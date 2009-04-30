@@ -1,0 +1,47 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      Check TwoListSelection js-functions
+    </span><br/><br/>
+    <table>
+      <tr>
+        <td class="container">
+          <o:twoListSelection id="withJSFunctions"
+                              value="#{TwoListSelectionSessionBean.testSelectedCollection3}">
+            <f:selectItem itemValue="itemV_1" itemLabel="itemL_1"/>
+            <f:selectItem itemValue="itemV_2" itemLabel="itemL_2"/>
+            <f:selectItem itemValue="itemV_3" itemLabel="itemL_3"/>
+            <f:selectItem itemValue="itemV_4" itemLabel="itemL_4"/>
+            <f:selectItem itemValue="itemV_5" itemLabel="itemL_5"/>
+            <f:selectItem itemValue="itemV_6" itemLabel="itemL_6"/>
+          </o:twoListSelection>
+        </td>
+        <td class="container">
+          <input id="getValue" type="button" value="getValue"
+                 onclick="printInfo(O$('formID:withJSFunctions').getValue(), 'getOutput', false);"/>
+
+          <div id="getOutput"></div>
+          <input id="setValue" type="button" value="setValue"
+                 onclick="O$('formID:withJSFunctions').setValue(['itemV_1', 'itemV_2']);"/>
+        </td>
+        <td class="container">
+          <h:outputText id="serverValue" value="#{TwoListSelectionSessionBean.selectedValueAsString3}"/>
+        </td>
+      </tr>
+    </table>
+
+    <br/>
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="Submit"/>
+  
+</div>

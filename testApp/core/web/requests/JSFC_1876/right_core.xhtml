@@ -1,0 +1,90 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <table>
+      <tr>
+        <td valign="top">
+          <table style="height:100%">
+            <tr>
+              <td valign="top">
+                <o:tabbedPane loadingMode="server" style="height:100%" frontBorderStyle="1px solid #899ca7"
+                              backBorderStyle="1px solid #a4a9ab"
+                              selectedTabStyle="font-weight: bold; text-align: center; vertical-align: middle; background: Lavender; height: 25px;"
+                              containerStyle="border-bottom: 0px;background-color:#798996;" tabClass="tab">
+                  <o:tabbedPaneItem>
+                    <f:facet name="tab">
+                      Calendar
+                    </f:facet>
+
+                    <o:tabbedPane loadingMode="server" style="padding-top:4px;height:100%"
+                                  frontBorderStyle="1px solid #899ca7"
+                                  backBorderStyle="1px solid #a4a9ab"
+                                  selectedTabStyle="font-weight: bold; text-align: center; vertical-align: middle; background: Lavender; height: 19px;"
+                                  containerStyle="border-bottom: 0px;background-color:#798996;" tabClass="innerTab">
+                      <o:tabbedPaneItem>
+                        <f:facet name="tab">
+                          Monthly
+                        </f:facet>
+
+                        <jsp:include page="monthly.jsf"/>
+                      </o:tabbedPaneItem>
+
+                      <o:tabbedPaneItem>
+                        <f:facet name="tab">
+                          Yearly
+                        </f:facet>
+
+                      </o:tabbedPaneItem>
+                    </o:tabbedPane>
+                  </o:tabbedPaneItem>
+
+                  <o:tabbedPaneItem>
+                    <f:facet name="tab">
+                      Test 1
+                    </f:facet>
+
+                    <table>
+                      <tr>
+                        <td><h1>Test1 TEST1 tesT1</h1></td>
+                      </tr>
+                    </table>
+                  </o:tabbedPaneItem>
+
+                  <o:tabbedPaneItem>
+                    <f:facet name="tab">
+                      Test 2
+                    </f:facet>
+
+                    <table>
+                      <tr>
+                        <td><h1>Test2 TEST2 tesT2</h1></td>
+                      </tr>
+                    </table>
+                  </o:tabbedPaneItem>
+
+                  <o:tabbedPaneItem>
+                    <f:facet name="tab">
+                      Test 3
+                    </f:facet>
+
+                    <table>
+                      <tr>
+                        <td><h1>Test3 TEST3 tesT3</h1></td>
+                      </tr>
+                    </table>
+                  </o:tabbedPaneItem>
+                </o:tabbedPane>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  
+</div>

@@ -1,0 +1,180 @@
+<project name="OpenFaces Project Build Script" default="build" basedir=".">
+
+  <property name="components.dir" location="openFaces"/>
+
+  <property name="target.dir" location="target"/>
+  <property name="target-lib.dir" location="${target.dir}/lib"/>
+  <property name="openfaces-jar.file" location="${target-lib.dir}/openfaces.jar"/>
+
+  <property name="test-app-jsp.dir" location="testApp/jsp"/>
+  <property name="test-app-facelets.dir" location="testApp/facelets"/>
+  <property name="live-demo.dir" location="liveDemo/jsp"/>
+  <property name="live-demo-facelets.dir" location="liveDemo/facelets"/>
+
+
+  <property name="funcTests.dir" location="funcTests"/>
+  <property name="funcTests-source.dir" location="${funcTests.dir}/source"/>
+  <property name="funcTests-target.dir" location="${funcTests.dir}/target"/>
+  <property name="funcTests-target-reports.dir" location="${funcTests-target.dir}/test-reports"/>
+  <property name="funcTestsFramework.dir" location="SeleniumInspector"/>
+  <property name="funcTestsFramework-source.dir" location="${funcTestsFramework.dir}/source"/>
+  <property name="funcTestsFramework-target.dir" location="${funcTestsFramework.dir}/out"/>
+  <property name="funcTestsFramework-distrib.dir" location="${funcTestsFramework.dir}/distribution"/>
+  <property name="funcTestsFramework-temp.dir" location="${funcTestsFramework.dir}/temp"/>
+  <property name="seleniuminspector-jar.file" location="${funcTestsFramework-distrib.dir}/seleniuminspector.jar"/>
+  <property name="patched-selenium-server.file"
+            location="${funcTestsFramework-distrib.dir}/patched-selenium-server.jar"/>
+  <property name="funcTestsFrameworkManifest.file" location="${funcTestsFramework-target.dir}/manifest.mf"/>
+
+  <target name="init">
+    <tstamp/>
+  </target>
+
+  <!-- *** Public Targets ** -->
+
+  <target name="build" depends="clean" description="Build OpenFaces core and all the demo applications">
+    <mkdir dir="${target.dir}"/>
+
+    <echo>Building Open Faces core...</echo>
+    <ant dir="${components.dir}" target="build" inheritall="false">
+      <property name="target-jar.file" value="${openfaces-jar.file}"/>
+      <property name="lib.dir" value="../lib"/>
+      <property name="retain.classes.dir" value="true"/>
+      <property file="ofversion.properties"/>
+    </ant>
+    <echo>Open Faces core built successfully.</echo>
+
+    <echo>Building Test Application (JSP-based version)...</echo>
+    <ant dir="${test-app-jsp.dir}" target="build" inheritall="false">
+      <property name="components-jar.file" value="${openfaces-jar.file}"/>
+    </ant>
+    <echo>Test Application (JSP-based version) built successfully.</echo>
+
+    <echo>Building Test Application (Facelets-based version)...</echo>
+    <ant dir="${test-app-facelets.dir}" target="build" inheritall="false">
+      <property name="components-jar.file" value="${openfaces-jar.file}"/>
+    </ant>
+    <echo>Test Application (Facelets-based version) built successfully.</echo>
+
+    <echo>Building Live Demo (JSP-based version)...</echo>
+    <ant dir="${live-demo.dir}" target="build" inheritall="false">
+      <property name="components-jar.file" value="${openfaces-jar.file}"/>
+    </ant>
+    <echo>Live Demo (JSP-based version) build successfully.</echo>
+
+    <echo>Building Live Demo (Facelets-based version)...</echo>
+    <ant dir="${live-demo-facelets.dir}" target="build" inheritall="false">
+      <property name="components-jar.file" value="${openfaces-jar.file}"/>
+    </ant>
+    <echo>Live Demo (Facelets-based version) build successfully.</echo>
+
+  </target>
+
+  <target name="clean" depends="init" description="clean up">
+    <delete dir="${target.dir}"/>
+  </target>
+
+  <target name="compile-func-test-framework" description="Compile framework required for functional testing">
+    <mkdir dir="${funcTestsFramework-target.dir}"/>
+    <javac srcdir="${funcTestsFramework-source.dir}" destdir="${funcTestsFramework-target.dir}" debug="true"
+           source="1.5" target="1.5">
+      <classpath>
+        <pathelement path="testLib/selenium-java-client-driver.jar"/>
+        <pathelement path="testLib/selenium-server.jar"/>
+        <pathelement path="testLib/junit.jar"/>
+        <fileset file="${openfaces-jar.file}"/>
+      </classpath>
+    </javac>
+    <manifest file="${funcTestsFrameworkManifest.file}">
+      <attribute name="Implementation-Title" value="OpenFaces SeleniumInspector"/>
+      <attribute name="Implementation-Vendor" value="TeamDev Ltd."/>
+    </manifest>
+    <mkdir dir="${funcTestsFramework-distrib.dir}"/>
+    <jar jarfile="${seleniuminspector-jar.file}" basedir="${funcTestsFramework-target.dir}"/>
+    <unzip src="testLib/selenium-server.jar" dest="${funcTestsFramework-temp.dir}" overwrite="true"/>
+    <copy file="${funcTestsFramework-source.dir}/funcTestsUtil.js"
+          tofile="${funcTestsFramework-temp.dir}/core/scripts/user-extensions.js" overwrite="true"/>
+    <jar basedir="${funcTestsFramework-temp.dir}" destfile="${patched-selenium-server.file}"/>
+    <delete dir="${funcTestsFramework-temp.dir}"/>
+    <copy file="testLib/selenium-java-client-driver.jar" todir="${funcTestsFramework-distrib.dir}"/>
+  </target>
+
+  <target name="compile-func-tests" depends="compile-func-test-framework" description="Compile functional tests">
+    <delete dir="${funcTests-target.dir}/classes"/>
+    <mkdir dir="${funcTests-target.dir}/classes"/>
+    <javac srcdir="${funcTests-source.dir}" destdir="${funcTests-target.dir}/classes" debug="true" encoding="UTF-8">
+      <classpath>
+        <pathelement path="${openfaces-jar.file}"/>
+        <pathelement path="${seleniuminspector-jar.file}"/>
+        <pathelement path="${patched-selenium-server.file}"/>
+        <pathelement path="${funcTestsFramework-distrib.dir}/selenium-java-client-driver.jar"/>
+        <pathelement path="testLib/junit.jar"/>
+        <pathelement path="testLib/jai/mlibwrapper_jai.jar"/>
+        <pathelement path="testLib/jai/jai_core.jar"/>
+        <pathelement path="testLib/jai/jai_codec.jar"/>
+      </classpath>
+    </javac>
+    <copy todir="${funcTests-target.dir}/classes">
+      <fileset dir="${funcTests-source.dir}">
+        <include name="**/*.properties"/>
+        <include name="**/*.lic"/>
+        <include name="**/*.png"/>
+        <include name="**/*.dll"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="run-func-tests" depends="compile-func-tests" description="Run functional tests">
+
+    <mkdir dir="${funcTests-target-reports.dir}"/>
+    <junit fork="yes" forkmode="once" failureproperty="junit_test_failed" dir="${funcTests-target.dir}">
+      <classpath>
+        <pathelement path="${openfaces-jar.file}"/>
+        <pathelement location="${funcTests-target.dir}/classes"/>
+        <pathelement path="${seleniuminspector-jar.file}"/>
+        <pathelement path="${patched-selenium-server.file}"/>
+        <pathelement path="${funcTestsFramework-distrib.dir}/selenium-java-client-driver.jar"/>
+        <pathelement path="testLib/junit.jar"/>
+        <pathelement path="testLib/jai/mlibwrapper_jai.jar"/>
+        <pathelement path="testLib/jai/jai_core.jar"/>
+        <pathelement path="testLib/jai/jai_codec.jar"/>
+      </classpath>
+      <formatter type="xml"/>
+      <formatter usefile="false" type="plain"/>
+      <batchtest todir="${funcTests-target-reports.dir}">
+        <fileset dir="${funcTests-source.dir}">
+          <include name="**/*Test.java"/>
+        </fileset>
+      </batchtest>
+      <sysproperty key="test.app.jsf.implementation" value="${jsf.implementation}"/>
+      <sysproperty key="test.app.is.facelets" value="${is.facelets}"/>
+      <sysproperty key="test.app.context.path" value="${context.path}"/>
+      <sysproperty key="demo.context.path" value="${demo.context.path}"/>
+    </junit>
+
+    <copy todir="${funcTests-source.dir}">
+      <fileset dir="${funcTests-target.dir}/classes">
+        <include name="**/*.png"/>
+      </fileset>
+    </copy>
+
+    <fail if="junit_test_failed" message="FUNCTIONAL TEST(S) FAILED"/>
+  </target>
+
+  <target name="run-func-tests-jsp-1.2" description="Run functional tests in JSP-based JSF 1.2 environment">
+    <property name="jsf.implementation" value="SUN12"/>
+    <property name="is.facelets" value="false"/>
+    <property name="context.path" value="/TestAppJsp_12"/>
+    <property name="demo.context.path" value="/LiveDemo_2x"/>
+    <antcall target="run-func-tests"/>
+  </target>
+
+  <target name="run-func-tests-facelets-1.2" description="Run functional tests in Facelets-based JSF 1.2 environment">
+    <property name="jsf.implementation" value="SUN12"/>
+    <property name="is.facelets" value="true"/>
+    <property name="context.path" value="/TestAppFacelets_12"/>
+    <property name="demo.context.path" value="/LiveDemoFacelets_2x"/>
+    <antcall target="run-func-tests"/>
+  </target>
+
+</project>

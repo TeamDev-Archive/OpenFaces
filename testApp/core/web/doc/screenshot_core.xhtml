@@ -1,0 +1,1047 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <a href="../main.jsf" style="float: right;">Return to main page</a>
+<table width="100%">
+<tr>
+  <td width="50%">
+    <h2>Component</h2>
+  </td>
+  <td width="50%">
+    <h2>Screenshot</h2>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <h3>Calendar</h3>
+  </td>
+</tr>
+<tr>
+  <td width="50%">
+    <o:calendar disabledDayStyle="color:#808080; background-color:#FFFFFF">
+      <o:dateRanges dayStyle="color:#000000; background-color:#fffeb4" disableExcludes="false">
+        <o:simpleDateRange fromDate="#{FoldingPanelTestBean.fromDate2}" toDate="#{FoldingPanelTestBean.toDate2}"
+                />
+      </o:dateRanges>
+    </o:calendar>
+  </td>
+  <td width="50%">
+    <img src="calendar.gif" alt="calendar"/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <h3>Confirmation</h3>
+  </td>
+</tr>
+<tr>
+  <td width="50%">
+    <input id="button1" type="button" value="Show confirmation" onclick="alert('!');"/>
+    <o:confirmation id="conf1"
+                    for=":button1"
+                    draggable="true"/>
+  </td>
+  <td width="50%">
+    <img src="confirmation_XP.gif" alt="confirmation"/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <h3>DataTable</h3>
+  </td>
+</tr>
+<tr>
+  <td width="50%">
+    <o:dataTable width="300px" pageSize="5" var="person" value="#{PeopleListBean.person}"
+                 rolloverRowStyle="background:#F0F0F0">
+      <o:column sortingExpression="#{person.name}"
+                sortingComparator="caseInsensitiveText"
+                filterExpression="#{person.name}"
+                filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="Name"/>
+        </f:facet>
+        <h:outputText value="#{person.name}"/>
+      </o:column>
+      <o:column filterExpression="#{person.profession}"
+                filterKind="dropDownField">
+        <f:facet name="header">
+          <h:outputText value="Profession"/>
+        </f:facet>
+        <h:outputText value="#{person.profession}"/>
+      </o:column>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="Hobby"/>
+        </f:facet>
+        <h:outputText value="#{person.hobby}"/>
+      </o:column>
+      <f:facet name="below">
+        <o:dataTablePaginator/>
+      </f:facet>
+    </o:dataTable>
+  </td>
+  <td width="50%">
+    <img src="dataTable_XP.gif" alt="DataTable"/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <h3>DateChooser</h3>
+  </td>
+</tr>
+<tr>
+  <td width="50%">
+    <o:dateChooser dateFormat="full"/>
+  </td>
+  <td width="25%">
+    <img src="dateChooser_closed.gif" alt="DateChooser closed"/>
+    <br/>
+    <br/>
+    <img src="dateChooser.gif" alt="DateChooser"/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <h3>DropDownField</h3>
+  </td>
+</tr>
+<tr>
+  <td width="50%">
+    <div style="background-color:#c41700; width:25px; border:1px solid silver"></div>
+    <br/>
+
+    <div style="background-color:#fff000; width:25px; border:1px solid silver"></div>
+    <br/>
+
+    <div style="background-color:#007bc4; width:25px; border:1px solid silver"></div>
+    <br/>
+    <o:dropDownField>
+      <o:dropDownItem value="#FF0000">
+        <h:graphicImage url="red.gif"/>
+        <h:outputText value=" Red"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="#FFFF00">
+        <h:graphicImage url="yellow.gif"/>
+        <h:outputText value=" Yellow"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="#0000FF">
+        <h:graphicImage url="blue.gif"/>
+        <h:outputText value=" Blue"/>
+      </o:dropDownItem>
+    </o:dropDownField>
+  </td>
+  <td width="25%">
+    <img src="dropDown_closed.gif" alt="DropDownField closed"/>
+    <br/>
+    <br/>
+    <img src="dropDownField.gif" alt="DropDownField"/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <h3>DynamicImage</h3>
+  </td>
+</tr>
+<tr>
+  <td width="50%">
+    <o:dynamicImage data="#{DynamicImageDataBean.testData}" width="200"/>
+  </td>
+  <td width="50%">
+    <img src="dynamicImage.gif" alt="DynamicImage"/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <h3>FoldingPanel</h3>
+  </td>
+</tr>
+<tr>
+  <td width="50%">
+    <o:foldingPanel contentStyle="padding:2px" style=" width:200px">
+      <f:facet name="caption">
+        <h:outputText value="FoldingPanel information"/>
+      </f:facet>
+      <h:outputText value="FoldingPanel is container for components which can be collapsed or expanded by the user"/>
+    </o:foldingPanel>
+  </td>
+  <td width="25%">
+    <img src="foldingPanel_closed.gif" alt="FoldingPanel closed"/>
+    <br/>
+    <br/>
+    <img src="foldingPanel.gif" alt="FoldingPanel"/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <h3>HintLabel</h3>
+  </td>
+</tr>
+<tr>
+  <td width="50%">
+    <table width="50%" border="1">
+      <tr>
+        <td width="25%">
+          Mercury
+        </td>
+        <td width="75%">
+          <o:hintLabel value="Is the closest planet to the Sun and the eighth largest" style="width:200px;"
+                       hintStyle="background-color:#fffff1"/>
+        </td>
+      </tr>
+      <tr>
+        <td width="25%">
+          Venus
+        </td>
+        <td width="75%">
+          <o:hintLabel value="Is the second planet from the Sun and the sixth largest" style="width:200px;"
+                       hintStyle="background-color:#fffff1"/>
+        </td>
+      </tr>
+      <tr>
+        <td width="25%">
+          Earth
+        </td>
+        <td width="75%">
+          <o:hintLabel value="Is the third planet from the Sun and the fifth largest" style="width:200px;"
+                       hintStyle="background-color:#fffff1"/>
+        </td>
+      </tr>
+      <tr>
+        <td width="25%">
+          Mars
+        </td>
+        <td width="75%">
+          <o:hintLabel value="Is the fourth planet from the Sun and the seventh largest" style="width:200px;"
+                       hintStyle="background-color:#fffff1"/>
+        </td>
+      </tr>
+    </table>
+  </td>
+  <td width="50%">
+    <img src="hintLabel.gif" alt="HintLabel"/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <h3>PopupLayer</h3>
+  </td>
+</tr>
+<tr>
+  <td width="50%">
+    <input type="button" id="popupInvoker" value="Show PopupLayer" onclick="O$('form1:popupLayer1').show();"/>
+    <br/>
+    <o:popupLayer id="popupLayer1" draggable="true" style="padding:2px; background-color:#fafdff">
+      <f:verbatim>
+        Click here to hide this PopupLayer:<br/>
+      </f:verbatim>
+      <h:outputLink>
+      </h:outputLink>
+
+    </o:popupLayer>
+  </td>
+  <td width="50%">
+    <img src="popupLayer_XP.gif" alt="PopupLayer"/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <br/>
+
+    <h3>TabbedPane</h3>
+  </td>
+</tr>
+<tr>
+  <td width="50%">
+    <o:tabbedPane style="width: 300px; height: 80px; padding:2px" containerStyle="padding:2px"
+                  tabStyle="white-space: nowrap; padding:2px">
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="First tab"/>
+        </f:facet>
+        <h:outputText value="Some text on the first tab"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Second tab"/>
+        </f:facet>
+        <h:outputText value="Some text on the second tab"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Third tab"/>
+        </f:facet>
+        <h:outputText value="Some text on the third tab"/>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+  </td>
+  <td width="50%">
+    <img src="tabbedPane.gif" alt="TabbedPane"/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <h3>TabSet</h3>
+  </td>
+</tr>
+<tr>
+  <td width="50%">
+    <o:tabSet>
+      <o:tabSetItem>
+        <h:outputText value="Client"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="Server"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="Custom"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="Default"></h:outputText>
+      </o:tabSetItem>
+    </o:tabSet>
+  </td>
+  <td width="50%">
+    <img src="tabSet.gif" alt="TabSet"/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <h3>TreeTable</h3>
+  </td>
+</tr>
+<tr>
+  <td width="50%">
+    <o:treeTable id="treeTable2" var="message" rolloverRowStyle="background:#F0F0F0;"
+                 expansionState="#{TreeTableBean.forumTreeTableExpansionState}"
+                 nodeLevelVar="level" style="width:300px">
+      <o:multipleNodeSelection nodeDatas="#{TreeTableBean.selectedNodeDatas2}"/>
+      <o:dynamicTreeStructure nodeChildren="#{TreeTableBean.nodeChildren}"/>
+      <o:selectionColumn style="width:25px">
+        <f:facet name="header">
+          <o:selectAllCheckbox/>
+        </f:facet>
+      </o:selectionColumn>
+      <o:treeColumn showAsTree="#{!TreeTableBean.booleanSwitch}" sortingExpression="#{message.subject}"
+                    filterExpression="#{message.subject}" filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="Subject"/>
+        </f:facet>
+        <h:outputText value="#{message.subject}"/>
+      </o:treeColumn>
+      <o:column sortingExpression="#{message.author}" filterExpression="#{message.author}"
+                filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText value="From"/>
+        </f:facet>
+        <h:outputText value="#{message.author}"/>
+      </o:column>
+    </o:treeTable>
+  </td>
+  <td width="50%">
+    <img src="treeTable_XP.gif" alt="TreeTable"/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <h3>TwoListSelection</h3>
+  </td>
+</tr>
+<tr>
+  <td width="50%">
+    <o:twoListSelection allowItemsOrdering="false" value="#{ScreenshotBean.selectedItem}" style="width:300px"
+                        leftListboxHeader="Available items"
+                        rightListboxHeader="Selected items">
+      <f:selectItems value="#{ScreenshotBean.items}"/>
+    </o:twoListSelection>
+  </td>
+  <td width="50%">
+    <img src="twoListSelection_XP.gif" alt="TwoListSelection"/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <br/>
+    <br/>
+    For DataTable component documentation
+    <br/>
+    <br/>
+    <o:dataTable pageSize="5" var="person" value="#{PeopleListBean.person}" rolloverRowStyle="background:#F0F0F0">
+      <o:column sortingExpression="#{person.name}"
+                sortingComparator="caseInsensitiveText"
+                filterExpression="#{person.name}"
+                filterKind="dropDownField">
+        <f:facet name="header">
+          <h:outputText value="Name"/>
+        </f:facet>
+        <h:outputText value="#{person.name}"/>
+      </o:column>
+      <o:column filterExpression="#{person.profession}"
+                filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText value="Profession"/>
+        </f:facet>
+        <h:outputText value="#{person.profession}"/>
+      </o:column>
+      <o:column filterExpression="#{person.hobby}"
+                filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="Hobby"/>
+        </f:facet>
+        <h:outputText value="#{person.hobby}"/>
+      </o:column>
+      <f:facet name="below">
+        <o:dataTablePaginator/>
+      </f:facet>
+    </o:dataTable>
+    <br/>
+    <br/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <br/>
+    <br/>
+    For Confirmation component documentation
+    <br/>
+    <br/>
+    <input id="button2" type="button" value="Show confirmation" onclick="alert('!');"/>
+    <o:confirmation id="conf2"
+                    for=":button2"
+                    draggable="true"
+                    captionText="caption"
+                    captionStyle="border:2px solid red;"
+                    contentStyle="border:2px solid blue;"
+                    iconAreaStyle="border:2px solid orange;"
+                    buttonAreaStyle="border:2px solid green;"/>
+    <br/>
+    <br/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <br/>
+    <br/>
+    For DataTable component documentation (Styles separators)
+    <br/>
+    <br/>
+    <o:dataTable pageSize="5" var="person" value="#{PeopleListBean.person}" rolloverRowStyle="background:#F0F0F0"
+                 horizontalGridLines="1px dotted gray"
+                 verticalGridLines="1px dotted gray"
+                 commonHeaderSeparator="3px solid gray"
+                 commonFooterSeparator="3px solid gray"
+                 headerHorizSeparator="2px solid gray"
+                 footerHorizSeparator="2px solid gray"
+                 headerVertSeparator="1px solid gray"
+                 footerVertSeparator="1px solid gray"
+                 filterRowSeparator="1px dotted black"
+            >
+      <f:facet name="header">
+        <h:outputText value="Table header"/>
+      </f:facet>
+      <o:column sortingExpression="#{person.name}"
+                sortingComparator="caseInsensitiveText"
+                filterExpression="#{person.name}"
+                filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="Column header"/>
+        </f:facet>
+        <h:outputText value="#{person.name}"/>
+        <f:facet name="footer">
+          <h:outputText value="Column footer"/>
+        </f:facet>
+      </o:column>
+      <o:column filterExpression="#{person.profession}"
+                filterKind="dropDownField">
+        <f:facet name="header">
+          <h:outputText value="Column header"/>
+        </f:facet>
+        <h:outputText value="#{person.profession}"/>
+        <f:facet name="footer">
+          <h:outputText value="Column footer"/>
+        </f:facet>
+      </o:column>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="Column header"/>
+        </f:facet>
+        <h:outputText value="#{person.hobby}"/>
+        <f:facet name="footer">
+          <h:outputText value="Column footer"/>
+        </f:facet>
+      </o:column>
+      <f:facet name="footer">
+        <h:outputText value="Table footer"/>
+      </f:facet>
+      <f:facet name="below">
+        <o:dataTablePaginator/>
+      </f:facet>
+    </o:dataTable>
+    <br/>
+    <br/>
+  </td>
+</tr>
+<tr>
+<td width="50%">
+  <br/>
+  <br/>
+  For DataTable component documentation (Styles)
+  <br/>
+  <br/>
+  <o:dataTable pageSize="5" var="person" value="#{PeopleListBean.person}" rolloverRowStyle="background:#F0F0F0"
+               style="border:1px solid #4c7177"
+               headerSectionStyle="font-size:13pt; color:#2e343d;"
+               bodySectionStyle="background-color:#fef9ee; color:#106574"
+               footerSectionStyle="font-size:13pt; color:#223957"
+               headerRowStyle="background-color:#e1caa2"
+               footerRowStyle="background-color:#aabede"
+               commonHeaderRowStyle="background-color:#aec2c5"
+               commonFooterRowStyle="background-color:#769ecb"
+               filterRowStyle="background-color:#faefd2"
+
+          >
+    <f:facet name="header">
+      <h:outputText value="Table header"/>
+    </f:facet>
+    <o:column sortingExpression="#{person.name}"
+              sortingComparator="caseInsensitiveText"
+              filterExpression="#{person.name}"
+              filterKind="searchField">
+      <f:facet name="header">
+        <h:outputText value="Column header"/>
+      </f:facet>
+      <h:outputText value="#{person.name}"/>
+      <f:facet name="footer">
+        <h:outputText value="Column footer"/>
+      </f:facet>
+    </o:column>
+    <o:column filterExpression="#{person.profession}"
+              filterKind="comboBox">
+      <f:facet name="header">
+        <h:outputText value="Column header"/>
+      </f:facet>
+      <h:outputText value="#{person.profession}"/>
+      <f:facet name="footer">
+        <h:outputText value="Column footer"/>
+      </f:facet>
+    </o:column>
+    <o:column>
+      <f:facet name="header">
+        <h:outputText value="Column header"/>
+      </f:facet>
+      <h:outputText value="#{person.hobby}"/>
+      <f:facet name="footer">
+        <h:outputText value="Column footer"/>
+      </f:facet>
+    </o:column>
+    <f:facet name="footer">
+      <h:outputText value="Table footer"/>
+    </f:facet>
+    <f:facet name="below">
+      <o:dataTablePaginator/>
+    </f:facet>
+  </o:dataTable>
+  <br/>
+  <br/>
+</td>
+<td width="50%">
+  <table>
+    <tr>
+      <td>
+        headerSectionStyle
+      </td>
+      <td>
+        <div width="100px" height="40px"
+             style="font-weight:bold; font-size:13pt; color:#2e343d; border:1px solid black; padding:2px">
+          headerSectionStyle
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        bodySectionStyle
+      </td>
+      <td>
+        <div width="100px" height="40px"
+             style="background-color:#fef9ee; color:#106574; border:1px solid black; padding:2px">
+          bodySectionStyle
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        footerSectionStyle
+      </td>
+      <td>
+        <div width="100px" height="40px" style="font-size:13pt; color:#223957; border:1px solid black; padding:2px">
+          footerSectionStyle
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        headerRowStyle
+      </td>
+      <td>
+        <div width="100px" height="40px" style="background-color:#e1caa2; border:1px solid black; padding:2px">
+          &#160;
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        footerRowStyle
+      </td>
+      <td>
+        <div width="100px" height="40px" style="background-color:#aabede; border:1px solid black; padding:2px">
+          &#160;
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        commonHeaderRowStyle
+      </td>
+      <td>
+        <div width="100px" height="40px" style="background-color:#aec2c5; border:1px solid black; padding:2px">
+          &#160;
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        commonFooterRowStyle
+      </td>
+      <td>
+        <div width="100px" height="40px" style="background-color:#769ecb; border:1px solid black; padding:2px">
+          &#160;
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        filterRowStyle
+      </td>
+      <td>
+        <div width="100px" height="40px" style="background-color:#faefd2; border:1px solid black; padding:2px">
+          &#160;
+        </div>
+      </td>
+    </tr>
+  </table>
+</td>
+</tr>
+<tr>
+  <td colspan="2">
+    <br/>
+    <br/>
+    For TabSet component documentation
+    <br/>
+    <br/>
+    <o:tabSet frontBorderStyle="red solid 2px"
+              backBorderStyle="blue solid 2px" style="width: 250px">
+      <o:tabSetItem>
+        <h:outputText value="Client"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="Server"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="Custom"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="Default"></h:outputText>
+      </o:tabSetItem>
+    </o:tabSet>
+    <br/>
+    <br/>
+  </td>
+</tr>
+<tr>
+<td colspan="2">
+  <br/>
+  <br/>
+  For Tabbed component documentation
+  <br/>
+  <br/>
+  <o:tabbedPane style="width: 300px; height: 80px; padding: 2px" tabStyle="white-space: nowrap"
+                frontBorderStyle="red solid 2px"
+                backBorderStyle="blue solid 2px">
+    <o:tabbedPaneItem>
+      <f:facet name="tab">
+        <h:outputText value="First tab"/>
+      </f:facet>
+      <h:outputText value="Some text on the first tab"/>
+    </o:tabbedPaneItem>
+    <o:tabbedPaneItem>
+      <f:facet name="tab">
+        <h:outputText value="Second tab"/>
+      </f:facet>
+      <h:outputText value="Some text on the second tab"/>
+    </o:tabbedPaneItem>
+    <o:tabbedPaneItem>
+      <f:facet name="tab">
+        <h:outputText value="Third tab"/>
+      </f:facet>
+      <h:outputText value="Some text on the third tab"/>
+    </o:tabbedPaneItem>
+  </o:tabbedPane>
+  <br/>
+  <br/>
+</td>
+</tr>
+<tr>
+  <td colspan="2">
+    <br/>
+    <br/>
+    For TreeTable component documentation (Styles separators)
+    <br/>
+    <br/>
+    <o:treeTable id="treeTable3" var="message" rolloverRowStyle="background:#F0F0F0;"
+                 expansionState="#{TreeTableBean.forumTreeTableExpansionState}"
+                 nodeLevelVar="level" width="40%"
+                 horizontalGridLines="1px dotted gray"
+                 verticalGridLines="1px dotted gray"
+                 commonHeaderSeparator="3px solid gray"
+                 commonFooterSeparator="3px solid gray"
+                 headerHorizSeparator="2px solid gray"
+                 footerHorizSeparator="2px solid gray"
+                 headerVertSeparator="1px solid gray"
+                 footerVertSeparator="1px solid gray"
+                 filterRowSeparator="1px dotted black">
+      <o:multipleNodeSelection nodeDatas="#{TreeTableBean.selectedNodeDatas2}"/>
+      <o:dynamicTreeStructure nodeChildren="#{TreeTableBean.nodeChildren}"/>
+      <f:facet name="header">
+        <h:outputText value="Table header"/>
+      </f:facet>
+      <o:selectionColumn>
+        <f:facet name="header">
+          <o:selectAllCheckbox/>
+        </f:facet>
+      </o:selectionColumn>
+      <o:treeColumn showAsTree="#{!TreeTableBean.booleanSwitch}" sortingExpression="#{message.subject}"
+                    filterExpression="#{message.subject}" filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="Column header"/>
+        </f:facet>
+        <h:outputText value="#{message.subject}"/>
+        <f:facet name="footer">
+          <h:outputText value="Column footer"/>
+        </f:facet>
+      </o:treeColumn>
+      <o:column sortingExpression="#{message.author}" filterExpression="#{message.author}"
+                filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText value="Column header"/>
+        </f:facet>
+        <h:outputText value="#{message.author}"/>
+        <f:facet name="footer">
+          <h:outputText value="Column footer"/>
+        </f:facet>
+      </o:column>
+      <o:column sortingExpression="#{message.date}">
+        <f:facet name="header">
+          <h:outputText value="Column header"/>
+        </f:facet>
+        <h:outputText value="#{message.date}"/>
+        <f:facet name="footer">
+          <h:outputText value="Column footer"/>
+        </f:facet>
+      </o:column>
+      <f:facet name="footer">
+        <h:outputText value="Table footer"/>
+      </f:facet>
+    </o:treeTable>
+    <br/>
+    <br/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <br/>
+    <br/>
+    For TreeTable component documentation (Styles)
+    <br/>
+    <br/>
+    <o:treeTable id="treeTable5" var="message" rolloverRowStyle="background:#F0F0F0;"
+                 expansionState="#{TreeTableBean.forumTreeTableExpansionState}"
+                 nodeLevelVar="level" width="40%"
+                 style="border:1px solid #4c7177"
+                 headerSectionStyle="font-size:13pt; color:#2e343d;"
+                 bodySectionStyle="background-color:#fef9ee; color:#106574"
+                 footerSectionStyle="font-size:13pt; color:#223957"
+                 headerRowStyle="background-color:#e1caa2"
+                 footerRowStyle="background-color:#aabede"
+                 commonHeaderRowStyle="background-color:#aec2c5"
+                 commonFooterRowStyle="background-color:#769ecb"
+                 filterRowStyle="background-color:#faefd2">
+      <o:multipleNodeSelection nodeDatas="#{TreeTableBean.selectedNodeDatas2}"/>
+      <o:dynamicTreeStructure nodeChildren="#{TreeTableBean.nodeChildren}"/>
+      <f:facet name="header">
+        <h:outputText value="Table header"/>
+      </f:facet>
+      <o:selectionColumn>
+        <f:facet name="header">
+          <o:selectAllCheckbox/>
+        </f:facet>
+      </o:selectionColumn>
+      <o:treeColumn sortingExpression="#{message.subject}"
+                    filterExpression="#{message.subject}" filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="Column header"/>
+        </f:facet>
+        <h:outputText value="#{message.subject}"/>
+        <f:facet name="footer">
+          <h:outputText value="Column footer"/>
+        </f:facet>
+      </o:treeColumn>
+      <o:column sortingExpression="#{message.author}" filterExpression="#{message.author}"
+                filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText value="Column header"/>
+        </f:facet>
+        <h:outputText value="#{message.author}"/>
+        <f:facet name="footer">
+          <h:outputText value="Column footer"/>
+        </f:facet>
+      </o:column>
+      <o:column sortingExpression="#{message.date}">
+        <f:facet name="header">
+          <h:outputText value="Column header"/>
+        </f:facet>
+        <h:outputText value="#{message.date}"/>
+        <f:facet name="footer">
+          <h:outputText value="Column footer"/>
+        </f:facet>
+      </o:column>
+      <f:facet name="footer">
+        <h:outputText value="Table footer"/>
+      </f:facet>
+    </o:treeTable>
+    <br/>
+    <br/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <br/>
+    <br/>
+    For TreeTable component documentation
+    <br/>
+    <br/>
+    <o:treeTable id="treeTable4" var="message" rolloverRowStyle="background:#F0F0F0;" width="40%"
+                 expansionState="#{TreeTableBean.forumTreeTableExpansionState}"
+                 nodeLevelVar="level">
+      <o:multipleNodeSelection nodeDatas="#{TreeTableBean.selectedNodeDatas2}"/>
+      <o:dynamicTreeStructure nodeChildren="#{TreeTableBean.nodeChildren}"/>
+      <o:selectionColumn>
+        <f:facet name="header">
+          <o:selectAllCheckbox/>
+        </f:facet>
+      </o:selectionColumn>
+      <o:treeColumn showAsTree="#{!TreeTableBean.booleanSwitch}" sortingExpression="#{message.subject}"
+                    filterExpression="#{message.subject}" filterKind="dropDownField">
+        <f:facet name="header">
+          <h:outputText value="Subject"/>
+        </f:facet>
+        <h:outputText value="#{message.subject}"/>
+      </o:treeColumn>
+      <o:column sortingExpression="#{message.author}" filterExpression="#{message.author}"
+                filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText value="From"/>
+        </f:facet>
+        <h:outputText value="#{message.author}"/>
+      </o:column>
+      <o:column sortingExpression="#{message.date}"
+                filterExpression="#{message.date}" filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="Sent"/>
+        </f:facet>
+        <h:outputText value="#{message.date}"/>
+      </o:column>
+    </o:treeTable>
+    <br/>
+    <br/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <br/>
+    <br/>
+    For TreeTable component documentation (Headers and footers)
+    <br/>
+    <br/>
+    <o:treeTable id="treeTable6" var="message" rolloverRowStyle="background:#F0F0F0;"
+                 expansionState="#{TreeTableBean.forumTreeTableExpansionState}"
+                 nodeLevelVar="level" style="width:40%; border:dotted 1px gray">
+      <o:multipleNodeSelection nodeDatas="#{TreeTableBean.selectedNodeDatas2}"/>
+      <o:dynamicTreeStructure nodeChildren="#{TreeTableBean.nodeChildren}"/>
+      <o:selectionColumn>
+        <f:facet name="header">
+          <o:selectAllCheckbox/>
+        </f:facet>
+      </o:selectionColumn>
+      <o:treeColumn showAsTree="#{!TreeTableBean.booleanSwitch}" sortingExpression="#{message.subject}"
+                    filterExpression="#{message.subject}" filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="Subject"/>
+        </f:facet>
+        <h:outputText value="#{message.subject}"/>
+      </o:treeColumn>
+      <o:column sortingExpression="#{message.author}" filterExpression="#{message.author}"
+                filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText value="From"/>
+        </f:facet>
+        <h:outputText value="#{message.author}"/>
+      </o:column>
+      <o:column sortingExpression="#{message.date}">
+        <f:facet name="header">
+          <h:outputText value="Sent"/>
+        </f:facet>
+        <h:outputText value="#{message.date}"/>
+      </o:column>
+      <f:facet name="above">
+        <h:outputText value="'Above' facet goes before the TreeTable"/>
+      </f:facet>
+      <f:facet name="header">
+        <h:outputText value="'Header' facet goes as the first row of the TreeTable"/>
+      </f:facet>
+      <f:facet name="footer">
+        <h:outputText value="'Footer' facet goes as the last row of the TreeTable"/>
+      </f:facet>
+      <f:facet name="below">
+        <h:outputText value="'Below' facet goes after the TreeTable"/>
+      </f:facet>
+
+    </o:treeTable>
+    <br/>
+    <br/>
+  </td>
+</tr>
+<tr>
+  <td colspan="2">
+    <o:dataTable pageSize="5" var="person" value="#{PeopleListBean.person}" rolloverRowStyle="background:#F0F0F0"
+                 style="border:1px dotted gray; width:40%">
+      <o:column sortingExpression="#{person.name}"
+                sortingComparator="caseInsensitiveText"
+                filterExpression="#{person.name}"
+                filterKind="searchField" style="width:30%">
+        <f:facet name="header">
+          <h:outputText value="Name"/>
+        </f:facet>
+        <h:outputText value="#{person.name}"/>
+      </o:column>
+      <o:column filterExpression="#{person.profession}"
+                filterKind="dropDownField" style="width:40%">
+        <f:facet name="header">
+          <h:outputText value="Profession"/>
+        </f:facet>
+        <h:outputText value="#{person.profession}"/>
+      </o:column>
+      <o:column style="width:30%">
+        <f:facet name="header">
+          <h:outputText value="Hobby"/>
+        </f:facet>
+        <h:outputText value="#{person.hobby}"/>
+      </o:column>
+      <f:facet name="above">
+        <h:outputText value="'Above' facet goes before the DataTable"/>
+      </f:facet>
+      <f:facet name="header">
+        <h:outputText value="'Header' facet goes as the first row of the DataTable"/>
+      </f:facet>
+      <f:facet name="footer">
+        <h:outputText value="'Footer' facet goes as the last row of the DataTable"/>
+      </f:facet>
+      <f:facet name="below">
+        <h:outputText value="'Below' facet goes after the DataTable"/>
+      </f:facet>
+
+    </o:dataTable>
+  </td>
+</tr>
+<tr>
+  <td width="50%">
+    <h3>Validators</h3>
+    <br/>
+    <h:inputText id="equalValidatorS1" value="#{OpenFacesValidatorsBean.equal1}"></h:inputText>
+    <br/>
+    <br/>
+    <h:inputText id="equalValidatorS2" value="#{OpenFacesValidatorsBean.equal2}">
+      <o:validateEqual for="equalValidatorS1" summary="Validation error"
+                        detail="Values are not equal"></o:validateEqual>
+    </h:inputText>
+    <br/>
+    <o:floatingIconMessage for="equalValidatorS2" style="border: 1px solid red;" showDetail="true"
+                           noImage="true" showSummary="true"></o:floatingIconMessage>
+    <br/>
+    <h:inputText id="urlValidatorS" value="#{OpenFacesValidatorsBean.urlValidator}">
+      <o:validateUrl detail="Incorrect url" summary="validation error"></o:validateUrl>
+    </h:inputText>
+    <br/>
+    <o:floatingIconMessage for="urlValidatorS" showDetail="true" showSummary="true" style="background-color: #ffff94;"
+                           imageUrl="error_icon_new.gif"></o:floatingIconMessage>
+    <br/>
+    <h:inputText id="emailValidatorS" value="#{OpenFacesValidatorsBean.emailValidator}">
+      <o:validateEmail detail="Incorrect e-mail" summary="validation error"></o:validateEmail>
+    </h:inputText>
+    <br/>
+    <o:floatingIconMessage for="emailValidatorS" showDetail="true" showSummary="true"
+                           noImage="true"></o:floatingIconMessage>
+    <br/>
+    <h:inputText id="reValidatorS" value="#{OpenFacesValidatorsBean.reValidator}">
+      <o:validateRegex pattern="\+\d\d [(]\d\d\d[)] \d\d\d \d\d \d\d" detail="Incorrect number"
+                         summary="validation error"></o:validateRegex>
+    </h:inputText>
+    <br/>
+    <o:floatingIconMessage offsetLeft="140" for="reValidatorS" showDetail="true"
+                           showSummary="true"></o:floatingIconMessage>
+    <br/>
+    <h:commandButton type="submit" value="Submmit"/>
+  </td>
+  <td width="50%">
+    <img src="Validators.gif" alt="Validators"/>
+  </td>
+</tr>
+</table>
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Vestibulum condimentum lectus vel ligula. Mauris iaculis, est
+vel sagittis hendrerit, dolor tortor dignissim ipsum, vitae elementum lectus purus quis quam. Ut tincidunt hendrerit
+neque. Phasellus vel neque nec justo malesuada suscipit. Ut metus. Integer ac nulla venenatis nisl fringilla lacinia. In
+ultricies fringilla metus. Nunc at orci. Maecenas semper vehicula sapien. Duis tortor magna, laoreet ut, mollis in,
+viverra nec, lorem. Fusce nulla. Praesent convallis elit sit amet pede. Vestibulum eget diam. Aenean tempus dictum arcu.
+
+Nulla suscipit adipiscing sapien. Maecenas elementum. Sed mattis ligula vel massa porttitor luctus. Etiam tincidunt
+tortor id massa. Pellentesque urna lorem, tempor eu, molestie in, ornare ornare, erat. Fusce nisi orci, dictum in,
+volutpat at, dignissim sit amet, massa. Maecenas pede. Fusce pretium purus eu lacus. Mauris ut enim quis erat lobortis
+varius. Cras sed ligula. Pellentesque scelerisque, lectus sit amet consectetuer aliquet, sapien massa semper orci, nec
+eleifend nunc turpis malesuada eros. Pellentesque sed diam. Donec lobortis placerat nisl. Ut nec quam.
+
+Aliquam rutrum, neque venenatis elementum faucibus, elit erat vehicula arcu, adipiscing vehicula risus tortor at ante.
+Pellentesque libero sem, placerat id, consectetuer non, sollicitudin non, urna. Nam tempor commodo quam. Etiam tellus
+elit, luctus a, rutrum in, tempus quis, mauris. Aenean at est. Curabitur tincidunt. Mauris eget nibh. In hac habitasse
+platea dictumst. Curabitur sit amet sem et ipsum consequat ultrices. Praesent sem nunc, dapibus in, viverra et,
+tincidunt volutpat, enim. Vestibulum quis leo ut diam faucibus venenatis. Sed tortor. Mauris libero. Proin aliquam
+luctus quam.
+
+Nam at orci. Maecenas at nulla. Nam ut massa. Pellentesque ac nisi. Vestibulum felis erat, pretium vel, egestas eu,
+auctor vel, neque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Duis
+viverra rhoncus leo. Aliquam sagittis. Vestibulum at felis. In non ante. Donec metus felis, molestie pellentesque,
+scelerisque in, elementum a, urna. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis
+egestas. Nullam sit amet odio quis turpis iaculis semper. Aenean sollicitudin tempus risus. Pellentesque habitant morbi
+tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam a massa. Suspendisse ultricies. Donec erat
+leo, faucibus id, ornare et, consectetuer sed, pede. Nulla a velit.
+
+Suspendisse dapibus lacus sit amet pede. Curabitur ante massa, varius non, ornare sit amet, tempus non, nibh. Donec
+tristique sagittis erat. Quisque dui arcu, ullamcorper id, lobortis eget, mollis et, nibh. Morbi gravida sagittis nunc.
+Sed convallis ultrices mi. Etiam commodo vulputate magna. In mattis. Ut venenatis aliquet sem. Phasellus hendrerit.
+Vestibulum augue. Fusce in lacus fermentum leo malesuada sollicitudin. Class aptent taciti sociosqu ad litora torquent
+per conubia nostra, per inceptos hymenaeos. Aliquam sed metus. Aliquam commodo pede. Quisque sapien. Nunc urna.
+
+
+
+</div>

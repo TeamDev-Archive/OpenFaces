@@ -1,0 +1,17 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+    <h:panelGrid columns="2">
+  <f:verbatim>Subject: </f:verbatim><h:inputText id="subject" value="#{TreeTableTestBean.newMessageSubject}" style="width: 500px"/>
+  <f:verbatim>Body (ignored anyway): </f:verbatim><h:inputTextarea id="body" style="width: 500px; height: 300px"/>
+  </h:panelGrid>
+  <h:commandButton value="Post" action="#{TreeTableTestBean.postNewMessage}"/>
+  <h:commandButton value="Cancel" action="#{TreeTableTestBean.cancelNewMessage}"/>
+
+</div>

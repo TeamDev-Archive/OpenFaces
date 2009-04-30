@@ -1,0 +1,56 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <span style="font-weight:bold;">Use ajax:</span><br/>
+    <o:tabSet id="loadingModes"
+              selectedIndex="#{DataTableLoadingModeBean.loadingModeSelectedIndex}"
+              onchange="document.forms[0].submit();">
+      <o:tabSetItems value="#{DataTableLoadingModeBean.loadingModeList}"/>
+    </o:tabSet>
+
+    <table cellpadding="0" cellspacing="5">
+      <tr>
+        <td class="header">'q_refreshTable' function</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:dataTable id="requestScopeDataTableID"
+                       var="requestScopeDataTable"
+                       useAjax="#{DataTableLoadingModeBean.useAjax}"
+                       value="#{DataTableA4jBean.a4JTestCollection}"
+                       verticalGridLines="1px solid gray">
+            <o:column id="col_third" style="padding: 10px 10px 10px 10px;">
+              <f:facet name="header">
+                <h:outputText value="#{DataTableA4jBean.firstColumnHeader}" id="requestScopeDataTableID_firstHeader"/>
+              </f:facet>
+              <h:outputText value="#{requestScopeDataTable.thirdColumn}" id="requestScopeDataTableID_firstBody"/>
+              <f:facet name="footer">
+                <h:outputText value="#{DataTableA4jBean.firstColumnFooter}" id="requestScopeDataTableID_firstFooter"/>
+              </f:facet>
+            </o:column>
+            <o:column id="col_fourth" style="padding: 10px 10px 10px 10px;">
+              <f:facet name="header">
+                <h:outputText value="#{DataTableA4jBean.secondColumnHeader}"
+                              id="requestScopeDataTableID_secondHeader"/>
+              </f:facet>
+              <h:outputText value="#{requestScopeDataTable.fourthColumn}" id="requestScopeDataTableID_secondBody"/>
+              <f:facet name="footer">
+                <h:outputText value="#{DataTableA4jBean.secondColumnFooter}"
+                              id="requestScopeDataTableID_secondFooter"/>
+              </f:facet>
+            </o:column>
+          </o:dataTable>
+          <h:commandButton id="refresher" value="Refresh DataTable"
+                           onclick="O$.reloadComponents(['formID:requestScopeDataTableID']); return false;"/>
+        </td>
+      </tr>
+    </table>
+  
+</div>

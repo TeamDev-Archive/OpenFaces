@@ -1,0 +1,32 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <o:tabbedPane loadingMode="client" id="tp">
+
+      <o:tabbedPaneItem id="tab1">
+        <f:facet name="tab">
+          <h:outputText value="First tab"/>
+        </f:facet>
+        <h:inputText id="it" required="true"/>
+        <o:floatingIconMessage id="fim" for="it"/>
+        <h:commandButton value="Submit" id="btn"/>
+      </o:tabbedPaneItem>
+
+      <o:tabbedPaneItem id="tab2">
+        <f:facet name="tab">
+          <h:outputText value="Second tab"/>
+        </f:facet>
+        <h:outputText value="Some text on the second tab"/>
+      </o:tabbedPaneItem>
+
+    </o:tabbedPane>
+
+  
+</div>

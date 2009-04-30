@@ -1,0 +1,54 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <h:commandButton onclick="O$.reloadComponents(['form1:fleetTreeTable']);" value="q refresh"/>
+    <a4j:commandButton reRender="fleetTreeTable" value="a4j rerender"/>
+    <o:treeTable id="fleetTreeTable"
+                 var="message"
+                 nodeHasChildrenVar="JSPVar_fleetTreeTableItem_nodeHasChildren"
+                 applyDefaultStyle="false"
+                 styleClass="fleetTreeTable"
+                 commonHeaderRowClass="fleetTreeTableCommonHeaderRow"
+                 headerRowClass="fleetTreeTableHeaderRow"
+                 rolloverRowClass="fleetTreeTableRolloverRow"
+                 filterRowClass="fleetTreeTableFilterRow"
+                 bodyRowClass="fleetTreeTableBodyRow"
+                 bodyOddRowClass="fleetTreeTableBodyOddRow"
+                 commonHeaderSeparator="1px solid gray"
+                 headerHorizSeparator="1px solid gray"
+                 filterRowSeparator="1px solid gray"
+                 headerVertSeparator="none"
+                 verticalGridLines="none"
+                 sortColumnId="subject"
+                 sortLevel="2"
+                 sortAscending="false"
+                 expansionState="#{TreeTableBean.forumTreeTableExpansionState}"
+                 preloadedNodes="levelsPreloaded:2"
+                 useAjax="true">
+      <o:dynamicTreeStructure nodeChildren="#{TreeTableBean.nodeChildren}"/>
+      <o:treeColumn id="subject" showAsTree="#{!TreeTableBean.booleanSwitch}" sortingExpression="#{message.subject}"
+                    filterExpression="#{message.subject}" filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="Subject"/>
+        </f:facet>
+        <h:outputText value="#{message.subject}"/>
+      </o:treeColumn>
+      <o:column id="author" sortingExpression="#{message.author}" filterExpression="#{message.author}"
+                filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText value="From"/>
+        </f:facet>
+        <h:outputText value="#{message.author}"/>
+      </o:column>
+    </o:treeTable>
+
+
+  
+</div>

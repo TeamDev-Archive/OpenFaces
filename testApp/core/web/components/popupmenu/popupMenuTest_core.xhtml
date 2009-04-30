@@ -1,0 +1,533 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+<a href="../../main.jsf">Back to the main page</a>
+<br/>
+<style>
+  .container {
+    background: lightyellow;
+    padding: 10px 10px 10px 10px;
+    border-left: 1px solid darkgray;
+    border-top: 1px solid darkgray;
+    border-bottom: 2px solid darkgray;
+    border-right: 2px solid darkgray;
+    text-align: center;
+  }
+
+  .header {
+    vertical-align: middle;
+    padding: 5px 5px 5px 5px;
+    background: azure;
+    border-left: 1px solid darkgray;
+    border-top: 1px solid darkgray;
+    border-bottom: 2px solid darkgray;
+    border-right: 2px solid darkgray;
+  }
+
+  .popup {
+    border: 2px dashed green;
+  }
+
+  .popup_rollover {
+    border: 3px solid blue;
+  }
+
+  .popup_item {
+    border: 2px dashed black;
+  }
+</style>
+
+
+<h:commandButton value="Submit"/>
+
+  <h:panelGroup>
+    <h:outputText value="Right-click here"/>
+    <o:popupMenu>
+      <o:menuItem value="Item 1"/>
+      <o:menuItem value="Item 2"/>
+      <o:menuItem value="Item 3"/>
+    </o:popupMenu>
+  </h:panelGroup>
+
+<h3>Base appearance fuctionality</h3>
+<table>
+  <tr>
+    <td class="container">
+      <h:panelGroup id="panel1" style="display: block; border: 1px solid gold;">
+        <f:verbatim><h4>panelGroup1:Click left mouse buntton on this element (event="onclick")</h4></f:verbatim>
+        <o:popupMenu event="onclick">
+          <o:menuItem value="New" iconUrl="newIcon.gif"/>
+          <o:menuItem value="Open" iconUrl="openIcon.gif" disabled="true"/>
+          <o:menuItem value="Close"/>
+          <o:menuSeparator/>
+          <o:menuItem value="Save" iconUrl="saveIcon.gif"/>
+        </o:popupMenu>
+      </h:panelGroup>
+    </td>
+    <td class="container">
+      <h:panelGroup id="panel2" style="display: block;border: 1px solid blue;">
+        <f:verbatim><h4>panelGroup2:Right click on this panelGroup element (for=panel2)</h4></f:verbatim>
+      </h:panelGroup>
+      <o:popupMenu for="panel2">
+        <o:menuItem value="New" iconUrl="newIcon.gif"/>
+        <o:menuItem value="Open" iconUrl="openIcon.gif" disabled="true"/>
+        <o:menuItem value="Close"/>
+        <o:menuSeparator/>
+        <o:menuItem value="Save" iconUrl="saveIcon.gif"/>
+      </o:popupMenu>
+    </td>
+    <td class="container">
+      <div style="border: 1px solid cadetblue;">
+        <h4>DIV: Click left mouse button on this element (event="onclick")</h4>
+        <o:popupMenu event="onclick">
+          <o:menuItem value="New" iconUrl="newIcon.gif"/>
+          <o:menuItem value="Open" iconUrl="openIcon.gif" disabled="true"/>
+          <o:menuItem value="Close"/>
+          <o:menuSeparator/>
+          <o:menuItem value="Save" iconUrl="saveIcon.gif"/>
+        </o:popupMenu>
+      </div>
+    </td>
+    <td class="container">
+      <div style="border: 1px solid gray;" ondblclick="O$('form1:pm1').showForEvent(event);">
+        <h4>DIV: Double-click on this element (standalone="true", manual JavaScript invocation)</h4>
+        <o:popupMenu id="pm1" standalone="true">
+          <o:menuItem value="New" iconUrl="newIcon.gif"/>
+          <o:menuItem value="Open" iconUrl="openIcon.gif" disabled="true"/>
+          <o:menuItem value="Close"/>
+          <o:menuSeparator/>
+          <o:menuItem value="Save" iconUrl="saveIcon.gif"/>
+        </o:popupMenu>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<h3>Deep nesting of submenus</h3>
+<table>
+<tr>
+  <td class="header">With indent area</td>
+  <td class="header">Without indent area</td>
+  <td class="header">Mixed</td>
+</tr>
+<tr>
+<td class="container">
+  <h:panelGroup style="display: block; border:1px solid black;">
+    <f:verbatim><h3>Click!</h3></f:verbatim>
+    <o:popupMenu event="onclick">
+      <o:menuItem value="New" iconUrl="newIcon.gif">
+        <o:popupMenu>
+          <o:menuItem value="Close">
+            <o:popupMenu>
+              <o:menuItem value="Close">
+                <o:popupMenu>
+                  <o:menuItem value="Close">
+                    <o:popupMenu>
+                      <o:menuItem value="Close"/>
+                      <o:menuItem value="Save"/>
+                      <o:menuItem value="Save as"/>
+                    </o:popupMenu>
+                  </o:menuItem>
+                  <o:menuItem value="Save"/>
+                  <o:menuItem value="Save as"/>
+                </o:popupMenu>
+              </o:menuItem>
+              <o:menuItem value="Save"/>
+              <o:menuItem value="Save as"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuItem value="Save"/>
+          <o:menuItem value="Save as"/>
+        </o:popupMenu>
+      </o:menuItem>
+      <o:menuItem value="Open" iconUrl="openIcon.gif" disabled="true">
+        <o:popupMenu>
+          <o:menuItem value="Close"/>
+          <o:menuItem value="Save"/>
+          <o:menuItem value="Save as"/>
+        </o:popupMenu>
+      </o:menuItem>
+      <o:menuItem value="item">
+        <o:popupMenu>
+          <o:menuItem value="Close"/>
+          <o:menuItem value="Save"/>
+          <o:menuItem value="Save as"/>
+        </o:popupMenu>
+      </o:menuItem>
+      <o:menuItem value="item"/>
+      <o:menuSeparator/>
+      <o:menuItem value="Save" iconUrl="saveIcon.gif"/>
+    </o:popupMenu>
+  </h:panelGroup>
+</td>
+<td class="container">
+  <h:panelGroup style="display: block; border:1px solid black;">
+    <f:verbatim><h3>Click!</h3></f:verbatim>
+    <o:popupMenu event="onclick" indentVisible="false">
+      <o:menuItem value="New">
+        <o:popupMenu>
+          <o:menuItem value="New 1">
+            <o:popupMenu>
+              <o:menuItem value="New 1 - item 1"/>
+              <o:menuItem value="New 1 - item 2"/>
+              <o:menuItem value="New 1 - item 3"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuItem value="New 2"/>
+          <o:menuItem value="New 3"/>
+        </o:popupMenu>
+      </o:menuItem>
+      <o:menuItem value="Open">
+        <o:popupMenu>
+          <o:menuItem value="Document 1"/>
+          <o:menuItem value="Document 2"/>
+          <o:menuItem value="Document 3"/>
+        </o:popupMenu>
+      </o:menuItem>
+      <o:menuItem value="Item">
+        <o:popupMenu>
+          <o:menuItem value="Close"/>
+          <o:menuItem value="Save"/>
+          <o:menuItem value="Save as"/>
+        </o:popupMenu>
+      </o:menuItem>
+      <o:menuItem value="Item"/>
+      <o:menuSeparator/>
+      <o:menuItem value="Item 1 after separator"/>
+      <o:menuItem value="Item 2 after separator"/>
+      <o:menuSeparator/>
+      <o:menuItem value="Item 1 after separator 2"/>
+      <o:menuItem value="Item 2 after separator 2"/>
+    </o:popupMenu>
+  </h:panelGroup>
+</td>
+<td class="container">
+  <h:panelGroup style="display: block; border:1px solid black;">
+    <f:verbatim><h3>Click!</h3></f:verbatim>
+    <o:popupMenu event="onclick">
+      <o:menuItem value="Indent" iconUrl="newIcon.gif">
+        <o:popupMenu indentVisible="false">
+          <o:menuItem value="No indent">
+            <o:popupMenu>
+              <o:menuItem value="No indent">
+                <o:popupMenu indentVisible="true">
+                  <o:menuItem value="Indent">
+                    <o:popupMenu>
+                      <o:menuItem value="Indent"/>
+                    </o:popupMenu>
+                  </o:menuItem>
+                  <o:menuItem value="Save"/>
+                  <o:menuItem value="Save as"/>
+                </o:popupMenu>
+              </o:menuItem>
+              <o:menuItem value="Save"/>
+              <o:menuItem value="Save as"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuItem value="Save"/>
+          <o:menuItem value="Save as"/>
+        </o:popupMenu>
+      </o:menuItem>
+    </o:popupMenu>
+  </h:panelGroup>
+</td>
+</tr>
+</table>
+<h3>Menu Commands</h3>
+<table>
+  <tr>
+    <td class="header">Panel with menu</td>
+    <td class="header">Value</td>
+  </tr>
+  <tr>
+    <td class="container">
+      <h:panelGroup style="display: block; border: 1px solid black; ">
+        <f:verbatim><h3>Click!</h3></f:verbatim>
+        <o:popupMenu event="onclick">
+          <o:menuItem value="Item1:Client side onclick" onclick="alert('Client side onclick');"/>
+          <o:menuItem value="Item2:Server side action" action="#{PopupMenuBean.menuItem2Action}"/>
+          <o:menuItem value="Item3:Server side action listener" actionListener="#{PopupMenuBean.menuItem3Listener}"/>
+        </o:popupMenu>
+      </h:panelGroup>
+    </td>
+    <td class="container"><h:outputText value="#{PopupMenuBean.value}"/></td>
+  </tr>
+</table>
+
+<h3>onshow, onhide events</h3>
+<table>
+  <tr>
+    <td class="container">
+      <h:panelGroup style="display: block; border: 1px solid black; ">
+        <f:verbatim><h3>Click!</h3></f:verbatim>
+        <o:popupMenu event="onclick" onshow="alert('onshow');" onhide="alert('onhide');">
+          <o:menuItem value="Item1"/>
+          <o:menuItem value="Item2"/>
+          <o:menuItem value="Item3"/>
+        </o:popupMenu>
+      </h:panelGroup>
+    </td>
+  </tr>
+</table>
+<h3>Default Icon Item Url</h3>
+<table>
+  <tr>
+    <td class="container">
+      <h:panelGroup style="display: block; border: 1px solid black; ">
+        <f:verbatim><h3>Click!</h3></f:verbatim>
+        <o:popupMenu event="onclick" itemIconUrl="submenuImage.gif"
+                     selectedSubmenuImageUrl="submenuSelectedImage.gif">
+          <o:menuItem value="Item1: default image"/>
+          <o:menuItem value="Item2: disabled, default image" disabled="true"/>
+          <o:menuItem value="Item3: custom image" iconUrl="openIcon.gif" selectedIconUrl="newIcon.gif"/>
+          <o:menuItem value="Item2: disabled, custom image" iconUrl="newIcon.gif" selectedIconUrl="openIcon.gif"
+                      disabled="true"/>
+        </o:popupMenu>
+      </h:panelGroup>
+    </td>
+  </tr>
+</table>
+<h3>Submenu Icon Url</h3>
+<table>
+  <tr>
+    <td class="container">
+      <h:panelGroup style="display: block; border: 1px solid black; ">
+        <f:verbatim><h3>Click!</h3></f:verbatim>
+        <o:popupMenu event="onclick"
+                     disabledSubmenuImageUrl="openIcon.gif"
+                     submenuImageUrl="plus.gif"
+                     selectedSubmenuImageUrl="minus.gif"
+                     selectedDisabledSubmenuImageUrl="newIcon.gif">
+          <o:menuItem value="Item1">
+            <o:popupMenu>
+              <o:menuItem value="item1"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuItem value="Item2" disabled="true">
+            <o:popupMenu>
+              <o:menuItem value="item1"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuItem value="Item3">
+            <o:popupMenu>
+              <o:menuItem value="item1"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuItem value="Item4: custom image"
+                      submenuImageUrl="submenuImage.gif"
+                      selectedSubmenuImageUrl="selectedSubmenuImage.gif">
+            <o:popupMenu>
+              <o:menuItem value="item1"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuItem value="Item5:disabled, custom image, selected the same" submenuImageUrl="saveIcon.gif">
+            <o:popupMenu>
+              <o:menuItem value="item1"/>
+            </o:popupMenu>
+          </o:menuItem>
+        </o:popupMenu>
+      </h:panelGroup>
+    </td>
+  </tr>
+</table>
+<h3>MenuItem nested components</h3>
+<table>
+  <tr>
+    <td class="container">
+      <h:panelGroup style="display: block; border: 1px solid black; ">
+        <f:verbatim><h3>Click!</h3></f:verbatim>
+        <o:popupMenu event="onclick">
+          <o:menuItem>
+            Text
+            <o:popupMenu>
+              <o:menuItem value="item1"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuItem disabled="true">
+            <h:outputText value="outputText"/>
+          </o:menuItem>
+          <o:menuItem value="Item3">
+            <o:spinner style="padding-top:2px;" value="#{SpinnerBackingBean.value}"
+                       cycled="false"
+                       minValue="0" maxValue="10">
+            </o:spinner>
+          </o:menuItem>
+        </o:popupMenu>
+      </h:panelGroup>
+    </td>
+  </tr>
+</table>
+<h3>PopupMenu padding</h3>
+<table>
+  <tr>
+    <td class="container">
+      <h:panelGroup>
+        <f:verbatim><h3>Click!</h3></f:verbatim>
+        <o:popupMenu style="padding: 5px;" indentStyle="background:white;" event="onclick">
+          <o:menuItem value="Item1">
+          </o:menuItem>
+          <o:menuItem disabled="true" value="Item2">
+          </o:menuItem>
+          <o:menuItem value="Item3">
+          </o:menuItem>
+        </o:popupMenu>
+      </h:panelGroup>
+    </td>
+  </tr>
+</table>
+<h3>MenuItem margin</h3>
+<table>
+  <tr>
+    <td class="container">
+      <h:panelGroup>
+        <f:verbatim><h3>Click!</h3></f:verbatim>
+        <o:popupMenu itemStyle="margin: 3px;" event="onclick">
+          <o:menuItem value="Item1">
+          </o:menuItem>
+          <o:menuItem disabled="true" value="Item2">
+          </o:menuItem>
+          <o:menuItem value="Item3">
+          </o:menuItem>
+        </o:popupMenu>
+      </h:panelGroup>
+    </td>
+  </tr>
+</table>
+<h3>Layout Icon Test</h3>
+<table>
+  <tr>
+    <td class="container">
+      <h:panelGroup style="display: block; border: 1px solid black; vertical-align:baseline; ">
+        <f:verbatim><h3>Click!</h3></f:verbatim>
+        <o:popupMenu event="onclick"
+                     itemIconUrl="plus.gif"
+                     submenuImageUrl="plus.gif">
+          <o:menuItem value="Top Right" indentAreaStyle="vertical-align:top; text-align:right;"
+                      submenuIconAreaStyle="vertical-align:top; text-align:right;">
+            <o:popupMenu>
+              <o:menuItem value="item1"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuItem value="Top Left" disabled="true" indentAreaStyle="vertical-align:top; text-align:left;"
+                      submenuIconAreaStyle="vertical-align:top; text-align:left;">
+            <o:popupMenu>
+              <o:menuItem value="item1"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuItem value="Bottom Left" indentAreaStyle="vertical-align:bottom; text-align:left;"
+                      submenuIconAreaStyle="vertical-align:bottom; text-align:left;">
+            <o:popupMenu>
+              <o:menuItem value="item1"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuItem value="Bottom Right" indentAreaStyle="vertical-align:bottom; text-align:right;"
+                      submenuIconAreaStyle="vertical-align:bottom; text-align:right;">
+            <o:popupMenu>
+              <o:menuItem value="item1"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuItem value="PaddingTop:10" indentAreaStyle="vertical-align:middle; text-align:left; padding-top:10px;"
+                      submenuIconAreaStyle="vertical-align:middle; text-align:left; padding-top:10px;">
+            <o:popupMenu>
+              <o:menuItem value="item1"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuItem value="BottomRight -- TopLeft"
+                      indentAreaStyle="vertical-align:bottom; text-align:right;"
+                      submenuIconAreaStyle="vertical-align:top; text-align:left;">
+            <o:popupMenu>
+              <o:menuItem value="item1"/>
+            </o:popupMenu>
+          </o:menuItem>
+        </o:popupMenu>
+      </h:panelGroup>
+    </td>
+  </tr>
+</table>
+<h3>PopupMenu Styles</h3>
+<table>
+  <tr>
+    <td class="header">styles</td>
+    <td class="header">decription</td>
+    <td class="header">style class</td>
+  </tr>
+  <tr>
+    <td class="container">
+      <h:panelGroup style="display: block; border:1px solid black;">
+        <f:verbatim><h3>Click!</h3></f:verbatim>
+
+        <o:popupMenu event="onclick" style="border:4px dashed green;"
+                     itemStyle="border:1px dashed black"
+                     rolloverStyle="border:4px solid blue;"
+                     selectedItemStyle="border:4px dashed yellow;"
+                     disabledItemStyle="background: cornflowerblue;"
+                     contentItemStyle="font-weight:bold;"
+                     indentStyle="vertical-align:bottom; text-align:right; background:white;"
+                     indentItemStyle="background:red;"
+                     submenuIconItemStyle="vertical-align:top; text-align:left; background:blue;"
+                     selectedDisabledItemStyle="background: aquamarine;"
+                >
+          <o:menuItem value="New" iconUrl="newIcon.gif"/>
+          <o:menuItem value="Open" iconUrl="openIcon.gif" disabled="true">
+            <o:popupMenu>
+              <o:menuItem value="Indent"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuItem value="Close">
+            <o:popupMenu style="border: 8px dashed red;">
+              <o:menuItem value="Indent"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuSeparator/>
+          <o:menuItem value="Save" iconUrl="saveIcon.gif"/>
+        </o:popupMenu>
+
+      </h:panelGroup>
+    </td>
+    <td class="container" style="text-align:left;">
+      <pre>
+          &lt;o:popupMenu event="onclick"&gt;
+                     itemStyle="border:2px dashed black; height:50px;"
+                     rolloverStyle="border:2px solid blue;"
+                     selectedItemStyle="border:2px dashed yellow;"
+                     disabledItemStyle="background: cornflowerblue;"
+                     contentAreaItemStyle="border-bottom: solid black 2px;height:50px; vertical-align:middle;"
+                     indentStyle="width:50px; vertical-align:bottom; text-align:right;"
+                     selectedDisabledItemStyle="background: aquamarine;"
+          &lt;o:menuItem value="New" iconUrl="newIcon.gif"/&gt;
+          &lt;o:menuItem value="Open" iconUrl="openIcon.gif" disabled="true"/&gt;
+          &lt;o:menuItem value="Close"&gt;
+            &lt;o:popupMenu&gt;
+              &lt;o:menuItem value="Indent"/&gt;
+            &lt;/o:popupMenu&gt;
+          &lt;/o:menuItem&gt;
+          &lt;o:menuSeparator/&gt;
+          &lt;o:menuItem value="Save" iconUrl="saveIcon.gif"/&gt;
+        &lt;/o:popupMenu&gt;
+        </pre>
+    </td>
+    <td class="container">
+      <h:panelGroup style="display: block; border:1px solid black;">
+        <f:verbatim><h3>Click!</h3></f:verbatim>
+        <o:popupMenu event="onclick"
+                     styleClass="popup"
+                     itemClass="popup_item"
+                     rolloverClass="popup_rollover">
+          <o:menuItem value="New" iconUrl="newIcon.gif"/>
+          <o:menuItem value="Open" iconUrl="openIcon.gif" disabled="true"/>
+          <o:menuItem value="Close">
+            <o:popupMenu>
+              <o:menuItem value="Indent"/>
+            </o:popupMenu>
+          </o:menuItem>
+          <o:menuSeparator/>
+          <o:menuItem value="Save" iconUrl="saveIcon.gif"/>
+        </o:popupMenu>
+      </h:panelGroup>
+    </td>
+  </tr>
+</table>
+</div>

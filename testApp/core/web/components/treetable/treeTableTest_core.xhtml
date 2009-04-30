@@ -1,0 +1,107 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+
+  <a href="../../main.jsf">Return to main page</a> <input type="Submit" value="Submit"/>
+
+  <div>Static Structure</div>
+  <o:treeTable id="treeTable1" var="node" rolloverRowStyle="background: silver"
+               expansionState="levelsExpanded:1"
+               textStyle="font-family: Arial; text-align: right; color: gray;">
+    <o:singleNodeSelection nodeData="#{TreeTableTestBean.selectedNodeData1}"/>
+    <o:staticTreeStructure>
+      <o:treeNode value="Root Node (and some long text)">
+        <o:treeNode value="Node 1 (and some long text)"/>
+        <o:treeNode value="Node 2 (and some long text)">
+          <o:treeNode value="Node 2-1 (and some long text)"/>
+          <o:treeNode value="Node 2-2 (and some long text)"/>
+        </o:treeNode>
+        <o:treeNode value="Node 3"/>
+      </o:treeNode>
+    </o:staticTreeStructure>
+
+    <o:selectionColumn/>
+    <o:treeColumn filterExpression="#{node}" filterKind="searchField"
+                  expansionToggleCellStyle="vertical-align: top; padding-top: 4px; "
+                  levelIndent="30px">
+      <f:facet name="header">
+        <h:outputText value="Column 1"/>
+      </f:facet>
+      <h:outputText value="#{node}" style="background: #f0f0f0; border: 1px solid gray; display: block; width: 100%; height: 40px;"/>
+    </o:treeColumn>
+    <o:column>
+      <f:facet name="header">
+        <h:outputText value="Column 2"/>
+      </f:facet>
+      <h:outputText value="col2"/>
+    </o:column>
+  </o:treeTable>
+
+  <div>Dynamic Structure</div>
+
+  <o:tabbedPane loadingMode="server" style="width: 750px;">
+    <o:tabbedPaneItem>
+      <f:facet name="tab">
+        <h:outputText value="Manage Category"/>
+      </f:facet>
+
+      <o:treeTable id="treeTable2" var="message" rolloverRowStyle="background: silver;"
+                   rolloverRowClass="cls1"
+                   nodeLevelVar="level"
+                   filterSubsidiaryRowStyle="color: blue"
+                   filterAcceptedRowStyle="color: green"
+                   width="100%" >
+        <o:row ondblclick="alert('Author: #{message.author.userName};\nSubject: #{message.subject}');"/>
+        <o:multipleNodeSelection nodeDatas="#{TreeTableTestBean.selectedNodeDatas2}" />
+        <o:dynamicTreeStructure nodeChildren="#{TreeTableTestBean.nodeChildren}"/>
+        <o:row style="#{TreeTableTestBean.dynamicRowStyle}"/>
+        <o:row condition="#{TreeTableTestBean.todayPost}" style="color: red;"/>
+
+        <o:selectionColumn>
+          <f:facet name="header"><o:selectAllCheckbox/></f:facet>
+        </o:selectionColumn>
+        <o:treeColumn showAsTree="#{!TreeTableTestBean.booleanSwitch}" sortingExpression="#{message.subject}" filterExpression="#{message.subject}" filterKind="searchField">
+          <f:facet name="header">
+            <h:outputText value="Subject"/>
+          </f:facet>
+          <h:inputText value="#{message.subject}"/>
+        </o:treeColumn>
+
+        <o:column sortingExpression="#{message.author.userName}" filterExpression="#{message.author.userName}" filterKind="comboBox">
+          <f:facet name="header">
+            <h:outputText value="From"/>
+          </f:facet>
+          <h:outputText value="#{message.author.userName}"/>
+        </o:column>
+
+        <o:column sortingExpression="#{message.date}" filterExpression="#{message.date}" filterKind="searchField">
+          <f:facet name="header">
+            <h:outputText value="Sent"/>
+          </f:facet>
+          <h:outputText value="#{message.date}"/>
+        </o:column>
+        <o:treeColumn sortingExpression="#{message.subject}" filterExpression="#{message.subject}" filterKind="searchField"
+                      showAsTree="#{TreeTableTestBean.booleanSwitch}" >
+          <f:facet name="header">
+            <h:outputText value="Spare Column"/>
+          </f:facet>
+          <h:inputText value="fixed text"/>
+        </o:treeColumn>
+        <o:selectionColumn>
+          <f:facet name="header"><o:selectAllCheckbox/></f:facet>
+        </o:selectionColumn>
+      </o:treeTable>
+
+
+    </o:tabbedPaneItem>
+  </o:tabbedPane>
+  
+  <br/>
+  <h:selectBooleanCheckbox value="#{TreeTableTestBean.booleanSwitch}" onclick="document.forms[0].submit();"/> Switch Tree Column
+
+
+</div>

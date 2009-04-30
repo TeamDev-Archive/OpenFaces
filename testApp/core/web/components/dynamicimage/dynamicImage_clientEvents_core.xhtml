@@ -1,0 +1,21 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/">
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+  <a href="../../main.jsf">Return to main page</a><br/><br/>
+
+  <o:dynamicImage id="dynamicImage1" data="#{DynamicImageDataBean.a4jImage}"
+                  onclick="logJSEvents(event.type, 'clientEventsLog');"
+                  ondblclick="logJSEvents(event.type, 'clientEventsLog');"
+                  onkeydown="logJSEvents(event.type, 'clientEventsLog');"
+                  onkeypress="logJSEvents(event.type, 'clientEventsLog');"
+                  onkeyup="logJSEvents(event.type, 'clientEventsLog');"
+                  onmousedown="logJSEvents(event.type, 'clientEventsLog');"
+                  onmousemove="logJSEvents(event.type, 'clientEventsLog');"
+                  onmouseout="logJSEvents(event.type, 'clientEventsLog');"
+                  onmouseover="logJSEvents(event.type, 'clientEventsLog');"
+                  onmouseup="logJSEvents(event.type, 'clientEventsLog');"/>
+
+  <div id="clientEventsLog"/>
+
+</div>

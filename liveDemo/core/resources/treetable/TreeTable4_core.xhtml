@@ -1,0 +1,93 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div id="component" align="center">
+
+    <o:treeTable var="pageInfo" applyDefaultStyle="false" cellpadding="0" cellspacing="0" border="0" width="100%"
+                 expansionState="levelsExpanded:2" preloadedNodes="all" bodyRowStyle="text-align: left;">
+      <o:staticTreeStructure>
+        <o:treeNode value="OpenFaces Demo Home|treetable/home.gif|../">
+          <o:treeNode value="Component Demos|treetable/category.gif">
+            <o:treeNode value="Input|treetable/category.gif">
+              <o:treeNode value="Calendar|component_icons/calendar.gif|../calendar/Calendar_styles.jsf"/>
+              <o:treeNode value="Date Chooser|component_icons/datechooser.gif|../datechooser/DateChooser.jsf"/>
+              <o:treeNode
+                      value="Drop Down Field|component_icons/dropdownfield.gif|../dropdownfield/DropDownField_client.jsf"/>
+              <o:treeNode value="Input Text|component_icons/inputtext.gif|../inputtext/InputText.jsf"/>
+              <o:treeNode value="Input Textarea|component_icons/inputtextarea.gif|../inputtextarea/InputTextarea.jsf"/>
+              <o:treeNode value="Spinner|component_icons/spinner.gif|../spinner/Spinner.jsf"/>
+              <o:treeNode
+                      value="Suggestion Field|component_icons/suggestionfield.gif|../suggestionfield/SuggestionField.jsf"/>
+              <o:treeNode
+                      value="Two List Selection|component_icons/twolistselection.gif|../twolistselection/TwoListSelection.jsf"/>
+            </o:treeNode>
+            <o:treeNode value="Containers|treetable/category.gif">
+              <o:treeNode
+                      value="Border Layout Panel|component_icons/borderlayoutpanel.gif|../borderlayoutpanel/BorderLayoutPanel.jsf"/>
+              <o:treeNode value="Folding Panel|component_icons/foldingpanel.gif|../foldingpanel/FoldingPanel1.jsf"/>
+              <o:treeNode value="Popup Layer|component_icons/popuplayer.gif|../popuplayer/PopupLayer.jsf"/>
+              <o:treeNode
+                      value="Tabbed Pane|component_icons/tabbedpane.gif|../tabbedpane/TabbedPane_placementAndAlignment.jsf"/>
+              <o:treeNode value="Window|component_icons/window.gif|../window/Window.jsf"/>
+            </o:treeNode>
+            <o:treeNode value="Image-based|treetable/category.gif">
+              <o:treeNode value="Chart|component_icons/chart.gif|../chart/ChartTypes.jsf"/>
+              <o:treeNode value="Dynamic Image|component_icons/dynamicimage.gif|../dynamicimage/DynamicImage1.jsf"/>
+              <o:treeNode value="Graphic Text|component_icons/graphictext.gif|../graphictext/GraphicText.jsf"/>
+            </o:treeNode>
+            <o:treeNode value="Data Structures|treetable/category.gif">
+              <o:treeNode value="Data Table|component_icons/datatable.gif|../datatable/DataTable_general.jsf"/>
+              <o:treeNode value="Tree Table|component_icons/treetable.gif|../treetable/TreeTable1.jsf"/>
+            </o:treeNode>
+            <o:treeNode value="More Components|treetable/category.gif">
+              <o:treeNode
+                      value="Confirmation|component_icons/confirmation.gif|../confirmation/ConfirmationDefault.jsf"/>
+              <o:treeNode value="Day Table|component_icons/daytable.gif|../daytable/DayTable1.jsf"/>
+              <o:treeNode value="Hint Label|component_icons/hintlabel.gif|../hintlabel/HintLabel.jsf"/>
+              <o:treeNode value="Popup Menu|component_icons/popupmenu.gif|../popupmenu/PopupMenu.jsf"/>
+              <o:treeNode value="Tab Set|component_icons/tabset.gif|../tabset/TabSet_placementAndStyling.jsf"/>
+            </o:treeNode>
+
+          </o:treeNode>
+          <o:treeNode value="Ajax Framework|component_icons/ajax.gif|../ajax/Ajax.jsf"/>
+          <o:treeNode value="Validators Demo|component_icons/validation.gif|../validators/Validators_standard.jsf"/>
+        </o:treeNode>
+
+      </o:staticTreeStructure>
+
+      <o:treeColumn expandedToggleImageUrl="../images/treetable/expanded4.gif"
+                    collapsedToggleImageUrl="../images/treetable/collapsed4.gif">
+        <h:graphicImage url="../images/#{SiteMapTreeTableBean.imageFileFromPageInfo}" width="16" height="16"/>
+        <h:outputLink rendered="#{SiteMapTreeTableBean.displayAsLink}"
+                      value="#{SiteMapTreeTableBean.pageUrlFromPageInfo}"
+                      styleClass="siteMapLink" target="_blank">
+          <h:outputText value="#{SiteMapTreeTableBean.pageNameFromPageInfo}"/>
+        </h:outputLink>
+        <h:outputText rendered="#{!SiteMapTreeTableBean.displayAsLink}"
+                      value="#{SiteMapTreeTableBean.pageNameFromPageInfo}" styleClass="siteMapText"/>
+      </o:treeColumn>
+
+    </o:treeTable>
+
+  </div>
+
+  <div class="Col1_1 serif">
+    <h4>Shown Functionality</h4>
+    <ul class="hang">
+      <li><strong>Static tree structure</strong> - All the nodes are specified right on the JSP page.
+      </li>
+      <li><strong>Preloading nodes</strong> - All the nodes are preloaded, which means that you can
+        expand them without sending any requests to the server.
+      </li>
+      <li><strong>Customization of the default expansion state</strong> - Only the nodes at the two
+        top levels are expanded by default when the TreeTable component is loaded.
+      </li>
+      <li><strong>Customization of the expansion toggle images</strong> - In this demo, the standard
+        +/- expansion toggle images are replaced by custom ones.
+      </li>
+    </ul>
+  </div>
+
+</div>

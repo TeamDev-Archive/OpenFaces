@@ -1,0 +1,111 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+     xmlns:s="http://jboss.com/products/seam/taglib"  >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <h:commandButton value="Submit"/>
+    <o:calendar binding="#{seamcomponentsbinding.calendar}"/>
+    <br/>
+    <o:dateChooser binding="#{seamcomponentsbinding.dateChooser}"/>
+    <br/>
+    <input id="button1" type="button" value="Show confirmation" onclick="alert('!');"/>
+    <br/>
+    <o:confirmation id="conf1"
+                    for=":button1"
+                    draggable="true"
+                    binding="#{seamcomponentsbinding.confirmation}"/>
+    <o:dropDownField binding="#{seamcomponentsbinding.dropDownField}">
+      <o:dropDownItem value="#FF0000">
+        <h:outputText value=" Red"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="#FFFF00">
+        <h:outputText value=" Yellow"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="#0000FF">
+        <h:outputText value=" Blue"/>
+      </o:dropDownItem>
+    </o:dropDownField>
+    <br/>
+    <o:dynamicImage binding="#{seamcomponentsbinding.dynamicImage}" data="#{DynamicImageDataBean.testData}" width="200"/>
+    <br/>
+    <o:foldingPanel binding="#{seamcomponentsbinding.foldingPanel}" expanded="false" contentStyle="padding:2px"
+                    style=" width:200px">
+      <f:facet name="caption">
+        <h:outputText value="FoldingPanel information"/>
+      </f:facet>
+      <h:outputText value="FoldingPanel is container for components which can be collapsed or expanded by the user"/>
+    </o:foldingPanel>
+    <br/>
+    <table width="50%" border="1">
+      <tr>
+        <td width="25%">
+          Mercury
+        </td>
+        <td width="75%">
+          <o:hintLabel binding="#{seamcomponentsbinding.hintLabel}"
+                       value="Is the closest planet to the Sun and the eighth largest" style="width:200px;"
+                       hintStyle="background-color:#fffff1"/>
+        </td>
+      </tr>
+    </table>
+    <input type="button" id="popupInvoker" value="Show PopupLayer" onclick="O$('form1:popupLayer1').show();"/>
+    <br/>
+    <o:popupLayer binding="#{seamcomponentsbinding.popupLayer}" id="popupLayer1" draggable="true"
+                  style="padding:2px; background-color:#fafdff">
+      <f:verbatim>
+        Click here to hide this PopupLayer:<br/>
+      </f:verbatim>
+      <input type="button" value="Hide" onclick="O$('form1:popupLayer1').hide();"/>
+    </o:popupLayer>
+    <br/>
+    <o:tabbedPane binding="#{seamcomponentsbinding.tabbedPane}" style="width: 300px; height: 80px; padding:2px"
+                  containerStyle="padding:2px"
+                  tabStyle="white-space: nowrap; padding:2px">
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="First tab"/>
+        </f:facet>
+        <h:outputText value="Some text on the first tab"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Second tab"/>
+        </f:facet>
+        <h:outputText value="Some text on the second tab"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Third tab"/>
+        </f:facet>
+        <h:outputText value="Some text on the third tab"/>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+    <br/>
+    <o:tabSet binding="#{seamcomponentsbinding.tabSet}">
+      <o:tabSetItem>
+        <h:outputText value="Client"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="Server"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="Custom"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="Default"></h:outputText>
+      </o:tabSetItem>
+    </o:tabSet>
+    <br/>
+    <o:twoListSelection binding="#{seamcomponentsbinding.twoListSelection}" allowItemsOrdering="false"
+                        value="#{ScreenshotBean.selectedItem}" style="width:300px"
+                        leftListboxHeader="Available items"
+                        rightListboxHeader="Selected items">
+      <f:selectItems value="#{ScreenshotBean.items}"/>
+    </o:twoListSelection>
+  
+</div>

@@ -1,0 +1,208 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+<a href="../../main.jsf">Back to the main page</a>
+<br/>
+<h4 style="border-bottom: 1px solid black;">Styles</h4>
+
+<table border="0">
+  <tr>
+    <td class="cells">
+      <o:calendar bodyStyle="background: PowderBlue;"
+                  daysHeaderStyle="background: #A8FFFE;"
+                  disabledDayStyle="color: blue;"
+                  dayStyle="color: red;"
+                  footerStyle="background: #12FF28;"
+                  headerStyle="background: #FF36F8;"
+                  inactiveMonthDayStyle="color: yellow;"
+                  rolloverDayStyle="font-weight: bold;"
+                  rolloverDisabledDayStyle="color: darkgreen;"
+                  rolloverInactiveMonthDayStyle="color: aquamarine;"
+                  rolloverSelectedDayStyle="background: orange; font-weight: bold;"
+                  rolloverTodayStyle="border: 1px solid black;"
+                  rolloverWeekendDayStyle="background: red;"
+                  selectedDayStyle="border: 1px solid SpringGreen;"
+                  todayStyle="color: Teal;"
+                  weekendDayStyle="border: 1px dotted RoyalBlue;"
+                  rolloverStyle="border: 1px solid red">
+        <o:dateRanges disableExcludes="true">
+          <o:simpleDateRange fromDate="#{FoldingPanelTestBean.fromDate}" toDate="#{FoldingPanelTestBean.toDate}"/>
+        </o:dateRanges>
+      </o:calendar>
+    </td>
+    <td class="cells">
+      <span style="font-weight:bold;">Style applied through *Style attributes</span><br/>
+      <pre>
+            &lt;o:calendar bodyStyle="background: PowderBlue;"
+                        daysHeaderStyle="background: #A8FFFE;"
+                        disabledDayStyle="color: blue;"
+                        dayStyle="color: red;"
+                        footerStyle="background: #12FF28;"
+                        headerStyle="background: #FF36F8;"
+                        inactiveMonthDayStyle="color: yellow;"
+                        rolloverDayStyle="font-weight: bold;"
+                        rolloverDisabledDayStyle="color: darkgreen;"
+                        rolloverInactiveMonthDayStyle="color: aquamarine;"
+                        rolloverSelectedDayStyle="background: orange; font-weight: bold;"
+                        rolloverTodayStyle="border: 1px solid black;"
+                        rolloverWeekendDayStyle="background: red;"
+                        selectedDayStyle="border: 1px solid SpringGreen;"
+                        todayStyle="color: Teal;"
+                        weekendDayStyle="border: 1px dotted RoyalBlue;"
+             &gt;
+
+        &lt;o:dateRanges&gt;
+          &lt;o:simpleDateRange fromDate="TestBean.fromDate" toDate="TestBean.toDate"/&gt;
+        &lt;/o:dateRanges&gt;
+      &lt;/o:calendar&gt;
+        </pre>
+    </td>
+    <td class="cells">
+      <span style="font-weight:bold;">The same through *Class attributes</span><br/>
+      <o:calendar bodyClass="body"
+                  daysHeaderClass="daysHeader"
+                  disabledDayClass="disabledDay"
+                  dayClass="day"
+                  footerClass="footer"
+                  headerClass="headerCalendar"
+                  inactiveMonthDayClass="inactiveMonthDay"
+                  rolloverDayClass="rolloverDay"
+                  rolloverDisabledDayClass="rolloverDisabledDay"
+                  rolloverInactiveMonthDayClass="rolloverInactiveMonthDay"
+                  rolloverSelectedDayClass="rolloverSelectedDay"
+                  rolloverTodayClass="rolloverToday"
+                  rolloverWeekendDayClass="rolloverWeekendDay"
+                  selectedDayClass="selectedDay"
+                  todayClass="today"
+                  weekendDayClass="weekendDay">
+        <o:dateRanges disableExcludes="true">
+          <o:simpleDateRange fromDate="#{FoldingPanelTestBean.fromDate}" toDate="#{FoldingPanelTestBean.toDate}"/>
+        </o:dateRanges>
+      </o:calendar>
+    </td>
+  </tr>
+</table>
+
+
+<h4 style="border-bottom: 1px solid black;">Basic Calendar Component</h4>
+<h:commandButton value="Submit" onclick="document.forms[0].submit();"/>
+<table style="width: 100%;">
+  <tr style="font-family: Tahoma,cursive; background: #C0C0C0;">
+    <td>Default Calendar</td>
+    <td>Client-side <b>onchange</b> event handler</td>
+    <td>Using of <b>ValueChangeListener</b></td>
+  </tr>
+  <tr>
+    <td>
+      <o:calendar/>
+    </td>
+    <td>
+      <o:calendar onchange="alert('onchange');"/>
+    </td>
+    <td>
+      <o:calendar valueChangeListener="#{CalendarBean.dateChanged}">
+      </o:calendar>
+    </td>
+  </tr>
+</table>
+<h4 style="border-bottom: 1px solid black;">Date Ranges for Calendar</h4>
+<table style="width: 100%;">
+  <tr style="font-family: Tahoma,cursive; background: #C0C0C0;">
+    <td>Calendar with <b>DateRanges</b> and one <b>SimpleDateRange</b></td>
+    <td>Calendar with days not in range enabled</td>
+    <td>Calendar with days in range disabled</td>
+  </tr>
+  <tr>
+    <td>
+      <o:calendar>
+        <o:dateRanges>
+          <o:simpleDateRange fromDate="#{FoldingPanelTestBean.fromDate}" toDate="#{FoldingPanelTestBean.toDate}"/>
+        </o:dateRanges>
+      </o:calendar>
+    </td>
+    <td>
+      <o:calendar>
+        <o:dateRanges disableExcludes="false">
+          <o:simpleDateRange fromDate="#{FoldingPanelTestBean.fromDate2}" toDate="#{FoldingPanelTestBean.toDate2}"/>
+        </o:dateRanges>
+      </o:calendar>
+    </td>
+    <td>
+      <o:calendar>
+        <o:dateRanges disableIncludes="true">
+          <o:simpleDateRange fromDate="#{FoldingPanelTestBean.fromDate2}" toDate="#{FoldingPanelTestBean.toDate2}"/>
+        </o:dateRanges>
+      </o:calendar>
+    </td>
+  </tr>
+</table>
+<h4 style="border-bottom: 1px solid black;">Styled Date Ranges &#38; Multiple Date Ranges</h4>
+<table style="width: 100%;">
+  <tr style="font-family: Tahoma,cursive; background: #C0C0C0;">
+    <td>Styled <b>DateRanges</b> component with single <b>SimpleDateRange</b> specified</td>
+    <td>Styled <b>DateRanges</b> component with single styled <b>SimpleDateRange</b> specified</td>
+    <td>Styled <b>DateRanges</b> compnent with two styled <b>SimpleDateRange</b> components specified</td>
+  </tr>
+  <tr>
+    <td>
+      <o:calendar>
+        <o:dateRanges dayStyle="background: green;" rolloverDayStyle="background: yellow;">
+          <o:simpleDateRange fromDate="#{FoldingPanelTestBean.fromDate2}" toDate="#{FoldingPanelTestBean.toDate2}"/>
+        </o:dateRanges>
+      </o:calendar>
+    </td>
+    <td>
+      <o:calendar>
+        <o:dateRanges dayStyle="background: green;" rolloverDayStyle="background: yellow;">
+          <o:simpleDateRange fromDate="#{FoldingPanelTestBean.fromDate2}" toDate="#{FoldingPanelTestBean.toDate2}"
+                             dayStyle="color: yellow;" rolloverDayStyle="color: green;"/>
+        </o:dateRanges>
+      </o:calendar>
+    </td>
+    <td>
+      <o:calendar>
+        <o:dateRanges dayStyle="background: green;" rolloverDayStyle="background: yellow;">
+          <o:simpleDateRange fromDate="#{FoldingPanelTestBean.fromDate2}" toDate="#{FoldingPanelTestBean.toDate2}"
+                             dayStyle="color: yellow;" rolloverDayStyle="color: green;"/>
+          <o:simpleDateRange fromDate="#{FoldingPanelTestBean.fromDate}" toDate="#{FoldingPanelTestBean.toDate}"
+                             dayStyle="color: blue;" rolloverDayStyle="color: magenta;"/>
+        </o:dateRanges>
+      </o:calendar>
+    </td>
+  </tr>
+</table>
+<br/>
+<h4 style="border-bottom: 1px solid black;">Focus and key navigation</h4>
+<table style="width: 100%;">
+  <tr style="font-family: Tahoma,cursive; background: #C0C0C0;">
+    <td>Focusable=true</td>
+    <td>Focusable=true with <b>DateRanges</b>, FocusedStyle=background: pink; boder: 3px solid blue </td>
+    <td>Focus and alert onkeypress and onclick, FocusedStyle=background: pink; boder: 3px solid blue;</td>
+  </tr>
+  <tr>
+    <td>
+      <o:calendar focusable="true" disabled="true">
+      </o:calendar>
+    </td>
+    <td>
+      <o:calendar focusable="true"
+                  focusedStyle="background: pink; boder: 3px solid blue;">
+        <o:dateRanges dayStyle="background: green;" rolloverDayStyle="background: yellow;">
+          <o:simpleDateRange fromDate="#{FoldingPanelTestBean.fromDate}" toDate="#{FoldingPanelTestBean.toDate}"/>
+        </o:dateRanges>
+      </o:calendar>
+    </td>
+    <td>
+      <o:calendar focusable="true"
+                  focusedStyle="boder: 3px solid blue;"
+                  onkeydown="alert('Key down!');" onclick="alert('on click!');">
+      </o:calendar>
+    </td>
+  </tr>
+</table>
+<h:commandButton value="submit"/>
+
+</div>

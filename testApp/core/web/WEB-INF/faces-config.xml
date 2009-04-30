@@ -1,0 +1,771 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<faces-config version="1.2"
+              xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+
+  <application>
+    <locale-config>
+      <default-locale>en</default-locale>
+      <supported-locale>en</supported-locale>
+      <supported-locale>de</supported-locale>
+      <supported-locale>ar</supported-locale>
+      <supported-locale>fr</supported-locale>
+      <supported-locale>it</supported-locale>
+      <supported-locale>ru</supported-locale>
+      <supported-locale>ja</supported-locale>
+      <supported-locale>ch</supported-locale>
+    </locale-config>
+  </application>
+
+  <managed-bean>
+    <managed-bean-name>TableColumnsBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.TableColumnsBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TreeTableColumnsBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.treetable.TreeTableColumnsBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>RichTestBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.richfaces.RichTestBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DnDBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.richfaces.DndBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>A4jSupportBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.richfaces.A4jSupportBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>A4jParametersBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.richfaces.A4jParametersBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ChartDataBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.richfaces.ChartDataBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>CalendarBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.calendar.CalendarBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>CalendarTestBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.calendar.CalendarTestBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DropDownBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.dropdown.DropDownBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>SpinnerBackingBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.spinner.SpinnerBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TabSetBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.tabset.TabSetBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>OutputTestBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.output.OutputTestBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+
+  <managed-bean>
+    <managed-bean-name>DynamicImageDataBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.dynamicImage.DynamicImageDataBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DynamicImageBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.dynamicImage.DynamicImageBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TimeTableBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.timetable.TimeTableBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>EventEditorBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.timetable.EventEditorBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TreeBackerBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.tomahawk.TreeBackerBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>FoldingPanelTestBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.testBeans.FoldingPanelTestBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+    <managed-property>
+      <property-name>state</property-name>
+      <property-class>boolean</property-class>
+      <value>true</value>
+    </managed-property>
+    <managed-property>
+      <property-name>value</property-name>
+      <property-class>java.lang.String</property-class>
+      <value>+</value>
+    </managed-property>
+    <managed-property>
+      <property-name>title</property-name>
+      <property-class>java.lang.String</property-class>
+      <value>Press to unfold</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TwoListSelectionBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.testBeans.TwoListSelectionBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TableTestBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.TableTestBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ColorListBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.ColorListBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TreeTableTestBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.treetable.TreeTableTestBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>LinksTableDemoBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.LinksTableDemoBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>EmailTableDemoBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.EmailTableDemoBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>UserPermissionsTableDemoBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.UserPermissionsTableDemoBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+
+  <managed-bean>
+    <managed-bean-name>ValidatorBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.validator.ValidatorBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ChartModelTestBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.chart.ChartModelTestBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>PopulationBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.chart.PopulationBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>BurnChartBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.chart.BurnChartBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>PieChartViewBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.chart.PieChartViewBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>LineChartViewBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.chart.LineChartViewBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>CitiesDataBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.chart.CitiesDataBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>WeatherBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.chart.WeatherBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>PeopleListBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.screenshot.PeopleListBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TabSetListBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS67.TabSetListBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ScreenshotBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.screenshot.ScreenshotBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ValidBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.testing.ValidBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TestNonLatinBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.testing.TestNonLatinBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TreeTableBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.screenshot.TreeTableBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DateChooserBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datechooser.DateChooserBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>OpenFacesValidatorsBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.testing.OpenFacesValidatorsBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TestEventsBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.TestEventsBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>WithGraphicTextDataBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.WithGraphicTextDataBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>SelectionBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.SelectionBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>LoadingModesBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.testing.LoadingModesBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DataTableLoadingModeBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.DataTableLoadingModeBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>LinkListBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.LinkListBean</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+
+  <!-- Managed Beans for tomahawk components -->
+
+  <managed-bean>
+    <managed-bean-name>CountryListBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.tomahawk.CountryListBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <!--<managed-bean>-->
+  <!--<managed-bean-name>country</managed-bean-name>-->
+  <!--<managed-bean-class>org.openfaces.testapp.tomahawk.Country</managed-bean-class>-->
+  <!--<managed-bean-scope>request</managed-bean-scope>-->
+  <!--</managed-bean>-->
+
+  <managed-bean>
+    <managed-bean-name>EditorFaceBean1</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.tomahawk.EditorFaceBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TreeTable</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.tomahawk.TreeTableBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ScrollerListBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.tomahawk.DataScrollerListBean</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TreeTablePerfBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS80.TreeTablePerfBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>PeopleBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.ajaxTesting.PeopleListBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ResultSetBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS110.ResultSetBean</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>SupportTreeTableBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS112.SupportTreeTableBean</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS144</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS144.QKS144</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS595</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS595.QKS595</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>QKS595ExtendRequest</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS595.QKS595ExtendRequest</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+    <managed-bean-name>ResizeRequest</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS595.QKS595ResizeRequest</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS145</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS145.QKS145</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS6251</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS6251.QKS6251</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS6250</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS6250.QKS6250</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS174</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS174.QKS174</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS177</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS177.QKS177</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS30</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS30.QKS30</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS301</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS301.QKS301</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS340</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS340.QKS340</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS371</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS371.QKS371</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS376</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS376.QKS376</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS455</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS455.QKS455</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS524</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS524.QKS524</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS545</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS545.QKS545</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS547</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS547.QKS547</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS656</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS656.QKS656</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS1140</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS1140.QKS1140</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS1588</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS1588.QKS1588</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS1599</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS1599.QKS1599</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS2116</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS2116.QKS2116</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS2294</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS2294.QKS2294</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>JSFC2097</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.requests.JSFC2097</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>JSFC3816</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.requests.JSFC3816</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+
+  <managed-bean>
+    <managed-bean-name>OasisSimpleSearchHandlerBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS247.SimpleSearchHandlerBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+
+  <managed-bean>
+    <managed-bean-name>QKS186</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS186.QKS186</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TabbedPaneBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.tabbedpane.TabbedPaneBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TwoListSelectionSessionBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.twolistselection.TwoListSelectionSessionBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS632</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS632.QKS632</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>FoldingPanelBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.foldingPanel.FoldingPanelBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TwoListSelectionRequestBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.twolistselection.TwoListSelectionBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ConfirmationBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.confirmation.ConfirmationBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DropDownA4jBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.dropdown.DropDownRequestBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DataTableA4jBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.DataTableRequestBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>HintLabelA4jBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.hintlabel.HintLabelRequestBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>PopupLayerA4jBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.popuplayer.PopupLayerRequestBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TabSetA4jBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.tabset.TabSetRequestBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TreeTableA4jBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.treetable.TreeTableRequestBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TreeTableFuncTestsBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.treetable.TreeTableBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>A4jIncludeBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.ajax4jsfTesting.A4jIncludeBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>SuggestionFieldBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.suggestionfield.SuggestionFieldBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>SuggestionFieldA4jBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.suggestionfield.SuggestionFieldRequestBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>CityPrecipitationBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.chart.CityPrecipitationBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ChartDemoBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.chart.ChartDemoBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ValidatiorBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.validator.ValidationBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ValidationBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.validation.ValidationBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>StandardInputsValidationBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.validator.StandardInputsValidationBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+    <managed-bean>
+      <managed-bean-name>JSFC2321</managed-bean-name>
+      <managed-bean-class>org.openfaces.testapp.requests.JSFC2321</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+      <managed-bean-name>JSFC2167</managed-bean-name>
+      <managed-bean-class>org.openfaces.testapp.requests.JSFC2167</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DefaultViewTestBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.testBeans.DefaultViewTestBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TabSetLocaleChangerBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.common.TabSetLocaleChangerBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TestTableDataBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.TestTableDataBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS1153</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS1153.QKS1153</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS1731</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS1731.QKS1731</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS820</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS820.QKS820</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS646</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS646.QKS646</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS1152</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS1152.QKS1152</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>InputTextBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.inputtext.InputTextBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>InputTextBeanSession</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.inputtext.InputTextBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ReloadComponentsBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.reloadcomponents.ReloadComponentsBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>PopupMenuBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.popupmenu.PopupMenuBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ForEachBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.foreach.ForEachBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>QKS5060</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.support.QKS5060.QKS5060</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+</faces-config>

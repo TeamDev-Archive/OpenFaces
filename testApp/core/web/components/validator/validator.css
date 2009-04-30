@@ -1,0 +1,42 @@
+.error {
+  color: red;
+  font-size: 7pt;
+  width: 150px;
+}
+
+ul {
+  color: red;
+  padding: 15;
+  margin: 0;
+}
+
+ul li {
+  color: red;
+}
+
+.capture {
+  border: #858585 solid 1px;
+  width: 200px;
+  padding: 5px;
+}
+
+table {
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 8pt;
+}
+
+  /*
+   <h:commandButton value="1" onclick="setBk('#FFFFC1');"></h:commandButton>
+    <h:commandButton value="2" onclick="setBk('#C9FFA6');"></h:commandButton>
+    <h:commandButton value="3" onclick="setBk('#D9D9B4');"></h:commandButton>
+  */
+
+  /*
+   <h:commandButton value="1" onclick="setBk('#FFFFAC');"></h:commandButton>
+    <h:commandButton value="2" onclick="setBk('#BDFF93');"></h:commandButton>
+    <h:commandButton value="3" onclick="setBk('#D5D6AD');"></h:commandButton>
+
+    <h:commandButton value="1" onclick="setBk('#FFFF95');"></h:commandButton>
+    <h:commandButton value="2" onclick="setBk('#B0FF7D');"></h:commandButton>
+    <h:commandButton value="3" onclick="setBk('#CED0A0');"></h:commandButton>
+  */

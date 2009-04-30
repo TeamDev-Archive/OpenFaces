@@ -1,0 +1,21 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <br/>
+  
+    <o:chart model="#{A4jIncludeBean.chart}" view="pie"/>
+    <o:chart model="#{A4jIncludeBean.chart}"
+             legendVisible="true"
+             textStyle="color:orange;"
+             titleText="People population in the different cuntries"
+             width="500" height="500">
+      <o:barChartView colors="#3E8EB3, #5ACAFF, #B3773E, #FFC559"
+                      labelsVisible="true"
+                      foregroundAlpha="0.5"
+                      tooltip="tooltip"/>
+    </o:chart>
+  
+</div>

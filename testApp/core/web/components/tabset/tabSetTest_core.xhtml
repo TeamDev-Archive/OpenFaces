@@ -1,0 +1,542 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+<a href="../../main.jsf">Return to main page</a>
+<h:commandButton action="sbmt" value="Submit"/>
+<br/>
+<h:messages showSummary="true" showDetail="true"/>
+<br/>
+
+<o:clientValidationSupport/>
+
+<br/>
+
+<o:tabSet value="#{sessionScope['tabSetTestPage_selectedValue1']}">
+  <o:tabSetItem itemValue="client">
+    <h:outputText value="Client"/>
+  </o:tabSetItem>
+  <o:tabSetItem itemValue="server">
+    <h:outputText value="Server"/>
+  </o:tabSetItem>
+  <a4j:support event="onchange" reRender="selectedTabText"/>
+</o:tabSet>
+
+Selected tab value (updated through A4j): <h:outputText id="selectedTabText2"
+                                                        value="#{sessionScope['tabSetTestPage_selectedValue1']}"/>
+<br/>
+
+<h4 style="text-decoration: underline">Style testing section</h4>
+<table>
+  <tr>
+    <td class="cells" width="50%">
+      <o:tabSet emptySpaceStyle="background: beige;"
+                rolloverSelectedTabStyle="border: 2px dashed blue;"
+                tabStyle="background: azure; border: 1px dotted darkgreen;"
+                rolloverTabStyle="background: brown; font-weight: bold; border: 2px dotted green;"
+                selectedTabStyle="background: pink; border: 1px solid black;"
+                style="border: 3px solid lightGreen;">
+        <o:tabSetItem>
+          <h:outputText value="Client"/>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:outputText value="Server"/>
+        </o:tabSetItem>
+      </o:tabSet>
+    </td>
+    <td class="cells" width="50%">
+      <pre>
+      &lt;o:tabSet emptySpaceStyle="background: beige;"
+              rolloverSelectedTabStyle="border: 2px dashed blue;"
+              tabStyle="background: azure; border: 1px dotted darkgreen;"
+              rolloverTabStyle="background: brown; font-weight: bold; border: 2px dotted green;"
+              style="border: 3px solid lightGreen;"
+              selectedTabStyle="background: pink; border: 1px solid black;"&gt;
+        &lt;o:tabSetItem&gt;
+          &lt;h:outputText value="Client" /&gt;
+        &lt;/o:tabSetItem&gt;
+        &lt;o:tabSetItem&gt;
+          &lt;h:outputText value="Server" /&gt;
+        &lt;/o:tabSetItem&gt;
+      &lt;/o:tabSet&gt;
+        </pre>
+    </td>
+  </tr>
+  <tr>
+    <td class="cells" width="50%">
+      <o:tabSet emptySpaceClass="emptySpaceTabSet"
+                rolloverSelectedTabClass="rolloverSelectedTab_TabSet"
+                tabClass="tab_TabSet"
+                rolloverTabClass="rolloverTab_TabSet"
+                selectedTabClass="selectedTab_TabSet"
+                styleClass="tabSetStyle">
+        <o:tabSetItem>
+          <h:outputText value="Client"/>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:outputText value="Server"/>
+        </o:tabSetItem>
+      </o:tabSet>
+    </td>
+    <td class="cells">
+      The same with *Class attributes
+    </td>
+  </tr>
+</table>
+
+<br/>
+<br/>
+<br/>
+
+<h4 style="text-decoration: underline">Set method binding on selection change event</h4>
+
+<o:tabSet
+        id="tab2"
+        selectedIndex="0"
+        onchange="document.forms[0].submit();"
+        frontBorderStyle="0px"
+        backBorderStyle="0px"
+        tabStyle="background-color: #bccd48; border: 0px; border-bottom: black 1px solid; padding-left: 3px; padding-right: 3px;"
+        rolloverTabStyle="background-color: #cce23a; height: 25px; color: #2762b9;"
+        selectedTabStyle="background-color: #76af43; height: 25px;"
+        rolloverSelectedTabStyle="background-color: #7cc937;"
+        alignment="topOrLeft"
+        placement="top"
+        selectionChangeListener="#{TabSetBean.selectionChanged}">
+  <o:tabSetItem>
+    <h:outputText value="Client"></h:outputText>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="Server"></h:outputText>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="Custom"></h:outputText>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="Default"></h:outputText>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="Reset"></h:outputText>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="Reboot"></h:outputText>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="Backup"></h:outputText>
+  </o:tabSetItem>
+
+</o:tabSet>
+
+<br/>
+<br/>
+<br/>
+
+<h4 style="text-decoration: underline">Tabset with client javascript on "onchange" event</h4>
+
+<o:tabSet
+        id="tab4"
+        selectedIndex="1"
+        style="width: 50%"
+        alignment="topOrLeft"
+        placement="top"
+        onchange="alert('onChange occured');"
+        >
+
+  <o:tabSetItem>
+    <h:outputText value="Java"></h:outputText>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="C#"></h:outputText>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="UML"></h:outputText>
+  </o:tabSetItem>
+
+</o:tabSet>
+
+<br/>
+<br/>
+<br/>
+
+<h4 style="text-decoration: underline">Use different JSF components as tab renderers</h4>
+
+<table border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td>
+      <o:tabSet
+              tabStyle="height: 25px;"
+              alignment="topOrLeft"
+              placement="top"
+              >
+
+        <o:tabSetItem>
+          <h:commandButton style="width: 50px;height: 100%;" value="tab_1" onclick="return false;"></h:commandButton>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:commandLink style="width: 50px;height: 100%;" value="tab_2"></h:commandLink>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:inputText style="width: 50px;height: 100%;" value="tab_3"></h:inputText>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:selectBooleanCheckbox id="tab_4" style="width: 50px;" title="tab_4"></h:selectBooleanCheckbox>
+        </o:tabSetItem>
+      </o:tabSet>
+    </td>
+  </tr>
+  <tr>
+    <td style="border-right: #EAE7D8 1px solid; border-left: #EAE7D8 1px solid; border-bottom: #EAE7D8 1px solid;">
+      &#160;
+    </td>
+  </tr>
+</table>
+
+<br/>
+<br/>
+<br/>
+
+<h4 style="text-decoration: underline">Test different tabset placements</h4>
+
+<table border="0" cellpadding="0" cellspacing="0" width="300px">
+<tr>
+  <td>
+    &#160;
+  </td>
+  <td>
+    <o:tabSet
+            style="width: 100%"
+
+            alignment="bottomOrRight"
+            placement="top"
+
+            onchange="setTabSetLabel('onchange');">
+      <o:tabSetItem>
+        <h:outputText value="tab_1"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="tab_2"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="tab_3"></h:outputText>
+      </o:tabSetItem>
+    </o:tabSet>
+  </td>
+  <td>
+    &#160;
+  </td>
+</tr>
+<tr>
+  <td style="height:150px;">
+    <o:tabSet
+            style="height: 100%"
+
+            alignment="topOrLeft"
+            placement="left"
+
+            onchange="setTabSetLabel(event._absoluteIndex);"
+            >
+
+      <o:tabSetItem>
+        <h:outputText value="tab_1"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="tab_2"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="tab_3"></h:outputText>
+      </o:tabSetItem>
+
+    </o:tabSet>
+  </td>
+  <td style="width: 150px; height:150px;" nowrap="nowrap">
+    <label id="tabSetLabel"></label>
+  </td>
+  <td style="height:150px;">
+    <o:tabSet
+            style="height: 100%"
+
+            alignment="bottomOrRight"
+            placement="right"
+
+            onchange="setTabSetLabel(event._absoluteIndex);"
+            >
+
+      <o:tabSetItem>
+        <h:outputText value="tab_1"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="tab_2"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="tab_3"></h:outputText>
+      </o:tabSetItem>
+
+    </o:tabSet>
+  </td>
+</tr>
+<tr>
+  <td>
+    &#160;
+  </td>
+  <td>
+    <o:tabSet
+            style="width: 100%"
+
+            alignment="topOrLeft"
+            placement="bottom"
+
+            onchange="setTabSetLabel(event._absoluteIndex);"
+            >
+
+      <o:tabSetItem>
+        <h:outputText value="tab_1"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="tab_2"></h:outputText>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="tab_3"></h:outputText>
+      </o:tabSetItem>
+
+    </o:tabSet>
+  </td>
+  <td>
+    &#160;
+  </td>
+</tr>
+</table>
+
+<br/>
+<br/>
+<br/>
+
+<h4 style="text-decoration: underline">Emulate layered pane layout with tabset</h4>
+
+<table border="0" cellpadding="0" cellspacing="0" height="333px">
+  <tr>
+    <td style="border-bottom: black 1px solid; border-left: black 1px solid; border-top: black 1px solid;">
+      <img id="img1" src="" alt="image" align="middle"/>
+    </td>
+    <td height="100%">
+      <o:tabSet
+              id="imageSelector"
+
+              selectedIndex="0"
+
+              style="height: 100%"
+
+              tabStyle="width: 200px; text-align: right; padding-left: 15px; padding-right: 5px;"
+
+              alignment="topOrLeft"
+              placement="right"
+
+              onchange="setImageByTabSet();"
+              >
+        <o:tabSetItem>
+          <h:outputText value="It use to be my table"></h:outputText>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:outputText value="We discuss"></h:outputText>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:outputText value="Our leasure"></h:outputText>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:outputText value="Touch the beauty"></h:outputText>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:outputText value="TeamDev needs you! "></h:outputText>
+        </o:tabSetItem>
+      </o:tabSet>
+    </td>
+  </tr>
+  <tr>
+    <td style="font-size: 8pt; background-color: silver; border: silver 2px solid;">
+      � Thanks to Topka� for kindly shared photos
+    </td>
+    <td style="border-left: silver 2px solid;">
+      &#160;
+    </td>
+  </tr>
+</table>
+
+<br/>
+<br/>
+<br/>
+
+Testing tabSet as UIInput:
+
+<h:selectOneRadio converter="#{TabSetBean.testConverter}" validator="#{TabSetBean.customValidator}">
+  <f:selectItem itemValue="item 1" itemLabel="Item 1"/>
+  <f:selectItem itemValue="item 2" itemLabel="Item 2"/>
+  <f:selectItem itemValue="item 3" itemLabel="Item 3"/>
+</h:selectOneRadio>
+
+<o:tabSet value="#{TabSetBean.selectedValue}" validator="#{TabSetBean.customValidator}">
+  <o:tabSetItem itemValue="item 1">
+    <h:outputText value="Item 1"/>
+  </o:tabSetItem>
+  <o:tabSetItem itemValue="item 2">
+    <h:outputText value="Item 2"/>
+  </o:tabSetItem>
+  <o:tabSetItem itemValue="item 3">
+    <h:outputText value="Item 3"/>
+  </o:tabSetItem>
+  <o:selectionChangeListener type="org.openfaces.testapp.customEvents.MySelectionChangeListener"/>
+  <f:valueChangeListener type="org.openfaces.testapp.customEvents.MyValueChangeListener"/>
+  <o:validateCustom clientFunction="return input.getSelectedIndex() != 1;" summary="Client TabSet validation check"
+                     detail="The second item must not be selected!"/>
+</o:tabSet>
+
+Selected value:
+<h:outputText value="#{TabSetBean.selectedValue}"/>
+
+<h4 style="text-decoration: underline">Tab widths in pixels</h4>
+
+<o:tabSet tabStyle="width: 500px;">
+  <o:tabSetItem>
+    <h:outputText value="Client"/>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="Server"/>
+  </o:tabSetItem>
+</o:tabSet>
+
+<h4 style="text-decoration: underline">Styles appliance through style class</h4>
+<table>
+  <tr>
+    <td style="padding: 20px 20px 20px 20px; border:1px solid black;">
+      <o:tabSet emptySpaceClass="emptySpace"
+                rolloverSelectedTabClass="rolloverSelected"
+                selectedTabClass="selectedTab"
+                tabClass="tab"
+                rolloverTabClass="rolloverTab">
+        <o:tabSetItem>
+          <h:outputText value="Client"/>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:outputText value="Server"/>
+        </o:tabSetItem>
+      </o:tabSet>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 20px 20px 20px 20px; border:1px solid black;">
+      <o:tabSet emptySpaceStyle="background: beige;"
+                rolloverSelectedTabStyle="background: yellow;"
+                selectedTabStyle="border: 2px solid red; padding-left: 20px;"
+                rolloverTabStyle="border: 3px solid brown;"
+                tabStyle="width: 100px; padding-left: 50px;">
+        <o:tabSetItem>
+          <h:outputText value="Client"/>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:outputText value="Server"/>
+        </o:tabSetItem>
+      </o:tabSet>
+    </td>
+  </tr>
+</table>
+<br/>
+<br/>
+<h4 style="text-decoration: underline">Focused tabSet</h4>
+
+<o:tabSet focusable="true">
+  <o:tabSetItem>
+    <h:outputText value="Client"/>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="Server"/>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="Client2"/>
+  </o:tabSetItem>
+</o:tabSet>
+<br/>
+<br/>
+<table border="0" cellpadding="0" cellspacing="0" height="333px">
+  <tr>
+    <td style="border-bottom: black 1px solid; border-left: black 1px solid; border-top: black 1px solid;">
+      <img id="img1" src="" alt="image" align="middle"/>
+    </td>
+    <td height="100%">
+      <o:tabSet focusable="true" alignment="topOrLeft"   style="height: 100%"
+                placement="right"  tabStyle="width: 200px; text-align: right;">
+        <o:tabSetItem>
+          <h:outputText value="Client"/>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:outputText value="Server"/>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:outputText value="Client2"/>
+        </o:tabSetItem>
+      </o:tabSet>
+    </td>
+  </tr>
+</table>
+<br/>
+<br/>
+<h4 style="text-decoration: underline">Focused Style testing section</h4>
+<table>
+  <tr>
+    <td class="cells" width="50%">
+      <o:tabSet emptySpaceStyle="background: beige;" focusable="true" focusAreaStyle="border: 1px dashed blue;"
+                rolloverSelectedTabStyle="border: 2px dashed blue;"
+                tabStyle="background: azure; border: 1px dotted darkgreen;"
+                rolloverTabStyle="background: brown; font-weight: bold; border: 2px dotted green;"
+                selectedTabStyle="background: pink; border: 1px solid black;"
+                style="border: 3px solid lightGreen;">
+        <o:tabSetItem>
+          <h:outputText value="Client"/>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:outputText value="Server"/>
+        </o:tabSetItem>
+      </o:tabSet>
+    </td>
+    <td class="cells" width="50%">
+      <pre>
+      &lt;o:tabSet emptySpaceStyle="background: beige;"
+              focusable="true" focusAreaStyle="border: 1px dashed blue;"
+              rolloverSelectedTabStyle="border: 2px dashed blue;"
+              tabStyle="background: azure; border: 1px dotted darkgreen;"
+              rolloverTabStyle="background: brown; font-weight: bold; border: 2px dotted green;"
+              style="border: 3px solid lightGreen;"
+              selectedTabStyle="background: pink; border: 1px solid black;"&gt;
+        &lt;o:tabSetItem&gt;
+          &lt;h:outputText value="Client" /&gt;
+        &lt;/o:tabSetItem&gt;
+        &lt;o:tabSetItem&gt;
+          &lt;h:outputText value="Server" /&gt;
+        &lt;/o:tabSetItem&gt;
+      &lt;/o:tabSet&gt;
+        </pre>
+    </td>
+  </tr>
+  <tr>
+    <td class="cells" width="50%">
+      <o:tabSet emptySpaceClass="emptySpaceTabSet" focusable="true"
+                rolloverSelectedTabClass="rolloverSelectedTab_TabSet"
+                tabClass="tab_TabSet" focusAreaClass="focused_TabSet"
+                rolloverTabClass="rolloverTab_TabSet"
+                selectedTabClass="selectedTab_TabSet"
+                styleClass="tabSetStyle">
+        <o:tabSetItem>
+          <h:outputText value="Client"/>
+        </o:tabSetItem>
+        <o:tabSetItem>
+          <h:outputText value="Server"/>
+        </o:tabSetItem>
+      </o:tabSet>
+    </td>
+    <td class="cells">
+      The same with *Class attributes
+    </td>
+  </tr>
+</table>
+
+</div>

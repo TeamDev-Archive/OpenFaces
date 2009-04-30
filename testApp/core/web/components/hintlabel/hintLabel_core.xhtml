@@ -1,0 +1,88 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <br/><br/>
+    <table>
+      <tr>
+        <td class="header">onclick</td>
+        <td class="header">ondblclick</td>
+        <td class="header">onmousedown</td>
+        <td class="header">onmouseover</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:hintLabel id="clickID"
+                       style="width: 140px; font-weight: 18px; border: 2px solid black;"
+                       hintStyle="padding: 10px 10px 10px 10px; color: gray; font-weight: 18px; border: 1px solid gray;"
+                       value="Test text for client-side events testing"
+                       onclick="logJSEvents('onclick works', 'empty'); logJSEvents(event.type, 'empty');"
+                       hint="Test text for client-side events testing"/>
+        </td>
+        <td class="container">
+          <o:hintLabel id="doubleclickID"
+                       style="width: 140px; font-weight: 18px; border: 2px solid black;"
+                       hintStyle="padding: 10px 10px 10px 10px; color: gray; font-weight: 18px; border: 1px solid gray;"
+                       value="Test text for client-side events testing"
+                       ondblclick="logJSEvents('ondblclick works', 'empty'); logJSEvents(event.type, 'empty');"
+                       hint="Test text for client-side events testing"/>
+        </td>
+        <td class="container">
+          <o:hintLabel id="mousedownID"
+                       style="width: 140px; font-weight: 18px; border: 2px solid black;"
+                       hintStyle="padding: 10px 10px 10px 10px; color: gray; font-weight: 18px; border: 1px solid gray;"
+                       value="Test text for client-side events testing"
+                       onmousedown="logJSEvents('onmousedown works', 'empty'); logJSEvents(event.type, 'empty');"
+                       hint="Test text for client-side events testing"/>
+        </td>
+        <td class="container">
+          <o:hintLabel id="mouseoverID"
+                       style="width: 140px; font-weight: 18px; border: 2px solid black;"
+                       hintStyle="padding: 10px 10px 10px 10px; color: gray; font-weight: 18px; border: 1px solid gray;"
+                       value="Test text for client-side events testing"
+                       onmouseover="logJSEvents('onmouseover works', 'empty'); logJSEvents(event.type, 'empty');"
+                       hint="Test text for client-side events testing"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="header">onmouseup</td>
+        <td class="header">onmouseout</td>
+        <td class="header">onmousemove</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:hintLabel id="mouseupID"
+                       style="width: 140px; font-weight: 18px; border: 2px solid black;"
+                       hintStyle="padding: 10px 10px 10px 10px; color: gray; font-weight: 18px; border: 1px solid gray;"
+                       value="Test text for client-side events testing"
+                       onmouseup="logJSEvents('onmouseup works', 'empty'); logJSEvents(event.type, 'empty');"
+                       hint="Test text for client-side events testing"/>
+        </td>
+        <td class="container">
+          <o:hintLabel id="mouseoutID"
+                       style="width: 140px; font-weight: 18px; border: 2px solid black;"
+                       hintStyle="padding: 10px 10px 10px 10px; color: gray; font-weight: 18px; border: 1px solid gray;"
+                       value="Test text for client-side events testing"
+                       onmouseout="logJSEvents('onmouseout works', 'empty'); logJSEvents(event.type, 'empty');"
+                       hint="Test text for client-side events testing"/>
+        </td>
+        <td class="container">
+          <o:hintLabel id="mousemoveID"
+                       style="width: 140px; font-weight: 18px; border: 2px solid black;"
+                       hintStyle="padding: 10px 10px 10px 10px; color: gray; font-weight: 18px; border: 1px solid gray;"
+                       value="Test text for client-side events testing"
+                       onmousemove="logJSEvents('onmousemove works', 'empty'); logJSEvents(event.type, 'empty');"
+                       hint="Test text for client-side events testing"/>
+        </td>
+      </tr>
+    </table>
+    <div id="empty"></div>
+  
+</div>

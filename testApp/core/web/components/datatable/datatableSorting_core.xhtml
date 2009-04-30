@@ -1,0 +1,77 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <span style="font-weight:bold;">Use ajax:</span><br/>
+    <table cellpadding="0" cellspacing="5">
+      <tr>
+        <td class="header">Sorting with ajax:</td>
+        <td class="header">Sorting without ajax:</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:dataTable id="sortableDataTable"
+                       var="sortable"
+                       useAjax="true"
+                       value="#{TestEventsBean.tableTestCollection}"
+                       verticalGridLines="1px solid gray">
+            <o:column id="col_first" style="padding: 10px 10px 10px 10px;" sortingExpression="#{sortable.thirdColumn}">
+              <f:facet name="header">
+                <h:outputText value="first column header" id="sortableDataTable_firstHeader"/>
+              </f:facet>
+              <h:outputText value="#{sortable.thirdColumn}" id="sortableDataTable_firstBody"/>
+              <f:facet name="footer">
+                <h:outputText value="first column footer" id="sortableDataTable_firstFooter"/>
+              </f:facet>
+            </o:column>
+            <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+              <f:facet name="header">
+                <h:outputText value="second column header" id="sortableDataTable_secondHeader"/>
+              </f:facet>
+              <h:outputText value="#{sortable.fourthColumn}" id="sortableDataTable_secondBody"/>
+              <f:facet name="footer">
+                <h:outputText value="second column footer" id="sortableDataTable_secondFooter"/>
+              </f:facet>
+            </o:column>
+            <o:multipleRowSelection/>
+            <o:selectionColumn id="selectionColumn" sortable="true"/>
+            <o:checkboxColumn id="checkboxColumn" sortable="true"/>
+          </o:dataTable>
+        </td>
+        <td class="container">
+          <o:dataTable id="sortableDataTable1"
+                       var="sortable"
+                       useAjax="false"
+                       value="#{TestEventsBean.tableTestCollection}"
+                       verticalGridLines="1px solid gray">
+            <o:column id="col_first" style="padding: 10px 10px 10px 10px;" sortingExpression="#{sortable.thirdColumn}">
+              <f:facet name="header">
+                <h:outputText value="first column header" id="sortableDataTable1_firstHeader"/>
+              </f:facet>
+              <h:outputText value="#{sortable.thirdColumn}" id="sortableDataTable1_firstBody"/>
+              <f:facet name="footer">
+                <h:outputText value="first column footer" id="sortableDataTable1_firstFooter"/>
+              </f:facet>
+            </o:column>
+            <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+              <f:facet name="header">
+                <h:outputText value="second column header" id="sortableDataTable1_secondHeader"/>
+              </f:facet>
+              <h:outputText value="#{sortable.fourthColumn}" id="sortableDataTable1_secondBody"/>
+              <f:facet name="footer">
+                <h:outputText value="second column footer" id="sortableDataTable1_secondFooter"/>
+              </f:facet>
+            </o:column>
+          </o:dataTable>
+        </td>
+
+      </tr>
+    </table>
+  
+</div>

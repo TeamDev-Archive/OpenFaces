@@ -1,0 +1,57 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <h:commandButton value="Submit" />
+    <br/><br/>
+    Choose loading mode fol FoldingPanel:
+    <o:tabSet id="loadingModes"
+              selectedIndex="#{LoadingModesBean.selectedFoldingPanelIndex}"
+              onchange="document.forms[0].submit();">
+      <o:tabSetItems value="#{LoadingModesBean.foldingPanelLabels}"/>
+    </o:tabSet>
+    <br/><br/>
+    Choose loading mode for TabbedPane:
+    <o:tabSet selectedIndex="#{LoadingModesBean.selectedTabbedPaneIndex}"
+              onchange="document.forms[0].submit();">
+      <o:tabSetItems value="#{LoadingModesBean.tabbedPaneLabels}"/>
+    </o:tabSet>
+    <br/><br/>
+    <table>
+      <tr>
+        <td class="container">
+          <o:foldingPanel id="tabbedPaneFoldingPanel"
+                          loadingMode="#{LoadingModesBean.foldingPanelCurrentLoadingMode}"
+                          expanded="false"
+                          contentStyle="padding: 10px 10px 10px 10px;">
+            <f:facet name="caption">
+              <h:outputText value="TabbedPane in folding panel"/>
+            </f:facet>
+            <o:tabbedPane id="tabbedPaneID"
+                          loadingMode="#{LoadingModesBean.tabbedPaneCurrentLoadingMode}">
+              <o:tabbedPaneItem>
+                <f:facet name="tab">
+                  <h:outputText value="First tab" id="firstHeader"/>
+                </f:facet>
+                <h:outputText value="Some text on the first tab" id="firstContent"/>
+              </o:tabbedPaneItem>
+              <o:tabbedPaneItem>
+                <f:facet name="tab">
+                  <h:outputText value="Second tab" id="secondHeader"/>
+                </f:facet>
+                <h:outputText value="Some text on the second tab" id="secondContent"/>
+              </o:tabbedPaneItem>
+            </o:tabbedPane>
+          </o:foldingPanel>
+        </td>
+      </tr>
+    </table>
+  
+</div>

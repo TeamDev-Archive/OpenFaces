@@ -1,0 +1,552 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+<style type="text/css">
+  .application {
+    margin: 20px 20px 5px 20px;
+  }
+
+  div.img {
+    margin: 2px;
+    border: 1px solid #0000ff;
+    height: auto;
+    width: auto;
+    float: left;
+    text-align: center;
+  }
+
+  div.img img {
+    display: inline;
+    margin: 3px;
+    border: 1px solid #ffffff;
+  }
+
+  div.img a:hover img {
+    border: 1px solid #0000ff;
+  }
+
+  .browserCaption {
+    background-image: url('./images/mac_header.png');
+    background-repeat: repeat;
+    text-align: center;
+  }
+
+  .refresh a:link {
+    color: #9c9c9c;
+  }
+
+</style>
+
+<div id="component" align="center">
+
+<script type="text/javascript">
+  function showFullSizeImage(event) {
+    var target;
+    if (!event) {
+      event = window.event;
+    }
+
+    if (event.target) {
+      target = event.target;
+    }
+    else if (event.srcElement) {
+      target = event.srcElement;
+    }
+    if (target.nodeType == 3) { // defeat Safari bug
+      target = target.parentNode;
+    }
+
+    O$('form:full_size_image_win').hide();
+    var parentWindow = document.getElementById("form:full_size_image_win");
+    document.getElementById("full_size_img").src = target.src;
+    document.getElementById("form:full_size_image_win::content").style.overflow = "visible";
+    parentWindow.style.height = getNaturalHeight(target) + 30 + "px";
+    parentWindow.style.width = getNaturalWeight(target) + 4 + "px";
+    O$('form:full_size_image_win').show();
+  }
+
+  function getNaturalHeight(img) {
+    if (img.naturalHeight) {
+      return img.naturalHeight;
+    } else {
+      lgi = new Image();
+      lgi.src = img.src;
+      return lgi.height;
+    }
+  }
+
+  function getNaturalWeight(img) {
+    if (img.naturalWidth) {
+      return img.naturalWidth;
+    } else {
+      lgi = new Image();
+      lgi.src = img.src;
+      return lgi.width;
+    }
+  }
+
+  function loadCnnSite() {
+    O$('form:cnnSite_win').show();
+    document.getElementById('form:cnnSite_win::content').style.overflow = "visible";
+    document.getElementById('cnnSiteContent').src = "http://www.cnn.com";
+  }
+
+  function loadGoogleSite() {
+    O$('form:webBrowser_win').show();
+    document.getElementById('form:webBrowser_win::content').style.overflow = "visible";
+    document.getElementById('browserContent').src = "http://www.google.com";
+  }
+
+  function cancelSubmit(event) {
+    var keynum;
+
+    if (window.event) { // IE
+      keynum = event.keyCode;
+    }
+    else if (event.which) { // Netscape/Firefox/Opera
+      keynum = event.which;
+    }
+
+    return keynum != 13;
+  }
+
+  function loadUrl() {
+    var url = document.getElementById('form:browserUrlInput').value;
+    var protocol = "http://";
+    if (url.indexOf(protocol) != 0) {
+      url = protocol + url;
+    }
+    document.getElementById('browserContent').src = url;
+  }
+
+  <!--  *** Calculator javascript ****************************** -->
+
+  calc_mode = 0;
+  buf = "";
+
+  function clearAll() {
+    clearInput();
+    clearBuf();
+    calc_mode = 0;
+  }
+
+  function clearInput() {
+    document.getElementById("form:calcInputField").value = "0";
+  }
+
+  function clearBuf() {
+    buf = "";
+  }
+
+  function number(ch) {
+    if (calc_mode) {
+      clearInput();
+      calc_mode = 0;
+    }
+
+    var value = document.getElementById("form:calcInputField").value;
+    if ((value == '0') &amp;&amp; (ch != '.')) {
+      document.getElementById("form:calcInputField").value = ch;
+    } else {
+      if ((ch == '.') &amp;&amp; (value.indexOf('.') != -1)) {
+        return;
+      }
+      document.getElementById("form:calcInputField").value += ch;
+    }
+
+    if (buf != "") {
+      buf += ch;
+    }
+  }
+
+  function operator(ch) {
+    calc_mode = 1;
+    buf = document.getElementById("form:calcInputField").value + ch;
+  }
+
+  function calculate() {
+    document.getElementById("form:calcInputField").value = eval(buf);
+    calc_mode = 1;
+  }
+
+</script>
+<div align="left">
+  <h:graphicImage url="./images/openfaces-windows-are.png"/>
+</div>
+
+<table>
+<tr>
+<td>
+  <!--   Calculator   -->
+  <div class="application">
+
+    <img src="./images/dragndropable.png"
+         onclick="O$('form:unresizeable_win').show(); return false;"
+         title="Calculator"/>
+
+    <o:window id="unresizeable_win"
+              resizeable="false"
+              style="position: absolute;
+                   right: 130px;
+                   top: 250px;
+                   background: #bbbbbb"
+              captionStyle="background: #bbbbbb;
+                          border-bottom: #e9e9e9 solid 1px;
+                          position:relative;
+                          top: -4px"
+              contentStyle="overflow: visible"
+              height="300px"
+              width="212px">
+      <o:captionArea style="padding: 0 0 10px 0">
+        <o:minimizeWindowButton imageUrl="./images/win_minimize.png"/>
+        <o:closeWindowButton imageUrl="./images/win_close.png"/>
+      </o:captionArea>
+
+      <f:facet name="caption">
+        <h:outputText style="color: #ffffff;" value="Calculator"/>
+      </f:facet>
+
+      <div style="background: #bbbbbb; padding: 3px; height: 97%">
+        <div style="background: #999999;">
+          <h:inputText id="calcInputField"
+                       value="0"
+                       onkeypress="return false;"
+                       style="width: 83%;
+                              background: #99b9a7;
+                              font-size: 180%;
+                              text-align: right;
+                              margin: 5px 15px 5px 15px;"/>
+        </div>
+        <div align="center" style="padding: 7px 17px 17px 17px;">
+          <table>
+            <tr>
+              <td align="center"><h:outputLink styleClass="calculatorBtn"
+                                               onclick="clearAll(); return false;">
+                <h:graphicImage url="./images/calc/clear.png"/>
+              </h:outputLink></td>
+              <td colspan="3"/>
+            </tr>
+            <tr>
+              <td><h:outputLink onclick="number('7'); return false;">
+                <h:graphicImage url="./images/calc/7.png"/>
+              </h:outputLink></td>
+              <td><h:outputLink styleClass="calculatorBtn" onclick="number('8'); return false;">
+                <h:graphicImage url="./images/calc/8.png"/>
+              </h:outputLink></td>
+              <td><h:outputLink styleClass="calculatorBtn" onclick="number('9'); return false;">
+                <h:graphicImage url="./images/calc/9.png"/>
+              </h:outputLink></td>
+              <td><h:outputLink styleClass="calculatorBtn" onclick="operator('/'); return false;">
+                <h:graphicImage url="./images/calc/div.png"/>
+              </h:outputLink></td>
+            </tr>
+            <tr>
+              <td><h:outputLink styleClass="calculatorBtn" onclick="number('4'); return false;">
+                <h:graphicImage url="./images/calc/4.png"/>
+              </h:outputLink></td>
+              <td><h:outputLink styleClass="calculatorBtn" onclick="number('5'); return false;">
+                <h:graphicImage url="./images/calc/5.png"/>
+              </h:outputLink></td>
+              <td><h:outputLink styleClass="calculatorBtn" onclick="number('6'); return false;">
+                <h:graphicImage url="./images/calc/6.png"/>
+              </h:outputLink></td>
+              <td><h:outputLink styleClass="calculatorBtn" onclick="operator('*'); return false;">
+                <h:graphicImage url="./images/calc/mult.png"/>
+              </h:outputLink></td>
+            </tr>
+            <tr>
+              <td><h:outputLink styleClass="calculatorBtn"
+                                onclick="number('1'); return false;">
+                <h:graphicImage url="./images/calc/1.png"/>
+              </h:outputLink></td>
+              <td><h:outputLink styleClass="calculatorBtn"
+                                onclick="number('2'); return false;">
+                <h:graphicImage url="./images/calc/2.png"/>
+              </h:outputLink></td>
+              <td><h:outputLink styleClass="calculatorBtn"
+                                onclick="number('3'); return false;">
+                <h:graphicImage url="./images/calc/3.png"/>
+              </h:outputLink></td>
+              <td><h:outputLink styleClass="calculatorBtn"
+                                onclick="operator('-'); return false;">
+                <h:graphicImage url="./images/calc/min.png"/>
+              </h:outputLink></td>
+            </tr>
+            <tr>
+              <td><h:outputLink styleClass="calculatorBtn"
+                                onclick="number('0'); return false;">
+                <h:graphicImage url="./images/calc/0.png"/>
+              </h:outputLink></td>
+              <td><h:outputLink styleClass="calculatorBtn"
+                                onclick="number('.'); return false;">
+                <h:graphicImage url="./images/calc/dot.png"/>
+              </h:outputLink></td>
+              <td><h:outputLink styleClass="calculatorBtn"
+                                onclick="calculate(); return false;">
+                <h:graphicImage url="./images/calc/equal.png"/>
+              </h:outputLink></td>
+              <td><h:outputLink styleClass="calculatorBtn"
+                                onclick="operator('+'); return false;">
+                <h:graphicImage url="./images/calc/plus.png"/>
+              </h:outputLink></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </o:window>
+  </div>
+</td>
+<td>
+  <!-- Image galary   -->
+  <div class="application">
+    <img src="./images/resizable.png"
+         onclick="O$('form:resizeable_win').show(); return false;"
+         title="Image Gallery"/>
+
+    <div align="center">
+      <o:window id="full_size_image_win"
+                resizeable="false"
+                modal="true"
+                captionStyle="background: #bbbbbb;
+                          border-bottom: #e9e9e9 solid 1px
+                          position:relative;
+                          top: -4px"
+                style="position: absolute; top: 50px; left: 50px;
+                       width:auto; overflow:visible;">
+        <f:facet name="caption">
+          <h:outputText style="color: #ffffff" value="Full Size Image"/>
+        </f:facet>
+
+        <o:captionArea>
+          <o:minimizeWindowButton imageUrl="./images/win_minimize.png" style="position: relative; top: -5px;"/>
+          <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png" style="position: relative; top: -5px;"/>
+          <o:closeWindowButton imageUrl="./images/win_close.png" style="position: relative; top: -5px;"/>
+        </o:captionArea>
+
+        <img id="full_size_img"/>
+
+      </o:window>
+    </div>
+
+    <o:window id="resizeable_win"
+              resizeable="true"
+              modal="false"
+              style="position: absolute; right: 110px; top: 340px; padding:10px;"
+              captionStyle="background: #bbbbbb;
+                            border-bottom: #e9e9e9 solid 1px
+                            position:relative;
+                          top: -4px"
+              height="350px"
+              width="550px">
+
+      <o:captionArea>
+        <o:minimizeWindowButton imageUrl="./images/win_minimize.png" style="position: relative; top: -5px;"/>
+        <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png" style="position: relative; top: -5px;"/>
+        <o:closeWindowButton imageUrl="./images/win_close.png" style="position: relative; top: -5px;"/>
+      </o:captionArea>
+
+      <f:facet name="caption">
+        <h:outputText style="color: #ffffff" value="Image Gallery"/>
+      </f:facet>
+
+      <div class="img">
+        <h:outputLink onclick="showFullSizeImage(event); return false;">
+          <h:graphicImage url="./images/gallery/flower1.jpg" width="110" height="90"/>
+        </h:outputLink>
+      </div>
+      <div class="img">
+        <h:outputLink onclick="showFullSizeImage(event); return false;">
+          <img src="./images/gallery/flower2.jpg" width="110" height="90"/>
+        </h:outputLink>
+      </div>
+      <div class="img">
+        <h:outputLink onclick="showFullSizeImage(event); return false;">
+          <img src="./images/gallery/flower3.jpg" width="110" height="90"/>
+        </h:outputLink>
+      </div>
+      <div class="img">
+        <h:outputLink onclick="showFullSizeImage(event); return false;">
+          <img src="./images/gallery/flower4.jpg" width="110" height="90"/>
+        </h:outputLink>
+      </div>
+      <div class="img">
+        <h:outputLink onclick="showFullSizeImage(event); return false;">
+          <img src="./images/gallery/flower5.jpg" width="110" height="90"/>
+        </h:outputLink>
+      </div>
+      <div class="img">
+        <h:outputLink onclick="showFullSizeImage(event); return false;">
+          <img src="./images/gallery/flower6.jpg" width="110" height="90"/>
+        </h:outputLink>
+      </div>
+      <div class="img">
+        <h:outputLink onclick="showFullSizeImage(event); return false;">
+          <img src="./images/gallery/flower7.jpg" width="110" height="90"/>
+        </h:outputLink>
+      </div>
+      <div class="img">
+        <h:outputLink onclick="showFullSizeImage(event); return false;">
+          <img src="./images/gallery/flower8.gif" width="110" height="90"/>
+        </h:outputLink>
+      </div>
+
+    </o:window>
+  </div>
+</td>
+<td>
+  <!-- Calendar   -->
+  <div class="application">
+    <img src="./images/modal.png"
+         onclick="O$('form:modal_win').show(); return false;"
+         title="Calendar"/>
+
+    <o:window id="modal_win"
+              resizeable="false"
+              modal="true"
+              modalLayerClass="modalLayer"
+              style="position: absolute; right: 150px; top: 160px"
+              width="236px"
+              height="228px"
+              contentStyle="overflow: visible; background: #bbbbbb;"
+              captionStyle="background: #bbbbbb;
+                          border-bottom: #e9e9e9 solid 1px">
+
+      <o:captionArea>
+        <o:minimizeWindowButton imageUrl="./images/win_minimize.png" style="position: relative; top: -5px;"/>
+        <o:closeWindowButton imageUrl="./images/win_close.png" style="position: relative; top: -5px;"/>
+      </o:captionArea>
+
+      <f:facet name="caption">
+        <h:outputText style="color: #ffffff;" value="Calendar"/>
+      </f:facet>
+
+      <div align="center" style="padding:20px"><o:calendar/></div>
+    </o:window>
+  </div>
+</td>
+<td>
+  <!-- Cnn.com    -->
+  <div class="application">
+    <img src="./images/shadable.png"
+         onclick="loadCnnSite(); return false;"
+         title="CNN.com site"/>
+
+    <o:window id="cnnSite_win"
+              resizeable="true"
+              width="800px"
+              height="600px"
+              style="position: absolute;
+                    left: 30px;
+                    top: 50px;"
+              modal="true"
+              modalLayerClass="modalLayer"
+              captionClass="browserCaption">
+
+      <o:captionArea alignment="left">
+        <o:closeWindowButton imageUrl="./images/mac_close.png" style="position: relative; top: -5px;"/>
+        <o:maximizeWindowButton maximizeImageUrl="./images/mac_maximize.png" style="position: relative; top: -5px;"/>
+        <o:minimizeWindowButton imageUrl="./images/mac_minimize.png" style="position: relative; top: -5px;"/>
+      </o:captionArea>
+
+      <f:facet name="caption">
+        <h:outputText value="CNN.com"/>
+      </f:facet>
+
+      <iframe id="cnnSiteContent"
+              frameborder="true"
+              width="100%"
+              height="100%" style="border: none">
+
+      </iframe>
+    </o:window>
+  </div>
+</td>
+<td>
+  <!-- Web browser    -->
+  <div class="application">
+    <img src="./images/customizable.png"
+         onclick="loadGoogleSite(); return false;"
+         title="Web Browser"/>
+
+    <o:window id="webBrowser_win"
+              resizeable="true"
+              width="800px"
+              height="600px"
+              style="position: absolute;
+                         left: 30px;
+                         top: 50px;"
+              captionClass="browserCaption"
+              contentStyle=" 100%! important">
+
+      <f:facet name="caption">
+        <h:panelGroup style="text-align: center">
+          <h:outputText value="Web Browser"/>
+        </h:panelGroup>
+      </f:facet>
+
+      <o:captionArea alignment="left">
+        <o:closeWindowButton imageUrl="./images/mac_close.png" style="position: relative; top: -5px;"/>
+        <o:maximizeWindowButton maximizeImageUrl="./images/mac_maximize.png" style="position: relative; top: -5px;"/>
+        <o:minimizeWindowButton imageUrl="./images/mac_minimize.png" style="position: relative; top: -5px;"/>
+      </o:captionArea>
+
+      <h:panelGroup style="width: 100%;">
+        <h:outputText value="Site:" style="color: #9c9c9c;font-weight: bold; padding: 0 2px 0 10px"/>
+        <h:inputText id="browserUrlInput"
+                     onkeydown="return cancelSubmit(event);"
+                     style="width:85%"/>
+        <h:outputLink styleClass="refresh" value="" onclick="loadUrl(); return false;"><h:outputText
+                style="font-style: italic; color: #9c9c9c" value="Go"/></h:outputLink>
+      </h:panelGroup>
+
+      <div style="border: 1px solid #bbbbbb; height: 0; width: 100%; margin: 2px 0 0 0;"/>
+
+      <iframe id="browserContent"
+              frameborder="true"
+              width="100%"
+              height="100%" style="border: none">
+
+      </iframe>
+    </o:window>
+  </div>
+</td>
+</tr>
+<tr>
+  <td align="center"><h:outputText value="Drag-and-dropable"/></td>
+  <td align="center"><h:outputText value="Resizeable"/></td>
+  <td align="center"><h:outputText value="Modal"/></td>
+  <td align="center"><h:outputText value="Shadeable"/></td>
+  <td align="center"><h:outputText value="Customizable"/></td>
+</tr>
+</table>
+
+
+</div>
+
+<div class="Col1_1 serif">
+  <h4>Shown Functionality</h4>
+  <ul class="hang">
+    <li><strong>Drag-and-drop</strong> - Click on the
+      <i>Drag-and-dropable</i> icon and you can see the draggable window,
+      that can be dragged around on the page
+    </li>
+    <li><strong>Resizing</strong> - Click on the <i>Resizeable</i> icon and you can see the resizeable window
+    </li>
+    <li><strong>Modality</strong> - Click on the <i>Modal</i> icon and you can see the modal window
+    </li>
+    <li>
+      <strong>Customization of the area that surrounding the modal window</strong> - Click on the
+      <i>Shadeable</i> icon and you can see
+      the modal window with customized visible
+      part of the page which is not covered by a Window component
+    </li>
+    <li><strong>Support for custom caption buttons</strong> - Click on the
+      <i>Customizable</i> icon and you can see the window
+      with customized caption buttons
+    </li>
+  </ul>
+</div>
+
+</div>

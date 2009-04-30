@@ -1,0 +1,138 @@
+<project name="OpenFaces Demo -- JSP Version" default="build" basedir=".">
+
+  <!-- *** Resources *** -->
+
+  <property name="lib.dir" location="../../lib"/>
+  <property name="apache.lib.dir" location="../../lib/apache"/>
+  <property name="openfaces-dependencies.lib.dir" location="../../lib/openfaces-dependencies"/>
+  <property name="el.lib.dir" location="../../lib/el"/>
+  <property name="jsf.lib.dir" location="../../lib/mojarra"/>
+  <property name="src.dir" location="../core/source"/>
+  <property name="web-inf.dir" location="WEB-INF"/>
+  <property name="web-inf-core.dir" location="../core/WEB-INF"/>
+  <property name="resources.dir" location="resources"/>
+  <property name="resources-core.dir" location="../core/resources"/>
+  <property name="target.dir" location="target"/>
+  <property name="resources.target.dir" location="${target.dir}/resources"/>
+  <property name="target-war.file" location="${target.dir}/openfaces-demo-jsp.war"/>
+  <property name="classes.dir" location="${target.dir}/classes"/>
+
+  <property name="components-jar.file" location="../../target/lib/openfaces.jar"/>
+
+  <property file="../../ofversion.properties"/>
+
+
+  <fileset id="basic-libraries" dir="${lib.dir}">
+    <include name="jstl-1.1.0.jar"/>
+  </fileset>
+
+  <fileset id="apache" dir="${apache.lib.dir}">
+    <include name="commons-beanutils-1.6.jar"/>
+    <include name="commons-collections-3.1.jar"/>
+    <include name="commons-digester-1.6.jar"/>
+    <include name="commons-logging-1.0.4.jar"/>
+  </fileset>
+
+  <fileset id="openfaces-dependencies" dir="${openfaces-dependencies.lib.dir}">
+    <include name="jfreechart-1.0.12.jar"/>
+    <include name="jcommon-1.0.15.jar"/>
+    <include name="jdom-1.0.jar"/>
+    <include name="ss_css2-0.9.4.jar"/>
+  </fileset>
+
+  <fileset id="mojarra-1.2" dir="${jsf.lib.dir}">
+    <include name="jsf-api-1.2_12-b01.jar"/>
+    <include name="jsf-impl-1.2_12-b01.jar"/>
+  </fileset>
+
+  <!-- *** Public Targets ** -->
+  <target name="build" depends="-fail-if-no-components-jar,-build-war"
+          description="generate the distribution"/>
+
+  <target name="init">
+    <tstamp/>
+  </target>
+
+  <target name="compile" depends="-fail-if-no-components-jar,-compile" description="compile the source">
+  </target>
+
+  <target name="copy-resources">
+    <copy todir="${classes.dir}">
+      <fileset dir="${src.dir}">
+        <exclude name="**/*.java"/>
+      </fileset>
+    </copy>
+  </target>
+
+
+  <target name="prepare-resources">
+    <copy todir="${resources.target.dir}">
+      <fileset dir="${resources.dir}"/>
+      <fileset dir="${resources-core.dir}"/>
+    </copy>
+    <replace dir="${resources.target.dir}" includes="**/*.jsp, **/*.xhtml" token="__OpenFacesVersion__"
+             value="${ofversion}"/>
+  </target>
+
+  <target name="deploy" depends="build" description="deploy war" if="deploy.dir">
+    <copy file="${target-war.file}" todir="${deploy.dir}"/>
+  </target>
+
+  <target name="clean" description="clean up">
+    <delete dir="${target.dir}"/>
+  </target>
+
+  <!-- *** Utility Targets *** -->
+
+  <target name="-build-war" depends="compile,copy-resources,prepare-resources">
+    <echo>Building WAR for Live Demo application (Facelets-based version)...</echo>
+    <property name="webxml" value="web.xml"/>
+    <war destfile="${target-war.file}" basedir="${resources.target.dir}" webxml="${web-inf.dir}/${webxml}">
+      <webinf dir="${web-inf.dir}">
+        <exclude name="${webxml}"/>
+      </webinf>
+      <webinf dir="${web-inf-core.dir}">
+        <exclude name="${webxml}"/>
+      </webinf>
+      <lib file="${components-jar.file}"/>
+      <lib refid="basic-libraries"/>
+      <lib refid="mojarra-1.2"/>
+      <lib refid="apache"/>
+      <lib refid="openfaces-dependencies"/>
+      <classes dir="${classes.dir}"/>
+    </war>
+    <echo>WAR built successfully.</echo>
+  </target>
+
+  <target name="-compile" depends="clean, init" if="components-jar.file">
+    <echo>Compiling source code of Live Demo application (JSP-based version)...</echo>
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" source="1.5" target="1.5">
+      <classpath>
+        <fileset dir="${lib.dir}">
+          <include name="jsp-api-2.1.jar"/>
+          <include name="mojarra/jsf-api-1.2_12-b01.jar"/>
+          <include name="servlet-api.jar"/>
+          <include name="apache/commons-digester-1.6.jar"/>
+          <include name="openfaces-dependencies/jdom-1.0.jar"/>
+          <include name="openfaces-dependencies/jfreechart-1.0.12.jar"/>
+          <include name="openfaces-dependencies/jcommon-1.0.15.jar"/>
+          <include name="jstl-1.1.0.jar"/>
+          <include name="openfaces-dependencies/ss_css2-0.9.4.jar"/>
+          <include name="facelets/jsf-facelets-1.1.14.jar"/>
+          <include name="el/el-api-1.5.0.jar"/>
+          <include name="el/el-ri-1.5.0.jar"/>
+
+        </fileset>
+        <fileset file="${components-jar.file}"/>
+      </classpath>
+    </javac>
+    <echo>Compilation successful.</echo>
+  </target>
+
+  <target name="-fail-if-no-components-jar" unless="components-jar.file">
+    <fail>"components-jar.file" property must be specified</fail>
+  </target>
+
+
+</project>

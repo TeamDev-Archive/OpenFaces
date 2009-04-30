@@ -1,0 +1,29 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+
+  <o:tabbedPane loadingMode="server">
+    <o:tabbedPaneItem>
+      <f:facet name="tab">
+        <h:outputText value="1"/>
+      </f:facet>
+      <h:selectBooleanCheckbox value="#{QKS6251.checkbox1}"/>
+    </o:tabbedPaneItem>
+    <o:tabbedPaneItem>
+      <f:facet name="tab">
+        <h:outputText value="2"/>
+      </f:facet>
+      <h:selectBooleanCheckbox value="#{QKS6251.checkbox2}"/>
+    </o:tabbedPaneItem>
+
+
+  </o:tabbedPane>
+
+
+</div>

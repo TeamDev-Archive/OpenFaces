@@ -1,0 +1,491 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+
+<a href="../../main.jsf">Return to main page</a>
+<h:commandButton action="sbmt" value="Submit" id="submitButton"/>
+
+<br/>
+<br/>
+
+<h4 style="text-decoration: underline;">Style testing section</h4>
+<table>
+  <tr>
+    <td class="cells">
+      <o:tabbedPane containerStyle="background: beige;"
+                    rolloverContainerStyle="border: 2px dotted blue;"
+                    rolloverSelectedTabStyle="background: LightGreen; font-weight: bold;"
+                    rolloverStyle="border: 2px dashed lightGreen;"
+                    rolloverTabStyle="font-weight: bold;"
+                    selectedTabStyle="background: DarkGreen; font-weight: bold; color: white;"
+                    tabEmptySpaceStyle="background: LightBlue;"
+                    tabStyle="color: red;"
+                    style="height: 300px; width: 200px;"
+                    id="tabbePane1">
+        <o:tabbedPaneItem id="tpi1">
+          <f:facet name="tab">
+            <h:outputText value="Tab1" id="ot1"/>
+          </f:facet>
+          <h:outputText value="Tab1 inner text" id="ot2"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem id="tpi2">
+          <f:facet name="tab">
+            <h:outputText value="Tab2" id="ot3"/>
+          </f:facet>
+          <h:outputText value="Tab2 inner text" id="ot4"/>
+        </o:tabbedPaneItem>
+      </o:tabbedPane>
+    </td>
+    <td class="cells">
+      <pre>
+      &lt;o:tabbedPane containerStyle="background: beige;"
+                    rolloverContainerStyle="border: 2px dotted blue;"
+                    rolloverSelectedTabStyle="background: LightGreen; font-weight: bold;"
+                    rolloverStyle="border: 2px dashed lightGreen;"
+                    rolloverTabStyle="font-weight: bold;"
+                    selectedTabStyle="background: DarkGreen; font-weight: bold; color: white;"
+                    tabEmptySpaceStyle="background: LightBlue;"
+                    tabStyle="color: red;"
+                    style="height: 300px; width: 200px;"&gt;
+        &lt;o:tabbedPaneItem&gt;
+          &lt;f:facet name="tab"&gt;
+            &lt;h:outputText value="Tab1"/&gt;
+          &lt;/f:facet&gt;
+          &lt;h:outputText value="Tab1 inner text" /&gt;
+        &lt;/o:tabbedPaneItem&gt;
+        &lt;o:tabbedPaneItem&gt;
+          &lt;f:facet name="tab"&gt;
+            &lt;h:outputText value="Tab2"/&gt;
+          &lt;/f:facet&gt;
+          &lt;h:outputText value="Tab2 inner text" /&gt;
+        &lt;/o:tabbedPaneItem&gt;
+      &lt;/o:tabbedPane&gt;
+        </pre>
+    </td>
+  </tr>
+  <tr>
+    <td class="cells">
+      <o:tabbedPane containerClass="containerTabbedPane"
+                    rolloverContainerClass="rolloverContainer"
+                    rolloverSelectedTabClass="rolloverSelectedTab"
+                    rolloverClass="rollover"
+                    rolloverTabClass="rolloverTab"
+                    selectedTabClass="selectedTab"
+                    tabEmptySpaceClass="tabEmptySpace"
+                    tabClass="tab"
+                    styleClass="tabbedPaneStyle"
+                    id="tabbedPane2">
+        <o:tabbedPaneItem id="tbi3">
+          <f:facet name="tab">
+            <h:outputText value="Tab1" id="ot5"/>
+          </f:facet>
+          <h:outputText value="Tab1 inner text" id="ot6"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem id="tbi4">
+          <f:facet name="tab">
+            <h:outputText value="Tab2" id="ot7"/>
+          </f:facet>
+          <h:outputText value="Tab2 inner text" id="ot8"/>
+        </o:tabbedPaneItem>
+      </o:tabbedPane>
+    </td>
+    <td class="cells">
+      The same css properties implement in *Class attributes
+    </td>
+  </tr>
+</table>
+
+<br/>
+<br/>
+
+<h4 style="text-decoration: underline">TabbedPane with server side selection changing and 'onselectionchange' client
+  script</h4>
+
+<o:tabbedPane id="tabbedPane3"
+              selectedIndex="1"
+              onselectionchange="alert('tab changed');">
+  <o:tabbedPaneItem id="tbi5">
+    <f:facet name="tab">
+      <h:outputText value="A1"/>
+    </f:facet>
+    <f:verbatim>
+      <table style="width: 100%; height: 100%">
+        <tr>
+          <td width="25%">
+            1
+          </td>
+          <td width="25%">
+            &#160;
+          </td>
+          <td width="25%">
+            &#160;
+          </td>
+          <td width="25%">
+            &#160;
+          </td>
+        </tr>
+      </table>
+    </f:verbatim>
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem rendered="false" id="tbi6">
+    <f:facet name="tab">
+      <h:outputText value="A2"/>
+    </f:facet>
+    <f:verbatim>
+      <table style="width: 100%; height: 100%">
+        <tr>
+          <td width="25%">
+            &#160;
+          </td>
+          <td width="25%">
+            2
+          </td>
+          <td width="25%">
+            &#160;
+          </td>
+          <td width="25%">
+            &#160;
+          </td>
+        </tr>
+      </table>
+    </f:verbatim>
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem id="tbi7">
+    <f:facet name="tab">
+      <h:outputText value="A3"/>
+    </f:facet>
+    <f:verbatim>
+      <table style="width: 100%; height: 100%">
+        <tr>
+          <td width="25%">
+            &#160;
+          </td>
+          <td width="25%">
+            &#160;
+          </td>
+          <td width="25%">
+            3
+          </td>
+          <td width="25%">
+            &#160;
+          </td>
+        </tr>
+      </table>
+    </f:verbatim>
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem id="tbi8">
+    <f:facet name="tab">
+      <h:outputText value="A4"/>
+    </f:facet>
+    <f:verbatim>
+      <table style="width: 100%; height: 100%">
+        <tr>
+          <td width="25%">
+            &#160;
+          </td>
+          <td width="25%">
+            &#160;
+          </td>
+          <td width="25%">
+            &#160;
+          </td>
+          <td width="25%">
+            4
+          </td>
+        </tr>
+      </table>
+    </f:verbatim>
+  </o:tabbedPaneItem>
+</o:tabbedPane>
+
+<br/>
+<br/>
+<br/>
+
+<h4 style="text-decoration: underline">TabbedPane with ajax and inner jsf content</h4>
+<o:tabbedPane loadingMode="ajax"
+              style="width: 600px; height: 100px;"
+              frontBorderStyle="2px solid #D2B48C"
+              backBorderStyle="1px dotted #D2B48C"
+              tabAlignment="bottomOrRight"
+              tabStyle="padding-left: 4px; padding-right: 4px;"
+              selectedTabStyle="background-color: green;"
+              rolloverSelectedTabStyle="background-color: orange;"
+              containerStyle="background-color: green;"
+              rolloverContainerStyle="background-color: orange;"
+              rolloverStyle="border: 1px solid gray"
+              tabGapWidth="0"
+              id="tabbedPane4"
+        >
+  <o:tabbedPaneItem id="tbi9">
+    <f:facet name="tab">
+      <h:outputText value="1"/>
+    </f:facet>
+    <h:panelGroup id="panelGroup1">
+      <h:outputText value="Label text" id="ot9"></h:outputText>
+      <h:inputText id="inputText1"></h:inputText>
+      <h:selectBooleanCheckbox id="sbch1"></h:selectBooleanCheckbox>
+      <h:selectBooleanCheckbox id="sbch2"></h:selectBooleanCheckbox>
+    </h:panelGroup>
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem id="tbi10">
+    <f:facet name="tab">
+      <h:outputText value="2"/>
+    </f:facet>
+    <h:commandButton value="press me 1" id="commandButton1"/>
+    <h:commandButton value="press me 2" id="commandButton2"/>
+    <h:commandButton value="press me 3" id="commandButton3"/>
+    <h:commandButton value="press me 4" id="commandButton4"/>
+    <h:commandButton value="press me 5" id="commandButton5"/>
+    <h:commandButton value="press me 6" id="commandButton6"/>
+    <h:commandButton value="press me 7" id="commandButton7"/>
+    <h:commandButton value="press me 8" id="commandButton8"/>
+    <o:twoListSelection style="width: 500px" id="twoListSelection"/>
+    <o:dataTable var="asd" id="dataTable"></o:dataTable>
+    <o:dropDownField id="dropDownField"/>
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem id="tbi11">
+    <f:facet name="tab">
+      <h:outputText value="3"/>
+    </f:facet>
+    <h:inputTextarea id="inputTextArea1" style="width: 300px; height: 300px;"/>
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem id="tbi12">
+    <f:facet name="tab">
+      <h:outputText value="4"/>
+    </f:facet>
+    <h:commandLink value="link 1" id="commandLink1"/>
+    <f:verbatim><br/></f:verbatim>
+    <h:commandLink value="link 2" id="commandLink2"/>
+    <f:verbatim><br/></f:verbatim>
+    <h:commandLink value="link 3" id="commandLink3"/>
+    <f:verbatim><br/></f:verbatim>
+    <h:commandLink value="link 4" id="commandLink4"/>
+  </o:tabbedPaneItem>
+</o:tabbedPane>
+
+<br/>
+<br/>
+<br/>
+<h4 style="text-decoration: underline">TabbedPane components with left and right tab placements</h4>
+<table cellpadding="0" cellspacing="0" width="300px">
+  <tr>
+    <td align="right" width="50%">
+      <o:tabbedPane loadingMode="client" tabPlacement="left" style="width: 100%"
+                    id="tabbedPane5">
+        <o:tabbedPaneItem id="tbi13">
+          <f:facet name="tab">
+            <h:outputText value="A1" id="outputText18"/>
+          </f:facet>
+          <h:outputText value="01" id="outputText19"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem id="tbi14">
+          <f:facet name="tab">
+            <h:outputText value="A2" id="outputText02"/>
+          </f:facet>
+          <h:outputText value="02" id="outputText21"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem id="tbi15">
+          <f:facet name="tab">
+            <h:outputText value="A3" id="outputText22"/>
+          </f:facet>
+          <h:outputText value="03" id="outputText23"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem id="tbi16">
+          <f:facet name="tab">
+            <h:outputText value="A4" id="outputText24"/>
+          </f:facet>
+          <h:outputText value="04" id="outputText25"/>
+        </o:tabbedPaneItem>
+      </o:tabbedPane>
+    </td>
+    <td align="left" width="50%">
+      <o:tabbedPane loadingMode="client" tabPlacement="right" style="width: 100%"
+                    id="tabbedPane6">
+        <o:tabbedPaneItem id="tbi17">
+          <f:facet name="tab">
+            <h:outputText value="A1" id="outputText1"/>
+          </f:facet>
+          <h:outputText value="01" id="outputText2"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem id="tbi18">
+          <f:facet name="tab">
+            <h:outputText value="A2" id="outputText3"/>
+          </f:facet>
+          <h:outputText value="02" id="outputText4"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem id="tbi19">
+          <f:facet name="tab">
+            <h:outputText value="A3" id="outputText5"/>
+          </f:facet>
+          <h:outputText value="03" id="outputText6"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem id="tbi20">
+          <f:facet name="tab">
+            <h:outputText value="A4" id="outputText7"/>
+          </f:facet>
+          <h:outputText value="04" id="outputText8"/>
+        </o:tabbedPaneItem>
+      </o:tabbedPane>
+    </td>
+  </tr>
+</table>
+
+
+<br/>
+<br/>
+<br/>
+<h4 style="text-decoration: underline">TabbedPane with mixed TabbedPaneItems setting ways. It also has no width to see
+  100% width issue under Opera (for testing goals)</h4>
+<o:tabbedPane loadingMode="ajax"
+              tabPlacement="bottom"
+              selectionChangeListener="#{TabSetBean.selectionChanged}"
+              id="tabbedPane7"
+        >
+  <o:selectionChangeListener type="org.openfaces.testapp.customEvents.MySelectionChangeListener"/>
+  <o:tabbedPaneItems value="#{TabSetBean.tabbedPaneItems}"/>
+  <o:tabbedPaneItem id="tbi21">
+    <f:facet name="tab">
+      <h:outputText value="A1" id="outputText9"/>
+    </f:facet>
+    <h:outputText value="01" id="outputText10"/>
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem id="tbi22">
+    <f:facet name="tab">
+      <h:outputText value="A2" id="outputText11"/>
+    </f:facet>
+    <h:outputText value="02" id="outputText12"/>
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem id="tbi23">
+    <f:facet name="tab">
+      <h:outputText value="A3" id="outputText13"/>
+    </f:facet>
+    <h:outputText value="03" id="outputText14"/>
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem id="tbi24">
+    <f:facet name="tab">
+      <h:outputText value="A4" id="outputText15"/>
+    </f:facet>
+    <h:outputText value="04" id="outputText16"/>
+  </o:tabbedPaneItem>
+</o:tabbedPane>
+<br/>
+<br/>
+
+<h4 style="text-decoration: underline;">Focused tabbedPane</h4>
+ <o:tabbedPane focusable="true" loadingMode="client"
+                    id="tabbePane_focused7">
+        <o:tabbedPaneItem id="focused_tpi7">
+          <f:facet name="tab">
+            <h:outputText value="Tab1" />
+          </f:facet>
+          <h:inputText value="Tab1 inner text" />
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem id="focused_tpi8">
+          <f:facet name="tab">
+            <h:outputText value="Tab2"/>
+          </f:facet>
+          <h:outputText value="Tab2 inner text" />
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem id="focused_tpi9">
+          <f:facet name="tab">
+            <h:outputText value="Tab3"/>
+          </f:facet>
+          <h:outputText value="Tab3 inner text" />
+        </o:tabbedPaneItem>
+      </o:tabbedPane>
+<br/>
+<br/>
+<br/>
+<h4 style="text-decoration: underline;">Focused style testing</h4>
+<table>
+  <tr>
+    <td class="cells">
+      <o:tabbedPane containerStyle="background: beige;" focusable="true"
+                    rolloverContainerStyle="border: 2px dotted blue;"
+                    rolloverSelectedTabStyle="background: LightGreen; font-weight: bold;"
+                    rolloverStyle="border: 2px dashed lightGreen;"
+                    rolloverTabStyle="font-weight: bold;"
+                    selectedTabStyle="background: DarkGreen; font-weight: bold; color: white;"
+                    tabEmptySpaceStyle="background: LightBlue;"
+                    tabStyle="color: red;"  focusAreaStyle="border: 1px dashed blue;"
+                    style="height: 300px; width: 200px;"
+                    id="tabbePane_focused1" loadingMode="client">
+        <o:tabbedPaneItem id="focused_tpi1">
+          <f:facet name="tab">
+            <h:outputText value="Tab1" />
+          </f:facet>
+          <h:outputText value="Tab1 inner text" />
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem>
+          <f:facet name="tab">
+            <h:outputText value="Tab2"/>
+          </f:facet>
+          <h:outputText value="Tab2 inner text" />
+        </o:tabbedPaneItem>
+      </o:tabbedPane>
+    </td>
+    <td class="cells">
+      <pre>
+      &lt;o:tabbedPane containerStyle="background: beige;" focusable="true"
+                    rolloverContainerStyle="border: 2px dotted blue;"
+                    rolloverSelectedTabStyle="background: LightGreen; font-weight: bold;"
+                    rolloverStyle="border: 2px dashed lightGreen;"
+                    rolloverTabStyle="font-weight: bold;"
+                    selectedTabStyle="background: DarkGreen; font-weight: bold; color: white;"
+                    tabEmptySpaceStyle="background: LightBlue;"
+                    tabStyle="color: red;" focusable="true"  focusAreaStyle="border: 1px dashed blue;"
+                    style="height: 300px; width: 200px;"&gt;
+        &lt;o:tabbedPaneItem&gt;
+          &lt;f:facet name="tab"&gt;
+            &lt;h:outputText value="Tab1"/&gt;
+          &lt;/f:facet&gt;
+          &lt;h:outputText value="Tab1 inner text" /&gt;
+        &lt;/o:tabbedPaneItem&gt;
+        &lt;o:tabbedPaneItem&gt;
+          &lt;f:facet name="tab"&gt;
+            &lt;h:outputText value="Tab2"/&gt;
+          &lt;/f:facet&gt;
+          &lt;h:outputText value="Tab2 inner text" /&gt;
+        &lt;/o:tabbedPaneItem&gt;
+      &lt;/o:tabbedPane&gt;
+        </pre>
+    </td>
+  </tr>
+  <tr>
+    <td class="cells">
+      <o:tabbedPane focusable="true"
+                    containerClass="containerTabbedPane"
+                    rolloverContainerClass="rolloverContainer"
+                    rolloverSelectedTabClass="rolloverSelectedTab"
+                    rolloverClass="rollover" focusAreaClass="focused_TabSet" 
+                    rolloverTabClass="rolloverTab"
+                    selectedTabClass="selectedTab"
+                    tabEmptySpaceClass="tabEmptySpace"
+                    tabClass="tab"
+                    styleClass="tabbedPaneStyle"
+                    id="tabbedPane_focused2">
+        <o:tabbedPaneItem id="focused_tbi3">
+          <f:facet name="tab">
+            <h:outputText value="Tab1" />
+          </f:facet>
+          <h:outputText value="Tab1 inner text" />
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem >
+          <f:facet name="tab">
+            <h:outputText value="Tab2" />
+          </f:facet>
+          <h:outputText value="Tab2 inner text" />
+        </o:tabbedPaneItem>
+      </o:tabbedPane>
+    </td>
+    <td class="cells">
+      The same css properties implement in *Class attributes
+    </td>
+  </tr>
+</table>
+</div>

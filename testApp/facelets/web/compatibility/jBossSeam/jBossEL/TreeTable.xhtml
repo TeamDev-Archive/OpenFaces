@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:s="http://jboss.com/products/seam/taglib">
+<head>
+    <title>TreeTable AND JBoss extended EL</title>
+</head>
+
+<body>
+<f:view>
+    <h:form id="form1">
+        <a href="../../seamTesting.jsf">Return to main page</a>
+        <o:treeTable id="treeTable" var="item"
+                     expansionState="#{seamTreeTable.forumTreeTableExpansionState1}" style="width: 100%;"
+                     columnIdVar="columnId"
+                     textStyle="font-family: verdana,Helvetica,sans-serif; font-size: 10pt;"
+                     sortColumnId="date"
+                     binding="#{seamtesttree.treeTable}">
+            <o:dynamicTreeStructure nodeChildren="#{seamTreeTable.findChildren(item)}"/>
+            <o:treeColumn id="subject" sortingExpression="#{item.subject}" filterExpression="#{item.subject}"
+                          filterKind="searchField" style="text-align: left;">
+                <f:facet name="header">
+                    <h:outputText value="Subject"/>
+                </f:facet>
+                <h:outputText value="#{item.subject}"/>
+            </o:treeColumn>
+            <o:column id="author" sortingExpression="#{item.author}" filterExpression="#{item.author}"
+                      filterKind="dropDownField" style="width: 120px; text-align: left;">
+                <f:facet name="header">
+                    <h:outputText value="From"/>
+                </f:facet>
+                <h:outputText value="#{item.author}"/>
+            </o:column>
+            <o:column id="date" sortingExpression="#{item.date}" filterExpression="#{seamTreeTable.dateCategory}"
+                      filterKind="comboBox" style="width: 120px; text-align: left;"
+                      filterValue="#{seamTreeTable.filterValue}">
+                <f:facet name=  "header">
+                    <h:outputText value="Sent"/>
+                </f:facet>
+                <h:outputText value="#{item.date}">
+                    <f:convertDateTime type="date" dateStyle="medium"/>
+                </h:outputText>
+            </o:column>
+            <o:column>
+                <h:commandLink value="action" action="#{seamTreeTable.action(item.subject, item.author)}"/>
+            </o:column>
+        </o:treeTable>
+        <br/>
+        <h:commandButton value="Re-render TreeTable"
+                         onclick="q_refreshTreeTable('form1:treeTable', ['form1:treeTable'], null);return false;"/>
+        <br/>
+        <h:commandButton value="Sort by first column Ajax"
+                         onclick="q_refreshTreeTable('form1:treeTable', ['form1:treeTable'], 'seamTreeTable.sortByFirstColumn');return false;"/>
+        <br/>
+        <h:commandButton value="Sort by first column server" action="#{seamTreeTable.sortByFirstColumn}"/>
+        <hr/>
+        <h:commandButton value="submit"/>
+
+    </h:form>
+</f:view>
+
+</body>
+</html>

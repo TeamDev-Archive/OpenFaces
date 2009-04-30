@@ -1,0 +1,34 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      PopupLayer visible by load
+    </span><br/><br/>
+    <o:popupLayer id="visible"
+                  visible="true"
+                  top="150"
+                  left="250"
+                  style="background:beige; border: 2px solid brown; font-weight: bold; color: crimson; padding: 10px 10px 10px 10px;"
+                  width="800px"
+                  height="250px">
+      <h:outputText value="Visible PopupLayer"/>
+    </o:popupLayer>
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="Submit"/>
+  
+</div>

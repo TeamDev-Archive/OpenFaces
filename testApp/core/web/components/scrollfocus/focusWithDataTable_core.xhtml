@@ -1,0 +1,82 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+  <o:focus focusedComponentId="byLoadFocused"/>
+  <h:commandButton id="submit" value="Submit"/><br/><br/>
+  <table>
+    <tr>
+      <td class="header">focused by load</td>
+      <td class="header">&#160;</td>
+    </tr>
+    <tr>
+      <td class="container">
+        <o:dataTable id="byLoadFocused"
+                     var="multipleSelection"
+                     onblur="printInfo('NON IN FOCUS', 'out', false);"
+                     onfocus="printInfo('FOCUSED', 'out', false);"
+                     value="#{SelectionBean.multipleSelectionCollection}"
+                     verticalGridLines="1px solid gray">
+          <o:singleRowSelection/>
+          <o:column id="col_first" style="padding: 10px 10px 10px 10px;">
+            <f:facet name="header">
+              <h:outputText value="first column header" id="multipleSelectionDataTable_firstHeader"/>
+            </f:facet>
+            <h:outputText value="#{multipleSelection.firstColumn}" id="multipleSelectionDataTable_firstBody"/>
+            <f:facet name="footer">
+              <h:outputText value="first column footer" id="multipleSelectionDataTable_firstFooter"/>
+            </f:facet>
+          </o:column>
+          <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+            <f:facet name="header">
+              <h:outputText value="second column header" id="multipleSelectionDataTable_secondHeader"/>
+            </f:facet>
+            <h:outputText value="#{multipleSelection.secondColumn}" id="multipleSelectionDataTable_secondBody"/>
+            <f:facet name="footer">
+              <h:outputText value="second column footer" id="multipleSelectionDataTable_secondFooter"/>
+            </f:facet>
+          </o:column>
+        </o:dataTable>
+
+        <div id="out"></div>
+      </td>
+      <td class="container">
+        <o:dataTable id="byAfterSubmission"
+                     var="multipleSelection_1"
+                     onblur="printInfo('NON IN FOCUS', 'out1', false);"
+                     onfocus="printInfo('FOCUSED', 'out1', false);"
+                     value="#{SelectionBean.multipleSelectionCollection}"
+                     verticalGridLines="1px solid gray">
+          <o:singleRowSelection/>
+          <o:column id="col_first" style="padding: 10px 10px 10px 10px;">
+            <f:facet name="header">
+              <h:outputText value="first column header" id="multipleSelection_1DataTable_firstHeader"/>
+            </f:facet>
+            <h:outputText value="#{multipleSelection_1.firstColumn}" id="multipleSelection_1DataTable_firstBody"/>
+            <f:facet name="footer">
+              <h:outputText value="first column footer" id="multipleSelection_1DataTable_firstFooter"/>
+            </f:facet>
+          </o:column>
+          <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+            <f:facet name="header">
+              <h:outputText value="second column header" id="multipleSelection_1DataTable_secondHeader"/>
+            </f:facet>
+            <h:outputText value="#{multipleSelection_1.secondColumn}" id="multipleSelection_1DataTable_secondBody"/>
+            <f:facet name="footer">
+              <h:outputText value="second column footer" id="multipleSelection_1DataTable_secondFooter"/>
+            </f:facet>
+          </o:column>
+        </o:dataTable>
+
+        <div id="out1"></div>
+      </td>
+    </tr>
+  </table>
+</div>

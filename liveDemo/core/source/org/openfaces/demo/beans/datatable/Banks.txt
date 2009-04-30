@@ -1,0 +1,314 @@
+Abbeville Savings and Loan, SSB	30619	Abbeville	SC	29620	Abbeville	85768
+Allendale County Bank	15062	Fairfax	SC	29827	Allendale	51600
+Anderson Brothers Bank	9923	Mullins	SC	29574	Marion	370629
+Access National Bank	35189	Reston	VA	20191	Fairfax City	651028
+Alliance Bank Corporation	34664	Chantilly	VA	20151	Fairfax	579677
+American National Bank and Trust Company	6837	Danville	VA	24543	Danville City	772861
+Abbeville Building & Loan	30332	Abbeville	LA	70511	Vermilion	26488
+American Bank & Trust Company	19234	Coushatta	LA	71019	St. Tammany	86437
+American Bank & Trust Company	17906	Opelousas	LA	70571	St. Landry	114912
+Amerika Samoa Bank	23671	Pago Pago	AS	96799	Eastern	117756
+AFB&T	28225	Athens	GA	30603	Clarke	1241590
+Albany Bank & Trust, National Association	35029	Albany	GA	31708	Dougherty	178104
+Alliance National Bank	35173	Dalton	GA	30722	Whitfield	134014
+Adams National Bank	22658	Washington	DC	20036	District Of Columbia	352443
+Bank of Georgetown	57941	Washington	DC	20007	District Of Columbia	146083
+City First Bank of D.C., National Association	34352	Washington	DC	20009	District Of Columbia	127011
+1st National Bank	6646	Lebanon	OH	45036	Warren	115230
+1st National Community Bank	26977	East Liverpool	OH	43920	Columbiana	102089
+Advantage Bank	29864	Cambridge	OH	43725	Guernsey	1040943
+1st American State Bank of Minnesota	15448	Hancock	MN	56244	Stevens	33596
+1st Regents Bank	57157	Andover	MN	55304	Anoka	77148
+21st Century Bank	9751	Loretto	MN	55357	Hennepin	367980
+1st Independence Bank	11338	Louisville	KY	40250	Jefferson	340427
+1st Trust Bank, Inc.	57869	Hazard	KY	41701	Perry	63211
+Alliance Banking Company	57424	Winchester	KY	40391	Clark	47363
+1st Security Bank of Washington	57633	Mountlake Terrace	WA	98043	Snohomish	258813
+American Marine Bank	16730	Bainbridge Island	WA	98110	Kitsap	385198
+AmericanWest Bank	22441	Spokane	WA	99201	Spokane	2043206
+Bank of Guam	20884	Hagatna	GU	96932	Guam	815142
+Citizens Security Bank (Guam), Inc.	33316	Hagatna	GU	96910	Guam	148656
+1st Community Bank	11706	Sherrard	IL	61281	Mercer	49726
+1st Equity Bank	34393	Skokie	IL	60076	Cook	127982
+1st Equity Bank Northwest	57611	Buffalo Grove	IL	60089	Cook	51589
+Albina Community Bank	34106	Portland	OR	97212	Multnomah	152921
+Bank of America Oregon, National Association	35453	Portland	OR	97204	Multnomah	14936377
+Bank of Astoria	19877	Astoria	OR	97103	Clatsop	223369
+AmBank	34302	Silver City	NM	88062	Grant	87417
+American Heritage Bank	57025	Clovis	NM	88101	Curry	51037
+Bank 1st	34554	Albuquerque	NM	87110	Bernalillo	82004
+Adams Co-operative Bank	26568	Adams	MA	1220	Berkshire	192076
+Athol Savings Bank	90146	Athol	MA	1331	Worcester	264330
+Athol-Clinton Co-operative Bank	27293	Athol	MA	1331	Worcester	95205
+Advanta Bank	18664	Wilmington	DE	19850	New Castle	46842
+Applied Bank	34193	Wilmington	DE	19801	New Castle	193512
+Artisans' Bank	17123	Wilmington	DE	19808	New Castle	592608
+BancorpSouth Bank	11813	Tupelo	MS	38801	Lee	12589276
+Bank of Anguilla	8243	Anguilla	MS	38721	Sharkey	94548
+Bank of Benoit	15817	Benoit	MS	38725	Bolivar	16437
+Bank of Charles Town	9023	Charles Town	WV	25414	Jefferson	298124
+Bank of Gassaway	15397	Gassaway	WV	26624	Braxton	150425
+Bank of Mingo	22273	Naugatuck	WV	25685	Mingo	106050
+Bank of St. Croix, Inc.	33990	Christiansted	VI	820	St. Croix	98162
+Merchants Commercial Bank	58184	St Thomas	VI	802	St. Thomas	29086
+Virgin Islands Community Bank	33964	Christiansted	VI	821	St. Croix	65122
+Bank of Hawaii	18053	Honolulu	HI	96813	Honolulu	10506253
+Central Pacific Bank	17308	Honolulu	HI	96811	Honolulu	5563703
+Finance Factors, Ltd.	25158	Honolulu	HI	96813	Honolulu	684695
+1st Manatee Bank	58548	Parrish	FL	34219	Manatee	6737
+1st National Bank of South Florida	3564	Homestead	FL	33030	Miami-dade	335474
+1st United Bank	35408	Boca Raton	FL	33432	Palm Beach	348809
+1st Bank of Troy	4788	Troy	KS	66087	Doniphan	18289
+1st Financial Bank	1149	Overland Park	KS	66223	Johnson	104208
+Academy Bank, National Association	19600	Fort Leavenworth	KS	66027	El Paso	260757
+1st Financial Bank USA	1673	Dakota Dunes	SD	57049	Union	289407
+American Bank & Trust	1117	Wessington Springs	SD	57382	Jerauld	208686
+American State Bank	15432	Oldham	SD	57051	Kingsbury	19070
+Denali State Bank	26530	Fairbanks	AK	99707	Fairbanks North Star	216519
+First Bank	14885	Ketchikan	AK	99901	Ketchikan Gateway	385099
+First National Bank Alaska	16130	Anchorage	AK	99510	Anchorage	2297946
+American Bank & Trust of the Cumberlands	31980	Livingston	TN	38570	Overton	87680
+American City Bank of Tullahoma	21663	Tullahoma	TN	37388	Coffee	172146
+American Patriot Bank	57169	Greeneville	TN	37745	Greene	104407
+Bank of Idaho	26403	Idaho Falls	ID	83403	Bonneville	239324
+Citizens Community Bank	34459	Pocatello	ID	83204	Bannock	178943
+Bank Rhode Island	34147	Providence	RI	2903	Providence	1464950
+BankNewport	18129	Newport	RI	2840	Newport	1045930
+Centreville Savings Bank	17764	West Warwick	RI	2893	Kent	746045
+Adirondack Bank	28380	Utica	NY	13501	Oneida	448807
+Alden State Bank	9831	Alden	NY	14004	Erie	187381
+Alliance Bank, National Association	7237	Syracuse	NY	13202	Onondaga	1271533
+Alliance Bank & Trust Company	57733	Gastonia	NC	28053	Gaston	126759
+American Community Bank	34868	Monroe	NC	28111	Union	495702
+Anson Bank & Trust Co.	30079	Wadesboro	NC	28170	Anson	47428
+Bank of New England	24540	Salem	NH	3079	Rockingham	449333
+Centrix Bank & Trust	35035	Bedford	NH	3110	Hillsborough	354588
+Claremont Savings Bank	18038	Claremont	NH	3743	Sullivan	302557
+1st Bank	22039	Sidney	MT	59270	Richland	80179
+American Bank	20311	Bozeman	MT	59715	Gallatin	476355
+Bank of Bozeman	57952	Bozeman	MT	59719	Gallatin	66067
+AbbyBank	19795	Abbotsford	WI	54405	Marathon	237921
+Advantage Community Bank	10375	Dorchester	WI	54425	Clark	110815
+Alliance Bank	12511	Mondovi	WI	54755	Buffalo	127310
+5 Star Bank	91005	Colorado Springs	CO	80914	El Paso	164026
+Advantage Bank	57072	Loveland	CO	80537	Larimer	341698
+Alamosa State Bank	13947	Alamosa	CO	81101	Alamosa	122053
+1st Bank & Trust	16419	Broken Bow	OK	74728	Mccurtain	105609
+ACB Bank	4061	Cherokee	OK	73728	Alfalfa	73998
+Advantage Bank	18152	Spencer	OK	73084	Oklahoma	48291
+1st Commerce Bank	58358	North Las Vegas	NV	89031	Clark	21571
+Bank of George	58626	Las Vegas	NV	89148	Clark	28667
+Bank of Las Vegas	57276	Las Vegas	NV	89118	Clark	73163
+Access Bank	58727	Omaha	NE	68124	Douglas	10822
+Adams Bank & Trust	18489	Ogallala	NE	69153	Keith	441632
+Adams County Bank	14311	Kenesaw	NE	68956	Adams	71429
+1st State Bank	57626	Saginaw	MI	48604	Saginaw	112756
+Alden State Bank	17622	Alden	MI	49612	Antrim	175148
+Ann Arbor Commerce Bank	33134	Ann Arbor	MI	48104	Washtenaw	336203
+AmericasBank	34294	Towson	MD	21204	Baltimore	127030
+Bank of Ocean City	5867	Ocean City	MD	21843	Worcester	133977
+Bank of the Eastern Shore	26759	Cambridge	MD	21613	Dorchester	211205
+1st Choice Bank	35048	Houston	TX	77008	Harris	303333
+Access 1st Capital Bank	58562	Denton	TX	76202	Denton	14706
+AIMBank	3304	Littlefield	TX	79339	Lamb	99813
+Chittenden Trust Company	14149	Burlington	VT	5401	Chittenden	3350255
+Community National Bank	6271	Derby	VT	5829	Orleans	347482
+Connecticut River Bank, National Association	6209	Springfield	VT	5156	Windsor	220472
+1st Bank Yuma	57298	Yuma	AZ	85364	Yuma	114793
+Alliance Bank of Arizona	57512	Phoenix	AZ	85016	Maricopa	728349
+Arizona Bank & Trust	57620	Chandler	AZ	85226	Maricopa	228721
+Banco Bilbao Vizcaya Argentaria Puerto Rico	19919	San Juan	PR	918	San Juan	6195648
+Banco Popular de Puerto Rico	34968	San Juan	PR	936	San Juan	25366750
+Banco Santander Puerto Rico	20828	San Juan	PR	936	San Juan	8335935
+1st Source Bank	9087	South Bend	IN	46634	St Joseph	3845866
+Alliance Bank	197	Francesville	IN	47946	Pulaski	222145
+Ameriana Bank, SB	29031	New Castle	IN	47362	Henry	424698
+AB&T National Bank	27207	Dothan	AL	36302	Houston	85179
+Alabama Banker's Bank, N.A.	57840	Homewood	AL	35209	Jefferson	210343
+Alabama Exchange Bank	15696	Tuskegee	AL	36083	Macon	78167
+1st Capital Bank	58485	Monterey	CA	93940	Monterey	50890
+1st Centennial Bank	33025	Redlands	CA	92373	San Bernardino	612729
+1st Century Bank, National Association	57657	Los Angeles	CA	90067	Los Angeles	220785
+Advanta Bank Corp.	33535	Draper	UT	84020	Salt Lake	2092840
+Allegiance Direct Bank, Inc.	57962	Cedar City	UT	84720	Iron	42626
+America West Bank	35461	Layton	UT	84041	Davis	220641
+1ST BANK	16522	Evanston	WY	82931	Uinta	450182
+Bank of Commerce	22639	Rawlins	WY	82301	Carbon	95130
+Bank of Jackson Hole	23826	Jackson	WY	83001	Teton	314334
+Bank of the Federated States of Micronesia	26539	Pohnpei	FM	96941	Pohnpei	80092
+1st Summit Bank	8426	Johnstown	PA	15904	Cambria	449217
+Abington Savings Bank	27942	Jenkintown	PA	19046	Montgomery	1008551
+Adams County National Bank	7506	Gettysburg	PA	17325	Adams	968464
+Alerus Financial, National Association	3931	Grand Forks	ND	58206	Grand Forks	712235
+American Bank Center	19115	Dickinson	ND	58601	Stark	224009
+American Bank Center First	22559	Bismarck	ND	58501	Burleigh	250320
+Allied Bank	91	Mulberry	AR	72947	Crawford	127802
+ANB Financial National Association	33901	Bentonville	AR	72712	Benton	1895915
+Arkansas Bankers Bank	32960	Little Rock	AR	72201	Pulaski	157228
+Bankers' Bank, Northeast	34858	Glastonbury	CT	6033	Hartford	95108
+Castle Bank & Trust Company	35159	Meriden	CT	6451	New Haven	60533
+Collinsville Savings Society	18223	Collinsville	CT	6022	Hartford	140322
+1st Colonial National Bank	35456	Collingswood	NJ	8108	Camden	201886
+1st Constitution Bank	27552	Cranbury	NJ	8512	Middlesex	421340
+Allegiance Community Bank	35265	South Orange	NJ	7079	Essex	75910
+Androscoggin Savings Bank	17751	Lewiston	ME	4243	Androscoggin	573736
+Bangor Savings Bank	18408	Bangor	ME	4401	Penobscot	2087248
+Bar Harbor Bank & Trust	11971	Bar Harbor	ME	4609	Hancock	840829
+1st Advantage Bank	57899	Saint Peters	MO	63376	St. Charles	71189
+Adrian Bank	8251	Adrian	MO	64720	Bates	85443
+Allen Bank and Trust Company	8583	Harrisonville	MO	64701	Cass	112025
+Ackley State Bank	14936	Ackley	IA	50601	Hardin	112567
+American Bank and Trust Company, National Association	34955	Davenport	IA	52807	Scott	616543
+American Bank, National Association	5800	Le Mars	IA	51031	Plymouth	211348
+Sterling Bank	21194	Montgomery	AL	36101	Montgomery	689348
+Metro Bank	27510	Pell City	AL 	35128	Saint Clair	518172
+Whidbey Island Bank	18412	Coupeville	WA	98239	Island	898044
+Kitsap Bank	6161	Port Orchard	WA	98366	Kitsap	815194
+Bank of the Ozarks	110	Little Rock	AR	72223	Pulaski	3228954
+Superior Bank	17750	Birmingham	AL	35203	Jefferson	3193418
+Luther Burbank Savings	32178	Santa Rosa	CA	95404	Sonoma	3172438
+American Chartered Bank	27006	Schaumburg	IL	60173	Cook	3160972
+Silverton Bank, National Association	26535	Atlanta	GA	30327	Cobb	3155328
+Towne Bank	35095	Portsmouth	VA	23703	Portsmouth City	3133589
+Advanta Bank Corp.	33535	Draper	UT	84020	Salt Lake	3106694
+Beal Bank Nevada	57833	Las Vegas	NV	89169	Clark	3105584
+Columbia State Bank	33826	Tacoma	WA	98402	Pierce	3091825
+Boston Private Bank & Trust Company	24811	Boston	MA	2109	Suffolk	3079468
+PNC Bank, Delaware	679	Wilmington	DE	19899	New Castle	3040227
+San Diego National Bank	23594	San Diego	CA	92101	San Diego	3036766
+Hancock Bank of Louisiana	33029	Baton Rouge	LA	70808	East Baton Rouge	3016818
+First Federal Savings and Loan Association of Charleston	28994	Charleston	SC	29401	Charleston	3009111
+Bank of Nevada	33897	Las Vegas	NV	89102	Clark	3008087
+Old Second National Bank	3603	Aurora	IL	60506	Kane	2989393
+The Washington Trust Company of Westerly	23623	Westerly	RI	2891	Washington	2963617
+Independent Bank	27811	Ionia	MI	48846	Ionia	2953214
+Community Trust Bank, Inc.	2720	Pikeville	KY	41501	Pike	2942745
+GreenBank	895	Greeneville	TN	37743	Greene	2938937
+HomeStreet Bank	32489	Seattle	WA	98101	King	2935360
+StellarOne Bank	6834	Christiansburg	VA	24073	Montgomery	2933064
+Woodforest National Bank	23220	Houston	TX	77015	Harris	2928263
+Provident Bank	30337	Montebello	NY	10901	Rockland	2914160
+The Mechanics Bank	1768	Richmond	CA	94806	Contra Costa	2869683
+Orion Bank	22427	Naples	FL	34102	Collier	2866585
+Eurobank	27150	San Juan	PR	926	San Juan	2859489
+Liberty Bank	17943	Middletown	CT	6457	Middlesex	2854357
+Salem Five Cents Savings Bank	23296	Salem	MA	1970	Essex	2845712
+Carter Bank & Trust	58596	Martinsville	VA	24112	Martinsville City	2800478
+Wachovia Card Services, National Association	58496	Atlanta	GA	30363	Fulton	2796058
+SCBT National Association	13425	Orangeburg	SC	29115	Orangeburg	2763151
+First Bank	15019	Troy	NC	27371	Montgomery	2753725
+First American Bank	3657	Carpentersville	IL	60110	Kane	2751640
+The Stillwater National Bank and Trust Company	4201	Stillwater	OK	74074	Payne	2743888
+Vectra Bank Colorado, National Association	2993	Farmington	NM	87401	San Juan	2721985
+Virginia Commerce Bank	27249	Arlington	VA	22207	Arlington	2713694
+Amarillo National Bank	14531	Amarillo	TX	79101	Potter	2711761
+New York Commercial Bank	32749	Islandia	NY	11749	Suffolk	2697944
+Southside Bank	18297	Tyler	TX	75701	Smith	2695678
+Alpine Bank	23091	Glenwood Springs	CO	81601	Garfield	2682098
+Nara Bank	27530	Los Angeles	CA	90010	Los Angeles	2668949
+Great Southern Bank	29546	Reeds Spring	MO	65737	Stone	2657417
+Lakeland Bank	19953	Oak Ridge	NJ	7438	Passaic	2634777
+Berkshire Bank	23621	Pittsfield	MA	1201	Berkshire	2630715
+CoBiz Bank	22683	Denver	CO	80202	Denver	2617361
+Liberty Bank of Arkansas	3878	Jonesboro	AR	72401	Craighead	2615639
+The Home Savings and Loan Company	28114	Youngstown	OH	44501	Mahoning	2615433
+Parkway Bank and Trust Company	19008	Harwood Heights	IL	60656	Cook	2613009
+Wells Fargo Financial National Bank	27389	Las Vegas	NV	89102	Clark	2590849
+First National Bank	14372	Fort Collins	CO	80521	Larimer	2587212
+Firstrust Savings Bank	26647	Conshohocken	PA	19428	Montgomery	2585746
+Amboy Bank	6423	Old Bridge	NJ	8857	Middlesex	2583468
+IronStone  Bank	34340	Fort Myers	FL	33907	Lee	2568689
+M & I Bank FSB	28923	Las Vegas	NV	89109	Clark	2568044
+Chinatrust Bank (U.S.A.)	19416	Torrance	CA	90505	Los Angeles	2564308
+Brookline  Bank	17798	Brookline	MA	2445	Norfolk	2555909
+City National Bank of West Virginia	17735	Cross Lanes	WV	25313	Kanawha	2552914
+Bremer Bank, National Association	12923	South St. Paul	MN	55075	Dakota	2521920
+West Coast Bank	2345	Lake Oswego	OR	97035	Clackamas	2511006
+Community Bank	24315	Pasadena	CA	91101	Los Angeles	2497849
+MainSource Bank	5766	Greensburg	IN	47240	Decatur	2483611
+Capital City Bank	9622	Tallahassee	FL	32301	Leon	2471454
+First Regional Bank	23011	Los Angeles	CA	90067	Los Angeles	2461291
+Beal Bank	32574	Plano	TX	75024	Collin	2450794
+Wilshire State Bank	23301	Los Angeles	CA	90010	Los Angeles	2446601
+First National Bank Alaska	16130	Anchorage	AK	99510	Anchorage	2437510
+Union Bank and Trust Company	13421	Lincoln	NE	68506	Lancaster	2437453
+ShoreBank	15640	Chicago	IL	60649	Cook	2433071
+First Security Bank	5633	Searcy	AR	72143	White	2420553
+Mellon United National Bank	21837	Miami	FL	33131	Miami-Dade	2417694
+Hudson Valley Bank, National Association	20693	Stamford	CT	6905	Fairfield	2411319
+Ameris Bank	20504	Moultrie	GA	31768	Colquitt	2405524
+Lake City Bank	13102	Warsaw	IN	46581	Kosciusko	2376286
+Bank of the Cascades	22407	Bend	OR	97701	Deschutes	2374394
+Bankers Trust Company, National Association	953	Des Moines	IA	50309	Polk	2373141
+Principal Bank	34507	Des Moines	IA	50392	Polk	2326856
+The Camden National Bank	4255	Camden	ME	4843	Knox	2322457
+Seacoast National Bank	131	Stuart	FL	34995	Martin	2312549
+Standard Bank and Trust Company	16606	Hickory Hills	IL	60457	Cook	2310882
+Bangor Savings Bank	18408	Bangor	ME	4401	Penobscot	2302065
+Pinnacle Bank	10634	Lincoln	NE	68508	Lancaster	2301637
+Nationwide Bank	34710	Columbus	OH	43215	Franklin	2246123
+Enterprise Bank & Trust	27237	Clayton	MO	63105	St. Louis	2244108
+Georgian Bank	57151	Atlanta	GA	30339	Cobb	2242028
+United Western Bank	31293	Denver	CO	80202	Denver	2240378
+First Financial Bank, National Association	4382	Terre Haute	IN	47808	Vigo	2224572
+Far East National Bank	21851	Los Angeles	CA	90071	Los Angeles	2221617
+ViewPoint Bank	58006	Plano	TX	75075	Collin	2213423
+Mercantile Bank of Michigan	34598	Grand Rapids	MI	49504	Kent	2203768
+Intervest National Bank	35011	New York	NY	10020	New York	2200895
+American State Bank	16701	Lubbock	TX	79408	Lubbock	2200542
+Gateway Bank & Trust Company	34861	Elizabeth City	NC	27906	Pasquotank	2196512
+Sterling National Bank	7220	New York	NY	10022	New York	2196255
+Wilmington Trust FSB	33911	Baltimore	MD	21202	Baltimore City	2168608
+BankPlus	5903	Belzoni	MS	39038	Humphreys	2148639
+Macatawa Bank	34618	Holland	MI	49424	Ottawa	2147294
+Fremont Bank	19222	Fremont	CA	94538	Alameda	2144548
+Commerce Bank/Harrisburg	26255	Lemoyne	PA	17043	Cumberland	2139169
+Lydian Private Bank	35356	Palm Beach	FL	33480	Palm Beach	2118855
+First Community Bank, National Association	13012	Bluefield	VA	24605	Tazewell	2103444
+Communityone Bank, National Association	4879	Asheboro	NC	27203	Randolph	2099191
+Guaranty Bank and Trust Company	17482	Denver	CO	80202	Denver	2098387
+First Bank	8663	Lexington	TN	38351	Henderson	2098333
+Cambridge Savings Bank	17870	Cambridge	MA	2138	Middlesex	2092407
+TIB The Independent Bankersbank	23647	Irving	TX	75039	Dallas	2089946
+BankTrust	26607	Mobile	AL	36602	Mobile	2088839
+TotalBank	21468	Miami	FL	33145	Miami-Dade	2081766
+Meridian Bank, National Association	22644	Wickenburg	AZ	85390	Maricopa	2074219
+NewBridge Bank	16799	Greensboro	NC	27410	Guilford	2073836
+Center Bank	26610	Los Angeles	CA	90010	Los Angeles	2056646
+Univest National Bank and Trust Co.	7759	Souderton	PA	18964	Montgomery	2054241
+Manufacturers Bank	18618	Los Angeles	CA	90071	Los Angeles	2045230
+First Commercial Bank	26359	Birmingham	AL	35209	Jefferson	2042890
+Tri Counties Bank	21943	Chico	CA	95973	Butte	2041951
+First Merchants Bank National Association	4365	Muncie	IN	47305	Delaware	2041199
+First United Bank and Trust Company	4239	Durant	OK	74701	Bryan	2039978
+Kearny Federal Savings Bank	28765	Kearny	NJ	7032	Hudson	2036034
+The Bank	27614	Woodbury	NJ	8096	Gloucester	2034457
+Union Bank and Trust Company	11579	Bowling Green	VA	22427	Caroline	2033806
+The American National Bank of Texas	23474	Terrell	TX	75160	Kaufman	2024897
+Vineyard Bank, National Association	23556	Rancho Cucamonga	CA	91730	San Bernardino	2014953
+Peoples Bank, National Association	6544	Marietta	OH	45750	Washington	1993254
+Citizens First Savings Bank	30005	Port Huron	MI	48060	St. Clair	1981370
+Centier Bank	12854	Whiting	IN	46394	Lake	1968570
+Cadence Bank, N.A.	4999	Starkville	MS	39759	Oktibbeha	1967150
+First Federal Bank of the Midwest	29845	Defiance	OH	43512	Defiance	1949553
+Prudential Bank & Trust, FSB	32957	Hartford	CT	6103	Hartford	1941970
+Hillcrest Bank	22173	Overland Park	KS	66214	Johnson	1934302
+ESB Bank	27708	Ellwood City	PA	16117	Lawrence	1928372
+State Bank & Trust	19581	Fargo	ND	58103	Cass	1926633
+American National Bank	19220	Denver	CO	80206	Denver	1917609
+Spencer Savings Bank, SLA	30076	Elmwood Park	NJ	7407	Bergen	1915795
+New South Federal Savings Bank	32276	Irondale	AL	35210	Jefferson	1914108
+Five Star Bank	659	Warsaw	NY	14569	Wyoming	1909009
+AmericanWest Bank	22441	Spokane	WA	99201	Spokane	1904207
+H&R Block Bank	58124	Kansas City	MO	64105	Jackson	1900148
+The Central Trust Bank	12633	Jefferson City	MO	65101	Cole	1891880
+Peoples First Community Bank	32167	Panama City	FL	32405	Bay	1890369
+Parkvale Savings Bank	30237	Monroeville	PA	15146	Allegheny	1888623
+Pacific National Bank	30006	San Francisco	CA	94104	San Francisco	1887198
+WaterStone Bank, SSB	28513	Wauwatosa	WI	53226	Milwaukee	1877014
+Broadway National Bank	15797	San Antonio	TX	78209	Bexar	1876520
+North Shore Bank, FSB	28679	Brookfield	WI	53005	Waukesha	1868208
+Bank of Smithtown	664	Smithtown	NY	11787	Suffolk	1863944
+City Bank	25103	Lubbock	TX	79407	Lubbock	1863661
+West Suburban Bank	18509	Lombard	IL	60148	Dupage	1861556
+OceanFirst Bank	28359	Toms River	NJ	8753	Ocean	1858907

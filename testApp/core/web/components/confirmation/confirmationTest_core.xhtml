@@ -1,0 +1,319 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+<a href="../../main.jsf">Back to the main page</a>
+<br/>
+<h:commandButton action="sbmt" value="Submit"/>
+<br/>
+<br/>
+<br/>
+
+<h4 style="border-bottom: 1px solid black;">Styles</h4>
+
+<table>
+  <tr>
+    <td class="cells">
+      <h:commandButton id="button1"
+                       value="styleConf"
+                       onclick="alert('Done'); return false;">
+        <o:confirmation id="styleConf"
+                        buttonAreaStyle="background: blue;"
+                        cancelButtonStyle="border: 1px dashed black;"
+                        captionStyle="border: 1px dashed white;"
+                        captionText="Caption Text"
+                        detailsStyle="color: red;"
+                        iconAreaStyle="border: 1px solid orange;"
+                        messageStyle="color: blue;"
+                        contentStyle="background: beige;"
+                        modalLayerStyle="background: url(ground_Camus.gif);"
+                        okButtonStyle="border: 1px dashed pink;"
+                        rolloverButtonAreaStyle="background: azure;"
+                        rolloverCancelButtonStyle="border: 3px dashed black;"
+                        rolloverDetailsStyle="font-weight: bold;"
+                        rolloverIconAreaStyle="border: 3px solid red;"
+                        rolloverMessageStyle="color: green;"
+                        rolloverContentStyle="background: orange;"
+                        rolloverOkButtonStyle="border: 3px dashed pink;"
+                        style="border: 3px solid black;">
+          <o:captionArea/>
+        </o:confirmation>
+      </h:commandButton>
+    </td>
+    <td class="cells">
+            <pre>
+      &lt;o:confirmation id="styleConf"
+                      for="form1:button1"
+                      buttonAreaStyle="background: blue;"
+                      cancelButtonStyle="border: 1px dashed black;"
+                      captionStyle="border: 1px dashed white;"
+                      captionText="Caption Text"
+                      detailsStyle="color: red;"
+                      iconAreaStyle="border: 1px solid orange;"
+                      messageStyle="color: blue;"
+                      contentStyle="background: beige;"
+                      modalLayerStyle="background: url(ground_Camus.gif);"
+                      okButtonStyle="border: 1px dashed pink;"
+                      rolloverButtonAreaStyle="background: azure;"
+                      rolloverCancelButtonStyle="border: 3px dashed black;"
+                      rolloverDetailsStyle="font-weight: bold;"
+                      rolloverIconAreaStyle="border: 3px solid red;"
+                      rolloverMessageStyle="color: green;"
+                      rolloverContentStyle="background: orange;"
+                      rolloverOkButtonStyle="border: 3px dashed pink;"
+                      style="border: 3px solid black;"
+              /&gt;
+      </pre>
+    </td>
+    <td class="cells">
+      <input id="button2" type="button" value="styleClassConf" onclick="alert('Done'); return false;"/>
+    </td>
+  </tr>
+</table>
+
+<o:confirmation id="styleClassConf"
+                for=":button2"
+                buttonAreaClass="buttonArea"
+                cancelButtonClass="cancelButton"
+                captionClass="caption"
+                captionText="Caption Text"
+                detailsClass="details"
+                iconAreaClass="iconArea"
+                messageClass="message"
+                contentClass="middleArea"
+                modalLayerClass="modalLayerConfirmation"
+                okButtonClass="okButton"
+                rolloverButtonAreaClass="rolloverButtonArea"
+                rolloverCancelButtonClass="rolloverCancelButton"
+                rolloverDetailsClass="rolloverDetails"
+                rolloverIconAreaClass="rolloverIconArea"
+                rolloverMessageClass="rolloverMessage"
+                rolloverContentClass="rolloverMiddleArea"
+                rolloverOkButtonClass="rolloverOkButton"
+                styleClass="confirmationStyle"/>
+
+<div style="font: 12pt Times; font-weight: normal; border-bottom: 1px solid gray; ">Confirmation attached to button on onclick event</div>
+<br/>
+<br/>
+<o:confirmation
+        id="c1"
+        for=":a1"
+        rolloverButtonAreaStyle="background: red;"
+        draggable="true"/>
+<input id="a1" type="button" value="Invoke confirmation" onclick="runAlert('Done');return false;"/>
+<br/>
+<br/>
+
+<div style="font: 12pt Times; font-weight: normal; border-bottom: 1px solid gray; ">Confirmation that is called by id and gets function object to execute</div>
+<br/>
+<br/>
+<o:confirmation id="c2"
+                standalone="true"
+                width="250px"
+                style="background: yellow; border: 4px solid yellow;"
+                rolloverStyle="background: #808000;"
+                draggable="true"
+                message="Alle neuen Shops bei shop!"
+                okButtonText="Uber alles"
+                cancelButtonText="Daz niht"
+                messageStyle="font-family: 'Comic Sans MS';"
+                captionText="Confirm action"
+                captionStyle="background: #5A7D12;"
+                okButtonStyle="background: #FFDAB9; font-family: 'Comic Sans MS';"
+                rolloverOkButtonStyle="background: #CD853F;"
+                cancelButtonStyle="background: #FFDAB9; font-family: 'Comic Sans MS';"
+                rolloverCancelButtonStyle="background: #CD853F;"/>
+<input id="a2" type="button" value="Invoke confirmation"
+       onclick="O$('form1:c2').runConfirmedFunction(function(){runAlert(event);return false;});"/>
+<br/>
+<br/>
+
+<div style="font: 12pt Times; font-weight: normal; border-bottom: 1px solid gray; ">Confirmation that is called by id, gets function name and function parameters. It also gets texts as js function parameters.</div>
+<br/>
+<br/>
+<o:confirmation
+        id="c3"
+        standalone="true"
+        left="100"
+        top="100"
+        style="background: black; border: 2px solid #CCCCCC; color: white;"
+        draggable="true"
+        captionText="Song"
+        captionStyle="background: black; color: white; border-bottom: 1px solid white; padding-top: 4px;"
+        messageStyle="font: 'Comic Sans MS' bold; color: white;"
+        okButtonStyle="width: 100px; background: black; border: 1px white solid; color: white;"
+        rolloverOkButtonStyle="background: white; color: black;"
+        cancelButtonStyle="width: 100px; background: black; border: 1px white solid; color: white;"
+        rolloverCancelButtonStyle="background: white; color: black;"
+        buttonAreaStyle="background: black;">
+  <o:captionArea>
+    <o:closeWindowButton imageUrl="button.gif"/>
+  </o:captionArea>
+</o:confirmation>
+<input id="a3" type="button" value="Invoke confirmation"
+       onclick="O$('form1:c3').setTexts('Song','...Red roses too, I see them blue...', 'Really?', 'Who is here?');O$('form1:c3').runConfirmedFunction(function(){runAlert('What a wonderful wo-o-o-orld...');});"/>
+
+<br/>
+<br/>
+
+<div style="font: 12pt Times; font-weight: normal; border-bottom: 1px solid gray; ">Confirmation attached to button on onclick event</div>
+<br/>
+<br/>
+<o:confirmation
+        id="c6"
+        for=":a4"
+        message="Last confirmation"
+        details="Press 'Sure' to perform the action"
+        okButtonText="Sure"
+        cancelButtonText="No"
+        captionStyle="background: yellow;"
+        captionText="Caption!"
+        draggable="true"
+        width="350px"
+        height="250px"/>
+<o:confirmation
+        id="c5"
+        for=":a4"
+        message="Really sure?"
+        captionText="Caption?"
+        width="250px"/>
+<o:confirmation id="c4" for=":a4"/>
+<input id="a4" type="button" value="Invoke confirmation" onclick="location.href = 'http://www.thelastpage.org/';"/>
+
+<div style="font: 12pt Times; font-weight: normal; border-bottom: 1px solid gray; ">Confirmations aligned to invoker</div>
+<br/>
+<table border="1px solid gray;">
+  <tr>
+    <td>
+<span id="textInvoker" style="color: #005CA3; font-weight: bold; margin-top:15px;"
+      onclick="O$('form1:textConfirmation').runConfirmedFunction(function(){O$('form1:textPopup').showAtXY(
+              O$('form1:textPopup').setLeft(O$.getElementPos(O$('textInvoker')).left + O$('textInvoker').offsetWidth + 50),
+              O$('form1:textPopup').setTop(O$.getElementPos(O$('textInvoker')).top));});
+      return false;">Action with confirmation</span>
+      <o:popupLayer id="textPopup"
+                    style="border: none; background: #f9f9f9; text-align:center; white-space:nowrap;"
+                    hideOnOuterClick="true"
+                    hidingTimeout="3000">
+        <h:outputText value="You confirmed action is executed!"/>
+      </o:popupLayer>
+    </td>
+    <td>
+      <span style="color: black; font-size: 20px; border-bottom: 1px solid black;">
+        Code:
+      </span><br/><br/>
+      <span style="color: black; font-size: 14px; border-bottom: 1px solid black;">
+        Invoker:
+        </span><pre>
+    &lt;span id="textInvoker"
+    style="color: #005CA3; font-weight: bold; margin-top:15px;"
+    onclick="O$('form1:textConfirmation').runConfirmedFunction(function(){O$('form1:textPopup').showAtXY(
+    O$('form1:textPopup').setLeft(O$.getElementPos(O$('textInvoker')).left + O$('textInvoker').offsetWidth + 50),
+    O$('form1:textPopup').setTop(O$.getElementPos(O$('textInvoker')).top))});
+    return false;"&gt;
+    Action with confirmation
+    &lt;/span&gt;</pre>
+      <span style="color: black; font-size: 14px; border-bottom: 1px solid black;">
+        Confirmation:
+      </span><pre>
+    &lt;o:confirmation id="textConfirmation"
+    alignToInvoker="true"/&gt;</pre>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <h:outputLink id="linkInvoker" value="" onclick="O$('form1:linkConfirmation').runConfirmedFunction(function(){O$('form1:linkPopup').showAtXY(
+                                                          O$('form1:linkPopup').setLeft(O$.getElementPos(O$('form1:linkInvoker')).left + O$('form1:linkInvoker').offsetWidth + 50),
+                                                          O$('form1:linkPopup').setTop(O$.getElementPos(O$('form1:linkInvoker')).top));});
+                                                      return false;">
+        <h:outputText value="Action with confirmation"/>
+      </h:outputLink>
+      <o:popupLayer id="linkPopup"
+                    style="border: none; background: #f9f9f9; text-align:center; white-space:nowrap;"
+                    hideOnOuterClick="true"
+                    hidingTimeout="3000">
+        <h:outputText value="You confirmed action is executed!"/>
+      </o:popupLayer>
+    </td>
+    <td>
+      <span style="color: black; font-size: 20px; border-bottom: 1px solid black;">
+        Code:
+      </span><br/><br/>
+      <span style="color: black; font-size: 14px; border-bottom: 1px solid black;">
+        Invoker:
+        </span><pre>
+    &lt;h:outputLink id="linkInvoker"
+    value=""
+    onclick="O$('form1:linkConfirmation').runConfirmedFunction(function(){O$('form1:linkPopup').showAtXY(
+    O$('form1:linkPopup').setLeft(O$.getElementPos(O$('form1:linkInvoker')).left + O$('form1:linkInvoker').offsetWidth + 50),
+    O$('form1:linkPopup').setTop(O$.getElementPos(O$('form1:linkInvoker')).top))});
+    return false;"&gt;
+    &lt;h:outputText value="Action with confirmation"/&gt;
+    &lt;/h:outputLink&gt;</pre>
+      <span style="color: black; font-size: 14px; border-bottom: 1px solid black;">
+        Confirmation:
+      </span><pre>
+    &lt;o:confirmation id="linkConfirmation"
+    alignToInvoker="true"/&gt;</pre>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <h:commandButton style="margin-top: 10px;"
+                       value="Action with confirmation" id="buttonInvoker"
+                       type="button"
+                       onclick="O$('form1:buttonConfirmation').runConfirmedFunction(function(){O$('form1:buttonPopup').showAtXY(
+                                  O$.getElementPos(O$('form1:buttonInvoker')).left + O$('form1:buttonInvoker').offsetWidth + 55,
+                                  O$.getElementPos(O$('form1:buttonInvoker')).top);});"/>
+      <o:popupLayer id="buttonPopup"
+                    style="border: none; background: #f9f9f9; text-align:center; white-space:nowrap;"
+                    hideOnOuterClick="true"
+                    hidingTimeout="3000">
+        <h:outputText value="You confirmed action is executed!"/>
+      </o:popupLayer>
+    </td>
+    <td>
+      <span style="color: black; font-size: 20px; border-bottom: 1px solid black;">
+        Code:
+      </span><br/><br/>
+      <span style="color: black; font-size: 14px; border-bottom: 1px solid black;">
+        Invoker:
+        </span><pre>
+    &lt;h:commandButton  style="margin-top: 10px;"
+    value="Action with confirmation" id="buttonInvoker"
+    onclick="O$('form1:buttonConfirmation').runConfirmedFunction(function(){O$('form1:buttonPopup').showAtXY(
+    O$('form1:buttonPopup').setLeft(O$.getElementPos(O$('form1:buttonInvoker')).left + O$('form1:buttonInvoker').offsetWidth + 55),
+    O$('form1:buttonPopup').setTop(O$.getElementPos(O$('form1:buttonInvoker')).top))});
+    return false;"/&gt;</pre>
+      <span style="color: black; font-size: 14px; border-bottom: 1px solid black;">
+        Confirmation:
+      </span><pre>
+    &lt;o:confirmation id="buttonConfirmation"
+    alignToInvoker="true"/&gt;</pre>
+    </td>
+  </tr>
+</table>
+
+<o:confirmation id="textConfirmation"
+                standalone="true"
+                rolloverButtonAreaClass="buttonAreaClass"
+                alignToInvoker="true"/>
+<o:confirmation id="linkConfirmation"
+                standalone="true"
+                alignToInvoker="true"/>
+<o:confirmation id="buttonConfirmation"
+                standalone="true"
+                alignToInvoker="true"/>
+<br/>
+<br/>
+<br/>
+
+<h:commandButton id="btn" value="Confirm JSF"/>
+<o:confirmation alignToInvoker="true" for="btn"/>
+<br/>
+<input type="button" id="htmlBtn" value="Confirm HTML"/>
+<o:confirmation alignToInvoker="true" for=":htmlBtn"/>
+
+
+</div>

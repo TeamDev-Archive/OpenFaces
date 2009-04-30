@@ -1,0 +1,73 @@
+<f:subview id="yearly"
+           xmlns:h="http://java.sun.com/jsf/html"
+           xmlns:f="http://java.sun.com/jsf/core"
+           xmlns:q="http://java.sun.com/jstl/core">
+
+  <table border="0" style="height:100%">
+    <tr style="color:white;height:18px">
+      <td colspan="2">
+        <h:commandButton id="toDayYearly" style="position:relative;top:-1px" value="Today"/>
+      </td>
+
+      <td align="right" colspan="2">
+        <h:commandButton id="previousYearYearly" image="navigate_left2.png"/>
+        <span style="position:relative;top:-5px">&#160;YearAsString&#160;</span>
+        <h:commandButton id="nextYearYearly" image="navigate_right2.png"/>
+      </td>
+    </tr>
+
+    <c:forEach begin="0" end="2">
+      <tr>
+        <c:forEach begin="0" end="3">
+          <td>
+            <table style="height:100%">
+              <tr style="background-color:Lavender;height:22px">
+                <td colspan="7" align="center" style="width:14%">MonthAsString</td>
+              </tr>
+
+              <c:forEach begin="0" end="5">
+                <tr>
+                  <td onmouseover="setStyleClass(this, 'mouseOverActiveDays');"
+                      onmouseout="setStyleClass(this, 'evenActiveDays');"
+                      class="evenActiveDays" valign="top">12
+                  </td>
+
+                  <td onmouseover="setStyleClass(this, 'mouseOverActiveDays');"
+                      onmouseout="setStyleClass(this, 'evenActiveDays');"
+                      class="evenActiveDays" valign="top">12
+                  </td>
+
+                  <td onmouseover="setStyleClass(this, 'mouseOverActiveDays');"
+                      onmouseout="setStyleClass(this, 'evenActiveDays');"
+                      class="evenActiveDays" valign="top">12
+                  </td>
+
+                  <td onmouseover="setStyleClass(this, 'mouseOverActiveDays');"
+                      onmouseout="setStyleClass(this, 'evenActiveDays');"
+                      class="evenActiveDays" valign="top">12
+                  </td>
+
+                  <td onmouseover="setStyleClass(this, 'mouseOverActiveDays');"
+                      onmouseout="setStyleClass(this, 'evenActiveDays');"
+                      class="evenActiveDays" valign="top">12
+                  </td>
+
+                  <td onmouseover="setStyleClass(this, 'mouseOverActiveDays');"
+                      onmouseout="setStyleClass(this, 'evenActiveDays');"
+                      class="evenActiveDays" valign="top">12
+                  </td>
+
+                  <td onmouseover="setStyleClass(this, 'mouseOverActiveDays');"
+                      onmouseout="setStyleClass(this, 'evenActiveDays');"
+                      class="evenActiveDays" valign="top">12
+                  </td>
+                </tr>
+              </c:forEach>
+            </table>
+          </td>
+        </c:forEach>
+      </tr>
+    </c:forEach>
+  </table>
+
+</f:subview>

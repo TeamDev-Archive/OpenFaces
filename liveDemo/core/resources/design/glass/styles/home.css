@@ -1,0 +1,157 @@
+/* CSS Document */
+*, .demo_font {
+  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-width: 760px;
+  color: #000000;
+  background: #dde2e8 url(../images/body_bkrnd.gif) repeat-x top;
+}
+
+form {
+  margin: 0;
+  padding: 0;
+}
+
+#nonFooter {
+  min-height: 634px;
+  *height: 100%;
+  min-width: 100%;
+  background: transparent url(../images/home_bkrnd.jpg) no-repeat left top;
+  float: left;
+}
+
+.sidebarContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+}
+
+.openfaces_label {
+  width: 300px;
+  height: 345px;
+  background: transparent url(../images/quipukit_label.jpg) no-repeat left top;
+}
+
+.sidebar_control_list {
+  width: 228px;
+}
+
+.control_list {
+  background: transparent url(../images/control_list_bkrnd_home.gif) repeat-y left top;
+}
+
+.control_list_top {
+  background: transparent url(../images/control_list_bkrnd_top_home.jpg) no-repeat left top;
+  min-height: 280px;
+}
+
+.control_list_top_content {
+  margin: 0;
+  padding: 30px 15px 0 55px;
+}
+
+.control_list_top_content h2 {
+  font-size: 11pt;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+.control_list_menu {
+  margin: 10px 0 0 10px;
+  border-collapse: collapse;
+}
+
+.control_list_menu td {
+  padding: 1px 3px 0 1px;
+}
+
+.controlmenuitem_current_a {
+  color: #a10d07;
+  font-weight: bold;
+}
+
+.control_list_menu a {
+  color: #494c50;
+  text-decoration: none;
+}
+
+.control_list_menu a:hover {
+  text-decoration: underline;
+}
+
+.control_list_menu img {
+  border: 0;
+}
+
+.control_list_bottom {
+  background: transparent url(../images/control_list_bkrnd_bottom_home.jpg) no-repeat left bottom;
+  height: 20px;
+}
+
+.features {
+  padding: 230px 50px 20px 380px;
+  font-size: 10pt;
+  line-height: 1.5em;
+  color: #353636;
+}
+
+.features ul {
+  padding: 0;
+  margin: 15px 0 0 15px;
+  *margin-left: 20px;
+  list-style: url(../images/bullet3.gif);
+}
+
+.features ul li {
+  font-size: 11pt;
+}
+
+.links {
+  position: absolute;
+  top: 435px;
+  left: 320px;
+  font-size: 10pt;
+  width: 512px;
+  text-align: right;
+}
+
+.features a {
+  color: #d66a00;
+  font-size: 10pt;
+}
+
+.copyright {
+  margin: 15px 0 0 -45px;
+  color: #abacad;
+  font-size: 10px;
+  text-align: left;
+}
+
+.slogan1 {
+  position: absolute;
+  top: 106px;
+  left: 320px;
+  width: 642px;
+  height: 89px;
+  background: url('../../../images/homepage/slogan1.gif');
+}
+
+.slogan2 {
+  position: absolute;
+  top: 400px;
+  left: 320px;
+  width: 512px;
+  height: 24px;
+  background: url('../../../images/homepage/slogan2.gif');
+}

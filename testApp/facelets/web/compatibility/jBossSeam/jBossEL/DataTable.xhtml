@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:s="http://jboss.com/products/seam/taglib">
+<head>
+  <title></title>
+</head>
+
+<body>
+<f:view>
+  <h:form id="form1">
+    <o:dataTable id="table"
+                 var="row" value="#{itemsList}" pageSize="4" binding="#{seamtesttable.dataTable}">
+      <o:column id="col1" sortingExpression="#{row.column1}" filterExpression="#{row.column1}"
+                filterKind="dropDownField" filterValue="#{seamTable.filterValue}"
+                filterValues="#{seamTable.filterValues}">
+        <f:facet name="header">
+          <h:outputText id="tableCol1Header" value="Column_1"/>
+        </f:facet>
+        <h:outputText id="tableCol1Value" value="#{row.column1}"/>
+      </o:column>
+      <o:column id="col2" sortingExpression="#{row.column2}" filterExpression="#{row.column2}"
+                filterKind="dropDownField">
+        <f:facet name="header">
+          <h:outputText id="tableCol2Header" value="Column_2"/>
+        </f:facet>
+        <h:outputText id="tableCol2Value" value="#{row.column2}"/>
+      </o:column>
+      <o:column id="col3" sortingExpression="#{row.column3}" filterExpression="#{row.column3}" filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText id="tableCol3Header" value="Column_3"/>
+        </f:facet>
+        <h:outputText id="tableCol3Value" value="#{row.column3}"/>
+      </o:column>
+      <o:column id="col4" sortingExpression="#{row.column4}" filterExpression="#{row.column4}">
+        <f:facet name="header">
+          <h:outputText id="tableCol4Header" value="Column_4"/>
+        </f:facet>
+        <h:outputText id="tableCol4Value" value="#{row.column4}"/>
+      </o:column>
+      <o:column>
+        <h:commandLink id="commandLink" value="select row" action="#{seamTable.addClickedRows(row.column1)}"/>
+      </o:column>
+      <f:facet name="below">
+        <o:dataTablePaginator id="dtpaginator1"/>
+      </f:facet>
+    </o:dataTable>
+    <h:outputText style="font-weight:bolder;" value="Selected values:"/>
+    <h:outputText value="#{seamTable.clickedRows}"/>
+  </h:form>
+</f:view>
+
+</body>
+</html>

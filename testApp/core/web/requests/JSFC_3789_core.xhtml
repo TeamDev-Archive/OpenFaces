@@ -1,0 +1,25 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+
+ <h:commandButton value="Show PopupLayer" onclick="O$('fm:test').showCentered();"/>
+
+    <o:popupLayer id="test"
+                  modal="true"
+                  modalLayerStyle="background: red;"
+                  rolloverClass="popupRolloverStyle"
+                  style="width: 500px; border: 1px solid red; background: beige; height: 300px; padding: 20 20 20 20;">
+      <h:panelGroup>
+        <h:commandButton value="Submit"/>
+        <h:commandButton value="Hide PopupLayer" onclick="O$('fm:test').hide();"/>
+      </h:panelGroup>
+    </o:popupLayer>
+
+</div>
+

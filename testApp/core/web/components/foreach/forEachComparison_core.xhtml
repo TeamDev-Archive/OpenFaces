@@ -1,0 +1,208 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+     xmlns:c="http://java.sun.com/jstl/core"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+
+  <style type="text/css">
+    h4 {
+      clear: both;
+      margin-top: 20px;
+    }
+  </style>
+
+  <a href="../../main.jsf">Back to the main page</a><br/>
+
+  <h3>ForEach comparison test page</h3>
+  <br/>
+  <h:commandButton value="Submit" onclick="document.forms[0].submit();"/>
+
+  <h4>items = List</h4>
+
+  <h5>q:forEach</h5>
+  <o:forEach items="#{ForEachBean.list}" var="item">
+    <h:outputText value="#{item.key}. "/>
+    <o:inputText value="#{item.value}"/>
+    <h:commandLink value="remove it" actionListener="#{ForEachBean.removeTestListItem}">
+      <f:param name="itemId" value="#{item}" id="fp1"/>
+    </h:commandLink>
+    <f:verbatim><br/></f:verbatim>
+  </o:forEach>
+
+  <h5>nested q:forEach</h5>
+  <o:forEach var="item" items="#{ForEachBean.list}">
+    <o:forEach var="itemI" items="#{ForEachBean.list}">
+      <h:commandLink
+          id="button1_#{item.key}"
+          value="Remove #{item.key} #{itemI.key} "/>
+    </o:forEach>
+  </o:forEach>
+
+  <h5>t:dataList</h5>
+  <t:dataList value="#{ForEachBean.list}" var="item">
+    <h:outputText value="#{item.key}. "/>
+    <h:commandLink value="remove it" actionListener="#{ForEachBean.removeTestListItem}">
+      <f:param name="itemId" value="#{item}" id="fp1"/>
+    </h:commandLink>
+    <f:verbatim><br/></f:verbatim>
+  </t:dataList>
+
+  <h5>nested t:dataList</h5>
+  <t:dataList var="item" value="#{ForEachBean.list}">
+    <t:dataList var="itemI" value="#{ForEachBean.list}">
+      <h:commandLink
+          id="button2_#{item.key}"
+          value="Remove #{item.key} #{itemI.key} "/>
+    </t:dataList>
+  </t:dataList>
+  
+  <h5>c:forEach</h5>
+  <c:forEach var="item" items="#{ForEachBean.list}">
+    <h:commandLink
+        id="button3_#{item.key}"
+        value="Remove #{item.key}"
+        actionListener="#{ForEachBean.removeTestListItem}" >
+      <f:param name="itemId" value="#{item}"/>
+    </h:commandLink>
+  </c:forEach>
+
+  <h5>nested c:forEach</h5>
+  <c:forEach var="item" items="#{ForEachBean.list}">
+    <c:forEach var="itemI" items="#{ForEachBean.list}">
+      <h:commandLink
+          id="button4_#{item.key}_#{itemI.key}"
+          value="Remove #{item.key} #{itemI.key} "/>
+    </c:forEach>
+  </c:forEach>
+
+  <h5>ui:repeat</h5>
+  <ui:repeat value="#{ForEachBean.list}" var="item">
+    <h:outputText value="#{item.key}. "/>
+    <o:inputText value="#{item.value}"/>
+    <h:commandLink value="remove it" actionListener="#{ForEachBean.removeTestListItem}">
+      <f:param name="itemId" value="#{item}"/>
+    </h:commandLink>
+    <f:verbatim><br/></f:verbatim>
+  </ui:repeat>
+
+  <h5>a4j:repeat</h5>
+  <a4j:repeat value="#{ForEachBean.list}" var="item">
+    <h:outputText value="#{item.key}. "/>
+    <o:inputText value="#{item.value}"/>
+    <h:commandLink value="remove it" actionListener="#{ForEachBean.removeTestListItem}">
+      <f:param name="itemId" value="#{item}"/>
+    </h:commandLink>
+    <f:verbatim><br/></f:verbatim>
+  </a4j:repeat>
+
+  <h5>q:forEach q:reloadComponents</h5>
+  <h:panelGroup  id="qforeachreload">
+  <o:forEach items="#{ForEachBean.list}" var="item">
+    <h:outputText value="#{item.key}. "/>
+    <o:inputText value="#{item.value}"/>
+    <h:commandLink value="remove it" actionListener="#{ForEachBean.removeTestListItem}">
+      <o:reloadComponents componentIds=":formID:qforeachreload" actionListener="#{ForEachBean.removeTestListItem}" event="onclick">
+        <f:param name="itemId" value="#{item}"/>
+      </o:reloadComponents>
+    </h:commandLink>
+  </o:forEach>
+  </h:panelGroup>
+
+  <h5>t:dataList q:reloadComponents</h5>
+  <h:panelGroup  id="tdataListreload">
+  <t:dataList value="#{ForEachBean.list}" var="item">
+    <h:outputText value="#{item.key}. #{item.value}"/>
+    <h:commandLink value="remove it" actionListener="#{ForEachBean.removeTestListItem}">
+      <o:reloadComponents componentIds=":formID:tdataListreload" actionListener="#{ForEachBean.removeTestListItem}" event="onclick">
+        <f:param name="itemId" value="#{item}"/>
+      </o:reloadComponents>
+    </h:commandLink>
+  </t:dataList>
+  </h:panelGroup>
+
+  <h5>c:forEach q:reloadComponents</h5>
+  <h:panelGroup  id="cforeachreload">
+  <c:forEach var="item" items="#{ForEachBean.list}">
+    <h:commandLink
+        id="button5_${item.key}"
+        value="Remove #{item.key}"
+        actionListener="#{ForEachBean.removeTestListItem}" >
+      <o:reloadComponents componentIds=":formID:cforeachreload" actionListener="#{ForEachBean.removeTestListItem}" event="onclick">
+        <f:param name="itemId" value="#{item}"/>
+      </o:reloadComponents>
+    </h:commandLink>
+  </c:forEach>
+  </h:panelGroup>
+
+  <h5>ui:repeat q:reloadComponents</h5>
+  <h:panelGroup  id="uirepeatreload">
+  <ui:repeat value="#{ForEachBean.list}" var="item">
+    <h:outputText value="#{item.key}. "/>
+    <o:inputText value="#{item.value}"/>
+    <h:commandLink value="remove it" actionListener="#{ForEachBean.removeTestListItem}">
+      <o:reloadComponents componentIds=":formID:uirepeatreload" actionListener="#{ForEachBean.removeTestListItem}" event="onclick">
+        <f:param name="itemId" value="#{item}"/>
+      </o:reloadComponents>
+    </h:commandLink>
+    <f:verbatim><br/></f:verbatim>
+  </ui:repeat>
+  </h:panelGroup>
+
+  <h5>a4j:repeat q:reloadComponents</h5>
+  <h:panelGroup id="a4jrepeatreload">
+  <a4j:repeat value="#{ForEachBean.list}" var="item">
+    <h:outputText value="#{item.key}. "/>
+    <o:inputText value="#{item.value}"/>
+    <h:commandLink value="remove it" actionListener="#{ForEachBean.removeTestListItem}">
+      <o:reloadComponents componentIds=":formID:a4jrepeatreload" actionListener="#{ForEachBean.removeTestListItem}" event="onclick">
+        <f:param name="itemId" value="#{item}"/>
+      </o:reloadComponents>
+    </h:commandLink>
+    <f:verbatim><br/></f:verbatim>
+  </a4j:repeat>
+  </h:panelGroup>
+
+  <h5>q:forEach inside h:dataTable</h5>
+  <h:dataTable value="#{QKS145.dataTableItems}" border="1" var="dt1">
+    <h:column>
+       <h:outputText value="#{dt1.id}"/>
+    </h:column>
+    <h:column>
+      <o:forEach items="#{ForEachBean.list}" var="item">
+        <h:outputText value="#{item.key}. "/>
+        <o:inputText value="#{item.value}"/>
+        <h:commandLink value="remove it" actionListener="#{ForEachBean.removeTestListItem}">
+          <f:param name="itemId" value="#{item}" id="fp1"/>
+        </h:commandLink>
+        <f:verbatim><br/></f:verbatim>
+      </o:forEach>
+    </h:column>
+  </h:dataTable>
+
+  <h5>c:forEach inside h:dataTable</h5>
+  <h:dataTable value="#{QKS145.dataTableItems}" border="1" var="dt">
+    <h:column>
+       <h:outputText value="#{dt.id}"/>
+    </h:column>
+    <h:column>
+      <c:forEach var="item" items="#{ForEachBean.list}">
+        <h:commandLink
+            id="button6_${item.key}"
+            value="Remove #{item.key}"
+            actionListener="#{ForEachBean.removeTestListItem}">
+          <f:param name="itemId" value="#{item}"/>
+        </h:commandLink>
+      </c:forEach>
+    </h:column>
+  </h:dataTable>
+
+  <o:dropDownField>
+    <c:forEach items="#{ForEachBean.list}" var="item">
+      <o:dropDownItem value="#{item.value}"/>
+    </c:forEach>
+  </o:dropDownField>
+
+</div>

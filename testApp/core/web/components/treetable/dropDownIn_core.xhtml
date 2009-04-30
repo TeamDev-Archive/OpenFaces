@@ -1,0 +1,55 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+
+    <table>
+      <tr>
+        <td class="container">
+          <o:treeTable var="dropDownTree" nodeLevelVar="level">
+            <o:staticTreeStructure>
+              <o:treeNode value="drop down top node">
+                <o:treeNode value="drop down sub node" />
+              </o:treeNode>
+            </o:staticTreeStructure>
+            <o:treeColumn>
+              <f:facet name="header">
+                <o:dropDownField>
+                  <o:dropDownItem value="header item 1" />
+                  <o:dropDownItem value="header item 2" />
+                  <o:dropDownItem value="header item 3" />
+                </o:dropDownField>
+              </f:facet>
+              <o:dropDownField rendered="#{level == 0}">
+                <o:dropDownItem value="body item 1" />
+                <o:dropDownItem value="body item 2" />
+                <o:dropDownItem value="body item 3" />
+              </o:dropDownField>
+              <o:dropDownField rendered="#{level == 1}">
+                <o:dropDownItem value="body item 1.1" />
+                <o:dropDownItem value="body item 2.1" />
+                <o:dropDownItem value="body item 3.1" />
+              </o:dropDownField>
+              <f:facet name="footer">
+                <o:dropDownField>
+                  <o:dropDownItem value="footer item 1" />
+                  <o:dropDownItem value="footer item 2" />
+                  <o:dropDownItem value="footer item 3" />
+                </o:dropDownField>
+              </f:facet>
+            </o:treeColumn>
+          </o:treeTable>
+        </td>
+      </tr>
+    </table>
+
+  
+</div>

@@ -1,0 +1,211 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+
+<script type="text/javascript" src="../funcTestsUtil.js"></script>
+  
+<a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+
+<table cellpadding="0" cellspacing="5">
+<tr>
+  <td class="header">Default no filtered data</td>
+  <td class="header">Displaying a message for no filtered data forbidden</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:dataTable id="noDataDefaultID"
+                 var="noDataDefault"
+                 value="#{TestEventsBean.tableTestCollection}"
+                 verticalGridLines="1px solid gray">
+      <f:facet name="noDataMessage">
+        <h:outputText id="noDataDefaultMessageID"/>
+      </f:facet>
+      <o:column id="col_first" style="padding: 10px 10px 10px 10px;"
+                filterExpression="#{noDataDefault.thirdColumn}"
+                filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="first column header" id="noDataDefaultID_firstHeader"/>
+        </f:facet>
+        <h:outputText value="#{noDataDefault.thirdColumn}" id="noDataDefaultID_firstBody"/>
+        <f:facet name="footer">
+          <h:outputText value="first column footer" id="noDataDefaultID_firstFooter"/>
+        </f:facet>
+      </o:column>
+      <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="second column header" id="noDataDefaultID_secondHeader"/>
+        </f:facet>
+        <h:outputText value="#{noDataDefault.fourthColumn}" id="noDataDefaultID_secondBody"/>
+        <f:facet name="footer">
+          <h:outputText value="second column footer" id="noDataDefaultID_secondFooter"/>
+        </f:facet>
+      </o:column>
+    </o:dataTable>
+  </td>
+  <td class="container">
+    <o:dataTable id="noDataMessageAllowedID"
+                 var="noDataMessageAllowed"
+                 value="#{TestEventsBean.tableTestCollection}"
+                 noDataMessageAllowed="false"
+                 verticalGridLines="1px solid gray">
+      <o:column id="col_first" style="padding: 10px 10px 10px 10px;"
+                filterExpression="#{noDataMessageAllowed.thirdColumn}"
+                filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="first column header" id="noDataMessageAllowedID_firstHeader"/>
+        </f:facet>
+        <h:outputText value="#{noDataMessageAllowed.thirdColumn}" id="noDataMessageAllowedID_firstBody"/>
+        <f:facet name="footer">
+          <h:outputText value="first column footer" id="noDataMessageAllowedID_firstFooter"/>
+        </f:facet>
+      </o:column>
+      <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="second column header" id="noDataMessageAllowedID_secondHeader"/>
+        </f:facet>
+        <h:outputText value="#{noDataMessageAllowed.fourthColumn}" id="noDataMessageAllowedID_secondBody"/>
+        <f:facet name="footer">
+          <h:outputText value="second column footer" id="noDataMessageAllowedID_secondFooter"/>
+        </f:facet>
+      </o:column>
+    </o:dataTable>
+  </td>
+</tr>
+<tr>
+  <td class="header">Custom Message for no filtered data</td>
+  <td class="header">Default message for empty data</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:dataTable id="customNoDataMessageID"
+                 var="customNoDataMessage"
+                 value="#{TestEventsBean.tableTestCollection}"
+                 verticalGridLines="1px solid gray">
+      <f:facet name="noFilterDataMessage">
+        <h:outputText id="noFilteredDataCustomMessageID" value="Test no filtered data"/>
+      </f:facet>
+      <o:column id="col_first" style="padding: 10px 10px 10px 10px;"
+                filterExpression="#{customNoDataMessage.thirdColumn}"
+                filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="first column header" id="customNoDataMessageID_firstHeader"/>
+        </f:facet>
+        <h:outputText value="#{customNoDataMessage.thirdColumn}" id="customNoDataMessageID_firstBody"/>
+        <f:facet name="footer">
+          <h:outputText value="first column footer" id="customNoDataMessageID_firstFooter"/>
+        </f:facet>
+      </o:column>
+      <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="second column header" id="customNoDataMessageID_secondHeader"/>
+        </f:facet>
+        <h:outputText value="#{customNoDataMessage.fourthColumn}" id="customNoDataMessageID_secondBody"/>
+        <f:facet name="footer">
+          <h:outputText value="second column footer" id="customNoDataMessageID_secondFooter"/>
+        </f:facet>
+      </o:column>
+    </o:dataTable>
+  </td>
+  <td class="container">
+    <o:dataTable id="emptyDataID"
+                 var="emptyData"
+                 value="#{TestEventsBean.emptyTestCollection}"
+                 verticalGridLines="1px solid gray">
+      <f:facet name="noFilterDataMessage">
+        <h:outputText value="Test no filtered data"/>
+      </f:facet>
+      <o:column id="col_first" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="first column header" id="emptyDataID_firstHeader"/>
+        </f:facet>
+        <h:outputText value="#{emptyData.thirdColumn}" id="emptyDataID_firstBody"/>
+        <f:facet name="footer">
+          <h:outputText value="first column footer" id="emptyDataID_firstFooter"/>
+        </f:facet>
+      </o:column>
+      <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="second column header" id="emptyDataID_secondHeader"/>
+        </f:facet>
+        <h:outputText value="#{emptyData.fourthColumn}" id="emptyDataID_secondBody"/>
+        <f:facet name="footer">
+          <h:outputText value="second column footer" id="emptyDataID_secondFooter"/>
+        </f:facet>
+      </o:column>
+    </o:dataTable>
+  </td>
+</tr>
+<tr>
+  <td class="header">Displaying a message for empty data forbidden</td>
+  <td class="header">Custom message for empty data forbidden</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:dataTable id="emptyDataMessageForbiddenID"
+                 var="emptyDataMessageForbidden"
+                 value="#{TestEventsBean.emptyTestCollection}"
+                 noDataMessageAllowed="false"
+                 verticalGridLines="1px solid gray">
+      <f:facet name="noDataMessage">
+        <h:outputText value="Test data is empty"/>
+      </f:facet>
+      <o:column id="col_first" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="first column header" id="emptyDataMessageForbiddenID_firstHeader"/>
+        </f:facet>
+        <h:outputText value="#{emptyDataMessageForbidden.thirdColumn}" id="emptyDataMessageForbiddenID_firstBody"/>
+        <f:facet name="footer">
+          <h:outputText value="first column footer" id="emptyDataMessageForbiddenID_firstFooter"/>
+        </f:facet>
+      </o:column>
+      <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="second column header" id="emptyDataMessageForbiddenID_secondHeader"/>
+        </f:facet>
+        <h:outputText value="#{emptyDataMessageForbidden.fourthColumn}" id="emptyDataMessageForbiddenID_secondBody"/>
+        <f:facet name="footer">
+          <h:outputText value="second column footer" id="emptyDataMessageForbiddenID_secondFooter"/>
+        </f:facet>
+      </o:column>
+    </o:dataTable>
+  </td>
+  <td class="container">
+    <o:dataTable id="customEmptyDataID"
+                 var="customEmptyData"
+                 value="#{TestEventsBean.emptyTestCollection}"
+                 verticalGridLines="1px solid gray">
+      <f:facet name="noDataMessage">
+        <h:outputText id="noDataMessageID" value="Test data is empty"/>
+      </f:facet>
+      <o:column id="col_first" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="first column header" id="customEmptyDataID_firstHeader"/>
+        </f:facet>
+        <h:outputText value="#{customEmptyData.thirdColumn}" id="customEmptyDataID_firstBody"/>
+        <f:facet name="footer">
+          <h:outputText value="first column footer" id="customEmptyDataID_firstFooter"/>
+        </f:facet>
+      </o:column>
+      <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="second column header" id="customEmptyDataID_secondHeader"/>
+        </f:facet>
+        <h:outputText value="#{customEmptyData.fourthColumn}" id="customEmptyDataID_secondBody"/>
+        <f:facet name="footer">
+          <h:outputText value="second column footer" id="customEmptyDataID_secondFooter"/>
+        </f:facet>
+      </o:column>
+    </o:dataTable>
+  </td>
+</tr>
+
+
+</table>
+
+</div>

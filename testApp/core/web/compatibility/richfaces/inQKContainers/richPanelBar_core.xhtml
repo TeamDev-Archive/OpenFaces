@@ -1,0 +1,233 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+<a href="inQKContainersIndex.jsf">Back to the main page</a>
+<br/>
+<h:commandButton value="Set Ajax loading mode" action="#{A4jParametersBean.defineAjaxMode}"/>
+<br/>
+<h:commandButton value="Set Server loading mode" action="#{A4jParametersBean.defineServerMode}"/>
+<br/>
+<h:commandButton value="Set Client loading mode" action="#{A4jParametersBean.defineClientMode}"/>
+<br/>
+<o:tabbedPane style="width: 400px; height: 400px; padding:2px"
+              containerStyle="padding:2px"
+              tabStyle="white-space: nowrap; padding:2px"
+              loadingMode="#{A4jParametersBean.loadingMode}">
+<o:tabbedPaneItem>
+  <f:facet name="tab">
+    <h:outputText value="First tab"/>
+  </f:facet>
+  <rich:panelBar height="400" width="500">
+    <rich:panelBarItem
+            label="Leverage the whole set of JSF benefits while working with AJAX">
+      <h:outputText value="Ajax4jsf is fully integrated into the JSF lifecycle. While other frameworks only"/>
+      <h:outputText value="give you access to the managed bean facility, Ajax4jsf advantages the action and value"/>
+      <h:outputText value="change listeners as well as invokes server-side validators and converters during the"/>
+      <h:outputText value="AJAX request-response cycle."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Add AJAX capability to existing JSF applications">
+      <h:outputText value="The framework is implemented using a component library. The library set Ajax"/>
+      <h:outputText value="functionality into existing pages, so there is no need to write any JavaScript"/>
+      <h:outputText value="code or to replace existing components with new Ajax one. Ajax4jsf enables page-wide"/>
+      <h:outputText value="Ajax support instead of the traditional component-wide support and it gives the"/>
+      <h:outputText value="opportunity to define the event on the page. An event invokes an Ajax request and areas"/>
+      <h:outputText value="of the page which are synchronized with the JSF Component Tree after changing the data"/>
+      <h:outputText value="on the server by Ajax request in accordance with events fired on the client."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Write your own custom rich components with built-in AJAX support">
+      <h:outputText value="Component Development Kit (CDK) is a design-time extension for Ajax4jsf. The CDK includes"/>
+      <h:outputText value="a code-generation facility and a templating facility using a JSP-like syntax. These"/>
+      <h:outputText value="capabilities help to avoid a routine process of a component creation. The component"/>
+      <h:outputText value="factory works like a well-oiled machine allowing the creation of first-class rich"/>
+      <h:outputText value="components with built-in Ajax functionality even more easily than the creation of"/>
+      <h:outputText value="simpler components by means of the traditional coding approach."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Test the components, actions, listeners, and pages as you are creating them">
+      <h:outputText value="An automated testing facility is in our roadmap for the near future. This facility"/>
+      <h:outputText value="will generate test cases for your component as soon as you develop it. The testing"/>
+      <h:outputText value="framework will not just test the components, but also any other server-side or"/>
+      <h:outputText value="client-side functionality including JavaScript code. What is more, it will do all"/>
+      <h:outputText value="of this without deploying the test application into the Servlet container."/>
+    </rich:panelBarItem>
+  </rich:panelBar>
+</o:tabbedPaneItem>
+<o:tabbedPaneItem>
+  <f:facet name="tab">
+    <h:outputText value="Second tab"/>
+  </f:facet>
+  <rich:panelBar height="400" width="500">
+    <rich:panelBarItem
+            label="Leverage the whole set of JSF benefits while working with AJAX">
+      <h:outputText value="Ajax4jsf is fully integrated into the JSF lifecycle. While other frameworks only"/>
+      <h:outputText value="give you access to the managed bean facility, Ajax4jsf advantages the action and value"/>
+      <h:outputText value="change listeners as well as invokes server-side validators and converters during the"/>
+      <h:outputText value="AJAX request-response cycle."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Add AJAX capability to existing JSF applications">
+      <h:outputText value="The framework is implemented using a component library. The library set Ajax"/>
+      <h:outputText value="functionality into existing pages, so there is no need to write any JavaScript"/>
+      <h:outputText value="code or to replace existing components with new Ajax one. Ajax4jsf enables page-wide"/>
+      <h:outputText value="Ajax support instead of the traditional component-wide support and it gives the"/>
+      <h:outputText value="opportunity to define the event on the page. An event invokes an Ajax request and areas"/>
+      <h:outputText value="of the page which are synchronized with the JSF Component Tree after changing the data"/>
+      <h:outputText value="on the server by Ajax request in accordance with events fired on the client."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Write your own custom rich components with built-in AJAX support">
+      <h:outputText value="Component Development Kit (CDK) is a design-time extension for Ajax4jsf. The CDK includes"/>
+      <h:outputText value="a code-generation facility and a templating facility using a JSP-like syntax. These"/>
+      <h:outputText value="capabilities help to avoid a routine process of a component creation. The component"/>
+      <h:outputText value="factory works like a well-oiled machine allowing the creation of first-class rich"/>
+      <h:outputText value="components with built-in Ajax functionality even more easily than the creation of"/>
+      <h:outputText value="simpler components by means of the traditional coding approach."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Test the components, actions, listeners, and pages as you are creating them">
+      <h:outputText value="An automated testing facility is in our roadmap for the near future. This facility"/>
+      <h:outputText value="will generate test cases for your component as soon as you develop it. The testing"/>
+      <h:outputText value="framework will not just test the components, but also any other server-side or"/>
+      <h:outputText value="client-side functionality including JavaScript code. What is more, it will do all"/>
+      <h:outputText value="of this without deploying the test application into the Servlet container."/>
+    </rich:panelBarItem>
+  </rich:panelBar>
+</o:tabbedPaneItem>
+<o:tabbedPaneItem>
+  <f:facet name="tab">
+    <h:outputText value="Third tab"/>
+  </f:facet>
+  <rich:panelBar height="400" width="500">
+    <rich:panelBarItem
+            label="Leverage the whole set of JSF benefits while working with AJAX">
+      <h:outputText value="Ajax4jsf is fully integrated into the JSF lifecycle. While other frameworks only"/>
+      <h:outputText value="give you access to the managed bean facility, Ajax4jsf advantages the action and value"/>
+      <h:outputText value="change listeners as well as invokes server-side validators and converters during the"/>
+      <h:outputText value="AJAX request-response cycle."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Add AJAX capability to existing JSF applications">
+      <h:outputText value="The framework is implemented using a component library. The library set Ajax"/>
+      <h:outputText value="functionality into existing pages, so there is no need to write any JavaScript"/>
+      <h:outputText value="code or to replace existing components with new Ajax one. Ajax4jsf enables page-wide"/>
+      <h:outputText value="Ajax support instead of the traditional component-wide support and it gives the"/>
+      <h:outputText value="opportunity to define the event on the page. An event invokes an Ajax request and areas"/>
+      <h:outputText value="of the page which are synchronized with the JSF Component Tree after changing the data"/>
+      <h:outputText value="on the server by Ajax request in accordance with events fired on the client."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Write your own custom rich components with built-in AJAX support">
+      <h:outputText value="Component Development Kit (CDK) is a design-time extension for Ajax4jsf. The CDK includes"/>
+      <h:outputText value="a code-generation facility and a templating facility using a JSP-like syntax. These"/>
+      <h:outputText value="capabilities help to avoid a routine process of a component creation. The component"/>
+      <h:outputText value="factory works like a well-oiled machine allowing the creation of first-class rich"/>
+      <h:outputText value="components with built-in Ajax functionality even more easily than the creation of"/>
+      <h:outputText value="simpler components by means of the traditional coding approach."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Test the components, actions, listeners, and pages as you are creating them">
+      <h:outputText value="An automated testing facility is in our roadmap for the near future. This facility"/>
+      <h:outputText value="will generate test cases for your component as soon as you develop it. The testing"/>
+      <h:outputText value="framework will not just test the components, but also any other server-side or"/>
+      <h:outputText value="client-side functionality including JavaScript code. What is more, it will do all"/>
+      <h:outputText value="of this without deploying the test application into the Servlet container."/>
+    </rich:panelBarItem>
+  </rich:panelBar>
+</o:tabbedPaneItem>
+</o:tabbedPane>
+
+<o:foldingPanel expanded="false"
+                loadingMode="#{A4jParametersBean.loadingMode}">
+  <f:facet name="caption">
+    <h:outputText value="FoldingPanel Caption"/>
+  </f:facet>
+  <rich:panelBar height="400" width="500">
+    <rich:panelBarItem
+            label="Leverage the whole set of JSF benefits while working with AJAX">
+      <h:outputText value="Ajax4jsf is fully integrated into the JSF lifecycle. While other frameworks only"/>
+      <h:outputText value="give you access to the managed bean facility, Ajax4jsf advantages the action and value"/>
+      <h:outputText value="change listeners as well as invokes server-side validators and converters during the"/>
+      <h:outputText value="AJAX request-response cycle."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Add AJAX capability to existing JSF applications">
+      <h:outputText value="The framework is implemented using a component library. The library set Ajax"/>
+      <h:outputText value="functionality into existing pages, so there is no need to write any JavaScript"/>
+      <h:outputText value="code or to replace existing components with new Ajax one. Ajax4jsf enables page-wide"/>
+      <h:outputText value="Ajax support instead of the traditional component-wide support and it gives the"/>
+      <h:outputText value="opportunity to define the event on the page. An event invokes an Ajax request and areas"/>
+      <h:outputText value="of the page which are synchronized with the JSF Component Tree after changing the data"/>
+      <h:outputText value="on the server by Ajax request in accordance with events fired on the client."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Write your own custom rich components with built-in AJAX support">
+      <h:outputText value="Component Development Kit (CDK) is a design-time extension for Ajax4jsf. The CDK includes"/>
+      <h:outputText value="a code-generation facility and a templating facility using a JSP-like syntax. These"/>
+      <h:outputText value="capabilities help to avoid a routine process of a component creation. The component"/>
+      <h:outputText value="factory works like a well-oiled machine allowing the creation of first-class rich"/>
+      <h:outputText value="components with built-in Ajax functionality even more easily than the creation of"/>
+      <h:outputText value="simpler components by means of the traditional coding approach."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Test the components, actions, listeners, and pages as you are creating them">
+      <h:outputText value="An automated testing facility is in our roadmap for the near future. This facility"/>
+      <h:outputText value="will generate test cases for your component as soon as you develop it. The testing"/>
+      <h:outputText value="framework will not just test the components, but also any other server-side or"/>
+      <h:outputText value="client-side functionality including JavaScript code. What is more, it will do all"/>
+      <h:outputText value="of this without deploying the test application into the Servlet container."/>
+    </rich:panelBarItem>
+  </rich:panelBar>
+</o:foldingPanel>
+
+<h:commandButton type="button"
+                 id="popupInvoker"
+                 value="Show PopupLayer"
+                 onclick="O$('form1:popupLayer1').show(); return false;"/>
+<br/>
+<o:popupLayer id="popupLayer1"
+              draggable="true"
+              style="padding:2px; background-color:#fafdff">
+  <rich:panelBar height="400" width="500">
+    <rich:panelBarItem
+            label="Leverage the whole set of JSF benefits while working with AJAX">
+      <h:outputText value="Ajax4jsf is fully integrated into the JSF lifecycle. While other frameworks only"/>
+      <h:outputText value="give you access to the managed bean facility, Ajax4jsf advantages the action and value"/>
+      <h:outputText value="change listeners as well as invokes server-side validators and converters during the"/>
+      <h:outputText value="AJAX request-response cycle."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Add AJAX capability to existing JSF applications">
+      <h:outputText value="The framework is implemented using a component library. The library set Ajax"/>
+      <h:outputText value="functionality into existing pages, so there is no need to write any JavaScript"/>
+      <h:outputText value="code or to replace existing components with new Ajax one. Ajax4jsf enables page-wide"/>
+      <h:outputText value="Ajax support instead of the traditional component-wide support and it gives the"/>
+      <h:outputText value="opportunity to define the event on the page. An event invokes an Ajax request and areas"/>
+      <h:outputText value="of the page which are synchronized with the JSF Component Tree after changing the data"/>
+      <h:outputText value="on the server by Ajax request in accordance with events fired on the client."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Write your own custom rich components with built-in AJAX support">
+      <h:outputText value="Component Development Kit (CDK) is a design-time extension for Ajax4jsf. The CDK includes"/>
+      <h:outputText value="a code-generation facility and a templating facility using a JSP-like syntax. These"/>
+      <h:outputText value="capabilities help to avoid a routine process of a component creation. The component"/>
+      <h:outputText value="factory works like a well-oiled machine allowing the creation of first-class rich"/>
+      <h:outputText value="components with built-in Ajax functionality even more easily than the creation of"/>
+      <h:outputText value="simpler components by means of the traditional coding approach."/>
+    </rich:panelBarItem>
+    <rich:panelBarItem
+            label="Test the components, actions, listeners, and pages as you are creating them">
+      <h:outputText value="An automated testing facility is in our roadmap for the near future. This facility"/>
+      <h:outputText value="will generate test cases for your component as soon as you develop it. The testing"/>
+      <h:outputText value="framework will not just test the components, but also any other server-side or"/>
+      <h:outputText value="client-side functionality including JavaScript code. What is more, it will do all"/>
+      <h:outputText value="of this without deploying the test application into the Servlet container."/>
+    </rich:panelBarItem>
+  </rich:panelBar>
+  <h:commandButton value="Hide"
+                   onclick="O$('form1:popupLayer1').hide(); return false;"/>
+</o:popupLayer>
+</div>

@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+<head>
+  <title>JSFC-2282 Confirmation is non-modal if "modalLayerStyle" attribute not specified (IE)</title>
+  <script type="text/javascript">
+    function test() {
+      if (O$.getElementStyleProperty(document.getElementById('fm:cn::blockingLayer'), 'background-image').indexOf('clear.gif') >= 0) {
+        alert('OK');
+      }
+    }
+  </script>
+</head>
+
+<body>
+<f:view>
+  <h:form id="fm">
+    <ui:include src="JSFC_2282_core.xhtml"/>
+  </h:form>
+</f:view>
+
+</body>
+</html>

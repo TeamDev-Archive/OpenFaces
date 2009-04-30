@@ -1,0 +1,311 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+<a href="richPanelsIndex.jsf">Back to the main page</a>
+<br/>
+<h:commandButton value="Set Ajax loading mode" action="#{A4jParametersBean.defineAjaxMode}"/>
+ <br/>
+ <h:commandButton value="Set Server loading mode" action="#{A4jParametersBean.defineServerMode}"/>
+ <br/>
+ <h:commandButton value="Set Client loading mode" action="#{A4jParametersBean.defineClientMode}"/>
+ <br/>
+    
+<h3>Calendar</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+  <o:calendar/>
+</rich:simpleTogglePanel>
+
+<h3>Chart</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+   <o:chart id="piechart"
+           model="#{ChartDataBean}"
+           width="350" height="300"
+           legendVisible="true">
+    <o:pieChartView colors="#5a87be, #94c237, #fff555, #da6a28"
+                    labelsVisible="true">
+    </o:pieChartView>
+    <o:chartTitle text="Pie Chart"/>
+  </o:chart>
+</rich:simpleTogglePanel>
+
+<h3>Confirmation</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+  <h:commandButton id="invoker" value="Invoke" onclick="alert('Action'); return false;"/>
+  <o:confirmation id="confirmation1"
+                  for="invoker"
+                  />
+  <h:commandButton id="link" value="Show Confirmation" onclick="O$('form1:confirmation2').runConfirmedFunction(function(){alert('Action');});return false;"/>
+  <o:confirmation id="confirmation2" draggable="true" standalone="true"/>
+</rich:simpleTogglePanel>
+
+<h3>DataTable</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+  <o:dataTable id="datatable"
+               value="#{RichTestBean.tableValue}"
+               var="row"
+               rowKey="#{row.id}"
+               useAjax="#{A4jParametersBean.useAjax}"
+               pageSize="10">
+    <f:facet name="below">
+      <o:dataTablePaginator/>
+    </f:facet>
+    <o:checkboxColumn/>
+
+    <o:column id="col1"
+              sortingExpression="#{row.stringField1}"
+              filterExpression="#{row.stringField1}">
+      <f:facet name="header">
+        <h:outputText id="id2" value="stringField1"/>
+      </f:facet>
+      <h:outputText id="outputCol1" value="#{row.stringField1}"/>
+    </o:column>
+
+    <o:column id="col2"
+              sortingExpression="#{row.stringField2}"
+              filterExpression="#{row.stringField2}">
+      <f:facet name="header">
+        <h:outputText id="id3" value="stringField2"/>
+      </f:facet>
+      <h:outputText id="outputCol2" value="#{row.stringField2}"/>
+    </o:column>
+
+    <o:column id="col3"
+              sortingExpression="#{row.intField1}"
+              filterExpression="#{row.intField1}">
+      <f:facet name="header">
+        <h:outputText id="id4" value="intField1"/>
+      </f:facet>
+      <h:outputText id="outputCol3" value="#{row.intField1}"/>
+    </o:column>
+
+    <o:column id="col4"
+              sortingExpression="#{row.intField2}"
+              filterExpression="#{row.intField2}">
+      <f:facet name="header">
+        <h:outputText id="id5" value="intField2"/>
+      </f:facet>
+      <h:outputText id="outputCol4" value="#{row.intField2}"/>
+    </o:column>
+  </o:dataTable>
+</rich:simpleTogglePanel>
+
+<h3>DateChooser</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+  <o:dateChooser/>
+</rich:simpleTogglePanel>
+
+<h3>DropDownField</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+  <o:dropDownField id="dropdownfield1"
+                   value="#{RichTestBean.dropDownFieldValue1}"
+                   suggestionMode="custom"
+                   autoComplete="true"
+                   customValueAllowed="false"
+                   listItemStyle="white-space:nowrap;">
+    <o:dropDownItems value="#{DropDownBean.suggestedPlants}"/>
+  </o:dropDownField>
+</rich:simpleTogglePanel>
+
+<h3>DynamicImage</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+  <o:dynamicImage id="dynamicImage" style="border: 2px solid red;" data="#{RichTestBean.testImage}"/>
+
+</rich:simpleTogglePanel>
+
+<h3>FoldingPanel</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+  <o:foldingPanel expanded="false" loadingMode="#{A4jParametersBean.loadingMode}">
+    <f:facet name="caption">
+      <h:outputText value="FoldingPanel Caption"/>
+    </f:facet>
+    <h:outputText value="FoldingPanel Content"/>
+  </o:foldingPanel>
+</rich:simpleTogglePanel>
+
+<h3>HintLabel</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+  <o:hintLabel value="Valus is the second planet from the Sun and the sixth largest" style="width:200px;"
+               hintStyle="background-color:#fffff1"/>
+</rich:simpleTogglePanel>
+
+<h3>popupLayer</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+  <h:commandButton type="button" id="popupInvoker" value="Show PopupLayer"
+                   onclick="O$('form1:popupLayer1').show();"/>
+  <br/>
+  <o:popupLayer id="popupLayer1" draggable="true" style="padding:2px; background-color:#fafdff">
+    <h:outputText value="Click here to hide this PopupLayer"/>
+    <h:commandButton value="Hide" onclick="O$('form1:popupLayer1').hide(); return false;"/>
+  </o:popupLayer>
+</rich:simpleTogglePanel>
+
+<h3>SuggestionField</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+  <o:suggestionField id="suggestionfield1"
+                     value="#{RichTestBean.suggestionFieldValue1}"
+                     suggestionMode="custom"
+                     autoComplete="true"
+                     customValueAllowed="false"
+                     listItemStyle="white-space:nowrap;">
+    <o:dropDownItems value="#{DropDownBean.suggestedPlants}"/>
+  </o:suggestionField>
+</rich:simpleTogglePanel>
+
+<h3>TabbedPane</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+  <o:tabbedPane style="width: 300px; height: 80px; padding:2px" containerStyle="padding:2px"
+                tabStyle="white-space: nowrap; padding:2px"
+                loadingMode="#{A4jParametersBean.loadingMode}">
+    <o:tabbedPaneItem>
+      <f:facet name="tab">
+        <h:outputText value="First tab"/>
+      </f:facet>
+      <h:outputText value="Some text on the first tab"/>
+    </o:tabbedPaneItem>
+    <o:tabbedPaneItem>
+      <f:facet name="tab">
+        <h:outputText value="Second tab"/>
+      </f:facet>
+      <h:outputText value="Some text on the second tab"/>
+    </o:tabbedPaneItem>
+    <o:tabbedPaneItem>
+      <f:facet name="tab">
+        <h:outputText value="Third tab"/>
+      </f:facet>
+      <h:outputText value="Some text on the third tab"/>
+    </o:tabbedPaneItem>
+  </o:tabbedPane>
+</rich:simpleTogglePanel>
+
+<h3>TabSet</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+  <o:tabSet id="tabset2" >
+    <o:tabSetItem>
+      <h:outputText value="Client"/>
+    </o:tabSetItem>
+    <o:tabSetItem>
+      <h:outputText value="Server"/>
+    </o:tabSetItem>
+    <o:tabSetItem>
+      <h:outputText value="Custom"/>
+    </o:tabSetItem>
+    <o:tabSetItem>
+      <h:outputText value="Default"/>
+    </o:tabSetItem>
+  </o:tabSet>>
+</rich:simpleTogglePanel>
+
+<h3>TreeTable</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+  <o:treeTable id="treetable"
+               var="node"
+               expansionState="allCollapsed"
+               useAjax="#{A4jParametersBean.useAjax}">
+    <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
+                            nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
+
+    <o:treeColumn id="name" sortingExpression="#{node.name}" filterExpression="#{node.name}"
+                  filterKind="searchField">
+      <f:facet name="header">
+        <h:outputText id="nameHeader" value="name"/>
+      </f:facet>
+      <h:outputText id="nameField" value="#{node.name}"/>
+    </o:treeColumn>
+
+    <o:column id="col1"
+              sortingExpression="#{node.stringField1}"
+              filterExpression="#{node.stringField1}">
+      <f:facet name="header">
+        <h:outputText id="id2" value="stringField1"/>
+      </f:facet>
+      <h:outputText id="outputCol1" value="#{node.stringField1}"/>
+    </o:column>
+
+    <o:column id="col2"
+              sortingExpression="#{node.stringField2}"
+              filterExpression="#{node.stringField2}">
+      <f:facet name="header">
+        <h:outputText id="id3" value="stringField2"/>
+      </f:facet>
+      <h:outputText id="outputCol2" value="#{node.stringField2}"/>
+    </o:column>
+
+    <o:column id="col3"
+              sortingExpression="#{node.intField1}"
+              filterExpression="#{node.intField1}">
+      <f:facet name="header">
+        <h:outputText id="id4" value="intField1"/>
+      </f:facet>
+      <h:outputText id="outputCol3" value="#{node.intField1}"/>
+    </o:column>
+
+    <o:column id="col4"
+              sortingExpression="#{node.intField2}"
+              filterExpression="#{node.intField2}">
+      <f:facet name="header">
+        <h:outputText id="id5" value="intField2"/>
+      </f:facet>
+      <h:outputText id="outputCol4" value="#{node.intField2}"/>
+    </o:column>
+
+  </o:treeTable>
+</rich:simpleTogglePanel>
+
+<h3>TwoListSelection</h3>
+<rich:simpleTogglePanel switchType="ajax"
+                        label="Ajax Switch Type"
+                        height="400px"
+                        opened="false">
+  <o:twoListSelection allowItemsOrdering="false"
+                      value="#{RichTestBean.twoListSelectionValue}"
+                      style="width:300px"
+                      leftListboxHeader="Available items"
+                      rightListboxHeader="Selected items">
+    <f:selectItems value="#{RichTestBean.items}"/>
+  </o:twoListSelection>
+</rich:simpleTogglePanel>
+</div>

@@ -1,0 +1,25 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/" class="ComponentsMenu menuPadded menuHomepage">
+
+  <ul>
+    <o:forEach items="#{MenuService.menus}" var="menuItem">
+
+      <h:panelGroup rendered="#{!menuItem.selected}">
+        <li>
+          <h:outputLink value="#{facesContext.externalContext.requestContextPath}#{menuItem.menuUrl}">
+            <h:panelGroup style="#{menuItem.menuImage}"></h:panelGroup><h:outputText value="#{menuItem.menuName}"/>
+          </h:outputLink>
+        </li>
+      </h:panelGroup>
+      <h:panelGroup rendered="#{menuItem.selected}">
+        <li class="active">
+          <h:outputLink value="#{facesContext.externalContext.requestContextPath}#{menuItem.menuUrl}">
+            <h:panelGroup style="#{menuItem.menuImage}"></h:panelGroup><h:outputText value="#{menuItem.menuName}"/>
+          </h:outputLink>
+        </li>
+      </h:panelGroup>
+    </o:forEach>
+  </ul>
+
+</div>

@@ -1,0 +1,12 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+
+  <h:commandButton id="invoker" value="Invoke" onclick="alert('Action'); return false;"/>
+  <o:confirmation id="confirmation1" for="invoker"/>
+  <h:commandButton id="link" value="Show Confirmation" onclick="O$('form1:confirmation2').runConfirmedFunction(function(){alert('Action');});return false;"/>
+  <o:confirmation id="confirmation2" draggable="true" standalone="true"/>
+
+</div>

@@ -1,0 +1,209 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+<br/><br/>
+        <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+         Folding panel client-side events
+        </span><br/>
+<table>
+<tr>
+  <td class="header">onclick</td>
+  <td class="header">ondblclick</td>
+  <td class="header">onmousedown</td>
+  <td class="header">onmouseover</td>
+  <td rowspan="8">
+    <div id="empty"></div>
+  </td>
+</tr>
+<tr>
+  <td class="container">
+    <o:foldingPanel id="clickID"
+                    captionStyle="width: 140px;"
+                    expanded="true"
+                    contentStyle="width: 140px; padding: 10px 10px 10px 10px; color: gray;"
+                    onclick="logJSEvents('onclick works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="caption">
+        <f:verbatim>Test folding panel</f:verbatim>
+      </f:facet>
+      <h:outputText value="Test text for client-side events testing" style="font-size: 18px;"/>
+    </o:foldingPanel>
+  </td>
+  <td class="container">
+    <o:foldingPanel id="doubleclickID"
+                    captionStyle="width: 140px;"
+                    expanded="true"
+                    contentStyle="width: 140px; padding: 10px 10px 10px 10px; color: gray;"
+                    ondblclick="logJSEvents('ondblclick works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="caption">
+        <f:verbatim>Test folding panel</f:verbatim>
+      </f:facet>
+      <h:outputText value="Test text for client-side events testing" style="font-size: 18px;"/>
+    </o:foldingPanel>
+  </td>
+  <td class="container">
+    <o:foldingPanel id="mousedownID"
+                    captionStyle="width: 140px;"
+                    expanded="true"
+                    contentStyle="width: 140px; padding: 10px 10px 10px 10px; color: gray;"
+                    onmousedown="logJSEvents('onmousedown works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="caption">
+        <f:verbatim>Test folding panel</f:verbatim>
+      </f:facet>
+      <h:outputText value="Test text for client-side events testing" style="font-size: 18px;"/>
+    </o:foldingPanel>
+  </td>
+  <td class="container">
+    <o:foldingPanel id="mouseoverID"
+                    captionStyle="width: 140px;"
+                    expanded="true"
+                    contentStyle="width: 140px; padding: 10px 10px 10px 10px; color: gray;"
+                    onmouseover="logJSEvents('onmouseover works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="caption">
+        <f:verbatim>Test folding panel</f:verbatim>
+      </f:facet>
+      <h:outputText value="Test text for client-side events testing" style="font-size: 18px;"/>
+    </o:foldingPanel>
+  </td>
+</tr>
+<tr>
+  <td class="header">onmouseup</td>
+  <td class="header">onmouseout</td>
+  <td class="header">onmousemove</td>
+  <td class="header">onfocus</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:foldingPanel id="mouseupID"
+                    captionStyle="width: 140px;"
+                    expanded="true"
+                    contentStyle="width: 140px; padding: 10px 10px 10px 10px; color: gray;"
+                    onmouseup="logJSEvents('onmouseup works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="caption">
+        <f:verbatim>Test folding panel</f:verbatim>
+      </f:facet>
+      <h:outputText value="Test text for client-side events testing" style="font-size: 18px;"/>
+    </o:foldingPanel>
+  </td>
+  <td class="container">
+    <o:foldingPanel id="mouseoutID"
+                    captionStyle="width: 140px;"
+                    expanded="true"
+                    contentStyle="width: 140px; padding: 10px 10px 10px 10px; color: gray;"
+                    onmouseout="logJSEvents('onmouseout works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="caption">
+        <f:verbatim>Test folding panel</f:verbatim>
+      </f:facet>
+      <h:outputText value="Test text for client-side events testing" style="font-size: 18px;"/>
+    </o:foldingPanel>
+  </td>
+  <td class="container">
+    <o:foldingPanel id="mousemoveID"
+                    captionStyle="width: 140px;"
+                    expanded="true"
+                    contentStyle="width: 140px; padding: 10px 10px 10px 10px; color: gray;"
+                    onmousemove="logJSEvents('onmousemove works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="caption">
+        <f:verbatim>Test folding panel</f:verbatim>
+      </f:facet>
+      <h:outputText value="Test text for client-side events testing" style="font-size: 18px;"/>
+    </o:foldingPanel>
+  </td>
+  <td class="container">
+    <o:foldingPanel id="focusID"
+                    captionStyle="width: 140px;"
+                    expanded="true"
+                    contentStyle="width: 140px; padding: 10px 10px 10px 10px; color: gray;"
+                    onfocus="logJSEvents('onfocus works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="caption">
+        <f:verbatim>Test folding panel</f:verbatim>
+      </f:facet>
+      <h:outputText value="Test text for client-side events testing" style="font-size: 18px;"/>
+    </o:foldingPanel>
+  </td>
+</tr>
+<tr>
+  <td class="header">onblur</td>
+  <td class="header">onkeydown</td>
+  <td class="header">onkeyup</td>
+  <td class="header">onkeypress</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:foldingPanel id="blurID"
+                    captionStyle="width: 140px;"
+                    expanded="true"
+                    contentStyle="width: 140px; padding: 10px 10px 10px 10px; color: gray;"
+                    onblur="logJSEvents('onblur works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="caption">
+        <f:verbatim>Test folding panel</f:verbatim>
+      </f:facet>
+      <h:outputText value="Test text for client-side events testing" style="font-size: 18px;"/>
+    </o:foldingPanel>
+  </td>
+  <td class="container">
+    <o:foldingPanel id="keydownID"
+                    captionStyle="width: 140px;"
+                    expanded="true"
+                    contentStyle="width: 140px; padding: 10px 10px 10px 10px; color: gray;"
+                    onkeydown="logJSEvents('onkeydown works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="caption">
+        <f:verbatim>Test folding panel</f:verbatim>
+      </f:facet>
+      <h:inputText value="Test text" style="width:140px;" id="content_keydownID"/>
+    </o:foldingPanel>
+  </td>
+  <td class="container">
+    <o:foldingPanel id="keyupID"
+                    captionStyle="width: 140px;"
+                    expanded="true"
+                    contentStyle="width: 140px; padding: 10px 10px 10px 10px; color: gray;"
+                    onkeyup="logJSEvents('onkeyup works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="caption">
+        <f:verbatim>Test folding panel</f:verbatim>
+      </f:facet>
+      <h:inputText value="Test text" style="width:140px;" id="content_keyupID"/>
+    </o:foldingPanel>
+  </td>
+  <td class="container">
+    <o:foldingPanel id="keypressID"
+                    captionStyle="width: 140px;"
+                    expanded="true"
+                    contentStyle="width: 140px; padding: 10px 10px 10px 10px; color: gray;"
+                    onkeypress="logJSEvents('onkeypress works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="caption">
+        <f:verbatim>Test folding panel</f:verbatim>
+      </f:facet>
+      <h:inputText value="Test text" style="width:140px;" id="content_keypressID"/>
+    </o:foldingPanel>
+  </td>
+</tr>
+
+<tr>
+  <td class="header" colspan="4">onstatechange</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:foldingPanel id="statechangeID"
+                    captionStyle="width: 140px;"
+                    expanded="true"
+                    contentStyle="width: 140px; padding: 10px 10px 10px 10px; color: gray;"
+                    onstatechange="logJSEvents('onstatechange works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="caption">
+        <f:verbatim>Test folding panel</f:verbatim>
+      </f:facet>
+      <h:outputText value="Test text for client-side events testing" style="font-size: 18px;"/>
+    </o:foldingPanel>
+  </td>
+</tr>
+</table>
+
+
+</div>

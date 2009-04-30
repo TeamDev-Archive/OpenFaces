@@ -1,0 +1,117 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div id="component">
+
+    <script type="text/javascript">
+      function showAlert(text) {
+        O$("alertText").innerHTML = text + " Please note popup menu serves in demonstrational purposes only.";
+        O$('form:alertWindow').show();
+      }
+    </script>
+
+    <h:panelGroup id="container" style="display: block; font-family: courier, monospace;
+      width:400px; padding-left: 25px; padding: 10px; border: 1px dashed;">
+      <h:outputText id="text"
+              escape="false"
+              title="Right-click here to see menu in action">
+            public class InputTextareaBean {<br/>
+
+                &#160;&#160;private String feedback;<br/>
+                <br/>
+                &#160;&#160;public String getFeedback() {<br/>
+                    &#160;&#160;&#160;&#160;return feedback;<br/>
+                &#160;&#160;}<br/>
+                <br/>
+                &#160;&#160;public void setFeedback(String feedback) {<br/>
+                    &#160;&#160;&#160;&#160;this.feedback = feedback;<br/>
+                &#160;&#160;}<br/>
+                <br/>
+                &#160;&#160;public String send() {<br/>
+                    &#160;&#160;&#160;&#160;mailService.sendFeedback(feedback);<br/>
+                    &#160;&#160;&#160;&#160;return "success";<br/>
+                &#160;&#160;}<br/>
+            }<br/>
+      </h:outputText>
+
+      <o:popupMenu for="container" itemStyle="font-family: tahoma, arial, sans-serif;" >
+
+        <o:menuItem iconUrl="icons/new-16x16.png" value="New">
+          <o:popupMenu>
+
+            <o:menuItem value="Class" onclick="showAlert('New class created.');"/>
+            <o:menuItem value="Interface" onclick="showAlert('New interface created.');"/>
+            <o:menuItem value="Enum" onclick="showAlert('New enum created.');"/>
+            <o:menuItem value="@Interface" onclick="showAlert('New annotation created.');"/>
+            <o:menuItem value="Package" onclick="showAlert('New package created.');"/>
+            <o:menuSeparator/>
+
+            <o:menuItem value="File" onclick="showAlert('New file created.');"/>
+            <o:menuItem value="Directory" onclick="showAlert('New directory created.');"/>
+          </o:popupMenu>
+        </o:menuItem>
+        <o:menuItem iconUrl="icons/save-16x16.png" value="Save" onclick="showAlert('File saved.');"/>
+        <o:menuSeparator/>
+
+        <o:menuItem iconUrl="icons/cut-16x16.png" value="Cut" onclick="showAlert('Selection is cut.');"/>
+        <o:menuItem iconUrl="icons/copy-16x16.png" value="Copy" onclick="showAlert('Selection is copied.');"/>
+        <o:menuItem iconUrl="icons/paste-16x16.png" value="Paste" onclick="showAlert('Buffer contents pasted.');"/>
+        <o:menuSeparator/>
+
+        <o:menuItem value="Refactor">
+          <o:popupMenu>
+
+            <o:menuItem value="Rename..." onclick="showAlert('Renaming started.');"/>
+            <o:menuSeparator/>
+
+            <o:menuItem value="Move..."  onclick="showAlert('Moving started.');"/>
+            <o:menuItem value="Copy..."  onclick="showAlert('Copying started.');"/>
+            <o:menuItem value="Safe Delete..."  onclick="showAlert('Safe deleting started.');"/>
+            <o:menuSeparator/>
+
+            <o:menuItem value="Extract Method..."  onclick="showAlert('Extracting of method started.');"/>
+            <o:menuItem value="Extract Class..."  onclick="showAlert('Extracting of class started.');"/>
+            <o:menuSeparator/>
+
+            <o:menuItem value="Introduce Field..."  onclick="showAlert('Introducing a field started.');"/>
+            <o:menuItem value="Introduce Constant..."  onclick="showAlert('Introducing a constant started.');"/>
+            <o:menuItem value="Introduce Parameter..." onclick="showAlert('Introducing a parameter started.');"/>
+          </o:popupMenu>
+        </o:menuItem>
+      </o:popupMenu>
+    </h:panelGroup>
+
+     <o:window id="alertWindow" resizeable="false"
+            modal="true"
+            modalLayerClass="modalLayer"
+            rolloverStyle="background: #FEFEFE"
+            style="position: absolute; right: 150px; top: 160px"
+            width="236px"
+            height="310px">
+    <f:facet name="caption">
+      <h:outputText value="Action executed"/>
+    </f:facet>
+    <div align="left" id="alertText"/>
+  </o:window>
+
+  </div>
+
+  <div class="Col1_1 serif">
+    <div><small>* Right click on Java code fragment to see Popup Menu component in action.</small><br/><br/></div>
+  </div>
+
+   <div class="Col1_1 serif">
+    <h4>Shown Functionality</h4>
+    <ul class="hang">
+      <li>
+        <strong>Menu Icons</strong> - Popup Menu items may be supplied with icons.
+      </li>
+      <li>
+        <strong>Hierarchical Menus</strong> - It is possible to build menu with submenus using Popup Menu component.
+      </li>
+    </ul>
+  </div>
+
+</div>

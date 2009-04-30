@@ -1,0 +1,35 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <o:treeTable id="equipHieTree" var="message"
+                 expansionState="#{TreeTableBean.forumTreeTableExpansionState}" style="width: 100%; border: 1px solid #287EC9"
+                 columnIdVar="columnId"
+                 filterRowStyle="background:white; padding-right: 8px" styleClass="tblborder" filterRowClass="tblborder"
+                 bodyRowClass="tblborder" bodySectionClass="tblborder" headerRowStyle="text-align:left"
+                 width="100%" headerRowClass="tbltitle" bodyOddRowClass="tr2 tblborder"
+            >
+      <o:dynamicTreeStructure nodeChildren="#{TreeTableBean.nodeChildren}"/>
+      <o:treeColumn id="subject" showAsTree="#{!TreeTableBean.booleanSwitch}" sortingExpression="#{message.subject}"
+                    filterExpression="#{message.subject}" filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="Subject"/>
+        </f:facet>
+        <h:outputText value="#{message.subject}"/>
+      </o:treeColumn>
+      <o:column id="author" sortingExpression="#{message.author}" filterExpression="#{message.author}"
+                filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText value="From"/>
+        </f:facet>
+        <h:outputText value="#{message.author}"/>
+      </o:column>
+    </o:treeTable>
+  
+</div>

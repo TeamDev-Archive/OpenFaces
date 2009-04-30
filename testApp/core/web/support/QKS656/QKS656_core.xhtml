@@ -1,0 +1,43 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+
+  <h:panelGrid width="90%" border="0" cellpadding="0" cellspacing="0" styleClass="req_form2">
+    <h:outputText value="Request Storage Form"/>
+    <h:panelGrid width="100%" columns="1" border="0" cellpadding="0" cellspacing="0"
+                 rowClasses="req_form_title,req_form_data">
+      <h:outputText value="Duration"/>
+      <h:panelGrid columns="6" styleClass="" width="100%" border="0" cellpadding="0" cellspacing="0">
+        <h:inputText id="inDuration" value="#{QKS656.duration}" required="true"
+                     disabled="#{QKS656.unlimitLifeSpan}">
+          <o:validateCustom
+                  clientFunction="return ( (value == 'unlimitted') || ((value &gt; 0) &amp;&amp; (value &lt; 10)) )"
+                  detail="Not in range" summary="Not in range"
+                  />
+        </h:inputText>
+        <h:outputText value="days"/>
+        <h:selectBooleanCheckbox id="unlimittedSelection" value="#{QKS656.unlimitLifeSpan}"
+                                 onclick="real = document.getElementById('requestAreaFormView:requestSingleAreaForm:inDuration'); if (this.checked) {real.disabled=true; real.value='unlimitted'; } else { real.value=''; real.disabled=false; } ;O$.validate(real);"/>
+        <h:outputLabel value="unlimitted" for="unlimittedSelection"/>
+        <h:panelGrid columns="2" width="100%" border="0" cellpadding="0" cellspacing="0" styleClass="error">
+          <h:message for="inDuration" style="color: red;"/>
+        </h:panelGrid>
+        <o:floatingIconMessage for="requestAreaFormView:requestSingleAreaForm:inDuration"
+                               style="border: 2px solid red;"/>
+      </h:panelGrid>
+
+      <h:commandButton styleClass="popup_Button" onclick="return (O$.validateEnclosingForm(this));" value="Submit"
+                       action="#{QKS656.performAction}"/>
+    </h:panelGrid>
+  </h:panelGrid>
+  <o:clientValidationSupport
+          clientValidation="onDemand">
+  </o:clientValidationSupport>
+
+</div>

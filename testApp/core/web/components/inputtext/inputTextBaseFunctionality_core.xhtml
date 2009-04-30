@@ -1,0 +1,38 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+  <br/>
+  <a href="../../main.jsf">Return to main page</a><br/><br/>
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      InputText Base Functionality
+    </span><br/><br/>
+  <table>
+    <tr>
+      <td class="header" colspan="2">InputText without prompt text</td>
+      <td class="header" colspan="2">InputText with prompt text</td>
+    </tr>
+    <tr>
+      <td class="container">
+        <o:inputText id="first" value="#{InputTextBean.value}"/>
+      </td>
+      <td class="container">
+        Value: <h:outputText id="value" value="#{InputTextBean.value}"/>
+      </td>
+      <td class="container">
+        <o:inputText id="second" promptText="#{InputTextBean.promptText}" value="#{InputTextBean.value2}"/>
+      </td>
+      <td class="container">
+        Value: <h:outputText id="value2" value="#{InputTextBean.value2}"/>
+      </td>
+    </tr>
+  </table>
+  <br/>
+  <br/>
+  <h:commandButton id="submit" value="Submit"/>
+
+</div>

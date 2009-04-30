@@ -1,0 +1,36 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <h:panelGrid style="border-width: 1px; border-style: solid; border-color: black; height: 300px;" width="100%">
+      <center>
+        <h:panelGrid width="80%" columns="1">
+          <h:outputText value="1. Allocation Unit"/>
+          <h:panelGrid columns="6">
+          </h:panelGrid>
+          <h:panelGrid columns="3">
+            <h:inputText required="true" value="#{QKS301.size}" id="requestedAreaSize">
+              <o:validateCustom serverFunction="#{QKS301.validateSize}"
+                                 detail="Please check the area size. It may be not the range."
+                                 summary="Area Size validation error."/>
+            </h:inputText>
+            <h:selectOneMenu value="#{QKS301.sizeUnits}">
+              <f:selectItem itemValue="M" itemLabel="M"/>
+              <f:selectItem itemValue="G" itemLabel="G"/>
+            </h:selectOneMenu>
+            <h:message for="requestedAreaSize" showDetail="true" style="color: red;"/>
+            <o:floatingIconMessage for="requestedAreaSize" showDetail="true" showSummary="true"
+                                   style="background: lightred;"/>
+          </h:panelGrid>
+        </h:panelGrid>
+        <h:commandButton value="Submit"/>
+      </center>
+    </h:panelGrid>
+  
+</div>

@@ -1,0 +1,128 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Return to main page</a><br/>
+<span style="font-size:18px; border-bottom: 1px solid black;">Test hint styles</span>
+<br/>
+<table>
+  <tr>
+    <td class="cells">
+      <span style="font-weight:bold;">*Style attributes here</span>
+      <o:hintLabel
+              style="background: beige; border: 1px solid brown; padding-top: 10px; padding-bottom: 10px; width: 100px;"
+              hintStyle="background: PaleGreen; border: 1px solid DarkGreen; padding-top: 20px; padding-bottom: 20px;"
+              value="Jupiter is more than twice as massive as all the other planets combined (the mass of Jupiter is 318 times that of Earth)"
+              hint="Jupiter is more than twice as massive as all the other planets combined (the mass of Jupiter is 318 times that of Earth)"/>
+    </td>
+    <td class="cells" width="400px">
+      &lt;o:hintLabel style="background: beige; border: 1px solid brown; padding: 10px 10px 10px 10px; width: 100px;"
+      hintStyle="background: PaleGreen; border: 1px solid DarkGreen; padding: 20px 20px 20px 20px;"
+      value="Jupiter is more than twice as massive as all the other planets combined (the mass of Jupiter is 318 times
+      that of Earth)"
+      hint="Jupiter is more than twice as massive as all the other planets combined (the mass of Jupiter is 318 times
+      that of Earth)" /&gt;
+    </td>
+    <td class="cells">
+      <span style="font-weight:bold;">*Class attributes here</span>
+      <o:hintLabel styleClass="hintLabelStyle"
+                   hintClass="hintStyle"
+                   value="Jupiter is more than twice as massive as all the other planets combined (the mass of Jupiter is 318 times that of Earth)"
+                   hint="Jupiter is more than twice as massive as all the other planets combined (the mass of Jupiter is 318 times that of Earth)"/>
+    </td>
+  </tr>
+</table>
+<br/>
+<span style="font-size:18px; border-bottom: 1px solid black;">Test events and hint label style attribute</span>
+<br/>
+<span style="color: gray;">width: 100px; color: blue;</span>
+<o:hintLabel style="width: 100px; color: blue;"
+             onclick="alert('onclick');"
+             value="onclick"/>
+<br/>
+<span style="color: gray;">width: 100px; color: red; background: yellow;</span>
+<o:hintLabel style="width: 100px; color: red; background: yellow;"
+             ondblclick="alert('ondblclick');"
+             value="ondblclick"/>
+<br/>
+<span style="color: gray;">width: 150px; color: green; border: 2px solid lightgrey;</span>
+<o:hintLabel style="width: 150px; color: green; border: 2px solid lightgrey;"
+             onmousedown="alert('onmousedown');"
+             value="onmousedown"/>
+<br/>
+<span style="color: gray;">width: 50%; font-weight: bold; color: brown; border: 1px solid black;</span>
+<o:hintLabel style="width: 50%; font-weight: bold; color: brown; border: 1px solid black;"
+             onmousemove="alert('onmousemove');"
+             value="onmousemove"/>
+<br/>
+<span style="color: gray;">width:5cm; height: 50px; border: 1px dotted darkblue;</span>
+<o:hintLabel style="width:5cm; height: 50px; border: 1px dotted darkblue;"
+             onmouseout="alert('onmouseout');"
+             value="onmouseout"/>
+<br/>
+<span style="color: gray;">background:lightgrey; width: 20%;</span>
+<o:hintLabel style="background:lightgrey; width: 20%;"
+             onmouseover="alert('onmouseover');"
+             value="onmouseover"/>
+<br/>
+<span style="color: gray;">padding:20px 20px 20px 20px; border:1px solid red;</span>
+<o:hintLabel style="padding:20px 20px 20px 20px; border:1px solid red;"
+             onmouseup="alert('onmouseup');"
+             value="onmouseup"/>
+<br/>
+<span style="font-size:18px; border-bottom: 1px solid black;">Test embedding hint label in different components</span>
+<br/>
+<span style="color: gray;">HintLabels in drop-down field</span>
+<o:dropDownField>
+  <o:dropDownItem value="item 1">
+    <o:hintLabel style="width: 100%; color: blue;" value="hint label 1"
+                 hintStyle="background: cornsilk; color: rosybrown;"
+                 hint="hint label title 1"/>
+  </o:dropDownItem>
+  <o:dropDownItem value="item 2">
+    <o:hintLabel style="width: 100%; color: green;" value="hint label 2"
+                 hintStyle="background: cornsilk; color: rosybrown;"
+                 hint="hint label title 2"/>
+  </o:dropDownItem>
+  <o:dropDownItem value="item 3">
+    <o:hintLabel style="width: 100%; color: gray;" value="hint label 3"
+                 hintStyle="background: cornsilk; color: rosybrown;"
+                 hint="hint label title 3"/>
+  </o:dropDownItem>
+</o:dropDownField>
+<br/>
+<span style="color: gray;">HintLabel in PopupLayer</span>
+<br/>
+<h:commandButton onclick="O$('form1:hintLabelPopup').show(); return false;"
+                 value="Show hint label in popup layer"/>
+<o:popupLayer id="hintLabelPopup" hideOnOuterClick="true">
+  <o:hintLabel value="this is a test embedding hint label component to the popup layer"
+               style="width: 100px; background: red;"
+               hintStyle="background: lightgrey; font-weight: bold;"/>
+</o:popupLayer>
+<br/>
+<br/>
+<span style="color: gray;">HintLabels in &lt;o:tabSet /&gt; component</span>
+<o:tabSet tabStyle="width: 170px;">
+  <o:tabSetItem>
+    <o:hintLabel value="Filtering and Paging" style="width: 100%; color: blue;"
+                 hint="This page demonstrates the following features: 1. Filtering - specify the filtering criteria in the fields below the header and click Enter. 2. Paging - to navigate between table pages, use the pager at the bottom of table. 3.Keyboard support - use 'PageUp' and 'PageDown' keys to navigate between pages."/>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <o:hintLabel value="Sorting and Selection" style="width: 100%;  color: blue;"
+                 hint="This page demonstrates the following features: 1. Sorting - click on column name in the table header to sorting the data. 2. Single and multiple selection - click on row to select it. In the multiple selection table, hold 'Ctrl' ('Command' under Mac OS) while clicking to select multiple rows. 3. Keyboard support - use 'Up' and 'Down' arrows to move selection, hold 'Shift' to select adjacent rows. Use 'Home' and 'End' to move selection to the first and last rows."/>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <o:hintLabel value="Styling" style="width: 100%; color: blue;"
+                 hint="Here you can see various ways of styling different parts of the DataTable, like headers, footers, columns, rows and individual cells."/>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <o:hintLabel value="Embedding Components" style="width: 100%; color: blue;"
+                 hint="DataTable can nest any components in it's cells. Click on 'Edit' to see an example of multiple components in a cell. "/>
+  </o:tabSetItem>
+</o:tabSet>
+
+</div>

@@ -1,0 +1,95 @@
+/* CSS Document */
+
+.photorow {
+  margin-top: 10px;
+  background: url(../images/popuplayer/photo_back.gif) repeat-x;
+  height: 176px;
+  width: 676px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.photorow td {
+  width: 169px;
+}
+
+.popup {
+  border: 1px solid #c9c9c9;
+  background-color: #ffffff;
+  padding: 0px 25px 5px 18px;
+  width: 370px;
+  height: 370px;
+}
+
+.popup h1 {
+  color: #375c7f;
+  font-size: 16px;
+}
+
+.popup input {
+  margin: 15px 0px 5px 0px;
+  font-size: 11px;
+}
+
+.bigimage {
+  border: 1px solid #c9c9c9;
+  background-color: #ffffff;
+  font-family: Georgia, Times, serif;
+  font-size: 14px;
+  width: 450px;
+  padding: 5px 5px 5px 5px;
+  text-align: center;
+}
+
+.year {
+  border: 1px solid #c9c9c9;
+  background-color: #fffde8;
+  font-family: Georgia, Times, serif;
+  padding: 5px 5px 5px 5px;
+  text-align: center;
+  font-size: 35px;
+  color: #93680c;
+  font-weight: normal;
+  width: 110px;
+}
+
+.note {
+  height: 100px;
+  width: 390px;
+  padding: 20px 0px 0px 40px;
+  border: 1px solid #fceadd;
+  background-color: #fffff3;
+  line-height: 20px;
+}
+
+.note h1 {
+  font-weight: normal;
+  font-size: 20px;
+  margin: 0px;
+  margin-bottom: 5px;
+  padding: 0px;
+}
+
+.note input {
+  font-family: Tahoma, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  display: block;
+  border: 1px solid #D28900;
+  background-color: #fcefba;
+  color: #6b1700;
+}
+
+.biography {
+  font-size: 11px;
+  text-align: justify;
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+}
+
+.author_name {
+  color: #375c7f;
+  font-size: 16px;
+  text-align: left;
+}

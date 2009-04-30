@@ -1,0 +1,147 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+  
+<a href="../../main.jsf">Return to main page</a>
+<br/>
+<table>
+  <tr>
+    <td class="cells">
+      <h:commandButton id="button1"
+                       value="Invoker"
+                       onclick="O$('formID:confirmedPopup').show(); return false;"/>
+        <o:confirmation id="confirmationID"
+                        for="formID:button1"
+                        cancelButtonText="#{ConfirmationBean.cancelButtonText}"
+                        defaultButton="ok"
+                        okButtonText="#{ConfirmationBean.okButtonText}"
+                        details="#{ConfirmationBean.details}"
+                        message="#{ConfirmationBean.message}"
+                        captionText="#{ConfirmationBean.captionText}"
+                                                buttonAreaStyle="background: blue;"
+                        cancelButtonStyle="border: 1px dashed black;"
+                        captionStyle="border: 1px dashed white;"
+                        detailsStyle="color: red;"
+                        iconAreaStyle="border: 1px solid orange;"
+                        messageStyle="color: blue;"
+                        contentStyle="background: beige;"
+                        modalLayerStyle="background: url(ground_Camus.gif);"
+                        okButtonStyle="border: 1px dashed pink;"
+                        rolloverButtonAreaStyle="background: azure;"
+                        rolloverCancelButtonStyle="border: 3px dashed black;"
+                        rolloverDetailsStyle="font-weight: bold;"
+                        rolloverIconAreaStyle="border: 3px solid red;"
+                        rolloverMessageStyle="color: green;"
+                        rolloverContentStyle="background: orange;"
+                        rolloverOkButtonStyle="border: 3px dashed pink;"
+                        style="border: 3px solid black;"/>
+    </td>
+    <td class="cells">
+          <pre>
+            &lt;h:commandButton id="button1"
+                             value="styleConf"
+                             onclick="alert('Done'); return false;"/&gt;
+            &lt;a4j:outputPanel id="confirmationPanel"&gt;
+              &lt;o:confirmation id="confirmationID"
+                            for="formID:button1"
+                            cancelButtonText="ConfirmationBean.cancelButtonText"
+                            defaultButton="ConfirmationBean.defaultButton"
+                            okButtonText="ConfirmationBean.okButtonText"
+                            details="ConfirmationBean.details"
+                            message="ConfirmationBean.message"
+                            captionText="ConfirmationBean.captionText"
+                                                        buttonAreaStyle="background: blue;"
+                            cancelButtonStyle="border: 1px dashed black;"
+                            captionStyle="border: 1px dashed white;"
+                            detailsStyle="color: red;"
+                            iconAreaStyle="border: 1px solid orange;"
+                            messageStyle="color: blue;"
+                            contentStyle="background: beige;"
+                            modalLayerStyle="background: url(ground_Camus.gif);"
+                            okButtonStyle="border: 1px dashed pink;"
+                            rolloverButtonAreaStyle="background: azure;"
+                            rolloverCancelButtonStyle="border: 3px dashed black;"
+                            rolloverDetailsStyle="font-weight: bold;"
+                            rolloverIconAreaStyle="border: 3px solid red;"
+                            rolloverMessageStyle="color: green;"
+                            rolloverContentStyle="background: orange;"
+                            rolloverOkButtonStyle="border: 3px dashed pink;"
+                            style="border: 3px solid black;"/&gt;
+            &lt;/a4j:outputPanel&gt;
+          </pre>
+    </td>
+    <td class="cells">
+      <a4j:commandButton id="refresher" value="Refresh" reRender="confirmationID"/>
+    </td>
+  </tr>
+</table>
+<o:popupLayer id="confirmedPopup"
+              hidingTimeout="10000"
+              hideOnOuterClick="true"
+              left="20"
+              top="305"
+              style="padding: 20px 20px 20px 20px; background: beige; font: 21px; font-weight: bold; color: red;">
+  <h:panelGroup>
+    <h:outputText value="Confirmation works!"/>
+    <h:commandButton value="Close" id="closer"
+                     onclick="O$('formID:confirmedPopup').hide(); return false;"/>
+  </h:panelGroup>
+</o:popupLayer>
+<h4 style="border-bottom: 1px solid black;">&lt;a4j:commandButton&gt; used here</h4>
+<table>
+  <tr>
+    <td class="cells">
+      <a4j:commandButton id="a4j_button"
+                         value="Invoker"
+                         onclick="O$('formID:confirmed_a4j_Popup').show(); return false;"/>
+        <o:confirmation id="confirmation_a4j_ID"
+                        for="formID:a4j_button"
+                        cancelButtonText="#{ConfirmationBean.cancelButtonText}"
+                        defaultButton="ok"
+                        okButtonText="#{ConfirmationBean.okButtonText}"
+                        details="#{ConfirmationBean.details}"
+                        message="#{ConfirmationBean.message}"
+                        captionText="#{ConfirmationBean.captionText}"
+                                                buttonAreaStyle="background: blue;"
+                        cancelButtonStyle="border: 1px dashed black;"
+                        captionStyle="border: 1px dashed white;"
+                        detailsStyle="color: red;"
+                        iconAreaStyle="border: 1px solid orange;"
+                        messageStyle="color: blue;"
+                        contentStyle="background: beige;"
+                        modalLayerStyle="background: url(ground_Camus.gif);"
+                        okButtonStyle="border: 1px dashed pink;"
+                        rolloverButtonAreaStyle="background: azure;"
+                        rolloverCancelButtonStyle="border: 3px dashed black;"
+                        rolloverDetailsStyle="font-weight: bold;"
+                        rolloverIconAreaStyle="border: 3px solid red;"
+                        rolloverMessageStyle="color: green;"
+                        rolloverContentStyle="background: orange;"
+                        rolloverOkButtonStyle="border: 3px dashed pink;"
+                        style="border: 3px solid black;"/>
+    </td>
+    <td class="cells">
+      <a4j:commandButton id="refresher_a4j" value="Refresh" reRender="confirmation_a4j_ID"/>
+    </td>
+  </tr>
+</table>
+<o:popupLayer id="confirmed_a4j_Popup"
+              hidingTimeout="10000"
+              hideOnOuterClick="true"
+              left="20"
+              top="670"
+              style="padding: 20px 20px 20px 20px; background: LightBlue; font: 21px; font-weight: bold; color: MidnightBlue;">
+  <h:panelGroup>
+    <h:outputText value="Confirmation works!"/>
+    <h:commandButton value="Close" id="closer_a4j"
+                     onclick="O$('formID:confirmed_a4j_Popup').hide(); return false;"/>
+  </h:panelGroup>
+</o:popupLayer>
+
+
+</div>

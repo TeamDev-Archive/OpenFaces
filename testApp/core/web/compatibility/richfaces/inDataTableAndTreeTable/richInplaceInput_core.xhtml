@@ -1,0 +1,96 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+  <a href="inDataTableIndex.jsf">Back to the main page</a>
+  <br/>
+  <h:commandButton value="Set Ajax loading mode" action="#{A4jParametersBean.defineAjaxMode}"/>
+  <br/>
+  <h:commandButton value="Set Server loading mode" action="#{A4jParametersBean.defineServerMode}"/>
+  <br/>
+  <h:commandButton value="Set Client loading mode" action="#{A4jParametersBean.defineClientMode}"/>
+  <br/>
+
+  <o:dataTable id="datatable"
+               value="#{RichTestBean.tableValue}"
+               var="row"
+               rowKey="#{row.id}"
+               useAjax="#{A4jParametersBean.useAjax}"
+               pageSize="10">
+    <f:facet name="below">
+      <o:dataTablePaginator/>
+    </f:facet>
+    <o:checkboxColumn/>
+
+    <o:column id="col1"
+              sortingExpression="#{row.stringField1}"
+              filterExpression="#{row.stringField1}">
+      <f:facet name="header">
+        <h:outputText id="id2" value="stringField1"/>
+      </f:facet>
+      <rich:inplaceInput layout="block"
+                         value="#{row.intField1}"
+                         id="inplace11"
+                         selectOnEdit="true"
+                         editEvent="onclick">
+        <a4j:support event="onviewactivated" reRender="datatable"/>
+      </rich:inplaceInput>
+    </o:column>
+
+    <o:column id="col2"
+              sortingExpression="#{row.stringField2}"
+              filterExpression="#{row.stringField2}">
+      <f:facet name="header">
+        <h:outputText id="id3" value="stringField2"/>
+      </f:facet>
+      <rich:inplaceInput layout="block"
+                         value="#{row.intField2}"
+                         id="inplace12"
+                         selectOnEdit="true"
+                         editEvent="onclick">
+        <a4j:support event="onviewactivated" reRender="datatable"/>
+      </rich:inplaceInput>
+
+    </o:column>
+  </o:dataTable>
+
+  <o:treeTable id="treetable"
+               var="node"
+               expansionState="allCollapsed"
+               useAjax="#{A4jParametersBean.useAjax}">
+    <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
+                            nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
+
+    <o:treeColumn id="name" sortingExpression="#{node.name}" filterExpression="#{node.name}"
+                  filterKind="searchField">
+      <f:facet name="header">
+        <h:outputText id="nameHeader" value="name"/>
+      </f:facet>
+      <rich:inplaceInput layout="block"
+                         value="#{node.intField1}"
+                         id="inplace21"
+                         selectOnEdit="true"
+                         editEvent="onclick">
+        <a4j:support event="onviewactivated" reRender="datatable"/>
+      </rich:inplaceInput>
+
+    </o:treeColumn>
+
+    <o:column id="col1"
+              sortingExpression="#{node.stringField1}"
+              filterExpression="#{node.stringField1}">
+      <f:facet name="header">
+        <h:outputText id="id2" value="stringField1"/>
+      </f:facet>
+      <rich:inplaceInput layout="block"
+                         value="#{node.intField2}"
+                         id="inplace22"
+                         selectOnEdit="true"
+                         editEvent="onclick">
+        <a4j:support event="onviewactivated" reRender="datatable"/>
+      </rich:inplaceInput>
+
+    </o:column>
+  </o:treeTable>
+</div>

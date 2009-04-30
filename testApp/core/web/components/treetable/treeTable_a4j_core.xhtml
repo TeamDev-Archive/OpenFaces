@@ -1,0 +1,148 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Return to main page</a>
+<br/>
+<table>
+  <tr>
+    <td class="cells">
+        <o:treeTable id="permissionsTreeTable"
+                     var="node"
+                     nodeLevelVar="level"
+                     sortLevel="0"
+                     filterAcceptedRowStyle="font: Comic Sans MS; font-size:24px;"
+                     filterSubsidiaryRowStyle="font: Comic Sans MS; font-size:10px;"
+                     bodyOddRowStyle="background: #F8FFA8;"
+                     bodyRowStyle="background: #D0FFFE;"
+                     bodySectionStyle="color: #13731E;"
+                     commonFooterRowStyle="background: #3333AF; border: 1px dashed yellow;"
+                     commonHeaderRowStyle="background: #C90EBE; color: white;"
+                     filterRowStyle="color: SlateBlue; font-weight: bold; background: NavajoWhite;"
+                     focusedStyle="border: 2px solid yellow;"
+                     footerRowStyle="background: Teal; border: 2px solid Salmon;"
+                     footerSectionStyle="font-weight: bold;"
+                     headerRowStyle="background: LightSlateGray; border: 3px solid red;"
+                     headerSectionStyle="font-weight: normal;"
+                     rolloverRowStyle="background: gray; color: white; font-weight: bold;"
+                     rolloverStyle="border: 3px solid black;"
+                     sortedColumnBodyStyle="font-weight: bold;"
+                     noDataRowStyle="color: darkgreen; font-weight: bold;"
+                     sortedColumnFooterStyle="background: Salmon; border: 2px solid Teal;"
+                     sortedColumnHeaderStyle="background:yellow;"
+                     sortedColumnStyle="background: IndianRed;">
+          <o:multipleNodeSelection nodePaths="#{TreeTableA4jBean.treeDemoSelectedNodePaths}" style="color: blue;"/>
+          <o:selectionColumn/>
+          <o:dynamicTreeStructure nodeChildren="#{TreeTableA4jBean.usersTreeChildren}"
+                                  nodeKey="#{TreeTableA4jBean.usersTreeNodeKey}"/>
+          <o:treeColumn sortingExpression="#{node.name}">
+            <f:facet name="header">
+              <h:outputText value="Permissions"/>
+            </f:facet>
+            <h:outputText rendered="#{level == 0}" value="#{node.name}" id="categoryID" style="width: 200px;"/>
+            <h:outputText rendered="#{level == 1}" value="#{node.userName}" id="nameID" style="width: 200px;"/>
+          </o:treeColumn>
+          <o:row condition="#{level == 0}" style="font-weight: bold; background: silver"/>
+        </o:treeTable>
+    </td>
+    <td class="cells">
+      <a4j:commandButton id="refresher" value="Refresh" reRender="permissionsTreeTable"/>
+    </td>
+  </tr>
+  <tr>
+    <td class="cells">
+          <pre>
+            &lt;o:treeTable id="permissionsTreeTable"
+                         var="node"
+                         nodeLevelVar="level"
+                         sortLevel="0"
+                         filterAcceptedRowStyle="font: Comic Sans MS; font-size:24px;"
+                         filterSubsidiaryRowStyle="font: Comic Sans MS; font-size:10px;"
+                         bodyOddRowStyle="background: #F8FFA8;"
+                         bodyRowStyle="background: #D0FFFE;"
+                         bodySectionStyle="color: #13731E;"
+                         commonFooterRowStyle="background: #3333AF; border: 1px dashed yellow;"
+                         commonHeaderRowStyle="background: #C90EBE; color: white;"
+                         filterRowStyle="color: SlateBlue; font-weight: bold; background: NavajoWhite;"
+                         focusedStyle="border: 2px solid yellow;"
+                         footerRowStyle="background: Teal; border: 2px solid Salmon;"
+                         footerSectionStyle="font-weight: bold;"
+                         headerRowStyle="background: LightSlateGray; border: 3px solid red;"
+                         headerSectionStyle="font-weight: normal;"
+                         rolloverRowStyle="background: gray; color: white; font-weight: bold;"
+                         rolloverStyle="border: 3px solid black;"
+                         sortedColumnBodyStyle="font-weight: bold;"
+                         noDataRowStyle="color: darkgreen; font-weight: bold;"
+                         sortedColumnFooterStyle="background: Salmon; border: 2px solid Teal;"
+                         sortedColumnHeaderStyle="background:yellow;"
+                         sortedColumnStyle="background: IndianRed;"&gt;
+              &lt;o:multipleNodeSelection nodePaths="TreeTable_a4j_Bean.treeDemoSelectedNodePaths"
+                                       style="color: blue;"/&gt;
+              &lt;o:selectionColumn/&gt;
+              &lt;o:dynamicTreeStructure nodeChildren="TreeTable_a4j_Bean.usersTreeChildren"
+                                      nodeKey="TreeTable_a4j_Bean.usersTreeNodeKey"/&gt;
+              &lt;o:treeColumn sortingExpression="node.name"&gt;
+                &lt;f:facet name="header"&gt;
+                  &lt;h:outputText value="Permissions"/&gt;
+                &lt;/f:facet&gt;
+                &lt;h:outputText rendered="level == 0" value="node.name" id="categoryID" style="width: 200px;"/&gt;
+                &lt;h:outputText rendered="level == 1" value="node.userName" id="nameID" style="width: 200px;"/&gt;
+              &lt;/o:treeColumn&gt;
+              &lt;o:row condition="level == 0" style="font-weight: bold; background: silver"/&gt;
+            &lt;/o:treeTable&gt;
+          </pre>
+    </td>
+  </tr>
+</table>
+<h4 style="border-bottom: 1px solid black;">&lt;a4j:commandLink&gt; used here</h4>
+<table>
+  <tr>
+    <td class="cells">
+        <o:treeTable id="permissionsTreeTable_a4j"
+                     var="node"
+                     nodeLevelVar="level"
+                     sortLevel="0"
+                     filterAcceptedRowStyle="font: Comic Sans MS; font-size:24px;"
+                     filterSubsidiaryRowStyle="font: Comic Sans MS; font-size:10px;"
+                     bodyOddRowStyle="background: #F8FFA8;"
+                     bodyRowStyle="background: #D0FFFE;"
+                     bodySectionStyle="color: #13731E;"
+                     commonFooterRowStyle="background: #3333AF; border: 1px dashed yellow;"
+                     commonHeaderRowStyle="background: #C90EBE; color: white;"
+                     filterRowStyle="color: SlateBlue; font-weight: bold; background: NavajoWhite;"
+                     focusedStyle="border: 2px solid yellow;"
+                     footerRowStyle="background: Teal; border: 2px solid Salmon;"
+                     footerSectionStyle="font-weight: bold;"
+                     headerRowStyle="background: LightSlateGray; border: 3px solid red;"
+                     headerSectionStyle="font-weight: normal;"
+                     rolloverRowStyle="background: gray; color: white; font-weight: bold;"
+                     rolloverStyle="border: 3px solid black;"
+                     sortedColumnBodyStyle="font-weight: bold;"
+                     noDataRowStyle="color: darkgreen; font-weight: bold;"
+                     sortedColumnFooterStyle="background: Salmon; border: 2px solid Teal;"
+                     sortedColumnHeaderStyle="background:yellow;"
+                     sortedColumnStyle="background: IndianRed;">
+          <o:multipleNodeSelection nodePaths="#{TreeTableA4jBean.treeDemoSelectedNodePaths}" style="color: blue;"/>
+          <o:selectionColumn/>
+          <o:dynamicTreeStructure nodeChildren="#{TreeTableA4jBean.usersTreeChildren}"
+                                  nodeKey="#{TreeTableA4jBean.usersTreeNodeKey}"/>
+          <o:treeColumn sortingExpression="#{node.name}">
+            <f:facet name="header">
+              <a4j:commandLink value="Permissions"/>
+            </f:facet>
+            <a4j:commandLink rendered="#{level == 0}" value="#{node.name}" id="categoryID_a4j" style="width: 200px;"/>
+            <a4j:commandLink rendered="#{level == 1}" value="#{node.userName}" id="nameID_a4j" style="width: 200px;"/>
+          </o:treeColumn>
+          <o:row condition="#{level == 0}" style="font-weight: bold; background: silver"/>
+        </o:treeTable>
+    </td>
+    <td class="cells">
+      <a4j:commandButton id="refresher_a4j" value="Refresh" reRender="permissionsTreeTable_a4j"/>
+    </td>
+  </tr>
+</table>
+
+</div>

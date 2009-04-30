@@ -1,0 +1,97 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <o:tabbedPane
+            selectedIndex="#{QKS371.selectedIndex}"
+            id="tabbedPane1"
+            loadingMode="ajax"
+            tabPlacement="top"
+            tabAlignment="topOrLeft"
+            frontBorderStyle="1px solid gray"
+            tabGapWidth="0"
+            styleClass="tabbedPane"
+            tabClass="tabStyle"
+            selectedTabClass="tab_active"
+            rolloverTabClass="tab_rollover"
+            containerClass="tab_container">
+      <o:tabbedPaneItem rendered="#{!QKS371.loginSuccessful}">
+        <f:facet name="tab">
+          <h:outputText value="Login" styleClass="tab_name"/>
+        </f:facet>
+        <f:subview id="login">
+          <h:outputText value="login"/>
+          <h:commandLink value="Login" action="#{QKS371.doLogin}" styleClass="logout"/>
+        </f:subview>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem rendered="#{QKS371.loginSuccessful}">
+        <f:facet name="tab">
+          <h:outputText value="Vehicle Explorer" styleClass="tab_name"/>
+        </f:facet>
+        <f:subview id="vehicleExplorer">
+          <h:outputText value="tree"/>
+        </f:subview>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem rendered="#{QKS371.loginSuccessful}">
+        <f:facet name="tab">
+          <h:commandLink value="Logout" action="#{QKS371.doLogout}" styleClass="logout"/>
+        </f:facet>
+        <h:outputText value="logout"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem rendered="#{QKS371.loginSuccessful}">
+        <f:facet name="tab">
+          <h:commandButton value="Logout" action="#{QKS371.doLogout}" styleClass="logout"/>
+        </f:facet>
+        <h:outputText value="logout"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem rendered="#{QKS371.loginSuccessful}">
+        <f:facet name="tab">
+          <h:commandButton type="submit" value="Submit"/>
+        </f:facet>
+        <h:outputText value="logout"/>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+
+    <o:dropDownField value="#{QKS371.selectedDropDownItem}" onchange="document.forms[0].submit();">
+      <o:dropDownItem value="Tab 1"/>
+      <o:dropDownItem value="Tab 2"/>
+      <o:dropDownItem value="Tab 3"/>
+    </o:dropDownField>
+
+    <h:outputText value="Selected tab index: #{sessionScope['q_idx']}"/>
+
+    <o:tabbedPane selectedIndex="#{sessionScope['q_idx']}">
+      <o:tabbedPaneItem >
+        <f:facet name="tab">
+          <h:outputText value="Tab 0"/>
+        </f:facet>
+        <h:outputText value="Tab 0"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem rendered="#{QKS371.selectedDropDownItem ==  \"Tab 1\"}">
+        <f:facet name="tab">
+          <h:outputText value="Tab 1"/>
+        </f:facet>
+        <h:outputText value="Tab 1"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem rendered="#{QKS371.selectedDropDownItem ==  \"Tab 2\"}">
+        <f:facet name="tab">
+          <h:outputText value="Tab 2"/>
+        </f:facet>
+        <h:outputText value="Tab 2"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem rendered="#{QKS371.selectedDropDownItem ==  \"Tab 3\"}">
+        <f:facet name="tab">
+          <h:outputText value="Tab 3"/>
+        </f:facet>
+        <h:outputText value="Tab 3"/>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+    <input type="Submit" value="Submit"/>
+  
+</div>

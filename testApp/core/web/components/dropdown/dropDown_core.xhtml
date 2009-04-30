@@ -1,0 +1,166 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+        <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+         DropDown client-side events
+        </span><br/>
+<table>
+<tr>
+  <td class="header">onchange</td>
+  <td class="header">onkeypress</td>
+  <td class="header">onclick</td>
+  <td class="header">ondblclick</td>
+  <td class="header">onmousedown</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:dropDownField id="changeID"
+                     onchange="logJSEvents('onchange works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+  <td class="container">
+    <o:dropDownField id="keypressID"
+                     onkeypress="logJSEvents('onkeypress works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+  <td class="container">
+    <o:dropDownField id="clickID"
+                     onclick="logJSEvents('onclick works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+  <td class="container">
+    <o:dropDownField id="doubleclickID"
+                     ondblclick="logJSEvents('ondblclick works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+  <td class="container">
+    <o:dropDownField id="mousedownID"
+                     onmousedown="logJSEvents('onmousedown works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+</tr>
+<tr>
+  <td class="header">onmouseover</td>
+  <td class="header">onmouseup</td>
+  <td class="header">onmouseout</td>
+  <td class="header">onmousemove</td>
+  <td class="header">onfocus</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:dropDownField id="mouseoverID"
+                     onmouseover="logJSEvents('onmouseover works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+  <td class="container">
+    <o:dropDownField id="mouseupID"
+                     onmouseup="logJSEvents('onmouseup works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+  <td class="container">
+    <o:dropDownField id="mouseoutID"
+                     onmouseout="logJSEvents('onmouseout works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+  <td class="container">
+    <o:dropDownField id="mousemoveID"
+                     onmousemove="logJSEvents('onmousemove works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+  <td class="container">
+    <o:dropDownField id="focusID"
+                     onfocus="logJSEvents('onfocus works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+</tr>
+<tr>
+  <td class="header">onblur</td>
+  <td class="header">onkeydown</td>
+  <td class="header">onkeyup</td>
+  <td class="header">ondropdown</td>
+  <td class="header">oncloseup</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:dropDownField id="blurID"
+                     onblur="logJSEvents('onblur works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+  <td class="container">
+    <o:dropDownField id="keydownID"
+                     onkeydown="logJSEvents('onkeydown works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+  <td class="container">
+    <o:dropDownField id="keyupID"
+                     onkeyup="logJSEvents('onkeyup works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+  <td class="container">
+    <o:dropDownField id="dropdownID"
+                     ondropdown="logJSEvents('ondropdown works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+  <td class="container">
+    <o:dropDownField id="closeupID"
+                     oncloseup="logJSEvents('oncloseup works', 'empty'); logJSEvents(event.type, 'empty');">
+      <o:dropDownItem value="Red"/>
+      <o:dropDownItem value="Yellow"/>
+      <o:dropDownItem value="Blue"/>
+    </o:dropDownField>
+  </td>
+</tr>
+</table>
+<div id="empty"></div>
+
+
+</div>

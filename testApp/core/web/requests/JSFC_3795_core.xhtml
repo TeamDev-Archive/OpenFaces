@@ -1,0 +1,47 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+        >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+
+  <h:commandButton value="Show PopupLayer" onclick="O$('fm:licensePopup').showCentered();"/>
+
+  <o:popupLayer id="licensePopup"
+                draggable="false"
+                modal="true"
+                modalLayerStyle="background: black; filter: alpha(opacity=50); opacity: .50;"
+                width="700px"
+                height="522px"
+                style="border: 4px #dfdfdf solid; padding: 5px 5px 0 5px;">
+    <table cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="620" valign="bottom" height="10">
+          <h4>Source Code License Agreement</h4>
+        </td>
+        <td width="80" align="right" valign="top" height="10">
+          <div id="closeImage" align="right">
+            <a title="Close Form" style="cursor: pointer; border: none; text-decoration: none;"
+               onclick="getElementById('fm:licensePopup').hide(); return false;"><img
+                    alt="Close Form" src="/images/store/close_button.gif"/></a>
+          </div>
+        </td>
+      </tr>
+    </table>
+<!--
+    <div style="height: 480px; overflow-y: scroll;">
+      <ui:include src="/layout/content/plaincontent.xhtml">
+        <ui:param name="pageHolder" value="#{sourceAgreementIndex}"/>
+        <ui:param name="contentName" value="main"/>
+      </ui:include>
+    </div>
+-->
+  </o:popupLayer>
+
+</div>
+
+        

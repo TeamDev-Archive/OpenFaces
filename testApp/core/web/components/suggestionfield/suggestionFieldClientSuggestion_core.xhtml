@@ -1,0 +1,103 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      SuggestionField Client-based Suggestion Functionality
+    </span><br/><br/>
+    <table>
+      <tr>
+        <td class="header">suggestionMode="substring"</td>
+        <td class="header">suggestionMode="stringStart"</td>
+        <td class="header">suggestionMode="stringEnd"</td>
+        <td class="header">suggestionMode="all"</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:suggestionField id="substringDD"
+                             var="color"
+                             converter="#{SuggestionFieldBean.colorConverter}"
+                             customValueAllowed="false"
+                             required="true"
+                             suggestionMode="substring"
+                             autoComplete="true"
+                             style="width: 155px;"
+                             listItemClass="demo_font"
+                             listItemStyle="padding: 2px 4px 2px 4px;">
+            <o:dropDownItems value="#{SuggestionFieldBean.colors}"/>
+            <o:column width="12px">
+              <h:outputText styleClass="colorRect" style="background: #{color.name};"/>
+            </o:column>
+            <o:column>
+              <h:outputText value="#{color.name}"/>
+            </o:column>
+          </o:suggestionField>
+        </td>
+        <td class="container">
+          <o:suggestionField id="stringStartDD"
+                             var="color"
+                             converter="#{SuggestionFieldBean.colorConverter}"
+                             customValueAllowed="false"
+                             required="true"
+                             suggestionMode="stringStart"
+                             autoComplete="true"
+                             style="width: 155px;"
+                             listItemClass="demo_font"
+                             listItemStyle="padding: 2px 4px 2px 4px;">
+            <o:dropDownItems value="#{SuggestionFieldBean.colors}"/>
+            <o:column width="12px">
+              <h:outputText styleClass="colorRect" style="background: #{color.name};"/>
+            </o:column>
+            <o:column>
+              <h:outputText value="#{color.name}"/>
+            </o:column>
+          </o:suggestionField>
+        </td>
+        <td class="container">
+          <o:suggestionField id="stringEndDD"
+                             var="color"
+                             converter="#{SuggestionFieldBean.colorConverter}"
+                             customValueAllowed="false"
+                             required="true"
+                             suggestionMode="stringEnd"
+                             autoComplete="true"
+                             style="width: 155px;"
+                             listItemClass="demo_font"
+                             listItemStyle="padding: 2px 4px 2px 4px;">
+            <o:dropDownItems value="#{SuggestionFieldBean.colors}"/>
+            <o:column width="12px">
+              <h:outputText styleClass="colorRect" style="background: #{color.name};"/>
+            </o:column>
+            <o:column>
+              <h:outputText value="#{color.name}"/>
+            </o:column>
+          </o:suggestionField>
+        </td>
+        <td class="container">
+          <o:suggestionField id="allDD"
+                             var="color"
+                             suggestionMode="all"
+                             autoComplete="true"
+                             style="width: 155px;"
+                             listItemClass="demo_font"
+                             suggestionMinChars="1"
+                             listItemStyle="padding: 2px 4px 2px 4px;">
+            <o:dropDownItem value="test1"/>
+            <o:dropDownItem value="sample2"/>
+            <o:dropDownItem value="demo3"/>
+          </o:suggestionField>
+        </td>
+      </tr>
+    </table>
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="Submit"/>
+  
+</div>

@@ -1,0 +1,76 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div id="component" align="center">
+
+    <!-- start content -->
+    <o:tabSet id="styleSelector"
+              selectedIndex="#{ImageList.styleIndex}"
+              gapWidth="0"
+              tabClass="tab_style clickable_item_cursor"
+              selectedTabClass="selected_tab_style non_clickable_item_cursor"
+              frontBorderStyle="0px"
+              backBorderStyle="0px">
+      <o:tabSetItems value="#{ImageList.styleNames}"/>
+
+      <o:reloadComponents event="onchange" componentIds="authorSelector, imageSelector"/>
+    </o:tabSet>
+    <table style="margin-top: 10px;" cellpadding="0" cellspacing="0" border="0" width="95%">
+      <tr>
+        <td width="61%" height="30" valign="bottom">
+          <o:tabSet id="authorSelector"
+                    selectedIndex="#{ImageList.authorIndex}"
+                    selectionChangeListener="#{ImageList.selectedAuthorChanged}"
+                    alignment="topOrLeft"
+                    placement="top"
+                    style="width: 100%"
+                    gapWidth="4"
+                    tabStyle="#{ImageList.authorSelectorStyle.tabStyle}"
+                    rolloverTabStyle="#{ImageList.authorSelectorStyle.rolloverTabStyle}"
+                    selectedTabStyle="#{ImageList.authorSelectorStyle.selectedTabStyle}"
+                    rolloverSelectedTabStyle="#{ImageList.authorSelectorStyle.rolloverSelectedTabStyle}"
+                    frontBorderStyle="#{ImageList.authorSelectorStyle.frontBorderStyle}"
+                    backBorderStyle="#{ImageList.authorSelectorStyle.backBorderStyle}">
+            <o:tabSetItems value="#{ImageList.authors}"/>
+
+            <o:reloadComponents event="onchange" componentIds="image, imageSelector"/>
+          </o:tabSet>
+        </td>
+        <td>&#160;</td>
+      </tr>
+      <tr>
+        <td height="500" align="center" valign="middle"
+            style="background:url(../images/tabset/canvas.jpg) center no-repeat;">
+          <h:graphicImage id="image" url="#{ImageList.currentImageUrl}"/>
+        </td>
+        <td height="500">
+          <o:tabSet id="imageSelector"
+                    selectedIndex="#{ImageList.imageIndex}"
+                    alignment="bottomOrRight"
+                    placement="right"
+                    style="height: 100%; width: 230px;"
+                    gapWidth="2"
+                    tabStyle="#{ImageList.imageSelectorStyle.tabStyle}"
+                    rolloverTabStyle="#{ImageList.imageSelectorStyle.rolloverTabStyle}"
+                    selectedTabStyle="#{ImageList.imageSelectorStyle.selectedTabStyle}"
+                    rolloverSelectedTabStyle="#{ImageList.imageSelectorStyle.rolloverSelectedTabStyle}"
+                    frontBorderStyle="#{ImageList.imageSelectorStyle.frontBorderStyle}"
+                    backBorderStyle="#{ImageList.imageSelectorStyle.backBorderStyle}">
+            <o:tabSetItems value="#{ImageList.selectedImages}"/>
+
+            <o:reloadComponents event="onchange" componentIds="image"/>
+          </o:tabSet>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div class="Col1_1 serif">
+    The tabs in the TabSet component can be customized to have different placement, alignment, and styles. Click the <b>
+    Default style</b> button to switch to the default presentation of the TabSet component.
+  </div>
+
+</div>

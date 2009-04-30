@@ -1,0 +1,28 @@
+<div style="padding-left: 10px;">
+  <link rel="stylesheet" href="style/style.css" type="text/css" media="screen,projection"/>
+
+  <h2><a name="TabbedPane-SpecifyingTabsContent"></a>Specifying Tabs Content</h2>
+
+  <p>To add the <cite>TabbedPane</cite> component to a page, use the <span class="tag">&lt;q:tabbedPane&gt;</span> tag. There are two ways to define the tabs and the page contents within them:</p>
+  <ul>
+    <li>To create a fixed set of tabs right on a JSF page, use a child <span class="tag">&lt;q:tabbedPaneItem&gt;</span> tag for representing one tab and associated page. To specify the object to be displayed on the tab, use the "tab" facet. The components that define the page content should be added as children of the <span class="tag">&lt;q:tabbedPaneItem&gt;</span> tag.</li>
+  </ul>
+
+
+  <p>The following example shows a two-tab <cite>TabbedPane</cite> component:</p>
+  <pre class="code_area">&lt;q:tabbedPane&gt;
+    &lt;q:tabbedPaneItem&gt;
+      &lt;f:facet name=<span class="code_area_values">"tab"</span>&gt;
+        &lt;h:outputText value=<span class="code_area_values">"First tab"</span>/&gt;
+      &lt;/f:facet&gt;
+      &lt;h:outputText value=<span class="code_area_values">"Some text on the first tab"</span> /&gt;
+    &lt;/q:tabbedPaneItem&gt;
+    &lt;q:tabbedPaneItem&gt;
+      &lt;f:facet name=<span class="code_area_values">"tab"</span>&gt;
+        &lt;h:outputText value=<span class="code_area_values">"Second tab"</span>/&gt;
+      &lt;/f:facet&gt;
+      &lt;h:outputText value=<span class="code_area_values">"Some text on the second tab"</span>/&gt;
+    &lt;/q:tabbedPaneItem&gt;
+  &lt;/q:tabbedPane&gt;</pre>
+
+</div>

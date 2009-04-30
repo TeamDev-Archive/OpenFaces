@@ -1,0 +1,220 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      Here you can see specified text for "removeAllText", "addText", "removeText" and "addAllText" buttons.
+    </span><br/><br/>
+    <o:twoListSelection leftListboxHeader="Available items"
+                        rightListboxHeader="Selected items"
+                        addAllText="Add All Test" addAllHint="Add All Hint"
+                        addText="Add Text Test" addHint="Add Text Hint"
+                        removeText="Remove Text Test" removeHint="Remove Hint"
+                        removeAllText="Remove All Text" removeAllHint="Remove all hint"
+                        moveDownText="Move Down Test" moveDownHint="Move Down Hint"
+                        moveUpText="Move Up Test" moveUpHint="Move Up Hint">
+      <f:selectItem itemValue="item 1 value" itemLabel="item 1 label" />
+      <f:selectItem itemValue="item 5 value" itemLabel="item 5 label" itemDisabled="false"/>
+      <f:selectItem itemValue="item 3 value" itemLabel="item 3 label" />
+      <f:selectItem itemValue="item 4 value" itemLabel="item 4 label" itemDisabled="true"/>
+      <f:selectItem itemValue="item 2 value" itemLabel="item 2 label" />
+      <f:selectItem itemValue="item 6 value" itemLabel="item 6 label" itemDisabled="true"/>
+    </o:twoListSelection><br/><br/>
+    <span style="border-bottom: 1px solid black; font-size: 18px; color: gray;">
+      Code
+    </span><br/><br/><pre>
+      &lt;o:twoListSelection leftListboxHeader="Available items"
+                        rightListboxHeader="Selected items"
+                        addAllText="Add All Test" addAllHint="Add All Hint"
+                        addText="Add Text Test" addHint="Add Text Hint"
+                        removeText="Remove Text Test" removeHint="Remove Hint"
+                        removeAllText="Remove All Text"  removeAllHint="Remove all hint"
+                        moveDownText="Move Down Test" moveDownHint="Move Down Hint"
+                        moveUpText="Move Up Test" moveUpHint="Move Up Hint"&gt;
+      &lt;f:selectItem itemValue="item 1 value" itemLabel="item 1 label" /&gt;
+      &lt;f:selectItem itemValue="item 2 value" itemLabel="item 2 label" /&gt;
+      &lt;f:selectItem itemValue="item 3 value" itemLabel="item 3 label" /&gt;
+      &lt;f:selectItem itemValue="item 4 value" itemLabel="item 4 label" itemDisabled="true"/&gt;
+      &lt;f:selectItem itemValue="item 5 value" itemLabel="item 5 label" itemDisabled="false"/&gt;
+      &lt;f:selectItem itemValue="item 6 value" itemLabel="item 6 label" itemDisabled="true"/&gt;
+    &lt;/o:twoListSelection&gt;
+    </pre><br/><br/>
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      Styled sortable TwoListSelection.
+    </span><br/>
+    <table>
+      <tr>
+        <td class="cells">
+          <o:twoListSelection leftListboxHeader="Available items"
+                              rightListboxHeader="Selected items"
+                              allowSorting="true"
+                              style="border: 2px solid yellow;"
+                              listStyle="background: buttonface; font-family: 'ParkAvenue BT' Tahoma; color: purple; font-size: 20px; width: 200px;"
+                              buttonStyle="color: red;"
+                              headerStyle="font-family: Tahoma; font-weight: bold; font-size: 12px; color: blue;">
+            <f:selectItem itemValue="item 1 value" itemLabel="item 1 label" />
+            <f:selectItem itemValue="item 2 value" itemLabel="item 2 label" />
+            <f:selectItem itemValue="item 3 value" itemLabel="item 3 label" />
+            <f:selectItem itemValue="item 4 value" itemLabel="item 4 label" itemDisabled="true"/>
+            <f:selectItem itemValue="item 5 value" itemLabel="item 5 label" itemDisabled="false"/>
+            <f:selectItem itemValue="item 6 value" itemLabel="item 6 label" itemDisabled="true"/>
+          </o:twoListSelection>
+        </td>
+      </tr>
+      <tr>
+        <td class="cells">
+          <pre>
+          &lt;o:twoListSelection leftListboxHeader="Available items"
+                              rightListboxHeader="Selected items"
+                              allowSorting="true"
+                              style="border: 2px solid yellow;"
+                              listStyle="background: buttonface; font-family: 'ParkAvenue BT' Tahoma; color: purple; font-size: 20px; width: 200px;"
+                              buttonStyle="color: red;"
+                              headerStyle="font-family: Tahoma; font-weight: bold; font-size: 12px; color: blue;"d&gt;
+            &lt;f:selectItem itemValue="item 1 value" itemLabel="item 1 label" /&gt;
+            &lt;f:selectItem itemValue="item 2 value" itemLabel="item 2 label" /&gt;
+            &lt;f:selectItem itemValue="item 3 value" itemLabel="item 3 label" /&gt;
+            &lt;f:selectItem itemValue="item 4 value" itemLabel="item 4 label" itemDisabled="true"/&gt;
+            &lt;f:selectItem itemValue="item 5 value" itemLabel="item 5 label" itemDisabled="false"/&gt;
+            &lt;f:selectItem itemValue="item 6 value" itemLabel="item 6 label" itemDisabled="true"/&gt;
+          &lt;/o:twoListSelection&gt;
+            </pre>
+        </td>
+      </tr>
+      <tr>
+        <td class="cells">
+          <o:twoListSelection leftListboxHeader="Available items"
+                              rightListboxHeader="Selected items"
+                              allowSorting="true"
+                              styleClass="TLSStyle"
+                              buttonClass="TLSbuttonStyle"
+                              headerClass="TLSheaderStyle"
+                              listClass="TLSlistStyle">
+            <f:selectItem itemValue="item 1 value" itemLabel="item 1 label" />
+            <f:selectItem itemValue="item 2 value" itemLabel="item 2 label" />
+            <f:selectItem itemValue="item 3 value" itemLabel="item 3 label" />
+            <f:selectItem itemValue="item 4 value" itemLabel="item 4 label" itemDisabled="true"/>
+            <f:selectItem itemValue="item 5 value" itemLabel="item 5 label" itemDisabled="false"/>
+            <f:selectItem itemValue="item 6 value" itemLabel="item 6 label" itemDisabled="true"/>
+          </o:twoListSelection>
+        </td>
+      </tr>
+    </table>
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      Client-side API test
+    </span><br/>
+    <table>
+      <tr>
+        <td width="50%">
+          <o:twoListSelection id="tls">
+            <f:selectItem itemValue="item 1 value" itemLabel="item 1 label" id="item1"/>
+            <f:selectItem itemValue="item 2 value" itemLabel="item 2 label" id="item2"/>
+            <f:selectItem itemValue="item 3 value" itemLabel="item 3 label" id="item3"/>
+            <f:selectItem itemValue="test value" itemLabel="test label" id="test" itemDisabled="true"/>
+            <f:selectItem itemValue="test 1 value" itemLabel="test 1 label" id="test1"/>
+            <f:selectItem itemValue="_2 test value" itemLabel="_2 test label" id="_2test" itemDisabled="true"/>
+            <f:selectItem itemValue="some value" itemLabel="some label" id="some"/>
+          </o:twoListSelection>
+        </td>
+        <td width="50%">
+          <h:commandButton value="geValue() function use"
+                           onclick="alert(O$('tlsForm:tls').getValue()); return false;" />
+          <br/>
+          <h:commandButton value="setValue(value) function use"
+                           onclick="O$('tlsForm:tls').setValue(['item 2 value,item 1 value']); return false;" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span style="border-bottom: 1px solid black; font-size: 18px; color: gray;">
+            Code
+          </span><br/><pre>
+            &lt;o:twoListSelection id="tls"&gt;
+              &lt;f:selectItem itemValue="item 1 value" itemLabel="item 1 label" id="item1"/&gt;
+              &lt;f:selectItem itemValue="item 2 value" itemLabel="item 2 label" id="item2"/&gt;
+              &lt;f:selectItem itemValue="item 3 value" itemLabel="item 3 label" id="item3"/&gt;
+              &lt;f:selectItem itemValue="test value" itemLabel="test label" id="test" itemDisabled="true"/&gt;
+              &lt;f:selectItem itemValue="test 1 value" itemLabel="test 1 label" id="test1"/&gt;
+              &lt;f:selectItem itemValue="_2 test value" itemLabel="_2 test label" id="_2test" itemDisabled="true"/&gt;
+              &lt;f:selectItem itemValue="some value" itemLabel="some label" id="some"/&gt;
+            &lt;/o:twoListSelection&gt;
+            &lt;h:commandButton value="O$(tlsId).getValue() function use"
+              onclick="alert(O$('tlsForm:tls').getValue()); return false;" /&gt;
+            &lt;h:commandButton value="O$(tlsId).setValue(value) function use"
+              onclick="O$('tlsForm:tls').setValue('item 2 value, item 1 value'); return false;" /&gt;
+          </pre>
+        </td>
+      </tr>
+    </table>
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      Items Ordering &amp; Sorting
+    </span>
+    <span style="font-weight:bold; font-style:italic;">
+      allowItemsOrdering="false"
+    </span>
+    <br/><br/>
+    <o:twoListSelection leftListboxHeader="Available items"
+                        rightListboxHeader="Selected items"
+                        allowItemsOrdering="false">
+      <f:selectItem itemValue="item 1 value" itemLabel="item 1 label" />
+      <f:selectItem itemValue="item 5 value" itemLabel="item 5 label" itemDisabled="false"/>
+      <f:selectItem itemValue="item 3 value" itemLabel="item 3 label" />
+      <f:selectItem itemValue="item 4 value" itemLabel="item 4 label" itemDisabled="true"/>
+      <f:selectItem itemValue="item 2 value" itemLabel="item 2 label" />
+      <f:selectItem itemValue="item 6 value" itemLabel="item 6 label" itemDisabled="true"/>
+    </o:twoListSelection>
+    <br/><br/>
+    <span style="font-weight:bold; font-style:italic;">
+      allowItemsOrdering="true"
+    </span>
+    <br/><br/>
+    <o:twoListSelection leftListboxHeader="Available items"
+                        rightListboxHeader="Selected items"
+                        allowItemsOrdering="true">
+      <f:selectItem itemValue="item 1 value" itemLabel="item 1 label" />
+      <f:selectItem itemValue="item 5 value" itemLabel="item 5 label" itemDisabled="false"/>
+      <f:selectItem itemValue="item 3 value" itemLabel="item 3 label" />
+      <f:selectItem itemValue="item 4 value" itemLabel="item 4 label" itemDisabled="true"/>
+      <f:selectItem itemValue="item 2 value" itemLabel="item 2 label" />
+      <f:selectItem itemValue="item 6 value" itemLabel="item 6 label" itemDisabled="true"/>
+    </o:twoListSelection>
+    <br/><br/>
+    <span style="font-weight:bold; font-style:italic;">
+      allowSorting="true"
+    </span>
+    <br/><br/>
+    <o:twoListSelection leftListboxHeader="Available items"
+                        rightListboxHeader="Selected items"
+                        allowSorting="true">
+      <f:selectItem itemValue="item 1 value" itemLabel="item 1 label" />
+      <f:selectItem itemValue="item 5 value" itemLabel="item 5 label" itemDisabled="false"/>
+      <f:selectItem itemValue="item 3 value" itemLabel="item 3 label" />
+      <f:selectItem itemValue="item 4 value" itemLabel="item 4 label" itemDisabled="true"/>
+      <f:selectItem itemValue="item 2 value" itemLabel="item 2 label" />
+      <f:selectItem itemValue="item 6 value" itemLabel="item 6 label" itemDisabled="true"/>
+    </o:twoListSelection>
+    <br/><br/>
+    <span style="font-weight:bold; font-style:italic;">
+      allowSorting="false"
+    </span>
+    <br/><br/>
+    <o:twoListSelection leftListboxHeader="Available items"
+                        rightListboxHeader="Selected items"
+                        allowSorting="false">
+      <f:selectItem itemValue="item 1 value" itemLabel="item 1 label" />
+      <f:selectItem itemValue="item 5 value" itemLabel="item 5 label" itemDisabled="false"/>
+      <f:selectItem itemValue="item 3 value" itemLabel="item 3 label" />
+      <f:selectItem itemValue="item 4 value" itemLabel="item 4 label" itemDisabled="true"/>
+      <f:selectItem itemValue="item 2 value" itemLabel="item 2 label" />
+      <f:selectItem itemValue="item 6 value" itemLabel="item 6 label" itemDisabled="true"/>
+    </o:twoListSelection>
+    <br/><br/>
+
+
+
+</div>

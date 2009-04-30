@@ -1,0 +1,58 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <h:commandButton value="submit"/>
+    <h:commandButton value="Reload DataTable" onclick="O$.reloadComponents(['form1:diagDetailTable'], {submittedComponentIds: ['form1:diagDetailTable']});" type="button"/>
+    <a4j:commandLink value="Refresh DataTable via Ajax4jsf" reRender="diagDetails"/>
+    <a4j:outputPanel id="diagDetails">
+      <o:dataTable id="diagDetailTable"
+                   var="person"
+                   noDataMessageAllowed="false"
+                   applyDefaultStyle="false"
+                   styleClass="diagDetailTable"
+                   commonHeaderRowClass="diagDetailTableCommonHeaderRow"
+                   headerRowClass="diagDetailTableHeaderRow"
+                   commonHeaderSeparator="1px solid gray"
+                   headerHorizSeparator="1px solid gray"
+                   filterRowSeparator="1px solid gray"
+                   value="#{PeopleListBean.person}">
+
+        <f:facet name="header">
+          <h:outputText value=" "/>
+        </f:facet>
+        <o:column sortingExpression="#{person.name}"
+                  sortingComparator="caseInsensitiveText"
+                  filterExpression="#{person.name}"
+                  filterKind="searchField">
+          <f:facet name="header">
+            <h:outputText value="Name"/>
+          </f:facet>
+          <h:outputText value="#{person.name}"/>
+        </o:column>
+        <o:column filterExpression="#{person.profession}"
+                  filterKind="dropDownField">
+          <f:facet name="header">
+            <h:outputText value="Profession"/>
+          </f:facet>
+          <h:outputText value="#{person.profession}"/>
+        </o:column>
+        <o:column>
+          <f:facet name="header">
+            <h:outputText value="Hobby"/>
+          </f:facet>
+          <h:outputText value="#{person.hobby}"/>
+        </o:column>
+        <f:facet name="below">
+          <o:dataTablePaginator/>
+        </f:facet>
+      </o:dataTable>
+    </a4j:outputPanel>
+  
+</div>

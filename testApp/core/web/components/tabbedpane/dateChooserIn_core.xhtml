@@ -1,0 +1,44 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <h:commandButton value="Submit" />
+    <br/><br/>
+    Choose loading mode:
+    <o:tabSet id="loadingModes"
+              selectedIndex="#{LoadingModesBean.selectedTabbedPaneIndex}"
+              onchange="document.forms[0].submit();">
+      <o:tabSetItems value="#{LoadingModesBean.tabbedPaneLabels}"/>
+    </o:tabSet>
+    <br/><br/>
+    <table>
+      <tr>
+        <td class="container">
+          <o:tabbedPane id="tabbedPaneID"
+                        loadingMode="#{LoadingModesBean.tabbedPaneCurrentLoadingMode}"
+                        containerStyle="padding: 10px 10px 10px 10px;">
+            <o:tabbedPaneItem>
+              <f:facet name="tab">
+                <h:outputText value="First tab" id="firstTabID"/>
+              </f:facet>
+              <o:dateChooser id="firstDateChooser" value="#{CalendarTestBean.examinationToDate}"/>
+            </o:tabbedPaneItem>
+            <o:tabbedPaneItem>
+              <f:facet name="tab">
+                <h:outputText value="Second tab" id="secondTabID"/>
+              </f:facet>
+              <o:dateChooser id="secondDateChooser" value="#{CalendarTestBean.examinationToDate}"/>
+            </o:tabbedPaneItem>
+          </o:tabbedPane>
+        </td>
+      </tr>
+    </table>
+  
+</div>

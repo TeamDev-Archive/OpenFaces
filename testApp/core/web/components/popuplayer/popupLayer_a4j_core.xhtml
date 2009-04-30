@@ -1,0 +1,86 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+      <a href="../../main.jsf">Return to main page</a>
+    <br/>
+    <table>
+      <tr>
+        <td class="cells">
+          <h:commandButton id="buttonID"
+                           value="Show Popup" onclick="O$('formID:popupLayerID').showAtXY(
+                                                      O$.getElementPos(document.getElementById('formID:buttonID')).left + document.getElementById('formID:buttonID').offsetWidth,
+                                                      O$.getElementPos(document.getElementById('formID:buttonID')).top + document.getElementById('formID:buttonID').offsetHeight);
+                                 return false;"/>
+          <o:popupLayer id="popupLayerID"
+                        modal="true"
+                        modalLayerStyle="background: url(ground_Camus.gif);"
+                        rolloverStyle="background: beige; border: 2px dotted red; color: blue;"
+                        style="background:lightseagreen; font-weight: bold; padding: 15px 15px 15px 15px; border: 1px solid black; font-size: 18px;">
+            <h:panelGroup>
+              <h:outputText value="#{PopupLayerA4jBean.generatedValue}"/>
+              <h:outputLabel id="popupCloser"
+                             value="Close" onclick="O$('formID:popupLayerID').hide(); return false;"
+                             style="margin-top:15px; margin-bottom: 10px; font-weight:normal; text-decoration:underline;"/>
+            </h:panelGroup>
+          </o:popupLayer>
+        </td>
+        <td class="cells">
+          <pre>
+            &lt;o:popupLayer id="popupLayerID"
+                        modal="true"
+                        modalLayerStyle="background: url(ground_Camus.gif);"
+                        rolloverStyle="background: beige;
+                                       border: 2px dotted red; color: blue;"
+                        style="background:lightseagreen; font-weight: bold;
+                               padding: 15px 15px 15px 15px;
+                                border: 1px solid black; font-size: 18px;"&gt;
+            &lt;h:panelGroup&gt;
+              &lt;h:outputText value="PopupLayer_a4j_Bean.generatedValue"/&gt;
+              &lt;h:commandButton id="popupCloser"
+                               value="Close" onclick="O$('formID:popupLayerID').hide();
+                                                      return false;"
+                               style="margin-bottom: 10px;"/&gt;
+            &lt;/h:panelGroup&gt;
+          &lt;/o:popupLayer&gt;
+          </pre>
+        </td>
+        <td class="cells">
+          <a4j:commandButton id="refresher" value="Refresh" reRender="popupLayerID"/>
+        </td>
+      </tr>
+    </table>
+
+    <h4 style="border-bottom: 1px solid black;">&lt;a4j:commandLink&gt; used here</h4>
+    <table>
+      <tr>
+        <td class="cells">
+          <a4j:commandButton id="button_a4j_ID"
+                             value="Show Popup" onclick="O$('formID:popupLayer_a4j_ID').showAtXY(
+                                                       O$.getElementPos(document.getElementById('formID:button_a4j_ID')).left + document.getElementById('formID:button_a4j_ID').offsetWidth,
+                                                       O$.getElementPos(document.getElementById('formID:button_a4j_ID')).top + document.getElementById('formID:button_a4j_ID').offsetHeight);
+                                  return false;"/>
+          <o:popupLayer id="popupLayer_a4j_ID"
+                        modal="true"
+                        modalLayerStyle="background: url(ground_Camus.gif);"
+                        rolloverStyle="background: beige; border: 2px dotted red; color: blue;"
+                        style="background:lightseagreen; font-weight: bold; padding: 15px 15px 15px 15px; border: 3px solid black; font-size: 18px;">
+            <h:panelGroup>
+              <a4j:commandLink value="#{PopupLayerA4jBean.generatedValue}"/>
+              <a4j:commandButton id="popup_a4j_Closer"
+                                 value="Close" onclick="O$('formID:popupLayer_a4j_ID').hide(); return false;"
+                                 style="margin-bottom: 10px;"/>
+            </h:panelGroup>
+          </o:popupLayer>
+        </td>
+        <td class="cells">
+          <a4j:commandButton id="refresher_a4j" value="Refresh" reRender="popupLayer_a4j_ID"/>
+        </td>
+      </tr>
+    </table>
+
+  
+</div>

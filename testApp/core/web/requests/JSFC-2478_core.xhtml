@@ -1,0 +1,83 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <table>
+      <tr>
+        <td class="header">DataTable with &lt;o:selectAllCheckbox/&gt;</td>
+        <td class="header">DataTable without &lt;o:selectAllCheckbox/&gt;</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:dataTable id="withSelectAllCheckboxDataTableID"
+                       var="checkboxColumn"
+                       value="#{TestEventsBean.tableTestCollection}"
+                       verticalGridLines="1px solid gray">
+            <o:checkboxColumn id="checkboxColumnID">
+              <f:facet name="header">
+                <o:selectAllCheckbox id="selectAllHeaderID"/>
+              </f:facet>
+              <f:facet name="footer">
+                <o:selectAllCheckbox id="selectAllFooterID"/>
+              </f:facet>
+            </o:checkboxColumn>
+            <o:column id="col_first" style="padding: 10px 10px 10px 10px;">
+              <f:facet name="header">
+                <h:outputText value="first column header" id="withSelectAllCheckboxDataTableID_firstHeader"/>
+              </f:facet>
+              <h:outputText value="#{checkboxColumn.thirdColumn}" id="withSelectAllCheckboxDataTableID_firstBody"/>
+              <f:facet name="footer">
+                <h:outputText value="first column footer" id="withSelectAllCheckboxDataTableID_firstFooter"/>
+              </f:facet>
+            </o:column>
+            <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+              <f:facet name="header">
+                <h:outputText value="second column header" id="withSelectAllCheckboxDataTableID_secondHeader"/>
+              </f:facet>
+              <h:outputText value="#{checkboxColumn.fourthColumn}" id="withSelectAllCheckboxDataTableID_secondBody"/>
+              <f:facet name="footer">
+                <h:outputText value="second column footer" id="withSelectAllCheckboxDataTableID_secondFooter"/>
+              </f:facet>
+            </o:column>
+          </o:dataTable>
+        </td>
+        <td class="container">
+          <o:dataTable id="withoutSelectAllCheckboxDataTableID"
+                       var="checkboxColumn"
+                       value="#{TestEventsBean.tableTestCollection}"
+                       verticalGridLines="1px solid gray">
+            <o:checkboxColumn id="checkboxColumnID">
+            </o:checkboxColumn>
+            <o:column id="col_first" style="padding: 10px 10px 10px 10px;">
+              <f:facet name="header">
+                <h:outputText value="first column header" id="withoutSelectAllCheckboxDataTableID_firstHeader"/>
+              </f:facet>
+              <h:outputText value="#{checkboxColumn.thirdColumn}" id="withoutSelectAllCheckboxDataTableID_firstBody"/>
+              <f:facet name="footer">
+                <h:outputText value="first column footer" id="withoutSelectAllCheckboxDataTableID_firstFooter"/>
+              </f:facet>
+            </o:column>
+            <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+              <f:facet name="header">
+                <h:outputText value="second column header" id="withoutSelectAllCheckboxDataTableID_secondHeader"/>
+              </f:facet>
+              <h:outputText value="#{checkboxColumn.fourthColumn}" id="withoutSelectAllCheckboxDataTableID_secondBody"/>
+              <f:facet name="footer">
+                <h:outputText value="second column footer" id="withoutSelectAllCheckboxDataTableID_secondFooter"/>
+              </f:facet>
+            </o:column>
+          </o:dataTable>
+
+        </td>
+      </tr>
+    </table>
+
+
+  
+</div>

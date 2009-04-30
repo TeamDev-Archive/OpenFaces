@@ -1,0 +1,80 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div id="component" align="center">
+
+    <table align="center" width="100%" style="vertical-align: middle;">
+      <tr>
+        <td align="center">
+          <h3>My Bookmarks</h3>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <o:dataTable id="linkTable" var="link"
+                       value="#{LinkList.links}"
+                       style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px; width: 420px;"
+                       cellspacing="0"
+                       bodyRowStyle="height: 40px;"
+                       cellpadding="0"
+                       rowKey="#{link.id}"
+                       applyDefaultStyle="false">
+            <o:row condition="#{LinkList.addingOrEditingLink}">
+              <o:cell span="2">
+                <h:panelGrid rendered="#{LinkList.addingOrEditingLink}"
+                             columns="2"
+                             style="width: 220px; background: #f8f8f8; border: 1px solid #bbbbbb; padding-left: 3px; white-space: nowrap;">
+                  <h:outputText value="Resource URL:"/>
+                  <h:inputText value="#{link.url}" styleClass="editfield"/>
+                  <h:outputText value="Resource Name:"/>
+                  <h:inputText value="#{link.name}" styleClass="editfield"/>
+                  <h:outputText value="Category:"/>
+                  <h:selectOneMenu value="#{link.linkCategory}" styleClass="editfield">
+                    <f:selectItem itemValue="music.gif" itemLabel="Music"/>
+                    <f:selectItem itemValue="favorite.gif" itemLabel="Favorite"/>
+                    <f:selectItem itemValue="fun.gif" itemLabel="Fun"/>
+                  </h:selectOneMenu>
+                </h:panelGrid>
+              </o:cell>
+              <o:cell>
+                <h:commandButton value="Save" action="#{LinkList.saveLink}"
+                                 styleClass="edit_remove" style="width: 60px; height: 15px;"/>
+                <h:commandButton value="Cancel" action="#{LinkList.cancelLink}"
+                                 styleClass="edit_remove" style="width: 60px; height: 15px;"/>
+              </o:cell>
+            </o:row>
+
+            <o:column style="width: 21px;">
+              <h:graphicImage url="../images/datatable/links/#{link.linkCategory}" width="16px" height="20px"/>
+            </o:column>
+            <o:column style="width: 187px;">
+              <h:outputLink value="javascript:smallWindow('#{link.url}')">
+                <h:outputText value="#{link.name}" style="font-size: 12px;"/>
+              </h:outputLink>
+            </o:column>
+            <o:column style="width: 130px;">
+              <h:commandButton value="Edit" action="#{LinkList.editLink}"
+                               styleClass="edit_remove" style="width: 60px; height: 15px;"/>
+              <h:commandButton value="Remove" action="#{LinkList.removeLink}"
+                               styleClass="edit_remove" style="width: 60px; height: 15px;"/>
+            </o:column>
+          </o:dataTable>
+        </td>
+      </tr>
+      <tr>
+        <td align="center" style="text-align: center; padding-left: 435px;">
+          <h:commandButton value="Add Bookmark" action="#{LinkList.addLink}" rendered="true"
+                           styleClass="edit_remove" style="height: 15px; text-align: center;"/>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="Col1_1 serif">
+    The DataTable component allows embedding any JSF components in the table cells. Click the
+    <strong>Edit</strong> button to see example of several components contained within a cell.
+  </div>
+
+</div>

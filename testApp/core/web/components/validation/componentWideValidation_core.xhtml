@@ -1,0 +1,105 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+    <a href="../../functional_testing.jsf" style="float: right;">Return to validation testing main page</a>
+    <table width="100%">
+      <tr>
+        <td width="33%">
+          <h2>Client Validation "off"</h2>
+          <h:inputText required="true" id="inputOff">
+            <f:attribute name="clientValidation" value="off"/>
+          </h:inputText>
+          <br/>
+          <h:message id="inputOffMessage" for="inputOff" showDetail="true" showSummary="false" style="color:red;"/>
+          <br/>
+          <o:dateChooser id="dchOff" required="true">
+            <f:attribute name="clientValidation" value="off"/>
+          </o:dateChooser>
+          <br/>
+          <h:message id="dchOffInput" for="dchOff" showDetail="true" showSummary="false" style="color:red;"/>
+          <br/>
+          <h:inputText id="validDROff" value="#{ValidBean.validDR}">
+            <f:validateDoubleRange minimum="0.001" maximum="0.999"/>
+            <f:attribute name="clientValidation" value="off"/>
+          </h:inputText>
+          <br/>
+          <h:message id="ValidDROffMessage" for="validDROff" showDetail="false" showSummary="true"
+                     style="color:red;"/>
+          <br/>
+          <h:inputText id="urlOff" value="#{OpenFacesValidatorsBean.urlValidator}">
+            <o:validateUrl detail="Entered value is not url" summary="Validation error occurs"/>
+            <f:attribute name="clientValidation" value="off"/>
+          </h:inputText>
+          <br/>
+          <h:message id="UrlOffMessage" for="urlOff" style="color:red;" showDetail="true" showSummary="true"/>
+        </td>
+        <td>
+          <h2>Clent validation "onSubmit"</h2>
+          <h:inputText required="true" id="inputOnSubmit">
+            <f:attribute name="clientValidation" value="onSubmit"/>
+          </h:inputText>
+          <br/>
+          <h:message id="inputOnSubmitMessage" for="inputOnSubmit" showDetail="true" showSummary="false"
+                     style="color:red;"/>
+          <br/>
+          <o:dateChooser id="dchOnSubmit" required="true">
+            <f:attribute name="clientValidation" value="onSubmit"/>
+          </o:dateChooser>
+          <br/>
+          <h:message id="dchOnSubmitInput" for="dchOnSubmit" showDetail="true" showSummary="false" style="color:red;"/>
+          <br/>
+          <h:inputText id="validDROnSubmit" value="#{ValidBean.validDR}">
+            <f:validateDoubleRange minimum="0.001" maximum="0.999"/>
+            <f:attribute name="clientValidation" value="onSubmit"/>
+          </h:inputText>
+          <br/>
+          <h:message id="ValidDROnSubmitMessage" for="validDROnSubmit" showDetail="false" showSummary="true"
+                     style="color:red;"/>
+          <br/>
+          <h:inputText id="urlOnSubmit" value="#{OpenFacesValidatorsBean.urlValidator}">
+            <o:validateUrl detail="Entered value is not url" summary="Validation error occurs"/>
+            <f:attribute name="clientValidation" value="onSubmit"/>
+          </h:inputText>
+          <br/>
+          <h:message id="UrlOnSubmitMessage" for="urlOnSubmit" style="color:red;" showDetail="true" showSummary="true"/>
+        </td>
+        <td>
+          <h2>Clietn validation "onDemand"</h2>
+          <h:inputText required="true" id="inputOnDemand">
+            <f:attribute name="clientValidation" value="onDemand"/>
+          </h:inputText>
+          <br/>
+          <h:message id="inputOnDemandMessage" for="inputOnDemand" showDetail="true" showSummary="false"
+                     style="color:red;"/>
+          <br/>
+          <o:dateChooser id="dchOnDemand" required="true">
+            <f:attribute name="clientValidation" value="onDemand"/>
+          </o:dateChooser>
+          <br/>
+          <h:message id="dchOnDemandInput" for="dchOnDemand" showDetail="true" showSummary="false" style="color:red;"/>
+          <br/>
+          <h:inputText id="validDROnDemand" value="#{ValidBean.validDR}">
+            <f:validateDoubleRange minimum="0.001" maximum="0.999"/>
+            <f:attribute name="clientValidation" value="onDemand"/>
+          </h:inputText>
+          <br/>
+          <h:message id="ValidDROnDemandMessage" for="validDROnDemand" showDetail="false" showSummary="true"
+                     style="color:red;"/>
+          <br/>
+          <h:inputText id="urlOnDemand" value="#{OpenFacesValidatorsBean.urlValidator}">
+            <o:validateUrl detail="Entered value is not url" summary="Validation error occurs"/>
+            <f:attribute name="clientValidation" value="onDemand"/>
+          </h:inputText>
+          <br/>
+          <h:message id="UrlOnDemandMessage" for="urlOnDemand" style="color:red;" showDetail="true" showSummary="true"/>
+        </td>
+      </tr>
+    </table>
+    <h:commandButton value="submit" id="submitBt"/>
+</div>

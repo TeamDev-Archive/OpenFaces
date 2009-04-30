@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:s="http://jboss.com/products/seam/taglib"  >
+<head>
+  <title></title>
+</head>
+
+<body>
+<f:view>
+  <h:form id="server">
+    <ui:include src="DecorateServer_core.xhtml"/>
+  </h:form>
+  <h:form id="client">
+    <ui:include src="DecorateClient_core.xhtml"/>
+  </h:form>
+</f:view>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div class="Col1_1 serif">
+    Tabbed pane component provides an ability to create different tabs placements. To see all possible variants, just choose an option for Placement and Alignment.
+  </div>
+
+  <div id="component" align="left">
+
+    <div class="container_control_items" style="margin-bottom: 25px; width: 320px;">
+      <table cellpadding="0" cellspacing="0"
+             style="background:url(../images/controls_container/widget.gif) repeat-y; padding-left: 12px;">
+        <tr>
+          <td width="160">
+            <h:outputText value="Placement" style="font-weight: bold;"/>
+            <br/>
+            <h:selectOneRadio id="placementSelector" style="text-align: left;"
+                              value="#{TabbedPaneBean.selectedPlacement}"
+                              converter="#{TabbedPaneBean.tabPositionConverter}"
+                              layout="pageDirection">
+              <f:selectItems value="#{TabbedPaneBean.placements}"/>
+
+              <o:reloadComponents componentIds="tabbedPane, alignmentSelector"/>
+            </h:selectOneRadio>
+          </td>
+          <td width="160" valign="top">
+            <h:outputText value="Alignment" style="font-weight: bold;"/>
+            <br/>
+            <h:selectOneRadio id="alignmentSelector" style="text-align: left;"
+                              value="#{TabbedPaneBean.selectedAlignment}"
+                              converter="#{TabbedPaneBean.tabAlignmentConverter}"
+                              layout="pageDirection">
+              <f:selectItems value="#{TabbedPaneBean.currentAlignments}"/>
+
+              <o:reloadComponents componentIds="tabbedPane"/>
+            </h:selectOneRadio>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <o:tabbedPane id="tabbedPane"
+                  loadingMode="client"
+                  tabPlacement="#{TabbedPaneBean.selectedPlacement}"
+                  tabAlignment="#{TabbedPaneBean.selectedAlignment}"
+                  tabGapWidth="3"
+                  style="width: 260px; height: 290px;"
+                  containerStyle="vertical-align: middle;">
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="a-h" styleClass="tab_name"/>
+        </f:facet>
+        <h:panelGrid columns="1" rowClasses=", name, tel, name, tel, name, tel"
+                     style="line-height: 30px; width: 210px; margin: 0 auto;" columnClasses="col">
+          <h:column><f:verbatim escape="false">&#160;</f:verbatim></h:column>
+          <h:outputText value="Jimmy Cheerful"/>
+          <h:outputText value="555-45-78"/>
+          <h:outputText value="William Green"/>
+          <h:outputText value="555-28-79"/>
+          <h:outputText value="James Erratic"/>
+          <h:outputText value="555-19-64"/>
+          <h:column><f:verbatim escape="false">&#160;</f:verbatim></h:column>
+        </h:panelGrid>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="i-p" styleClass="tab_name"/>
+        </f:facet>
+        <h:panelGrid columns="1" rowClasses=", name, tel, name, tel, name, tel"
+                     style="line-height: 30px; width: 210px; margin: 0 auto;" columnClasses="col">
+          <h:column><f:verbatim escape="false">&#160;</f:verbatim></h:column>
+          <h:outputText value="Clayton Major"/>
+          <h:outputText value="555-46-81"/>
+          <h:outputText value="Diana Ironist"/>
+          <h:outputText value="555-26-73"/>
+          <h:outputText value="Chris Lee"/>
+          <h:outputText value="555-53-79"/>
+          <h:column><f:verbatim escape="false">&#160;</f:verbatim></h:column>
+        </h:panelGrid>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="q-z" styleClass="tab_name"/>
+        </f:facet>
+        <h:panelGrid columns="1" rowClasses=", name, tel, name, tel, name, tel"
+                     style="line-height: 30px; width: 210px; margin: 0 auto;" columnClasses="col">
+          <h:column><f:verbatim escape="false">&#160;</f:verbatim></h:column>
+          <h:outputText value="Larry Smart"/>
+          <h:outputText value="555-52-84"/>
+          <h:outputText value="Christian Smile"/>
+          <h:outputText value="555-42-53"/>
+          <h:outputText value="Joe Tricky"/>
+          <h:outputText value="555-21-74"/>
+          <h:column><f:verbatim escape="false">&#160;</f:verbatim></h:column>
+        </h:panelGrid>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+  </div>
+
+</div>

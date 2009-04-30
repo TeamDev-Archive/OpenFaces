@@ -1,0 +1,57 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+      <a href="../../main.jsf">Return to main page</a><br/><br/>
+    <o:clientValidationSupport clientValidation="onSubmit"/>
+    <o:tabbedPane id="tp1" style="width: 300px; height: 80px; padding: 2px" tabStyle="white-space: nowrap"
+                  loadingMode="ajax">
+      <o:tabbedPaneItem id="tab1">
+        <f:facet name="tab">
+          <h:outputText value="First tab"/>
+        </f:facet>
+        <h:outputText id="tab1Output" value="Some text on the first tab"/>
+        <h:inputText id="input1" value="Input tab 1" required="true"/>
+        <h:message for="input1" style="color:red;"/>
+        <h:message for="input1" style="color:blue;"/>
+        <h:commandButton id="button1" value="validate" onclick="O$.validateById('form1:input1');return false;"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem id="tab2">
+        <f:facet name="tab">
+          <h:outputText value="Second tab"/>
+        </f:facet>
+        <h:outputText id="tab2Output" value="Some text on the second tab"/>
+        <h:inputText id="input2" value="Input tab 2" required="true"/>
+        <h:message for="input2" style="color:red;"/>
+        <h:message for="input2" style="color:blue;"/>
+        <h:commandButton id="button2" value="validate" onclick="O$.validateById('form1:input2');return false;"/>
+        <h:commandButton id="button3" value="validate input1" onclick="O$.validateById('form1:input1');return false;"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem id="tab3">
+        <f:facet name="tab">
+          <h:outputText value="Third tab"/>
+        </f:facet>
+        <h:outputText id="tab3Output" value="Some text on the third tab"/>
+        <h:inputText id="input3" value="Input tab 3" required="true"/>
+        <h:message for="input3" style="color:red;"/>
+        <h:message for="input3" style="color:blue;"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem id="tab4">
+        <f:facet name="tab">
+          <h:outputText value="Forth tab"/>
+        </f:facet>
+        <h:outputText id="tab4Output" value="Some text on the forth tab"/>
+        <h:inputText id="input4" value="Input tab 4" required="true"/>
+        <h:message for="input4" style="color:red;"/>
+        <h:message for="input4" style="color:blue;"/>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+    <h:messages id="formQKMessages" style="color:blue;"/>
+    <h:messages id="formMessages" style="color:red;"/>
+    <br/>
+    <h:commandButton id="submitForm" value="submit" type="submit"/>
+  
+</div>

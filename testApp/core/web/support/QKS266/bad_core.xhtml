@@ -1,0 +1,53 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+<o:clientValidationSupport clientValidation="onDemand"
+                           useDefaultClientValidationPresentation="false"
+                           useDefaultServerValidationPresentation="true">
+  <o:floatingIconMessage showDetail="true" showSummary="false"
+                         style="border: 2px solid red;"/>
+</o:clientValidationSupport>
+
+
+<f:loadBundle basename="messages" var="msg"/>
+
+<t:panelLayout id="simpleSearchPage" cellpadding="0" cellspacing="0"
+               layout="classic" width="100%">
+
+  <f:facet name="header">
+    <f:subview id="header">
+
+    </f:subview>
+  </f:facet>
+
+  <f:facet name="body">
+
+    <f:subview id="body">
+
+
+      <o:focus focusedComponentId="criteria"/>
+      <h:panelGroup>
+        <t:inputText required="true" maxlength="100" id="criteria"
+                     styleClass="DataField" size="50"
+                     value="#{OasisSimpleSearchHandlerBean.simpleSearchCriteria}" forceId="false"/>
+      </h:panelGroup>
+
+
+    </f:subview>
+  </f:facet>
+
+  <f:facet name="footer">
+    <f:subview id="footer">
+
+    </f:subview>
+  </f:facet>
+</t:panelLayout>
+
+</div>

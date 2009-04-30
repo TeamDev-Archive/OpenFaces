@@ -1,0 +1,89 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      TabSet Change Listeners
+    </span><br/><br/>
+    All TabSets represented here without submit
+    <table>
+      <tr>
+        <td class="header" colspan="2"><b>valueChangeListener</b> as attribute</td>
+        <td class="header" colspan="2"><b>valueChangeListener</b> as tag</td>
+        <td class="header" colspan="2"><b>selectionChangeListener</b> as attribute</td>
+        <td class="header" colspan="2"><b>selectionChangeListener</b> as tag</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:tabSet id="valueChangeListenerAttributeWithoutSubmit"
+                    valueChangeListener="#{TabSetBean.valueChangedAttributeWithoutSubmitFunctTest}">
+            <o:tabSetItem>
+              <h:outputText value="Blue"/>
+            </o:tabSetItem>
+            <o:tabSetItem>
+              <h:outputText value="Yellow"/>
+            </o:tabSetItem>
+          </o:tabSet>
+        </td>
+        <td class="container">
+          <h:outputText id="out1" value="#{TabSetBean.valueChangeListenerAttributeWithoutSubmitFuncTest}" />
+        </td>
+        <td class="container">
+          <o:tabSet id="valueChangeListenerTagWithoutSubmit"
+                    valueChangeListener="#{TabSetBean.valueChangedAttributeWithoutSubmitFunctTest}">
+            <o:tabSetItem>
+              <h:outputText value="Blue"/>
+            </o:tabSetItem>
+            <o:tabSetItem>
+              <h:outputText value="Yellow"/>
+            </o:tabSetItem>
+            <f:valueChangeListener type="org.openfaces.testapp.tabset.TestValueChangeListener" />
+          </o:tabSet>
+        </td>
+        <td class="container">
+          <h:outputText id="out2" value="#{TabSetBean.testValueChangeListener}" />
+        </td>
+        <td class="container">
+          <o:tabSet id="selectionChangeListenerAttributeWithoutSubmit"
+                    selectionChangeListener="#{TabSetBean.selectionChanged}">
+            <o:tabSetItem>
+              <h:outputText value="Blue"/>
+            </o:tabSetItem>
+            <o:tabSetItem>
+              <h:outputText value="Yellow"/>
+            </o:tabSetItem>
+          </o:tabSet>
+        </td>
+        <td class="container">
+          <h:outputText id="out3" value="#{TabSetBean.selectionChangeListenerAttributeWithoutSubmitFuncTest}" />
+        </td>
+        <td class="container">
+          <o:tabSet id="selectionChangeListenerTagWithoutSubmit"
+                    valueChangeListener="#{TabSetBean.valueChangedAttributeWithoutSubmitFunctTest}">
+            <o:tabSetItem>
+              <h:outputText value="Blue"/>
+            </o:tabSetItem>
+            <o:tabSetItem>
+              <h:outputText value="Yellow"/>
+            </o:tabSetItem>
+            <o:selectionChangeListener type="org.openfaces.testapp.tabset.TestSelectionChangeListener" />
+          </o:tabSet>
+        </td>
+        <td class="container">
+          <h:outputText id="out4" value="#{TabSetBean.testSelectionChangeListener}" />
+        </td>
+      </tr>
+    </table>
+
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="Submit"/>
+  
+</div>

@@ -1,0 +1,65 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="https://ajax4jsf.dev.java.net/ajax">
+    <p style="padding-left: 2px;">Click the <b>Submit</b> button to trigger validation.</p>
+    <table>
+        <tr>
+            <td style="padding-right: 20px;">
+                <h:commandButton style="font-weight:bold;" value="Submit"
+                                 onclick="return O$.validateFormById('validationForm');"/>
+            </td>
+            <td>
+                <input type="button" value="Enter Invalid Data" onclick="fillInvalidData();"/>
+            </td>
+            <td>
+                <input type="button" value="Enter Valid Data" onclick="fillValidData();"/>
+            </td>
+        </tr>
+    </table>
+
+    <br/>
+
+    <table class="demo_table" cellpadding="0" cellspacing="0" border="0" width="90%">
+        <tr>
+            <td style="width: 25%;">
+                <span class="field_title">Required field:</span>
+            </td>
+            <td style="width: 15%;">
+                <h:inputText
+                        id="requiredField"
+                        style="width: 150px;"
+                        required="true"/>
+            </td>
+            <td style="width: 1%;">
+                <input
+                        type="button"
+                        onclick="return O$.validateById('validationForm:requiredField');"
+                        value="Validate"/>
+            </td>
+            <td>
+                <h:message for="requiredField" style="color: #ff7f7f;"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <h:outputText id="refresher_required" value="Refresh"
+                              style="font-weight: bold; text-decoration:underline;">
+                    <a4j:support event="onclick" reRender="requiredField"/>
+                </h:outputText>
+            </td>
+        </tr>
+    </table>
+    <br/>
+
+    <div>
+        <span class="field_title">All client-side validation messages can also be shown in one place:</span>
+    </div>
+
+    <div style="border: 1px solid #e0e0e0; font-size: 12px; font-family: Verdana; margin: 10px 0px 10px 0px; width: 90%;">
+        <h:messages
+                showDetail="true"
+                showSummary="false"
+                style="color: #ff7f7f;"/>
+    </div>
+</div>

@@ -1,0 +1,267 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <a href="../../main.jsf">Return to main page</a>
+ <style>
+  .container {
+    background: lightyellow;
+    padding: 10px 10px 10px 10px;
+    border-left: 1px solid darkgray;
+    border-top: 1px solid darkgray;
+    border-bottom: 2px solid darkgray;
+    border-right: 2px solid darkgray;
+    text-align: center;
+  }
+
+  .header {
+    vertical-align: middle;
+    padding: 5px 5px 5px 5px;
+    background: azure;
+    border-left: 1px solid darkgray;
+    border-top: 1px solid darkgray;
+    border-bottom: 2px solid darkgray;
+    border-right: 2px solid darkgray;
+  }
+
+</style>
+
+<br/>
+
+<h3>Input Textarea</h3>
+<br/>
+<h:commandButton id="submit2" value="Submit"/>
+<br/>
+  <table>
+  <tr>
+    <td>
+      <h4>Base fuctionality</h4>
+
+      <div>
+        <table>
+          <tr>
+            <td class="header" colspan="2">InputText without prompt text, Cols=40, Rows=5 </td>
+            <td class="header" colspan="2">InputText with prompt text, Cols=40, Rows=5 </td>
+          </tr>
+          <tr>
+            <td class="container">
+              <o:inputTextarea id="first"  cols="40" rows="5" value="#{InputTextBean.value}"/>
+            </td>
+            <td class="container">
+              Value: <h:outputText id="value" value="#{InputTextBean.value}"/>
+            </td>
+            <td class="container">
+              <o:inputTextarea id="second"  cols="40" rows="5" promptText="#{InputTextBean.promptText}" value="#{InputTextBean.value2}"/>
+            </td>
+            <td class="container">
+              Value: <h:outputText id="value2" value="#{InputTextBean.value2}"/>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <h4>Style</h4>
+
+      <div>
+        <o:inputTextarea id="first2"
+                     style="border: 1px solid #A4AEB4; width: 160px; color: brown; font-weight: bold;"
+                     promptText="#{InputTextBean.promptText}"
+                     promptTextStyle="background:none; font-style:italic; font-weight:lighter; color:#7E7E7E;"
+                     focusedStyle=""/>
+        <br/>
+        <br/>
+        <o:inputTextarea id="second2"
+                     style="background: beige; border: 3px solid pink; width: 160px; color: brown; font-weight: bold;"
+                     promptText="#{InputTextBean.promptText}"
+                     promptTextStyle="background: yellow; font-weight: lighter;"
+                     focusedStyle="border: 1px solid green;"
+                     rolloverStyle="border: 4px dotted darkblue; background: red;"
+                     value="some value"/>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <h4>Events</h4>
+
+      <div>
+        <table>
+          <tr>
+            <td class="header">onfocus, onblur</td>
+            <td class="header">onmouseover, onmouseout</td>
+            <td class="header">onmouseup, onmousedown</td>
+          </tr>
+          <tr>
+            <td class="container">
+              <o:inputTextarea id="focusBlur"
+                           onblur="logJSEvents('onblur works', 'empty'); logJSEvents(event.type, 'empty');"
+                           onfocus="logJSEvents('onfocus works', 'empty'); logJSEvents(event.type, 'empty');"/>
+
+            </td>
+            <td class="container">
+              <o:inputTextarea id="mouseoverMouseout"
+                           onmouseout="logJSEvents('onmouseout works', 'empty'); logJSEvents(event.type, 'empty');"
+                           onmouseover="logJSEvents('onmouseover works', 'empty'); logJSEvents(event.type, 'empty');"/>
+            </td>
+            <td class="container">
+              <o:inputTextarea id="mouseupMousedown"
+                           onmousedown="logJSEvents('onmousedown works', 'empty'); logJSEvents(event.type, 'empty');"
+                           onmouseup="logJSEvents('onmouseup works', 'empty'); logJSEvents(event.type, 'empty');"/>
+            </td>
+          </tr>
+          <tr>
+            <td class="header">onkeypress, onkeydown, onkeyup, onchange</td>
+            <td class="header">onclick, ondblclick</td>
+            <td class="header">onmousemove</td>
+          </tr>
+          <tr>
+            <td class="container">
+              <o:inputTextarea id="keyChange"
+                           onchange="logJSEvents('onchange works', 'empty'); logJSEvents(event.type, 'empty');"
+                           onkeydown="logJSEvents('onkeydown works', 'empty'); logJSEvents(event.type, 'empty');"
+                           onkeypress="logJSEvents('onkeypress works', 'empty'); logJSEvents(event.type, 'empty');"
+                           onkeyup="logJSEvents('onkeyup works', 'empty'); logJSEvents(event.type, 'empty');"/>
+            </td>
+            <td class="container">
+              <o:inputTextarea id="clickDblclick"
+                           onclick="logJSEvents('onclick works', 'empty'); logJSEvents(event.type, 'empty');"
+                           ondblclick="logJSEvents('ondblclick works', 'empty'); logJSEvents(event.type, 'empty');"/>
+            </td>
+            <td class="container">
+              <o:inputTextarea id="mousemove"
+                           onmousemove="logJSEvents('onmousemove works', 'empty'); logJSEvents(event.type, 'empty');"/>
+            </td>
+          </tr>
+        </table>
+        <div id="empty"></div>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <h4>Change Value Listener</h4>
+
+      <div>
+        <table>
+          <tr>
+            <td class="header" colspan="2">'valueChangeListener' as attribute</td>
+            <td class="header" colspan="2">'valueChangeListener' as tag</td>
+          </tr>
+          <tr>
+            <td class="container">
+              <o:inputTextarea id="first3" valueChangeListener="#{InputTextBean.valueChangedAttribute}"/>
+            </td>
+            <td class="container">
+              <h:outputText id="asAttributeOutput" value="#{InputTextBean.valueChangeListenerFlag}"/>
+            </td>
+            <td class="container">
+              <o:inputTextarea id="second3">
+                <f:valueChangeListener type="org.openfaces.testapp.inputtext.TestValueChangeListener"/>
+              </o:inputTextarea>
+            </td>
+            <td class="container">
+              <h:outputText id="asTagOutput" value="#{InputTextBean.testValueChangeListener}"/>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <h4>Ajax4jsf</h4>
+
+      <div>
+        <table>
+          <tr>
+            <td class="container">
+              <h:panelGroup id="inputT">
+                <o:inputTextarea id="inputTextID" value="#{InputTextBeanSession.a4jValue}" promptText="#{InputTextBean.a4jPromptText}"
+                             rolloverStyle="border: 1px dotted darkblue;"
+                             style="width: 230px;"/>
+              </h:panelGroup>
+            </td>
+            <td class="container">
+              <a4j:commandButton reRender="inputT" value="refresh"/>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <h4>Disable</h4>
+
+      <div>
+        <o:inputTextarea id="first4" disabled="true"
+                     style="background: beige; border: 3px solid pink; width: 160px; color: brown; font-weight: bold;"
+                     promptText="#{InputTextBean.promptText}"
+                     promptTextStyle="background: yellow; font-weight: lighter;"
+                     focusedStyle="border: 1px solid green;"
+                     rolloverStyle="border: 4px dotted darkblue; background: red;"
+                     value=""/>
+        <br/>
+        <br/>
+        <o:inputTextarea id="second4" disabled="true"
+                     style="background: beige; border: 3px solid pink; width: 160px; color: brown; font-weight: bold;"
+                     promptText="#{InputTextBean.promptText}"
+                     promptTextStyle="background: yellow; font-weight: lighter;"
+                     focusedStyle="border: 1px solid green;"
+                     rolloverStyle="border: 4px dotted darkblue; background: red;"
+                     value="some value"/>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <h4>Readonly</h4>
+
+      <div>
+        <o:inputTextarea id="first5" disabled="true"
+                     style="background: beige; border: 3px solid pink; width: 160px; color: brown; font-weight: bold;"
+                     promptText="#{InputTextBean.promptText}"
+                     promptTextStyle="background: yellow; font-weight: lighter;"
+                     focusedStyle="border: 1px solid green;"
+                     rolloverStyle="border: 4px dotted darkblue; background: red;"
+                     value=""/>
+        <br/>
+        <br/>
+        <o:inputTextarea id="second5" disabled="true"
+                     style="background: beige; border: 3px solid pink; width: 160px; color: brown; font-weight: bold;"
+                     promptText="#{InputTextBean.promptText}"
+                     promptTextStyle="background: yellow; font-weight: lighter;"
+                     focusedStyle="border: 1px solid green;"
+                     rolloverStyle="border: 4px dotted darkblue; background: red;"
+                     value="some value"/>
+      </div>
+    </td>
+  </tr>
+  </table>
+  <br/>
+  <br/>
+  <h:commandButton id="submit" value="Submit"/>
+
+  <script type="text/javascript">
+  function getControl(id) {
+    return document.getElementById(id);
+  }
+
+  function printInfo(textToOutput, divID, add) {
+    var empty = getControl(divID);
+    empty.innerHTML = textToOutput;
+    empty.style.color = "green";
+  }
+
+  function logJSEvents(textToOutput, divID) {
+    printInfo(textToOutput, divID, true);
+  }
+
+</script>
+
+</div>

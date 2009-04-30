@@ -1,0 +1,49 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+      <a href="../../SupportPages.jsf">Return to support pages list</a>
+      <br/>
+      <br/>
+
+      <div style="position: absolute; left: 0px; top: 60px;">
+        
+
+
+        <o:dataTable value="#{QKS186.users}" var="user">
+            <o:column>
+                <a4j:commandLink
+                        immediate="true"
+                        value="#{user}"
+                        actionListener="#{QKS186.userSelected}"
+                        reRender="marchesDataTablePanel, marchesDataTable, marchesDataTable1">
+                </a4j:commandLink>
+            </o:column>
+        </o:dataTable>
+
+        <a4j:outputPanel id="marchesDataTablePanel">
+            <o:dataTable id="marchesDataTable" value="#{QKS186.listeMarches}" var="marche">
+                <o:column rendered="true">
+                    <a4j:commandLink rendered="true"
+                                     value="#{marche}"
+                                     actionListener="#{QKS186.marcheSelected}"/>
+                </o:column>
+            </o:dataTable>
+        </a4j:outputPanel>
+
+        <h:dataTable id="marchesDataTable1" value="#{QKS186.listeMarches}" var="marche">
+            <h:column rendered="true">
+                <a4j:commandLink rendered="true"
+                                 value="#{marche}"
+                                 actionListener="#{QKS186.marcheSelected}"/>
+            </h:column>
+        </h:dataTable>
+      </div>
+    
+</div>

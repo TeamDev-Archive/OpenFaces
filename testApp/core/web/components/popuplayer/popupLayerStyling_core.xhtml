@@ -1,0 +1,33 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      PopupLayer Styling
+    </span><br/><br/>
+
+    <o:popupLayer id="styled"
+                  modalLayerStyle="background: beige;"
+                  modal="true"
+                  rolloverStyle="width: 450px; height: 250px; border: 3px dashed springgreen; background: azure; text-decoration: overline; font-weight: lighter;"
+                  style="width: 400px; height: 200px; border: 2px solid crimson; background: mistyrose; text-decoration: underline; font-weight: bold; text-align:center; left: 200px; top: 200px;"
+                  visible="true">
+      <h:outputText id="textInside" value="Styled PopupLayer"/>
+    </o:popupLayer>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="Submit"/>
+  
+</div>

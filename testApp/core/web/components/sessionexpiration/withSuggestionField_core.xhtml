@@ -1,0 +1,38 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+
+    <a href="../../main.jsf">Return to main page</a><br/><br/>
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      SuggestionField Ajax-based Suggestion Functionality
+    </span><br/><br/>
+
+    <o:ajaxSettings>
+      <f:facet name="progressMessage">
+        <o:defaultProgressMessage imageUrl="panther_eye.png" text="custom loading"
+                                  style="background: red; border: 2px solid green;"/>
+      </f:facet>
+      <f:facet name="sessionExpiration">
+        <o:defaultSessionExpiration />
+      </f:facet>
+    </o:ajaxSettings>
+
+    <div id="empty"></div>
+    <o:suggestionField id="country"
+                       suggestionDelay="0"
+                       suggestionMinChars="0"
+                       listItemStyle="white-space:nowrap;"
+                       suggestionMode="custom"
+                       value="#{SuggestionFieldBean.testSelectedValue}">
+      <o:dropDownItems value="#{SuggestionFieldBean.simpleTestCollection}"/>
+    </o:suggestionField>
+
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="Submit"/>
+  
+</div>

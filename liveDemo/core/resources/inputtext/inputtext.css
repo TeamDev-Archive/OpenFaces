@@ -1,0 +1,31 @@
+/* CSS Document */
+
+.previewPanel p {
+  font-family: "Script MT Bold", Bookman, serif;
+  font-size: 20px
+}
+
+.templateInput {
+  font-size: 2em;
+  margin: 0.3em;
+  border: 1px #FFFFFF solid;
+}
+
+.focusedTemplateInput {
+  border: 1px #494C50 solid;
+}
+
+.rolloverTemplateInput {
+  background-color: #F3FFF3;
+  border: 1px #333333 solid;
+}
+
+#inputDataPanel {
+  float: left;
+  width: 330px;
+}
+
+#preview {
+  margin-left: 350px;
+  display: block;
+}

@@ -1,0 +1,57 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div class="Col1_1 serif">
+    TabbedPane appearance is highly customizable. The UI fragment below is built using this feature. 
+  </div>
+
+  <div id="component" align="center">
+    <!-- start content -->
+    <o:tabbedPane
+            style="width: 380px;"
+            containerStyle="background: #f9f9f9 url(../images/tabbedpane/back_container.gif) repeat-x bottom; border-bottom: 0px; padding: 20px 20px 20px 20px; text-align: justify; width: 340px; height: 230px;"
+            tabStyle="color: #444c50; background: url(../images/tabbedpane/back_inactivetab.gif) repeat-x bottom; text-align: center; vertical-align: middle; height: 25px; width: 90px;"
+            selectedTabStyle="font-weight: bold; background: #f9f9f9;"
+            tabEmptySpaceStyle="background: url(../images/tabbedpane/back_emptycell.gif);"
+            frontBorderStyle="1px solid #99acb7"
+            backBorderStyle="1px solid #a4a9ab"
+            >
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Calendar"/>
+        </f:facet>
+        <h:graphicImage url="../images/tabbedpane/calendar_thumb.jpg" styleClass="componentImage"/>
+        <h:outputText value="Calendar" styleClass="componentName"/>
+        <f:verbatim><br/></f:verbatim>
+        <h:outputText
+                value="The Calendar component enables the user to select a date from a one-month calendar and navigate between months and years."
+                styleClass="componentDescription"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Confirmation"/>
+        </f:facet>
+        <h:graphicImage url="../images/tabbedpane/confirm_th.jpg" styleClass="componentImage"/>
+        <h:outputText value="Confirmation" styleClass="componentName"/>
+        <f:verbatim><br/></f:verbatim>
+        <h:outputText
+                value="The Confirmation component is a DHTML modal window containing a main instruction and two buttons that allow the user to confirm or reject execution of some operation. A Confirmation works asynchronously, i.e. it does not stop a script's execution when called: it returns false and waits for user input. When the user clicks OK, the Confirmation runs the JavaScript function that was intended for confirmation."
+                styleClass="componentDescription"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Date Chooser"/>
+        </f:facet>
+        <h:graphicImage url="../images/tabbedpane/datach_th.jpg" styleClass="componentImage"/>
+        <h:outputText value="Date Chooser" styleClass="componentName"/>
+        <f:verbatim><br/></f:verbatim>
+        <h:outputText
+                value="The DateChooser component allows the user to enter a date either by typing it in the text field or select it from the calendar that appears when the user clicks a button next to text field. The selected date is displayed in the text field in the specified format."
+                styleClass="componentDescription"/>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+  </div>
+
+</div>

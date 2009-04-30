@@ -1,0 +1,25 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+
+    <o:confirmation
+            id="confirmationId"
+            for=":form1:buttonId"
+            draggable="true"
+            message="Are you sure?"
+            captionText="Some Caption Text"
+            details="Are you sure that you want to accept this confirmation. Think twice!"
+            hideOnOuterClick="true"
+            />
+
+    <h:commandButton id="buttonId" value="Invoke confirmation"/>
+
+  
+</div>

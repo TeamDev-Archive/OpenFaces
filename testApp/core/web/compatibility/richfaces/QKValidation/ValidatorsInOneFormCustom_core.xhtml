@@ -1,0 +1,122 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <a href="../../../main.jsf">Back to the main page</a>
+  <br/>
+  
+        <h:outputText id="refresher_a4j" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+          <a4j:support event="onclick" reRender="validationForm"/>
+        </h:outputText>
+
+        <o:clientValidationSupport clientValidation="onDemand"/>
+        <h:inputHidden id="firstLoadHelper" value="#{ValidatiorBean.firstLoad2}"/>
+
+        <div class="control_demo_space">
+          <table>
+  <tr>
+    <td style="padding-right: 20px;">
+      <h:commandButton style="font-weight:bold;" value="Submit" onclick="return O$.validateFormById('validationForm');"/>
+    </td>
+    <td>
+      <input type="button" value="Enter Invalid Data" onclick="fillInvalidData();"/>
+    </td>
+    <td>
+      <input type="button" value="Enter Valid Data" onclick="fillValidData();"/>
+    </td>
+  </tr>
+</table>
+<br/>
+<table class="demo_table" cellpadding="0" cellspacing="0" border="0" width="90%">
+  <tr>
+    <td style="width: 40%;">
+      <span class="field_title">Custom validator. Enter "TeamDev":</span>
+    </td>
+    <td style="width: 130px;">
+      <h:inputText id="customValidatorField" style="width: 120px;">
+        <o:validateCustom clientFunction="return value == 'TeamDev';" summary="Wrong word"
+                            detail="'TeamDev' word is expected"/>
+      </h:inputText>
+      <o:floatingIconMessage for="customValidatorField"/>
+    </td>
+    <td>
+      &#160;<h:message for="customValidatorField" style="color: #ff7f7f;"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span class="field_title">RegExp validator. Enter a phone number in <i>+xx (xxx) xxx xx xx</i> format:</span>
+    </td>
+    <td>
+      <h:inputText id="regExpValidatorField" style="width: 120px;">
+        <o:validateRegex
+                pattern="\+\d\d [(]\d\d\d[)] \d\d\d \d\d \d\d"
+                summary="Wrong number"
+                detail="Please provide a phone number in the following format: +xx (xxx) xxx xx xx"/>
+      </h:inputText>
+      <o:floatingIconMessage for="regExpValidatorField"/>
+    </td>
+    <td>
+      &#160;<h:message for="regExpValidatorField" style="color: #ff7f7f;"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span class="field_title">E-mail validator:</span>
+    </td>
+    <td>
+      <h:inputText id="emailValidatorField" style="width: 120px;">
+        <o:validateEmail summary="Incorrect e-mail" detail="Please provide a correct e-mail address"/>
+      </h:inputText>
+      <o:floatingIconMessage for="emailValidatorField"/>
+    </td>
+    <td>
+      &#160;<h:message for="emailValidatorField" style="color: #ff7f7f;"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span class="field_title">URL validator:</span>
+    </td>
+    <td>
+      <h:inputText id="urlValidatorField" style="width: 120px;">
+        <o:validateUrl summary="Incorrect URL" detail="Please provide a valid URL address"/>
+      </h:inputText>
+      <o:floatingIconMessage for="urlValidatorField"/>
+    </td>
+    <td>
+      &#160;<h:message for="urlValidatorField" style="color: #ff7f7f;"/>
+    </td>
+  </tr>
+  <tr>
+    <td rowspan="2" style="border-bottom: 1px solid #E0E0E0;">
+      <span class="field_title">Equal validator:</span>
+    </td>
+    <td style="border-bottom: 0px solid white;">
+      <h:inputText id="equalValidatorField1" style="width: 120px;">
+        <o:validateCustom clientFunction="return value.length > 0" detail="The value should not be empty"/>
+      </h:inputText>
+      <o:floatingIconMessage for="equalValidatorField1"/>
+    </td>
+    <td style="border-bottom: 0px solid white;">
+      &#160;<h:message for="equalValidatorField1" style="color: #ff7f7f;"/>
+    </td>
+  </tr>
+  <tr>
+    <td style="border-bottom: 1px solid #E0E0E0;">
+      <h:inputText id="equalValidatorField2" style="width: 120px;">
+        <o:validateEqual for="equalValidatorField1"/>
+      </h:inputText>
+      <o:floatingIconMessage for="equalValidatorField2"/>
+    </td>
+    <td style="border-bottom: 1px solid #E0E0E0;">
+      &#160;<h:message for="equalValidatorField2" style="color: #ff7f7f;"/>
+    </td>
+  </tr>
+</table>
+        </div>
+
+      
+</div>

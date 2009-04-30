@@ -1,0 +1,341 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+
+<style type="text/css">
+  .testDiv {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    background-color: #ffffff;
+    float: left;
+    margin: 10px;
+    border: 1px solid gray;
+  }
+
+  h4 {
+    clear: both;
+    margin-top: 20px;
+  }
+</style>
+
+<a href="../../main.jsf">Back to the main page</a> <br/>
+<a href="./borderLayoutPanel.jsf">Go to the BoderLayoutPanel test page</a> <br/>
+<br/>
+
+<h3>SidePanel</h3>
+<br/>
+<h:commandButton value="Submit" onclick="document.forms[0].submit();"/>
+
+<h4>Different sides</h4>
+
+<div class="testDiv">
+  <o:sidePanel alignment="left">
+    <f:facet name="caption">
+      <h:outputText value='... Left sidePanel ...'/>
+    </f:facet>
+    <h:outputText value='... content ...'/>
+  </o:sidePanel>
+</div>
+
+<div class="testDiv">
+  <o:sidePanel alignment="right">
+    <f:facet name="caption">
+      <h:outputText value='... Right sidePanel ...'/>
+    </f:facet>
+    <h:outputText value='... content ...'/>
+  </o:sidePanel>
+</div>
+
+<div class="testDiv">
+  <o:sidePanel alignment="top">
+    <f:facet name="caption">
+      <h:outputText value='... Top sidePanel ...'/>
+    </f:facet>
+    <h:outputText value='... content ...'/>
+  </o:sidePanel>
+</div>
+
+<div class="testDiv">
+  <o:sidePanel alignment="bottom">
+    <f:facet name="caption">
+      <h:outputText value='... Bottom sidePanel ...'/>
+    </f:facet>
+    <h:outputText value='... content ...'/>
+  </o:sidePanel>
+</div>
+
+<h4>default SidePanel</h4>
+
+<div class="testDiv">
+  <o:sidePanel/>
+</div>
+
+<h4> borders, paddings, margins layout </h4>
+
+<div class="testDiv" style="background-color: #ffffbb; float: none;">
+  <style type="text/css">
+    .borderLayoutPanel {
+      background-color: #ffffbb;
+      border: 2px solid gray;
+      padding: 2px;
+      margin: 2px;
+    }
+
+    .sidePanel0 {
+      background-color: #ffffbb;
+      border: 2px solid gray;
+      padding: 2px;
+      margin: 2px;
+    }
+
+    .caption0 {
+      background-color: #ffbbff;
+      border: 2px solid gray;
+      padding: 2px;
+      margin: 2px;
+    }
+
+    .content0 {
+      background-color: #ffffff;
+      border: 2px solid gray;
+      padding: 2px;
+      margin: 2px;
+    }
+
+    .splitter0 {
+      background-color: #bbffbb;
+      border: 2px solid gray;
+      padding: 2px;
+      margin: 2px;
+    }
+
+    .legend0 {
+      width: 16px;
+      height: 15px;
+      border: 1px solid black;
+      margin: 5px 5px 5px 20px;
+      overflow: hidden;
+      clear: both;
+      float: left;
+    }
+
+  </style>
+
+  <o:sidePanel alignment="left" style="height: 188px;" styleClass="sidePanel0" captionClass="caption0"
+               contentClass="content0" splitterClass="splitter0">
+    <f:facet name="caption">
+      <h:outputText value='... caption ...'/>
+    </f:facet>
+    <h:outputText value='... content ...'/>
+  </o:sidePanel>
+</div>
+
+<p>
+  <div class="legend0" style="background-color: #ffffbb"> </div>
+  - margin, padding or free space
+</p>
+<p>
+  <div class="legend0" style="background-color: gray"> </div>
+  - border
+</p>
+<p>
+  <div class="legend0" style="background-color: #ffbbff"> </div>
+  - caption
+</p>
+<p>
+  <div class="legend0" style="background-color: #ffffff"> </div>
+  - content
+</p>
+<p>
+  <div class="legend0" style="background-color: #bbffbb"> </div>
+  - splitter
+</p>
+
+<h4>minSize, maxSize</h4>
+
+<div class="testDiv">
+  <o:sidePanel alignment="top" minSize="25%" maxSize="75%">
+    <h:outputText value='minSize="25%" maxSize="75%"'/>
+  </o:sidePanel>
+</div>
+
+<div class="testDiv">
+  <o:sidePanel alignment="top" minSize="30px" maxSize="150px">
+    <h:outputText value='minSize="30px" maxSize="150px"'/>
+  </o:sidePanel>
+</div>
+
+<h4>events</h4>
+
+<div class="testDiv">
+  <o:sidePanel id="sidePanelWithDisplay1"
+               alignment="top"
+               size="50%"
+               oncollapse='alert("sidePanel is collapsed");'
+               onrestore='alert("sidePanel are restored");'
+               onsplitterdrag='var sidePanel = O$("formID:sidePanelWithDisplay1");
+                           var display = O$("display1");
+                           display.innerHTML = "size = " + sidePanel._size;'>
+    <f:verbatim><div id="display1">
+      size = 50%
+    </div></f:verbatim>
+  </o:sidePanel>
+</div>
+
+<div class="testDiv">
+  <o:sidePanel id="sidePanelWithDisplay2"
+               alignment="bottom"
+               size="100px"
+               oncollapse='alert("sidePanel is collapsed");'
+               onrestore='alert("sidePanel are restored");'
+               onsplitterdrag='var sidePanel = O$("formID:sidePanelWithDisplay2");
+                           var display = O$("display2");
+                           display.innerHTML = "size = " + sidePanel._size;'>
+    <f:verbatim><div id="display2">
+      size = 100px
+    </div></f:verbatim>
+  </o:sidePanel>
+</div>
+
+<h4>fixed</h4>
+
+<div class="testDiv">
+  <o:sidePanel alignment="top" collapsible="false">
+    <h:outputText value="collapsible = false"/>
+  </o:sidePanel>
+</div>
+
+<div class="testDiv">
+  <o:sidePanel alignment="top" resizeable="false">
+    <h:outputText value='resizeable = false'/>
+  </o:sidePanel>
+</div>
+
+<div class="testDiv">
+  <o:sidePanel alignment="top" resizeable="false" collapsible="false">
+    <h:outputText value='resizeable = false; collapsible = false'/>
+  </o:sidePanel>
+</div>
+
+<h4>SidePanel using as simple splitter</h4>
+
+<div id="panel1" class="testDiv">
+
+  <div id="rightSide1" style="height: 100%; width: 50%; overflow: auto; position: absolute; right: 0;">
+    <h:outputText value='... Right side text ... Right side text ... Right side text ... Right side text ... Right side text ... Right side text ... Right side text ... Right side text ... Right side text ... Right side text ... Right side text ... Right side text ... Right side text ...'/>
+  </div>
+
+  <o:sidePanel id="leftSidePanel1" alignment="left" collapsible="false"
+               onsplitterdrag="O$('rightSide1').style.width = (O$('panel1').offsetWidth - O$('formID:leftSidePanel1').offsetWidth) + 'px'; ">
+    <h:outputText value='... Left side text ... Left side text ... Left side text ... Left side text ... Left side text ... Left side text ... Left side text ... Left side text ... Left side text ... Left side text ... Left side text ... Left side text ... Left side text ...'/>
+  </o:sidePanel>
+
+</div>
+
+<div id="panel2" class="testDiv">
+
+  <div id="bottomSide2" style="width: 100%; height: 50%; position:absolute; bottom: 0; overflow: auto">
+    <h:outputText value='... Bottom side text ... Bottom side text ... Bottom side text ... Bottom side text ... Bottom side text ... Bottom side text ... Bottom side text ... Bottom side text ... Bottom side text ... Bottom side text ... Bottom side text ... Bottom side text ...'/>
+  </div>
+
+  <o:sidePanel id="topSidePanel2" alignment="top" collapsible="false"
+               onsplitterdrag="O$('bottomSide2').style.height = (O$('panel2').offsetHeight - O$('formID:topSidePanel2').offsetHeight) + 'px'; ">
+    <h:outputText value='... Top side text ... Top side text ... Top side text ... Top side text ... Top side text ... Top side text ... Top side text ... Top side text ... Top side text ... Top side text ... Top side text ... Top side text ... Top side text ... Top side text ...'/>
+  </o:sidePanel>
+
+</div>
+
+<h4 style="clear:left; margin-top: 20px">SidePanel different styles</h4>
+
+<style type="text/css">
+  .panel1 {
+    height: 186px;
+    width: 87px;
+    margin: 5px;
+    position: absolute;
+    right: 0;
+    border: 2px solid #99aabd;
+    background-color: #ffffff;
+    margin-left: 0;
+  }
+
+  .sidePanel1 {
+    height: 190px;
+    margin: 5px;
+    border: 2px solid #99aabd;
+    background-color: #ffffff;
+    margin-right: 0;
+  }
+
+  .content1 {
+
+  }
+
+  .splitter1 {
+    border: 0;
+    background-color: #e9f2fa;
+    width: 8px;
+  }
+</style>
+<div id="styleDiv1" class="testDiv" style="background-color: #e9f2fa;">
+  <div id="stylePanel1" class="panel1"> </div>
+  <o:sidePanel id="styleSidePanel1" size="104px" styleClass="sidePanel1" contentClass="content1"
+               splitterClass="splitter1"
+               onsplitterdrag="O$('stylePanel1').style.width = (O$('styleDiv1').offsetWidth - O$('formID:styleSidePanel1').offsetWidth - 11) + 'px'; "
+               oncollapse="O$('stylePanel1').style.width = (O$('styleDiv1').offsetWidth - O$('formID:styleSidePanel1').offsetWidth - 11) + 'px'; "
+               onrestore="O$('stylePanel1').style.width = (O$('styleDiv1').offsetWidth - O$('formID:styleSidePanel1').offsetWidth - 11) + 'px'; ">
+  </o:sidePanel>
+</div>
+
+<div id="styleDiv2" class="testDiv" style="background-color: #e9f2fa;">
+  <div id="stylePanel2" class="panel1"> </div>
+  <o:sidePanel id="styleSidePanel2" size="104px" styleClass="sidePanel1" contentClass="content1"
+               splitterClass="splitter1"
+               collapsible="false"
+               onsplitterdrag="O$('stylePanel2').style.width = (O$('styleDiv2').offsetWidth - O$('formID:styleSidePanel2').offsetWidth - 11) + 'px'; "
+               oncollapse="O$('stylePanel2').style.width = (O$('styleDiv2').offsetWidth - O$('formID:styleSidePanel2').offsetWidth - 11) + 'px'; "
+               onrestore="O$('stylePanel2').style.width = (O$('styleDiv2').offsetWidth - O$('formID:styleSidePanel2').offsetWidth - 11) + 'px'; ">
+    <f:verbatim><script type="text/javascript">
+      O$._createSplitterImage(O$('formID:styleSidePanel2'), "images/3dots_v.png", true);
+    </script></f:verbatim>
+  </o:sidePanel>
+</div>
+
+<div id="styleDiv3" class="testDiv" style="background-color: #e9f2fa;">
+  <div id="stylePanel3" class="panel1"> </div>
+  <o:sidePanel id="styleSidePanel3" size="104px" styleClass="sidePanel1" contentClass="content1"
+               splitterClass="splitter1"
+               collapsible="false"
+               onsplitterdrag="O$('stylePanel3').style.width = (O$('styleDiv3').offsetWidth - O$('formID:styleSidePanel3').offsetWidth - 11) + 'px'; "
+               oncollapse="O$('stylePanel3').style.width = (O$('styleDiv3').offsetWidth - O$('formID:styleSidePanel3').offsetWidth - 11) + 'px'; "
+               onrestore="O$('stylePanel3').style.width = (O$('styleDiv3').offsetWidth - O$('formID:styleSidePanel3').offsetWidth - 11) + 'px'; ">
+    <f:verbatim><script type="text/javascript">
+      O$._createSplitterButton(O$('formID:styleSidePanel3'), "images/btn_left.png", "images/btn_right.png", "images/btn_left_mouseover.png", "images/btn_right_mouseover.png", "images/btn_left_mouseover.png", "images/btn_right_mouseover.png", true);
+    </script></f:verbatim>
+  </o:sidePanel>
+</div>
+
+<div id="styleDiv4" class="testDiv" style="background-color: #e9f2fa;">
+  <div id="stylePanel4" class="panel1"> </div>
+  <o:sidePanel id="styleSidePanel4" size="104px" styleClass="sidePanel1" contentClass="content1"
+               splitterClass="splitter1" resizeable="false"
+               onsplitterdrag="O$('stylePanel4').style.width = (O$('styleDiv4').offsetWidth - O$('formID:styleSidePanel4').offsetWidth - 11) + 'px'; "
+               oncollapse="O$('stylePanel4').style.width = (O$('styleDiv4').offsetWidth - O$('formID:styleSidePanel4').offsetWidth - 11) + 'px'; "
+               onrestore="O$('stylePanel4').style.width = (O$('styleDiv4').offsetWidth - O$('formID:styleSidePanel4').offsetWidth - 11) + 'px'; ">
+    <f:verbatim><script type="text/javascript">
+      O$._createSplitterMouseSattelite(O$('formID:styleSidePanel4'), "images/btn_left.png", "images/btn_right.png", true);
+    </script></f:verbatim>
+  </o:sidePanel>
+</div>
+
+
+<br style="clear:left;"/>
+<h:commandButton value="Submit" onclick="document.forms[0].submit();"/>
+<br/>
+
+</div>

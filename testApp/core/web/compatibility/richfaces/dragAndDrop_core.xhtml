@@ -1,0 +1,42 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+  <a href="index.jsf">Back to the main page</a>
+  <br/>
+  <rich:dragIndicator id="indicator"/>
+  <h:panelGrid columnClasses="panelc" columns="2" width="100%">
+    <rich:panel style="width:133px">
+      <f:facet name="header">
+        <h:outputText value="Source List"/>
+      </f:facet>
+      <h:dataTable id="src" value="#{DnDBean.frameworks}"
+                   var="fm">
+        <h:column>
+          <a4j:outputPanel style="width:100px;border:1px solid gray;padding:2px"
+                           layout="block">
+            <rich:dragSupport dragIndicator=":indicator"
+                              dragType="#{fm.family}" dragValue="#{fm}">
+              <rich:dndParam name="label" value="#{fm.name}"/>
+            </rich:dragSupport>
+            <h:outputText value="#{fm.name}"/>
+          </a4j:outputPanel>
+        </h:column>
+      </h:dataTable>
+    </rich:panel>
+    <rich:panel >
+      <f:facet name="header">
+        <h:outputText value="PHP Frameworks"/>
+      </f:facet>
+      <rich:dropSupport id="php" acceptedTypes="PHP" dropValue="PHP"
+                        dropListener="#{DnDBean.processDrop}" reRender="phptable, src">
+      </rich:dropSupport>
+      <h:dataTable id="phptable" value="#{DnDBean.containerPHP}" var="fm">
+        <h:column>
+          <h:outputText value="#{fm.name}"/>
+        </h:column>
+      </h:dataTable>
+    </rich:panel>
+  </h:panelGrid>
+</div>

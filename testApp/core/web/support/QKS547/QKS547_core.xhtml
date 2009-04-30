@@ -1,0 +1,87 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <h:panelGrid columns="3" border="1" cellpadding="10px">
+    <o:dataTable useAjax="true" id="grid1" value="#{QKS547.data}"
+                 var="row" rowKey="#{row.id}"
+                 pageSize="5" applyDefaultStyle="true" width="100%">
+      <f:facet name="below">
+        <o:dataTablePaginator/>
+      </f:facet>
+
+      <o:column sortingExpression="#{row.id}">
+        <f:facet name="header">
+          <h:outputText value="Id"/>
+        </f:facet>
+        <h:outputText value="#{row.id}"/>
+      </o:column>
+
+      <o:column sortingExpression="#{row.text}" filterExpression="#{row.text}" filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText value="Text"/>
+        </f:facet>
+        <h:outputText value="#{row.text}"/>
+      </o:column>
+    </o:dataTable>
+
+    <o:dataTable useAjax="true" id="grid2" value="#{QKS547.data}"
+                 var="row" rowKey="#{row.id}"
+                 pageSize="5" applyDefaultStyle="true" width="100%">
+      <f:facet name="below">
+        <o:dataTablePaginator/>
+      </f:facet>
+
+      <o:column sortingExpression="#{row.id}">
+        <f:facet name="header">
+          <h:outputText value="Id"/>
+        </f:facet>
+        <h:outputText value="#{row.id}"/>
+      </o:column>
+
+      <o:column sortingExpression="#{row.text}" filterExpression="#{row.text}" filterKind="dropDownField">
+        <f:facet name="header">
+          <h:outputText value="Text"/>
+        </f:facet>
+        <h:outputText value="#{row.text}"/>
+      </o:column>
+    </o:dataTable>
+
+    <o:dataTable useAjax="true" id="grid3" value="#{QKS547.data}"
+                 var="row" rowKey="#{row.id}"
+                 pageSize="5" applyDefaultStyle="true" width="100%">
+      <f:facet name="below">
+        <o:dataTablePaginator/>
+      </f:facet>
+
+      <o:column sortingExpression="#{row.id}">
+        <f:facet name="header">
+          <h:outputText value="Id"/>
+        </f:facet>
+        <h:outputText value="#{row.id}"/>
+      </o:column>
+
+      <o:column sortingExpression="#{row.text}" filterExpression="#{row.text}" filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="Text"/>
+        </f:facet>
+        <h:outputText value="#{row.text}"/>
+      </o:column>
+    </o:dataTable>
+    </h:panelGrid>
+    <h:inputText id="inputText" value="#{sessionScope['qks547_testText']}"/>
+    <input type="button" value=" -> (qk ajax) -> " onclick="O$.reloadComponents(['content:outputText'], {submittedComponentIds: ['content:inputText']});"/>
+    <a4j:commandButton value=" -> (a4j ajax) -> " reRender="outputText"/>
+    <input type="submit" value=" -> (submit) -> "/>
+
+    <h:outputText id="outputText" value="#{sessionScope['qks547_testText']}"/>
+
+
+  
+</div>

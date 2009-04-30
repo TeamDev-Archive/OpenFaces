@@ -1,0 +1,14 @@
+/* CSS Document */
+
+.propertyName {
+  width: 75px;
+  padding-left: 10px;
+  vertical-align: top;
+  height: 28px;
+}
+
+.propertyValue {
+  height: 28px;
+  vertical-align: top;
+  width: 118px;
+}

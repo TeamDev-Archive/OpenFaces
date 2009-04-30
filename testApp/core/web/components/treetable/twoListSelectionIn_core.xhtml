@@ -1,0 +1,59 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+
+    <table>
+      <tr>
+        <td class="container">
+          <o:treeTable var="TLSTree" nodeLevelVar="level">
+            <o:staticTreeStructure>
+              <o:treeNode value="TLS top node">
+                <o:treeNode value="TLS sub node"/>
+              </o:treeNode>
+            </o:staticTreeStructure>
+            <o:treeColumn>
+              <f:facet name="header">
+                <o:twoListSelection>
+                  <f:selectItem itemValue="item1" itemLabel="label1"/>
+                  <f:selectItem itemValue="item5" itemLabel="label2" itemDisabled="false"/>
+                  <f:selectItem itemValue="item3" itemLabel="label3"/>
+                  <f:selectItem itemValue="item4" itemLabel="label4" itemDisabled="true"/>
+                </o:twoListSelection>
+              </f:facet>
+              <o:twoListSelection rendered="#{level == 0}">
+                <f:selectItem itemValue="item1" itemLabel="label1"/>
+                <f:selectItem itemValue="item5" itemLabel="label2" itemDisabled="false"/>
+                <f:selectItem itemValue="item3" itemLabel="label3"/>
+                <f:selectItem itemValue="item4" itemLabel="label4" itemDisabled="true"/>
+              </o:twoListSelection>
+              <o:twoListSelection rendered="#{level == 1}">
+                <f:selectItem itemValue="item1" itemLabel="label1 subnode"/>
+                <f:selectItem itemValue="item5" itemLabel="label2 subnode" itemDisabled="false"/>
+                <f:selectItem itemValue="item3" itemLabel="label3 subnode"/>
+                <f:selectItem itemValue="item4" itemLabel="label4 subnode" itemDisabled="true"/>
+              </o:twoListSelection>
+              <f:facet name="footer">
+                <o:twoListSelection>
+                  <f:selectItem itemValue="item1" itemLabel="label1"/>
+                  <f:selectItem itemValue="item5" itemLabel="label2" itemDisabled="false"/>
+                  <f:selectItem itemValue="item3" itemLabel="label3"/>
+                  <f:selectItem itemValue="item4" itemLabel="label4" itemDisabled="true"/>
+                </o:twoListSelection>
+              </f:facet>
+            </o:treeColumn>
+          </o:treeTable>
+        </td>
+      </tr>
+    </table>
+
+  
+</div>

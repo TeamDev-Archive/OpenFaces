@@ -1,0 +1,152 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+<a href="../../main.jsf">Back to the main page</a>
+<br/>
+<table>
+    <tr>
+        <td>
+            <h3>Select list of dynamic columns</h3>
+        </td>
+        <td>
+            <h3>Select list of rendered columns</h3>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <o:twoListSelection id="tlsSelected"
+                                value="#{TreeTableColumnsBean.selectedColumns}"
+                                onadd="document.forms['form1'].submit();"
+                                onremove="document.forms['form1'].submit();"
+                                allowItemsOrdering="true"
+                                allowSorting="true"
+                                leftListboxHeader="Available columns"
+                                rightListboxHeader="Selected columns">
+                <f:selectItems value="#{TreeTableColumnsBean.availableColumns}"/>
+            </o:twoListSelection>
+        </td>
+        <td>
+            <o:twoListSelection id="tlsRendered"
+                                value="#{TreeTableColumnsBean.renderedColumns}"
+                                allowItemsOrdering="false"
+                                allowSorting="false"
+                                leftListboxHeader="Available columns"
+                                rightListboxHeader="Rendered columns">
+                <f:selectItems value="#{TreeTableColumnsBean.usedColumns}"/>
+            </o:twoListSelection>
+        </td>
+    </tr>
+</table>
+<h:commandButton value="Update Table"
+                 type="button"
+                 onclick="O$.reloadComponents(['form1:treeTable1'], {submittedComponentIds: ['form1:tlsSelected', 'form1:tlsRendered'], action: 'treeTableColumnsBean.updateColumnsList'});"/>
+
+<br/>
+<br/>
+<o:treeTable id="treeTable1"
+             var="node"
+             expansionState="allCollapsed "
+             columnIdVar="columnId">
+    <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
+                            nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
+    <o:treeColumn id="name" sortingExpression="#{node.name}" filterExpression="#{node.name}"
+                  filterKind="searchField">
+        <f:facet name="header">
+            <h:outputText value="name"/>
+        </f:facet>
+        <h:outputText value="#{node.name}"/>
+    </o:treeColumn>
+    <o:columns value="#{TreeTableColumnsBean.dynamicColumns}"
+               var="col"
+               columnId="dynamicCol#{col}"
+               columnRendered="#{TreeTableColumnsBean.columnRendered}"
+               style="#{TreeTableColumnsBean.columnStyle}"
+               sortingEnabled="#{TreeTableColumnsBean.sortingEnabled}"
+               sortingExpression="#{node.dynamicColumns[col]}"
+               filterExpression="#{node.dynamicColumns[col]}"
+               filterKind="#{TreeTableColumnsBean.filterKind}"
+               filterValues="#{TreeTableColumnsBean.filterValues}">
+        <f:facet name="header">
+            <h:outputText value="Column #{col}"/>
+        </f:facet>
+        <f:facet name="footer">
+            <h:outputText value="Column #{col}"/>
+        </f:facet>
+        <h:outputText value="#{node.dynamicColumns[col]}"/>
+    </o:columns>
+</o:treeTable>
+<br/>
+<br/>
+<table>
+    <tr>
+        <td width="50%">
+            <h3>HintLabel in the o:columns</h3>
+        </td>
+        <td width="50%">
+            <h3>InputText in the o:columns</h3>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <o:treeTable id="treeTableHintLabel"
+                         var="node"
+                         expansionState="allCollapsed "
+                         columnIdVar="columnId">
+                <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
+                                        nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
+                <o:treeColumn id="name" sortingExpression="#{node.name}" filterExpression="#{node.name}"
+                              filterKind="searchField">
+                    <f:facet name="header">
+                        <h:outputText value="name"/>
+                    </f:facet>
+                    <o:hintLabel style="width:75px;"
+                                 value="#{node.name}  Veee eeee eee eee eee eee eee ry looo ooooooooo oooooo oooooo ooo ooong text"/>
+                </o:treeColumn>
+                <o:columns value="#{TreeTableColumnsBean.dynamicColumns1}"
+                           var="col"
+                           sortingExpression="#{node.dynamicColumns[col]}">
+                    <f:facet name="header">
+                        <h:outputText value="Column #{col}"/>
+                    </f:facet>
+                    <f:facet name="footer">
+                        <h:outputText value="Column #{col}"/>
+                    </f:facet>
+                    <o:hintLabel style="width:75px;"
+                                 value="#{node.dynamicColumns[col]} Veee eeee eee eee eee eee eee ry looo ooooooooo oooooo oooooo ooo ooong text"/>
+                </o:columns>
+            </o:treeTable>
+        </td>
+        <td>
+            <o:treeTable id="treeTableInputText"
+                         var="node"
+                         expansionState="allCollapsed "
+                         columnIdVar="columnId">
+                <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
+                                        nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
+                <o:treeColumn id="name" sortingExpression="#{node.name}" filterExpression="#{node.name}"
+                              filterKind="searchField">
+                    <f:facet name="header">
+                        <h:outputText value="name"/>
+                    </f:facet>
+                    <h:outputText value="#{node.name}"/>
+                </o:treeColumn>
+                <o:columns value="#{TreeTableColumnsBean.dynamicColumns1}"
+                           var="col"
+                           sortingExpression="#{node.dynamicColumns[col]}">
+                    <f:facet name="header">
+                        <h:outputText value="Column #{col}"/>
+                    </f:facet>
+                    <f:facet name="footer">
+                        <h:outputText value="Column #{col}"/>
+                    </f:facet>
+                    <h:inputText value="#{node.dynamicColumns[col]}"/>
+                </o:columns>
+            </o:treeTable>
+        </td>
+    </tr>
+</table>
+<h:commandButton value="Submit"/>
+
+</div>

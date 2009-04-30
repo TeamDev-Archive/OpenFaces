@@ -1,0 +1,344 @@
+/* CSS Document */
+*, .demo_font {
+  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  min-width: 960px;
+  color: #000000;
+  background: #3e3f41 url(../images/control_demo_space_bkrnd.gif) repeat-x top;
+  min-height: 100%;
+}
+
+h3, h3 a {
+  color: #717171;
+  font-family: Tahoma, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  margin: 5px 0 0;
+  padding: 0;
+}
+
+form {
+  margin: 0;
+  padding: 0;
+}
+
+.sidebarContainer {
+  width: 228px;
+  position: absolute;
+  float: left;
+  margin: 0;
+  left: 0;
+  top: 0;
+}
+
+.sidebar_header {
+  width: 228px;
+  height: 49px;
+  background: transparent url(../images/logo_back.jpg) no-repeat top;
+}
+
+.sidebar_header img {
+  border: 0;
+}
+
+.features_list {
+  min-height: 270px;
+  max-height: 360px;
+  background: transparent url(../images/features_bkrnd.jpg) no-repeat top;
+}
+
+.features_list_limiter {
+  width: 1px;
+  height: 270px;
+  float: left;
+}
+
+.features_list_content {
+  padding: 12px 15px 25px 35px;
+}
+
+.features_list_content .controlname {
+  color: #ff8400;
+  padding: 0;
+  font-size: 18pt;
+  font-weight: normal;
+  display: block;
+  margin: 0 0 5px 0;
+  position: relative;
+}
+
+.features_list_bottom {
+  margin-bottom: -20px !important;
+  top: -20px;
+  height: 59px !important;
+  background: transparent url(../images/features_bkrnd_bottom.gif) no-repeat right top;
+  position: relative;
+}
+
+.features_border_bottom {
+  position: absolute;
+  left: 12px;
+  top: -70px;
+  width: 5px;
+  height: 84px;
+  background: transparent url(../images/features_border_bottom.gif) no-repeat top;
+}
+
+.featuresTable {
+  float: left;
+  margin-bottom: 15px;
+  width: 180px;
+}
+
+.featuresTable td {
+  color: white;
+  padding: 0 5px 4px 5px;
+  font-size: 11px;
+  line-height: normal;
+}
+
+.control_list {
+  background: transparent url(../images/control_list_bkrnd.gif) repeat-y left top;
+}
+
+.control_list_top {
+  background: transparent url(../images/control_list_bkrnd_top.jpg) no-repeat left top;
+  min-height: 280px;
+}
+
+.control_list_top_content {
+  margin: 0;
+  padding: 30px 15px 0 55px;
+}
+
+.control_list_top_content h2 {
+  font-size: 11pt;
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+.control_list_menu {
+  margin: 10px 0 0 10px;
+  border-collapse: collapse;
+}
+
+.control_list_menu td {
+  padding: 1px 3px 0 1px;
+}
+
+.controlmenuitem_current_a {
+  color: #a10d07;
+  font-weight: bold;
+}
+
+.control_list_menu a {
+  color: #494c50;
+  text-decoration: none;
+}
+
+.control_list_menu a:hover {
+  text-decoration: underline;
+}
+
+.control_list_menu img {
+  border: 0;
+}
+
+.control_list_bottom {
+  background: transparent url(../images/control_list_bkrnd_bottom.gif) no-repeat left bottom;
+  height: 30px;
+}
+
+.mainfield {
+  margin: 0;
+  padding: 0;
+  min-width: 100%;
+}
+
+.mainfieldContainer {
+  background: transparent url(../images/sidebar_bkrnd.gif) repeat-y left top;
+  padding: 0 20px 0 0;
+  min-height: 100%;
+  min-width: 720px;
+  *height: 100%;
+  float: left;
+  width: 98%;
+}
+
+.mainfieldTop {
+  background: transparent url(../images/mainfield_top_bkrnd.gif) repeat-x top;
+  min-width: 743px;
+  margin-left: 240px;
+}
+
+.mainfieldTopLeft {
+  background: transparent url(../images/mainfield_top_corner.gif) no-repeat right bottom;
+}
+
+.mainfieldTopCorner {
+  height: 63px;
+  background: transparent url(../images/mainfield_top_left.gif) no-repeat left bottom;
+  width: 743px;
+}
+
+.mainfieldBottom {
+  height: 18px;
+  background: transparent url(../images/mainfield_bottom_bkrnd.gif) repeat-x top;
+  margin-left: 240px;
+}
+
+.mainfieldBottomLeft {
+  height: 18px;
+  min-width: 743px;
+  background: transparent url(../images/mainfield_bottom_right.gif) no-repeat right top;
+}
+
+.mainfieldBottomRight {
+  height: 18px;
+  background: transparent url(../images/mainfield_bottom_left.gif) no-repeat left top;
+  width: 743px;
+}
+
+.control_demo_space {
+  padding: 20px;
+  line-height: 1.5em;
+  color: #4c4c4c;
+  min-height: 640px;
+  background: white;
+  margin: 0 1px 0 242px;
+  min-width: 700px;
+  *height: auto;
+}
+
+.control_demo_space ul.componentFeatures {
+  padding: 0;
+  margin: 15px 0 0 15px;
+  *margin-left: 20px;
+  list-style: outside url(../images/bullet2.gif);
+}
+
+.control_demo_space ul.componentFeatures li {
+  color: #4c4c4c;
+  padding: 0 0 0 5px;
+  margin: 4px 0;
+  *padding-left: 0;
+}
+
+.container_control_items {
+  background: #e5e5e5 url(../../../images/controls_container/end_widget.jpg) repeat-y scroll right center;
+  border-bottom: medium none;
+  padding: 15px 15px 10px 6px;
+}
+
+.simple_text {
+  line-height: 18px;
+  padding-bottom: 20px;
+}
+
+.clear {
+  clear: both;
+  width: 100%;
+  *float: left;
+  *margin-top: -2px;
+}
+
+.limiter {
+  width: 700px;
+}
+
+.teamdev {
+  position: absolute;
+  top: 5px;
+  right: 25px;
+}
+
+.teamdev a {
+  display: block;
+  color: white;
+}
+
+.tabSet {
+  float: left;
+  padding: 0 15px 0 241px;
+  margin: -46px 0 0 0;
+}
+
+.tabSet table {
+  width: 100%;
+}
+
+.tab_default {
+  background: url(../images/tab_inactive.gif) no-repeat;
+  padding: 10px 0 0 0;
+  width: 182px !important;
+  height: 32px;
+  text-align: center;
+  border: 0;
+  color: #232323;
+  font-size: 11px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.tab_empty {
+  border: none !important;
+}
+
+.tab_selected {
+  background: url(../images/tab_active.gif) no-repeat;
+  color: #a10d07;
+  font-weight: bold;
+}
+
+.copyright {
+  margin: 15px 0 0 -45px;
+  color: #abacad;
+  font-size: 10px;
+  text-align: left;
+}
+
+.relative {
+  position: relative !important;
+}
+
+.notrelative {
+  position: static !important;
+}
+
+.subtitle {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-weight: bold;
+  position: relative;
+}
+
+.colorRect {
+  display: block;
+  font-size: 0;
+  width: 12px;
+  height: 12px;
+  border: 1px solid gray;
+}
+
+.treeTableText {
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  padding-left: 2px;
+}
+
+.modalLayer {
+  filter: alpha(opacity = 75);
+  -moz-opacity: .75;
+  opacity: .75;
+  background: GhostWhite;
+}

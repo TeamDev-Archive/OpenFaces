@@ -1,0 +1,116 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <a href="../../main.jsf">Return to main page</a>
+  <input type="submit" value="Submit"/>
+
+  <o:spinner value="#{SpinnerBackingBean.value}"
+             cycled="false"
+             minValue="0" maxValue="10">
+  </o:spinner>
+  <br/>
+  Typing is not allowed.
+  <o:spinner value="#{SpinnerBackingBean.value}"
+             typingAllowed="false"
+             minValue="0" maxValue="10">
+  </o:spinner>
+  <br/>
+  Alert on change.
+  <o:spinner value="#{SpinnerBackingBean.value}"
+             cycled="false" onchange="alert('!!!!');"
+             minValue="0" maxValue="10">
+  </o:spinner>
+  <br/>
+  Cycled.
+  <o:spinner value="#{SpinnerBackingBean.value}"
+             cycled="true"
+             minValue="0" maxValue="10">
+  </o:spinner>
+  <br/>
+  Step value = 6.
+  <o:spinner value="#{SpinnerBackingBean.value}"
+             step="6"
+             minValue="0" maxValue="10">
+  </o:spinner>
+  <br/>
+  Prompt text.
+  <o:spinner value="#{SpinnerBackingBean.value}"
+             promptText="xxx"
+             minValue="0" maxValue="10">
+  </o:spinner>
+  <br/>
+  Button allignment.
+  <o:spinner value="#{SpinnerBackingBean.value}"
+             buttonAlignment="left"
+             minValue="0" maxValue="10">
+  </o:spinner>
+  <br/>
+  Disabled component.
+  <o:spinner value="#{SpinnerBackingBean.value}"
+             disabled="true">
+  </o:spinner>
+  <br/>
+  Required value.
+  <o:spinner value="#{SpinnerBackingBean.value}"
+             required="true">
+  </o:spinner>
+
+  <h1>Styles</h1>
+  Big images for button.
+  <o:spinner value="#{SpinnerBackingBean.value}"
+          style="background: tan; color: red"
+          increaseButtonImageUrl="/compatibility/tomahawk/arrow-previous.gif"
+          decreaseButtonImageUrl="/compatibility/tomahawk/arrow-next.gif"
+             cycled="false" typingAllowed="false"
+             minValue="0" maxValue="10">
+  </o:spinner>
+  <br/>
+  pressedButtonStyle, rolloverButtonStyle, focusedStyle, rolloverStyle,fieldStyle,rolloverFieldStyle
+  <o:spinner value="#{SpinnerBackingBean.value}"
+          style="border: 3px solid black; width: 140px; height: 60px"
+          rolloverStyle="border: 3px solid gray"
+          focusedStyle="border: 3px solid orange"
+
+          buttonStyle="background: yellow; width: 30px"
+          rolloverButtonStyle="background: pink"
+          pressedButtonStyle="background: orange"
+
+          fieldStyle="font-size: 20pt; color: blue; text-align: right;"
+          rolloverFieldStyle="font-size: 22pt; color: pink; text-align: right;"
+
+          cycled="true"
+          minValue="0" maxValue="20">
+    </o:spinner>
+    <br/>
+  StyleClass, fieldClass
+  <o:spinner value="#{SpinnerBackingBean.value}"
+          styleClass="styleClass"
+          fieldClass="fieldClass"
+          cycled="true"
+          minValue="0" maxValue="20">
+    </o:spinner>
+    <br/>
+  Disabled, disabledStyle, disabledFieldStyle, disabledButtonStyle
+  <o:spinner value="#{SpinnerBackingBean.value}"
+          disabled="true"
+          disabledStyle="background: gray;"
+          disabledFieldStyle="background: navy;"
+          disabledButtonStyle="background: navy;"
+          style="border: 3px solid black; width: 140px; height: 60px"
+          rolloverStyle="border: 3px solid gray"
+          focusedStyle="border: 3px solid orange"
+
+          buttonStyle="background: yellow; width: 30px"
+          rolloverButtonStyle="background: pink"
+          pressedButtonStyle="background: orange"
+
+          fieldStyle="font-size: 20pt; color: blue; text-align: right;"
+          rolloverFieldStyle="font-size: 22pt; color: pink; text-align: right;"
+          cycled="true"
+          minValue="0" maxValue="20">
+    </o:spinner>
+
+</div>

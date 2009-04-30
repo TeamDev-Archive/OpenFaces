@@ -1,0 +1,164 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+<a href="a4jSupportIndex.jsf">Back to the index page</a>
+<br/>
+<h:outputText id="counter" value="This value is updated on Ajax request: #{A4jSupportBean.counter}"
+              style="font-size:16px;"/>
+
+<h3>DataTable's onlick event</h3>
+<o:dataTable id="datatable1"
+             value="#{RichTestBean.tableValue}"
+             var="row"
+             rowKey="#{row.id}"
+             useAjax="#{A4jParametersBean.useAjax}"
+             pageSize="4">
+  <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+  <f:facet name="below">
+    <o:dataTablePaginator/>
+  </f:facet>
+  <o:checkboxColumn/>
+
+  <o:column id="col1"
+            sortingExpression="#{row.stringField1}"
+            filterExpression="#{row.stringField1}">
+    <f:facet name="header">
+      <h:outputText id="id2" value="stringField1"/>
+    </f:facet>
+    <h:outputText id="outputCol1" value="#{row.stringField1}"/>
+  </o:column>
+
+  <o:column id="col2"
+            sortingExpression="#{row.stringField2}"
+            filterExpression="#{row.stringField2}">
+    <f:facet name="header">
+      <h:outputText id="id3" value="stringField2"/>
+    </f:facet>
+    <h:outputText id="outputCol2" value="#{row.stringField2}"/>
+  </o:column>
+
+  <o:column id="col3"
+            sortingExpression="#{row.intField1}"
+            filterExpression="#{row.intField1}">
+    <f:facet name="header">
+      <h:outputText id="id4" value="intField1"/>
+    </f:facet>
+    <h:outputText id="outputCol3" value="#{row.intField1}"/>
+  </o:column>
+
+  <o:column id="col4"
+            sortingExpression="#{row.intField2}"
+            filterExpression="#{row.intField2}">
+    <f:facet name="header">
+      <h:outputText id="id5" value="intField2"/>
+    </f:facet>
+    <h:outputText id="outputCol4" value="#{row.intField2}"/>
+  </o:column>
+</o:dataTable>
+
+<h3>First column's onlick event; Checkbox columns's onclick event;</h3>
+<o:dataTable id="datatable2"
+             value="#{RichTestBean.tableValue}"
+             var="row"
+             rowKey="#{row.id}"
+             useAjax="#{A4jParametersBean.useAjax}"
+             pageSize="4">
+  <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+  <f:facet name="below">
+    <o:dataTablePaginator/>
+  </f:facet>
+  <o:checkboxColumn>
+    <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+  </o:checkboxColumn>
+
+  <o:column id="col1"
+            sortingExpression="#{row.stringField1}"
+            filterExpression="#{row.stringField1}">
+    <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <f:facet name="header">
+      <h:outputText id="id2" value="stringField1"/>
+    </f:facet>
+    <h:outputText id="outputCol1" value="#{row.stringField1}"/>
+  </o:column>
+
+  <o:column id="col2"
+            sortingExpression="#{row.stringField2}"
+            filterExpression="#{row.stringField2}">
+    <f:facet name="header">
+      <h:outputText id="id3" value="stringField2"/>
+    </f:facet>
+    <h:outputText id="outputCol2" value="#{row.stringField2}"/>
+  </o:column>
+
+  <o:column id="col3"
+            sortingExpression="#{row.intField1}"
+            filterExpression="#{row.intField1}">
+    <f:facet name="header">
+      <h:outputText id="id4" value="intField1"/>
+    </f:facet>
+    <h:outputText id="outputCol3" value="#{row.intField1}"/>
+  </o:column>
+
+  <o:column id="col4"
+            sortingExpression="#{row.intField2}"
+            filterExpression="#{row.intField2}">
+    <f:facet name="header">
+      <h:outputText id="id5" value="intField2"/>
+    </f:facet>
+    <h:outputText id="outputCol4" value="#{row.intField2}"/>
+  </o:column>
+</o:dataTable>
+
+<h3>Onchange event of the singleRowSelection tag</h3>
+<o:dataTable id="datatable3"
+             value="#{RichTestBean.tableValue}"
+             var="row"
+             rowKey="#{row.id}"
+             useAjax="#{A4jParametersBean.useAjax}"
+             pageSize="4">
+  <f:facet name="below">
+    <o:dataTablePaginator/>
+  </f:facet>
+  <o:singleRowSelection>
+    <a4j:support event="onchange" reRender="counter" action="#{A4jSupportBean.increase}"/>
+  </o:singleRowSelection>
+  <o:column id="col1"
+            sortingExpression="#{row.stringField1}"
+            filterExpression="#{row.stringField1}">
+    <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <f:facet name="header">
+      <h:outputText id="id2" value="stringField1"/>
+    </f:facet>
+    <h:outputText id="outputCol1" value="#{row.stringField1}"/>
+  </o:column>
+
+  <o:column id="col2"
+            sortingExpression="#{row.stringField2}"
+            filterExpression="#{row.stringField2}">
+    <f:facet name="header">
+      <h:outputText id="id3" value="stringField2"/>
+    </f:facet>
+    <h:outputText id="outputCol2" value="#{row.stringField2}"/>
+  </o:column>
+
+  <o:column id="col3"
+            sortingExpression="#{row.intField1}"
+            filterExpression="#{row.intField1}">
+    <f:facet name="header">
+      <h:outputText id="id4" value="intField1"/>
+    </f:facet>
+    <h:outputText id="outputCol3" value="#{row.intField1}"/>
+  </o:column>
+
+  <o:column id="col4"
+            sortingExpression="#{row.intField2}"
+            filterExpression="#{row.intField2}">
+    <f:facet name="header">
+      <h:outputText id="id5" value="intField2"/>
+    </f:facet>
+    <h:outputText id="outputCol4" value="#{row.intField2}"/>
+  </o:column>
+</o:dataTable>
+</div>

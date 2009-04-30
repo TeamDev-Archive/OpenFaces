@@ -1,0 +1,56 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <span style="font-weight:bold;">Use ajax:</span><br/>
+    <o:tabSet id="loadingModes"
+              selectedIndex="#{DataTableLoadingModeBean.loadingModeSelectedIndex}"
+              onchange="document.forms[0].submit();">
+      <o:tabSetItems value="#{DataTableLoadingModeBean.loadingModeList}"/>
+    </o:tabSet>
+
+    <table cellpadding="0" cellspacing="5">
+      <tr>
+        <td class="header">Pagination</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:dataTable id="filterableDataTable_dropDownField"
+                       var="filterable_dropDownField"
+                       useAjax="#{DataTableLoadingModeBean.useAjax}"
+                       value="#{TestEventsBean.tableTestCollection}"
+                       verticalGridLines="1px solid gray">
+            <o:column id="col_first" style="padding: 10px 10px 10px 10px;"
+                      filterExpression="#{filterable_dropDownField.thirdColumn}"
+                      filterKind="dropDownField">
+              <f:facet name="header">
+                <h:outputText value="first column header" id="filterableDataTable_dropDownField_firstHeader"/>
+              </f:facet>
+              <h:outputText value="#{filterable_dropDownField.thirdColumn}"
+                            id="filterableDataTable_dropDownField_firstBody"/>
+              <f:facet name="footer">
+                <h:outputText value="first column footer" id="filterableDataTable_dropDownField_firstFooter"/>
+              </f:facet>
+            </o:column>
+            <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+              <f:facet name="header">
+                <h:outputText value="second column header" id="filterableDataTable_dropDownField_secondHeader"/>
+              </f:facet>
+              <h:outputText value="#{filterable_dropDownField.fourthColumn}"
+                            id="filterableDataTable_dropDownField_secondBody"/>
+              <f:facet name="footer">
+                <h:outputText value="second column footer" id="filterableDataTable_dropDownField_secondFooter"/>
+              </f:facet>
+            </o:column>
+          </o:dataTable>
+        </td>
+      </tr>
+    </table>
+  
+</div>

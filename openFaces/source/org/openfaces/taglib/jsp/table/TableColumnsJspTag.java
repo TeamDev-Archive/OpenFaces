@@ -1,0 +1,219 @@
+/*
+ * OpenFaces - JSF Component Library 2.0
+ * Copyright (C) 2007-2009, TeamDev Ltd.
+ * licensing@openfaces.org
+ * Unless agreed in writing the contents of this file are subject to
+ * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * Please visit http://openfaces.org/licensing/ for more details.
+ */
+package org.openfaces.taglib.jsp.table;
+
+import org.openfaces.taglib.internal.table.TableColumnsTag;
+import org.openfaces.taglib.jsp.AbstractComponentJspTag;
+
+import javax.el.ValueExpression;
+
+/**
+ * @author Dmitry Pikhulya
+ */
+public class TableColumnsJspTag extends AbstractComponentJspTag {
+    public TableColumnsJspTag() {
+        super(new TableColumnsTag());
+    }
+
+    public void setValue(ValueExpression value) {
+        getDelegate().setPropertyValue("value", value);
+    }
+
+    public void setVar(ValueExpression var) {
+        getDelegate().setPropertyValue("var", var);
+    }
+
+    public void setColumnId(ValueExpression columnId) {
+        getDelegate().setPropertyValue("columnId", columnId);
+    }
+
+    public void setColumnRendered(ValueExpression columnRendered) {
+        getDelegate().setPropertyValue("columnRendered", columnRendered);
+    }
+
+    public void setSortingEnabled(ValueExpression sortingEnabled) {
+        getDelegate().setPropertyValue("sortingEnabled", sortingEnabled);
+    }
+
+    public void setSortingExpression(ValueExpression sortingExpression) {
+        getDelegate().setPropertyValue("sortingExpression", sortingExpression);
+    }
+
+    public void setFilterExpression(ValueExpression filterExpression) {
+        getDelegate().setPropertyValue("filterExpression", filterExpression);
+    }
+
+    public void setFilterKind(ValueExpression filterKind) {
+        getDelegate().setPropertyValue("filterKind", filterKind);
+    }
+
+    public void setFilterValues(ValueExpression filterValues) {
+        getDelegate().setPropertyValue("filterValues", filterValues);
+    }
+
+    public void setFilterValue(ValueExpression filterValue) {
+        getDelegate().setPropertyValue("filterValue", filterValue);
+    }
+
+    public void setSortingComparator(ValueExpression sortingComparator) {
+        getDelegate().setPropertyValue("sortingComparator", sortingComparator);
+    }
+
+    public void setWidth(ValueExpression width) {
+        getDelegate().setPropertyValue("width", width);
+    }
+
+    public void setAlign(ValueExpression align) {
+        getDelegate().setPropertyValue("align", align);
+    }
+
+    public void setValign(ValueExpression valign) {
+        getDelegate().setPropertyValue("valign", valign);
+    }
+
+    public void setResizeable(ValueExpression resizeable) {
+        getDelegate().setPropertyValue("resizeable", resizeable);
+    }
+
+    public void setMinResizingWidth(ValueExpression minResizingWidth) {
+        getDelegate().setPropertyValue("minResizingWidth", minResizingWidth);
+    }
+
+    public void setHeaderStyle(ValueExpression headerStyle) {
+        getDelegate().setPropertyValue("headerStyle", headerStyle);
+    }
+
+    public void setHeaderClass(ValueExpression headerClass) {
+        getDelegate().setPropertyValue("headerClass", headerClass);
+    }
+
+    public void setFilterCellStyle(ValueExpression filterCellStyle) {
+        getDelegate().setPropertyValue("filterCellStyle", filterCellStyle);
+    }
+
+    public void setFilterCellClass(ValueExpression filterCellClass) {
+        getDelegate().setPropertyValue("filterCellClass", filterCellClass);
+    }
+
+    public void setBodyStyle(ValueExpression bodyStyle) {
+        getDelegate().setPropertyValue("bodyStyle", bodyStyle);
+    }
+
+    public void setBodyClass(ValueExpression bodyClass) {
+        getDelegate().setPropertyValue("bodyClass", bodyClass);
+    }
+
+    public void setFooterStyle(ValueExpression footerStyle) {
+        getDelegate().setPropertyValue("footerStyle", footerStyle);
+    }
+
+    public void setFooterClass(ValueExpression footerClass) {
+        getDelegate().setPropertyValue("footerClass", footerClass);
+    }
+
+    public void setHeaderOnclick(ValueExpression headerOnclick) {
+        getDelegate().setPropertyValue("headerOnclick", headerOnclick);
+    }
+
+    public void setHeaderOndblclick(ValueExpression headerOndblclick) {
+        getDelegate().setPropertyValue("headerOndblclick", headerOndblclick);
+    }
+
+    public void setHeaderOnmousedown(ValueExpression headerOnmousedown) {
+        getDelegate().setPropertyValue("headerOnmousedown", headerOnmousedown);
+    }
+
+    public void setHeaderOnmouseover(ValueExpression headerOnmouseover) {
+        getDelegate().setPropertyValue("headerOnmouseover", headerOnmouseover);
+    }
+
+    public void setHeaderOnmousemove(ValueExpression headerOnmousemove) {
+        getDelegate().setPropertyValue("headerOnmousemove", headerOnmousemove);
+    }
+
+    public void setHeaderOnmouseout(ValueExpression headerOnmouseout) {
+        getDelegate().setPropertyValue("headerOnmouseout", headerOnmouseout);
+    }
+
+    public void setHeaderOnmouseup(ValueExpression headerOnmouseup) {
+        getDelegate().setPropertyValue("headerOnmouseup", headerOnmouseup);
+    }
+
+    public void setBodyOnclick(ValueExpression bodyOnclick) {
+        getDelegate().setPropertyValue("bodyOnclick", bodyOnclick);
+    }
+
+    public void setBodyOndblclick(ValueExpression bodyOndblclick) {
+        getDelegate().setPropertyValue("bodyOndblclick", bodyOndblclick);
+    }
+
+    public void setBodyOnmousedown(ValueExpression bodyOnmousedown) {
+        getDelegate().setPropertyValue("bodyOnmousedown", bodyOnmousedown);
+    }
+
+    public void setBodyOnmouseover(ValueExpression bodyOnmouseover) {
+        getDelegate().setPropertyValue("bodyOnmouseover", bodyOnmouseover);
+    }
+
+    public void setBodyOnmousemove(ValueExpression bodyOnmousemove) {
+        getDelegate().setPropertyValue("bodyOnmousemove", bodyOnmousemove);
+    }
+
+    public void setBodyOnmouseout(ValueExpression bodyOnmouseout) {
+        getDelegate().setPropertyValue("bodyOnmouseout", bodyOnmouseout);
+    }
+
+    public void setBodyOnmouseup(ValueExpression bodyOnmouseup) {
+        getDelegate().setPropertyValue("bodyOnmouseup", bodyOnmouseup);
+    }
+
+    public void setFooterOnclick(ValueExpression footerOnclick) {
+        getDelegate().setPropertyValue("footerOnclick", footerOnclick);
+    }
+
+    public void setFooterOndblclick(ValueExpression footerOndblclick) {
+        getDelegate().setPropertyValue("footerOndblclick", footerOndblclick);
+    }
+
+    public void setFooterOnmousedown(ValueExpression footerOnmousedown) {
+        getDelegate().setPropertyValue("footerOnmousedown", footerOnmousedown);
+    }
+
+    public void setFooterOnmouseover(ValueExpression footerOnmouseover) {
+        getDelegate().setPropertyValue("footerOnmouseover", footerOnmouseover);
+    }
+
+    public void setFooterOnmousemove(ValueExpression footerOnmousemove) {
+        getDelegate().setPropertyValue("footerOnmousemove", footerOnmousemove);
+    }
+
+    public void setFooterOnmouseout(ValueExpression footerOnmouseout) {
+        getDelegate().setPropertyValue("footerOnmouseout", footerOnmouseout);
+    }
+
+    public void setFooterOnmouseup(ValueExpression footerOnmouseup) {
+        getDelegate().setPropertyValue("footerOnmouseup", footerOnmouseup);
+    }
+
+    public void setFilterPromptText(ValueExpression promptText) {
+        getDelegate().setPropertyValue("filterPromptText", promptText);
+    }
+
+    public void setFilterPromptTextStyle(ValueExpression promptTextStyle) {
+        getDelegate().setPropertyValue("filterPromptTextStyle", promptTextStyle);
+    }
+
+    public void setFilterPromptTextClass(ValueExpression promptTextClass) {
+        getDelegate().setPropertyValue("filterPromptTextClass", promptTextClass);
+    }
+
+}

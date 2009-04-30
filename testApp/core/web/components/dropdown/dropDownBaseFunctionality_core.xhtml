@@ -1,0 +1,44 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      DropDown Base Functionality
+    </span><br/><br/>
+    <table>
+      <tr>
+        <td class="header" colspan="2">Items defined on jsp</td>
+        <td class="header" colspan="2">Items defined by binding</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:dropDownField id="first" value="#{DropDownBean.testSelectedValue}">
+            <o:dropDownItem value="Red"/>
+            <o:dropDownItem value="Yellow"/>
+            <o:dropDownItem value="Blue"/>
+          </o:dropDownField>
+        </td>
+        <td class="container">
+          Value: <h:outputText id="selectedValue" value="#{DropDownBean.testSelectedValue}"/>
+        </td>
+        <td class="container">
+          <o:dropDownField id="second" value="#{DropDownBean.testSelectedValue2}">
+            <o:dropDownItems value="#{DropDownBean.simpleTestCollection}"/>
+          </o:dropDownField>
+        </td>
+        <td class="container">
+          Value: <h:outputText id="selectedValue2" value="#{DropDownBean.testSelectedValue2}"/>
+        </td>
+      </tr>
+    </table>
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="Submit"/>
+  
+</div>

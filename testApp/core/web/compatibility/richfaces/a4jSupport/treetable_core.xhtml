@@ -1,0 +1,180 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+ <a href="a4jSupportIndex.jsf">Back to the index page</a>
+  <br/>
+
+  <h:outputText id="counter" value="This value is updated on Ajax request: #{A4jSupportBean.counter}"
+                style="font-size:16px;"/>
+
+  <h3>TreeTable's onlick event</h3>
+  <o:treeTable id="treetable1"
+               var="node"
+               expansionState="allCollapsed"
+               useAjax="#{A4jParametersBean.useAjax}">
+    <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
+                            nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
+
+    <o:treeColumn id="name" sortingExpression="#{node.name}" filterExpression="#{node.name}"
+                  filterKind="searchField">
+      <f:facet name="header">
+        <h:outputText id="nameHeader" value="name"/>
+      </f:facet>
+      <h:outputText id="nameField" value="#{node.name}"/>
+    </o:treeColumn>
+
+    <o:column id="col1"
+              sortingExpression="#{node.stringField1}"
+              filterExpression="#{node.stringField1}">
+      <f:facet name="header">
+        <h:outputText id="id2" value="stringField1"/>
+      </f:facet>
+      <h:outputText id="outputCol1" value="#{node.stringField1}"/>
+    </o:column>
+
+    <o:column id="col2"
+              sortingExpression="#{node.stringField2}"
+              filterExpression="#{node.stringField2}">
+      <f:facet name="header">
+        <h:outputText id="id3" value="stringField2"/>
+      </f:facet>
+      <h:outputText id="outputCol2" value="#{node.stringField2}"/>
+    </o:column>
+
+    <o:column id="col3"
+              sortingExpression="#{node.intField1}"
+              filterExpression="#{node.intField1}">
+      <f:facet name="header">
+        <h:outputText id="id4" value="intField1"/>
+      </f:facet>
+      <h:outputText id="outputCol3" value="#{node.intField1}"/>
+    </o:column>
+
+    <o:column id="col4"
+              sortingExpression="#{node.intField2}"
+              filterExpression="#{node.intField2}">
+      <f:facet name="header">
+        <h:outputText id="id5" value="intField2"/>
+      </f:facet>
+      <h:outputText id="outputCol4" value="#{node.intField2}"/>
+    </o:column>
+
+  </o:treeTable>
+
+<h3>First Tree column's onlick event; Checkbox columns's onclick event;</h3>
+  <o:treeTable id="treetable2"
+               var="node"
+               expansionState="allCollapsed"
+               useAjax="#{A4jParametersBean.useAjax}">
+    <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
+                            nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
+    <o:checkboxColumn>
+      <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    </o:checkboxColumn>
+    <o:treeColumn id="name" sortingExpression="#{node.name}" filterExpression="#{node.name}"
+                  filterKind="searchField">
+      <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+      <f:facet name="header">
+        <h:outputText id="nameHeader" value="name"/>
+      </f:facet>
+      <h:outputText id="nameField" value="#{node.name}"/>
+    </o:treeColumn>
+
+    <o:column id="col1"
+              sortingExpression="#{node.stringField1}"
+              filterExpression="#{node.stringField1}">
+      <f:facet name="header">
+        <h:outputText id="id2" value="stringField1"/>
+      </f:facet>
+      <h:outputText id="outputCol1" value="#{node.stringField1}"/>
+    </o:column>
+
+    <o:column id="col2"
+              sortingExpression="#{node.stringField2}"
+              filterExpression="#{node.stringField2}">
+      <f:facet name="header">
+        <h:outputText id="id3" value="stringField2"/>
+      </f:facet>
+      <h:outputText id="outputCol2" value="#{node.stringField2}"/>
+    </o:column>
+
+    <o:column id="col3"
+              sortingExpression="#{node.intField1}"
+              filterExpression="#{node.intField1}">
+      <f:facet name="header">
+        <h:outputText id="id4" value="intField1"/>
+      </f:facet>
+      <h:outputText id="outputCol3" value="#{node.intField1}"/>
+    </o:column>
+
+    <o:column id="col4"
+              sortingExpression="#{node.intField2}"
+              filterExpression="#{node.intField2}">
+      <f:facet name="header">
+        <h:outputText id="id5" value="intField2"/>
+      </f:facet>
+      <h:outputText id="outputCol4" value="#{node.intField2}"/>
+    </o:column>
+
+  </o:treeTable>
+
+<h3>Onchange event of the singleRowSelection tag</h3>
+  <o:treeTable id="treetable3"
+               var="node"
+               expansionState="allCollapsed"
+               useAjax="#{A4jParametersBean.useAjax}">
+    <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
+                            nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
+    <o:singleNodeSelection>
+      <a4j:support event="onchange" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    </o:singleNodeSelection>
+    <o:treeColumn id="name" sortingExpression="#{node.name}" filterExpression="#{node.name}"
+                  filterKind="searchField">
+      <f:facet name="header">
+        <h:outputText id="nameHeader" value="name"/>
+      </f:facet>
+      <h:outputText id="nameField" value="#{node.name}"/>
+    </o:treeColumn>
+
+    <o:column id="col1"
+              sortingExpression="#{node.stringField1}"
+              filterExpression="#{node.stringField1}">
+      <f:facet name="header">
+        <h:outputText id="id2" value="stringField1"/>
+      </f:facet>
+      <h:outputText id="outputCol1" value="#{node.stringField1}"/>
+    </o:column>
+
+    <o:column id="col2"
+              sortingExpression="#{node.stringField2}"
+              filterExpression="#{node.stringField2}">
+      <f:facet name="header">
+        <h:outputText id="id3" value="stringField2"/>
+      </f:facet>
+      <h:outputText id="outputCol2" value="#{node.stringField2}"/>
+    </o:column>
+
+    <o:column id="col3"
+              sortingExpression="#{node.intField1}"
+              filterExpression="#{node.intField1}">
+      <f:facet name="header">
+        <h:outputText id="id4" value="intField1"/>
+      </f:facet>
+      <h:outputText id="outputCol3" value="#{node.intField1}"/>
+    </o:column>
+
+    <o:column id="col4"
+              sortingExpression="#{node.intField2}"
+              filterExpression="#{node.intField2}">
+      <f:facet name="header">
+        <h:outputText id="id5" value="intField2"/>
+      </f:facet>
+      <h:outputText id="outputCol4" value="#{node.intField2}"/>
+    </o:column>
+
+  </o:treeTable>
+
+</div>

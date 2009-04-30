@@ -1,0 +1,71 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+      <a href="../../main.jsf">Return to main page</a><br/><br/>
+    <o:treeTable id="treeTable1" var="message" rolloverRowStyle="background:#F0F0F0;"
+                 expansionState="#{TreeTableBean.forumTreeTableExpansionState}"
+                 nodeLevelVar="level">
+      <o:dynamicTreeStructure nodeChildren="#{TreeTableBean.nodeChildren}"/>
+      <o:treeColumn showAsTree="true" sortingExpression="#{message.subject}"
+                    filterExpression="#{message.subject}" filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="Subject"/>
+        </f:facet>
+        <h:inputText required="true" id="subjectInput" value="#{message.subject}"/>
+        <f:verbatim><br/></f:verbatim>
+        <h:message id="subjectQKMessage" for="subjectInput" style="color:blue;"/>
+        <f:verbatim><br/></f:verbatim>
+        <h:message id="subjectMessage" for="subjectInput" style="color:red;"/>
+      </o:treeColumn>
+      <o:column sortingExpression="#{message.author}" filterExpression="#{message.author}"
+                filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText value="From"/>
+        </f:facet>
+        <h:inputText required="true" id="authorInput" value="#{message.author}"/>
+        <f:verbatim><br/></f:verbatim>
+        <h:message id="authorQKMessage" for="authorInput" style="color:blue;"/>
+        <f:verbatim><br/></f:verbatim>
+        <h:message id="authorMessage" for="authorInput" style="color:red;"/>
+      </o:column>
+      <o:column sortingExpression="#{message.mail}" filterExpression="#{message.mail}"
+                filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="Mail"/>
+        </f:facet>
+        <h:inputText id="inputMail" value="#{message.mail}">
+          <o:validateEmail/>
+        </h:inputText>
+        <f:verbatim><br/></f:verbatim>
+        <h:message id="mailQKMessage" for="inputMail" style="color:blue;"/>
+        <f:verbatim><br/></f:verbatim>
+        <h:message id="mailMessage" for="inputMail" style="color:red;"/>
+      </o:column>
+      <o:column sortingExpression="#{message.date}">
+        <f:facet name="header">
+          <h:outputText value="Sent"/>
+        </f:facet>
+        <o:dateChooser id="dchDate" value="#{message.date}"/>
+        <f:verbatim><br/></f:verbatim>
+        <h:message id="MailQKMessage" for="dchDate" style="color:blue;"/>
+        <f:verbatim><br/></f:verbatim>
+        <h:message id="MailMessage" for="dchDate" style="color:red;"/>
+      </o:column>
+      <f:facet name="above">
+        <h:panelGroup>
+          <h:messages id="tableQKMessages" style="color:blue;"/>
+          <h:messages id="tableMessages" style="color:red;"/>
+        </h:panelGroup>
+      </f:facet>
+    </o:treeTable>
+    <br/>
+    <h:messages id="formQKMessages" style="color:blue;"/>
+    <h:messages id="formMessages" style="color:red;"/>
+    <br/>
+    <h:commandButton value="submit" type="submit"/>
+  
+</div>

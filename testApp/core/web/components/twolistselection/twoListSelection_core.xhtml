@@ -1,0 +1,46 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <table>
+      <tr>
+        <td class="event_name">onadd</td>
+        <td class="event_name">onremove</td>
+      </tr>
+      <tr>
+        <td>
+          <o:twoListSelection id="onaddID"
+                              leftListboxHeader="Available items"
+                              onadd="logJSEvents('onadd works', 'empty'); logJSEvents(event.type, 'empty');"
+                              rightListboxHeader="Selected items">
+            <f:selectItem itemValue="item 1 value" itemLabel="item 1 label"/>
+            <f:selectItem itemValue="item 5 value" itemLabel="item 5 label" itemDisabled="false"/>
+            <f:selectItem itemValue="item 3 value" itemLabel="item 3 label"/>
+            <f:selectItem itemValue="item 4 value" itemLabel="item 4 label" itemDisabled="true"/>
+          </o:twoListSelection>
+        </td>
+        <td>
+          <o:twoListSelection id="onremoveID"
+                              leftListboxHeader="Available items"
+                              onremove="logJSEvents('onremove works', 'empty'); logJSEvents(event.type, 'empty');"
+                              rightListboxHeader="Selected items">
+            <f:selectItem itemValue="item 1 value" itemLabel="item 1 label"/>
+            <f:selectItem itemValue="item 5 value" itemLabel="item 5 label" itemDisabled="false"/>
+            <f:selectItem itemValue="item 3 value" itemLabel="item 3 label"/>
+            <f:selectItem itemValue="item 4 value" itemLabel="item 4 label" itemDisabled="true"/>
+          </o:twoListSelection>
+        </td>
+      </tr>
+    </table>
+    <br/><br/>
+
+    <div id="empty"></div>
+  
+</div>

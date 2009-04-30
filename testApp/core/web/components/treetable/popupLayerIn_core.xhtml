@@ -1,0 +1,79 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+
+    <table>
+      <tr>
+        <td class="container">
+          <o:treeTable var="popupTree" id="dataTableId8" nodeLevelVar="level">
+            <o:staticTreeStructure>
+              <o:treeNode value="popup top node">
+                <o:treeNode value="popup sub node" />
+              </o:treeNode>
+            </o:staticTreeStructure>
+            <o:treeColumn>
+              <f:facet name="header">
+                <h:panelGroup>
+                  <h:commandButton id="header_invoker" value="Show Popup"
+                                   onclick="O$('fn:dataTableId8:header_popup').showAtXY(
+          O$.getElementPos(O$('fn:dataTableId8:header_invoker')).left + O$('fn:dataTableId8:header_invoker').offsetWidth,
+          O$.getElementPos(O$('fn:dataTableId8:header_invoker')).top + O$('fn:dataTableId8:header_invoker').offsetHeight); return false;" />
+                  <o:popupLayer id="header_popup"
+                                hideOnOuterClick="true"
+                                style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">
+                    <h:outputText value="this is header popup layer!" />
+                  </o:popupLayer>
+                </h:panelGroup>
+              </f:facet>
+              <h:panelGroup rendered="#{level == 0}">
+                <h:commandButton id="body_invoker" value="Show Popup"
+                                 onclick="O$('fn:body_popup').showAtXY(
+          O$.getElementPos(O$('fn:body_invoker')).left + O$('fn:body_invoker').offsetWidth,
+          O$.getElementPos(O$('fn:body_invoker')).top + O$('fn:body_invoker').offsetHeight); return false;" />
+                <o:popupLayer id="body_popup"
+                              hideOnOuterClick="true"
+                              style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">
+                  <h:outputText value="this is body popup" />
+                </o:popupLayer>
+              </h:panelGroup>
+              <h:panelGroup rendered="#{level == 1}">
+                <h:commandButton id="body_invoker1" value="Show Popup"
+                                 onclick="O$('fn:body_popup1').showAtXY(
+          O$.getElementPos(O$('fn:body_invoker1')).left + O$('fn:body_invoker1').offsetWidth,
+          O$.getElementPos(O$('fn:body_invoker1')).top + O$('fn:body_invoker1').offsetHeight); return false;" />
+                <o:popupLayer id="body_popup1"
+                              hideOnOuterClick="true"
+                              style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">
+                  <h:outputText value="this is body popup" />
+                </o:popupLayer>
+              </h:panelGroup>
+              <f:facet name="footer">
+                <h:panelGroup>
+                  <h:commandButton id="footer_invoker" value="Show Popup"
+                                   onclick="O$('fn:dataTableId8:footer_popup').showAtXY(
+          O$.getElementPos(O$('fn:dataTableId8:footer_invoker')).left + O$('fn:dataTableId8:footer_invoker').offsetWidth,
+          O$.getElementPos(O$('fn:dataTableId8:footer_invoker')).top + O$('fn:dataTableId8:footer_invoker').offsetHeight); return false;" />
+                  <o:popupLayer id="footer_popup"
+                                hideOnOuterClick="true"
+                                style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">
+                    <h:outputText value="this is footer popup layer!" />
+                  </o:popupLayer>
+                </h:panelGroup>
+              </f:facet>
+            </o:treeColumn>
+          </o:treeTable>
+        </td>
+      </tr>
+    </table>
+
+  
+</div>

@@ -1,0 +1,56 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+
+				<jsp:include page="popup.jsf" flush="true" />
+
+				<f:loadBundle basename="messages" var="msg" />
+
+				<o:clientValidationSupport clientValidation="onDemand"
+					useDefaultClientValidationPresentation="true"
+					useDefaultServerValidationPresentation="true">
+					<o:floatingIconMessage showDetail="true" showSummary="false"
+						style="border: 2px solid red;" />
+				</o:clientValidationSupport>
+
+				<o:focus focusedComponentId=":strategicPlan" />
+
+				<t:panelLayout id="edit" cellpadding="0" cellspacing="0"
+					layout="classic" width="100%">
+
+					<f:facet name="header">
+						<f:subview id="header">
+						</f:subview>
+					</f:facet>
+
+					<f:facet name="body">
+						<f:subview id="body">
+
+
+							<h:panelGrid border="0" cellpadding="10" cellspacing="0"
+								columns="1">
+
+			
+										<t:commandButton immediate="true" id="selectCommandButton"
+											alt="Change Executive Owner" forceId="true"
+											onclick="O$(ownerSearchPopupId).showCentered(); return false;"
+											title="Change Executive Owner" />
+								</h:panelGrid>
+						</f:subview>
+					</f:facet>
+
+					<f:facet name="footer">
+						<f:subview id="footer">
+						</f:subview>
+					</f:facet>
+
+				</t:panelLayout>
+			
+</div>

@@ -1,0 +1,214 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+<br/>
+
+<a href="../../main.jsf">Return to main page</a> <input type="Submit" value="Submit"/>
+
+<h3 style="text-decoration: underline;">DataTable common styles</h3>
+<table>
+<tr>
+<td class="cells">
+  <o:dataTable id="table1"
+               var="table_events"
+               style="font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;"
+               value="#{TestEventsBean.tableTestCollection}"
+               pageSize="3"
+               bodyOddRowStyle="background: #F8FFA8;"
+               bodyRowStyle="background: #D0FFFE;"
+               bodySectionStyle="color: #13731E;"
+               commonFooterRowStyle="background: #3333AF; border: 1px dashed yellow;"
+               commonHeaderRowStyle="background: #C90EBE; color: white;"
+               filterRowStyle="color: SlateBlue; font-weight: bold; background: NavajoWhite;"
+               focusedStyle="border: 2px solid yellow ! important;"
+               footerRowStyle="background: Teal; border: 2px solid Salmon;"
+               footerSectionStyle="font-weight: bold;"
+               headerRowStyle="background: LightSlateGray; border: 3px solid red;"
+               headerSectionStyle="font-weight: normal;"
+               rolloverRowStyle="background: gray; color: white; font-weight: bold;"
+               rolloverStyle="border: 3px solid black;"
+               sortedColumnBodyStyle="font-weight: bold;"
+               noDataRowStyle="color: darkgreen; font-weight: bold;"
+               sortedColumnFooterStyle="background: Salmon; border: 2px solid Teal;"
+               sortedColumnHeaderStyle="background:yellow;"
+               sortedColumnStyle="background: IndianRed;">
+    <f:facet name="header">
+      <h:outputText value="It is a common header"/>
+    </f:facet>
+    <o:column id="col_one"
+              filterKind="searchField"
+              filterExpression="#{table_events.firstColumn}">
+      <f:facet name="header">
+        <h:outputText value="Col1 header"/>
+      </f:facet>
+      <h:outputText value="#{table_events.firstColumn}"/>
+      <f:facet name="footer">
+        <h:outputText value="Col1 footer"/>
+      </f:facet>
+    </o:column>
+    <o:column id="col_two" sortingExpression="#{table_events.secondColumn}">
+      <f:facet name="header">
+        <h:outputText value="Col2 header"/>
+      </f:facet>
+      <h:outputText value="#{table_events.secondColumn}"/>
+      <f:facet name="footer">
+        <h:outputText value="Col2 footer"/>
+      </f:facet>
+    </o:column>
+    <o:column id="col_third">
+      <f:facet name="header">
+        <h:outputText value="Col3 header"/>
+      </f:facet>
+      <h:outputText value="#{table_events.thirdColumn}"/>
+      <f:facet name="footer">
+        <h:outputText value="Col3 footer"/>
+      </f:facet>
+    </o:column>
+    <f:facet name="footer">
+      <h:outputText value="It is a common footer"/>
+    </f:facet>
+    <f:facet name="below">
+      <o:dataTablePaginator/>
+    </f:facet>
+  </o:dataTable>
+</td>
+<td class="cells">
+          <pre>
+          &lt;o:dataTable var="table_events"
+                       value="TestEventsBean.tableTestCollection"
+                       pageSize="3"
+                       bodyOddRowStyle="background: #F8FFA8;"
+                       bodyRowStyle="background: #D0FFFE;"
+                       bodySectionStyle="color: #13731E;"
+                       commonFooterRowStyle="background: #3333AF; border: 1px dashed yellow;"
+                       commonHeaderRowStyle="background: #C90EBE; color: white;"
+                       filterRowStyle="color: SlateBlue; font-weight: bold; background: NavajoWhite;"
+                       focusedStyle="border: 2px solid yellow;"
+                       footerRowStyle="background: Teal; border: 2px solid Salmon;"
+                       footerSectionStyle="font-weight: bold;"
+                       headerRowStyle="background: LightSlateGray; border: 3px solid red;"
+                       headerSectionStyle="font-weight: normal;"
+                       rolloverRowStyle="background: gray; color: white; font-weight: bold;"
+                       rolloverStyle="border: 3px solid black;"
+                       sortedColumnBodyStyle="font-weight: bold;"
+                       noDataRowStyle="color: darkgreen; font-weight: bold;"
+                       sortedColumnFooterStyle="background: Salmon; border: 2px solid Teal;"
+                       sortedColumnHeaderStyle="background:yellow;"
+                       sortedColumnStyle="background: IndianRed;"&gt;
+            &lt;f:facet name="header"&gt;
+              &lt;h:outputText value="It is a common header"/&gt;
+            &lt;/f:facet&gt;
+            &lt;o:column id="col_one"
+                      filterKind="searchField"
+                      filterExpression="table_events.firstColumn"&gt;
+              &lt;f:facet name="header"&gt;
+                &lt;h:outputText value="Col1 header" /&gt;
+              &lt;/f:facet&gt;
+              &lt;h:outputText value="table_events.firstColumn" /&gt;
+              &lt;f:facet name="footer"&gt;
+                &lt;h:outputText value="Col1 footer" /&gt;
+              &lt;/f:facet&gt;
+            &lt;/o:column&gt;
+            &lt;o:column id="col_two" sortingExpression="table_events.secondColumn"&gt;
+              &lt;f:facet name="header"&gt;
+                &lt;h:outputText value="Col2 header" /&gt;
+              &lt;/f:facet&gt;
+              &lt;h:outputText value="table_events.secondColumn" /&gt;
+              &lt;f:facet name="footer"&gt;
+                &lt;h:outputText value="Col2 footer" /&gt;
+              &lt;/f:facet&gt;
+            &lt;/o:column&gt;
+            &lt;o:column id="col_third"&gt;
+              &lt;f:facet name="header"&gt;
+                &lt;h:outputText value="Col3 header" /&gt;
+              &lt;/f:facet&gt;
+              &lt;h:outputText value="table_events.thirdColumn" /&gt;
+              &lt;f:facet name="footer"&gt;
+                &lt;h:outputText value="Col3 footer" /&gt;
+              &lt;/f:facet&gt;
+            &lt;/o:column&gt;
+            &lt;f:facet name="footer"&gt;
+              &lt;h:outputText value="It is a common footer"/&gt;
+            &lt;/f:facet&gt;
+            &lt;f:facet name="below"&gt;
+              &lt;o:dataTablePaginator /&gt;
+            &lt;/f:facet&gt;
+          &lt;/o:dataTable&gt;
+            </pre>
+</td>
+</tr>
+<tr>
+  <td class="cells">
+    <o:dataTable var="table_events"
+                 styleClass="entireTable"
+                 value="#{TestEventsBean.tableTestCollection}"
+                 pageSize="3"
+                 bodyOddRowClass="bodyOddRowTable"
+                 bodyRowClass="bodyRowTable"
+                 bodySectionClass="bodySectionTable"
+                 commonFooterRowClass="commonFooterRowTable"
+                 commonHeaderRowClass="commonHeaderRowTable"
+                 filterRowClass="filterRowTable"
+                 focusedClass="focusedTable"
+                 footerRowClass="footerRowTable"
+                 footerSectionClass="footerSectionTable"
+                 headerRowClass="headerRowTable"
+                 headerSectionClass="headerSectionTable"
+                 rolloverRowClass="rolloverRowTable"
+                 rolloverClass="rolloverTable"
+                 sortedColumnBodyClass="sortedColumnBodyTable"
+                 noDataRowClass="noDataRowTable"
+                 sortedColumnFooterClass="sortedColumnFooterTable"
+                 sortedColumnHeaderClass="sortedColumnHeaderTable"
+                 sortedColumnClass="sortedColumnTable">
+      <f:facet name="header">
+        <h:outputText value="It is a common header"/>
+      </f:facet>
+      <o:column id="col_one"
+                filterKind="searchField"
+                filterExpression="#{table_events.firstColumn}">
+        <f:facet name="header">
+          <h:outputText value="Col1 header"/>
+        </f:facet>
+        <h:outputText value="#{table_events.firstColumn}"/>
+        <f:facet name="footer">
+          <h:outputText value="Col1 footer"/>
+        </f:facet>
+      </o:column>
+      <o:column id="col_two" sortingExpression="#{table_events.secondColumn}">
+        <f:facet name="header">
+          <h:outputText value="Col2 header"/>
+        </f:facet>
+        <h:outputText value="#{table_events.secondColumn}"/>
+        <f:facet name="footer">
+          <h:outputText value="Col2 footer"/>
+        </f:facet>
+      </o:column>
+      <o:column id="col_third">
+        <f:facet name="header">
+          <h:outputText value="Col3 header"/>
+        </f:facet>
+        <h:outputText value="#{table_events.thirdColumn}"/>
+        <f:facet name="footer">
+          <h:outputText value="Col3 footer"/>
+        </f:facet>
+      </o:column>
+      <f:facet name="footer">
+        <h:outputText value="It is a common footer"/>
+      </f:facet>
+      <f:facet name="below">
+        <o:dataTablePaginator/>
+      </f:facet>
+    </o:dataTable>
+  </td>
+  <td class="cells">
+    The same defined in *Class attributes
+  </td>
+</tr>
+</table>
+
+
+</div>

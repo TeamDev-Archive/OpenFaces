@@ -1,0 +1,27 @@
+/*
+ * OpenFaces - JSF Component Library 2.0
+ * Copyright (C) 2007-2009, TeamDev Ltd.
+ * licensing@openfaces.org
+ * Unless agreed in writing the contents of this file are subject to
+ * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * Please visit http://openfaces.org/licensing/ for more details.
+ */
+O$._BigDecimalConverterValidator = function(summary, detail) {
+  this.conversionSummary = summary;
+  this.conversionDetail = detail;
+  this.type = "converter";
+}
+
+O$._BigDecimalConverterValidator.prototype.validate = function(input) {
+  var value = O$.trim(O$.getValue(input));
+  if (O$.notEmpty(value)) {
+    if (!O$.isBigDecimal(value)) {
+      O$.addMessage(input, this.conversionSummary, this.conversionDetail);
+      return false;
+    }
+  }
+  return true;
+}

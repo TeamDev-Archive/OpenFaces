@@ -1,0 +1,192 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div class="Col1_1 serif">
+    Sometimes plain HTML text headers are just not suitable for some reasons. In such cases you can use Graphic Text component. It provides you with an ability to create captions that are much more customizable than plain HTML text.
+
+    Example below shows vertical headers build with Graphic Text component in the table with thin columns.
+  </div>
+
+  <div id="component" align="center">
+
+    <o:dataTable id="hotels"
+                 var="hotel"
+                 value="#{GraphicTextBean.hotels}"
+                 verticalGridLines="1px solid gray"
+                 multiHeaderSeparator="1px solid gray"
+                 width="100%"
+                 horizontalGridLines="1px solid white"
+                 headerVertSeparator="1px solid #d0d0d0, 1px solid #a0a0a0"
+                 headerRowStyle="background: white url('../images/graphictext/tableHeader.gif') repeat-x; padding-bottom: 5px; padding-top: 5px;"
+                 bodyRowStyle="height: 21px;"
+                 bodyOddRowStyle="background: #f5f5f5 ! important; height: 21px;">
+      <o:column style="padding-left: 1em; padding-righ: 1em;" headerStyle="vertical-align: bottom; text-align: left;">
+        <f:facet name="header">
+          <h:panelGroup>
+            <h:outputText value="Hotel List" style="font-size: 18px; color: #e38400;"/>
+          </h:panelGroup>
+        </f:facet>
+        <h:outputText value="#{hotel.name}"/>
+      </o:column>
+      <o:columnGroup>
+        <f:facet name="header">
+          <h:outputText value="Dining"/>
+        </f:facet>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Breakfast Cooked to Order" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.breakfastCookedToOrder}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Lounges / Bars" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.loungesBars}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Restaurants" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.restaurants}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Room Service" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.roomService}"
+                          width="8" height="8"/>
+        </o:column>
+      </o:columnGroup>
+      <o:columnGroup style="border-bottom: 1px solid gray">
+        <f:facet name="header">
+          <h:outputText value="Hotel Features"/>
+        </f:facet>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Parking Fee" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.parkingFee}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Concierge" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.concierge}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Gym / Health Club" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.gymHealthClub}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Laundromat" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.laundromat}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Transportation" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.transportation}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Swimming Pools" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.swimmingPools}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Whirlpools / Sauna" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.whirlpoolsSauna}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Business Center" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.businessCenter}"
+                          width="8" height="8"/>
+        </o:column>
+      </o:columnGroup>
+      <o:columnGroup style="border-bottom: 1px solid gray">
+        <f:facet name="header">
+          <h:outputText value="Room Features"/>
+        </f:facet>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Coffee / Tea Maker" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.coffeeTeaMaker}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Crib" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.crib}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Hair Dryer" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.hairDryer}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="In Room Movies for a Fee" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.inRoomMoviesForAFee}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Internet Access" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.internetAccess}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Microwave" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.microwave}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Refrigerator" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.refrigerator}"
+                          width="8" height="8"/>
+        </o:column>
+        <o:column style="text-align: center;">
+          <f:facet name="header">
+            <o:graphicText value="Rollaway" textStyle="color: SlateGray;" direction="bottomToTop"/>
+          </f:facet>
+          <h:graphicImage url="../images/graphictext/bullet3.gif" rendered="#{hotel.rollaway}"
+                          width="8" height="8"/>
+        </o:column>
+      </o:columnGroup>
+    </o:dataTable>
+
+  </div>
+
+</div>

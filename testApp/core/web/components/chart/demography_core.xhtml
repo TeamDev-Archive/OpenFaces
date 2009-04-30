@@ -1,0 +1,95 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+    <a href="../../main.jsf">Back to the main page</a>
+    <br/>
+
+  <table width="100%">
+    <tr>
+      <td width="100%" valign="top" align="center" colspan="2">
+        <div>
+          <o:chart id="myPieChartTest" width="650" height="300"
+                   model="#{ChartModelTestBean}"
+                   legendVisible="false"
+                   textStyle="font: 15pt Verdana; color:gray;">
+            <o:pieChartView binding="#{PieChartViewBean.pieView}"
+                            style="background:white;"
+                            labelsVisible="true"
+                            tooltip="#{sector.key}"
+                            actionListener="#{PieChartViewBean.onSectorClickActionListener}"
+                            colors="#FFD700, #8B0000, #FFA07A"
+                            onclick="go_there();">
+              <o:pieSectorProperties condition="#{PieChartViewBean.selectedSector || PieChartViewBean.defaultSector}" pulled="0.1f"/>
+              <o:chartLabels style="background: white; font:15pt;"></o:chartLabels>
+            </o:pieChartView>
+            <o:chartTitle text="People PopulationBean in Different Countries"
+                          actionListener="#{PieChartViewBean.onTitleClickActionListener}"
+                          tooltip="it's tooltip for title"/>
+            <o:chartNoDataMessage text="!!!!no data!!!!"
+                                  style="color: red; font-size: 20pt;"></o:chartNoDataMessage>
+          </o:chart>
+        </div>
+
+        <div style="width:100%; text-align:center;">
+          <h:outputText value="click on the pie sector to view detailed information"
+                        style="font-size: 8pt; color:gray"></h:outputText>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td width="50%" valign="middle" align="center">
+        <o:chart width="500" height="400"
+                 model="#{CitiesDataBean}"
+                 textStyle="background:white; font-family: Verdana; font-size: 15pt; color:gray;"
+                 rendered="#{PieChartViewBean.viewDetails}">
+          <o:barChartView orientation="vertical"
+                          binding="#{PieChartViewBean.barView}"
+                          labelsVisible="true"
+                          tooltip="#{point.key}"
+                          colors="#9ACD32, #90EE90, #556B2F"
+                          actionListener="#{LineChartViewBean.onPointClickActionListener}"
+                          style="color: gray; font: 12pt;"
+                          showAxes="both">
+
+            <o:chartGridLines style="dashed 1px gray;"></o:chartGridLines>
+            <o:categoryAxis domain="key" position="up_45"/>
+            <o:numberAxis domain="value" lowerBound="100000" upperBound="800000"/>
+            <o:chartLabels style="font: 8pt;"/>
+          </o:barChartView>
+          <o:chartLegend position="right" style="width:250px; height:200px; margin: 5px"/>
+          <o:chartTitle text="People PopulationBean in Different Cities of #{PieChartViewBean.pieInfo.key}"
+                        actionListener="#{PieChartViewBean.onTitleClickActionListener}"
+                        tooltip="test title tooltip"/>
+          <o:chartNoDataMessage text="!!!!no data!!!!"/>
+        </o:chart>
+        <div>
+        </div>
+
+      </td>
+      <td>
+        <o:chart width="500" height="400"
+                 model="#{WeatherBean}"
+                 textStyle="background:white; font-family: Verdana; font-size: 9pt; color:gray;"
+                 rendered="#{PieChartViewBean.viewDetails}"
+                 legendVisible="true">
+          <o:lineChartView shapesVisible="true" valueAxisLabel="temperature, C"
+                           binding="#{PieChartViewBean.lineView}" labelsVisible="true">
+            <o:lineProperties condition="#{point.series.key=='Ukraine'}" shapesVisible="true" showInLegend="true"
+                              style="border:none;"></o:lineProperties>
+            <o:dateAxis dateFormat="#{PieChartViewBean.sampleDateFormat}" domain="key"/>
+            <o:chartLabels style="color:red; font-size: 8pt;"/>
+            <o:chartAxis domain="value"/>
+          </o:lineChartView>
+
+          <o:chartTitle text="Temperature Distribution During a Year for #{PieChartViewBean.pieInfo.key}" style="font: 15pt"/>
+
+          <o:chartNoDataMessage text="!!!!no data!!!!"></o:chartNoDataMessage>
+
+        </o:chart>
+      </td>
+    </tr>
+  </table>
+
+</div>

@@ -1,0 +1,49 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a href="../../SupportPages.jsf">Support pages list</a>
+    <br/>
+    <o:foldingPanel
+            foldingDirection="down"
+            loadingMode="server"
+            expanded="true"
+            id="marchesPanelItem"
+            binding="#{QKS177.marchesPanel}">
+      <f:facet name="caption">
+        <h:outputText value="Marches"/>
+      </f:facet>
+      <o:dataTable useAjax="true" id="marchesDataTable" styleClass="tablebg" value="#{QKS177.listeMarches}"
+                   var="marche">
+        <o:column>
+          <h:commandLink value="#{marche.nomMarche}" actionListener="#{QKS177.marcheSelected}"/>
+        </o:column>
+      </o:dataTable>
+    </o:foldingPanel>
+    <o:foldingPanel loadingMode="server"
+                    expanded="false"
+                    id="userPanel"
+                    binding="#{QKS177.usersPanel}">
+      <f:facet name="caption">
+        <f:verbatim>Users</f:verbatim>
+      </f:facet>
+      <h:outputText value="test"/>
+    </o:foldingPanel>
+    <h:dataTable var="test" value="#{QKS177.listeMarches}" binding="#{QKS177.dataTableTest}">
+      <f:facet name="header">
+        <h:outputText value="header"></h:outputText>
+      </f:facet>
+      <h:column>
+        <h:commandLink value="test"/>
+      </h:column>
+
+    </h:dataTable>
+
+  
+</div>

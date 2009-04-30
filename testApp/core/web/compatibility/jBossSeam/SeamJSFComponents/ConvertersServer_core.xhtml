@@ -1,0 +1,40 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+     xmlns:s="http://jboss.com/products/seam/taglib"  >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a href="../../JBossSeamTesting.jsf">Return to main page</a>
+    <o:clientValidationSupport clientValidation="off"/>
+    <h3>Server</h3>
+    DateTime converter (convertDateTime) (timeZone, locale, pattern)
+    <br/>
+    <h:inputText id="dateConv" value="#{ValidBean.date}">
+      <s:convertDateTime timeZone="Europe/London" locale="#{seamvalidators.locale}" pattern="MMM-dd-yyyy hh:mm"/>
+    </h:inputText>
+    <br/>
+    DateTime converter (convertDateTime) (type, dateStyle, timeStyle)
+    <br/>
+    <h:inputText id="dateConv2" value="#{ValidBean.date2}">
+      <s:convertDateTime type="both" dateStyle="full" timeStyle="short"/>
+    </h:inputText>
+    <br/>
+    <o:dateChooser value="#{seamvalidators.dchValue}" locale="en">
+      <s:convertDateTime/>
+    </o:dateChooser>
+    <br/>
+    <h:selectOneMenu value="#{seamvalidators.honorific}">
+      <s:selectItems value="#{honorifics}" var="honorific" label="#{honorific.label}" noSelectionLabel="Please select"/>
+      <s:convertEnum/>
+    </h:selectOneMenu>
+    <br/>
+    <h:commandButton value="Submit"/>
+    <h:commandButton value="Fill Valid Data" onclick="fillValidData('server');return false;"/>
+    <h:commandButton value="Fill Invalid Data" onclick="fillInvalidData('server');return false;"/>
+
+  
+</div>

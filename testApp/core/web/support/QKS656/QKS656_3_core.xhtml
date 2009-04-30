@@ -1,0 +1,23 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <h:selectBooleanCheckbox id="box" value="#{QKS656.bool}"/>
+    <h:inputText id="inDuration" required="false" value="#{QKS656.val}">
+      <f:attribute name="clientValueFunction"
+                   value="if (document.getElementById('form1:box').checked) return 'dudu'; return document.getElementById('form1:inDuration').value;"/>
+      <f:validateLength minimum="3" maximum="5"/>
+    </h:inputText>
+    <o:floatingIconMessage for="form1:inDuration"/>
+    <h:message for="form1:inDuration"/>
+    <h:commandButton type="button" value="Check" onclick="O$.validateEnclosingForm(this);"/>
+    <h:commandButton action="null" value="Submit" onclick="return O$.validateEnclosingForm(this);"/>
+    <h:outputText value="#{QKS656.val}"/>
+  
+</div>

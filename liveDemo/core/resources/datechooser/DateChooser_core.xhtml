@@ -1,0 +1,151 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+
+  <div class="Col1_1 serif">
+    The DateChooser component can be easily localized and configured to accept different date formats. And using a variety
+    of style options, you can create a desired look-and-feel for the component, whether you want it simplistic,
+    transparent or fancy (see the examples below).
+  </div>
+  
+
+  <div id="component" align="center">
+
+    <table style="margin-top: 20px;">
+      <tr>
+        <td>
+          <table>
+            <tr>
+              <td style="text-align: center;">
+                <strong>Choose your locale</strong>
+              </td>
+            </tr>
+            <tr>
+              <td width="220" style="text-align: left; display: block;">
+                <o:tabSet id="localeSelector"
+                          value="#{DateChooserBean.selectedLocaleItem}"
+                          placement="right"
+                          gapWidth="0"
+                          tabClass="default_tab"
+                          rolloverTabClass="rollover_tab"
+                          selectedTabClass="selected_tab"
+                          rolloverSelectedTabClass="rollover_selected_tab">
+                  <o:tabSetItems value="#{DateChooserBean.locales}"/>
+
+                  <o:reloadComponents event="onchange" componentIds="dateChoosers"/>
+                </o:tabSet>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td class="datechoosers_container">
+          <h:panelGroup id="dateChoosers">
+
+            <h:panelGrid style="margin: 15px 15px 15px 15px;border-collapse: collapse;" columns="2"
+                         columnClasses="first, second" rowClasses=", spacer">
+
+              <h:panelGroup styleClass="field_title"><h:outputText value="Default"/></h:panelGroup>
+              <o:dateChooser id="dcDefault"
+                             styleClass="defaultWidth"
+                             dateFormat="medium"
+                             value="#{DateChooserBean.defaultDate}"
+                             locale="#{DateChooserBean.selectedLocale}"
+                             todayText="#{DateChooserBean.currentTodayText}"
+                             noneText="#{DateChooserBean.currentNoneText}"
+                             dayStyle="border: 1px solid white;"/>
+              <h:column><f:verbatim escape="false"><!--  --></f:verbatim></h:column>
+              <h:column><f:verbatim escape="false"><!--  --></f:verbatim></h:column>
+              <h:panelGroup styleClass="field_title"><h:outputText value="MM/dd/yyyy"/></h:panelGroup>
+              <o:dateChooser id="dcMMdd"
+                             pattern="MM/dd/yyyy"
+                             value="#{DateChooserBean.patternDate}"
+                             locale="#{DateChooserBean.selectedLocale}"
+                             todayText="#{DateChooserBean.currentTodayText}"
+                             noneText="#{DateChooserBean.currentNoneText}"
+                             headerStyle="background: white; color: black;"
+                             daysHeaderStyle="background: #20386b; color: white;"
+                             dayStyle="border: 1px solid white;"
+                             rolloverDayStyle="border: 1px solid #f7a902; background: white; color: black;"
+                             rolloverWeekendDayStyle="border: 1px solid #f7a902; background: white; color: #ff8a00;"
+                             selectedDayStyle="border: 1px solid #20386b; color: #20386b; background: white;"
+                             weekendDayStyle="color: #ff8a00;"
+                             footerStyle="background: white; color: black; border-top: 1px solid #20386b;"/>
+              <h:column><f:verbatim escape="false"><!--  --></f:verbatim></h:column>
+              <h:column><f:verbatim escape="false"><!--  --></f:verbatim></h:column>
+              <h:panelGroup styleClass="field_title"><h:outputText value="Full"/></h:panelGroup>
+              <o:dateChooser id="dcFull"
+                             dateFormat="full"
+                             dayStyle="border: 1px solid white;"
+                             value="#{DateChooserBean.fullDate}"
+                             locale="#{DateChooserBean.selectedLocale}"
+                             todayText="#{DateChooserBean.currentTodayText}"
+                             noneText="#{DateChooserBean.currentNoneText}"
+                             headerStyle="background: #d1e1b5;"
+                             daysHeaderStyle="background: #6c8500; color: white;"
+                             selectedDayStyle="background: #629900; font-weight: bold; color: white;"
+                             rolloverDayStyle="background: #d1e1b5; color: #629900;"
+                             weekendDayStyle="background: #f4ffC6; color: #6c8500; border: 1px solid #f4ffc6;"
+                             footerStyle="background: #d1e1b5; color: black;"/>
+              <h:column><f:verbatim escape="false"><!--  --></f:verbatim></h:column>
+              <h:column><f:verbatim escape="false"><!--  --></f:verbatim></h:column>
+              <h:panelGroup styleClass="field_title"><h:outputText value="Long"/></h:panelGroup>
+              <o:dateChooser id="dcLong"
+                             dateFormat="long"
+                             value="#{DateChooserBean.longDate}"
+                             locale="#{DateChooserBean.selectedLocale}"
+                             todayText="#{DateChooserBean.currentTodayText}"
+                             noneText="#{DateChooserBean.currentNoneText}"
+                             headerStyle="background: #def3ff; color: black;"
+                             daysHeaderStyle="background: #87b2c9; color: white;"
+                             selectedDayStyle="border: 1px solid black; background: white; color: black;"
+                             dayStyle="border: 1px solid white;"
+                             rolloverDayStyle="background: #fce55d;"
+                             weekendDayStyle="color: #b09f41;"
+                             footerStyle="background: #def3ff; color: black; border-top: 1px solid #87b2c9;"/>
+              <h:column><f:verbatim escape="false"><!--  --></f:verbatim></h:column>
+              <h:column><f:verbatim escape="false"><!--  --></f:verbatim></h:column>
+              <h:panelGroup styleClass="field_title"><h:outputText value="Medium"/></h:panelGroup>
+              <o:dateChooser id="dcMedium"
+                             dateFormat="medium"
+                             value="#{DateChooserBean.mediumDate}"
+                             locale="#{DateChooserBean.selectedLocale}"
+                             todayText="#{DateChooserBean.currentTodayText}"
+                             noneText="#{DateChooserBean.currentNoneText}"
+                             headerStyle="background: #55563e; color: white;"
+                             footerStyle="background: #55563e; color: white;"
+                             daysHeaderStyle="background: #89191b; color: white;"
+                             weekendDayStyle="background: #e3d08c; color: #8a1f1f; border: 1px solid #e3d08c;"
+                             dayStyle="background: #eae8e1; color: #000000; border: 1px solid #eae8e1;"
+                             rolloverDayStyle="background: #d6d39a;"
+                             selectedDayStyle="background: #afB27d; font-weight: bold;"
+                             inactiveMonthDayStyle="color: #808080;"/>
+              <h:column><f:verbatim escape="false"><!--  --></f:verbatim></h:column>
+              <h:column><f:verbatim escape="false"><!--  --></f:verbatim></h:column>
+              <h:panelGroup styleClass="field_title"><h:outputText value="Short"/></h:panelGroup>
+              <o:dateChooser id="dcShort"
+                             dateFormat="short"
+                             value="#{DateChooserBean.shortDate}"
+                             locale="#{DateChooserBean.selectedLocale}"
+                             todayText="#{DateChooserBean.currentTodayText}"
+                             noneText="#{DateChooserBean.currentNoneText}"
+                             headerStyle="background: #fff;"
+                             rolloverDayStyle="background: #fff; border: 1px solid #8eb5d4; color: black;"
+                             selectedDayStyle="background: #8eb5d4;"
+                             todayStyle="color: #ff8a01; font-weight: bold; background: #fff;"
+                             footerStyle="border-top: 1px solid #505050; background: #fff;"
+                             daysHeaderStyle="background: #505050; color: white;"
+                             inactiveMonthDayStyle="color: #b4b4b4; background: #fff;"
+                             dayStyle="color: #505050; background: #fff; border: 1px solid #fff;"
+                             weekendDayStyle="color: #000000;  background: #fff;"
+                             rolloverWeekendDayStyle="background: #fff; border: 1px solid #8eb5d4; color: black;"
+                             calendarStyle="background: #f9f9f9; border: 1px solid #505050;"/>
+            </h:panelGrid>
+          </h:panelGroup>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+</div>

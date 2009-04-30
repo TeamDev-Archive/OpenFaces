@@ -1,0 +1,25 @@
+<jsp:root xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:o="http://openfaces.org/">
+
+	<ui:composition template="template.xhtml">
+		<ui:define name="mainPanel">
+			<h:commandButton value="New Application"
+				id="startNewApplication"
+				action="#{QKS1152.startNewApplication}" />
+			<o:confirmation id="confirmation"
+        modalLayerClass="confirmationLayer"
+				for="appForm:startNewApplication"
+        captionText="Confirm"
+				message="are you sure that you want to clear curren application and start new one?"
+				details="Click Yes to start a new application" showMessageIcon="true"
+				okButtonText="Yes" cancelButtonText="No" draggable="true"
+				hideOnOuterClick="true" />
+		</ui:define>
+	</ui:composition>
+
+</jsp:root>

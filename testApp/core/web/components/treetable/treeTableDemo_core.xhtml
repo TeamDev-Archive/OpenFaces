@@ -1,0 +1,178 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+<h:commandButton value="Test" action="#{TreeTableTestBean.test}"/>
+<h:commandButton onclick="O$.reloadComponents(['form1:treeTable1', 'form1:forumTree', 'form1:forumTree', 'form1:permissionsTreeTable', 'form1:bigNodesTreeTable']); return false;" value="Rerender with q_refreshTable"/>
+
+<div style="font: 12pt Times; font-weight: normal; border-bottom: 1px solid gray; ">TreeTable with a static structure
+  (using o:staticTreeStructure)</div>
+<br/>
+<o:treeTable id="treeTable1" var="pageInfo" nodeHasChildrenVar="nodeHasChildren" applyDefaultStyle="false" cellpadding="2"
+             cellspacing="0" border="0"
+             expansionState="allExpanded" preloadedNodes="all">
+  <o:staticTreeStructure>
+    <o:treeNode value="PopulationBean|http://www.teamdev.com/jniwrapper">
+      <o:treeNode value="JNIWrapper|http://www.teamdev.com/jniwrapper">
+        <o:treeNode value="What's New|http://www.teamdev.com/jniwrapper"/>
+        <o:treeNode value="Features|http://www.teamdev.com/jniwrapper/features"/>
+        <o:treeNode value="Download|http://www.teamdev.com/jniwrapper/documentation"/>
+        <o:treeNode value="Documentation|http://www.teamdev.com/jniwrapper/documentation"/>
+      </o:treeNode>
+    </o:treeNode>
+    <o:treeNode value="ComfyJ|http://www.teamdev.com/comfyj">
+      <o:treeNode value="Features|http://www.teamdev.com/comfyj/features"/>
+      <o:treeNode value="What's New|http://www.teamdev.com/comfyj"/>
+      <o:treeNode value="Online Demo|http://www.teamdev.com/comfyj/onlinedemo"/>
+      <o:treeNode value="Download|http://www.teamdev.com/comfyj"/>
+      <o:treeNode value="Documentation|http://www.teamdev.com/comfyj/documentation"/>
+    </o:treeNode>
+    <o:treeNode value="JExplorer|http://www.teamdev.com/jexplorer">
+    </o:treeNode>
+    <o:treeNode value="WinPack|http://www.teamdev.com/jniwrapper/winpack">
+    </o:treeNode>
+    <o:treeNode value="Services|http://www.teamdev.com/services">
+    </o:treeNode>
+    <o:treeNode value="About|http://www.teamdev.com/company">
+      <o:treeNode value="Our Clients|http://www.teamdev.com/company/customers"/>
+      <o:treeNode value="News And Announcements|http://www.teamdev.com/company/news"/>
+    </o:treeNode>
+  </o:staticTreeStructure>
+  <o:treeColumn>
+    <h:graphicImage url="book_open.gif" rendered="#{nodeHasChildren}"/>
+    <h:graphicImage url="page.gif" rendered="#{!nodeHasChildren}"/>
+    <h:outputLink value="#{TreeTableTestBean.pageUrlFromPageInfo}" styleClass="siteMapLink"><h:outputText
+            value="#{TreeTableTestBean.pageNameFromPageInfo}"/></h:outputLink>
+  </o:treeColumn>
+
+</o:treeTable>
+
+<p/>
+
+<p/>
+
+<br/>
+
+<div style="font: 12pt Times; font-weight: normal; border-bottom: 1px solid gray; ">TreeTable with a dynamic structure
+  (using o:dynamicTreeStructure)</div>
+<br/>
+<h:commandButton value="expansionState=allExpanded" action="#{TreeTableTestBean.forumExpandAll}"/>
+<h:commandButton value="expansionState=allCollapsed" action="#{TreeTableTestBean.forumCollapseAll}"/>
+<h:commandButton value="expansionState=levelsExpanded:" action="#{TreeTableTestBean.forumExpandUpToLevel}"/>
+<h:inputText value="#{TreeTableTestBean.forumExpansionLevel}"/>
+<o:treeTable id="forumTree" var="message"
+             expansionState="#{TreeTableTestBean.forumTreeTableExpansionState}" style="width: 100%;"
+             columnIdVar="columnId" nodeLevelVar="level"
+             bodyOddRowStyle="background: #e4e4e4;"
+        >
+  <o:dynamicTreeStructure nodeChildren="#{TreeTableTestBean.nodeChildren}"/>
+  <o:row>
+    <o:cell/><o:cell columnIds="author,reply" style="background: silver"/><o:cell onclick="alert('second column cell clicked');"/>
+  </o:row>
+  <o:row condition="#{TreeTableTestBean.anonymousMessage}">
+    <o:cell span="2"/><o:cell style="background: orange"/><o:cell columnIds="delete" style="background: gray"/>
+    <o:cell columnIds="author" style="color: orange" onclick="alert('author cell of anonymous message clicked. message subject: #{message.subject}');"/>
+  </o:row>
+  <o:row condition="#{level == 0}">
+    <o:cell span="5"/>
+  </o:row>
+  <o:treeColumn sortingExpression="#{message.subject}" filterExpression="#{message.subject}" filterKind="searchField">
+    <f:facet name="header">
+      <h:outputText value="Subject"/>
+    </f:facet>
+    <h:outputText value="#{message.subject}"/>
+  </o:treeColumn>
+
+  <o:column id="author" sortingExpression="#{message.author.userName}" filterExpression="#{message.author.userName}"
+            filterKind="comboBox" style="width: 200px">
+    <f:facet name="header">
+      <h:outputText value="From"/>
+    </f:facet>
+    <h:outputText value="#{message.author.userName}"/>
+  </o:column>
+
+  <o:column sortingExpression="#{message.date}" style="width: 120px" >
+    <f:facet name="header">
+      <h:outputText value="Sent"/>
+    </f:facet>
+    <h:outputText value="#{message.date}"/>
+  </o:column>
+  <o:column style="width: 55px" id="reply">
+    <h:commandLink value="Reply" action="#{TreeTableTestBean.reply}"/>
+  </o:column>
+  <o:column style="width: 55px" id="delete">
+    <h:commandLink value="Delete" action="#{TreeTableTestBean.delete}"/>
+  </o:column>
+</o:treeTable>
+
+<br/>
+
+<div style="font: 12pt Times; font-weight: normal; border-bottom: 1px solid gray; ">Advanced selection using
+  nodeId</div>
+<br/>
+
+<o:treeTable id="permissionsTreeTable" var="node" nodeLevelVar="level" sortLevel="0">
+  <o:multipleNodeSelection nodePaths="#{UserPermissionsTableDemoBean.treeDemoSelectedNodePaths}"
+                           onchange="updatePermissionsBtn();"/>
+  <o:selectionColumn/>
+  <o:dynamicTreeStructure nodeChildren="#{UserPermissionsTableDemoBean.usersTreeChildren}"
+                          nodeKey="#{UserPermissionsTableDemoBean.usersTreeNodeKey}"/>
+
+  <o:treeColumn sortingExpression="#{node.name}">
+    <f:facet name="header"><h:outputText value="Permissions"/></f:facet>
+    <h:outputText rendered="#{level == 0}" value="#{node.name}"/>
+    <h:outputText rendered="#{level == 1}" value="#{node.userName}"/>
+  </o:treeColumn>
+  <o:row condition="#{level == 0}" style="font-weight: bold; background: silver"/>
+</o:treeTable>
+
+Click this button to remove appropriate permission from the selected user<br/>
+<h:commandButton id="permissionsBtn" action="#{UserPermissionsTableDemoBean.treeDemoRemovePermission}"
+                 value="Deprive User's Permission"/>
+<br/>
+
+
+<br/>
+
+<div style="font: 12pt Times; font-weight: normal; border-bottom: 1px solid gray; ">Demonstrating expansion toggle
+  alignment on high nodes</div>
+<br/>
+<h:commandButton value="Switch toggle alignment to 'top'" action="#{TreeTableTestBean.alignTop}"/>
+<h:commandButton value="Switch toggle alignment to 'middle'" action="#{TreeTableTestBean.alignMiddle}"/>
+<h:commandButton value="Switch toggle alignment to 'bottom'" action="#{TreeTableTestBean.alignBottom}"/>
+
+<o:treeTable id="bigNodesTreeTable" var="node" style="width: 200px; ">
+  <o:staticTreeStructure>
+    <o:treeNode value="Node 1 (and some long text paragraph here)">
+      <o:treeNode value="Node 1-1 (and some long text paragraph here)"/>
+      <o:treeNode value="Node 1-2 (and some long text paragraph here)">
+        <o:treeNode value="Node 1-2-1 (and some long text paragraph here)"/>
+        <o:treeNode value="Node 1-2-2 (and some long text paragraph here)"/>
+      </o:treeNode>
+    </o:treeNode>
+    <o:treeNode value="Node 2 (and some long text paragraph here)">
+      <o:treeNode value="Node 2-1 (and some long text paragraph here)"/>
+      <o:treeNode value="Node 2-2 (and some long text paragraph here)"/>
+    </o:treeNode>
+    <o:treeNode value="Node 3 (and some long text paragraph here)">
+      <o:treeNode value="Node 3 (and some long text paragraph here)"/>
+    </o:treeNode>
+  </o:staticTreeStructure>
+  <o:treeColumn
+          expansionToggleCellStyle="vertical-align: #{TreeTableTestBean.bigNodesToggleVeritcalAlign}; padding-top: 2px; padding-bottom: 2px">
+    <f:facet name="header">
+      <h:outputText value="Text Column"/>
+    </f:facet>
+    <h:inputTextarea style="width: 100%;" rows="3" value="#{node}"/>
+  </o:treeColumn>
+</o:treeTable>
+
+
+
+</div>

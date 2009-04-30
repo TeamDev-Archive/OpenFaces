@@ -1,0 +1,86 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+
+  <h:commandButton id="resetBtn" value="Reset Counter">
+    <o:reloadComponents componentIds="counter" action="#{TableTestBean.resetCounter}" disableDefault="true"/>
+  </h:commandButton>
+
+  <h:outputText id="counter" value="#{TableTestBean.counter}"/>
+
+  <br/>
+
+  <h:panelGrid columns="3">
+    <h:commandButton id="btn1" value="btn1">
+      <o:reloadComponents componentIds="counter" action="#{TableTestBean.incrementCounter}" disableDefault="true"/>
+    </h:commandButton>
+    <h:panelGroup>
+      <h:commandButton id="btn2" value="btn2"/>
+      <o:reloadComponents for="btn2" componentIds="counter" action="#{TableTestBean.incrementCounter}"
+                          disableDefault="true"/>
+    </h:panelGroup>
+    <h:panelGroup>
+      <h:commandButton id="btn3" value="btn3" onclick="O$('form1:reload1').run(); return false;"/>
+      <o:reloadComponents id="reload1" standalone="true" componentIds="counter" action="#{TableTestBean.incrementCounter}"/>
+    </h:panelGroup>
+
+    <h:commandLink id="link1" value="link1">
+      <o:reloadComponents componentIds="counter" action="#{TableTestBean.incrementCounter}" disableDefault="true"/>
+    </h:commandLink>
+    <h:panelGroup>
+      <h:commandLink id="link2" value="link2"/>
+      <o:reloadComponents for="link2" componentIds="counter" action="#{TableTestBean.incrementCounter}"
+                          disableDefault="true"/>
+    </h:panelGroup>
+    <h:panelGroup>
+      <h:commandLink id="link3" value="link3" onclick="O$('form1:reload2').run(); return false;"/>
+      <o:reloadComponents id="reload2" standalone="true" componentIds="counter" action="#{TableTestBean.incrementCounter}"/>
+    </h:panelGroup>
+
+    <h:inputText id="input1">
+      <o:reloadComponents event="onkeypress" componentIds="counter" action="#{TableTestBean.incrementCounter}"
+                          requestDelay="500"/>
+    </h:inputText>
+    <h:panelGroup>
+      <h:inputText id="input2"/>
+      <o:reloadComponents for="input2" event="onkeypress" componentIds="counter" action="#{TableTestBean.incrementCounter}"
+                          requestDelay="500"/>
+    </h:panelGroup>
+    <h:panelGroup>
+      <h:inputText id="input3" onkeypress="O$('form1:reload3').run();"/>
+      <o:reloadComponents id="reload3" standalone="true" componentIds="counter" action="#{TableTestBean.incrementCounter}"
+                          requestDelay="500"/>
+    </h:panelGroup>
+
+
+    <h:graphicImage id="image1" url="../datatable/arrowBullet.gif">
+      <o:reloadComponents componentIds="counter" action="#{TableTestBean.incrementCounter}"/>
+    </h:graphicImage>
+    <h:panelGroup>
+      <h:graphicImage id="image2" url="../datatable/arrowBullet.gif"/>
+      <o:reloadComponents for="image2" componentIds="counter" action="#{TableTestBean.incrementCounter}"/>
+    </h:panelGroup>
+    <h:panelGroup>
+      <h:graphicImage id="image3" url="../datatable/arrowBullet.gif" onclick="O$('form1:reload4').run();"/>
+      <o:reloadComponents id="reload4" standalone="true" componentIds="counter" action="#{TableTestBean.incrementCounter}"/>
+    </h:panelGroup>
+
+    <h:outputText value="N/A"/>
+    <h:panelGroup>
+      <div id="div2" style="background: silver">div2</div>
+      <o:reloadComponents for=":div2" componentIds="counter" action="#{TableTestBean.incrementCounter}"/>
+    </h:panelGroup>
+    <h:panelGroup>
+      <div id="div3" onclick="O$('form1:reload5').run();" style="background: silver">div3</div>
+      <o:reloadComponents id="reload5" standalone="true" componentIds="counter" action="#{TableTestBean.incrementCounter}"/>
+    </h:panelGroup>
+
+  </h:panelGrid>
+
+</div>

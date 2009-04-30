@@ -1,0 +1,127 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:s="http://jboss.com/products/seam/taglib" >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+
+<a href="../../JBossSeamTesting.jsf">Return to main page</a>
+<o:treeTable id="treeTable" var="item"
+             expansionState="#{seamTreeTable.forumTreeTableExpansionState1}" style="width: 100%;"
+             columnIdVar="columnId"
+             textStyle="font-family: verdana,Helvetica,sans-serif; font-size: 10pt;"
+             sortColumnId="date"
+             binding="#{seamtesttree.treeTable}">
+  <o:dynamicTreeStructure nodeChildren="#{seamTreeTable.nodeChildren}"/>
+  <o:treeColumn id="subject" sortingExpression="#{item.subject}" filterExpression="#{item.subject}"
+                filterKind="searchField" style="text-align: left;">
+    <f:facet name="header">
+      <h:outputText value="Subject"/>
+    </f:facet>
+    <h:outputText value="#{item.subject}"/>
+  </o:treeColumn>
+  <o:column id="author" sortingExpression="#{item.author}" filterExpression="#{item.author}"
+            filterKind="dropDownField" style="width: 120px; text-align: left;">
+    <f:facet name="header">
+      <h:outputText value="From"/>
+    </f:facet>
+    <h:outputText value="#{item.author}"/>
+  </o:column>
+  <o:column id="date" sortingExpression="#{item.date}" filterExpression="#{seamTreeTable.dateCategory}"
+            filterKind="comboBox" style="width: 120px; text-align: left;"
+            filterValue="#{seamTreeTable.filterValue}">
+    <f:facet name="header">
+      <h:outputText value="Sent"/>
+    </f:facet>
+    <h:outputText value="#{item.date}">
+      <f:convertDateTime type="date" dateStyle="medium"/>
+    </h:outputText>
+  </o:column>
+</o:treeTable>
+<br/>
+<h:commandButton value="Re-render TreeTable"
+                 onclick="O$.reloadComponents(['form1:treeTable'], {submittedComponentIds: ['form1:treeTable']});return false;"/>
+<br/>
+<h:commandButton value="Sort by first column Ajax"
+                 onclick="O$.reloadComponents(['form1:treeTable'], {submittedComponentIds: ['form1:treeTable'], action: 'seamTreeTable.sortByFirstColumn'});return false;"/>
+<br/>
+<h:commandButton value="Sort by first column server" action="#{seamTreeTable.sortByFirstColumn}"/>
+<hr/>
+<h4>TreeTable Single Selection</h4>
+<o:treeTable id="treeTableSingleSelection" var="item"
+             expansionState="#{seamTreeTable.forumTreeTableExpansionState2}" style="width: 100%;"
+             columnIdVar="columnId"
+             textStyle="font-family: verdana,Helvetica,sans-serif; font-size: 10pt;"
+             sortColumnId="date">
+  <o:singleNodeSelection nodeData="#{seamTreeTable.singleSelectionItem}"
+                         onchange="O$.reloadComponents(['form1:treeTableSingleSelection'], {submittedComponentIds: ['form1:treeTableSingleSelection']});"/>
+  <o:dynamicTreeStructure nodeChildren="#{seamTreeTable.nodeChildren}"/>
+  <o:treeColumn id="subject" sortingExpression="#{item.subject}" filterExpression="#{item.subject}"
+                filterKind="searchField" style="text-align: left;">
+    <f:facet name="header">
+      <h:outputText value="Subject"/>
+    </f:facet>
+    <h:outputText value="#{item.subject}"/>
+  </o:treeColumn>
+  <o:column id="author" sortingExpression="#{item.author}" filterExpression="#{item.author}"
+            filterKind="dropDownField" style="width: 120px; text-align: left;">
+    <f:facet name="header">
+      <h:outputText value="From"/>
+    </f:facet>
+    <h:outputText value="#{item.author}"/>
+  </o:column>
+  <o:column id="date" sortingExpression="#{item.date}" filterExpression="#{seamTreeTable.dateCategory}"
+            filterKind="comboBox" style="width: 120px; text-align: left;">
+    <f:facet name="header">
+      <h:outputText value="Sent"/>
+    </f:facet>
+    <h:outputText value="#{item.date}">
+      <f:convertDateTime type="date" dateStyle="medium"/>
+    </h:outputText>
+  </o:column>
+  <f:facet name="below">
+    <h:outputText id="selectedValue" value="Selected value: #{seamTreeTable.singleSelectionItem.subject}"
+                  style="font-size:large;font-weight:bolder;"/>
+  </f:facet>
+</o:treeTable>
+
+<h4>TreeTable Multiple Selection</h4>
+<o:treeTable id="treeTableMultiple" var="item"
+             expansionState="#{seamTreeTable.forumTreeTableExpansionState3}" style="width: 100%;"
+             columnIdVar="columnId"
+             textStyle="font-family: verdana,Helvetica,sans-serif; font-size: 10pt;"
+             sortColumnId="date">
+  <o:dynamicTreeStructure nodeChildren="#{seamTreeTable.nodeChildren}"/>
+  <o:multipleNodeSelection nodeDatas="#{seamTreeTable.multipleSelectionItems}"/>
+  <o:treeColumn id="subject" sortingExpression="#{item.subject}" filterExpression="#{item.subject}"
+                filterKind="searchField" style="text-align: left;">
+    <f:facet name="header">
+      <h:outputText value="Subject"/>
+    </f:facet>
+    <h:outputText value="#{item.subject}"/>
+  </o:treeColumn>
+  <o:column id="author" sortingExpression="#{item.author}" filterExpression="#{item.author}"
+            filterKind="dropDownField" style="width: 120px; text-align: left;">
+    <f:facet name="header">
+      <h:outputText value="From"/>
+    </f:facet>
+    <h:outputText value="#{item.author}"/>
+  </o:column>
+  <o:column id="date" sortingExpression="#{item.date}" filterExpression="#{seamTreeTable.dateCategory}"
+            filterKind="comboBox" style="width: 120px; text-align: left;">
+    <f:facet name="header">
+      <h:outputText value="Sent"/>
+    </f:facet>
+    <h:outputText value="#{item.date}">
+      <f:convertDateTime type="date" dateStyle="medium"/>
+    </h:outputText>
+  </o:column>
+</o:treeTable>
+<br/>
+<h:commandButton value="submit"/>
+
+
+</div>

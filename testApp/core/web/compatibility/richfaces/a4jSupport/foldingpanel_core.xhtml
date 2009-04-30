@@ -1,0 +1,30 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+  <a href="a4jSupportIndex.jsf">Back to the index page</a>
+  <br/>
+
+  <h:outputText id="counter" value="This value is updated on Ajax request: #{A4jSupportBean.counter}"
+                style="font-size:16px;"/>
+
+  <h3>The onstatechange event</h3>
+  <o:foldingPanel expanded="false" loadingMode="#{A4jParametersBean.loadingMode}">
+    <a4j:support event="onstatechange" reRender="counter" action="#{A4jSupportBean.increase}" disableDefault="true"/>
+    <f:facet name="caption">
+      <h:outputText value="FoldingPanel Caption"/>
+    </f:facet>
+    <h:outputText value="FoldingPanel Content"/>
+  </o:foldingPanel>
+
+  <h3>The onclick event</h3>
+  <o:foldingPanel expanded="false" loadingMode="#{A4jParametersBean.loadingMode}">
+    <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}" disableDefault="true"/>
+    <f:facet name="caption">
+      <h:outputText value="FoldingPanel Caption"/>
+    </f:facet>
+    <h:outputText value="FoldingPanel Content"/>
+  </o:foldingPanel>
+
+</div>

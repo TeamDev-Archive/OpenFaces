@@ -1,0 +1,64 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <o:clientValidationSupport clientValidation="onDemand"></o:clientValidationSupport>
+    Multiple-selection table
+    <o:dataTable id="table2" var="row" value="#{TableTestBean.collection1}" rowKey="#{row.id}"
+                  style="border: 1px solid black"
+                  horizontalGridLines="1px solid green" verticalGridLines="1px solid blue"
+                  commonHeaderSeparator="2px solid gray"
+                  commonFooterSeparator="4px solid gray"
+                  headerHorizSeparator="1px solid red"
+                  footerHorizSeparator="1px solid purple"
+                  headerVertSeparator="1px dotted red"
+                  footerVertSeparator="1px dotted purple"
+                  filterRowStyle="background: gray"
+                  filterRowSeparator="1px dotted black"
+
+            >
+
+      <o:multipleRowSelection mouseSupport="false"/>
+      <f:facet name="header">
+        <h:outputText value="DataTable Header"/>
+      </f:facet>
+      <f:facet name="footer">
+        <h:outputText value="DataTable Footer"/>
+      </f:facet>
+      <o:selectionColumn>
+        <f:facet name="header"><o:selectAllCheckbox/></f:facet>
+      </o:selectionColumn>
+      <o:column id="col1" sortingExpression="#{row.field1}" filterExpression="#{row.field1}" filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText value="Letters"/>
+        </f:facet>
+        <f:facet name="footer">
+          <h:outputText value="Total Letters"/>
+        </f:facet>
+
+        <h:outputText value="#{row.field1}"/>
+      </o:column>
+      <o:column sortingExpression="#{row.field2}" id="col3">
+        <f:facet name="header">
+          <h:inputText value="Numbers"/>
+        </f:facet>
+        <f:facet name="footer">
+          <h:outputText value="Total Numbers"/>
+        </f:facet>
+        <h:inputText value="#{row.field2}" required="true" id="q">
+          <o:validateCustom clientFunction="return value.length>0;"></o:validateCustom>
+        </h:inputText>
+
+        <o:floatingIconMessage for="q" id="flTest" rendered="false"></o:floatingIconMessage>
+      </o:column>
+    </o:dataTable>
+
+    <h:commandButton id="submit" action="success" value="Submit"/>
+
+  
+</div>

@@ -1,0 +1,180 @@
+#Menu{
+	margin:0 10px;
+	padding:0;
+	display:block;
+	height:40px;
+	font-size:1.45em;
+	list-style:none;
+}
+#Menu li{
+	display:block;
+	float:left;
+	list-style:none;
+	background-color:#ea4500;
+}
+
+#Menu li a{
+	display:block;
+	height:36px;
+	padding:4px 1px 0 0;
+	text-decoration:none;
+	overflow:hidden;
+	float:left;
+}
+#Menu li a span{
+	display:block;
+	padding: 0 7px;
+	background-color:#f5f5f6;
+	background-position:left top;
+	background-repeat:no-repeat;
+	line-height:35px;
+	color:#555;
+	cursor:hand;
+	font-size:14px;
+}
+#Menu li a span img{margin:0; width:107px; height:36px;}
+
+#Menu li.hover a span{background-color:transparent;}
+
+#Menu li.lastItem a span{
+	margin-right:0 !important;
+}
+
+
+#Menu li.current a span{ background-color:transparent; color:white !important; }
+#Menu li.hover a span,
+#Menu li:active a span,
+#Menu li:hover a span{ background-position:left -36px; }
+#Menu li.current a span{ background-position:3px -72px; background-repeat:no-repeat;}
+
+#Menu li.item_openfaces a span{ background-image:url(../../images/menu/openfaces.png);}
+#Menu li.item_components a span{ background-image:url(../../images/menu/components.png);}
+#Menu li.item_features a span{ background-image:url(../../images/menu/features.png);}
+#Menu li.item_onlinedemo a span{ background-image:url(../../images/menu/onlinedemo.png);}
+#Menu li.item_downloads a span{ background-image:url(../../images/menu/downloads.png);}
+#Menu li.item_licensing a span{ background-image:url(../../images/menu/licensing.png);}
+#Menu li.item_support a span{ background-image:url(../../images/menu/support.png);}
+#Menu li.item_contribute a span{ background-image:url(../../images/menu/contribute.png);}
+
+
+/********* 2nd level submenu *********/
+
+.SubMenu{
+	margin:25px 10px 0;
+	padding:0;
+	display:block;
+	list-style:none;
+	overflow:hidden;
+}
+
+.SubMenu li{
+	display:block;
+	float:left;
+	list-style:none;
+	padding: 0 7px;
+}
+
+.SubMenu li h2{
+	line-height:normal;
+	padding: 1px 0;
+}
+
+.SubMenu li a, .SubMenu li span {
+	margin: 15px 0 0 0;
+	display:block;
+	text-decoration:none;
+	font-size:1.2em;
+	color:#434343;
+}
+.SubMenu li.imagemenu {margin:0 4px;}
+.SubMenu li.imagemenu a, .SubMenu li.imagemenu span {
+	line-height:normal;
+	display: inline;
+	padding: 1px 0;
+	margin: auto;
+}
+.SubMenu li.active span,  .SubMenu li.active a {
+	color:#b8b8b8 !important;
+	cursor: default;
+	text-decoration:none;
+}
+.SubMenu li.active a:hover,
+.SubMenu li.active a:active {text-decoration:none;}
+.SubMenu li a {text-decoration:underline;}
+.SubMenu li a:hover,
+.SubMenu li a:active{color:#b8b8b8 !important; text-decoration:underline;}
+
+.SubMenu li.selected a {
+	cursor: default;
+}
+
+.rightsubmenu{float:right;}
+
+
+
+
+
+/********* Icons submenu *********/
+
+ul.arrowSubMenu{}
+ul.arrowSubMenu li{margin-left:-6px; overflow:hidden;}
+ul.arrowSubMenu li a{display:block; position:relative; color:#5c5c5c; text-decoration:none; padding: 1px 10px 1px 6px; zoom:1;}
+ul.arrowSubMenu li a:hover{border:1px solid #3f9eda !important; padding: 0 9px 0 5px; color:#007ece !important;}
+
+ul.arrowSubMenu li.selected a{
+	border:1px solid #3f9eda;
+	background-color:#3f9eda;
+	padding: 0 9px 0 5px;
+	color:white !important;
+}
+ul.arrowSubMenu li a span._text{display:block; vertical-align:middle; line-height:120%; padding:3px 0;}
+ul.arrowSubMenu li a span._right{display:none; background:url(../../images/menu/arrow_submenu.png) no-repeat right center; position:absolute; width:32px; top:-1px; right:-1px; bottom:-1px;}
+ul.arrowSubMenu li a:hover span._right,
+ul.arrowSubMenu li.selected a span._right{display:block;}
+ul.arrowSubMenu li a span._icon{
+	float:left;
+	background-repeat:norepeat;
+	background-position:0 0;
+	height:16px;
+	margin:3px 5px 5px 0;
+	width:16px;
+}
+ul.arrowSubMenu li.selected a span._icon{background-position:0 -16px;}
+
+
+ul.arrowSubMenu li.title a{background:transparent !important; border:none !important;  padding: 1px 10px 0 6px !important;}
+
+
+/***** Demo components menu *****/
+.ComponentsMenu{
+	background:#f7f7f7;
+	border:1px solid #cfcfcf;
+	margin: 2em 0 2em -50px;
+	padding: .5em 0 .5em 50px;
+}
+.ComponentsMenu ul{font-size:8pt; margin:0; padding:0;}
+.ComponentsMenu ul li{display: block; position:relative; margin:0; padding:0;}
+.ComponentsMenu ul li a{display: block; text-decoration:none; color:#494949; margin: 0 -15px 0 -55px; padding:3px 20px 3px 55px;}
+.ComponentsMenu ul li a:hover{background:#FFEAE1; color:#494949 !important;}
+.ComponentsMenu ul li.active a{background:#e84102; color:white !important;}
+.ComponentsMenu ul li a span{position:absolute; height:16px; width:16px; background-repeat:no-repeat; background-position:0 0; left:-20px; top:50%; margin-top:-7px;}
+.ComponentsMenu ul li.active a span{background-position:0 -16px;}
+
+
+
+/* JQuery Tabs */
+/***** Tabs *****/
+.Tabs{margin:0 0 1em 0; line-height:1em; overflow:hidden;}
+.Tabs li{float: left; margin:0; padding:.3em .5em; color:#2f2f2f;}
+.Tabs li.title{padding: 0.47em 0.47em 0.47em 6px; font-weight:bold;}
+.Tabs li.storeTitle{padding: 0.47em 0.47em 0.47em 0; font-weight:bold;}
+
+
+.Tabs li a {color:#2f2f2f; text-decoration:none; display:block; border-bottom:1px dashed #2f2f2f; padding:2px;}
+.Tabs li a:hover{color:#000 !important; border-color:#000 !important;}
+
+.Tabs .ui-tabs-selected{background:#f3f4f3;}
+.Tabs .ui-tabs-selected a{border:none !important;}
+
+#descrTabs .Tabs li.title{padding-left:1px !important;}
+.ui-tabs-hide { display: none; }

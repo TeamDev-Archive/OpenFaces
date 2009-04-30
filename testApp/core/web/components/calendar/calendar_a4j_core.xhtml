@@ -1,0 +1,98 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+  <br/>
+  <a href="../../main.jsf">Return to main page</a>
+  <br/>
+  <table>
+    <tr>
+      <td class="cells">
+        <o:popupLayer id="onchangePopup"
+                hidingTimeout="10000"
+                hideOnOuterClick="true"
+                style="padding: 20px 20px 20px 20px; background: beige; font: 21px; font-weight: bold; color: red;">
+          <h:panelGroup>
+            <h:outputText value="It works!"/>
+            <h:commandButton value="Close" id="closer"
+                             onclick="O$('formID:onchangePopup').hide(); return false;"/>
+          </h:panelGroup>
+        </o:popupLayer>
+        
+        <o:calendar id="calendarID"
+                    value="#{CalendarBean.defaultDate}"
+                    onperiodchange="O$('formID:onchangePopup').showAtXY(15, 291);"
+                    bodyStyle="background: PowderBlue;"
+                    daysHeaderStyle="background: #A8FFFE;"
+                    dayStyle="color: red; "
+                    footerStyle="background: #12FF28;"
+                    headerStyle="background: #FF36F8;"
+                    rolloverDayStyle="font-weight: bold;"
+                    rolloverInactiveMonthDayStyle="color: aquamarine;"
+                    rolloverSelectedDayStyle="background: orange; font-weight: bold;"
+                    selectedDayStyle="border: 3px solid SpringGreen;"
+                    todayStyle="color: Teal;"
+                    weekendDayStyle="border: 1px dotted RoyalBlue; background: yellow;"/>
+      </td>
+      <td class="cells">
+          <pre>
+            &lt;a4j:outputPanel id="calendarPanel"&gt;
+              &lt;o:calendar id="calendarID"
+                          value="calendarBean.defaultDate"
+                          onperiodchange="O$('formID:onchangePopup').showAtXY(15, 291)"
+                          bodyStyle="background: PowderBlue;"
+                          daysHeaderStyle="background: #A8FFFE;"
+                          dayStyle="color: red; "
+                          footerStyle="background: #12FF28;"
+                          headerStyle="background: #FF36F8;"
+                          rolloverDayStyle="font-weight: bold;"
+                          rolloverInactiveMonthDayStyle="color: aquamarine;"
+                          rolloverSelectedDayStyle="background: orange; font-weight: bold;"
+                          selectedDayStyle="border: 3px solid SpringGreen;"
+                          todayStyle="color: Teal;"
+                          weekendDayStyle="border: 1px dotted RoyalBlue; background: yellow;"/&gt;
+            &lt;/a4j:outputPanel&gt;
+          </pre>
+      </td>
+      <td class="cells">
+        <a4j:commandButton id="refresher" value="Refresh" reRender="calendarID"/>
+      </td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td class="cells">
+        <rich:calendar id="richCalendar" popup="false"/>
+      </td>
+      <td class="cells">
+          <pre>
+            &lt;a4j:outputPanel id="calendarPanel"&gt;
+              &lt;o:calendar id="calendarID"
+                          value="calendarBean.defaultDate"
+                          onperiodchange="O$('formID:onchangePopup').showAtXY(15, 291)"
+                          bodyStyle="background: PowderBlue;"
+                          daysHeaderStyle="background: #A8FFFE;"
+                          dayStyle="color: red; "
+                          footerStyle="background: #12FF28;"
+                          headerStyle="background: #FF36F8;"
+                          rolloverDayStyle="font-weight: bold;"
+                          rolloverInactiveMonthDayStyle="color: aquamarine;"
+                          rolloverSelectedDayStyle="background: orange; font-weight: bold;"
+                          selectedDayStyle="border: 3px solid SpringGreen;"
+                          todayStyle="color: Teal;"
+                          weekendDayStyle="border: 1px dotted RoyalBlue; background: yellow;"/&gt;
+            &lt;/a4j:outputPanel&gt;
+          </pre>
+      </td>
+      <td class="cells">
+        <a4j:commandButton id="refresher2" value="Refresh" style="font-weight: bold; text-decoration:underline;"
+                           reRender="richCalendar"/>
+
+      </td>
+    </tr>
+  </table>
+
+</div>

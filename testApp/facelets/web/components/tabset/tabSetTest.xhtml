@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+<head>
+  <title>TabSet Test</title>
+  <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
+  <script type="text/javascript">
+    var imgSrc = new Array(5);
+    imgSrc[0] = "../../../../work.jpg";
+    imgSrc[1] = "../../../../disc.jpg";
+    imgSrc[2] = "../../../../leas.jpg";
+    imgSrc[3] = "../../../../artw.jpg";
+    imgSrc[4] = "../../../../casa.jpg";
+
+    function setImageByTabSet() {
+      var img1 = O$('img1');
+      img1.src = imgSrc[O$('form1:imageSelector')._index];
+    }
+
+    function setTabSetLabel(index) {
+      var label = O$('tabSetLabel');
+      label.innerHTML = "Selected index " + index;
+    }
+  </script>
+</head>
+
+<body>
+<f:view>
+  <h:form id="form1">
+  <ui:include src="tabSetTest_core.xhtml"/>
+</h:form>
+</f:view>
+
+</body>
+        </html>

@@ -1,0 +1,176 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+<table>
+<tr>
+  <td class="header">footeronclick</td>
+  <td class="header">footerondblclick</td>
+  <td class="header">footeronmousedown, footeronmouseup</td>
+  <td class="header">footeronmouseover</td>
+  <td class="header">footeronmouseout</td>
+  <td class="header">footeronmousemove</td>
+</tr>
+<tr>
+<td class="container">
+  <o:dataTable id="clickDT"
+               var="table_events"
+               footerRowStyle="background:	IndianRed;"
+               value="#{TestEventsBean.tableTestCollection}"
+               verticalGridLines="1px solid gray">
+    <o:multipleRowSelection rowDatas="#{TestEventsBean.list}" style="background: #a4aec5; color: white;"/>
+    <o:selectionColumn style="width: 5%;" id="col_one"
+                       footerOnclick="logJSEvents('footerOnclick works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="header">
+        <h:outputText value="Col1"/>
+      </f:facet>
+      <h:outputText value="#{table_events.firstColumn}"/>
+      <f:facet name="footer">
+        <h:outputText value="Footer" id="footer"/>
+      </f:facet>
+    </o:selectionColumn>
+    <o:column id="col_two">
+      <f:facet name="header">
+        <h:outputText value="Col2"/>
+      </f:facet>
+      <h:outputText value="#{table_events.secondColumn}"/>
+    </o:column>
+  </o:dataTable>
+</td>
+<td class="container">
+  <o:dataTable id="dblclickDT"
+               var="table_events"
+               footerRowStyle="background:	IndianRed;"
+               value="#{TestEventsBean.tableTestCollection}"
+               verticalGridLines="1px solid gray">
+    <o:multipleRowSelection rowDatas="#{TestEventsBean.list}" style="background: #a4aec5; color: white;"/>
+    <o:selectionColumn style="width: 5%;" id="col_one"
+                       footerOndblclick="logJSEvents('footerOndblclick works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="header">
+        <h:outputText value="Col1"/>
+      </f:facet>
+      <h:outputText value="#{table_events.firstColumn}"/>
+      <f:facet name="footer">
+        <h:outputText value="Footer" id="footer"/>
+      </f:facet>
+    </o:selectionColumn>
+    <o:column id="col_two">
+      <f:facet name="header">
+        <h:outputText value="Col2"/>
+      </f:facet>
+      <h:outputText value="#{table_events.secondColumn}"/>
+    </o:column>
+  </o:dataTable>
+</td>
+<td class="container">
+  <o:dataTable id="mousedownDT"
+               var="table_events"
+               footerRowStyle="background:	IndianRed;"
+               value="#{TestEventsBean.tableTestCollection}"
+               verticalGridLines="1px solid gray">
+    <o:multipleRowSelection rowDatas="#{TestEventsBean.list}" style="background: #a4aec5; color: white;"/>
+    <o:selectionColumn style="width: 5%;" id="col_one"
+                       footerOnmousedown="logJSEvents('footerOnmousedown works', 'empty'); logJSEvents(event.type, 'empty');"
+                       footerOnmouseup="logJSEvents('footerOnmouseup works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="header">
+        <h:outputText value="Col1"/>
+      </f:facet>
+      <h:outputText value="#{table_events.firstColumn}"/>
+      <f:facet name="footer">
+        <h:outputText value="Footer" id="footer"/>
+      </f:facet>
+    </o:selectionColumn>
+    <o:column id="col_two">
+      <f:facet name="header">
+        <h:outputText value="Col2"/>
+      </f:facet>
+      <h:outputText value="#{table_events.secondColumn}"/>
+    </o:column>
+  </o:dataTable>
+</td>
+<td class="container">
+  <o:dataTable id="mouseoverDT"
+               var="table_events"
+               footerRowStyle="background:	IndianRed;"
+               value="#{TestEventsBean.tableTestCollection}"
+               verticalGridLines="1px solid gray">
+    <o:multipleRowSelection rowDatas="#{TestEventsBean.list}" style="background: #a4aec5; color: white;"/>
+    <o:selectionColumn style="width: 5%;" id="col_one"
+                       footerOnmouseover="logJSEvents('footerOnmouseover works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="header">
+        <h:outputText value="Col1"/>
+      </f:facet>
+      <h:outputText value="#{table_events.firstColumn}"/>
+      <f:facet name="footer">
+        <h:outputText value="Footer" id="footer"/>
+      </f:facet>
+    </o:selectionColumn>
+    <o:column id="col_two">
+      <f:facet name="header">
+        <h:outputText value="Col2"/>
+      </f:facet>
+      <h:outputText value="#{table_events.secondColumn}"/>
+    </o:column>
+  </o:dataTable>
+</td>
+<td class="container">
+  <o:dataTable id="mouseoutDT"
+               var="table_events"
+               footerRowStyle="background:	IndianRed;"
+               value="#{TestEventsBean.tableTestCollection}"
+               verticalGridLines="1px solid gray">
+    <o:multipleRowSelection rowDatas="#{TestEventsBean.list}" style="background: #a4aec5; color: white;"/>
+    <o:selectionColumn style="width: 5%;" id="col_one"
+                       footerOnmouseout="logJSEvents('footerOnmouseout works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="header">
+        <h:outputText value="Col1"/>
+      </f:facet>
+      <h:outputText value="#{table_events.firstColumn}"/>
+      <f:facet name="footer">
+        <h:outputText value="Footer" id="footer"/>
+      </f:facet>
+    </o:selectionColumn>
+    <o:column id="col_two">
+      <f:facet name="header">
+        <h:outputText value="Col2"/>
+      </f:facet>
+      <h:outputText value="#{table_events.secondColumn}"/>
+    </o:column>
+  </o:dataTable>
+</td>
+<td class="container">
+  <o:dataTable id="mousemoveDT"
+               var="table_events"
+               footerRowStyle="background:	IndianRed;"
+               value="#{TestEventsBean.tableTestCollection}"
+               verticalGridLines="1px solid gray">
+    <o:multipleRowSelection rowDatas="#{TestEventsBean.list}" style="background: #a4aec5; color: white;"/>
+    <o:selectionColumn style="width: 5%;" id="col_one"
+                       footerOnmousemove="logJSEvents('footerOnmousemove works', 'empty'); logJSEvents(event.type, 'empty');">
+      <f:facet name="header">
+        <h:outputText value="Col1"/>
+      </f:facet>
+      <h:outputText value="#{table_events.firstColumn}"/>
+      <f:facet name="footer">
+        <h:outputText value="Footer" id="footer"/>
+      </f:facet>
+    </o:selectionColumn>
+    <o:column id="col_two">
+      <f:facet name="header">
+        <h:outputText value="Col2"/>
+      </f:facet>
+      <h:outputText value="#{table_events.secondColumn}"/>
+    </o:column>
+  </o:dataTable>
+</td>
+</tr>
+</table>
+<div id="empty"></div>
+
+</div>

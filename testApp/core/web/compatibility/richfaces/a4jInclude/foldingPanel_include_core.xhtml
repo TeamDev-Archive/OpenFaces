@@ -1,0 +1,77 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <br/>
+  
+    <h:commandButton action="sbmt" value="Submit"/>
+    <br/>
+    <table>
+      <tr>
+        <td>
+          loadingMode="server"<br/>
+          expanded="false"<br/>
+          captionStyle="background: MediumSlateBlue; font-weight: bold; font-size: 18px;"<br/>
+          contentStyle="background: LightSkyBlue; color: DarkBlue; font-size: 20px; padding: 20px 20px 20px 20px;"<br/>
+          style="border: 2px dashed LawnGreen;"
+        </td>
+        <td>
+          <o:foldingPanel loadingMode="server"
+                          expanded="false"
+                          captionStyle="background: MediumSlateBlue; font-weight: bold; font-size: 18px;"
+                          contentStyle="background: LightSkyBlue; color: DarkBlue; font-size: 20px; padding: 20px 20px 20px 20px;"
+                          style="border: 2px dashed LawnGreen;">
+            <f:facet name="caption">
+              <h:outputText value="FoldingPanel caption"/>
+            </f:facet>
+            <h:outputText value="Just some text inside folding panel"/>
+          </o:foldingPanel>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          loadingMode="ajax"<br/>
+          expanded="false" <br/>
+          foldingDirection="up" <br/>
+        </td>
+        <td>
+          <o:foldingPanel loadingMode="ajax"
+                          expanded="false"
+                          foldingDirection="up">
+            <f:facet name="caption">
+              <h:outputLabel value="Folding panel caption"/>
+            </f:facet>
+            <o:captionArea>
+              <o:expansionToggleButton hint="hint"/>
+            </o:captionArea>
+            <h:panelGroup>
+              <h:outputText value="Folding panel's content"/>
+              <o:calendar/>
+              <h:commandButton value="submit"/>
+              <h:inputText required="true"/>
+            </h:panelGroup>
+          </o:foldingPanel>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          loadingMode="client" <br/>
+          expanded="false" <br/>
+          onstatechange="alert('!');"
+        </td>
+        <td>
+          <o:foldingPanel loadingMode="client"
+                          expanded="false"
+                          onstatechange="alert('!');">
+            <f:facet name="caption">
+              <h:outputText value="FoldingPanel caption"/>
+            </f:facet>
+            <h:outputText value="Just some text inside folding panel"/>
+          </o:foldingPanel>
+        </td>
+      </tr>
+    </table>
+  
+</div>

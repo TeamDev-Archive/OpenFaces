@@ -1,0 +1,118 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+<a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      Check formats, locales, patterns in DateChooser
+    </span><br/><br/>
+<h:commandButton id="submit" value="Submit"/>
+<br/>
+<br/>
+<o:tabSet id="localeChanger"
+          tabStyle="padding:5px;"
+          onchange="document.forms[0].submit();"
+          selectedIndex="#{DateChooserBean.selectedLocaleIndex}">
+  <o:tabSetItems value="#{DateChooserBean.locales}"/>
+</o:tabSet>
+<br/>
+<br/>
+<table>
+  <tr>
+    <td class="header">dateFormat="short"</td>
+    <td class="header">dateFormat="medium"</td>
+    <td class="header">dateFormat="long"</td>
+    <td class="header">dateFormat="full"</td>
+  </tr>
+  <tr>
+    <td class="container">
+      <o:dateChooser id="shortDF" locale="#{DateChooserBean.selectedLocale}"
+                     value="#{DateChooserBean.formatsLocalesPatterns}"
+                     dateFormat="short" selectedDayStyle="color: red; background: yellow;"/>
+      <input type="button" value="selected date, first day of week" id="getSelDate1"
+             onclick="printDateChooserSelectedDate('formID:shortDF', 'out1'); printFirstDayOfWeek('formID:shortDF', 'out11', true);"/>
+      <div id="out1">&#160;</div>
+      <div id="out11">&#160;</div>
+    </td>
+    <td class="container">
+      <o:dateChooser id="mediumDF" value="#{DateChooserBean.formatsLocalesPatterns}"
+                     locale="#{DateChooserBean.selectedLocale}"
+                     dateFormat="medium" selectedDayStyle="color: red; background: yellow;"/>
+      <input type="button" value="selected date, first day of week" id="getSelDate2"
+             onclick="printDateChooserSelectedDate('formID:mediumDF', 'out2'); printFirstDayOfWeek('formID:mediumDF', 'out21', true);"/>
+      <div id="out2">&#160;</div>
+      <div id="out21">&#160;</div>
+    </td>
+    <td class="container">
+      <o:dateChooser id="longDF" value="#{DateChooserBean.formatsLocalesPatterns}"
+                     locale="#{DateChooserBean.selectedLocale}"
+                     dateFormat="long" selectedDayStyle="color: red; background: yellow;"/>
+      <input type="button" value="selected date, first day of week" id="getSelDate3"
+             onclick="printDateChooserSelectedDate('formID:longDF', 'out3'); printFirstDayOfWeek('formID:longDF', 'out31', true);"/>
+      <div id="out3">&#160;</div>
+      <div id="out31">&#160;</div>
+    </td>
+    <td class="container">
+      <o:dateChooser id="fullDF" value="#{DateChooserBean.formatsLocalesPatterns}"
+                     locale="#{DateChooserBean.selectedLocale}"
+                     dateFormat="full" selectedDayStyle="color: red; background: yellow;"/>
+      <input type="button" value="selected date, first day of week" id="getSelDate4"
+             onclick="printDateChooserSelectedDate('formID:fullDF', 'out4'); printFirstDayOfWeek('formID:fullDF', 'out41', true);"/>
+      <div id="out4">&#160;</div>
+      <div id="out41">&#160;</div>
+    </td>
+  </tr>
+  <tr>
+    <td class="header">pattern="dd, MM, yy"</td>
+    <td class="header">pattern="MM/dd/yyyy"</td>
+    <td class="header">pattern="dd.MMMM.yy"</td>
+    <td class="header">pattern="dddd-MM-yyyy"</td>
+  </tr>
+  <tr>
+    <td class="container">
+      <o:dateChooser id="first"
+                     locale="#{DateChooserBean.selectedLocale}"
+                     selectedDayStyle="color: red; background: yellow;"
+                     pattern="dd, MM, yy" value="#{DateChooserBean.formatsLocalesPatterns}"/>
+      <input type="button" value="selected date, first day of week" id="getSelDate5"
+             onclick="printDateChooserSelectedDate('formID:first', 'out5'); printFirstDayOfWeek('formID:first', 'out51', true);"/>
+      <div id="out5">&#160;</div>
+      <div id="out51">&#160;</div>
+    </td>
+    <td class="container">
+      <o:dateChooser id="second" locale="#{DateChooserBean.selectedLocale}"
+                     selectedDayStyle="color: red; background: yellow;"
+                     pattern="MM/dd/yyyy" value="#{DateChooserBean.formatsLocalesPatterns}"/>
+      <input type="button" value="selected date, first day of week" id="getSelDate6"
+             onclick="printDateChooserSelectedDate('formID:second', 'out6'); printFirstDayOfWeek('formID:second', 'out61', true);"/>
+      <div id="out6">&#160;</div>
+      <div id="out61">&#160;</div>
+    </td>
+    <td class="container">
+      <o:dateChooser id="third"
+                     locale="#{DateChooserBean.selectedLocale}"
+                     selectedDayStyle="color: red; background: yellow;"
+                     pattern="dd.MMMM.yy" value="#{DateChooserBean.formatsLocalesPatterns}"/>
+      <input type="button" value="selected date, first day of week" id="getSelDate7"
+             onclick="printDateChooserSelectedDate('formID:third', 'out7'); printFirstDayOfWeek('formID:third', 'out71', true);"/>
+      <div id="out7">&#160;</div>
+      <div id="out71">&#160;</div>
+    </td>
+    <td class="container">
+      <o:dateChooser id="fourth"
+                     locale="#{DateChooserBean.selectedLocale}"
+                     selectedDayStyle="color: red; background: yellow;"
+                     pattern="d-MM-yyyy" value="#{DateChooserBean.formatsLocalesPatterns}"/>
+      <input type="button" value="selected date, first day of week" id="getSelDate8"
+             onclick="printDateChooserSelectedDate('formID:fourth', 'out8'); printFirstDayOfWeek('formID:fourth', 'out81', true);"/>
+      <div id="out8">&#160;</div>
+      <div id="out81">&#160;</div>
+    </td>
+  </tr>
+</table>
+
+</div>

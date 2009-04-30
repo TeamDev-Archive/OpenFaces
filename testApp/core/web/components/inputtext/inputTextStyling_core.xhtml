@@ -1,0 +1,29 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+  <o:inputText id="first"
+               style="background: beige; border: 3px solid pink; width: 160px; color: brown; font-weight: bold;"
+               promptText="#{InputTextBean.promptText}" promptTextStyle="background: yellow; font-weight: lighter;"
+               focusedStyle="border: 1px solid green;" rolloverStyle="border: 4px dotted darkblue; background: red;"
+               value=""/>
+  <br/>
+  <br/>
+  <br/>
+  <o:inputText id="second"
+               style="background: beige; border: 3px solid pink; width: 160px; color: brown; font-weight: bold;"
+               promptText="#{InputTextBean.promptText}" promptTextStyle="background: yellow; font-weight: lighter;"
+               focusedStyle="border: 1px solid green;" rolloverStyle="border: 4px dotted darkblue; background: red;"
+               value="some value"/>
+  <br/>
+  <br/>
+  <h:commandButton id="submit" value="submit"/>
+
+</div>

@@ -1,0 +1,9 @@
+<ul class="small hang" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:o="http://openfaces.org/" style="position: absolute; width: 23%; padding-left: 3px !important;">
+
+  <o:forEach items="#{MenuService.selectedMenu.features}"
+             rendered="#{MenuService.selectedMenu != null}"
+             var="feature">
+    <li><h:outputText value="#{feature}"/></li>
+  </o:forEach>
+</ul>

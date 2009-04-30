@@ -1,0 +1,87 @@
+.taskDemo {
+  font-size: 16px;
+  float: left;
+  font-weight: bold;
+}
+
+h5 {
+  color: #adabab;
+  font-size: 1em;
+  margin-top: .5em;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #73a480;
+}
+
+.styledCheckbox {
+  display: block;
+  width: 22px;
+  height: 27px;
+  background: url("../images/ajax/unchecked.png") no-repeat 0 5px;
+}
+
+.checked {
+  background: url("../images/ajax/checked.png") no-repeat 0 5px !important;
+}
+
+.styledCheckbox input {
+  display: none;
+}
+
+.rollover {
+  background-color: #fff8ea;
+}
+
+.tasks {
+  display: block;
+  padding: 0 0 0 10px;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.taskText {
+  float: left;
+  padding: 3px 0 0 10px;
+  width: 400px;
+  font-weight: bold;
+}
+
+.delete {
+  float: right;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.rollover .delete {
+  visibility: visible;
+}
+
+.row td {
+  display: table-cell;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+.addTaskPrompt {
+  color: #adabab;
+  border: 1px #fff solid !important;
+}
+
+.taskInput {
+  border: 1px #adabab solid;
+  padding: 2px;
+}
+
+.addTask {
+  width: 375px;
+}

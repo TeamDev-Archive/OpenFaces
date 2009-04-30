@@ -1,0 +1,53 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+
+    <table>
+      <tr>
+        <td class="container">
+          <o:treeTable var="hintLabelTree" nodeLevelVar="level">
+            <o:staticTreeStructure>
+              <o:treeNode value="hint label top node">
+                <o:treeNode value="hint label sub node"/>
+              </o:treeNode>
+            </o:staticTreeStructure>
+            <o:treeColumn>
+              <f:facet name="header">
+                <o:hintLabel style="width: 140px; font-weight: 18px; border: 2px solid black;"
+                             hintStyle="padding: 10px 10px 10px 10px; color: gray; font-weight: 18px; border: 1px solid gray;"
+                             value="Text inside header. Value attribute."
+                             hint="Text inside header. Title attribute."/>
+              </f:facet>
+              <o:hintLabel style="width: 140px; font-weight: 18px; border: 2px solid black;"
+                           hintStyle="padding: 10px 10px 10px 10px; color: gray; font-weight: 18px; border: 1px solid gray;"
+                           value="Text inside body1. Value attribute."
+                           rendered="#{level == 0}"
+                           hint="Text inside body1. Title attribute."/>
+              <o:hintLabel style="width: 140px; font-weight: 18px; border: 2px solid black;"
+                           hintStyle="padding: 10px 10px 10px 10px; color: gray; font-weight: 18px; border: 1px solid gray;"
+                           value="Subnode text inside body1. Value attribute."
+                           rendered="#{level == 1}"
+                           hint="Subnode text inside body1. Title attribute."/>
+              <f:facet name="footer">
+                <o:hintLabel style="width: 140px; font-weight: 18px; border: 2px solid black;"
+                             hintStyle="padding: 10px 10px 10px 10px; color: gray; font-weight: 18px; border: 1px solid gray;"
+                             value="Text inside footer. Value attribute."
+                             hint="Text inside footer. Title attribute."/>
+              </f:facet>
+            </o:treeColumn>
+          </o:treeTable>
+        </td>
+      </tr>
+    </table>
+
+  
+</div>

@@ -1,0 +1,72 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <h:commandButton value="Submit (Сабмит)"/>
+    <br/><br/>
+
+    <o:dropDownField id="ddf"
+                     value="#{TestNonLatinBean.dropDownValue}"
+                     var="item"
+                     customValueAllowed="true"
+                     suggestionMode="custom"
+                     autoComplete="true"
+            >
+      <o:dropDownItems value="#{TestNonLatinBean.suggestedValues}"/>
+      <h:outputText value="#{item}"/>
+    </o:dropDownField>
+
+    <br/>
+
+    <o:dataTable useAjax="true" id="table" value="#{TestNonLatinBean.data}"
+                 var="row" rowKey="#{row.id}"
+                 pageSize="7" applyDefaultStyle="true"
+            allRecordsFilterName="All / Все">
+      <f:facet name="header">
+        <h:outputText value="Table Header (Заголовок Таблицы)"/>
+      </f:facet>
+      <f:facet name="below">
+        <o:dataTablePaginator pageNumberPrefix="Page (страница)" pageCountPreposition="of (из)"
+                firstText="First (Первая)" lastText="Last (Последняя)" nextText="Next (Слудующая)" previousText="Previous (Предыдущая)"/>
+      </f:facet>
+      <o:column sortingExpression="#{row.id}">
+        <f:facet name="header">
+          <h:outputText value="Id (Айди)"/>
+        </f:facet>
+        <h:outputText value="#{row.id}"/>
+      </o:column>
+      <o:column sortingExpression="#{row.text}" filterExpression="#{row.text}" filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText value="Text (Текст)"/>
+        </f:facet>
+        <h:outputText value="#{row.text}"/>
+      </o:column>
+      <o:column sortingExpression="#{row.text}" filterExpression="#{row.text}" filterKind="dropDownField">
+        <f:facet name="header">
+          <h:outputText value="Text (Текст)"/>
+        </f:facet>
+        <h:outputText value="#{row.text}"/>
+      </o:column>
+      <o:column sortingExpression="#{row.text}" filterExpression="#{row.text}" filterKind="searchField">
+        <f:facet name="header">
+          <h:outputText value="Téxt (Тёкст)"/>
+        </f:facet>
+        <h:outputText value="#{row.text}"/>
+      </o:column>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="number (число)"/>
+        </f:facet>
+        <h:outputText value="#{row.number}">
+          <f:convertNumber pattern="#,###,###,##0.00"/>
+        </h:outputText>
+      </o:column>
+    </o:dataTable>
+
+  
+</div>

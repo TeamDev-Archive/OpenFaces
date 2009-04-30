@@ -1,0 +1,34 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+      <a href="../../main.jsf">Return to main page</a><br/><br/>
+
+    <o:ajaxSettings>
+      <f:facet name="progressMessage">
+        <o:defaultProgressMessage imageUrl="panther_eye.png" text="custom loading"
+                                  style="background: red; border: 2px solid green;"/>
+      </f:facet>
+      <f:facet name="sessionExpiration">
+        <o:silentSessionExpiration/>
+      </f:facet>
+    </o:ajaxSettings>
+
+    <o:tabSet id="tabSetWithoutSubmit">
+      <o:tabSetItem>
+        <h:outputText value="Blue"/>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="Yellow"/>
+      </o:tabSetItem>
+    </o:tabSet>
+
+    <br/>
+    <br/>
+    <h:commandButton value="submit"/>
+  
+</div>

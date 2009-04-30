@@ -1,0 +1,83 @@
+/*
+ * OpenFaces - JSF Component Library 2.0
+ * Copyright (C) 2007-2009, TeamDev Ltd.
+ * licensing@openfaces.org
+ * Unless agreed in writing the contents of this file are subject to
+ * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * Please visit http://openfaces.org/licensing/ for more details.
+ */
+package org.openfaces.util;
+
+import org.openfaces.component.ValueBindings;
+import org.openfaces.component.input.DateChooser;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.StringTokenizer;
+
+/**
+ * @author Andrew Palval
+ */
+public class CalendarUtil {
+
+    public static Locale getLocaleFromString(String localString) {
+        Locale locale = null;
+        StringTokenizer localeTokens = new StringTokenizer(localString, "_");
+        int paramsCount = localeTokens.countTokens();
+        switch (paramsCount) {
+            case 1:
+                locale = new Locale(localeTokens.nextToken());
+                break;
+            case 2:
+                locale = new Locale(localeTokens.nextToken(), localeTokens.nextToken());
+                break;
+            case 3:
+                locale = new Locale(localeTokens.nextToken(), localeTokens.nextToken(), localeTokens.nextToken());
+        }
+        return locale;
+    }
+
+    public static Locale getBoundPropertyValueAsLocale(UIComponent component, String property, Locale fieldValue) {
+        Locale defaultLocale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        Object propertyValue = ValueBindings.get(component, property, fieldValue, defaultLocale, Object.class);
+
+        if (propertyValue instanceof Locale) {
+            return (Locale) propertyValue;
+        } else {
+            return CalendarUtil.getLocaleFromString(propertyValue.toString());
+        }
+    }
+
+    public static String getDatePattern(UIComponent component, String dateFormat, String pattern, Locale locale) {
+        SimpleDateFormat sdf = (SimpleDateFormat) DateFormat.getDateInstance(convertToDateFormatStyle(dateFormat), locale);
+        return ValueBindings.get(component, "pattern", pattern, sdf.toPattern());
+    }
+
+    private static int convertToDateFormatStyle(String dateFormat) {
+        if (dateFormat.equals(DateChooser.FORMAT_MEDIUM)) {
+            return DateFormat.MEDIUM;
+        } else if (dateFormat.equals(DateChooser.FORMAT_SHORT)) {
+            return DateFormat.SHORT;
+        } else if (dateFormat.equals(DateChooser.FORMAT_LONG)) {
+            return DateFormat.LONG;
+        } else if (dateFormat.equals(DateChooser.FORMAT_FULL)) {
+            return DateFormat.FULL;
+        } else {
+            throw new IllegalArgumentException("Wrong date format: " + dateFormat);
+        }
+    }
+
+//  public static Locale getLocaleProperty (UIComponent component, Locale locale) {
+//    FacesContext context = FacesContext.getCurrentInstance();
+//    Locale defaultLocale = context.getViewRoot().getLocale();
+//    Object locale = component.getBoundPropertyValue(component, "locale", locale, defaultLocale);
+//    ComponentUtil.
+//    return ;
+//  }
+}

@@ -1,0 +1,440 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<style type="text/css">
+  td {
+    font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+  }
+
+  .container {
+    overflow: auto;
+    height: 200px;
+    width: auto;
+  }
+
+  .columnheader {
+    top: expression(document.getElementById("container").scrollTop);
+    z-index: 30;
+    position: relative;
+    height: 25px;
+    background-color: #e0e0e0;
+  }
+</style>
+     
+<a href="../../main.jsf">Return to main page</a> <input type="submit" value="Submit"/> <br/>
+<a href="dynamicTable.jsf">Test</a>
+
+<h3 style="color: gray; text-decoration: underline">OpenFaces DataTable (o:dataTable)</h3>
+
+<o:dataTable id="dataFetchTestTable" var="DATA_ROW" value="#{TableTestBean.collection2}" pageSize="5" rowIndexVar="row">
+  <f:attribute name="forceRowsDecoding" value="false"/>
+  <o:column sortingExpression="#{DATA_ROW.field1}" filterExpression="#{DATA_ROW.field1}">
+    <f:facet name="header">
+      <h:outputText value="Field 1"/>
+    </f:facet>
+    <h:outputText value="#{DATA_ROW.field1}"/>
+  </o:column>
+  <o:column sortingExpression="#{DATA_ROW.field2}" filterExpression="#{DATA_ROW.field2}">
+    <f:facet name="header">
+      <h:outputText value="Field 2"/>
+    </f:facet>
+    <h:outputText value="#{DATA_ROW.field2}"/>
+  </o:column>
+  <o:column>
+    <h:commandButton value="Go" onclick="O$('form1:dataFetchTestTable:#{row}:popup').show(); return false;"/>
+    <o:popupLayer id="popup" hideOnOuterClick="true" hidingTimeout="5000"
+                    rolloverStyle="border: 1px solid black;">
+          <h:panelGrid columns="2">
+              <h:outputText value="Dividend Info:"/>
+          </h:panelGrid>
+    </o:popupLayer>
+
+  </o:column>
+
+  <f:facet name="below">
+    <o:dataTablePaginator/>
+  </f:facet>
+
+</o:dataTable>
+
+
+
+
+<o:foldingPanel expanded="true" loadingMode="ajax" rolloverStyle="border: 1px solid red;">
+  <o:dataTable id="ttt2" value="#{TableTestBean.collection1}" var="row" rowKey="#{row.id}" pageSize="4" columnsOrder="#{TableTestBean.columnsOrder}"
+          columnIdVar="colId"
+          columnIndexVar="colIndex">
+    <f:facet name="header">
+      <h:panelGroup id="scheduleStartDate">
+        <h:outputText value="Schedule Start Date"/>
+      </h:panelGroup>
+    </f:facet>
+    <f:facet name="below">
+      <o:dataTablePaginator/>
+    </f:facet>
+
+    <o:row>
+      <o:cell condition="#{TableTestBean.oddColumnsCondition}" style="background: olive"/>
+    </o:row>
+
+    <o:checkboxColumn sortable="true"/>
+    <o:column id="col1" sortingExpression="#{row.field1}" filterExpression="#{row.field1}" filterValue="#{TableTestBean.filterValue1}">
+      <f:facet name="header">
+        <h:outputText value="First Name"/>
+      </f:facet>
+      <f:facet name="footer">
+        <h:outputText value="footer"/>
+      </f:facet>
+      <h:outputText value="#{row.field1}"/>
+    </o:column>
+    <o:column id="col2" sortingExpression="#{row.field2}" filterExpression="#{row.field2}" filterValue="#{TableTestBean.filterValue2}">
+      <f:facet name="header">
+        <h:outputText value="Last Name"/>
+      </f:facet>
+      <f:facet name="footer">
+        <h:outputText value="footer"/>
+      </f:facet>
+      <h:outputText value="#{row.field2}"/>
+    </o:column>
+    <o:columns value="#{TableTestBean.testColumns}" var="col"
+               columnId="customCol#{col}" columnRendered="#{TableTestBean.columnRendered}"
+               sortingEnabled="#{TableTestBean.sortingEnabled}" sortingExpression="#{row.customFields[col]}"
+               style="width: 75px; text-align: right;"
+               filterExpression="#{row.customFields[col]}" filterKind="comboBox" filterValues="#{TableTestBean.filterValues}"
+               filterValue="#{TableTestBean.filterValue[col]}">
+      <f:facet name="header">
+        <h:outputText value="Header #{col}"/>
+      </f:facet>
+      <f:facet name="footer">
+        <h:outputText value="Footer #{col}"/>
+      </f:facet>
+      <o:hintLabel value="#{row.customFields[col]}" hint="#{row.customFields[col]} (this is a hint)"/>
+      <h:inputText value="#{row.customFields[col]}"/>
+    </o:columns>
+  </o:dataTable>
+  <h:commandButton value="Change Columns" action="#{TableTestBean.changeColumns}"/>
+  <h:commandButton value="Change Highlighted Columns" action="#{TableTestBean.changeHighlightedColumns}"/>
+</o:foldingPanel>
+
+
+  <o:focus focusedComponentId="i2" autoSaveFocus="true"/>
+  <o:scrollPosition autoSaveScrollPos="true"/>
+  <h:inputText id="i1"/>
+  <h:inputText id="i2"/>
+   <a4j:commandButton reRender="dataFetchTestTable" value="Rerender with Ajax4jsf"/>
+   <h:commandButton onclick="O$.reloadComponents(['form1:dataFetchTestTable']); return false;" value="Rerender with O$.reloadComponents"/>
+   <o:dataTable id="table1" var="row" value="#{TableTestBean.collection1}" useAjax="true"
+          style="border: 1px solid black; background: #eaf5fa" styleClass="cls1"
+          sortColumnId="col2" sortAscending="true" rowKey="#{row.id}" pageSize="#{TableTestBean.pageSize}"
+          bodyRowStyle="background: #f8ffaa; font-weight: normal; font-style: italic" bodyOddRowStyle="background: #fffffc; font-weight: bold"
+          commonHeaderRowStyle="background: blue" headerRowStyle="height: 50px; font-style: italic; color: NAVY" commonFooterRowStyle="background: green" footerRowStyle="height: 100px"
+          allRecordsFilterName="- All Records -" emptyRecordsFilterName="- Empty Records -" nonEmptyRecordsFilterName="- Non-empty Records -"
+          rolloverRowStyle="background: silver"
+          noDataRowStyle="color: red; font-weight: bold; font-size: 20pt; font-style: normal; "
+          paginationKeyboardSupport="false"
+          rowIndexVar="rowIndex">
+    <f:facet name="noFilterDataMessage"><h:outputText value="Alert! No matching records found!"/></f:facet>
+    <f:facet name="header">
+        <h:panelGrid columns="2" style="width: 100%" columnClasses="headCol,paginatorCol">
+          <h:outputText value="DataTable Header"/>
+          <o:dataTablePaginator
+                  style="background: #e0e0e0; border: 1px solid #a0a0a0; font-family: Tahoma; font-size: 10pt;"
+                  firstText="Pervaja"
+                  lastText="Poslednyaja"
+                  nextText="Sledujuschaja"
+                  previousText = "Predyduschaja"
+                  pageCountPreposition="iz"
+                  showDisabledImages="false"
+                  pageNumberPrefix="Stranica"
+                  />
+        </h:panelGrid>
+    </f:facet>
+    <f:facet name="footer">
+      <h:outputText value="DataTable Footer"/>
+    </f:facet>
+    <o:singleRowSelection keyboardSupport="false" rowData="#{TableTestBean.testObj}"/>
+    <o:column>
+      <h:outputText id="noTxt" value="#{rowIndex + 1}. "/>
+    </o:column>
+    <o:selectionColumn headerStyle="background: yellow" bodyStyle="background: #eed322" footerStyle="background: maroon">
+      <f:facet name="header">
+        <f:verbatim></f:verbatim>
+      </f:facet>
+    </o:selectionColumn>
+    <o:column id="col1" sortingExpression="#{row.field1}" filterExpression="#{row.field1}" filterKind="dropDownField">
+      <f:facet name="header">
+        <h:outputText id="letterTxt" value="Letters"/>
+      </f:facet>
+      <f:facet name="footer">
+        <h:outputText value="Total Letters"/>
+      </f:facet>
+
+      <h:outputText value="#{row.field1}"/>
+    </o:column>
+    <o:column>
+      <f:facet name="header">
+        <h:outputText value="Boolean Field"/>
+      </f:facet>
+      <h:selectBooleanCheckbox value="#{row.booleanField}"/>
+    </o:column>
+    <o:column id="col2" sortingExpression="#{row.field2}" filterExpression="#{TableTestBean.field2Range}" style="width: 200px;" filterKind="comboBox"
+               headerStyle="background: #98ddea" bodyStyle="background: #eeffd8" footerStyle="background: #f0d0c0"
+            headerOnclick="alert('col2header')" bodyOnclick="alert('col2body')" footerOnclick="alert('col2footer')" onclick="alert('col2');">
+      <f:facet name="header">
+        <h:outputText value="Numbers"/>
+      </f:facet>
+      <f:facet name="footer">
+        <h:outputText value="Total Numbers"/>
+      </f:facet>
+      <h:outputText value="#{row.field2}"/>
+    </o:column>
+  </o:dataTable>
+
+Page size: <h:inputText value="#{TableTestBean.pageSize}"/>
+
+<h3>Multiple-selection table</h3>
+<o:dataTable id="table2" var="row" rowIndexVar="rowIndex" value="#{TableTestBean.collection1}" rowKey="#{row.id}"
+        style="border: 1px solid black"
+        horizontalGridLines="1px solid green" verticalGridLines="1px solid blue"
+        commonHeaderSeparator="2px solid gray"
+        commonFooterSeparator="4px solid gray"
+        headerHorizSeparator="1px solid red"
+        footerHorizSeparator="1px solid purple"
+        headerVertSeparator="1px dotted red"
+        footerVertSeparator="1px dotted purple"
+        filterRowStyle="background: gray"
+        filterRowSeparator="1px dotted black"
+        rolloverStyle="border: 1px solid red"
+        rolloverRowStyle="background: gray"
+        >
+
+  <o:multipleRowSelection />
+  <f:facet name="header">
+    <h:outputText value="DataTable Header"/>
+  </f:facet>
+  <f:facet name="footer">
+    <h:outputText value="DataTable Footer"/>
+  </f:facet>
+  <o:selectionColumn>
+    <f:facet name="header"><o:selectAllCheckbox/></f:facet>
+  </o:selectionColumn>
+  <o:column id="col1" sortingExpression="#{row.field1}" sortingComparator="caseInsensitiveText" filterExpression="#{row.field1}" filterKind="comboBox">
+    <f:facet name="header">
+      <h:outputText value="Letters"/>
+    </f:facet>
+    <f:facet name="footer">
+      <h:outputText value="Total Letters"/>
+    </f:facet>
+
+    <h:outputText value="#{row.field1}"/>
+  </o:column>
+  <o:column id="col2" sortingExpression="#{row.field2}" filterExpression="#{row.field2}" filterKind="searchField">
+    <f:facet name="header">
+      <h:outputText value="Numbers"/>
+    </f:facet>
+    <f:facet name="footer">
+      <h:outputText value="Total Numbers"/>
+    </f:facet>
+    <h:outputText value="#{row.field2}"/>
+  </o:column>
+</o:dataTable>
+
+
+<h3 style="color: gray; text-decoration: underline">Table for Metrics</h3>
+
+<h:commandButton action="#{TableTestBean.insertRow}" value="Insert Row"/>
+<h:commandButton action="#{TableTestBean.deleteRow}" value="Delete Row"/>
+
+<h:panelGrid columns="4" style="border: 1px dotted gray">
+  <h:panelGroup >
+    <o:dataTable id="table3" var="row" value="#{TableTestBean.collection1Paged}" rowKey="#{row.id}"
+            customDataProviding="true" rowDataByKey="#{TableTestBean.objectByKey}"
+            width="500pt" cellpadding="2"
+            pageIndex="#{TableTestBean.testPageIndex}"  pageSize="3" totalRowCount="#{TableTestBean.collection1Size}"
+            sortColumnId="col1" sortAscending="true">
+      <o:multipleRowSelection
+              style="background: gray;" styleClass="selection1"
+              rowDatas="#{TableTestBean.testRowDatas}"
+              rowIndexes="#{TableTestBean.testRowIndexes}"
+              />
+      <f:facet name="above">
+        <o:dataTablePaginator id="pager1"/>
+       </f:facet>
+      <f:facet name="below">
+        <o:dataTablePaginator id="pager2"/>
+      </f:facet>
+      <f:facet name="header"><o:dataTablePaginator id="pager3"/></f:facet>
+      <f:facet name="footer">
+        <h:outputText value="DataTable Footer"/>
+      </f:facet>
+
+      <o:selectionColumn>
+        <f:facet name="header"><o:selectAllCheckbox/></f:facet>
+        <f:facet name="footer"><o:selectAllCheckbox/></f:facet>
+      </o:selectionColumn>
+      <o:selectionColumn style="text-align: center">
+        <f:facet name="header"><h:panelGroup style="background: gray"><f:verbatim>[</f:verbatim><o:selectAllCheckbox/><o:selectAllCheckbox/><f:verbatim>]</f:verbatim></h:panelGroup></f:facet>
+        <f:facet name="footer"><h:panelGroup style="background: gray"><f:verbatim>[</f:verbatim><o:selectAllCheckbox/><o:selectAllCheckbox/><f:verbatim>]</f:verbatim></h:panelGroup></f:facet>
+      </o:selectionColumn>
+
+      <o:column id="col1" sortingExpression="#{row.field1}" filterValues="#{TableTestBean.col1FilterValues}" filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText value="Letters"/>
+        </f:facet>
+        <f:facet name="footer">
+          <h:outputText value="Total Letters"/>
+        </f:facet>
+        <h:inputText value="#{row.field1}"/>
+      </o:column>
+
+      <o:column id="col2" sortingExpression="#{row.field2}" filterValues="#{TableTestBean.col2FilterValues}" filterKind="dropDownField">
+        <f:facet name="header">
+          <h:outputText value="Numbers"/>
+        </f:facet>
+        <f:facet name="footer">
+          <h:outputText value="Total Numbers"/>
+        </f:facet>
+        <h:outputText value="#{row.field2}"/>
+      </o:column>
+      <o:checkboxColumn id="col3"
+                         rowIndexes="#{TableTestBean.checkedRowIndexes1}"
+                         rowDatas="#{TableTestBean.checkedRowDatas1}">
+        <f:facet name="header"><o:selectAllCheckbox/></f:facet>
+        <f:facet name="footer"><o:selectAllCheckbox/></f:facet>
+      </o:checkboxColumn>
+      <o:checkboxColumn id="col4" style="text-align: center"
+                         rowIndexes="#{TableTestBean.checkedRowIndexes2}"
+                         rowDatas="#{TableTestBean.checkedRowDatas2}">
+        <f:facet name="header"><h:panelGroup style="background: gray"><f:verbatim>[</f:verbatim><o:selectAllCheckbox/><o:selectAllCheckbox/><f:verbatim>]</f:verbatim></h:panelGroup></f:facet>
+        <f:facet name="footer"><h:panelGroup style="background: gray"><f:verbatim>[</f:verbatim><o:selectAllCheckbox/><o:selectAllCheckbox/><f:verbatim>]</f:verbatim></h:panelGroup></f:facet>
+      </o:checkboxColumn>
+
+    </o:dataTable>
+  </h:panelGroup>
+  <h:panelGroup>
+    <f:verbatim>Current page index: </f:verbatim><h:inputText style="width: 70px" value="#{TableTestBean.testPageIndex2}"/><h:commandButton value="Switch Page" action="#{TableTestBean.switchPage}"/>
+    <o:dataTable style="border: 1px solid black" var="idx" value="#{TableTestBean.testRowIndexes}">
+      <f:facet name="header"><f:verbatim>selection rowIndexes</f:verbatim></f:facet>
+      <o:column>
+        <h:outputText value="#{idx}"/>
+      </o:column>
+    </o:dataTable>
+    <o:dataTable style="border: 1px solid black" var="data" value="#{TableTestBean.testRowDatas}">
+      <f:facet name="header"><f:verbatim>selection rowDatas</f:verbatim></f:facet>
+      <o:column>
+        <h:outputText value="field1 = #{data.field1}; field2 = #{data.field2}"/>
+      </o:column>
+    </o:dataTable>
+  </h:panelGroup>
+  <h:panelGroup>
+    <f:verbatim>Check-box column 1:</f:verbatim>
+    <o:dataTable style="border: 1px solid black" var="idx" value="#{TableTestBean.checkedRowIndexes1}">
+      <f:facet name="header"><f:verbatim>rowIndexes</f:verbatim></f:facet>
+      <o:column>
+        <h:outputText value="#{idx}"/>
+      </o:column>
+    </o:dataTable>
+    <o:dataTable style="border: 1px solid black" var="data" value="#{TableTestBean.checkedRowDatas1}">
+      <f:facet name="header"><f:verbatim>rowDatas</f:verbatim></f:facet>
+      <o:column>
+        <h:outputText value="field1 = #{data.field1}; field2 = #{data.field2}"/>
+      </o:column>
+    </o:dataTable>
+  </h:panelGroup>
+
+  <h:panelGroup>
+    <f:verbatim>Check-box column 2:</f:verbatim>
+    <o:dataTable style="border: 1px solid black" var="idx" value="#{TableTestBean.checkedRowIndexes2}">
+      <f:facet name="header"><f:verbatim>rowIndexes</f:verbatim></f:facet>
+      <o:column>
+        <h:outputText value="#{idx}"/>
+      </o:column>
+    </o:dataTable>
+    <o:dataTable style="border: 1px solid black" var="data" value="#{TableTestBean.checkedRowDatas2}">
+      <f:facet name="header"><f:verbatim>rowDatas</f:verbatim></f:facet>
+      <o:column>
+        <h:outputText value="field1 = #{data.field1}; field2 = #{data.field2}"/>
+      </o:column>
+    </o:dataTable>
+  </h:panelGroup>
+
+</h:panelGrid>
+
+  <h3 style="color: gray; text-decoration: underline">Standard table (h:dataTable)</h3>
+  <o:dataTable id="tblA" var="DATA_ROW" rowIndexVar="rowIndex" value="#{TableTestBean.collection1}" pageSize="5" rowKey="#{DATA_ROW.id}"
+                        border="1">
+    <f:facet name="header">
+      <o:dataTablePaginator/>
+    </f:facet>
+    <o:column sortingExpression="#{DATA_ROW.field1}">
+      <f:facet name="header">
+        <h:outputText value="First Name"/>
+      </f:facet>
+      <f:facet name="footer">
+        <h:outputText value="footer"/>
+      </f:facet>
+
+      <h:outputText id="txt" value="RowIndex:#{rowIndex}"/>
+      <h:outputText rendered="false" escape="false" value="&#60;script&#62;alert(document.getElementById('form1:tblA:#{rowIndex%5}:txt').innerHTML);&#60;/script&#62;"/>
+
+    </o:column>
+  </o:dataTable>
+
+An ordinary &lt;h:dataTable&gt; below:
+<h:dataTable var="DATA_ROW" border="1" value="#{TableTestBean.collection1}" >
+  <f:facet name="header">
+    <h:outputText value="Header"/>
+  </f:facet>
+  <f:facet name="footer">
+    <h:outputText value="Footer"/>
+  </f:facet>
+  <f:facet name="above">
+    <h:outputText value="Above"/>
+  </f:facet>
+  <f:facet name="below">
+    <h:outputText value="Below"/>
+  </f:facet>
+
+
+</h:dataTable>
+
+<div id="container" class="container">
+  <o:dataTable var="row" value="#{TableTestBean.collection1}"
+               rolloverRowStyle="background:#F0F0F0"
+               headerRowClass="columnheader">
+    <o:singleRowSelection/>
+
+    <o:column id="col1">
+      <f:facet name="header">
+        <h:outputText id="letterTxt" value="Letters"/>
+      </f:facet>
+
+      <h:outputText value="#{row.field1}"/>
+    </o:column>
+
+    <o:column>
+      <f:facet name="header">
+        <h:outputText value="Boolean Field"/>
+      </f:facet>
+      <h:selectBooleanCheckbox value="#{row.booleanField}"/>
+    </o:column>
+
+    <o:column id="col2" >
+      <f:facet name="header">
+        <h:outputText value="Numbers"/>
+      </f:facet>
+      <h:outputText value="#{row.field2}"/>
+    </o:column>
+
+  </o:dataTable>
+
+</div>
+
+
+
+</div>

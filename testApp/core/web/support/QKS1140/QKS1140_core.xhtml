@@ -1,0 +1,182 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+<h:commandButton onclick="startMeasuring(); O$.reloadComponents(['frm:tbl'], {onajaxend: endMeasuring}); return false;" value="Rerender with O$.reloadComponents"/>
+
+<o:dataTable id="tbl" useAjax="true" var="rec" value="#{QKS1140.records}" pageSize="250" rowKey="#{rec.id}">
+<o:multipleRowSelection enabled="true"/>
+<f:facet name="above">
+  <o:dataTablePaginator/>
+</f:facet>
+<f:facet name="noDataMessage">
+  <h:outputText value="No records found..."/>
+</f:facet>
+<o:selectionColumn>
+  <f:facet name="header">
+    <o:selectAllCheckbox/>
+  </f:facet>
+  <f:facet name="footer">
+    <o:selectAllCheckbox/>
+  </f:facet>
+</o:selectionColumn>
+<o:column sortingExpression="#{rec.column1}">
+  <f:facet name="header">
+    <h:outputText value="Column1"/>
+  </f:facet>
+  <h:outputText value="#{rec.column1}"/>
+</o:column>
+<o:column filterExpression="#{rec.column2}">
+  <f:facet name="header">
+    <h:outputText value="Column2"/>
+  </f:facet>
+  <h:outputText value="#{rec.column2}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column3"/>
+  </f:facet>
+  <h:outputText value="#{rec.column3}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column4"/>
+  </f:facet>
+  <h:outputText value="#{rec.column4}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column5"/>
+  </f:facet>
+  <h:outputText value="#{rec.column5}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column6"/>
+  </f:facet>
+  <h:outputText value="#{rec.column6}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column7"/>
+  </f:facet>
+  <h:outputText value="#{rec.column7}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column8"/>
+  </f:facet>
+  <h:outputText value="#{rec.column8}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column9"/>
+  </f:facet>
+  <h:outputText value="#{rec.column9}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column10"/>
+  </f:facet>
+  <h:outputText value="#{rec.column10}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column11"/>
+  </f:facet>
+  <h:outputText value="#{rec.column11}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column12"/>
+  </f:facet>
+  <h:outputText value="#{rec.column12}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column13"/>
+  </f:facet>
+  <h:outputText value="#{rec.column13}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column14"/>
+  </f:facet>
+  <h:outputText value="#{rec.column14}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column15"/>
+  </f:facet>
+  <h:outputText value="#{rec.column15}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column16"/>
+  </f:facet>
+  <h:outputText value="#{rec.column16}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column17"/>
+  </f:facet>
+  <h:outputText value="#{rec.column17}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column18"/>
+  </f:facet>
+  <h:outputText value="#{rec.column18}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column19"/>
+  </f:facet>
+  <h:outputText value="#{rec.column19}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column20"/>
+  </f:facet>
+  <h:outputText value="#{rec.column20}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column21"/>
+  </f:facet>
+  <h:outputText value="#{rec.column21}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column22"/>
+  </f:facet>
+  <h:outputText value="#{rec.column22}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column23"/>
+  </f:facet>
+  <h:outputText value="#{rec.column23}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column24"/>
+  </f:facet>
+  <h:outputText value="#{rec.column24}"/>
+</o:column>
+<o:column>
+  <f:facet name="header">
+    <h:outputText value="Column25"/>
+  </f:facet>
+  <h:outputText value="#{rec.column25}"/>
+</o:column>
+
+</o:dataTable>
+
+</div>

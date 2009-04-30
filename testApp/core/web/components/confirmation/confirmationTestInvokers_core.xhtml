@@ -1,0 +1,121 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      JSF invokers
+    </span>
+<table>
+  <tr>
+    <td class="header">&lt;h:commandLink&gt; with server-side action</td>
+    <td class="header">&lt;h:outputLink&gt; with client-side action</td>
+    <td class="header">&lt;h:outputLink&gt; as navigation element</td>
+    <td class="header">&lt;h:commandButton&gt; with client-side action</td>
+  </tr>
+  <tr>
+    <td class="container">
+      <h:commandLink id="commandLink"     
+                     value="commandLink invoker"
+                     action="#{ConfirmationBean.commandLinkActionString}"/>
+      <o:confirmation id="confirmForCommandLink"
+                      for="form1:commandLink"/>
+      <h:outputText id="actionConfirmedText" value="Confirmed: #{ConfirmationBean.commandLinkAction}"/>
+    </td>
+    <td class="container">
+      <h:outputLink value="outputLink" id="outputLinkID"
+                    onclick="logJSEvents('h:outputLink works', 'outputLinkPrint'); return false;">
+        <h:outputText value="outputText"/>
+      </h:outputLink>
+      <o:confirmation id="outputLinkWithOnclick"
+                      for="form1:outputLinkID"/>
+      <div id="outputLinkPrint"></div>
+    </td>
+    <td class="container">
+      <h:outputLink id="outputLinkNavigator"
+                    value="http://www.openfaces.org">
+        <h:outputText value="output link navigator"/>
+      </h:outputLink>
+      <o:confirmation id="outputLinkNavigatorConfirmation"
+                      for="form1:outputLinkNavigator"
+                      />
+    </td>
+    <td class="container">
+      <h:commandButton id="buttonWithOnclick"
+                       value="commandButton with onclick"
+                       onclick="logJSEvents('button with onclick', 'empty'); return false;"/>
+      <o:confirmation id="confirmForButtonWithOnclick"
+                      for="form1:buttonWithOnclick"
+                      />
+      <div id="empty"></div>
+    </td>
+  </tr>
+</table>
+<br/>
+<span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+  HTML invoker
+</span>
+<input id="htmlButton" type="button" value="HTML button"
+       onclick="logJSEvents('HTML button', 'empty1'); return false;"/>
+<o:confirmation id="invokedByHTMLElementID"
+                for=":htmlButton"
+                />
+<div id="empty1"></div>
+<br/>
+<br/>
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      Check js-functions
+    </span>
+<table>
+  <tr>
+    <td class="header">runConfirmedFunction</td>
+    <td class="header">setConfirmationTexts</td>
+  </tr>
+  <tr>
+    <td class="container">
+      <h:outputLink id="linkInvokerID1"
+                    style="font-weight:bold; color: orange;"
+                    onclick="O$('form1:q_runConfirmedFunctionID').runConfirmedFunction(function(){logJSEvents('runConfirmedFunction works', 'empty3');}); return false;">
+        <h:outputText value="execute runConfirmedFunction"/>
+      </h:outputLink>
+      <o:confirmation id="q_runConfirmedFunctionID" standalone="true"/>
+      <div id="empty3"></div>
+    </td>
+    <td class="container">
+      <h:outputLink id="linkInvokerID2"
+                    style="font-weight:bold; color: orange;"
+                    onclick="">
+        <h:outputText value="execute setConfirmationTexts"/>
+      </h:outputLink>
+      <o:confirmation id="setConfirmationTexts" for="form1:linkInvokerID2"/>
+    </td>
+  </tr>
+</table>
+<br/>
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      With server action
+    </span>
+<table>
+  <tr>
+    <td class="header">&lt;h:commandButton&gt; with action</td>
+  </tr>
+  <tr>
+    <td class="container">
+      <h:commandButton id="buttonWithAction"
+                       value="commandButton with action"
+                       action="#{ConfirmationBean.confirmedActionString}"/>
+      <o:confirmation id="confirmForButtonWithAction"
+                      for="form1:buttonWithAction"
+                      />
+      <h:outputText id="actionConfirmedText1" value="Confirmed: #{ConfirmationBean.confirmedAction}"/>
+    </td>
+  </tr>
+</table>
+
+
+</div>

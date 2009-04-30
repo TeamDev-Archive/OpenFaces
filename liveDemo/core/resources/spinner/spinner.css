@@ -1,0 +1,11 @@
+.spinnerDefault {
+  border: 1px solid #EEEEEE;
+}
+
+.spinnerRollover {
+  border: 1px solid gray;
+}
+
+.spinnerFocused {
+  border: 1px solid black;
+}

@@ -1,0 +1,30 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+
+    <o:tabbedPane>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="First Tab"/>
+        </f:facet>
+        <h:outputText value="Stub Content"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Tab Title"/>
+        </f:facet>
+        <f:subview id="subview1">
+          <jsp:include page="xxxx.jsf"/>
+        </f:subview>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+
+  
+</div>

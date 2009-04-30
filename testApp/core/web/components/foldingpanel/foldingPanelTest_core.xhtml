@@ -1,0 +1,173 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+<a href="../../main.jsf">Back to the main page</a>
+<br/>
+<h4 style="border-bottom: 1px solid black;">Basic FoldingPanel Component</h4>
+<h:commandButton value="Submit" onclick="document.forms[0].submit();"/>
+<table style="width: 100%;">
+  <tr style="background: #c0c0c0;">
+    <td>Default FoldingPanel</td>
+    <td>Collapsed FoldingPanel</td>
+    <td>FoldingPanel with custom images and styles assigned</td>
+    <td>FoldingPanel with class names assigned</td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+      <o:foldingPanel>
+        <f:facet name="caption">
+          <f:verbatim>Expanded FoldingPanel (Default)</f:verbatim>
+        </f:facet>
+        <h:commandButton value="inner control"/>
+      </o:foldingPanel>
+    </td>
+    <td style="vertical-align: top;">
+      <o:foldingPanel expanded="false" loadingMode="client">
+        <f:facet name="caption">
+          <f:verbatim>Collapsed FoldingPanel with button placed right</f:verbatim>
+        </f:facet>
+        <h:commandButton value="inner control"/>
+      </o:foldingPanel>
+    </td>
+    <td style="vertical-align: top;">
+      <o:foldingPanel
+              expanded="false"
+              style="border: 1px solid black; width: 250px;"
+              captionStyle="background: red; padding: 3 3 3 3; font-family: Tahoma; font-size: 12px; font-weight: bold;"
+              contentStyle="background: blue; padding: 3 3 3 3;"
+              loadingMode="server">
+        <f:facet name="caption">
+          <f:verbatim>FoldingPanel with custom images</f:verbatim>
+        </f:facet>
+        <o:captionArea>
+          <o:expansionToggleButton
+                  collapsedImageUrl="/custom_collaps.png"
+                  collapsedPressedImageUrl="/custom_collaps_pressed.png"
+                  collapsedRolloverImageUrl="/custom_collaps_rollover.png"
+                  expandedImageUrl="/custom_expand.png"
+                  expandedPressedImageUrl="/custom_expand_pressed.png"
+                  expandedRolloverImageUrl="/custom_expand_rollover.png"/>
+        </o:captionArea>
+
+        <h:outputText escape="false" value="&#60;div style=&#34;font-family: Tahoma; font-size: 12px;&#34;&#62;This control contains both plain HTML and JSF controls
+                inside.&#60;/div&#62;"/>
+        <h:commandButton value="JSF Button"/>
+      </o:foldingPanel>
+    </td>
+    <td style="vertical-align: top;">
+      <o:foldingPanel
+              expanded="false"
+              styleClass="fpStyle"
+              captionClass="fpCaptionStyle"
+              contentClass="fpContentStyle" loadingMode="client">
+        <f:facet name="caption">
+          <f:verbatim>Class Names Demo</f:verbatim>
+        </f:facet>
+        <h:outputText value="Test content label"/>
+      </o:foldingPanel>
+    </td>
+  </tr>
+</table>
+<h4 style="border-bottom: 1px solid black;">onstatechange Event Handling in FoldingPanel</h4>
+<table style="width: 100%;">
+  <tr style="background: #c0c0c0;">
+    <td>
+      Custom implementation of <b>StateChangeListener</b> (server-side)
+    </td>
+    <td>
+      Client-side <b>onstatechange</b> event
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+      <o:foldingPanel loadingMode="server">
+        <f:facet name="caption">
+          <f:verbatim>Just Caption</f:verbatim>
+        </f:facet>
+        <o:stateChangeListener type="org.openfaces.testapp.customEvents.MyStateChangeListener"/>
+        <h:outputText value="Text here"/>
+      </o:foldingPanel>
+    </td>
+    <td style="vertical-align: top;">
+    </td>
+    <td style="vertical-align: top;">
+      <o:foldingPanel expanded="false" onstatechange="alert('It works!');" loadingMode="client">
+        <f:facet name="caption">
+          <f:verbatim>Just Caption</f:verbatim>
+        </f:facet>
+        <h:outputText value="Text here"/>
+      </o:foldingPanel>
+    </td>
+  </tr>
+</table>
+<h4 style="border-bottom: 1px solid black;">Custom Renderers for Caption and Folding Panel</h4>
+<table>
+  <tr style="background: #c0c0c0;">
+    <td>Button and caption were rendered as facets</td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+      <o:foldingPanel loadingMode="client">
+        <f:facet name="caption">
+          <h:outputText value="This Caption Is Custom Rendered"/>
+        </f:facet>
+        <h:outputText value="CONTENT"/>
+      </o:foldingPanel>
+    </td>
+  </tr>
+</table>
+<h:inputText required="true" id="q"></h:inputText>
+<h:message for="q"></h:message>
+<h4 style="border-bottom: 1px solid black;">AJAX Support for FoldingPanel</h4>
+<table>
+  <tr style="background: #c0c0c0;">
+    <td>
+      AJAX is used for loading content of FoldingPanel
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+      <o:foldingPanel loadingMode="ajax" expanded="false">
+        <f:facet name="caption">
+          <f:verbatim>Test Ajax</f:verbatim>
+        </f:facet>
+        <h:commandButton value="content"/>
+
+      </o:foldingPanel>
+    </td>
+  </tr>
+</table>
+<h4 style="border-bottom: 1px solid black;">Focusable FoldingPanel</h4>
+<table>
+  <tr style="background: #c0c0c0;">
+    <td>
+      Simple focused
+    </td>
+    <td>
+      FoldingPanel with custom styles
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+      <o:foldingPanel focusable="true">
+        <f:facet name="caption">
+          <f:verbatim>Test</f:verbatim>
+        </f:facet>
+        <h:commandButton value="Inner Control"/>
+      </o:foldingPanel>
+    </td>
+    <td style="vertical-align: top;">
+      <o:foldingPanel focusable="true" focusedCaptionStyle="background:pink;" focusedContentStyle="background:blue;">
+        <f:facet name="caption">
+          <f:verbatim>Test</f:verbatim>
+        </f:facet>
+        <h:commandButton value="Inner Control"/>
+      </o:foldingPanel>
+    </td>
+  </tr>
+</table>
+
+</div>

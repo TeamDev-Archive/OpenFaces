@@ -1,0 +1,153 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+<style type="text/css">
+  .borderLayoutPanel1 {
+    background-color: #ffbbbb;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border: 3px solid black;
+    padding: 3px;
+    margin: 3px;
+  }
+
+  .borderLayoutPanelContent1 {
+    background-color: #bbffff;
+    border: 3px solid black;
+    padding: 3px;
+    margin: 3px;
+  }
+
+  .sidePanel1 {
+    background-color: #ffffbb;
+    border: 3px solid gray;
+    padding: 3px;
+    margin: 3px;
+  }
+
+  .caption1 {
+    background-color: #ffbbff;
+    border: 3px solid gray;
+    padding: 3px;
+    margin: 3px;
+  }
+
+  .content1 {
+    background-color: #ffffff;
+    border: 3px solid gray;
+    padding: 3px;
+    margin: 3px;
+  }
+
+  .splitter1 {
+    background-color: #bbffbb;
+    border: 3px solid gray;
+    padding: 3px;
+    margin: 3px;
+  }
+
+  .legend1 {
+    width: 16px;
+    height: 15px;
+    border: 1px solid black;
+    margin: 5px 5px 5px 20px;
+    overflow: hidden;
+    clear: both;
+    float: left;
+  }
+
+</style>
+
+<o:borderLayoutPanel styleClass="borderLayoutPanel1" contentClass="borderLayoutPanelContent1">
+  <o:sidePanel alignment="left" size="25%" styleClass="sidePanel1" captionClass="caption1"
+               contentClass="content1" splitterClass="splitter1">
+    <f:facet name="caption">
+      <h:outputText value=" "/>
+    </f:facet>
+    <o:borderLayoutPanel styleClass="borderLayoutPanel1" contentClass="content1">
+      <o:sidePanel alignment="top" styleClass="sidePanel1" captionClass="caption1" contentClass="content1"
+                   splitterClass="splitter1"/>
+    </o:borderLayoutPanel>
+  </o:sidePanel>
+
+  <o:sidePanel alignment="right" size="25%" styleClass="sidePanel1" captionClass="caption1"
+               contentClass="content1" splitterClass="splitter1">
+    <f:facet name="caption">
+      <h:outputText value=" "/>
+    </f:facet>
+    <o:borderLayoutPanel styleClass="borderLayoutPanel1" contentClass="content1">
+      <o:sidePanel alignment="top" styleClass="sidePanel1" captionClass="caption1" contentClass="content1"
+                   splitterClass="splitter1"/>
+    </o:borderLayoutPanel>
+  </o:sidePanel>
+
+  <o:sidePanel alignment="top" size="25%" styleClass="sidePanel1" captionClass="caption1"
+               contentClass="content1" splitterClass="splitter1">
+    <f:facet name="caption">
+      <h:outputText value=" "/>
+    </f:facet>
+    <o:borderLayoutPanel styleClass="borderLayoutPanel1" contentClass="content1">
+      <o:sidePanel alignment="left" styleClass="sidePanel1" captionClass="caption1" contentClass="content1"
+                   splitterClass="splitter1"/>
+    </o:borderLayoutPanel>
+  </o:sidePanel>
+
+  <o:sidePanel alignment="bottom" size="25%" styleClass="sidePanel1" captionClass="caption1"
+               contentClass="content1" splitterClass="splitter1">
+    <f:facet name="caption">
+      <h:outputText value=" "/>
+    </f:facet>
+    <o:borderLayoutPanel styleClass="borderLayoutPanel1" contentClass="content1">
+      <o:sidePanel alignment="left" styleClass="sidePanel1" captionClass="caption1" contentClass="content1"
+                   splitterClass="splitter1"/>
+    </o:borderLayoutPanel>
+  </o:sidePanel>
+  <f:verbatim>
+  <p>
+    <div class="legend1" style="background-color: #ffbbbb"></div>
+    - BorderLayoutPanel background
+  </p>
+  <p>
+    <div class="legend1" style="background-color: black"></div>
+    - BorderLayoutPanel border
+  </p>
+  <p>
+    <div class="legend1" style="background-color: #bbffff"></div>
+    - BorderLayoutPanel content
+  </p>
+  <p>
+    <div class="legend1" style="background-color: #ffffbb"></div>
+    - SidePanel background
+  </p>
+  <p>
+    <div class="legend1" style="background-color: gray"></div>
+    - SidePanel border
+  </p>
+  <p>
+    <div class="legend1" style="background-color: #ffbbff"></div>
+    - SidePanel caption
+  </p>
+  <p>
+    <div class="legend1" style="background-color: #ffffff"></div>
+    - SidePanel content
+  </p>
+  <p>
+    <div class="legend1" style="background-color: #bbffbb"></div>
+    - SidePanel splitter
+  </p>
+  </f:verbatim>
+</o:borderLayoutPanel>
+
+<div style="position: absolute; z-index: 30; left : 20px; top:10px; width: 70px; border: 1px solid gray; background-color: #ddddff;">
+  <a href="../../main.jsf">main page</a><br/>
+  <a href="./borderLayoutPanel.jsf">page 0</a><br/>
+  <a href="./borderLayoutPanel1.jsf">page 1</a><br/>
+  <a href="./borderLayoutPanel2.jsf">page 2</a><br/>
+  <h:commandButton value="Submit" onclick="document.forms[0].submit();"/>
+</div>
+</div>

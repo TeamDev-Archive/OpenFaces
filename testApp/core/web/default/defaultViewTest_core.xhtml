@@ -1,0 +1,213 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  
+<a href="../main.jsf" style="float: right;">Return to main page</a>
+  <o:calendar/>
+<div class="separator"></div>
+
+<o:confirmation for=":form1:button1" />
+<h:commandButton id="button1" value="Invoke confirmation - all default properties" onclick="alert('Action confirmed!');"/>
+
+<o:confirmation
+        id="c1"
+        for=":form1:button2"
+        draggable="true"
+        message="Delete Item(s)?"
+        captionText="Microsfot Office Outlook"
+        details="Are you sure that you want to permanently delete the selected item(s)? You won't be able to undo this action."
+        hideOnOuterClick="true"
+        />
+
+<h:commandButton id="button2" value="Invoke confirmation - draggable with custom texts" onclick="alert('Action confirmed!');"/>
+<div class="separator"></div>
+
+<input type="button" id="popupInvoker1" value="Show PopupLayer" onclick="O$('form1:popupLayer1').show();"/>
+<o:popupLayer id="popupLayer1">
+  <f:verbatim>
+    Click here to hide this PopupLayer: <input type="button" value="Hide" onclick="O$('form1:popupLayer1').hide();"/> <br/>
+    Click here to do something else: <input type="button" value="Do It!" onclick="alert('Something else');"/>
+  </f:verbatim>
+</o:popupLayer>
+<div class="separator"></div>
+
+<o:foldingPanel>
+  <f:facet name="caption"><f:verbatim>Default Folding Panel</f:verbatim></f:facet>
+  <h:outputText value="Some text inside of a folding panel goes here."/>
+</o:foldingPanel>
+<div class="separator"></div>
+
+<h:inputText/>
+<div class="separator"></div>
+
+<o:dropDownField>
+  <o:dropDownItem value="red"/>
+  <o:dropDownItem value="yellow"/>
+  <o:dropDownItem value="green"/>
+</o:dropDownField>
+<div class="separator"></div>
+
+<o:dateChooser/>
+<div class="separator"></div>
+
+<h:selectOneMenu >
+   <f:selectItems value="#{TwoListSelectionBean.items}"/>
+</h:selectOneMenu>
+<div class="separator"></div>
+
+<o:twoListSelection>
+  <f:selectItems value="#{TwoListSelectionBean.items}"/>
+</o:twoListSelection>
+<div class="separator"></div>
+
+<o:twoListSelection
+        style="width: 300px;"
+        value="#{TwoListSelectionBean.selectedItem}"
+        leftListboxHeader="Available items"
+        rightListboxHeader="Selected items"
+        allowSorting="true"
+>
+  <f:selectItems value="#{TwoListSelectionBean.items}"/>
+</o:twoListSelection>
+
+<div class="separator"></div>
+
+<o:tabbedPane>
+  <o:tabbedPaneItem>
+    <f:facet name="tab">
+      <f:verbatim>A1</f:verbatim>
+    </f:facet>
+      <f:verbatim>1</f:verbatim>
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem>
+    <f:facet name="tab">
+      <f:verbatim>A2</f:verbatim>
+    </f:facet>
+      <f:verbatim>2</f:verbatim>
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem>
+    <f:facet name="tab">
+      <f:verbatim>A3</f:verbatim>
+    </f:facet>
+      <f:verbatim>3</f:verbatim>
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem>
+    <f:facet name="tab">
+      <f:verbatim>A4</f:verbatim>
+    </f:facet>
+      <f:verbatim>4</f:verbatim>
+  </o:tabbedPaneItem>
+</o:tabbedPane>
+<div class="separator"></div>
+
+<table><tr><td width="50%">
+  <o:dropDownField>
+    <o:dropDownItem value="red"/>
+    <o:dropDownItem value="yellow"/>
+    <o:dropDownItem value="green"/>
+  </o:dropDownField>
+</td>
+  <td width="50%">
+    <o:dateChooser/>
+  </td>
+</tr>
+</table>
+<div class="separator"></div>
+
+<o:dataTable var="DATA_ROW" value="#{TableTestBean.collection1}" pageSize="5" rowKey="#{DATA_ROW.id}">
+  <f:facet name="header">
+    <h:outputText value="Employee List"/>
+  </f:facet>
+  <f:facet name="footer">
+    <h:outputText value="Footer"/>
+  </f:facet>
+  <o:multipleRowSelection/>
+  <f:facet name="above">
+    <o:dataTablePaginator/>
+  </f:facet>
+  <f:facet name="below">
+    <o:dataTablePaginator/>
+  </f:facet>
+
+  <o:selectionColumn>
+    <f:facet name="header"><o:selectAllCheckbox/></f:facet>
+  </o:selectionColumn>
+  <o:column sortingExpression="#{DATA_ROW.field1}" filterExpression="#{DATA_ROW.field1}" >
+    <f:facet name="header">
+      <h:outputText value="First Name"/>
+    </f:facet>
+    <f:facet name="footer">
+      <h:outputText value="Col1"/>
+    </f:facet>
+    <h:outputText value="#{DATA_ROW.field1}"/>
+  </o:column>
+  <o:column sortingExpression="#{DATA_ROW.field2}" filterExpression="#{DATA_ROW.field2}" filterKind="comboBox">
+    <f:facet name="header">
+      <h:outputText value="Last Name"/>
+    </f:facet>
+    <f:facet name="footer">
+      <h:outputText value="Col2"/>
+    </f:facet>
+    <h:outputText value="#{DATA_ROW.field2}"/>
+  </o:column>
+  <o:column sortingExpression="#{DATA_ROW.field2}" filterExpression="#{DATA_ROW.field2}" filterKind="dropDownField">
+    <f:facet name="header">
+      <h:outputText value="Last Name"/>
+    </f:facet>
+    <f:facet name="footer">
+      <h:outputText value="Col3"/>
+    </f:facet>
+    <h:outputText value="#{DATA_ROW.field2}"/>
+  </o:column>
+</o:dataTable>
+<div class="separator"></div>
+
+<o:treeTable id="treeTable2" var="message">
+  <o:multipleNodeSelection nodeDatas="#{TreeTableTestBean.selectedNodeDatas2}" />
+  <o:dynamicTreeStructure nodeChildren="#{TreeTableTestBean.nodeChildren}"/>
+  <o:selectionColumn>
+    <f:facet name="header"><o:selectAllCheckbox/></f:facet>
+  </o:selectionColumn>
+
+  <f:facet name="header">
+    <h:outputText value="Common Header"/>
+  </f:facet>
+  <o:treeColumn sortingExpression="#{message.subject}" filterExpression="#{message.subject}" filterKind="searchField">
+    <f:facet name="header">
+      <h:outputText value="Subject"/>
+    </f:facet>
+    <h:outputText value="#{message.subject}"/>
+    <f:facet name="footer">
+      <h:outputText value="Footer1"/>
+    </f:facet>
+  </o:treeColumn>
+
+  <o:column sortingExpression="#{message.author.userName}" filterExpression="#{message.author.userName}" filterKind="comboBox">
+    <f:facet name="header">
+      <h:outputText value="From"/>
+    </f:facet>
+    <h:outputText value="#{message.author.userName}"/>
+    <f:facet name="footer">
+      <h:outputText value="Footer2"/>
+    </f:facet>
+  </o:column>
+
+  <o:column sortingExpression="#{message.date}" filterExpression="#{message.date}" filterKind="dropDownField">
+    <f:facet name="header">
+      <h:outputText value="Sent"/>
+    </f:facet>
+    <h:outputText value="#{message.date}"/>
+    <f:facet name="footer">
+      <h:outputText value="Footer3"/>
+    </f:facet>
+  </o:column>
+  <f:facet name="footer">
+    <h:outputText value="Common Footer"/>
+  </f:facet>
+</o:treeTable>
+
+
+</div>

@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:my="http://my.com/my-custom">
+<head>
+  <title></title>
+</head>
+
+<body>
+<f:view>
+  <h:form>
+    <o:dataTable value="#{QKS1152.collection}" var="item" style="width:300px"
+                 verticalGridLines="1px solid gray" horizontalGridLines="1px solid gray">
+
+      <my:dateColumn headerName="Date" entity="#{item}" fieldName="field1"/>
+      <o:column sortingExpression="#{item.field2}">
+        <f:facet name="header">
+          <h:outputText value="From"/>
+        </f:facet>
+        <h:outputText value="#{item.field2}"/>
+      </o:column>
+
+    </o:dataTable>
+
+  </h:form>
+</f:view>
+
+</body>
+</html>

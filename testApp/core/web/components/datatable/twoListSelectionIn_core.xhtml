@@ -1,0 +1,85 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+  
+    <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <table cellspacing="20">
+      <tr>
+        <td class="container">
+          <td class="container">
+            <o:dataTable id="TLSDataTable"
+                         pageSize="3"
+                         var="TLS"
+                         value="#{TestEventsBean.tableTestCollection}"
+                         verticalGridLines="1px solid gray">
+              <f:facet name="below">
+                <o:dataTablePaginator/>
+              </f:facet>
+              <o:singleRowSelection/>
+              <o:selectionColumn></o:selectionColumn>
+              <o:column id="col_fourteenth" style="padding: 15px 15px 15px 15px;"
+                        sortingExpression="#{TLS.firstColumn}">
+                <f:facet name="header">
+                  <o:twoListSelection>
+                    <f:selectItem itemValue="item1" itemLabel="label1"/>
+                    <f:selectItem itemValue="item5" itemLabel="label2" itemDisabled="false"/>
+                    <f:selectItem itemValue="item3" itemLabel="label3"/>
+                    <f:selectItem itemValue="item4" itemLabel="label4" itemDisabled="true"/>
+                  </o:twoListSelection>
+                </f:facet>
+                <o:twoListSelection leftListboxHeader="#{TLS.firstColumn}" rightListboxHeader="#{TLS.secondColumn}">
+                  <f:selectItem itemValue="item1" itemLabel="label1"/>
+                  <f:selectItem itemValue="item5" itemLabel="label2" itemDisabled="false"/>
+                  <f:selectItem itemValue="item3" itemLabel="label3"/>
+                  <f:selectItem itemValue="item4" itemLabel="label4" itemDisabled="true"/>
+                </o:twoListSelection>
+                <f:facet name="footer">
+                  <o:twoListSelection>
+                    <f:selectItem itemValue="item1" itemLabel="label1"/>
+                    <f:selectItem itemValue="item5" itemLabel="label2" itemDisabled="false"/>
+                    <f:selectItem itemValue="item3" itemLabel="label3"/>
+                    <f:selectItem itemValue="item4" itemLabel="label4" itemDisabled="true"/>
+                  </o:twoListSelection>
+                </f:facet>
+              </o:column>
+              <o:column id="col_fourth" style="padding: 15px 15px 15px 15px;" sortingExpression="#{TLS.thirdColumn}">
+                <f:facet name="header">
+                  <o:twoListSelection>
+                    <f:selectItem itemValue="item1" itemLabel="label1"/>
+                    <f:selectItem itemValue="item5" itemLabel="label2" itemDisabled="false"/>
+                    <f:selectItem itemValue="item3" itemLabel="label3"/>
+                    <f:selectItem itemValue="item4" itemLabel="label4" itemDisabled="true"/>
+                  </o:twoListSelection>
+                </f:facet>
+                <o:twoListSelection leftListboxHeader="#{TLS.thirdColumn}" rightListboxHeader="#{TLS.fourthColumn}">
+                  <f:selectItem itemValue="item1" itemLabel="label1"/>
+                  <f:selectItem itemValue="item5" itemLabel="label2" itemDisabled="false"/>
+                  <f:selectItem itemValue="item3" itemLabel="label3"/>
+                  <f:selectItem itemValue="item4" itemLabel="label4" itemDisabled="true"/>
+                </o:twoListSelection>
+                <f:facet name="footer">
+                  <o:twoListSelection>
+                    <f:selectItem itemValue="item1" itemLabel="label1"/>
+                    <f:selectItem itemValue="item5" itemLabel="label2" itemDisabled="false"/>
+                    <f:selectItem itemValue="item3" itemLabel="label3"/>
+                    <f:selectItem itemValue="item4" itemLabel="label4" itemDisabled="true"/>
+                  </o:twoListSelection>
+                </f:facet>
+              </o:column>
+            </o:dataTable>
+            <h:commandButton value="Submit" />
+            DataTable with <span style="font-weight:bold;">TwoListSelection</span> inside. DataTable have: paging,
+            sorting, selection.
+          </td>
+        </td>
+      </tr>
+    </table>
+
+  
+</div>

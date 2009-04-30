@@ -1,0 +1,26 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+  <a href="a4jSupportIndex.jsf">Back to the index page</a>
+  <br/>
+
+  <h:outputText id="counter" value="This value is updated on Ajax request: #{A4jSupportBean.counter}"
+                style="font-size:16px;"/>
+
+
+  <h:commandButton type="button" id="popupInvoker" value="Show PopupLayer"
+                   onclick="O$('form1:popupLayer1').show();"/>
+  <br/>
+
+  <h3>The onshow, onhide and onclick events</h3>
+  <o:popupLayer id="popupLayer1" draggable="true" style="padding:2px; background-color:#fafdff">
+    <a4j:support event="onshow" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:support event="onhide" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <a4j:support event="onclick" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <h:outputText value="Click here to hide this PopupLayer"/>
+    <h:commandButton value="Hide" onclick="O$('form1:popupLayer1').hide(); return false;"/>
+  </o:popupLayer>
+
+</div>

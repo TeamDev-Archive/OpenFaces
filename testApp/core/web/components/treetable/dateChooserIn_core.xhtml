@@ -1,0 +1,39 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+
+    <table>
+      <tr>
+        <td class="container">
+          <o:treeTable var="dateChooserTree" nodeLevelVar="level">
+            <o:staticTreeStructure>
+              <o:treeNode value="DateChooser top node">
+                <o:treeNode value="DateChooser sub node" />
+              </o:treeNode>
+            </o:staticTreeStructure>
+            <o:treeColumn>
+              <f:facet name="header">
+                <o:dateChooser />
+              </f:facet>
+              <o:dateChooser rendered="#{level == 0}" />
+              <o:dateChooser rendered="#{level == 1}" />
+              <f:facet name="footer">
+                <o:dateChooser />
+              </f:facet>
+            </o:treeColumn>
+          </o:treeTable>
+        </td>
+      </tr>
+    </table>
+
+  
+</div>

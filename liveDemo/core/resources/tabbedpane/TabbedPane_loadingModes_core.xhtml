@@ -1,0 +1,96 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div id="component" align="center">
+
+    <div style="float: left; width: 315px; margin-bottom: 2em;">
+      <h3 style="text-align: left;">Server</h3>
+      <br/>
+      <span class="simple_text">Every time a tab is changed, a corresponding tabbed page is reloaded with the tab content.</span>
+      <br/>
+
+      <o:tabbedPane loadingMode="server"
+                    style="margin-top: 10px;"
+                    containerStyle="padding: 15px 15px 15px 15px;">
+        <o:tabbedPaneItem>
+          <f:facet name="tab">
+            <h:outputText id="tabName1" value="Poppy" styleClass="tab_name"/>
+          </f:facet>
+          <h:graphicImage url="../images/tabbedpane/bigFlower_small.jpg" width="228" height="171"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem>
+          <f:facet name="tab">
+            <h:outputText id="tabName2" value="Tree stump" styleClass="tab_name"/>
+          </f:facet>
+          <h:graphicImage url="../images/tabbedpane/bole_small.jpg" width="228" height="171"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem>
+          <f:facet name="tab">
+            <h:outputText id="tabName3" value="Lane" styleClass="tab_name"/>
+          </f:facet>
+          <h:graphicImage url="../images/tabbedpane/pathway_small.jpg" width="228" height="171"/>
+        </o:tabbedPaneItem>
+      </o:tabbedPane>
+    </div>
+    <div style="float: left; width: 315px; margin-bottom: 2em;">
+      <h3 style="text-align: left;">Client</h3>
+      <br/>
+      <span class="simple_text"> The content of all tabs is loaded to the client side on the first page load.</span>
+      <br/>
+
+      <o:tabbedPane loadingMode="client"
+                    style="margin-top: 10px;"
+                    containerStyle="padding: 15px 15px 15px 15px;">
+        <o:tabbedPaneItem>
+          <f:facet name="tab">
+            <h:outputText value="Poppy" styleClass="tab_name"/>
+          </f:facet>
+          <h:graphicImage url="../images/tabbedpane/bigFlower_small.jpg" width="228" height="171"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem>
+          <f:facet name="tab">
+            <h:outputText value="Tree stump" styleClass="tab_name"/>
+          </f:facet>
+          <h:graphicImage url="../images/tabbedpane/bole_small.jpg" width="228" height="171"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem>
+          <f:facet name="tab">
+            <h:outputText value="Lane" styleClass="tab_name"/>
+          </f:facet>
+          <h:graphicImage url="../images/tabbedpane/pathway_small.jpg" width="228" height="171"/>
+        </o:tabbedPaneItem>
+      </o:tabbedPane>
+    </div>
+    <div style="float: left; width: 315px; margin-bottom: 2em;">
+      <h3 style="text-align: left;">Ajax</h3>
+      <br/>
+      <span class="simple_text"> The tab content is retrieved from the server by the Ajax request on the first switch to the tab.</span>
+      <br/>
+
+      <o:tabbedPane loadingMode="ajax"
+                    style="margin-top: 10px;"
+                    containerStyle="padding: 15px 15px 15px 15px;">
+        <o:tabbedPaneItem>
+          <f:facet name="tab">
+            <h:outputText value="Poppy" styleClass="tab_name"/>
+          </f:facet>
+          <h:graphicImage url="../images/tabbedpane/bigFlower_small.jpg" width="228" height="171"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem>
+          <f:facet name="tab">
+            <h:outputText value="Tree stump" styleClass="tab_name"/>
+          </f:facet>
+          <h:graphicImage url="../images/tabbedpane/bole_small.jpg" width="228" height="171"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem>
+          <f:facet name="tab">
+            <h:outputText value="Lane" styleClass="tab_name"/>
+          </f:facet>
+          <h:graphicImage url="../images/tabbedpane/pathway_small.jpg" width="228" height="171"/>
+        </o:tabbedPaneItem>
+      </o:tabbedPane>
+    </div>
+  </div>
+</div>

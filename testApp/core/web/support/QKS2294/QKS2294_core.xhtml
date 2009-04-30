@@ -1,0 +1,44 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <o:dataTable var="item" value="#{QKS2294.tableData}">
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="column1"/>
+        </f:facet>
+        <h:inputText value="#{item.column1}" required="true"/>
+      </o:column>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="column2"/>
+        </f:facet>
+        <h:inputText value="#{item.column2}" required="true"/>
+      </o:column>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="column3"/>
+        </f:facet>
+        <h:inputText value="#{item.column3}" required="true"/>
+      </o:column>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="column4"/>
+        </f:facet>
+        <h:inputText value="#{item.column4}" required="true"/>
+      </o:column>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="column5"/>
+        </f:facet>
+        <h:inputText value="#{item.column5}" required="true"/>
+      </o:column>
+    </o:dataTable>
+  
+</div>

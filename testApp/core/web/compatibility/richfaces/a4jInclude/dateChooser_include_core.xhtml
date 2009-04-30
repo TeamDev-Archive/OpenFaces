@@ -1,0 +1,28 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <br/>
+  
+    <h:commandButton type="submit" value="Submit"/>
+    <br/>
+    <o:dateChooser id="dcLong"
+                   dateFormat="long"
+                   locale="ru"
+                   todayText="Segodnya"
+                   noneText="Nichego"
+                   headerStyle="background: #DEF3FF; color: black;"
+                   daysHeaderStyle="background: #87B2C9; color: white;"
+                   selectedDayStyle="border: 1px solid black; background: white; color: black;"
+                   dayStyle="border: 1px solid white;"
+                   rolloverDayStyle="background: #FCE55D;"
+                   weekendDayStyle="color: #B09F41;"
+                   footerStyle="background: #DEF3FF; color: black; border-top: 1px solid #87B2C9;"/>
+    <br/>
+    <o:dateChooser dateFormat="short"/>
+    <br/>
+
+  
+</div>

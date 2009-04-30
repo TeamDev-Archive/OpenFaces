@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:s="http://jboss.com/products/seam/taglib">
+<head>
+    <title>You won!</title>
+  </head>
+  <body>
+    <h1>You won!</h1>
+    <f:view>
+      Yes, the answer was <h:outputText value="#{numberGuess.currentGuess}" />.
+      It took you <h:outputText value="#{numberGuess.guessCount}" /> guesses.
+      <h:outputText value="But you cheated, so it doesn't count!" rendered="#{numberGuess.cheat}"/>
+      Would you like to <a href="numberGuess.jsf">play again</a>?
+    </f:view>
+  </body>
+  </html>

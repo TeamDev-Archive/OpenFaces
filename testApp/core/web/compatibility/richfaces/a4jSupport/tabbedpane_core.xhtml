@@ -1,0 +1,38 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+ <a href="a4jSupportIndex.jsf">Back to the index page</a>
+  <br/>
+
+  <h:outputText id="counter" value="This value is updated on Ajax request: #{A4jSupportBean.counter}"
+                style="font-size:16px;"/>
+
+  <h3>The onselectionchange event</h3>
+  <o:tabbedPane style="width: 300px; height: 80px; padding:2px" containerStyle="padding:2px"
+                tabStyle="white-space: nowrap; padding:2px"
+                loadingMode="#{A4jParametersBean.loadingMode}">
+    <a4j:support event="onselectionchange" reRender="counter" action="#{A4jSupportBean.increase}"/>
+    <o:tabbedPaneItem>
+      <f:facet name="tab">
+        <h:outputText value="First tab"/>
+      </f:facet>
+      <h:outputText value="Some text on the first tab"/>
+    </o:tabbedPaneItem>
+    <o:tabbedPaneItem>
+      <f:facet name="tab">
+        <h:outputText value="Second tab"/>
+      </f:facet>
+      <h:outputText value="Some text on the second tab"/>
+    </o:tabbedPaneItem>
+    <o:tabbedPaneItem>
+      <f:facet name="tab">
+        <h:outputText value="Third tab"/>
+      </f:facet>
+      <h:outputText value="Some text on the third tab"/>
+    </o:tabbedPaneItem>
+  </o:tabbedPane>
+
+
+</div>

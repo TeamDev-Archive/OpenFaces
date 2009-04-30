@@ -1,0 +1,61 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+  <br/>
+  <h:commandButton value="submit" id="submit"/>
+  <br/>
+  <table>
+    <tr>
+      <td class="header">onfocus, onblur</td>
+      <td class="header">onmouseover, onmouseout</td>
+      <td class="header">onmouseup, onmousedown</td>
+      <td class="header">onkeypress, onkeydown, onkeyup, onchange</td>
+      <td class="header">onclick, ondblclick</td>
+      <td class="header">onmousemove</td>
+    </tr>
+    <tr>
+      <td class="container">
+        <o:inputText id="focusBlur"
+                     onblur="logJSEvents('onblur works', 'empty'); logJSEvents(event.type, 'empty');"
+                     onfocus="logJSEvents('onfocus works', 'empty'); logJSEvents(event.type, 'empty');"/>
+
+      </td>
+      <td class="container">
+        <o:inputText id="mouseoverMouseout"
+                     onmouseout="logJSEvents('onmouseout works', 'empty'); logJSEvents(event.type, 'empty');"
+                     onmouseover="logJSEvents('onmouseover works', 'empty'); logJSEvents(event.type, 'empty');"/>
+      </td>
+      <td class="container">
+        <o:inputText id="mouseupMousedown"
+                     onmousedown="logJSEvents('onmousedown works', 'empty'); logJSEvents(event.type, 'empty');"
+                     onmouseup="logJSEvents('onmouseup works', 'empty'); logJSEvents(event.type, 'empty');"/>
+      </td>
+      <td class="container">
+        <o:inputText id="keyChange"
+                     onchange="logJSEvents('onchange works', 'empty'); logJSEvents(event.type, 'empty');"
+                     onkeydown="logJSEvents('onkeydown works', 'empty'); logJSEvents(event.type, 'empty');"
+                     onkeypress="logJSEvents('onkeypress works', 'empty'); logJSEvents(event.type, 'empty');"
+                     onkeyup="logJSEvents('onkeyup works', 'empty'); logJSEvents(event.type, 'empty');"/>
+      </td>
+      <td class="container">
+        <o:inputText id="clickDblclick"
+                     onclick="logJSEvents('onclick works', 'empty'); logJSEvents(event.type, 'empty');"
+                     ondblclick="logJSEvents('ondblclick works', 'empty'); logJSEvents(event.type, 'empty');"/>
+      </td>
+      <td class="container">
+        <o:inputText id="mousemove"
+                     onmousemove="logJSEvents('onmousemove works', 'empty'); logJSEvents(event.type, 'empty');"/>
+      </td>
+    </tr>
+  </table>
+  <div id="empty"></div>
+  <br/><br/>
+
+</div>

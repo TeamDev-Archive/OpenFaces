@@ -1,0 +1,104 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div id="component">
+
+    <script>
+
+            function setDescriptionSource() {
+              var componentName = document.getElementById("form:componentName").value;
+              if (componentName != "") {
+                document.getElementById("componentDescription").src =
+                 componentName + ".html";
+                 document.getElementById("componentDescriptionWrapper").style.display = "";
+              } else {
+                 document.getElementById("componentDescriptionWrapper").style.display = "none";
+              }
+            }
+
+        </script>
+
+    <h:panelGroup style="display: block; height: 400px;">
+
+      <o:borderLayoutPanel id="borderLayoutPanel" style="border: 1px solid gray">
+        <h:panelGroup>
+          <div id="componentDescriptionWrapper" style="width:99%;height:99%;display:none;">
+          <iframe id="componentDescription" src=""
+              frameborder="0" border="0" cellspacing="0" marginwidth="0" marginheight="0"
+              width="99%" height="99%" scrollbar="no">
+          </iframe>
+          </div>
+
+          <h:inputHidden id="componentName" value="#{BorderLayoutBean.normalizedSelectedComponent}"/>
+
+        </h:panelGroup>
+        
+        <o:sidePanel alignment="top" splitterStyle="border:none;border-top: 1px solid gray;height:1px;"
+                     resizeable="false" collapsible="false" size="22px" style="text-align:center;">
+             Developers Guide 2.x
+        </o:sidePanel>
+
+        <o:sidePanel alignment="left" size="27%" style="width:100%;"
+                captionStyle="padding-left: 3px;">
+            <f:facet name="caption">
+              <h:outputText style="background-color:#657386;">
+                <h:outputText value="Open Faces Components"/>
+              </h:outputText>
+            </f:facet>
+
+            <o:treeTable var="treeNode" id="componentsTree" useAjax="true"
+                    style="width:100%;border:none;font-size:10pt;" expansionState="allExpanded">
+              <o:dynamicTreeStructure
+                nodeChildren="#{BorderLayoutBean.nodeChildren}"
+                nodeHasChildren="#{BorderLayoutBean.nodeHasChildren}" />
+
+              <o:singleNodeSelection
+                        nodeData="#{BorderLayoutBean.selectedComponent}"
+                        keyboardSupport="false"                        
+                        style="background-color:gray;color:white;"
+                        >
+                  <o:reloadComponents event="onchange"
+                                      componentIds=":form:componentName"
+                                      submittedComponentIds=":form:borderLayoutPanel,:form:componentName"
+                                      action="#{BorderLayoutBean.selectComponent}"
+                                      onajaxend="setDescriptionSource();"
+                                      />
+              </o:singleNodeSelection>
+
+              <o:treeColumn>
+                  <h:outputText value="#{treeNode}"/>
+              </o:treeColumn>
+
+            </o:treeTable>
+
+        </o:sidePanel>
+
+        <o:sidePanel alignment="bottom"
+                     splitterStyle="border:none;border-top: 1px solid gray;height:1px;" 
+                     resizeable="false" collapsible="false" size="22px" style="text-align:center;">
+           <h:outputText escape="false" value="&#169; 2009 TeamDev Ltd. All rights reserved."/>
+        </o:sidePanel>
+
+      </o:borderLayoutPanel>
+        </h:panelGroup>
+
+
+  </div>
+
+  <div class="Col1_1 serif">
+    <h4>Shown Functionality</h4>
+    <ul class="hang">
+      <li><strong>Static border layout</strong> - if you're creating a static layout, you can disable the resizing capability by setting the SidePanel's resizeable attribute to "false".
+        See the header and footer for the panel above.
+      </li>
+      <li><strong>Side panel resizing/collapsing</strong> - each SidePanel can optionally be configured to have resizing capability by dragging the panel's separator, and/or expanding/collapsing capability by clicking on the separator.
+        Left panel on this demo both resizing and collapsing capabilities.
+      </li>
+      <li><strong>Side panel captions</strong> - you can also specify the caption of SidePanel component by using by using the "caption" facet.See the left panel in this demo. 
+      </li>
+    </ul>
+  </div>
+
+</div>

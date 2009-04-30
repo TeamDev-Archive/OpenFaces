@@ -1,0 +1,87 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div class="Col1_1 serif">
+    The HintLabel component below is used for displaying large text data in the table cells. Each cell has limited size.
+    If text doesn't fit into a cell, it is shown fully in a tooltip when the mouse pointer rests over it.
+  </div>
+
+  <div id="component" align="center">
+
+    <o:dataTable var="rq" rowIndexVar="rowIndex" value="#{HintLabelDemo.requestList}" rowKey="#{rq.key}"
+                 style="width: 600px; table-layout: fixed;">
+      <f:facet name="footer">
+        <h:outputText value="Displaying issues as at 24/May/06 04:14 PM."/>
+      </f:facet>
+      <f:facet name="header">
+        <h:outputText value="OpenFaces Project Requests"/>
+      </f:facet>
+      <o:column styleClass="hintLabel_column">
+        <f:facet name="header">
+          <h:outputText value="Key"/>
+        </f:facet>
+        <h:outputText value="#{rq.key}"/>
+      </o:column>
+      <o:column styleClass="hintLabel_column">
+        <f:facet name="header">
+          <h:outputText value="Summary"/>
+        </f:facet>
+        <o:hintLabel value="#{rq.summary}" hintClass="hintLabel_hint" styleClass="hintLabel_label"/>
+      </o:column>
+      <o:column styleClass="hintLabel_column">
+        <f:facet name="header">
+          <h:outputText value="Description"/>
+        </f:facet>
+        <o:hintLabel value="#{rq.description}" hintTimeout="0" hintClass="hintLabel_hint" styleClass="hintLabel_label"/>
+      </o:column>
+      <o:column styleClass="hintLabel_column">
+        <f:facet name="header">
+          <h:outputText value="Assign To"/>
+        </f:facet>
+        <o:hintLabel value="#{rq.assignTo}" hintClass="hintLabel_hint" styleClass="hintLabel_label"/>
+      </o:column>
+      <o:column styleClass="hintLabel_column">
+        <f:facet name="header">
+          <h:outputText value="Priority"/>
+        </f:facet>
+        <o:hintLabel value="#{rq.priority}" hintClass="hintLabel_hint" styleClass="hintLabel_label"/>
+      </o:column>
+      <o:column styleClass="hintLabel_column">
+        <f:facet name="header">
+          <h:outputText value="Updated"/>
+        </f:facet>
+        <o:hintLabel value="#{rq.updated}" hintClass="hintLabel_hint" styleClass="hintLabel_label"/>
+      </o:column>
+    </o:dataTable>
+  </div>
+
+  <div class="Col1_1 serif">
+    <br/>
+    The following example shows the HintLabel component with a custom tooltip displaying text which is different from
+    the one in the label. In addition, the component uses raw HTML to format and lay out the text in the tooltip.
+  </div>
+
+  <div id="component" align="center">
+    <o:dataTable var="rq" style="width: 170px; table-layout: fixed;" rowIndexVar="rowIndex"
+                 value="#{HintLabelDemo.truncatedRequestList}" rowKey="#{rq.key}">
+      <o:column styleClass="hintLabel_column" style="width: 70px;">
+        <f:facet name="header">
+          <h:outputText value="Key"/>
+        </f:facet>
+        <h:outputText value="#{rq.key}"/>
+      </o:column>
+      <o:column styleClass="hintLabel_column" style="width: 100px;">
+        <f:facet name="header">
+          <h:outputText value="Summary"/>
+        </f:facet>
+        <o:hintLabel value="#{rq.summary}" hint="#{rq.summaryTitle}" escape="false"
+                     styleClass="hintLabel_label" hintStyle="background-color: #FFFACD;" hintClass="hintLabel_hint"/>
+      </o:column>
+    </o:dataTable>
+
+  </div>
+
+
+</div>

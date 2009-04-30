@@ -1,0 +1,76 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+
+    <o:suggestionField id="degree"
+                       suggestionDelay="0"
+                       suggestionMode="substring"
+                       listItemStyle="white-space:nowrap; padding: 3px;"
+                       suggestionMinChars="0"
+                       manualListOpeningAllowed="true">
+      <o:dropDownItem value="Associate Degree">
+        <h:outputText value="Associate Degree" style="padding-left: 5px;"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="Bachelor-Arts">
+        <h:outputText value="Bachelor-Arts" style="padding-left: 5px;"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="Bachelor-Engineering">
+        <h:outputText value="Bachelor-Engineering" style="padding-left: 5px;"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="Bachelor-Science">
+        <h:outputText value="Bachelor-Science" style="padding-left: 5px;"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="Doctor of Medicine">
+        <h:outputText value="Doctor of Medicine" style="padding-left: 5px;"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="Doctoral">
+        <h:outputText value="Doctoral" style="padding-left: 5px;"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="Doctoral - All But Dissertation">
+        <h:outputText value="Doctoral - All But Dissertation" style="padding-left: 5px;"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="Juris Doctorate">
+        <h:outputText value="Juris Doctorate" style="padding-left: 5px;"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="Masters-Arts">
+        <h:outputText value="Masters-Arts" style="padding-left: 5px;"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="Masters-Science">
+        <h:outputText value="Masters-Science" style="padding-left: 5px;"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="Masters-Business Administration">
+        <h:outputText value="Masters-Business Administration" style="padding-left: 5px;"/>
+      </o:dropDownItem>
+    </o:suggestionField>
+
+    <br/>
+    <br/>
+
+    <o:dropDownField id="fontFamily"
+                     suggestionMode="all"
+                     autoComplete="true"
+                     suggestionDelay="0"
+                     style="width: 120px;">
+      <o:dropDownItem value="Tahoma">
+        <h:outputText value="Tahoma" style="font-family: 'Tahoma', sans-serif; font-size: 13px;"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="Times New Roman">
+        <h:outputText value="Times New Roman" style=" font-family: 'Times New Roman', serif; font-size: 13px;"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="Courier New">
+        <h:outputText value="Courier New" style="font-family: 'Courier New', monospace; font-size: 13px;"/>
+      </o:dropDownItem>
+      <o:dropDownItem value="Comic Sans MS">
+        <h:outputText value="Comic Sans MS" style="font-family: 'Comic Sans MS', fantasy; font-size: 13px;"/>
+      </o:dropDownItem>
+    </o:dropDownField>
+
+  
+</div>

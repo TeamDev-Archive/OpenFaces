@@ -1,0 +1,85 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+    <a href="../../main.jsf">Back to the main page</a>
+    <br/>
+
+    <o:treeTable id="treeTable1"
+                 var="node"
+                 expansionState="allExpanded"
+                 nodePathVar="nodePath"
+                 nodeLevelVar="nodeLevel"
+                 nodeHasChildrenVar="nodeHasChildren"
+                 columnIndexVar="columnIndex"
+                 columnIdVar="columnId">
+        <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
+                                nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
+        <o:treeColumn id="name" sortingExpression="#{node.name}" filterExpression="#{node.name}"
+                      filterKind="searchField">
+            <f:facet name="header">
+                <h:outputText id="nameHeader" value="name"/>
+            </f:facet>
+            <h:outputText id="nameField" value="#{node.name}"/>
+        </o:treeColumn>
+
+
+        <o:row condition="#{TreeTableColumnsBean.highlightedByNodePath}" style="color:red;"/>
+        <o:row condition="#{nodeHasChildren == false}" style="background-color:beige;">
+            <o:cell columnIds="col3" span="2" style="text-align:right; color:green;"/>
+            <o:cell span="2" style="color:violet"/>
+        </o:row>
+        <o:row>
+            <o:cell condition="#{columnIndex == 3}" style="color:gray;font-weight:bold;"/>
+        </o:row>
+        <o:row condition="#{nodeLevel == 0}" style="background-color:aliceblue;">
+            <o:cell span="5" style="color:blue; text-align:center;">
+                <h:outputText id="outputCell1" value="#{node.name}"/>
+            </o:cell>
+        </o:row>
+        <o:row condition="#{TreeTableColumnsBean.highlightedByNodePath}" style="color:red; background-color:lavender;"/>
+        
+        <o:column id="col1"
+                  sortingExpression="#{node.stringField1}"
+                  filterExpression="#{node.stringField1}">
+            <f:facet name="header">
+                <h:outputText id="id2" value="stringField1"/>
+            </f:facet>
+            <h:outputText id="outputCol1" value="#{node.stringField1}"/>
+        </o:column>
+
+        <o:column id="col2"
+                  sortingExpression="#{node.stringField2}"
+                  filterExpression="#{node.stringField2}">
+            <f:facet name="header">
+                <h:outputText id="id3" value="stringField2"/>
+            </f:facet>
+            <h:outputText id="outputCol2" value="#{node.stringField2}"/>
+        </o:column>
+
+        <o:column id="col3"
+                  sortingExpression="#{node.intField1}"
+                  filterExpression="#{node.intField1}">
+            <f:facet name="header">
+                <h:outputText id="id4" value="intField1"/>
+            </f:facet>
+            <h:outputText id="outputCol3" value="#{node.intField1}"/>
+        </o:column>
+
+        <o:column id="col4"
+                  sortingExpression="#{node.intField2}"
+                  filterExpression="#{node.intField2}">
+            <f:facet name="header">
+                <h:outputText id="id5" value="intField2"/>
+            </f:facet>
+            <h:outputText id="outputCol4" value="#{node.intField2}"/>
+        </o:column>
+
+    </o:treeTable>
+
+    <h:commandButton value="Submit"/>
+    <br/>
+    <h:graphicImage value="treeTableCells.png"/>
+
+</div>

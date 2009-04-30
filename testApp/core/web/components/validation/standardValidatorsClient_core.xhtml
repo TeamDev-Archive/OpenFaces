@@ -1,0 +1,115 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+<a href="../../main.jsf">Back to the main page</a>
+<br/>
+<o:clientValidationSupport clientValidation="onSubmit"/>
+<h3>Client side</h3>
+required="true"
+<br/>
+<h:inputText id="required" value="#{ValidBean.required}" required="true"/>
+<br/>
+<h:message id="RequiredMessage" for="required" showDetail="false" showSummary="true" tooltip="true"
+           style="color:red;"/>
+<br/>
+validateDoubleRange
+<br/>
+<h:inputText id="validDR" value="#{ValidBean.validDR}">
+  <f:validateDoubleRange minimum="0.001" maximum="0.999"></f:validateDoubleRange>
+</h:inputText>
+<br/>
+<h:message id="ValidDRMessage" for="validDR" showDetail="false" showSummary="true" tooltip="true"
+           style="color:red;"/>
+<br/>
+validateLongRange
+<br/>
+<h:inputText id="validLR" value="#{ValidBean.validLR}">
+  <f:validateLongRange minimum="10" maximum="100"></f:validateLongRange>
+</h:inputText>
+<br/>
+<h:message id="ValidLRMessage" for="validLR" showDetail="false" showSummary="true" tooltip="true"
+           style="color:red;"/>
+<br/>
+validateLength
+<br/>
+<h:inputText id="validL" value="#{ValidBean.validL}">
+  <f:validateLength maximum="3" minimum="1"></f:validateLength>
+</h:inputText>
+<br/>
+<h:message id="ValidLMessage" for="validL" showDetail="false" showSummary="true" tooltip="true"
+           style="color:red;"/>
+<br/>
+Integer converter
+<br/>
+<h:inputText id="intConv" value="#{ValidBean.intConv}">
+</h:inputText>
+<br/>
+<h:message id="IntConvMessage" for="intConv" showDetail="false" showSummary="true" tooltip="true"
+           style="color:red;"/>
+<br/>
+Double converter
+<br/>
+<h:inputText id="doubleConv" value="#{ValidBean.doubleConv}">
+</h:inputText>
+<br/>
+<h:message id="DoubleConvMessage" for="doubleConv" showDetail="false" showSummary="true" tooltip="true"
+           style="color:red;"/>
+<br/>
+Byte converter
+<br/>
+<h:inputText id="byteConv" value="#{ValidBean.byteConv}">
+</h:inputText>
+<br/>
+<h:message id="ByteConvMessage" for="byteConv" showDetail="false" showSummary="true" tooltip="true"
+           style="color:red;"/>
+<br/>
+Short converter
+<br/>
+<h:inputText id="shortConv" value="#{ValidBean.shortConv}">
+</h:inputText>
+<br/>
+<h:message id="ShortConvMessage" for="shortConv" showDetail="false" showSummary="true" tooltip="true"
+           style="color:red;"/>
+<br/>
+Float converter
+<br/>
+<h:inputText id="floatConv" value="#{ValidBean.floatConv}">
+</h:inputText>
+<br/>
+<h:message id="FloatConvMessage" for="floatConv" showDetail="false" showSummary="true" tooltip="true"
+           style="color:red;"/>
+<br/>
+DateTime converter (convertDateTime) (timeZone, locale, pattern)
+<br/>
+<h:inputText id="dateConv" value="#{ValidBean.date}">
+  <f:convertDateTime timeZone="Europe/London" locale="en" pattern="MMM-dd-yyyy hh:mm"/>
+</h:inputText>
+<br/>
+<h:message id="DateConvMessage" for="dateConv" showDetail="false" showSummary="true" tooltip="true"
+           style="color:red;"/>
+<br/>
+DateTime converter (convertDateTime) (type, dateStyle, timeStyle)
+<br/>
+<h:inputText id="dateConv2" value="#{ValidBean.date2}">
+  <f:convertDateTime type="both" dateStyle="full" timeStyle="short"></f:convertDateTime>
+</h:inputText>
+<br/>
+<h:message id="DateConv2Message" for="dateConv2" showDetail="false" showSummary="true" tooltip="true"
+           style="color:red;"/>
+<br/>
+Number converter (convertNumber)
+<br/>
+<h:inputText id="numberConv" value="#{ValidBean.number}">
+  <f:convertNumber pattern="0,000.0##"></f:convertNumber>
+</h:inputText>
+<br/>
+<h:message id="NumberConvMessage" for="numberConv" showDetail="false" showSummary="true" tooltip="true"
+           style="color:red;"/>
+<br/>
+<h:commandButton id="submitBt" type="submit" value="Submit"></h:commandButton>
+<h:commandButton id="fillValid" onclick="fillValidData('clientValidation:'); return false;"
+                 value="Fill Valid Data"/>
+<h:commandButton id="fillInvalid" onclick="fillInvalidData('clientValidation:'); return false;"
+                 value="Fill Invalid Data"/></div>

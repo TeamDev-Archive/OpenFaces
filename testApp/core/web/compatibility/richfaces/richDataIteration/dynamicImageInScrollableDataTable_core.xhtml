@@ -1,0 +1,37 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+    <a href="richScrollableDataTable.jsf">Back to the main page</a>
+    <br/>
+  <h3>DynamicImage in the scrollableDataTable</h3>
+  <rich:scrollableDataTable value="#{RichTestBean.tableValue}"
+                            var="item"
+                            width="350px"
+                            height="200px"
+                            frozenColCount="1"
+                            id="dynamicImageIn"
+                            sortMode="single">
+    <rich:column>
+      <f:facet name="header">Column 0</f:facet>
+      <h:outputText value="#{item.stringField1}"/>
+    </rich:column>
+    <rich:column sortBy="#{item.stringField1}">
+      <f:facet name="header">Column 1</f:facet>
+      <o:dynamicImage id="dynamicImage1" style="border: 2px solid red;" data="#{RichTestBean.testImage}"/>
+    </rich:column>
+    <rich:column>
+      <f:facet name="header">Column 2</f:facet>
+      <o:dynamicImage id="dynamicImage2" style="border: 2px solid red;" data="#{RichTestBean.testImage}"/>
+    </rich:column>
+    <rich:column>
+      <f:facet name="header">Column 3</f:facet>
+      <o:dynamicImage id="dynamicImage3" style="border: 2px solid red;" data="#{RichTestBean.testImage}"/>
+    </rich:column>
+    <f:facet name="footer">
+      <rich:datascroller/>
+    </f:facet>
+  </rich:scrollableDataTable>
+
+</div>

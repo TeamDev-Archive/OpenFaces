@@ -1,0 +1,60 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a4j:commandButton reRender="areasTablePanel,areasPreviewPanel" id="btnDeleteArea" value="Delete"
+                       action="#{QKS301.deleteMultipleAction}" disabled="#{!QKS301.canDeleteSelectedAreas}"/>
+
+    <o:confirmation id="btnDeleteAreaConfirmation"
+                    for="btnDeleteArea"
+                    captionText="Confirm deletion"
+                    message="Delete selected Areas?"
+                    details="Click OK to delete selected Areas"
+                    showMessageIcon="true"
+                    okButtonText="OK"
+                    cancelButtonText="No"/>
+    <a4j:outputPanel id="areasTablePanel">
+      <h:inputText value="#{QKS301.inputField}"/>
+    </a4j:outputPanel>
+    <a4j:outputPanel id="areasPreviewPanel">
+      <h:outputText value="#{QKS301.inputField}"/>
+    </a4j:outputPanel>
+
+    <h:commandButton type="button" onclick="O$('form1:extendPopoutLayer').show();"/>
+    <o:popupLayer id="extendPopoutLayer"
+                  width="300px" height="200px"
+                  draggable="true"
+                  left="400" top="400"
+                  modal="true">
+      <center>
+        <h:panelGrid columns="1">
+          <center>
+            <h:outputText value="Extending selected areas"/>
+          </center>
+          <h:outputText value="Select new Expiration Date: "/>
+          <o:calendar value="#{QKS301.date}" showFooter="false">
+            <o:dateRanges disableExcludes="true">
+              <o:simpleDateRange fromDate="#{QKS301.fromDate}" toDate="#{QKS301.toDate}"
+                                 selectedDayStyle="color: yellow; background: green;"/>
+            </o:dateRanges>
+          </o:calendar>
+          <h:panelGrid columns="2">
+            <a4j:commandButton reRender="areasTablePanel,areasPreviewPanel" value="Submit"
+                               action="#{QKS301.deleteMultipleAction}"
+                               onclick="O$('form1:extendPopoutLayer').hide();"/>
+            <h:commandButton value="Cancel" type="button"
+                             onclick="O$('form1:extendPopoutLayer').hide();"></h:commandButton>
+          </h:panelGrid>
+        </h:panelGrid>
+      </center>
+    </o:popupLayer>
+
+
+  
+</div>

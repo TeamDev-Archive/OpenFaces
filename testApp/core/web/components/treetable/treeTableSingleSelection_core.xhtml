@@ -1,0 +1,75 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+
+    <h:commandButton id="submitID" value="Submit"/>
+    <br/>
+
+    <table cellpadding="0" cellspacing="5">
+      <tr>
+        <td class="header">Just Single selection</td>
+        <td class="header">Single selection with defined 'nodePath' attribute</td>
+        <td class="header">Single selection with defined 'nodeData' attribute</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:treeTable id="singleSelectionTreeTableID"
+                       var="node"
+                       nodeLevelVar="level">
+            <o:singleNodeSelection style="background: yellow;"
+                                   onchange="singleSelectionChanged('formID:singleSelectionTreeTableID', 'empty');"/>
+            <o:dynamicTreeStructure nodeChildren="#{TreeTableFuncTestsBean.usersTreeChildren}"
+                                    nodeKey="#{TreeTableFuncTestsBean.usersTreeNodeKey}"/>
+            <o:treeColumn id="singleSelectionTreeTable_columnID">
+              <h:outputText rendered="#{level == 0}" value="#{node.name}" id="categoryID"/>
+              <h:outputText rendered="#{level == 1}" value="#{node.userName}" id="nameID"/>
+            </o:treeColumn>
+          </o:treeTable>
+          <div id='empty'></div>
+        </td>
+        <td class="container">
+          <o:treeTable id="singleNodePathSelectionTreeTableID"
+                       var="node"
+                       useAjax="#{DataTableLoadingModeBean.useAjax}"
+                       nodeLevelVar="level">
+            <o:singleNodeSelection nodePath="#{TreeTableFuncTestsBean.treeDemoSelectedNodePath}"
+                                   onchange="singleSelectionChanged('formID:singleNodePathSelectionTreeTableID', 'selectionNodePathID');"/>
+            <o:dynamicTreeStructure nodeChildren="#{TreeTableFuncTestsBean.usersTreeChildren}"
+                                    nodeKey="#{TreeTableFuncTestsBean.usersTreeNodeKey}"/>
+            <o:treeColumn>
+              <h:outputText rendered="#{level == 0}" value="#{node.name}" id="categoryID"/>
+              <h:outputText rendered="#{level == 1}" value="#{node.userName}" id="nameID"/>
+            </o:treeColumn>
+          </o:treeTable>
+          <div id='selectionNodePathID'></div>
+        </td>
+        <td class="container">
+          <o:treeTable id="singleNodeDataSelectionTreeTableID"
+                       var="node"
+                       useAjax="#{DataTableLoadingModeBean.useAjax}"
+                       nodeLevelVar="level">
+            <o:singleNodeSelection nodeData="#{TreeTableFuncTestsBean.nodeData}"
+                                   onchange="singleSelectionChanged('formID:singleNodeDataSelectionTreeTableID', 'selectionNodeDataID');"/>
+            <o:dynamicTreeStructure nodeChildren="#{TreeTableFuncTestsBean.usersTreeChildren}"
+                                    nodeKey="#{TreeTableFuncTestsBean.usersTreeNodeKey}"/>
+            <o:treeColumn>
+              <h:outputText rendered="#{level == 0}" value="#{node.name}" id="categoryID"/>
+              <h:outputText rendered="#{level == 1}" value="#{node.userName}" id="nameID"/>
+            </o:treeColumn>
+          </o:treeTable>
+          <div id='selectionNodeDataID'></div>
+        </td>
+
+      </tr>
+    </table>
+  
+</div>

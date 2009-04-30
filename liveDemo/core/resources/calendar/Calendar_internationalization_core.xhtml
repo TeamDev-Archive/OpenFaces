@@ -1,0 +1,38 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div id="component" align="center">
+    <table align="left" style="vertical-align:middle;">
+      <tr>
+        <td width="165">
+          <o:tabSet id="localeSelector"
+                    value="#{CalendarBean.selectedLocaleItem}"
+                    gapWidth="0"
+                    placement="right"
+                    style="height: 100%"
+                    tabClass="default_tab"
+                    rolloverTabClass="rollover_tab"
+                    selectedTabClass="selected_tab"
+                    rolloverSelectedTabClass="rollover_selected_tab">
+            <o:tabSetItems value="#{CalendarBean.locales}"/>
+
+            <o:reloadComponents event="onchange" componentIds="localizedCalendar"/>
+          </o:tabSet>
+        </td>
+        <td width="300" class="calendar_style">
+          <o:calendar id="localizedCalendar"
+                      locale="#{CalendarBean.selectedLocale}"
+                      todayText="#{CalendarBean.currentTodayText}"
+                      noneText="#{CalendarBean.currentNoneText}"
+                  />
+        </td>
+      </tr>
+    </table>
+  </div>
+  
+  <div class="Col1_1 serif">The Calendar component supports internationalization, enabling you to specify the first day
+    of the week and have the names of months and week days easily localized.
+  </div>
+</div>

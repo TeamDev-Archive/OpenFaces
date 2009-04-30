@@ -1,0 +1,106 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div id="component" align="center">
+
+    <o:treeTable id="emailsTreeTable"
+                 var="email"
+                 style="width: 100%; border: 1px solid white; table-layout: fixed;"
+                 expansionState="allExpanded"
+                 sortAscending="#{EMailsTreeTableBean.sortAscending}"
+                 sortColumnId="#{EMailsTreeTableBean.sortedColumnId}"
+                 rolloverRowStyle="background: #b6cfec;"
+                 horizontalGridLines="1px solid #eef0f2"
+                 headerRowStyle="background: url('../images/treetable/header1.gif') repeat-x; height: 19px; text-align: left;"
+                 sortedAscendingImageUrl="../images/treetable/sort_a.gif"
+                 sortedDescendingImageUrl="../images/treetable/sort_d.gif"
+                 sortedColumnHeaderStyle="background: url('../images/treetable/header_selected.gif') repeat-x;"
+                 sortedColumnStyle="background: #f2f5f6;"
+                 focusedStyle="border: 1px dotted black !important;"
+                 columnIdVar="columnId" nodeLevelVar="level">
+      <o:row condition="#{level == 0}" style="background: white !important;">
+        <o:cell span="6" styleClass="category_name">
+          <h:outputText value="#{email}" style="padding-left: 5px;"/>
+        </o:cell>
+      </o:row>
+      <o:singleNodeSelection
+              style="background:url('../images/treetable/selection.gif') repeat-x #168aff !important; color: white !important;"
+              nodeData="#{EMailsTreeTableBean.selectedEMail}"/>
+      <o:dynamicTreeStructure nodeChildren="#{EMailsTreeTableBean.EMailsTreeChildren}"/>
+      <o:treeColumn id="importance"
+                    expandedToggleImageUrl="../images/treetable/expanded.gif"
+                    collapsedToggleImageUrl="../images/treetable/collapsed.gif"
+                    width="32px"
+                    headerStyle="text-align: right !important;"
+                    sortingExpression="#{EMailsTreeTableBean.sortByImportance}"
+                    levelIndent="10px">
+        <f:facet name="header">
+          <h:graphicImage url="../images/treetable/sort_prioity.gif"/>
+        </f:facet>
+        <h:graphicImage url="#{EMailsTreeTableBean.importanceIcon}"/>
+      </o:treeColumn>
+      <o:column id="attachment"
+                width="32px"
+                style="text-align: center;"
+                headerStyle="text-align: center !important;"
+                sortingExpression="#{EMailsTreeTableBean.sortByAttachmentExpression}">
+        <f:facet name="header">
+          <h:graphicImage url="../images/treetable/attachment.gif"/>
+        </f:facet>
+        <h:graphicImage url="../images/treetable/attachment.gif" rendered="#{email.hasAttachment}"/>
+      </o:column>
+      <o:column width="16px"
+                style="text-align: center;">
+        <f:facet name="header">
+          <h:outputText value=""/>
+        </f:facet>
+        <h:graphicImage url="../images/treetable/letter.gif"/>
+      </o:column>
+      <o:column id="sender"
+                width="21%"
+                style="padding-left: 5px;"
+                sortingExpression="#{EMailsTreeTableBean.sortBySenderExpression}">
+        <f:facet name="header">
+          <h:outputText value="From"/>
+        </f:facet>
+        <h:outputText value="#{email.sender}" style="margin-left: 5px;"/>
+      </o:column>
+      <o:column id="subject"
+                width="61%"
+                bodyStyle="text-align: left;"
+                style="padding-left: 5px;"
+                sortingExpression="#{EMailsTreeTableBean.sortBySubjectExpression}">
+        <f:facet name="header">
+          <h:outputText value="Subject"/>
+        </f:facet>
+        <h:outputText value="#{email.subject}" style="margin-left: 5px;"/>
+      </o:column>
+      <o:column id="date"
+                width="16%"
+                style="padding-left: 5px;"
+                sortingExpression="#{EMailsTreeTableBean.sortByDateExpression}">
+        <f:facet name="header">
+          <h:outputText value="Received"/>
+        </f:facet>
+        <h:outputText value="#{email.receivedDate}" style="margin-left: 5px;"
+                      converter="#{EMailsTreeTableBean.receivedDateConverter}"/>
+      </o:column>
+    </o:treeTable>
+
+  </div>
+
+  <div class="Col1_1 serif">
+    <h4>Shown Functionality</h4>
+    <ul class="hang">
+      <li><strong>Support for merging cells</strong> - all cells in root nodes are merged using the span
+        attribute of the &lt;o:cell&gt; tag.
+      </li>
+      <li><strong>Specifying styles by condition</strong> - root nodes have a different style than all
+        other nodes.
+      </li>
+    </ul>
+  </div>
+
+</div>

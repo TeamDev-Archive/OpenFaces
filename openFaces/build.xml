@@ -1,0 +1,150 @@
+<project name="OpenFaces Library" default="build" basedir=".">
+
+  <buildnumber file="build.number"/>
+
+  <property name="src.dir" location="source"/>
+  <property name="target.dir" location="target"/>
+  <property name="classes.dir" location="${target.dir}/classes"/>
+  <property name="components-jar.file" location="${target.dir}/openfaces.jar"/>
+  <property name="manifest.file" location="${target.dir}/manifest.mf"/>
+
+  <target name="init">
+    <tstamp/>
+  </target>
+
+  <target name="clean" description="Clean up">
+    <delete dir="${target.dir}"/>
+  </target>
+
+  <target name="compile" depends="init" description="Compile the source code">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" source="1.5" target="1.5">
+      <classpath>
+        <fileset dir="${lib.dir}">
+          <include name="jsp-api-2.1.jar"/>
+          <include name="servlet-api.jar"/>
+          <include name="jstl-1.1.0.jar"/>
+        </fileset>
+        <fileset dir="${facelets.lib.dir}">
+          <include name="jsf-facelets-1.1.14.jar"/>
+        </fileset>
+        <fileset dir="${el.lib.dir}">
+          <include name="el-api-1.5.0.jar"/>
+          <include name="el-ri-1.5.0.jar"/>
+        </fileset>
+        <fileset dir="${trinidad.lib.dir}">
+          <include name="trinidad-stub.jar"/>
+        </fileset>
+        <fileset dir="${adffaces.lib.dir}">
+          <include name="adf-faces-api-10.1.3.0.4.jar"/>
+        </fileset>
+        <fileset dir="${jsf.ri.lib.dir}">
+          <include name="jsf-api-1.2_12-b01.jar"/>
+        </fileset>
+        <fileset dir="${portlets.lib.dir}">
+          <include name="exoportal-stub.jar"/>
+          <include name="portlet-api-lib.jar"/>
+          <include name="jsf-portlet-1.2.jar"/>
+        </fileset>
+        <fileset dir="${openfaces.dependencies.lib.dir}">
+          <include name="jdom-1.0.jar"/>
+          <include name="jfreechart-1.0.12.jar"/>
+          <include name="jcommon-1.0.15.jar"/>
+          <include name="ss_css2-0.9.4.jar"/>
+        </fileset>
+        <fileset dir="${richfaces.lib.dir}">
+          <include name="richfaces-api-3.3.0.GA.jar"/>
+          <include name="richfaces-impl-3.3.0.GA.jar"/>
+          <include name="richfaces-ui-3.3.0.GA.jar"/>
+        </fileset>
+
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="build" depends="clean" description="Generate the distribution">
+    <antcall target="-build-if-lib-set"/>
+    <antcall target="-build-if-lib-not-set"/>
+  </target>
+
+  <!-- *** Utility Targets *** -->
+
+  <target name="-build-if-lib-set" if="lib.dir"
+          description="generate the distribution">
+    <property name="facelets.lib.dir" location="${lib.dir}/facelets"/>
+    <property name="el.lib.dir" location="${lib.dir}/el"/>
+    <property name="trinidad.lib.dir" location="${lib.dir}/trinidad"/>
+    <property name="adffaces.lib.dir" location="${lib.dir}/adf-faces"/>
+    <property name="jsf.ri.lib.dir" location="${lib.dir}/mojarra"/>
+    <property name="portlets.lib.dir" location="${lib.dir}/portals"/>
+    <property name="openfaces.dependencies.lib.dir" location="${lib.dir}/openfaces-dependencies"/>
+    <property name="richfaces.lib.dir" location="${lib.dir}/richfaces"/>
+    <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
+    <property name="apache.lib.dir" location="${lib.dir}/apache"/>
+    <antcall target="-build"/>
+  </target>
+
+  <target name="-build-if-lib-not-set" unless="lib.dir"
+          description="generate the distribution">
+    <property name="lib.dir" location="lib"/>
+    <property name="facelets.lib.dir" location="${lib.dir}/facelets"/>
+    <property name="el.lib.dir" location="${lib.dir}/el"/>
+    <property name="trinidad.lib.dir" location="${lib.dir}/trinidad"/>
+    <property name="adffaces.lib.dir" location="${lib.dir}/adf-faces"/>
+    <property name="jsf.ri.lib.dir" location="${lib.dir}/mojarra"/>
+    <property name="portlets.lib.dir" location="${lib.dir}/portals"/>
+    <property name="openfaces.dependencies.lib.dir" location="${lib.dir}/openfaces-dependencies"/>
+    <property name="richfaces.lib.dir" location="${lib.dir}/richfaces"/>
+    <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
+    <property name="apache.lib.dir" location="${lib.dir}/apache"/>
+    <property file="ofversion.properties"/>
+    <antcall target="-build" inheritall="true"/>
+  </target>
+
+  <target name="-build" depends="compile,-copy-resources,-prepare-manifest-and-version"
+          description="generate the distribution">
+    <jar jarfile="${components-jar.file}" basedir="${classes.dir}" manifest="${manifest.file}"/>
+    <antcall target="-copy-target-jar"/>
+
+    <antcall target="-delete-classes-dir"/>
+    <delete file="${manifest.file}"/>
+  </target>
+
+  <target name="-delete-classes-dir" unless="retain.classes.dir">
+    <delete dir="${target.dir}/classes"/>
+  </target>
+
+  <target name="-prepare-manifest-and-version" depends="-set-cc-properties,-copy-resources">
+    <manifest file="${manifest.file}">
+      <attribute name="Implementation-Title" value="OpenFaces"/>
+      <attribute name="Implementation-Vendor" value="TeamDev Ltd."/>
+      <attribute name="Implementation-Version" value="${ofversion}"/>
+      <attribute name="Build-Label" value="${label}"/>
+      <attribute name="Build-Timestamp" value="${cvstimestamp}"/>
+    </manifest>
+    <property name="version.file" location="${classes.dir}/META-INF/openFacesVersion.txt"/>
+    <copy file="source/META-INF/openFacesVersion.txt" tofile="${version.file}" overwrite="true"/>
+    <replace file="${version.file}" token="label" value="${label}"/>
+    <replace file="${version.file}" token="cvstimestamp" value="${cvstimestamp}"/>
+    <replace file="${version.file}" token="version" value="${ofversion}"/>
+  </target>
+
+  <target name="-set-cc-properties" unless="label">
+    <!--    <property name="label" value="Manual build"/>-->
+    <property name="label" value="build.${build.number}"/>
+    <property name="cvstimestamp" value="${TODAY}"/>
+  </target>
+
+  <target name="-copy-target-jar" if="target-jar.file">
+    <copy file="${components-jar.file}" tofile="${target-jar.file}"/>
+  </target>
+
+  <target name="-copy-resources">
+    <copy todir="${classes.dir}">
+      <fileset dir="${src.dir}">
+        <exclude name="**/*.java"/>
+      </fileset>
+    </copy>
+    <replace file="${classes.dir}/META-INF/openfaces.tld" token="__OpenFacesVersion__" value="${ofversion}"/>
+  </target>
+</project>

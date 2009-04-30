@@ -1,0 +1,102 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+<a href="inQKContainersIndex.jsf">Back to the main page</a>
+<br/>
+<h:commandButton value="Set Ajax loading mode" action="#{A4jParametersBean.defineAjaxMode}"/>
+<br/>
+<h:commandButton value="Set Server loading mode" action="#{A4jParametersBean.defineServerMode}"/>
+<br/>
+<h:commandButton value="Set Client loading mode" action="#{A4jParametersBean.defineClientMode}"/>
+<br/>
+<o:tabbedPane style="width: 400px; height: 400px; padding:2px"
+              containerStyle="padding:2px"
+              tabStyle="white-space: nowrap; padding:2px"
+              loadingMode="#{A4jParametersBean.loadingMode}">
+  <o:tabbedPaneItem>
+    <f:facet name="tab">
+      <h:outputText value="First tab"/>
+    </f:facet>
+    <h:panelGroup>
+      <h:outputText id="text1" value="Show context menu" style="border : 5px solid #E4EAEF"/>
+      <rich:contextMenu event="oncontextmenu"
+                        attachTo="text1"
+                        submitMode="none">
+        <rich:menuItem value="Menu 1" onclick="alert('Menu 1');"/>
+        <rich:menuItem value="Menu 2" onclick="alert('Menu 2');"/>
+      </rich:contextMenu>
+    </h:panelGroup>
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem>
+    <f:facet name="tab">
+      <h:outputText value="Second tab"/>
+    </f:facet>
+    <h:panelGroup>
+      <h:outputText id="text2" value="Show context menu" style="border : 5px solid #E4EAEF"/>
+      <rich:contextMenu event="oncontextmenu"
+                        attachTo="text2"
+                        submitMode="none">
+        <rich:menuItem value="Menu 1" onclick="alert('Menu 1');"/>
+        <rich:menuItem value="Menu 2" onclick="alert('Menu 2');"/>
+      </rich:contextMenu>
+    </h:panelGroup>
+
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem>
+    <f:facet name="tab">
+      <h:outputText value="Third tab"/>
+    </f:facet>
+    <h:panelGroup>
+      <h:outputText id="text3" value="Show context menu" style="border : 5px solid #E4EAEF"/>
+      <rich:contextMenu event="oncontextmenu"
+                        attachTo="text3"
+                        submitMode="none">
+        <rich:menuItem value="Menu 1" onclick="alert('Menu 1');"/>
+        <rich:menuItem value="Menu 2" onclick="alert('Menu 2');"/>
+      </rich:contextMenu>
+    </h:panelGroup>
+
+  </o:tabbedPaneItem>
+</o:tabbedPane>
+
+<o:foldingPanel expanded="false"
+                loadingMode="#{A4jParametersBean.loadingMode}">
+  <f:facet name="caption">
+    <h:outputText value="FoldingPanel Caption"/>
+  </f:facet>
+  <h:panelGroup>
+    <h:outputText id="text4" value="Show context menu" style="border : 5px solid #E4EAEF"/>
+    <rich:contextMenu event="oncontextmenu"
+                      attachTo="text4"
+                      submitMode="none">
+      <rich:menuItem value="Menu 1" onclick="alert('Menu 1');"/>
+      <rich:menuItem value="Menu 2" onclick="alert('Menu 2');"/>
+    </rich:contextMenu>
+  </h:panelGroup>
+
+</o:foldingPanel>
+
+<h:commandButton type="button"
+                 id="popupInvoker"
+                 value="Show PopupLayer"
+                 onclick="O$('form1:popupLayer1').show(); return false;"/>
+<br/>
+<o:popupLayer id="popupLayer1"
+              draggable="true"
+              style="padding:2px; background-color:#fafdff">
+  <h:panelGroup>
+    <h:outputText id="text5" value="Show context menu" style="border : 5px solid #E4EAEF"/>
+    <rich:contextMenu event="oncontextmenu"
+                      attachTo="text5"
+                      submitMode="none">
+      <rich:menuItem value="Menu 1" onclick="alert('Menu 1');"/>
+      <rich:menuItem value="Menu 2" onclick="alert('Menu 2');"/>
+    </rich:contextMenu>
+  </h:panelGroup>
+
+  <h:commandButton value="Hide"
+                   onclick="O$('form1:popupLayer1').hide(); return false;"/>
+</o:popupLayer>
+</div>

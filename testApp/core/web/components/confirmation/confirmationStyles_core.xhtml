@@ -1,0 +1,40 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;
+    ">
+      Confirmation Styles
+    </span>
+    <br/>
+    <br/>
+    <input id="invoker" value="invoke" type="button"/>
+    <o:confirmation id="styled"
+                    for=":invoker"
+                    buttonAreaStyle="background: blue;"
+                    style="border-style:solid; border-width:3px; border-color:black;"
+                    cancelButtonStyle="border: 1px dashed black;"
+                    captionStyle="border: 1px dashed white;"
+                    captionText="Caption Text"
+                    detailsStyle="color: red;"
+                    iconAreaStyle="border: 1px solid orange;"
+                    messageStyle="color: blue;"
+                    contentStyle="background: beige;"
+                    modalLayerStyle="background: gray;"
+                    okButtonStyle="border: 1px dashed pink;"
+                    rolloverButtonAreaStyle="background: azure;"
+                    rolloverStyle="border: 2px dotted blue;"
+                    rolloverCancelButtonStyle="border: 3px dashed black;"
+                    rolloverDetailsStyle="font-weight: bold;"
+                    rolloverIconAreaStyle="border: 3px solid red;"
+                    rolloverMessageStyle="color: green;"
+                    rolloverContentStyle="background: orange;"
+                    rolloverOkButtonStyle="border: 3px dashed pink;"/>
+  
+</div>

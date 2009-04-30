@@ -1,0 +1,47 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+        <a href="../../SupportPages.jsf">Return to support pages list</a>
+      <br/>
+      <br/>
+      <o:treeTable id="treeTable2" var="message" rolloverRowStyle="background:#F0F0F0;"
+                   expansionState="#{TreeTableBean.forumTreeTableExpansionState}"
+                   nodeLevelVar="level">
+        <o:multipleNodeSelection nodeDatas="#{TreeTableBean.selectedNodeDatas2}"/>
+        <o:dynamicTreeStructure nodeChildren="#{TreeTableBean.nodeChildren}"/>
+        <o:selectionColumn style="width:25px">
+          <f:facet name="header"><o:selectAllCheckbox/></f:facet>
+        </o:selectionColumn>
+        <o:treeColumn showAsTree="#{!TreeTableBean.booleanSwitch}" sortingExpression="#{message.subject}"
+                      filterExpression="#{message.subject}" filterKind="searchField">
+          <f:facet name="header">
+            <h:outputText value="Subject"/>
+          </f:facet>
+          <h:outputText value="#{message.subject}"/>
+        </o:treeColumn>
+        <o:column sortingExpression="#{message.author}" filterExpression="#{message.author}"
+                  filterKind="comboBox">
+          <f:facet name="header">
+            <h:outputText value="From"/>
+          </f:facet>
+          <h:outputText value="#{message.author}"/>
+        </o:column>
+        <o:column sortingExpression="#{message.date}">
+          <f:facet name="header">
+            <h:outputText value="Sent"/>
+          </f:facet>
+          <h:outputText value="#{message.date}"/>
+        </o:column>
+        <o:row>
+          <o:cell style="background-color:red;" condition="#{message.author == 'Chris Lee'}"/>
+        </o:row>
+      </o:treeTable>
+
+    
+</div>

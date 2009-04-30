@@ -1,0 +1,46 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+    <a href="../../main.jsf">Return to main page</a>
+    <br/>
+    <input type="submit" value="Submit"/>
+    <table>
+      <tr>
+        <td class="cells">
+          <o:twoListSelection id="TLS_ID"
+                              leftListboxHeader="Available items"
+                              rightListboxHeader="Selected items"
+                              listStyle="background: buttonface; font-family: 'ParkAvenue BT' Tahoma; color: purple; font-size: 20px; width: 200px;"
+                              buttonStyle="color: red;"
+                              headerStyle="font-family: Tahoma; font-weight: bold; font-size: 12px; color: blue;">
+            <f:selectItems value="#{TwoListSelectionRequestBean.TLSItems}"/>
+          </o:twoListSelection>
+        </td>
+        <td class="cells">
+          <pre>
+            &lt;o:twoListSelection id="TLS_ID"
+                                leftListboxHeader="Available items"
+                                rightListboxHeader="Selected items"
+                                listStyle="background: buttonface; font-family:
+                                           'ParkAvenue BT' Tahoma; color: purple;
+                                            font-size: 20px; width: 200px;"
+                                buttonStyle="color: red;"
+                                headerStyle="font-family: Tahoma;
+                                             font-weight: bold;
+                                             font-size: 12px;
+                                             color: blue;"&gt;
+              &lt;f:selectItems value="TwoListSelectionBean.TLSItems"/&gt;
+            &lt;/o:twoListSelection&gt;
+          </pre>
+        </td>
+        <td class="cells">
+          <a4j:commandButton id="refresher" value="Refresh" reRender="TLS_ID"/>
+        </td>
+      </tr>
+    </table>
+  
+</div>

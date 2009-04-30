@@ -1,0 +1,72 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      SuggestionField Client-Side API
+    </span><br/><br/>
+
+
+    <table>
+      <tr>
+        <td class="header">
+          <input type="button" id="valueSetter" value="setDropDownValue"
+                 onclick="O$('formID:testableDropDown').setValue('Red');"/>
+        </td>
+        <td class="header">
+          <input type="button" id="valueGetter" value="getDropDownValue"
+                 onclick="printInfo(O$('formID:testableDropDown').getValue(), 'out1');"/>
+
+          <div id="out1"></div>
+        </td>
+        <td class="header">
+          <input type="button" id="openDropDown" value="dropDown, isOpened, closeUp"
+                 onclick="O$('formID:testableDropDown').dropDown(); printInfo(O$('formID:testableDropDown').isOpened(), 'out2');
+                 setTimeout(function t(){
+                                          O$('formID:testableDropDown').closeUp();
+                                          printInfo(O$('formID:testableDropDown').isOpened(), 'out2');
+                                         }, 5000);"/>
+        </td>
+        <td class="header" width="200px">
+          <table>
+            <tr>
+              <td>isDropDownOpened:</td>
+              <td>
+                <div id="out2"></div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td class="container" colspan="4">
+          <table>
+            <tr>
+              <td>
+                <o:suggestionField id="testableDropDown" value="#{SuggestionFieldBean.selectedValue}">
+                  <o:dropDownItem value="Red"/>
+                  <o:dropDownItem value="Yellow"/>
+                  <o:dropDownItem value="Blue"/>
+                </o:suggestionField>
+              </td>
+              <td>
+                <h:outputText id="valueDD" value="Value: #{SuggestionFieldBean.selectedValue}"/>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="Submit"/>
+  
+</div>

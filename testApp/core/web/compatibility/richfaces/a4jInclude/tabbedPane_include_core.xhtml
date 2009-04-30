@@ -1,0 +1,81 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <br/>
+  
+    <h:commandButton action="sbmt" value="Submit"/>
+    <table>
+      <tr>
+        <td>
+          loadingMode="ajax" <br/>
+          tabAlignment="bottomOrRight"<br/>
+          tabPlacement="left"<br/>
+          style="height:250px;"
+        </td>
+        <td>
+          <o:tabbedPane loadingMode="ajax"
+                        tabAlignment="bottomOrRight"
+                        tabPlacement="left"
+                        style="height:250px;">
+            <o:tabbedPaneItem>
+              <f:facet name="tab">
+                <h:outputText value="Tab1"/>
+              </f:facet>
+              <h:inputText value="Tab1 inner text" required="true"/>
+              <h:commandButton value="submit"/>
+            </o:tabbedPaneItem>
+            <o:tabbedPaneItem>
+              <f:facet name="tab">
+                <h:outputText value="Tab2"/>
+              </f:facet>
+              <h:outputText value="Tab2 inner text"/>
+              <o:calendar/>
+            </o:tabbedPaneItem>
+          </o:tabbedPane>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          loadingMode="server" <br/>
+          containerStyle="background: beige;"<br/>
+          rolloverContainerStyle="border: 2px dotted blue;"<br/>
+          rolloverSelectedTabStyle="background: LightGreen; font-weight: bold;"<br/>
+          rolloverStyle="border: 2px dashed lightGreen;"<br/>
+          rolloverTabStyle="font-weight: bold;"<br/>
+          selectedTabStyle="background: DarkGreen; font-weight: bold; color: white;"<br/>
+          tabEmptySpaceStyle="background: LightBlue;"<br/>
+          tabStyle="color: red;"<br/>
+          style="height: 300px; width: 200px;"
+        </td>
+        <td>
+          <o:tabbedPane loadingMode="server"
+                        containerStyle="background: beige;"
+                        rolloverContainerStyle="border: 2px dotted blue;"
+                        rolloverSelectedTabStyle="background: LightGreen; font-weight: bold;"
+                        rolloverStyle="border: 2px dashed lightGreen;"
+                        rolloverTabStyle="font-weight: bold;"
+                        selectedTabStyle="background: DarkGreen; font-weight: bold; color: white;"
+                        tabEmptySpaceStyle="background: LightBlue;"
+                        tabStyle="color: red;"
+                        style="height: 300px; width: 200px;">
+            <o:tabbedPaneItem>
+              <f:facet name="tab">
+                <h:outputText value="Tab1"/>
+              </f:facet>
+              <h:outputText value="Tab1 inner text"/>
+            </o:tabbedPaneItem>
+            <o:tabbedPaneItem>
+              <f:facet name="tab">
+                <h:outputText value="Tab2"/>
+              </f:facet>
+              <h:outputText value="Tab2 inner text"/>
+            </o:tabbedPaneItem>
+          </o:tabbedPane>
+        </td>
+      </tr>
+    </table>
+  
+</div>

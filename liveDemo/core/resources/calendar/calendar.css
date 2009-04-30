@@ -1,0 +1,28 @@
+/* CSS Document */
+
+.default_tab {
+  height: 28px;
+  width: 156px;
+  border: none;
+  background: url('../images/button_inactive.gif') no-repeat right;
+  padding-right: 30px;
+}
+
+.rollover_tab {
+  background: url('../images/button_rollover.gif') no-repeat right;
+  color: #0095cc;
+}
+
+.selected_tab {
+  background: url('../images/button_active.gif') no-repeat right;
+}
+
+.rollover_selected_tab {
+  color: black;
+}
+
+.calendar_style {
+  background: url('../images/calendar_back.gif') no-repeat left;
+  text-align: left;
+  padding-left: 63px;
+}

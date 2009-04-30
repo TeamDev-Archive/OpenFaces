@@ -1,0 +1,39 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+
+    <table>
+      <tr>
+        <td class="container">
+          <o:treeTable var="calendarTree" nodeLevelVar="level">
+            <o:staticTreeStructure>
+              <o:treeNode value="calendar top node">
+                <o:treeNode value="calendar sub node"/>
+              </o:treeNode>
+            </o:staticTreeStructure>
+            <o:treeColumn>
+              <f:facet name="header">
+                <o:calendar/>
+              </f:facet>
+              <o:calendar rendered="#{level == 0}"/>
+              <o:calendar rendered="#{level == 1}"/>
+              <f:facet name="footer">
+                <o:calendar/>
+              </f:facet>
+            </o:treeColumn>
+          </o:treeTable>
+        </td>
+      </tr>
+    </table>
+
+  
+</div>

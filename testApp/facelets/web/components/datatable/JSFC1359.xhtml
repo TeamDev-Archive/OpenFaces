@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+<head>
+  <title>JSFC 1359</title>
+  <SCRIPT language="JavaScript">
+    function small_window(window_name){
+      var win = window.open(window_name,"","width=350,height=400,status,resizable,scrollbars")
+    }
+  </SCRIPT>
+  <link rel="STYLESHEET" type="text/css" href="embeddingComponents.css" />
+</head>
+
+<body>
+<f:view>
+  <h:form id="fn">
+  <ui:include src="JSFC1359_core.xhtml"/>
+</h:form>
+</f:view>
+
+</body>
+        </html>

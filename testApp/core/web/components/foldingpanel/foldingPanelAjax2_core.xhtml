@@ -1,0 +1,23 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  <o:clientValidationSupport clientValidation="off"/>
+  <o:foldingPanel id="fp2" expanded="false" contentStyle="padding:2px" style=" width:200px" loadingMode="ajax">
+    <f:facet name="caption">
+      <h:outputText value="FoldingPanel information"/>
+    </f:facet>
+    <h:outputText id="output2" value="Some text on the first tab"/>
+    <h:inputText id="input2" value="Input tab 1" required="true"/>
+    <h:message for="input2" style="color:red;"/>
+    <h:message for="input2" style="color:blue;"/>
+    <h:commandButton id="button2" value="validate" onclick="O$.validateById('form1:input1');return false;"/>
+  </o:foldingPanel>
+  <h:messages id="formQKMessages2" style="color:blue;"/>
+  <h:messages id="formMessages2" style="color:red;"/>
+  <br/>
+  <h:commandButton id="submitForm2" value="submit" type="submit"/>
+</div>

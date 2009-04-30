@@ -1,0 +1,66 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+    
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      Change Calendar date range
+    </span><br/><br/>
+    <table style="margin-left: 25px; margin-top: 8px;" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="250" align="left" valign="top">
+          <table cellpadding="0" cellspacing="2">
+            <tr>
+              <td>
+                <span class="field_title">From:</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <o:dateChooser id="fromDateChooser" dateFormat="medium" value="#{CalendarBean.fromDate}"/>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-top: 2px;">
+                <span class="field_title">To:</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <o:dateChooser id="toDateChooser" dateFormat="medium" value="#{CalendarBean.toDate}"/>
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: right;">
+                <h:commandButton id="submit" value="Update" style="margin-top: 10px;"/>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          <o:calendar id="withDateRanges" value="#{CalendarBean.testDateRangesValue}"
+                      disabledDayStyle="background: #fcfefc; color: #848284;" firstDayOfWeek="2">
+            <o:dateRanges disableIncludes="true" dayClass="dateRangeStyle">
+              <o:simpleDateRange fromDate="#{CalendarBean.fromDate}"
+                                 toDate="#{CalendarBean.toDate}"/>
+            </o:dateRanges>
+          </o:calendar>
+        </td>
+        <td style="padding-left: 10px;" valign="top">
+          <input type="button" id="dateRangesPrinter" value="print date range" onclick="determineDateRange('formID:withDateRanges',
+           'dateRangeStyle', 'empty');"/>
+          <br/>
+
+          <div id="empty"></div>
+        </td>
+      </tr>
+    </table>
+
+
+  
+</div>

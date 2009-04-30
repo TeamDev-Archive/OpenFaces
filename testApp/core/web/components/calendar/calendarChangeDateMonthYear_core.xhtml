@@ -1,0 +1,63 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      Change Calendar selected date, month, year
+    </span><br/><br/>
+    <h:commandButton id="submit" value="Submit"/>
+    <br/>
+    <br/>
+    <table>
+      <tr>
+        <td class="header" colspan="2">Change selection date</td>
+        <td class="header" colspan="2">Change selection month, year</td>        
+      </tr>
+      <tr>
+        <td class="container"><o:calendar id="changeSelectedDate" value="#{CalendarBean.testSelectedDateChange}"
+                                          firstDayOfWeek="2"/></td>
+        <td class="container"><h:outputText id="selectedDate"
+                                            value="#{CalendarBean.testSelectedDateChangeString}"/></td>
+        <td class="container"><o:calendar locale="en" id="changeYearMonth"
+                                          value="#{CalendarBean.testSelectedMonthChange}"/></td>
+        <td class="container">Selected date:
+            <h:outputText id="selectedMonth"
+                          value="#{CalendarBean.testSelectedMonthChangeString}"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="header" colspan="2">Change selection date with <b>keepTime</b> attribute set to <b>true</b></td>
+        <td class="header" colspan="2">Change selection date with <b>keepTime</b> attribute set to <b>false</b></td>
+      </tr>
+      <tr>
+        <td class="container">
+            <o:calendar id="keepTimeCalendar" value="#{CalendarBean.dateWithTime1}" keepTime="true"
+                    timeZone="#{CalendarBean.eetTimeZone}"/>
+        </td>
+        <td class="container">
+            Time:
+            <h:outputText id="timeForKeepTimeCalendar" value="#{CalendarBean.dateWithTime1}">
+                <f:convertDateTime pattern="HH:mm:ss" timeZone="#{CalendarBean.eetTimeZone}"/>
+            </h:outputText>
+        </td>
+        <td class="container">
+            <o:calendar id="dontKeepTimeCalendar" value="#{CalendarBean.dateWithTime2}"
+                    timeZone="#{CalendarBean.eetTimeZone}"/>
+        </td>
+        <td class="container">
+            Time:
+            <h:outputText id="timeForDontKeepTimeCalendar" value="#{CalendarBean.dateWithTime2}">
+                <f:convertDateTime pattern="HH:mm:ss" timeZone="#{CalendarBean.eetTimeZone}"/>
+            </h:outputText>
+        </td>
+      </tr>
+    </table>
+  
+</div>

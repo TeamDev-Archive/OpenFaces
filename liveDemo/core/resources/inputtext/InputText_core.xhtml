@@ -1,0 +1,59 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div id="component">
+
+    <div id="inputDataPanel">
+
+      <h3>Fill in the following information</h3>
+
+      <div>
+        <o:inputText promptText="Client first name" value="#{InputTextBean.clientFirstName}" size="20"
+                     styleClass="templateInput" focusedClass="focusedTemplateInput"
+                     rolloverClass="rolloverTemplateInput">
+          <o:reloadComponents event="onkeyup" componentIds=":form:previewPanel" requestDelay="500"
+                              disableDefault="true"/>
+        </o:inputText>
+      </div>
+
+      <div>
+        <o:inputText promptText="Your first name" value="#{InputTextBean.firstName}" size="20"
+                     styleClass="templateInput" focusedClass="focusedTemplateInput"
+                     rolloverClass="rolloverTemplateInput">
+          <o:reloadComponents event="onkeyup" componentIds=":form:previewPanel" requestDelay="500"
+                              disableDefault="true"/>
+        </o:inputText>
+      </div>
+
+      <div>
+        <o:inputText promptText="Your last name" value="#{InputTextBean.lastName}" size="20"
+                     styleClass="templateInput" focusedClass="focusedTemplateInput"
+                     rolloverClass="rolloverTemplateInput">
+          <o:reloadComponents event="onkeyup" componentIds=":form:previewPanel" requestDelay="500"
+                              disableDefault="true"/>
+        </o:inputText>
+      </div>
+    </div>
+
+    <div id="preview">
+      <h3>Preview</h3>
+      <h:panelGroup id="previewPanel" styleClass="previewPanel">
+        <h:outputText value="#{InputTextBean.text}" escape="false"/>
+      </h:panelGroup>
+    </div>
+
+  </div>
+
+  <div class="Col1_1 serif">
+    <h4>Shown Functionality</h4>
+    <ul class="hang">
+      <li><strong>Prompt Text</strong> - Input Text component allows to set text value displayed in case the input text field is empty and not focused. It provides you with an ability to make input fields self-explanatory telling users what kind of information is expected.
+        </li>
+      <li><strong>Customized styles for focus and rollover</strong> - Put your mouse over one of text fields above and notice the custom style for rollover is applied. To edit the text field value just click it. Then focused style is applied to let you know the text field is ready for editing.
+      </li>
+    </ul>
+  </div>
+
+</div>

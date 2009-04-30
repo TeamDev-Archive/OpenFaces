@@ -1,0 +1,44 @@
+<!--<?xml version="1.0" encoding="ISO-8859-1"?>-->
+<!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"-->
+<!--"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a4j="https://ajax4jsf.dev.java.net/ajax"
+      xmlns:o="http://openfaces.org/"
+      xmlns:c="http://java.sun.com/jstl/core">
+
+<body>
+<f:view>
+  <h:form id="mainForm">
+
+    <a4j:commandLink reRender="testPanel"
+                     oncomplete="O$('mainForm:testEditPopUp').showCentered()">
+      Open pop-up
+    </a4j:commandLink>
+
+    <a4j:outputPanel id="testPanel">
+
+      <o:popupLayer id="testEditPopUp" width="300px"
+                    styleClass="modale" modalLayerClass="modaleBehind"
+                    draggable="false" modal="true">
+
+        <h:outputText value="myDate"/>
+        <o:dateChooser id="myDate"
+                       style="width:90px!important;"
+                       pattern="dd/MM/yyyy"/>
+
+
+        <a4j:commandLink onclick="O$('mainForm:testEditPopUp').hide(); return false;">
+          Close pop-up
+        </a4j:commandLink>
+
+      </o:popupLayer>
+    </a4j:outputPanel>
+
+  </h:form>
+</f:view>
+</body>
+
+</html>

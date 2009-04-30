@@ -1,0 +1,96 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <br/>
+  
+    <h:commandButton action="sbmt" value="Submit"/>
+    <table>
+      <tr>
+        <td width="200px;">
+          Calendar without any attributes
+        </td>
+        <td>
+          <o:calendar id="c"/>
+        </td>
+      </tr>
+      <tr>
+        <td width="200px;">
+          Required validator (default presentation)<br/>
+          showFooter="false"
+        </td>
+        <td>
+          <o:calendar id="required" required="true" showFooter="false"/>
+        </td>
+      </tr>
+      <tr>
+        <td width="200px;">
+          bodyStyle="background: PowderBlue;"<br/>
+          daysHeaderStyle="background: #A8FFFE;"<br/>
+          disabledDayStyle="color: blue;"<br/>
+          dayStyle="color: red;"<br/>
+          footerStyle="background: #12FF28;"<br/>
+          headerStyle="background: #FF36F8;"<br/>
+          inactiveMonthDayStyle="color: yellow;"<br/>
+          rolloverDayStyle="font-weight: bold;"<br/>
+          rolloverDisabledDayStyle="color: darkgreen;"<br/>
+          rolloverInactiveMonthDayStyle="color: aquamarine;"<br/>
+          rolloverSelectedDayStyle="background: orange; font-weight: bold;"<br/>
+          rolloverTodayStyle="border: 1px solid black;"<br/>
+          rolloverWeekendDayStyle="background: red;"<br/>
+          selectedDayStyle="border: 1px solid SpringGreen;"<br/>
+          todayStyle="color: Teal;"<br/>
+          weekendDayStyle="border: 1px dotted RoyalBlue;"
+        </td>
+        <td>
+          <o:calendar id="styles"
+                      bodyStyle="background: PowderBlue;"
+                      daysHeaderStyle="background: #A8FFFE;"
+                      disabledDayStyle="color: blue;"
+                      dayStyle="color: red;"
+                      footerStyle="background: #12FF28;"
+                      headerStyle="background: #FF36F8;"
+                      inactiveMonthDayStyle="color: yellow;"
+                      rolloverDayStyle="font-weight: bold;"
+                      rolloverDisabledDayStyle="color: darkgreen;"
+                      rolloverInactiveMonthDayStyle="color: aquamarine;"
+                      rolloverSelectedDayStyle="background: orange; font-weight: bold;"
+                      rolloverTodayStyle="border: 1px solid black;"
+                      rolloverWeekendDayStyle="background: red;"
+                      selectedDayStyle="border: 1px solid SpringGreen;"
+                      todayStyle="color: Teal;"
+                      weekendDayStyle="border: 1px dotted RoyalBlue;">
+            <o:dateRanges disableExcludes="true">
+              <o:simpleDateRange fromDate="#{A4jIncludeBean.fromDate}" toDate="#{A4jIncludeBean.toDate}"/>
+            </o:dateRanges>
+          </o:calendar>
+        </td>
+      </tr>
+      <tr>
+        <td width="200px;">
+          The other attributes<br/>
+          firstDayOfWeek="3"<br/>
+          locale="ru"<br/>
+          noneText="N"<br/>
+          todayText="C"<br/>
+        </td>
+        <td>
+          <o:calendar id="attr"
+                      firstDayOfWeek="3"
+                      locale="ru"
+                      noneText="N"
+                      todayText="C"
+                      >
+            <o:dateRanges disableExcludes="true">
+              <o:simpleDateRange fromDate="#{A4jIncludeBean.fromDate}" toDate="#{A4jIncludeBean.toDate}"
+                                 dayStyle="color:orange"/>
+            </o:dateRanges>
+          </o:calendar>
+
+        </td>
+      </tr>
+    </table>
+  
+</div>

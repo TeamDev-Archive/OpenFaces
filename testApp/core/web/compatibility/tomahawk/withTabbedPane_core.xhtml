@@ -1,0 +1,382 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../functional_testing.jsf">Return to main testing page</a><br/><br/>
+<a href="../../main.jsf">Return to main page</a><br/><br/>
+
+<table>
+<tr>
+  <td class="container_one">JSCook Menu</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:tabbedPane loadingMode="ajax" containerStyle="padding: 15px 15px 15px 15px; width: 230px; height: 185px;">
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="First tab"/>
+        </f:facet>
+        <t:jscookMenu layout="hbr" theme="ThemePanel">
+          <t:navigationMenuItem id="nav_2" itemLabel="Examples">
+            <t:navigationMenuItem id="nav_2_1" itemLabel="Sample 1" action="go_sample1" />
+            <t:navigationMenuItem split="true"> </t:navigationMenuItem>
+            <t:navigationMenuItem id="nav_2_2" itemLabel="Sample 2" action="go_sample2" />
+            <t:navigationMenuItem id="nav_2_4" itemLabel="Components" split="true">
+              <t:navigationMenuItem id="nav_2_4_1" itemLabel="Sort Table" action="go_sortTable" />
+              <t:navigationMenuItem id="nav_2_4_2" itemLabel="Select Box" action="go_selectbox" />
+              <t:navigationMenuItem id="nav_2_4_3" itemLabel="File upload" action="go_fileupload" />
+            </t:navigationMenuItem>
+          </t:navigationMenuItem>
+        </t:jscookMenu>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Second tab"/>
+        </f:facet>
+        <t:jscookMenu layout="hbl" theme="ThemeMiniBlack">
+          <t:navigationMenuItem id="nav_3" itemLabel="Level 1">
+            <t:navigationMenuItem id="nav_3_1" itemLabel="Level 2.1" action="go_sample1" />
+            <t:navigationMenuItem split="true"> </t:navigationMenuItem>
+            <t:navigationMenuItem id="nav_3_2" itemLabel="Level 2.2" action="go_sample2" />
+            <t:navigationMenuItem id="nav_3_4" itemLabel="Level 2.3" split="true">
+              <t:navigationMenuItem id="nav_3_4_1" itemLabel="Level 3.1" action="go_sortTable" />
+              <t:navigationMenuItem id="nav_3_4_2" itemLabel="Level 3.2" action="go_selectbox" />
+              <t:navigationMenuItem id="nav_3_4_3" itemLabel="Level 3.3" action="go_fileupload" />
+            </t:navigationMenuItem>
+          </t:navigationMenuItem>
+        </t:jscookMenu>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">TabbedPane</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:tabbedPane loadingMode="ajax" containerStyle="padding: 15px 15px 15px 15px;">
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="First tab"/>
+        </f:facet>
+        <t:panelTabbedPane selectedIndex="1">
+          <t:panelTab>
+            <h:outputText value="Test Tab 1.1" />
+          </t:panelTab>
+          <t:panelTab>
+            <h:outputText value="Test Tab 1.2" />
+          </t:panelTab>
+        </t:panelTabbedPane>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Second tab"/>
+        </f:facet>
+        <t:panelTabbedPane selectedIndex="1">
+          <t:panelTab>
+            <h:outputText value="Test Tab 2.1" />
+          </t:panelTab>
+          <t:panelTab>
+            <h:outputText value="Test Tab 2.2" />
+          </t:panelTab>
+        </t:panelTabbedPane>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">Tree2</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:tabbedPane loadingMode="ajax" containerStyle="padding: 15px 15px 15px 15px;">
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="First tab"/>
+        </f:facet>
+        <t:tree2 id="clientTree" value="#{TreeBackerBean.treeData}" var="node" varNodeToggler="t" showRootNode="false">
+          <f:facet name="person">
+            <h:outputText value="#{node.description}"/>
+            <f:facet name="foo-folder">
+              <h:outputText value="#{node.description}"/>
+            </f:facet>
+          </f:facet>
+        </t:tree2>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Second tab"/>
+        </f:facet>
+        <t:tree2 id="clientTree2" value="#{TreeBackerBean.treeData}" var="node1" varNodeToggler="t" showRootNode="false">
+          <f:facet name="person">
+            <h:outputText value="#{node1.description}"/>
+            <f:facet name="foo-folder">
+              <h:outputText value="#{node1.description}"/>
+            </f:facet>
+          </f:facet>
+        </t:tree2>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">Calendar</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:tabbedPane loadingMode="ajax" containerStyle="padding: 15px 15px 15px 15px;">
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="First tab"/>
+        </f:facet>
+        <t:inputCalendar id="testCalendar" />
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Second tab"/>
+        </f:facet>
+        <t:inputCalendar id="testCalendar1" />
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">Newspaper Table</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:tabbedPane loadingMode="ajax" containerStyle="padding: 15px 15px 15px 15px;">
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="First tab"/>
+        </f:facet>
+        <t:newspaperTable id="dataOld"
+                          newspaperColumns="2"
+                          styleClass="standardTable"
+                          headerClass="standardTable_Header"
+                          footerClass="standardTable_Header"
+                          rowClasses="standardTable_Row1,standardTable_Row2"
+                          columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
+                          var="country"
+                          value="#{CountryListBean.countries}">
+          <f:facet name="spacer">
+            <f:verbatim> &#160; </f:verbatim>
+          </f:facet>
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="#{example_messages['label_country_name']}" />
+            </f:facet>
+            <h:outputText value="#{country.name}" />
+          </h:column>
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="#{example_messages['label_country_iso']}" />
+            </f:facet>
+            <h:outputText value="#{country.isoCode}" />
+          </h:column>
+        </t:newspaperTable>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Second tab"/>
+        </f:facet>
+        <t:newspaperTable id="dataOld1"
+                          newspaperColumns="2"
+                          styleClass="standardTable"
+                          headerClass="standardTable_Header"
+                          footerClass="standardTable_Header"
+                          rowClasses="standardTable_Row1,standardTable_Row2"
+                          columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
+                          var="country"
+                          value="#{CountryListBean.countries}">
+          <f:facet name="spacer">
+            <f:verbatim> &#160; </f:verbatim>
+          </f:facet>
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="#{example_messages['label_country_name']}" />
+            </f:facet>
+            <h:outputText value="#{country.name}" />
+          </h:column>
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="#{example_messages['label_country_iso']}" />
+            </f:facet>
+            <h:outputText value="#{country.isoCode}" />
+          </h:column>
+        </t:newspaperTable>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">Date</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:tabbedPane loadingMode="ajax" containerStyle="padding: 15px 15px 15px 15px;">
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="First tab"/>
+        </f:facet>
+        <t:inputDate id="date1" ampm="true" type="full" popupCalendar="true"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Second tab"/>
+        </f:facet>
+        <t:inputDate id="date2" ampm="true" type="full" popupCalendar="true"/>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">HtmlEditor</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:tabbedPane loadingMode="ajax" containerStyle="padding: 15px 15px 15px 15px;">
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="First tab"/>
+        </f:facet>
+        <h:panelGroup>
+          <f:verbatim><h2>Editor #1</h2></f:verbatim>
+          <t:inputHtml value="#{EditorFaceBean1.text}" style="height: 200px; width: 200px;"/>
+        </h:panelGroup>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Second tab"/>
+        </f:facet>
+        <h:panelGroup>
+          <f:verbatim><h2>Editor #3</h2></f:verbatim>
+          <t:inputHtml value="#{EditorFaceBean1.text}" style="height: 200px; width: 200px;"/>
+        </h:panelGroup>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">HtmlTag</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:tabbedPane loadingMode="ajax" containerStyle="padding: 15px 15px 15px 15px;">
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="First tab"/>
+        </f:facet>
+        <t:htmlTag value="h2"><h:outputText value="Test h2 tag in tab1" /></t:htmlTag>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Second tab"/>
+        </f:facet>
+        <t:htmlTag value="h2"><h:outputText value="Test h2 tag in tab2" /></t:htmlTag>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">TreeTable</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:tabbedPane loadingMode="ajax" containerStyle="padding: 15px 15px 15px 15px;">
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="First tab"/>
+        </f:facet>
+        <t:tree id="tree" value="#{TreeTable.treeModel}"
+                var="treeItem"
+                styleClass="tree"
+                nodeClass="treenode"
+                headerClass="treeHeader"
+                footerClass="treeFooter"
+                rowClasses="a, b"
+                columnClasses="col1, col2"
+                selectedNodeClass="treenodeSelected"
+                expandRoot="true">
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="Header 1" />
+            </f:facet>
+            <h:outputText value="#{treeItem.isoCode}" />
+          </h:column>
+          <t:treeColumn>
+            <f:facet name="header">
+              <h:outputText value="Header 2" />
+            </f:facet>
+            <h:outputText value="#{treeItem.name}" />
+          </t:treeColumn>
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="Header 3" />
+            </f:facet>
+            <h:outputText value="#{treeItem.description}" />
+          </h:column>
+          <f:facet name="footer">
+            <h:outputText value="Footer" />
+          </f:facet>
+        </t:tree>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Second tab"/>
+        </f:facet>
+        <t:tree id="tree1" value="#{TreeTable.treeModel}"
+                var="treeItem"
+                styleClass="tree"
+                nodeClass="treenode"
+                headerClass="treeHeader"
+                footerClass="treeFooter"
+                rowClasses="a, b"
+                columnClasses="col1, col2"
+                selectedNodeClass="treenodeSelected"
+                expandRoot="true">
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="Header 1" />
+            </f:facet>
+            <h:outputText value="#{treeItem.isoCode}" />
+          </h:column>
+          <t:treeColumn>
+            <f:facet name="header">
+              <h:outputText value="Header 2" />
+            </f:facet>
+            <h:outputText value="#{treeItem.name}" />
+          </t:treeColumn>
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="Header 3" />
+            </f:facet>
+            <h:outputText value="#{treeItem.description}" />
+          </h:column>
+          <f:facet name="footer">
+            <h:outputText value="Footer" />
+          </f:facet>
+        </t:tree>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">DataScroller</td>
+</tr>
+<tr>
+<td class="container">
+</td>
+</tr>
+</table>
+
+
+
+
+
+
+
+</div>

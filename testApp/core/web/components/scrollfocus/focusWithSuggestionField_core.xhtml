@@ -1,0 +1,40 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >    <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+
+    <o:focus focusedComponentId="byLoadFocused"/>
+    <h:commandButton id="submit" value="Submit"/><br/><br/>
+    <table>
+      <tr>
+        <td class="header">focused by load</td>
+        <td class="header">&#160;</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:suggestionField id="byLoadFocused"
+                             onblur="printInfo('NON IN FOCUS', 'out', false);"
+                             onfocus="printInfo('FOCUSED', 'out', false);">
+            <o:dropDownItem value="Red"/>
+            <o:dropDownItem value="Yellow"/>
+            <o:dropDownItem value="Blue"/>
+          </o:suggestionField>
+          <div id="out"></div>
+        </td>
+        <td class="container">
+          <o:suggestionField id="byAfterSubmission"
+                             onblur="printInfo('NON IN FOCUS', 'out1', false);"
+                             onfocus="printInfo('FOCUSED', 'out1', false);">
+            <o:dropDownItem value="Red"/>
+            <o:dropDownItem value="Yellow"/>
+            <o:dropDownItem value="Blue"/>
+          </o:suggestionField>
+          <div id="out1"></div>
+        </td>
+      </tr>
+    </table>
+</div>

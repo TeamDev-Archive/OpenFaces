@@ -1,0 +1,67 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div id="component" align="center">
+
+    <o:treeTable id="forumTreeTable" var="message"
+                 expansionState="#{ForumTreeTableBean.forumTreeTableExpansionState}"
+                 columnIdVar="columnId"
+                 sortColumnId="date"
+                 style="width: 100%;"
+                 headerVertSeparator="1px solid #a0a0a0"
+                 textStyle="font-family: verdana,Helvetica,sans-serif; font-size: 10pt; white-space: nowrap">
+      <o:dynamicTreeStructure nodeChildren="#{ForumTreeTableBean.nodeChildren}"
+                              nodeHasChildren="#{ForumTreeTableBean.nodeHasChildren}" nodeKey="#{message.id}"/>
+      <o:columnResizing/>
+      <o:treeColumn id="subject" sortingExpression="#{message.subject}" filterExpression="#{message.subject}"
+                    filterKind="searchField" bodyStyle="text-align: left;">
+        <f:facet name="header">
+          <h:outputText value="Subject"/>
+        </f:facet>
+        <h:outputText value="#{message.subject}" styleClass="treeTableText"/>
+      </o:treeColumn>
+      <o:column id="author" sortingExpression="#{message.author}" filterExpression="#{message.author}"
+                filterKind="dropDownField" style="width: 120px;">
+        <f:facet name="header">
+          <h:outputText value="From"/>
+        </f:facet>
+        <h:outputText value="#{message.author}" styleClass="treeTableText"/>
+      </o:column>
+      <o:column id="date" sortingExpression="#{message.date}" filterExpression="#{ForumTreeTableBean.dateCategory}"
+                filterKind="dropDownField" style="width: 120px;">
+        <f:facet name="header">
+          <h:outputText value="Sent"/>
+        </f:facet>
+        <h:outputText value="#{message.date}" styleClass="treeTableText">
+          <f:convertDateTime type="date" dateStyle="medium"/>
+        </h:outputText>
+      </o:column>
+    </o:treeTable>
+  </div>
+
+  <div class="Col1_1 serif">
+    <h4>Shown Functionality</h4>
+    <ul class="hang">
+      <li><strong>Sorting</strong> - Click on the header of any column to sort data by that column.
+      </li>
+      <li><strong>Filtering</strong> - Specify the filtering criteria in the appropriate fields under
+        the header and press Enter to filter the displayed data.
+        The rows that don't meet the filtering criteria but are required to show the tree structure are grayed.
+      </li>
+      <li><strong>Dynamic loading for node expansion, sorting, and filtering</strong> - Only the
+        modified or revealed data is loaded using Ajax technology instead of reloading the whole page.
+      </li>
+      <li><strong>Column resizing</strong> - Drag column header separators to resize columns.
+      </li>
+      <li><strong>Dynamic tree structure</strong> - The data is retrieved dynamically from the
+        backing bean.
+      </li>
+      <li><strong>Customizing default node expansion state</strong> - All top-level nodes are
+        expanded by default when the TreeTable component is loaded.
+      </li>
+    </ul>
+  </div>
+
+</div>

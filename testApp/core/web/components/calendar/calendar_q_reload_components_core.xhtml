@@ -1,0 +1,38 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <br/>
+  <a href="../../main.jsf">Return to main page</a>
+  <br/>
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+  <o:calendar id="calendarID"
+              value="#{CalendarBean.defaultDate}"
+              bodyStyle="background: PowderBlue;"
+              daysHeaderStyle="background: #A8FFFE;"
+              dayStyle="color: red; "
+              footerStyle="background: #12FF28;"
+              headerStyle="background: #FF36F8;"
+              rolloverDayStyle="font-weight: bold;"
+              rolloverInactiveMonthDayStyle="color: aquamarine;"
+              rolloverSelectedDayStyle="background: orange; font-weight: bold;"
+              selectedDayStyle="border: 3px solid SpringGreen;"
+              todayStyle="color: Teal;"
+              weekendDayStyle="border: 1px dotted RoyalBlue; background: yellow;"/>
+  <br/>
+  <br/>
+  <h:commandButton title="REFRESH" value="REFRESH">
+    <o:reloadComponents componentIds="calendarID"/>
+  </h:commandButton>
+  <br/>
+  <br/>
+  <h:inputText>
+    <o:reloadComponents componentIds="calendarID"/>
+  </h:inputText>
+  <br/>
+  <br/>
+  <h:outputLabel value="REFRESH">
+    <o:reloadComponents componentIds="calendarID"/>
+  </h:outputLabel>
+
+</div>

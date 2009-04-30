@@ -1,0 +1,112 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+<a href="../../main.jsf">Back to the main page</a>
+<br/>
+<a href="../../functional_testing.jsf">Return to main testing page</a>
+<br/><br/>
+<h:commandButton value="submit"/>
+<table>
+  <tr>
+    <td width="300px;" class="header">{background: transparent; font-family: Verdana; font-size:10pt; color:gray;
+      font-style:normal; font-weight:normal;}
+      <br></br>
+      default direction="0"
+    </td>
+    <td class="header">{font-size: 45px; color:#a10d07; font-style:italic; font-weight:bold;}
+      <br></br>
+      direction="rightToLeft"
+    </td>
+  </tr>
+  <tr>
+    <td class="container">
+      <o:graphicText value="First" id="test"/>
+    </td>
+    <td class="container">
+      <o:graphicText textStyle="font-size: 45px; color:#a10d07; font-style:italic; font-weight:bold;"
+                     value="Fourth"
+                     id="test4"
+                     direction="rightToLeft"/>
+    </td>
+  </tr>
+  <tr>
+    <td class="header">{font-size: 15px; color:red;}
+      <br></br>
+      direction="topToBottom"
+    </td>
+    <td class="header">{font-size: 20px; color:green; font-style:italic; font-family:Arial;}
+      <br></br>
+      direction="bottomToTop"
+    </td>
+  </tr>
+  <tr>
+    <td class="container">
+      <o:graphicText textStyle="font-size: 15px; color:red;"
+                     value="Second"
+                     id="test1"
+                     direction="topToBottom"/>
+    </td>
+    <td class="container">
+      <o:graphicText textStyle="font-size: 20px; color:green; font-style:italic; font-family:Arial;"
+                     value="Fifth"
+                     id="test5"
+                     direction="bottomToTop"/>
+    </td>
+  </tr>
+  <tr>
+    <td class="header">{font-size: 45px; color:#FFA07A; font-style:italic;}
+      <br></br>
+      direction="50"
+    </td>
+    <td class="header">{font-size: 15px; color:blue; font-weight:bold; font-family:Courier;}
+      <br></br>
+      direction="15"
+    </td>
+  </tr>
+  <tr>
+    <td class="container">
+      <o:graphicText textStyle="font-size: 45pt; color:#FFA07A; font-style:italic;"
+                     value="Third"
+                     id="test2"
+                     direction="50"/>
+    </td>
+    <td class="container">
+      <o:graphicText textStyle="font-size: 15px; color:blue; font-weight:bold; font-family:Courier;"
+                     value="Sixth Sixth Sixth Sixth"
+                     id="test6"
+                     direction="15"/>
+    </td>
+  </tr>
+  <tr>
+    <td class="header">&lt;f:datetimeConverter pattern="dd/MM/yyyy"&gt; ; direction="140"</td>
+    <td class="header">binded to 'full' format for 'en' locale converter ; direction="340"</td>
+  </tr>
+  <tr>
+    <td class="container">
+      <o:graphicText value="#{WithGraphicTextDataBean.dateValue}"
+                     id="test7"
+                     direction="140">
+        <f:convertDateTime pattern="dd/MM/yyyy"/>
+      </o:graphicText>
+    </td>
+    <td class="container">
+      <o:graphicText value="#{WithGraphicTextDataBean.dateValue}"
+                     id="test8"
+                     converter="#{WithGraphicTextDataBean.dateConverter}"
+                     direction="340"/>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="header">Check 'binding' attribute</td>
+  </tr>
+  <tr>
+    <td class="container">
+      <o:graphicText id="test9" binding="#{WithGraphicTextDataBean.graphicText}"/>
+    </td>
+  </tr>
+</table>
+
+</div>

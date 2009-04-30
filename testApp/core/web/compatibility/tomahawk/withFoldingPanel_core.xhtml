@@ -1,0 +1,308 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../functional_testing.jsf">Return to main testing page</a><br/><br/>
+<a href="../../main.jsf">Return to main page</a><br/><br/>
+
+<table>
+<tr>
+  <td class="container_one">JSCook Menu</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:foldingPanel loadingMode="ajax" expanded="false">
+      <f:facet name="caption">
+        <f:verbatim>JSCook Menu Inside</f:verbatim>
+      </f:facet>
+      <t:jscookMenu layout="hbr" theme="ThemePanel">
+        <t:navigationMenuItem id="nav_2" itemLabel="Examples">
+          <t:navigationMenuItem id="nav_2_1" itemLabel="Sample 1" action="go_sample1" />
+          <t:navigationMenuItem split="true"> </t:navigationMenuItem>
+          <t:navigationMenuItem id="nav_2_2" itemLabel="Sample 2" action="go_sample2" />
+          <t:navigationMenuItem id="nav_2_4" itemLabel="Components" split="true">
+            <t:navigationMenuItem id="nav_2_4_1" itemLabel="Sort Table" action="go_sortTable" />
+            <t:navigationMenuItem id="nav_2_4_2" itemLabel="Select Box" action="go_selectbox" />
+            <t:navigationMenuItem id="nav_2_4_3" itemLabel="File upload" action="go_fileupload" />
+          </t:navigationMenuItem>
+        </t:navigationMenuItem>
+      </t:jscookMenu>
+    </o:foldingPanel>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">TabbedPane</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:foldingPanel loadingMode="ajax" expanded="false">
+      <f:facet name="caption">
+        <f:verbatim>TabbedPane Inside</f:verbatim>
+      </f:facet>
+      <t:panelTabbedPane selectedIndex="1">
+        <t:panelTab>
+          <h:outputText value="Test Tab 1.1" />
+        </t:panelTab>
+        <t:panelTab>
+          <h:outputText value="Test Tab 1.2" />
+        </t:panelTab>
+      </t:panelTabbedPane>
+    </o:foldingPanel>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">Tree2</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:foldingPanel loadingMode="ajax" expanded="false">
+      <f:facet name="caption">
+        <f:verbatim>Tree2 Menu Inside</f:verbatim>
+      </f:facet>
+      <t:tree2 id="clientTree" value="#{TreeBackerBean.treeData}" var="node" varNodeToggler="t" showRootNode="false">
+        <f:facet name="person">
+          <h:outputText value="#{node.description}"/>
+          <f:facet name="foo-folder">
+            <h:outputText value="#{node.description}"/>
+          </f:facet>
+        </f:facet>
+      </t:tree2>
+    </o:foldingPanel>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">Calendar</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:foldingPanel loadingMode="ajax" expanded="false">
+      <f:facet name="caption">
+        <f:verbatim>Calendar Inside</f:verbatim>
+      </f:facet>
+      <t:inputCalendar id="testCalendar" />
+    </o:foldingPanel>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">Newspaper Table</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:foldingPanel loadingMode="ajax" expanded="false">
+      <f:facet name="caption">
+        <f:verbatim>Newspaper Table Inside</f:verbatim>
+      </f:facet>
+      <t:newspaperTable id="dataOld"
+                        newspaperColumns="2"
+                        styleClass="standardTable"
+                        headerClass="standardTable_Header"
+                        footerClass="standardTable_Header"
+                        rowClasses="standardTable_Row1,standardTable_Row2"
+                        columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
+                        var="country"
+                        value="#{CountryListBean.countries}">
+        <f:facet name="spacer">
+          <f:verbatim> &#160; </f:verbatim>
+        </f:facet>
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="#{example_messages['label_country_name']}" />
+          </f:facet>
+          <h:outputText value="#{country.name}" />
+        </h:column>
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="#{example_messages['label_country_iso']}" />
+          </f:facet>
+          <h:outputText value="#{country.isoCode}" />
+        </h:column>
+      </t:newspaperTable>
+    </o:foldingPanel>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">Date</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:foldingPanel loadingMode="ajax" expanded="false">
+      <f:facet name="caption">
+        <f:verbatim>Date Inside</f:verbatim>
+      </f:facet>
+      <t:inputDate id="date1" ampm="true" type="full" popupCalendar="true"/>
+    </o:foldingPanel>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">HtmlEditor</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:foldingPanel loadingMode="ajax" expanded="false">
+      <f:facet name="caption">
+        <f:verbatim>HtmlEditor Inside</f:verbatim>
+      </f:facet>
+      <h:panelGroup>
+        <f:verbatim><h2>Editor #1</h2></f:verbatim>
+        <t:inputHtml value="#{EditorFaceBean1.text}" style="height: 200px; width: 200px;"/>
+      </h:panelGroup>
+    </o:foldingPanel>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">HtmlTag</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:foldingPanel loadingMode="ajax" expanded="false">
+      <f:facet name="caption">
+        <f:verbatim>HtmlTag Inside</f:verbatim>
+      </f:facet>
+      <t:htmlTag value="h2"><h:outputText value="Test h2 tag in FoldingPanel" /></t:htmlTag>
+    </o:foldingPanel>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">TreeTable</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:foldingPanel loadingMode="ajax" expanded="false">
+      <f:facet name="caption">
+        <f:verbatim>TreeTable Inside</f:verbatim>
+      </f:facet>
+      <t:tree id="tree" value="#{TreeTable.treeModel}"
+              var="treeItem"
+              styleClass="tree"
+              nodeClass="treenode"
+              headerClass="treeHeader"
+              footerClass="treeFooter"
+              rowClasses="a, b"
+              columnClasses="col1, col2"
+              selectedNodeClass="treenodeSelected"
+              expandRoot="true">
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="Header 1" />
+          </f:facet>
+          <h:outputText value="#{treeItem.isoCode}" />
+        </h:column>
+        <t:treeColumn>
+          <f:facet name="header">
+            <h:outputText value="Header 2" />
+          </f:facet>
+          <h:outputText value="#{treeItem.name}" />
+        </t:treeColumn>
+        <h:column>
+          <f:facet name="header">
+            <h:outputText value="Header 3" />
+          </f:facet>
+          <h:outputText value="#{treeItem.description}" />
+        </h:column>
+        <f:facet name="footer">
+          <h:outputText value="Footer" />
+        </f:facet>
+      </t:tree>
+    </o:foldingPanel>
+  </td>
+</tr>
+<tr>
+  <td class="container_one">DataScroller</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:foldingPanel loadingMode="ajax" expanded="false">
+      <f:facet name="caption">
+        <f:verbatim>DataScroller Inside</f:verbatim>
+      </f:facet>
+      <h:panelGroup>
+        <t:dataTable id="data"
+                     style="font-family : verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 12px;color: #000000; padding: 2; border-style: solid; border-width: 1px; width: 400px;"
+                     headerClass="standardTable_Header"
+                     footerClass="standardTable_Header"
+                     rowClasses="standardTable_Row1,standardTable_Row2"
+                     columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
+                     var="car"
+                     value="#{ScrollerListBean.list}"
+                     preserveDataModel="false"
+                     rows="10">
+          <h:column>
+            <f:facet name="header">
+            </f:facet>
+            <h:outputText value="#{car.id}" />
+          </h:column>
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="#{example_messages['label_cars']}" />
+            </f:facet>
+            <h:outputText value="#{car.type}" />
+          </h:column>
+          <h:column>
+            <f:facet name="header">
+              <h:outputText value="#{example_messages['label_color']}" />
+            </f:facet>
+            <h:outputText value="#{car.color}" />
+          </h:column>
+        </t:dataTable>
+        <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
+          <t:dataScroller id="scroll_1"
+                          for="data"
+                          fastStep="10"
+                          pageCountVar="pageCount"
+                          pageIndexVar="pageIndex"
+                          styleClass="scroller"
+                          paginator="true"
+                          paginatorMaxPages="9"
+                          paginatorTableClass="paginator"
+                          paginatorActiveColumnStyle="font-weight:bold;"
+                          immediate="true"
+                          actionListener="#{ScrollerListBean.scrollerAction}">
+            <f:facet name="first" >
+              <t:graphicImage url="arrow-first.gif" border="1" />
+            </f:facet>
+            <f:facet name="last">
+              <t:graphicImage url="arrow-last.gif" border="1" />
+            </f:facet>
+            <f:facet name="previous">
+              <t:graphicImage url="arrow-previous.gif" border="1" />
+            </f:facet>
+            <f:facet name="next">
+              <t:graphicImage url="arrow-next.gif" border="1" />
+            </f:facet>
+            <f:facet name="fastforward">
+              <t:graphicImage url="arrow-ff.gif" border="1" />
+            </f:facet>
+            <f:facet name="fastrewind">
+              <t:graphicImage url="arrow-fr.gif" border="1" />
+            </f:facet>
+          </t:dataScroller>
+          <t:dataScroller id="scroll_2"
+                          for="data"
+                          rowsCountVar="rowsCount"
+                          displayedRowsCountVar="displayedRowsCountVar"
+                          firstRowIndexVar="firstRowIndex"
+                          lastRowIndexVar="lastRowIndex"
+                          pageCountVar="pageCount"
+                          immediate="true"
+                          pageIndexVar="pageIndex">
+            <h:outputFormat value="#{example_messages['dataScroller_pages']}" styleClass="standard" >
+              <f:param value="#{rowsCount}" />
+              <f:param value="#{displayedRowsCountVar}" />
+              <f:param value="#{firstRowIndex}" />
+              <f:param value="#{lastRowIndex}" />
+              <f:param value="#{pageIndex}" />
+              <f:param value="#{pageCount}" />
+            </h:outputFormat>
+          </t:dataScroller>
+        </h:panelGrid>
+      </h:panelGroup>
+    </o:foldingPanel>
+  </td>
+</tr>
+</table>
+
+
+</div>

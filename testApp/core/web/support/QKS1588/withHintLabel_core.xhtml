@@ -1,0 +1,51 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a4j:commandButton value="Rerender Table" reRender="a4jpanel"/>
+    <a4j:outputPanel id="a4jpanel">
+      <o:dataTable useAjax="true" var="item" value="#{QKS1588.data}" rowKey="#{item.id}">
+        <o:multipleRowSelection enabled="true"/>
+        <f:facet name="noDataMessage">
+          <h:outputText value="No records found..."/>
+        </f:facet>
+        <o:column sortingExpression="#{item.column1}" width="100px">
+          <f:facet name="header">
+            <h:outputText value="Column1"/>
+          </f:facet>
+          <o:hintLabel value="#{item.column1}"/>
+        </o:column>
+        <o:column filterExpression="#{item.column2}" width="100px">
+          <f:facet name="header">
+            <h:outputText value="Column2"/>
+          </f:facet>
+          <o:hintLabel value="#{item.column2}"/>
+        </o:column>
+        <o:column width="100px">
+          <f:facet name="header">
+            <h:outputText value="Column3"/>
+          </f:facet>
+          <o:hintLabel value="#{item.column3}"/>
+        </o:column>
+        <o:column width="100px">
+          <f:facet name="header">
+            <h:outputText value="Column4"/>
+          </f:facet>
+          <o:hintLabel value="#{item.column4}"/>
+        </o:column>
+        <o:column width="100px">
+          <f:facet name="header">
+            <h:outputText value="Column5"/>
+          </f:facet>
+          <o:hintLabel value="#{item.column5}"/>
+        </o:column>
+      </o:dataTable>
+    </a4j:outputPanel>
+  
+</div>

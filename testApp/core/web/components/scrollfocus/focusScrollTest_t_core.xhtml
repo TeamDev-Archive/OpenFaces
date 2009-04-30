@@ -1,0 +1,209 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <o:scrollPosition autoSaveScrollPos="true" scrollX="0" scrollY="350" />
+<o:focus autoSaveFocus="true" />
+
+<a href="../functional_testing.jsf">Return to main testing page</a><br/><br/>
+<a href="../../main.jsf">Return to main page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 16px; font-weight:bold; background:bisque;">
+        Test the focus tracking feature
+    </span>
+<br/>
+<table cellspacing="15">
+  <tr>
+    <td style="padding:15px 15px 15px 15px; border: 1px solid darkgray; background: gold;">
+      <h:inputText value="Non focused" onfocus="document.forms[0].submit();" id="tree1"/>
+    </td>
+    <td style="padding-left:15px; vertical-align:middle; font-weight:bold;">
+      Non-focused inputText by page load
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:15px 15px 15px 15px; border: 1px solid darkgray; background: gold;">
+      <h:inputText onblur="O$('fn:blurPopup').showAtXY(
+                O$.getElementPos(O$('fn:reflector').left) + O$('fn:reflector').offsetWidth + 15,
+                O$.getElementPos(O$('fn:reflector').top)); return false;"
+                   onfocus="O$('fn:focusPopup').showAtXY(
+                O$.getElementPos(O$('fn:reflector').left) + O$('fn:reflector').offsetWidth + 15,
+                O$.getElementPos(O$('fn:reflector').top)); return false;"
+                   value="focused input field"
+                   id="tree2" />
+      <o:popupLayer id='blurPopup'
+                    draggable="true"
+                    onshow="document.getElementById('fn:focusPopup').hide();"
+                    style="color: blue; font-weight: bold; border: none;">
+        <h:outputLabel value="NON IN FOCUS" />
+      </o:popupLayer>
+      <o:popupLayer id='focusPopup'
+                    draggable="true"
+                    onshow="document.getElementById('fn:blurPopup').hide();"
+                    style="font-weight: bold; color: darkred; border: none;">
+        <h:outputLabel value="FOCUSED" />
+      </o:popupLayer>
+    </td>
+    <td style="padding-left:15px; vertical-align:middle; font-weight:bold;">
+      <h:outputText id="reflector" value="State: " />
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:15px 15px 15px 15px; border: 1px solid darkgray; background: gold;">
+      <o:dropDownField onchange="document.forms[0].submit();"
+              pressedButtonStyle="background: red; border: 2px solid yellow;">
+        <o:dropDownItem value="Item 1" />
+        <o:dropDownItem value="Item 2" />
+        <o:dropDownItem value="Item 3" />
+      </o:dropDownField>
+    </td>
+    <td style="padding-left:15px; vertical-align:middle; font-weight:bold;">
+      DropDownField here
+    </td>
+  </tr>
+</table>
+<br/>
+    <span style="display:block;border:1px solid darkblue; background:azure; padding:15px 15px 15px 15px; font-size:18pt;">
+      Submit occurs by first input field focus
+    </span>
+<br/>
+<br/>
+<span style="display:block;width:50%; text-align:justify;">
+  <h:outputText id="t1" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b1" value="Submit" onclick="document.forms[0].submit();" />
+  <br/>
+  <h:outputText id="t2" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b2" value="Submit" onclick="document.forms[0].submit();" />
+  <br/>
+  <h:outputText id="t3" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b3" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t4" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b4" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t5" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b5" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t6" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b6" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t7" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b8" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t9" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b9" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t10" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b10" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t11" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b11" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t12" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b12" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t13" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b13" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t14" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b14" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t15" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b15" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t16" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b16" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t17" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b17" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t18" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b18" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t19" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b19" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t20" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b20" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t21" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b21" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t22" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b22" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t23" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b23" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t24" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b24" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t25" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b25" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <o:foldingPanel expanded="false">
+    <f:facet name="caption">
+      <h:outputText value="Header Test Caption"/>
+    </f:facet>
+    <h:panelGroup>
+      <f:verbatim><br/></f:verbatim>
+      <h:outputText value="Header test text"/>
+      <f:verbatim><br/></f:verbatim>
+      <h:outputText value="Header test text"/>
+      <f:verbatim><br/></f:verbatim>
+      <h:outputText value="Header test text"/>
+      <f:verbatim><br/></f:verbatim>
+      <h:outputText value="Header test text"/>
+      <f:verbatim><br/></f:verbatim>
+      <h:outputText value="Header test text"/>
+      <f:verbatim><br/></f:verbatim>
+      <h:outputText value="Header test text"/>
+      <f:verbatim><br/></f:verbatim>
+      <h:outputText value="Header test text"/>
+      <f:verbatim><br/></f:verbatim>
+      <h:outputText value="Header test text"/>
+      <f:verbatim><br/></f:verbatim>
+      <h:outputText value="Header test text"/>
+      <f:verbatim><br/></f:verbatim>
+      <h:outputText value="Header test text"/>
+      <f:verbatim><br/></f:verbatim>
+      <h:outputText value="Header test text"/>
+      <f:verbatim><br/></f:verbatim>
+      <h:outputText value="Header test text"/>
+    </h:panelGroup>
+  </o:foldingPanel>
+  <br/>
+  <h:outputText id="t26" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b26" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t27" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b27" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t28" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b28" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t29" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b29" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t30" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b30" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t31" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b31" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t32" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b32" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t33" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b33" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t34" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b35" value="Submit" onclick="document.forms[0].submit();" />
+      <br/>
+  <h:outputText id="t36" value="Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. Stub test text. " />
+  <h:commandButton id="b36" value="Submit" onclick="document.forms[0].submit();" />
+</span>                                                                                                                           <br/>
+
+</div>

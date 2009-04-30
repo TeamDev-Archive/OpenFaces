@@ -1,0 +1,35 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+    <a href="../../main.jsf">Return to main page</a><br/><br/>
+    <h:commandButton value="Submit" />
+    <br/><br/>
+    Choose loading mode:
+    <o:tabSet id="loadingModes"
+              selectedIndex="#{LoadingModesBean.selectedFoldingPanelIndex}"
+              onchange="document.forms[0].submit();">
+      <o:tabSetItems value="#{LoadingModesBean.foldingPanelLabels}"/>
+    </o:tabSet>
+    <br/><br/>
+    <table>
+      <tr>
+        <td class="container">
+          <o:foldingPanel id="dateChooserFoldingPanel"
+                          loadingMode="#{LoadingModesBean.foldingPanelCurrentLoadingMode}"
+                          expanded="false"
+                          contentStyle="padding: 10px 10px 10px 10px;">
+            <f:facet name="caption">
+              <h:outputText value="DateChooser in folding panel"/>
+            </f:facet>
+            <o:dateChooser id="dateChooserID" value="#{CalendarTestBean.examinationToDate}"/>
+          </o:foldingPanel>
+        </td>
+      </tr>
+    </table>
+  
+</div>

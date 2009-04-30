@@ -1,0 +1,42 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+	<a4j:outputPanel id="a4jAdminUsersTabbedPane">
+		<o:tabbedPane id="adminUsersTabbedPane"
+					  loadingMode="client"
+					  tabPlacement="top"
+					  tabAlignment="topOrLeft"
+					  frontBorderStyle="1px solid gray;"
+					  tabGapWidth="0"
+					  styleClass="tabbedPane_full"
+					  tabClass="tabStyle"
+					  selectedTabClass="tab_active"
+					  rolloverTabClass="tab_rollover"
+					  containerClass="tab_container">
+			<o:tabbedPaneItem>
+				<f:facet name="tab">
+					<h:outputText value="New User" styleClass="tab_name" />
+				</f:facet>
+				<f:subview id="newUser">
+					<jsp:include page="./newUser.jsf" flush="true"/>
+				</f:subview>
+			</o:tabbedPaneItem>
+			<o:tabbedPaneItem>
+				<f:facet name="tab">
+					<h:outputText value="Delete Users" styleClass="tab_name" />
+				</f:facet>
+				<f:subview id="deleteUser">
+					<jsp:include page="./deleteUser.jsf" flush="true"/>
+				</f:subview>
+			</o:tabbedPaneItem>
+		</o:tabbedPane>
+	</a4j:outputPanel>
+
+</div>

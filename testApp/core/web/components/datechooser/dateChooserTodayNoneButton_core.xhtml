@@ -1,0 +1,78 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      Check functionality of 'Today' and 'None' buttons
+    </span><br/><br/>
+    <h:commandButton id="submit" value="Submit"/>
+    <br/>
+    <br/>
+    <table width="50%">
+      <tr>
+        <td width="100%" class="header" colspan="2">Initially defined date</td>
+      </tr>
+      <tr>
+        <td class="container" width="25%"><o:dateChooser id="today" pattern="dd MMMM, yyyy" locale="en"
+                                                         value="#{DateChooserBean.todayDate}"
+                                                         selectedDayStyle="color: red; background: yellow;"/>
+        </td>
+        <td class="container" valign="top" width="75%" height="230px;">
+          <span style="text-decoration:underline">Selected value on server:</span><h:outputText id="todayDateString"
+                                                                                                value="#{DateChooserBean.todayDateString}"/>
+          <br/>
+          <input id="todayStyleButton" value="print Today style" type="button"
+                 onclick="printTodayStyle('formID:today', 'todayInfo');"/>
+
+          <div id="todayInfo">&#160;</div>
+          <br/><br/>
+          <input id="noneStyleButton" value="print None style" type="button"
+                 onclick="printNoneStyle('formID:today', 'noneInfo');"/>
+
+          <div id="noneInfo">&#160;</div>
+          <br/><br/>
+          <br/>
+          <input type="button" value="print selected date on client" id="selectedDate"
+                 onclick="printDateChooserSelectedDate('formID:today', 'selectedDateInfo');"/>
+
+          <div id="selectedDateInfo">&#160;</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="header" colspan="2">Initially undefined date</td>
+      </tr>
+      <tr>
+        <td class="container"><o:dateChooser id="none" value="#{DateChooserBean.noneDate}"
+                                             pattern="dd MMMM, yyyy" locale="en"
+                                             selectedDayStyle="color: red; background: yellow;"/></td>
+        <td class="container"><span style="text-decoration:underline">Selected value on server:</span> <h:outputText
+                id="noneDateString"
+                value="#{DateChooserBean.noneDateString}"/>
+          <br/>
+          <input id="todayStyleButton1" value="print Today style" type="button"
+                 onclick="printTodayStyle('formID:none', 'todayInfo1');"/>
+
+          <div id="todayInfo1">&#160;</div>
+          <br/><br/>
+          <input id="noneStyleButton1" value="print None style" type="button"
+                 onclick="printNoneStyle('formID:none', 'noneInfo1');"/>
+
+          <div id="noneInfo1">&#160;</div>
+          <br/><br/>
+          <input type="button" value="print selected date on client" id="noneSelectedDate"
+                 onclick="printDateChooserSelectedDate('formID:none', 'noneSelectedDateInfo');"/>
+
+          <div id="noneSelectedDateInfo">&#160;</div>
+
+        </td>
+      </tr>
+    </table>
+
+  
+</div>

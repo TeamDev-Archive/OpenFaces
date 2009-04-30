@@ -1,0 +1,92 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <br/>
+      <a href="../functional_testing.jsf">Return to main testing page</a><br/><br/>
+    <a href="../../main.jsf">Return to main page</a><br/><br/>
+
+    <table align="center" width="100%" style="vertical-align:middle;">
+      <tr>
+        <td align="center">
+          <h3>My Bookmarks</h3>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          <o:dataTable id="linkTable" var="link"
+                       pageSize="4"
+                       binding="#{LinkListBean.linksDataTable}"
+                       value="#{LinkListBean.links}"
+                       style="margin:20px 20px 20px 20px; padding:10px 10px 10px 10px; width:420px;"
+                       cellspacing="0"
+                       bodyRowStyle="height: 40px;"
+                       cellpadding="0"
+                       rowKey="#{link.id}"
+                       applyDefaultStyle="false">
+            <f:facet name="below">
+              <o:dataTablePaginator />
+            </f:facet>
+            <o:multipleRowSelection rowDatas="#{LinkListBean.selectedList}"
+                                    style="background: #a4aec5; color: darkblue;"/>
+            <o:selectionColumn>
+              <f:facet name="header">
+                <o:selectAllCheckbox />
+              </f:facet>
+            </o:selectionColumn>
+            <o:column style="width: 50px;" sortingExpression="#{link.linkCategory}">
+              <f:facet name="header">
+                <h:outputText value="Icon" />
+              </f:facet>
+              <h:graphicImage url="#{link.linkCategory}" rendered="#{!LinkListBean.addingOrEditingLink}"/>
+              <h:graphicImage url="empty.gif" rendered="#{LinkListBean.addingOrEditingLink}" />
+            </o:column>
+            <o:column filterExpression="#{link.name}"
+                      sortingExpression="#{link.name}"
+                      filterKind="comboBox"
+                      style="width: 187px;">
+              <f:facet name="header">
+                <h:outputText value="Link" />
+              </f:facet>
+              <h:outputLink rendered="#{!LinkListBean.addingOrEditingLink}" value="javascript:small_window('#{link.url}')">
+                <h:outputText value="#{link.name}" style="font-size: 12px;"/>
+              </h:outputLink>
+              <h:panelGrid rendered="#{LinkListBean.addingOrEditingLink}"
+                           columns="2" style="width:195; background:#f8f8f8; border:1px solid #bbbbbb; padding-left:3px; white-space:nowrap;">
+                <h:outputText value="Resource URL:"/>
+                <h:inputText value="#{link.url}" styleClass="editfield"/>
+                <h:outputText value="Resource Name:"/>
+                <h:inputText value="#{link.name}" styleClass="editfield"/>
+                <h:outputText value="Category:"/>
+                <h:selectOneMenu value="#{link.linkCategory}" styleClass="editfield">
+                  <f:selectItem itemValue="music.gif" itemLabel="music" />
+                  <f:selectItem itemValue="favorite.gif" itemLabel="favorite" />
+                  <f:selectItem itemValue="fun.gif" itemLabel="fun" />
+                </h:selectOneMenu>
+              </h:panelGrid>
+            </o:column>
+            <o:column style="width: 130px;">
+              <h:commandButton value="Edit" action="#{LinkListBean.editLink}" rendered="#{!LinkListBean.addingOrEditingLink}"
+                               styleClass="edit_remove" style="width: 60; height: 15;"/>
+              <h:commandButton value="Remove" action="#{LinkListBean.removeLink}" rendered="#{!LinkListBean.addingOrEditingLink}"
+                               styleClass="edit_remove" style="width: 60; height: 15;"/>
+              <h:commandButton value="Save" action="#{LinkListBean.saveLink}" rendered="#{LinkListBean.addingOrEditingLink}"
+                               styleClass="edit_remove" style="width: 60; height: 15;"/>
+              <h:commandButton value="Cancel" action="#{LinkListBean.cancelLink}" rendered="#{LinkListBean.addingOrEditingLink}"
+                               styleClass="edit_remove" style="width: 60; height: 15;"/>
+            </o:column>
+          </o:dataTable>
+        </td>
+      </tr>
+      <tr>
+        <td align="center" style="text-align: center; padding-left: 435px;">
+          <h:commandButton value="Add Bookmark" action="#{LinkListBean.addLink}" rendered="true"
+                           styleClass="edit_remove" style="height: 15; text-align:center;" />
+        </td>
+      </tr>
+    </table>
+
+  
+</div>

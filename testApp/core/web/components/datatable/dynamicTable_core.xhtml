@@ -1,0 +1,33 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+<a href="../../main.jsf">Return to main page</a> <input type="submit" value="Submit"/>
+
+  <o:dataTable id="table1" var="DATA_ROW" value="#{TableTestBean.collection2}">
+    <o:column sortingExpression="#{DATA_ROW.field1}" filterExpression="#{DATA_ROW.field1}">
+      <f:facet name="header">
+        <h:outputText value="Field 1"/>
+      </f:facet>
+      <h:outputText value="#{DATA_ROW.field1}"/>
+    </o:column>
+    <o:column sortingExpression="#{DATA_ROW.field2}" filterExpression="#{DATA_ROW.field2}">
+      <f:facet name="header">
+        <h:outputText value="Field 2"/>
+      </f:facet>
+      <h:outputText value="#{DATA_ROW.field2}"/>
+    </o:column>
+  </o:dataTable>
+
+  <button onclick="test1();">Test 1</button>
+
+  <script>
+    function test1() {
+      var table = document.getElementById('form1::table1');
+      
+    }
+  </script>
+
+</div>

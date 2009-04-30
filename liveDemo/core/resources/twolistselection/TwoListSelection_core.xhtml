@@ -1,0 +1,113 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div class="Col1_1 serif">
+    Click the <strong>Update</strong> button above the <strong>Tasks</strong> list to apply changes made in the upper TwoListSelection
+    component.
+  </div>
+
+  <div id="component" align="center">
+
+    <table style="width: 100%;" border="0">
+      <tr>
+        <td style="vertical-align: top; padding-right: 15px;">
+          <table border="0" width="450px">
+            <tr>
+              <td>
+                <o:twoListSelection id="tasksTLS"
+                                    addAllText="#{TLSStylingBean.addAllText}"
+                                    addText="#{TLSStylingBean.addText}"
+                                    removeAllText="#{TLSStylingBean.removeAllText}"
+                                    removeText="#{TLSStylingBean.removeText}"
+                                    moveDownText="#{TLSStylingBean.moveDownText}"
+                                    moveUpText="#{TLSStylingBean.moveUpText}"
+                                    allowAddRemoveAll="#{TLSStylingBean.allowAddRemoveAll}"
+                                    allowItemsOrdering="#{TLSStylingBean.allowOrdering}"
+                                    allowSorting="#{TLSStylingBean.allowSorting}"
+                                    buttonStyle="#{TLSStylingBean.buttonStyle}"
+                                    headerStyle="#{TLSStylingBean.captionStyle}"
+                                    listStyle="#{TLSStylingBean.listStyle}"
+                                    style="#{TLSStylingBean.style}"
+                                    leftListboxHeader="#{TLSStylingBean.leftCaption}"
+                                    rightListboxHeader="#{TLSStylingBean.rightCaption}"
+                                    value="#{TwoListSelectionBean.selectedTasks}">
+                  <f:selectItems value="#{TwoListSelectionBean.tasks}"/>
+                </o:twoListSelection>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-top: 20px;">
+                <h3>Customization Options</h3>
+
+                <div class="simple_text" style="width: 100%">
+                  Selecting items in this TwoListSelection component affects the appearance and capabilities of the upper
+                  TwoListSelection component.
+                </div>
+                <o:twoListSelection style="width: 100%;"
+                                    leftListboxHeader="Available Options"
+                                    rightListboxHeader="Applied Options"
+                                    value="#{TLSStylingBean.selectedCustomizations}"
+                                    allowItemsOrdering="false"
+                                    allowSorting="false">
+                  <f:selectItems value="#{TLSStylingBean.customizations}"/>
+
+                  <o:reloadComponents event="onchange" componentIds="tasksTLS"/>
+                </o:twoListSelection>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td style="vertical-align: top; width: 50%;">
+          <h:commandButton value="Update"
+                           onclick="O$.reloadComponents(['tlsForm:detailTable'], {submittedComponentIds: ['tlsForm:tasksTLS']}); return false;"/>
+          <o:dataTable id="detailTable"
+                       style="width: 100%;"
+                       var="task"
+                       value="#{TwoListSelectionBean.displayableTasks}"
+                       rowIndexVar="rowIdx"
+                       applyDefaultStyle="false"
+                       noDataMessageAllowed="false">
+            <o:column>
+              <f:facet name="header">
+                <h:outputText value="Tasks"/>
+              </f:facet>
+              <h:panelGroup>
+                <h:panelGrid style="border: 1px solid #7070ff; background-color: #ffffa3; width: 100%;" columns="1">
+                  <h:outputText style="font-weight: bold; font-family: Tahoma,sans-serif; font-size: 12px;"
+                                value="#{task.taskName}"/>
+                  <h:outputText style="font-family: Tahoma,sans-serif; font-size: 12px;"
+                                value="#{task.taskDescription}"/>
+                </h:panelGrid>
+              </h:panelGroup>
+            </o:column>
+          </o:dataTable>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="Col1_1 serif">
+    <h4>Shown Functionality</h4>
+    <ul class="hang">
+      <li><strong>Items ordering and sorting</strong> - You can reorder selected items by using the
+        <b>Up</b> and
+        <b>Down</b> buttons on the right and sort them by clicking the header of the right-hand list box.
+        Ordering and sorting can be disabled by selecting a corresponding option in the bottom TwoListSelection
+        component.
+      </li>
+      <li><strong>Items selection</strong> - You can select and remove individual, multiple or all items.
+        Use the bottom TwoListSelection component to enable/disable selection and removal of all items.
+      </li>
+      <li><strong>Changing labels of buttons and captions</strong> - All text labels of the buttons and
+        captions can be changed by selecting a corresponding option in the bottom TwoListSelection component.
+      </li>
+      <li><strong>Styles customization</strong> - You can change the styles of the upper TwoListSelection
+        component by selecting a corresponding option in the bottom TwoListComponent.
+        Note that the Safari browser does not support customization of some styles for list boxes.
+      </li>
+    </ul>
+  </div>
+
+</div>

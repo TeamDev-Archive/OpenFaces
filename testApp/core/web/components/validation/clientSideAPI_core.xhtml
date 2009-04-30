@@ -1,0 +1,110 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <o:clientValidationSupport clientValidation="onDemand"/>
+  <table>
+    <tr>
+      <td width="50%" valign="top">
+        <h3>Required validator</h3>
+        <h:inputText id="required" value="#{ValidBean.required}" required="true"/>
+        <br/>
+        <h:message id="RequiredMessage" for="required" showDetail="false" showSummary="true"
+                   style="color:red;"/>
+        <br/>
+        <o:calendar id="c" required="true"/>
+        <br/>
+        <h:message showDetail="true" showSummary="false" for="c" id="CMessage" style="color:red"/>
+        <br/>
+        <o:dateChooser id="dch" required="true"/>
+        <br/>
+        <h:message showDetail="true" showSummary="false" for="dch" id="DchMessage" style="color:red"/>
+        <br/>
+        <o:twoListSelection id="tls" required="true" style="width:300px;">
+          <f:selectItems value="#{OpenFacesValidatorsBean.TLSList}"/>
+        </o:twoListSelection>
+        <br/>
+        <h:message showDetail="true" showSummary="false" for="tls" id="TlsMessage" style="color:red"/>
+        <br/>
+        <o:dropDownField id="ddf" required="true">
+          <o:dropDownItem value="red"></o:dropDownItem>
+          <o:dropDownItem value="blue"></o:dropDownItem>
+        </o:dropDownField>
+        <br/>
+        <h:message showDetail="true" showSummary="false" for="ddf" id="DdfMessage" style="color:red"/>
+      </td>
+      <td valign="top">
+        <h3>OpenFaces Validators</h3>
+        <h4>validateDoubleRange</h4>
+        <h:inputText id="validDR" value="#{ValidBean.validDR}">
+          <f:validateDoubleRange minimum="0.001" maximum="0.999"></f:validateDoubleRange>
+        </h:inputText>
+        <br/>
+        <h:message id="MessageValidDR" for="validDR" showDetail="false" showSummary="true"
+                   style="color:red;"/>
+        <br/>
+        <h4>Equal Validator</h4>
+        <h:inputText id="equal1" value="#{OpenFacesValidatorsBean.equal1}"/>
+        <br/>
+        <br/>
+        <h:inputText id="equal2" value="#{OpenFacesValidatorsBean.equal2}">
+          <o:validateEqual for="equal1" summary="Validation error occurs"
+                            detail="These values are not equal"/>
+        </h:inputText>
+        <br/>
+        <h:message id="EqualMessage" for="equal2" style="color:red;" showDetail="true" showSummary="true"/>
+        <br/>
+        <h4>URLValidator</h4>
+        <h:inputText id="url" value="#{OpenFacesValidatorsBean.urlValidator}">
+          <o:validateUrl detail="Entered value is not url" summary="Validation error occurs"/>
+        </h:inputText>
+        <br/>
+        <h:message id="UrlMessage" for="url" style="color:red;" showDetail="true" showSummary="true"/>
+        <br/>
+        <h4>E-mail Validator</h4>
+        <h:inputText id="email" value="#{OpenFacesValidatorsBean.emailValidator}">
+          <o:validateEmail detail="Entered value is not e-mail" summary="Validation error occurs"/>
+        </h:inputText>
+        <br/>
+        <h:message id="EmailMessage" for="email" style="color:red;" showDetail="true" showSummary="true"/>
+        <br/>
+        <h4>RegExpValidator</h4>
+        <h:inputText id="regExp" value="#{OpenFacesValidatorsBean.reValidator}">
+          <o:validateRegex pattern="[-\+]?[0-9]*\.?[0-9]*" detail="Entered value is not correct number"
+                             summary="Validation error occurs"/>
+        </h:inputText>
+        <br/>
+        <h:message id="RegExpMessage" for="regExp" style="color:red;" showDetail="true" showSummary="true"/>
+        <br/>
+        <h4>CustomValidator</h4>
+        <h:inputText id="custom" value="#{OpenFacesValidatorsBean.customValidator1}">
+          <o:validateCustom serverFunction="#{OpenFacesValidatorsBean.customValidatorTest}" clientFunction="return value == 10;" summary="Validation error occurs"
+                             detail="Number should be equal '10'"/>
+        </h:inputText>
+        <br/>
+        <h:message id="CustomMessage" for="custom" style="color:red;" showDetail="true" showSummary="true"/>
+      </td>
+    </tr>
+  </table>
+  <h:commandButton value="Submit" id="fmSubmit"/>
+  <h:commandButton value="Fill valid data" onclick="fillValidData(); return false;" id="fillValidData"/>
+  <h:commandButton value="Fill invalid data" onclick="fillInvalidData(); return false;" id="fillInvalidData"/>
+  <br/>
+  <h:commandButton value="Submit without validation" id="withoutValidation"
+                   onclick="O$.submitWithoutValidation(this);"/>
+  <h:commandButton value="validate form by ID" id="validateFormById"
+                   onclick="O$.validateFormById('testForm');return false;"/>
+  <h:commandButton value="validate form" id="validateForm"
+                   onclick="O$.validateForm(document.getElementById('testForm'));return false;"/>
+  <h:commandButton value="validate enclosing form" id="validateEnclForm"
+                   onclick="O$.validateEnclosingForm(this);return false;"/>
+  <h:commandButton value="validate components by IDs" id="validateById"
+                   onclick="validateComponentsByIDs(); return false;"/>
+  <h:commandButton value="validate components" id="validate"
+                   onclick="validateComponents(); return false;"/>
+
+</div>

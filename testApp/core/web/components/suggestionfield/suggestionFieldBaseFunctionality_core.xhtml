@@ -1,0 +1,47 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      SuggestionField Base Functionality
+    </span><br/><br/>
+    <table>
+      <tr>
+        <td class="header" colspan="2">Items defined on jsp</td>
+        <td class="header" colspan="2">Items defined by binding</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:suggestionField id="first" value="#{SuggestionFieldBean.testSelectedValue}"
+                             manualListOpeningAllowed="true">
+            <o:dropDownItem value="Red"/>
+            <o:dropDownItem value="Yellow"/>
+            <o:dropDownItem value="Blue"/>
+          </o:suggestionField>
+        </td>
+        <td class="container">
+          Value: <h:outputText id="selectedValue" value="#{SuggestionFieldBean.testSelectedValue}"/>
+        </td>
+        <td class="container">
+          <o:suggestionField id="second" manualListOpeningAllowed="true"
+                             value="#{SuggestionFieldBean.testSelectedValue2}">
+            <o:dropDownItems value="#{SuggestionFieldBean.simpleTestCollection}"/>
+          </o:suggestionField>
+        </td>
+        <td class="container">
+          Value: <h:outputText id="selectedValue2" value="#{SuggestionFieldBean.testSelectedValue2}"/>
+        </td>
+      </tr>
+    </table>
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="Submit"/>
+  
+</div>

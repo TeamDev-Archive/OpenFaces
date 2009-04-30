@@ -1,0 +1,37 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <div class="capture">
+      First input:
+      <br/>
+      <h:inputText id="first">
+
+      </h:inputText>
+      <h:message for="first" styleClass="error"></h:message>
+      <br/>
+      <br/>
+      Double range (30.5-100.6):
+      Second inout:
+      <h:inputText id="second" required="true">
+        <o:validateEqual for="first"></o:validateEqual>
+      </h:inputText>
+      <br/>
+      <h:message for="second" styleClass="error"></h:message>
+      <br/>
+      <br/>
+
+      <h:commandButton value="submit" type="submit"></h:commandButton>
+      <br/>
+
+    </div>
+    <h:commandButton value="1" onclick="setBk('#FFFF95');"></h:commandButton>
+    <h:commandButton value="2" onclick="setBk('#B0FF7D');"></h:commandButton>
+    <h:commandButton value="3" onclick="setBk('#CED0A0');"></h:commandButton>
+  
+</div>

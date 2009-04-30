@@ -1,0 +1,25 @@
+<ul class="SubMenu leftsubmenu"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:o="http://openfaces.org/">
+  <li><h2 class="Title"><h:graphicImage alt="Overview"
+                             url="#{MenuService.selectedMenu.selectedMenuImage}"/>
+  </h2></li>
+  
+  <o:forEach var="demoItem" items="#{MenuService.selectedMenu.demos}" statusVar="status" rendered="#{MenuService.selectedMenu.demoCount > 1}">
+    <h:panelGroup rendered="#{status.index eq MenuService.selectedMenu.selectedTabIndex}">
+      <li class="active">
+        <a href="#" onclick="return false;"><h:outputText value="#{demoItem.demoName}"/></a>
+      </li>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{status.index ne MenuService.selectedMenu.selectedTabIndex}">
+      <li>
+        <h:commandLink actionListener="#{MenuService.selectionChanged}" immediate="true">
+          <f:param name="menuItemIndex" value="#{status.index}"/>
+          <h:outputText value="#{demoItem.demoName}"/>
+        </h:commandLink>
+      </li>
+    </h:panelGroup>
+  </o:forEach>
+</ul>

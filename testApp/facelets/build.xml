@@ -1,0 +1,164 @@
+<project name="OpenFaces Test Application -- Facelets Version" default="build" basedir=".">
+
+  <!-- *** Resources *** -->
+
+  <property name="lib.dir" location="../../lib"/>
+  <property name="apache.lib.dir" location="../../lib/apache"/>
+  <property name="openfaces-dependencies.lib.dir" location="../../lib/openfaces-dependencies"/>
+  <property name="el.lib.dir" location="../../lib/el"/>
+  <property name="tomahawk.lib.dir" location="../../lib/tomahawk"/>
+  <property name="facelets.lib.dir" location="../../lib/facelets"/>
+  <property name="richfaces.lib.dir" location="../../lib/richfaces"/>
+  <property name="jsf.lib.dir" location="../../lib/mojarra"/>
+  <property name="src.dir" location="../core/source"/>
+  <property name="web-inf.dir" location="web/WEB-INF"/>
+  <property name="web-inf-core.dir" location="../core/web/WEB-INF"/>
+  <property name="resources.dir" location="web"/>
+  <property name="resources-core.dir" location="../core/web"/>
+  <property name="target.dir" location="target"/>
+  <property name="resources.target.dir" location="${target.dir}/resources"/>
+  <property name="target-war-12.file" location="${target.dir}/test-app-facelets-12.war"/>
+  <property name="classes.dir" location="${target.dir}/classes"/>
+
+  <property name="components-jar.file" location="../../target/lib/openfaces.jar"/>
+
+  <property file="../../ofversion.properties"/>
+
+  <fileset id="basic-libraries" dir="${lib.dir}">
+    <include name="jstl-1.1.0.jar"/>
+  </fileset>
+
+  <fileset id="apache" dir="${apache.lib.dir}">
+    <include name="commons-beanutils-1.6.jar"/>
+    <include name="commons-collections-3.1.jar"/>
+    <include name="commons-digester-1.6.jar"/>
+    <include name="commons-logging-1.0.4.jar"/>
+    <include name="commons-el-1.0.jar"/>
+    <include name="standard-1.1.2.jar"/>
+    <include name="commons-fileupload-1.0.jar"/>
+    <include name="commons-lang-2.1.jar"/>
+  </fileset>
+
+  <fileset id="openfaces-dependencies" dir="${openfaces-dependencies.lib.dir}">
+    <include name="jfreechart-1.0.12.jar"/>
+    <include name="jcommon-1.0.15.jar"/>
+    <include name="jdom-1.0.jar"/>
+    <include name="ss_css2-0.9.4.jar"/>
+  </fileset>
+
+  <fileset id="tomahawk-libs" dir="${tomahawk.lib.dir}">
+    <include name="tomahawk12-1.1.8.jar"/>
+  </fileset>
+
+  <fileset id="richfaces-libs" dir="${richfaces.lib.dir}">
+    <include name="richfaces-api-3.3.0.GA.jar"/>
+    <include name="richfaces-impl-3.3.0.GA.jar"/>
+    <include name="richfaces-ui-3.3.0.GA.jar"/>
+  </fileset>
+
+  <fileset id="mojarra-1.2" dir="${jsf.lib.dir}">
+    <include name="jsf-api-1.2_12-b01.jar"/>
+    <include name="jsf-impl-1.2_12-b01.jar"/>
+  </fileset>
+
+
+  <fileset id="facelets" dir="${facelets.lib.dir}">
+    <include name="jsf-facelets-1.1.14.jar"/>
+  </fileset>
+
+  <fileset id="el-ri" dir="${el.lib.dir}">
+    <include name="el-ri-1.5.0.jar"/>
+  </fileset>
+
+  <!-- *** Public Targets ** -->
+
+  <target name="build" depends="-fail-if-no-components-jar,-build-war-mojarra12"
+          description="generate the distribution"/>
+
+  <target name="init">
+    <tstamp/>
+  </target>
+
+  <target name="compile" depends="-fail-if-no-components-jar,-compile" description="compile the source">
+  </target>
+
+  <target name="copy-resources">
+    <copy todir="${classes.dir}">
+      <fileset dir="${src.dir}">
+        <exclude name="**/*.java"/>
+      </fileset>
+    </copy>
+  </target>
+
+
+  <target name="prepare-resources">
+    <copy todir="${resources.target.dir}">
+      <fileset dir="${resources.dir}"/>
+      <fileset dir="${resources-core.dir}"/>
+    </copy>
+    <replace dir="${resources.target.dir}" includes="**/*.jsp, **/*.xhtml" token="__OpenFacesVersion__"
+             value="${ofversion}"/>
+  </target>
+
+
+
+  <target name="deploy" depends="build" description="deploy war" if="deploy.dir">
+    <copy file="${target-war-12.file}" todir="${deploy.dir}"/>
+  </target>
+
+  <target name="clean" description="clean up">
+    <delete dir="${target.dir}"/>
+  </target>
+
+  <!-- *** Utility Targets *** -->
+
+  <target name="-build-war-mojarra12" depends="compile,copy-resources,prepare-resources">
+    <property name="webxml" value="web.xml"/>
+    <war destfile="${target-war-12.file}" basedir="${resources.target.dir}" webxml="${web-inf.dir}/${webxml}">
+      <lib file="${components-jar.file}"/>
+      <lib refid="basic-libraries"/>
+      <lib refid="apache"/>
+      <lib refid="openfaces-dependencies"/>
+      <lib refid="tomahawk-libs"/>
+      <lib refid="richfaces-libs"/>
+      <lib refid="mojarra-1.2"/>
+      <lib refid="el-ri"/>
+      <lib refid="facelets"/>
+      <classes dir="${classes.dir}"/>
+    </war>
+  </target>
+
+  <target name="-fail-if-no-components-jar" unless="components-jar.file">
+    <fail>"components-jar.file" property must be specified</fail>
+  </target>
+
+   <target name="-compile" depends="clean,init" if="components-jar.file">
+    <mkdir dir="${classes.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" source="1.5" target="1.5" encoding="UTF-8">
+      <classpath>
+        <fileset dir="${lib.dir}">
+          <include name="jsp-api-2.1.jar"/>
+          <include name="mojarra/jsf-api-1.2_12-b01.jar"/>
+          <include name="servlet-api.jar"/>
+          <include name="apache/commons-digester-1.6.jar"/>
+          <include name="apache/commons-logging-1.0.4.jar"/>
+          <include name="openfaces-dependencies/jdom-1.0.jar"/>
+          <include name="openfaces-dependencies/jfreechart-1.0.12.jar"/>
+          <include name="openfaces-dependencies/jcommon-1.0.15.jar"/>
+          <include name="jstl-1.1.0.jar"/>
+          <include name="openfaces-dependencies/ss_css2-0.9.4.jar"/>
+          <include name="facelets/jsf-facelets-1.1.14.jar"/>
+          <include name="richfaces/richfaces-api-3.3.0.GA.jar"/>
+          <include name="el/el-api-1.5.0.jar"/>
+          <include name="el/el-ri-1.5.0.jar"/>
+          <include name="jboss-seam/hibernate-all.jar"/>
+          <include name="jboss-seam/jboss-ejb3-all.jar"/>
+          <include name="jboss-seam/jboss-seam-2.1.1.GA.jar"/>
+          <include name="tomahawk/tomahawk12-1.1.8.jar"/>
+        </fileset>
+        <fileset file="${components-jar.file}"/>
+      </classpath>
+    </javac>
+  </target>
+
+</project>

@@ -1,0 +1,31 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <o:treeTable id="treeTable" var="tree" expansionState="#{QKS376.treeTableExpansionState}">
+      <o:dynamicTreeStructure nodeChildren="#{QKS376.nodeChildren}"/>
+      <o:treeColumn>
+        <f:facet name="header">
+          <h:outputText value="Checked"/>
+        </f:facet>
+        <h:selectBooleanCheckbox value="#{tree.checked}">
+          <a4j:support event="onchange" reRender="treeTable" action="#{QKS376.updateTreeTable}"/>
+        </h:selectBooleanCheckbox>
+      </o:treeColumn>
+      <o:column sortingExpression="#{tree.name}" filterExpression="#{tree.name}"
+                filterKind="comboBox">
+        <f:facet name="header">
+          <h:outputText value="From"/>
+        </f:facet>
+        <h:outputText value="#{tree.name}"/>
+      </o:column>
+    </o:treeTable>
+
+  
+</div>

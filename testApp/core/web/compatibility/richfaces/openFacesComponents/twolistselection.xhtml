@@ -1,0 +1,15 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+
+  <o:twoListSelection allowItemsOrdering="false"
+                      value="#{RichTestBean.twoListSelectionValue}"
+                      style="width:300px"
+                      leftListboxHeader="Available items"
+                      rightListboxHeader="Selected items">
+    <f:selectItems value="#{RichTestBean.items}"/>
+  </o:twoListSelection>
+
+</div>

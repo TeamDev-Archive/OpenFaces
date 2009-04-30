@@ -1,0 +1,1244 @@
+/* ========== REGULAR STYLE GROUP ================== */
+
+/* == Miscellaneous == */
+
+.o_ajax_message {
+  width: 1px;
+  border: 1px solid #939393;
+  background: #efefef;
+  margin: 1px;
+  padding: 4px;
+  padding-left: 5px;
+  padding-right: 15px;
+  color: #1f3314;
+  font-weight: bold;
+}
+
+/* == Shared among components styles == */
+
+/* DEFAULT_BORDER */
+.o_calendar,
+  .o_table,
+  .o_dropdown,
+  .o_dropdown_list,
+  .o_spinner,
+  .o_popuplayer,
+  .o_popup_menu,
+  .o_hintlabel_hint,
+  .o_dayTable {
+  border: 1px solid gray;
+}
+
+/* DEFAULT_HEADER_BACKGROUND */
+.o_table_header_section,
+  .o_calendar_header, .o_calendar_footer,
+  .o_confirmation_button_backplane,
+  .o_tabset_top, .o_tabset_right, .o_tabset_bottom, .o_tabset_left,
+  .o_folding_panel_caption, .o_window_caption,
+  .o_tls_caption,
+  .o_sidepanel_caption {
+  background: #dfdfdf;
+}
+
+.o_table_footer_section {
+
+}
+
+/* GRAYED_TEXT_COLOR */
+.o_table_no_data_row,
+  .o_table_filter_predefined_criterion,
+  .o_treetable_auxilary_node,
+  .o_confirmation_details,
+  .o_confirmation_details_message,
+  .o_tls_disabled_option {
+  color: gray;
+}
+
+.o_text_color {
+  color: WindowText;
+}
+
+.o_text_color_safari {
+  color: black;
+}
+
+.o_background_color {
+  background: Window;
+}
+
+.o_background_color_safari {
+  background: white;
+}
+
+/* Specifying transparent background explicitly is requird to avoid making absolutely-positioned elements in IE to
+  "leak" events to underlying elmenets */
+.o_explicitly_transparent_background,
+  .o_popuplayer_modal_layer {
+  background-image: url(clear.gif);
+  background-position: center center;
+  background-repeat: repeat;
+
+}
+
+.o_captionButton {
+  width: 16px;
+  text-align: center;
+}
+
+.o_captionButton_rollover {
+  background: #a0a0a0;
+}
+
+.o_captionButton_pressed {
+  background: #808080;
+}
+
+/* getDialogControlsFontFamily */
+.o_calendar_day,
+  .o_calendar_days_header,
+  .o_calendar_header,
+  .o_calendar_footer,
+  .o_dropdown_list,
+  .o_dropdown_list_item,
+  .o_menu_list_item {
+  font-family: MS Shell Dlg, Arial, sans-serif;
+}
+
+/* == End of Shared among components styles == */
+
+/* Table styles */
+.o_noWrapHeaderCell {
+  white-space: nowrap;
+}
+
+.o_filter_row_cells {
+  font-weight: normal;
+}
+
+.o_table_header_section {
+  font-weight: bold;
+  text-align: center;
+}
+
+.o_table_sortable_header {
+  cursor: pointer;
+}
+
+.o_table_sortable_header_rollover {
+  background: #d4d4d4;
+}
+
+.o_table_sorted_column_header {
+  background: #cccccc;
+}
+
+.o_table_sorted_column_body {
+  background: #f4f4f4;
+}
+
+.o_table_sorted_column_footer {
+  background: #f4f4f4;
+}
+
+.o_table_no_data_row {
+  padding: 5px;
+  text-align: center;
+}
+
+.o_table_paginator_field {
+  width: 40px;
+  text-align: right;
+}
+
+.o_table_layout_fixed {
+  table-layout: fixed;
+}
+
+/* Checkbox column */
+.o_checkbox_column {
+  width: 35px;
+  text-align: center;
+}
+
+/* Selection column */
+.o_selection_column {
+  width: 35px;
+  text-align: center;
+}
+
+/* Paginator */
+.o_table_paginator {
+  white-space: nowrap;
+}
+
+.o_table_paginator_image {
+  cursor: pointer;
+}
+
+.o_hiddenFocus {
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  font-size: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 none transparent !important;
+  background: transparent !important;
+  opacity: 0 !important;
+}
+
+.o_hiddenFocus:focus {
+  outline: none !important;
+}
+
+/* TreeTable */
+.o_treetable_folding {
+  cursor: pointer;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.o_treetable_expansion_toggle_cell {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.o_treetable_indent {
+  width: 16px;
+  text-align: center;
+}
+
+.o_hiddenRow {
+  display: none !important;
+}
+
+.o_hiddenRow * {
+/* IE doesn't hide absolutely-positioned elements of "display:none" parents, so it should be done explicitly */
+  display: none !important;
+}
+
+/* TimeTable styles */
+
+.o_dayTable {
+  width: 100%;
+  cursor: default;
+}
+
+.o_tinyText {
+  font-size: 0 ! important;
+}
+
+.o_dayTable_tableRow {
+  height: 100%;
+  vertical-align: top;
+}
+
+.o_dayTable_scroller {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  left: 0;
+  top: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.o_dayTable_table, .o_resourceHeadersTable {
+  width: 100%;
+  table-layout: fixed;
+  overflow: hidden;
+}
+
+.o_resourceHeadersRow {
+  font-family: MS Shell Dlg, Arial, sans-serif;
+  font-size: 11pt;
+  text-align: center;
+  overflow: hidden;
+}
+
+.o_defaultScrollBarWidth {
+  width: 17px;
+}
+
+.o_dayTableRowClass {
+  font-size: 0;
+  height: 25px;
+
+}
+
+.o_timeColumn {
+  width: 50px;
+  background: #f0f0f0;
+  text-align: right;
+  padding-right: 8px;
+  vertical-align: top;
+
+  color: #606060;
+  font-family: MS Shell Dlg, Arial, sans-serif;
+  font-size: 14pt;
+}
+
+.o_majorTimeText {
+}
+
+.o_minorTimeText {
+}
+
+.o_timeSuffixText {
+  font-size: .5em;
+  vertical-align: top;
+}
+
+.o_timetableEvent,
+  .o_reservedTimeEvent {
+  position: absolute;
+
+  cursor: default;
+  border: 1px solid gray;
+}
+
+.o_timetableEvent {
+  padding: 2px;
+  overflow: hidden;
+
+  font-family: MS Shell Dlg, Arial, sans-serif;
+  font-size: 11pt;
+  margin: 4px;
+}
+
+.o_timetableEventName {
+  display: block;
+  width: 100%;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.o_timetableEventDescription {
+
+}
+
+.o_timetableEventArea {
+  position: absolute;
+}
+
+.o_rolloverTimetableEvent {
+  border: 2px solid gray;
+}
+
+.o_reservedTimeEvent {
+  background-image: url(timetable/reservedTimePattern.gif);
+  background-repeat: repeat;
+  margin: 4px;
+}
+
+.o_eventActionBar {
+  position: absolute;
+  visibility: hidden;
+  text-align: center;
+
+  padding: 1px;
+  font-size: 9pt;
+  color: white;
+}
+
+.o_eventActionButton {
+  cursor: pointer;
+  padding: 1px 2px 1px 2px;
+}
+
+.o_timetableEventBackground {
+  position: absolute;
+  border: 0 solid gray; /* for Opera to correctly handle background layer boundaries */
+}
+
+.o_eventPreview {
+  width: 400px;
+  padding: 2px;
+}
+
+.o_truncatedTimetableEvent {
+  border-bottom: none ! important;
+}
+
+.o_eventEditorDialog {
+  padding: 4px;
+  font-size: 9pt;
+  font-family: MS Shell Dlg, Arial, sans-serif;
+}
+
+.o_eventEditor_buttonsArea {
+  text-align: right;
+  padding: 5px;
+}
+
+.o_eventEditor_modalLayer {
+  filter: alpha(opacity = 50);
+  -moz-opacity: .50;
+  opacity: .50;
+  background: gray;
+}
+
+.o_zeroPaddings {
+  padding: 0 ! important;
+}
+
+/* Calendar styles */
+
+/*  Index 0 */
+
+.o_calendar {
+  background: white;
+  table-layout: fixed;
+}
+
+.o_calendarCol {
+  width: 25px;
+}
+
+.o_cal_week_row {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.o_calendar_day {
+  font-size: 11px;
+  text-decoration: none;
+  width: 25px;
+  height: 15px;
+  padding-top: 1px;
+}
+
+.o_calendar_header {
+  font-size: 10px;
+  width: 100%;
+}
+
+.o_calendar_footer {
+  font-size: 10px;
+  width: 100%;
+}
+
+.o_calendar_days_header {
+  text-align: center;
+  background: #b3b3d9;
+  color: White;
+  width: 25px;
+  height: 15px;
+  padding-top: 1px;
+  font-size: 10px;
+}
+
+/* Index 2 */
+.o_calendar_weekend_day {
+  color: red;
+}
+
+/* Index 3 */
+.o_calendar_inactive_month_day {
+  color: gray;
+}
+
+/*  Index 5 */
+.o_calendar_today {
+  font-weight: bold;
+}
+
+/* Popup layer styles */
+
+.o_popuplayer {
+  position: absolute;
+  display: none;
+}
+
+.o_popuplayer_modal {
+  z-index: 301;
+}
+
+.o_popuplayer_modal_layer {
+  z-index: 300;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Dropdown field */
+.o_dropdown {
+  background: white;
+  width: 140px;
+  height: 20px;
+}
+
+.o_spinner {
+  background: white;
+  width: 60px;
+  height: 20px;
+}
+
+.o_spinner_button {
+  background-color: #cfcfcf;
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+  white-space: nowrap;
+  line-height: 0;
+  height: 50%;
+}
+
+.o_spinner_field {
+  background-color: transparent;
+  margin: 0;
+  padding: 2px 2px 0 2px;
+  border: 0 solid;
+  text-align: right;
+}
+
+.o_dropdown_field {
+  background-color: transparent;
+  margin: 0;
+  padding: 2px 2px 0 2px;
+  border: 0 solid;
+}
+
+.o_dropdown_list {
+  background-color: window;
+  cursor: default;
+}
+
+.o_dropdownfield_list {
+  position: absolute;
+  visibility: hidden;
+  overflow: auto;
+  width: 0;
+  height: 200px;
+}
+
+.o_dropdown_button {
+  background-color: #cfcfcf;
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+  width: 15px;
+  white-space: nowrap;
+  height: 100%;
+}
+
+.o_dropdown_list_item {
+  padding: 0 2px 0 2px;
+  text-align: left;
+  font-size: 10pt;
+}
+
+.o_dropdown_prompt {
+  color: #7e7e7e;
+  text-align: left;
+}
+
+.o_combo_button_pressed {
+  background-color: #dfdfdf;
+}
+
+.o_combo_button_disabled {
+  background: #cfcfcf;
+}
+
+.o_combo_field_disabled {
+  background-color: transparent;
+}
+
+.o_dropdown_disabled {
+  background: #ebebeb;
+}
+
+/* Folding panel */
+.o_folding_panel {
+  border: 1px solid gray;
+}
+
+.o_folding_panel_content {
+  padding-left: 2px;
+  padding-right: 2px;
+  background: white;
+}
+
+.o_folding_panel_caption {
+  width: 100%;
+  border-bottom: 1px solid gray;
+  padding-left: 2px;
+  padding-right: 2px;
+  text-align: left;
+}
+
+/* Window */
+.o_window {
+  overflow: hidden;
+  border: 2px solid gray;
+  padding: 0 ! important;
+}
+
+.o_window_table {
+  table-layout: fixed;
+}
+
+.o_window_caption {
+  padding-left: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  text-align: left;
+  font-weight: bold;
+  white-space: nowrap;
+  cursor: default;
+}
+
+.o_default_caption_width {
+  width: 100%;
+}
+
+.o_window_content {
+  position: absolute;
+  visibility: hidden;
+
+  overflow: auto;
+  vertical-align: top;
+  text-align: left;
+  padding: 2px;
+}
+
+/* Confirmation */
+.o_confirmation {
+  z-index: 301;
+  overflow: hidden;
+  cursor: default;
+  border: 1px solid gray;
+}
+
+.o_confirmation_icon_backplane {
+  vertical-align: bottom;
+  padding: 15px 15px 5px 15px;
+}
+
+.o_confirmation_text_backplane {
+  height: 100%;
+}
+
+.o_confirmation_header_text {
+  font-weight: bold;
+  text-align: left;
+  vertical-align: middle;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+}
+
+.o_confirmation_button_backplane {
+  padding: 3px;
+}
+
+.o_confirmation_yes_button {
+  padding-left: 5px;
+  padding-right: 5px;
+  width: 100%;
+}
+
+.o_confirmation_no_button {
+  padding-left: 5px;
+  padding-right: 5px;
+  width: 100%;
+}
+
+.o_confirmation_details,
+  .o_confirmation_details_message {
+  text-align: left;
+  vertical-align: top;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+}
+
+.o_confirmation_details_message {
+  padding-top: 0;
+}
+
+/* TwoListSelection */
+.o_twoListSelection {
+  width: 500px;
+}
+
+.o_tls_caption {
+  font-weight: bold;
+  padding-top: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 2px;
+}
+
+.o_tls_list {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+/* TabSet */
+.o_tabset_empty_space_top,
+  .o_tabset_empty_space_right,
+  .o_tabset_empty_space_bottom,
+  .o_tabset_empty_space_left {
+  font-size: 1px;
+}
+
+.o_tabset_moz_empty_space {
+  width: 1px;
+  height: 1px;
+}
+
+.o_tabset_empty_space_top {
+  border-bottom: #dbdad5 1px solid;
+}
+
+.o_tabset_empty_space_right {
+  border-left: #dbdad5 1px solid;
+}
+
+.o_tabset_empty_space_bottom {
+  border-top: #dbdad5 1px solid;
+}
+
+.o_tabset_empty_space_left {
+  border-right: #dbdad5 1px solid;
+}
+
+.o_tabset_front_border_top,
+  .o_tabset_front_border_right,
+  .o_tabset_front_border_bottom,
+  .o_tabset_front_border_left {
+  border: #dbdad5 1px solid;
+}
+
+.o_tabset_front_border_top {
+  border-bottom: 0;
+}
+
+.o_tabset_front_border_right {
+  border-left: 0;
+}
+
+.o_tabset_front_border_bottom {
+  border-top: 0;
+}
+
+.o_tabset_front_border_left {
+  border-right: 0;
+}
+
+.o_tabset_back_border_top,
+  .o_tabset_back_border_right,
+  .o_tabset_back_border_bottom,
+  .o_tabset_back_border_left {
+  border: 0;
+}
+
+.o_tabset_back_border_top {
+  border-bottom: #dbdad5 1px solid;
+}
+
+.o_tabset_back_border_right {
+  border-left: #dbdad5 1px solid;
+}
+
+.o_tabset_back_border_bottom {
+  border-top: #dbdad5 1px solid;
+}
+
+.o_tabset_back_border_left {
+  border-right: #dbdad5 1px solid;
+}
+
+.o_tabset_top,
+  .o_tabset_right,
+  .o_tabset_bottom,
+  .o_tabset_left {
+  white-space: nowrap;
+  width: 1%;
+  padding-left: 2px;
+  padding-right: 2px;
+  cursor: default;
+}
+
+.o_tabset_top {
+  border-top: 3px solid #dfdfdf;
+  border-left: 1px solid #dfdfdf;
+  border-right: 1px solid #dfdfdf;
+}
+
+.o_tabset_right {
+  border-right: 3px solid #dfdfdf;
+  border-top: 1px solid #dfdfdf;
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.o_tabset_bottom {
+  border-bottom: 3px solid #dfdfdf;
+  border-left: 1px solid #dfdfdf;
+  border-right: 1px solid #dfdfdf;
+}
+
+.o_tabset_left {
+  border-left: 3px solid #dfdfdf;
+  border-top: 1px solid #dfdfdf;
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.o_tabset_selected_top,
+  .o_tabset_selected_right,
+  .o_tabset_selected_bottom,
+  .o_tabset_selected_left {
+  background-color: transparent;
+}
+
+.o_tabset_selected_top {
+  border-top: #c9d8f5 3px solid;
+}
+
+.o_tabset_selected_right {
+  border-right: #c9d8f5 3px solid;
+}
+
+.o_tabset_selected_bottom {
+  border-bottom: #c9d8f5 3px solid;
+}
+
+.o_tabset_selected_left {
+  border-left: #c9d8f5 3px solid;
+}
+
+/* TabbedPane */
+.o_tabbedpane_border_top {
+  border-right: #dbdad5 1px solid;
+  border-bottom: #dbdad5 1px solid;
+  border-left: #dbdad5 1px solid;
+}
+
+.o_tabbedpane_border_right {
+  border-bottom: #dbdad5 1px solid;
+  border-left: #dbdad5 1px solid;
+  border-top: #dbdad5 1px solid;
+}
+
+.o_tabbedpane_border_bottom {
+  border-left: #dbdad5 1px solid;
+  border-top: #dbdad5 1px solid;
+  border-right: #dbdad5 1px solid;
+}
+
+.o_tabbedpane_border_left {
+  border-top: #dbdad5 1px solid;
+  border-right: #dbdad5 1px solid;
+  border-bottom: #dbdad5 1px solid;
+}
+
+.o_tabbedpane_container {
+  padding: 2px 2px 2px 2px;
+  vertical-align: top;
+}
+
+/* HintLabel */
+.o_hintlabel_label,
+  .o_hintlabel_label_ie {
+  table-layout: fixed;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.o_hintlabel_label_ie {
+  text-overflow: ellipsis;
+}
+
+.o_hintlabel_hint {
+  position: absolute;
+  visibility: hidden;
+  display: none;
+}
+
+/* Text Field */
+.o_inputtext_prompt {
+  color: #7e7e7e;
+}
+
+/* Popup Menu */
+
+.o_popup_menu {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  visibility: hidden;
+  font-size: 0;
+  line-height: 0;
+  list-style: none;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.o_popup_menu_background {
+  background: menu;
+}
+
+.o_popup_menu_background_safari {
+  background: lightgray;
+}
+
+.o_popup_menu_indent {
+  width: 30px;
+}
+
+.o_menu_list_item {
+/*position: relative;*/
+  display: block;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  white-space: nowrap;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  zoom: 1;
+}
+
+.o_menu_list_item_image_span {
+  display: table-cell;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 24px; /*height: 24px;*/
+  text-align: center;
+  vertical-align: middle;
+}
+
+.o_menu_list_item_arrow_span {
+  display: table-cell;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 20px; /*height: 24px;*/
+  text-align: center;
+  vertical-align: middle;
+}
+
+.o_menu_list_item_span {
+  display: block;
+  position: relative;
+  padding: 1px;
+  cursor: default;
+  color: menutext;
+  font-family: times New Roman, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  height: 25px;
+  line-height: 25px;
+  /*text-align: left;
+  text-decoration: none;
+  border: 1px solid transparent;
+  margin: 0;
+  outline: none;*/
+}
+
+.o_menu_list_item_content {
+  display: block;
+  padding: 0 .5em;
+  text-align: left;
+}
+
+.o_menu_list_item_img_fakespan {
+  display: inline-block;
+  height: 100%;
+  width: 1px;
+  vertical-align: middle;
+}
+
+.o_menu_list_item_img {
+  border: 0;
+  vertical-align: middle;
+}
+
+.o_menu_item_selected {
+  background: highlight;
+  color: highlighttext;
+}
+
+.o_menu_list_item_disabled {
+  color: gray;
+}
+
+.o_menu_list_item_separator {
+  height: 1px;
+  padding: 0;
+}
+
+.o_menu_list_item_icon {
+  vertical-align: middle;
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 25px;
+  text-align: center;
+}
+
+.o_menu_separator {
+  display: block;
+  position: relative;
+  padding: 1px;
+  line-height: 1px;
+  border-top: 1px solid gray;
+  margin: 0 2px 0 2px;
+  height: 1px;
+}
+
+/* SidePanel */
+.o_sidepanel_container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+.o_sidepanel_splitter {
+  position: absolute;
+  background-color: #f4f4f4;
+  height: 4px;
+  width: 4px;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+.o_sidepanel_panel {
+  position: absolute;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+.o_sidepanel_caption {
+  position: absolute;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 1px solid gray;
+  overflow-x: hidden;
+  white-space: nowrap;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  right: 0;
+}
+
+.o_sidepanel_content {
+  position: absolute;
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.o_sidepanel_container_left {
+  left: 0;
+}
+
+.o_sidepanel_panel_left {
+  top: 0;
+  left: 0;
+}
+
+.o_sidepanel_splitter_left {
+  height: 100%;
+  border-left: 2px groove gray;
+  border-right: 1px outset gray;
+  cursor: e-resize;
+  cursor: col-resize;
+  top: 0;
+  right: 0;
+}
+
+.o_sidepanel_container_right {
+  right: 0;
+}
+
+.o_sidepanel_panel_right {
+  top: 0;
+  right: 0;
+}
+
+.o_sidepanel_splitter_right {
+  height: 100%;
+  border-left: 2px groove gray;
+  border-right: 1px outset gray;
+  cursor: e-resize;
+  cursor: col-resize;
+  top: 0;
+  left: 0;
+}
+
+.o_sidepanel_container_top {
+  top: 0;
+}
+
+.o_sidepanel_panel_top {
+  top: 0;
+  left: 0;
+}
+
+.o_sidepanel_splitter_top {
+  width: 100%;
+  border-top: 2px groove gray;
+  border-bottom: 1px outset gray;
+  cursor: n-resize;
+  cursor: row-resize;
+  right: 0;
+  bottom: 0;
+}
+
+.o_sidepanel_container_bottom {
+  bottom: 0;
+}
+
+.o_sidepanel_panel_bottom {
+  bottom: 0;
+  left: 0;
+}
+
+.o_sidepanel_splitter_bottom {
+  width: 100%;
+  border-top: 2px groove gray;
+  border-bottom: 1px outset gray;
+  cursor: n-resize;
+  cursor: row-resize;
+  top: 0;
+  left: 0;
+}
+
+.o_borderlayoutpanel_container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+.o_borderlayoutpanel_content {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  position: absolute;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  top: 0;
+  left: 0;
+}
+
+/* Validation */
+
+.o_floatingIconMessage {
+  background: #f8d3d4;
+}
+
+/* Other */
+.o_chart {
+  border: 0;
+}
+
+/* ========== ROLLOVER STYLE GROUP ================== */
+
+/* == Shared among components styles == */
+
+/* ROLLOVER_BACKGROUND_COLOR */
+.o_calendar_rollover_day, .o_calendar_rollover_inactive_month_day {
+  background: #cfcfcf;
+}
+
+/* == End of Shared among components styles == */
+
+.o_initially_invisible {
+  visibility: hidden;
+}
+
+/* Calendar */
+/* Index 0 */
+.o_calendar_rollover_day {
+  color: white;
+  cursor: pointer;
+}
+
+/* Index 2 */
+.o_calendar_rollover_weekend_day {
+  background: #cfcfcf;
+  color: white;
+}
+
+.o_calendar_disabled_day {
+  background: #f0f0f0;
+  color: gray;
+  cursor: default;
+}
+
+/* Index 3 */
+.o_calendar_rollover_inactive_month_day {
+  color: white;
+}
+
+/* Index 5 */
+.o_calendar_rollover_today {
+  background: #cfcfcf;
+  color: white;
+}
+
+/* Tabset */
+.o_tabset_rollover_top {
+  border-top-color: #f8c838;
+}
+
+.o_tabset_rollover_right {
+  border-right-color: #f8c838;
+}
+
+.o_tabset_rollover_bottom {
+  border-bottom-color: #f8c838;
+}
+
+.o_tabset_rollover_left {
+  border-left-color: #f8c838;
+}
+
+.o_tabset_selected_rollover_top {
+  border-top-color: #c9d8f5;
+}
+
+.o_tabset_selected_rollover_right {
+  border-right-color: #c9d8f5;
+}
+
+.o_tabset_selected_rollover_bottom {
+  border-bottom-color: #c9d8f5;
+}
+
+.o_tabset_selected_rollover_left {
+  border-left-color: #c9d8f5;
+}

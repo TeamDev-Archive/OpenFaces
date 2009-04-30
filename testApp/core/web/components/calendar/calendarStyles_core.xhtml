@@ -1,0 +1,37 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      Calendar styles
+    </span><br/><br/>
+    <o:calendar id="styled"
+                firstDayOfWeek="2"
+                value="#{CalendarBean.styledCalendarValue}"
+                bodyStyle="background: PowderBlue;"
+                daysHeaderStyle="background: #A8FFFE;"
+                dayStyle="color: red;"
+                footerStyle="background: greenyellow;"
+                headerStyle="background: #FF36F8;"
+                inactiveMonthDayStyle="color: yellow;"
+                rolloverDayStyle="font-weight: bold;"
+                rolloverDisabledDayStyle="color: darkgreen;"
+                rolloverInactiveMonthDayStyle="color: aquamarine;"
+                rolloverSelectedDayStyle="background: orange; font-weight: bold;"
+                rolloverTodayStyle="border: 1px solid black;"
+                rolloverWeekendDayStyle="background: red;"
+                selectedDayStyle="border: 1px solid springgreen;"
+                todayStyle="color: Teal;"
+                weekendDayStyle="border-style:dotted; border-color:RoyalBlue; border-width:1px;">
+    </o:calendar>
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="submit" />
+  
+</div>

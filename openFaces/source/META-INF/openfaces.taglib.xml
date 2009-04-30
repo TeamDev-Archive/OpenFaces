@@ -1,0 +1,838 @@
+<?xml version="1.0"?>
+<!DOCTYPE facelet-taglib PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN"
+        "http://java.sun.com/dtd/facelet-taglib_1_0.dtd">
+
+<facelet-taglib>
+  <namespace>http://openfaces.org/</namespace>
+
+
+  <tag>
+    <tag-name>dataTable</tag-name>
+    <component>
+      <component-type>org.openfaces.DataTable</component-type>
+      <renderer-type>org.openfaces.DataTableRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.DataTableTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>singleRowSelection</tag-name>
+    <component>
+      <component-type>org.openfaces.SingleRowSelection</component-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>multipleRowSelection</tag-name>
+    <component>
+      <component-type>org.openfaces.MultipleRowSelection</component-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>column</tag-name>
+    <component>
+      <component-type>org.openfaces.TableColumn</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.TableColumnTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>columns</tag-name>
+    <component>
+      <component-type>org.openfaces.TableColumns</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.TableColumnsTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>columnGroup</tag-name>
+    <component>
+      <component-type>org.openfaces.TableColumnGroup</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.TableColumnGroupTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>columnResizing</tag-name>
+    <component>
+      <component-type>org.openfaces.ColumnResizing</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.ColumnResizingTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>row</tag-name>
+    <component>
+      <component-type>org.openfaces.TableRow</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.TableRowTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>cell</tag-name>
+    <component>
+      <component-type>org.openfaces.TableCell</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.TableCellTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>selectionColumn</tag-name>
+    <component>
+      <component-type>org.openfaces.SelectionColumn</component-type>
+      <renderer-type>org.openfaces.SelectionColumnRenderer</renderer-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>checkboxColumn</tag-name>
+    <component>
+      <component-type>org.openfaces.CheckboxColumn</component-type>
+      <renderer-type>org.openfaces.CheckboxColumnRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.CheckBoxColumnTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>selectionColumn</tag-name>
+    <component>
+      <component-type>org.openfaces.SelectionColumn</component-type>
+      <renderer-type>org.openfaces.SelectionColumnRenderer</renderer-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>selectAllCheckbox</tag-name>
+    <component>
+      <component-type>org.openfaces.SelectAllCheckbox</component-type>
+      <renderer-type>org.openfaces.SelectAllCheckboxRenderer</renderer-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>dataTablePaginator</tag-name>
+    <component>
+      <component-type>org.openfaces.DataTablePaginator</component-type>
+      <renderer-type>org.openfaces.DataTablePaginatorRenderer</renderer-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>columnResizing</tag-name>
+    <component>
+      <component-type>org.openfaces.ColumnResizing</component-type>
+      <renderer-type>org.openfaces.ColumnResizingRenderer</renderer-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>treeTable</tag-name>
+    <component>
+      <component-type>org.openfaces.TreeTable</component-type>
+      <renderer-type>org.openfaces.TreeTableRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.TreeTableTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>staticTreeStructure</tag-name>
+    <component>
+      <component-type>org.openfaces.StaticTreeStructure</component-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>dynamicTreeStructure</tag-name>
+    <component>
+      <component-type>org.openfaces.DynamicTreeStructure</component-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>treeNode</tag-name>
+    <component>
+      <component-type>org.openfaces.TreeNode</component-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>treeColumn</tag-name>
+    <component>
+      <component-type>org.openfaces.TreeColumn</component-type>
+      <renderer-type>org.openfaces.TreeColumnRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.TreeColumnTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <!--<tag>-->
+  <!--<tag-name>imageExpansionToggle</tag-name>-->
+  <!--<component>-->
+  <!--<component-type>org.openfaces.ImageExpansionToggle</component-type>-->
+  <!--<renderer-type>org.openfaces.ImageExpansionToggleRenderer</renderer-type>-->
+  <!--</component>-->
+  <!--</tag>-->
+
+  <tag>
+    <tag-name>singleNodeSelection</tag-name>
+    <component>
+      <component-type>org.openfaces.SingleNodeSelection</component-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>multipleNodeSelection</tag-name>
+    <component>
+      <component-type>org.openfaces.MultipleNodeSelection</component-type>
+    </component>
+  </tag>
+
+
+  <tag>
+    <tag-name>dayTable</tag-name>
+    <component>
+      <component-type>org.openfaces.DayTable</component-type>
+      <renderer-type>org.openfaces.DayTableRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.DayTableTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>timetableEvent</tag-name>
+    <component>
+      <component-type>org.openfaces.TimetableEvent</component-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.TimetableEventTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>timetableEditingOptions</tag-name>
+    <component>
+      <component-type>org.openfaces.TimetableEditingOptions</component-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.TimetableEditingOptionsTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>eventEditorDialog</tag-name>
+    <component>
+      <component-type>org.openfaces.EventEditorDialog</component-type>
+      <renderer-type>org.openfaces.EventEditorDialogRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.EventEditorDialogTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>eventEditorPage</tag-name>
+    <component>
+      <component-type>org.openfaces.EventEditorPage</component-type>
+      <renderer-type>org.openfaces.EventEditorPageRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.EventEditorPageTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>eventActionBar</tag-name>
+    <component>
+      <component-type>org.openfaces.EventActionBar</component-type>
+      <renderer-type>org.openfaces.EventActionBarRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.EventActionBarTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>eventArea</tag-name>
+    <component>
+      <component-type>org.openfaces.EventArea</component-type>
+      <renderer-type>org.openfaces.EventAreaRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.EventAreaTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>eventPreview</tag-name>
+    <component>
+      <component-type>org.openfaces.EventPreview</component-type>
+      <renderer-type>org.openfaces.EventPreviewRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.EventPreviewTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>eventAction</tag-name>
+    <component>
+      <component-type>org.openfaces.EventAction</component-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.EventActionTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>deleteEventAction</tag-name>
+    <component>
+      <component-type>org.openfaces.DeleteEventAction</component-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.DeleteEventActionTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>dropDownField</tag-name>
+    <component>
+      <component-type>org.openfaces.DropDownField</component-type>
+      <renderer-type>org.openfaces.DropDownFieldRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.DropDownFieldTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>suggestionField</tag-name>
+    <component>
+      <component-type>org.openfaces.SuggestionField</component-type>
+      <renderer-type>org.openfaces.SuggestionFieldRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.SuggestionFieldTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>dropDownItem</tag-name>
+    <component>
+      <component-type>org.openfaces.DropDownItem</component-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>dropDownItems</tag-name>
+    <component>
+      <component-type>org.openfaces.DropDownItems</component-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>popupLayer</tag-name>
+    <component>
+      <component-type>org.openfaces.PopupLayer</component-type>
+      <renderer-type>org.openfaces.PopupLayerRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.window.PopupLayerTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>window</tag-name>
+    <component>
+      <component-type>org.openfaces.Window</component-type>
+      <renderer-type>org.openfaces.WindowRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.window.WindowTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>captionArea</tag-name>
+    <component>
+      <component-type>org.openfaces.CaptionArea</component-type>
+      <renderer-type>org.openfaces.CaptionAreaRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.CaptionAreaTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>captionButton</tag-name>
+    <component>
+      <component-type>org.openfaces.CaptionButton</component-type>
+      <renderer-type>org.openfaces.CaptionButtonRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.CaptionButtonTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>expansionToggleButton</tag-name>
+    <component>
+      <component-type>org.openfaces.ExpansionToggleButton</component-type>
+      <renderer-type>org.openfaces.ExpansionToggleButtonRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.ExpansionToggleButtonTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>closeWindowButton</tag-name>
+    <component>
+      <component-type>org.openfaces.CloseWindowButton</component-type>
+      <renderer-type>org.openfaces.CloseWindowButtonRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.window.CloseWindowButtonTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>maximizeWindowButton</tag-name>
+    <component>
+      <component-type>org.openfaces.MaximizeWindowButton</component-type>
+      <renderer-type>org.openfaces.MaximizeWindowButtonRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.window.MaximizeWindowButtonTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>minimizeWindowButton</tag-name>
+    <component>
+      <component-type>org.openfaces.MinimizeWindowButton</component-type>
+      <renderer-type>org.openfaces.MinimizeWindowButtonRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.window.MinimizeWindowButtonTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>confirmation</tag-name>
+    <component>
+      <component-type>org.openfaces.Confirmation</component-type>
+      <renderer-type>org.openfaces.ConfirmationRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.window.ConfirmationTagHandler</handler-class>
+    </component>
+  </tag>
+
+
+  <tag>
+    <tag-name>foldingPanel</tag-name>
+    <component>
+      <component-type>org.openfaces.FoldingPanel</component-type>
+      <renderer-type>org.openfaces.FoldingPanelRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.panel.FoldingPanelTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>chart</tag-name>
+    <component>
+      <component-type>org.openfaces.Chart</component-type>
+      <renderer-type>org.openfaces.ChartRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.ChartTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>pieChartView</tag-name>
+
+    <component>
+      <component-type>org.openfaces.PieChartView</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.PieChartViewTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>barChartView</tag-name>
+
+    <component>
+      <component-type>org.openfaces.BarChartView</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.BarChartViewTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>lineChartView</tag-name>
+    <component>
+      <component-type>org.openfaces.LineChartView</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.LineChartViewTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>pieSectorProperties</tag-name>
+    <component>
+      <component-type>org.openfaces.PieSectorProperties</component-type>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>lineProperties</tag-name>
+    <component>
+      <component-type>org.openfaces.LineProperties</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.LinePropertiesTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>chartTitle</tag-name>
+    <component>
+      <component-type>org.openfaces.ChartTitle</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.ChartTitleTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>chartLabels</tag-name>
+    <component>
+      <component-type>org.openfaces.ChartLabels</component-type>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>chartLegend</tag-name>
+    <component>
+      <component-type>org.openfaces.ChartLegend</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.ChartLegendTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>chartAxis</tag-name>
+    <component>
+      <component-type>org.openfaces.ChartAxis</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.AxisTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>categoryAxis</tag-name>
+    <component>
+      <component-type>org.openfaces.ChartCategoryAxis</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.AxisTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>numberAxis</tag-name>
+    <component>
+      <component-type>org.openfaces.ChartNumberAxis</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.AxisTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>dateAxis</tag-name>
+    <component>
+      <component-type>org.openfaces.ChartDateAxis</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.AxisTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>chartNoDataMessage</tag-name>
+    <component>
+      <component-type>org.openfaces.ChartNoDataMessage</component-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>chartGridLines</tag-name>
+
+    <component>
+      <component-type>org.openfaces.ChartGridLines</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.ChartGridLinesTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>dynamicImage</tag-name>
+
+    <component>
+      <component-type>org.openfaces.DynamicImage</component-type>
+      <handler-class>org.openfaces.taglib.facelets.output.DynamicImageTagHandler</handler-class>
+    </component>
+  </tag>
+
+
+  <tag>
+    <tag-name>hintLabel</tag-name>
+    <component>
+      <component-type>org.openfaces.HintLabel</component-type>
+      <renderer-type>org.openfaces.HintLabelRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.hintlabel.HintLabelTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>tabSet</tag-name>
+    <component>
+      <component-type>org.openfaces.TabSet</component-type>
+      <renderer-type>org.openfaces.TabSetRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.select.TabSetTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>tabSetItem</tag-name>
+    <component>
+      <component-type>org.openfaces.TabSetItem</component-type>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>tabSetItems</tag-name>
+    <component>
+      <component-type>org.openfaces.TabSetItems</component-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>tabbedPane</tag-name>
+    <component>
+      <component-type>org.openfaces.TabbedPane</component-type>
+      <renderer-type>org.openfaces.TabbedPaneRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.panel.TabbedPaneTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>tabbedPaneItem</tag-name>
+    <component>
+      <component-type>org.openfaces.TabbedPaneItem</component-type>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>tabbedPaneItems</tag-name>
+    <component>
+      <component-type>org.openfaces.TabbedPaneItems</component-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>twoListSelection</tag-name>
+    <component>
+      <component-type>org.openfaces.TwoListSelection</component-type>
+      <renderer-type>org.openfaces.TwoListSelectionRenderer</renderer-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>clientValidationSupport</tag-name>
+    <component>
+      <component-type>org.openfaces.ClientValidationSupport</component-type>
+      <handler-class>org.openfaces.taglib.facelets.validation.ClientValidationSupportTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>floatingIconMessage</tag-name>
+    <component>
+      <component-type>org.openfaces.FloatingIconMessage</component-type>
+      <handler-class>org.openfaces.taglib.facelets.validation.FloatingIconTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>stateChangeListener</tag-name>
+    <handler-class>org.openfaces.taglib.facelets.StateChangeListenerTagHandler</handler-class>
+  </tag>
+
+  <tag>
+    <tag-name>selectionChangeListener</tag-name>
+    <handler-class>org.openfaces.taglib.facelets.SelectionChangeListenerTagHandler</handler-class>
+  </tag>
+
+  <tag>
+    <tag-name>validateCustom</tag-name>
+    <validator>
+      <validator-id>org.openfaces.Custom</validator-id>
+      <handler-class>org.openfaces.taglib.facelets.validation.ValidateCustomTagHandler</handler-class>
+    </validator>
+  </tag>
+
+  <tag>
+    <tag-name>validateEmail</tag-name>
+    <validator>
+      <validator-id>org.openfaces.EMail</validator-id>
+      <handler-class>org.openfaces.taglib.facelets.validation.ValidateEmailTagHandler</handler-class>
+    </validator>
+  </tag>
+  <tag>
+    <tag-name>validateUrl</tag-name>
+    <validator>
+      <validator-id>org.openfaces.URL</validator-id>
+      <handler-class>org.openfaces.taglib.facelets.validation.ValidateUrlTagHandler</handler-class>
+    </validator>
+  </tag>
+  <tag>
+    <tag-name>validateRegex</tag-name>
+    <validator>
+      <validator-id>org.openfaces.RegularExpression</validator-id>
+      <handler-class>org.openfaces.taglib.facelets.validation.ValidateRegexTagHandler</handler-class>
+    </validator>
+  </tag>
+  <tag>
+    <tag-name>validateEqual</tag-name>
+    <validator>
+      <validator-id>org.openfaces.Equal</validator-id>
+      <handler-class>org.openfaces.taglib.facelets.validation.ValidateEqualTagHandler</handler-class>
+    </validator>
+  </tag>
+
+  <tag>
+    <tag-name>messageParam</tag-name>
+    <handler-class>org.openfaces.taglib.facelets.validation.MessageParameterTagHandler</handler-class>
+  </tag>
+
+
+  <tag>
+    <tag-name>dateChooser</tag-name>
+    <component>
+      <component-type>org.openfaces.DateChooser</component-type>
+      <renderer-type>org.openfaces.DateChooserRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.DateChooserTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>calendar</tag-name>
+    <component>
+      <component-type>org.openfaces.Calendar</component-type>
+      <renderer-type>org.openfaces.CalendarRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.calendar.CalendarTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>dateRanges</tag-name>
+    <component>
+      <component-type>org.openfaces.DateRanges</component-type>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>simpleDateRange</tag-name>
+    <component>
+      <component-type>org.openfaces.DateRange</component-type>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>scrollPosition</tag-name>
+    <component>
+      <component-type>org.openfaces.ScrollPosition</component-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>focus</tag-name>
+    <component>
+      <component-type>org.openfaces.Focus</component-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>reloadComponents</tag-name>
+    <component>
+      <component-type>org.openfaces.ReloadComponents</component-type>
+      <renderer-type>org.openfaces.ReloadComponentsRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.ajax.ReloadComponentsTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>ajaxSettings</tag-name>
+    <component>
+      <component-type>org.openfaces.AjaxSettings</component-type>
+      <renderer-type>org.openfaces.AjaxSettingsRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.ajax.AjaxSettingsTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>defaultProgressMessage</tag-name>
+    <component>
+      <component-type>org.openfaces.DefaultProgressMessage</component-type>
+      <renderer-type>org.openfaces.DefaultProgressMessageRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.ajax.DefaultProgressMessageTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>defaultSessionExpiration</tag-name>
+    <component>
+      <component-type>org.openfaces.DefaultSessionExpiration</component-type>
+      <renderer-type>org.openfaces.DefaultSessionExpirationRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.ajax.DefaultSessionExpirationTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>silentSessionExpiration</tag-name>
+    <component>
+      <component-type>org.openfaces.SilentSessionExpiration</component-type>
+      <renderer-type>org.openfaces.SilentSessionExpirationRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.ajax.SilentSessionExpirationTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>commandButton</tag-name>
+    <component>
+      <component-type>org.openfaces.CommandButton</component-type>
+      <renderer-type>org.openfaces.CommandButtonRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.action.CommandButtonTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>inputText</tag-name>
+    <component>
+      <component-type>org.openfaces.InputText</component-type>
+      <renderer-type>org.openfaces.InputTextRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.InputTextTagHandler</handler-class>
+    </component>
+  </tag>
+
+   <tag>
+    <tag-name>inputTextarea</tag-name>
+    <component>
+      <component-type>org.openfaces.InputTextarea</component-type>
+      <renderer-type>org.openfaces.InputTextareaRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.InputTextareaTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>popupMenu</tag-name>
+    <component>
+      <component-type>org.openfaces.PopupMenu</component-type>
+      <renderer-type>org.openfaces.PopupMenuRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.action.PopupMenuTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>menuSeparator</tag-name>
+    <component>
+      <component-type>org.openfaces.MenuSeparator</component-type>
+      <renderer-type>org.openfaces.MenuSeparatorRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.action.MenuSeparatorTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>menuItem</tag-name>
+    <component>
+      <component-type>org.openfaces.MenuItem</component-type>
+      <renderer-type>org.openfaces.MenuItemRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.action.MenuItemTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>loadBundle</tag-name>
+    <component>
+      <component-type>org.openfaces.LoadBundle</component-type>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>graphicText</tag-name>
+    <component>
+      <component-type>org.openfaces.GraphicText</component-type>
+      <renderer-type>org.openfaces.GraphicTextRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.output.GraphicTextTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>borderLayoutPanel</tag-name>
+    <component>
+      <component-type>org.openfaces.BorderLayoutPanel</component-type>
+      <renderer-type>org.openfaces.BorderLayoutPanelRenderer</renderer-type>
+	  <handler-class>org.openfaces.taglib.facelets.panel.BorderLayoutPanelTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>sidePanel</tag-name>
+    <component>
+      <component-type>org.openfaces.SidePanel</component-type>
+      <renderer-type>org.openfaces.SidePanelRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.panel.SidePanelTagHandler</handler-class>
+    </component>
+  </tag>
+
+   <tag>
+    <tag-name>spinner</tag-name>
+    <component>
+      <component-type>org.openfaces.Spinner</component-type>
+      <renderer-type>org.openfaces.SpinnerRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.input.SpinnerTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>forEach</tag-name>
+    <component>
+      <component-type>org.openfaces.ForEach</component-type>
+      <renderer-type>org.openfaces.ForEachRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.util.ForEachTagHandler</handler-class>
+    </component>
+  </tag>
+
+</facelet-taglib>

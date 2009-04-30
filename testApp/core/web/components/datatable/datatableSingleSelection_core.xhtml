@@ -1,0 +1,109 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+<h:commandButton id="submitID" value="Submit"/>
+<table cellpadding="0" cellspacing="5">
+<tr>
+  <td class="header">Just Single Selection</td>
+  <td class="header">With predefined rowData</td>
+</tr>
+<tr>
+  <td class="container">
+    <o:dataTable id="singleSelectionDataTable"
+                 var="singleSelection"
+                 value="#{SelectionBean.multipleSelectionCollection}"
+                 verticalGridLines="1px solid gray">
+      <o:singleRowSelection/>
+      <o:selectionColumn/>
+      <o:column id="col_first" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="first column header" id="singleSelectionDataTable_firstHeader"/>
+        </f:facet>
+        <h:outputText value="#{singleSelection.firstColumn}" id="singleSelectionDataTable_firstBody"/>
+        <f:facet name="footer">
+          <h:outputText value="first column footer" id="singleSelectionDataTable_firstFooter"/>
+        </f:facet>
+      </o:column>
+      <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="second column header" id="singleSelectionDataTable_secondHeader"/>
+        </f:facet>
+        <h:outputText value="#{singleSelection.secondColumn}" id="singleSelectionDataTable_secondBody"/>
+        <f:facet name="footer">
+          <h:outputText value="second column footer" id="singleSelectionDataTable_secondFooter"/>
+        </f:facet>
+      </o:column>
+    </o:dataTable>
+  </td>
+  <td class="container">
+    <o:dataTable id="withRowDataID"
+                 var="withRowData"
+                 value="#{SelectionBean.multipleSelectionCollection}"
+                 verticalGridLines="1px solid gray">
+      <o:singleRowSelection rowData="#{SelectionBean.selectedRow}"/>
+      <o:selectionColumn/>
+      <o:column id="col_first" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="first column header" id="withRowData_firstHeader"/>
+        </f:facet>
+        <h:outputText value="#{withRowData.firstColumn}" id="withRowData_firstBody"/>
+        <f:facet name="footer">
+          <h:outputText value="first column footer" id="withRowData_firstFooter"/>
+        </f:facet>
+      </o:column>
+      <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="second column header" id="withRowData_secondHeader"/>
+        </f:facet>
+        <h:outputText value="#{withRowData.secondColumn}" id="withRowData_secondBody"/>
+        <f:facet name="footer">
+          <h:outputText value="second column footer" id="withRowData_secondFooter"/>
+        </f:facet>
+      </o:column>
+    </o:dataTable>
+  </td>
+</tr>
+<tr>
+  <td class="header">With predefined rowIndex</td>
+  <td class="header"></td>
+</tr>
+<tr>
+  <td class="container">
+    <o:dataTable id="withRowIndexID"
+                 var="withRowIndex"
+                 value="#{SelectionBean.multipleSelectionCollection}"
+                 verticalGridLines="1px solid gray">
+      <o:singleRowSelection rowIndex="#{SelectionBean.rowIndex}" />
+      <o:selectionColumn/>
+      <o:column id="col_first" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="first column header" id="withRowIndex_firstHeader"/>
+        </f:facet>
+        <h:outputText value="#{withRowIndex.firstColumn}" id="withRowIndex_firstBody"/>
+        <f:facet name="footer">
+          <h:outputText value="first column footer" id="withRowIndex_firstFooter"/>
+        </f:facet>
+      </o:column>
+      <o:column id="col_second" style="padding: 10px 10px 10px 10px;">
+        <f:facet name="header">
+          <h:outputText value="second column header" id="withRowIndex_secondHeader"/>
+        </f:facet>
+        <h:outputText value="#{withRowIndex.secondColumn}" id="withRowIndex_secondBody"/>
+        <f:facet name="footer">
+          <h:outputText value="second column footer" id="withRowIndex_secondFooter"/>
+        </f:facet>
+      </o:column>
+    </o:dataTable>
+  </td>
+</tr>
+</table>
+
+
+</div>

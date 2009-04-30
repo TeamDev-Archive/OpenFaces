@@ -1,0 +1,533 @@
+/***********************************************/
+/* 3col_rightNav.css                              */
+/* Use with template 3col_rightNav.html           */
+/***********************************************/
+
+/***********************************************/
+/* HTML tag styles                             */
+/***********************************************/
+
+
+body{
+	font: 11px/1.65 Tahoma,sans-serif;
+	color: #333333;
+	margin: 0px;
+	padding: 0px;
+}
+
+.bold {
+	font: 11px Tahoma, sans-serif;
+	font-weight: bold;
+	color: #660000;
+}
+
+a{
+	font: 11px Tahoma, sans-serif;
+	color: #ffffff;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+a:visited{
+	font: 11px Tahoma, sans-serif;
+	color: #ffffff;
+	font-weight: bold;
+	text-decoration: underline;
+	text-align: left;
+}
+
+a:hover{
+	font: 11px Tahoma, sans-serif;
+	color: #ffffff;
+	font-weight: bold;
+	text-decoration: underline;
+	text-align: left;
+}
+
+a:visited:hover{
+	font: 11px Tahoma, sans-serif;
+	color: #ffffff;
+	font-weight: bold;
+	text-decoration: underline;
+	text-align: left;
+}
+
+
+a.ButtonLabel
+{
+	font-family: Verdana;
+	font-weight: bold;
+	font-size: 12px;
+	color: #2A3547;
+	text-decoration: none;
+}
+
+a.ButtonLabel:active
+{
+	font-family: Verdana;
+	font-weight: bold;
+	font-size: 12px;
+	color: #014A67;
+	text-decoration: none;
+}
+
+a.ButtonLabel:visited
+{
+	font-family: Verdana;
+	font-weight: bold;
+	font-size: 12px;
+	color: #2A3547;
+	text-decoration: none;
+}
+
+h2{
+	color:#000000;
+}
+
+.leftAlign {
+	text-align: left;
+	padding-left: 10px;
+}
+
+.centerAlign {
+	text-align: center;
+}
+
+h1{
+ font-family: Tahoma,sans-serif;
+ font-size: 24px;
+ color: #999966;
+ margin: 0px;
+ padding: 0px 0px 0px 0px;
+}
+
+.head, h3 {
+ font-family: Tahoma,sans-serif;
+ font-size: 18px;
+ color: #000000;
+ font-weight:bold;
+ margin: 0px;
+ padding: 0px;
+}
+
+.subhead, h3 {
+ font-family: Tahoma,sans-serif;
+ text-align:left;
+ font-size: 11px;
+ color: #990000;
+ font-weight:bold;
+ margin: 0px;
+ padding: 0px;
+}
+
+h4{
+ font-family: Tahoma,sans-serif;
+ font-size: 100%;
+ font-weight: normal;
+ color: #333333;
+ margin: 0px;
+ padding: 0px;
+}
+
+h5{
+ font-family: Tahoma,sans-serif;
+ font-size: 100%;
+ color: #334d55;
+ margin: 0px;
+ padding: 0px;
+}
+
+ul{
+ list-style-type: square;
+}
+
+ul ul{
+ list-style-type: disc;
+}
+
+ul ul ul{
+ list-style-type: none;
+}
+
+label{
+ font-family: Tahoma,sans-serif;
+ font-size: 100%;
+ font-weight: bold;
+ color: #334d55;
+}
+
+.filterHead {
+	background-color: #eee7cc;
+	height: 24px;
+}
+
+.selectedRows {
+	background-color: #bdd5da;
+}
+
+.tablesHeader {
+	text-align: center;
+	font-family: Tahoma;
+	font-weight: bold;
+	font-size: 11px;
+	color: #ffffff;
+	text-decoration: none;
+	background-color: #330000;
+	height: 22px;
+}
+
+.tablesEvenRow {
+	height: 22px;
+	font-family: Tahoma;
+	font-weight: normal;
+	font-size: 11px;
+	color: #333333;
+	text-decoration: none;
+	background: #FFFFFF;
+
+}
+
+.tablesOddRow {
+	height: 22px;
+	font-family: Tahoma;
+	font-weight: normal;
+	font-size: 11px;
+	color: #333333;
+	text-decoration: none;
+	background: #f7f4e9;
+
+}
+
+.DataLabel
+{
+	font-family: Tahoma;
+	font-weight: normal;
+	font-size: 11px;
+	font-weight:bold;
+	color: #000000;
+	text-decoration: none;
+	text-align: right;
+	max-width: 150px;
+}
+
+.DataField
+{
+	font-family: Tahoma;
+	font-weight: normal;
+	font-size: 11px;
+	color: #333333;
+	text-decoration: none;
+	text-align: left;
+	vertical-align: center;
+}
+
+.DataColumn
+{
+	font-family: Tahoma;
+	font-weight: normal;
+	font-size: 11px;
+	font-weight:normal;
+	color: #333333;
+	text-decoration: none;
+	text-align: center;
+	max-width: 150px;
+}
+
+.error
+{
+	font-family: Tahoma;
+	font-weight: bold;
+	font-size: 11px;
+	color: #cc0000;
+	text-decoration: none;
+}
+
+.message
+{
+	font-family: Tahoma;
+	font-weight: bold;
+	font-size: 11px;
+	color: green;
+	text-decoration: none;
+}
+
+/***********************************************/
+/* Layout Divs                                 */
+/***********************************************/
+
+
+#mastheadADPost{
+	padding: 0px 0px 0px 0px;
+	width: 100%;
+	height: 60px;
+	margin: 0px;
+	background-color:#ffffff;
+	background-image:url(../images/bg_headerPost.jpg);
+	background-repeat:no-repeat;
+	background-position:left;
+}
+#rightColumn{
+  	float: right;
+	width: 15%;
+	margin: 0px;
+}
+
+#leftColumn{
+  	float:left;
+	width: 15%;
+	padding-right: 0px;
+}
+
+#content{
+  	float: left;
+	padding: 0px 0px 0px 0px;
+}
+
+/***********************************************/
+/* Components                                  */
+/***********************************************/
+
+#siteName{
+	position:absolute;
+	top:16px;
+	right:12px;
+	width: 180px;
+	height: 30px;
+	background-image:url(../images/chiLogo.gif);
+	background-repeat:no-repeat;
+	background-position:right;
+}
+
+
+/************* #myMenuID styles **************/
+
+#myMenuID{
+	display: block;
+	border-bottom: 1px solid #ffffff;
+	text-align:center;
+	background-color:#090000;
+	width: 100%;
+	height: 25px;
+}
+
+#myMenuID img{
+ 	display: block;
+}
+
+#myMenuID a {
+	font-size: 90%;
+	padding: 0 4px 0 0;
+}
+
+/*************** #pageName styles **************/
+
+#pageName{
+	margin: 0px;
+	padding: 0px 0px 0px 10px;
+}
+
+/************* #breadCrumb styles *************/
+
+#breadCrumb{
+	position:relative;
+	display:block;
+	font-size: 80%;
+	padding: 2px 0px 2px 10px;
+	text-align:left;
+	background-color:#211340;
+	filter:alpha(opacity=100);
+	opacity: 1.0;
+	-moz-opacity:1.0;
+}
+
+
+/************** .feature styles ***************/
+
+.feature{
+	padding: 0px 0px 0px 0px;
+	font-size: 70%;
+}
+
+.feature h3{
+	padding: 30px 0px 5px 0px;
+	text-align: center;
+}
+
+.feature img{
+	float: left;
+	padding: 10px 10px 0px 0px;
+}
+
+
+/************** .story styles *****************/
+
+.story{
+	clear: both;
+	padding: 10px 0px 0px 10px;
+	font-size: 80%;
+}
+
+.story p{
+	padding: 0px 0px 10px 0px;
+}
+
+
+/************* #siteInfo styles ***************/
+
+#siteInfo{
+	clear: both;
+	border-top: 1px solid #000000;
+	border-bottom: 1px solid #000000;
+	font: 11px/1.65 Tahoma, sans-serif;
+	color: #ffffff;
+	height: 21px;
+	text-align:center;
+	background-color:#660000;
+}
+
+#siteInfo img{
+	padding: 4px 4px 4px 10px;
+	vertical-align: middle;
+}
+
+
+/************* #search styles ***************/
+
+#search{
+	padding: 5px 0px 5px 10px;
+	border-bottom: 1px solid #cccccc;
+	font-size: 90%;
+}
+
+#search form{
+ margin: 0px;
+ padding: 0px;
+}
+
+#search label{
+	display: block;
+	margin: 0px;
+	padding: 0px;
+}
+
+
+/*********** #navBar link styles ***********/
+
+#navBar ul a:link, #navBar ul a:visited {display: block;}
+#navBar ul {list-style: none; margin: 0; padding: 0;}
+
+/* hack to fix IE/Win's broken rendering of block-level anchors in lists */
+#navBar li {border-bottom: 1px solid #EEE;}
+
+/* fix for browsers that don't need the hack */
+html>body #navBar li {border-bottom: none;}
+
+
+/*********** #sectionLinks styles ***********/
+
+#sectionLinks{
+	position: relative;
+	margin: 0px;
+	padding: 0px;
+	border-bottom: 1px solid #cccccc;
+	font-size: 90%;
+}
+
+#sectionLinks h3{
+	padding: 10px 0px 2px 10px;
+}
+
+#sectionLinks a {
+	display: block;
+	border-top: 1px solid #cccccc;
+	padding: 2px 0px 2px 10px;
+}
+
+#sectionLinks a:hover{
+	background-color: #dddddd;
+}
+
+
+/*********** .relatedLinks styles ***********/
+
+.relatedLinks{
+	margin: 0px;
+	padding: 0px 0px 10px 10px;
+	font-size: 90%;
+}
+
+.relatedLinks h3{
+	padding: 10px 0px 2px 0px;
+}
+
+.relatedLinks a:link,
+.relatedLinks a:visited {
+	display: block;
+}
+
+/************** #advert styles **************/
+
+#advert{
+	padding: 30px 0px 10px;
+}
+
+#advert img{
+	display: block;
+}
+
+
+/************** #headlines styles **************/
+
+#headlines{
+	margin: 0px;
+	padding: 10px 0px 20px 10px;
+}
+
+#headlines p{
+	padding: 5px 0px 5px 0px;
+}
+
+.PopupHead {
+ font-family: Tahoma,sans-serif;
+ font-size: 18px;
+ color: #000000;
+ font-weight:bold;
+ margin: 0px;
+ padding: 0px;
+ text-align: left
+}
+
+
+.PopupField
+{
+	font-family: Tahoma;
+	font-weight: normal;
+	font-size: 11px;
+	color: #333333;
+	text-decoration: none;
+	text-align: left;
+	background-color:#f7f4e9;
+	padding: 10px;
+}
+
+.PopupLabel
+{
+	font-family: Tahoma;
+	font-weight: normal;
+	font-size: 11px;
+	font-weight:bold;
+	color: #333333;
+	text-decoration: none;
+	vertical-align: top;
+}
+.PopupMessage
+{
+	font-family: Tahoma;
+	font-weight: bold;
+	font-size: 11px;
+	text-decoration: none;
+}
+
+.top {
+	vertical-align:top;
+}

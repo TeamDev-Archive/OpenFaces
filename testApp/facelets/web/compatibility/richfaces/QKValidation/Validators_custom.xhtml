@@ -1,0 +1,74 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+<head>
+  <title>Custom Validators</title>
+  <style type="text/css">
+    .demo_table td {
+      border-bottom: 1px solid #E0E0E0;
+      padding: 4px;
+    }
+  </style>
+  <script type="text/javascript">
+    var formName = "validationForm:";
+
+    function fillInvalidData() {
+      var field = document.getElementById(formName + "customValidatorField");
+      field.value = "Incorrect value";
+      field = document.getElementById(formName + "regExpValidatorField");
+      field.value = "Incorrect value";
+
+      field = document.getElementById(formName + "emailValidatorField");
+      field.value = "Not e-mail address";
+      field = document.getElementById(formName + "urlValidatorField");
+      field.value = "Not URL address";
+      field = document.getElementById(formName + "equalValidatorField1");
+      field.value = "password 1";
+      field = document.getElementById(formName + "equalValidatorField2");
+      field.value = "password 2";
+    }
+
+    function fillValidData() {
+      var field = document.getElementById(formName + "customValidatorField");
+      field.value = "TeamDev";
+
+      field = document.getElementById(formName + "regExpValidatorField");
+      field.value = "+38 (057) 555 55 55";
+      field = document.getElementById(formName + "emailValidatorField");
+      field.value = "someone@gmail.com";
+      field = document.getElementById(formName + "urlValidatorField");
+      field.value = "http://teamdev.com";
+      field = document.getElementById(formName + "equalValidatorField1");
+      field.value = "A8edf2-ewer";
+      field = document.getElementById(formName + "equalValidatorField2");
+      field.value = "A8edf2-ewer";
+    }
+
+    function firstLoad() {
+      var helper = document.getElementById(formName + "firstLoadHelper");
+      if (helper.value == true || helper.value == 'true') {
+        fillInvalidData();
+        helper.value = false;
+      }
+    }
+
+    firstLoad();
+  </script>
+</head>
+
+<body>
+<f:view>
+  <h:form id="validationForm">
+    <ui:include src="Validators_custom_core.xhtml"/>
+  </h:form>
+</f:view>
+
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <table>
+      <tr>
+        <td class="container">
+          <o:treeTable id="treeTable"
+                       var="color"
+                       expansionState="allExpanded">
+            <o:singleNodeSelection/>
+            <o:staticTreeStructure>
+              <o:treeNode value="Colors">
+                <o:treeNode value="Warm colors">
+                  <o:treeNode value="Red"/>
+                  <o:treeNode value="Yellow"/>
+                </o:treeNode>
+                <o:treeNode value="Cold colors">
+                  <o:treeNode value="Blue"/>
+                  <o:treeNode value="Purple"/>
+                </o:treeNode>
+              </o:treeNode>
+            </o:staticTreeStructure>
+            <o:treeColumn bodyOnclick="logJSEvents('bodyOnclick works', 'empty'); logJSEvents(event.type, 'empty');"
+                          bodyOndblclick="logJSEvents('bodyOndblclick works', 'empty'); logJSEvents(event.type, 'empty');"
+                          bodyOnmousedown="logJSEvents('bodyOnmousedown works', 'empty'); logJSEvents(event.type, 'empty');"
+                          bodyOnmousemove="logJSEvents('bodyOnmousemove works', 'empty'); logJSEvents(event.type, 'empty');"
+                          bodyOnmouseout="logJSEvents('bodyOnmouseout works', 'empty'); logJSEvents(event.type, 'empty');"
+                          bodyOnmouseover="logJSEvents('bodyOnmouseover works', 'empty'); logJSEvents(event.type, 'empty');"
+                          bodyOnmouseup="logJSEvents('bodyOnmouseup works', 'empty'); logJSEvents(event.type, 'empty');">
+              <h:outputText value="#{color}" id="body">
+              </h:outputText>
+            </o:treeColumn>
+          </o:treeTable>
+        </td>
+      </tr>
+    </table>
+    <div id="empty"></div>
+  
+</div>

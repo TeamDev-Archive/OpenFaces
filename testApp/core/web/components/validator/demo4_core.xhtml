@@ -1,0 +1,25 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <div class="capture">
+      <o:clientValidationSupport clientValidation="onDemand"></o:clientValidationSupport>
+      <h:messages></h:messages>
+      Required:
+      <br/>
+      <h:inputText id="required_input" value="#{ValidatorBean.demo1}" validator="#{ValidatorBean.customValidator}"/>
+      <br/>
+      <br/>
+
+      <h:commandButton value="submit" type="submit"></h:commandButton>
+    </div>
+    <h:commandButton value="1" onclick="setBk('#FFFF95');"></h:commandButton>
+    <h:commandButton value="2" onclick="setBk('#B0FF7D');"></h:commandButton>
+    <h:commandButton value="3" onclick="setBk('#CED0A0');"></h:commandButton>
+  
+</div>

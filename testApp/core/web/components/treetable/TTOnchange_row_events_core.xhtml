@@ -1,0 +1,71 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+    <a href="../../main.jsf">Return to main page</a>
+    <table>
+      <tr>
+        <td class="header">Single Selection</td>
+        <td class="header">Multiple Selection</td>
+        <td class="header">Row Events</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:treeTable id="singleSelectionTreeTableID"
+                       var="node"
+                       nodeLevelVar="level">
+            <o:singleNodeSelection style="background: yellow;"
+                                   onchange="logJSEvents('single onchange works', 'empty'); logJSEvents(event.type, 'empty');"/>
+            <o:dynamicTreeStructure nodeChildren="#{TreeTableFuncTestsBean.usersTreeChildren}"
+                                    nodeKey="#{TreeTableFuncTestsBean.usersTreeNodeKey}"/>
+            <o:treeColumn id="singleSelectionTreeTable_columnID">
+              <h:outputText rendered="#{level == 0}" value="#{node.name}" id="categoryID"/>
+              <h:outputText rendered="#{level == 1}" value="#{node.userName}" id="nameID"/>
+            </o:treeColumn>
+          </o:treeTable>
+        </td>
+        <td class="container">
+          <o:treeTable id="multipleSelectionTreeTableID"
+                       var="node"
+                       nodeLevelVar="level">
+            <o:multipleNodeSelection style="background: yellow;"
+                                     onchange="logJSEvents('multiple onchange works', 'empty'); logJSEvents(event.type, 'empty');"/>
+            <o:dynamicTreeStructure nodeChildren="#{TreeTableFuncTestsBean.usersTreeChildren}"
+                                    nodeKey="#{TreeTableFuncTestsBean.usersTreeNodeKey}"/>
+            <o:treeColumn id="singleSelectionTreeTable_columnID">
+              <h:outputText rendered="#{level == 0}" value="#{node.name}" id="categoryID"/>
+              <h:outputText rendered="#{level == 1}" value="#{node.userName}" id="nameID"/>
+            </o:treeColumn>
+          </o:treeTable>
+        </td>
+        <td class="container">
+          <o:treeTable id="rowEventsTreeTable"
+                       var="node"
+                       nodeLevelVar="level">
+            <o:row
+                    onclick="logJSEvents('rowOnclick works', 'empty'); logJSEvents(event.type, 'empty');"
+                    ondblclick="logJSEvents('rowOndblclick works', 'empty'); logJSEvents(event.type, 'empty');"
+                    onmousedown="logJSEvents('rowOnmousedown works', 'empty'); logJSEvents(event.type, 'empty');"
+                    onmousemove="logJSEvents('rowOnmousemove works', 'empty'); logJSEvents(event.type, 'empty');"
+                    onmouseout="logJSEvents('rowOnmouseout works', 'empty'); logJSEvents(event.type, 'empty');"
+                    onmouseover="logJSEvents('rowOnmouseover works', 'empty'); logJSEvents(event.type, 'empty');"
+                    onmouseup="logJSEvents('rowOnmouseup works', 'empty'); logJSEvents(event.type, 'empty');"
+                    />
+
+            <o:dynamicTreeStructure nodeChildren="#{TreeTableFuncTestsBean.usersTreeChildren}"
+                                    nodeKey="#{TreeTableFuncTestsBean.usersTreeNodeKey}"/>
+            <o:treeColumn id="singleSelectionTreeTable_columnID">
+              <h:outputText rendered="#{level == 0}" value="#{node.name}" id="categoryID"/>
+              <h:outputText rendered="#{level == 1}" value="#{node.userName}" id="nameID"/>
+            </o:treeColumn>
+          </o:treeTable>
+        </td>
+      </tr>
+    </table>
+    <div id="empty"></div>
+  
+</div>

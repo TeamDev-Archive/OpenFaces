@@ -1,0 +1,130 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  <a href="../functional_testing.jsf">Return to main testing page</a><br/><br/>
+<div style="background:beige; border: 3px solid black; position:absolute;left:100; top:100;">
+<o:calendar/>
+<br/><br/>
+<input id="onclick" type="button" value="Show confirmation"
+       onclick="O$('fn:onclick_conf').runConfirmedFunction(function(){alert('action done');});"/>
+<o:confirmation id="onclick_conf" standalone="true"/>
+<br/><br/>
+<o:dataTable var="table_events"
+             value="#{TestEventsBean.tableTestCollection}"
+             verticalGridLines="1px solid gray">
+  <o:column id="col_one">
+    <f:facet name="header">
+      <h:outputText value="Col1"/>
+    </f:facet>
+    <h:outputText value="#{table_events.firstColumn}"/>
+  </o:column>
+  <o:column id="col_two">
+    <f:facet name="header">
+      <h:outputText value="Col2"/>
+    </f:facet>
+    <h:outputText value="#{table_events.secondColumn}"/>
+  </o:column>
+  <o:column id="col_third">
+    <f:facet name="header">
+      <h:outputText value="Col3"/>
+    </f:facet>
+    <h:outputText value="#{table_events.thirdColumn}"/>
+  </o:column>
+</o:dataTable>
+<br/><br/>
+<o:dateChooser/>
+<br/><br/>
+<o:dropDownField>
+  <o:dropDownItem value="Red"/>
+  <o:dropDownItem value="Yellow"/>
+  <o:dropDownItem value="Blue"/>
+</o:dropDownField>
+<br/><br/>
+<o:dynamicImage data="#{DynamicImageDataBean.testData}"></o:dynamicImage>
+<br/><br/>
+<o:foldingPanel>
+  <f:facet name="caption">
+    <h:outputText value="Test caption"/>
+  </f:facet>
+  <h:outputText value="Test text for folding panel"/>
+</o:foldingPanel>
+<br/><br/>
+<o:hintLabel style="width: 140px; font-weight: 18px; border: 2px solid black;"
+             hintStyle="padding: 10px 10px 10px 10px; color: gray; font-weight: 18px; border: 1px solid gray;"
+             value="Test text for client-side events testing"
+             onclick="alert('onclick works!');"
+             hint="Test text for client-side events testing"/>
+<br/><br/>
+<o:popupLayer visible="true"
+              left="250"
+              top="1150"
+              width="100px"
+              height="100px">
+  <h:outputText value="This is popup layer!"/>
+</o:popupLayer>
+<br/><br/>
+<o:tabSet>
+  <o:tabSetItem>
+    <h:outputText value="Client"/>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="Server"/>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="Custom"/>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="Default"/>
+  </o:tabSetItem>
+</o:tabSet>
+<br/><br/>
+<o:tabbedPane>
+  <o:tabbedPaneItem>
+    <f:facet name="tab">
+      <h:outputText value="First tab"/>
+    </f:facet>
+    <h:outputText value="Some text on the first tab"/>
+  </o:tabbedPaneItem>
+  <o:tabbedPaneItem>
+    <f:facet name="tab">
+      <h:outputText value="Second tab"/>
+    </f:facet>
+    <h:outputText value="Some text on the second tab"/>
+  </o:tabbedPaneItem>
+</o:tabbedPane>
+<br/><br/>
+<o:treeTable var="color" expansionState="allExpanded">
+  <o:staticTreeStructure>
+    <o:treeNode value="Colors">
+      <o:treeNode value="Warm colors">
+        <o:treeNode value="Red"/>
+        <o:treeNode value="Yellow"/>
+      </o:treeNode>
+      <o:treeNode value="Cold colors">
+        <o:treeNode value="Blue"/>
+        <o:treeNode value="Purple"/>
+      </o:treeNode>
+    </o:treeNode>
+  </o:staticTreeStructure>
+  <o:treeColumn>
+    <h:outputText value="#{color}">
+    </h:outputText>
+  </o:treeColumn>
+</o:treeTable>
+<br/><br/>
+<o:twoListSelection leftListboxHeader="Available items"
+                    onadd="alert('onadd works!');"
+                    rightListboxHeader="Selected items">
+  <f:selectItem itemValue="item 1 value" itemLabel="item 1 label"/>
+  <f:selectItem itemValue="item 5 value" itemLabel="item 5 label" itemDisabled="false"/>
+  <f:selectItem itemValue="item 3 value" itemLabel="item 3 label"/>
+  <f:selectItem itemValue="item 4 value" itemLabel="item 4 label" itemDisabled="true"/>
+</o:twoListSelection>
+</div>
+
+</div>

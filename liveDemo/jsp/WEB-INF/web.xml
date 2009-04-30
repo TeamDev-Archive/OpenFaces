@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
+
+  <display-name>OpenFaces Demo Application</display-name>
+  <description>OpenFaces Demo Application</description>
+
+  <context-param>
+    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+    <param-value>server</param-value>
+  </context-param>
+
+  <context-param>
+    <description>This parameter specifies the way of session expiration handling.
+      Possible values:
+      default - the confirmation that asks the user to reload the page appears when the current session is expired.
+      silent - the page is reloaded when the current session is expired.
+    </description>
+    <param-name>org.openfaces.ajax.sessionExpiration</param-name>
+    <param-value>default</param-value>
+  </context-param>
+
+  <context-param>
+    <description>This flag indicates whether client-side validation for the application is enabled.
+      Possible values:
+      onSubmit - Client-side validation is enabled for all the components within the application
+      and is triggered automatically before each form submission.
+      onDemand - Client-side validation is enabled for all the components within the application,
+      but is not triggered automatically.
+      off - Client-side validation is turned off for the application. This is the default value.
+    </description>
+    <param-name>org.openfaces.validation.clientValidation</param-name>
+    <param-value>onSubmit</param-value>
+  </context-param>
+
+  <context-param>
+    <description>This flag indicates whether the OpenFaces validation
+      for the entire application is disabled. The default is "false".
+      If the org.openfaces.validation.disabled property is set to "true", all OpenFaces validation features
+      are disabled. This property can be used for debugging purposes.
+    </description>
+    <param-name>org.openfaces.validation.disabled</param-name>
+    <param-value>false</param-value>
+  </context-param>
+
+  <context-param>
+    <description>This flag indicates whether validatable components use the default presentation
+      if no validation or conversion error presentation is set for these components.
+      This property is relevant when client-side validation is enabled for the application.
+    </description>
+    <param-name>org.openfaces.validation.useDefaultClientPresentation</param-name>
+    <param-value>true</param-value>
+  </context-param>
+
+  <context-param>
+    <description>This flag indicates whether validatable components use the default presentation
+      if no validation or conversion error presentation is set for these components.
+      This property is relevant when client-side validation is disabled for the application.
+    </description>
+    <param-name>org.openfaces.validation.useDefaultServerPresentation</param-name>
+    <param-value>true</param-value>
+  </context-param>
+
+  <context-param>
+    <description>The full class name of the component that will be used as a default validation
+      presentation component. The component should extend the UIMessage class.
+      If this parameter is omitted, the FloatingIconMessage component is used as
+      a default validation presentation component.
+    </description>
+    <param-name>org.openfaces.validation.defaultPresentationClass</param-name>
+    <param-value>org.openfaces.component.validation.FloatingIconMessage</param-value>
+  </context-param>
+
+  <!--
+  <context-param>
+    <description>Parameters for the validation presentation component are specified as
+      application-scope context parameters, with the name that contains the class name of the default
+      validation presentation component without package specification,
+      following dot ".", and the component's attribute name.
+    </description>
+    <param-name>FloatingIconMessage.style</param-name>
+    <param-value>background: red;</param-value>
+  </context-param>
+  -->
+
+  <!--
+  <context-param>
+    <description>Specifies the message that appears when any Ajax request is in progress.
+      This parameter should be specified as portion of HTML that will be shown in the
+      upper-right corner upon an Ajax request.
+    </description>
+    <param-name>org.openfaces.ajaxMessageHTML</param-name>
+    <param-value><![CDATA[
+      <div style="background: white;
+                font: Tahoma 15pt normal;
+                border: 1px solid black;">
+        <img src="/LiveDemo/images/progress.gif"/>
+        Ajax request is currently in progress!
+      </div>
+    ]]></param-value>
+  </context-param>
+  -->
+
+  <context-param>
+    <description>This flag indicates whether the focus is saved between form submissions
+      for all application pages. The default is "false".
+    </description>
+    <param-name>org.openfaces.autoSaveFocus</param-name>
+    <param-value>true</param-value>
+  </context-param>
+
+  <context-param>
+    <description>This flag indicates whether the scroll position is tracked for
+      all application pages. The default is "false".
+    </description>
+    <param-name>org.openfaces.autoSaveScrollPos</param-name>
+    <param-value>true</param-value>
+  </context-param>
+
+  <!-- FILTER FOR PROCESSING INTERNAL OPENFACES RESOURCES -->
+  <filter>
+    <filter-name>ResourceFilter</filter-name>
+    <filter-class>org.openfaces.util.ResourceFilter</filter-class>
+  </filter>
+
+  <filter>
+    <filter-name>LiveDemoFilter</filter-name>
+    <filter-class>org.openfaces.demo.filter.LiveDemoFilter</filter-class>
+  </filter>
+
+  <!-- MAPPING FOR OPENFACES RESOURCE FILTER -->
+  <filter-mapping>
+    <filter-name>ResourceFilter</filter-name>
+    <servlet-name>Faces Servlet</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>ResourceFilter</filter-name>
+    <url-pattern>/openFacesResources/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>LiveDemoFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <servlet>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>*.jsf</url-pattern>
+  </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+</web-app>
+

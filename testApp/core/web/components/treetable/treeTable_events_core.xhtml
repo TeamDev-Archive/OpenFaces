@@ -1,0 +1,78 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <input type="button" value="click" id="click" onclick="return false;"/> <br/><br/>
+    <o:focus focusedComponentId="mousemoveTreeTable"/>
+    <table>
+      <tr>
+        <td class="container">
+          <o:treeTable id="eventsTreeTable"
+                       var="color"
+                       onclick="logJSEvents('onclick works', 'empty'); logJSEvents(event.type, 'empty');"
+                       ondblclick="logJSEvents('ondblclick works', 'empty'); logJSEvents(event.type, 'empty');"
+                       onkeydown="logJSEvents('onkeydown works', 'empty'); logJSEvents(event.type, 'empty');"
+                       onkeypress="logJSEvents('onkeypress works', 'empty'); logJSEvents(event.type, 'empty');"
+                       onkeyup="logJSEvents('onkeyup works', 'empty'); logJSEvents(event.type, 'empty');"
+                       onmousedown="logJSEvents('onmousedown works', 'empty'); logJSEvents(event.type, 'empty');"
+                       onmouseout="logJSEvents('onmouseout works', 'empty'); logJSEvents(event.type, 'empty');"
+                       onmouseover="logJSEvents('onmouseover works', 'empty'); logJSEvents(event.type, 'empty');"
+                       onmouseup="logJSEvents('onmouseup works', 'empty'); logJSEvents(event.type, 'empty');"
+                       expansionState="allExpanded">
+            <o:singleNodeSelection/>
+            <o:staticTreeStructure>
+              <o:treeNode value="Colors">
+                <o:treeNode value="Warm colors">
+                  <o:treeNode value="Red"/>
+                  <o:treeNode value="Yellow"/>
+                </o:treeNode>
+                <o:treeNode value="Cold colors">
+                  <o:treeNode value="Blue"/>
+                  <o:treeNode value="Purple"/>
+                </o:treeNode>
+              </o:treeNode>
+            </o:staticTreeStructure>
+            <o:treeColumn>
+              <h:outputText value="#{color}">
+              </h:outputText>
+            </o:treeColumn>
+          </o:treeTable>
+        </td>
+        <td class="container">
+          <o:treeTable id="mousemoveTreeTable"
+                       var="color"
+                       onblur="logJSEvents('onblur works', 'empty'); logJSEvents(event.type, 'empty');"
+                       onfocus="logJSEvents('onfocus works', 'empty'); logJSEvents(event.type, 'empty');"
+                       onmousemove="logJSEvents('onmousemove works', 'empty'); logJSEvents(event.type, 'empty');"
+                       expansionState="allExpanded">
+            <o:singleNodeSelection/>
+            <o:staticTreeStructure>
+              <o:treeNode value="Colors">
+                <o:treeNode value="Warm colors">
+                  <o:treeNode value="Red"/>
+                  <o:treeNode value="Yellow"/>
+                </o:treeNode>
+                <o:treeNode value="Cold colors">
+                  <o:treeNode value="Blue"/>
+                  <o:treeNode value="Purple"/>
+                </o:treeNode>
+              </o:treeNode>
+            </o:staticTreeStructure>
+            <o:treeColumn>
+              <h:outputText value="#{color}">
+              </h:outputText>
+            </o:treeColumn>
+          </o:treeTable>
+        </td>
+      </tr>
+    </table>
+    <div id="empty"></div>
+  
+</div>

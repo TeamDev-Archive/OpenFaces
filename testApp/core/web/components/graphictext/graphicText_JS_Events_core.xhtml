@@ -1,0 +1,48 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+  <h:commandButton value="Submit"/>
+  <br/><br/>
+
+  <table>
+    <tr>
+      <td class="header">onclick</td>
+      <td class="header">ondblclick</td>
+      <td class="header">onmouseup, onmousedown</td>
+      <td class="header">onmouseover, onmouseout</td>
+      <td class="header">onmousemove</td>
+    </tr>
+    <tr>
+      <td class="container">
+        <o:graphicText value="Humpty Dumpty" id="test" direction="90"
+                       onclick="logJSEvents('onclick works', 'empty'); logJSEvents(event.type, 'empty');"/>
+      </td>
+      <td class="container">
+        <o:graphicText value="Humpty Dumpty" id="test1" direction="90"
+                       ondblclick="logJSEvents('ondblclick works', 'empty'); logJSEvents(event.type, 'empty');"/>
+      </td>
+      <td class="container">
+        <o:graphicText value="Humpty Dumpty" id="test2" direction="90"
+                       onmouseup="logJSEvents('onmouseup works', 'empty'); logJSEvents(event.type, 'empty');"
+                       onmousedown="logJSEvents('onmousedown works', 'empty'); logJSEvents(event.type, 'empty');"/>
+      </td>
+      <td class="container">
+        <o:graphicText value="Humpty Dumpty" id="test3" direction="90"
+                       onmouseover="logJSEvents('onmouseover works', 'empty'); logJSEvents(event.type, 'empty');"
+                       onmouseout="logJSEvents('onmouseout works', 'empty'); logJSEvents(event.type, 'empty');"/>
+      </td>
+      <td class="container">
+        <o:graphicText value="Humpty Dumpty" id="test4" direction="90"
+                       onmousemove="logJSEvents('onmousemove works', 'empty'); logJSEvents(event.type, 'empty');"/>
+      </td>
+    </tr>
+  </table>
+  <div id="empty"></div>
+</div>

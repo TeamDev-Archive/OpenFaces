@@ -1,0 +1,44 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <br/>
+
+    <o:foldingPanel id="styledFP" expanded="false"
+                    style="border: 5px solid orange; width: 200px;"
+                    captionStyle="border: 2px dashed blue; background: LightBlue; color: DarkOrange; font-weight: bold;"
+                    contentStyle="background: LightYellow; color: red; border: 2px solid springgreen;">
+
+      <f:facet name="caption">
+        <f:verbatim>Styled</f:verbatim>
+      </f:facet>
+      <o:captionArea>
+        <o:expansionToggleButton
+                collapsedImageUrl="collapsed.gif"
+                collapsedPressedImageUrl="collapsed_pressed.gif"
+                collapsedRolloverImageUrl="collapsed_rollover.gif"
+                expandedImageUrl="expanded.gif"
+                expandedPressedImageUrl="expanded_pressed.gif"
+                expandedRolloverImageUrl="expanded_rollover.gif"/>
+      </o:captionArea>
+
+
+      <h:outputText id="styledText" value="test FoldingPanel styles"/>
+    </o:foldingPanel>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="submit"/>
+  
+</div>

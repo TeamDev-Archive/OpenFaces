@@ -1,0 +1,145 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+<a href="../../main.jsf">Return to main page</a>
+<br/>
+<h:commandButton value="submit" id="submit"/>
+<br/>
+<table>
+<tr>
+  <td class="header">onfocus, onblur</td>
+  <td class="header">onmouseover, onmouseout</td>
+  <td class="header">onmouseup, onmousedown</td>
+  <td class="header">onkeypress, onkeydown, onkeyup, onchange</td>
+  <td class="header">onclick, ondblclick, ondropdown, oncloseup</td>
+  <td class="header">onmousemove</td>
+</tr>
+<tr>
+<td class="container">
+  <o:suggestionField id="focusBlur"
+                     autoComplete="true"
+                     manualListOpeningAllowed="true"
+                     suggestionDelay="0"
+                     suggestionMinChars="0"
+                     onblur="logJSEvents('onblur works', 'empty'); logJSEvents(event.type, 'empty');"
+                     onfocus="logJSEvents('onfocus works', 'empty'); logJSEvents(event.type, 'empty');">
+    <o:dropDownItem value="OpenFaces">
+      <h:outputText value="OpenFaces"/>
+    </o:dropDownItem>
+    <o:dropDownItem value="DummyFaces">
+      <h:outputText value="DummyFaces"/>
+    </o:dropDownItem>
+    <o:dropDownItem value="FeatureLessFaces">
+      <h:outputText value="FeatureLessFaces"/>
+    </o:dropDownItem>
+  </o:suggestionField>
+</td>
+<td class="container">
+  <o:suggestionField id="mouseoverMouseout"
+                     autoComplete="true"
+                     manualListOpeningAllowed="true"
+                     suggestionDelay="0"
+                     suggestionMinChars="0"
+                     onmouseout="logJSEvents('onmouseout works', 'empty'); logJSEvents(event.type, 'empty');"
+                     onmouseover="logJSEvents('onmouseover works', 'empty'); logJSEvents(event.type, 'empty');">
+    <o:dropDownItem value="OpenFaces">
+      <h:outputText value="OpenFaces"/>
+    </o:dropDownItem>
+    <o:dropDownItem value="DummyFaces">
+      <h:outputText value="DummyFaces"/>
+    </o:dropDownItem>
+    <o:dropDownItem value="FeatureLessFaces">
+      <h:outputText value="FeatureLessFaces"/>
+    </o:dropDownItem>
+  </o:suggestionField>
+</td>
+<td class="container">
+  <o:suggestionField id="mouseupMousedown"
+                     autoComplete="true"
+                     manualListOpeningAllowed="true"
+                     suggestionDelay="0"
+                     suggestionMinChars="0"
+                     onmousedown="logJSEvents('onmousedown works', 'empty'); logJSEvents(event.type, 'empty');"
+                     onmouseup="logJSEvents('onmouseup works', 'empty'); logJSEvents(event.type, 'empty');">
+    <o:dropDownItem value="OpenFaces">
+      <h:outputText value="OpenFaces"/>
+    </o:dropDownItem>
+    <o:dropDownItem value="DummyFaces">
+      <h:outputText value="DummyFaces"/>
+    </o:dropDownItem>
+    <o:dropDownItem value="FeatureLessFaces">
+      <h:outputText value="FeatureLessFaces"/>
+    </o:dropDownItem>
+  </o:suggestionField>
+</td>
+<td class="container">
+  <o:suggestionField id="keyChange"
+                     autoComplete="true"
+                     manualListOpeningAllowed="true"
+                     suggestionDelay="0"
+                     suggestionMinChars="0"
+                     onchange="logJSEvents('onchange works', 'empty'); logJSEvents(event.type, 'empty');"
+                     onkeydown="logJSEvents('onkeydown works', 'empty'); logJSEvents(event.type, 'empty');"
+                     onkeypress="logJSEvents('onkeypress works', 'empty'); logJSEvents(event.type, 'empty');"
+                     onkeyup="logJSEvents('onkeyup works', 'empty'); logJSEvents(event.type, 'empty');">
+    <o:dropDownItem value="OpenFaces">
+      <h:outputText value="OpenFaces"/>
+    </o:dropDownItem>
+    <o:dropDownItem value="DummyFaces">
+      <h:outputText value="DummyFaces"/>
+    </o:dropDownItem>
+    <o:dropDownItem value="FeatureLessFaces">
+      <h:outputText value="FeatureLessFaces"/>
+    </o:dropDownItem>
+  </o:suggestionField>
+</td>
+<td class="container">
+  <o:suggestionField id="clickDblclick"
+                     autoComplete="true"
+                     manualListOpeningAllowed="true"
+                     suggestionDelay="0"
+                     suggestionMinChars="0"
+                     onclick="logJSEvents('onclick works', 'empty'); logJSEvents(event.type, 'empty');"
+                     oncloseup="logJSEvents('oncloseup works', 'empty'); logJSEvents(event.type, 'empty');"
+                     ondblclick="logJSEvents('ondblclick works', 'empty'); logJSEvents(event.type, 'empty');"
+                     ondropdown="logJSEvents('ondropdown works', 'empty'); logJSEvents(event.type, 'empty');">
+    <o:dropDownItem value="OpenFaces">
+      <h:outputText value="OpenFaces"/>
+    </o:dropDownItem>
+    <o:dropDownItem value="DummyFaces">
+      <h:outputText value="DummyFaces"/>
+    </o:dropDownItem>
+    <o:dropDownItem value="FeatureLessFaces">
+      <h:outputText value="FeatureLessFaces"/>
+    </o:dropDownItem>
+  </o:suggestionField>
+</td>
+<td class="container">
+  <o:suggestionField id="mousemove"
+                     autoComplete="true"
+                     manualListOpeningAllowed="true"
+                     suggestionDelay="0"
+                     suggestionMinChars="0"
+                     onmousemove="logJSEvents('onmousemove works', 'empty'); logJSEvents(event.type, 'empty');">
+    <o:dropDownItem value="OpenFaces">
+      <h:outputText value="OpenFaces"/>
+    </o:dropDownItem>
+    <o:dropDownItem value="DummyFaces">
+      <h:outputText value="DummyFaces"/>
+    </o:dropDownItem>
+    <o:dropDownItem value="FeatureLessFaces">
+      <h:outputText value="FeatureLessFaces"/>
+    </o:dropDownItem>
+  </o:suggestionField>
+</td>
+</tr>
+</table>
+<div id="empty"></div>
+<br/><br/>
+
+</div>

@@ -1,0 +1,168 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  <a href="../functional_testing.jsf">Return to main testing page</a>
+<table border="10px" bgcolor="cornflowerblue">
+<tr>
+  <td style="border:1px solid black; padding:10px 10px 10px 10px;background:thistle;">
+    <o:calendar/>
+  </td>
+  <td style="border:1px solid black; padding:10px 10px 10px 10px; background:thistle;">
+    <input id="button1"
+           type="button"
+           value="Invoke confirmation"
+           onclick="alert('done');"/>
+    <o:confirmation id="conf1"
+                    for=":button1"
+                    />
+    <input id="onclick" type="button" style="margin-top:20px;"
+           value="Invoke confirmation with js-function help"
+           onclick="O$('fn:onclick_conf').runConfirmedFunction(function(){alert('action done');});"/>
+    <o:confirmation id="onclick_conf" standalone="true"/>
+  </td>
+  <td style="background:thistle; border:1px solid black; padding:10px 10px 10px 10px;">
+    <o:dataTable var="table_events"
+                 value="#{TestEventsBean.tableTestCollection}"
+                 verticalGridLines="1px solid gray">
+      <o:column id="col_one">
+        <f:facet name="header">
+          <h:outputText value="Col1"/>
+        </f:facet>
+        <h:outputText value="#{table_events.firstColumn}"/>
+      </o:column>
+      <o:column id="col_two">
+        <f:facet name="header">
+          <h:outputText value="Col2"/>
+        </f:facet>
+        <h:outputText value="#{table_events.secondColumn}"/>
+      </o:column>
+      <o:column id="col_third">
+        <f:facet name="header">
+          <h:outputText value="Col3"/>
+        </f:facet>
+        <h:outputText value="#{table_events.thirdColumn}"/>
+      </o:column>
+    </o:dataTable>
+  </td>
+</tr>
+<tr>
+  <td style="border:1px solid black; padding:10px 10px 10px 10px;background:thistle;">
+    <o:dateChooser/>
+  </td>
+  <td style="border:3px solid black; padding:10px 10px 10px 10px;background:thistle;">
+    <h:panelGrid border="5" bgcolor="blue">
+      <h:panelGrid border="7" bgcolor="green">
+        <o:dropDownField>
+          <o:dropDownItem value="Red"/>
+          <o:dropDownItem value="Yellow"/>
+          <o:dropDownItem value="Blue"/>
+        </o:dropDownField>
+      </h:panelGrid>
+    </h:panelGrid>
+  </td>
+</tr>
+<tr>
+  <td style="border:1px solid black; padding:10px 10px 10px 10px; background:thistle;">
+    <o:dynamicImage data="#{DynamicImageDataBean.testData}"></o:dynamicImage>
+  </td>
+</tr>
+<tr>
+  <td style="border:5px solid black; padding:10px 10px 10px 10px;background:thistle;">
+    <o:foldingPanel>
+      <f:facet name="caption">
+        <h:outputText value="Test caption"/>
+      </f:facet>
+      <h:outputText value="Test text for folding panel"/>
+    </o:foldingPanel>
+  </td>
+  <td style="border:1px solid black; padding:10px 10px 10px 10px;background:thistle;">
+    <o:hintLabel style="width: 140px; font-weight: 18px; border: 2px solid black;"
+                 hintStyle="padding: 10px 10px 10px 10px; color: gray; font-weight: 18px; border: 1px solid gray;"
+                 value="Test text for client-side events testing"
+                 onclick="alert('onclick works!');"
+                 hint="Test text for client-side events testing"/>
+  </td>
+  <td style="border:1px solid black; padding:10px 10px 10px 10px;background:thistle; background:thistle;">
+    <o:popupLayer visible="true"
+                  left="1030"
+                  top="685"
+                  width="100px"
+                  height="100px">
+      <h:outputText value="This is popup layer!"/>
+    </o:popupLayer>
+  </td>
+</tr>
+<tr>
+  <td style="border:1px solid black; padding:10px 10px 10px 10px;background:thistle;">
+    <o:tabSet>
+      <o:tabSetItem>
+        <h:outputText value="Client"/>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="Server"/>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="Custom"/>
+      </o:tabSetItem>
+      <o:tabSetItem>
+        <h:outputText value="Default"/>
+      </o:tabSetItem>
+    </o:tabSet>
+  </td>
+  <td style="border:1px solid black; padding:10px 10px 10px 10px; background:thistle;">
+    <o:tabbedPane>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="First tab"/>
+        </f:facet>
+        <h:outputText value="Some text on the first tab"/>
+      </o:tabbedPaneItem>
+      <o:tabbedPaneItem>
+        <f:facet name="tab">
+          <h:outputText value="Second tab"/>
+        </f:facet>
+        <h:outputText value="Some text on the second tab"/>
+      </o:tabbedPaneItem>
+    </o:tabbedPane>
+  </td>
+  <td style="border:1px solid black; padding:10px 10px 10px 10px;">
+    <o:treeTable var="color" expansionState="allExpanded">
+      <o:staticTreeStructure>
+        <o:treeNode value="Colors">
+          <o:treeNode value="Warm colors">
+            <o:treeNode value="Red"/>
+            <o:treeNode value="Yellow"/>
+          </o:treeNode>
+          <o:treeNode value="Cold colors">
+            <o:treeNode value="Blue"/>
+            <o:treeNode value="Purple"/>
+          </o:treeNode>
+        </o:treeNode>
+      </o:staticTreeStructure>
+      <o:treeColumn>
+        <h:outputText value="#{color}">
+        </h:outputText>
+      </o:treeColumn>
+    </o:treeTable>
+  </td>
+</tr>
+<tr>
+  <td style="border:1px solid black; padding:10px 10px 10px 10px;">
+    <o:twoListSelection leftListboxHeader="Available items"
+                        rightListboxHeader="Selected items">
+      <f:selectItem itemValue="item 1 value" itemLabel="item 1 label"/>
+      <f:selectItem itemValue="item 5 value" itemLabel="item 5 label" itemDisabled="false"/>
+      <f:selectItem itemValue="item 3 value" itemLabel="item 3 label"/>
+      <f:selectItem itemValue="item 4 value" itemLabel="item 4 label" itemDisabled="true"/>
+    </o:twoListSelection>
+  </td>
+</tr>
+</table>
+
+
+</div>

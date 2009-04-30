@@ -1,0 +1,36 @@
+.currencyCol1 {
+  text-align: left;
+  width: 50px;
+}
+
+.currencyCol2 {
+  text-align: right;
+  width: 70px;
+}
+
+.currencyCol3 {
+  text-align: right;
+  width: 60px;
+}
+
+.portalPanel {
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.portalCaption {
+  font-weight: bold;
+  padding-top: 1px;
+  padding-bottom: 2px;
+}
+
+.portalLink {
+  text-decoration: none ! important;
+  border-bottom: none ! important;
+}
+
+.portalLink:hover {
+  text-decoration: underline ! important;
+  border-bottom: none ! important;
+  color: red ! important;
+}

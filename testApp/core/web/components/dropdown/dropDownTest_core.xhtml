@@ -1,0 +1,434 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+<a href="../../main.jsf">Return to main page</a>
+<input type="submit" value="Submit"/>
+
+<h:selectOneMenu value="#{DropDownBean.testValue1}">
+  <f:selectItem itemValue="item1" itemLabel="Item One"/>
+  <f:selectItem itemValue="item2" itemLabel="Item Two"/>
+  <f:selectItem itemValue="item3" itemLabel="Item Three"/>
+</h:selectOneMenu>
+&#160;
+<h:outputText value="#{DropDownBean.testValue1}"/>
+
+<o:dropDownField value="#{DropDownBean.selectedUser}" converter="#{DropDownBean.userConverter}"
+                 var="user"
+                 customValueAllowed="false"
+                 onchange="alert('onchange event. this = ' + this + '; this.getValue() == ' + this.getValue());">
+  <o:dropDownItems value="#{UserPermissionsTableDemoBean.smallUserList}"/>
+  <h:outputText value="#{user.userName} (#{user.category})"/>
+</o:dropDownField>
+
+<br/>
+<h4 style="border-bottom: 1px solid black;">Styles</h4>
+<br/>
+
+<table>
+<tr>
+<td class="container" style="border:1px dashed OrangeRed">
+  <o:dropDownField id="stylesDDF"
+                   var="styles"
+                   value="#{TestEventsBean.selectedDropDownValue}"
+                   buttonStyle="border: 1px solid blue; background: PowderBlue;"
+                   fieldStyle="background: GreenYellow; font-weight: bold;"
+                   listItemStyle="color: Teal; font-size: 18px;"
+                   listStyle="border: 1px dotted red;"
+                   pressedButtonStyle="border: 1px solid OrangeRed; background: PaleVioletRed;"
+                   rolloverButtonStyle="border: 2px solid darkgreen; background: green;"
+
+                   listFooterRowStyle="color: white;"
+                   listHeaderRowStyle="text-decoration:underline;"
+                   oddListItemStyle="border: 1px solid green; background:bisque;"
+
+                   verticalGridLines="1px solid blue"
+                   horizontalGridLines="2px dotted DarkOliveGreen"
+                   headerVertSeparator="2px dashed springgreen"
+                   headerHorizSeparator="2px solid fuchsia"
+                   footerVertSeparator="3px solid black"
+                   footerHorizSeparator="2px solid green"
+
+                   rolloverFieldStyle="border: 2px dashed MediumSpringGreen;"
+                   rolloverListItemStyle="color: orange; font: Comic Sans MS;
+                                          background: LightGreen;"
+                   rolloverListStyle="border: 3px dotted pink;"
+                   rolloverStyle="border: 1px dotted darkblue;"
+                   style="width: 230px;">
+    <o:dropDownItems value="#{TestEventsBean.tableTestCollection}"/>
+    <o:column id="col_first" style="white-space:nowrap;">
+      <f:facet name="header">
+        <h:outputText value="first column header"/>
+      </f:facet>
+      <h:outputText value="#{styles.thirdColumn}"/>
+      <f:facet name="footer">
+        <h:outputText value="first column footer"/>
+      </f:facet>
+    </o:column>
+    <o:column id="col_second" style="white-space:nowrap;">
+      <f:facet name="header">
+        <h:outputText value="second column header"/>
+      </f:facet>
+      <h:outputText value="#{styles.fourthColumn}"/>
+      <f:facet name="footer">
+        <h:outputText value="second column footer"/>
+      </f:facet>
+    </o:column>
+  </o:dropDownField>
+</td>
+<td class="header">
+      <pre>
+        &lt;o:dropDownField id="stylesDDF"
+                         var="styles"
+                         buttonStyle="border: 1px solid blue; background: PowderBlue;"
+                         fieldStyle="background: GreenYellow; font-weight: bold;"
+                         listItemStyle="color: Teal; font-size: 18px;"
+                         listStyle="border: 1px dotted red;"
+                         pressedButtonStyle="border: 1px solid OrangeRed;
+                                             background: PaleVioletRed;"
+                         rolloverButtonStyle="border: 2px solid darkgreen;
+                                              background: green;"
+                         listFooterRowStyle="color: white;"
+                         listHeaderRowStyle="text-decoration:underline;"
+                         oddListItemStyle="border: 1px solid green; background:bisque;"
+                         verticalGridLines="1px solid blue"
+                         horizontalGridLines="2px dotted DarkOliveGreen"
+                         headerVertSeparator="2px dashed springgreen"
+                         headerHorizSeparator="2px solid fuchsia"
+                         footerVertSeparator="3px solid black;"
+                         footerHorizSeparator="2px solid green;"
+                         rolloverFieldStyle="border: 2px dashed MediumSpringGreen;"
+                         rolloverListItemStyle="color: orange; font: Comic Sans MS;
+                                                background: LightGreen;"
+                         rolloverListStyle="border: 3px dotted pink;"
+                         rolloverStyle="border: 1px dotted darkblue;"
+                         style="width: 230px;">
+         ....
+        &lt;/o:dropDownField&gt;
+        </pre>
+</td>
+<td class="container">
+  <o:dropDownField
+          value="#{TestEventsBean.selectedDropDownValue}"
+          var="styles2"
+          buttonClass="buttonDD"
+          fieldClass="fieldDD"
+          listItemClass="listItemDD"
+          listClass="listDD"
+          pressedButtonClass="pressedButtonDD"
+          rolloverButtonClass="rolloverButtonDD"
+          rolloverFieldClass="rolloverFieldDD"
+          rolloverListItemClass="rolloverListItemDD"
+
+          listFooterRowClass="listFooterRowDD"
+          listHeaderRowClass="listHeaderRowDD"
+          oddListItemClass="oddListItemDD"
+
+          rolloverListClass="rolloverListDD"
+          rolloverClass="rolloverDD"
+          styleClass="styleDD">
+    <o:dropDownItems value="#{TestEventsBean.tableTestCollection}"/>
+    <o:column style="white-space:nowrap;">
+      <f:facet name="header">
+        <h:outputText value="first column header"/>
+      </f:facet>
+      <h:outputText value="#{styles2.thirdColumn}"/>
+      <f:facet name="footer">
+        <h:outputText value="first column footer"/>
+      </f:facet>
+    </o:column>
+    <o:column style="white-space:nowrap;">
+      <f:facet name="header">
+        <h:outputText value="second column header"/>
+      </f:facet>
+      <h:outputText value="#{styles2.fourthColumn}"/>
+      <f:facet name="footer">
+        <h:outputText value="second column footer"/>
+      </f:facet>
+    </o:column>
+  </o:dropDownField>
+</td>
+</tr>
+</table>
+<br/>
+<table border="0" cellpadding="10">
+<thead>
+  <th colspan="6" style="background-color: #D3D3D3;">
+    'Gloomy Morning' style drop down components (aka MS or gray on the gray)
+  </th>
+</thead>
+<tr style="background-color: #DCDCDC;">
+  <td width="16%">
+    Button on the right
+  </td>
+  <td width="16%">
+    Left button alignment
+  </td>
+  <td width="16%">
+    Plain drop down
+  </td>
+  <td width="16%">
+    Drop down without button <i>(only keyboard navigation is allowed)</i>
+  </td>
+  <td width="16%">
+    Drop down without field <i>(see selected value in text field below)</i>
+  </td>
+  <td width="16%">
+    Drop down vulgarus obiknovenius
+  </td>
+</tr>
+<tr style="background-color: #DCDCDC;">
+<td align="center">
+  <o:dropDownField customValueAllowed="false"
+                   value="file"
+                   buttonAlignment="right"
+
+                   style="width: 80px; height: 22px; border-style: outset; border-width: 2px; border-color: silver;"
+                   rolloverStyle="border-style: inset;"
+
+                   fieldStyle="background-color: #DCDCDC;"
+                   rolloverFieldStyle="background-color: #ECECEC;"
+
+                   buttonStyle="border: 0px; width: 22px; background-color: #DCDCDC;"
+                   rolloverButtonStyle="border: 0px; width: 22px; background-color: #ECECEC;"
+
+                   listStyle="border-style: solid; border-width: 1px; border-color: silver;"
+
+                   listItemStyle="text-align: right; background-color: #ECECEC;"
+                   rolloverListItemStyle="background-color: #DCDCDC;"
+                   timeout="2000"
+          >
+    <o:dropDownItem value="red">
+      <h:outputText value="first"/>
+    </o:dropDownItem>
+    <o:dropDownItem value="yellow">
+      <h:outputText value="second"/>
+    </o:dropDownItem>
+    <o:dropDownItem value="green">
+      <h:outputText value="third"/>
+    </o:dropDownItem>
+  </o:dropDownField>
+</td>
+<td align="center">
+  <o:dropDownField
+          value="file"
+          buttonAlignment="left"
+
+          style="width: 60px; height: 22px; border-style: inset; border-width: 2px; border-color: silver;"
+          rolloverStyle="border-style: outset;"
+
+          fieldStyle="background-color: #DCDCDC; text-align: right;"
+          rolloverFieldStyle="background-color: #ECECEC;"
+
+          buttonStyle="border: 0px; width: 22px; background-color: #DCDCDC;"
+          rolloverButtonStyle="border: 0px; width: 22px; background-color: #ECECEC;"
+
+          listStyle="border-style: solid; border-width: 1px; border-color: silver;"
+
+          listItemStyle="text-align: left; color: #ACACAC; background-color: #ECECEC;"
+          rolloverListItemStyle="color: #000000; height: 25px; font-weight: bolder; background-color: #DCDCDC;"
+          >
+    <o:dropDownItem value="red"/>
+    <o:dropDownItem value="yellow"/>
+    <o:dropDownItem value="green"/>
+  </o:dropDownField>
+</td>
+<td align="center">
+  <o:dropDownField
+          value="file"
+          buttonAlignment="right"
+          style="width: 150px; height: 22px; border-style: solid; border-width: 1px; border-color: silver;"
+          rolloverStyle="border-color: #CACACA;"
+          fieldStyle="background-color: #DCDCDC;"
+          rolloverFieldStyle="background-color: #ECECEC;"
+          buttonStyle="border: 0px; border-left-width: 1px; border-left-style: solid; border-left-color: silver; width: 20px; background-color: #DCDCDC;"
+          rolloverButtonStyle="border-left-color: #CACACA; background-color: #ECECEC;"
+          listStyle="border-style: solid; border-width: 1px; border-color: silver; border-top-width: 0px;"
+          listItemStyle="background-color: #ECECEC;"
+          rolloverListItemStyle="background-color: #DCDCDC;"
+          onchange="this.value=this.value=='green'?'green-gray':this.value=='yellow'?'yellow submarine':this.value=='red'?'rot-front':this.value;">
+    <o:dropDownItem value="red"/>
+    <o:dropDownItem value="yellow"/>
+    <o:dropDownItem value="green"/>
+  </o:dropDownField>
+</td>
+<td align="center">
+  <o:dropDownField
+          value="file"
+          buttonAlignment="right"
+          style="width: 60px; height: 22px; border-style: solid; border-width: 1px; border-color: silver;"
+          rolloverStyle="border-color: #CACACA;"
+          fieldStyle="width: 60px; background-color: #E1E1E1; text-align: right;"
+          rolloverFieldStyle="background-color: #EFEFEF;"
+          buttonStyle="display: none;"
+          listStyle="border-style: solid; border-width: 1px; border-color: silver;"
+          listItemStyle="text-align: left; background-color: #DCDCDC;"
+          rolloverListItemStyle="background-color: #ECECEC; color: #000000;">
+    <o:dropDownItem value="red"/>
+    <o:dropDownItem value="yellow"/>
+    <o:dropDownItem value="green"/>
+  </o:dropDownField>
+</td>
+<td align="center">
+  <table>
+    <tr>
+      <td>
+        <h:inputText style="text-align: center; border-style: solid; border-width: 0px; background-color: silver;"
+                     id="output1" value="no value"/>
+      </td>
+      <td>
+        <o:dropDownField
+                id="ddf"
+                value="file"
+                buttonAlignment="right"
+                style="width: 22px; height: 22px; border-style: solid; border-width: 1px; border-color: silver;"
+                fieldStyle="display: none;"
+                buttonStyle="width: 22px; border: 0px; height: 22px; background-color: #DCDCDC;"
+                rolloverButtonStyle="background-color: #ECECEC;"
+                listStyle="border-style: solid; border-width: 1px; border-color: silver;"
+                listItemStyle="text-align: left; background-color: #DCDCDC;"
+                rolloverListItemStyle="background-color: #ECECEC; color: #000000;"
+                listAlignment="right"
+                onchange="document.getElementById('form1:output1').value=document.getElementById('form1:ddf').getValue();document.getElementById('form1:output1').style.backgroundColor=document.getElementById('form1:ddf').getValue();">
+
+        </o:dropDownField>
+      </td>
+    </tr>
+  </table>
+</td>
+<td align="center">
+  <o:dropDownField
+          style="width: 160px; height: 22px;"
+          buttonStyle="text-align: center;"
+          >
+    <o:dropDownItem value="red"/>
+    <o:dropDownItem value="yellow"/>
+    <o:dropDownItem value="green"/>
+  </o:dropDownField>
+</td>
+</tr>
+<tr style="background-color: #DCDCDC;">
+  <td>
+    &#160;
+  </td>
+  <td>
+    &#160;
+  </td>
+  <td>
+    &#160;
+  </td>
+  <td>
+    &#160;
+  </td>
+  <td>
+    &#160;
+  </td>
+  <td>
+    &#160;
+  </td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+<o:dropDownField id="userActionDropDown"
+                 buttonAlignment="right"
+                 immediate="true"
+                 style="width: 22px; height: 22px; border-style: solid; border-width: 1px; border-color: silver;"
+                 buttonStyle="width: 22px; border: 0px; height: 22px; background-color: #DCDCDC;"
+                 rolloverButtonStyle="background-color: #ECECEC;"
+                 fieldStyle="display: none;"
+                 listStyle="border-style: solid; border-width: 1px; border-color: silver;"
+                 listItemStyle="width: 120px; display: block; text-align: left; background-color: #DCDCDC;"
+                 rolloverListItemStyle="background-color: #ECECEC; color: #000000;"
+                 listAlignment="left"
+                 onchange="document.forms['form1'].submit();"
+                 valueChangeListener="#{DropDownBean.valueChanged}">
+</o:dropDownField>
+
+<p/>
+<o:dropDownField>
+  <o:dropDownItem value="red"/>
+  <o:dropDownItem value="yellow"/>
+  <o:dropDownItem value="green"/>
+</o:dropDownField>
+test
+
+<table border="3">
+  <tr>
+    <td>
+      <table border="2">
+        <tr>
+          <td>
+            <table border="1">
+              <tr>
+                <td>one</td>
+                <td>
+                  <o:dropDownField style="width: 100%"
+                                   onchange="alert(predefinedValueChoosen); var text = predefinedValueChoosen != undefined ? 'value changed by selecting dropdown item' : 'value changed manually'; alert(text);"
+                          >
+                    <o:dropDownItem value="red"/>
+                    <o:dropDownItem value="yellow"/>
+                    <o:dropDownItem value="green"/>
+                  </o:dropDownField>
+                </td>
+                <td>abcd</td>
+              </tr>
+              <tr>
+                <td>two</td>
+                <td>second row</td>
+                <td>cell 2x2</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+
+<table border="1">
+  <tr>
+    <td>one</td>
+    <td>
+      <o:dropDownField style="width: 100%; height: 100px;">
+        <o:dropDownItem value="red"/>
+        <o:dropDownItem value="yellow"/>
+        <o:dropDownItem value="green"/>
+      </o:dropDownField>
+    </td>
+    <td>abcd</td>
+  </tr>
+  <tr>
+    <td>two</td>
+    <td>second row</td>
+    <td>cell 2x2</td>
+  </tr>
+</table>
+
+<h2 style="background: #e0e0e0; padding-bottom: 5px; border-bottom: 1px solid black;">DropDown with margin</h2>
+
+<div style="border:1px solid black; background:beige;">
+  <o:dropDownField style="margin: 50px 50px 50px 50px;">
+    <o:dropDownItem value="Item 1"/>
+    <o:dropDownItem value="Item 2"/>
+    <o:dropDownItem value="Item 3"/>
+  </o:dropDownField>
+</div>
+<h2 style="background: #e0e0e0; padding-bottom: 5px; border-bottom: 1px solid black;">Drag DropDown button</h2>
+
+<div style="border:1px solid black; background:azure; padding:20px 20px 20px 20px;">
+  <o:dropDownField style="width: 650px;">
+    <o:dropDownItem value="Item 1"/>
+    <o:dropDownItem value="Item 2"/>
+    <o:dropDownItem value="Item 3"/>
+  </o:dropDownField>
+  <br/>
+  <h:inputText style="width: 650px;"/>
+</div>
+
+</div>

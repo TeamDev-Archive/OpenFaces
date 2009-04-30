@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:s="http://jboss.com/products/seam/taglib">
+<head>
+  <title></title>
+</head>
+
+<body>
+<f:view>
+  <h:form id="form1">
+    <h:selectOneMenu value="#{localeSelector.language}">
+      <f:selectItem itemLabel="English" itemValue="en"/>
+      <f:selectItem itemLabel="Deutsch" itemValue="de"/>
+      <f:selectItem itemLabel="Francais" itemValue="fr"/>
+      <f:selectItem itemLabel="Russian" itemValue="ru"/>
+    </h:selectOneMenu>
+    <br/>
+    <h:commandButton action="#{localeSelector.select}" value="#{messages['ChangeLanguage']}"/>
+    <br/>
+    <o:calendar/>
+    <br/>
+    <o:dateChooser/>
+  </h:form>
+</f:view>
+
+</body>
+</html>

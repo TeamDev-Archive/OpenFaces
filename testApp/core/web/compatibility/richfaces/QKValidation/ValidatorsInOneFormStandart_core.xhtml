@@ -1,0 +1,213 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <a href="../../../main.jsf">Back to the main page</a>
+  <br/>
+  
+        <h:outputText id="refresher_a4j" value="Refresh" style="font-weight: bold; text-decoration:underline;">
+          <a4j:support event="onclick" reRender="validationForm"/>
+        </h:outputText>
+
+        <o:clientValidationSupport clientValidation="onDemand"/>
+        <h:inputHidden id="firstLoadHelper" value="#{ValidatiorBean.firstLoad}"/>
+
+        <div class="control_demo_space">
+          <f:verbatim>
+            <br/>
+
+<p style="padding-left: 2px;">Click the <b>Submit</b> button to trigger validation.</p>
+<table>
+  <tr>
+    <td style="padding-right: 20px;">
+      <h:commandButton style="font-weight:bold;" value="Submit" onclick="return O$.validateFormById('validationForm');"/>
+    </td>
+    <td>
+      <input type="button" value="Enter Invalid Data" onclick="fillInvalidData();"/>
+    </td>
+    <td>
+      <input type="button" value="Enter Valid Data" onclick="fillValidData();"/>
+    </td>
+  </tr>
+</table>
+
+<br/>
+
+<table class="demo_table" cellpadding="0" cellspacing="0" border="0" width="90%">
+<tr>
+  <td style="width: 25%;">
+    <span class="field_title">Required field:</span>
+  </td>
+  <td style="width: 15%;">
+      <h:inputText
+              id="requiredField"
+              style="width: 150px;"
+              required="true"/>
+  </td>
+  <td style="width: 1%;">
+    <input
+            type="button"
+            onclick="return O$.validateById('validationForm:requiredField');"
+            value="Validate"/>
+  </td>
+  <td>
+    &#160;
+    <h:message for="requiredField" style="color: #ff7f7f;"/>
+  </td>
+</tr>
+<tr>
+  <td>
+    <span class="field_title">DoubleRange field (10 to 100):</span>
+  </td>
+  <td>
+    <h:inputText
+            id="doubleRangeField"
+            style="width: 150px;">
+      <f:validateDoubleRange maximum="100" minimum="10"/>
+    </h:inputText>
+  </td>
+  <td>
+    <input type="button" onclick="return O$.validateById('validationForm:doubleRangeField');" value="Validate"/>
+  </td>
+  <td>
+    &#160;
+    <h:message for="doubleRangeField" style="color: #ff7f7f;"/>
+  </td>
+</tr>
+<tr>
+  <td>
+    <span class="field_title">LongRange field (-10 to 1000):</span>
+  </td>
+  <td>
+    <h:inputText
+            id="longRangeField"
+            style="width: 150px;">
+      <f:validateLongRange minimum="-10" maximum="1000"/>
+    </h:inputText>
+    <o:floatingIconMessage for="longRangeField" showDetail="true" showSummary="false"/>
+  </td>
+  <td>
+    <input type="button" onclick="return O$.validateById('validationForm:longRangeField');" value="Validate"/>
+  </td>
+  <td>
+    &#160;
+    <h:message for="longRangeField" style="color: #ff7f7f;"/>
+  </td>
+</tr>
+<tr>
+  <td>
+    <span class="field_title">Integer field (bound to the integer type property):</span>
+  </td>
+  <td>
+    <h:inputText
+            style="width: 150px;"
+            id="integerField"
+            value="#{ValidatiorBean.integerValue}">
+    </h:inputText>
+    <o:floatingIconMessage
+            for="integerField"
+            showDetail="true"
+            showSummary="false"
+            style="border: 1px solid red; background-color: #e0e0ff;"/>
+  </td>
+  <td>
+    <input type="button" onclick="return O$.validateById('validationForm:integerField');" value="Validate"/>
+  </td>
+  <td>
+    &#160;
+    <h:message for="integerField" style="color: #ff7f7f;"/>
+  </td>
+</tr>
+<tr>
+  <td>
+    <span class="field_title">Double field (bound to the double type property):</span>
+  </td>
+  <td>
+    <h:inputText
+            id="doubleField"
+            style="width: 150px;"
+            value="#{ValidatiorBean.doubleValue}">
+    </h:inputText>
+    <o:floatingIconMessage
+            for="doubleField"
+            showDetail="true"
+            showSummary="false"
+            style="background-color: #ffff94;"
+            imageUrl="error_icon_new.gif"/>
+  </td>
+  <td>
+    <input type="button" onclick="return O$.validateById('validationForm:doubleField');" value="Validate"/>
+  </td>
+  <td>
+    &#160;
+    <h:message for="doubleField" style="color: #ff7f7f;"/>
+  </td>
+</tr>
+<tr>
+  <td>
+    <span class="field_title">Byte field (bound to the byte type property):</span>
+  </td>
+  <td>
+    <h:inputText
+            id="byteField"
+            style="width: 150px;"
+            value="#{ValidatiorBean.byteValue}">
+    </h:inputText>
+    <o:floatingIconMessage
+            for="byteField"
+            showDetail="true"
+            showSummary="false"
+            noImage="true"/>
+  </td>
+  <td>
+    <input type="button" onclick="return O$.validateById('validationForm:byteField');" value="Validate"/>
+  </td>
+  <td>
+    &#160;
+    <h:message for="byteField" style="color: #ff7f7f;"/>
+  </td>
+</tr>
+<tr>
+  <td style="border-bottom: 1px solid #E0E0E0;">
+    <span class="field_title">DateTime (dd.mm.yyyy) field (converter is used):</span>
+  </td>
+  <td style="border-bottom: 1px solid #E0E0E0;">
+    <h:inputText
+            id="dateTimeField2"
+            style="width: 150px;">
+      <f:convertDateTime pattern="dd.mm.yyyy" locale="en"/>
+    </h:inputText>
+    <o:floatingIconMessage
+            for="dateTimeField2"
+            showDetail="true"
+            showSummary="false"
+            offsetLeft="140"/>
+  </td>
+  <td style="border-bottom: 1px solid #E0E0E0;">
+    <input type="button" onclick="return O$.validateById('validationForm:dateTimeField2');" value="Validate"/>
+  </td>
+  <td style="border-bottom: 1px solid #E0E0E0;">
+    &#160;
+    <h:message for="dateTimeField2" style="color: #ff7f7f;"/>
+  </td>
+</tr>
+</table>
+<br/>
+
+<div>
+  <span class="field_title">All client-side validation messages can also be shown in one place:</span>
+</div>
+
+<div style="border: 1px solid #e0e0e0; font-size: 12px; font-family: Verdana; margin: 10px 0px 10px 0px; width: 90%;">
+  <h:messages
+          showDetail="true"
+          showSummary="false"
+          style="color: #ff7f7f;"/>
+</div>
+          </f:verbatim>
+        </div>
+
+      
+</div>

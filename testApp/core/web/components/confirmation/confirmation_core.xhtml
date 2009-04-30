@@ -1,0 +1,134 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+
+<br/><br/>
+      <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+        Confirmation client-side events
+      </span><br/><br/>
+<table border="1px">
+<tr>
+  <td width="25%">onclick</td>
+  <td width="25%">
+    <input id="onclickInvoker1" type="button" value="Do action"
+           onclick="O$('fn:onclick_conf').runConfirmedFunction(function(){logJSEvents('onclick action', 'empty');});"/>
+    <o:confirmation id="onclick_conf"
+                    standalone="true"
+                    onclick="logJSEvents('onclick works', 'empty'); logJSEvents(event.type, 'empty');"
+                    captionText="ONCLICK!"/>
+  </td>
+</tr>
+<tr>
+  <td>ondblclick</td>
+  <td>
+    <input id="ondblclick" type="button" value="Do action"
+           onclick="O$('fn:ondblclick_conf').runConfirmedFunction(function(){logJSEvents('ondblclick action', 'empty');});"/>
+    <o:confirmation id="ondblclick_conf"
+                    standalone="true"
+                    ondblclick="logJSEvents('ondblclick works', 'empty'); logJSEvents(event.type, 'empty');"
+                    captionText="ONDOUBLECLICK"/>
+  </td>
+</tr>
+<tr>
+  <td>onmousedown</td>
+  <td>
+    <input id="onmousedown" type="button" value="Do action"
+           onclick="O$('fn:onmousedown_conf').runConfirmedFunction(function(){logJSEvents('onmousedown action', 'empty');});"/>
+    <o:confirmation id="onmousedown_conf"
+                    standalone="true"
+                    onmousedown="logJSEvents('onmousedown works', 'empty'); logJSEvents(event.type, 'empty');"
+                    captionText="ONMOUSEDOWN"/>
+  </td>
+</tr>
+<tr>
+  <td>onmouseover</td>
+  <td>
+    <input id="onmouseover" type="button" value="Do action"
+           onclick="O$('fn:onmouseover_conf').runConfirmedFunction(function(){logJSEvents('onmouseover action', 'empty');});"/>
+    <o:confirmation id="onmouseover_conf"
+                    standalone="true"
+                    onmouseover="logJSEvents('onmouseover works', 'empty'); logJSEvents(event.type, 'empty');"
+                    captionText="ONMOUSEOVER"/>
+  </td>
+</tr>
+<tr>
+  <td>onmouseup</td>
+  <td>
+    <input id="onmouseup" type="button" value="Do action"
+           onclick="O$('fn:onmouseup_conf').runConfirmedFunction(function(){logJSEvents('onmouseup action', 'empty');});"/>
+    <o:confirmation id="onmouseup_conf"
+                    standalone="true"
+                    onmouseup="logJSEvents('onmouseup works', 'empty'); logJSEvents(event.type, 'empty');"
+                    captionText="ONMOUSEUP"/>
+  </td>
+</tr>
+<tr>
+  <td>onmouseout</td>
+  <td>
+    <input id="onmouseout" type="button" value="Do action"
+           onclick="O$('fn:onmouseout_conf').runConfirmedFunction(function(){logJSEvents('onmouseout action', 'empty');});"/>
+    <o:confirmation id="onmouseout_conf"
+                    standalone="true"
+                    onmouseout="logJSEvents('onmouseout works', 'empty'); logJSEvents(event.type, 'empty');"
+                    captionText="ONMOUSEOUT"/>
+  </td>
+</tr>
+<tr>
+  <td>onmousemove</td>
+  <td>
+    <input id="onmousemove" type="button" value="Do action"
+           onclick="O$('fn:onmousemove_conf').runConfirmedFunction(function(){logJSEvents('onmousemove action', 'empty');});"/>
+    <o:confirmation id="onmousemove_conf"
+                    standalone="true"
+                    onmousemove="logJSEvents('onmousemove works', 'empty'); logJSEvents(event.type, 'empty');"
+                    captionText="ONMOUSEMOVE"/>
+  </td>
+</tr>
+<tr>
+  <td>onkeydown</td>
+  <td>
+    <input id="onkeydown" type="button" value="Do action"
+           onclick="O$('fn:onkeydown_conf').runConfirmedFunction(function(){logJSEvents('onkeydown action', 'empty');});"/>
+    <o:confirmation id="onkeydown_conf"
+                    standalone="true"
+                    defaultButton="ok"
+                    onkeydown="logJSEvents('onkeydown works', 'empty'); logJSEvents(event.type, 'empty');"
+                    captionText="ONKEYDOWN"/>
+  </td>
+</tr>
+<tr>
+  <td>onkeypress</td>
+  <td>
+    <input id="onkeypress" type="button" value="Do action"
+           onclick="O$('fn:onkeypress_conf').runConfirmedFunction(function(){logJSEvents('onkeypress action', 'empty');});"/>
+    <o:confirmation id="onkeypress_conf"
+                    standalone="true"
+                    defaultButton="ok"
+                    onkeypress="logJSEvents('onkeypress works', 'empty'); logJSEvents(event.type, 'empty');"
+                    captionText="ONKEYPRESS"/>
+  </td>
+</tr>
+<tr>
+  <td>onkeyup</td>
+  <td>
+    <input id="onkeyup" type="button" value="Do action"
+           onclick="O$('fn:onkeyup_conf').runConfirmedFunction(function(){logJSEvents('onkeyup action', 'empty');});"/>
+    <o:confirmation id="onkeyup_conf"
+                    standalone="true"
+                    defaultButton="ok"
+                    onkeyup="logJSEvents('onkeyup works', 'empty'); logJSEvents(event.type, 'empty');"
+                    captionText="ONKEYUP"/>
+  </td>
+</tr>
+</table>
+<div style="position:absolute; left:435px; top:185px;" id='empty'></div>
+
+
+</div>

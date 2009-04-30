@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:s="http://jboss.com/products/seam/taglib"  >
+<head>
+  <title></title>
+  <script type="text/javascript">
+  function fillInvalidData(formName) {
+    var field = document.getElementById(formName + ":dateConv");
+    field.value = "12/02/2007";
+    field = document.getElementById(formName + ":dateConv2");
+    field.value = "12/02/2007";
+  }
+
+  function fillValidData(formName) {
+    var field = document.getElementById(formName + ":dateConv");
+    field.value = "Jun-07-2006 12:00";
+    field = document.getElementById(formName + ":dateConv2");
+    field.value = "Thursday, June 8, 2006 10:00 PM";
+  }
+
+</script>
+</head>
+
+
+<body>
+<f:view>
+  <h:form id="server">
+    <ui:include src="ConvertersServer_core.xhtml"/>
+  </h:form>
+  <h:form id="client">
+    <ui:include src="ConvertersClient_core.xhtml"/>
+  </h:form>
+</f:view>
+
+</body>
+</html>

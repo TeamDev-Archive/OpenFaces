@@ -1,0 +1,84 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <span style="display:block; width: 100%; border-bottom: 1px solid black; font-size: 18px; background:lightgrey;">
+      TabSet Change Selected tab. Check Styling.
+    </span><br/><br/>
+    <table>
+      <tr>
+        <td class="header" colspan="2">Styled without submit</td>
+        <td class="header" colspan="3">Styled with submit</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:tabSet id="tabSetWithoutSubmit"
+                    emptySpaceStyle="background: beige;"
+                    backBorderStyle="2px solid SpringGreen"
+                    frontBorderStyle="3px dashed OliveDrab"
+                    rolloverSelectedTabStyle="border: 2px dashed blue;"
+                    tabStyle="background: azure; border-top: 1px dotted darkgreen; width: 70px;"
+                    rolloverTabStyle="background: brown; font-weight: bold; border: 2px dotted green;"
+                    selectedTabStyle="background: pink; border-top: 1px solid black;"
+                    style="width: 300px;">
+            <o:tabSetItem>
+              <h:outputText value="Blue"/>
+            </o:tabSetItem>
+            <o:tabSetItem>
+              <h:outputText value="Yellow"/>
+            </o:tabSetItem>
+          </o:tabSet>
+        </td>
+        <td class="container">
+          <input id="getSelectedTab1" type="button" value="getSelectedIndex"
+                 onclick="printInfo(O$('formID:tabSetWithoutSubmit').getSelectedIndex(), 'empty', false);"/>
+
+          <div id="empty" style="height:20px;"></div>
+          <input id="setSelectedTab1" type="button" value="setSelectedIndex"
+                 onclick="O$('formID:tabSetWithoutSubmit').setSelectedIndex(1);"/>
+        </td>
+        <td class="container">
+          <o:tabSet id="tabSetWithSubmit"
+                    onchange="document.forms[0].submit();"
+                    selectedIndex="#{TabSetBean.tabSetWithSubmitSelectedIndex}"
+                    emptySpaceStyle="background: beige;"
+                    backBorderStyle="2px solid SpringGreen"
+                    frontBorderStyle="3px dashed OliveDrab"
+                    rolloverSelectedTabStyle="border: 2px dashed blue;"
+                    tabStyle="background: azure; border-top: 1px dotted darkgreen; width: 70px;"
+                    rolloverTabStyle="background: brown; font-weight: bold; border: 2px dotted green;"
+                    selectedTabStyle="background: pink; border-top: 1px solid black;"
+                    style="width: 300px;">
+            <o:tabSetItems value="#{TabSetBean.tabSetWithSubmitTest}"/>
+          </o:tabSet>
+        </td>
+        <td class="container">
+          <input id="getSelectedTab2" type="button" value="getSelectedIndex"
+                 onclick="printInfo(O$('formID:tabSetWithSubmit').getSelectedIndex(), 'empty1', false);"/>
+
+          <div id="empty1" style="height:20px;"></div>
+          <input id="setSelectedTab2" type="button" value="setSelectedIndex"
+                 onclick="O$('formID:tabSetWithSubmit').setSelectedIndex(1);"/>
+        </td>
+        <td class="container">
+          Selected index: <h:outputText id="selectedIndex" value="#{TabSetBean.tabSetWithSubmitSelectedIndex}"/>
+          <br/>
+          <br/>
+          Selected index: <h:outputText id="selectedValue" value="#{TabSetBean.tabSetWithSubmitSelectedValue}"/>
+        </td>
+      </tr>
+    </table>
+
+    <br/>
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="Submit"/>
+  
+</div>

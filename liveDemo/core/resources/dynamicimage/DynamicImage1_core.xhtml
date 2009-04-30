@@ -1,0 +1,90 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div class="Col1_1 serif">The DynamicImage component can be used to display an image with image data specified as a
+    RenderedImage object. Is is also possible to specify different parameters to be used during image generation.
+
+    In the fields below, specify your own values and click the <b> Generate Image</b> button to see the result.
+  </div>
+
+  <div id="component" align="center">
+
+    <div class="container_control_items" style="margin-bottom: 25px; width: 425px;">
+      <table style="background: url(../images/controls_container/widget.gif) repeat-y;">
+        <tr>
+          <td width="90px" style="text-align: left;">
+            <span style="padding-left: 20px;" class="field_title">Text:&#160;</span>
+          </td>
+          <td width="130px">
+            <h:inputText id="textField" value="#{DynamicImageBean.text}"
+                         style="width: 100%;"
+                         onkeypress="O$('form:updateImage').run()"/>
+          </td>
+        </tr>
+        <tr>
+          <td width="90px" style="text-align: left;">
+            <span style="padding-left: 20px; white-space: nowrap;" class="field_title">Text color:&#160;</span>
+          </td>
+          <td width="130px">
+            <h:selectOneMenu id="colorField"
+                             value="#{DynamicImageBean.textColor}"
+                             converter="#{DynamicImageBean.colorConverter}"
+                             style="width: 100%"
+                             onchange="O$('form:updateImage').run()">
+              <f:selectItems value="#{DynamicImageBean.colorItems}"/>
+            </h:selectOneMenu>
+          </td>
+        </tr>
+        <tr>
+          <td width="90px" style="text-align: left;padding-left: 20px;">
+            <span class="field_title">Font size (px):&#160;</span>
+          </td>
+          <td width="130px">
+            <o:dropDownField id="fontSizeField" value="#{DynamicImageBean.fontSize}" style="width: 100%"
+                             onchange="O$('form:updateImage').run()">
+              <o:dropDownItems value="#{DynamicImageBean.predefinedFontSizes}"/>
+            </o:dropDownField>
+            <o:floatingIconMessage for="fontSizeField"/>
+          </td>
+        </tr>
+        <tr>
+          <td width="90px" style="text-align: left;">
+            <span style="padding-left: 20px; white-space: nowrap;" class="field_title">Glow width:&#160;</span>
+          </td>
+          <td width="130px">
+            <o:dropDownField id="glowWidthField" value="#{DynamicImageBean.glowWidth}" style="width: 100%"
+                             onchange="O$('form:updateImage').run()">
+              <o:dropDownItems value="#{DynamicImageBean.predefinedGlowWidths}"/>
+            </o:dropDownField>
+            <o:floatingIconMessage for="glowWidthField"/>
+          </td>
+        </tr>
+        <tr>
+          <td width="90px" style="text-align:left;">
+            <span style="padding-left: 20px; white-space: nowrap;" class="field_title">Glow color:&#160;</span>
+          </td>
+          <td width="130px">
+            <h:selectOneMenu id="glowColorField"
+                             value="#{DynamicImageBean.glowColor}"
+                             converter="#{DynamicImageBean.colorConverter}"
+                             style="width: 100%"
+                             onchange="O$('form:updateImage').run()">
+              <f:selectItems value="#{DynamicImageBean.colorItems}"/>
+            </h:selectOneMenu>
+            <o:reloadComponents id="updateImage"
+                                standalone="true"
+                                componentIds="dynamicImage"
+                                submittedComponentIds="textField, colorField, fontSizeField, glowWidthField, glowColorField"
+                                requestDelay="500"/>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <o:dynamicImage id="dynamicImage" data="#{DynamicImageBean.textAsImage}" style="border: 1px solid gray; "/>
+    <o:clientValidationSupport/>
+
+  </div>
+
+</div>

@@ -1,0 +1,220 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+<div id="component" align="center">
+
+  <div class="container_control_items" style="width: 600px;">
+    <script type="text/javascript">
+      function updateTextAreaStyle(dropDownField, styleName) {
+        var textArea = O$('mainForm:textAreaID');
+        try {
+          var textAreaCopy = textArea.cloneNode(true);
+          textAreaCopy.style[styleName] = dropDownField.value;
+          textArea.parentNode.replaceChild(textAreaCopy, textArea);
+        } catch(err) {
+          dropDownField.value = textArea.style[styleName];
+        }
+      }
+    </script>
+    <table cellpadding="0" cellspacing="0"
+           style="background: url(../images/controls_container/widget.gif) repeat-y; padding-left: 12px;">
+      <tr>
+        <td height="34">
+          <table style="margin-left: 15px; padding-top: 6px;">
+            <tr>
+              <td width="62">
+                <h:outputText value="Text align:" styleClass="field_title"/>
+              </td>
+              <td width="96">
+                <o:dropDownField id="textAlign"
+                                 value="#{DropDownBean.selectedTextAlign}"
+                                 customValueAllowed="false"
+                                 required="true"
+                                 suggestionMode="all"
+                                 autoComplete="true"
+                                 suggestionDelay="0"
+                                 onchange="updateTextAreaStyle(this, 'textAlign');"
+                                 listItemStyle="padding-top: 7px; padding-bottom: 7px;"
+                                 style="width: 90px;">
+                  <o:dropDownItem value="Left">
+                    <h:graphicImage url="../images/dropdownfield/left.gif" style="vertical-align: middle;"/>
+                    <h:outputText value="Left" style="padding-left: 10px;"/>
+                  </o:dropDownItem>
+                  <o:dropDownItem value="Center">
+                    <h:graphicImage url="../images/dropdownfield/center.gif" style="vertical-align: middle;"/>
+                    <h:outputText value="Center" style="padding-left: 10px;"/>
+                  </o:dropDownItem>
+                  <o:dropDownItem value="Right">
+                    <h:graphicImage url="../images/dropdownfield/right.gif" style="vertical-align: middle;"/>
+                    <h:outputText value="Right" style="padding-left: 10px;"/>
+                  </o:dropDownItem>
+                </o:dropDownField>
+              </td>
+              <td width="60" style="text-align: right;">
+                <h:outputText value="Font:" styleClass="field_title"/>
+              </td>
+              <td width="125">
+                <o:dropDownField id="fontFamily"
+                                 value="#{DropDownBean.selectedFontFamily}"
+                                 required="true"
+                                 suggestionMode="all"
+                                 autoComplete="true"
+                                 suggestionDelay="0"
+                                 onchange="updateTextAreaStyle(this, 'fontFamily');"
+                                 style="width: 120px;">
+                  <o:dropDownItem value="Tahoma">
+                    <h:outputText value="Tahoma" style="font-family: 'Tahoma', sans-serif; font-size: 13px;"/>
+                  </o:dropDownItem>
+                  <o:dropDownItem value="Times New Roman">
+                    <h:outputText value="Times New Roman"
+                                  style=" font-family: 'Times New Roman', serif; font-size: 13px;"/>
+                  </o:dropDownItem>
+                  <o:dropDownItem value="Courier New">
+                    <h:outputText value="Courier New" style="font-family: 'Courier New', monospace; font-size: 13px;"/>
+                  </o:dropDownItem>
+                  <o:dropDownItem value="Comic Sans MS">
+                    <h:outputText value="Comic Sans MS"
+                                  style="font-family: 'Comic Sans MS', fantasy; font-size: 13px;"/>
+                  </o:dropDownItem>
+                </o:dropDownField>
+              </td>
+              <td style="text-align: right;" colspan="2">
+                <o:dropDownField id="fontSize"
+                                 value="#{DropDownBean.selectedFont}"
+                                 var="size"
+                                 required="true"
+                                 suggestionMode="all"
+                                 autoComplete="true"
+                                 suggestionDelay="0"
+                                 onchange="updateTextAreaStyle(this, 'fontSize');"
+                                 style="width: 70px;"
+                                 fieldStyle="text-align: right;"
+                                 listItemStyle="text-align: right;"
+                                 buttonAlignment="left">
+                  <o:dropDownItem value="9pt"/>
+                  <o:dropDownItem value="10pt"/>
+                  <o:dropDownItem value="12pt"/>
+                  <o:dropDownItem value="14pt"/>
+                  <o:dropDownItem value="16pt"/>
+                  <o:dropDownItem value="18pt"/>
+                  <o:dropDownItem value="20pt"/>
+                  <h:outputText value="#{size}" style="font-size: #{size};"/>
+                </o:dropDownField>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td height="35">
+          <table style="margin-left: 15px;  padding-top: 5px;">
+            <tr>
+              <td width="62">
+                <h:outputText value="Background:" styleClass="field_title"/>
+              </td>
+              <td width="96">
+                <o:dropDownField id="bgColor"
+                                 value="#{DropDownBean.selectedBGColor}"
+                                 var="color"
+                                 converter="#{DropDownBean.colorConverter}"
+                                 customValueAllowed="false"
+                                 required="true"
+                                 suggestionMode="substring"
+                                 autoComplete="true"
+                                 onchange="updateTextAreaStyle(this, 'background');"
+                                 style="width: 155px;"
+                                 listItemStyle="padding: 2px 4px 2px 4px;"
+                                 listItemClass="demo_font"
+                        >
+                  <o:dropDownItems value="#{DropDownBean.colors}"/>
+                  <o:column width="12px">
+                    <h:outputText styleClass="colorRect" style="background: #{color.name};"/>
+                  </o:column>
+                  <o:column>
+                    <h:outputText value="#{color.name}"/>
+                  </o:column>
+                </o:dropDownField>
+              </td>
+              <td width="70" style="text-align: right;">
+                <nobr>
+                  <h:outputText value="Font color:" styleClass="field_title"/>
+                </nobr>
+              </td>
+              <td>
+                <o:dropDownField id="fontColor"
+                                 value="#{DropDownBean.selectedFontColor}"
+                                 var="color"
+                                 onchange="updateTextAreaStyle(this, 'color');"
+                                 converter="#{DropDownBean.colorConverter}"
+                                 customValueAllowed="false"
+                                 required="true"
+                                 suggestionMode="substring"
+                                 autoComplete="true"
+                                 style="width: 155px;"
+                                 listItemStyle="padding: 2px 4px 2px 4px;"
+                                 listItemClass="demo_font">
+                  <o:dropDownItems value="#{DropDownBean.colors}"/>
+                  <o:column width="12px">
+                    <h:outputText styleClass="colorRect" style="background: #{color.name};"/>
+                  </o:column>
+                  <o:column>
+                    <h:outputText value="#{color.name}"/>
+                  </o:column>
+                </o:dropDownField>
+              </td>
+              <td width="65">
+              </td>
+              <td width="100">
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div style="width:100%; text-align:left;">
+    <h:inputTextarea id="textAreaID" readonly="true"
+                     value="#{DropDownBean.countingRhyme}"
+                     style="width: 600px; height: 330px;
+                                margin-top: 15px;
+                                padding: 10px 10px 10px 10px;
+                                border: 1px solid gray;
+                                overflow: hidden;
+                                font-size: #{DropDownBean.selectedFont};
+                                font-family: #{DropDownBean.selectedFontFamily};
+                                color: #{DropDownBean.selectedFontColor.name};
+                                background-color: #{DropDownBean.selectedBGColor.name};
+                                text-align: #{DropDownBean.selectedTextAlign};
+                                escape: none;"/>
+  </div>
+
+</div>
+<div class="Col1_1 serif">
+  <h4>Shown Functionality</h4>
+  <ul class="hang">
+    <li><strong>Embedded components in list items</strong> - See the <strong>Text align </strong>, <strong>Background</strong>
+      and <strong>Font color</strong> fields.
+    </li>
+    <li><strong>Style and appearance customization</strong> - See the <strong>Font</strong> fields.
+    </li>
+    <li><strong>Keyboard support</strong> - Use the "Down Arrow" key to open the drop-down list, "Esc" key
+      to close it, and "Enter" to apply a chosen value.
+    </li>
+    <li><strong>Client-side auto-suggestion modes</strong> - You can type the beginning of a value or any
+      part of it to quickly find it in the suggestion list. As you type on, the list is getting shorter. When typing in
+      the <strong>Text align</strong> field, you can see all values displayed with the closest suggestion being highlighted.
+    </li>
+    <li><strong>Auto-completion</strong> - Start typing text in any field on this page and it will get
+      completed right in the field. The added part will be marked as selected.
+    </li>
+  </ul>
+
+  Use the DropDownField components below to modify the sample text and background, either by typing in values or
+  choosing them from the list of the predefined options.
+
+</div>
+
+</div>

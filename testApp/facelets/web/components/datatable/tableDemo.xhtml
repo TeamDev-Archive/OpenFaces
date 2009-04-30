@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+<head>
+  <title>Table Demo</title>
+
+  <style type="text/css">
+    .defaultTableStyle {
+      font: 10pt Tahoma;
+      cursor: default;
+    }
+
+    .defaultHeaderStyle {
+      background: #d0d0d0;
+    }
+
+    .lnk1 {
+      color: blue;
+      font: 10pt Tahoma;
+    }
+
+    .lnk1:hover {
+      color: red;
+      font: 10pt Tahoma;
+    }
+  </style>
+  <script type="text/javascript">
+    function checkReadUnreadKeys(evt) {
+      var e = evt ? evt : window.event;
+      if (e.altKey || e.ctrlKey || e.shiftKey) return;
+      if (e.keyCode == 82)
+        document.getElementById("form1:markAsReadBtn").click();
+      if (e.keyCode == 85)
+        document.getElementById("form1:markAsUnreadBtn").click();
+    }
+
+    function showCurrentIndex() {
+      var table = document.getElementById("form1:checkBoxColumnTable");
+      var idx = table.getSelectedRowIndex();
+      var rowIndex = document.getElementById("form1:rowIndex");
+      rowIndex.innerHTML = "table.getSelectedRowIndex() returns: " + idx;
+      O$.reloadComponents(['form1:checkedUsers'], {submittedComponentIds: ['form1:checkBoxColumnTable']});
+    }
+  </script>
+</head>
+
+<body onload="showCurrentIndex();" onclick="O$('form1:selectColumnsPopup').hide()">
+<h2 style="background: #e0e0e0; padding-bottom: 5px; border-bottom: 1px solid black;">Table Component Demo</h2>
+<f:view>
+  <h:form id="form1">
+    <ui:include src="tableDemo_core.xhtml"/>
+  </h:form>
+</f:view>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+<br/>
+<h4 style="border-bottom: 1px solid black;">Styles</h4>
+<br/>
+<table>
+  <tr>
+    <td class="cells">
+      <o:dateChooser calendarStyle="border: 3px dotted red;"
+                     daysHeaderStyle="background: #A8FFFE;"
+                     dayStyle="color: red;"
+                     footerStyle="background: #12FF28;"
+                     headerStyle="background: #FF36F8;"
+                     inactiveMonthDayStyle="color: yellow;"
+                     rolloverButtonStyle="border: 1px solid yellow;"
+                     buttonStyle="border: 1px solid blue;"
+                     rolloverDayStyle="font-weight: bold;"
+                     rolloverInactiveMonthDayStyle="color: aquamarine;"
+                     rolloverSelectedDayStyle="background: orange; font-weight: bold;"
+                     rolloverTodayStyle="border: 1px solid black;"
+                     rolloverWeekendDayStyle="background: red;"
+                     selectedDayStyle="border: 1px solid SpringGreen;"
+                     style="width: 230px!important; border: 1px solid red;"
+                     todayStyle="color: Teal;"
+                     weekendDayStyle="border: 1px dotted RoyalBlue;" />
+    </td>
+    <td class="cells">
+          <pre>
+          &lt;o:dateChooser calendarStyle="border: 3px dotted red;"
+                         daysHeaderStyle="background: #A8FFFE;"
+                         dayStyle="color: red;"
+                         footerStyle="background: #12FF28;"
+                         headerStyle="background: #FF36F8;"
+                         inactiveMonthDayStyle="color: yellow;"
+                         buttonStyle="border: 1px solid red;"
+                         rolloverButtonStyle="border: 1px solid yellow;"
+                         rolloverDayStyle="font-weight: bold;"
+                         rolloverInactiveMonthDayStyle="color: aquamarine;"
+                         rolloverSelectedDayStyle="background: orange; font-weight: bold;"
+                         rolloverTodayStyle="border: 1px solid black;"
+                         rolloverWeekendDayStyle="background: red;"
+                         selectedDayStyle="border: 1px solid SpringGreen;"
+                         style="width: 230px!important; border: 1px solid red;"
+                         todayStyle="color: Teal;"
+                         weekendDayStyle="border: 1px dotted RoyalBlue;"&gt;
+          &lt;/o:dateChooser&gt;
+            </pre>
+    </td>
+    <td class="cells">
+            <o:dateChooser calendarClass="calendarDch"
+                     daysHeaderClass="daysHeaderDCh"
+                     dayClass="dayDCh"
+                     footerClass="footerDCh"
+                     headerClass="headerDCh"
+                     inactiveMonthDayClass="inactiveMonthDayDCh"
+                     rolloverDayClass="rolloverDayDCh"
+                     rolloverInactiveMonthDayClass="rolloverInactiveMonthDayDCh;"
+                     rolloverSelectedDayClass="rolloverSelectedDayDCh"
+                     rolloverTodayClass="rolloverTodayDCh"
+                     rolloverWeekendDayClass="rolloverWeekendDayDCh"
+                     selectedDayClass="selectedDayDCh"
+                     styleClass="styleDCh"
+                     todayClass="todayDCh"
+                     weekendDayClass="weekendDayDCh" />
+    </td>
+  </tr>
+</table>
+<br/>
+<o:dateChooser dateFormat="medium"/>
+<table style="width: 100%;">
+  <tr>
+    <td>
+      <o:dateChooser dateFormat="medium"/>
+    </td>
+    <td>
+      <o:dateChooser dateFormat="short" valueChangeListener="#{TableTestBean.test2}"/>
+    </td>
+    <td>
+      <o:dateChooser dateFormat="medium"/>
+    </td>
+    <td>
+      <o:dateChooser dateFormat="long"/>
+    </td>
+    <td>
+      <o:dateChooser dateFormat="full"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span style="font-weight:bold; font-size:16px;">pattern="M/d/yy, EEE":</span>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <o:dateChooser pattern="M/d/yy, EEE"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span style="font-weight:bold; font-size:16px;">pattern="dddd, MMMM dd, yyyy":</span>
+    </td>
+    <td>
+      <span style="font-weight:bold; font-size:16px;">dateFormat="full":</span>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <o:dateChooser pattern="dddd, MMMM dd, yyyy"/>
+    </td>
+    <td>
+      <o:dateChooser dateFormat="full"/>
+    </td>
+  </tr>
+
+</table>
+<br/>
+<br/>
+<h4 style="border-bottom: 1px solid black;">Focusable</h4>
+    <o:dateChooser focusable="true"/>
+  <br/><br/>
+  <o:dateChooser
+          calendarStyle="border: 3px dotted red;" focusable="true"
+                     daysHeaderStyle="background: #A8FFFE;"
+                     dayStyle="color: red;"
+                     footerStyle="background: #12FF28;"
+                     headerStyle="background: #FF36F8;"
+                     inactiveMonthDayStyle="color: yellow;"
+                     rolloverButtonStyle="border: 1px solid yellow;"
+                     buttonStyle="border: 1px solid blue;"
+                     rolloverDayStyle="font-weight: bold;"
+                     rolloverInactiveMonthDayStyle="color: aquamarine;"
+                     rolloverSelectedDayStyle="background: orange; font-weight: bold;"
+                     rolloverTodayStyle="border: 1px solid black;"
+                     rolloverWeekendDayStyle="background: red;"
+                     selectedDayStyle="border: 1px solid SpringGreen;"
+                     style="width: 230px!important; border: 1px solid red;"
+                     todayStyle="color: Teal;"
+                     weekendDayStyle="border: 1px dotted RoyalBlue;" />
+<br/>
+<h:commandButton value="submit"/>
+
+</div>

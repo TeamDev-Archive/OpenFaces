@@ -1,0 +1,264 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+<p/>
+
+<o:dataTable id="linkTable" var="link" binding="#{LinksTableDemoBean.linksDataTable}" value="#{LinksTableDemoBean.links}"
+              style="#{LinksTableDemoBean.linksTableStyle}" cellspacing="0" cellpadding="0" border="0" applyDefaultStyle="false">
+
+
+  <f:facet name="header"><f:verbatim><div style="margin-bottom: 7px; font: 12pt Times; font-weight: normal; border-bottom: 1px solid gray;">Editable Table Using the <i>rendered</i> Attribute</div></f:verbatim></f:facet>
+  <o:column>
+    <h:graphicImage url="arrowBullet.gif" style="margin-right: 3px;"></h:graphicImage>
+  </o:column>
+  <o:column>
+    <h:outputLink rendered="#{!LinksTableDemoBean.addingOrEditingLink}" value="#{link.url}" styleClass="lnk1">
+      <h:outputText value="#{link.name}"/></h:outputLink>
+    <h:panelGrid style="border: 1px solid gray; background: #c0c0c0" rendered="#{LinksTableDemoBean.addingOrEditingLink}"
+                 columns="2">
+      <h:outputText value="Resource URL:"/><h:inputText value="#{link.url}"/>
+      <h:outputText value="Resource Name:"/><h:inputText value="#{link.name}"/>
+    </h:panelGrid>
+  </o:column>
+  <o:column rendered="#{LinksTableDemoBean.editingLinks}">
+    <h:commandButton id="editRowBtn" value="Edit" onclick="O$.reloadComponents(['form1:linkTable'], {action: 'LinksTableDemo.editLink'}); return false;"
+                     rendered="#{!LinksTableDemoBean.addingOrEditingLink}"/>
+    <h:commandButton id="removeRowBtn" value="Remove" onclick="O$.reloadComponents(['form1:linkTable'], {action: 'LinksTableDemo.removeLink'}); return false;"
+                     rendered="#{!LinksTableDemoBean.addingOrEditingLink}"/>
+    <h:commandButton id="saveRowBtn" value="Save" onclick="O$.reloadComponents(['form1:linkTable'], {action: 'LinksTableDemo.saveLink'}); return false;"
+                     rendered="#{LinksTableDemoBean.addingOrEditingLink}"/>
+    <h:commandButton id="cancelRowBtn" value="Cancel" onclick="O$.reloadComponents(['form1:linkTable'], {action: 'LinksTableDemo.cancelLink'}); return false;"
+                     rendered="#{LinksTableDemoBean.addingOrEditingLink}"/>
+  </o:column>
+  <f:facet name="below">
+    <h:panelGroup id="linkTableButtons">
+      <h:commandButton value="Edit" onclick="O$.reloadComponents(['form1:linkTable'], {action: 'LinksTableDemo.editLinks'}); return false;" rendered="#{!LinksTableDemoBean.editingLinks}"/>
+      <h:commandButton value="Add" onclick="O$.reloadComponents(['form1:linkTable'], {action: 'LinksTableDemo.addLink'}); return false;" rendered="#{LinksTableDemoBean.editingLinks}"/>
+      <h:commandButton value="Save" onclick="O$.reloadComponents(['form1:linkTable'], {action: 'LinksTableDemo.saveEditedLinks'}); return false;" rendered="#{LinksTableDemoBean.editingLinks}"/>
+      <h:commandButton value="Cancel" onclick="O$.reloadComponents(['form1:linkTable'], {action: 'LinksTableDemo.cancelEditedLinks'}); return false;" rendered="#{LinksTableDemoBean.editingLinks}"/>
+    </h:panelGroup>
+  </f:facet>
+</o:dataTable>
+
+<p/>
+
+<table style="width: 100%; border-right: 1px solid gray;" cellspacing="0" cellpadding="0" border="0">
+  <tr><td colspan="2"><div
+          style="padding: 2px 2px 2px 2px; font: 12pt Times; font-weight: normal; border-top: 1px solid gray; border-left: 1px solid gray; ">Master
+    Table with Details Available on Selection</div></td></tr>
+  <tr><td >
+    <o:dataTable var="msg" value="#{EmailTableDemoBean.messages}" rowKey="#{msg.id}" rowIndexVar="rowIndex"
+                  style="border: 1px solid gray; width: 100%;"
+                  styleClass="defaultTableStyle"
+                  cellspacing="0"
+                  cellpadding="2"
+                  sortColumnId="#{EmailTableDemoBean.sortColumnId}"
+                  sortAscending="#{EmailTableDemoBean.sortAscending}"
+                  onkeydown="checkReadUnreadKeys(event);"
+                  columnsOrder="#{EmailTableDemoBean.columnsOrder}">
+      <o:row condition="#{!msg.read}" style="font-weight: bold" onclick="alert('Bold row clicked: #{msg.subject}');"/>
+      <!--<o:row>-->
+        <!--<a4j:support event="ondblclick" reRender="detailPanel" />-->
+      <!--</o:row>-->
+
+      <o:singleRowSelection rowData="#{EmailTableDemoBean.selectedMessage}">
+        <a4j:support event="onchange" reRender="detailPanel" />
+      </o:singleRowSelection>
+
+      <o:column id="importance" sortingExpression="#{msg.important}" style="width: 20px; text-align: center">
+        <f:facet name="header">
+          <h:graphicImage url="importance.gif"/>
+        </f:facet>
+        <h:graphicImage url="important.gif" rendered="#{msg.important}"/>
+      </o:column>
+
+      <o:column id="address" sortingExpression="#{msg.fromAddress}" style="width: 100px;" bodyStyle="border-left: 1px solid #d0d0d0;" headerStyle="border-left: 1px solid #adadad">
+        <f:facet name="header">
+          <h:outputText value="From"/>
+        </f:facet>
+        <h:outputText value="#{msg.fromAddress}"/>
+      </o:column>
+
+      <o:column id="subject" sortingExpression="#{msg.subject}">
+        <f:facet name="header">
+          <h:outputText value="Subject"/>
+        </f:facet>
+        <h:outputText value="#{msg.subject}"/>
+      </o:column>
+
+      <o:column id="date" sortingExpression="#{msg.receivedDate}" width="80px" align="right">
+        <f:facet name="header">
+          <h:outputText value="Received"/>
+        </f:facet>
+        <h:outputText value="#{msg.receivedDate}" style="white-space: nowrap"/>
+      </o:column>
+    </o:dataTable>
+
+  </td><td  align="left" valign="top" width="50%" style="border-top: 1px solid gray; border-bottom: 1px solid gray;">
+    <a4j:outputPanel id="detailPanel">
+    <h:outputText escape="false" value="[No message selected]" style="padding: 5px 5px 5px 5px; font-size: 14pt"
+                  rendered="#{EmailTableDemoBean.selectedMessage == null}"/>
+    <h:panelGrid rendered="#{EmailTableDemoBean.selectedMessage != null}" width="100%"
+                 style="border-bottom: 1px solid gray">
+      <h:outputText style="font: 14pt Arial; font-weight: bold"
+                    value="#{EmailTableDemoBean.selectedMessage.subject}"/>
+      <h:panelGroup><h:outputText style="font: 12pt Arial; font-weight: bold; color: gray" value="From: "/>
+        <h:outputText style="font: 12pt Arial; font-weight: normal;"
+                      value="#{EmailTableDemoBean.selectedMessage.fromAddress}"/></h:panelGroup>
+      <h:panelGroup><h:outputText escape="false"
+                                  value="&#60;div style='background: #d0d0d0; padding: 2px 10px 2px 10px;'&#62;This message was sent with "/>
+        <h:outputText rendered="#{!EmailTableDemoBean.selectedMessage.important}" value="Normal"/>
+        <h:outputText rendered="#{EmailTableDemoBean.selectedMessage.important}" value="High"/>
+        <h:outputText escape="false" value=" importance.&#60;/div&#62;"/></h:panelGroup>
+      <h:panelGroup><h:outputText style="font: 10pt Arial; font-weight: bold; color: gray" value="To: "/>
+        <h:outputText style="font: 10pt Arial; font-weight: normal;"
+                      value="#{EmailTableDemoBean.selectedMessage.toAddress}"/></h:panelGroup>
+    </h:panelGrid>
+
+    <h:outputText rendered="#{EmailTableDemoBean.selectedMessage != null}"
+                  escape="false"
+                  value="#{EmailTableDemoBean.selectedMessage.body}"/>
+    </a4j:outputPanel>
+  </td></tr>
+  <tr valign="middle"><td valign="middle" colspan="2" style="border-left: 1px solid gray; border-bottom: 1px solid gray; ">
+    <table cellspacing="0" cellpadding="0"><tr><td>
+      <h:commandButton id="markAsReadBtn" disabled="#{EmailTableDemoBean.selectedMessage == null}" value="[R]" action="#{EmailTableDemoBean.markAsRead}"/></td><td> - Mark as Read; &#160;;</td>
+      <td><h:commandButton id="markAsUnreadBtn" disabled="#{EmailTableDemoBean.selectedMessage == null}" value="[U]" action="#{EmailTableDemoBean.markAsUnread}"/></td><td> - Mark as Unread</td>
+    </tr></table>
+  </td></tr>
+</table>
+
+<input type="button" value="Customize Columns" onclick="O$('form1:selectColumnsPopup').show(); event.cancelBubble=true;"/>
+
+<o:popupLayer id="selectColumnsPopup" style="border: 1px solid gray; background: #d0d0d0; padding: 4px; width: 500px" onclick="event.cancelBubble=true;">
+  <o:twoListSelection value="#{EmailTableDemoBean.selectedColumnItems}">
+    <f:selectItems value="#{EmailTableDemoBean.columnItems}"/>
+  </o:twoListSelection>
+  <h:commandButton action="#{EmailTableDemoBean.selectColumns}" value="Set Columns" onclick="O$('form1:selectColumnsPopup').hide();"/>
+  <h:commandButton value="Close" onclick="O$('form1:selectColumnsPopup').hide(); return false;"/>
+</o:popupLayer>
+
+<h:selectOneMenu value="#{EmailTableDemoBean.sortColumnId}">
+  <f:selectItem itemValue="importance" itemLabel="Importance" />
+  <f:selectItem itemValue="address" itemLabel="Address" />
+  <f:selectItem itemValue="subject" itemLabel="Subject" />
+  <f:selectItem itemValue="date" itemLabel="Date" />
+</h:selectOneMenu>
+<h:selectBooleanCheckbox value="#{EmailTableDemoBean.sortAscending}"><h:outputText value="Sort ascending"/></h:selectBooleanCheckbox>
+<input type="submit" value="Change sorting"/>
+
+<p/>
+<span style="font: 12pt Times; font-weight: normal; border-bottom: 1px solid gray; ">Simple multi-selection demo</span>
+<div style="height: 3px;"> </div>
+<table cellspacing="0" cellpadding="0" border="1"><tr><td valign="top">
+  <o:dataTable id="users" var="user" value="#{UserPermissionsTableDemoBean.users}" rowKey="#{user.id}"
+                styleClass="defaultTableStyle"
+                headerSectionClass="defaultHeaderStyle"
+                pageSize="7"
+                style="width: 100%; border: 1px solid white;"
+                bodyRowStyle="background: white" bodyOddRowStyle="background: #f0f0f8">
+    <f:facet name="above">
+      <o:dataTablePaginator styleClass="defaultTableStyle" />
+    </f:facet>
+    <f:facet name="below">
+      <o:dataTablePaginator styleClass="defaultTableStyle"/>
+    </f:facet>
+    <o:singleRowSelection rowData="#{UserPermissionsTableDemoBean.currentUser}" action="#{UserPermissionsTableDemoBean.userChanged}"/>
+    <o:column sortingExpression="#{user.userName}">
+      <f:facet name="header"><h:outputText value="User Name"/></f:facet>
+      <h:outputText value="#{user.userName}"/>
+    </o:column>
+  </o:dataTable>
+</td><td valign="top">
+  <o:dataTable id="permissions" var="permission" value="#{UserPermissionsTableDemoBean.permissions}"
+                style="border: 1px solid white;"
+                styleClass="defaultTableStyle"
+                rowKey="#{permission.id}">
+    <o:multipleRowSelection rowDatas="#{UserPermissionsTableDemoBean.currentUserPermissions}" enabled="#{UserPermissionsTableDemoBean.currentUser != null}"
+                             style="background: #e8e8f8"/>
+    <o:selectionColumn>
+      <f:facet name="header"><o:selectAllCheckbox/></f:facet>
+    </o:selectionColumn>
+    <o:column sortingExpression="#{permission.name}">
+      <f:facet name="header"><h:outputText value="Permission"/></f:facet>
+      <h:outputText value="#{permission.name}"/>
+    </o:column>
+  </o:dataTable>
+</td>
+</tr>
+</table>
+<p/>
+<span style="font: 12pt Times; font-weight: normal; border-bottom: 1px solid gray; ">Simple check-box column demo (note that check-boxes are independent of selection)</span>
+
+<h:panelGrid columns="3">
+  <o:dataTable id="checkBoxColumnTable" var="user" value="#{UserPermissionsTableDemoBean.smallUserList}" rolloverStyle="border: 1px solid blue;" rolloverRowStyle="background: #c0d0d0;">
+    <o:singleRowSelection rowData="#{UserPermissionsTableDemoBean.selectedUser}" onchange="showCurrentIndex();"/>
+    <o:column>
+      <f:facet name="header"><h:outputText value="User Name"/></f:facet>
+      <h:outputText value="#{user.userName}"/>
+    </o:column>
+    <o:checkboxColumn id="checks" rowDatas="#{UserPermissionsTableDemoBean.checkedUsers}">
+      <f:facet name="header"><o:selectAllCheckbox/></f:facet>
+    </o:checkboxColumn>
+  </o:dataTable>
+  <h:panelGroup>
+    <f:verbatim><input type="submit" value="Show Checked Users (via form submit) ->"/><br/></f:verbatim>
+    <f:verbatim><input type="button" value="Show Checked Users (via Ajax request) ->" onclick="showCurrentIndex();"/><br/></f:verbatim>
+    <h:panelGroup>
+      <h:outputLink onclick="var prevRowIndex = O$('form1:checkBoxColumnTable').getSelectedRowIndex(); if (prevRowIndex == -1) return false;if (prevRowIndex == 0) {alert('The first row is already selected');return false;} O$('form1:checkBoxColumnTable').setSelectedRowIndex(prevRowIndex - 1); return false;" ><h:outputText value="Move selection up"/></h:outputLink>
+      <h:outputText value=" "/>
+      <h:outputLink onclick="var rowCount = O$('form1:checkBoxColumnTable').getRowCount(); var prevRowIndex = O$('form1:checkBoxColumnTable').getSelectedRowIndex(); if (prevRowIndex == -1) return false; if (prevRowIndex == rowCount - 1) {alert('The last row is already selected');return false;} O$('form1:checkBoxColumnTable').setSelectedRowIndex(prevRowIndex + 1);  return false;"><h:outputText value="Move selection down"/></h:outputLink>
+      <h:outputText value=" "/>
+      <h:outputLink id="clearSelectionLink" onclick="O$('form1:checkBoxColumnTable').clearSelection(); return false;"><h:outputText value="Clear selection"/></h:outputLink>
+      <h:outputText value=" "/>
+      <h:outputText id="rowIndex" />
+    </h:panelGroup>
+  </h:panelGroup>
+  <h:panelGroup>
+    <o:dataTable id="checkedUsers" var="user" value="#{UserPermissionsTableDemoBean.checkedUsers}" style="width: 150px; ">
+      <f:facet name="above">
+        <h:panelGroup>
+          <f:verbatim><b>Selected user: </b><br/></f:verbatim>
+          <h:outputText id="selectedUserNameLabel" value="#{UserPermissionsTableDemoBean.selectedUserName}"/>
+        </h:panelGroup>
+      </f:facet>
+      <o:column>
+        <f:facet name="header"><f:verbatim>Checked users:</f:verbatim></f:facet>
+        <h:outputText value="#{user.userName}"/>
+      </o:column>
+    </o:dataTable>
+  </h:panelGroup>
+</h:panelGrid>
+
+<p/>
+<span style="font: 12pt Times; font-weight: normal; border-bottom: 1px solid gray; ">Filtering demo</span>
+<h:panelGrid columns="1">
+  <o:dataTable id="filterTable" var="user" value="#{UserPermissionsTableDemoBean.usersForFiltering}" horizontalGridLines="0px solid black" bodyOddRowStyle="background: silver">
+    <f:facet name="noDataMessage"><h:outputText value="Users database is empty"/></f:facet>
+    <f:facet name="noFilterDataMessage"><h:outputText value="No such users have been found"/></f:facet>  
+    <f:facet name="above">
+      <h:panelGroup>
+        <f:verbatim>Custom filter with Ajax:&#160;</f:verbatim>
+        <h:selectOneMenu id="manualFilter" value="#{UserPermissionsTableDemoBean.manualFilterValue}" onchange="O$.reloadComponents(['form1:filterTable']);">
+          <f:selectItems value="#{UserPermissionsTableDemoBean.manualFilterItems}"/>
+        </h:selectOneMenu>
+      </h:panelGroup>
+    </f:facet>
+    <o:column filterExpression="#{user.userName}" filterKind="dropDownField">
+      <f:facet name="header"><h:outputText value="User Name"/></f:facet>
+      <h:outputText value="#{user.userName}"/>
+    </o:column>
+    <o:column filterExpression="#{user.category}" filterKind="comboBox">
+      <f:facet name="header"><h:outputText value="User Category"/></f:facet>
+      <h:outputText value="#{user.category}"/>
+    </o:column>
+  </o:dataTable>
+</h:panelGrid>
+
+</div>

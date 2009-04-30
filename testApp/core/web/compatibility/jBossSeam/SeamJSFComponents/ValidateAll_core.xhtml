@@ -1,0 +1,46 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+     xmlns:s="http://jboss.com/products/seam/taglib">
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+
+  <a href="../../JBossSeamTesting.jsf">Return to main page</a>
+  Note: Messages are displayed several times. It is a bug in JBoss Seam and RI
+  <s:validateAll>
+
+    <div>
+      DateChooser (@NotNull @Past):
+      <o:dateChooser id="dch" required="true" value="#{seamvalidators.dchValue}">
+      </o:dateChooser>
+    </div>
+
+    <div>
+      DropDownField (@NotNull @Length(min = 2, max = 10)):
+      <o:dropDownField id="ddf" required="true" value="#{seamvalidators.ddfValue}">
+        <o:dropDownItem value="red"></o:dropDownItem>
+        <o:dropDownItem value="blue"></o:dropDownItem>
+      </o:dropDownField>
+    </div>
+
+    <div>
+      Calendar (@NotNull @Future):
+      <o:calendar id="c" required="true" value="#{seamvalidators.calendarValue}">
+      </o:calendar>
+    </div>
+
+    <div>
+      TwoListSelection (@NotNull):
+      <o:twoListSelection id="tls" required="true" style="width:300px;" value="#{seamvalidators.tlsValue}">
+        <f:selectItems value="#{OpenFacesValidatorsBean.TLSList}"/>
+      </o:twoListSelection>
+    </div>
+
+  </s:validateAll>
+
+  <h:commandButton value="submit"/>
+
+</div>

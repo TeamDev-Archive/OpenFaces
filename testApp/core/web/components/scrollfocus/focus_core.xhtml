@@ -1,0 +1,46 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+
+    <o:focus focusedComponentId="byLoadFocused"/>
+
+    <table>
+      <tr>
+        <td class="header">
+          Focused by page load
+        </td>
+        <td class="header">
+          After page submission should be focused
+        </td>
+      </tr>
+      <tr>
+        <td class="container">
+          <h:inputText id="byLoadFocused"
+                       onblur="printInfo('NON IN FOCUS', 'out', false);"
+                       onfocus="printInfo('FOCUSED', 'out', false);"/>
+          <div id="out"></div>
+        </td>
+        <td class="container">
+          <h:commandButton value="Submit" id="submit"
+                           onblur="printInfo('NON IN FOCUS', 'out1', false);"
+                           onfocus="printInfo('FOCUSED', 'out1', false);"/>
+          <div id="out1"></div>
+        </td>
+      </tr>
+    </table>
+
+    <br/>
+    <br/>
+
+
+  
+</div>

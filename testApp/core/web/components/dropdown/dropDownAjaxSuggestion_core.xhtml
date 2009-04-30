@@ -1,0 +1,31 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <table>
+      <tr>
+        <td class="header">DropDown Ajax-based Suggestion Functionality</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:dropDownField id="plants"
+                           suggestionMode="custom"
+                           autoComplete="true"
+                           customValueAllowed="false"
+                           listItemStyle="white-space:nowrap;">
+            <o:dropDownItems value="#{DropDownBean.suggestedPlants}"/>
+          </o:dropDownField>
+        </td>
+      </tr>
+    </table>
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="Submit"/>
+  
+</div>

@@ -1,0 +1,125 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+<style type="text/css">
+  .borderLayoutPanel0 {
+    background-color: #ffbbbb;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .borderLayoutPanel1 {
+    background-color: #ffbbbb;
+    border: 3px solid black;
+    padding: 3px;
+    margin: 3px;
+  }
+
+  .borderLayoutPanelContent1 {
+    background-color: #bbffff;
+    border: 3px solid black;
+    padding: 3px;
+    margin: 3px;
+  }
+
+  .sidePanel1 {
+    background-color: #ffffbb;
+    border: 3px solid gray;
+    padding: 3px;
+    margin: 3px;
+  }
+
+  .caption1 {
+    background-color: #ffbbff;
+    border: 3px solid gray;
+    padding: 3px;
+    margin: 3px;
+  }
+
+  .content1 {
+    background-color: #ffffff;
+    border: 3px solid gray;
+    padding: 3px;
+    margin: 3px;
+  }
+
+  .splitter1 {
+    background-color: #bbffbb;
+    border: 3px solid gray;
+    padding: 3px;
+    margin: 3px;
+  }
+
+  .legend1 {
+    width: 16px;
+    height: 15px;
+    border: 1px solid black;
+    margin: 5px 5px 5px 20px;
+    overflow: hidden;
+    clear: both;
+    float: left;
+  }
+
+</style>
+
+<o:borderLayoutPanel id="borderLayoutPanel0" styleClass="borderLayoutPanel0" contentClass="borderLayoutPanelContent1" oncontentresize='O$("textDiv").innerHTML = "window resized";'>
+  <o:sidePanel id="sidePanel1" alignment="left" size="25%" styleClass="sidePanel1" captionClass="caption1"
+               contentClass="content1" splitterClass="splitter1">
+    <f:facet name="caption">
+      <h:outputText value=" "/>
+    </f:facet>
+    <o:borderLayoutPanel id="borderLayoutPanel1" styleClass="borderLayoutPanel1" contentClass="content1">
+      <o:sidePanel id="sidePanel11" alignment="top" styleClass="sidePanel1" captionClass="caption1" contentClass="content1"
+                   splitterClass="splitter1"/>
+    </o:borderLayoutPanel>
+  </o:sidePanel>
+
+  <o:sidePanel id="sidePanel2" alignment="right" size="25%" styleClass="sidePanel1" captionClass="caption1"
+               contentClass="content1" splitterClass="splitter1">
+    <f:facet name="caption">
+     <h:outputText value=" "/>
+    </f:facet>
+    <o:borderLayoutPanel id="borderLayoutPanel2" styleClass="borderLayoutPanel1" contentClass="content1">
+      <o:sidePanel id="sidePanel21" alignment="top" styleClass="sidePanel1" captionClass="caption1" contentClass="content1"
+                   splitterClass="splitter1"/>
+    </o:borderLayoutPanel>
+  </o:sidePanel>
+
+  <o:sidePanel id="sidePanel3" alignment="top" size="25%" styleClass="sidePanel1" captionClass="caption1"
+               contentClass="content1" splitterClass="splitter1">
+    <f:facet name="caption">
+      <h:outputText value=" "/>
+    </f:facet>
+    <o:borderLayoutPanel id="borderLayoutPanel3" styleClass="borderLayoutPanel1" contentClass="content1">
+      <o:sidePanel id="sidePanel31" alignment="left" styleClass="sidePanel1" captionClass="caption1" contentClass="content1"
+                   splitterClass="splitter1"/>
+    </o:borderLayoutPanel>
+  </o:sidePanel>
+
+  <o:sidePanel id="sidePanel4" alignment="bottom" size="25%" styleClass="sidePanel1" captionClass="caption1"
+               contentClass="content1" splitterClass="splitter1">
+    <f:facet name="caption">
+      <h:outputText value=" "/>
+    </f:facet>
+    <o:borderLayoutPanel id="borderLayoutPanel4" styleClass="borderLayoutPanel1" contentClass="content1">
+      <o:sidePanel id="sidePanel41" alignment="left" styleClass="sidePanel1" captionClass="caption1" contentClass="content1"
+                   splitterClass="splitter1"/>
+    </o:borderLayoutPanel>
+  </o:sidePanel>
+
+  <h:commandButton value="Submit" onclick="document.forms[0].submit();"/>
+
+</o:borderLayoutPanel>
+
+<f:verbatim>
+  <div style="position: absolute; z-index: 30; left : 20px; top:10px; width: 200px; border: 1px solid gray; background-color: #ddddff;">
+    <a href="../../main.jsf">Back to the main page</a><br/>
+    <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+    <div id="textDiv"> </div>
+  </div>
+</f:verbatim>
+</div>

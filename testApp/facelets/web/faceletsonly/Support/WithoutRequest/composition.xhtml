@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/">
+<!--<ui:composition>-->
+  <!--<o:column sortingExpression="#{item.field1}}">-->
+    <!--<f:facet name="header">-->
+      <!--<h:outputText value="header"/>-->
+    <!--</f:facet>-->
+    <!--<h:outputText value="##{item.field1}"/>-->
+
+  <!--</o:column>-->
+<!--</ui:composition>-->
+<ui:composition>
+<o:column sortingExpression="#{entity[fieldName]}">
+<f:facet name="header">
+<h:outputText value="#{headerName}"/>
+</f:facet>
+<h:outputText value="#{entity[fieldName]}"/>
+</o:column>
+</ui:composition>
+</html>

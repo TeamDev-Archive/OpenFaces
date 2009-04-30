@@ -1,0 +1,273 @@
+<?xml version="1.0"?>
+
+<faces-config version="1.2"
+              xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+  <application>
+    <locale-config>
+      <default-locale>en</default-locale>
+      <supported-locale>de</supported-locale>
+      <supported-locale>fr</supported-locale>
+      <supported-locale>es</supported-locale>
+      <supported-locale>ru</supported-locale>
+    </locale-config>
+  </application>
+
+  <managed-bean>
+    <managed-bean-name>MenuService</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.services.MenuService</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TaskBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.ajax.TaskBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>BorderLayoutBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.borderlayout.BorderLayoutBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>CalendarBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.calendar.CalendarBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DayTableBean1</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.daytable.DayTableBean1</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DayTableBean2</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.daytable.DayTableBean2</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>BanksList</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.datatable.BanksList</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>BookList</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.datatable.BookList</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>LinkList</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.datatable.LinkList</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>StylingBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.datatable.StylingBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>CitiesList</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.datatable.CitiesList</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ImageList</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.tabset.ImageList</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ComponentList</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.tabset.ComponentList</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DateChooserBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.datechooser.DateChooserBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>RequestsTreeTableBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.treetable.RequestsTreeTableBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ForumTreeTableBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.treetable.ForumTreeTableBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>SiteMapTreeTableBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.treetable.SiteMapTreeTableBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>EMailsTreeTableBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.treetable.EMailsTreeTableBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DynamicImageBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.dynamicimage.DynamicImageBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DynamicImageByteArrayBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.dynamicimage.DynamicImageByteArrayBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>FoldingPanelBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.foldingpanel.FoldingPanelBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TabbedPaneBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.tabbedpane.TabbedPaneBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ChartView</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.chart.ChartView</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>IncomeData</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.chart.IncomeData</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>CityPrecipitation</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.chart.CityPrecipitation</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ChartDemo</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.chart.ChartDemo</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+    <managed-property>
+      <property-name>cityPrecipitation</property-name>
+      <value>#{CityPrecipitation}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>averageTemp</property-name>
+      <value>#{AverageTemp}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>monthPrecipitation</property-name>
+      <value>#{MonthPrecipitation}</value>
+    </managed-property>
+    <managed-property>
+      <property-name>cityTemperature</property-name>
+      <value>#{CityTemperature}</value>
+    </managed-property>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>AverageTemp</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.chart.AverageTemp</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>MonthPrecipitation</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.chart.MonthPrecipitation</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>CityTemperature</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.chart.CityTemperature</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DropDownBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.dropdown.DropDownBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DropDownAjaxBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.dropdown.DropDownAjaxBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>HintLabelDemo</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.hintlabel.HintLabelDemo</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>SuggestionFieldBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.suggestionfield.SuggestionFieldBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TwoListSelectionBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.twolistselection.TwoListSelectionBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>TLSStylingBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.twolistselection.TLSStylingBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ValidationBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.validation.ValidationBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>GraphicTextBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.graphictext.GraphicTextBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>InputTextBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.inputtext.InputTextBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+   <managed-bean>
+    <managed-bean-name>InputTextareaBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.inputtextarea.InputTextareaBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>SpinnerBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.spinner.SpinnerBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+</faces-config>

@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+<head>
+  <title>Validation messages</title>
+  <script type="text/javascript">
+    function fillInvalidData(formName) {
+      var field = document.getElementById(formName + ":required");
+      field.value = "";
+      field = document.getElementById(formName + ":validDR");
+      field.value = 5;
+      field = document.getElementById(formName + ":url");
+      field.value = "not url";
+      field = document.getElementById(formName + ":ddf");
+      field.value = "";
+
+    }
+
+    function fillValidData(formName) {
+      var field = document.getElementById(formName + ":required");
+      field.value = "text";
+      field = document.getElementById(formName + ":validDR");
+      field.value = 0.1;
+      field = document.getElementById(formName + ":url");
+      field.value = "http://www.teamdev.com";
+      field = document.getElementById(formName + ":ddf");
+      field.value = "text";
+
+    }
+  </script>
+</head>
+
+<body>
+<f:view>
+  <a href="../../main.jsf" style="float: right;">Return to main page</a>
+  <br/>
+  <a href="../../functional_testing.jsf" style="float: right;">Return to validation testing main page</a>
+  <table width="100%">
+    <tr>
+      <td width="50%">
+        <h:form id="serverValidation">
+          <ui:include src="validationMessagesServer_core.xhtml"/>
+        </h:form>
+      </td>
+      <td width="50%">
+        <h:form id="clientValidation">
+          <ui:include src="validationMessagesClient_core.xhtml"/>
+        </h:form>
+      </td>
+    </tr>
+  </table>
+</f:view>
+
+</body>
+</html>

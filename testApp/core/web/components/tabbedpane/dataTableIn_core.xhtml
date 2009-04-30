@@ -1,0 +1,98 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    <h:commandButton value="Submit" />
+    <br/><br/>
+    Choose loading mode:
+    <o:tabSet id="loadingModes"
+              selectedIndex="#{LoadingModesBean.selectedTabbedPaneIndex}"
+              onchange="document.forms[0].submit();">
+      <o:tabSetItems value="#{LoadingModesBean.tabbedPaneLabels}"/>
+    </o:tabSet>
+    <br/><br/>
+    <table>
+      <tr>
+        <td class="container">
+          <o:tabbedPane id="tabbedPaneID"
+                        loadingMode="#{LoadingModesBean.tabbedPaneCurrentLoadingMode}"
+                        containerStyle="padding: 10px 10px 10px 10px;">
+            <o:tabbedPaneItem>
+              <f:facet name="tab">
+                <h:outputText value="First tab" id="firstTabID"/>
+              </f:facet>
+              <o:dataTable id="firstDataTableID"
+                           var="table_events"
+                           pageSize="3"
+                           value="#{TestEventsBean.tableTestCollection}"
+                           verticalGridLines="1px solid gray">
+                <o:singleRowSelection rowData="#{TestEventsBean.selectedItem}"/>
+                <f:facet name="below">
+                  <o:dataTablePaginator id="firstPaginator"/>
+                </f:facet>
+                <o:column id="col_one" sortingExpression="#{table_events.firstColumn}">
+                  <f:facet name="header">
+                    <h:outputText value="Col1" id="firstColumnHeaderID"/>
+                  </f:facet>
+                  <h:outputText value="#{table_events.firstColumn}" id="firstDataTable_firstContent"/>
+                </o:column>
+                <o:column id="col_two" filterExpression="#{table_events.secondColumn}" filterKind="dropDownField">
+                  <f:facet name="header">
+                    <h:outputText value="Col2"/>
+                  </f:facet>
+                  <h:outputText value="#{table_events.secondColumn}" id="firstDataTable_secondContent"/>
+                </o:column>
+                <o:column id="col_third">
+                  <f:facet name="header">
+                    <h:outputText value="Col3"/>
+                  </f:facet>
+                  <h:outputText value="#{table_events.thirdColumn}" id="firstDataTable_thirdContent"/>
+                </o:column>
+              </o:dataTable>
+            </o:tabbedPaneItem>
+            <o:tabbedPaneItem>
+              <f:facet name="tab">
+                <h:outputText value="Second tab" id="secondTabID"/>
+              </f:facet>
+              <o:dataTable id="secondDataTableID"
+                           var="table_events1"
+                           pageSize="3"
+                           value="#{TestEventsBean.tableTestCollection}"
+                           verticalGridLines="1px solid gray">
+                <o:singleRowSelection rowData="#{TestEventsBean.selectedItem}"/>
+                <f:facet name="below">
+                  <o:dataTablePaginator id="secondPaginator"/>
+                </f:facet>
+                <o:column id="col_one" filterExpression="#{table_events1.firstColumn}" filterKind="comboBox">
+                  <f:facet name="header">
+                    <h:outputText value="Col1"/>
+                  </f:facet>
+                  <h:outputText value="#{table_events1.firstColumn}" id="secondDataTable_firstContent"/>
+                </o:column>
+                <o:column id="col_two">
+                  <f:facet name="header">
+                    <h:outputText value="Col2"/>
+                  </f:facet>
+                  <h:outputText value="#{table_events1.secondColumn}" id="secondDataTable_secondContent"/>
+                </o:column>
+                <o:column id="col_third" sortingExpression="#{table_events1.thirdColumn}">
+                  <f:facet name="header">
+                    <h:outputText value="Col3" id="thirdColumnHeaderID"/>
+                  </f:facet>
+                  <h:outputText value="#{table_events1.thirdColumn}" id="secondDataTable_thirdContent"/>
+                </o:column>
+              </o:dataTable>
+            </o:tabbedPaneItem>
+          </o:tabbedPane>
+        </td>
+      </tr>
+    </table>
+  
+</div>

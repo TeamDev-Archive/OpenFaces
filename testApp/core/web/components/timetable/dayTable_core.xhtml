@@ -1,0 +1,224 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a><br/>
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+  <input type="submit" value="Submit"/>
+
+  <o:hintLabel id="hl1" value="Hint label!" hint="Hint for hint label"/>
+
+  <div style="z-index: 500; position: absolute; margin: 9px; left: 100px; top: 100px; border: 20px solid gray; width: 1000px; height: 1000px; overflow: scroll; padding: 1cm;">
+    <o:hintLabel id="hl2" value="Hint label" hint="Hint for hint label"/>
+
+    <table border="10" cellpadding="5" cellspacing="5" style="width: 100%"><tr><td>
+
+      <table style="border: 1cm solid gray; margin: 14px; width: 100%;"><tr><td style="border: 11px solid gray; padding: 5px;">
+      <o:hintLabel id="hl3" value="Hint label" hint="Hint for hint label"/>
+
+  <o:tabbedPane id="tp1" selectedIndex="#{sessionScope['pageIndex']}" style="width: 100%;" tabStyle="text-align: center" loadingMode="server">
+    <o:tabbedPaneItem>
+      <f:facet name="tab"><h:outputText value="Default view"/></f:facet>
+
+      <o:dayTable id="dt1" rolloverStyle="border: 1px solid blue;" events="#{TimeTableBean.events1}" resources="#{TimeTableBean.resources}" style="height: 500px;" daySwitcherVisible="true"
+              timetableChangeListener="#{TimeTableBean.processTimetableChanges1}"
+              preloadedEvents="none">
+        <o:eventArea horizontalAlignment="rightEdge" verticalAlignment="topEdge" style="margin: 0; padding: 0;">
+          <o:dropDownField id="colorField"
+                           value="#{TimeTableBean.eventColor1}"
+                           converter="#{TimeTableBean.colorConverter}"
+                           suggestionMode="all"
+                           autoComplete="true"
+                           suggestionDelay="0"
+                           style="width: 90px;"
+                  onchange="document.forms[0].submit();">
+            <o:dropDownItem value="Red"/>
+            <o:dropDownItem value="Green"/>
+            <o:dropDownItem value="Blue"/>
+          </o:dropDownField>
+          <h:commandButton value="Move" action="#{TimeTableBean.moveEvent1}"/>
+        </o:eventArea>
+        <o:eventArea horizontalAlignment="leftEdge" verticalAlignment="above">
+          <h:outputText value="#{event.name}" style="color: gray"/>
+        </o:eventArea>
+        <o:eventArea horizontalAlignment="right" verticalAlignment="above">
+          <h:commandLink value="Remove" action="#{TimeTableBean.removeEvent1}" style="margin: 10px"/>
+        </o:eventArea>
+
+      </o:dayTable>
+
+      <h:commandButton value="Switch event set" onclick="document.getElementById('form:dt1').refreshEvents('TimeTableBean.switchEvents1'); return false;"/>
+
+    </o:tabbedPaneItem>
+
+    <o:tabbedPaneItem>
+      <f:facet name="tab"><h:outputText value="iTrain view"/></f:facet>
+
+      <o:dayTable id="dt2" events="#{TimeTableBean.events2}" resources="#{TimeTableBean.resources}"
+                  timetableChangeListener="#{TimeTableBean.processTimetableChanges2}"
+                  style="border: none;"
+                  startTime="8:00"
+                  endTime="19:00"
+                  timeColumnStyle="color: black; background: transparent;"
+                  timeTextPosition="againstMark"
+                  timeColumnSeparator="none"
+                  timeColumnPrimaryRowSeparator="none"
+                  timeColumnSecondaryRowSeparator="none"
+                  rowStyle="height: 45px;"
+                  showTimeForMinorIntervals="true"
+                  minorTimeStyle="color: gray"
+                  reservedTimeEventStyle="border-left: none; border-right: none; margin: 0;">
+        <f:facet name="eventEditor">
+          <o:eventEditorPage action="#{TimeTableBean.editEvent}"/>
+        </f:facet>
+        <f:facet name="deleteEventConfirmation">
+          <o:confirmation message="Удалить этот ивэнт?" details="Нажми 'Да' если уверен что надо удалять"
+                          okButtonText="Да" cancelButtonText="Нет"
+                          style="border: 1px solid red;"
+                          draggable="true"/>
+        </f:facet>
+        <o:timetableEvent
+                style="margin: 2px; padding: 5px;"
+                rolloverStyle="border-color: red !important;"
+                escapeName="false"
+                escapeDescription="false"
+
+                onmouseover="event.timetableEvent.mainElement.style.backgroundColor='silver'; "
+                onmouseout="event.timetableEvent.mainElement.style.backgroundColor='';"
+                oncreate="/*alert('timetableEvent.oncreate: ' + event.timetableEvent.id)*/"/>
+
+        <o:timetableEditingOptions
+                overlappedEventsAllowed="false"
+                eventResourceEditable="false"
+                eventDurationEditable="false"
+                defaultEventDuration="45"/>
+        <o:eventArea id="area1" horizontalAlignment="rightEdge" verticalAlignment="topEdge" style="margin: 0; padding: 0;">
+          <o:dropDownField id="colorField"
+                           value="#{TimeTableBean.eventColor2}"
+                           converter="#{TimeTableBean.colorConverter}"
+                           suggestionMode="all"
+                           autoComplete="true"
+                           suggestionDelay="0"
+                           style="width: 90px;"
+                  onchange="document.forms[0].submit();">
+            <o:dropDownItem value="Red"/>
+            <o:dropDownItem value="Green"/>
+            <o:dropDownItem value="Blue"/>
+          </o:dropDownField>
+          <h:commandButton value="Move" action="#{TimeTableBean.moveEvent}"/>
+        </o:eventArea>
+        <o:eventArea horizontalAlignment="right" verticalAlignment="above">
+          <h:commandLink value="Remove" action="#{TimeTableBean.removeEvent}" style="margin: 10px"/>
+        </o:eventArea>
+        <o:eventActionBar>
+          <o:eventAction id="customEventAction1" actionListener="#{TimeTableBean.customEventAction1Listener}" imageUrl="customAction1.gif" hint="The first custom action" onclick="alert('The first custom action');"/>
+          <o:eventAction id="customEventAction2" actionListener="#{TimeTableBean.customEventAction2Listener}" imageUrl="customAction2.gif" hint="The second custom action" onclick="alert('The second custom action');"/>
+          <o:deleteEventAction hint="Delete this event" rolloverStyle="background: red" pressedStyle="background: maroon;"/>
+        </o:eventActionBar>
+        <o:eventPreview style="width: 300px; background: Cornsilk" eventNameStyle="font-size: 20pt;"/>
+      </o:dayTable>
+      <o:confirmation for="dt2:customEventAction1" />
+      <h:commandButton value="Switch event set" onclick="document.getElementById('form:dt2').refreshEvents('TimeTableBean.switchEvents2'); return false;"/>
+    </o:tabbedPaneItem>
+
+    <o:tabbedPaneItem>
+      <f:facet name="tab"><h:outputText value="Without resource separation"/></f:facet>
+
+      <o:dayTable events="#{TimeTableBean.simpleEvents}" style="height: 500px;" daySwitcherVisible="true"
+              timetableChangeListener="#{TimeTableBean.processSimpleTimetableChanges}"
+              dragAndDropTransitionPeriod="0"
+              dragAndDropCancelingPeriod="0"
+              undroppableStateTransitionPeriod="0"
+              undroppableEventTransparency="0.8"
+              minorTimeInterval="15"
+              timePattern="hh:mm"
+              timeSuffixPattern=" a"
+              rowStyle="height: 10px">
+        <o:timetableEditingOptions autoSaveChanges="false"/>
+      </o:dayTable>
+    </o:tabbedPaneItem>
+
+    <o:tabbedPaneItem>
+      <f:facet name="tab"><h:outputText value="Absolute positioning functions test"/> </f:facet>
+
+      <o:hintLabel value="Hint label" hint="Hint for hint label"/>
+      <o:hintLabel value="Hint label" hint="Hint for hint label" style="margin: 5px;"/>
+      <o:dateChooser style="margin: 5px;"/>
+
+      <o:dropDownField style="margin: 5px; width: 200px">
+        <o:dropDownItem value="item 1"/>
+        <o:dropDownItem value="item 2"/>
+        <o:dropDownItem value="item 3"/>
+      </o:dropDownField>
+
+      <o:suggestionField style="margin: 5px;">
+        <o:dropDownItem value="item 1"/>
+        <o:dropDownItem value="item 2"/>
+        <o:dropDownItem value="item 3"/>
+      </o:suggestionField>
+
+      <input type="button" value="Show popup layer" onclick="O$('form:popupLayer1').showCentered();"/>
+      <o:popupLayer id="popupLayer1" modal="true" modalLayerStyle="background: silver" style="width: 200px; height: 150px;" draggable="true">
+        <h:outputText value="Some content inside popup layer"/>
+        <o:dateChooser/>
+        <h:commandButton value="Close" onclick="O$('form:popupLayer1').hide(); return false;"/>
+      </o:popupLayer>
+      <o:calendar/>
+      <f:verbatim>See also hint label embedding tests in &#160;</f:verbatim>
+      <h:outputLink value="../../output/hintLabelTest2.jsf">
+        <h:outputText value="hintLabelTest2.jsf"/>
+      </h:outputLink>
+
+      <h:panelGroup style="display: block; border: 1px solid black; padding: 7px; height: 250px; width: 300px;">
+      <h:panelGroup id="container" style="display: block; border: 1px solid black; padding: 4px; overflow: scroll; height: 200px; width: 250px;">
+        <o:dataTable var="row" value="#{TableTestBean.collection1}"
+                     rolloverRowStyle="background: #f0f0f0"
+                     headerRowClass="columnheader"
+                style="table-layout: fixed;">
+          <o:singleRowSelection/>
+
+          <o:column id="col1"  width="100px" style="width: 100px">
+            <f:facet name="header">
+              <h:outputText id="letterTxt" value="Letters"/>
+            </f:facet>
+
+            <o:hintLabel style="width: 100px" value="#{row.field1} aaaaaa aaaaaaa aaaaa"/>
+          </o:column>
+
+          <o:column style="width: 150px">
+            <f:facet name="header">
+              <h:outputText value="Boolean Field"/>
+            </f:facet>
+            <h:selectBooleanCheckbox value="#{row.booleanField}"/>
+          </o:column>
+
+          <o:column id="col2" width="100px" style="width: 100px">
+            <f:facet name="header">
+              <h:outputText value="Numbers"/>
+            </f:facet>
+            <o:hintLabel style="width: 100px" value="#{row.field2} ccccc ccccccc cccccc"/>
+          </o:column>
+
+        </o:dataTable>
+
+      </h:panelGroup>
+      </h:panelGroup>
+
+      <f:verbatim><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
+      <f:verbatim><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
+      <f:verbatim><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
+      <f:verbatim><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
+
+    </o:tabbedPaneItem>
+  </o:tabbedPane>
+
+      </td></tr></table>
+    </td></tr></table>
+
+    </div>
+
+
+</div>

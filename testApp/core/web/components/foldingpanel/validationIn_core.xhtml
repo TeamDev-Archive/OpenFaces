@@ -1,0 +1,35 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+<h:commandButton value="Submit" />
+<br/><br/>
+Choose loading mode:
+<o:tabSet id="loadingModes"
+          selectedIndex="#{LoadingModesBean.selectedFoldingPanelIndex}"
+          onchange="document.forms[0].submit();">
+  <o:tabSetItems value="#{LoadingModesBean.foldingPanelLabels}"/>
+</o:tabSet>
+<br/><br/>
+<o:foldingPanel id="validationFoldingPanel"
+                loadingMode="#{LoadingModesBean.foldingPanelCurrentLoadingMode}"
+                expanded="false"
+                contentStyle="padding: 10px 10px 10px 10px;">
+  <f:facet name="caption">
+    <h:outputText value="Validation in folding panel"/>
+  </f:facet>
+  Required:
+  <f:verbatim><br/></f:verbatim>
+  <h:inputText id="required_input" value="#{ValidatorBean.demo1}" required="true"/>
+  <f:verbatim><br/></f:verbatim>
+  <h:message id="validationMessage" for="required_input" style="color: red; font-size: 7pt; width: 150px;"/>
+</o:foldingPanel>
+
+</div>

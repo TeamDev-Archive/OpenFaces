@@ -1,0 +1,52 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+      <a href="../../main.jsf">Return to main page</a><br/><br/>
+
+    <o:ajaxSettings>
+      <f:facet name="progressMessage">
+        <o:defaultProgressMessage imageUrl="panther_eye.png" text="custom loading"
+                                  style="background: red; border: 2px solid green;"/>
+      </f:facet>
+      <f:facet name="sessionExpiration">
+        <o:defaultSessionExpiration />
+      </f:facet>
+    </o:ajaxSettings>
+
+    <div id="empty"></div>
+    <table>
+      <tr>
+        <td class="container">
+          <o:tabbedPane id="tabbedPaneID"
+                        containerStyle="padding: 10px 10px 10px 10px;">
+            <o:tabbedPaneItem>
+              <f:facet name="tab">
+                <h:outputText value="First panther" id="firstTabID"/>
+              </f:facet>
+              <h:graphicImage url="panther.jpg"/>
+            </o:tabbedPaneItem>
+            <o:tabbedPaneItem>
+              <f:facet name="tab">
+                <h:outputText value="Second panther" id="secondTabID"/>
+              </f:facet>
+              <h:graphicImage url="panther2.jpg"/>
+            </o:tabbedPaneItem>
+            <o:tabbedPaneItem>
+              <f:facet name="tab">
+                <h:outputText value="Third panther" id="thirdTabID"/>
+              </f:facet>
+              <h:graphicImage url="panther3.jpg"/>
+            </o:tabbedPaneItem>
+          </o:tabbedPane>
+        </td>
+      </tr>
+    </table>
+    <br/>
+    <br/>
+    <h:commandButton value="submit"/>
+  
+</div>

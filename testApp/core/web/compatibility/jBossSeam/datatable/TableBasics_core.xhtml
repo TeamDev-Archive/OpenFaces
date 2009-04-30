@@ -1,0 +1,179 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+     xmlns:s="http://jboss.com/products/seam/taglib"  >
+  
+<a href="../../main.jsf">Return to main page</a>
+<table>
+  <tr>
+    <td width="70%">
+      <o:dataTable id="table"
+                   var="row" value="#{itemsList}" pageSize="4" binding="#{seamtesttable.dataTable}">
+        <o:column id="col1" sortingExpression="#{row.column1}" filterExpression="#{row.column1}"
+                  filterKind="dropDownField" filterValue="#{seamTable.filterValue}"
+                  filterValues="#{seamTable.filterValues}">
+          <f:facet name="header">
+            <h:outputText value="Column_1"/>
+          </f:facet>
+          <h:outputText value="#{row.column1}"/>
+        </o:column>
+        <o:column id="col2" sortingExpression="#{row.column2}" filterExpression="#{row.column2}" filterKind="dropDownField">
+          <f:facet name="header">
+            <h:outputText value="Column_2"/>
+          </f:facet>
+          <h:outputText value="#{row.column2}"/>
+        </o:column>
+        <o:column id="col3" sortingExpression="#{row.column3}" filterExpression="#{row.column3}" filterKind="comboBox">
+          <f:facet name="header">
+            <h:outputText value="Column_3"/>
+          </f:facet>
+          <h:outputText value="#{row.column3}"/>
+        </o:column>
+        <o:column id="col4" sortingExpression="#{row.column4}" filterExpression="#{row.column4}">
+          <f:facet name="header">
+            <h:outputText value="Column_4"/>
+          </f:facet>
+          <h:outputText value="#{row.column4}"/>
+        </o:column>
+        <o:column>
+          <h:commandLink value="select row" action="#{seamTable.select}"/>
+        </o:column>
+        <f:facet name="below">
+          <o:dataTablePaginator/>
+        </f:facet>
+      </o:dataTable>
+    </td>
+    <td style="text-align:center;" align="center">
+      <h:outputText value="Current DataTable Row:"/>
+      <br/>
+      <h:outputText value="#{seamTable.currentItem}" style="font-size:large;font-weight:bolder;"/>
+    </td>
+  </tr>
+</table>
+<h:commandButton value="Re-render table"
+                 onclick="O$.reloadComponents(['form1:table'], {submittedComponentIds: ['form1:table']});return false;"/>
+<br/>
+<h:commandButton value="Sort by forth column Ajax"
+                 onclick="O$.reloadComponents(['form1:table'], {submittedComponentIds: ['form1:table'], action: 'seamTable.sortByForthColumn'});return false;"/>
+<br/>
+<h:commandButton value="Sort by forth column server" action="#{seamTable.sortByForthColumn}"/>
+<hr/>
+<h4>DataTable Single Selection</h4>
+<o:dataTable id="tableSingleSelection"
+             var="row" value="#{itemsList}" pageSize="4">
+  <o:singleRowSelection rowData="#{seamTable.singleSelectionItem}"
+                        onchange="O$.reloadComponents(['form1:tableSingleSelection'], {submittedComponentIds: ['form1:tableSingleSelection']});"/>
+  <o:column id="col1_single" sortingExpression="#{row.column1}" filterExpression="#{row.column1}"
+            filterKind="dropDownField">
+    <f:facet name="header">
+      <h:outputText value="Column_1"/>
+    </f:facet>
+    <h:outputText value="#{row.column1}"/>
+  </o:column>
+  <o:column id="col2_single" sortingExpression="#{row.column2}" filterExpression="#{row.column2}"
+            filterKind="dropDownField"
+            filterValues="#{seamTable.filterValues}">
+    <f:facet name="header">
+      <h:outputText value="Column_2"/>
+    </f:facet>
+    <h:outputText value="#{row.column2}"/>
+  </o:column>
+  <o:column id="col3_single" sortingExpression="#{row.column3}" filterExpression="#{row.column3}"
+            filterKind="comboBox">
+    <f:facet name="header">
+      <h:outputText value="Column_3"/>
+    </f:facet>
+    <h:outputText value="#{row.column3}"/>
+  </o:column>
+  <o:column id="col4_single" sortingExpression="#{row.column4}" filterExpression="#{row.column4}">
+    <f:facet name="header">
+      <h:outputText value="Column_4"/>
+    </f:facet>
+    <h:outputText value="#{row.column4}"/>
+  </o:column>
+  <f:facet name="above">
+    <o:dataTablePaginator/>
+  </f:facet>
+  <f:facet name="below">
+    <h:outputText id="selectedValue" value="Selected value: #{seamTable.singleSelectionItem.column1}"
+                  style="font-size:large;font-weight:bolder;"/>
+  </f:facet>
+</o:dataTable>
+<h4>DataTable Multiple Selection</h4>
+<table>
+  <tr>
+    <td width="50%">
+      <o:dataTable id="tableMultipleSelection"
+                   var="row" value="#{itemsList}" pageSize="4">
+        <o:multipleRowSelection rowDatas="#{seamTable.multipleSelectionItems}"
+                                onchange="O$.reloadComponents(['form1:selectedItems'], {submittedComponentIds: ['form1:tableMultipleSelection']});"/>
+        <o:column id="col1_multiple" sortingExpression="#{row.column1}" filterExpression="#{row.column1}"
+                  filterKind="dropDownField">
+          <f:facet name="header">
+            <h:outputText value="Column_1"/>
+          </f:facet>
+          <h:outputText value="#{row.column1}"/>
+        </o:column>
+        <o:column id="col2_multiple" sortingExpression="#{row.column2}" filterExpression="#{row.column2}"
+                  filterKind="dropDownField"
+                  filterValues="#{seamTable.filterValues}">
+          <f:facet name="header">
+            <h:outputText value="Column_2"/>
+          </f:facet>
+          <h:outputText value="#{row.column2}"/>
+        </o:column>
+        <o:column id="col3_multiple" sortingExpression="#{row.column3}" filterExpression="#{row.column3}"
+                  filterKind="comboBox">
+          <f:facet name="header">
+            <h:outputText value="Column_3"/>
+          </f:facet>
+          <h:outputText value="#{row.column3}"/>
+        </o:column>
+        <o:column id="col4_multiple" sortingExpression="#{row.column4}" filterExpression="#{row.column4}">
+          <f:facet name="header">
+            <h:outputText value="Column_4"/>
+          </f:facet>
+          <h:outputText value="#{row.column4}"/>
+        </o:column>
+        <f:facet name="below">
+          <o:dataTablePaginator/>
+        </f:facet>
+      </o:dataTable>
+    </td>
+    <td align="center">
+      <o:dataTable id="selectedItems"
+                   var="row" value="#{seamTable.multipleSelectionItems}">
+        <o:column id="col1_selected" filterExpression="#{row.column1}" filterKind="dropDownField">
+          <f:facet name="header">
+            <h:outputText value="Column_1"/>
+          </f:facet>
+          <h:outputText value="#{row.column1}"/>
+        </o:column>
+        <o:column id="col2_selected">
+          <f:facet name="header">
+            <h:outputText value="Column_2"/>
+          </f:facet>
+          <h:outputText value="#{row.column2}"/>
+        </o:column>
+        <o:column id="col3_selected">
+          <f:facet name="header">
+            <h:outputText value="Column_3"/>
+          </f:facet>
+          <h:outputText value="#{row.column3}"/>
+        </o:column>
+        <o:column id="col4_selected">
+          <f:facet name="header">
+            <h:outputText value="Column_4"/>
+          </f:facet>
+          <h:outputText value="#{row.column4}"/>
+        </o:column>
+      </o:dataTable>
+    </td>
+  </tr>
+</table>
+<h:commandButton value="submit"/>
+
+</div>

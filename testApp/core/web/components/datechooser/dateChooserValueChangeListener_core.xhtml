@@ -1,0 +1,39 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+
+    <table>
+      <tr>
+        <td class="header" colspan="2">'valueChangeListener' as attribute</td>
+        <td class="header" colspan="2">'valueChangeListener' as tag</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:dateChooser id="asAttributeDC" valueChangeListener="#{DateChooserBean.valueChangedAttribute}" />
+        </td>
+        <td class="container">
+          <h:outputText id="asAttributeOutput" value="#{DateChooserBean.valueChangeListenerFlag}" />
+        </td>
+        <td class="container">
+          <o:dateChooser id="asTagDC">
+            <f:valueChangeListener type="org.openfaces.testapp.datechooser.TestValueChangeListener" />
+          </o:dateChooser>
+        </td>
+        <td class="container">
+          <h:outputText id="asTagOutput" value="#{DateChooserBean.testValueChangeListener}" />
+        </td>
+      </tr>
+    </table>
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="Submit" />
+
+  
+</div>

@@ -1,0 +1,16 @@
+/* CSS Document */
+
+.hintLabel_column {
+  text-align: left;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.hintLabel_label {
+  width: 100%;
+}
+
+.hintLabel_hint {
+  background-color: #ffffff;
+  color: black;
+}

@@ -1,0 +1,55 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:o="http://openfaces.org/">
+
+	<f:verbatim><br/></f:verbatim>
+		<!--<h:form>-->
+<!--style></style--> <!-- Uncomment this dummy style to work around background image in style not being displayed with Mozilla+Facelets+JSF1.2 (as reported against QuipuKit 1.2.2)-->
+
+  <div style="border: 1px solid black; width: 200px; height: 100px; " class="cls1">test div 1</div>
+  <div style="border: 1px solid black; width: 200px; height: 100px; " class="cls2">test div 2</div>
+
+      <o:tabbedPane loadingMode="client" selectedIndex="0"
+		styleClass="width100" style="width: 100%" tabGapWidth="5"
+		tabStyle="background: url(images/back_inactivetab.gif) repeat-x bottom; font-family: Verdana, Geneva, Arial, Helvetica, Sans-serif; font-size: 11px; text-align: center; color: #10569F; padding: 0px 15px 0px 15px; vertical-align: middle; height: 25px; width: 90px;"
+		selectedTabStyle="background: #F9F9F9; font-family: Arial, Helvetica, Sans-serif; font-weight: bold; color: #0B2D50; text-decoration: none; cursor:default; padding: 0px 15px 0px 15px;"
+		rolloverTabStyle="cursor: pointer; text-decoration: underline;"
+    tabEmptySpaceStyle="background: url(images/back_inactivetab.gif);"
+    containerClass="tabcontainer" tabEmptySpaceClass="tabspace"
+		frontBorderStyle="1px solid #99ACB7" backBorderStyle="1px solid #A4A9AB">
+				<o:tabbedPaneItem rendered="true">
+					<f:facet name="tab">
+						<h:outputText value="Inhaltsdateien"/>
+					</f:facet>
+					<h:outputText value=" " />
+					<!--<ui:include src="/xhtml/datapackage/DataPackageFilter.xhtml" /> -->
+					<!--<ui:include src="/xhtml/tables/PackageContentItemTable.xhtml" />-->
+				</o:tabbedPaneItem>
+				<o:tabbedPaneItem>
+					<f:facet name="tab">
+						<h:outputText value="Nachverarbeitung" />
+					</f:facet>
+					<h:panelGrid columns="1" styleClass="tabsubheadpanel">
+						<h:outputText value="Testview" />
+					</h:panelGrid>
+				</o:tabbedPaneItem>
+				<o:tabbedPaneItem>
+					<f:facet name="tab">
+						<h:outputText value="Verlauf" />
+					</f:facet>
+					<h:outputText value=" " />
+						<!--<ui:include src="/xhtml/history/HistoryFilter.xhtml" /> -->
+						<!--<ui:include src="/xhtml/tables/HistoryTable.xhtml" />-->
+				</o:tabbedPaneItem>
+			</o:tabbedPane>
+		<!--</h:form>-->
+
+  <script type="text/javascript">
+    O$.addCssRule(".cls1{background: url(/FaceletsTestApplication/Support/QKS1838/images/back_inactivetab.gif);");
+    O$.addCssRule(".cls2{background: url(images/back_inactivetab.gif);");
+  </script>
+  
+  </div>

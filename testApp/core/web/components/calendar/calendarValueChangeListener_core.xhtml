@@ -1,0 +1,39 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <br/>
+      <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+
+    <table>
+      <tr>
+        <td class="header" colspan="2">'valueChangeListener' as attribute</td>
+        <td class="header" colspan="2">'valueChangeListener' as tag</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:calendar id="asAttributeDD" valueChangeListener="#{CalendarBean.valueChangedAttribute}"/>
+        </td>
+        <td class="container">
+          <h:outputText id="asAttributeOutput" value="#{CalendarBean.valueChangeListenerFlag}"/>
+        </td>
+        <td class="container">
+          <o:calendar id="asTagDD">
+            <f:valueChangeListener type="org.openfaces.testapp.calendar.TestValueChangeListener"/>
+          </o:calendar>
+        </td>
+        <td class="container">
+          <h:outputText id="asTagOutput" value="#{CalendarBean.testValueChangeListener}"/>
+        </td>
+      </tr>
+    </table>
+    <br/>
+    <br/>
+    <h:commandButton id="submit" value="Submit"/>
+
+  
+</div>

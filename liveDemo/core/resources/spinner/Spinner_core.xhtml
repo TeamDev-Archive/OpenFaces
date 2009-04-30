@@ -1,0 +1,89 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     class="Col4_234 darkgray">
+
+  <div id="component" align="center">
+
+    <h:panelGroup id="productsPanel">
+      <o:dataTable id="table" value="#{SpinnerBean.products}" var="product" style="width: 100%; border:0;">
+
+        <o:column style="padding:0.5em 1em 0.5em 1em;"
+                headerStyle="text-align: left"
+                bodyStyle="text-align: left;">
+          <f:facet name="header">Product Name</f:facet>
+          <h:outputText value="#{product.name}"/>
+        </o:column>
+
+        <o:column headerStyle="text-align: right"
+                  bodyStyle="text-align: right;"
+                  style="padding:0.5em 1em 0.5em 1em;" width="15%">
+          <f:facet name="header">Price</f:facet>
+          &#8364;<h:outputText value="#{product.price}">
+          <f:convertNumber pattern="0.00" groupingUsed="true" minFractionDigits="2" maxFractionDigits="0"/>
+        </h:outputText>
+        </o:column>
+
+        <o:column align="right" 
+                  headerStyle="text-align: right;"
+                  style="padding:0.5em 1em 0.5em 1em;" width="15%">
+          <f:facet name="header">Quantity</f:facet>
+          <o:spinner id="quantityField"
+                     value="#{product.quantity}"
+                     styleClass="spinnerDefault"
+                     rolloverClass="spinnerRollover"
+                     focusedClass="spinnerFocused"
+                     maxValue="#{product.inStock}"
+                     minValue="0">
+
+            <o:reloadComponents requestDelay="500" componentIds=":form:productsPanel"
+                                action="#{SpinnerBean.calculateTotalCost}"
+                                event="onchange"/>
+          </o:spinner>
+        </o:column>
+
+        <o:column  style="padding:0.5em 1em 0.5em 1em;" width="10%"
+                bodyStyle="text-align: right;"
+                headerStyle="text-align: right;">
+          <f:facet name="header">Left in Stock</f:facet>
+         <h:outputText value="#{product.leftInStock}"/>
+        </o:column>
+
+        <o:column headerStyle="text-align: right;"
+                  bodyStyle="text-align: right;"
+                  footerStyle="text-align: right;"
+                  style="padding:0.5em 1em 0.5em 1em;"
+                  width="25%">
+          <f:facet name="header">Cost</f:facet>
+          <f:facet name="footer">
+            <h:panelGroup>
+              Total Cost:&#160;
+                <span style="font-size: 120%; font-weight: bold;">  &#8364;
+                   <h:outputText value="#{SpinnerBean.totalCost}">
+                     <f:convertNumber pattern="0.00" groupingUsed="true" minFractionDigits="2" maxFractionDigits="0"/>
+                   </h:outputText>
+                </span>
+            </h:panelGroup>
+          </f:facet>
+
+          <h:outputText value="&#8364;" escape="false" rendered="#{product.quantity > 0}"/><h:outputText value="#{product.productTotalCost}" styleClass="currency" rendered="#{product.quantity > 0}">
+          <f:convertNumber pattern="0.00" groupingUsed="true" minFractionDigits="2" maxFractionDigits="0"/>
+        </h:outputText>
+        </o:column>
+      </o:dataTable>
+
+    </h:panelGroup>
+  </div>
+
+
+  <div class="Col1_1 serif">
+    <h4>Shown Functionality</h4>
+    <ul class="hang">
+      <li><strong>Specifying allowed number range</strong> - The Spinner component allows to set maximum and minimum value, giving ability to simplify input data validation code and improve user experience. In the order form above users are restricted to increase product quantity over the amount present in stock. Spinner control is also configured to disallow decreasing product quantity below zero.
+      </li>
+      <li><strong>Focused style</strong> - Click on one of Spinners controlling product quantity to see custom focused style.
+      </li>
+    </ul>
+  </div>
+
+</div>

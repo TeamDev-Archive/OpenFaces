@@ -1,0 +1,51 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  
+    <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+    
+    <span style="font-weight:bold;">Use ajax:</span><br/>
+    <o:tabSet id="loadingModes"
+              selectedIndex="#{DataTableLoadingModeBean.loadingModeSelectedIndex}"
+              onchange="document.forms[0].submit();">
+      <o:tabSetItems value="#{DataTableLoadingModeBean.loadingModeList}"/>
+    </o:tabSet>
+
+    <table cellpadding="0" cellspacing="5">
+      <tr>
+        <td class="header">TreeTable with the static structure</td>
+      </tr>
+      <tr>
+        <td class="container">
+          <o:treeTable id="treeTableStaticStructureID"
+                  var="color"
+                  useAjax="#{DataTableLoadingModeBean.useAjax}">
+            <o:staticTreeStructure>
+              <o:treeNode value="Colors">
+                <o:treeNode value="Warm colors">
+                  <o:treeNode value="Red"/>
+                  <o:treeNode value="Yellow"/>
+                </o:treeNode>
+                <o:treeNode value="Cold colors">
+                  <o:treeNode value="Blue"/>
+                  <o:treeNode value="Purple"/>
+                </o:treeNode>
+              </o:treeNode>
+            </o:staticTreeStructure>
+            <o:treeColumn>
+              <h:outputText value="#{color}">
+              </h:outputText>
+            </o:treeColumn>
+          </o:treeTable>
+        </td>
+      </tr>
+    </table>
+  
+</div>
