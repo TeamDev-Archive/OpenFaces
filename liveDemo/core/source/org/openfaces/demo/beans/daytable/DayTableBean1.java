@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Date;
 
 /**
  * @author Dmitry Pikhulya
@@ -31,6 +32,7 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
     private static int eventIdCounter = 0;
 
     List<AbstractTimetableEvent> events = new ArrayList<AbstractTimetableEvent>();
+    static List<AbstractTimetableEvent> reservedTimes = new ArrayList<AbstractTimetableEvent>();
 
     public DayTableBean1() {
         Color red1 = new Color(220, 0, 0);
@@ -50,7 +52,9 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
                 "Instructor: Tony Bricks <br/>Fee: Free", orange));
         events.add(new TimetableEvent(generateEventId(), todayAt(17, 55), todayAt(19, 25), "<b>Gentle Yoga, <i>Level 1</i></b>",
                 "Instructor: Alex West <br/>Fee: $30", blue));
-        events.add(new ReservedTimeEvent(generateEventId(), null, todayAt(19, 45), todayAt(20, 15)));
+        ReservedTimeEvent reservedTimeEvent1 = new ReservedTimeEvent(generateEventId(), null, todayAt(19, 45), todayAt(20, 15));
+        events.add(reservedTimeEvent1);
+        reservedTimes.add(reservedTimeEvent1);
         events.add(new TimetableEvent(generateEventId(), todayAt(21, 40), todayAt(23, 30), "<b>Meditation</b>",
                 "Instructor: Gregory House <br/>Fee: $20", green));
 
@@ -63,7 +67,9 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
                 "Instructor: Melany Scott <br/>Fee: $25", red2));
         events.add(new TimetableEvent(generateEventId(), yesterdayAt(19, 55), yesterdayAt(19, 25), "<b>Gentle Yoga For Those with Special Considerations</b>",
                 "Instructor: Alex West <br/>Fee: $25", blue));
-        events.add(new ReservedTimeEvent(generateEventId(), null, yesterdayAt(21, 5), yesterdayAt(24, 0)));
+        ReservedTimeEvent reservedTimeEvent2 = new ReservedTimeEvent(generateEventId(), null, yesterdayAt(21, 5), yesterdayAt(24, 0));
+        events.add(reservedTimeEvent2);
+        reservedTimes.add(reservedTimeEvent2);
 
         //tomorrow
         events.add(new TimetableEvent(generateEventId(), tomorrowAt(8, 30), tomorrowAt(11, 30), "<b>Meditation</b>",
@@ -79,8 +85,12 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
     public void postponeEventActionListener(EventActionEvent event) {
         AbstractTimetableEvent localEvent = eventById(events, event.getEventId());
         if(localEvent != null) {
-            localEvent.setStart(modifyDate(localEvent.getStart(), Calendar.DAY_OF_YEAR, 1));
-            localEvent.setEnd(modifyDate(localEvent.getEnd(), Calendar.DAY_OF_YEAR, 1));
+            Date start = modifyDate(localEvent.getStart(), Calendar.DAY_OF_YEAR, 1);
+            Date end = modifyDate(localEvent.getEnd(), Calendar.DAY_OF_YEAR, 1);
+            if(isTimeAvailable(start, end)) {
+                localEvent.setStart(start);
+                localEvent.setEnd(end);
+            }
         }
     }
 
@@ -135,10 +145,24 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
         if (modifiedEvent != null) {
             AbstractTimetableEvent event = eventById(events, modifiedEvent.getId());
             if (event != null) {
-                 event.setStart(modifyDate(event.getStart(), Calendar.HOUR_OF_DAY, 1));
-                 event.setEnd(modifyDate(event.getEnd(), Calendar.HOUR_OF_DAY, 1));
+                Date startDate = modifyDate(event.getStart(), Calendar.HOUR_OF_DAY, 1);
+                Date endDate = modifyDate(event.getEnd(), Calendar.HOUR_OF_DAY, 1);
+                if(isTimeAvailable(startDate, endDate)) {
+                    event.setStart(startDate);
+                    event.setEnd(endDate);
+                }
             }
         }
+    }
+
+    private boolean isTimeAvailable(Date startDate, Date endDate) {
+        for (AbstractTimetableEvent reservedTime : reservedTimes) {
+            if ((reservedTime.getStart().after(startDate) && reservedTime.getStart().before(endDate)) ||
+                    (reservedTime.getStart().before(startDate) && reservedTime.getEnd().after(startDate))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private TimetableEvent getEvent() {
