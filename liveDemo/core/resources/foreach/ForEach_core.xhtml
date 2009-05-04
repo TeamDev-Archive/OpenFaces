@@ -8,8 +8,8 @@
     <table id="Component">
       <tr>
         <td style="width: 400px; vertical-align: top;" >
+          <h2>Select a state</h2>
           <h:panelGroup id="statesList" style="line-height:normal;">
-              <h2>Select a state</h2>
               <o:forEach items="#{BanksList.bankStates}" var="state">
                 <h:commandLink style="text-decoration: none;
         color: #{state.stateName eq BanksList.selectedState.stateName ? '#FF8400' : 'gray'}; margin-left: 0.5em; margin-right: 0.5em;">
@@ -26,8 +26,8 @@
           </h:panelGroup>
         </td>
         <td style="vertical-align: top;">
+          <h2>Banks</h2>
           <h:panelGroup id="banksList">
-              <h2>Available Banks</h2>
               <h:panelGroup rendered="#{BanksList.selectedState ne null}">
                 <o:forEach items="#{BanksList.selectedState.banks}" var="bank" statusVar="status">
                   <ul>
