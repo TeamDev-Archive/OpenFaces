@@ -27,7 +27,7 @@ public class LiveDemoTest extends OpenFacesTestCase {
 
     @Test
     public void testAvailability() {
-        assertDemoPageAvailable("/overview/homepage.jsf", "Online Demo \u2014 See Components in action");
+        assertDemoPageAvailable("/overview/homepage.jsf", "OpenFaces Online Demo \u2014 See Components in action");
         assertDemoPageAvailable("/borderlayoutpanel/BorderLayoutPanel.jsf", "Border Layout Panel \u2014 OpenFaces Demo");
         assertDemoPageAvailable("/calendar/Calendar_styles.jsf", "Calendar \u2014 OpenFaces Demo");
         assertDemoPageAvailable("/calendar/Calendar_dateRanges.jsf", "Calendar \u2014 OpenFaces Demo");
