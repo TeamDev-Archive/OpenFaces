@@ -73,6 +73,7 @@ O$._initCalendar = function(calendarId,
   cal._noneSelector = O$(calendarId + "::none");
   cal._valueHolder = O$(calendarId + "::long_date_holder");
   cal._valueDateHolder = O$(calendarId + "::date_holder");
+  cal._hasOwnItsOwnMouseBehavior = true;
 
   cal.ondragstart = O$.breakEvent;
   cal.onselectstart = O$.breakEvent;

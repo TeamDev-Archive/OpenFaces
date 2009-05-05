@@ -327,8 +327,9 @@ O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidin
     }
     if (popup._draggable) {
       var evt = O$.getEvent(e);
-      if (evt.clientX < popup.offsetLeft + popup.clientWidth
-              && evt.clientY < popup.offsetTop + popup.clientHeight) {
+      var pos = O$.getEventPoint(evt, popup)
+      if (pos.x < popup.offsetLeft + popup.clientWidth
+              && pos.y < popup.offsetTop + popup.clientHeight) {
         O$.startDragAndDrop(e, popup);
       }
     }

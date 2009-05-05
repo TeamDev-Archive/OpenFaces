@@ -1819,6 +1819,17 @@ O$.getTargetComponentHasOwnMouseBehavior = function(evt) {
           tagName == "option" ||
           tagName == "button" ||
           tagName == "a";
+  if (!elementHasItsOwnMouseBehavior) {
+    elementHasItsOwnMouseBehavior = function(elem) {
+      while (elem) {
+        if (elem._hasOwnItsOwnMouseBehavior) {
+          return true;
+        }
+        elem = elem.parentNode;
+      }
+      return false;
+    }(element);
+  }
   return elementHasItsOwnMouseBehavior;
 }
 
@@ -1833,8 +1844,11 @@ O$.startDragAndDrop = function(e, draggable) {
   draggable._draggingWasStarted = false;
 
   var pageScrollPos = O$.getPageScrollPos();
-  draggable._lastDragX = evt.clientX + pageScrollPos.x;
-  draggable._lastDragY = evt.clientY + pageScrollPos.y;
+//  draggable._lastDragX = evt.clientX + pageScrollPos.x;
+  var pos = O$.getEventPoint(evt, draggable);
+  draggable._lastDragX = pos.x;
+//  draggable._lastDragY = evt.clientY + pageScrollPos.y;
+  draggable._lastDragY = pos.y;
   if (!draggable._getPositionLeft)
     draggable._getPositionLeft = function() {
       return this.offsetLeft;
@@ -1865,8 +1879,11 @@ O$.handleDragMove = function(e) {
   }
 
   var pageScrollPos = O$.getPageScrollPos();
-  var dragX = evt.clientX + pageScrollPos.x;
-  var dragY = evt.clientY + pageScrollPos.y;
+  var pos = O$.getEventPoint(evt, draggable);
+  var dragX = pos.x;
+//  var dragX = evt.clientX + pageScrollPos.x;
+  var dragY = pos.y;
+//  var dragY = evt.clientY + pageScrollPos.y;
   var left = draggable._getPositionLeft();
   var top = draggable._getPositionTop();
   var xChangeSinceLastDrag = left - draggable._lastDragOffsetLeft;
