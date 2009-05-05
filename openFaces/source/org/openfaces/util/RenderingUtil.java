@@ -345,7 +345,7 @@ public class RenderingUtil {
     public static void renderJavascriptFunctionStart(Writer writer, String name) throws IOException {
         if (name == null)
             throw new IllegalArgumentException("Name for Javascript function can not be null");
-        if (name.equals(""))
+        if (name.length() == 0)
             throw new IllegalArgumentException("Name for Javascript function can not be empty");
         writer.write("\n");
         writer.write("function " + name + "(){\n");
@@ -1129,7 +1129,7 @@ public class RenderingUtil {
         }
 
         if (EnvironmentUtil.isExplorer() && component instanceof GraphicText) {
-            writeAttribute(writer, "src", ResourceUtil.getClearGif(context));
+            writeAttribute(writer, "src", getClearGif(context));
             writeAttribute(writer, "style", "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + imageUrl + "', sizingMethod='scale');");
             if (size != null) {
                 writeAttribute(writer, "width", String.valueOf(size[0]));
@@ -1138,6 +1138,15 @@ public class RenderingUtil {
         } else {
             writeAttribute(writer, "src", imageUrl);
         }
+    }
+
+    /**
+     * Return URL to clear.gif image
+     * @param context {@link FacesContext} for the current request
+     * @return URL to clear.gif image
+     */
+    private static String getClearGif(FacesContext context) {
+        return ResourceUtil.getInternalResourceURL(context, null, "org/openfaces/renderkit/clear.gif");
     }
 
     /**

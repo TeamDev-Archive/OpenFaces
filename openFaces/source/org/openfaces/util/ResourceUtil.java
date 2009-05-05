@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Dmitry Pikhulya
@@ -113,14 +114,17 @@ public class ResourceUtil {
             boolean prependContextPath) {
         if (context == null) throw new NullPointerException("context");
         if (resourcePath == null) throw new NullPointerException("resourcePath");
-        if (componentClass == null) throw new NullPointerException("componentClass");
 
-        String packageName = getPackageName(componentClass);
+        String packageName = componentClass == null ? "" : getPackageName(componentClass);
         String packagePath = packageName.replace('.', '/');
+        if(packagePath.length() > 0) {
+            packagePath += "/";
+        }
 
         String versionString = getVersionString();
-        String urlRelativeToContextRoot = ResourceFilter.INTERNAL_RESOURCE_PATH + packagePath + "/" +
-                resourcePath.substring(0, resourcePath.lastIndexOf(".")) + "-" + versionString + resourcePath.substring(resourcePath.lastIndexOf("."));
+        int extensionIndex = resourcePath.lastIndexOf(".");
+        String urlRelativeToContextRoot = ResourceFilter.INTERNAL_RESOURCE_PATH + packagePath +
+                resourcePath.substring(0, extensionIndex) + "-" + versionString + resourcePath.substring(extensionIndex);
 
         if (!prependContextPath)
             return urlRelativeToContextRoot;
@@ -143,15 +147,23 @@ public class ResourceUtil {
         InputStream versionStream = ResourceUtil.class.getResourceAsStream(OPENFACES_VERSION);
         String version = "";
         if (versionStream != null) {
+            BufferedReader bufferedReader = null;
             try {
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(versionStream));
+                bufferedReader = new BufferedReader(new InputStreamReader(versionStream));
                 String buildInfo = bufferedReader.readLine();
-                bufferedReader.close();
                 if (buildInfo != null) {
                     version = buildInfo.substring(0, buildInfo.indexOf(",")).trim();
                 }
             } catch (IOException e) {
                 Log.log("Couldn't read version string", e);
+            } finally {
+                if(bufferedReader != null) {
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        //
+                    }
+                }
             }
         }
         if (VERSION_PLACEHOLDER_STR.equals(version)) {
@@ -259,7 +271,7 @@ public class ResourceUtil {
         String ajax4jsfStylesParameter = (String) ReflectionUtil.getStaticFieldValue(richfacesContextClass, "STYLES_PARAMETER");
 
         if (ajax4jsfStylesParameter != null) {
-            LinkedHashSet<String> styles = (LinkedHashSet<String>) requestMap.get(ajax4jsfStylesParameter);
+            Set<String> styles = (Set<String>) requestMap.get(ajax4jsfStylesParameter);
             String defaultCssUrl = ((HttpServletRequest) context.getExternalContext().getRequest()).getContextPath()
                     + ResourceFilter.INTERNAL_RESOURCE_PATH + "org/openfaces/renderkit/default" + "-" + getVersionString() + ".css";
             if (styles == null) {
@@ -270,7 +282,7 @@ public class ResourceUtil {
         }
 
         if (ajax4jsfScriptParameter != null) {
-            LinkedHashSet<String> libraries = (LinkedHashSet<String>) requestMap.get(ajax4jsfScriptParameter);
+            Set<String> libraries = (Set<String>) requestMap.get(ajax4jsfScriptParameter);
             List<String> ourLibraries = (List<String>) requestMap.get(HEADER_JS_LIBRARIES);
 
             if (libraries == null) {
@@ -382,14 +394,5 @@ public class ResourceUtil {
             requestMap.put(RENDERED_JS_LINKS, renderedJsLinks);
         }
         return renderedJsLinks;
-    }
-
-    /**
-     * Return URL to clear.gif image
-     * @param context {@link FacesContext} for the current request
-     * @return URL to clear.gif image
-     */
-    public static String getClearGif(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, ResourceUtil.class, "clear.gif");
     }
 }
