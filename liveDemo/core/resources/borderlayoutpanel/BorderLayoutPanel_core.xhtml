@@ -5,20 +5,19 @@
 
   <div id="component">
 
-    <script>
+    <script type="text/javascript">
+      function setDescriptionSource() {
+        var componentName = document.getElementById("form:componentName").value;
+        if (componentName != "") {
+          document.getElementById("componentDescription").src =
+          componentName + ".html";
+          document.getElementById("componentDescriptionWrapper").style.display = "";
+        } else {
+          document.getElementById("componentDescriptionWrapper").style.display = "none";
+        }
+      }
 
-            function setDescriptionSource() {
-              var componentName = document.getElementById("form:componentName").value;
-              if (componentName != "") {
-                document.getElementById("componentDescription").src =
-                 componentName + ".html";
-                 document.getElementById("componentDescriptionWrapper").style.display = "";
-              } else {
-                 document.getElementById("componentDescriptionWrapper").style.display = "none";
-              }
-            }
-
-        </script>
+    </script>
 
     <h:panelGroup style="display: block; height: 400px;">
 
@@ -34,19 +33,18 @@
           <h:inputHidden id="componentName" value="#{BorderLayoutBean.normalizedSelectedComponent}"/>
 
         </h:panelGroup>
-        
+
         <o:sidePanel alignment="top" splitterStyle="border:none;border-top: 1px solid gray;height:1px;"
                      resizeable="false" collapsible="false" size="22px" style="text-align:center;">
              Developers Guide 2.x
         </o:sidePanel>
 
-        <o:sidePanel alignment="left" size="27%" style="width:100%;"
-                captionStyle="padding-left: 3px;">
-            <f:facet name="caption">
-              <h:outputText style="background-color:#657386;">
-                <h:outputText value="Open Faces Components"/>
-              </h:outputText>
-            </f:facet>
+        <o:sidePanel alignment="left" size="27%" style="width:100%;">
+          <f:facet name="caption">
+            <h:outputText style="background-color:#657386;">
+              <h:outputText escape="false" value="&#160; Open Faces Components"/>
+            </h:outputText>
+          </f:facet>
 
             <o:treeTable var="treeNode" id="componentsTree" useAjax="true"
                     style="width:100%;border:none;font-size:10pt;" expansionState="allExpanded">
@@ -56,7 +54,7 @@
 
               <o:singleNodeSelection
                         nodeData="#{BorderLayoutBean.selectedComponent}"
-                        keyboardSupport="false"                        
+                        keyboardSupport="false"
                         style="background-color:gray;color:white;"
                         >
                   <o:reloadComponents event="onchange"
@@ -76,13 +74,13 @@
         </o:sidePanel>
 
         <o:sidePanel alignment="bottom"
-                     splitterStyle="border:none;border-top: 1px solid gray;height:1px;" 
+                     splitterStyle="border:none;border-top: 1px solid gray;height:1px;"
                      resizeable="false" collapsible="false" size="22px" style="text-align:center;">
            <h:outputText escape="false" value="&#169; 2009 TeamDev Ltd. All rights reserved."/>
         </o:sidePanel>
 
       </o:borderLayoutPanel>
-        </h:panelGroup>
+    </h:panelGroup>
 
 
   </div>
