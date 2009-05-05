@@ -24,31 +24,7 @@
         </h:panelGroup>
         <h:panelGroup style="display: block; float: left; font-weight: bold; padding-top: 0.8em;">
           <h:outputText value="Calendar" style="padding-left: 10px;"/>
-        </h:panelGroup>
-        <h:panelGroup style="display: block; float: right; font-size: 10px;">
-          <h:outputLink id="calendarLink" value="" onclick="O$('form1:popupLayerInfoCalendar').showAtXY(
-                                                             d_getElementLeft(O$('form1:calendarQuote')) + O$('form1:calendarQuote').offsetWidth,
-                                                             d_getElementTop(O$('form1:calendarQuote')) + O$('form1:calendarQuote').offsetHeight);
-                                        event.cancelBubble = true; return false;">
-            <h:outputText value="[?]" id="calendarQuote"/>
-          </h:outputLink>
-        </h:panelGroup>
-        <o:popupLayer id="popupLayerInfoCalendar"
-                      hidingTimeout="30000"
-                      draggable="true"
-                      onclick="event.cancelBubble = true; return false;"
-                      hideOnOuterClick="true"
-                      style="background: #fffef7; color: #005372; padding: 1em; border: 1px solid #96abda; font-size: 10px;">
-          <h:panelGroup>
-            <h:outputText value="- Multiple date ranges"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Built-in I18n support"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Flexible style customization"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Component specific client-side events"/>
-          </h:panelGroup>
-        </o:popupLayer>
+        </h:panelGroup>        
       </h:panelGroup>
     </o:tabSetItem>
     <o:tabSetItem itemValue="Confirmation">
@@ -59,34 +35,6 @@
         <h:panelGroup style="display: block; float: left; font-weight: bold; padding-top: 0.8em;">
           <h:outputText value="Confirmation" style="padding-left: 10px;"/>
         </h:panelGroup>
-        <h:panelGroup style="display: block; float: right; font-size: 10px;">
-          <h:outputLink id="confirmationLink" value="" onclick="O$('form1:popupLayerInfoConfirmation').showAtXY(
-                                                             d_getElementLeft(O$('form1:confirmationQuote')) + O$('form1:confirmationQuote').offsetWidth,
-                                                             d_getElementTop(O$('form1:confirmationQuote')) + O$('form1:confirmationQuote').offsetHeight);
-                                        event.cancelBubble = true; return false;">
-            <h:outputText value="[?]" id="confirmationQuote"/>
-          </h:outputLink>
-        </h:panelGroup>
-        <o:popupLayer id="popupLayerInfoConfirmation"
-                      hidingTimeout="30000"
-                      draggable="true"
-                      onclick="event.cancelBubble = true; return false;"
-                      hideOnOuterClick="true"
-                      style="background: #fffef7; color: #005372; padding: 1em; border: 1px solid #96abda; font-size: 10px;">
-          <h:panelGroup>
-            <h:outputText value="- Flexible invocation mechanism"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Customizable texts, buttons and icon"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Flexible position customization"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Draggable"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Flexible style customization"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Standard client-side events"/>
-          </h:panelGroup>
-        </o:popupLayer>
       </h:panelGroup>
     </o:tabSetItem>
     <o:tabSetItem itemValue="Date Chooser">
@@ -97,32 +45,6 @@
         <h:panelGroup style="display: block; float: left; font-weight: bold; padding-top: 0.8em;">
           <h:outputText value="DateChooser" style="padding-left: 10px;"/>
         </h:panelGroup>
-        <h:panelGroup style="display: block; float: right; font-size: 10px;">
-          <h:outputLink id="dateChooserLink" value="" onclick="O$('form1:popupLayerInfoDateChooser').showAtXY(
-                                                             d_getElementLeft(O$('form1:dateChooserQuote')) + O$('form1:dateChooserQuote').offsetWidth,
-                                                             d_getElementTop(O$('form1:dateChooserQuote')) + O$('form1:dateChooserQuote').offsetHeight);
-                                        event.cancelBubble = true; return false;">
-            <h:outputText value="[?]" id="dateChooserQuote"/>
-          </h:outputLink>
-        </h:panelGroup>
-        <o:popupLayer id="popupLayerInfoDateChooser"
-                      hidingTimeout="30000"
-                      draggable="true"
-                      onclick="event.cancelBubble = true; return false;"
-                      hideOnOuterClick="true"
-                      style="background: #fffef7; color: #005372; padding: 1em; border: 1px solid #96abda; font-size: 10px;">
-          <h:panelGroup>
-            <h:outputText value="- Built-in Calendar"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- I18n support"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Various date formats"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Flexible style and appearance customization"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Component specific client-side events"/>
-          </h:panelGroup>
-        </o:popupLayer>
       </h:panelGroup>
     </o:tabSetItem>
     <o:tabSetItem itemValue="Drop Down">
@@ -132,38 +54,7 @@
         </h:panelGroup>
         <h:panelGroup style="display: block; float: left; font-weight: bold; padding-top: 0.8em;">
           <h:outputText value="DropDownField" style="padding-left: 10px;"/>
-        </h:panelGroup>
-        <h:panelGroup style="display: block; float: right; font-size: 10px;">
-          <h:outputLink id="dropDownLink" value="" onclick="O$('form1:popupLayerInfoDropDown').showAtXY(
-                                                             d_getElementLeft(O$('form1:dropDownQuote')) + O$('form1:dropDownQuote').offsetWidth,
-                                                             d_getElementTop(O$('form1:dropDownQuote')) + O$('form1:dropDownQuote').offsetHeight);
-                                        event.cancelBubble = true; return false;">
-            <h:outputText value="[?]" id="dropDownQuote"/>
-          </h:outputLink>
-        </h:panelGroup>
-        <o:popupLayer id="popupLayerInfoDropDown"
-                      hidingTimeout="30000"
-                      draggable="true"
-                      onclick="event.cancelBubble = true; return false;"
-                      hideOnOuterClick="true"
-                      style="background: #fffef7; color: #005372; padding: 1em; border: 1px solid #96abda; font-size: 10px;">
-          <h:panelGroup>
-            <h:outputText value="Ajax-based and client-side suggestion feature"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="Auto-completion"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="Ability to specify columns within a drop-down list"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="Keyboard navigation"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="Ability to embed JSF components"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="Flexible style and appearance customization"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="Standard and component-specific client-side events"/>
-            <f:verbatim><br/></f:verbatim>
-          </h:panelGroup>
-        </o:popupLayer>
+        </h:panelGroup>        
       </h:panelGroup>
     </o:tabSetItem>
     <o:tabSetItem itemValue="Tabbed Pane">
@@ -173,33 +64,7 @@
         </h:panelGroup>
         <h:panelGroup style="display: block; float: left; font-weight: bold; padding-top: 0.8em;">
           <h:outputText value="TabbedPane" style="padding-left: 10px;"/>
-        </h:panelGroup>
-        <h:panelGroup style="display: block; float: right; font-size: 10px;">
-          <h:outputLink id="tabbedPaneLink" value="" onclick="O$('form1:popupLayerInfoTabbedPane').showAtXY(
-                                                             d_getElementLeft(O$('form1:tabbedPaneQuote')) + O$('form1:tabbedPaneQuote').offsetWidth,
-                                                             d_getElementTop(O$('form1:tabbedPaneQuote')) + O$('form1:tabbedPaneQuote').offsetHeight);
-                                        event.cancelBubble = true; return false;">
-            <h:outputText value="[?]" id="tabbedPaneQuote"/>
-          </h:outputLink>
-        </h:panelGroup>
-        <o:popupLayer id="popupLayerInfoTabbedPane"
-                      hidingTimeout="30000"
-                      draggable="true"
-                      onclick="event.cancelBubble = true; return false;"
-                      hideOnOuterClick="true"
-                      style="background: #fffef7; color: #005372; padding: 1em; border: 1px solid #96abda; font-size: 10px;">
-          <h:panelGroup>
-            <h:outputText value="- Customizable tabs placement"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Ability to embed JSF components into tabs"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Dynamic container content loading (using Ajax)"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Flexible style customization"/>
-            <f:verbatim><br/></f:verbatim>
-            <h:outputText value="- Standard and component-specific client-side events"/>
-          </h:panelGroup>
-        </o:popupLayer>
+        </h:panelGroup>        
       </h:panelGroup>
     </o:tabSetItem>
   </o:tabSet>
