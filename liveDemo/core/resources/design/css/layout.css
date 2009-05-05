@@ -214,4 +214,8 @@ p {	margin:0 0 .5em 0;}
   background: GhostWhite;
 }
 
+.modalLayerShade {
+  background: #B2B2B2;
+}
+
 .menuPadded {margin-top: 260px !important;}
