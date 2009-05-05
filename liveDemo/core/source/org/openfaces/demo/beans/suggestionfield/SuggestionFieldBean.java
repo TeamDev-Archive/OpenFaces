@@ -93,7 +93,9 @@ public class SuggestionFieldBean implements Serializable {
                 "Robert", "Adam", "Hannes", "James", "Andrew", "George", "Dean", "Walter", "Albert", "William", "Gary",
                 "Chris", "Charles"));
 
-        degrees = new ArrayList<String>(Arrays.asList("Bachelor-Science", "Doctor of Medicine", "Masters-Arts", "Post Doc"));
+        degrees = new ArrayList<String>(Arrays.asList("Associate Degree", "Bachelor-Arts", "Bachelor-Engineering",
+                "Bachelor-Science", "Doctor of Medicine", "Doctoral", "Doctoral - All But Dissertation", "Juris Doctorate",
+                "Masters-Arts", "Masters-Science", "Masters-Business Administration"));
     }
 
     public List<String> getCountries() {
@@ -177,7 +179,7 @@ public class SuggestionFieldBean implements Serializable {
             if (filteredHobbies.isEmpty()) {
                 filteredHobbies = hobbies;
             }
-            int count = 1 + rand.nextInt(5);
+            int count = 1 + rand.nextInt(7);
             for (int i = 0; i < count; i++) {
                 String firstLastName = firstNames.get(rand.nextInt(firstNames.size() - 1)) + ", " +
                         lastNames.get(rand.nextInt(lastNames.size() - 1));
@@ -210,6 +212,8 @@ public class SuggestionFieldBean implements Serializable {
                     result.add(item);
                 }
             }
+        } else {
+            result = list; 
         }
         return result;
     }
