@@ -28,11 +28,11 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
     private String contentStyle;
     private String contentClass;
 
-    protected String captionText;
+    private String captionText;
     private Boolean draggableByContent;
-    protected Boolean resizeable;
-    protected String minWidth;
-    protected String minHeight;
+    private Boolean resizeable;
+    private String minWidth;
+    private String minHeight;
 
     public UIComponent getCaption() {
         return getFacet(CAPTION_FACET_NAME);
@@ -136,7 +136,8 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
                 captionClass,
                 contentStyle,
                 contentClass,
-                draggableByContent};
+                draggableByContent,
+                captionText};
     }
 
     public void restoreState(FacesContext context, Object stateObj) {
@@ -151,6 +152,7 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
         contentStyle = (String) state[i++];
         contentClass = (String) state[i++];
         draggableByContent = (Boolean) state[i++];
+        captionText = (String) state[i++];
     }
 
 }

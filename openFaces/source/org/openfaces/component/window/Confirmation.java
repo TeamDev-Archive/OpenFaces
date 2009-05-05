@@ -442,7 +442,6 @@ public class Confirmation extends AbstractWindow implements OUIClientAction {
                 cancelButtonClass,
                 rolloverCancelButtonClass,
 
-                captionText,
                 alignToInvoker};
     }
 
@@ -491,8 +490,6 @@ public class Confirmation extends AbstractWindow implements OUIClientAction {
         rolloverOkButtonClass = (String) values[i++];
         cancelButtonClass = (String) values[i++];
         rolloverCancelButtonClass = (String) values[i++];
-
-        captionText = (String) values[i++];
 
         alignToInvoker = (Boolean) values[i++];
     }

@@ -37,14 +37,14 @@ O$._initTabbedPane = function(clientId, rolloverClass,
       this._tabSet.blur();
     };
     O$.addEventHandler(tabbedPane, "click", function (evt) {
-      if (this._tabSet.onclick)
-        this._tabSet.onclick(evt);
+      if (tabbedPane._tabSet.onclick)
+        tabbedPane._tabSet.onclick(evt);
       if (window.getSelection) {
         if (window.getSelection() != "")
           return; // don't switch focus to make text selection possible under FF (JSFC-1134)
       }
       var e = evt ? evt : event;
-      if (this._focused)
+      if (tabbedPane._focused)
         return;
 
       var target = (e != null)
@@ -52,9 +52,9 @@ O$._initTabbedPane = function(clientId, rolloverClass,
               : null;
       if (O$.isControlFocusable(target))
         return;
-      this._tabSet._preventPageScrolling = true;
-      this._tabSet.focus();
-      this._tabSet._preventPageScrolling = false;
+      tabbedPane._tabSet._preventPageScrolling = true;
+      tabbedPane._tabSet.focus();
+      tabbedPane._tabSet._preventPageScrolling = false;
     });
     O$.addEventHandler(tabbedPane._tabSet, "focus", function () {
       O$.setElementStyleMappings(tabbedPane, {
