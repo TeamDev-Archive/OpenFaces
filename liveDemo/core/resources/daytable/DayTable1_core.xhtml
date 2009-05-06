@@ -67,8 +67,9 @@
             >
       <o:timetableEvent style="text-align:center;" descriptionStyle="color: #5f5f5f;" escapeDescription="false" escapeName="false"/>
       <o:eventArea horizontalAlignment="rightEdge" verticalAlignment="above">
-        <h:commandLink title="Postpone training for 1 hour" value="1&#160;hour&#160;later"
-                       action="#{DayTableBean1.doLater}" style="margin: 10px"/>
+        <h:commandLink title="Postpone training for 1 hour" action="#{DayTableBean1.doLater}" style="margin: 10px">
+          <h:outputText value="1&#160;hour&#160;later" escape="false"/>
+        </h:commandLink>
       </o:eventArea>
       
       <o:eventActionBar>
