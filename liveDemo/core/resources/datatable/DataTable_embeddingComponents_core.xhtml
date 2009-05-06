@@ -20,6 +20,7 @@
                        bodyRowStyle="height: 40px;"
                        cellpadding="0"
                        rowKey="#{link.id}"
+                       rowIndexVar="index"
                        applyDefaultStyle="false">
             <o:row condition="#{LinkList.addingOrEditingLink}">
               <o:cell span="2">
@@ -27,21 +28,41 @@
                              columns="2"
                              style="width: 220px; background: #f8f8f8; border: 1px solid #bbbbbb; padding-left: 3px; white-space: nowrap;">
                   <h:outputText value="Resource URL:"/>
-                  <h:inputText value="#{link.url}" styleClass="editfield"/>
+                  <h:inputText value="#{link.url}"
+                               onkeydown="return saveChanges(event, 'form:linkTable:#{index}:saveBookmark');"
+                               styleClass="editfield"/>
                   <h:outputText value="Resource Name:"/>
-                  <h:inputText value="#{link.name}" styleClass="editfield"/>
+                  <h:inputText value="#{link.name}"
+                                onkeydown="return saveChanges(event, 'form:linkTable:#{index}:saveBookmark');"
+                                styleClass="editfield"/>
                   <h:outputText value="Category:"/>
                   <h:selectOneMenu value="#{link.linkCategory}" styleClass="editfield">
                     <f:selectItem itemValue="music.gif" itemLabel="Music"/>
                     <f:selectItem itemValue="favorite.gif" itemLabel="Favorite"/>
                     <f:selectItem itemValue="fun.gif" itemLabel="Fun"/>
                   </h:selectOneMenu>
+
+                  <script>
+
+                    function saveChanges(e, saveButtonId) {
+                      var unicode = e.charCode ? e.charCode : e.keyCode;
+
+                      if (unicode == 13) {
+                        document.getElementById(saveButtonId).click();
+                        return false;
+                      }
+
+                      return true;
+                    }
+
+                  </script>
                 </h:panelGrid>
               </o:cell>
               <o:cell>
-                <h:commandButton value="Save" action="#{LinkList.saveLink}"
-                                 styleClass="edit_remove" style="width: 60px; height: 15px;"/>
-                <h:commandButton value="Cancel" action="#{LinkList.cancelLink}"
+                <h:commandButton id="saveBookmark" value="Save" action="#{LinkList.saveLink}"                                 
+                                 styleClass="edit_remove"
+                                 style="width: 60px; height: 15px;"/>
+                <h:commandButton value="Cancel" action="#{LinkList.cancelLink}"                                 
                                  styleClass="edit_remove" style="width: 60px; height: 15px;"/>
               </o:cell>
             </o:row>
