@@ -265,7 +265,7 @@
   <menuItem>
     <name>Dynamic Image</name>
     <componentName>Dynamic Image</componentName>
-    <url>/dynamicimage/DynamicImage1.jsf</url>
+    <url>/dynamicimage/DynamicImage_generated.jsf</url>
     <shortPath>/dynamicimage/</shortPath>
     <image>background-image:url(../images/icons/components/DynamicImage.png);</image>
     <selectedImage>/images/components/titles/DynamicImage.png</selectedImage>
@@ -276,11 +276,11 @@
     <demos>
       <demoItem>
         <demoName>Generated Image</demoName>
-        <demoUrl>/dynamicimage/DynamicImage1.jsf</demoUrl>
+        <demoUrl>/dynamicimage/DynamicImage_generated.jsf</demoUrl>
       </demoItem>
       <demoItem>
         <demoName>Byte Array Image</demoName>
-        <demoUrl>/dynamicimage/DynamicImage2.jsf</demoUrl>
+        <demoUrl>/dynamicimage/DynamicImage_byteArray.jsf</demoUrl>
       </demoItem>
     </demos>
   </menuItem>
