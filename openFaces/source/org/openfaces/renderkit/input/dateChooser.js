@@ -88,7 +88,12 @@ O$._initDateChooser = function(dateChooserId,
       dc._keyDownEvent = null;
     }
     popup.hide();
-    dc._field.focus();
+
+    try {
+      dc._field.focus();
+    } catch(e) {
+      //IE 
+    }
     O$._dc_updateDCField(dc, date != null ? new Date(date) : null);
   }
 
