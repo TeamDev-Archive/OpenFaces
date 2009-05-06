@@ -12,7 +12,7 @@
 package org.openfaces.component.output;
 
 import org.openfaces.component.OUIOutput;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 

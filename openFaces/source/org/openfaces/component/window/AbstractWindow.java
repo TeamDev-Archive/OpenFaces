@@ -12,7 +12,7 @@
 package org.openfaces.component.window;
 
 import org.openfaces.component.ComponentWithCaption;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

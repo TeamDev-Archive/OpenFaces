@@ -12,7 +12,7 @@
 package org.openfaces.component.table;
 
 import org.openfaces.util.ComponentUtil;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;

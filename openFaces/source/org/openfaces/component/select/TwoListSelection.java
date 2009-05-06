@@ -12,7 +12,7 @@
 package org.openfaces.component.select;
 
 import org.openfaces.component.OUISelectMany;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 

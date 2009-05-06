@@ -18,7 +18,6 @@ import java.util.Map;
  * @author Ekaterina Shliakhovetskaya
  */
 public class HTML {
-    // todo: review this class: remove unneeded constants, consider renaming/removing/merging into other class if needed
 
     private HTML() {
         // disable instantiation

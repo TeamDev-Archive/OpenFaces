@@ -12,7 +12,7 @@
 package org.openfaces.component.calendar;
 
 import org.openfaces.component.OUIInputBase;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.util.CalendarUtil;
 import org.openfaces.util.DataUtil;
 

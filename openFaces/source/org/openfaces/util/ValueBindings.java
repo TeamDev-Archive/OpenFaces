@@ -9,7 +9,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component;
+package org.openfaces.util;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+ * by any application code.
+ *
  * @author Dmitry Pikhulya
  */
 public class ValueBindings {

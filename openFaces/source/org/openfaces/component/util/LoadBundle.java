@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.util;
 
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponentBase;

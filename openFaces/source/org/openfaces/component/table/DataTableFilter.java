@@ -12,7 +12,7 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.CompoundComponent;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;

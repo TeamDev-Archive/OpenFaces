@@ -33,6 +33,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+ * by any application code.
+ *
  * @author Kharchenko
  */
 public class DropDownPopup extends AbstractPopup {

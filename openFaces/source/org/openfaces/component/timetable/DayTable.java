@@ -14,7 +14,7 @@ package org.openfaces.component.timetable;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.OUIObjectIteratorBase;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.component.window.Confirmation;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.AjaxUtil;

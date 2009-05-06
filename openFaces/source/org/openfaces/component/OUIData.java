@@ -21,6 +21,7 @@ import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.renderkit.table.CustomCellRenderingInfo;
 import org.openfaces.renderkit.table.CustomContentCellRenderingInfo;
 import org.openfaces.renderkit.table.CustomRowRenderingInfo;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;

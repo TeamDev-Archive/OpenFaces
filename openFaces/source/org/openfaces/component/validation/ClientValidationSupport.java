@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.validation;
 
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;

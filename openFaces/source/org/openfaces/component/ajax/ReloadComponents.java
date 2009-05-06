@@ -12,7 +12,7 @@
 package org.openfaces.component.ajax;
 
 import org.openfaces.component.OUIClientAction;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.util.StyleUtil;
 import org.openfaces.util.AjaxUtil;
 

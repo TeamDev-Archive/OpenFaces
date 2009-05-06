@@ -13,7 +13,7 @@ package org.openfaces.component.input;
 
 import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.HorizontalAlignment;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.AjaxUtil;
 

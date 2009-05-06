@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.util.StyleUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.util.StyleGroup;

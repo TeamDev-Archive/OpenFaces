@@ -12,7 +12,7 @@
 package org.openfaces.component.timetable;
 
 import org.openfaces.component.OUIPanel;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.ConvertibleToJSON;

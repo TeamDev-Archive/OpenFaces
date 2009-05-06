@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+ * by any application code.
+
  * @author Kharchenko
  */
 public class DateChooserPopup extends AbstractPopup {

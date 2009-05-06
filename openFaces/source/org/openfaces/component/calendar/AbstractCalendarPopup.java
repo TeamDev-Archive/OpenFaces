@@ -18,6 +18,9 @@ import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
 /**
+ * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+ * by any application code.
+ *
  * @author Dmitry Pikhulya
  */
 public class AbstractCalendarPopup extends AbstractPopup {

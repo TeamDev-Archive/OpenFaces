@@ -12,7 +12,7 @@
 package org.openfaces.component.chart;
 
 import org.openfaces.component.OUIComponentBase;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.component.chart.impl.JfcRenderHints;
 import org.openfaces.renderkit.chart.ChartDefaultStyle;
 import org.openfaces.renderkit.cssparser.CSSUtil;

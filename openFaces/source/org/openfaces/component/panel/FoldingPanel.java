@@ -15,7 +15,7 @@ import org.openfaces.component.CaptionArea;
 import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.ExpansionToggleButton;
 import org.openfaces.component.LoadingMode;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.event.StateChangeListener;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ComponentUtil;

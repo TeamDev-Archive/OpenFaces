@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.renderkit.table.TreeColumnRenderer;

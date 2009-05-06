@@ -11,6 +11,8 @@
  */
 package org.openfaces.component;
 
+import org.openfaces.util.ValueBindings;
+
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 import java.util.Collections;

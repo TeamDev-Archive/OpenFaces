@@ -12,7 +12,7 @@
 package org.openfaces.component.input;
 
 import org.openfaces.component.HorizontalAlignment;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.util.CalendarUtil;
 import org.openfaces.util.MessageUtil;
 

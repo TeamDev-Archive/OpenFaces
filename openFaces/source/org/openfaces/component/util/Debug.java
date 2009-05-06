@@ -9,18 +9,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.calendar;
+package org.openfaces.component.util;
+
+import org.openfaces.component.window.Window;
 
 /**
- * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
- * by any application code.
- *
- * @author Kharchenko
+ * @author Dmitry Pikhulya
  */
-public class CalendarMonthPopup extends AbstractCalendarPopup {
-    public static final String COMPONENT_TYPE = "org.openfaces.CalendarMonthPopup";
-
-    public CalendarMonthPopup() {
-    }
-
+public class Debug extends Window {
 }

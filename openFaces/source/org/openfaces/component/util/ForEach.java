@@ -13,7 +13,7 @@ package org.openfaces.component.util;
 
 import org.openfaces.component.OUIData;
 import org.openfaces.component.OUIObjectIteratorBase;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.util.DataUtil;
 import org.openfaces.util.ComponentUtil;
 

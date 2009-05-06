@@ -13,7 +13,7 @@ package org.openfaces.component.table;
 
 import org.openfaces.component.OUIData;
 import org.openfaces.component.TableStyles;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.util.AjaxUtil;

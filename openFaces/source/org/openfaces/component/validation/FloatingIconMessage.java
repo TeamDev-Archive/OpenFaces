@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.validation;
 
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.util.ResourceUtil;
 
 import javax.faces.component.UIMessage;

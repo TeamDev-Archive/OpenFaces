@@ -12,7 +12,7 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.CompoundComponent;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.util.RenderingUtil;
 
 import javax.el.ELContext;

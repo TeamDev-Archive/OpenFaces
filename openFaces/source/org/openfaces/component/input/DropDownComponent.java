@@ -13,7 +13,7 @@ package org.openfaces.component.input;
 
 import org.openfaces.component.HorizontalAlignment;
 import org.openfaces.component.OUIInputText;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 

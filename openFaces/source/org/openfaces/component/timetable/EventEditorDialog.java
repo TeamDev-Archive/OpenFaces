@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.timetable;
 
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.component.window.PopupLayer;
 
 import javax.faces.context.FacesContext;

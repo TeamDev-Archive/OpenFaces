@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.input;
 
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;

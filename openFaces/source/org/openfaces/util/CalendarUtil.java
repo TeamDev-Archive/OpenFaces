@@ -11,7 +11,7 @@
  */
 package org.openfaces.util;
 
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.component.input.DateChooser;
 
 import javax.faces.component.UIComponent;

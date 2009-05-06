@@ -14,7 +14,7 @@ package org.openfaces.component.panel;
 import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.LoadingMode;
 import org.openfaces.component.OUIPanel;
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 import org.openfaces.component.select.TabAlignment;
 import org.openfaces.component.select.TabPlacement;
 import org.openfaces.component.select.TabSelectionHolder;

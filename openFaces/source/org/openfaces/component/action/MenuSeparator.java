@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.action;
 
-import org.openfaces.component.ValueBindings;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
