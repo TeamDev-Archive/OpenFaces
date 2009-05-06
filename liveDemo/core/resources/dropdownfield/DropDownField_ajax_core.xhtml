@@ -21,13 +21,13 @@
     <table>
       <tr>
         <td style="width: 205px;" colspan="2">
-          <span style="font-weight:bold;">Default List</span> (with autocompletion)
+          <span style="font-weight: bold;">Default List</span> (with autocompletion)
         </td>
         <td style="width: 215px;" colspan="2">
-          <h:outputText value="Styled List" style="font-weight:bold;"/>
+          <h:outputText value="Styled List" style="font-weight: bold;"/>
         </td>
         <td style="width: 260px;" colspan="2">
-          <h:outputText value="Milti-column List" style="font-weight:bold;"/>
+          <h:outputText value="Milti-column List" style="font-weight: bold;"/>
         </td>
       </tr>
       <tr>
@@ -40,7 +40,7 @@
                            autoComplete="true"
                            customValueAllowed="false"
                            value="#{DropDownAjaxBean.selectedPlant}"
-                           listItemStyle="white-space:nowrap;">
+                           listItemStyle="white-space: nowrap;">
             <o:dropDownItems value="#{DropDownAjaxBean.suggestedPlants}"/>
           </o:dropDownField>
         </td>
@@ -52,15 +52,15 @@
                            suggestionMode="custom"
                            customValueAllowed="false"
                            value="#{DropDownAjaxBean.selectedAnimal}"
-                           oddListItemStyle="background: #ebf3ff; font-size: 11px; padding-left: 2px; white-space:nowrap;font-family:MS Shell Dlg,Arial,sans-serif; height: 16px; line-height: 16px;"
+                           oddListItemStyle="background: #ebf3ff; font-size: 11px; padding-left: 2px; white-space: nowrap; font-family: MS Shell Dlg,Arial,sans-serif; height: 16px; line-height: 16px;"
                            buttonStyle="background: url('../images/dropdownfield/dropdown_button.gif') no-repeat; height: 18px; width: 18px;"
                            buttonImageUrl="../images/dropdownfield/dropdown_arrow.gif"
                            pressedButtonStyle="background: url('../images/dropdownfield/dropdown_button_pressed.gif') no-repeat; height: 18px; width: 18px;"
                            style="border: 1px solid #57a6d9; height: 18px;"
-                           fieldStyle="font-size: 11px; border: 0px; *margin-top:-1px;
+                           fieldStyle="font-size: 11px; border: 0px; *margin-top: -1px;
                             background: white url(../images/dropdownfield/inputshade.gif) no-repeat left top;	padding-left: 4px;"
-                           listItemStyle="font-size: 11px; padding-left: 2px; white-space:nowrap;font-family:MS Shell Dlg,Arial,sans-serif; height: 16px; line-height: 16px;"
-                           listStyle="text-align: left; border: 1px solid #57a6d9;margin-top:-1px"
+                           listItemStyle="font-size: 11px; padding-left: 2px; white-space: nowrap; font-family: MS Shell Dlg,Arial,sans-serif; height: 16px; line-height: 16px;"
+                           listStyle="text-align: left; border: 1px solid #57a6d9; margin-top: -1px"
                            rolloverListItemStyle="background: url('../images/dropdownfield/selection.gif') repeat-x left center;">
             <o:dropDownItems value="#{DropDownAjaxBean.suggestedAnimals}"/>
           </o:dropDownField>
@@ -74,23 +74,23 @@
                            converter="#{DropDownAjaxBean.cityConverter}"
                            value="#{DropDownAjaxBean.selectedCity}"
                            suggestionMode="custom"
-                           horizontalGridLines="1px solid #DEDEDE"
+                           horizontalGridLines="1px solid #dedede"
                            customValueAllowed="false"
-                           listItemStyle="white-space:nowrap;">
+                           listItemStyle="white-space: nowrap;">
             <o:dropDownItems value="#{DropDownAjaxBean.suggestedCities}"/>
-            <o:column style="width: 80px; background: #EBF3FF;">
+            <o:column style="width: 80px; background: #ebf3ff;">
               <f:facet name="header">
                 <h:outputText value="City"/>
               </f:facet>
               <h:outputText value="#{city.name}"/>
             </o:column>
-            <o:column style="width: 73px; padding-left: 5px; color: #5B5B5B; text-align:right;">
+            <o:column style="width: 73px; padding-left: 5px; color: #5b5b5b; text-align: right;">
               <f:facet name="header">
                 <h:outputText value="Population"/>
               </f:facet>
               <h:outputText value="#{city.population}"/>
             </o:column>
-            <o:column style="width: 77px; color: #5B5B5B; padding-left: 10px;">
+            <o:column style="width: 77px; color: #5b5b5b; padding-left: 10px;">
               <f:facet name="header">
                 <h:outputText value="Country"/>
               </f:facet>
@@ -105,13 +105,13 @@
 
     <div style="width:100%; text-align:left;">
       <h:commandButton value="Show Selected Values" onclick="showSelectedValue('mainForm:plants', 'selectedPlant');
-                                                           showSelectedValue('mainForm:animals', 'selectedAnimal');
-                                                           showSelectedValue('mainForm:cities', 'selectedCity'); return false;"/>
+                                                             showSelectedValue('mainForm:animals', 'selectedAnimal');
+                                                             showSelectedValue('mainForm:cities', 'selectedCity'); return false;"/>
     </div>
     <br/>
     <br/>
 
-    <div style="border: 1px solid #A0A0A0; background: #DFDFDF; width: 435px;">
+    <div style="border: 1px solid #a0a0a0; background: #dfdfdf; width: 435px;">
       <table style=" margin: 15px;">
         <tr>
           <td width="100px" style="white-space: nowrap; padding: 5px 5px 5px 5px;">Selected plant:</td>
