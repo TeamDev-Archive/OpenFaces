@@ -42,43 +42,43 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
         Color orange = new Color(247, 103, 24);        
 
 //        today
-        events.add(new TimetableEvent(generateEventId(), todayAt(6, 50), todayAt(8, 0), "Yoga, <i>Level 1</i>",
+        events.add(new TimetableEvent(generateEventId(), todayAt(6, 50), todayAt(8, 0), "Yoga, Level 1",
                 "Instructor: Ivan Doe <br/>Fee: $40", red1));
-        events.add(new TimetableEvent(generateEventId(), todayAt(10, 50), todayAt(12, 0), "<b>Power Yoga, <i>Level 1</i></b>",
+        events.add(new TimetableEvent(generateEventId(), todayAt(10, 50), todayAt(12, 0), "Power Yoga, Level 1",
                 "Instructor: Gregory House <br/>Fee: $30", blue));
-        events.add(new TimetableEvent(generateEventId(), todayAt(13, 0), todayAt(14, 55), "Yoga, <i>Level 2</i>",
+        events.add(new TimetableEvent(generateEventId(), todayAt(13, 0), todayAt(14, 55), "Yoga, Level 2",
                 "Instructor: Melany Scott <br/>Fee: $25", red1));
         events.add(new TimetableEvent(generateEventId(), todayAt(15, 30), todayAt(17, 30), "Intro to Yoga",
                 "Instructor: Tony Bricks <br/>Fee: Free", orange));
-        events.add(new TimetableEvent(generateEventId(), todayAt(17, 55), todayAt(19, 25), "<b>Gentle Yoga, <i>Level 1</i></b>",
+        events.add(new TimetableEvent(generateEventId(), todayAt(17, 55), todayAt(19, 25), "Gentle Yoga, Level 1",
                 "Instructor: Alex West <br/>Fee: $30", blue));
         ReservedTimeEvent reservedTimeEvent1 = new ReservedTimeEvent(generateEventId(), null, todayAt(19, 45), todayAt(20, 15));
         events.add(reservedTimeEvent1);
         reservedTimes.add(reservedTimeEvent1);
-        events.add(new TimetableEvent(generateEventId(), todayAt(21, 40), todayAt(23, 30), "<b>Meditation</b>",
+        events.add(new TimetableEvent(generateEventId(), todayAt(21, 40), todayAt(23, 30), "Meditation",
                 "Instructor: Gregory House <br/>Fee: $20", green));
 
         //yesterday
-        events.add(new TimetableEvent(generateEventId(), yesterdayAt(7, 0), yesterdayAt(8, 20), "Yoga, <i>Level 1</i>",
+        events.add(new TimetableEvent(generateEventId(), yesterdayAt(7, 0), yesterdayAt(8, 20), "Yoga, Level 1",
                 "Instructor: Ivan Doe <br/>Fee: $40", red1));
-        events.add(new TimetableEvent(generateEventId(), yesterdayAt(9, 0), yesterdayAt(11, 30), "<b>Meditation</b>",
+        events.add(new TimetableEvent(generateEventId(), yesterdayAt(9, 0), yesterdayAt(11, 30), "Meditation",
                 "Instructor: Tony Bricks <br/>Fee: $20", green));
-        events.add(new TimetableEvent(generateEventId(), yesterdayAt(13, 0), yesterdayAt(14, 55), "Yoga, <i>Level 3</i>",
+        events.add(new TimetableEvent(generateEventId(), yesterdayAt(13, 0), yesterdayAt(14, 55), "Yoga, Level 3",
                 "Instructor: Melany Scott <br/>Fee: $25", red2));
-        events.add(new TimetableEvent(generateEventId(), yesterdayAt(19, 55), yesterdayAt(19, 25), "<b>Gentle Yoga For Those with Special Considerations</b>",
+        events.add(new TimetableEvent(generateEventId(), yesterdayAt(19, 55), yesterdayAt(19, 25), "Gentle Yoga For Those with Special Considerations",
                 "Instructor: Alex West <br/>Fee: $25", blue));
         ReservedTimeEvent reservedTimeEvent2 = new ReservedTimeEvent(generateEventId(), null, yesterdayAt(21, 5), yesterdayAt(24, 0));
         events.add(reservedTimeEvent2);
         reservedTimes.add(reservedTimeEvent2);
 
         //tomorrow
-        events.add(new TimetableEvent(generateEventId(), tomorrowAt(8, 30), tomorrowAt(11, 30), "<b>Meditation</b>",
+        events.add(new TimetableEvent(generateEventId(), tomorrowAt(8, 30), tomorrowAt(11, 30), "Meditation",
                 "Instructor: Tony Bricks <br/>Fee: $20", green));
-        events.add(new TimetableEvent(generateEventId(), tomorrowAt(13, 0), tomorrowAt(14, 30), "Yoga, <i>Level 2/3</i>",
+        events.add(new TimetableEvent(generateEventId(), tomorrowAt(13, 0), tomorrowAt(14, 30), "Yoga, Level 2/3",
                 "Instructor: Ivan Doe <br/>Fee: $40", red1));
-        events.add(new TimetableEvent(generateEventId(), tomorrowAt(16, 0), tomorrowAt(17, 55), "Yoga and Meditation, <i>Level 2/3</i>",
+        events.add(new TimetableEvent(generateEventId(), tomorrowAt(16, 0), tomorrowAt(17, 55), "Yoga and Meditation, Level 2/3",
                 "Instructor: Melany Scott <br/>Fee: $45", red2));
-        events.add(new TimetableEvent(generateEventId(), tomorrowAt(20, 30), tomorrowAt(22, 0), "<b>Gentle Yoga and Meditation</b>",
+        events.add(new TimetableEvent(generateEventId(), tomorrowAt(20, 30), tomorrowAt(22, 0), "Gentle Yoga and Meditation",
                 "Instructor: Matt Hunt <br/>Fee: $55", blue));
     }
 

@@ -110,6 +110,9 @@ public class DayTableBean2 extends DayTableBean implements Serializable {
 
     public void addEvent(List<AbstractTimetableEvent> events, TimetableEvent event) {
         event.setId(generateEventId());
+        if(event.getColor() == null) {
+            event.setColor(new Color(0, 0x6e, 0xbb));
+        }
         events.add(event);
     }
 
