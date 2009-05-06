@@ -49,8 +49,8 @@ public class LiveDemoTest extends OpenFacesTestCase {
 
         assertDemoPageAvailable("/dynamicimage/DynamicImage_generated.jsf", "Dynamic Image \u2014 OpenFaces Demo");
         assertDemoPageAvailable("/dynamicimage/DynamicImage_byteArray.jsf", "Dynamic Image \u2014 OpenFaces Demo");
-        assertDemoPageAvailable("/foldingpanel/FoldingPanel1.jsf", "Folding Panel \u2014 OpenFaces Demo");
-        assertDemoPageAvailable("/foldingpanel/FoldingPanel2.jsf", "Folding Panel \u2014 OpenFaces Demo");
+        assertDemoPageAvailable("/foldingpanel/FoldingPanel_basicFeatures.jsf", "Folding Panel \u2014 OpenFaces Demo");
+        assertDemoPageAvailable("/foldingpanel/FoldingPanel_dynamicLoading.jsf", "Folding Panel \u2014 OpenFaces Demo");
         assertDemoPageAvailable("/graphictext/GraphicText.jsf", "Graphic Text \u2014 OpenFaces Demo");
         assertDemoPageAvailable("/graphictext/GraphicText_flexibleConfiguration.jsf", "Graphic Text \u2014 OpenFaces Demo");
 

@@ -70,7 +70,7 @@
           </div>
 
           <!-- start content -->
-          <%@ include file="FoldingPanel2_core.xhtml"%>
+          <%@ include file="FoldingPanel_dynamicLoading_core.xhtml"%>
           <!-- end content -->
 
         </div>

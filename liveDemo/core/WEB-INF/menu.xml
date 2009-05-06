@@ -287,7 +287,7 @@
   <menuItem>
     <name>Folding Panel</name>
     <componentName>Folding Panel</componentName>
-    <url>/foldingpanel/FoldingPanel1.jsf</url>
+    <url>/foldingpanel/FoldingPanel_basicFeatures.jsf</url>
     <shortPath>/foldingpanel/</shortPath>
     <image>background-image:url(../images/icons/components/FoldingPanel.png);</image>
     <selectedImage>/images/components/titles/FoldingPanel.png</selectedImage>
@@ -301,11 +301,11 @@
     <demos>
       <demoItem>
         <demoName>Basic Features</demoName>
-        <demoUrl>/foldingpanel/FoldingPanel1.jsf</demoUrl>
+        <demoUrl>/foldingpanel/FoldingPanel_basicFeatures.jsf</demoUrl>
       </demoItem>
       <demoItem>
         <demoName>Dynamic Loading</demoName>
-        <demoUrl>/foldingpanel/FoldingPanel2.jsf</demoUrl>
+        <demoUrl>/foldingpanel/FoldingPanel_dynamicLoading.jsf</demoUrl>
       </demoItem>
     </demos>
   </menuItem>
