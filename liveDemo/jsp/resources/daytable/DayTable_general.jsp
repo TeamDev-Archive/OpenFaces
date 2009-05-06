@@ -78,7 +78,7 @@
           </div>
 
           <!-- start content -->
-          <%@ include file="DayTable1_core.xhtml"%>
+          <%@ include file="DayTable_general_core.xhtml"%>
           <!-- end content -->
 
         </div>

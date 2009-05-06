@@ -18,7 +18,7 @@
         document.getElementById("form:date").innerHTML = date.getDate();
         document.getElementById("form:month").innerHTML = month[date.getMonth()];
         document.getElementById("form:year").innerHTML = date.getFullYear();
-        document.getElementById("form:dateHidden").value = twoDigit(date.getDate()) + "/" + twoDigit(date.getMonth()+1) + "/" + date.getFullYear();  
+        document.getElementById("form:dateHidden").value = twoDigit(date.getDate()) + "/" + twoDigit(date.getMonth()+1) + "/" + date.getFullYear();
       }
 
       function twoDigit(value) {
@@ -45,7 +45,7 @@
         updateDate(date);
       }
 
-     
+
     </script>
     <h3 class="CalendarDate"><big><h:commandLink style="text-decoration:none;" onclick="previousDay();return false;"><h:outputText value="&#8592;&#160;" escape="false" /></h:commandLink></big>
       <h:outputText id="date" value="" styleClass="date"/>&#160;<h:outputText id="month" value="" styleClass="date"/>&#160;<h:outputText id="year" value="" styleClass="date"/>
@@ -71,11 +71,11 @@
           <h:outputText value="1&#160;hour&#160;later" escape="false"/>
         </h:commandLink>
       </o:eventArea>
-      
+
       <o:eventActionBar>
         <o:eventAction id="customEventAction" actionListener="#{DayTableBean1.postponeEventActionListener}"
                        imageUrl="../images/daytable/customAction1.gif"
-                       hint="Postpone for 1 day"/>        
+                       hint="Postpone for 1 day"/>
       </o:eventActionBar>
     </o:dayTable>
   </div>
@@ -88,5 +88,5 @@
       <li><strong>Embedded custom content areas</strong> - any tags can be put for event area. See <i>1 hour later</i> link at top right corner of event.</li>
       <li><strong>Reserved time intervals</strong> - user can't put any event for reserved time (grey box).</li>
     </ul>
-  </div>  
+  </div>
 </div>

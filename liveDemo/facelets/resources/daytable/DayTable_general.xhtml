@@ -28,8 +28,6 @@
       <link rel="stylesheet" type="text/css" media="all" href="/css/style_ie6.css">
       <script src="/js/stylefix.js" type="text/javascript"></script>
   <![endif]-->
-  <link rel="icon" href="../images/icons/favicon.ico" type="image/x-icon"/>
-  <link rel="shortcut icon" href="../images/icons/favicon.ico" type="image/x-icon"/>
   <script type="text/javascript">
     function updateLayout() {
       var dayTable = document.getElementById('form:dayTable');
@@ -42,6 +40,9 @@
       }
     }
   </script>
+  <link rel="icon" href="../images/icons/favicon.ico" type="image/x-icon"/>
+  <link rel="shortcut icon" href="../images/icons/favicon.ico" type="image/x-icon"/>
+
 </head>
 
 <body onload="updateLayout()">
@@ -74,7 +75,7 @@
           </div>
 
           <!-- start content -->
-          <ui:include src="DayTable2_core.xhtml"/>
+          <ui:include src="DayTable_general_core.xhtml"/>
           <!-- end content -->
 
         </div>
