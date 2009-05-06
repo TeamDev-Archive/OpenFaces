@@ -550,7 +550,7 @@
   <menuItem>
     <name>Tree Table</name>
     <componentName>Tree Table</componentName>
-    <url>/treetable/TreeTable1.jsf</url>
+    <url>/treetable/TreeTable_basicFeatures.jsf</url>
     <shortPath>/treetable/</shortPath>
     <image>background-image:url(../images/icons/components/TreeTable.png);</image>
     <selectedImage>/images/components/titles/TreeTable.png</selectedImage>
@@ -570,19 +570,19 @@
     <demos>
       <demoItem>
         <demoName>Basic Features</demoName>
-        <demoUrl>/treetable/TreeTable1.jsf</demoUrl>
+        <demoUrl>/treetable/TreeTable_basicFeatures.jsf</demoUrl>
       </demoItem>
       <demoItem>
         <demoName>Selection &amp; Keyboard</demoName>
-        <demoUrl>/treetable/TreeTable2.jsf</demoUrl>
+        <demoUrl>/treetable/TreeTable_selectionAndKeyboard.jsf</demoUrl>
       </demoItem>
       <demoItem>
         <demoName>Rows &amp; Cells Customization</demoName>
-        <demoUrl>/treetable/TreeTable3.jsf</demoUrl>
+        <demoUrl>/treetable/TreeTable_RowsAndCellsCustomization.jsf</demoUrl>
       </demoItem>
       <demoItem>
         <demoName>Preloading Nodes</demoName>
-        <demoUrl>/treetable/TreeTable4.jsf</demoUrl>
+        <demoUrl>/treetable/TreeTable_preloadingNodes.jsf</demoUrl>
       </demoItem>
     </demos>
   </menuItem>

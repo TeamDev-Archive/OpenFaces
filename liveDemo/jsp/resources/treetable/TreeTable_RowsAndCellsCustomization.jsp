@@ -70,7 +70,7 @@
           </div>
 
           <!-- start content -->
-          <%@ include file="TreeTable3_core.xhtml"%>
+          <%@ include file="TreeTable_RowsAndCellsCustomization_core.xhtml"%>
           <!-- end content -->
 
         </div>

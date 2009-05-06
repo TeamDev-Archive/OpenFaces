@@ -63,9 +63,9 @@ public class LiveDemoTest extends OpenFacesTestCase {
         assertDemoPageAvailable("/tabbedpane/TabbedPane_placementAndAlignment.jsf", "Tabbed Pane \u2014 OpenFaces Demo");
         assertDemoPageAvailable("/tabbedpane/TabbedPane_loadingModes.jsf", "Tabbed Pane \u2014 OpenFaces Demo");
         assertDemoPageAvailable("/tabbedpane/TabbedPane_styling.jsf", "Tabbed Pane \u2014 OpenFaces Demo");
-        assertDemoPageAvailable("/treetable/TreeTable1.jsf", "Tree Table \u2014 OpenFaces Demo");
-        assertDemoPageAvailable("/treetable/TreeTable2.jsf", "Tree Table \u2014 OpenFaces Demo");
-        assertDemoPageAvailable("/treetable/TreeTable3.jsf", "Tree Table \u2014 OpenFaces Demo");
+        assertDemoPageAvailable("/treetable/TreeTable_basicFeatures.jsf", "Tree Table \u2014 OpenFaces Demo");
+        assertDemoPageAvailable("/treetable/TreeTable_selectionAndKeyboard.jsf", "Tree Table \u2014 OpenFaces Demo");
+        assertDemoPageAvailable("/treetable/TreeTable_RowsAndCellsCustomization.jsf", "Tree Table \u2014 OpenFaces Demo");
         assertDemoPageAvailable("/twolistselection/TwoListSelection.jsf", "Two List Selection \u2014 OpenFaces Demo");
 
         assertDemoPageAvailable("/validators/Validators_standard.jsf", "Validation \u2014 OpenFaces Demo");

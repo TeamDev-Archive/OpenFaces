@@ -25,8 +25,8 @@ public class JSFC_2294Test extends OpenFacesTestCase {
     @Test
     public void testThereIsNoJSErrorOnAjaxTreeTableReloading() {
         Selenium selenium = getSelenium();
-        liveDemoPage("/treetable/TreeTable2.jsf");
-        assertTrue(selenium.getLocation().endsWith("/treetable/TreeTable2.jsf"));
+        liveDemoPage("/treetable/TreeTable_selectionAndKeyboard.jsf");
+        assertTrue(selenium.getLocation().endsWith("/treetable/TreeTable_selectionAndKeyboard.jsf"));
         TreeTableInspector treeTable = treeTable("form1:requestsTreeTable");
         treeTable.bodyRow(1).click();
         treeTable.bodyRow(1).doubleClick();
@@ -38,6 +38,6 @@ public class JSFC_2294Test extends OpenFacesTestCase {
         //TODO: do we really need to check correct navigation?
 //        selenium.click("form1:demoItems::2");
 //        waitForPageToLoad();
-//        assertTrue(selenium.getLocation().endsWith("/treetable/TreeTable3.jsf"));
+//        assertTrue(selenium.getLocation().endsWith("/treetable/TreeTable_RowsAndCellsCustomization.jsf"));
     }
 }
