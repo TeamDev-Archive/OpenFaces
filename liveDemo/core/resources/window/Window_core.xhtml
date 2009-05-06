@@ -4,6 +4,10 @@
      class="Col4_234 darkgray">
 
 <style type="text/css">
+  .buttonRollover {
+    background: none;
+  }
+
   .application {
     margin: 20px 20px 5px 20px;
   }
@@ -36,6 +40,7 @@
   .refresh a:link {
     color: #9c9c9c;
   }
+
   .calculatorButtons td {
     padding: 3px;
   }
@@ -265,7 +270,6 @@ function checkRequestKeys(evt) {
   }
   return false;
 }
-
 </script>
 <div align="left">
   <h:graphicImage url="./images/openfaces-windows-are.png"/>
@@ -279,6 +283,7 @@ function checkRequestKeys(evt) {
 
     <img src="./images/dragndroppable.png"
          onclick="O$('form:unresizeable_win').show(); Calculator.clearAll(); return false;"
+         style="cursor: pointer;"
          title="Calculator"/>
 
     <o:window id="unresizeable_win"
@@ -296,7 +301,7 @@ function checkRequestKeys(evt) {
               height="300px"
               width="212px">
       <o:captionArea style="padding: 0 0 10px 0">
-        <o:closeWindowButton imageUrl="./images/win_close.png"/>
+        <o:closeWindowButton imageUrl="./images/win_close.png" rolloverClass="buttonRollover"/>
       </o:captionArea>
 
       <f:facet name="caption">
@@ -400,6 +405,7 @@ function checkRequestKeys(evt) {
   <div class="application">
     <img src="./images/resizable.png"
          onclick="O$('form:resizeable_win').show(); return false;"
+         style="cursor: pointer;"
          title="Image Gallery"/>
 
     <div align="center">
@@ -417,9 +423,12 @@ function checkRequestKeys(evt) {
         </f:facet>
 
         <o:captionArea>
-          <o:minimizeWindowButton imageUrl="./images/win_minimize.png" style="position: relative; top: -5px;"/>
-          <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png" style="position: relative; top: -5px;"/>
-          <o:closeWindowButton imageUrl="./images/win_close.png" style="position: relative; top: -5px;"/>
+          <o:minimizeWindowButton imageUrl="./images/win_minimize.png" style="position: relative; top: -5px;"
+                                  rolloverClass="buttonRollover"/>
+          <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png" style="position: relative; top: -5px;"
+                                  rolloverClass="buttonRollover"/>
+          <o:closeWindowButton imageUrl="./images/win_close.png" style="position: relative; top: -5px;"
+                               rolloverClass="buttonRollover"/>
         </o:captionArea>
 
         <img id="full_size_img"/>
@@ -439,9 +448,12 @@ function checkRequestKeys(evt) {
               width="550px">
 
       <o:captionArea>
-        <o:minimizeWindowButton imageUrl="./images/win_minimize.png" style="position: relative; top: -5px;"/>
-        <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png" style="position: relative; top: -5px;"/>
-        <o:closeWindowButton imageUrl="./images/win_close.png" style="position: relative; top: -5px;"/>
+        <o:minimizeWindowButton imageUrl="./images/win_minimize.png" style="position: relative; top: -5px;"
+                                rolloverClass="buttonRollover"/>
+        <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png" style="position: relative; top: -5px;"
+                                rolloverClass="buttonRollover"/>
+        <o:closeWindowButton imageUrl="./images/win_close.png" style="position: relative; top: -5px;"
+                             rolloverClass="buttonRollover"/>
       </o:captionArea>
 
       <f:facet name="caption">
@@ -497,6 +509,7 @@ function checkRequestKeys(evt) {
   <div class="application">
     <img src="./images/modal.png"
          onclick="O$('form:modal_win').show(); return false;"
+         style="cursor: pointer;"
          title="Calendar"/>
 
     <o:window id="modal_win"
@@ -511,7 +524,8 @@ function checkRequestKeys(evt) {
                           border-bottom: #e9e9e9 solid 1px">
 
       <o:captionArea>
-        <o:closeWindowButton imageUrl="./images/win_close.png" style="position: relative; top: -5px;"/>
+        <o:closeWindowButton imageUrl="./images/win_close.png" style="position: relative; top: -5px;"
+                             rolloverClass="buttonRollover"/>
       </o:captionArea>
 
       <f:facet name="caption">
@@ -527,6 +541,7 @@ function checkRequestKeys(evt) {
   <div class="application">
     <img src="./images/shadable.png"
          onclick="loadBbcSite(); return false;"
+         style="cursor: pointer;"
          title="BBC.com site"/>
 
     <o:window id="bbcSite_win"
@@ -541,9 +556,13 @@ function checkRequestKeys(evt) {
               captionClass="browserCaption">
 
       <o:captionArea alignment="left">
-        <o:closeWindowButton imageUrl="./images/mac_close.png" style="position: relative; top: -5px;"/>
-        <o:maximizeWindowButton maximizeImageUrl="./images/mac_maximize.png" style="position: relative; top: -5px;"/>
-        <o:minimizeWindowButton imageUrl="./images/mac_minimize.png" style="position: relative; top: -5px;"/>
+        <o:closeWindowButton rolloverImageUrl="./images/mac_close.png" imageUrl="./images/mac_inactive.png"
+                             style="position: relative; top: -5px;" rolloverClass="buttonRollover"/>
+        <o:maximizeWindowButton maximizeImageUrl="./images/mac_inactive.png"
+                                maximizeRolloverImageUrl="./images/mac_maximize.png"
+                                style="position: relative; top: -5px;" rolloverClass="buttonRollover"/>
+        <o:minimizeWindowButton imageUrl="./images/mac_inactive.png" rolloverImageUrl="./images/mac_minimize.png"
+                                style="position: relative; top: -5px;" rolloverClass="buttonRollover"/>
       </o:captionArea>
 
       <f:facet name="caption">
@@ -564,6 +583,7 @@ function checkRequestKeys(evt) {
   <div class="application">
     <img src="./images/customizable.png"
          onclick="loadGoogleSite(); return false;"
+         style="cursor: pointer;"
          title="Web Browser"/>
 
     <o:window id="webBrowser_win"
@@ -583,9 +603,13 @@ function checkRequestKeys(evt) {
       </f:facet>
 
       <o:captionArea alignment="left">
-        <o:closeWindowButton imageUrl="./images/mac_close.png" style="position: relative; top: -5px;"/>
-        <o:maximizeWindowButton maximizeImageUrl="./images/mac_maximize.png" style="position: relative; top: -5px;"/>
-        <o:minimizeWindowButton imageUrl="./images/mac_minimize.png" style="position: relative; top: -5px;"/>
+        <o:closeWindowButton rolloverImageUrl="./images/mac_close.png" imageUrl="./images/mac_inactive.png"
+                             style="position: relative; top: -5px;" rolloverClass="buttonRollover"/>
+        <o:maximizeWindowButton maximizeImageUrl="./images/mac_inactive.png"
+                                maximizeRolloverImageUrl="./images/mac_maximize.png"
+                                style="position: relative; top: -5px;" rolloverClass="buttonRollover"/>
+        <o:minimizeWindowButton imageUrl="./images/mac_inactive.png" rolloverImageUrl="./images/mac_minimize.png"
+                                style="position: relative; top: -5px;" rolloverClass="buttonRollover"/>
       </o:captionArea>
 
       <h:panelGroup style="width: 100%;">
