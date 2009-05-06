@@ -18,7 +18,15 @@
         document.getElementById("form:date").innerHTML = date.getDate();
         document.getElementById("form:month").innerHTML = month[date.getMonth()];
         document.getElementById("form:year").innerHTML = date.getFullYear();
-        document.getElementById("form:dateHidden").value = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear();  
+        document.getElementById("form:dateHidden").value = twoDigit(date.getDate()) + "/" + twoDigit(date.getMonth()+1) + "/" + date.getFullYear();  
+      }
+
+      function twoDigit(value) {
+         var str = value.toString(10);
+        if(str.length == 1) {
+          str = "0" + str;
+        }
+        return str;
       }
 
       function nextDay() {
