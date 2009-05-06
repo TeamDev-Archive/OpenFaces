@@ -180,7 +180,8 @@ O$._initWindow = function(windowId, resizeable, draggableByContent, minWidth, mi
       this._contentRow.style.display = this._contentRow._originalDisplay;
       if (this._footerRow)
         this._footerRow.style.display = this._footerRow._originalDisplay;
-      this._setSize(this._normalSize.width, this._normalSize.height);
+      var rect = O$.getElementBorderRectangle(this, true);
+      this._setRect(new O$.Rectangle(rect.x, rect.y, this._normalSize.width, this._normalSize.height));
       this._normalSize = null;
     }
     if (this._state == O$.WINDOW_MAXIMIZED) {
