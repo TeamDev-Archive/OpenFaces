@@ -1844,10 +1844,8 @@ O$.startDragAndDrop = function(e, draggable) {
   draggable._draggingWasStarted = false;
 
   var pageScrollPos = O$.getPageScrollPos();
-//  draggable._lastDragX = evt.clientX + pageScrollPos.x;
   var pos = O$.getEventPoint(evt, draggable);
   draggable._lastDragX = pos.x;
-//  draggable._lastDragY = evt.clientY + pageScrollPos.y;
   draggable._lastDragY = pos.y;
   if (!draggable._getPositionLeft)
     draggable._getPositionLeft = function() {
@@ -1881,9 +1879,7 @@ O$.handleDragMove = function(e) {
   var pageScrollPos = O$.getPageScrollPos();
   var pos = O$.getEventPoint(evt, draggable);
   var dragX = pos.x;
-//  var dragX = evt.clientX + pageScrollPos.x;
   var dragY = pos.y;
-//  var dragY = evt.clientY + pageScrollPos.y;
   var left = draggable._getPositionLeft();
   var top = draggable._getPositionTop();
   var xChangeSinceLastDrag = left - draggable._lastDragOffsetLeft;
@@ -2189,10 +2185,6 @@ O$.getLocalStyleSheet = function() {
       }
     }
   }
-
-  //  locateLocalStyleSheet();
-  //  if (document._of_localStyleSheet)
-  //    return document._of_localStyleSheet;
 
   if (document.createStyleSheet) {
     document._of_localStyleSheet = document.createStyleSheet();
@@ -2695,7 +2687,6 @@ O$.initDateTimeFormatObject = function(months, shortMonths, days, shortDays, loc
     this._dateTimeFormatLocales.push(localeStr);
   }
 
-  //  this._dateTimeFormat = new DateTimeFormat(months, shortMonths, days, shortDays);
 }
 
 O$.getDateTimeFormatObject = function(locale) {
@@ -2885,11 +2876,6 @@ O$.getElementPos = function(element, relativeToNearestContainingBlock) {
         if (pscrollTop)
           top -= pscrollTop;
       }
-
-      //      if (O$.calculateElementStyleProperty(parent, "overflow") != "visible") {
-      //        left += O$.calculateNumericStyleProperty(parent, "padding-left");
-      //        top += O$.calculateNumericStyleProperty(parent, "padding-top");
-      //      }
 
       if (!thisIsContainingBlock) {
         // containing blocks already have the following corrections as part of offsetLeft/offsetTop
