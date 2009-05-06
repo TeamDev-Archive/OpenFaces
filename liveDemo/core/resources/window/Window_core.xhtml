@@ -4,6 +4,10 @@
      class="Col4_234 darkgray">
 
 <style type="text/css">
+  .customButton {
+    padding: 0;
+  }
+
   .buttonRollover {
     background: none;
   }
@@ -104,6 +108,7 @@ function loadGoogleSite() {
   O$('form:webBrowser_win').show();
   document.getElementById('form:webBrowser_win::content').style.overflow = "visible";
   document.getElementById('browserContent').src = "http://www.google.com";
+  document.getElementById('form:browserUrlInput').value = "http://www.google.com";
 }
 
 function cancelSubmit(event) {
@@ -298,7 +303,7 @@ function checkRequestKeys(evt) {
                           position:relative;
                           top: -4px"
               contentStyle="overflow: visible"
-              height="300px"
+              height="310px"
               width="212px">
       <o:captionArea style="padding: 0 0 10px 0">
         <o:closeWindowButton imageUrl="./images/win_close.png" rolloverClass="buttonRollover"/>
@@ -423,11 +428,11 @@ function checkRequestKeys(evt) {
         </f:facet>
 
         <o:captionArea>
-          <o:minimizeWindowButton imageUrl="./images/win_minimize.png" style="position: relative; top: -5px;"
+          <o:minimizeWindowButton imageUrl="./images/win_minimize.png" styleClass="customButton"
                                   rolloverClass="buttonRollover"/>
-          <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png" style="position: relative; top: -5px;"
+          <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png" styleClass="customButton"
                                   rolloverClass="buttonRollover"/>
-          <o:closeWindowButton imageUrl="./images/win_close.png" style="position: relative; top: -5px;"
+          <o:closeWindowButton imageUrl="./images/win_close.png" styleClass="customButton"
                                rolloverClass="buttonRollover"/>
         </o:captionArea>
 
@@ -448,11 +453,11 @@ function checkRequestKeys(evt) {
               width="550px">
 
       <o:captionArea>
-        <o:minimizeWindowButton imageUrl="./images/win_minimize.png" style="position: relative; top: -5px;"
+        <o:minimizeWindowButton imageUrl="./images/win_minimize.png" styleClass="customButton"
                                 rolloverClass="buttonRollover"/>
-        <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png" style="position: relative; top: -5px;"
+        <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png" styleClass="customButton"
                                 rolloverClass="buttonRollover"/>
-        <o:closeWindowButton imageUrl="./images/win_close.png" style="position: relative; top: -5px;"
+        <o:closeWindowButton imageUrl="./images/win_close.png" styleClass="customButton"
                              rolloverClass="buttonRollover"/>
       </o:captionArea>
 
@@ -524,7 +529,7 @@ function checkRequestKeys(evt) {
                           border-bottom: #e9e9e9 solid 1px">
 
       <o:captionArea>
-        <o:closeWindowButton imageUrl="./images/win_close.png" style="position: relative; top: -5px;"
+        <o:closeWindowButton imageUrl="./images/win_close.png" styleClass="customButton"
                              rolloverClass="buttonRollover"/>
       </o:captionArea>
 
@@ -557,12 +562,12 @@ function checkRequestKeys(evt) {
 
       <o:captionArea alignment="left">
         <o:closeWindowButton rolloverImageUrl="./images/mac_close.png" imageUrl="./images/mac_inactive.png"
-                             style="position: relative; top: -5px;" rolloverClass="buttonRollover"/>
+                             styleClass="customButton" rolloverClass="buttonRollover"/>
         <o:maximizeWindowButton maximizeImageUrl="./images/mac_inactive.png"
                                 maximizeRolloverImageUrl="./images/mac_maximize.png"
-                                style="position: relative; top: -5px;" rolloverClass="buttonRollover"/>
+                                styleClass="customButton" rolloverClass="buttonRollover"/>
         <o:minimizeWindowButton imageUrl="./images/mac_inactive.png" rolloverImageUrl="./images/mac_minimize.png"
-                                style="position: relative; top: -5px;" rolloverClass="buttonRollover"/>
+                                styleClass="customButton" rolloverClass="buttonRollover"/>
       </o:captionArea>
 
       <f:facet name="caption">
@@ -604,19 +609,20 @@ function checkRequestKeys(evt) {
 
       <o:captionArea alignment="left">
         <o:closeWindowButton rolloverImageUrl="./images/mac_close.png" imageUrl="./images/mac_inactive.png"
-                             style="position: relative; top: -5px;" rolloverClass="buttonRollover"/>
+                             styleClass="customButton" rolloverClass="buttonRollover"/>
         <o:maximizeWindowButton maximizeImageUrl="./images/mac_inactive.png"
                                 maximizeRolloverImageUrl="./images/mac_maximize.png"
-                                style="position: relative; top: -5px;" rolloverClass="buttonRollover"/>
+                                styleClass="customButton" rolloverClass="buttonRollover"/>
         <o:minimizeWindowButton imageUrl="./images/mac_inactive.png" rolloverImageUrl="./images/mac_minimize.png"
-                                style="position: relative; top: -5px;" rolloverClass="buttonRollover"/>
+                                styleClass="customButton" rolloverClass="buttonRollover"/>
       </o:captionArea>
 
       <h:panelGroup style="width: 100%;">
         <h:outputText value="Site:" style="color: #9c9c9c;font-weight: bold; padding: 0 2px 0 10px"/>
-        <h:inputText id="browserUrlInput"
+        <o:inputText id="browserUrlInput"
                      onkeydown="return cancelSubmit(event);"
-                     style="width:85%"/>
+                     focusedStyle="border-color: #7f9db9;"
+                     style="width:85%; border: 1px #ffffff solid; color: #525252;"/>
         <h:outputLink styleClass="refresh" value="" onclick="loadUrl(); return false;"><h:outputText
                 style="font-style: italic; color: #9c9c9c" value="Go"/></h:outputLink>
       </h:panelGroup>
