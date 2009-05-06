@@ -40,6 +40,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
     private static final String DEFAULT_CAPTION_WIDTH_CLASS = "o_default_caption_width";
     private static final String PRE_ANCHOR = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "preAnchor";
     private static final String POST_ANCHOR = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "postAnchor";
+    public static final String MIDDLE_AREA_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "content";
 
     public static String getWindowJs(FacesContext context) {
         return ResourceUtil.getInternalResourceURL(context, AbstractWindowRenderer.class, "window.js");

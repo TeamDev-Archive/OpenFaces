@@ -42,7 +42,6 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
     public static final String DETAILS_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "detailsText";
     public static final String OK_BUTTON_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "yes_button";
     public static final String CANCEL_BUTTON_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "no_button";
-    public static final String MIDDLE_AREA_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "content";
     public static final String BUTTON_AREA_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "buttonArea";
 
     private static final String DEFAULT_ICON_BACKPLANE_CLASS = "o_confirmation_icon_backplane";

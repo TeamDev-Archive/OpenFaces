@@ -144,7 +144,7 @@ O$._initWindow = function(windowId, resizeable, draggableByContent, minWidth, mi
     this._setResizeable(false);
     this._setState(O$.WINDOW_MINIMIZED);
     this._normalSize = O$.getElementSize(this);
-    var contentSize = O$.getElementSize(this._contentRow);
+    var contentSize = O$.getElementSize(this._content);
     var footerSize = this._footerRow ? O$.getElementSize(this._footerRow) : null;
     this._contentRow._originalDisplay = this._contentRow.style.display;
     this._contentRow.style.display = "none";

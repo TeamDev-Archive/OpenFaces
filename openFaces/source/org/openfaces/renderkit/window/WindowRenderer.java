@@ -29,7 +29,7 @@ public class WindowRenderer extends AbstractWindowRenderer {
         String clientId = win.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", win);
-        writer.writeAttribute("id", clientId + "::content", null);
+        writer.writeAttribute("id", clientId + MIDDLE_AREA_SUFFIX, null);
         RenderingUtil.writeStyleAndClassAttributes(writer, win.getContentStyle(), win.getContentClass(), getDefaultContentClass());
         ComponentWithCaptionRenderer.renderChildren(context, abstractWindow);
         writer.endElement("div");
