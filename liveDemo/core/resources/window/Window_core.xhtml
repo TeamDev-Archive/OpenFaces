@@ -36,140 +36,235 @@
   .refresh a:link {
     color: #9c9c9c;
   }
-
+  .calculatorButtons td {
+    padding: 3px;
+  }
 </style>
 
 <div id="component" align="center">
 
 <script type="text/javascript">
-  function showFullSizeImage(event) {
-    var target;
-    if (!event) {
-      event = window.event;
-    }
-
-    if (event.target) {
-      target = event.target;
-    }
-    else if (event.srcElement) {
-      target = event.srcElement;
-    }
-    if (target.nodeType == 3) { // defeat Safari bug
-      target = target.parentNode;
-    }
-
-    O$('form:full_size_image_win').hide();
-    var parentWindow = document.getElementById("form:full_size_image_win");
-    document.getElementById("full_size_img").src = target.src;
-    document.getElementById("form:full_size_image_win::content").style.overflow = "visible";
-    parentWindow.style.height = getNaturalHeight(target) + 30 + "px";
-    parentWindow.style.width = getNaturalWeight(target) + 4 + "px";
-    O$('form:full_size_image_win').show();
+function showFullSizeImage(event) {
+  var target;
+  if (!event) {
+    event = window.event;
   }
 
-  function getNaturalHeight(img) {
-    if (img.naturalHeight) {
-      return img.naturalHeight;
-    } else {
-      lgi = new Image();
-      lgi.src = img.src;
-      return lgi.height;
+  if (event.target) {
+    target = event.target;
+  }
+  else if (event.srcElement) {
+    target = event.srcElement;
+  }
+  if (target.nodeType == 3) { // defeat Safari bug
+    target = target.parentNode;
+  }
+
+  O$('form:full_size_image_win').hide();
+  var parentWindow = document.getElementById("form:full_size_image_win");
+  document.getElementById("full_size_img").src = target.src;
+  document.getElementById("form:full_size_image_win::content").style.overflow = "visible";
+  parentWindow.style.height = getNaturalHeight(target) + 30 + "px";
+  parentWindow.style.width = getNaturalWeight(target) + 4 + "px";
+  O$('form:full_size_image_win').show();
+}
+
+function getNaturalHeight(img) {
+  if (img.naturalHeight) {
+    return img.naturalHeight;
+  } else {
+    lgi = new Image();
+    lgi.src = img.src;
+    return lgi.height;
+  }
+}
+
+function getNaturalWeight(img) {
+  if (img.naturalWidth) {
+    return img.naturalWidth;
+  } else {
+    lgi = new Image();
+    lgi.src = img.src;
+    return lgi.width;
+  }
+}
+
+function loadBbcSite() {
+  O$('form:bbcSite_win').show();
+  document.getElementById('form:bbcSite_win::content').style.overflow = "visible";
+  document.getElementById('bbcSiteContent').src = "http://www.bbc.com";
+}
+
+function loadGoogleSite() {
+  O$('form:webBrowser_win').show();
+  document.getElementById('form:webBrowser_win::content').style.overflow = "visible";
+  document.getElementById('browserContent').src = "http://www.google.com";
+}
+
+function cancelSubmit(event) {
+  var keynum;
+
+  if (window.event) { // IE
+    keynum = event.keyCode;
+  }
+  else if (event.which) { // Netscape/Firefox/Opera
+    keynum = event.which;
+  }
+
+  return keynum != 13;
+}
+
+function loadUrl() {
+  var url = document.getElementById('form:browserUrlInput').value;
+  var protocol = "http://";
+  if (url.indexOf(protocol) != 0) {
+    url = protocol + url;
+  }
+  document.getElementById('browserContent').src = url;
+}
+
+<!--  *** Calculator javascript ****************************** -->
+var Calculator = {
+  state : false,
+  operation : false,
+  value : "",
+  calculated : false,
+
+  floatValue : function() {
+    return parseFloat(this.stringValue());
+  },
+
+  stringValue : function() {
+    return this.value == "" || this.value == "." ? '0' : this.value;
+  },
+
+  clearAll : function() {
+    this.value = "";
+    this.clearInput();
+    this.state = false;
+    this.operation = false;
+    this.calculated = false;
+    this.focus();
+  },
+
+  clearInput : function () {
+    document.getElementById("form:calcInputField").value = this.stringValue();
+  },
+
+  typeNumber : function (character) {
+    if (this.calculated) {
+      this.clearAll();
     }
-  }
-
-  function getNaturalWeight(img) {
-    if (img.naturalWidth) {
-      return img.naturalWidth;
-    } else {
-      lgi = new Image();
-      lgi.src = img.src;
-      return lgi.width;
+    if (character == '.' &amp;&amp; this.value.indexOf('.') != -1) {
+      return;
     }
-  }
+    this.value = this.value + character;
+    document.getElementById("form:calcInputField").value = this.stringValue();
+    this.calculated = false;
+    this.focus();
+  },
 
-  function loadCnnSite() {
-    O$('form:cnnSite_win').show();
-    document.getElementById('form:cnnSite_win::content').style.overflow = "visible";
-    document.getElementById('cnnSiteContent').src = "http://www.cnn.com";
-  }
-
-  function loadGoogleSite() {
-    O$('form:webBrowser_win').show();
-    document.getElementById('form:webBrowser_win::content').style.overflow = "visible";
-    document.getElementById('browserContent').src = "http://www.google.com";
-  }
-
-  function cancelSubmit(event) {
-    var keynum;
-
-    if (window.event) { // IE
-      keynum = event.keyCode;
-    }
-    else if (event.which) { // Netscape/Firefox/Opera
-      keynum = event.which;
-    }
-
-    return keynum != 13;
-  }
-
-  function loadUrl() {
-    var url = document.getElementById('form:browserUrlInput').value;
-    var protocol = "http://";
-    if (url.indexOf(protocol) != 0) {
-      url = protocol + url;
-    }
-    document.getElementById('browserContent').src = url;
-  }
-
-  <!--  *** Calculator javascript ****************************** -->
-
-  calc_mode = 0;
-  buf = "";
-
-  function clearAll() {
-    clearInput();
-    clearBuf();
-    calc_mode = 0;
-  }
-
-  function clearInput() {
-    document.getElementById("form:calcInputField").value = "0";
-  }
-
-  function clearBuf() {
-    buf = "";
-  }
-
-  function number(ch) {
-    if (calc_mode) {
-      clearInput();
-      calc_mode = 0;
-    }
-
-    var value = document.getElementById("form:calcInputField").value;
-    if ((value == '0') &amp;&amp; (ch != '.')) {
-      document.getElementById("form:calcInputField").value = ch;
-    } else {
-      if ((ch == '.') &amp;&amp; (value.indexOf('.') != -1)) {
-        return;
+  typeOperation : function (character) {
+    if (character == '+' || character == '-' || character == '/' || character == '*') {
+      if (this.operation &amp;&amp; !this.calculated) {
+        this.calculate();
+      } else if (!this.state) {
+        this.state = this.floatValue();
       }
-      document.getElementById("form:calcInputField").value += ch;
+      this.operation = character;
+      this.value = "";
+      this.calculated = false;
     }
+    this.focus();
+  },
 
-    if (buf != "") {
-      buf += ch;
+  calculate : function () {
+    if (this.operation) {
+      if (this.value == "") {
+        this.value = this.state;
+      }
+      if (this.operation == '+') {
+        this.state = this.state + this.floatValue();
+      }
+      if (this.operation == '-') {
+        this.state = this.state - this.floatValue();
+      }
+      if (this.operation == '*') {
+        this.state = this.state * this.floatValue();
+      }
+      if (this.operation == '/') {
+        if (this.stringValue() == '0') {
+          document.getElementById("form:calcInputField").value = "Division by zero";
+          return;
+        }
+        this.state = this.state / this.floatValue();
+      }
+      document.getElementById("form:calcInputField").value = this.state;
+      this.calculated = true;
     }
+    this.focus();
+  },
+  focus : function() {
+    O$('form:calcInputField').focus();
   }
+};
 
-  function operator(ch) {
-    calc_mode = 1;
-    buf = document.getElementById("form:calcInputField").value + ch;
+function checkRequestKeys(evt) {
+  var e = evt ? evt : window.event;
+  if (e.keyCode == 27) { // Escape
+    Calculator.clearAll();
   }
+  if (e.keyCode == 48 || e.keyCode == 96) { // 0
+    Calculator.typeNumber('0');
+  }
+  if (e.keyCode == 49 || e.keyCode == 97) { // 1
+    Calculator.typeNumber('1');
 
-  function calculate() {
-    document.getElementById("form:calcInputField").value = eval(buf);
-    calc_mode = 1;
   }
+  if (e.keyCode == 50 || e.keyCode == 98) { // 2
+    Calculator.typeNumber('2');
+  }
+  if (e.keyCode == 51 || e.keyCode == 99) { // 3
+    Calculator.typeNumber('3');
+  }
+  if (e.keyCode == 52 || e.keyCode == 100) { // 4
+    Calculator.typeNumber('4');
+  }
+  if (e.keyCode == 53 || e.keyCode == 101) { // 5
+    Calculator.typeNumber('5');
+  }
+  if (e.keyCode == 54 || e.keyCode == 102) { // 6
+    Calculator.typeNumber('6');
+  }
+  if (e.keyCode == 55 || e.keyCode == 103) { // 7
+    Calculator.typeNumber('7');
+  }
+  if (e.keyCode == 56 || e.keyCode == 104) { // 8
+    Calculator.typeNumber('8');
+  }
+  if (e.keyCode == 57 || e.keyCode == 105) { // 9
+    Calculator.typeNumber('9');
+  }
+  if (e.keyCode == 106) { // multiply
+    Calculator.typeOperation('*');
+  }
+  if (e.keyCode == 107) { // add
+    Calculator.typeOperation('+');
+  }
+  if (e.keyCode == 109) { // subtract
+    Calculator.typeOperation('-');
+  }
+  if (e.keyCode == 110) { // decimal point
+    Calculator.typeNumber('.');
+  }
+  if (e.keyCode == 111) { // divide
+    Calculator.typeOperation('/');
+  }
+  if (e.keyCode == 13) { // Enter
+    Calculator.calculate();
+  }
+  return false;
+}
 
 </script>
 <div align="left">
@@ -182,8 +277,8 @@
   <!--   Calculator   -->
   <div class="application">
 
-    <img src="./images/dragndropable.png"
-         onclick="O$('form:unresizeable_win').show(); return false;"
+    <img src="./images/dragndroppable.png"
+         onclick="O$('form:unresizeable_win').show(); Calculator.clearAll(); return false;"
          title="Calculator"/>
 
     <o:window id="unresizeable_win"
@@ -201,7 +296,6 @@
               height="300px"
               width="212px">
       <o:captionArea style="padding: 0 0 10px 0">
-        <o:minimizeWindowButton imageUrl="./images/win_minimize.png"/>
         <o:closeWindowButton imageUrl="./images/win_close.png"/>
       </o:captionArea>
 
@@ -213,83 +307,85 @@
         <div style="background: #999999;">
           <h:inputText id="calcInputField"
                        value="0"
+                       onkeydown="checkRequestKeys(event);"
                        onkeypress="return false;"
                        style="width: 83%;
                               background: #99b9a7;
                               font-size: 180%;
                               text-align: right;
+                              border: none;
                               margin: 5px 15px 5px 15px;"/>
         </div>
         <div align="center" style="padding: 7px 17px 17px 17px;">
-          <table>
+          <table class="calculatorButtons">
             <tr>
               <td align="center"><h:outputLink styleClass="calculatorBtn"
-                                               onclick="clearAll(); return false;">
+                                               onclick="Calculator.clearAll(); return false;">
                 <h:graphicImage url="./images/calc/clear.png"/>
               </h:outputLink></td>
               <td colspan="3"/>
             </tr>
             <tr>
-              <td><h:outputLink onclick="number('7'); return false;">
+              <td><h:outputLink onclick="Calculator.typeNumber('7'); return false;">
                 <h:graphicImage url="./images/calc/7.png"/>
               </h:outputLink></td>
-              <td><h:outputLink styleClass="calculatorBtn" onclick="number('8'); return false;">
+              <td><h:outputLink styleClass="calculatorBtn" onclick="Calculator.typeNumber('8'); return false;">
                 <h:graphicImage url="./images/calc/8.png"/>
               </h:outputLink></td>
-              <td><h:outputLink styleClass="calculatorBtn" onclick="number('9'); return false;">
+              <td><h:outputLink styleClass="calculatorBtn" onclick="Calculator.typeNumber('9'); return false;">
                 <h:graphicImage url="./images/calc/9.png"/>
               </h:outputLink></td>
-              <td><h:outputLink styleClass="calculatorBtn" onclick="operator('/'); return false;">
+              <td><h:outputLink styleClass="calculatorBtn" onclick="Calculator.typeOperation('/'); return false;">
                 <h:graphicImage url="./images/calc/div.png"/>
               </h:outputLink></td>
             </tr>
             <tr>
-              <td><h:outputLink styleClass="calculatorBtn" onclick="number('4'); return false;">
+              <td><h:outputLink styleClass="calculatorBtn" onclick="Calculator.typeNumber('4'); return false;">
                 <h:graphicImage url="./images/calc/4.png"/>
               </h:outputLink></td>
-              <td><h:outputLink styleClass="calculatorBtn" onclick="number('5'); return false;">
+              <td><h:outputLink styleClass="calculatorBtn" onclick="Calculator.typeNumber('5'); return false;">
                 <h:graphicImage url="./images/calc/5.png"/>
               </h:outputLink></td>
-              <td><h:outputLink styleClass="calculatorBtn" onclick="number('6'); return false;">
+              <td><h:outputLink styleClass="calculatorBtn" onclick="Calculator.typeNumber('6'); return false;">
                 <h:graphicImage url="./images/calc/6.png"/>
               </h:outputLink></td>
-              <td><h:outputLink styleClass="calculatorBtn" onclick="operator('*'); return false;">
+              <td><h:outputLink styleClass="calculatorBtn" onclick="Calculator.typeOperation('*'); return false;">
                 <h:graphicImage url="./images/calc/mult.png"/>
               </h:outputLink></td>
             </tr>
             <tr>
               <td><h:outputLink styleClass="calculatorBtn"
-                                onclick="number('1'); return false;">
+                                onclick="Calculator.typeNumber('1'); return false;">
                 <h:graphicImage url="./images/calc/1.png"/>
               </h:outputLink></td>
               <td><h:outputLink styleClass="calculatorBtn"
-                                onclick="number('2'); return false;">
+                                onclick="Calculator.typeNumber('2'); return false;">
                 <h:graphicImage url="./images/calc/2.png"/>
               </h:outputLink></td>
               <td><h:outputLink styleClass="calculatorBtn"
-                                onclick="number('3'); return false;">
+                                onclick="Calculator.typeNumber('3'); return false;">
                 <h:graphicImage url="./images/calc/3.png"/>
               </h:outputLink></td>
               <td><h:outputLink styleClass="calculatorBtn"
-                                onclick="operator('-'); return false;">
+                                onclick="Calculator.typeOperation('-'); return false;">
                 <h:graphicImage url="./images/calc/min.png"/>
               </h:outputLink></td>
             </tr>
             <tr>
               <td><h:outputLink styleClass="calculatorBtn"
-                                onclick="number('0'); return false;">
+                                onclick="Calculator.typeNumber('0'); return false;">
                 <h:graphicImage url="./images/calc/0.png"/>
               </h:outputLink></td>
               <td><h:outputLink styleClass="calculatorBtn"
-                                onclick="number('.'); return false;">
+                                onclick="Calculator.typeNumber('.'); return false;">
                 <h:graphicImage url="./images/calc/dot.png"/>
               </h:outputLink></td>
               <td><h:outputLink styleClass="calculatorBtn"
-                                onclick="calculate(); return false;">
+                                onclick="Calculator.calculate(); return false;">
                 <h:graphicImage url="./images/calc/equal.png"/>
               </h:outputLink></td>
               <td><h:outputLink styleClass="calculatorBtn"
-                                onclick="operator('+'); return false;">
+                                onclick="Calculator.typeOperation('+'); return false;">
                 <h:graphicImage url="./images/calc/plus.png"/>
               </h:outputLink></td>
             </tr>
@@ -300,7 +396,7 @@
   </div>
 </td>
 <td>
-  <!-- Image gallery   -->
+  <!-- Image galary   -->
   <div class="application">
     <img src="./images/resizable.png"
          onclick="O$('form:resizeable_win').show(); return false;"
@@ -407,7 +503,7 @@
               resizeable="false"
               modal="true"
               modalLayerClass="modalLayer"
-              style="position: absolute; right: 150px; top: 160px;"
+              style="position: absolute; right: 150px; top: 160px"
               width="236px"
               height="228px"
               contentStyle="overflow: visible; background: #bbbbbb;"
@@ -415,7 +511,6 @@
                           border-bottom: #e9e9e9 solid 1px">
 
       <o:captionArea>
-        <o:minimizeWindowButton imageUrl="./images/win_minimize.png" style="position: relative; top: -5px;"/>
         <o:closeWindowButton imageUrl="./images/win_close.png" style="position: relative; top: -5px;"/>
       </o:captionArea>
 
@@ -428,13 +523,13 @@
   </div>
 </td>
 <td>
-  <!-- Cnn.com    -->
+  <!-- bbc.com    -->
   <div class="application">
     <img src="./images/shadable.png"
-         onclick="loadCnnSite(); return false;"
-         title="CNN.com site"/>
+         onclick="loadBbcSite(); return false;"
+         title="BBC.com site"/>
 
-    <o:window id="cnnSite_win"
+    <o:window id="bbcSite_win"
               resizeable="true"
               width="800px"
               height="600px"
@@ -442,7 +537,7 @@
                     left: 30px;
                     top: 50px;"
               modal="true"
-              modalLayerClass="modalLayerShade"
+              modalLayerClass="modalLayer"
               captionClass="browserCaption">
 
       <o:captionArea alignment="left">
@@ -452,10 +547,10 @@
       </o:captionArea>
 
       <f:facet name="caption">
-        <h:outputText value="CNN.com"/>
+        <h:outputText value="BBC.com"/>
       </f:facet>
 
-      <iframe id="cnnSiteContent"
+      <iframe id="bbcSiteContent"
               frameborder="true"
               width="100%"
               height="100%" style="border: none">
@@ -515,8 +610,8 @@
 </td>
 </tr>
 <tr>
-  <td align="center"><h:outputText value="Drag-and-dropable"/></td>
-  <td align="center"><h:outputText value="Resizeable"/></td>
+  <td align="center"><h:outputText value="Drag-and-droppable"/></td>
+  <td align="center"><h:outputText value="Resizable"/></td>
   <td align="center"><h:outputText value="Modal"/></td>
   <td align="center"><h:outputText value="Shadeable"/></td>
   <td align="center"><h:outputText value="Customizable"/></td>
@@ -530,10 +625,10 @@
   <h4>Shown Functionality</h4>
   <ul class="hang">
     <li><strong>Drag-and-drop</strong> - Click on the
-      <i>Drag-and-dropable</i> icon and you can see the draggable window,
+      <i>Drag-and-droppable</i> icon and you can see the draggable window,
       that can be dragged around on the page
     </li>
-    <li><strong>Resizing</strong> - Click on the <i>Resizeable</i> icon and you can see the resizeable window
+    <li><strong>Resizing</strong> - Click on the <i>Resizable</i> icon and you can see the resizeable window
     </li>
     <li><strong>Modality</strong> - Click on the <i>Modal</i> icon and you can see the modal window
     </li>
