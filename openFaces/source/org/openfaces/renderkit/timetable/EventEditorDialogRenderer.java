@@ -12,7 +12,6 @@
 package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.input.DateChooser;
-import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.EventEditorDialog;
 import org.openfaces.component.window.PopupLayer;
@@ -38,16 +37,10 @@ public class EventEditorDialogRenderer extends PopupLayerRenderer {
     protected void encodeCustomContent(FacesContext context, PopupLayer popupLayer) throws IOException {
         final EventEditorDialog dialog = (EventEditorDialog) popupLayer;
         final DayTable dayTable = (DayTable) dialog.getParent();
-        final boolean useResourceSeparationMode = (Boolean) dayTable.getAttributes().
-                get(DayTableRenderer.USE_RESOURCE_SEPARATION_MODE_ATTR);
         final UIComponent[][] components = new UIComponent[][]{
                 {
                         RenderingUtil.composeHtmlOutputText(context, popupLayer, "nameLabel", dialog.getNameLabel()),
                         getNameField(context, popupLayer)
-                },
-                {
-                        RenderingUtil.composeHtmlOutputText(context, popupLayer, "resourceLabel", dialog.getResourceLabel()),
-                        getResourceField(context, popupLayer)
                 },
                 {
                         RenderingUtil.composeHtmlOutputText(context, popupLayer, "startLabel", dialog.getStartLabel()),
@@ -56,10 +49,6 @@ public class EventEditorDialogRenderer extends PopupLayerRenderer {
                 {
                         RenderingUtil.composeHtmlOutputText(context, popupLayer, "endLabel", dialog.getENdLabel()),
                         createDateTimeFields(context, popupLayer, "end")
-                },
-                {
-                        RenderingUtil.composeHtmlOutputText(context, popupLayer, "colorLabel", dialog.getColorLabel()),
-                        getColorField(context, popupLayer)
                 },
                 {
                         RenderingUtil.composeHtmlOutputText(context, popupLayer, "descriptionLabel", dialog.getDescriptionLabel()),
@@ -93,10 +82,7 @@ public class EventEditorDialogRenderer extends PopupLayerRenderer {
                             "','" + dialog.getClientId(context) + "');");
                 }
             }
-
-            protected boolean isRowVisible(int rowIndex) {
-                return rowIndex != 1 || useResourceSeparationMode;
-            }
+            
         }.render(popupLayer, components);
     }
 
@@ -105,14 +91,6 @@ public class EventEditorDialogRenderer extends PopupLayerRenderer {
                 HtmlInputTextarea.COMPONENT_TYPE, "descriptionField", HtmlInputTextarea.class);
         descriptionField.setStyle("width: 100%; height: 100px;");
         return descriptionField;
-    }
-
-    private UIComponent getColorField(FacesContext context, PopupLayer popupLayer) {
-        return RenderingUtil.getOrCreateFacet(context, popupLayer, DropDownField.COMPONENT_TYPE, "colorField", DropDownField.class);
-    }
-
-    private UIComponent getResourceField(FacesContext context, PopupLayer popupLayer) {
-        return RenderingUtil.getOrCreateFacet(context, popupLayer, DropDownField.COMPONENT_TYPE, "resourceField", DropDownField.class);
     }
 
     private UIComponent getNameField(FacesContext context, PopupLayer popupLayer) {

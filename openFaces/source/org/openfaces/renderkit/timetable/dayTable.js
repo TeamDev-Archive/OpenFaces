@@ -1528,12 +1528,11 @@ O$._initEventEditorDialog = function(dayTableId, dialogId) {
   dialog._dayTable = dayTable;
 
   dialog._nameField = O$.byIdOrName(dialog.id + "--nameField");
-  dialog._resourceField = O$.byIdOrName(dialog.id + "--resourceField");
   dialog._startDateField = O$.byIdOrName(dialog.id + "--startDateField");
   dialog._endDateField = O$.byIdOrName(dialog.id + "--endDateField");
   dialog._startTimeField = O$.byIdOrName(dialog.id + "--startTimeField");
   dialog._endTimeField = O$.byIdOrName(dialog.id + "--endTimeField");
-  dialog._colorField = O$.byIdOrName(dialog.id + "--colorField");
+  dialog._color = "";
   dialog._descriptionField = O$.byIdOrName(dialog.id + "--descriptionField");
   dialog._okButton = O$.byIdOrName(dialog.id + "--okButton");
   dialog._cancelButton = O$.byIdOrName(dialog.id + "--cancelButton");
@@ -1541,15 +1540,12 @@ O$._initEventEditorDialog = function(dayTableId, dialogId) {
 
   dialog.run = function(event, mode, listeners) {
     this._event = event;
-    this._nameField.value = event.name;
-    var resource = dayTable._getResourceForEvent(event);
-    if (dialog._resourceField)
-      dialog._resourceField.setValue(resource ? resource.name : "");
+    this._nameField.value = event.name;    
     this._startDateField.setSelectedDate(event._start);
     this._endDateField.setSelectedDate(event._end);
     this._startTimeField.value = O$.formatTime(event._start);
     this._endTimeField.value = O$.formatTime(event._end);
-    this._colorField.setValue(event.color);
+    this._color = event.color;
     this._descriptionField.value = event.description;
     dialog._deleteButton.style.visibility = mode == "update" ? "visible" : "hidden";
 
@@ -1562,7 +1558,7 @@ O$._initEventEditorDialog = function(dayTableId, dialogId) {
       O$.parseTime(dialog._endTimeField.value, endDate);
       event.setStart(startDate);
       event.setEnd(endDate);
-      event.color = dialog._colorField.getValue();
+      event.color = dialog._color ? dialog._color : "";
       event.description = dialog._descriptionField.value;
       dialog.hide();
       if (listeners.onclose)
