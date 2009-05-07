@@ -1937,6 +1937,37 @@ O$.fixIEEventsForTransparentLayer = function(layerElement) {
   }
 }
 
+O$._enableIFrameFix = function () {
+  if (document._of_transparentLayer) {
+    document._of_transparentLayer.style.display = "block";
+  } else {
+    var transparentLayer = document.createElement("div");
+    transparentLayer.style.position = "fixed";
+    transparentLayer.style.left = "0px";
+    transparentLayer.style.top = "0px";
+    transparentLayer.style.width = "100%";
+    transparentLayer.style.height = "100%";
+    transparentLayer.style.display = "block";
+    transparentLayer.style.zIndex = "999";
+    O$.fixIEEventsForTransparentLayer(transparentLayer);
+    document._of_transparentLayer = transparentLayer;
+    document.body.appendChild(transparentLayer);
+    O$.addEventHandler(transparentLayer, "mouseup", function() {
+      O$.sendEvent(document, "mouseup");
+    }, false);
+
+    O$.addEventHandler(transparentLayer, "mousemove", function() {
+      O$.sendEvent(document, "mousemove");
+    }, true);
+  }
+}
+
+O$._disableIframeFix = function () {
+  if (document._of_transparentLayer) {
+    document._of_transparentLayer.style.display = "none";
+  }
+}
+
 
 O$.showFocusOutline = function(component, outlineStyleClass) {
   if (!outlineStyleClass)

@@ -328,32 +328,7 @@ O$._sidePanelResizingBegin = function(sidePanel, event) {
   O$.addEventHandler(document, "mousemove", O$._documentMouseMoveForSidePanel, false);
   O$.addEventHandler(document, "mouseup", O$._documentMouseUpForSidePanel, false);
   if (sidePanel._iframeBugCorrection) {
-    if (O$.isExplorer()) {
-      var frameList = document.getElementsByTagName("iframe");
-      for (var index in frameList) {
-        var frame = frameList[index];
-        if (!frame.contentWindow) continue;
-        O$.addEventHandler(frame.contentWindow.document, "mousemove", O$._documentMouseMoveForSidePanel, false);
-        O$.addEventHandler(frame.contentWindow.document, "mouseup", O$._documentMouseUpForSidePanel, false);
-      }
-    } else {
-      if (document._of_transparentLayer) {
-        document._of_transparentLayer.style.display = "block";
-      } else {
-        var transparentLayer = document.createElement("div");
-        transparentLayer.style.position = "fixed";
-        transparentLayer.style.left = "0px";
-        transparentLayer.style.top = "0px";
-        transparentLayer.style.width = "100%";
-        transparentLayer.style.height = "100%";
-        transparentLayer.style.display = "block";
-        document._of_transparentLayer = transparentLayer;
-        document.body.appendChild(transparentLayer);
-        O$.addEventHandler(transparentLayer, "mouseup", function() {
-          O$.sendEvent(document, "mouseup");
-        }, false);
-      }
-    }
+   O$._enableIFrameFix();
   }
   if (sidePanel._selectBugCorrection) {
     O$._disableMouseSelection(event);
@@ -381,17 +356,7 @@ O$._sidePanelResizingEnd = function(sidePanel) {
   }
 
   if (sidePanel._iframeBugCorrection) {
-    if (O$.isExplorer()) {
-      var frameList = document.getElementsByTagName("iframe");
-      for (var index in frameList) {
-        var frame = frameList[index];
-        if (!frame.contentWindow) continue;
-        O$.removeEventHandler(frame.contentWindow.document, "mousemove", O$._documentMouseMoveForSidePanel, false);
-        O$.removeEventHandler(frame.contentWindow.document, "mouseup", O$._documentMouseUpForSidePanel, false);
-      }
-    } else {
-      document._of_transparentLayer.style.display = "none";
-    }
+    O$._disableIframeFix();
   }
   if (sidePanel._selectBugCorrection) {
     O$._enableMouseSelection();
@@ -449,11 +414,11 @@ O$._documentMouseMoveForSidePanel = function(event) {
     if (O$.isExplorer()) {
       var mouseX = event.clientX + document.body.scrollLeft;
       var mouseY = event.clientY + document.body.scrollTop;
-      if (sidePanel._iframeBugCorrection) {
-        var position = O$._IE_getIFramePos(event.srcElement.ownerDocument.parentWindow);
-        mouseX = mouseX + position.left;
-        mouseY = mouseY + position.top;
-      }
+//      if (sidePanel._iframeBugCorrection) {
+//        var position = O$._IE_getIFramePos(event.srcElement.ownerDocument.parentWindow);
+//        mouseX = mouseX + position.left;
+//        mouseY = mouseY + position.top;
+//      }
     } else {
       mouseX = event.pageX;
       mouseY = event.pageY;

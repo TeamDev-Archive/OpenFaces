@@ -38,6 +38,8 @@ O$._initWindow = function(windowId, resizeable, draggableByContent, minWidth, mi
 
   if (win._caption && !draggableByContent)
     win._caption.onmousedown = function(e) {
+      O$._enableIFrameFix();
+      O$.addEventHandler(document, "mouseup", O$._disableIframeFix, true);
       O$.startDragAndDrop(e, win);
     }
 
@@ -279,8 +281,11 @@ O$._createResizers = function(win) {
       this._rect = rect;
     }
     resizer.onmousedown = function (e) {
+      O$._enableIFrameFix();
+      O$.addEventHandler(document, "mouseup", O$._disableIframeFix, true);
       O$.startDragAndDrop(e, this);
     }
+
     resizer.setPosition = function(x, y, dx, dy) {
       var rect = O$.getElementBorderRectangle(win, true);
       this._resizeFunction(rect, dx, dy);
