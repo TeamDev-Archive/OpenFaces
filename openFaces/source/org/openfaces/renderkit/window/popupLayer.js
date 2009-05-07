@@ -398,10 +398,7 @@ O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidin
   //  }
 }
 
-O$._simulateFixedPosForBlockingLayer = function() {
-  return O$.isExplorer() /* ie doesn't support fixed pos */ ||
-         O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/ /* mozilla's blocking layer hides cursor of text-field in fixed-pos popup-layer (JSFC-1930) */;
-}
+
 
 // -- Standalone popup functions
 

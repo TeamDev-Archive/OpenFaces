@@ -1959,13 +1959,19 @@ O$._enableIFrameFix = function () {
     document._of_transparentLayer.style.display = "block";
   } else {
     var transparentLayer = document.createElement("div");
-    transparentLayer.style.position = "fixed";
-    transparentLayer.style.left = "0px";
-    transparentLayer.style.top = "0px";
+    if(O$._simulateFixedPosForBlockingLayer()) {
+      transparentLayer.style.position = "absolute";
+      transparentLayer.style.left = document.body.scrollLeft + "px";
+      transparentLayer.style.top = document.body.scrollTop + "px";
+    } else {
+      transparentLayer.style.position = "fixed";
+      transparentLayer.style.left = "0px";
+      transparentLayer.style.top = "0px";
+    }
     transparentLayer.style.width = "100%";
     transparentLayer.style.height = "100%";
     transparentLayer.style.display = "block";
-    transparentLayer.style.zIndex = "999";
+    transparentLayer.style.zIndex = "999999";
     O$.fixIEEventsForTransparentLayer(transparentLayer);
     document._of_transparentLayer = transparentLayer;
     document.body.appendChild(transparentLayer);
@@ -1975,7 +1981,7 @@ O$._enableIFrameFix = function () {
 
     O$.addEventHandler(transparentLayer, "mousemove", function() {
       O$.sendEvent(document, "mousemove");
-    }, true);
+    }, false);
   }
 }
 
@@ -1983,6 +1989,11 @@ O$._disableIframeFix = function () {
   if (document._of_transparentLayer) {
     document._of_transparentLayer.style.display = "none";
   }
+}
+
+O$._simulateFixedPosForBlockingLayer = function() {
+  return O$.isExplorer() /* ie doesn't support fixed pos */ ||
+         O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/ /* mozilla's blocking layer hides cursor of text-field in fixed-pos popup-layer (JSFC-1930) */;
 }
 
 
