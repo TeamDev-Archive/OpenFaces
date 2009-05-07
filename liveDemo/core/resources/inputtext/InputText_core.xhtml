@@ -10,28 +10,37 @@
       <h3>Fill in the following information</h3>
 
       <div>
-        <o:inputText promptText="Client first name" value="#{InputTextBean.clientFirstName}" size="20"
+        <o:inputText promptText="Client first name" value="#{InputTextBean.clientFirstName}"
+                     size="20" maxlength="23"
                      styleClass="templateInput" focusedClass="focusedTemplateInput"
                      rolloverClass="rolloverTemplateInput">
           <o:reloadComponents event="onkeyup" componentIds=":form:previewPanel" requestDelay="500"
+                              disableDefault="true"/>
+          <o:reloadComponents event="onchange" componentIds=":form:previewPanel"
                               disableDefault="true"/>
         </o:inputText>
       </div>
 
       <div>
-        <o:inputText promptText="Your first name" value="#{InputTextBean.firstName}" size="20"
+        <o:inputText promptText="Your first name" value="#{InputTextBean.firstName}"
+                     size="20" maxlength="23"
                      styleClass="templateInput" focusedClass="focusedTemplateInput"
                      rolloverClass="rolloverTemplateInput">
           <o:reloadComponents event="onkeyup" componentIds=":form:previewPanel" requestDelay="500"
+                              disableDefault="true"/>
+          <o:reloadComponents event="onchange" componentIds=":form:previewPanel"
                               disableDefault="true"/>
         </o:inputText>
       </div>
 
       <div>
-        <o:inputText promptText="Your last name" value="#{InputTextBean.lastName}" size="20"
+        <o:inputText promptText="Your last name" value="#{InputTextBean.lastName}"
+                     size="20" maxlength="23"
                      styleClass="templateInput" focusedClass="focusedTemplateInput"
                      rolloverClass="rolloverTemplateInput">
           <o:reloadComponents event="onkeyup" componentIds=":form:previewPanel" requestDelay="500"
+                              disableDefault="true"/>
+          <o:reloadComponents event="onchange" componentIds=":form:previewPanel"
                               disableDefault="true"/>
         </o:inputText>
       </div>
