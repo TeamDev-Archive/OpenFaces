@@ -17,7 +17,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class togToggleCaptionButtonTag extends CaptionButtonTag {
+public class ToggleCaptionButtonTag extends CaptionButtonTag {
     public void setComponentProperties(FacesContext context, UIComponent component) {
         super.setComponentProperties(context, component);
 
