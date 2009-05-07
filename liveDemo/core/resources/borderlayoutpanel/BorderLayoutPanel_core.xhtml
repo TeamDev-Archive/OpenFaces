@@ -8,13 +8,20 @@
     <script type="text/javascript">
       function setDescriptionSource() {
         var componentName = document.getElementById("form:componentName").value;
+        var frame = document.getElementById("componentDescription");
+
         if (componentName != "") {
-          document.getElementById("componentDescription").src =
-          componentName + ".html";
-          document.getElementById("componentDescriptionWrapper").style.display = "";
+          var componentDescription = componentName + ".html";
+          if (frame.src != componentDescription) {
+            frame.src = componentDescription;
+          }
+
         } else {
-          document.getElementById("componentDescriptionWrapper").style.display = "none";
+          if (frame.src != "Index.html") {
+            frame.src = "Index.html";
+          }
         }
+        //document.getElementById("componentDescriptionWrapper").style.display = "";
       }
 
     </script>
@@ -23,8 +30,8 @@
 
       <o:borderLayoutPanel id="borderLayoutPanel" style="border: 1px solid gray">
         <h:panelGroup>
-          <div id="componentDescriptionWrapper" style="width:99%;height:99%;display:none;">
-          <iframe id="componentDescription" src=""
+          <div id="componentDescriptionWrapper" style="width:99%;height:99%;">
+          <iframe id="componentDescription" src="Index.html"
               frameborder="0" border="0" cellspacing="0" marginwidth="0" marginheight="0"
               width="99%" height="99%" scrollbar="no">
           </iframe>
@@ -46,8 +53,10 @@
             </h:outputText>
           </f:facet>
 
-            <o:treeTable var="treeNode" id="componentsTree" useAjax="true"
-                    style="width:100%;border:none;font-size:10pt;" expansionState="allExpanded">
+            <o:treeTable id="componentsTree" var="treeNode" useAjax="true"
+                    expansionState="allExpanded"
+                    style="width:100%;border:none;font-size:10pt;"
+                    rolloverStyle="cursor:pointer;">
               <o:dynamicTreeStructure
                 nodeChildren="#{BorderLayoutBean.nodeChildren}"
                 nodeHasChildren="#{BorderLayoutBean.nodeHasChildren}" />
@@ -55,7 +64,7 @@
               <o:singleNodeSelection
                         nodeData="#{BorderLayoutBean.selectedComponent}"
                         keyboardSupport="false"
-                        style="background-color:gray;color:white;"
+                        style="background-color:gray;color:white;cursor:default;"
                         >
                   <o:reloadComponents event="onchange"
                                       componentIds=":form:componentName"
@@ -66,7 +75,7 @@
               </o:singleNodeSelection>
 
               <o:treeColumn>
-                  <h:outputText value="#{treeNode}"/>
+                <h:outputText value="#{treeNode}"/>
               </o:treeColumn>
 
             </o:treeTable>
