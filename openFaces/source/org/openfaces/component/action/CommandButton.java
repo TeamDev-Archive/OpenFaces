@@ -13,9 +13,10 @@ package org.openfaces.component.action;
 
 import org.openfaces.component.OUICommand;
 
-import javax.faces.context.FacesContext;
-
 /**
+ * This component is under construction. API is subject to change. Please avoid using this component in a production
+ * environment.
+ *
  * @author Dmitry Pikhulya
  */
 public class CommandButton extends OUICommand {

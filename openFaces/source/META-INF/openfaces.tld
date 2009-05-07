@@ -18683,6 +18683,7 @@ and it is automatically triggered on any form submission. -->
 
   <!-- CommandButton tag declaration -->
   <tag>
+    <description>This component is under construction.</description>
     <name>commandButton</name>
     <tag-class>org.openfaces.taglib.jsp.action.CommandButtonJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -18702,7 +18703,7 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.input.SuggestionField</type>
+        <type>org.openfaces.component.action.CommandButton</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.action. CommandButton -->
       <!-- @default null -->
@@ -18961,6 +18962,45 @@ and it is automatically triggered on any form submission. -->
 
   </tag>
 
+  <!-- CommandButton tag declaration -->
+  <tag>
+    <description>This component is under construction.</description>
+    <name>debug</name>
+    <tag-class>org.openfaces.taglib.jsp.util.DebugJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A value-binding expression that associates the Debug component with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.util.Debug</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.util. Debug -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+  </tag>
 
   <!-- InputText tag declaration -->
   <tag>

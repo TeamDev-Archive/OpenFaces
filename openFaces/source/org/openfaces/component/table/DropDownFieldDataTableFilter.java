@@ -13,7 +13,7 @@ package org.openfaces.component.table;
 
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItems;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ComponentUtil;
 
 import javax.faces.context.FacesContext;
 
@@ -42,6 +42,6 @@ public class DropDownFieldDataTableFilter extends TextSearchDataTableFilter {
 
     public void createSubComponents(FacesContext context) {
         super.createSubComponents(context);
-        RenderingUtil.createChildComponent(context, getSearchComponent(), DropDownItems.COMPONENT_TYPE, "dropdownItems");
+        ComponentUtil.createChildComponent(context, getSearchComponent(), DropDownItems.COMPONENT_TYPE, "dropdownItems");
     }
 }

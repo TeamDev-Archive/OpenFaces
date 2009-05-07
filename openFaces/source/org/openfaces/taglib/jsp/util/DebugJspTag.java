@@ -9,20 +9,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.internal;
+package org.openfaces.taglib.jsp.util;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
+import org.openfaces.taglib.internal.util.DebugTag;
+import org.openfaces.taglib.jsp.window.WindowJspTag;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class togToggleCaptionButtonTag extends CaptionButtonTag {
-    public void setComponentProperties(FacesContext context, UIComponent component) {
-        super.setComponentProperties(context, component);
+public class DebugJspTag extends WindowJspTag {
 
-        setStringProperty(component, "toggledImageUrl");
-        setStringProperty(component, "toggledRolloverImageUrl");
-        setStringProperty(component, "toggledPressedImageUrl");
+    public DebugJspTag() {
+        super(new DebugTag());
     }
 }

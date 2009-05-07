@@ -14,7 +14,26 @@ package org.openfaces.component.util;
 import org.openfaces.component.window.Window;
 
 /**
+ * This component is under construction. API is subject to change. Please avoid using this component in a production 
+ * environment.
+ *
  * @author Dmitry Pikhulya
  */
 public class Debug extends Window {
+    public static final String COMPONENT_TYPE = "org.openfaces.Debug";
+    public static final String COMPONENT_FAMILY = "org.openfaces.Debug";
+
+    public Debug() {
+        setRendererType("org.openfaces.DebugRenderer");
+    }
+
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+    @Override
+    protected String getDefaultCaptionText() {
+        return "Debug";
+    }
 }

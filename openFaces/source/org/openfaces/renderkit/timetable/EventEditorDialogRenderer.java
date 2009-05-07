@@ -17,6 +17,7 @@ import org.openfaces.component.timetable.EventEditorDialog;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.util.HTML;
 import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.renderkit.TableRenderer;
 import org.openfaces.renderkit.window.PopupLayerRenderer;
 
@@ -39,19 +40,19 @@ public class EventEditorDialogRenderer extends PopupLayerRenderer {
         final DayTable dayTable = (DayTable) dialog.getParent();
         final UIComponent[][] components = new UIComponent[][]{
                 {
-                        RenderingUtil.composeHtmlOutputText(context, popupLayer, "nameLabel", dialog.getNameLabel()),
+                        ComponentUtil.composeHtmlOutputText(context, popupLayer, "nameLabel", dialog.getNameLabel()),
                         getNameField(context, popupLayer)
                 },
                 {
-                        RenderingUtil.composeHtmlOutputText(context, popupLayer, "startLabel", dialog.getStartLabel()),
+                        ComponentUtil.composeHtmlOutputText(context, popupLayer, "startLabel", dialog.getStartLabel()),
                         createDateTimeFields(context, popupLayer, "start")
                 },
                 {
-                        RenderingUtil.composeHtmlOutputText(context, popupLayer, "endLabel", dialog.getENdLabel()),
+                        ComponentUtil.composeHtmlOutputText(context, popupLayer, "endLabel", dialog.getENdLabel()),
                         createDateTimeFields(context, popupLayer, "end")
                 },
                 {
-                        RenderingUtil.composeHtmlOutputText(context, popupLayer, "descriptionLabel", dialog.getDescriptionLabel()),
+                        ComponentUtil.composeHtmlOutputText(context, popupLayer, "descriptionLabel", dialog.getDescriptionLabel()),
                 },
                 {
                         getDescriptionField(context, popupLayer)
@@ -67,13 +68,13 @@ public class EventEditorDialogRenderer extends PopupLayerRenderer {
                     writer.startElement("div", component);
                     writer.writeAttribute("class", "o_eventEditor_buttonsArea", null);
 
-                    HtmlCommandButton deleteButton = RenderingUtil.createButtonFacet(context, dialog, "deleteButton", dialog.getDeleteButtonText());
+                    HtmlCommandButton deleteButton = ComponentUtil.createButtonFacet(context, dialog, "deleteButton", dialog.getDeleteButtonText());
                     deleteButton.setStyle("float: left");
                     deleteButton.encodeAll(context);
 
-                    HtmlCommandButton okButton = RenderingUtil.createButtonFacet(context, dialog, "okButton", dialog.getOkButtonText());
+                    HtmlCommandButton okButton = ComponentUtil.createButtonFacet(context, dialog, "okButton", dialog.getOkButtonText());
                     okButton.encodeAll(context);
-                    HtmlCommandButton cancelButton = RenderingUtil.createButtonFacet(context, dialog, "cancelButton", dialog.getCancelButtonText());
+                    HtmlCommandButton cancelButton = ComponentUtil.createButtonFacet(context, dialog, "cancelButton", dialog.getCancelButtonText());
                     writer.write(HTML.NBSP_ENTITY);
                     cancelButton.encodeAll(context);
                     writer.endElement("div");
@@ -110,7 +111,7 @@ public class EventEditorDialogRenderer extends PopupLayerRenderer {
         children.clear();
 
         children.add(RenderingUtil.getOrCreateFacet(context, popupLayer, DateChooser.COMPONENT_TYPE, idPrefix + "DateField", DateChooser.class));
-        children.add(RenderingUtil.createOutputText(context, HTML.NBSP_ENTITY, false));
+        children.add(ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY, false));
         HtmlInputText timeField = (HtmlInputText) RenderingUtil.getOrCreateFacet(context, popupLayer, HtmlInputText.COMPONENT_TYPE, idPrefix + "TimeField", HtmlInputText.class);
         timeField.setStyle("width: 50px");
 

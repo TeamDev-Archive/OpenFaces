@@ -114,15 +114,15 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         writer.startElement("tr", dayTable);
         writer.startElement("td", dayTable);
 
-        HtmlCommandButton prevBtn = RenderingUtil.createButtonFacet(context, dayTable, "prev", "Previous");
+        HtmlCommandButton prevBtn = ComponentUtil.createButtonFacet(context, dayTable, "prev", "Previous");
         prevBtn.setId("_prev");
         prevBtn.encodeAll(context);
         writer.write(HTML.NBSP_ENTITY);
-        HtmlCommandButton nextBtn = RenderingUtil.createButtonFacet(context, dayTable, "next", "Next");
+        HtmlCommandButton nextBtn = ComponentUtil.createButtonFacet(context, dayTable, "next", "Next");
         nextBtn.setId("_next");
         nextBtn.encodeAll(context);
         writer.write(HTML.NBSP_ENTITY);
-        HtmlCommandButton todayBtn = RenderingUtil.createButtonFacet(context, dayTable, "today", "Today");
+        HtmlCommandButton todayBtn = ComponentUtil.createButtonFacet(context, dayTable, "today", "Today");
         todayBtn.setId("_today");
         todayBtn.encodeAll(context);
         writer.write(HTML.NBSP_ENTITY);

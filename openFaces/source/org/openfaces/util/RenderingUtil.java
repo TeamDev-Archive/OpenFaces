@@ -12,7 +12,6 @@
 package org.openfaces.util;
 
 import org.ajax4jsf.component.UIAjaxSupport;
-import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIComponent;
 import org.openfaces.component.OUIInput;
@@ -35,8 +34,6 @@ import javax.faces.component.UIForm;
 import javax.faces.component.UISelectMany;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.ValueHolder;
-import javax.faces.component.html.HtmlCommandButton;
-import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
@@ -127,8 +124,8 @@ public class RenderingUtil {
                 return component;
         }
 
-        String childId = generateIdWithSuffix(parent, identifier);
-        component = createComponent(context, childId, componentType);
+        String childId = ComponentUtil.generateIdWithSuffix(parent, identifier);
+        component = ComponentUtil.createComponent(context, childId, componentType);
         parent.getFacets().put(identifier, component);
         return component;
     }
@@ -155,135 +152,12 @@ public class RenderingUtil {
     }
 
     /**
-     *
-     * This method create new output text component and add it as facet to parent component
-     *
-     * @param context {@link FacesContext} for the current request
-     * @param parent Method will search fo facet in this component or create it, if needed
-     * @param idSuffix The suffix identifying the {@link javax.faces.component.html.HtmlOutputText} to be returned
-     * @param text The text in output text field
-     * @return created or existed output text component
-     */
-    public static HtmlOutputText composeHtmlOutputText(FacesContext context, UIComponent parent, String idSuffix, String text) {
-        HtmlOutputText outputText = (HtmlOutputText) RenderingUtil.getOrCreateFacet(context, parent,
-                HtmlOutputText.COMPONENT_TYPE, idSuffix, HtmlOutputText.class);
-        outputText.setValue(text);
-        return outputText;
-    }
-
-    /**
-     *
-     * This method add child to parent component
-     *
-     * @param context {@link FacesContext} for the current request
-     * @param parent Method will create child for this component
-     * @param componentType The class for child creation
-     * @param idSuffix The suffix identifying the child {@link UIComponent} to be returned
-     * @return created child
-     */
-    public static UIComponent createChildComponent(
-            FacesContext context, UIComponent parent, String componentType, String idSuffix) {
-        String childId = generateIdWithSuffix(parent, idSuffix);
-        UIComponent component = createComponent(context, childId, componentType);
-        parent.getChildren().add(component);
-        return component;
-    }
-
-    /**
-     *
-     * This method create components with given name and class and create, if needed, its subcomponents
-     *
-     * @param context {@link FacesContext} for the current request
-     * @param id The id identifying the {@link javax.faces.component.UIComponent} to be returned
-     * @param componentType The component type for which to create and return a new {@link javax.faces.component.UIComponent} instance
-     * @return
-     */
-    public static UIComponent createComponent(FacesContext context, String id, String componentType) {
-        Application application = context.getApplication();
-        UIComponent component = application.createComponent(componentType);
-        component.setId(id);
-        if (component instanceof CompoundComponent)
-            ((CompoundComponent) component).createSubComponents(context);
-        return component;
-    }
-
-    /**
-     *
-     * This method create new command button component and add it as facet to parent component
-     *
-     * @param context {@link FacesContext} for the current request
-     * @param parent Method will search fo facet in this component or create it, if needed
-     * @param idSuffix The suffix identifying the {@link javax.faces.component.html.HtmlCommandButton} to be returned
-     * @param text The text on command button
-     * @return created or existed command button component
-     */
-    public static HtmlCommandButton createButtonFacet(FacesContext context, UIComponent parent, String idSuffix, String text) {
-        HtmlCommandButton prevBtn = (HtmlCommandButton) RenderingUtil.getOrCreateFacet(
-                context, parent, HtmlCommandButton.COMPONENT_TYPE, idSuffix, HtmlCommandButton.class);
-        prevBtn.setValue(text);
-        return prevBtn;
-    }
-
-    /**
-     * Generate id on base of component id.
-     *
-     * @param baseComponent The component, which id will be used for generating
-     * @param idSuffix The suffix, which will be added to component id
-     * @return generated id
-     */
-    public static String generateIdWithSuffix(UIComponent baseComponent, String idSuffix) {
-        generateIdIfNotSpecified(baseComponent); // null id may have place when creating a component programmatically (especially in JSF RI 1.2, where id is not assigned in getClientId automatically)
-        String result = baseComponent.getId() + SERVER_ID_SUFFIX_SEPARATOR + idSuffix;
-        return result;
-    }
-
-    /**
      * Log OpenFaces warning to external context
      * @param context {@link FacesContext} for the current request 
      * @param message The message to log
      */
     public static void logWarning(FacesContext context, String message) {
         Log.log(context, "OpenFaces library warning: " + message);
-    }
-
-    /**
-     * Find child component by its suffix
-     *
-     * @see #generateIdWithSuffix
-     * @param component The parent component to search in
-     * @param idSuffix The suffix identifying the {@link UIComponent} to be returned
-     * @return the found {@link UIComponent}, or <code>null</code> if the component was not found.
-     */
-    public static UIComponent getChildBySuffix(UIComponent component, String idSuffix) {
-        String childId = generateIdWithSuffix(component, idSuffix);
-        return component.findComponent(childId);
-    }
-
-    /**
-     * Create {@link HtmlOutputText} component with given text
-     *  
-     * @param context {@link FacesContext} for the current request
-     * @param text The text to be set in output text 
-     * @param escape Flag indicating that characters that are sensitive in HTML and XML markup must be escaped.
-     * @return the created {@link javax.faces.component.html.HtmlOutputText} 
-     */
-    public static HtmlOutputText createOutputText(FacesContext context, String text, boolean escape) {
-        HtmlOutputText outputText = (HtmlOutputText) context.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
-        outputText.setValue(text);
-        outputText.setEscape(escape);
-        return outputText;
-    }
-
-    /**
-     *
-     * Create {@link HtmlOutputText} component with given text
-     *
-     * @param context {@link FacesContext} for the current request
-     * @param text The text to be set in output text 
-     * @return the created {@link javax.faces.component.html.HtmlOutputText}
-     */
-    public static HtmlOutputText createOutputText(FacesContext context, String text) {
-        return createOutputText(context, text, true);
     }
 
     /**
@@ -878,24 +752,6 @@ public class RenderingUtil {
 
     /**
      *
-     * Return the closest form for component
-     *
-     * @param component The component, which form we obtain
-     * @return the nearest enclosing form for component
-     */
-    public static UIForm getEnclosingForm(UIComponent component) {
-        UIComponent result = component;
-        while (result != null) {
-            if (result instanceof UIForm) {
-                return (UIForm) result;
-            }
-            result = result.getParent();
-        }
-        return null;
-    }
-
-    /**
-     *
      * Render javascript for preloading images
      *
      * @param context {@link FacesContext} for the current request
@@ -923,15 +779,6 @@ public class RenderingUtil {
         RenderingUtil.renderInitScript(context, buf, new String[]{ResourceUtil.getUtilJsURL(context)});
     }
 
-    private static UIForm findForm(UIComponent component) {
-        while (component != null) {
-            if (component instanceof UIForm)
-                return (UIForm) component;
-            component = component.getParent();
-        }
-        return null;
-    }
-
     /**
      *
      * Return true if component is inside form component, throw exception otherwise
@@ -939,7 +786,7 @@ public class RenderingUtil {
      * @param component The component to check
      */
     public static void ensureComponentInsideForm(UIComponent component) {
-        UIForm form = findForm(component);
+        UIForm form = ComponentUtil.findForm(component);
         if (form == null) {
             FacesContext context = FacesContext.getCurrentInstance();
             throw new FacesException("The following component has been detected to be located outside of the form. " +
@@ -960,20 +807,6 @@ public class RenderingUtil {
     public static void writeAttribute(ResponseWriter writer, String name, String value) throws IOException {
         if (value != null)
             writer.writeAttribute(name, value, null);
-    }
-
-    /**
-     *
-     * Check component id and generate it, if nessesary
-     *
-     * @param component The component for id generation
-     */
-    public static void generateIdIfNotSpecified(UIComponent component) {
-        if (component.getId() != null)
-            return;
-        FacesContext context = FacesContext.getCurrentInstance();
-        UIViewRoot viewRoot = context.getViewRoot();
-        component.setId(viewRoot.createUniqueId());
     }
 
     /**
@@ -1112,7 +945,7 @@ public class RenderingUtil {
     public static void startWriteIMG(ResponseWriter writer, FacesContext context,
                                      UIComponent component, String extension,
                                      ImageDataModel model, int[] size) throws IOException {
-        generateIdIfNotSpecified(component);
+        ComponentUtil.generateIdIfNotSpecified(component);
         writeNewLine(writer);
         writer.startElement("img", component);
 

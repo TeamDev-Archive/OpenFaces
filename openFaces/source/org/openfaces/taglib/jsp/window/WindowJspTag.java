@@ -12,6 +12,7 @@
 package org.openfaces.taglib.jsp.window;
 
 import org.openfaces.taglib.internal.window.WindowTag;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.taglib.jsp.AbstractWindowJspTag;
 
 import javax.el.ValueExpression;
@@ -22,6 +23,10 @@ import javax.el.ValueExpression;
 public class WindowJspTag extends AbstractWindowJspTag {
     public WindowJspTag() {
         super(new WindowTag());
+    }
+
+    public WindowJspTag(AbstractComponentTag delegate) {
+        super(delegate);
     }
 
     public void setResizeable(ValueExpression resizeable) {

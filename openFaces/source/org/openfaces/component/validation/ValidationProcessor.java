@@ -11,8 +11,8 @@
  */
 package org.openfaces.component.validation;
 
-import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.Finder;
+import org.openfaces.util.ComponentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
@@ -378,7 +378,7 @@ public class ValidationProcessor extends UIComponentBase {
             }
         }
         if (cv == null) {
-            UIForm form = RenderingUtil.getEnclosingForm(component);
+            UIForm form = ComponentUtil.getEnclosingForm(component);
             cv = getClientValidationRuleForForm(form);
         }
         if (cv == null) {

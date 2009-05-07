@@ -34,6 +34,7 @@ import org.openfaces.util.StyleGroup;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.StyleUtil;
 import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.ComponentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -561,7 +562,7 @@ public class TableUtil {
         List<BaseColumn> columns = new ArrayList<BaseColumn>();
         for (UIComponent child : children) {
             if (child instanceof BaseColumn && !(child instanceof TableColumnGroup)) {
-                RenderingUtil.generateIdIfNotSpecified(child);
+                ComponentUtil.generateIdIfNotSpecified(child);
                 columns.add((BaseColumn) child);
             } else if (child instanceof TableColumns) {
                 TableColumns tableColumns = (TableColumns) child;

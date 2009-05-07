@@ -20,6 +20,7 @@ import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.StyleUtil;
 import org.openfaces.util.Log;
+import org.openfaces.util.ComponentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlGraphicImage;
@@ -130,21 +131,21 @@ public class DataTablePaginatorRenderer extends RendererBase {
         preloadImages.add(getFirstImageUrl(context, pager, !firstLinkActive));
         boolean showDisabledImages = pager.getShowDisabledImages();
         if ((firstLinkActive && previousLinkActive) || showDisabledImages)
-            children.add(RenderingUtil.createOutputText(context, HTML.NBSP_ENTITY, false));
+            children.add(ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY, false));
         createAndAddActionLink(context, children, pager, actionFieldName, "selectPrevPage", getPreviousImageUrl(context, pager, previousLinkActive), getPreviousText(pager), PREV_PAGE_COMPONENT, useAjax, table, previousLinkActive);
         preloadImages.add(getPreviousImageUrl(context, pager, !previousLinkActive));
 
         if (firstLinkActive || previousLinkActive || showDisabledImages)
-            children.add(RenderingUtil.createOutputText(context, HTML.NBSP_ENTITY + HTML.NBSP_ENTITY, false));
+            children.add(ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY + HTML.NBSP_ENTITY, false));
 
         String pageNumberPrefix = pager.getPageNumberPrefix();
         if (pageNumberPrefix == null)
             pageNumberPrefix = DEFAULT_PAGE_NUMBER_PREFIX;
         if (pageNumberPrefix.length() > 0)
-            children.add(RenderingUtil.createOutputText(context, pageNumberPrefix + HTML.NBSP_ENTITY, false));
+            children.add(ComponentUtil.createOutputText(context, pageNumberPrefix + HTML.NBSP_ENTITY, false));
 
         HtmlInputText inputText = (HtmlInputText) context.getApplication().createComponent(HtmlInputText.COMPONENT_TYPE);
-        inputText.setId(RenderingUtil.generateIdWithSuffix(component, "pageNo"));
+        inputText.setId(ComponentUtil.generateIdWithSuffix(component, "pageNo"));
         String pageNo = String.valueOf(table.getPageIndex() + 1);
         inputText.setValue(pageNo);
         inputText.setStyle(pager.getPageNumberFieldStyle());
@@ -159,17 +160,17 @@ public class DataTablePaginatorRenderer extends RendererBase {
             String pageCountPreposition = pager.getPageCountPreposition();
             if (pageCountPreposition == null)
                 pageCountPreposition = DEFAULT_PAGE_COUNT_PREPOSITION;
-            children.add(RenderingUtil.createOutputText(context, HTML.NBSP_ENTITY + pageCountPreposition + HTML.NBSP_ENTITY, false));
-            children.add(RenderingUtil.createOutputText(context, String.valueOf(pageCount), false));
+            children.add(ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY + pageCountPreposition + HTML.NBSP_ENTITY, false));
+            children.add(ComponentUtil.createOutputText(context, String.valueOf(pageCount), false));
         }
 
         if (lastLinkActive || nextLinkActive || showDisabledImages)
-            children.add(RenderingUtil.createOutputText(context, HTML.NBSP_ENTITY + HTML.NBSP_ENTITY, false));
+            children.add(ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY + HTML.NBSP_ENTITY, false));
 
         createAndAddActionLink(context, children, pager, actionFieldName, "selectNextPage", getNextImageUrl(context, pager, nextLinkActive), getNextText(pager), NEXT_PAGE_COMPONENT, useAjax, table, nextLinkActive);
         preloadImages.add(getNextImageUrl(context, pager, !nextLinkActive));
         if (lastLinkActive && nextLinkActive || showDisabledImages)
-            children.add(RenderingUtil.createOutputText(context, HTML.NBSP_ENTITY, false));
+            children.add(ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY, false));
         createAndAddActionLink(context, children, pager, actionFieldName, "selectLastPage", getLastImageUrl(context, pager, lastLinkActive), getLastText(pager), LAST_PAGE_COMPONENT, useAjax, table, lastLinkActive);
         preloadImages.add(getLastImageUrl(context, pager, !lastLinkActive));
         RenderingUtil.renderPreloadImagesScript(context, preloadImages, true);
@@ -238,7 +239,7 @@ public class DataTablePaginatorRenderer extends RendererBase {
 
         String submitScript = getSubmitComponentWithParamScript(context, useAjax, componentToReload, fieldName, "'" + fieldValue + "'");
         image.setOnclick(submitScript + "event.cancelBubble = true; return false;");
-        image.setId(RenderingUtil.generateIdWithSuffix(eventReceiver, idSuffix));
+        image.setId(ComponentUtil.generateIdWithSuffix(eventReceiver, idSuffix));
         image.setStyleClass(DEFAULT_IMAGE_CLASS);
         image.setTitle(text);
         image.setAlt(text);

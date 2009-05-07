@@ -19,6 +19,7 @@ import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleUtil;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.renderkit.validation.ValidatorUtil;
 
 import javax.faces.component.UIComponent;
@@ -52,7 +53,7 @@ public class HtmlMessageRenderer extends BaseHtmlMessageRenderer {
                             "target component client ID. It may be caused by 'for' attribute absence");
                     return;
                 }
-                UIForm form = RenderingUtil.getEnclosingForm(component);
+                UIForm form = ComponentUtil.getEnclosingForm(component);
                 if (validationProcessor.isUseDefaultClientValidationPresentationForForm(form)) {
                     ValidatorUtil.renderPresentationExistsForComponent(forComponentClientId, context);
                 }

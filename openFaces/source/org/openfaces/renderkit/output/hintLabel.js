@@ -101,9 +101,10 @@ O$._hintLabel_getInnerHtml = function(label) {
   if (O$.isExplorer())
     return label.innerHTML;
 
-  var innerScriptsDivId = label.id + "::innerscripts";
-  var indexOfScriptsStart = label.innerHTML.indexOf("<div id=\"" + innerScriptsDivId + "\">");
-  return label.innerHTML.substring(0, indexOfScriptsStart);
+  var searchString = label.innerHTML.toLowerCase();
+  var scriptIndex = searchString.indexOf("<script");
+  var scriptContainerIndex = searchString.lastIndexOf("<div", scriptIndex);
+  return label.innerHTML.substring(0, scriptContainerIndex);
 }
 
 O$._hintLabel_getElementWidth = function(elt, extractScriptsFromInnerHtml) {

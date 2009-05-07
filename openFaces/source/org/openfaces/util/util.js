@@ -1680,6 +1680,17 @@ O$.initMouseListenerUtils = function() {
   }
 }
 
+O$.waitForCondition = function(conditionFunction, func, conditionCheckInterval) {
+  if (!conditionCheckInterval)
+    conditionCheckInterval = 50;
+  var intervalId = setInterval(function(){
+    if (!conditionFunction())
+      return;
+    clearInterval(intervalId);
+    func();
+  }, conditionCheckInterval);
+}
+
 O$.invokeFunctionAfterDelay = function(func, delay, actionId) {
   // Invokes the specified function after the specified delay in milliseconds. If another invocation request comes for
   // the same function during the delay, then the invocation is postponed until that new invocation delay expires, etc.

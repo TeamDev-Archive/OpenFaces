@@ -249,7 +249,7 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
     public void createSubComponents(FacesContext context) {
         CaptionArea captionArea = (CaptionArea) RenderingUtil.getOrCreateFacet(
                 context, this, CaptionArea.COMPONENT_TYPE, "_defaultButtonsArea", CaptionArea.class);
-        RenderingUtil.createChildComponent(context, captionArea, ExpansionToggleButton.COMPONENT_TYPE, "toggle");
+        ComponentUtil.createChildComponent(context, captionArea, ExpansionToggleButton.COMPONENT_TYPE, "toggle");
     }
 
 }

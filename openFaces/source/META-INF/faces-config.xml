@@ -273,13 +273,13 @@
     <component-class>org.openfaces.component.table.MultipleNodeSelection</component-class>
   </component>
 
-  <!-- POPUP LAYER COMPONENTS DECLARATION -->
+  <!-- POPUP LAYER COMPONENT DECLARATION -->
   <component>
     <component-type>org.openfaces.PopupLayer</component-type>
     <component-class>org.openfaces.component.window.PopupLayer</component-class>
   </component>
 
-  <!-- CONFIRMATION COMPONENTS DECLARATION -->
+  <!-- CONFIRMATION COMPONENT DECLARATION -->
   <component>
     <component-type>org.openfaces.Confirmation</component-type>
     <component-class>org.openfaces.component.window.Confirmation</component-class>
@@ -296,7 +296,14 @@
     <component-class>org.openfaces.component.CaptionArea</component-class>
   </component>
 
-  <!-- HintLabel COMPONENTS DECLARATION -->
+  <!-- DEBUG COMPONENT DECLARATION -->
+  <component>
+    <component-type>org.openfaces.Debug</component-type>
+    <component-class>org.openfaces.component.util.Debug</component-class>
+  </component>
+
+
+  <!-- HintLabel COMPONENT DECLARATION -->
   <component>
     <component-type>org.openfaces.HintLabel</component-type>
     <component-class>org.openfaces.component.output.HintLabel</component-class>
@@ -655,21 +662,21 @@
       <renderer-class>org.openfaces.renderkit.table.ImageExpansionToggleRenderer</renderer-class>
     </renderer>
 
-    <!-- POPUP LAYER COMPONENTS DECLARATION -->
+    <!-- POPUP LAYER COMPONENT DECLARATION -->
     <renderer>
       <component-family>org.openfaces.PopupLayer</component-family>
       <renderer-type>org.openfaces.PopupLayerRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.window.PopupLayerRenderer</renderer-class>
     </renderer>
 
-    <!-- CONFIRMATION COMPONENTS DECLARATION -->
+    <!-- CONFIRMATION COMPONENT DECLARATION -->
     <renderer>
       <component-family>org.openfaces.Confirmation</component-family>
       <renderer-type>org.openfaces.ConfirmationRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.window.ConfirmationRenderer</renderer-class>
     </renderer>
 
-    <!-- WNIDOW COMPONENT DECLARATION -->
+    <!-- WINDOW COMPONENT DECLARATION -->
     <renderer>
       <component-family>org.openfaces.Window</component-family>
       <renderer-type>org.openfaces.WindowRenderer</renderer-type>
@@ -680,6 +687,13 @@
       <component-family>org.openfaces.CaptionArea</component-family>
       <renderer-type>org.openfaces.CaptionAreaRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.CaptionAreaRenderer</renderer-class>
+    </renderer>
+
+    <!-- CONFIRMATION COMPONENT DECLARATION -->
+    <renderer>
+      <component-family>org.openfaces.Debug</component-family>
+      <renderer-type>org.openfaces.DebugRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.util.DebugRenderer</renderer-class>
     </renderer>
 
     <!-- HintLabel COMPONENTS DECLARATION -->

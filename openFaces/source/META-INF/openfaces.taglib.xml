@@ -388,6 +388,14 @@
     </component>
   </tag>
 
+  <tag>
+    <tag-name>debug</tag-name>
+    <component>
+      <component-type>org.openfaces.Debug</component-type>
+      <renderer-type>org.openfaces.DebugRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.util.DebugTagHandler</handler-class>
+    </component>
+  </tag>
 
   <tag>
     <tag-name>foldingPanel</tag-name>

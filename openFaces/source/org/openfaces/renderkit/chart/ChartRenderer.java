@@ -20,6 +20,7 @@ import org.openfaces.component.output.ImageType;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.renderkit.output.DynamicImageRenderer;
 
 import javax.el.ELContext;
@@ -36,7 +37,7 @@ import java.util.Map;
 public class ChartRenderer extends RendererBase {
 
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        RenderingUtil.generateIdIfNotSpecified(component);
+        ComponentUtil.generateIdIfNotSpecified(component);
         ResponseWriter writer = facesContext.getResponseWriter();
         Chart chart = (Chart) component;
 

@@ -13,7 +13,7 @@ package org.openfaces.component.ajax;
 
 import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.window.Confirmation;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ComponentUtil;
 
 import javax.faces.context.FacesContext;
 
@@ -44,7 +44,7 @@ public class DefaultSessionExpiration extends SessionExpiration implements Compo
     }
 
     public void createSubComponents(FacesContext context) {
-        Confirmation confirmation = (Confirmation) RenderingUtil.createChildComponent(context,
+        Confirmation confirmation = (Confirmation) ComponentUtil.createChildComponent(context,
                 this, Confirmation.COMPONENT_TYPE, "confirm_expiration");
         confirmation.setId(DEFAULT_CONFIRAMTION_ID);
         confirmation.setCaptionText("Session Expired");

@@ -99,7 +99,7 @@ public class CalendarRenderer extends RendererBase {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
 
-        RenderingUtil.generateIdIfNotSpecified(component);
+        ComponentUtil.generateIdIfNotSpecified(component);
 
         Calendar calendar = (Calendar) component;
         RenderingUtil.registerDateTimeFormatObject(calendar.getLocale());

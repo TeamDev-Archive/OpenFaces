@@ -20,6 +20,7 @@ import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.StyleUtil;
 import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.ComponentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -101,7 +102,7 @@ public class TreeColumnRenderer extends RendererBase {
             writer.writeAttribute("style", indentStyle, null);
 
         if (nodeHasChildren) {
-            RenderingUtil.generateIdIfNotSpecified(component);
+            ComponentUtil.generateIdIfNotSpecified(component);
             ExpansionToggle expansionToggle = treeColumn.getExpansionToggle();
             expansionToggle.encodeAll(context);
         } else

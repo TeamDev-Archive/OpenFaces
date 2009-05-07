@@ -20,6 +20,7 @@ import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleUtil;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.ComponentUtil;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -43,7 +44,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         setUpConverter((Spinner) component);
-        RenderingUtil.generateIdIfNotSpecified(component);
+        ComponentUtil.generateIdIfNotSpecified(component);
         super.encodeBegin(context, component);
     }
 

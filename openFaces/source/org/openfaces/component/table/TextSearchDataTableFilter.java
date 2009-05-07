@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ComponentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -44,7 +44,7 @@ public abstract class TextSearchDataTableFilter extends DataTableFilter {
 
     public void createSubComponents(FacesContext context) {
         super.createSubComponents(context);
-        RenderingUtil.createChildComponent(context, this, getInputComponentType(), SEARCH_COMPONENT_SUFFIX);
+        ComponentUtil.createChildComponent(context, this, getInputComponentType(), SEARCH_COMPONENT_SUFFIX);
     }
 
     protected abstract String getInputComponentType();

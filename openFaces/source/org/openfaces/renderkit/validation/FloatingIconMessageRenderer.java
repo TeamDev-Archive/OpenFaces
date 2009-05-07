@@ -14,13 +14,13 @@ package org.openfaces.renderkit.validation;
 import org.openfaces.component.validation.ClientValidationMode;
 import org.openfaces.component.validation.FloatingIconMessage;
 import org.openfaces.component.validation.ValidationProcessor;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.FunctionCallScript;
 import org.openfaces.util.NewInstanceScript;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
-import org.openfaces.util.StyleUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.renderkit.validation.ValidatorUtil;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -50,7 +50,7 @@ public class FloatingIconMessageRenderer extends BaseMessageRenderer {
             String styleClassName = StyleUtil.getCSSClass(context, component, flMessage.getStyle(), DEFAULT_CLASS, flMessage.getStyleClass());
 
             ClientValidationMode cv = validationProcessor.getClientValidationRule(component, forComponent);
-            UIForm form = RenderingUtil.getEnclosingForm(component);
+            UIForm form = ComponentUtil.getEnclosingForm(component);
             boolean clientValidation = !cv.equals(ClientValidationMode.OFF);
             boolean useDCVP = validationProcessor.isUseDefaultClientValidationPresentationForForm(form);
             boolean useDSVP = validationProcessor.isUseDefaultServerValidationPresentationForForm(form);

@@ -16,6 +16,7 @@ import org.openfaces.util.ResourceUtil;
 import org.openfaces.renderkit.validation.BaseMessageRenderer;
 import org.openfaces.util.ConverterUtil;
 import org.openfaces.util.Log;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.validator.AbstractClientValidator;
 import org.openfaces.validator.ClientValidatorUtil;
 
@@ -245,7 +246,7 @@ MODIFY WITH CARE. ENSURE MINIMAL EXECUTION TIME AND AMOUNT OF OUTPUT */
         VerifiableComponent[] verifiableComponents = processor.getVerifiableComponents(context);
         VerifiableComponent vc = VerifiableComponent.getVerifiableComponent(
                 verifiableComponents, editableValueHolder, component.getClientId(context));
-        UIForm parentForm = RenderingUtil.getEnclosingForm(component);
+        UIForm parentForm = ComponentUtil.getEnclosingForm(component);
         if (parentForm == null) {
             Log.log(context, "Warn: enclosing form cannot be found for component " + component.getClientId(context) + ". Client-side validation will not be available for it.");
             return;

@@ -15,10 +15,10 @@ import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItem;
 import org.openfaces.component.input.DropDownItems;
 import org.openfaces.component.table.DataTableFilter;
-import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.StyleUtil;
 import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.ComponentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -70,7 +70,7 @@ public class DropDownFieldDataTableFilterRenderer extends TextSearchDataTableFil
         }
         DropDownItem allRecordsItem = createDropDownItem(context, "");
         String allRecordsCriterionName = filter.getAllRecordsCriterionName();
-        HtmlOutputText outputText = RenderingUtil.createOutputText(context, allRecordsCriterionName);
+        HtmlOutputText outputText = ComponentUtil.createOutputText(context, allRecordsCriterionName);
         String predefinedCriterionsClass = getPredefinedCriterionClass(context, filter);
         outputText.setStyleClass(predefinedCriterionsClass);
         allRecordsItem.getChildren().add(outputText);

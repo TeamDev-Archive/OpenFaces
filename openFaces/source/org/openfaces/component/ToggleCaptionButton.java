@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * @author Kharchenko
  */
-public abstract class ToggleCaptionButton extends CaptionButton {
+public class ToggleCaptionButton extends CaptionButton {
     public static final String COMPONENT_TYPE = "org.openfaces.ToggleCaptionButton";
     public static final String COMPONENT_FAMILY = "org.openfaces.ToggleCaptionButton";
 

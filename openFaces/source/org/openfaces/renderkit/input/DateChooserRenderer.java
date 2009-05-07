@@ -24,6 +24,7 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.renderkit.calendar.CalendarRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RequestFacade;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.validator.ClientValidatorUtil;
 
 import javax.faces.component.EditableValueHolder;
@@ -83,7 +84,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         setUpConverter((DateChooser) component);
-        RenderingUtil.generateIdIfNotSpecified(component);
+        ComponentUtil.generateIdIfNotSpecified(component);
         super.encodeBegin(context, component);
     }
 

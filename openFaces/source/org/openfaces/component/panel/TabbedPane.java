@@ -23,7 +23,7 @@ import org.openfaces.component.select.TabSetItems;
 import org.openfaces.event.SelectionChangeEvent;
 import org.openfaces.event.SelectionChangeListener;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ComponentUtil;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -559,13 +559,13 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
     }
 
     public void createSubComponents(FacesContext context) {
-        UIComponent tabSet = RenderingUtil.createChildComponent(context, this, TabSet.COMPONENT_TYPE, TAB_SET_SUFFIX);
+        UIComponent tabSet = ComponentUtil.createChildComponent(context, this, TabSet.COMPONENT_TYPE, TAB_SET_SUFFIX);
         TabSetItems items = new TabSetItems();
         tabSet.getChildren().add(items);
     }
 
     public TabSet getTabSet() {
-        return (TabSet) RenderingUtil.getChildBySuffix(this, TAB_SET_SUFFIX);
+        return (TabSet) ComponentUtil.getChildBySuffix(this, TAB_SET_SUFFIX);
     }
 
     private interface ComponentPhaseProcessor {

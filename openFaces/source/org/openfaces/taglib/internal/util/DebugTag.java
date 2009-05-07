@@ -11,28 +11,27 @@
  */
 package org.openfaces.taglib.internal.util;
 
-import org.openfaces.taglib.internal.AbstractComponentTag;
-import org.openfaces.component.util.Focus;
+import org.openfaces.component.util.Debug;
+import org.openfaces.taglib.internal.window.WindowTag;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.component.UIComponent;
 
 /**
- * @author Pavel Kaplin
+ * @author Dmitry Pikhulya
  */
-public class FocusTag extends AbstractComponentTag {
+public class DebugTag extends WindowTag {
 
     public String getComponentType() {
-        return Focus.COMPONENT_TYPE;
+        return Debug.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return null;
+        return "org.openfaces.DebugRenderer";
     }
 
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
-        setStringProperty(component, "focusedComponentId");
-        setBooleanProperty(component, "autoSaveFocus");
     }
+
 }

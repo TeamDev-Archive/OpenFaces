@@ -43,7 +43,11 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
     }
 
     public String getCaptionText() {
-        return ValueBindings.get(this, "captionText", captionText);
+        return ValueBindings.get(this, "captionText", captionText, getDefaultCaptionText());
+    }
+
+    protected String getDefaultCaptionText() {
+        return null;
     }
 
     public void setCaptionText(String captionText) {

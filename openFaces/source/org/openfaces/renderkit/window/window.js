@@ -89,9 +89,14 @@ O$._initWindow = function(windowId, resizeable, draggableByContent, minWidth, mi
   }
 
   win._afterShow = function() {
+    if (win._postponedInitialization) {
+      O$.waitForCondition(function(){return !win._postponedInitialization;}, win._afterShow);
+      return;
+    }
+
     if (resizeable)
-      this._updateResizersPos();
-    this._updateContentPos();
+      win._updateResizersPos();
+    win._updateContentPos();
   }
 
   win._afterHide = function() {
@@ -252,6 +257,7 @@ O$._createResizers = function(win) {
   if (O$.isExplorer()) {
     if (!win._initScheduled) {
       win._initScheduled = true;
+      win._postponedInitialization = true;
       var initArgs = arguments;
       // postpone initialization to avoid IE failure during page loading
       O$.addLoadEvent(function() {
@@ -260,6 +266,8 @@ O$._createResizers = function(win) {
       return;
     }
   }
+  win._postponedInitialization = false;
+
   var resizerWidth = O$.calculateNumericCSSValue("6px");
   var cornerLength = O$.calculateNumericCSSValue("20px");
   var halfResizerWidth = resizerWidth / 2;

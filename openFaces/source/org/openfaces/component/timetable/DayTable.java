@@ -744,7 +744,7 @@ public class DayTable extends OUIObjectIteratorBase {
         FacesContext context = FacesContext.getCurrentInstance();
         Confirmation confirmation = getDeleteEventConfirmation();
         if (confirmation == null) {
-            confirmation = (Confirmation) RenderingUtil.createComponent(context,
+            confirmation = (Confirmation) ComponentUtil.createComponent(context,
                     getId() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "deleteEventConfirmation",
                     Confirmation.COMPONENT_TYPE);
             confirmation.setMessage("Delete the event?");
