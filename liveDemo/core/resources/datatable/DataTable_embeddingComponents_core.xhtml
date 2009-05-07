@@ -15,7 +15,7 @@
         <td align="center">
           <o:dataTable id="linkTable" var="link"
                        value="#{LinkList.links}"
-                       style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px; width: 420px;"
+                       style="margin: 20px 20px 20px 20px; padding: 10px 10px 10px 10px; width: 420px;text-align:left;"
                        cellspacing="0"
                        bodyRowStyle="height: 40px;"
                        cellpadding="0"
@@ -67,15 +67,15 @@
               </o:cell>
             </o:row>
 
-            <o:column style="width: 21px;">
+            <o:column style="width: 21px; padding:5px;">
               <h:graphicImage url="../images/datatable/links/#{link.linkCategory}" width="16px" height="20px"/>
             </o:column>
-            <o:column style="width: 187px;">
+            <o:column style="width: 187px; padding:5px;">
               <h:outputLink value="javascript:smallWindow('#{link.url}')">
                 <h:outputText value="#{link.name}" style="font-size: 12px;"/>
               </h:outputLink>
             </o:column>
-            <o:column style="width: 130px;">
+            <o:column style="width: 130px; padding:5px;">
               <h:commandButton value="Edit" action="#{LinkList.editLink}"
                                styleClass="edit_remove" style="width: 60px; height: 15px;"/>
               <h:commandButton value="Remove" action="#{LinkList.removeLink}"
