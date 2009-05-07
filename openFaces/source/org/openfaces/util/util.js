@@ -10,6 +10,12 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
+if(typeof(O$) != "undefined") {
+  //it's possible situation when server was restarted and session expiration
+  // confirmation dialog was sent with new util.js file.  
+  alert("util.js was loaded twice. It's possible only for development environment. Please refresh page.");
+}
+
 var OpenFaces = O$ = function(id) {
   return document.getElementById(id);
 };
