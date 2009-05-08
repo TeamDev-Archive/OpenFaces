@@ -584,7 +584,11 @@ public class TreeTable extends AbstractTable {
                 continue;
             if (!shouldBeExpanded && dontCollapseNodes)
                 continue;
-            setNodeExpanded(keyPath, shouldBeExpanded);
+            if(!getNodeHasChildren()) { // rows without children should have expanded state by default
+                setNodeExpanded(keyPath, true);
+            } else {
+                setNodeExpanded(keyPath, shouldBeExpanded);
+            }
         }
     }
 
