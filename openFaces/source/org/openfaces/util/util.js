@@ -1562,6 +1562,7 @@ O$.initFocus_ = function(trackerFieldId, autoSaveFocus, priority) {
       O$.Ajax.onajaxend = function() {
         if (prevAjaxEnd)
           prevAjaxEnd();
+        O$._autoSavingFocusInitialized = false;
         setupFocus();
       }
     }
