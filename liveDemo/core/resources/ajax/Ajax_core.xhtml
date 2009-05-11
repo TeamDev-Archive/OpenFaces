@@ -3,6 +3,19 @@
      xmlns:o="http://openfaces.org/"
      class="Col4_234 darkgray">
 
+  <script type="text/javascript">
+    function addTask(e) {      
+      var unicode = e.charCode ? e.charCode : e.keyCode;
+      
+      if (unicode == 13) {        
+        document.getElementById('form:addTask').click();
+        return false;
+      }
+      
+      return true;
+    }
+  </script>
+
   <div class="taskDemo" style="width: 100%">
     <h:graphicImage value="../images/ajax/TaskList.png" alt="Task List" styleClass="left"/>
     <o:inputText id="filter" value="#{TaskBean.filter}" promptText="Search" styleClass="left taskInput"
@@ -42,6 +55,7 @@
                        required="true"
                        onblur="addTaskBlur();"
                        promptText="Type here to add a new task"
+                       onkeydown="return addTask(event);"
                        promptTextClass="addTaskPrompt" styleClass="taskInput addTask"/>
         </h:panelGroup>
         <h:commandButton image="../images/ajax/plus.png" alt="Add Task" styleClass="left"
@@ -49,8 +63,7 @@
                          id="addTask">
           <o:reloadComponents action="#{TaskBean.addTask}"
                               submittedComponentIds=":form:newTask"
-                              componentIds=":form:taskList" disableDefault="true">
-          </o:reloadComponents>
+                              componentIds=":form:taskList" disableDefault="true"/>
         </h:commandButton>
       </div>
     </h:panelGroup>
