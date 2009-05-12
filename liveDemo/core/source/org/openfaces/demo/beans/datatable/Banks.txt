@@ -170,7 +170,6 @@ Luther Burbank Savings	32178	Santa Rosa	CA	95404	Sonoma	3172438
 American Chartered Bank	27006	Schaumburg	IL	60173	Cook	3160972
 Silverton Bank, National Association	26535	Atlanta	GA	30327	Cobb	3155328
 Towne Bank	35095	Portsmouth	VA	23703	Portsmouth City	3133589
-Advanta Bank Corp.	33535	Draper	UT	84020	Salt Lake	3106694
 Beal Bank Nevada	57833	Las Vegas	NV	89169	Clark	3105584
 Columbia State Bank	33826	Tacoma	WA	98402	Pierce	3091825
 Boston Private Bank & Trust Company	24811	Boston	MA	2109	Suffolk	3079468
@@ -230,7 +229,6 @@ Capital City Bank	9622	Tallahassee	FL	32301	Leon	2471454
 First Regional Bank	23011	Los Angeles	CA	90067	Los Angeles	2461291
 Beal Bank	32574	Plano	TX	75024	Collin	2450794
 Wilshire State Bank	23301	Los Angeles	CA	90010	Los Angeles	2446601
-First National Bank Alaska	16130	Anchorage	AK	99510	Anchorage	2437510
 Union Bank and Trust Company	13421	Lincoln	NE	68506	Lancaster	2437453
 ShoreBank	15640	Chicago	IL	60649	Cook	2433071
 First Security Bank	5633	Searcy	AR	72143	White	2420553
@@ -299,7 +297,6 @@ American National Bank	19220	Denver	CO	80206	Denver	1917609
 Spencer Savings Bank, SLA	30076	Elmwood Park	NJ	7407	Bergen	1915795
 New South Federal Savings Bank	32276	Irondale	AL	35210	Jefferson	1914108
 Five Star Bank	659	Warsaw	NY	14569	Wyoming	1909009
-AmericanWest Bank	22441	Spokane	WA	99201	Spokane	1904207
 H&R Block Bank	58124	Kansas City	MO	64105	Jackson	1900148
 The Central Trust Bank	12633	Jefferson City	MO	65101	Cole	1891880
 Peoples First Community Bank	32167	Panama City	FL	32405	Bay	1890369
