@@ -41,8 +41,8 @@ public class EventEditorPageRenderer extends RendererBase {
         DayTable dayTable = (DayTable) eventEditorPage.getParent();
         RenderingUtil.renderInitScript(context, new ScriptBuilder().initScript(context, dayTable, "O$._initEventEditorPage",
                 eventEditorPage,
-                eventEditorPage.getUrl(),
                 eventEditorPage.getActionExpression() != null,
+                eventEditorPage.getUrl(),
                 eventEditorPage.getModeParamName(),
                 eventEditorPage.getEventIdParamName(),
                 eventEditorPage.getEventStartParamName(),

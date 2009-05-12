@@ -304,9 +304,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
         if (actionDeclaration == null)
             return;
 
-        if (!getExpressionCreator().isValueReference(actionPropertyName, actionDeclaration))
-            throw new FacesException("The action attribute should be declared as method expression, but it was declared as follows: " + actionDeclaration);
-        MethodExpression methodExpression = createMethodExpression(context, actionPropertyName, actionDeclaration, void.class, new Class[0]);
+        MethodExpression methodExpression = createMethodExpression(context, actionPropertyName, actionDeclaration, Object.class, new Class[0]);
         actionSource.setActionExpression(methodExpression);
     }
 
