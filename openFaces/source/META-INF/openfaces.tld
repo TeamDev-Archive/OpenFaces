@@ -10819,7 +10819,7 @@ entering a value and returns a list of suggestions from the server -->
 
     <attribute>
       <description>URL of the image that should be displayed in this button when the button is toggled.</description>
-      <name>minimizeImageUrl</name>
+      <name>restoreImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -10829,7 +10829,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when mouse cursor is over the button.</description>
-      <name>minimizeRolloverImageUrl</name>
+      <name>restoreRolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -10840,7 +10840,7 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>URL of the image that should be displayed in this button when the button is in a toggled state and
         the mouse is pressed over the button, but not released yet.</description>
-      <name>minimizePressedImageUrl</name>
+      <name>restorePressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
