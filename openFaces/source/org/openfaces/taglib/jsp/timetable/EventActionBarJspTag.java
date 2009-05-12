@@ -19,6 +19,7 @@ import javax.el.ValueExpression;
 public class EventActionBarJspTag extends AbstractComponentJspTag {
     public EventActionBarJspTag() {
         super(new EventActionBarTag());
+        setId("_eventActionBar"); // this component should be only the one at DayTable. See JSFC-3916
     }
 
     public void setNoteText(ValueExpression noteText) {
@@ -36,5 +37,4 @@ public class EventActionBarJspTag extends AbstractComponentJspTag {
     public void setActionPressedBackgroundIntensity(ValueExpression value) {
         getDelegate().setPropertyValue("actionPressedBackgroundIntensity", value);
     }
-
 }

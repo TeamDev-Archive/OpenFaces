@@ -83,33 +83,17 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
     }
 
     private void encodeActionBar(FacesContext context, DayTable dayTable) throws IOException {
-        encodeElement(context, dayTable, EventActionBar.class, "_eventActionBar");
-    }
-
-    private <T extends UIComponent> void encodeElement(FacesContext context, DayTable dayTable, Class<T> childClass, String defaultId) throws IOException {
-        List<T> list = ComponentUtil.findChildrenWithClass(dayTable, childClass);
-        T child = null;
-        if (list.size() > 1) { // at JSP version some elements are created twice on restore state phase
-            do {
-                T element = list.get(0);
-                if (defaultId.equals(element.getId())) {
-                    child = element;
-                } else {
-                    dayTable.getChildren().remove(element);
-                }
-                list.remove(element);
-            } while (!list.isEmpty());
-        } else if (list.size() == 1) {
-            child = list.get(0);
-            child.setId(defaultId);
-        }
-        if (child != null) {
-            child.encodeAll(context);
+        EventActionBar bar = dayTable.getEventActionBar();
+        if(bar != null) {
+            bar.encodeAll(context);
         }
     }
 
     private void encodeEventPreview(FacesContext context, DayTable dayTable) throws IOException {
-        encodeElement(context, dayTable, EventPreview.class, "_eventPreview");
+        EventPreview preview = dayTable.getEventPreview();
+        if(preview != null) {
+            preview.encodeAll(context);
+        }
     }
 
     private void encodeEventEditor(FacesContext context, DayTable dayTable) throws IOException {

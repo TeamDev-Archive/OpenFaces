@@ -23,6 +23,7 @@ public class EventPreviewJspTag extends AbstractComponentJspTag {
 
     public EventPreviewJspTag() {
         super(new EventPreviewTag());
+        setId("_eventPreview"); // this component should be only the one at DayTable. See JSFC-3916
     }
 
     public void setEventNameStyle(ValueExpression eventNameStyle) {
