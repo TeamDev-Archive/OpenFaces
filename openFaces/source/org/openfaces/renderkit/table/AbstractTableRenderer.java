@@ -412,7 +412,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
                 if (customCellStyle != null)
                     cellStyles.add(customCellStyle);
 
-                if (cellStyles != null && cellStyles.size() > 0) {
+                if (!cellStyles.isEmpty()) {
                     String styleClass = classNamesToClass(cellStyles);
                     if (!RenderingUtil.isNullOrEmpty(styleClass))
                         cellStylesMap.put(bodyRowIndex + "x" + colIndex, styleClass);

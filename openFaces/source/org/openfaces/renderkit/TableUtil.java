@@ -436,8 +436,6 @@ public class TableUtil {
             return result;
         for (Map.Entry entry : (Iterable<Map.Entry>) map.entrySet()) {
             Object key = entry.getKey();
-            if (key instanceof String)
-                key = "'" + key + "'";
             String className = (String) entry.getValue();
             try {
                 result.put(key.toString(), className);
