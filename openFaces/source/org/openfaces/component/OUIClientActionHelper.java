@@ -11,9 +11,9 @@
  */
 package org.openfaces.component;
 
-import org.openfaces.util.StyleUtil;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlCommandButton;
@@ -66,7 +66,7 @@ public abstract class OUIClientActionHelper {
         if (action.isStandalone() || action.getFor() != null ||
                 parent instanceof HtmlCommandButton || parent instanceof HtmlCommandLink) {
             if (context.getResponseWriter() != null) {
-                AjaxUtil.prepareComponentForAjax(context, parent);
+                AjaxUtil.addJSLinks(context, parent);
                 StyleUtil.requestDefaultCss(context);
             }
             return;
@@ -74,7 +74,7 @@ public abstract class OUIClientActionHelper {
 
         String script = getClientActionScript(context, action);
         if (context.getResponseWriter() != null) {
-            AjaxUtil.prepareComponentForAjax(context, parent);
+            AjaxUtil.addJSLinks(context, parent);
             StyleUtil.requestDefaultCss(context);
         }
         if (parent != null && parent.getAttributes() != null) {

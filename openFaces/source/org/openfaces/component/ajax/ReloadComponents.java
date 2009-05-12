@@ -12,9 +12,9 @@
 package org.openfaces.component.ajax;
 
 import org.openfaces.component.OUIClientAction;
-import org.openfaces.util.ValueBindings;
-import org.openfaces.util.StyleUtil;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.StyleUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
@@ -162,7 +162,7 @@ public class ReloadComponents extends UICommand implements OUIClientAction {
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         if (!(getParent() instanceof HtmlCommandLink)) {
-            AjaxUtil.prepareComponentForAjax(context, getParent());
+            AjaxUtil.addJSLinks(context, getParent());
             StyleUtil.requestDefaultCss(FacesContext.getCurrentInstance());
         }
         return new Object[]{superState,

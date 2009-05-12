@@ -244,13 +244,17 @@ public class AjaxUtil {
     }
 
     public static void prepareComponentForAjax(FacesContext context, UIComponent component) {
+        if (addJSLinks(context, component)) {
+            makeComponentsNonTransient(context, component);
+        }
+    }
+
+    public static boolean addJSLinks(FacesContext context, UIComponent component) {
         if (!component.isRendered())
-            return;
+            return false;
 
         if (isAjaxRequest(context))
-            return;
-        makeComponentsNonTransient(context, component);
-
+            return false;
         ExternalContext externalContext = context.getExternalContext();
         Map<String, Object> requestMap = externalContext.getRequestMap();
         if (requestMap.put("_of_ajaxSupportOnPageRendered", Boolean.TRUE) == null) {
@@ -268,6 +272,7 @@ public class AjaxUtil {
                 throw new RuntimeException(e);
             }
         }
+        return true;
     }
 
     public static Object retrieveAjaxStateObject(FacesContext context, UIComponent component) {
