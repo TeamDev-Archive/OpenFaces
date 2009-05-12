@@ -30,4 +30,15 @@ O$._initDebug = function(clientId) {
     logElement(document.createTextNode(text));
     logElement(document.createTextNode(date + " : "));
   }
+
+  debug.logObject = function(obj) {
+    var txt = "";
+    for (var fld in obj) {
+      if (txt.length > 0)
+        txt += ", ";
+      txt += fld + " : " + obj[fld]; 
+    }
+    txt = "[" + txt + "]";
+    debug.log(txt);
+  }
 }
