@@ -4,11 +4,17 @@
      class="Col4_234 darkgray">
 
 <style type="text/css">
+  .commandLink {
+    border-bottom: 1px gray dashed;
+    text-decoration: none;
+  }
+
   .window {
     border: 2px solid #BBBBBB;
   }
 
   .customButton {
+    vertical-align: top;
     padding: 0;
   }
 
@@ -46,7 +52,7 @@
   .browserCaption {
     background: url('./images/mac_header.png') repeat;
     text-align: center;
-    padding: 1px;
+    padding: 0;
   }
 
   .refresh a:link {
@@ -315,7 +321,7 @@ function checkRequestKeys(evt) {
               height="310px"
               width="212px">
       <o:captionArea style="padding: 0 0 10px 0">
-        <o:closeWindowButton imageUrl="./images/win_close.png" rolloverClass="buttonRollover"/>
+        <o:closeWindowButton imageUrl="./images/win_close_single.jpg" rolloverClass="buttonRollover"/>
       </o:captionArea>
 
       <f:facet name="caption">
@@ -428,9 +434,9 @@ function checkRequestKeys(evt) {
                 modal="true"
                 styleClass="window"
                 captionStyle="background: #bbbbbb;
-                          border-bottom: #e9e9e9 solid 1px
+                          border-bottom: #e9e9e9 solid 1px;
                           position:relative;
-                          top: -4px"
+                          padding: 0 0 0 6px;"
                 style="position: absolute; top: 50px; left: 50px;
                        width:auto; overflow:visible;">
         <f:facet name="caption">
@@ -441,6 +447,7 @@ function checkRequestKeys(evt) {
           <o:minimizeWindowButton imageUrl="./images/win_minimize.png" styleClass="customButton"
                                   rolloverClass="buttonRollover"/>
           <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png" styleClass="customButton"
+                                  restoreImageUrl="./images/win_restore.jpg"
                                   rolloverClass="buttonRollover"/>
           <o:closeWindowButton imageUrl="./images/win_close.png" styleClass="customButton"
                                rolloverClass="buttonRollover"/>
@@ -457,9 +464,9 @@ function checkRequestKeys(evt) {
               style="position: absolute; right: 110px; top: 340px; padding:10px;"
               styleClass="window"
               captionStyle="background: #bbbbbb;
-                            border-bottom: #e9e9e9 solid 1px
-                            position:relative;
-                          top: -4px"
+                            border-bottom: #e9e9e9 solid 1px;
+                            position: relative;
+                            padding: 0 0 0 6px;"
               height="350px"
               width="550px">
 
@@ -467,6 +474,7 @@ function checkRequestKeys(evt) {
         <o:minimizeWindowButton imageUrl="./images/win_minimize.png" styleClass="customButton"
                                 rolloverClass="buttonRollover"/>
         <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png" styleClass="customButton"
+                                restoreImageUrl="./images/win_restore.jpg"
                                 rolloverClass="buttonRollover"/>
         <o:closeWindowButton imageUrl="./images/win_close.png" styleClass="customButton"
                              rolloverClass="buttonRollover"/>
@@ -538,10 +546,10 @@ function checkRequestKeys(evt) {
               height="228px"
               contentStyle="overflow: visible; background: #bbbbbb;"
               captionStyle="background: #bbbbbb;
-                          border-bottom: #e9e9e9 solid 1px">
+                          border-bottom: 1px solid #e9e9e9;">
 
       <o:captionArea>
-        <o:closeWindowButton imageUrl="./images/win_close.png" styleClass="customButton"
+        <o:closeWindowButton imageUrl="./images/win_close_single.jpg" styleClass="customButton"
                              rolloverClass="buttonRollover"/>
       </o:captionArea>
 
@@ -569,21 +577,25 @@ function checkRequestKeys(evt) {
               style="position: absolute;
                     left: 30px;
                     top: 50px;"
+              captionStyle="background: #bbbbbb;
+                            border-bottom: #e9e9e9 solid 1px;
+                            position: relative;
+                            padding: 0 0 0 6px;"
               modal="true"
-              modalLayerClass="modalLayer"
-              captionClass="browserCaption">
+              modalLayerClass="modalLayer">
 
       <o:captionArea>
         <o:minimizeWindowButton imageUrl="./images/win_minimize.png"
                                 styleClass="customButton" rolloverClass="buttonRollover"/>
         <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png"
+                                restoreImageUrl="./images/win_restore.jpg"
                                 styleClass="customButton" rolloverClass="buttonRollover"/>
         <o:closeWindowButton imageUrl="./images/win_close.png"
                              styleClass="customButton" rolloverClass="buttonRollover"/>
       </o:captionArea>
 
       <f:facet name="caption">
-        <h:outputText value="BBC.com"/>
+        <h:outputText style="color: #ffffff;" value="BBC.com"/>
       </f:facet>
 
       <iframe id="bbcSiteContent"
@@ -625,6 +637,8 @@ function checkRequestKeys(evt) {
                              styleClass="customButton macButton" rolloverClass="buttonRollover"/>
         <o:maximizeWindowButton maximizeImageUrl="./images/mac_inactive.png"
                                 maximizeRolloverImageUrl="./images/mac_maximize.png"
+                                restoreImageUrl="./images/mac_inactive.png"
+                                restoreRolloverImageUrl="./images/mac_maximize.png"
                                 styleClass="customButton macButton" rolloverClass="buttonRollover"/>
         <o:minimizeWindowButton imageUrl="./images/mac_inactive.png" rolloverImageUrl="./images/mac_minimize.png"
                                 styleClass="customButton macButton" rolloverClass="buttonRollover"/>
@@ -653,11 +667,18 @@ function checkRequestKeys(evt) {
 </td>
 </tr>
 <tr>
-  <td align="center"><h:outputText value="Drag-and-droppable"/></td>
-  <td align="center"><h:outputText value="Resizable"/></td>
-  <td align="center"><h:outputText value="Modal"/></td>
-  <td align="center"><h:outputText value="Shadeable"/></td>
-  <td align="center"><h:outputText value="Customizable"/></td>
+  <td align="center"><h:outputLink styleClass="commandLink"
+                                   onclick="O$('form:unresizeable_win').show(); Calculator.clearAll(); return false;"
+          >Drag-and-droppable</h:outputLink></td>
+  <td align="center"><h:outputLink styleClass="commandLink"
+                                   onclick="O$('form:resizeable_win').show(); return false;">Resizable</h:outputLink>
+  </td>
+  <td align="center"><h:outputLink styleClass="commandLink"
+                                   onclick="O$('form:modal_win').show(); return false;">Modal</h:outputLink></td>
+  <td align="center"><h:outputLink styleClass="commandLink"
+                                   onclick="loadBbcSite(); return false;">Shadeable</h:outputLink></td>
+  <td align="center"><h:outputLink styleClass="commandLink"
+                                   onclick="loadGoogleSite(); return false;">Customizable</h:outputLink></td>
 </tr>
 </table>
 
