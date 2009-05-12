@@ -1556,15 +1556,17 @@ O$._initEventEditorDialog = function(dayTableId, dialogId) {
       O$.parseTime(dialog._startTimeField.value, startDate);
       var endDate = dialog._endDateField.getSelectedDate();
       O$.parseTime(dialog._endTimeField.value, endDate);
-      event.setStart(startDate);
-      event.setEnd(endDate);
-      event.color = dialog._color ? dialog._color : "";
-      event.description = dialog._descriptionField.value;
-      dialog.hide();
-      if (listeners.onclose)
-        listeners.onclose();
-      if (listeners.onok)
-        listeners.onok();
+      if(startDate && endDate && !isNaN(startDate) && !isNaN(endDate)) {  //in case of wrong values we should allow user to fix input
+        event.setStart(startDate);
+        event.setEnd(endDate);
+        event.color = dialog._color ? dialog._color : "";
+        event.description = dialog._descriptionField.value;
+        dialog.hide();
+        if (listeners.onclose)
+          listeners.onclose();
+        if (listeners.onok)
+          listeners.onok();
+      }
     }
     this._cancelButton.onclick = function(e) {
       O$.breakEvent(e);
