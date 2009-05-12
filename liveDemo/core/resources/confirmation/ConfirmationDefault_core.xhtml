@@ -180,43 +180,54 @@
 
 <p/>
 
-<div style="padding-top: 10px;" class="simple_text">The Confirmation component can also be invoked manually from
+<div style="padding: 10px 0;" class="simple_text">The Confirmation component can also be invoked manually from
   JavaScript code. Fill out the fields below to modify the content area of the Confirmation component and click the
   <strong>Show confirmation</strong> button to see the results.
 </div>
 
 <div class="fieldsLayouter_class">
+  <script>
+    function validateFields() {
+      if (O$('message_input').value == ""
+              || O$('yes_input').value == ""
+              || O$('no_input').value == "") {
+        alert("Input required fields!");
+        return false;
+      }
+      return true;
+    }
+  </script>
   <table id="fieldsLayouter" width="280px" align="center">
     <tr>
-      <td class="title">Main instruction:</td>
+      <td class="title">Main instruction *:</td>
       <td class="inputfield_class">
-        <input id="message_input" style="width: 175px;" type="text" name="header" align="right"
+        <input id="message_input" style="width: 200px;" type="text" name="header" align="right"
                value="Are you really sure?"/>
       </td>
     </tr>
     <tr>
       <td class="title">Details:</td>
       <td class="inputfield_class">
-        <input id="detail_input" style="width: 175px;" type="text" name="message" align="right"
+        <input id="detail_input" style="width: 200px;" type="text" name="message" align="right"
                value="Think once again before doing it"/>
       </td>
     </tr>
     <tr>
-      <td class="title">"Yes" button:</td>
+      <td class="title">"Yes" button *:</td>
       <td class="inputfield_class">
-        <input id="yes_input" style="width: 175px;" maxlength="15" type="text" name="yes" align="right" value="Let it be"/>
+        <input id="yes_input" style="width: 200px;" maxlength="15" type="text" name="yes" align="right" value="Let it be"/>
       </td>
     </tr>
     <tr>
-      <td class="title">"No" button :</td>
+      <td class="title">"No" button *:</td>
       <td class="inputfield_class">
-        <input id="no_input" style="width: 175px;"  maxlength="15" type="text" name="no" align="right" value="No way"/>
+        <input id="no_input" style="width: 200px;"  maxlength="15" type="text" name="no" align="right" value="No way"/>
       </td>
     </tr>
     <tr>
       <td colspan="2" height="40" style="text-align: center;">
         <input type="button" id="changedInvoker" value="Show confirmation"
-               onclick="O$('confirmationForm:editableConfirmation').setTexts(O$('confirmationForm').header.value,
+               onclick="if(!validateFields()){return;}O$('confirmationForm:editableConfirmation').setTexts(O$('confirmationForm').header.value,
                                                     O$('confirmationForm').message.value,
                                                     O$('confirmationForm').yes.value,
                                                     O$('confirmationForm').no.value);
