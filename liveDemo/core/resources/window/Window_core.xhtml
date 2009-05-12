@@ -4,8 +4,16 @@
      class="Col4_234 darkgray">
 
 <style type="text/css">
+  .window {
+    border: 2px solid #BBBBBB;
+  }
+
   .customButton {
     padding: 0;
+  }
+
+  .macButton {
+    padding: 2px;
   }
 
   .buttonRollover {
@@ -36,9 +44,9 @@
   }
 
   .browserCaption {
-    background-image: url('./images/mac_header.png');
-    background-repeat: repeat;
+    background: url('./images/mac_header.png') repeat;
     text-align: center;
+    padding: 1px;
   }
 
   .refresh a:link {
@@ -293,6 +301,7 @@ function checkRequestKeys(evt) {
 
     <o:window id="unresizeable_win"
               resizeable="false"
+              styleClass="window"
               style="position: absolute;
                    right: 130px;
                    top: 250px;
@@ -417,6 +426,7 @@ function checkRequestKeys(evt) {
       <o:window id="full_size_image_win"
                 resizeable="false"
                 modal="true"
+                styleClass="window"
                 captionStyle="background: #bbbbbb;
                           border-bottom: #e9e9e9 solid 1px
                           position:relative;
@@ -445,6 +455,7 @@ function checkRequestKeys(evt) {
               resizeable="true"
               modal="false"
               style="position: absolute; right: 110px; top: 340px; padding:10px;"
+              styleClass="window"
               captionStyle="background: #bbbbbb;
                             border-bottom: #e9e9e9 solid 1px
                             position:relative;
@@ -521,6 +532,7 @@ function checkRequestKeys(evt) {
               resizeable="false"
               modal="true"
               modalLayerClass="modalLayer"
+              styleClass="window"
               style="position: absolute; right: 150px; top: 160px"
               width="236px"
               height="228px"
@@ -553,6 +565,7 @@ function checkRequestKeys(evt) {
               resizeable="true"
               width="800px"
               height="600px"
+              styleClass="window"
               style="position: absolute;
                     left: 30px;
                     top: 50px;"
@@ -560,14 +573,13 @@ function checkRequestKeys(evt) {
               modalLayerClass="modalLayer"
               captionClass="browserCaption">
 
-      <o:captionArea alignment="left">
-        <o:closeWindowButton rolloverImageUrl="./images/mac_close.png" imageUrl="./images/mac_inactive.png"
+      <o:captionArea>
+        <o:minimizeWindowButton imageUrl="./images/win_minimize.png"
+                                styleClass="customButton" rolloverClass="buttonRollover"/>
+        <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png"
+                                styleClass="customButton" rolloverClass="buttonRollover"/>
+        <o:closeWindowButton imageUrl="./images/win_close.png"
                              styleClass="customButton" rolloverClass="buttonRollover"/>
-        <o:maximizeWindowButton maximizeImageUrl="./images/mac_inactive.png"
-                                maximizeRolloverImageUrl="./images/mac_maximize.png"
-                                styleClass="customButton" rolloverClass="buttonRollover"/>
-        <o:minimizeWindowButton imageUrl="./images/mac_inactive.png" rolloverImageUrl="./images/mac_minimize.png"
-                                styleClass="customButton" rolloverClass="buttonRollover"/>
       </o:captionArea>
 
       <f:facet name="caption">
@@ -595,6 +607,7 @@ function checkRequestKeys(evt) {
               resizeable="true"
               width="800px"
               height="600px"
+              styleClass="window"
               style="position: absolute;
                          left: 30px;
                          top: 50px;"
@@ -609,12 +622,12 @@ function checkRequestKeys(evt) {
 
       <o:captionArea alignment="left">
         <o:closeWindowButton rolloverImageUrl="./images/mac_close.png" imageUrl="./images/mac_inactive.png"
-                             styleClass="customButton" rolloverClass="buttonRollover"/>
+                             styleClass="customButton macButton" rolloverClass="buttonRollover"/>
         <o:maximizeWindowButton maximizeImageUrl="./images/mac_inactive.png"
                                 maximizeRolloverImageUrl="./images/mac_maximize.png"
-                                styleClass="customButton" rolloverClass="buttonRollover"/>
+                                styleClass="customButton macButton" rolloverClass="buttonRollover"/>
         <o:minimizeWindowButton imageUrl="./images/mac_inactive.png" rolloverImageUrl="./images/mac_minimize.png"
-                                styleClass="customButton" rolloverClass="buttonRollover"/>
+                                styleClass="customButton macButton" rolloverClass="buttonRollover"/>
       </o:captionArea>
 
       <h:panelGroup style="width: 100%;">
