@@ -6,6 +6,8 @@
   <div id="component">
 
     <script type="text/javascript">
+      window.onload = setDescriptionSource;
+      
       function setDescriptionSource() {
         var componentName = document.getElementById("form:componentName").value;
         var frame = document.getElementById("componentDescription");
@@ -21,7 +23,6 @@
             frame.src = "Index.html";
           }
         }
-        //document.getElementById("componentDescriptionWrapper").style.display = "";
       }
 
     </script>
