@@ -3,10 +3,10 @@
 
   <h2><a name="HintLabel-BasicConfiguration"></a>Basic Configuration</h2>
 
-<p>To add the <cite>HintLabel</cite> component to a page, use the <span class="tag">&lt;q:hintLabel&gt;</span> tag. The <span class="attribute">value</span> attribute of the <span class="tag">&lt;q:hintLabel&gt;</span> tag lets you specify the text for the component. By using the style-related attributes, you can set the width of the <cite>HintLabel</cite> component.</p>
+<p>To add the <cite>HintLabel</cite> component to a page, use the <span class="tag">&lt;o:hintLabel&gt;</span> tag. The <span class="attribute">value</span> attribute of the <span class="tag">&lt;o:hintLabel&gt;</span> tag lets you specify the text for the component. By using the style-related attributes, you can set the width of the <cite>HintLabel</cite> component.</p>
 
 <p>In the following example, only the text that fits in 100 pixels is displayed. If the user moves the mouse pointer over the <cite>HintLabel</cite> component, the full text will appear in the tooltip.</p>
-<pre class="code_area">&lt;q:hintLabel style=<span class="code_area_values">"width: 100px;"</span>
+<pre class="code_area">&lt;o:hintLabel style=<span class="code_area_values">"width: 100px;"</span>
              value=<span class="code_area_values">"#{ForumMessages.topic}"</span>/&gt;</pre>
 <p class="bubble note"><strong>Note</strong><br>The <cite>HintLabel</cite> text is rendered using a block HTML element.</p>
 
@@ -14,7 +14,7 @@
 
 <p>As seen from the following example, two different texts will be displayed when the <cite>HintLabel</cite> component is hovered by the mouse pointer and not.</p>
 
-<pre class="code_area">&lt;q:hintLabel style=<span class="code_area_values">"width: 300px;"</span>
+<pre class="code_area">&lt;o:hintLabel style=<span class="code_area_values">"width: 300px;"</span>
              value="Jupiter is the fifth planet from
                     the Sun and by far the largest"
              hint="Jupiter is more than twice as massive
