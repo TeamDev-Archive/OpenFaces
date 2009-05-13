@@ -28,7 +28,7 @@
     <componentName>Ajax Framework</componentName>
     <url>/ajax/Ajax.jsf</url>
     <shortPath>/ajax/</shortPath>
-    <image>background-image:url(../images/icons/components/AjaxFramework.png);</image>
+    <image>AjaxFramework</image>
     <selectedImage>/images/components/titles/AjaxFramework.png</selectedImage>
     <keyFeatures>
       <feature>Reloading components with Ajax</feature>
@@ -52,7 +52,7 @@
     <componentName>Border Layout Panel</componentName>
     <url>/borderlayoutpanel/BorderLayoutPanel.jsf</url>
     <shortPath>/borderlayoutpanel/</shortPath>
-    <image>background-image:url(../images/icons/components/BorderLayoutPanel.png);</image>
+    <image>BorderLayoutPanel</image>
     <selectedImage>/images/components/titles/BorderLayoutPanel.png</selectedImage>
     <keyFeatures>
       <feature>Static border layout</feature>
@@ -73,7 +73,7 @@
     <componentName>Calendar</componentName>
     <url>/calendar/Calendar_styles.jsf</url>
     <shortPath>/calendar/</shortPath>
-    <image>background-image:url(../images/icons/components/Calendar.png);</image>
+    <image>Calendar</image>
     <selectedImage>/images/components/titles/Calendar.png</selectedImage>
     <keyFeatures>
       <feature>Multiple date ranges</feature>
@@ -101,7 +101,7 @@
     <componentName>Chart</componentName>
     <url>/chart/ChartTypes.jsf</url>
     <shortPath>/chart/</shortPath>
-    <image>background-image:url(../images/icons/components/Chart.png);</image>
+    <image>Chart</image>
     <selectedImage>/images/components/titles/Chart.png</selectedImage>
     <keyFeatures>
       <feature>Various chart types</feature>
@@ -125,7 +125,7 @@
     <componentName>Confirmation</componentName>
     <url>/confirmation/ConfirmationDefault.jsf</url>
     <shortPath>/confirmation/</shortPath>
-    <image>background-image:url(../images/icons/components/Confirmation.png);</image>
+    <image>Confirmation</image>
     <selectedImage>/images/components/titles/Confirmation.png</selectedImage>
     <keyFeatures>
       <feature>Flexible invocation mechanism</feature>
@@ -147,7 +147,7 @@
     <componentName>Data Table</componentName>
     <url>/datatable/DataTable_general.jsf</url>
     <shortPath>/datatable/</shortPath>
-    <image>background-image:url(../images/icons/components/DataTable.png);</image>
+    <image>DataTable</image>
     <selectedImage>/images/components/titles/DataTable.png</selectedImage>
     <keyFeatures>
       <feature>Ajax sorting</feature>
@@ -190,7 +190,7 @@
     <componentName>Date Chooser</componentName>
     <url>/datechooser/DateChooser.jsf</url>
     <shortPath>/datechooser/</shortPath>
-    <image>background-image:url(../images/icons/components/DateChooser.png);</image>
+    <image>DateChooser</image>
     <selectedImage>/images/components/titles/DateChooser.png</selectedImage>
     <keyFeatures>
       <feature>Built-in Calendar</feature>
@@ -211,7 +211,7 @@
     <componentName>Day Table</componentName>
     <url>/daytable/DayTable_general.jsf</url>
     <shortPath>/daytable/</shortPath>
-    <image>background-image:url(../images/icons/components/DayTable.png);</image>
+    <image>DayTable</image>
     <selectedImage>/images/components/titles/DayTable.png</selectedImage>
     <keyFeatures>
       <feature>Editable/read-only mode</feature>
@@ -240,7 +240,7 @@
     <componentName>Drop Down Field</componentName>
     <url>/dropdownfield/DropDownField_client.jsf</url>
     <shortPath>/dropdownfield/</shortPath>
-    <image>background-image:url(../images/icons/components/DropDownField.png);</image>
+    <image>DropDownField</image>
     <selectedImage>/images/components/titles/DropDownField.png</selectedImage>
     <keyFeatures>
       <feature>Ajax and client-side suggestion</feature>
@@ -267,7 +267,7 @@
     <componentName>Dynamic Image</componentName>
     <url>/dynamicimage/DynamicImage_generated.jsf</url>
     <shortPath>/dynamicimage/</shortPath>
-    <image>background-image:url(../images/icons/components/DynamicImage.png);</image>
+    <image>DynamicImage</image>
     <selectedImage>/images/components/titles/DynamicImage.png</selectedImage>
     <keyFeatures>
       <feature>Various ways to specify image</feature>
@@ -289,7 +289,7 @@
     <componentName>Folding Panel</componentName>
     <url>/foldingpanel/FoldingPanel_basicFeatures.jsf</url>
     <shortPath>/foldingpanel/</shortPath>
-    <image>background-image:url(../images/icons/components/FoldingPanel.png);</image>
+    <image>FoldingPanel</image>
     <selectedImage>/images/components/titles/FoldingPanel.png</selectedImage>
     <keyFeatures>
       <feature>Ajax-based content loading</feature>
@@ -314,7 +314,7 @@
     <componentName>For Each</componentName>
     <url>/foreach/ForEach.jsf</url>
     <shortPath>/foreach/</shortPath>
-    <image>background-image:url(../images/icons/components/ForEach.png);</image>
+    <image>ForEach</image>
     <selectedImage>/images/components/titles/ForEach.png</selectedImage>
 
     <keyFeatures>
@@ -334,7 +334,7 @@
     <componentName>Graphic Text</componentName>
     <url>/graphictext/GraphicText.jsf</url>
     <shortPath>/graphictext/</shortPath>
-    <image>background-image:url(../images/icons/components/GraphicText.png);</image>
+    <image>GraphicText</image>
     <selectedImage>/images/components/titles/GraphicText.png</selectedImage>
     <keyFeatures>
       <feature>Custom angle text rotation</feature>
@@ -356,7 +356,7 @@
     <componentName>Hint Label</componentName>
     <url>/hintlabel/HintLabel.jsf</url>
     <shortPath>/hintlabel/</shortPath>
-    <image>background-image:url(../images/icons/components/HintLabel.png);</image>
+    <image>HintLabel</image>
     <selectedImage>/images/components/titles/HintLabel.png</selectedImage>
     <keyFeatures>
       <feature>Configurable display timeout</feature>
@@ -375,7 +375,7 @@
     <componentName>Input Text</componentName>
     <url>/inputtext/InputText.jsf</url>
     <shortPath>/inputtext/</shortPath>
-    <image>background-image:url(../images/icons/components/InputText.png);</image>
+    <image>InputText</image>
     <selectedImage>/images/components/titles/InputText.png</selectedImage>
     <keyFeatures>
       <feature>All features of the standard &lt;h:inputText&gt; component</feature>
@@ -394,7 +394,7 @@
     <componentName>Input Textarea</componentName>
     <url>/inputtextarea/InputTextarea.jsf</url>
     <shortPath>/inputtextarea/</shortPath>
-    <image>background-image:url(../images/icons/components/InputTextArea.png);</image>
+    <image>InputTextarea</image>
     <selectedImage>/images/components/titles/InputTextarea.png</selectedImage>
     <keyFeatures>
       <feature>All features of the standard &lt;h:inputTextarea&gt; component</feature>
@@ -413,7 +413,7 @@
     <componentName>Popup Layer</componentName>
     <url>/popuplayer/PopupLayer.jsf</url>
     <shortPath>/popuplayer/</shortPath>
-    <image>background-image:url(../images/icons/components/PopupLayer.png);</image>
+    <image>PopupLayer</image>
     <selectedImage>/images/components/titles/PopupLayer.png</selectedImage>
     <keyFeatures>
       <feature>Embedding JSF components</feature>
@@ -436,7 +436,7 @@
     <componentName>Popup Menu</componentName>
     <url>/popupmenu/PopupMenu.jsf</url>
     <shortPath>/popupmenu/</shortPath>
-    <image>background-image:url(../images/icons/components/PopupMenu.png);</image>
+    <image>PopupMenu</image>
     <selectedImage>/images/components/titles/PopupMenu.png</selectedImage>
     <keyFeatures>
       <feature>Keyboard support</feature>
@@ -456,7 +456,7 @@
     <componentName>Spinner</componentName>
     <url>/spinner/Spinner.jsf</url>
     <shortPath>/spinner/</shortPath>
-    <image>background-image:url(../images/icons/components/Spinner.png);</image>
+    <image>Spinner</image>
     <selectedImage>/images/components/titles/Spinner.png</selectedImage>
     <keyFeatures>
       <feature>Specifying allowed number range</feature>
@@ -476,7 +476,7 @@
     <componentName>Suggestion Field</componentName>
     <url>/suggestionfield/SuggestionField.jsf</url>
     <shortPath>/suggestionfield/</shortPath>
-    <image>background-image:url(../images/icons/components/SuggestionField.png);</image>
+    <image>SuggestionField</image>
     <selectedImage>/images/components/titles/SuggestionField.png</selectedImage>
     <keyFeatures>
       <feature>Ajax and client-side suggestion</feature>
@@ -499,7 +499,7 @@
     <componentName>Tab Set</componentName>
     <url>/tabset/TabSet_placementAndStyling.jsf</url>
     <shortPath>/tabset/</shortPath>
-    <image>background-image:url(../images/icons/components/TabSet.png);</image>
+    <image>TabSet</image>
     <selectedImage>/images/components/titles/TabSet.png</selectedImage>
     <keyFeatures>
       <feature>Customizable tabs placement</feature>
@@ -523,7 +523,7 @@
     <componentName>Tabbed Pane</componentName>
     <url>/tabbedpane/TabbedPane_placementAndAlignment.jsf</url>
     <shortPath>/tabbedpane/</shortPath>
-    <image>background-image:url(../images/icons/components/TabbedPane.png);</image>
+    <image>TabbedPane</image>
     <selectedImage>/images/components/titles/TabbedPane.png</selectedImage>
     <keyFeatures>
       <feature>Customizable tabs placement</feature>
@@ -552,7 +552,7 @@
     <componentName>Tree Table</componentName>
     <url>/treetable/TreeTable_basicFeatures.jsf</url>
     <shortPath>/treetable/</shortPath>
-    <image>background-image:url(../images/icons/components/TreeTable.png);</image>
+    <image>TreeTable</image>
     <selectedImage>/images/components/titles/TreeTable.png</selectedImage>
     <keyFeatures>
       <feature>Ajax data loading</feature>
@@ -591,7 +591,7 @@
     <componentName>Two List Selection</componentName>
     <url>/twolistselection/TwoListSelection.jsf</url>
     <shortPath>/twolistselection/</shortPath>
-    <image>background-image:url(../images/icons/components/TwoListSelection.png);</image>
+    <image>TwoListSelection</image>
     <selectedImage>/images/components/titles/TwoListSelection.png</selectedImage>
     <keyFeatures>
       <feature>Reordering of selected items</feature>
@@ -612,7 +612,7 @@
     <componentName>Validation</componentName>
     <url>/validators/Validators_standard.jsf</url>
     <shortPath>/validators/</shortPath>
-    <image>background-image:url(../images/icons/components/ValidationFramework.png);</image>
+    <image>ValidationFramework</image>
     <selectedImage>/images/components/titles/Validation.png</selectedImage>
     <keyFeatures>
       <feature>Easy-to-configure client-side validation</feature>
@@ -639,7 +639,7 @@
     <componentName>Window</componentName>
     <url>/window/Window.jsf</url>
     <shortPath>/window/</shortPath>
-    <image>background-image:url(../images/icons/components/Window.png);</image>
+    <image>Window</image>
     <selectedImage>/images/components/titles/Window.png</selectedImage>
     <keyFeatures>
       <feature>Draggable</feature>

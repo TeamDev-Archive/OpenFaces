@@ -1,8 +1,8 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-     class="Col4_234 darkgray" style="win-height:700px;">
-  <div id="component" align="center">
+     style="win-height:700px;">
+  <div id="Demo">
     <o:dataTable id="citiesTable"
                  var="city"
                  customDataProviding="true"
@@ -63,7 +63,7 @@
     </o:dataTable>
   </div>
 
-  <div class="Col1_1 serif">
+  <div id="Description">
     <p>This page shows the ability of the DataTable to handle large amounts of data with the help of a custom data
       providing feature. So all data processing (filtering, sorting, paging) is done manually here, not automatically
       by the DataTable component. When sorting, paging or filtering is performed, an event log appears at the bottom of

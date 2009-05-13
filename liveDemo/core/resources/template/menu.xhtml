@@ -1,25 +1,28 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:o="http://openfaces.org/" class="ComponentsMenu menuPadded menuHomepage">
+     xmlns:o="http://openfaces.org/">
+  <div id="Components">
+    <ul>
 
-  <ul>
-    <o:forEach items="#{MenuService.menus}" var="menuItem">
+      <o:forEach items="#{MenuService.menus}" var="menuItem">
 
-      <h:panelGroup rendered="#{!menuItem.selected}">
-        <li>
-          <h:outputLink value="#{facesContext.externalContext.requestContextPath}#{menuItem.menuUrl}">
-            <h:panelGroup style="#{menuItem.menuImage}"></h:panelGroup><h:outputText value="#{menuItem.menuName}"/>
-          </h:outputLink>
-        </li>
-      </h:panelGroup>
-      <h:panelGroup rendered="#{menuItem.selected}">
-        <li class="active">
-          <h:outputLink value="#{facesContext.externalContext.requestContextPath}#{menuItem.menuUrl}">
-            <h:panelGroup style="#{menuItem.menuImage}"></h:panelGroup><h:outputText value="#{menuItem.menuName}"/>
-          </h:outputLink>
-        </li>
-      </h:panelGroup>
-    </o:forEach>
-  </ul>
+        <h:panelGroup rendered="#{!menuItem.selected}">
+          <li>
+            <h:outputLink styleClass="#{menuItem.menuImage}" value="#{facesContext.externalContext.requestContextPath}#{menuItem.menuUrl}">
+              <em></em><h:outputText value="#{menuItem.menuName}"/>
+            </h:outputLink>
+          </li>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{menuItem.selected}">
+          <li>
+            <h:outputLink styleClass="#{menuItem.menuImage} active" value="#{facesContext.externalContext.requestContextPath}#{menuItem.menuUrl}">
+              <em></em><h:outputText value="#{menuItem.menuName}"/>
+            </h:outputLink>
+          </li>
+        </h:panelGroup>
+      </o:forEach>
+    </ul>
+  </div>
 
+  <div id="Shadow"><!-- Components list shadow --></div>
 </div>

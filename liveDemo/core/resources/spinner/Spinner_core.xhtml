@@ -1,9 +1,9 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-     class="Col4_234 darkgray">
+     >
 
-  <div id="component" align="center">
+  <div id="Demo">
 
     <h:panelGroup id="productsPanel">
       <o:dataTable id="table" value="#{SpinnerBean.products}" var="product" style="width: 100%; border:0;">
@@ -75,12 +75,12 @@
     </h:panelGroup>
   </div>
 
-  <div class="Col1_1 serif">
+  <div id="Description">
     <div><small>* Maximum quantity allowed for purchase is 10 items</small><br/><br/></div>
   </div>
 
 
-  <div class="Col1_1 serif">
+  <div id="Description">
     <h4>Shown Functionality</h4>
     <ul class="hang">
       <li><strong>Specifying allowed number range</strong> - The Spinner component allows to set maximum and minimum value, giving ability to simplify input data validation code and improve user experience. In the order form above users are restricted to increase product quantity over the amount present in stock. Spinner control is also configured to disallow decreasing product quantity below zero.

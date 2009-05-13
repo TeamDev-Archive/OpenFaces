@@ -1,54 +1,55 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-     class="Col4_234 darkgray">
+        >
 
-    <o:ajaxSettings/>
+  <o:ajaxSettings/>
 
+  <div id="Demo">
     <table id="Component">
       <tr>
-        <td style="width: 400px; vertical-align: top;" >
+        <td style="width: 400px; vertical-align: top;">
           <h2>Select a state</h2>
           <h:panelGroup id="statesList" style="line-height:normal;">
-              <o:forEach items="#{BanksList.bankStates}" var="state">
-                <h:commandLink style="text-decoration: none;
+            <o:forEach items="#{BanksList.bankStates}" var="state">
+              <h:commandLink style="text-decoration: none;
         color: #{state.stateName eq BanksList.selectedState.stateName ? '#FF8400' : 'gray'}; margin-left: 0.5em; margin-right: 0.5em;">
-                  <h:outputText value="#{state.stateName}"
-                                style="font-size: #{state.quantity le 3 ? 9 : state.quantity * 3}px;"/>
-                  <o:reloadComponents event="onclick"
-                                      actionListener="#{BanksList.selectState}"
-                                      componentIds=":form:banksList" requestDelay="500" disableDefault="true">
-                    <f:param name="state" value="#{state.stateName}"/>
-                  </o:reloadComponents>
-                </h:commandLink>
-                &#160;
-              </o:forEach>
+                <h:outputText value="#{state.stateName}"
+                              style="font-size: #{state.quantity le 3 ? 9 : state.quantity * 3}px;"/>
+                <o:reloadComponents event="onclick"
+                                    actionListener="#{BanksList.selectState}"
+                                    componentIds=":form:banksList" requestDelay="500" disableDefault="true">
+                  <f:param name="state" value="#{state.stateName}"/>
+                </o:reloadComponents>
+              </h:commandLink>
+              &#160;
+            </o:forEach>
           </h:panelGroup>
         </td>
         <td style="vertical-align: top;">
           <h2>Banks</h2>
           <h:panelGroup id="banksList">
-              <h:panelGroup rendered="#{BanksList.selectedState ne null}">
-                <o:forEach items="#{BanksList.selectedState.banks}" var="bank" statusVar="status">
-                  <ul>
-                    <li>
-                      <h:outputText value="#{bank.institutionName}"/>, &#160;<h:outputText value="#{bank.city}"/>
-                    </li>
-                  </ul>
-                </o:forEach>
-              </h:panelGroup>
-              <h:panelGroup rendered="#{BanksList.selectedState eq null}"
-                            style="display: block; color: gray; font-style: italic; padding-left: 40px;">
-                No state selected
-              </h:panelGroup>
+            <h:panelGroup rendered="#{BanksList.selectedState ne null}">
+              <o:forEach items="#{BanksList.selectedState.banks}" var="bank" statusVar="status">
+                <ul>
+                  <li>
+                    <h:outputText value="#{bank.institutionName}"/>, &#160;<h:outputText value="#{bank.city}"/>
+                  </li>
+                </ul>
+              </o:forEach>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{BanksList.selectedState eq null}"
+                          style="display: block; color: gray; font-style: italic; padding-left: 40px;">
+              No state selected
+            </h:panelGroup>
           </h:panelGroup>
         </td>
       </tr>
     </table>
+  </div>
 
 
-
-  <div class="Col1_1 serif">
+  <div id="Description">
     <h4>Shown Functionality</h4>
     <ul class="hang">
       <li>

@@ -1,16 +1,16 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-     class="Col4_234 darkgray">
+     >
 
-  <div class="Col1_1 serif">
+  <div id="Description">
     The Chart component lets you plot data in pie, bar, or line charts. With numerous chart options, you can modify any
     part of the Chart component such as the title, legend, labels, axes, grid lines, and chart types.
     <br/>
     The charts abouve use random data. To generate new data, click the <b>Generate New Data</b> button.
   </div>
 
-  <div id="component" align="center">
+  <div id="Demo">
     <h:commandButton value="Generate New Data">
       <o:reloadComponents
               componentIds="yearPrecipitationChart, temperatureChart, monthPrecipitationChart, temperatureChart2"
@@ -29,7 +29,7 @@
                           style="font-size: 14px;"/>
           </o:chart>
 
-          <div class="Col1_1 serif">
+          <div id="Description">
             <h:outputText escape="false"
                           value="A pie chart with each pie sector uniquely colored and the labels positioned on the left and right sides and connected to the sectors with lines."/>
           </div>
@@ -52,7 +52,7 @@
                           style="font-size: 14px;"/>
           </o:chart>
 
-          <div class="Col1_1 serif">
+          <div id="Description">
             <h:outputText escape="false"
                           value="A horizontal bar chart with reversely oriented key and values axes, labels rotated by 45 degrees and dotted vertical grid line."/>
           </div>
@@ -75,7 +75,7 @@
                           style="font-size: 14px;"/>
           </o:chart>
 
-          <div class="Col1_1 serif">
+          <div id="Description">
             <h:outputText escape="false"
                           value="A vertical bar chart displaying 2 data series, legend keys to the left, horizontally oriented key axis with the labels rotated by 45 degrees, and dotted horizontal grid line."/>
           </div>
@@ -99,7 +99,7 @@
             <o:chartAxis style="border: 3px solid red;" domain="both"/>
           </o:chart>
 
-          <div class="Col1_1 serif">
+          <div id="Description">
             <h:outputText escape="false"
                           value="A line chart displaying 3 data series with different markers for each data point, key and values axes, dotted grid lines, and legend keys at the bottom."/>
           </div>
