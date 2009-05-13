@@ -136,7 +136,16 @@
     <condition property="testAppContextPath" value="${test.app.context.path}">
         <isset property="test.app.context.path"/>
     </condition>
-    <echo message="${testAppContextPath}"/>
+
+    <condition property="demoContextPath" value="${demoContext.path}">
+      <not>
+        <isset property="demo.context.path"/>
+      </not>
+    </condition>
+    <condition property="demoContextPath" value="${demo.context.path}">
+        <isset property="demo.context.path"/>
+    </condition>
+
     <junit fork="yes" forkmode="once" failureproperty="junit_test_failed" dir="${funcTests-target.dir}">
       <classpath>
         <pathelement path="${openfaces-jar.file}"/>
@@ -159,7 +168,7 @@
       <sysproperty key="test.app.jsf.implementation" value="${jsf.implementation}"/>
       <sysproperty key="test.app.is.facelets" value="${is.facelets}"/>
       <sysproperty key="test.app.context.path" value="${testAppContextPath}"/>
-      <sysproperty key="demo.context.path" value="${demo.context.path}"/>
+      <sysproperty key="demo.context.path" value="${demoContextPath}"/>
     </junit>
 
     <copy todir="${funcTests-source.dir}">
@@ -175,7 +184,7 @@
     <property name="jsf.implementation" value="SUN12"/>
     <property name="is.facelets" value="false"/>
     <property name="context.path" value="/TestAppJsp_12"/>
-    <property name="demo.context.path" value="/LiveDemo_2x"/>
+    <property name="demoContext.path" value="/LiveDemo_2x"/>
     <antcall target="run-func-tests"/>
   </target>
 
@@ -183,7 +192,7 @@
     <property name="jsf.implementation" value="SUN12"/>
     <property name="is.facelets" value="true"/>
     <property name="context.path" value="/TestAppFacelets_12"/>
-    <property name="demo.context.path" value="/LiveDemoFacelets_2x"/>
+    <property name="demoContext.path" value="/LiveDemoFacelets_2x"/>
     <antcall target="run-func-tests"/>
   </target>
 
