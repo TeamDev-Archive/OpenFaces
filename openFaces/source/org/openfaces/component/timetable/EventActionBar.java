@@ -83,4 +83,9 @@ public class EventActionBar extends OUIPanel {
     public void setActionPressedBackgroundIntensity(double actionPressedBackgroundIntensity) {
         this.actionPressedBackgroundIntensity = actionPressedBackgroundIntensity;
     }
+
+    @Override
+    public void setId(String id) {
+        super.setId("_eventActionBar");  //this component should be only the one at DayTable. See JSFC-3916
+    }
 }

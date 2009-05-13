@@ -181,4 +181,9 @@ public class EventPreview extends UIComponentBase {
     public void setShowingDelay(int showingDelay) {
         this.showingDelay = showingDelay;
     }
+
+    @Override
+    public void setId(String id) {
+        super.setId("_eventPreview");  //this component should be only the one at DayTable. See JSFC-3916
+    }
 }
