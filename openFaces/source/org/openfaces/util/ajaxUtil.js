@@ -1070,7 +1070,7 @@ O$.processErrorDuringAjaxRequest = function(errorMessage, ajaxComponentIds, ajax
       var errorEvent = O$.createEvent("error");
       var result = false;
       try {
-        var result = true;
+        result = true;
         for (var i = 0; i < ajaxComponentIds.length; i++) {
           var ajaxComponentId = ajaxComponentIds[i];
           result = result & OpenFaces.Ajax.Components[ajaxComponentId].onerror(errorEvent);
@@ -1084,7 +1084,7 @@ O$.processErrorDuringAjaxRequest = function(errorMessage, ajaxComponentIds, ajax
         return;
       }
 
-      if (result != false) {
+      if (result) {
         O$.showDefaultAlertAfterException(errorMessage, ajaxObject);
       }
       return;
@@ -1105,7 +1105,7 @@ O$.processErrorDuringAjaxRequest = function(errorMessage, ajaxComponentIds, ajax
       return;
     }
 
-    if (onerrorResult != false) {
+    if (onerrorResult) {
       O$.showDefaultAlertAfterException(errorMessage, ajaxObject);
     }
     return;

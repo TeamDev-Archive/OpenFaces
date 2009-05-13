@@ -32,7 +32,7 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
     private static int eventIdCounter = 0;
 
     List<AbstractTimetableEvent> events = new ArrayList<AbstractTimetableEvent>();
-    static List<AbstractTimetableEvent> reservedTimes = new ArrayList<AbstractTimetableEvent>();
+    List<AbstractTimetableEvent> reservedTimes = new ArrayList<AbstractTimetableEvent>();
 
     public DayTableBean1() {
         Color red1 = new Color(220, 0, 0);
