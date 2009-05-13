@@ -152,10 +152,14 @@ O$._calculateNumericHeightFactor = function(element, useDoubleBuffering) {
 
 O$._storeSizeProperties = function(element) {
   //todo don't support "cm", "in", etc. yet
-  var leftBorderSize = parseInt(O$.getStyleClassProperty(element.className, "border-left-width"));
-  var rightBorderSize = parseInt(O$.getStyleClassProperty(element.className, "border-right-width"));
-  var topBorderSize = parseInt(O$.getStyleClassProperty(element.className, "border-top-width"));
-  var bottomBorderSize = parseInt(O$.getStyleClassProperty(element.className, "border-bottom-width"));
+  var leftBorderWidthValue = parseInt(O$.getStyleClassProperty(element.className, "border-left-width"));
+  var leftBorderSize = isNaN(leftBorderWidthValue) ? 0 : leftBorderWidthValue;
+  var rightBorderWidthValue = parseInt(O$.getStyleClassProperty(element.className, "border-right-width"));
+  var rightBorderSize = isNaN(rightBorderWidthValue) ? 0 : rightBorderWidthValue;
+  var topBorderWidthValue = parseInt(O$.getStyleClassProperty(element.className, "border-top-width"));
+  var topBorderSize = isNaN(topBorderWidthValue) ? 0 : topBorderWidthValue;
+  var bottomBorderWidthValue = parseInt(O$.getStyleClassProperty(element.className, "border-bottom-width"));
+  var bottomBorderSize = isNaN(bottomBorderWidthValue) ? 0 : bottomBorderWidthValue;
   var leftPaddingSize = parseInt(O$.getStyleClassProperty(element.className, "padding-left"));
   var rightPaddingSize = parseInt(O$.getStyleClassProperty(element.className, "padding-right"));
   var topPaddingSize = parseInt(O$.getStyleClassProperty(element.className, "padding-top"));
