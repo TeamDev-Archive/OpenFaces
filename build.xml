@@ -123,10 +123,20 @@
       </fileset>
     </copy>
   </target>
-
+  <property environment="env"/>
   <target name="run-func-tests" depends="compile-func-tests" description="Run functional tests">
 
     <mkdir dir="${funcTests-target-reports.dir}"/>
+
+    <condition property="testAppContextPath" value="${context.path}">
+      <not>
+        <isset property="test.app.context.path"/>
+      </not>
+    </condition>
+    <condition property="testAppContextPath" value="${test.app.context.path}">
+        <isset property="test.app.context.path"/>
+    </condition>
+    <echo message="${testAppContextPath}"/>
     <junit fork="yes" forkmode="once" failureproperty="junit_test_failed" dir="${funcTests-target.dir}">
       <classpath>
         <pathelement path="${openfaces-jar.file}"/>
@@ -148,7 +158,7 @@
       </batchtest>
       <sysproperty key="test.app.jsf.implementation" value="${jsf.implementation}"/>
       <sysproperty key="test.app.is.facelets" value="${is.facelets}"/>
-      <sysproperty key="test.app.context.path" value="${context.path}"/>
+      <sysproperty key="test.app.context.path" value="${testAppContextPath}"/>
       <sysproperty key="demo.context.path" value="${demo.context.path}"/>
     </junit>
 
