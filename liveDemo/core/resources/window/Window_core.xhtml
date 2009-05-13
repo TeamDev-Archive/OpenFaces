@@ -126,7 +126,7 @@ function loadGoogleSite() {
   document.getElementById('form:browserUrlInput').value = "http://www.google.com";
 }
 
-function cancelSubmit(event) {
+function submitBrowserUrl(event) {
   var keynum;
 
   if (window.event) { // IE
@@ -136,7 +136,9 @@ function cancelSubmit(event) {
     keynum = event.which;
   }
 
-  return keynum != 13;
+  if (keynum == 13) {
+    loadUrl();
+  }
 }
 
 function loadUrl() {
@@ -624,8 +626,8 @@ function checkRequestKeys(evt) {
               style="position: absolute;
                          left: 30px;
                          top: 50px;"
-              captionClass="browserCaption"
-              contentStyle=" 100%! important">
+              contentStyle="padding: 0; width: 100% !important;"
+              captionClass="browserCaption">
 
       <f:facet name="caption">
         <h:panelGroup style="text-align: center">
@@ -644,25 +646,33 @@ function checkRequestKeys(evt) {
         <o:minimizeWindowButton imageUrl="./images/mac_inactive.png" rolloverImageUrl="./images/mac_minimize.png"
                                 styleClass="customButton macButton" rolloverClass="buttonRollover"/>
       </o:captionArea>
+      <table style="height: 100%; width: 100%;" cellspacing="0" cellpadding="0">
+        <tr>
+          <td style="border-bottom: 1px solid #bbbbbb;">
+            <h:panelGroup style="width: 100%;">
+              <h:outputText value="Site:" style="color: #9c9c9c;font-weight: bold; padding: 0 2px 0 10px"/>
+              <o:inputText id="browserUrlInput"
+                           onkeydown="return submitBrowserUrl(event);"
+                           focusedStyle="border-color: #7f9db9;"
+                           style="width:85%; border: 1px #ffffff solid; color: #525252;"/>
+              <h:outputLink styleClass="refresh" value="" onclick="loadUrl(); return false;"><h:outputText
+                      style="font-style: italic; color: #9c9c9c" value="Go"/></h:outputLink>
+            </h:panelGroup>
+          </td>
+        </tr>
+        <tr>
+          <td style="height: 94%; width: 100%; margin: 2px 0 2px 0;">
+            <iframe id="browserContent"
+                    frameborder="true"
+                    width="100%"
+                    height="100%"
+                    style="border: none">
 
-      <h:panelGroup style="width: 100%;">
-        <h:outputText value="Site:" style="color: #9c9c9c;font-weight: bold; padding: 0 2px 0 10px"/>
-        <o:inputText id="browserUrlInput"
-                     onkeydown="return cancelSubmit(event);"
-                     focusedStyle="border-color: #7f9db9;"
-                     style="width:85%; border: 1px #ffffff solid; color: #525252;"/>
-        <h:outputLink styleClass="refresh" value="" onclick="loadUrl(); return false;"><h:outputText
-                style="font-style: italic; color: #9c9c9c" value="Go"/></h:outputLink>
-      </h:panelGroup>
+            </iframe>
+          </td>
+        </tr>
+      </table>
 
-      <div style="border: 1px solid #bbbbbb; height: 0; width: 100%; margin: 2px 0 0 0;"/>
-
-      <iframe id="browserContent"
-              frameborder="true"
-              width="100%"
-              height="100%" style="border: none">
-
-      </iframe>
     </o:window>
   </div>
 </td>
