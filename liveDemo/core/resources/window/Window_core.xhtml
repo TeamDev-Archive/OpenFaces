@@ -67,7 +67,7 @@
 
 <div id="component" align="center">
 
-<script type="text/javascript">
+<script type="text/javascript">/*<![CDATA[*/
 function showFullSizeImage(event) {
   var target;
   if (!event) {
@@ -165,6 +165,11 @@ var Calculator = {
     return this.value == "" || this.value == "." ? '0' : this.value;
   },
 
+  formatValue : function(val) {
+    val = "" + val;
+    return val.length >= 13 ? parseFloat(val).toPrecision(7) : val;
+  },
+
   clearAll : function() {
     this.value = "";
     this.clearInput();
@@ -175,25 +180,25 @@ var Calculator = {
   },
 
   clearInput : function () {
-    document.getElementById("form:calcInputField").value = this.stringValue();
+    document.getElementById("form:calcInputField").value = this.formatValue(this.stringValue());
   },
 
   typeNumber : function (character) {
     if (this.calculated) {
       this.clearAll();
     }
-    if (character == '.' &amp;&amp; this.value.indexOf('.') != -1) {
+    if ((character == '.' && this.value.indexOf('.') != -1) || this.value.length >= 13) {
       return;
     }
     this.value = this.value + character;
-    document.getElementById("form:calcInputField").value = this.stringValue();
+    document.getElementById("form:calcInputField").value = this.formatValue(this.stringValue());
     this.calculated = false;
     this.focus();
   },
 
   typeOperation : function (character) {
     if (character == '+' || character == '-' || character == '/' || character == '*') {
-      if (this.operation &amp;&amp; !this.calculated) {
+      if (this.operation && !this.calculated) {
         this.calculate();
       } else if (!this.state) {
         this.state = this.floatValue();
@@ -226,7 +231,7 @@ var Calculator = {
         }
         this.state = this.state / this.floatValue();
       }
-      document.getElementById("form:calcInputField").value = this.state;
+      document.getElementById("form:calcInputField").value = this.formatValue(this.state);
       this.calculated = true;
     }
     this.focus();
@@ -292,6 +297,7 @@ function checkRequestKeys(evt) {
   }
   return false;
 }
+/*]]>*/
 </script>
 <div align="left">
   <h:graphicImage url="./images/openfaces-windows-are.png"/>
