@@ -2194,7 +2194,11 @@ O$.setupArtificialFocus = function(component, focusedClassName, tabindex) {
       this._focusControl.style.left = "";
       this._focusControl.style.top = "";
     }
-    this._focusControl.focus();
+    try {
+      this._focusControl.focus();
+    } catch(e) {
+      //in IE hidden element can't receive focus 
+    }
   }
 
   component.blur = function() {
