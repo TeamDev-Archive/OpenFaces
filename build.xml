@@ -123,7 +123,7 @@
       </fileset>
     </copy>
   </target>
-  <property environment="env"/>
+
   <target name="run-func-tests" depends="compile-func-tests" description="Run functional tests">
 
     <mkdir dir="${funcTests-target-reports.dir}"/>
