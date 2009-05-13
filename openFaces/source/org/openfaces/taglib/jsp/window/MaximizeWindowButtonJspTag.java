@@ -14,6 +14,8 @@ package org.openfaces.taglib.jsp.window;
 import org.openfaces.taglib.internal.window.MaximizeWindowButtonTag;
 import org.openfaces.taglib.jsp.ToggleCaptionButtonJspTag;
 
+import javax.el.ValueExpression;
+
 /**
  * @author Dmitry Pikhulya
  */
@@ -22,27 +24,27 @@ public class MaximizeWindowButtonJspTag extends ToggleCaptionButtonJspTag {
         super(new MaximizeWindowButtonTag());
     }
 
-    public void setRestoreImageUrl(String restoreImageUrl) {
+    public void setRestoreImageUrl(ValueExpression restoreImageUrl) {
         getDelegate().setPropertyValue("restoreImageUrl", restoreImageUrl);
     }
 
-    public void setRestoreRolloverImageUrl(String restoreRolloverImageUrl) {
+    public void setRestoreRolloverImageUrl(ValueExpression restoreRolloverImageUrl) {
         getDelegate().setPropertyValue("restoreRolloverImageUrl", restoreRolloverImageUrl);
     }
 
-    public void setRestorePressedImageUrl(String restorePressedImageUrl) {
+    public void setRestorePressedImageUrl(ValueExpression restorePressedImageUrl) {
         getDelegate().setPropertyValue("restorePressedImageUrl", restorePressedImageUrl);
     }
 
-    public void setMaximizeImageUrl(String maximizeImageUrl) {
+    public void setMaximizeImageUrl(ValueExpression maximizeImageUrl) {
         getDelegate().setPropertyValue("maximizeImageUrl", maximizeImageUrl);
     }
 
-    public void setMaximizeRolloverImageUrl(String maximizeRolloverImageUrl) {
+    public void setMaximizeRolloverImageUrl(ValueExpression maximizeRolloverImageUrl) {
         getDelegate().setPropertyValue("maximizeRolloverImageUrl", maximizeRolloverImageUrl);
     }
 
-    public void setMaximizePressedImageUrl(String maximizePressedImageUrl) {
+    public void setMaximizePressedImageUrl(ValueExpression maximizePressedImageUrl) {
         getDelegate().setPropertyValue("maximizePressedImageUrl", maximizePressedImageUrl);
     }
 }
