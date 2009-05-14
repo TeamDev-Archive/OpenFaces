@@ -3,6 +3,36 @@
      xmlns:o="http://openfaces.org/"
      >
 
+<script type="text/javascript">
+  function showInfoCamus() {
+    O$('popupDemo:infoCamus').showAtXY(
+            d_getElementLeft(O$('popupDemo:smallCamus')) + O$('popupDemo:smallCamus').offsetWidth - 100,
+            d_getElementTop(O$('popupDemo:smallCamus')) - 250);
+    return false;
+  }
+
+  function showInfoHemingway() {
+    O$('popupDemo:infoHemingway').showAtXY(
+            d_getElementLeft(O$('popupDemo:smallHemingway')) + O$('popupDemo:smallHemingway').offsetWidth - 300,
+            d_getElementTop(O$('popupDemo:smallHemingway')) - 200);
+    return false;
+  }
+
+  function showInfoMarquez() {
+    O$('popupDemo:infoMarquez').showAtXY(
+            d_getElementLeft(O$('popupDemo:smallMarquez')) - O$('popupDemo:smallMarquez').offsetWidth - 290,
+            d_getElementTop(O$('popupDemo:smallMarquez')) + 30);
+    return false;
+  }
+
+  function showInfoBrodsky() {
+    O$('popupDemo:infoBrodsky').showAtXY(
+            d_getElementLeft(O$('popupDemo:smallBrodsky')) - O$('popupDemo:smallBrodsky').offsetWidth - 730,
+            d_getElementTop(O$('popupDemo:smallBrodsky')) - 260);
+    return false;
+  }
+</script>
+
 
 <div id="Demo">
 
@@ -13,14 +43,11 @@
   <td valign="bottom">
     <h:graphicImage id="smallCamus"
                     url="../images/popuplayer/Camus_small.JPG" width="116px" height="129px"
-                    onclick="O$('popupDemo:infoCamus').showAtXY(
-                                                    d_getElementLeft(O$('popupDemo:smallCamus')) + O$('popupDemo:smallCamus').offsetWidth + 25,
-                                                    d_getElementTop(O$('popupDemo:smallCamus')) - 78);
-                               return false;"
+                    onclick="return showInfoCamus();"
                     onmouseover="hideAllLayers(); O$('popupDemo:bigCamus').show();"
                     onmousemove="event.cancelBubble=true"/>
     <o:popupLayer id="bigCamus"
-                  left="412"
+                  left="200"
                   top="318"
                   onshow="O$('popupDemo:prizeYearCamus').show();"
                   onhide="O$('popupDemo:prizeYearCamus').hide();"
@@ -31,7 +58,7 @@
     <o:popupLayer id="prizeYearCamus"
                   hidingTimeout="1000"
                   styleClass="year"
-                  left="790"
+                  left="580"
                   top="318"
                   style="z-index: 100;">
       <h:outputText value="1957"/>
@@ -40,15 +67,12 @@
   <td valign="bottom">
     <h:graphicImage id="smallHemingway"
                     url="../images/popuplayer/Hemingway_small.jpg" width="116px" height="129px"
-                    onclick="O$('popupDemo:infoHemingway').showAtXY(
-                                                    d_getElementLeft(O$('popupDemo:smallHemingway')) + O$('popupDemo:smallHemingway').offsetWidth + 5,
-                                                    d_getElementTop(O$('popupDemo:smallHemingway')) - 28);
-                               return false;"
+                    onclick="return showInfoHemingway();"
                     onmouseover="hideAllLayers(); O$('popupDemo:bigHemingway').show();"
                     onmousemove="event.cancelBubble=true"/>
     <o:popupLayer id="bigHemingway"
-                  left="541"
-                  top="320"
+                  left="241"
+                  top="280"
                   onshow="O$('popupDemo:prizeYearHemingway').show();"
                   onhide="O$('popupDemo:prizeYearHemingway').hide();"
                   onmousemove="event.cancelBubble=true"
@@ -57,8 +81,8 @@
     </o:popupLayer>
     <o:popupLayer id="prizeYearHemingway"
                   hidingTimeout="1000"
-                  left="779"
-                  top="320"
+                  left="480"
+                  top="280"
                   styleClass="year"
                   style="z-index: 100;">
       <h:outputText value="1954"/>
@@ -67,15 +91,12 @@
   <td valign="bottom">
     <h:graphicImage id="smallMarquez"
                     url="../images/popuplayer/Marquez_small.jpg" width="116px" height="129px"
-                    onclick="O$('popupDemo:infoMarquez').showAtXY(
-                                                    d_getElementLeft(O$('popupDemo:smallMarquez')) - O$('popupDemo:smallMarquez').offsetWidth - 290,
-                                                    d_getElementTop(O$('popupDemo:smallMarquez')) - 58);
-                               return false;"
+                    onclick="return showInfoMarquez();"
                     onmouseover="hideAllLayers(); O$('popupDemo:bigMarquez').show();"
                     onmousemove="event.cancelBubble=true"/>
     <o:popupLayer id="bigMarquez"
-                  left="402"
-                  top="326"
+                  left="172"
+                  top="290"
                   onshow="O$('popupDemo:prizeYearMarquez').show();"
                   onhide="O$('popupDemo:prizeYearMarquez').hide();"
                   onmousemove="event.cancelBubble=true"
@@ -85,8 +106,8 @@
     </o:popupLayer>
     <o:popupLayer id="prizeYearMarquez"
                   hidingTimeout="1000"
-                  left="877"
-                  top="326"
+                  left="650"
+                  top="290"
                   styleClass="year"
                   style="z-index: 100;">
       <h:outputText value="1982"/>
@@ -95,15 +116,12 @@
   <td valign="bottom">
     <h:graphicImage id="smallBrodsky"
                     url="../images/popuplayer/Brodsky_small.jpg" width="116px" height="129px"
-                    onclick="O$('popupDemo:infoBrodsky').showAtXY(
-                                                    d_getElementLeft(O$('popupDemo:smallBrodsky')) - O$('popupDemo:smallBrodsky').offsetWidth - 290,
-                                                    d_getElementTop(O$('popupDemo:smallBrodsky')) - 68);
-                               return false;"
+                    onclick="return showInfoBrodsky();"
                     onmouseover="hideAllLayers(); O$('popupDemo:bigBrodsky').show();"
                     onmousemove="event.cancelBubble=true"/>
     <o:popupLayer id="bigBrodsky"
-                  left="408"
-                  top="326"
+                  left="160"
+                  top="290"
                   onshow="O$('popupDemo:prizeYearBrodsky').show();"
                   onhide="O$('popupDemo:prizeYearBrodsky').hide();"
                   onmousemove="event.cancelBubble=true"
@@ -113,8 +131,8 @@
     </o:popupLayer>
     <o:popupLayer id="prizeYearBrodsky"
                   hidingTimeout="1000"
-                  left="883"
-                  top="326"
+                  left="640"
+                  top="290"
                   styleClass="year"
                   style="z-index: 100;">
       <h:outputText value="1987"/>
@@ -124,10 +142,7 @@
 <tr>
   <td height="27" valign="top">
     <h:outputLink value=""
-                  onclick="O$('popupDemo:infoCamus').showAtXY(
-                                                  d_getElementLeft(O$('popupDemo:smallCamus')) + O$('popupDemo:smallCamus').offsetWidth + 25,
-                                                  d_getElementTop(O$('popupDemo:smallCamus')) - 28);
-                             return false;">
+                  onclick="return showInfoCamus();">
       <h:outputText value="Albert Camus"/>
     </h:outputLink>
     <o:popupLayer id="infoCamus"
@@ -175,10 +190,7 @@
   </td>
   <td valign="top">
     <h:outputLink value=""
-                  onclick="O$('popupDemo:infoHemingway').showAtXY(
-                                                  d_getElementLeft(O$('popupDemo:smallHemingway')) + O$('popupDemo:smallHemingway').offsetWidth + 25,
-                                                  d_getElementTop(O$('popupDemo:smallHemingway')) - 28);
-                             return false;">
+                  onclick="return showInfoHemingway();">
       <h:outputText value="Ernest Hemingway"/>
     </h:outputLink>
     <o:popupLayer id="infoHemingway"
@@ -222,10 +234,7 @@
   </td>
   <td valign="top">
     <h:outputLink value=""
-                  onclick="O$('popupDemo:infoMarquez').showAtXY(
-                                                  d_getElementLeft(O$('popupDemo:smallMarquez')) - O$('popupDemo:smallMarquez').offsetWidth - 290,
-                                                  d_getElementTop(O$('popupDemo:smallMarquez')) - 28);
-                             return false;">
+                  onclick="return showInfoMarquez();">
       <h:outputText value="Gabriel Garcia Marquez"/>
     </h:outputLink>
     <o:popupLayer id="infoMarquez"
@@ -257,10 +266,7 @@
   </td>
   <td valign="top">
     <h:outputLink value=""
-                  onclick="O$('popupDemo:infoBrodsky').showAtXY(
-                                                  d_getElementLeft(O$('popupDemo:smallBrodsky')) - O$('popupDemo:smallBrodsky').offsetWidth - 290,
-                                                  d_getElementTop(O$('popupDemo:smallBrodsky')) - 28);
-                             return false;">
+                  onclick="return showInfoBrodsky();">
       <h:outputText value="Joseph Brodsky"/>
     </h:outputLink>
     <o:popupLayer id="infoBrodsky"
