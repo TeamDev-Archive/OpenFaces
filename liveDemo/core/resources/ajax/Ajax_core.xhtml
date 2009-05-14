@@ -17,18 +17,19 @@
       }
     </script>
 
-    <h3><h:graphicImage value="../images/ajax/TaskList.png" alt="Task List" styleClass="left"/></h3>
+    <h3><h:graphicImage value="../images/ajax/TaskList.png" alt="Task List"/></h3>
 
-    <div class="taskDemo" style="width: 100%">
-      <o:inputText id="filter" value="#{TaskBean.filter}" promptText="Search" styleClass="left taskInput"
+    <div class="taskDemo" style="width: 100%;overflow:hidden;float:none;">
+      <div>
+      <o:inputText id="filter" value="#{TaskBean.filter}" promptText="Search" styleClass="taskInput"
                    style="margin: 8px 0 0 12px;">
         <o:reloadComponents event="onkeyup"
                             componentIds=":form:taskList, :form:doneList, :form:doneListCaption" requestDelay="500"
                             disableDefault="true">
         </o:reloadComponents>
       </o:inputText>
+      </div>
 
-      <div style="clear:both;"></div>
       <h5>Undone tasks</h5>
       <h:panelGroup id="taskList" styleClass="tasks">
         <o:forEach items="#{TaskBean.tasks}" id="undoneTasks" var="task" statusVar="taskListStatus">
@@ -58,7 +59,9 @@
                          onblur="addTaskBlur();"
                          promptText="Type here to add a new task"
                          onkeydown="return addTask(event);"
-                         promptTextClass="addTaskPrompt" styleClass="taskInput addTask"/>
+                         promptTextClass="addTaskPrompt"
+                         promptTextStyle="background: transparent url(../../images/backgrounds/content_demo.png) repeat-x scroll 0 bottom;"
+                         styleClass="taskInput addTask"/>
           </h:panelGroup>
           <h:commandButton image="../images/ajax/plus.png" alt="Add Task" styleClass="left"
                            style="margin: 3px 0 0 6px; display:none;"
