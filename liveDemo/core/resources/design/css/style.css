@@ -246,3 +246,7 @@ ul.hang li{
 .modalLayerShade {
   background: #B2B2B2;
 }
+
+.emptyDescription {
+  min-height: 786px;
+}
