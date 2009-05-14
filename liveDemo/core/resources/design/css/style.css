@@ -8,7 +8,7 @@ html{
 body{
 	margin:0;
 	padding:0;
-	background:#45515f url(../../images/backgrounds/page_right.jpg) repeat-x left top;
+	background:#191e22 url(../../images/backgrounds/page_right.jpg) repeat-x left top;
 	position:relative;
 	min-width:995px;
 	font: normal 1em/1.4 Tahoma, Arial, Helvetica, sans-serif;
@@ -73,7 +73,7 @@ a img{
 	top:10px; right:.25em;
 	height:62px;
 	width:auto;
-	background:url(../../images/backgrounds/logo.png) no-repeat left top;
+	background:url(../../images/backgrounds/logo_glow.png) no-repeat left top;
 	z-index:100;
 }
 #Logo img{display:block; padding:16px;}
@@ -92,15 +92,15 @@ a img{
 	margin: 0 0 10px 0;
 	overflow:hidden;
 	color:white;
-	background:#333c41 url(../../images/backgrounds/title.png) repeat-x 0 0;
-	border-top: 1px solid #92969b;
-	border-right: 1px solid #232a2f;
-	border-bottom: 1px solid #232a2f;
-	border-left: 1px solid #92969b;
+	background:#428bad url(../../images/backgrounds/title.jpg) repeat-x 0 0;
+	border-top: 1px solid #8ad3e7;
+	border-right: 1px solid #1bb6d3;
+	border-bottom: 1px solid #19b8d4;
+	border-left: 1px solid #85e5f1;
 }
 
 #Title h2{
-	padding:0 5px 0 12px;
+	padding:2px 5px 0 12px;
 	line-height:56px;
 	vertical-align:middle;
 	font-size:32px;
@@ -145,12 +145,12 @@ a img{
 }
 
 #Components{
-	background:#2b3337 url(../../images/backgrounds/components.jpg) no-repeat 0 0;
-	border-top: 1px solid #787b7f;
-	border-right: 1px solid #272b30;
-	border-bottom: 1px solid #21252a;
-	border-left: 1px solid #6c6e75;
-	position:relative; z-index:10;
+	background:#2f393e url(../../images/backgrounds/components.png) repeat-y 0 0;
+	border-top: 1px solid #aec9d5;
+	border-right: 1px solid #34b6c7;
+	border-bottom: 1px solid #7f9599;
+	border-left: 1px solid #acc8d3;
+	position:relative;  z-index:10;
 	bottom:0;
 }
 
@@ -234,6 +234,7 @@ ul.hang li{
 
 .relative{	position:relative; }
 .thin{	font-weight:normal; }
+.png24_alt{display:none;}
 
 
 .modalLayer {

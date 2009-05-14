@@ -1,0 +1,37 @@
+@charset "utf-8";
+/* CSS Document */
+
+#PageBackground div span{
+	display:block;
+	width:347px;
+	height:244px;
+	background:url(../../images/intro/logo_bg.png) no-repeat 0 0;
+	position:absolute;
+	z-index:1;
+	top:0;
+	left:50%;
+	margin-left:-550px;
+}
+
+#Logo{filter:alpha(opacity=40);opacity:.40; background:none;}
+#Components{margin-top:325px;}
+#Content{
+	background:transparent;
+	border:none;
+}
+
+#Content h2{position:absolute; top:33px; left:-231px;}
+#Content .h2{position:absolute; top:157px; left:-137px;}
+#Content .h3{position:absolute; top:210px; left:357px;}
+#Content .h4{position:absolute; top:255px; left:-100px;}
+#Content .h5{position:absolute; top:320px; right:31px;}
+#Content .h6{position:absolute; top:390px; left:90px;}
+#Content .h7{position:absolute; top:460px; left:220px;}
+
+#Thumbs{position:absolute; top:610px; margin:0; padding:0; list-style:none;}
+#Thumbs li{float:left; width:250px; text-align:center;}
+#Thumbs li a{position:relative; display:block; width: 220px; height:220px; overflow:hidden;}
+#Thumbs li a:hover img,
+#Thumbs li a:active img{margin-top:-220px;}
+
+#Floor{background:none;}

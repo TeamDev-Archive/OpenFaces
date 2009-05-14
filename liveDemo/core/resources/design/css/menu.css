@@ -35,17 +35,17 @@
 #Title ul li.active{background:url(../../images/backgrounds/title_active.png) no-repeat 0 0;}
 #Title ul li span{background:url(../../images/backgrounds/title_active_right.png) no-repeat right 0;}
 #Title ul li a{
-	color:#d9d9d9;
+	color:#ebf8ff;
 	text-decoration:none;
 }
 #Title ul li a:hover{
-	color:white;
 	text-decoration:underline;
 }
 
 
 /* Components Menu */
 #Components ul{
+	background:url(../../images/backgrounds/components_ul.jpg) no-repeat 0 0;
 	margin:0;
 	padding:10px 0;
 	list-style:none;
@@ -54,12 +54,13 @@
 	display:block;
 	height:16px;
 	padding:2px 5px 3px 12px;
+	margin:0 1px;
 	color:white;
 	text-decoration:none;
 	overflow:hidden;
 }
-#Components ul li a:hover{background:url(../../images/backgrounds/components_selection.png) no-repeat 0 -21px;}
-#Components ul li a.active{background:url(../../images/backgrounds/components_selection.png) no-repeat 0 0 !important; cursor:default;}
+#Components ul li a:hover{background:url(../../images/backgrounds/components_selection.png) repeat-x 0 -21px;}
+#Components ul li a.active{background:url(../../images/backgrounds/components_selection.png) repeat-x 0 0 !important; cursor:default;}
 #Components ul li a em{float:left; width:16px; height:16px; margin-right:5px; background-repeat:no-repeat;}
 
 #Components ul li a.AjaxFramework em {background-image:url(../../images/components/icons/AjaxFramework.png);}
