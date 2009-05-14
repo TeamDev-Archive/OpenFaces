@@ -166,24 +166,12 @@ public class SuggestionFieldBean implements Serializable {
         List<String> filteredIndustries = filterList(industries, industryParam);
         List<String> filteredDegrees = filterList(degrees, degreeParam);
         List<Hobby> filteredHobbies = filterList(hobbies, hobbyParam);
-        if (!filteredCountries.isEmpty() || !filteredIndustries.isEmpty() || !filteredDegrees.isEmpty() || !filteredHobbies.isEmpty()) {
-            if (filteredCountries.isEmpty()) {
-                filteredCountries = countries;
-            }
-            if (filteredIndustries.isEmpty()) {
-                filteredIndustries = industries;
-            }
-            if (filteredDegrees.isEmpty()) {
-                filteredDegrees = degrees;
-            }
-            if (filteredHobbies.isEmpty()) {
-                filteredHobbies = hobbies;
-            }
+        if (!filteredCountries.isEmpty() && !filteredIndustries.isEmpty()
+                && !filteredDegrees.isEmpty() && !filteredHobbies.isEmpty()) {
             int count = 1 + rand.nextInt(7);
             for (int i = 0; i < count; i++) {
                 String firstLastName = firstNames.get(rand.nextInt(firstNames.size() - 1)) + ", " +
                         lastNames.get(rand.nextInt(lastNames.size() - 1));
-//        int age = 20 + rand.nextInt(15);
                 int countriesIndex = escapeRandomGeneration(rand, filteredCountries.size() - 1);
                 String country = filteredCountries.get(countriesIndex);
                 int industriesIndex = escapeRandomGeneration(rand, filteredIndustries.size() - 1);
@@ -206,14 +194,14 @@ public class SuggestionFieldBean implements Serializable {
 
     private List<String> filterList(List<String> list, String filter) {
         List<String> result = new ArrayList<String>();
-        if (!"".equals(filter)) {
+        if (filter != null && !filter.isEmpty()) {
             for (String item : list) {
                 if (item.toLowerCase().startsWith(filter.toLowerCase())) {
                     result.add(item);
                 }
             }
         } else {
-            result = list; 
+            result = list;
         }
         return result;
     }
@@ -226,6 +214,8 @@ public class SuggestionFieldBean implements Serializable {
                     result.add(item);
                 }
             }
+        } else {
+            result = list;
         }
         return result;
     }
