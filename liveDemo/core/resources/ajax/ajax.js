@@ -58,7 +58,7 @@ function check(element) {
       } else {
         removeClassName(element, "checked");
       }
-      O$.reloadComponents([ 'form:taskList', 'form:doneList' ], {
+      O$.reloadComponents([ 'form:taskList', 'form:doneList', 'form:doneListCaption' ], {
         requestDelay: 500,
         immediate :true
       });

@@ -11,8 +11,8 @@
         <td style="width: 400px; vertical-align: top;">
           <h2>Select a state</h2>
           <h:panelGroup id="statesList" style="line-height:normal;">
-            <o:forEach items="#{BanksList.bankStates}" var="state">
-              <h:commandLink style="text-decoration: none;
+            <o:forEach items="#{BanksList.bankStates}" var="state" id="states">
+              <h:commandLink id="state" style="text-decoration: none;
         color: #{state.stateName eq BanksList.selectedState.stateName ? '#FF8400' : 'gray'}; margin-left: 0.5em; margin-right: 0.5em;">
                 <h:outputText value="#{state.stateName}"
                               style="font-size: #{state.quantity le 3 ? 9 : state.quantity * 3}px;"/>

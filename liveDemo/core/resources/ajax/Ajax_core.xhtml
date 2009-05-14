@@ -31,7 +31,7 @@
       <div style="clear:both;"></div>
       <h5>Undone tasks</h5>
       <h:panelGroup id="taskList" styleClass="tasks">
-        <o:forEach items="#{TaskBean.tasks}" var="task" statusVar="taskListStatus">
+        <o:forEach items="#{TaskBean.tasks}" id="undoneTasks" var="task" statusVar="taskListStatus">
           <h:panelGrid id="taskListItem" onmouseover="this.className='rollover';"
                        onmouseout="this.className='';" columns="3">
             <h:outputLink value="#" styleClass="styledCheckbox #{task.completed?'checked':''}"
@@ -40,7 +40,7 @@
               </h:selectBooleanCheckbox>
             </h:outputLink>
             <h:outputText styleClass="taskText" value="#{task.name}"/>
-            <h:commandLink styleClass="delete">
+            <h:commandLink styleClass="delete" id="delete">
               <h:graphicImage value="../images/ajax/delete.png" alt="Delete Task">
               </h:graphicImage>
               <o:reloadComponents actionListener="#{TaskBean.deleteTask}"
@@ -78,7 +78,7 @@
         </h:panelGroup>
       </h5>
       <h:panelGroup id="doneList" styleClass="tasks">
-        <o:forEach items="#{TaskBean.doneTasks}" var="task" statusVar="taskListStatus">
+        <o:forEach items="#{TaskBean.doneTasks}" var="task" id="doneTasks" statusVar="taskListStatus">
           <h:panelGrid onmouseover="this.className='rollover';"
                        onmouseout="this.className='';" columns="3">
             <h:outputLink value="#" styleClass="left styledCheckbox #{task.completed?'checked':''}"
@@ -87,7 +87,7 @@
               </h:selectBooleanCheckbox>
             </h:outputLink>
             <h:outputText styleClass="taskText" value="#{task.name}"/>
-            <h:commandLink styleClass="delete">
+            <h:commandLink styleClass="delete" id="delete">
               <h:graphicImage value="../images/ajax/delete.png" alt="Delete Task">
               </h:graphicImage>
               <o:reloadComponents actionListener="#{TaskBean.deleteTask}"
