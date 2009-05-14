@@ -1,4 +1,4 @@
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
  "http://www.w3.org/TR/html4/strict.dtd">
  <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -19,60 +19,54 @@
 
   <%@ include file="../template/keywords.xhtml"%>
 
-
   <title>OpenFaces Online Demo &#8212; See Components in action</title>
   <link rel="stylesheet" href="../design/css/style.css" type="text/css" media="screen,projection"/>
+  <link rel="stylesheet" href="../design/css/menu.css" type="text/css" media="screen,projection"/>
+  <link rel="stylesheet" href="../design/css/intro.css" type="text/css" media="screen,projection"/>
   <link rel="stylesheet" href="../design/css/print.css" type="text/css" media="print"/>
   <link rel="stylesheet" href="../design/css/handheld.css" type="text/css" media="handheld"/>
-
-  <link rel="stylesheet" href="homepage.css" type="text/css" media="screen"/>
-
   <!--[if lt IE 7]>
       <link rel="stylesheet" type="text/css" media="all" href="../design/css/style_ie6.css">
       <script src="/js/stylefix.js" type="text/javascript"></script>
   <![endif]-->
-  <link rel="icon" href="../images/icons/favicon.ico" type="image/x-icon"/>
-  <link rel="shortcut icon" href="../images/icons/favicon.ico" type="image/x-icon"/>
+  <link rel="icon" href="../favicon.ico" type="image/x-icon"/>
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon"/>
+  <script src="../design/js/style.js" type="text/javascript"></script>
 
 </head>
 
-<body>
-<div id="Page">
+<body id="Intro">
 
+<div id="PageBackground"><div><span><!-- Background--></span></div></div>
+
+<div id="Page" class="clearfix">
   <f:view>
-    <h:form id="form">
+    <h:form>
 
       <o:ajaxSettings/>
+      
+      <%@ include file="../template/logo.xhtml"%>
 
       <!--start site menu-->
       <%@ include file="../template/siteMenu.xhtml"%>
       <!--end start menu-->
 
-      <div id="Content" class="Component">
-
-        <div class="Text clearfix">
-          <div class="Col4_1">
-            <img src="../images/homepage/index-openfaces.png" width="214" height="46" alt="OpenFaces"
-                 class="titleLogo"/>
-
-            <!--- start menu -->
-            <%@ include file="../template/menu.xhtml"%>
-            <!--- end menu -->
-
-          </div>
-
-          <!-- start content -->
-          <%@ include file="homepage_content.xhtml"%>
-          <!-- end content -->
-
-        </div>
+      <div id="LeftPannel">
+        <!--- start menu -->
+        <%@ include file="../template/menu.xhtml"%>
+        <!--- end menu -->
       </div>
 
-      <%@ include file="../template/footer.xhtml"%>
-
+      <div id="Content">
+        <!-- start content -->
+        <%@ include file="homepage_content.xhtml"%>
+        <!-- end content -->
+      </div>
     </h:form>
   </f:view>
 </div>
 
+<%@ include file="../template/footer.xhtml"%>
+
 </body>
-</html>
+</html> 
