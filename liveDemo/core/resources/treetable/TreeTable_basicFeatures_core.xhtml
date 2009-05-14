@@ -15,7 +15,7 @@
                               nodeHasChildren="#{ForumTreeTableBean.nodeHasChildren}" nodeKey="#{message.id}"/>
       <o:columnResizing/>
       <o:treeColumn id="subject" sortingExpression="#{message.subject}" filterExpression="#{message.subject}"
-                    filterKind="searchField" bodyStyle="text-align: left;">
+                    filterKind="searchField" bodyStyle="text-align: left;" filterCellClass="filterInput">
         <f:facet name="header">
           <h:outputText value="Subject"/>
         </f:facet>

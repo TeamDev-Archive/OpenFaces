@@ -267,3 +267,4 @@ a.HK_holder:hover .HK_holder_right {
   font-family: Tahoma;
 }
 
+.filterInput input {width: 98% !important;}
