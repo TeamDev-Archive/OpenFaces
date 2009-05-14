@@ -5,6 +5,8 @@
 
   <div id="Demo">
 
+    <h3 style="margin-bottom: 1em;">Shopping Cart</h3>
+
     <h:panelGroup id="productsPanel">
       <o:dataTable id="table" value="#{SpinnerBean.products}" var="product" style="width: 100%; border:0;">
 
@@ -35,7 +37,7 @@
                      focusedClass="spinnerFocused"
                      maxValue="#{product.inStock}"
                      minValue="0">
-
+            <f:validateLongRange maximum="10" minimum="0"/>
             <o:reloadComponents requestDelay="500" componentIds=":form:productsPanel"
                                 action="#{SpinnerBean.calculateTotalCost}"
                                 event="onchange"/>
@@ -73,10 +75,8 @@
       </o:dataTable>
 
     </h:panelGroup>
-  </div>
 
-  <div id="Description">
-    <div><small>* Maximum quantity allowed for purchase is 10 items</small><br/><br/></div>
+    <div><small>* Maximum quantity allowed for purchase is 10 items</small></div>
   </div>
 
 
