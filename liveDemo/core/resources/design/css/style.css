@@ -234,3 +234,15 @@ ul.hang li{
 
 .relative{	position:relative; }
 .thin{	font-weight:normal; }
+
+
+.modalLayer {
+  filter: alpha(opacity = 75);
+  -moz-opacity: .75;
+  opacity: .75;
+  background: GhostWhite;
+}
+
+.modalLayerShade {
+  background: #B2B2B2;
+}
