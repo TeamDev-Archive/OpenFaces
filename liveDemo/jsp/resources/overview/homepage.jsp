@@ -74,6 +74,5 @@
   </f:view>
 </div>
 
-<ui:include src="template/script.xhtml"/>
 </body>
 </html>
