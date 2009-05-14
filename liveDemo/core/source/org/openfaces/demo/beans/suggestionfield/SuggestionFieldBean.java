@@ -194,7 +194,7 @@ public class SuggestionFieldBean implements Serializable {
 
     private List<String> filterList(List<String> list, String filter) {
         List<String> result = new ArrayList<String>();
-        if (filter != null && !filter.isEmpty()) {
+        if (!"".equals(filter)) {
             for (String item : list) {
                 if (item.toLowerCase().startsWith(filter.toLowerCase())) {
                     result.add(item);
