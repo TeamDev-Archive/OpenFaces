@@ -41,7 +41,7 @@
               <td style="padding-top: 20px;">
                 <h3>Customization Options</h3>
 
-                <div class="simple_text" style="width: 100%">
+                <div class="simple_text" style="width: 100%; margin: 1em;">
                   Selecting items in this TwoListSelection component affects the appearance and capabilities of the upper
                   TwoListSelection component.
                 </div>
@@ -68,6 +68,7 @@
                        value="#{TwoListSelectionBean.displayableTasks}"
                        rowIndexVar="rowIdx"
                        applyDefaultStyle="false"
+                       headerRowStyle="text-align: left; padding-top: 0.5em;"
                        noDataMessageAllowed="false">
             <o:column>
               <f:facet name="header">
