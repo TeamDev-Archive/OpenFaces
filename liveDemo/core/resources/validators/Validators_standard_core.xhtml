@@ -1,7 +1,6 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:o="http://openfaces.org/"
-     >
+     xmlns:o="http://openfaces.org/">
 
 <div id="Demo">
 
@@ -162,23 +161,24 @@
             style="color: #ff7f7f;"/>
   </div>
 
-</div>
+  <p style="padding-left: 2px;">Click the <b>Submit</b> button to trigger validation.</p>
+  <table>
+    <tr>
+      <td style="padding-right: 20px;">
+        <h:commandButton style="font-weight: bold;" value="Submit"
+                         onclick="return O$.validateFormById('validationForm');"/>
+      </td>
+      <td>
+        <input type="button" value="Enter Invalid Data" onclick="fillInvalidData();"/>
+      </td>
+      <td>
+        <input type="button" value="Enter Valid Data" onclick="fillValidData();"/>
+      </td>
+    </tr>
+  </table>
 
-<p style="padding-left: 2px;">Click the <b>Submit</b> button to trigger validation.</p>
-<table>
-  <tr>
-    <td style="padding-right: 20px;">
-      <h:commandButton style="font-weight: bold;" value="Submit"
-                       onclick="return O$.validateFormById('validationForm');"/>
-    </td>
-    <td>
-      <input type="button" value="Enter Invalid Data" onclick="fillInvalidData();"/>
-    </td>
-    <td>
-      <input type="button" value="Enter Valid Data" onclick="fillValidData();"/>
-    </td>
-  </tr>
-</table>
+
+</div>
 
 
 <div id="Description">

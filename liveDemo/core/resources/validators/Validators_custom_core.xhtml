@@ -1,7 +1,7 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-     >
+        >
 
   <div id="Demo">
 
@@ -103,26 +103,28 @@
       </tr>
     </table>
 
+    <br/>
+
+    <table>
+      <tr>
+        <td style="padding-right: 20px;">
+          <h:commandButton style="font-weight: bold;" value="Submit"
+                           onclick="return O$.validateFormById('validationForm');"/>
+        </td>
+        <td>
+          <input type="button" value="Enter Invalid Data" onclick="fillInvalidData();"/>
+        </td>
+        <td>
+          <input type="button" value="Enter Valid Data" onclick="fillValidData();"/>
+        </td>
+      </tr>
+    </table>
+
+
   </div>
 
-  <br/>
-
-  <table>
-    <tr>
-      <td style="padding-right: 20px;">
-        <h:commandButton style="font-weight: bold;" value="Submit"
-                         onclick="return O$.validateFormById('validationForm');"/>
-      </td>
-      <td>
-        <input type="button" value="Enter Invalid Data" onclick="fillInvalidData();"/>
-      </td>
-      <td>
-        <input type="button" value="Enter Valid Data" onclick="fillValidData();"/>
-      </td>
-    </tr>
-  </table>
-
   <div id="Description">
+    <h4>Shown Functionality</h4>
     The OpenFaces validation framework provides additional set of validators supported both on the client and server side:
     <ul class="hang">
       <li><strong>CustomValidator</strong> - Allows writing custom JavaScript code to validate the value on
