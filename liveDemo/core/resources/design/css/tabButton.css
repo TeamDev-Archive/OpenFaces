@@ -1,8 +1,12 @@
 @charset "utf-8";
 /* CSS Document */
 
-.tabButton,
-.tabButton:hover{
+.tabButton {
+  background-color: transparent;
+}
+
+.tabButton div,
+.tabButton:hover div{
 	display:block;
 	height:22px;
 	background:#c0c1c2 url(../../images/buttons/tabButton.png) repeat-x 0 0;
@@ -15,11 +19,11 @@
 	line-height: 22px;
 	cursor:pointer;
 	text-decoration:none;
-	text-align:center;
+	text-align:center;                
 	outline:none;
 }
-.tabButton:focus,
-.tabButton:active{
+.tabButton:focus div,
+.tabButton:active div{
 	background-position: 0 -22px;
 	background-color:#b5cdd2;
 	border-top:1px solid #aff2ff;
@@ -28,10 +32,10 @@
 	border-left:1px solid #aff2ff;
 }
 
-.tabButton_active,
-.tabButton_active:hover,
-.tabButton_active:focus,
-.tabButton_active:active{
+.tabButton_active div,
+.tabButton_active:hover div,
+.tabButton_active:focus div,
+.tabButton_active:active div{
 	background-position: 0 -44px;
 	background-color:#bdbfbf;
 	border-top:1px solid #9d9e9e;
