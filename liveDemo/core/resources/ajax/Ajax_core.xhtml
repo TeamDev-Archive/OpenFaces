@@ -17,24 +17,31 @@
       }
     </script>
 
-    <h3><h:graphicImage value="../images/ajax/TaskList.png" alt="Task List"/></h3>
+    <table cellspacing="0" cellpadding="0">
+      <tr>
+        <td><h3>Task List</h3></td>
 
+        <td style="vertical-align: top;">
+          <div>
+            <o:inputText id="filter" value="#{TaskBean.filter}" promptText="Search" styleClass="taskInput"
+                         style="margin: 8px 0 0 12px;">
+              <o:reloadComponents event="onkeyup"
+                                  componentIds=":form:taskList, :form:doneList, :form:doneListCaption"
+                                  requestDelay="500"
+                                  disableDefault="true">
+              </o:reloadComponents>
+            </o:inputText>
+          </div>
+        </td>
+      </tr>
+    </table>
     <div class="taskDemo" style="width: 100%;overflow:hidden;float:none;">
-      <div>
-      <o:inputText id="filter" value="#{TaskBean.filter}" promptText="Search" styleClass="taskInput"
-                   style="margin: 8px 0 0 12px;">
-        <o:reloadComponents event="onkeyup"
-                            componentIds=":form:taskList, :form:doneList, :form:doneListCaption" requestDelay="500"
-                            disableDefault="true">
-        </o:reloadComponents>
-      </o:inputText>
-      </div>
 
       <h5>Undone tasks</h5>
       <h:panelGroup id="taskList" styleClass="tasks">
         <o:forEach items="#{TaskBean.tasks}" id="undoneTasks" var="task" statusVar="taskListStatus">
           <h:panelGrid id="taskListItem" onmouseover="this.className='rollover';"
-                       onmouseout="this.className='';" columns="3">
+                       onmouseout="this.className='';" columns="3" cellspacing="0" cellpadding="0">
             <h:outputLink value="#" styleClass="styledCheckbox #{task.completed?'checked':''}"
                           onclick="check(this); return false;">
               <h:selectBooleanCheckbox value="#{task.completed}">
@@ -53,14 +60,13 @@
         </o:forEach>
 
         <div>
-          <h:panelGroup styleClass="taskText" style="padding-left: 0; margin-left: 42px;">
+          <h:panelGroup styleClass="taskText" style="padding-left: 0; margin-left: 37px;">
             <o:inputText id="newTask" value="#{TaskBean.newTaskName}" onfocus="addTaskFocus();"
                          required="true"
                          onblur="addTaskBlur();"
                          promptText="Type here to add a new task"
                          onkeydown="return addTask(event);"
                          promptTextClass="addTaskPrompt"
-                         promptTextStyle="background: transparent url(../../images/backgrounds/content_demo.png) repeat-x scroll 0 bottom;"
                          styleClass="taskInput addTask"/>
           </h:panelGroup>
           <h:commandButton image="../images/ajax/plus.png" alt="Add Task" styleClass="left"
@@ -83,7 +89,7 @@
       <h:panelGroup id="doneList" styleClass="tasks">
         <o:forEach items="#{TaskBean.doneTasks}" var="task" id="doneTasks" statusVar="taskListStatus">
           <h:panelGrid onmouseover="this.className='rollover';"
-                       onmouseout="this.className='';" columns="3">
+                       onmouseout="this.className='';" columns="3" cellspacing="0" cellpadding="0">
             <h:outputLink value="#" styleClass="left styledCheckbox #{task.completed?'checked':''}"
                           onclick="check(this); return false;">
               <h:selectBooleanCheckbox value="#{task.completed}">
@@ -103,61 +109,61 @@
         </o:forEach>
       </h:panelGroup></div>
 
-    </div>
+  </div>
 
   <div id="Description">
-      OpenFaces library has a range of Ajax-powered features built-in in components themselves, and facilities for
-      introducing inter-component Ajax-based interaction using the ReloadComponents component. This is a non-visual
-      component that can be attached to any other JSF component to reload other components when some particular event
-      occurs. Actually ReloadComponents has a wider purpose than just reloading components which makes it possible to
-      perform dynamic page updates to meet a wide range of scenarios that require Ajax page updates.
+    OpenFaces library has a range of Ajax-powered features built-in in components themselves, and facilities for
+    introducing inter-component Ajax-based interaction using the ReloadComponents component. This is a non-visual
+    component that can be attached to any other JSF component to reload other components when some particular event
+    occurs. Actually ReloadComponents has a wider purpose than just reloading components which makes it possible to
+    perform dynamic page updates to meet a wide range of scenarios that require Ajax page updates.
 
-      Here are the major features of the ReloadComponents component:
-      <ul class="hang">
-        <li><strong>Reloading components</strong> - The main purpose of this component is to reload one or
-          more components with Ajax without reloading the whole page. Just specify the comma-separated list of component
-          ids in the "componentIds" attribute.
-        </li>
-        <li><strong>Two ways of attaching to components</strong> - You can either embed &lt;o:reloadComponents>
-          tag right into the component that initiates Ajax reload, or attach to a component using the "for" attribute.
-        </li>
-        <li><strong>Standalone mode for programmatic usage</strong> - Declare standalone="true" attribute,
-          and it becomes possible to run Ajax reload programmatically. This is especially useful for complex scenarios
-          with conditional reloads, or when the same ReloadComponents component should be reused in different places.
-        </li>
-        <li><strong>Submitting additional components</strong> - Specifying a comma-separated component ids in
-          the "submittedComponentIds" attribute includes data from other components into the reload procedure.
-          This is useful when the reloaded data or server action depends on data in various page's components.
-        </li>
-        <li><strong>Executing server action</strong> - Specifying the "action" attribute allows executing
-          a server action before reloading the components.
-        </li>
-        <li><strong>Avoiding frequent requests</strong> - Sends only one request in case of several events
-          during the short period of time specified with the "requestDelay" attribute.
-        </li>
-        <li><strong>Ajax request lifecycle events</strong> - Use "onajaxstart", "onajaxend", and "onerror" events
-          to implement additional logic that is bound to the ajax reloading process itself.
-        </li>
-      </ul>
-      <br/>
-      Another valuable facility is an AjaxSettings component that allows customizing various aspects of Ajax
-      functionality on a page:
-      <ul class="hang">
-        <li><strong>Customizing ajax progress message</strong> - It is possible to change the text, style and
-          image displayed in the Ajax progress message, or it is possible to fully redefine the progress message by
-          specifying its HTML source.
-        </li>
-        <li><strong>Customizing session expiration message</strong> - Any Ajax action on an expired session
-          leads to showing a message where the user chooses either to reload the page or cancel the action. The
-          AjaxSettings component can be used to define the policy on handling session expiration: showing a message, or
-          silent page reload.
-        </li>
-        <li><strong>Page-wide Ajax request lifecycle events</strong> - The AjaxSettings component allows
-          receiving notifications for tracking Ajax request state on a page level using the "onajaxstart", "onajaxend",
-          "onerror", and "onsessionexpired" events.
-        </li>
-      </ul>
-
-    </div>
+    Here are the major features of the ReloadComponents component:
+    <ul class="hang">
+      <li><strong>Reloading components</strong> - The main purpose of this component is to reload one or
+        more components with Ajax without reloading the whole page. Just specify the comma-separated list of component
+        ids in the "componentIds" attribute.
+      </li>
+      <li><strong>Two ways of attaching to components</strong> - You can either embed &lt;o:reloadComponents>
+        tag right into the component that initiates Ajax reload, or attach to a component using the "for" attribute.
+      </li>
+      <li><strong>Standalone mode for programmatic usage</strong> - Declare standalone="true" attribute,
+        and it becomes possible to run Ajax reload programmatically. This is especially useful for complex scenarios
+        with conditional reloads, or when the same ReloadComponents component should be reused in different places.
+      </li>
+      <li><strong>Submitting additional components</strong> - Specifying a comma-separated component ids in
+        the "submittedComponentIds" attribute includes data from other components into the reload procedure.
+        This is useful when the reloaded data or server action depends on data in various page's components.
+      </li>
+      <li><strong>Executing server action</strong> - Specifying the "action" attribute allows executing
+        a server action before reloading the components.
+      </li>
+      <li><strong>Avoiding frequent requests</strong> - Sends only one request in case of several events
+        during the short period of time specified with the "requestDelay" attribute.
+      </li>
+      <li><strong>Ajax request lifecycle events</strong> - Use "onajaxstart", "onajaxend", and "onerror" events
+        to implement additional logic that is bound to the ajax reloading process itself.
+      </li>
+    </ul>
+    <br/>
+    Another valuable facility is an AjaxSettings component that allows customizing various aspects of Ajax
+    functionality on a page:
+    <ul class="hang">
+      <li><strong>Customizing ajax progress message</strong> - It is possible to change the text, style and
+        image displayed in the Ajax progress message, or it is possible to fully redefine the progress message by
+        specifying its HTML source.
+      </li>
+      <li><strong>Customizing session expiration message</strong> - Any Ajax action on an expired session
+        leads to showing a message where the user chooses either to reload the page or cancel the action. The
+        AjaxSettings component can be used to define the policy on handling session expiration: showing a message, or
+        silent page reload.
+      </li>
+      <li><strong>Page-wide Ajax request lifecycle events</strong> - The AjaxSettings component allows
+        receiving notifications for tracking Ajax request state on a page level using the "onajaxstart", "onajaxend",
+        "onerror", and "onsessionexpired" events.
+      </li>
+    </ul>
 
   </div>
+
+</div>

@@ -33,7 +33,7 @@
   <script src="../design/js/style.js" type="text/javascript"></script>
 
 
-  <link rel="stylesheet" href="inputtext.css" type="text/css" media="handheld"/>
+  <link rel="stylesheet" href="inputtext.css" type="text/css" media="screen,projection"/>
 </head>
 
 <body>

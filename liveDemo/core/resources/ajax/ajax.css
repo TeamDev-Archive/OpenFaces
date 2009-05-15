@@ -18,7 +18,8 @@ h5 {
 .styledCheckbox {
   display: block;
   width: 22px;
-  height: 27px;
+  height: 30px;
+  margin-left: 5px;
   background: url("../images/ajax/unchecked.png") no-repeat 0 5px;
 }
 
@@ -31,7 +32,7 @@ h5 {
 }
 
 .rollover {
-  background-color: #fff8ea;
+  background-color: #f6faff;
 }
 
 .tasks {
@@ -51,7 +52,7 @@ h5 {
   float: left;
   padding: 3px 0 0 10px;
   width: 400px;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .delete {
@@ -74,7 +75,6 @@ h5 {
 
 .addTaskPrompt {
   color: #adabab;
-  border: 1px #fff solid !important;
 }
 
 .taskInput {
