@@ -164,12 +164,13 @@ a img{
 	border-bottom: 1px solid #d7d7d8;
 	border-left: 1px solid white;
 	position:relative; z-index:100;
+  zoom: 1;
 }
 
 #Demo{
 	padding:20px 10px 20px 20px;
 	background:url(../../images/backgrounds/content_demo.png) repeat-x 0 bottom;
-  width: 720px;
+  width: 720px;  
 }
 
 #Description{
