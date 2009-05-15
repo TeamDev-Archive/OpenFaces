@@ -9,11 +9,14 @@ function fixheight() {
 
   if (document.getElementById('LeftPannel') && document.getElementById('Content')) {
     if (ie6) {
-      document.getElementById('Content').style.height = (document.getElementById('LeftPannel').offsetHeight - 2) + 'px';
+      if (document.getElementById('LeftPannel').offsetHeight > document.getElementById('Content').offsetHeight) {
+        document.getElementById('Content').style.height = (document.getElementById('LeftPannel').offsetHeight - 2) + 'px';
+      }
     } else {
       document.getElementById('Content').style.minHeight = (document.getElementById('LeftPannel').offsetHeight - 2) + 'px';
     }
   }
+
 }
 
 function setEventHandler(element, eventName, eventScript, useCapture) {
