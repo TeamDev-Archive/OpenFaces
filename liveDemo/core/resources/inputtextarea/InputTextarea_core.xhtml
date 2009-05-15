@@ -1,46 +1,46 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-     >
+        >
 
-  <div id="component" >
+  <div id="Demo">
 
-      <h4>Tell us what you think</h4>
+    <h3>Tell us what you think</h3>
 
-      <h:panelGroup id="tellusGroup">
-        <h:panelGroup rendered="#{!InputTextareaBean.successfullySent}">
+    <h:panelGroup id="tellusGroup">
+      <h:panelGrid rendered="#{!InputTextareaBean.successfullySent}" columns="1">
 
         <o:inputTextarea id="tellusText"
                          value="#{InputTextareaBean.feedback}"
-          promptTextClass="empty"
-          promptTextStyle="overflow: auto;"
-          style="overflow: auto;margin-top:2px;width:450px;height:150px;background-color:beige;"
-          promptText="If you want to get a feedback, please leave your email with the message" />
+                         promptTextClass="empty"
+                         promptTextStyle="overflow: auto; color: #d0d9e0; font-style: italic;"
+                         style="overflow: auto; margin-top: 2px; width: 450px; height: 150px; background: url('../images/inputtextarea/textarea_back.jpg') no-repeat 0 0; color: #fff; font-size: 1.5em;"
+                         promptText="If you want to get a feedback, please leave your email with the message."/>
 
-        <div style="padding-top:3px;">
-          <h:commandButton id="tellusButton" value="Send" >
+        <h:panelGroup style="padding-top:3px; text-align: right; display: block;">
+          <h:commandButton id="tellusButton" value="Send Us Your Opinion">
             <o:reloadComponents
-             action="#{InputTextareaBean.send}"
-             event="onclick"
-             disableDefault="true"
-             componentIds=":form:tellusGroup"/>
+                    action="#{InputTextareaBean.send}"
+                    event="onclick"
+                    disableDefault="true"
+                    componentIds=":form:tellusGroup"/>
           </h:commandButton>
-        </div>
         </h:panelGroup>
+      </h:panelGrid>
 
-        <h:panelGrid id="tellusSuccess" rendered="#{InputTextareaBean.successfullySent}">            
-            <h:outputText value="Following feedback was accepted:"/>
-            <o:inputTextarea
-                    style="font-style:italic; width:450px;height:150px;"
-                    readonly="true"
-                    value="#{InputTextareaBean.feedback}"/>
-            <h:outputText value="Your opinion is very important to us."/>          
-        </h:panelGrid>
+      <h:panelGrid id="tellusSuccess" rendered="#{InputTextareaBean.successfullySent}">
+        <h:outputText value="Following feedback was accepted:"/>
+        <h:panelGroup
+                style="display: block; overflow: auto; margin-top: 2px; width: 450px; height: 150px; font-size: 1.5em;">
+          <h:outputText value="#{InputTextareaBean.feedback}"/>
+        </h:panelGroup>
+        <h:outputText value="Thank you. Your opinion is very important to us."/>
+      </h:panelGrid>
 
-         <br/>
-    <h:commandLink value="Submit more feedback" rendered="#{InputTextareaBean.successfullySent}"/>
+      <br/>
+      <h:commandLink value="Submit more feedback" rendered="#{InputTextareaBean.successfullySent}"/>
 
-      </h:panelGroup>
+    </h:panelGroup>
 
   </div>
 
@@ -48,10 +48,12 @@
   <div id="Description">
     <h4>Shown Functionality</h4>
     <ul class="hang">
-      <li><strong>Displaying prompt text</strong> - You can use the <i>promptText</i> attribute if you'd like to display helper text when text field's value is empty.
-        See demo promt text in the feedback form above. 
+      <li><strong>Displaying prompt text</strong> - You can use the
+        <i>promptText</i> attribute if you'd like to display helper text when text field's value is empty.
+        See demo promt text in the feedback form above.
       </li>
-      <li><strong>Extended styling</strong> - You can apply styles for the Input Textarea component when it's in a normal, focused or rollover state.
+      <li>
+        <strong>Extended styling</strong> - You can apply styles for the Input Textarea component when it's in a normal, focused or rollover state.
         Demo component's background color is changed to beige.
       </li>
     </ul>
