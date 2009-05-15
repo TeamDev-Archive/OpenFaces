@@ -146,7 +146,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
                 sidePanel.getMinSize(),
                 sidePanel.getMaxSize(),
                 sidePanel.isCollapsible(),
-                sidePanel.isResizeable(),
+                sidePanel.isResizable(),
                 sidePanel.getCollapsed(),
                 RenderingUtil.getRolloverClass(context, sidePanel),
                 getSplitterRolloverClass(context, sidePanel),

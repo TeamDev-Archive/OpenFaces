@@ -35,7 +35,7 @@ public class WindowTag extends AbstractWindowTag {
         super.setComponentProperties(facesContext, component);
 
         Window window = (Window) component;
-        setBooleanProperty(window, "resizeable");
+        setBooleanProperty(window, "resizable");
         setStringProperty(window, "minWidth");
         setStringProperty(window, "minHeight");
     }

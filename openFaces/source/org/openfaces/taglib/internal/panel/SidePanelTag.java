@@ -40,7 +40,7 @@ public class SidePanelTag extends AbstractPanelWithCaptionTag {
         setStringProperty(component, "splitterRolloverStyle");
         setStringProperty(component, "splitterClass");
         setStringProperty(component, "splitterRolloverClass");
-        setBooleanProperty(component, "resizeable");
+        setBooleanProperty(component, "resizable");
         setBooleanProperty(component, "collapsible");
         setBooleanProperty(component, "collapsed");
         setStringProperty(component, "onsplitterdrag");

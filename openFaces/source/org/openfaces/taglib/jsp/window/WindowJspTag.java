@@ -29,8 +29,8 @@ public class WindowJspTag extends AbstractWindowJspTag {
         super(delegate);
     }
 
-    public void setResizeable(ValueExpression resizeable) {
-        getDelegate().setPropertyValue("resizeable", resizeable);
+    public void setResizable(ValueExpression resizable) {
+        getDelegate().setPropertyValue("resizable", resizable);
     }
 
     public void setWidth(ValueExpression width) {

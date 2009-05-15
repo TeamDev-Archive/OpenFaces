@@ -26,7 +26,7 @@ public class BaseColumn extends UIColumn {
     private String valign;
     private String width;
 
-    private Boolean resizeable;
+    private Boolean resizable;
     private String minResizingWidth;
 
     private String style;
@@ -75,7 +75,7 @@ public class BaseColumn extends UIColumn {
 
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, align, valign, width, resizeable, minResizingWidth,
+        return new Object[]{superState, align, valign, width, resizable, minResizingWidth,
                 style, styleClass, headerStyle, headerClass,
                 filterCellStyle, filterCellClass, bodyStyle, bodyClass, footerStyle, footerClass,
                 onclick, ondblclick, onmousedown, onmouseover, onmousemove,
@@ -93,7 +93,7 @@ public class BaseColumn extends UIColumn {
         align = (String) state[i++];
         valign = (String) state[i++];
         width = (String) state[i++];
-        resizeable = (Boolean) state[i++];
+        resizable = (Boolean) state[i++];
         minResizingWidth = (String) state[i++];
         style = (String) state[i++];
         styleClass = (String) state[i++];
@@ -159,12 +159,12 @@ public class BaseColumn extends UIColumn {
         this.width = width;
     }
 
-    public boolean isResizeable() {
-        return ValueBindings.get(this, "resizeable", resizeable, true);
+    public boolean isResizable() {
+        return ValueBindings.get(this, "resizable", resizable, true);
     }
 
-    public void setResizeable(boolean resizeable) {
-        this.resizeable = resizeable;
+    public void setResizable(boolean resizable) {
+        this.resizable = resizable;
     }
 
     public String getMinResizingWidth() {

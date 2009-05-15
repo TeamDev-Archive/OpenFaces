@@ -389,7 +389,7 @@ public class Confirmation extends AbstractWindow implements OUIClientAction {
         this.standalone = standalone;
     }
 
-    protected boolean isResizeableByDefault() {
+    protected boolean isResizableByDefault() {
         return false;
     }
 

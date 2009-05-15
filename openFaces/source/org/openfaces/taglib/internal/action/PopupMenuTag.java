@@ -60,14 +60,14 @@ public class PopupMenuTag extends AbstractComponentTag {
         setStringProperty(uiComponent, "selectedItemClass");
         setStringProperty(uiComponent, "disabledItemStyle");
         setStringProperty(uiComponent, "disabledItemClass");
-        setStringProperty(uiComponent, "contentItemStyle");
-        setStringProperty(uiComponent, "contentItemClass");
+        setStringProperty(uiComponent, "itemContentStyle");
+        setStringProperty(uiComponent, "itemContentClass");
         setStringProperty(uiComponent, "indentStyle");
         setStringProperty(uiComponent, "indentClass");
-        setStringProperty(uiComponent, "indentItemStyle");
-        setStringProperty(uiComponent, "indentItemClass");
-        setStringProperty(uiComponent, "submenuIconItemStyle");
-        setStringProperty(uiComponent, "submenuIconItemClass");
+        setStringProperty(uiComponent, "itemIndentStyle");
+        setStringProperty(uiComponent, "itemIndentClass");
+        setStringProperty(uiComponent, "itemSubmenuIconStyle");
+        setStringProperty(uiComponent, "itemSubmenuIconClass");
         setStringProperty(uiComponent, "selectedDisabledItemStyle");
         setStringProperty(uiComponent, "selectedDisabledItemClass");
 

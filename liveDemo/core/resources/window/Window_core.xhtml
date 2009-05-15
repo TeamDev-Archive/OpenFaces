@@ -310,12 +310,12 @@ function checkRequestKeys(evt) {
   <div class="application">
 
     <img src="./images/dragndroppable.png"
-         onclick="O$('form:unresizeable_win').show(); Calculator.clearAll(); return false;"
+         onclick="O$('form:unresizable_win').show(); Calculator.clearAll(); return false;"
          style="cursor: pointer;"
          title="Calculator"/>
 
-    <o:window id="unresizeable_win"
-              resizeable="false"
+    <o:window id="unresizable_win"
+              resizable="false"
               styleClass="window"
               style="position: absolute;
                    right: 130px;
@@ -433,13 +433,13 @@ function checkRequestKeys(evt) {
   <!-- Image galary   -->
   <div class="application">
     <img src="./images/resizable.png"
-         onclick="O$('form:resizeable_win').show(); return false;"
+         onclick="O$('form:resizable_win').show(); return false;"
          style="cursor: pointer;"
          title="Image Gallery"/>
 
     <div align="center">
       <o:window id="full_size_image_win"
-                resizeable="false"
+                resizable="false"
                 modal="true"
                 styleClass="window"
                 captionStyle="background: #bbbbbb;
@@ -467,8 +467,8 @@ function checkRequestKeys(evt) {
       </o:window>
     </div>
 
-    <o:window id="resizeable_win"
-              resizeable="true"
+    <o:window id="resizable_win"
+              resizable="true"
               modal="false"
 
               style="position: absolute; left: -110px; top: 130px; padding:10px;"
@@ -547,7 +547,7 @@ function checkRequestKeys(evt) {
          title="Calendar"/>
 
     <o:window id="modal_win"
-              resizeable="false"
+              resizable="false"
               modal="true"
               styleClass="window"
               style="position: absolute; right: 150px; top: 160px"
@@ -579,7 +579,7 @@ function checkRequestKeys(evt) {
          title="Openfaces documentation site"/>
 
     <o:window id="documentationSite_win"
-              resizeable="true"
+              resizable="true"
               width="800px"
               height="500px"
               styleClass="window"
@@ -625,7 +625,7 @@ function checkRequestKeys(evt) {
          title="Web Browser"/>
 
     <o:window id="webBrowser_win"
-              resizeable="true"
+              resizable="true"
               width="800px"
               height="600px"
               styleClass="window"
@@ -685,10 +685,10 @@ function checkRequestKeys(evt) {
 </tr>
 <tr>
   <td align="center"><h:outputLink styleClass="commandLink"
-                                   onclick="O$('form:unresizeable_win').show(); Calculator.clearAll(); return false;"
+                                   onclick="O$('form:unresizable_win').show(); Calculator.clearAll(); return false;"
           >Drag-and-droppable</h:outputLink></td>
   <td align="center"><h:outputLink styleClass="commandLink"
-                                   onclick="O$('form:resizeable_win').show(); return false;">Resizable</h:outputLink>
+                                   onclick="O$('form:resizable_win').show(); return false;">Resizable</h:outputLink>
   </td>
   <td align="center"><h:outputLink styleClass="commandLink"
                                    onclick="O$('form:modal_win').show(); return false;">Modal</h:outputLink></td>
@@ -709,7 +709,7 @@ function checkRequestKeys(evt) {
       <i>Drag-and-droppable</i> icon and you can see the draggable window,
       that can be dragged around on the page
     </li>
-    <li><strong>Resizing</strong> - Click on the <i>Resizable</i> icon and you can see the resizeable window
+    <li><strong>Resizing</strong> - Click on the <i>Resizable</i> icon and you can see the resizable window
     </li>
     <li><strong>Modality</strong> - Click on the <i>Modal</i> icon and you can see the modal window
     </li>

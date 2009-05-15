@@ -51,7 +51,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
     private String valign;
     private String width;
 
-    private Boolean resizeable;
+    private Boolean resizable;
     private String minResizingWidth;
 
     private String style;
@@ -114,7 +114,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         return new Object[]{
                 super.saveState(context), prevValueFromBinding,
                 columnRendered, var, sortingEnabled, sortingComparator, filterKind, filterPromptText,
-                align, valign, width, resizeable, minResizingWidth,
+                align, valign, width, resizable, minResizingWidth,
                 style, styleClass, headerStyle, headerClass,
                 filterCellStyle, filterCellClass, bodyStyle, bodyClass, footerStyle, footerClass,
                 filterPromptTextStyle, filterPromptTextClass,
@@ -142,7 +142,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         align = (String) state[i++];
         valign = (String) state[i++];
         width = (String) state[i++];
-        resizeable = (Boolean) state[i++];
+        resizable = (Boolean) state[i++];
         minResizingWidth = (String) state[i++];
         style = (String) state[i++];
         styleClass = (String) state[i++];
@@ -323,12 +323,12 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         this.width = width;
     }
 
-    public boolean isResizeable() {
-        return ValueBindings.get(this, "resizeable", resizeable, true);
+    public boolean isResizable() {
+        return ValueBindings.get(this, "resizable", resizable, true);
     }
 
-    public void setResizeable(boolean resizeable) {
-        this.resizeable = resizeable;
+    public void setResizable(boolean resizable) {
+        this.resizable = resizable;
     }
 
     public String getMinResizingWidth() {
@@ -717,7 +717,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
                 }
                 column.setRendered(getColumnRendered());
 
-                String[] copiedAttributes = new String[]{"width", "align", "valign", "resizeable", "minResizingWidth",
+                String[] copiedAttributes = new String[]{"width", "align", "valign", "resizable", "minResizingWidth",
                         "style", "styleClass", "headerStyle", "headerClass", "filterCellStyle", "filterCellClass",
                         "bodyStyle", "bodyClass", "footerStyle", "footerClass",
                         "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove", "onmouseout", "onmouseup",

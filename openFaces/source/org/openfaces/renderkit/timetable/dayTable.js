@@ -906,9 +906,9 @@ O$._initDayTable = function(componentId,
         return;
       }
       var actionBar = getEventActionBar();
-      var elementResizeable = eventElement._topResizeHandle || eventElement._bottomResizeHandle;
+      var elementResizable = eventElement._topResizeHandle || eventElement._bottomResizeHandle;
       event._setMouseInside(eventElement._mouseInside ||
-                            elementResizeable && (eventElement._topResizeHandle._mouseInside || eventElement._bottomResizeHandle._mouseInside) ||
+                            elementResizable && (eventElement._topResizeHandle._mouseInside || eventElement._bottomResizeHandle._mouseInside) ||
                             (actionBar._event == event && actionBar._actionsArea._mouseInside));
     }
 

@@ -1406,11 +1406,11 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
 
       var thisColumnParams = columnParams[colIndex];
       if (thisColumnParams) {
-        col._resizeable = thisColumnParams.resizeable;
+        col._resizable = thisColumnParams.resizable;
         col._minResizingWidth = thisColumnParams.minWidth;
       }
-      if (col._resizeable == undefined)
-        col._resizeable = true;
+      if (col._resizable == undefined)
+        col._resizable = true;
       if (col._minResizingWidth == undefined)
         col._minResizingWidth = minColWidth;
       col._minResizingWidth = O$.calculateNumericCSSValue(col._minResizingWidth);
@@ -1523,7 +1523,7 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
       if (retainTableWidth) {
         for (var i = table._columns.length - 1; i >= 0; i--) {
           var c = table._columns[i];
-          if (c._resizeable) {
+          if (c._resizable) {
             widthCompensationColIndex = i;
             break;
           }
@@ -1532,7 +1532,7 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
       if (widthCompensationColIndex != -1 && colIndex >= widthCompensationColIndex)
         continue;
 
-      if (!column._resizeable)
+      if (!column._resizable)
         continue;
       var resizeHandle = document.createElement("div");
       resizeHandle.style.cursor = "e-resize"

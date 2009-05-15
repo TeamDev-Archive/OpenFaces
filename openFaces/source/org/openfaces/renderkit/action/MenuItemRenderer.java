@@ -73,8 +73,8 @@ public class MenuItemRenderer extends RendererBase {
         writeAttribute(writer, "id", menuItem.getClientId(context) + SPAN_SUFIX);
 
         String contentClass = StyleUtil.getCSSClass(context, menuItem, menuItem.getContentAreaStyle(), StyleGroup.regularStyleGroup(),
-                menuItem.getContentAreaClass(), StyleUtil.getCSSClass(context, popupMenu, popupMenu.getContentItemStyle(), StyleGroup.regularStyleGroup(),
-                        popupMenu.getContentItemClass(), DEFAULT_CONTENT_CLASS));
+                menuItem.getContentAreaClass(), StyleUtil.getCSSClass(context, popupMenu, popupMenu.getItemContentStyle(), StyleGroup.regularStyleGroup(),
+                        popupMenu.getItemContentClass(), DEFAULT_CONTENT_CLASS));
 
         writeAttribute(writer, "class", contentClass);
 
@@ -142,8 +142,8 @@ public class MenuItemRenderer extends RendererBase {
             writeAttribute(writer, "id", menuItem.getClientId(context) + IMG_SPAN_SUFIX);
 
             String indentAreaClass = StyleUtil.getCSSClass(context, menuItem, menuItem.getIndentAreaStyle(), StyleGroup.regularStyleGroup(),
-                    menuItem.getIndentAreaClass(), StyleUtil.getCSSClass(context, popupMenu, popupMenu.getIndentItemStyle(), StyleGroup.regularStyleGroup(),
-                            popupMenu.getIndentItemClass(), DEFAULT_INDENT_CLASS));
+                    menuItem.getIndentAreaClass(), StyleUtil.getCSSClass(context, popupMenu, popupMenu.getItemIndentStyle(), StyleGroup.regularStyleGroup(),
+                            popupMenu.getItemIndentClass(), DEFAULT_INDENT_CLASS));
             writeAttribute(writer, "class", indentAreaClass);
 
             writer.startElement("span", menuItem);
@@ -176,8 +176,8 @@ public class MenuItemRenderer extends RendererBase {
         writeAttribute(writer, "id", menuItem.getClientId(context) + ARROW_SPAN_SUFIX);
         //todo
         String submenuIconAreaClass = StyleUtil.getCSSClass(context, menuItem, menuItem.getSubmenuIconAreaStyle(), StyleGroup.regularStyleGroup(),
-                menuItem.getSubmenuIconAreaClass(), StyleUtil.getCSSClass(context, popupMenu, popupMenu.getSubmenuIconItemStyle(), StyleGroup.regularStyleGroup(),
-                        popupMenu.getSubmenuIconItemClass(), DEFAULT_ARROW_SPAN_CLASS));
+                menuItem.getSubmenuIconAreaClass(), StyleUtil.getCSSClass(context, popupMenu, popupMenu.getItemSubmenuIconStyle(), StyleGroup.regularStyleGroup(),
+                        popupMenu.getItemSubmenuIconClass(), DEFAULT_ARROW_SPAN_CLASS));
         writeAttribute(writer, "class", submenuIconAreaClass);
         if (popupMenuChild != null) {
             String submenuImageUrl = menuItem.getSubmenuImageUrl();

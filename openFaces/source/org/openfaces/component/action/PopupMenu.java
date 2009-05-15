@@ -56,12 +56,12 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction {
     private String selectedItemClass;
     private String disabledItemStyle;
     private String disabledItemClass;
-    private String contentItemStyle;// todo: consider renaming to itemContentStyle/Class
-    private String contentItemClass;
-    private String indentItemStyle;// todo: consider renaming to itemIndentStyle/Class
-    private String indentItemClass;
-    private String submenuIconItemStyle;// todo: consider renaming to itemSugmenuIconStyle/Class
-    private String submenuIconItemClass;
+    private String itemContentStyle;
+    private String itemContentClass;
+    private String itemIndentStyle;
+    private String itemIndentClass;
+    private String itemSubmenuIconStyle;
+    private String itemSubmenuIconClass;
     private String indentStyle;
     private String indentClass;
 
@@ -376,51 +376,51 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction {
         return result;
     }
 
-    public void setIndentItemStyle(String indentItemStyle) {
-        this.indentItemStyle = indentItemStyle;
+    public void setItemIndentStyle(String itemIndentStyle) {
+        this.itemIndentStyle = itemIndentStyle;
     }
 
-    public String getIndentItemStyle() {
-        String result = ValueBindings.get(this, "indentItemStyle", indentItemStyle);
+    public String getItemIndentStyle() {
+        String result = ValueBindings.get(this, "itemIndentStyle", itemIndentStyle);
         if (result == null && getPopupMenuParent() != null) {
-            result = getPopupMenuParent().indentItemStyle;
+            result = getPopupMenuParent().itemIndentStyle;
         }
         return result;
     }
 
-    public void setIndentItemClass(String indentItemClass) {
-        this.indentItemClass = indentItemClass;
+    public void setItemIndentClass(String itemIndentClass) {
+        this.itemIndentClass = itemIndentClass;
     }
 
-    public String getIndentItemClass() {
-        String result = ValueBindings.get(this, "indentItemClass", indentItemClass);
+    public String getItemIndentClass() {
+        String result = ValueBindings.get(this, "itemIndentClass", itemIndentClass);
         if (result == null && getPopupMenuParent() != null) {
-            result = getPopupMenuParent().indentItemClass;
+            result = getPopupMenuParent().itemIndentClass;
         }
         return result;
     }
 
 
-    public void setSubmenuIconItemStyle(String submenuIconItemStyle) {
-        this.submenuIconItemStyle = submenuIconItemStyle;
+    public void setItemSubmenuIconStyle(String itemSubmenuIconStyle) {
+        this.itemSubmenuIconStyle = itemSubmenuIconStyle;
     }
 
-    public String getSubmenuIconItemStyle() {
-        String result = ValueBindings.get(this, "submenuIconItemStyle", submenuIconItemStyle);
+    public String getItemSubmenuIconStyle() {
+        String result = ValueBindings.get(this, "itemSubmenuIconStyle", itemSubmenuIconStyle);
         if (result == null && getPopupMenuParent() != null) {
-            result = getPopupMenuParent().submenuIconItemStyle;
+            result = getPopupMenuParent().itemSubmenuIconStyle;
         }
         return result;
     }
 
-    public void setSubmenuIconItemClass(String submenuIconItemClass) {
-        this.submenuIconItemClass = submenuIconItemClass;
+    public void setItemSubmenuIconClass(String itemSubmenuIconClass) {
+        this.itemSubmenuIconClass = itemSubmenuIconClass;
     }
 
-    public String getSubmenuIconItemClass() {
-        String result = ValueBindings.get(this, "submenuIconItemClass", submenuIconItemClass);
+    public String getItemSubmenuIconClass() {
+        String result = ValueBindings.get(this, "itemSubmenuIconClass", itemSubmenuIconClass);
         if (result == null && getPopupMenuParent() != null) {
-            result = getPopupMenuParent().submenuIconItemClass;
+            result = getPopupMenuParent().itemSubmenuIconClass;
         }
         return result;
     }
@@ -438,28 +438,28 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction {
         return result;
     }
 
-    public String getContentItemClass() {
-        String result = ValueBindings.get(this, "contentItemClass", contentItemClass);
+    public String getItemContentClass() {
+        String result = ValueBindings.get(this, "itemContentClass", itemContentClass);
         if (result == null && getPopupMenuParent() != null) {
-            result = getPopupMenuParent().contentItemClass;
+            result = getPopupMenuParent().itemContentClass;
         }
         return result;
     }
 
-    public void setContentItemClass(String contentItemClass) {
-        this.contentItemClass = contentItemClass;
+    public void setItemContentClass(String itemContentClass) {
+        this.itemContentClass = itemContentClass;
     }
 
-    public String getContentItemStyle() {
-        String result = ValueBindings.get(this, "contentItemStyle", contentItemStyle);
+    public String getItemContentStyle() {
+        String result = ValueBindings.get(this, "itemContentStyle", itemContentStyle);
         if (result == null && getPopupMenuParent() != null) {
-            result = getPopupMenuParent().contentItemStyle;
+            result = getPopupMenuParent().itemContentStyle;
         }
         return result;
     }
 
-    public void setContentItemStyle(String contentItemStyle) {
-        this.contentItemStyle = contentItemStyle;
+    public void setItemContentStyle(String itemContentStyle) {
+        this.itemContentStyle = itemContentStyle;
     }
 
     public void setDisabledItemClass(String disabledItemClass) {
@@ -501,14 +501,14 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction {
                 selectedItemClass,
                 disabledItemStyle,
                 disabledItemClass,
-                contentItemStyle,
-                contentItemClass,
+                itemContentStyle,
+                itemContentClass,
                 indentStyle,
                 indentClass,
-                indentItemStyle,
-                indentItemClass,
-                submenuIconItemStyle,
-                submenuIconItemClass,
+                itemIndentStyle,
+                itemIndentClass,
+                itemSubmenuIconStyle,
+                itemSubmenuIconClass,
 
                 onshow,
                 onhide
@@ -547,14 +547,14 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction {
         selectedItemClass = (String) values[i++];
         disabledItemStyle = (String) values[i++];
         disabledItemClass = (String) values[i++];
-        contentItemStyle = (String) values[i++];
-        contentItemClass = (String) values[i++];
+        itemContentStyle = (String) values[i++];
+        itemContentClass = (String) values[i++];
         indentStyle = (String) values[i++];
         indentClass = (String) values[i++];
-        indentItemStyle = (String) values[i++];
-        indentItemClass = (String) values[i++];
-        submenuIconItemStyle = (String) values[i++];
-        submenuIconItemClass = (String) values[i++];
+        itemIndentStyle = (String) values[i++];
+        itemIndentClass = (String) values[i++];
+        itemSubmenuIconStyle = (String) values[i++];
+        itemSubmenuIconClass = (String) values[i++];
 
         onshow = (String) values[i++];
         onhide = (String) values[i++];

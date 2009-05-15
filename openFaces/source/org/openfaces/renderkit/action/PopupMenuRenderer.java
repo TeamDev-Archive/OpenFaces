@@ -115,7 +115,7 @@ public class PopupMenuRenderer extends RendererBase {
                 DEFAULT_SPAN_CLASS);
         String defaultSelectedClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getSelectedItemStyle(), StyleGroup.selectedStyleGroup(), popupMenu.getSelectedItemClass(),
                 DEFAULT_SELECTED_ITEM_CLASS);
-        String defaultContentClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getContentItemStyle(), StyleGroup.regularStyleGroup(), popupMenu.getContentItemClass(),
+        String defaultContentClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getItemContentStyle(), StyleGroup.regularStyleGroup(), popupMenu.getItemContentClass(),
                 DEFAULT_CONTENT_ITEM_CLASS);
         String defaultDisabledClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getDisabledItemStyle(), StyleGroup.disabledStyleGroup(1), popupMenu.getDisabledItemClass(),
                 DEFAULT_DISABLED_ITEM);

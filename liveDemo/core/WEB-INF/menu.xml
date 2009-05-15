@@ -643,7 +643,7 @@
     <selectedImage>/images/components/titles/Window.png</selectedImage>
     <keyFeatures>
       <feature>Draggable</feature>
-      <feature>Resizeable</feature>
+      <feature>Resizable</feature>
       <feature>Can be made modal</feature>
       <feature>Built-in minimize, maximize, close functions</feature>
       <feature>Support for custom caption buttons</feature>

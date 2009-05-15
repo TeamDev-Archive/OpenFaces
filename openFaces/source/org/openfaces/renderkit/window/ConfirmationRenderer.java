@@ -210,7 +210,7 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
         return StyleUtil.mergeClassNames(super.getDefaultClassName(), "o_confirmation");
     }
 
-    protected boolean isResizeableByDefault() {
+    protected boolean isResizableByDefault() {
         return false;
     }
 

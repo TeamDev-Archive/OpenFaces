@@ -17,7 +17,7 @@ O$._initBorderLayoutPanel_part1 = function(borderLayoutPanelId) {
   var borderLayoutPanel = O$(borderLayoutPanelId);
   borderLayoutPanel._isBorderLayoutPanel = true;
   borderLayoutPanel._truncateMode = false;
-  borderLayoutPanel._isNotResizeableComponent = true;
+  borderLayoutPanel._isNotResizableComponent = true;
   borderLayoutPanel._isCoupled = couplingEnabled && borderLayoutPanel.parentNode._isCouplingElement;
   borderLayoutPanel._newStyle = new O$._createPseudoCSSStyle();
   borderLayoutPanel._newStyle.width = O$._evaluateStyleOrClassProperty(borderLayoutPanel, "width");
@@ -53,7 +53,7 @@ O$._initBorderLayoutPanel_part2 = function(borderLayoutPanelId, rolloverClass, e
   var borderLayoutPanel = O$(borderLayoutPanelId);
   borderLayoutPanel._content = O$(borderLayoutPanelId + "::content");
   borderLayoutPanel._content._newStyle = new O$._createPseudoCSSStyle();
-  borderLayoutPanel._content._isResizeableElement = true;
+  borderLayoutPanel._content._isResizableElement = true;
   borderLayoutPanel._content._isCouplingElement = true;
   borderLayoutPanel._content._isCoupled = true;
 
@@ -421,7 +421,7 @@ O$._truncateMode_calculateSidePanelPriority = function(sidePanel, isTruncateOp) 
   if (isTruncateOp) {
     if (sidePanelSize <= sidePanelCollapsedSize) {
       priority = priority + 4;
-    } else if (!sidePanel._resizeable) {
+    } else if (!sidePanel._resizable) {
       priority = priority + 2;
     } else if (sidePanelSize <= sidePanelMinSize) {
       priority = priority + 2;
@@ -429,7 +429,7 @@ O$._truncateMode_calculateSidePanelPriority = function(sidePanel, isTruncateOp) 
   } else {
     if (sidePanelSize < sidePanelCollapsedSize) {
       priority = priority + 4;
-    } else if (!sidePanel._resizeable) {
+    } else if (!sidePanel._resizable) {
       priority = priority + 2;
     } else if (sidePanelSize < sidePanelMinSize) {
       priority = priority + 2;
@@ -471,7 +471,7 @@ O$._truncateMode_untruncateSidePanel = function(sidePanel, freeSpace, useDoubleB
     if (force <= 2) {
       var untruncationSize = O$._calculateNumericSizeValue(sidePanel, sidePanel._forBorderLayoutPanel._beforeTruncationSize, useDoubleBuffering) - sidePanelSize;
     } else if (force <= 4) {
-      if (!sidePanel._resizeable) {
+      if (!sidePanel._resizable) {
         untruncationSize = O$._calculateNumericSizeValue(sidePanel, sidePanel._minSize, useDoubleBuffering) - sidePanelSize;
       } else {
         untruncationSize = O$._calculateNumericSizeValue(sidePanel, sidePanel._forBorderLayoutPanel._beforeTruncationSize, useDoubleBuffering) - sidePanelSize;

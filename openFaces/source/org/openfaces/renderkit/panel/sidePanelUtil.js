@@ -313,17 +313,17 @@ O$._IE_getIFramePos = function(iframeWindow) {
   return position;
 }
 
-//------------------  resizeableElement methods  -------------------
+//------------------  resizableElement methods  -------------------
 
 O$._subscribeToOnresizeEvent = function(element, func) {
   var widthIsNotFixed = true;
   var heightIsNotFixed = true;
   var targetElement = element;
   while (widthIsNotFixed || heightIsNotFixed) {
-    if (targetElement._isNotResizeableElement) {
+    if (targetElement._isNotResizableElement) {
       break;
     }
-    else if (targetElement._isResizeableElement) {
+    else if (targetElement._isResizableElement) {
       O$._subscribeToTargetOnresizeEvent(element, targetElement, func);
       return;
     }
@@ -342,7 +342,7 @@ O$._subscribeToOnresizeEvent = function(element, func) {
       targetElement = targetElement.parentNode;
     }
   }
-  element._isNotResizeableElement = true;
+  element._isNotResizableElement = true;
 
 }
 
@@ -366,7 +366,7 @@ O$._subscribeToTargetOnresizeEvent = function(element, targetElement, func) {
       }, false);
     }
   }
-  element._isResizeableElement = true;
+  element._isResizableElement = true;
 }
 
 O$._sendResizeEvent = function(element, phase) {

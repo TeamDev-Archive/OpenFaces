@@ -47,13 +47,13 @@ public class ColumnResizingRenderer extends RendererBase {
         List columns = table.getColumnsForRendering();
         for (int i = 0; i < columns.size(); i++) {
             BaseColumn column = (BaseColumn) columns.get(i);
-            boolean resizeable = column.isResizeable();
+            boolean resizable = column.isResizable();
             String minResizingWidth = column.getMinResizingWidth();
-            if (!resizeable || minResizingWidth != null) {
+            if (!resizable || minResizingWidth != null) {
                 JSONObject thisColumnParams = new JSONObject();
                 try {
-                    if (!resizeable)
-                        thisColumnParams.put("resizeable", resizeable);
+                    if (!resizable)
+                        thisColumnParams.put("resizable", resizable);
                     if (minResizingWidth != null)
                         thisColumnParams.put("minWidth", minResizingWidth);
                     columnParams.put(String.valueOf(i), thisColumnParams);

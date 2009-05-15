@@ -226,7 +226,7 @@ public class SidePanelTest extends OpenFacesTestCase {
     public void testFixedSidePanels() {
         testAppFunctionalPage("/components/borderlayoutpanel/sidePanelft.jsf");
 
-        /* test SidePanel with collapsible = false and resizeable = false */
+        /* test SidePanel with collapsible = false and resizable = false */
         SidePanelInspector notFixedSidePane = sidePanel("formID:notFixedSidePanelId");
 
         notFixedSidePane.splitter().assertStyle("cursor: row-resize");
@@ -259,7 +259,7 @@ public class SidePanelTest extends OpenFacesTestCase {
         collapseFixedSidePanel.splitter().dragAndDrop(0, -50);
         collapseFixedSidePanel.assertExpressionEquals("_size", "50%");
 
-        /* test SidePanel with resizeable = false */
+        /* test SidePanel with resizable = false */
         SidePanelInspector resizeFixedSidePanel = sidePanel("formID:resizeFixedSidePanelId");
 
         resizeFixedSidePanel.splitter().assertStyle("cursor: pointer");
@@ -275,7 +275,7 @@ public class SidePanelTest extends OpenFacesTestCase {
         resizeFixedSidePanel.splitter().dragAndDrop(0, -50);
         resizeFixedSidePanel.assertExpressionEquals("_size", "50%");
 
-        /* test SidePanel with collapsible = false and resizeable = false */
+        /* test SidePanel with collapsible = false and resizable = false */
         SidePanelInspector fullFixedSidePanel = sidePanel("formID:fullFixedSidePanelId");
 
         fullFixedSidePanel.splitter().assertStyle("cursor: auto");

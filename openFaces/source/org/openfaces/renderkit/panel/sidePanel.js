@@ -73,7 +73,7 @@ O$._initSidePanel = function(sidePanelId,
                              minSize,
                              maxSize,
                              collapsible,
-                             resizeable,
+                             resizable,
                              collapsed,
                              rolloverClass,
                              splitterRolloverClass,
@@ -88,7 +88,7 @@ O$._initSidePanel = function(sidePanelId,
   sidePanel._alignment = alignment;
   sidePanel._collapsed = false;
   sidePanel._collapsible = collapsible;
-  sidePanel._resizeable = resizeable;
+  sidePanel._resizable = resizable;
   sidePanel._iframeBugCorrection = true;
   sidePanel._selectBugCorrection = true;
   sidePanel._blockSelfRepaint = false;
@@ -106,8 +106,8 @@ O$._initSidePanel = function(sidePanelId,
     O$.refreshSidePanel(sidePanelId);
     O$._sendResizeEvent(sidePanel._content);
   });
-  sidePanel._content._isResizeableElement = true;
-  if (sidePanel._caption) sidePanel._caption._isResizeableElement = true;
+  sidePanel._content._isResizableElement = true;
+  if (sidePanel._caption) sidePanel._caption._isResizableElement = true;
 
   O$._recalculateSidePanel(sidePanel);
   O$._repaintSidePanel(sidePanel);
@@ -164,7 +164,7 @@ O$._initSidePanel_style = function(sidePanel, rolloverClass, splitterRolloverCla
   } else {
     sidePanel._splitterCursor_collapsedState = "auto";
   }
-  if (!sidePanel._resizeable) {
+  if (!sidePanel._resizable) {
     sidePanel._splitterCursor_normalState = sidePanel._splitterCursor_collapsedState;
   }
   splitter.style.cursor = sidePanel._splitterCursor_normalState;
@@ -410,7 +410,7 @@ O$._documentMouseMoveForSidePanel = function(event) {
   if (!document._nowResizingSidePanel) return;
   var sidePanel = document._nowResizingSidePanel;
   sidePanel._isClicking = false;
-  if (sidePanel._resizeable && !sidePanel._collapsed) {
+  if (sidePanel._resizable && !sidePanel._collapsed) {
     if (O$.isExplorer()) {
       var mouseX = event.clientX + document.body.scrollLeft;
       var mouseY = event.clientY + document.body.scrollTop;

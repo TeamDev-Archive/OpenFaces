@@ -109,12 +109,12 @@ public class PopupMenuJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("disabledItemClass", disabledItemClass);
     }
 
-    public void setContentItemStyle(ValueExpression contentItemStyle) {
-        getDelegate().setPropertyValue("contentItemStyle", contentItemStyle);
+    public void setItemContentStyle(ValueExpression itemContentStyle) {
+        getDelegate().setPropertyValue("itemContentStyle", itemContentStyle);
     }
 
-    public void setContentItemClass(ValueExpression contentItemClass) {
-        getDelegate().setPropertyValue("contentItemClass", contentItemClass);
+    public void setItemContentClass(ValueExpression itemContentClass) {
+        getDelegate().setPropertyValue("itemContentClass", itemContentClass);
     }
 
     public void setIndentStyle(ValueExpression indentStyle) {
@@ -125,21 +125,21 @@ public class PopupMenuJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("indentClass", indentClass);
     }
 
-    public void setIndentItemStyle(ValueExpression indentItemStyle) {
-        getDelegate().setPropertyValue("indentItemStyle", indentItemStyle);
+    public void setItemIndentStyle(ValueExpression itemIndentStyle) {
+        getDelegate().setPropertyValue("itemIndentStyle", itemIndentStyle);
     }
 
-    public void setIndentItemClass(ValueExpression indentItemClass) {
-        getDelegate().setPropertyValue("indentItemClass", indentItemClass);
+    public void setItemIndentClass(ValueExpression itemIndentClass) {
+        getDelegate().setPropertyValue("itemIndentClass", itemIndentClass);
     }
 
 
-    public void setSubmenuIconItemStyle(ValueExpression submenuIconItemStyle) {
-        getDelegate().setPropertyValue("submenuIconItemStyle", submenuIconItemStyle);
+    public void setItemSubmenuIconStyle(ValueExpression itemSubmenuIconStyle) {
+        getDelegate().setPropertyValue("itemSubmenuIconStyle", itemSubmenuIconStyle);
     }
 
-    public void setSubmenuIconItemClass(ValueExpression submenuIconItemClass) {
-        getDelegate().setPropertyValue("submenuIconItemClass", submenuIconItemClass);
+    public void setItemSubmenuIconClass(ValueExpression itemSubmenuIconClass) {
+        getDelegate().setPropertyValue("itemSubmenuIconClass", itemSubmenuIconClass);
     }
 
     public void setSelectedDisabledItemStyle(ValueExpression selectedDisabledItemStyle) {

@@ -62,8 +62,8 @@ public class SidePanelJspTag extends AbstractPanelWithCaptionJspTag {
         getDelegate().setPropertyValue("splitterRolloverClass", splitterRolloverClass);
     }
 
-    public void setResizeable(ValueExpression resizeable) {
-        getDelegate().setPropertyValue("resizeable", resizeable);
+    public void setResizable(ValueExpression resizable) {
+        getDelegate().setPropertyValue("resizable", resizable);
     }
 
     public void setCollapsible(ValueExpression collapsible) {

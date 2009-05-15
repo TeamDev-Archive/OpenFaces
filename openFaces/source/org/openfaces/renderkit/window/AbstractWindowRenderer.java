@@ -71,7 +71,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
             List<UIComponent> areaChildren = area.getChildren();
             if (isMinimizeAllowed())
                 areaChildren.add(new MinimizeWindowButton());
-            if (win.isResizeable())
+            if (win.isResizable())
                 areaChildren.add(new MaximizeWindowButton());
             areaChildren.add(closeButton);
         }
@@ -170,7 +170,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
         AbstractWindow win = (AbstractWindow) component;
         ScriptBuilder sb = new ScriptBuilder();
         sb.initScript(context, win, "O$._initWindow",
-                win.isResizeable(),
+                win.isResizable(),
                 win.isDraggableByContent(),
                 win.getMinWidth(),
                 win.getMinHeight());

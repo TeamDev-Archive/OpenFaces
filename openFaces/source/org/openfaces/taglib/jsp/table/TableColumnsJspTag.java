@@ -80,8 +80,8 @@ public class TableColumnsJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("valign", valign);
     }
 
-    public void setResizeable(ValueExpression resizeable) {
-        getDelegate().setPropertyValue("resizeable", resizeable);
+    public void setResizable(ValueExpression resizable) {
+        getDelegate().setPropertyValue("resizable", resizable);
     }
 
     public void setMinResizingWidth(ValueExpression minResizingWidth) {

@@ -1315,7 +1315,7 @@
       <description>Applicable only when column resizing is enabled for a table. This attribute can be used to disable
         manual resizing for a particular column.
       </description>
-      <name>resizeable</name>
+      <name>resizable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -2141,7 +2141,7 @@
         data
         variable specified in the "var" attribute.
       </description>
-      <name>resizeable</name>
+      <name>resizable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -3676,7 +3676,7 @@
       <description>Applicable only when column resizing is enabled for a table. This attribute can be used to disable
         manual resizing for a particular column.
       </description>
-      <name>resizeable</name>
+      <name>resizable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -4264,7 +4264,7 @@
       <description>Applicable only when column resizing is enabled for a table. This attribute can be used to disable
         manual resizing for a particular column.
       </description>
-      <name>resizeable</name>
+      <name>resizable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -6466,7 +6466,7 @@ means that only root nodes and their immediate children are preloaded -->
       <description>Applicable only when column resizing is enabled for a table. This attribute can be used to disable
         manual resizing for a particular column.
       </description>
-      <name>resizeable</name>
+      <name>resizable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -9618,7 +9618,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <name>resizeable</name>
+      <name>resizable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -9719,7 +9719,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>The minimal width that the Window component can have when the user is resizing the window. This
-        attribute is applicable when "resizeable" attribute is set to "true". This attribute can be specified
+        attribute is applicable when "resizable" attribute is set to "true". This attribute can be specified
         in any units (px, mm, em, etc.) except percent.
       </description>
       <name>minWidth</name>
@@ -9732,7 +9732,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>The minimal height that the Window component can have when the user is resizing the window. This
-        attribute is applicable when "resizeable" attribute is set to "true". This attribute can be specified
+        attribute is applicable when "resizable" attribute is set to "true". This attribute can be specified
         in any units (px, mm, em, etc.) except percent.
       </description>
       <name>minHeight</name>
@@ -20408,7 +20408,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A default style for content of menu items of the PopupMenu component.</description>
-      <name>contentItemStyle</name>
+      <name>itemContentStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -20418,7 +20418,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A CSS class name for content of menu items of the PopupMenu component.</description>
-      <name>contentItemClass</name>
+      <name>itemContentClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -20448,7 +20448,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A default style for indent area of menu items of the PopupMenu component.</description>
-      <name>indentItemStyle</name>
+      <name>itemIndentStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -20458,7 +20458,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A CSS class name for indent area of menu items of the PopupMenu component.</description>
-      <name>indentItemClass</name>
+      <name>itemIndentClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -20469,7 +20469,7 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>A default style for submenu icon area of menu items of the PopupMenu component.</description>
-      <name>submenuIconItemStyle</name>
+      <name>itemSubmenuIconStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -20479,7 +20479,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A CSS class name for submenu icon area of menu items of the PopupMenu component.</description>
-      <name>submenuIconItemClass</name>
+      <name>itemSubmenuIconClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -23775,7 +23775,7 @@ and it is automatically triggered on any form submission. -->
   </tag>
 
   <tag>
-    <description>The sidePanel component is one side resizeable container.</description>
+    <description>The sidePanel component is one side resizable container.</description>
     <name>sidePanel</name>
     <tag-class>org.openfaces.taglib.jsp.panel.SidePanelJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -23988,7 +23988,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A flag that indicates is it splitter draggable ability enabled.</description>
-      <name>resizeable</name>
+      <name>resizable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>

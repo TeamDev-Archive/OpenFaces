@@ -31,7 +31,7 @@ public class SidePanel extends AbstractPanelWithCaption {
     private String splitterClass;
     private String splitterRolloverStyle;
     private String splitterRolloverClass;
-    private Boolean resizeable;
+    private Boolean resizable;
     private Boolean collapsible;
     private Boolean collapsed;
 
@@ -114,12 +114,12 @@ public class SidePanel extends AbstractPanelWithCaption {
         this.splitterRolloverClass = splitterRolloverClass;
     }
 
-    public boolean isResizeable() {
-        return ValueBindings.get(this, "resizeable", resizeable, true);
+    public boolean isResizable() {
+        return ValueBindings.get(this, "resizable", resizable, true);
     }
 
-    public void setResizeable(boolean resizeable) {
-        this.resizeable = resizeable;
+    public void setResizable(boolean resizable) {
+        this.resizable = resizable;
     }
 
     public boolean isCollapsible() {
@@ -182,7 +182,7 @@ public class SidePanel extends AbstractPanelWithCaption {
                 splitterRolloverStyle,
                 splitterClass,
                 splitterRolloverClass,
-                resizeable,
+                resizable,
                 collapsible,
                 collapsed,
 
@@ -205,7 +205,7 @@ public class SidePanel extends AbstractPanelWithCaption {
         splitterRolloverStyle = (String) values[i++];
         splitterClass = (String) values[i++];
         splitterRolloverClass = (String) values[i++];
-        resizeable = (Boolean) values[i++];
+        resizable = (Boolean) values[i++];
         collapsible = (Boolean) values[i++];
         collapsed = (Boolean) values[i++];
 

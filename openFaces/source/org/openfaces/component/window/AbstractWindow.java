@@ -30,7 +30,7 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
 
     private String captionText;
     private Boolean draggableByContent;
-    private Boolean resizeable;
+    private Boolean resizable;
     private String minWidth;
     private String minHeight;
 
@@ -86,12 +86,12 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
         this.contentClass = contentClass;
     }
 
-    public boolean isResizeable() {
-        return ValueBindings.get(this, "resizeable", resizeable, isResizeableByDefault());
+    public boolean isResizable() {
+        return ValueBindings.get(this, "resizable", resizable, isResizableByDefault());
     }
 
-    public void setResizeable(boolean resizeable) {
-        this.resizeable = resizeable;
+    public void setResizable(boolean resizable) {
+        this.resizable = resizable;
     }
 
     public boolean isDraggableByContent() {
@@ -126,14 +126,14 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
         return false;
     }
 
-    protected boolean isResizeableByDefault() {
+    protected boolean isResizableByDefault() {
         return true;
     }
 
 
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context),
-                resizeable,
+                resizable,
                 minWidth,
                 minHeight,
                 captionStyle,
@@ -148,7 +148,7 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
         Object state[] = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-        resizeable = (Boolean) state[i++];
+        resizable = (Boolean) state[i++];
         minWidth = (String) state[i++];
         minHeight = (String) state[i++];
         captionStyle = (String) state[i++];

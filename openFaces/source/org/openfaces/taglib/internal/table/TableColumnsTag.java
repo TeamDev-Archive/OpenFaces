@@ -65,7 +65,7 @@ public class TableColumnsTag extends AbstractComponentTag {
         setStringProperty(component, "align");
         setStringProperty(component, "valign");
 
-        setBooleanProperty(component, "resizeable");
+        setBooleanProperty(component, "resizable");
         setStringProperty(component, "minResizingWidth");
 
         setStringProperty(component, "headerStyle");
