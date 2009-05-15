@@ -252,3 +252,22 @@ ul.hang li{
 .emptyDescription {
   min-height: 786px;
 }
+
+/******************Daytable pages*************************/
+.eventWithBackground{
+  background-image: url(../../images/daytable/daytable-gradient.png);
+  background-position: left top;
+  background-repeat: repeat-x;
+}
+.CalendarDate{
+  text-align:center;
+	position:relative;
+	padding:0 .5em 0 0 !important;
+	line-height:25px;
+}
+.CalendarDate .dayOfWeek{
+	font-size:10px;
+	line-height:10px;
+	padding: 0 .25em;
+}
+.CalendarDate .date{line-height:1.5em;}
