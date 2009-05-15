@@ -166,6 +166,7 @@ a img{
 
 #Demo{
 	padding:20px 10px 20px 20px;
+  width: 720px;
 	background:url(../../images/backgrounds/content_demo.png) repeat-x 0 bottom;
 }
 
