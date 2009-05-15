@@ -13,14 +13,14 @@
         <o:column style="padding:0.5em 1em 0.5em 1em;"
                 headerStyle="text-align: left"
                 bodyStyle="text-align: left;">
-          <f:facet name="header">Product Name</f:facet>
+          <f:facet name="header"><h:outputText value="Product Name"/></f:facet>
           <h:outputText value="#{product.name}"/>
         </o:column>
 
         <o:column headerStyle="text-align: right"
                   bodyStyle="text-align: right;"
                   style="padding:0.5em 1em 0.5em 1em;" width="15%">
-          <f:facet name="header">Price</f:facet>
+          <f:facet name="header"><h:outputText value="Price"/></f:facet>
           &#36;<h:outputText value="#{product.price}">
           <f:convertNumber pattern="0.00" groupingUsed="true" minFractionDigits="2" maxFractionDigits="0"/>
         </h:outputText>
@@ -29,7 +29,7 @@
         <o:column align="right" 
                   headerStyle="text-align: right;"
                   style="padding:0.5em 1em 0.5em 1em;" width="15%">
-          <f:facet name="header">Quantity</f:facet>
+          <f:facet name="header"><h:outputText value="Quantity"/></f:facet>
           <o:spinner id="quantityField"
                      value="#{product.quantity}"
                      styleClass="spinnerDefault"
@@ -47,7 +47,7 @@
         <o:column  style="padding:0.5em 1em 0.5em 1em;" width="10%"
                 bodyStyle="text-align: right;"
                 headerStyle="text-align: right;">
-          <f:facet name="header">Left in Stock</f:facet>
+          <f:facet name="header"><h:outputText value="Left in Stock"/></f:facet>
          <h:outputText value="#{product.leftInStock}"/>
         </o:column>
 
@@ -56,10 +56,10 @@
                   footerStyle="text-align: right;"
                   style="padding:0.5em 1em 0.5em 1em;"
                   width="25%">
-          <f:facet name="header">Cost</f:facet>
+          <f:facet name="header"><h:outputText value="Cost"/></f:facet>
           <f:facet name="footer">
             <h:panelGroup>
-              Total Cost:&#160;
+              <h:outputText value="Total Cost:"/>&#160;
                 <span style="font-size: 120%; font-weight: bold;">  &#36;
                    <h:outputText value="#{SpinnerBean.totalCost}">
                      <f:convertNumber pattern="0.00" groupingUsed="true" minFractionDigits="2" maxFractionDigits="0"/>
