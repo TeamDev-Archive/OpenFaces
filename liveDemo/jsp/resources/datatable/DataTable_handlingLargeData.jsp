@@ -34,7 +34,7 @@
   <script src="../design/js/style.js" type="text/javascript"></script>
 
 
-  <link rel="stylesheet" href="datatable.css" type="text/css" media="handheld"/>
+  <link rel="stylesheet" href="datatable.css" type="text/css" media="screen,projection"/>
   <script src="datatable.js" type="text/javascript"></script>
 </head>
 
