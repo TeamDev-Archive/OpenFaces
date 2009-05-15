@@ -9,7 +9,7 @@
 
   <div>
 
-    <table>
+    <table align="center">
       <tr>
         <td valign="top">
           <div class="container_control_items" style="margin-bottom: 25px; width: 320px;">
@@ -21,7 +21,7 @@
                 <td class="propertyValue">
                   <h:inputText id="textField" value="#{GraphicTextBean.text}" style="width: 100%;"
                                onkeypress="O$('form:updateText').run()"
-                          maxlength="25"/>
+                          maxlength="11"/>
                 </td>
               </tr>
               <tr>
@@ -88,14 +88,14 @@
             </table>
           </div>
         </td>
-        <td style="text-align:center; width:90%; vertical-align:top;">
-          <o:graphicText id="graphicText"
+      </tr>
+    </table>
+    <div style="text-align:center;margin-top:30px;">
+      <o:graphicText id="graphicText"
                          value="#{GraphicTextBean.text}"
                          direction="#{GraphicTextBean.direction}"
                          textStyle="#{GraphicTextBean.style}"/>
-        </td>
-      </tr>
-    </table>
+    </div>
 
   </div>
 
