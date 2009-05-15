@@ -11,14 +11,28 @@
  */
 package org.openfaces.component.window;
 
-import org.openfaces.component.CaptionButton;
+import org.openfaces.component.ToggleCaptionButton;
+
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class MinimizeWindowButton extends CaptionButton {
+public class MinimizeWindowButton extends ToggleCaptionButton {
     public static final String COMPONENT_TYPE = "org.openfaces.MinimizeWindowButton";
     public static final String COMPONENT_FAMILY = "org.openfaces.MinimizeWindowButton";
+
+    private static Map<String, String> OUR_PROPERTY_MAPPINGS = new HashMap<String, String>();
+
+     static {
+        OUR_PROPERTY_MAPPINGS.put("restoreImageUrl", "toggledImageUrl");
+        OUR_PROPERTY_MAPPINGS.put("restoreRolloverImageUrl", "toggledRolloverImageUrl");
+        OUR_PROPERTY_MAPPINGS.put("restorePressedImageUrl", "toggledPressedImageUrl");
+        OUR_PROPERTY_MAPPINGS.put("maximizeImageUrl", "imageUrl");
+        OUR_PROPERTY_MAPPINGS.put("maximizeRolloverImageUrl", "rolloverImageUrl");
+        OUR_PROPERTY_MAPPINGS.put("maximizePressedImageUrl", "pressedImageUrl");
+    }
 
     public MinimizeWindowButton() {
         setRendererType("org.openfaces.MinimizeWindowButtonRenderer");
@@ -28,5 +42,56 @@ public class MinimizeWindowButton extends CaptionButton {
         return COMPONENT_FAMILY;
     }
 
+    @Override
+    protected Map<String, String> getPropertyMappings() {
+        return OUR_PROPERTY_MAPPINGS;
+    }
 
+     public String getRestoreImageUrl() {
+        return super.getToggledImageUrl();
+    }
+
+    public void setRestoreImageUrl(String toggledImageUrl) {
+        super.setToggledImageUrl(toggledImageUrl);
+    }
+
+    public String getRestoreRolloverImageUrl() {
+        return super.getToggledRolloverImageUrl();
+    }
+
+    public void setRestoreRolloverImageUrl(String toggledRolloverImageUrl) {
+        super.setToggledRolloverImageUrl(toggledRolloverImageUrl);
+    }
+
+    public String getRestorePressedImageUrl() {
+        return super.getToggledPressedImageUrl();
+    }
+
+    public void setRestorePressedImageUrl(String toggledPressedImageUrl) {
+        super.setToggledPressedImageUrl(toggledPressedImageUrl);
+    }
+
+    public String getMinimizeImageUrl() {
+        return super.getImageUrl();
+    }
+
+    public void setMinimizeImageUrl(String imageUrl) {
+        super.setImageUrl(imageUrl);
+    }
+
+    public String getMinimizeRolloverImageUrl() {
+        return super.getRolloverImageUrl();
+    }
+
+    public void setMinimizeRolloverImageUrl(String rolloverImageUrl) {
+        super.setRolloverImageUrl(rolloverImageUrl);
+    }
+
+    public String getMinimizePressedImageUrl() {
+        return super.getPressedImageUrl();
+    }
+
+    public void setMinimizePressedImageUrl(String pressedImageUrl) {
+        super.setPressedImageUrl(pressedImageUrl);
+    }
 }

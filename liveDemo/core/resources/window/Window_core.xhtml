@@ -85,9 +85,9 @@ function showFullSizeImage(event) {
   }
 
   O$('form:full_size_image_win').hide();
-  var parentWindow = document.getElementById("form:full_size_image_win");
-  document.getElementById("full_size_img").src = target.src;
-  document.getElementById("form:full_size_image_win::content").style.overflow = "visible";
+  var parentWindow = O$("form:full_size_image_win");
+  O$("full_size_img").src = target.src;
+  O$("form:full_size_image_win::content").style.overflow = "visible";
   parentWindow.style.height = getNaturalHeight(target) + 30 + "px";
   parentWindow.style.width = getNaturalWeight(target) + 4 + "px";
   O$('form:full_size_image_win').show();
@@ -113,17 +113,17 @@ function getNaturalWeight(img) {
   }
 }
 
-function loadBbcSite() {
-  O$('form:bbcSite_win').show();
-  document.getElementById('form:bbcSite_win::content').style.overflow = "visible";
-  document.getElementById('bbcSiteContent').src = "http://www.bbc.com";
+function loadDocumentationSite() {
+  O$('form:documentationSite_win').show();
+  O$('form:documentationSite_win::content').style.overflow = "visible";
+  O$('documentationSiteContent').src = "http://www.openfaces.org/documentation/";
 }
 
 function loadGoogleSite() {
   O$('form:webBrowser_win').show();
-  document.getElementById('form:webBrowser_win::content').style.overflow = "visible";
-  document.getElementById('browserContent').src = "http://www.google.com";
-  document.getElementById('form:browserUrlInput').value = "http://www.google.com";
+  O$('form:webBrowser_win::content').style.overflow = "visible";
+  O$('browserContent').src = "http://www.google.com";
+  O$('form:browserUrlInput').value = "http://www.google.com";
 }
 
 function submitBrowserUrl(event) {
@@ -142,12 +142,12 @@ function submitBrowserUrl(event) {
 }
 
 function loadUrl() {
-  var url = document.getElementById('form:browserUrlInput').value;
+  var url = O$('form:browserUrlInput').value;
   var protocol = "http://";
   if (url.indexOf(protocol) != 0) {
     url = protocol + url;
   }
-  document.getElementById('browserContent').src = url;
+  O$('browserContent').src = url;
 }
 
 <!--  *** Calculator javascript ****************************** -->
@@ -180,7 +180,7 @@ var Calculator = {
   },
 
   clearInput : function () {
-    document.getElementById("form:calcInputField").value = this.formatValue(this.stringValue());
+    O$("form:calcInputField").value = this.formatValue(this.stringValue());
   },
 
   typeNumber : function (character) {
@@ -191,7 +191,7 @@ var Calculator = {
       return;
     }
     this.value = this.value + character;
-    document.getElementById("form:calcInputField").value = this.formatValue(this.stringValue());
+    O$("form:calcInputField").value = this.formatValue(this.stringValue());
     this.calculated = false;
     this.focus();
   },
@@ -226,12 +226,12 @@ var Calculator = {
       }
       if (this.operation == '/') {
         if (this.stringValue() == '0') {
-          document.getElementById("form:calcInputField").value = "Division by zero";
+          O$("form:calcInputField").value = "Division by zero";
           return;
         }
         this.state = this.state / this.floatValue();
       }
-      document.getElementById("form:calcInputField").value = this.formatValue(this.state);
+      O$("form:calcInputField").value = this.formatValue(this.state);
       this.calculated = true;
     }
     this.focus();
@@ -453,7 +453,7 @@ function checkRequestKeys(evt) {
         </f:facet>
 
         <o:captionArea>
-          <o:minimizeWindowButton imageUrl="./images/win_minimize.png" styleClass="customButton"
+          <o:minimizeWindowButton minimizeImageUrl="./images/win_minimize.png" restoreImageUrl="./images/win_restore.jpg" styleClass="customButton"
                                   rolloverClass="buttonRollover"/>
           <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png" styleClass="customButton"
                                   restoreImageUrl="./images/win_restore.jpg"
@@ -481,7 +481,7 @@ function checkRequestKeys(evt) {
               width="550px">
 
       <o:captionArea>
-        <o:minimizeWindowButton imageUrl="./images/win_minimize.png" styleClass="customButton"
+        <o:minimizeWindowButton minimizeImageUrl="./images/win_minimize.png" restoreImageUrl="./images/win_restore.jpg" styleClass="customButton"
                                 rolloverClass="buttonRollover"/>
         <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png" styleClass="customButton"
                                 restoreImageUrl="./images/win_restore.jpg"
@@ -571,17 +571,17 @@ function checkRequestKeys(evt) {
   </div>
 </td>
 <td>
-  <!-- bbc.com    -->
+  <!-- documentation.com    -->
   <div class="application">
     <img src="./images/shadable.png"
-         onclick="loadBbcSite(); return false;"
+         onclick="loadDocumentationSite(); return false;"
          style="cursor: pointer;"
-         title="BBC.com site"/>
+         title="Openfaces documentation site"/>
 
-    <o:window id="bbcSite_win"
+    <o:window id="documentationSite_win"
               resizeable="true"
               width="800px"
-              height="600px"
+              height="500px"
               styleClass="window"
               style="position: absolute;
                     left: -100px;
@@ -594,7 +594,7 @@ function checkRequestKeys(evt) {
               modalLayerClass="modalLayer">
 
       <o:captionArea>
-        <o:minimizeWindowButton imageUrl="./images/win_minimize.png"
+        <o:minimizeWindowButton minimizeImageUrl="./images/win_minimize.png" restoreImageUrl="./images/win_restore.jpg"
                                 styleClass="customButton" rolloverClass="buttonRollover"/>
         <o:maximizeWindowButton maximizeImageUrl="./images/win_maximize.png"
                                 restoreImageUrl="./images/win_restore.jpg"
@@ -604,10 +604,10 @@ function checkRequestKeys(evt) {
       </o:captionArea>
 
       <f:facet name="caption">
-        <h:outputText style="color: #ffffff;" value="BBC.com"/>
+        <h:outputText style="color: #ffffff;" value="OpenFaces Documentation - http://www.openfaces.org/documentation/"/>
       </f:facet>
 
-      <iframe id="bbcSiteContent"
+      <iframe id="documentationSiteContent"
               frameborder="true"
               width="100%"
               height="100%" style="border: none">
@@ -649,8 +649,8 @@ function checkRequestKeys(evt) {
                                 restoreImageUrl="./images/mac_inactive.png"
                                 restoreRolloverImageUrl="./images/mac_maximize.png"
                                 styleClass="customButton macButton" rolloverClass="buttonRollover"/>
-        <o:minimizeWindowButton imageUrl="./images/mac_inactive.png" rolloverImageUrl="./images/mac_minimize.png"
-                                styleClass="customButton macButton" rolloverClass="buttonRollover"/>
+        <o:minimizeWindowButton minimizeImageUrl="./images/mac_inactive.png" minimizeRolloverImageUrl="./images/mac_minimize.png"
+                                restoreImageUrl="./images/mac_inactive.png" restoreRolloverImageUrl="./images/mac_maximize.png" styleClass="customButton macButton" rolloverClass="buttonRollover"/>
       </o:captionArea>
       <table style="height: 100%; width: 100%;" cellspacing="0" cellpadding="0">
         <tr>
@@ -693,7 +693,7 @@ function checkRequestKeys(evt) {
   <td align="center"><h:outputLink styleClass="commandLink"
                                    onclick="O$('form:modal_win').show(); return false;">Modal</h:outputLink></td>
   <td align="center"><h:outputLink styleClass="commandLink"
-                                   onclick="loadBbcSite(); return false;">Shadeable</h:outputLink></td>
+                                   onclick="loadDocumentationSite(); return false;">Shadeable</h:outputLink></td>
   <td align="center"><h:outputLink styleClass="commandLink"
                                    onclick="loadGoogleSite(); return false;">Customizable</h:outputLink></td>
 </tr>

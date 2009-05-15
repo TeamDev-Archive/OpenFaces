@@ -13,7 +13,7 @@ package org.openfaces.renderkit.window;
 
 import org.openfaces.component.ComponentWithCaption;
 import org.openfaces.component.window.AbstractWindow;
-import org.openfaces.renderkit.CaptionButtonRenderer;
+import org.openfaces.renderkit.ToggleCaptionButtonRenderer;
 import org.openfaces.util.ResourceUtil;
 
 import javax.faces.FacesException;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public class MinimizeWindowButtonRenderer extends CaptionButtonRenderer {
+public class MinimizeWindowButtonRenderer extends ToggleCaptionButtonRenderer {
     protected void checkContainerType(ComponentWithCaption container) {
         if (!(container instanceof AbstractWindow))
             throw new FacesException("<o:minimizeWindowButton> can only be used in <o:window> and <o:confirmation> components.");
@@ -31,6 +31,10 @@ public class MinimizeWindowButtonRenderer extends CaptionButtonRenderer {
 
     protected String getDefaultImageUrl(FacesContext context) {
         return ResourceUtil.getInternalResourceURL(context, AbstractWindowRenderer.class, "minimize.gif");
+    }
+    
+    protected String getDefaultToggleImageUrl(FacesContext context) {
+        return ResourceUtil.getInternalResourceURL(context, AbstractWindowRenderer.class, "restore.gif");
     }
 
     protected String getInitFunctionName() {
@@ -42,6 +46,4 @@ public class MinimizeWindowButtonRenderer extends CaptionButtonRenderer {
         libraries.add(AbstractWindowRenderer.getWindowJs(context));
         return libraries;
     }
-
-
 }

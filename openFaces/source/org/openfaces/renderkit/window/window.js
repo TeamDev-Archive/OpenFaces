@@ -227,14 +227,18 @@ O$._initCloseWindowButton = function(clientId) {
 }
 
 O$._initMinimizeWindowButton = function(clientId) {
-  O$._initCaptionButton.apply(null, arguments);
+  O$._initToggleCaptionButton.apply(null, arguments);
   var btn = O$(clientId);
-  O$.addEventHandler(btn, "click", function () {
-    btn._container.minimize();
-    return false;
+  btn._addToggleStateChangeListener(function(toggled) {
+    if (toggled) {
+      btn._container.minimize();
+    }
+    else {
+      btn._container.restore();
+    }
   });
   O$._addWindowStateChangeListener(btn._container, function(win) {
-    btn.style.display = win.isMinimized() ? "none" : "";
+    btn.setToggleState(win.isMinimized(), true);
   });
 }
 
@@ -249,6 +253,7 @@ O$._initMaximizeWindowButton = function(clientId) {
   });
   O$._addWindowStateChangeListener(btn._container, function(win) {
     btn.setToggleState(win.isMinimized() || win.isMaximized(), true);
+    btn.style.display = win.isMinimized() ? "none" : "";
   });
 }
 

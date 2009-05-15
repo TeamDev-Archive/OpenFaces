@@ -11032,8 +11032,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>URL of the image that should be displayed in this button.</description>
-      <name>imageUrl</name>
+      <description>URL of the image that should be displayed in this button when a window is in normal state.</description>
+      <name>minimizeImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -11042,8 +11042,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.</description>
-      <name>rolloverImageUrl</name>
+      <description>URL of the image that should be displayed in this button when mouse cursor is over the button,
+        and a window is in normal state.</description>
+      <name>minimizeRolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -11053,8 +11054,40 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when the mouse is pressed over the button,
-        but not released yet.</description>
-      <name>pressedImageUrl</name>
+        but not released yet, and a window is in normal state.</description>
+      <name>minimizePressedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>URL of the image that should be displayed in this button when the button is toggled.</description>
+      <name>restoreImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.</description>
+      <name>restoreRolloverImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL of the image that should be displayed in this button when the button is in a toggled state and
+        the mouse is pressed over the button, but not released yet.</description>
+      <name>restorePressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

@@ -29,4 +29,15 @@ public class MinimizeWindowButtonTag extends CaptionButtonTag {
     public String getRendererType() {
         return "org.openfaces.MinimizeWindowButtonRenderer";
     }
+
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
+
+        setStringProperty(component, "restoreImageUrl");
+        setStringProperty(component, "restoreRolloverImageUrl");
+        setStringProperty(component, "restorePressedImageUrl");
+        setStringProperty(component, "minimizeImageUrl");
+        setStringProperty(component, "minimizeRolloverImageUrl");
+        setStringProperty(component, "minimizePressedImageUrl");
+    }
 }
