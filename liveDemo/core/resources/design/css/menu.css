@@ -58,6 +58,7 @@
 	color:white;
 	text-decoration:none;
 	overflow:hidden;
+	line-height:16px;
 }
 #Components ul li a:hover{background:url(../../images/backgrounds/components_selection.png) repeat-x 0 -21px;}
 #Components ul li a.active{background:url(../../images/backgrounds/components_selection.png) repeat-x 0 0 !important; cursor:default;}

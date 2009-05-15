@@ -8,6 +8,7 @@
 #Shadow{background:none;}
 #Footer{background-image:url(../../images/ie6/footer.png) !important;}
 
+#Components{background-position:1px 0;}
 #Components ul li a.AjaxFramework em {background-image:url(../../images/ie6/AjaxFramework.png);}
 
 .png24{display:none;}
