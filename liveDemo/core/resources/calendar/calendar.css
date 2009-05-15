@@ -9,8 +9,7 @@
 }
 
 .rollover_tab {
-  background: url('../images/button_rollover.gif') no-repeat right;
-  color: #0095cc;
+  text-decoration: underline;  
 }
 
 .selected_tab {
@@ -21,8 +20,7 @@
   color: black;
 }
 
-.calendar_style {
-  background: url('../images/calendar_back.gif') no-repeat left;
+.calendar_style {  
   text-align: left;
   padding-left: 63px;
 }
