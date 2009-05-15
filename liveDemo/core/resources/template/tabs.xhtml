@@ -11,7 +11,7 @@
                rendered="#{MenuService.selectedMenu.demoCount > 1}">
       <h:panelGroup rendered="#{status.index eq MenuService.selectedMenu.selectedTabIndex}">
         <li class="active">
-          <a href="#" onclick="return false;"><h:outputText value="#{demoItem.demoName}"/></a>
+          <span><h:outputText value="#{demoItem.demoName}"/></span>
         </li>
       </h:panelGroup>
 

@@ -11,7 +11,7 @@ body{
 	background:#191e22 url(../../images/backgrounds/page_right.jpg) repeat-x left top;
 	position:relative;
 	min-width:995px;
-	font: normal 1em/1.4 Tahoma, Arial, Helvetica, sans-serif;
+	font: normal 1em/1.5 "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
 	color:#5b5a5a;
 }
 
@@ -101,7 +101,7 @@ a img{
 
 #Title h2{
 	padding:2px 5px 0 12px;
-	line-height:56px;
+	line-height:50px;
 	vertical-align:middle;
 	font-size:32px;
 	font-weight:normal;
@@ -166,8 +166,8 @@ a img{
 
 #Demo{
 	padding:20px 10px 20px 20px;
-  width: 720px;
 	background:url(../../images/backgrounds/content_demo.png) repeat-x 0 bottom;
+  width: 720px;
 }
 
 #Description{
