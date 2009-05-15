@@ -9,8 +9,7 @@
 }
 
 .rollover_tab {
-  background: url('../images/button_rollover.gif') no-repeat right;
-  color: #0095cc;
+  text-decoration: underline;
 }
 
 .selected_tab {
