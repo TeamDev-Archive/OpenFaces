@@ -33,12 +33,4 @@ public class WindowJspTag extends AbstractWindowJspTag {
         getDelegate().setPropertyValue("resizable", resizable);
     }
 
-    public void setWidth(ValueExpression width) {
-        getDelegate().setPropertyValue("minWidth", width);
-    }
-
-    public void setHeight(ValueExpression height) {
-        getDelegate().setPropertyValue("minHeight", height);
-    }
-
 }

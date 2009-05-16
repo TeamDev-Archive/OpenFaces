@@ -40,7 +40,7 @@ O$._initWindow = function(windowId, resizable, draggableByContent, minWidth, min
     win._caption.onmousedown = function(e) {
       O$._enableIFrameFix();
       O$.addEventHandler(document, "mouseup", O$._disableIframeFix, true);
-      O$.startDragAndDrop(e, win);
+      O$.startDragAndDrop(e, win, win._caption);
     }
 
   if (resizable)

@@ -1851,7 +1851,16 @@ O$.getTargetComponentHasOwnMouseBehavior = function(evt) {
   return elementHasItsOwnMouseBehavior;
 }
 
-O$.startDragAndDrop = function(e, draggable) {
+O$.startDragAndDrop = function(e, draggable, simulateDblClickForElement) {
+  if (simulateDblClickForElement && e.type == "mousedown") {
+    var thisTime = new Date().getTime();
+    if (draggable._lastClickTime && thisTime - draggable._lastClickTime < 400) {
+      // allow double-click despite being disabled with O$.breakEvent by this function in specified browsers
+      if (simulateDblClickForElement.ondblclick && (O$.isMozillaFF() || O$.isSafari() || O$.isChrome()))
+        simulateDblClickForElement.ondblclick(e);
+    }
+    draggable._lastClickTime = thisTime;
+  }
   var evt = O$.getEvent(e);
   if (O$.getTargetComponentHasOwnMouseBehavior(evt))
     return; // don't drag native components to avoid unwanted effects (see JSFC-2347 and all related requests)
@@ -1861,18 +1870,17 @@ O$.startDragAndDrop = function(e, draggable) {
   draggable._draggingInProgress = true;
   draggable._draggingWasStarted = false;
 
-  var pageScrollPos = O$.getPageScrollPos();
   var pos = O$.getEventPoint(evt, draggable);
   draggable._lastDragX = pos.x;
   draggable._lastDragY = pos.y;
   if (!draggable._getPositionLeft)
     draggable._getPositionLeft = function() {
       return this.offsetLeft;
-    }
+    };
   if (!draggable._getPositionTop)
     draggable._getPositionTop = function() {
       return this.offsetTop;
-    }
+    };
   draggable._lastDragOffsetLeft = draggable._getPositionLeft();
   draggable._lastDragOffsetTop = draggable._getPositionTop();
 
@@ -1894,7 +1902,6 @@ O$.handleDragMove = function(e) {
       draggable.ondragstart(evt);
   }
 
-  var pageScrollPos = O$.getPageScrollPos();
   var pos = O$.getEventPoint(evt, draggable);
   var dragX = pos.x;
   var dragY = pos.y;
