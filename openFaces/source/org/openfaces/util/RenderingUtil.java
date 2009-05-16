@@ -145,7 +145,7 @@ public class RenderingUtil {
             if (enforceComponentClass == null || component.getClass().equals(enforceComponentClass))
                 return component;
         } else {
-            throw new IllegalStateException("There is now facet with id - " + identifier + " in component - " + parent);
+            throw new IllegalStateException("There is no facet with id - " + identifier + " in component - " + parent);
         }
 
         return component;

@@ -13,14 +13,13 @@ package org.openfaces.renderkit.validation;
 
 import org.openfaces.component.validation.ClientValidationMode;
 import org.openfaces.component.validation.ValidationProcessor;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.NewInstanceScript;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleUtil;
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.renderkit.validation.ValidatorUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;

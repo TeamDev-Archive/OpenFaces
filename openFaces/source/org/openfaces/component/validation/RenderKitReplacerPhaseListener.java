@@ -90,8 +90,6 @@ public class RenderKitReplacerPhaseListener implements PhaseListener {
                     processRenderKitSupportForTrinidad(true, renderKit, factory, renderKitId);
             } catch (NoClassDefFoundError e) {
                 countCatch++;
-                RenderingUtil.logWarning(FacesContext.getCurrentInstance(),
-                        "Trinidad support is disabled, because Trinidad classes were not found.");
             }
 
             try {
@@ -100,8 +98,6 @@ public class RenderKitReplacerPhaseListener implements PhaseListener {
                     processRenderKitSupportForADFFaces(renderKit, factory, renderKitId);
             } catch (NoClassDefFoundError e) {
                 countCatch++;
-                RenderingUtil.logWarning(FacesContext.getCurrentInstance(),
-                        "ADF Faces support is disabled, because ADF Faces classes were not found.");
             }
             if (countCatch > 1)
                 factory.addRenderKit(renderKitId, new ValidationSupportRenderKit(renderKit));
