@@ -11,9 +11,9 @@
  */
 
 if(typeof(O$) != "undefined") {
-  //it's possible situation when server was restarted and session expiration
+  // It's a possible situation when server was restarted and session expiration
   // confirmation dialog was sent with new util.js file.  
-  alert("util.js was loaded twice. It's possible only for development environment. Please refresh page.");
+  alert("util.js was loaded twice. It's normally possible only in development environment on an expired session. Please refresh the page.");
 }
 
 var OpenFaces = O$ = function(id) {

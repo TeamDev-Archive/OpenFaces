@@ -113,7 +113,7 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
 
     public void startElement(String name, UIComponent component) throws IOException {
         /* IMPORTANT: THIS METHOD AND ALL ITS CALLEES IS A PERFORMANCE BOTTLENECK.
-MODIFY WITH CARE. ENSURE MINIMAL EXECUTION TIME AND AMOUNT OF OUTPUT */
+           MODIFY WITH CARE. ENSURE MINIMAL EXECUTION TIME AND AMOUNT OF OUTPUT */
         flushValidationScriptInElement();
         FacesContext context = FacesContext.getCurrentInstance();
         if (!processingValidation && isValidationNeeded(context, component)) {
@@ -207,9 +207,10 @@ MODIFY WITH CARE. ENSURE MINIMAL EXECUTION TIME AND AMOUNT OF OUTPUT */
     private void flushValidationScriptIfNecessary() throws IOException {
         if (isValidationScriptNotEmpty() && clientIdRendered) {
             String validationScript = validationScriptWriter.toString();
+            putNewJSLinksInRenderedJsLinks();
             writer.write(validationScript);
             validationScriptWriter = null;
-            putNewJSLinksInRenderedJsLinks();
+
             validationScripts = null;
         }
     }
@@ -376,21 +377,24 @@ MODIFY WITH CARE. ENSURE MINIMAL EXECUTION TIME AND AMOUNT OF OUTPUT */
             }
         }
         requestMap.put(ResourceUtil.RENDERED_JS_LINKS, validationScripts);
+        requestMap.put(ResourceUtil.POSTPONE_JS_LINK_RENDERING, Boolean.TRUE);
         return renderedJsLinks;
     }
 
     private void restoreRenderedJsLinks(FacesContext context, List<String> prevRenderedJsLinks) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         requestMap.put(ResourceUtil.RENDERED_JS_LINKS, prevRenderedJsLinks);
+        requestMap.put(ResourceUtil.POSTPONE_JS_LINK_RENDERING, Boolean.FALSE);
     }
 
-    private void putNewJSLinksInRenderedJsLinks() {
+    private void putNewJSLinksInRenderedJsLinks() throws IOException {
         if (validationScripts == null)
             return;
-        List<String> renderedJsLinks = ResourceUtil.getRenderedJsLinks(FacesContext.getCurrentInstance());
+        FacesContext context = FacesContext.getCurrentInstance();
+        List<String> renderedJsLinks = ResourceUtil.getRenderedJsLinks(context);
         for (String js : validationScripts) {
             if (!renderedJsLinks.contains(js))
-                renderedJsLinks.add(js);
+                ResourceUtil.renderJSLinkIfNeeded(js, context);
         }
     }
 }

@@ -33,6 +33,7 @@ import java.util.Set;
 public class ResourceUtil {
     public static final String HEADER_JS_LIBRARIES = "OF:js_file_included";
     public static final String RENDERED_JS_LINKS = "org.openfaces.util.RenderingUtil.renderedJsLinks";
+    public static final String POSTPONE_JS_LINK_RENDERING = "org.openfaces.util.ResourceUtil.postponeJsLinkRendering";
     public static final String JSON_JS_LIB_NAME = "json2.js";
 
     private static final String OPENFACES_VERSION = "/META-INF/openFacesVersion.txt";
@@ -361,7 +362,11 @@ public class ResourceUtil {
         if (renderedJsLinks.contains(jsFile)) {
             return;
         }
+        renderedJsLinks.add(jsFile);
 
+        Boolean postponeJsLinkRendering = (Boolean) context.getExternalContext().getRequestMap().get(POSTPONE_JS_LINK_RENDERING);
+        if (postponeJsLinkRendering != null && postponeJsLinkRendering)
+            return;
         if (AjaxUtil.isAjaxRequest(context)) {
             registerJavascriptLibrary(context, jsFile);
         } else if (AjaxUtil.isAjax4jsfRequest()) {
@@ -375,8 +380,6 @@ public class ResourceUtil {
             writer.writeText(" ", null);
             writer.endElement("script");
         }
-
-        renderedJsLinks.add(jsFile);
     }
 
     /**
