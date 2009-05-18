@@ -81,3 +81,7 @@
   border: 1px solid white;
   font-size: 11px;
 }
+
+.citiesfilter input {
+  width: 98%;
+}
