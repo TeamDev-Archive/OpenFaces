@@ -14,10 +14,10 @@ package org.openfaces.component.validation;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.renderkit.validation.BaseMessageRenderer;
+import org.openfaces.renderkit.validation.ValidatorUtil;
 import org.openfaces.util.ConverterUtil;
 import org.openfaces.util.Log;
 import org.openfaces.util.ComponentUtil;
-import org.openfaces.validator.AbstractClientValidator;
 import org.openfaces.validator.ClientValidatorUtil;
 
 import javax.faces.application.FacesMessage;
@@ -270,7 +270,7 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
         Iterator<FacesMessage> globalMessages = context.getMessages(null);
         if (globalMessages.hasNext()) {
             ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getUtilJsURL(context), context);
-            ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getInternalResourceURL(context, AbstractClientValidator.class, "validatorUtil.js"), context);
+            ResourceUtil.renderJSLinkIfNeeded(ValidatorUtil.getValidatorUtilJsUrl(context), context);
             while (globalMessages.hasNext()) {
                 FacesMessage message = globalMessages.next();
                 RenderingUtil.renderInitScript(context, ClientValidatorUtil.getScriptAddGlobalMessage(message), null);
@@ -301,11 +301,15 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
         if (clientValidationRuleForComponent.equals(ClientValidationMode.ON_SUBMIT)) {
             String formClientId = parentForm.getClientId(context);
             if (!formsHaveOnSubmitRendered.contains(formClientId)) {
-                RenderingUtil.renderInitScript(context, "O$.addOnSubmitEvent(O$._autoValidateForm,'" + formClientId + "');\n", null);
+                RenderingUtil.renderInitScript(context, "O$.addOnSubmitEvent(O$._autoValidateForm,'" + formClientId + "');\n", new String[] {
+                        ValidatorUtil.getValidatorUtilJsUrl(context)
+                });
                 formsHaveOnSubmitRendered.add(formClientId);
             }
         } else if (clientValidationRuleForComponent.equals(ClientValidationMode.ON_DEMAND)) {
-            RenderingUtil.renderInitScript(context, "O$.addNotValidatedInput('" + vc.getClientId() + "');", null);
+            RenderingUtil.renderInitScript(context, "O$.addNotValidatedInput('" + vc.getClientId() + "');", new String[] {
+                        ValidatorUtil.getValidatorUtilJsUrl(context)
+                });
         }
     }
 
@@ -391,10 +395,19 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
         if (validationScripts == null)
             return;
         FacesContext context = FacesContext.getCurrentInstance();
-        List<String> renderedJsLinks = ResourceUtil.getRenderedJsLinks(context);
-        for (String js : validationScripts) {
-            if (!renderedJsLinks.contains(js))
-                ResourceUtil.renderJSLinkIfNeeded(js, context);
+        ResponseWriter prevWriter = context.getResponseWriter();
+        try {
+            // use original writer when writing js links to avoid recursive startElement...putNewJSLinksInRenderedJsLinks
+            // call on this ValidationSupportResponseWriter
+            context.setResponseWriter(writer);
+
+            List<String> renderedJsLinks = ResourceUtil.getRenderedJsLinks(context);
+            for (String js : validationScripts) {
+                if (!renderedJsLinks.contains(js))
+                    ResourceUtil.renderJSLinkIfNeeded(js, context);
+            }
+        } finally {
+            context.setResponseWriter(prevWriter);
         }
     }
 }
