@@ -20,9 +20,7 @@
       <strong>Click</strong> the&#160;<h:commandButton
               style="margin-top: 10px;"
               value="Execute" id="buttonInvoker1"
-              onclick="O$('confirmationForm:buttonPopup1').showAtXY(d_getElementLeft(O$('confirmationForm:buttonInvoker1')) + 5,
-                           d_getElementTop(O$('confirmationForm:buttonInvoker1')) + O$('confirmationForm:buttonInvoker1').offsetHeight + 5);
-                       return false;"
+              onclick="O$('confirmationForm:buttonPopup1').showCentered();return false;"
               />
         button to perform an action without confirmation.
         </span>
@@ -31,7 +29,7 @@
                 styleClass="confirmed_popup"
                 hideOnOuterClick="true"
                 hidingTimeout="3000">
-    <h:outputText style="color: #d46400;" value="Action executed!"/>
+    <h:outputText style="color: #d46400;" styleClass="actionExecutedLayer" value="Action executed!"/>
   </o:popupLayer>
 </div>
 
@@ -41,9 +39,7 @@
               id="buttonInvoker"
               style="margin-top: 10px;"
               value="Delete"
-              onclick="O$('confirmationForm:buttonPopup').showAtXY(d_getElementLeft(O$('confirmationForm:buttonInvoker')) + 5,
-                          d_getElementTop(O$('confirmationForm:buttonInvoker')) + O$('confirmationForm:buttonInvoker').offsetHeight + 5);
-                       return false;"
+              onclick="O$('confirmationForm:buttonPopup').showCentered();return false;"
               >
         <o:confirmation id="buttonConfirmation" message="Confirm your action!" draggable="true"/>
 
@@ -55,7 +51,7 @@
                 styleClass="confirmed_popup"
                 hideOnOuterClick="true"
                 hidingTimeout="3000">
-    <h:outputText style="color: #d46400;" value="Action executed!"/>
+    <h:outputText style="color: #d46400;" styleClass="actionExecutedLayer" value="Action executed!"/>
   </o:popupLayer>
 </div>
 
@@ -63,9 +59,7 @@
       <span class="simple_text">
       <strong>Click</strong> the&#160;<h:outputLink
               id="linkInvoker"
-              onclick="O$('confirmationForm:linkPopup').showAtXY(d_getElementLeft(O$('confirmationForm:linkInvoker')) + 1,
-                          d_getElementTop(O$('confirmationForm:linkInvoker')) + O$('confirmationForm:linkInvoker').offsetHeight + 5);
-                       return false;">
+              onclick="O$('confirmationForm:linkPopup').showCentered();return false;">
         <h:outputText value="Remove"/>
       </h:outputLink> link to perform an action with confirmation.
       <o:confirmation for=":confirmationForm:linkInvoker"
@@ -92,7 +86,7 @@
                 styleClass="confirmed_popup"
                 hideOnOuterClick="true"
                 hidingTimeout="3000">
-    <h:outputText style="color: #d46400;" value="Action executed!"/>
+    <h:outputText style="color: #d46400;" styleClass="actionExecutedLayer" value="Action executed!"/>
   </o:popupLayer>
 </div>
 
@@ -101,9 +95,7 @@
       <strong>Click</strong> the
         <span id="textInvoker" class="text_invoker"
               onclick="O$('confirmationForm:textConfirmation').runConfirmedFunction(function(){
-                          O$('confirmationForm:textPopup').showAtXY(d_getElementLeft(O$('textInvoker')) + 5,
-                            d_getElementTop(O$('textInvoker')) + O$('textInvoker').offsetHeight + 5)});
-                        return false;">
+                          O$('confirmationForm:textPopup').showCentered();});return false;">
             Delete All
           </span> text to perform an action with confirmation.
         </span>
@@ -114,7 +106,7 @@
                 styleClass="confirmed_popup"
                 hideOnOuterClick="true"
                 hidingTimeout="3000">
-    <h:outputText style="color: #d46400;" value="Action executed!"/>
+    <h:outputText style="color: #d46400;" styleClass="actionExecutedLayer" value="Action executed!"/>
   </o:popupLayer>
 </div>
 
@@ -128,9 +120,7 @@
         <h:graphicImage
                 id="imageInvoker" url="../images/confirmation/button.gif"
                 width="99" height="25"
-                ondblclick="O$('confirmationForm:imagePopup').showAtXY(d_getElementLeft(O$('confirmationForm:imageInvoker')) + 5,
-                               d_getElementTop(O$('confirmationForm:imageInvoker')) + O$('confirmationForm:imageInvoker').offsetHeight + 5);
-                             return false;">
+                ondblclick="O$('confirmationForm:imagePopup').showCentered(); return false;">
           <o:confirmation id="imageConfirmation"
                           event="ondblclick"
                           captionText="Marine Styled Confirmation"
@@ -156,7 +146,7 @@
                 styleClass="confirmed_popup"
                 hideOnOuterClick="true"
                 hidingTimeout="3000">
-    <h:outputText style="color: #d46400;" value="Action executed!"/>
+    <h:outputText style="color: #d46400;" styleClass="actionExecutedLayer" value="Action executed!"/>
   </o:popupLayer>
 </div>
 

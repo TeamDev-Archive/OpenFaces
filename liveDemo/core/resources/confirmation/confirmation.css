@@ -46,3 +46,7 @@
   margin-right: 15px;
   margin-bottom: 15px;
 }
+
+.actionExecutedLayer {
+   padding: 3em; font-size: 20px;
+}
