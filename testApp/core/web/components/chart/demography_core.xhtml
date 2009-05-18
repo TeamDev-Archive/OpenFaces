@@ -10,24 +10,23 @@
     <tr>
       <td width="100%" valign="top" align="center" colspan="2">
         <div>
-          <div style="font:14pt Verdana; font-weight: bold;color:black;">Workout Summary</div>
           <o:chart id="myPieChartTest" width="650" height="300"
                    model="#{ChartModelTestBean}"
                    legendVisible="false"
-                   textStyle="font: 10pt Verdana;">
+                   textStyle="font: 15pt Verdana; color:gray;">
             <o:pieChartView binding="#{PieChartViewBean.pieView}"
-                            style="background:#FEFFEF;"
+                            style="background:white;"
                             labelsVisible="true"
-                            tooltip="#{sector.key} - #{sector.proportionalValue}"
+                            tooltip="#{sector.key}"
                             actionListener="#{PieChartViewBean.onSectorClickActionListener}"
-                            colors="#D15555, #43B8D4, #7FC11D, #436DAF, #868787, #FFA734, #A74E28"
+                            colors="#FFD700, #8B0000, #FFA07A"
                             onclick="go_there();">
               <o:pieSectorProperties condition="#{PieChartViewBean.selectedSector || PieChartViewBean.defaultSector}" pulled="0.1f"/>
-              <o:chartLabels style="background: #FEFFEF; font:10pt;color:gray;"/>
+              <o:chartLabels style="background: white; font:15pt;"></o:chartLabels>
             </o:pieChartView>
-            <o:chartTitle text=""
-                          style="font:14pt; font-weight: bold;color:black;height:0;"
-                          actionListener="#{PieChartViewBean.onTitleClickActionListener}"/>
+            <o:chartTitle text="People PopulationBean in Different Countries"
+                          actionListener="#{PieChartViewBean.onTitleClickActionListener}"
+                          tooltip="it's tooltip for title"/>
             <o:chartNoDataMessage text="!!!!no data!!!!"
                                   style="color: red; font-size: 20pt;"></o:chartNoDataMessage>
           </o:chart>
