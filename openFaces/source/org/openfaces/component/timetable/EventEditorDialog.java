@@ -11,8 +11,8 @@
  */
 package org.openfaces.component.timetable;
 
-import org.openfaces.util.ValueBindings;
 import org.openfaces.component.window.PopupLayer;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 
@@ -101,7 +101,7 @@ public class EventEditorDialog extends PopupLayer {
         startLabel = value;
     }
 
-    public String getENdLabel() {
+    public String getEndLabel() {
         return ValueBindings.get(this, "endLabel", endLabel, "End:");
     }
 

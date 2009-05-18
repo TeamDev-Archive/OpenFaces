@@ -15,11 +15,11 @@ import org.openfaces.component.input.DateChooser;
 import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.EventEditorDialog;
 import org.openfaces.component.window.PopupLayer;
-import org.openfaces.util.HTML;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ComponentUtil;
 import org.openfaces.renderkit.TableRenderer;
 import org.openfaces.renderkit.window.PopupLayerRenderer;
+import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.HTML;
+import org.openfaces.util.RenderingUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlCommandButton;
@@ -48,7 +48,7 @@ public class EventEditorDialogRenderer extends PopupLayerRenderer {
                         createDateTimeFields(context, popupLayer, "start")
                 },
                 {
-                        ComponentUtil.composeHtmlOutputText(context, popupLayer, "endLabel", dialog.getENdLabel()),
+                        ComponentUtil.composeHtmlOutputText(context, popupLayer, "endLabel", dialog.getEndLabel()),
                         createDateTimeFields(context, popupLayer, "end")
                 },
                 {
