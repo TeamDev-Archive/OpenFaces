@@ -257,6 +257,14 @@ ul.hang li{
   min-height: 786px;
 }
 
+.colorRect {
+  border: 1px solid gray;
+  display: block;
+  font-size: 0;
+  height: 12px;
+  width: 12px;
+}
+
 /******************Daytable pages*************************/
 .eventWithBackground{
   background-image: url(../../images/daytable/daytable-gradient.png);
