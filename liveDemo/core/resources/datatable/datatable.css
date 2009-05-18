@@ -82,6 +82,12 @@
   font-size: 11px;
 }
 
+
 .citiesfilter input {
   width: 98%;
+}
+
+.featuresTable td {
+  padding-bottom: 0 !important;
+  line-height: normal;
 }

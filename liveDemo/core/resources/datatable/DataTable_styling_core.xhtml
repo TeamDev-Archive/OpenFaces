@@ -84,14 +84,15 @@
         <o:dataTable id="featuresId"
                      var="features"
                      value="#{StylingBean.featuresList}"
+                     styleClass="featuresTable"
                      style="border: 1px solid #d77100; width: 502px; margin-left: 9px; margin-right: 9px;"
                      headerRowStyle="background:url('../images/datatable/header.gif') repeat-x; height: 30px; color: white;"
                      headerHorizSeparator="1px solid #d77100"
                      horizontalGridLines="1px solid #ff9a2a"
                      verticalGridLines="1px solid #ff9a2a"
                      focusedStyle="border: 10px solid #ffdc7c !important; width: 520px !important; margin-left: 0px !important; margin-right: 0px !important;"
-                     bodyRowStyle="height: 20px;"
-                     bodyOddRowStyle="height: 20px; background: #e1e1e1;">
+                     bodyRowStyle="height: 19px;"
+                     bodyOddRowStyle="height: 19px; background: #e1e1e1;">
           <o:singleRowSelection style="background:url('../images/datatable/selected.gif') repeat-x; color: white;"
                                 rowData="#{StylingBean.selectedFeature}"/>
           <o:column style="width: 268px; text-align: left;">
