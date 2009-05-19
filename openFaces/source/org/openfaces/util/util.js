@@ -1852,16 +1852,17 @@ O$.getTargetComponentHasOwnMouseBehavior = function(evt) {
 }
 
 O$.startDragAndDrop = function(e, draggable, simulateDblClickForElement) {
-  if (simulateDblClickForElement && e.type == "mousedown") {
+  var evt = O$.getEvent(e);
+  if (simulateDblClickForElement && evt.type == "mousedown") {
     var thisTime = new Date().getTime();
     if (draggable._lastClickTime && thisTime - draggable._lastClickTime < 400) {
       // allow double-click despite being disabled with O$.breakEvent by this function in specified browsers
       if (simulateDblClickForElement.ondblclick && (O$.isMozillaFF() || O$.isSafari() || O$.isChrome()))
-        simulateDblClickForElement.ondblclick(e);
+        simulateDblClickForElement.ondblclick(evt);
     }
     draggable._lastClickTime = thisTime;
   }
-  var evt = O$.getEvent(e);
+
   if (O$.getTargetComponentHasOwnMouseBehavior(evt))
     return; // don't drag native components to avoid unwanted effects (see JSFC-2347 and all related requests)
 
