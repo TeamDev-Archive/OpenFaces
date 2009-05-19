@@ -133,6 +133,7 @@ img{
  	border-top: 1px solid  #004A95;
 	padding: 0.5em 1em 0.7em 1em;
 	font-size: 95%;
+  width: 100%;
 }
 .code_area_values{
 	color: #006600;
