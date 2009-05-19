@@ -96,6 +96,11 @@ public class SuggestionFieldBean implements Serializable {
         degrees = new ArrayList<String>(Arrays.asList("Associate Degree", "Bachelor-Arts", "Bachelor-Engineering",
                 "Bachelor-Science", "Doctor of Medicine", "Doctoral", "Doctoral - All But Dissertation", "Juris Doctorate",
                 "Masters-Arts", "Masters-Science", "Masters-Business Administration"));
+
+        PeopleSearchCriteria criteria = new PeopleSearchCriteria(
+                selectedCountry, selectedIndustry, selectedDegree, selectedHobby);
+
+        cachedPeopleSearchResults.put(criteria, new ArrayList<Person>());
     }
 
     public List<String> getCountries() {
