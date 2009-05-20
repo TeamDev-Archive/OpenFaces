@@ -1,0 +1,38 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+
+  <o:dateChooser id="dateChooser1">
+    <o:reloadComponents componentIds="formID:dateChooser1" event="onchange" onajaxend="O$('formID:dayTable').next();"/> 
+  </o:dateChooser>
+
+  <o:dayTable id="dayTable"
+                events="#{DayTableBean1.events}"
+                day="#{DayTableBean1.date}"
+                startTime="6:00"
+                timetableChangeListener="#{DayTableBean1.processTimetableChanges}"
+                majorTimeStyle="font-family: MS Shell Dlg,Arial,sans-serif; font-size: 14pt;"
+                timeSuffixStyle="font-size: 7pt; line-height: 1em;"
+                preloadedEvents="none"
+            >
+      <o:timetableEvent style="text-align:center;" descriptionStyle="color: #5f5f5f;" escapeDescription="false" escapeName="false"/>
+      <o:eventArea horizontalAlignment="rightEdge" verticalAlignment="above">
+        <h:commandLink title="Postpone training for 1 hour" action="#{DayTableBean1.doLater}" style="margin: 10px">
+          <h:outputText value="1&#160;hour&#160;later" escape="false"/>
+        </h:commandLink>
+      </o:eventArea>
+
+      <o:eventActionBar>
+        <o:eventAction id="customEventAction" actionListener="#{DayTableBean1.postponeEventActionListener}"
+                       imageUrl="../images/daytable/customAction1.gif"
+                       hint="Postpone for 1 day"/>
+      </o:eventActionBar>
+    </o:dayTable>
+
+</div>
