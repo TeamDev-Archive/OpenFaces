@@ -229,19 +229,17 @@ O$.requestComponentPortions = function(componentId, portionNames, customJsonPara
 O$.sendAjaxRequestIfNoFormSubmission = function() {
   var ajaxArgs = arguments;
   O$._ajaxRequestScheduled = true;
+  if (O$._ajax_request_processing) {
+    if (!O$._ajax_requests_queue) {
+      O$._ajax_requests_queue = new Array();
+    }
+    O$._ajax_requests_queue.push(ajaxArgs);
+    return;
+  }
   setTimeout(function() {
     O$._ajaxRequestScheduled = false;
     if (O$._isFormSubmissionJustStated())
       return;
-
-    if (O$._ajax_request_processing) {
-      if (!O$._ajax_requests_queue) {
-        O$._ajax_requests_queue = new Array();
-      }
-      O$._ajax_requests_queue.push(ajaxArgs);
-
-      return;
-    }
 
     O$._ajax_request_processing = true;
     O$.sendAjaxRequest.apply(null, ajaxArgs);
