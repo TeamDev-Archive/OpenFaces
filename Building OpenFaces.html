@@ -93,6 +93,12 @@ p.msopapdefault, li.msopapdefault, div.msopapdefault
 	line-height:115%;
 	font-size:12.0pt;
 	font-family:"Times New Roman","serif";}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0in;
+	margin-left:0in;
+	font-size:10.0pt;
+	font-family:"Times New Roman","serif";}
 .MsoChpDefault
 	{font-size:10.0pt;}
 @page Section1
@@ -127,8 +133,8 @@ Selenium-based tests for OpenFaces functionality.</span></p>
 style='font-size:12.0pt;font-family:"Times New Roman","serif"'>-</span><span
 style='font-size:7.0pt;font-family:"Times New Roman","serif"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span><b><span style='font-family:Courier'>lib</span></b><span
-style='font-size:12.0pt;font-family:"Times New Roman","serif"'> – third-party libraries
-required for building and running OpenFaces modules.</span></p>
+style='font-size:12.0pt;font-family:"Times New Roman","serif"'> – third-party
+libraries required for building and running OpenFaces modules.</span></p>
 
 <p class=MsoListParagraph style='text-indent:-.25in;line-height:normal'><span
 style='font-size:12.0pt;font-family:"Times New Roman","serif"'>-</span><span
@@ -206,8 +212,8 @@ Facelets-based version of OpenFaces Test Application. </span></p>
 line-height:normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif"'>-</span><span
 style='font-size:7.0pt;font-family:"Times New Roman","serif"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span><b><span style='font-family:Courier'>jsp</span></b><span
-style='font-size:12.0pt;font-family:"Times New Roman","serif"'> – JSP-based version
-of OpenFaces Test Application.</span></p>
+style='font-size:12.0pt;font-family:"Times New Roman","serif"'> – JSP-based
+version of OpenFaces Test Application.</span></p>
 
 <p class=MsoListParagraph style='text-indent:-.25in;line-height:normal'><span
 style='font-size:12.0pt;font-family:"Times New Roman","serif"'>-</span><span
@@ -291,8 +297,8 @@ links to the OpenFaces project's root folder in file system.</span></p>
 style='font-size:9.0pt;font-family:"Times New Roman","serif"'>(For this purpose
 open Workspace Preferences dialog, type Linked Resources in quick search field,
 choose Linked Resources preference page, check the Enable Linked Resources
-check-box if unchecked, add new path variable named ‘ProjectRoot’and choose
-project’s root folder location).</span></p>
+check-box if unchecked, add new path variable named ‘ProjectRoot’ and choose project’s
+root folder location).</span></p>
 
 <p class=MsoNormal style='line-height:normal'><b><span style='font-size:13.5pt;
 font-family:"Times New Roman","serif"'>&nbsp;</span></b></p>
@@ -315,7 +321,7 @@ system-wide Idea settings must be configured:</span></p>
 normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif"'>1.</span><span
 style='font-size:7.0pt;font-family:"Times New Roman","serif"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span><span style='font-size:12.0pt;font-family:"Times New Roman","serif"'>There
-must be a JDK version 1.5.0_x in Idea named <b>1.5</b>.</span></p>
+must be a JDK version 1.5.0_x in Idea named &quot;<b>1.5</b>&quot;.</span></p>
 
 <p class=MsoNormal style='margin-left:.75in;text-indent:-.25in;line-height:
 normal'><span style='font-size:12.0pt;font-family:"Times New Roman","serif"'>2.</span><span
@@ -339,8 +345,8 @@ font-family:"Times New Roman","serif"'>Using Ant Scripts</span></b></p>
 
 <p class=MsoNormal style='margin-left:.25in;line-height:normal'><span
 style='font-size:12.0pt;font-family:"Times New Roman","serif"'>There is an
-ability to build the OpenFaces library, Test Application and Live Demo using Ant
-scripts. To do this, find </span><span style='font-size:12.0pt;font-family:
+ability to build the OpenFaces library, Test Application and Live Demo using
+Ant scripts. To do this, find </span><span style='font-size:12.0pt;font-family:
 Courier'>build.xml</span><span style='font-size:12.0pt;font-family:"Times New Roman","serif"'>
 file in project’s root folder and run the default target named </span><span
 style='font-size:12.0pt;font-family:Courier'>build</span><span
@@ -354,7 +360,7 @@ style='font-size:10.0pt;font-family:Courier'>.</span></p>
 
 <p class=MsoNormal style='margin-left:.25in;line-height:normal'><span
 style='font-size:12.0pt;font-family:"Times New Roman","serif"'>WAR files for
-Demo and Test applications may be found in the following directories:</span></p>
+Demo and Test applications can be found in the following directories:</span></p>
 
 <p class=MsoListParagraph style='margin-left:.75in;text-indent:-.25in;
 line-height:normal'><span style='font-family:"Times New Roman","serif"'>-</span><span
@@ -408,11 +414,11 @@ ant targets that can be run from the project's root folder for running tests:</s
   deployed under </span><span style='font-family:Courier'>TestAppFacelets_12</span><span
   style='font-size:12.0pt;font-family:"Times New Roman","serif"'> and </span><span
   style='font-family:Courier'>LiveDemoFacelets_2x</span><span style='font-size:
-  12.0pt;font-family:"Times New Roman","serif"'> contexts accordingly. These contexts
-    may be defined at runtime with </span><span style='font-family:Courier'>test.app.context.path</span>
-    <span style='font-size:12.0pt;font-family:"Times New Roman","serif"'> and </span><span
-  style='font-family:Courier'>demo.context.path</span><span
-  style='font-size:12.0pt;font-family:"Times New Roman","serif"'> system properties.</span></p>
+  12.0pt;font-family:"Times New Roman","serif"'> contexts accordingly. These
+  contexts may be defined at runtime with </span><span style='font-family:Courier'>test.app.context.path</span>
+  <span style='font-size:12.0pt;font-family:"Times New Roman","serif"'>and </span><span
+  style='font-family:Courier'>demo.context.path</span><span style='font-size:
+  12.0pt;font-family:"Times New Roman","serif"'> system properties.</span></p>
   </td>
  </tr>
  <tr>
@@ -434,8 +440,8 @@ ant targets that can be run from the project's root folder for running tests:</s
   contexts accordingly. These contexts may be defined at runtime with </span><span
   style='font-family:Courier'>test.app.context.path</span><span
   style='font-size:12.0pt;font-family:"Times New Roman","serif"'> and </span><span
-  style='font-family:Courier'>demo.context.path</span><span
-  style='font-size:12.0pt;font-family:"Times New Roman","serif"'> system properties.</span></p>
+  style='font-family:Courier'>demo.context.path</span><span style='font-size:
+  12.0pt;font-family:"Times New Roman","serif"'> system properties.</span></p>
   </td>
  </tr>
 </table>
