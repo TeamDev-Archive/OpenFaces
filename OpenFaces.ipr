@@ -761,6 +761,12 @@
       <module fileurl="file://$PROJECT_DIR$/liveDemo/facelets/LiveDemoFacelets.iml" filepath="$PROJECT_DIR$/liveDemo/facelets/LiveDemoFacelets.iml" group="LiveDemo" />
       <module fileurl="file://$PROJECT_DIR$/liveDemo/jsp/LiveDemoJsp.iml" filepath="$PROJECT_DIR$/liveDemo/jsp/LiveDemoJsp.iml" group="LiveDemo" />
       <module fileurl="file://$PROJECT_DIR$/openFaces/OpenFaces.iml" filepath="$PROJECT_DIR$/openFaces/OpenFaces.iml" />
+      <module fileurl="file://$PROJECT_DIR$/portletBridge/PortletBridge.iml" filepath="$PROJECT_DIR$/portletBridge/PortletBridge.iml" group="Portlets" />
+      <module fileurl="file://$PROJECT_DIR$/portlets/common/PortletsCommon.iml" filepath="$PROJECT_DIR$/portlets/common/PortletsCommon.iml" group="Portlets" />
+      <module fileurl="file://$PROJECT_DIR$/portlets/jboss/PortletsJBossPortal.iml" filepath="$PROJECT_DIR$/portlets/jboss/PortletsJBossPortal.iml" group="Portlets" />
+      <module fileurl="file://$PROJECT_DIR$/portlets/jetspeed/MyFacesGenericPortlet/PortletsJetspeedMyFacesGenericPortlet.iml" filepath="$PROJECT_DIR$/portlets/jetspeed/MyFacesGenericPortlet/PortletsJetspeedMyFacesGenericPortlet.iml" group="Portlets/PortletsJetspeed" />
+      <module fileurl="file://$PROJECT_DIR$/portlets/jetspeed/regular/PortletsJetspeedRegular.iml" filepath="$PROJECT_DIR$/portlets/jetspeed/regular/PortletsJetspeedRegular.iml" group="Portlets/PortletsJetspeed" />
+      <module fileurl="file://$PROJECT_DIR$/portlets/liferay/PortletsLiferay.iml" filepath="$PROJECT_DIR$/portlets/liferay/PortletsLiferay.iml" group="Portlets" />
       <module fileurl="file://$PROJECT_DIR$/Root.iml" filepath="$PROJECT_DIR$/Root.iml" />
       <module fileurl="file://$PROJECT_DIR$/seleniumInspector/SeleniumInspector.iml" filepath="$PROJECT_DIR$/seleniumInspector/SeleniumInspector.iml" />
       <module fileurl="file://$PROJECT_DIR$/testApp/core/TestAppCore.iml" filepath="$PROJECT_DIR$/testApp/core/TestAppCore.iml" group="TestApp" />
@@ -882,9 +888,9 @@
     </library>
     <library name="Facelets">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/el/el-ri-1.5.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/el/el-api-1.5.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/facelets/jsf-facelets-1.1.14.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/el/el-api.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/el/el-ri.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
@@ -1029,7 +1035,7 @@
     <library name="Facelets (without el-api.jar -- for Tomcat 6.0)">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/facelets/jsf-facelets-1.1.14.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/el/el-ri-1.5.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/el/el-ri.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
@@ -1129,6 +1135,27 @@
       </CLASSES>
       <JAVADOC />
       <SOURCES />
+    </library>
+    <library name="el">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/el/el-api.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/el/el-ri.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="jboss portlet brige">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/portals/jboss/portletbridge-api-1.0.0.CR2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/portals/jboss/portletbridge-impl-1.0.0.CR2.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-impl/src/test/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-impl/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-api/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/JBossPortletBridge-1.0.0.CR2-src.zip!/core/portletbridge-api/src/test/java" />
+      </SOURCES>
     </library>
   </component>
 </project>

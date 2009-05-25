@@ -1,0 +1,127 @@
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+              version="1.2">
+  <managed-bean>
+    <managed-bean-name>portletsBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.portlets.PortletsBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>testPortletBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.portlets.TestPortletBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>peopleList</managed-bean-name>
+    <managed-bean-class>org.openfaces.portlets.PeopleList</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>DropDownBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.portlets.DropDownBean_Portlets</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>util</managed-bean-name>
+    <managed-bean-class>org.openfaces.portlets.Util</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>valid</managed-bean-name>
+    <managed-bean-class>org.openfaces.portlets.valid</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ForumTreeTableBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.portlets.ForumTreeTableBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <navigation-rule>
+    <from-view-id>/*</from-view-id>
+    <navigation-case>
+      <from-outcome>index</from-outcome>
+      <to-view-id>/index.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>/index.jsp</from-view-id>
+    <navigation-case>
+      <from-outcome>calendar</from-outcome>
+      <to-view-id>/calendar.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>confirmation</from-outcome>
+      <to-view-id>/confirmation.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>datatable</from-outcome>
+      <to-view-id>/dataTable.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>datechooser</from-outcome>
+      <to-view-id>/dateChooser.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>dropdownfield</from-outcome>
+      <to-view-id>/dropDownField.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>dynamicimage</from-outcome>
+      <to-view-id>/dynamicImage.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>chart</from-outcome>
+      <to-view-id>/chart.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>validation</from-outcome>
+      <to-view-id>/validationTest.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>foldingpanel</from-outcome>
+      <to-view-id>/foldingPanel.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>hintlabel</from-outcome>
+      <to-view-id>/hintLabel.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>suggestionfield</from-outcome>
+      <to-view-id>/suggestionField.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>popuplayer</from-outcome>
+      <to-view-id>/popupLayer.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>tabset</from-outcome>
+      <to-view-id>/tabSet.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>tabbedpane</from-outcome>
+      <to-view-id>/tabbedPane.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>treetable</from-outcome>
+      <to-view-id>/treeTable.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>twolistselection</from-outcome>
+      <to-view-id>/twoListSelection.jsp</to-view-id>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>miscellaneous</from-outcome>
+      <to-view-id>/miscellaneous.jsp</to-view-id>
+    </navigation-case>
+  </navigation-rule>
+
+</faces-config>
