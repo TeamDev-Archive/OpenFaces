@@ -138,37 +138,26 @@ public class AjaxUtil {
     }
 
     /**
-     * This method is required for use cases when there is no chance to get ExternalContext or FacesContext instance,
-     * like during processing of doFilter method in any custom Filter implementation.
-     * Method have been added for redirect handling during session expiration on ajax request
-     * Checks whether request is AJAX request
+     * Checks whether the current request is an Ajax request
      *
      * @param request incoming request.
-     * @return <code>true</code> - if request is for internal resource. <code>false</code> otherwise.
-     */
-    public static boolean isAjaxRequest(HttpServletRequest request) {
-        // for portlets: String browser = request.getProperty(...);
-        return request.getParameter(AJAX_REQUEST_MARKER) != null;
-    }
-
-    /**
-     * Checks whether request is AJAX request
-     *
-     * @param request incoming request.
-     * @return <code>true</code> - if request is for internal resource. <code>false</code> otherwise.
+     * @return <code>true</code> - if the current request is an Ajax request. <code>false</code> otherwise.
      */
     public static boolean isAjaxRequest(RequestFacade request) {
         // for portlets: String browser = request.getProperty(...);
         return request.getParameter(AJAX_REQUEST_MARKER) != null;
     }
 
-    /**
-     * Checks whether request is AJAX request
-     *
-     * @param externalContext - external context.
-     * @return <code>true</code> - if request is for internal resource. <code>false</code> otherwise.
-     */
-    public static boolean isAjaxRequest(ExternalContext externalContext) {
+    public static boolean isAjaxRequest(FacesContext context) {
+        if (isPortletRenderRequest(context)) {
+            Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+            boolean ajaxKeyExists = sessionMap.containsKey(AJAX_REQUEST_MARKER);
+            if (ajaxKeyExists)
+                return true;
+            // isPortletRenderRequest also returns true for action requests under Liferay, so it's safe to perform the default check to address this
+        }
+
+        ExternalContext externalContext = context.getExternalContext();
         if (isPortletRequest(FacesContext.getCurrentInstance())) {
             RequestFacade request = RequestFacade.getInstance(externalContext.getRequest());
             // for portlets: String browser = request.getProperty(...);
@@ -205,18 +194,6 @@ public class AjaxUtil {
             considerPortlets = false;
             return false;
         }
-    }
-
-    public static boolean isAjaxRequest(FacesContext context) {
-        if (isPortletRenderRequest(context)) {
-            Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-            boolean ajaxKeyExists = sessionMap.containsKey(AJAX_REQUEST_MARKER);
-            if (ajaxKeyExists)
-                return true;
-            // isPortletRenderRequest also returns true for action requests under Liferay, so it's safe to perform the default check to address this
-        }
-
-        return isAjaxRequest(context.getExternalContext());
     }
 
     public static String getComponentStateFieldName(String clientId) {

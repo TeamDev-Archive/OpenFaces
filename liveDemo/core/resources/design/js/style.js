@@ -7,13 +7,13 @@ function fixheight() {
     }
   }
 
-  if (document.getElementById('LeftPannel') && document.getElementById('Content')) {
+  if (O$("LeftPannel") && O$("Content")) {
     if (ie6) {
-      if (document.getElementById('LeftPannel').offsetHeight > document.getElementById('Content').offsetHeight) {
-        document.getElementById('Content').style.height = (document.getElementById('LeftPannel').offsetHeight - 2) + 'px';
+      if (O$("LeftPannel").offsetHeight > O$("Content").offsetHeight) {
+        O$("Content").style.height = (O$("LeftPannel").offsetHeight - 2) + "px";
       }
     } else {
-      document.getElementById('Content').style.minHeight = (document.getElementById('LeftPannel').offsetHeight - 2) + 'px';
+      O$("Content").style.minHeight = (O$("LeftPannel").offsetHeight - 2) + "px";
     }
   }
 

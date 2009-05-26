@@ -11,7 +11,7 @@
  */
 
 function updateLayout() {
-  var dayTable = document.getElementById('form:dayTable');
+  var dayTable = O$("form:dayTable");
   if (dayTable != null) {
     if (dayTable.updateLayout) {
       dayTable.updateLayout();

@@ -8,8 +8,8 @@
       window.onload = setDescriptionSource;
       
       function setDescriptionSource() {
-        var componentName = document.getElementById("form:componentName").value;
-        var frame = document.getElementById("componentDescription");
+        var componentName = O$("form:componentName").value;
+        var frame = O$("componentDescription");
 
         if (componentName != "") {
           var componentDescription = componentName + ".html";

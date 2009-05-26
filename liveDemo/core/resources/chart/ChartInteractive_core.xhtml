@@ -29,7 +29,7 @@
               </f:facet>
               <h:inputText id="input1" required="true" value="#{income.firstProduct}"
                            style="width: 50px; text-align: right"
-                           onchange="document.getElementById('form1:editedQuarter').value='#{income.quarter}';">
+                           onchange="O$('form1:editedQuarter').value='#{income.quarter}';">
                 <f:validateLongRange maximum="1000" minimum="0"/>
               </h:inputText>
               <o:floatingIconMessage for="input1" showDetail="true" showSummary="false"/>
@@ -40,7 +40,7 @@
               </f:facet>
               <h:inputText id="input2" required="true" value="#{income.secondProduct}"
                            style="width: 50px; text-align: right"
-                           onchange="document.getElementById('form1:editedQuarter').value='#{income.quarter}';">
+                           onchange="O$('form1:editedQuarter').value='#{income.quarter}';">
                 <f:validateLongRange maximum="1000" minimum="0"/>
               </h:inputText>
               <o:floatingIconMessage for="input2" showDetail="true" showSummary="false"/>

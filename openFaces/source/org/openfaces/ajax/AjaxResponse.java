@@ -32,6 +32,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+ * by any application code.
+ */
 class AjaxResponse {
     private static final String TEXT_RESPONSE_PREFIX = "_openfaces_ajax_response_prefix_";
     private static final String TEXT_RESPONSE_SUFFIX = "_openfaces_ajax_response_suffix_";

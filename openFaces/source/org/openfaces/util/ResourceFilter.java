@@ -109,6 +109,7 @@ public class ResourceFilter implements Filter {
                         Class viewExpiredExceptionClass = Class.forName("javax.faces.application.ViewExpiredException");
                         isViewExpiredException = viewExpiredExceptionClass.isAssignableFrom(exception.getClass());
                     } catch (ClassNotFoundException e1) {
+                        // todo: remove all JSF 1.1-specific code
                         // ViewExpiredException is a JSF 1.2 specific class, and JSF 1.1 session expiration is handled in a
                         // different way (null viewroot upon restoring state).
                     }

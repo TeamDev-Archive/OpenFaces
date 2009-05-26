@@ -4,20 +4,20 @@
 
   <div id="Demo">
     <script type="text/javascript">
-      var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       function previousDay() {
-        var dayTable = document.getElementById("form:dayTable");
+        var dayTable = O$("form:dayTable");
         dayTable.previous();
         var date = dayTable.getDay();
         updateDate(date);
-        O$.reloadComponents(['form:dateHidden']);
+        O$.reloadComponents(["form:dateHidden"]);
       }
 
       function updateDate(date) {
-        document.getElementById("form:date").innerHTML = date.getDate();
-        document.getElementById("form:month").innerHTML = month[date.getMonth()];
-        document.getElementById("form:year").innerHTML = date.getFullYear();
-        document.getElementById("form:dateHidden").value = twoDigit(date.getDate()) + "/" + twoDigit(date.getMonth()+1) + "/" + date.getFullYear();
+        O$("form:date").innerHTML = date.getDate();
+        O$("form:month").innerHTML = month[date.getMonth()];
+        O$("form:year").innerHTML = date.getFullYear();
+        O$("form:dateHidden").value = twoDigit(date.getDate()) + "/" + twoDigit(date.getMonth()+1) + "/" + date.getFullYear();
       }
 
       function twoDigit(value) {
@@ -29,15 +29,15 @@
       }
 
       function nextDay() {
-        var dayTable = document.getElementById("form:dayTable");
+        var dayTable = O$("form:dayTable");
         dayTable.next();
         var date = dayTable.getDay();
         updateDate(date);
-        O$.reloadComponents(['form:dateHidden']);
+        O$.reloadComponents(["form:dateHidden"]);
       }
 
       function initDate(){
-        var dateText = document.getElementById("form:dateHidden").value;
+        var dateText = O$("form:dateHidden").value;
         var elems = dateText.split("/");
         var date = new Date();
         date.setFullYear(elems[2], elems[1] - 1, elems[0]);

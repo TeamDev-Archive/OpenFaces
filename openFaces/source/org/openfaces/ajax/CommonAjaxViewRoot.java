@@ -64,6 +64,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -261,8 +262,7 @@ public abstract class CommonAjaxViewRoot {
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
-        }
-        catch (Error e) {
+        } catch (Error e) {
             processExceptionDuringAjax(e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
@@ -1031,17 +1031,27 @@ public abstract class CommonAjaxViewRoot {
         // collect all initialization scripts to buffer to use them in runtime loaded js library
         StringBuilder initializationScripts = new StringBuilder();
 
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        List<String> updatePortions = AjaxUtil.getAjaxPortionNames(context, request);
         for (UIComponent component : components) {
-            UIForm form = getParentForm(component);
-            if (form != null) { // for ButtonRenderer of JSF RI 1.1_02, which requires this parameter to be set by the enclosing form
-                requestMap.put(COM_SUN_FACES_FORM_CLIENT_ID_ATTR, form.getClientId(context));
-            }
             Log.log(context, "ajaxRenderResponse start for component " + component);
-            ajaxRenderRequestedPortions(request, context, component, ajaxResponse, initializationScripts);
+            try {
+                if (updatePortions.isEmpty()) {
+                    renderSimpleUpdate(request, context, component, ajaxResponse, initializationScripts);
+                } else {
+                    renderPortionUpdate(request, context, component, ajaxResponse, initializationScripts, updatePortions);
+                }
+            } catch (IOException e) {
+                throw new FacesException(e.getMessage(), e);
+            }
             Log.log(context, "ajaxRenderResponse finish for component " + component);
-            if (form != null)
-                requestMap.remove(COM_SUN_FACES_FORM_CLIENT_ID_ATTR);
+        }
+
+        AjaxRequest ajaxRequest = AjaxRequest.getInstance(context);
+        Set<String> additionalComponentIds = ajaxRequest.getReloadedComponentIds();
+        UIViewRoot viewRoot = context.getViewRoot();
+        for (String componentId : additionalComponentIds) {
+            UIComponent component = findComponentByPath(viewRoot, componentId, false, true);
+            renderSimpleUpdate(request, context, component, ajaxResponse, initializationScripts);
         }
 
         AjaxPluginIncludes availableIncludes = PluginsLoader.getAvailableIncludes(context);
@@ -1070,75 +1080,58 @@ public abstract class CommonAjaxViewRoot {
         return (UIForm) c;
     }
 
-    private void ajaxRenderRequestedPortions(
-            RequestFacade request, FacesContext context, UIComponent component, AjaxResponse ajaxResponse,
-            StringBuilder initializationScripts) throws FacesException {
-        try {
-            render(request, context, component, ajaxResponse, initializationScripts);
-        }
-        catch (IOException e) {
-            throw new FacesException(e.getMessage(), e);
-        }
-    }
-
-    private void render(
-            RequestFacade request,
-            FacesContext context,
-            UIComponent component,
-            AjaxResponse ajaxResponse,
-            StringBuilder initializationScripts) throws IOException {
-        List<String> updatePortions = AjaxUtil.getAjaxPortionNames(context, request);
-        if (updatePortions.isEmpty()) {
-            StringWriter wrt = new StringWriter();
-            ResponseWriter originalWriter = substituteResponseWriter(context, request, wrt);
-            StringBuilder outputBuffer;
+    private void renderPortionUpdate(RequestFacade request, FacesContext context, UIComponent component, AjaxResponse ajaxResponse, StringBuilder initializationScripts, List<String> updatePortions) throws IOException {
+        RenderKitFactory factory = (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
+        RenderKit renderKit = factory.getRenderKit(context, context.getViewRoot().getRenderKitId());
+        Renderer renderer = renderKit.getRenderer(component.getFamily(), component.getRendererType());
+        JSONObject customJSONParam = AjaxUtil.getCustomJSONParam(context, request);
+        AjaxPortionRenderer ajaxComponentRenderer = (AjaxPortionRenderer) renderer;
+        for (String nextId : updatePortions) {
+            StringBuilder portionOutput;
+            JSONObject responseData;
+            StringWriter stringWriter = new StringWriter();
+            ResponseWriter originalWriter = substituteResponseWriter(context, request, stringWriter);
             try {
-                component.encodeBegin(context);
-                component.encodeChildren(context);
-                component.encodeEnd(context);
-
-                outputBuffer = new StringBuilder(wrt.toString());
+                responseData = ajaxComponentRenderer.encodeAjaxPortion(context, component, nextId, customJSONParam);
+                portionOutput = new StringBuilder(stringWriter.toString());
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
             } finally {
                 restoreWriter(context, originalWriter);
             }
-            StringBuilder rtLibraryScriptsBuffer = new StringBuilder();
+
             StringBuilder rawScriptsBuffer = new StringBuilder();
-            extractScripts(outputBuffer, rawScriptsBuffer, rtLibraryScriptsBuffer);
+            StringBuilder rtLibraryScriptsBuffer = new StringBuilder();
+            extractScripts(portionOutput, rawScriptsBuffer, rtLibraryScriptsBuffer);
             if (rtLibraryScriptsBuffer.length() > 0) {
                 initializationScripts.append(rtLibraryScriptsBuffer).append("\n");
             }
-            String output = outputBuffer.toString();
-            String clientId = component.getClientId(context);
-            ajaxResponse.addSimpleUpdate(clientId, output, rawScriptsBuffer.toString());
-        } else {
-            RenderKitFactory factory = (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
-            RenderKit renderKit = factory.getRenderKit(context, context.getViewRoot().getRenderKitId());
-            Renderer renderer = renderKit.getRenderer(component.getFamily(), component.getRendererType());
-            JSONObject customJSONParam = AjaxUtil.getCustomJSONParam(context, request);
-            AjaxPortionRenderer ajaxComponentRenderer = (AjaxPortionRenderer) renderer;
-            for (String nextId : updatePortions) {
-                StringBuilder portionOutput;
-                JSONObject responseData;
-                StringWriter stringWriter = new StringWriter();
-                ResponseWriter originalWriter = substituteResponseWriter(context, request, stringWriter);
-                try {
-                    responseData = ajaxComponentRenderer.encodeAjaxPortion(context, component, nextId, customJSONParam);
-                    portionOutput = new StringBuilder(stringWriter.toString());
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                } finally {
-                    restoreWriter(context, originalWriter);
-                }
-
-                StringBuilder rawScriptsBuffer = new StringBuilder();
-                StringBuilder rtLibraryScriptsBuffer = new StringBuilder();
-                extractScripts(portionOutput, rawScriptsBuffer, rtLibraryScriptsBuffer);
-                if (rtLibraryScriptsBuffer.length() > 0) {
-                    initializationScripts.append(rtLibraryScriptsBuffer).append("\n");
-                }
-                ajaxResponse.addPortion(nextId, portionOutput.toString(), rawScriptsBuffer.toString(), responseData);
-            }
+            ajaxResponse.addPortion(nextId, portionOutput.toString(), rawScriptsBuffer.toString(), responseData);
         }
+    }
+
+    private void renderSimpleUpdate(RequestFacade request, FacesContext context, UIComponent component, AjaxResponse ajaxResponse, StringBuilder initializationScripts) throws IOException {
+        StringWriter wrt = new StringWriter();
+        ResponseWriter originalWriter = substituteResponseWriter(context, request, wrt);
+        StringBuilder outputBuffer;
+        try {
+            component.encodeBegin(context);
+            component.encodeChildren(context);
+            component.encodeEnd(context);
+
+            outputBuffer = new StringBuilder(wrt.toString());
+        } finally {
+            restoreWriter(context, originalWriter);
+        }
+        StringBuilder rtLibraryScriptsBuffer = new StringBuilder();
+        StringBuilder rawScriptsBuffer = new StringBuilder();
+        extractScripts(outputBuffer, rawScriptsBuffer, rtLibraryScriptsBuffer);
+        if (rtLibraryScriptsBuffer.length() > 0) {
+            initializationScripts.append(rtLibraryScriptsBuffer).append("\n");
+        }
+        String output = outputBuffer.toString();
+        String clientId = component.getClientId(context);
+        ajaxResponse.addSimpleUpdate(clientId, output, rawScriptsBuffer.toString());
     }
 
     private void extractScripts(StringBuilder buffer,

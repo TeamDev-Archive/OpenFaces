@@ -63,11 +63,6 @@ O$.extend(window.OpenFaces, {
  *    immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
  */
 O$.reloadComponents = function(componentIds, args) {
-  /* todo: revise this API. We'll need programmatic access for invoking o:reloadComponents with JavaScript. This method should probably be
-   removed in favor of that API. There should be an ability to create o:reloadComponents at run-time, and API for
-   running it should be the same regardless of whether it's included on the page or created with JavaScript,
-   e.g. new O$.ReloadComponents(componentId, {onajaxend: ...}).run(),
-   or O$.reloadComponents(componentId).run();*/
   O$.reloadComponent(componentIds, args);
 }
 
@@ -1427,21 +1422,10 @@ O$.updateJsfSequenceForMyFaces = function(jsfSequence) {
 }
 
 O$.updateViewIdForRI = function(viewId) {
-  if (O$('com.sun.faces.VIEW')) {
-    // JSF RI 1.1
-    for (var sunFacesViewFieldIndex = 0; sunFacesViewFieldIndex < document.getElementsByName('com.sun.faces.VIEW').length; sunFacesViewFieldIndex++) {
-      if (document.getElementsByName('com.sun.faces.VIEW')[sunFacesViewFieldIndex]) {
-        document.getElementsByName('com.sun.faces.VIEW')[sunFacesViewFieldIndex].value = viewId;
-      }
-    }
-  }
-  else {
-    // JSF RI 1.2
-    if (document.getElementsByName('javax.faces.ViewState')) {
-      for (var facesViewStateFieldIndex = 0; facesViewStateFieldIndex < document.getElementsByName('javax.faces.ViewState').length; facesViewStateFieldIndex++) {
-        if (document.getElementsByName('javax.faces.ViewState')[facesViewStateFieldIndex]) {
-          document.getElementsByName('javax.faces.ViewState')[facesViewStateFieldIndex].value = viewId;
-        }
+  if (document.getElementsByName('javax.faces.ViewState')) {
+    for (var facesViewStateFieldIndex = 0; facesViewStateFieldIndex < document.getElementsByName('javax.faces.ViewState').length; facesViewStateFieldIndex++) {
+      if (document.getElementsByName('javax.faces.ViewState')[facesViewStateFieldIndex]) {
+        document.getElementsByName('javax.faces.ViewState')[facesViewStateFieldIndex].value = viewId;
       }
     }
   }

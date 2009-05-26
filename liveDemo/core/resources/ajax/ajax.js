@@ -12,7 +12,7 @@
 
 function removeClassName(element, className) {
   if (element.className) {
-    var arrList = element.className.split(' ');
+    var arrList = element.className.split(" ");
     var classNameInLowerCase = className.toLowerCase();
     for (var i = 0; i < arrList.length; i++)
     {
@@ -22,7 +22,7 @@ function removeClassName(element, className) {
         i--;
       }
     }
-    element.className = arrList.join(' ');
+    element.className = arrList.join(" ");
   }
 }
 
@@ -30,7 +30,7 @@ function removeClassName(element, className) {
 function addClassName(element, className)
 {
   if (element.className) {
-    var arrList = element.className.split(' ');
+    var arrList = element.className.split(" ");
     var classNameInLowerCase = className.toLowerCase();
     for (var i = 0; i < arrList.length; i++) {
       if (arrList[i].toLowerCase() == classNameInLowerCase) {
@@ -39,7 +39,7 @@ function addClassName(element, className)
       }
     }
     arrList[arrList.length] = className;
-    element.className = arrList.join(' ');
+    element.className = arrList.join(" ");
   } else {
     element.className = className;
   }
@@ -58,7 +58,7 @@ function check(element) {
       } else {
         removeClassName(element, "checked");
       }
-      O$.reloadComponents([ 'form:taskList', 'form:doneList', 'form:doneListCaption' ], {
+      O$.reloadComponents([ "form:taskList", "form:doneList", "form:doneListCaption" ], {
         requestDelay: 500,
         immediate :true
       });
@@ -68,7 +68,7 @@ function check(element) {
 }
 
 var clickAddTask = function() {
-  document.getElementById('form:addTask').click();
+  O$("form:addTask").click();
 };
 
 function executeOnEnter(event, func) {
@@ -78,11 +78,11 @@ function executeOnEnter(event, func) {
 }
 
 function showAddTaskButton() {
-  document.getElementById('form:addTask').style.display = 'block';
+  O$("form:addTask").style.display = "block";
 }
 
 function hideAddTaskButton() {
-  document.getElementById('form:addTask').style.display = 'none';
+  O$("form:addTask").style.display = "none";
 }
 
 function addTaskFocus() {
@@ -90,7 +90,7 @@ function addTaskFocus() {
 }
 
 function addTaskBlur() {
-  if (document.getElementById("form:newTask").value == '') {
+  if (O$("form:newTask").value == "") {
     hideAddTaskButton();
   }
 }
