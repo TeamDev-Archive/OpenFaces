@@ -52,7 +52,7 @@ O$._initSpinner = function(spinnerId,
         var valueAfter = field.value;
         if (valueBefore == valueAfter)
           return;
-        notifyForInputChanges(spinner);
+        notifyOfInputChanges(spinner);
       }, 1);
       evt.cancelBubble = true;
     }
@@ -91,6 +91,25 @@ O$._initSpinner = function(spinnerId,
   decreaseButton.ondblclick = O$.repeatClickOnDblclick;
   increaseButton.ondblclick = O$.repeatClickOnDblclick;
 
+  spinner.getValue = function() {
+    if (!spinner._field)
+      return null;
+    var value = parseInt(spinner._field.value, 10);
+    return !isNaN(value) ? value : null;
+  }
+
+  spinner.setValue = function(value) {
+    var newValue = value == null || isNaN(value)
+            ? ""
+            : value;
+    var prevValue = spinner._field.value;
+    spinner._field.value = newValue;
+    if (newValue != parseInt(prevValue, 10)) {
+      notifyOfInputChanges(spinner);
+    }
+
+  }
+
   if (!disabled) {
     spinner._increaseButton.onmousedown = function(e) {
       checkValueForBounds(spinner);
@@ -99,7 +118,7 @@ O$._initSpinner = function(spinnerId,
         pressed: spinner._pressedButtonClass
       });
 
-      var value = parseInt(spinner._field.value);
+      var value = parseInt(spinner._field.value, 10);
       if (!value && value != 0) {
         spinner._field.value = minValue;
       } else if (value + step <= maxValue) {
@@ -111,8 +130,8 @@ O$._initSpinner = function(spinnerId,
           spinner._field.value = maxValue;
         }
       }
-      if (value != parseInt(spinner._field.value)) {
-        notifyForInputChanges(spinner);
+      if (value != parseInt(spinner._field.value, 10)) {
+        notifyOfInputChanges(spinner);
       }
       O$.breakEvent(e);
     };
@@ -124,7 +143,7 @@ O$._initSpinner = function(spinnerId,
         pressed: spinner._pressedButtonClass
       });
 
-      var value = parseInt(spinner._field.value);
+      var value = parseInt(spinner._field.value, 10);
       if (!value && value != 0) {
         spinner._field.value = minValue;
       } else if (value - step >= minValue) {
@@ -137,8 +156,8 @@ O$._initSpinner = function(spinnerId,
           spinner._field.value = minValue;
         }
       }
-      if (value != parseInt(spinner._field.value)) {
-        notifyForInputChanges(spinner);
+      if (value != parseInt(spinner._field.value, 10)) {
+        notifyOfInputChanges(spinner);
       }
       O$.breakEvent(e);
     };
@@ -216,21 +235,21 @@ O$._initSpinner = function(spinnerId,
     O$.addMouseOutListener(spinner, spinner._dropDownMouseOut);
   }
 
-  function notifyForInputChanges(spinner) {
+  function notifyOfInputChanges(spinner) {
     if (spinner.onchange)
       spinner.onchange();
   }
 
   function checkValueForBounds(spinner) {
-    var value = parseInt(spinner._field.value);
+    var value = parseInt(spinner._field.value, 10);
     if (value) {
       if (value < minValue) {
         spinner._field.value = minValue;
-        notifyForInputChanges(spinner);
+        notifyOfInputChanges(spinner);
       }
       if (value > maxValue) {
         spinner._field.value = maxValue;
-        notifyForInputChanges(spinner);
+        notifyOfInputChanges(spinner);
       }
     }
   }

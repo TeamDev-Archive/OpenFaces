@@ -9,7 +9,7 @@
         var unicode = e.charCode ? e.charCode : e.keyCode;
 
         if (unicode == 13) {
-          document.getElementById('form:addTask').click();
+          O$("form:addTask").click();
           return false;
         }
 
@@ -35,7 +35,7 @@
         </td>
       </tr>
     </table>
-    <div class="taskDemo" style="width: 100%;overflow:hidden;float:none;">
+    <div class="taskDemo" style="width: 100%; overflow: hidden; float: none;">
 
       <h5>Undone tasks</h5>
       <h:panelGroup id="taskList" styleClass="tasks">

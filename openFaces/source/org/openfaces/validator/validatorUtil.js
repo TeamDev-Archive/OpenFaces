@@ -31,7 +31,7 @@ O$.getConverters = function(input) {
   var validators = O$.getValidators(input);
   if (validators && validators.length > 0) {
     var converters = new Array();
-    for (i = 0; i < validators.length; i++) {
+    for (var i = 0; i < validators.length; i++) {
       var validator = validators[i];
       if (validator && validator.type && validator.type == "converter") {
         converters.push(validator);

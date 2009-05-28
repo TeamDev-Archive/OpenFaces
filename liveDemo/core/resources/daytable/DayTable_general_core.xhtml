@@ -46,9 +46,9 @@
 
 
     </script>
-    <h3 class="CalendarDate"><big><h:commandLink style="text-decoration:none;" onclick="previousDay();return false;"><h:outputText value="&#8592;&#160;" escape="false" /></h:commandLink></big>
+    <h3 class="CalendarDate"><big><h:commandLink style="text-decoration: none;" onclick="previousDay(); return false;"><h:outputText value="&#8592;&#160;" escape="false" /></h:commandLink></big>
       <h:outputText id="date" value="" styleClass="date"/>&#160;<h:outputText id="month" value="" styleClass="date"/>&#160;<h:outputText id="year" value="" styleClass="date"/>
-      <big><h:commandLink style="text-decoration:none;" onclick="nextDay(); return false;"><h:outputText escape="false" value="&#8594;" /> </h:commandLink></big>
+      <big><h:commandLink style="text-decoration: none;" onclick="nextDay(); return false;"><h:outputText escape="false" value="&#8594;" /> </h:commandLink></big>
       <h:inputHidden id="dateHidden" value="#{DayTableBean1.date}">
         <f:convertDateTime pattern="dd/MM/yyyy"/>
       </h:inputHidden>
