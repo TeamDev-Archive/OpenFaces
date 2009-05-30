@@ -4,20 +4,18 @@
 
   <div id="Demo">
     <script type="text/javascript">
-      var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       function previousDay() {
         var dayTable = O$("form:dayTable");
         dayTable.previous();
         var date = dayTable.getDay();
         updateDate(date);
-        O$.reloadComponents(["form:dateHidden"]);
       }
 
       function updateDate(date) {
         O$("form:date").innerHTML = date.getDate();
-        O$("form:month").innerHTML = month[date.getMonth()];
+        O$("form:month").innerHTML = months[date.getMonth()];
         O$("form:year").innerHTML = date.getFullYear();
-        O$("form:dateHidden").value = twoDigit(date.getDate()) + "/" + twoDigit(date.getMonth()+1) + "/" + date.getFullYear();
       }
 
       function twoDigit(value) {
@@ -33,14 +31,10 @@
         dayTable.next();
         var date = dayTable.getDay();
         updateDate(date);
-        O$.reloadComponents(["form:dateHidden"]);
       }
 
       function initDate(){
-        var dateText = O$("form:dateHidden").value;
-        var elems = dateText.split("/");
-        var date = new Date();
-        date.setFullYear(elems[2], elems[1] - 1, elems[0]);
+        var date = O$("form:dayTable").getDay();
         updateDate(date);
       }
 
@@ -49,12 +43,6 @@
     <h3 class="CalendarDate"><big><h:commandLink style="text-decoration: none;" onclick="previousDay(); return false;"><h:outputText value="&#8592;&#160;" escape="false" /></h:commandLink></big>
       <h:outputText id="date" value="" styleClass="date"/>&#160;<h:outputText id="month" value="" styleClass="date"/>&#160;<h:outputText id="year" value="" styleClass="date"/>
       <big><h:commandLink style="text-decoration: none;" onclick="nextDay(); return false;"><h:outputText escape="false" value="&#8594;" /> </h:commandLink></big>
-      <h:inputHidden id="dateHidden" value="#{DayTableBean1.date}">
-        <f:convertDateTime pattern="dd/MM/yyyy"/>
-      </h:inputHidden>
-      <script>
-        initDate();
-      </script>
     </h3>
     <o:dayTable id="dayTable"
                 events="#{DayTableBean1.events}"
@@ -66,8 +54,9 @@
             >
       <o:timetableEvent style="text-align:center;" descriptionStyle="color: #5f5f5f;" escapeDescription="false" escapeName="false"/>
       <o:eventArea horizontalAlignment="rightEdge" verticalAlignment="above">
-        <h:commandLink title="Postpone training for 1 hour" action="#{DayTableBean1.doLater}" style="margin: 10px">
+        <h:commandLink title="Postpone training for 1 hour" style="margin: 10px">
           <h:outputText value="1&#160;hour&#160;later" escape="false"/>
+          <o:reloadComponents componentIds=":form:dayTable" action="#{DayTableBean1.doLater}" disableDefault="true"/>
         </h:commandLink>
       </o:eventArea>
 

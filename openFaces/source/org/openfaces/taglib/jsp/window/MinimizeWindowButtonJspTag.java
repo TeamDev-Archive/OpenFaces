@@ -12,7 +12,6 @@
 package org.openfaces.taglib.jsp.window;
 
 import org.openfaces.taglib.internal.window.MinimizeWindowButtonTag;
-import org.openfaces.taglib.jsp.CaptionButtonJspTag;
 import org.openfaces.taglib.jsp.ToggleCaptionButtonJspTag;
 
 import javax.el.ValueExpression;

@@ -1144,6 +1144,9 @@ O$._initDayTable = function(componentId,
     if (O$._datesEqual(dayTable._day, day))
       return;
 
+    var dtf = O$.getDateTimeFormatObject(locale);
+    O$.addHiddenField(dayTable, dayTable.id + "::day", dtf.format(day, "dd/MM/yyyy"));
+
     dayTable._day = day;
     dayTable._startTime = O$.parseTime(startTimeStr, O$.cloneDate(day));
     dayTable._endTime = O$.parseTime(endTimeStr, O$.cloneDate(day));

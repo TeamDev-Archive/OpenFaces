@@ -63,7 +63,7 @@ O$.extend(window.OpenFaces, {
  *    immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
  */
 O$.reloadComponents = function(componentIds, args) {
-  O$.reloadComponent(componentIds, args);
+  O$._reloadComponent(componentIds, args);
 }
 
 // ================================== IMPLEMENTATION
@@ -76,7 +76,7 @@ O$.PARAM_COMPONENT_IDS = "_of_componentIds";
 O$.CUSTOM_JSON_PARAM = "_of_customJsonParam";
 O$.SUBMITTED_COMPONENT_IDS = "_of_submittedComponentIds";
 O$.SERVER_ACTION = "_of_serverAction";
-O$.SERVER_ACTION_SOURCE_COMPONENT_ID = "serverActionSourceComponentId";
+O$.SERVER_ACTION_SOURCE_COMPONENT_ID = "_of_sourceComponentId";
 O$.ACTION_LISTENER = "_of_actionListener";
 O$.ACTION_COMPONENT = "_of_actionComponent";
 O$.IMMEDIATE = "_of_immediate";
@@ -173,12 +173,14 @@ O$.reloadPage = function(loc) {
   window.location = loc;
 }
 
-O$.reloadComponent = function(componentIds, args) {
+O$._reloadComponent = function(componentIds, args) {
   if (!args) args = {}
   var params = args.additionalParams ? args.additionalParams : [];
   var ids = new Array();
   if (args.action)
     params.push([O$.SERVER_ACTION, args.action]);
+  if (args.actionSourceId)
+    params.push([O$.SERVER_ACTION_SOURCE_COMPONENT_ID, args.actionSourceId]);
   if (componentIds instanceof Array) {
     ids = componentIds;
   } else {
@@ -258,7 +260,7 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
  * customJsonParam -
  *
  * action - (optional) server action in the form of EL, which should be executed during this ajax request
- * serverActionSourceComponentId - (optional) client id of a component from which this action is initiated (e.g. actual for a button in a table which needs current row's data in the action)
+ * sourceComponentId - (optional) client id of a component from which this action is initiated (e.g. actual for a button in a table which needs current row's data in the action)
  */
 O$.sendAjaxRequest = function(componentIds, args) {
   if (document.__sessionHasExpired
@@ -967,7 +969,7 @@ O$.replaceDocumentElements = function(htmlPortion, allowElementsWithNewIds) {
     var oldElement = O$(elementId);
     if (!oldElement) {
       if (!allowElementsWithNewIds) {
-        O$.logError(oldElement, "Couldn't find component to replace: " + elementId);
+        O$.logError("Couldn't find component to replace: " + elementId + "; incoming HTML for this component: " + newElement.innerHTML);
       }
       continue;
     }

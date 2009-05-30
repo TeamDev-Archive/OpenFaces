@@ -37,7 +37,7 @@
 
 </head>
 
-<body onload="updateLayout()">
+<body onload="updateLayout(); initDate();">
 
 <%@ include file="../template/pageBackground.xhtml" %>
 

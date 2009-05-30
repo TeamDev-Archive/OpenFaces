@@ -45,6 +45,15 @@ public class FacesUtil {
         return value;
     }
 
+
+    /*
+    public static Object var(String varName) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ELContext elContext = context.getELContext();
+        return elContext.getELResolver().getValue(elContext, null, varName);
+    }
+    */
+
     /**
      * This method retrieve value from request parameters map by key.
      *

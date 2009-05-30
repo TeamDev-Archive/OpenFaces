@@ -25,13 +25,13 @@ public class MinimizeWindowButton extends ToggleCaptionButton {
 
     private static Map<String, String> OUR_PROPERTY_MAPPINGS = new HashMap<String, String>();
 
-     static {
+    static {
         OUR_PROPERTY_MAPPINGS.put("restoreImageUrl", "toggledImageUrl");
         OUR_PROPERTY_MAPPINGS.put("restoreRolloverImageUrl", "toggledRolloverImageUrl");
         OUR_PROPERTY_MAPPINGS.put("restorePressedImageUrl", "toggledPressedImageUrl");
-        OUR_PROPERTY_MAPPINGS.put("maximizeImageUrl", "imageUrl");
-        OUR_PROPERTY_MAPPINGS.put("maximizeRolloverImageUrl", "rolloverImageUrl");
-        OUR_PROPERTY_MAPPINGS.put("maximizePressedImageUrl", "pressedImageUrl");
+        OUR_PROPERTY_MAPPINGS.put("minimizeImageUrl", "imageUrl");
+        OUR_PROPERTY_MAPPINGS.put("minimizeRolloverImageUrl", "rolloverImageUrl");
+        OUR_PROPERTY_MAPPINGS.put("minimizePressedImageUrl", "pressedImageUrl");
     }
 
     public MinimizeWindowButton() {
@@ -47,7 +47,7 @@ public class MinimizeWindowButton extends ToggleCaptionButton {
         return OUR_PROPERTY_MAPPINGS;
     }
 
-     public String getRestoreImageUrl() {
+    public String getRestoreImageUrl() {
         return super.getToggledImageUrl();
     }
 

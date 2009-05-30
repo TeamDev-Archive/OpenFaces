@@ -50,6 +50,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         RenderingUtil.registerDateTimeFormatObject(dayTable.getLocale());
         AjaxUtil.prepareComponentForAjax(context, dayTable);
 
+        dayTable.setEvent(null);
         ResponseWriter writer = context.getResponseWriter();
         String clientId = dayTable.getClientId(context);
         writer.startElement("table", dayTable);
@@ -243,7 +244,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         if (eventAreas.size() > 0) {
             String eventVarName = dayTable.getEventVar();
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-            String prevEventVarValue = (String) requestMap.get(eventVarName);
+            Object prevEventVarValue = requestMap.get(eventVarName);
             for (AbstractTimetableEvent event : events) {
                 dayTable.setEvent(event);
                 for (EventArea eventArea : eventAreas) {
@@ -434,6 +435,20 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
         DayTable dayTable = (DayTable) component;
+
+        Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
+        String dayStr = requestParams.get(dayTable.getClientId(context) + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "day");
+        if (dayStr != null) {
+            TimeZone timeZone = (dayTable.getTimeZone() != null)
+                    ? dayTable.getTimeZone()
+                    : TimeZone.getDefault();
+            Date day = DataUtil.parseDateFromJs(dayStr, timeZone);
+            dayTable.setDay(day);
+        }
+        decodeTimetableChanges(context, dayTable);
+    }
+
+    private void decodeTimetableChanges(FacesContext context, DayTable dayTable) {
         Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
 
         String changesKey = dayTable.getClientId(context) + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "timetableChanges";

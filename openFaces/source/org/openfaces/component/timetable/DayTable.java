@@ -857,6 +857,8 @@ public class DayTable extends OUIObjectIteratorBase {
 
         if (context.getRenderResponse())
             childrenValid = false;
+        if (day != null && ValueBindings.set(this, "day", day))
+            day = null;
     }
 
 

@@ -77,10 +77,9 @@ public abstract class OUIClientActionHelper {
             AjaxUtil.addJSLinks(context, parent);
             StyleUtil.requestDefaultCss(context);
         }
-        if (parent != null && parent.getAttributes() != null) {
-            String event = action.getEvent();
-            parent.getAttributes().put(event, script);
-        }
+
+        String event = action.getEvent();
+        parent.getAttributes().put(event, script);
     }
 
     protected abstract String getClientActionScript(FacesContext context, OUIClientAction action);

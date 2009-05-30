@@ -78,11 +78,11 @@ public abstract class CommonAjaxViewRoot {
 
     private static final String PARAM_SUBMITTED_COMPONENT_IDS = "_of_submittedComponentIds";
     private static final String PARAM_SERVER_ACTION = "_of_serverAction";
-    private static final String PARAM_SERVER_ACTION_COMPONENT_ID = "serverActionSourceComponentId";// see JSFC-1516
+    private static final String PARAM_SERVER_ACTION_SOURCE_COMPONENT_ID = "_of_sourceComponentId";
     private static final String PARAM_ACTION_COMPONENT = "_of_actionComponent";
     private static final String PARAM_ACTION_LISTENER = "_of_actionListener";
     private static final String PARAM_IMMEDIATE = "_of_immediate";
-    // copy of org.apache.myfaces.shared_impl.renderkit.RendererUtils.SEQUENCE_PARAM
+    // a copy of org.apache.myfaces.shared_impl.renderkit.RendererUtils.SEQUENCE_PARAM
     private static final String MYFACES_SEQUENCE_PARAM = "jsf_sequence";
     public static final long MAX_PORTLET_PARALLEL_REQUEST_TIMEOUT = 20 * 1000;
     private static final String COM_SUN_FACES_FORM_CLIENT_ID_ATTR = "com.sun.faces.FORM_CLIENT_ID_ATTR";
@@ -415,7 +415,7 @@ public abstract class CommonAjaxViewRoot {
         assertComponentId(componentId);
         String[] componentIds = componentId.split(";");
         String serverAction = request.getParameter(PARAM_SERVER_ACTION);
-        String serverActionComponentId = request.getParameter(PARAM_SERVER_ACTION_COMPONENT_ID);
+        String serverActionComponentId = request.getParameter(PARAM_SERVER_ACTION_SOURCE_COMPONENT_ID);
 
         UIViewRoot viewRoot = context.getViewRoot();
         assertChildren(viewRoot);
@@ -862,7 +862,6 @@ public abstract class CommonAjaxViewRoot {
             throw new IllegalStateException("This method should only be invoked for portlet Ajax requests");
         }
 
-//    decreaseSequenceIdForMyFaces(context);
         Integer sequenceId = (EnvironmentUtil.isLiferay(context.getExternalContext().getRequestMap()))
                 ? getSequenceIdForMyFaces(context)
                 : null;

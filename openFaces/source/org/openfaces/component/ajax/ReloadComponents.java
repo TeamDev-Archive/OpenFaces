@@ -56,7 +56,8 @@ public class ReloadComponents extends UICommand implements OUIClientAction {
 
     public void setParent(UIComponent parent) {
         super.setParent(parent);
-        helper.onParentChange(this, parent);
+        if (parent != null)
+            helper.onParentChange(this, parent);
     }
 
     public void setComponentIds(List<String> componentIds) {

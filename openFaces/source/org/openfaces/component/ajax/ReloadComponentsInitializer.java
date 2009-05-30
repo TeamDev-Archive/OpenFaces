@@ -13,6 +13,7 @@ package org.openfaces.component.ajax;
 
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
+import org.openfaces.component.OUIObjectIterator;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
@@ -43,7 +44,7 @@ public class ReloadComponentsInitializer {
             for (String componentId : componentIds) {
                 UIComponent component = ((UIComponent) action).findComponent(componentId);
                 if (component == null) {
-                    Log.log(context, "o:reloadComponents couldn't find component by id: " + componentId);
+                    Log.log(context, "<o:reloadComponents> couldn't find component by id: " + componentId);
                     continue;
                 }
 
@@ -54,6 +55,12 @@ public class ReloadComponentsInitializer {
                     uiData.setRowIndex(-1);
                     idsArray.put(component.getClientId(context));
                     uiData.setRowIndex(savedRowIndex);
+                } else if (component instanceof OUIObjectIterator) {
+                    OUIObjectIterator ouiObjectIterator = (OUIObjectIterator) component;
+                    String savedObjectId = ouiObjectIterator.getObjectId();
+                    ouiObjectIterator.setObjectId(null);
+                    idsArray.put(component.getClientId(context));
+                    ouiObjectIterator.setObjectId(savedObjectId);
                 } else {
                     idsArray.put(component.getClientId(context));
                 }
@@ -90,6 +97,8 @@ public class ReloadComponentsInitializer {
                 validateExpressionString(actionExpressionString);
                 result.put("action", actionExpressionString.substring(
                         EXPRESSION_PREFIX.length(), actionExpressionString.length() - EXPRESSION_SUFFIX.length()));
+                String invokerId = OUIClientActionHelper.getClientActionInvoker(context, reloadComponents);
+                result.put("actionSourceId", invokerId); 
             }
             int requestDelay = reloadComponents.getRequestDelay();
             if (requestDelay > 0) {
