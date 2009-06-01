@@ -53,7 +53,12 @@ public abstract class OUIClientActionHelper {
             UIComponent associatedComponent = actionComponent.getParent();
             boolean allowedComponent = !considerOnlyCommandLinkAndButton ||
                     (associatedComponent instanceof HtmlCommandButton || associatedComponent instanceof HtmlCommandLink);
-            return allowedComponent ? associatedComponent.getClientId(context) : null;
+            String result = allowedComponent ? associatedComponent.getClientId(context) : null;
+            if (associatedComponent != null) {
+                // reset client-id cache for client-id to be calculated as usual after setParent is called
+                associatedComponent.setId(associatedComponent.getId());
+            }
+            return result;
         } else
             return null;
     }
