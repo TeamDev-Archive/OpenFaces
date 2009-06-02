@@ -21719,6 +21719,19 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
+      <description>Works only for scrollable DayTables. Specifies the time to which the top DayTable's top edge will be
+        scrolled. The time should be specified as a string in the "HH:mm" format, e.g. "10:00".
+      </description>
+      <name>scrollTime</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>Specifies whether a time is written right against an appropriate hour separator line ("againstMark"),
         or below hour separator line ("underMark" -- default).
       </description>

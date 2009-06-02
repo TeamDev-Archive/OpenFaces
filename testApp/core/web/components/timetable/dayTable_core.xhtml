@@ -23,9 +23,11 @@
     <o:tabbedPaneItem>
       <f:facet name="tab"><h:outputText value="Default view"/></f:facet>
 
-      <o:dayTable id="dt1" rolloverStyle="border: 1px solid blue;" events="#{TimeTableBean.events1}" resources="#{TimeTableBean.resources}" style="height: 500px;" daySwitcherVisible="true"
+      <o:dayTable id="dt1" rolloverStyle="border: 1px solid blue;" events="#{TimeTableBean.events1}"
+                  resources="#{TimeTableBean.resources}" style="height: 500px;" daySwitcherVisible="true"
               timetableChangeListener="#{TimeTableBean.processTimetableChanges1}"
-              preloadedEvents="none">
+              preloadedEvents="none"
+              scrollTime="5:30">
         <o:eventArea horizontalAlignment="rightEdge" verticalAlignment="topEdge" style="margin: 0; padding: 0;">
           <o:dropDownField id="colorField"
                            value="#{TimeTableBean.eventColor1}"
@@ -55,7 +57,7 @@
     </o:tabbedPaneItem>
 
     <o:tabbedPaneItem>
-      <f:facet name="tab"><h:outputText value="iTrain view"/></f:facet>
+      <f:facet name="tab"><h:outputText value="Multiresource view"/></f:facet>
 
       <o:dayTable id="dt2" events="#{TimeTableBean.events2}" resources="#{TimeTableBean.resources}"
                   timetableChangeListener="#{TimeTableBean.processTimetableChanges2}"

@@ -60,8 +60,8 @@ public class DayTable extends OUIObjectIteratorBase {
     private MethodExpression timetableChangeListener;
     private String onchange;
     private Boolean daySwitcherVisible;
-    private Date day; // todo: add submission of the current day from client-side and writing it to binding
-    //todo: add an attribute for specifying the scrolling position (as time at the top scrolling edge)
+    private Date day;
+
 
     // todo: implement keyboard events inherited from OUIObjectIterator, this should probably be done along with keyboard support
     private Locale locale;
@@ -71,6 +71,8 @@ public class DayTable extends OUIObjectIteratorBase {
 
     private String startTime;
     private String endTime;
+    //todo: add an attribute for specifying the scrolling position (as time at the top scrolling edge)
+    private String scrollTime;
     private TimeTextPosition timeTextPosition;
 
     private String resourceHeadersRowStyle;
@@ -143,6 +145,7 @@ public class DayTable extends OUIObjectIteratorBase {
 
                 startTime,
                 endTime,
+                scrollTime,
                 timeTextPosition,
 
                 resourceHeadersRowStyle,
@@ -204,6 +207,7 @@ public class DayTable extends OUIObjectIteratorBase {
 
         startTime = (String) state[i++];
         endTime = (String) state[i++];
+        scrollTime = (String) state[i++];
         timeTextPosition = (TimeTextPosition) state[i++];
 
         resourceHeadersRowStyle = (String) state[i++];
@@ -381,6 +385,19 @@ public class DayTable extends OUIObjectIteratorBase {
         checkTimeString(endTime);
         this.endTime = endTime;
     }
+
+    public String getScrollTime() {
+        String scrollTime = ValueBindings.get(this, "scrollTime", this.scrollTime);
+        checkTimeString(scrollTime);
+        return scrollTime;
+    }
+
+    public void setScrollTime(String scrollTime) {
+        checkTimeString(scrollTime);
+
+        this.scrollTime = scrollTime;
+    }
+
 
     public TimeTextPosition getTimeTextPosition() {
         return ValueBindings.get(this, "timeTextPosition", timeTextPosition, TimeTextPosition.UNDER_MARK, TimeTextPosition.class);

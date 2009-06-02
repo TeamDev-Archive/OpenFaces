@@ -436,7 +436,11 @@ O$.Logger = function() {
   //  this._win = window.open("about:blank", "O$.Logger");
   this.log = function (text) {
     var date = new Date();
-    this._div.insertBefore(document.createElement("br"), this._div.childNodes[0]);
+    var br = document.createElement("br");
+    if (this._div.childNodes.length > 0)
+      this._div.insertBefore(br, this._div.childNodes[0]);
+    else
+      this._div.appendChild(br);
     this._div.insertBefore(document.createTextNode(text), this._div.childNodes[0]);
     this._div.insertBefore(document.createTextNode(date + " : "), this._div.childNodes[0]);
 //    this._div.innerHTML = date + " : " + text + "<br/>" + this._div.innerHTML;
@@ -1320,11 +1324,13 @@ O$.getEventPoint = function(e, forElement) {
 
 
 O$.addLoadEvent = function(func, _isAjaxRequest) {
-  if (O$._onLoadEventsProcessed || _isAjaxRequest) {
+  if (O$._documentLoaded || _isAjaxRequest) {
     func();
-  }
-  else {
-    O$.addEventHandler(window, "load", func);
+  } else {
+    O$.addEventHandler(window, "load", function() {
+      O$._documentLoaded = true;
+      func();
+    });
   }
 };
 
@@ -1356,13 +1362,8 @@ O$.addUnloadEvent = function(func) {
 };
 
 
-// This function call is required to make components know certainly that onLoad event had been already proccesed.
-O$.addLoadEvent(function() {
-  O$._onLoadEventsProcessed = true;
-});
-
 O$.isLoadedFullPage = function() {
-  return O$._onLoadEventsProcessed;
+  return O$._documentLoaded;
 };
 
 O$.createHiddenFocusElement = function(tabindex) {

@@ -19,7 +19,7 @@
 O$.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT = 1;
 
 O$._initDayTable = function(componentId,
-                            day, locale, dateFormat, startTimeStr, endTimeStr,
+                            day, locale, dateFormat, startTimeStr, endTimeStr, scrollTimeStr,
                             preloadedEventParams, resources, eventAreaSettings,
                             editable, onchange, editingOptions,
                             daySwitcherVisible,
@@ -75,6 +75,9 @@ O$._initDayTable = function(componentId,
     endTimeStr = "24:00";
   var startTime = O$.parseTime(startTimeStr);
   var endTime = O$.parseTime(endTimeStr);
+  if (!scrollTimeStr)
+    scrollTimeStr = startTimeStr;
+  var scrollTime = O$.parseTime(scrollTimeStr);
   var startTimeInMinutes = startTime.getHours() * 60 + startTime.getMinutes();
   var endTimeInMinutes = (endTime.getHours() == 0 ? 24 : endTime.getHours()) * 60 + endTime.getMinutes();
 
@@ -396,6 +399,89 @@ O$._initDayTable = function(componentId,
     return dayTable._eventEditor;
   }
 
+
+  function getNearestTimeslotForPosition(x, y) {
+    var row = table._rowFromPoint(10, y, true, dayTable._getLayoutCache());
+    if (!row)
+      return {
+        resource: undefined,
+        time: y <= 0 ? dayTable._startTime : dayTable._endTime
+      };
+
+    var cell = row._cellFromPoint(x, y, true, dayTable._getLayoutCache());
+    var resource;
+    if (cell) {
+      if (cell._cell) {
+        cell = cell._cell;
+        row = cell._row;
+      }
+      var nextCell = cell.nextSibling;
+      if (!nextCell)
+        resource = cell._resource;
+      else {
+        if (!cell._resource && nextCell._resource)
+          resource = nextCell._resource;
+        else {
+          var x1 = O$.getElementPos(cell, true, dayTable._getLayoutCache()).left;
+          var x2 = O$.getElementPos(nextCell, true, dayTable._getLayoutCache()).left;
+          var nearestCell = Math.abs(x - x1) < Math.abs(x - x2) ? cell : nextCell;
+          resource = nearestCell._resource;
+        }
+      }
+    }
+
+    if (row._row)
+      row = row._row;
+    var time;
+    var rows = table.body._getRows();
+    var rowIncrement = duplicatedRows ? 2 : 1;
+    var nextRow = (row._index + rowIncrement < rows.length) ? rows[row._index + rowIncrement] : null;
+    if (!nextRow)
+      time = row._time;
+    else {
+      var y1 = O$.getElementPos(row, true, dayTable._getLayoutCache()).top;
+      var y2 = O$.getElementPos(nextRow, true, dayTable._getLayoutCache()).top;
+      var nearestRow = Math.abs(y - y1) < Math.abs(y - y2) ? row : nextRow;
+      time = nearestRow._time;
+    }
+    return {resource: resource, time: time};
+  }
+
+  function getVertOffsetByTime(time) {
+    var hours = time.getHours();
+    var minutes = time.getMinutes();
+    var thisTime = time.getTime();
+    var startTime = dayTable._startTime.getTime();
+    if (thisTime < startTime)
+      hours -= 24;
+    var endTime = dayTable._endTime.getTime();
+    if (thisTime == endTime && hours == 0)
+      hours = 24;
+    if (thisTime > endTime)
+      hours += 24;
+    var timeOffsetInMinutes = hours * 60 + minutes - startTimeInMinutes;
+    var minutesPerRow = duplicatedRows ? minorTimeInterval / 2 : minorTimeInterval;
+    var rowIndex = Math.floor(timeOffsetInMinutes / minutesPerRow);
+    var relativePosInsideRow = (timeOffsetInMinutes % minutesPerRow) / minutesPerRow;
+    var rows = table.body._getRows();
+    var correctedRowIndex = rowIndex;
+    if (correctedRowIndex < 0)
+      correctedRowIndex = 0;
+    if (correctedRowIndex >= rows.length)
+      correctedRowIndex = rows.length - 1;
+    var row = rows[correctedRowIndex];
+    var rowRectangle = O$.getElementBorderRectangle(row, true);
+    var result = {y: rowRectangle.y + rowRectangle.height * relativePosInsideRow};
+    if (rowIndex < 0) {
+      result.y += rowRectangle.height * rowIndex;
+      result.topTruncated = true;
+    }
+    if (rowIndex >= rows.length) {
+      result.y += rowRectangle.height;
+      result.bottomTruncated = !(rowIndex == rows.length && minutes == 0);
+    }
+    return result;
+  }
 
   function addEventElement(event) {
     var eventElement = document.createElement("div");
@@ -724,89 +810,6 @@ O$._initDayTable = function(componentId,
 
     if (event.type != "reserved" && editable) {
       setupDragAndDrop();
-    }
-
-    function getNearestTimeslotForPosition(x, y) {
-      var row = table._rowFromPoint(10, y, true, dayTable._getLayoutCache());
-      if (!row)
-        return {
-          resource: undefined,
-          time: y <= 0 ? dayTable._startTime : dayTable._endTime
-        };
-
-      var cell = row._cellFromPoint(x, y, true, dayTable._getLayoutCache());
-      var resource;
-      if (cell) {
-        if (cell._cell) {
-          cell = cell._cell;
-          row = cell._row;
-        }
-        var nextCell = cell.nextSibling;
-        if (!nextCell)
-          resource = cell._resource;
-        else {
-          if (!cell._resource && nextCell._resource)
-            resource = nextCell._resource;
-          else {
-            var x1 = O$.getElementPos(cell, true, dayTable._getLayoutCache()).left;
-            var x2 = O$.getElementPos(nextCell, true, dayTable._getLayoutCache()).left;
-            var nearestCell = Math.abs(x - x1) < Math.abs(x - x2) ? cell : nextCell;
-            resource = nearestCell._resource;
-          }
-        }
-      }
-
-      if (row._row)
-        row = row._row;
-      var time;
-      var rows = table.body._getRows();
-      var rowIncrement = duplicatedRows ? 2 : 1;
-      var nextRow = (row._index + rowIncrement < rows.length) ? rows[row._index + rowIncrement] : null;
-      if (!nextRow)
-        time = row._time;
-      else {
-        var y1 = O$.getElementPos(row, true, dayTable._getLayoutCache()).top;
-        var y2 = O$.getElementPos(nextRow, true, dayTable._getLayoutCache()).top;
-        var nearestRow = Math.abs(y - y1) < Math.abs(y - y2) ? row : nextRow;
-        time = nearestRow._time;
-      }
-      return {resource: resource, time: time};
-    }
-
-    function getVertOffsetByTime(time) {
-      var hours = time.getHours();
-      var minutes = time.getMinutes();
-      var thisTime = time.getTime();
-      var startTime = dayTable._startTime.getTime();
-      if (thisTime < startTime)
-        hours -= 24;
-      var endTime = dayTable._endTime.getTime();
-      if (thisTime == endTime && hours == 0)
-        hours = 24;
-      if (thisTime > endTime)
-        hours += 24;
-      var timeOffsetInMinutes = hours * 60 + minutes - startTimeInMinutes;
-      var minutesPerRow = duplicatedRows ? minorTimeInterval / 2 : minorTimeInterval;
-      var rowIndex = Math.floor(timeOffsetInMinutes / minutesPerRow);
-      var relativePosInsideRow = (timeOffsetInMinutes % minutesPerRow) / minutesPerRow;
-      var rows = table.body._getRows();
-      var correctedRowIndex = rowIndex;
-      if (correctedRowIndex < 0)
-        correctedRowIndex = 0;
-      if (correctedRowIndex >= rows.length)
-        correctedRowIndex = rows.length - 1;
-      var row = rows[correctedRowIndex];
-      var rowRectangle = O$.getElementBorderRectangle(row, true);
-      var result = {y: rowRectangle.y + rowRectangle.height * relativePosInsideRow};
-      if (rowIndex < 0) {
-        result.y += rowRectangle.height * rowIndex;
-        result.topTruncated = true;
-      }
-      if (rowIndex >= rows.length) {
-        result.y += rowRectangle.height;
-        result.bottomTruncated = !(rowIndex == rows.length && minutes == 0);
-      }
-      return result;
     }
 
     eventElement._update = function(transitionPeriod) {
@@ -1295,6 +1298,14 @@ O$._initDayTable = function(componentId,
   });
   O$.addLoadEvent(function() {
     dayTable.updateLayout(); // update positions after layout changes that might have had place during loading
+
+    var scrollOffset = getVertOffsetByTime(scrollTime).y;
+    var maxScrollOffset = dayTable._scroller.scrollHeight - O$.getElementSize(dayTable._scroller).height;
+    if (maxScrollOffset < 0)
+      maxScrollOffset = 0;
+    if (scrollOffset > maxScrollOffset)
+      scrollOffset = maxScrollOffset;
+    dayTable._scroller.scrollTop = scrollOffset;
   });
 
   function updateHeightForFF() {

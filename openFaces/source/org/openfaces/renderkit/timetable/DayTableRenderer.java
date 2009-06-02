@@ -213,6 +213,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
                     "MMMM, dd yyyy",
                     dayTable.getStartTime(),
                     dayTable.getEndTime(),
+                    dayTable.getScrollTime(),
                     eventParams,
                     resourcesJsArray,
                     areaSettings,

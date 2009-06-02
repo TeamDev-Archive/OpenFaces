@@ -69,6 +69,10 @@ public class DayTableJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("endTime", value);
     }
 
+    public void setScrollTime(ValueExpression value) {
+        getDelegate().setPropertyValue("scrollTime", value);
+    }
+
     public void setTimeTextPosition(ValueExpression value) {
         getDelegate().setPropertyValue("timeTextPosition", value);
     }

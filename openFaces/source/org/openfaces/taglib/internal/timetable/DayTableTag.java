@@ -53,6 +53,7 @@ public class DayTableTag extends AbstractComponentTag {
 
         setTimePropertyAsString(component, "startTime");
         setTimePropertyAsString(component, "endTime");
+        setTimePropertyAsString(component, "scrollTime");
         setEnumerationProperty(component, "timeTextPosition", TimeTextPosition.class);
         setBooleanProperty(component, "showTimeAgainstSeparator");
 
