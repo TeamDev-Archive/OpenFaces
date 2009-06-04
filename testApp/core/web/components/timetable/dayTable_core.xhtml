@@ -8,6 +8,7 @@
   <a href="../../main.jsf">Back to the main page</a><br/>
   <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
   <input type="submit" value="Submit"/>
+  <h:outputText value="#{TimeTableBean.scrollTime}"/>
 
   <o:hintLabel id="hl1" value="Hint label!" hint="Hint for hint label"/>
 
@@ -27,7 +28,7 @@
                   resources="#{TimeTableBean.resources}" style="height: 500px;" daySwitcherVisible="true"
               timetableChangeListener="#{TimeTableBean.processTimetableChanges1}"
               preloadedEvents="none"
-              scrollTime="5:30">
+              scrollTime="#{TimeTableBean.scrollTime}">
         <o:eventArea horizontalAlignment="rightEdge" verticalAlignment="topEdge" style="margin: 0; padding: 0;">
           <o:dropDownField id="colorField"
                            value="#{TimeTableBean.eventColor1}"

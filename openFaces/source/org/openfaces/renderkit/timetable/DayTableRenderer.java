@@ -438,7 +438,8 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         DayTable dayTable = (DayTable) component;
 
         Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
-        String dayStr = requestParams.get(dayTable.getClientId(context) + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "day");
+        String clientId = dayTable.getClientId(context);
+        String dayStr = requestParams.get(clientId + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "day");
         if (dayStr != null) {
             TimeZone timeZone = (dayTable.getTimeZone() != null)
                     ? dayTable.getTimeZone()
@@ -446,7 +447,12 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
             Date day = DataUtil.parseDateFromJs(dayStr, timeZone);
             dayTable.setDay(day);
         }
+        String scrollTimeStr = requestParams.get(clientId + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "scrollPos");
+        if (scrollTimeStr != null) {
+            dayTable.setScrollTime(scrollTimeStr);
+        }
         decodeTimetableChanges(context, dayTable);
+
     }
 
     private void decodeTimetableChanges(FacesContext context, DayTable dayTable) {

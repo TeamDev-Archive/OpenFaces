@@ -201,6 +201,7 @@ O$._initDayTable = function(componentId,
   intervalCount = roundedIntervalCount;
 
   var now = new Date();
+  var minutesPerRow = showTimeAgainstMark ? minorTimeInterval / 2 : minorTimeInterval;
   for (var timeInMinutes = startTimeInMinutes, intervalIndex = 0;
        timeInMinutes < endTimeInMinutes;
        timeInMinutes += minorTimeInterval,intervalIndex++) {
@@ -436,15 +437,19 @@ O$._initDayTable = function(componentId,
     var rows = table.body._getRows();
     var rowIncrement = duplicatedRows ? 2 : 1;
     var nextRow = (row._index + rowIncrement < rows.length) ? rows[row._index + rowIncrement] : null;
-    if (!nextRow)
+    var timeAtPosition = new Date();
+    if (!nextRow) {
       time = row._time;
-    else {
+      var rowRect = O$.getElementBorderRectangle(row, true, dayTable._getLayoutCache());
+      timeAtPosition.setTime(row._time.getTime() + minutesPerRow * 60000 * (y - rowRect.y) / rowRect.height);
+    } else {
       var y1 = O$.getElementPos(row, true, dayTable._getLayoutCache()).top;
       var y2 = O$.getElementPos(nextRow, true, dayTable._getLayoutCache()).top;
       var nearestRow = Math.abs(y - y1) < Math.abs(y - y2) ? row : nextRow;
       time = nearestRow._time;
+      timeAtPosition.setTime(row._time.getTime() + minutesPerRow * 60000 * (y - y1) / (y2 - y1));
     }
-    return {resource: resource, time: time};
+    return {resource: resource, time: time, timeAtPosition: timeAtPosition};
   }
 
   function getVertOffsetByTime(time) {
@@ -1306,6 +1311,10 @@ O$._initDayTable = function(componentId,
     if (scrollOffset > maxScrollOffset)
       scrollOffset = maxScrollOffset;
     dayTable._scroller.scrollTop = scrollOffset;
+    O$.addEventHandler(dayTable._scroller, "scroll", function() {
+      var timeslot = getNearestTimeslotForPosition(10, dayTable._scroller.scrollTop);
+      O$.addHiddenField(dayTable, dayTable.id + "::scrollPos", O$.formatTime(timeslot.timeAtPosition));
+    });
   });
 
   function updateHeightForFF() {

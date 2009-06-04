@@ -876,6 +876,8 @@ public class DayTable extends OUIObjectIteratorBase {
             childrenValid = false;
         if (day != null && ValueBindings.set(this, "day", day))
             day = null;
+        if (scrollTime != null && ValueBindings.set(this, "scrollTime", scrollTime))
+            scrollTime = null;
     }
 
 

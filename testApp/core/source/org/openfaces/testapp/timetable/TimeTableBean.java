@@ -401,5 +401,13 @@ public class TimeTableBean {
         }
     }
 
+    private String scrollTime ="5:45";
 
+    public String getScrollTime() {
+        return scrollTime;
+    }
+
+    public void setScrollTime(String scrollTime) {
+        this.scrollTime = scrollTime;
+    }
 }
