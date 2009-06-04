@@ -22073,34 +22073,6 @@ and it is automatically triggered on any form submission. -->
 
 
     <attribute>
-      <description>Allows customizing transparency effect for events' background. This should be a floating-point number
-        in range 0..1. 0 corresponds to fully opaque background, and 1 corresponds to fully transparent background.
-      </description>
-      <name>eventBackgroundTransparencyLevel</name>
-      <deferred-value>
-        <type>java.lang.Double</type>
-      </deferred-value>
-      <!-- @bindingType double -->
-      <!-- @default 0.2 -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Event background color is calculated automatically based on event color. This attribute allows
-        customizing intensity of event's background color. This should be a floating-point number in range 0..1.
-        0 corresponds to a least-intense color -- white, and 1 corresponds to a fully intense color -- a color specified
-        for this event. The functionality of automatic calculation of background color can be overridden by
-        explicitly specifying background using eventStyle and eventClass attributes.
-      </description>
-      <name>eventBackgroundIntensityLevel</name>
-      <deferred-value>
-        <type>java.lang.Double</type>
-      </deferred-value>
-      <!-- @bindingType double -->
-      <!-- @default 0.25 -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
       <description>Specifies time in milliseconds for smooth transition between time-slots when using drag and drop.
         Smooth transition during drag and drop can be turned off by specifying 0 in this attribute.
       </description>
@@ -22330,6 +22302,33 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
 
+    <attribute>
+      <description>Allows customizing transparency effect for events' background. This should be a floating-point number
+        in range 0..1. 0 corresponds to fully opaque background, and 1 corresponds to fully transparent background.
+      </description>
+      <name>backgroundTransparencyLevel</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.2 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Event background color is calculated automatically based on event color. This attribute allows
+        customizing intensity of event's background color. This should be a floating-point number in range 0..1.
+        0 corresponds to a least-intense color -- white, and 1 corresponds to a fully intense color -- a color specified
+        for this event. The functionality of automatic calculation of background color can be overridden by
+        explicitly specifying background using eventStyle and eventClass attributes.
+      </description>
+      <name>backgroundIntensityLevel</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.25 -->
+      <!-- @el true -->
+    </attribute>
 
     <!-- common client-side events declaration -->
     <attribute>

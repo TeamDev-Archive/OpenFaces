@@ -83,9 +83,6 @@ public class DayTableTag extends AbstractComponentTag {
         setStringProperty(component, "rolloverEventNoteStyle");
         setStringProperty(component, "rolloverEventNoteClass");
 
-        setDoubleProperty(component, "eventBackgroundTransparencyLevel");
-        setDoubleProperty(component, "eventBackgroundIntensityLevel");
-
         setIntProperty(component, "dragAndDropTransitionPeriod");
         setIntProperty(component, "dragAndDropCancelingPeriod");
         setIntProperty(component, "undroppableStateTransitionPeriod");

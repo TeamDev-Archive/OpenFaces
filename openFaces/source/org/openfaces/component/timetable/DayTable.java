@@ -71,7 +71,6 @@ public class DayTable extends OUIObjectIteratorBase {
 
     private String startTime;
     private String endTime;
-    //todo: add an attribute for specifying the scrolling position (as time at the top scrolling edge)
     private String scrollTime;
     private TimeTextPosition timeTextPosition;
 
@@ -101,8 +100,6 @@ public class DayTable extends OUIObjectIteratorBase {
     private String rolloverEventNoteStyle;
     private String rolloverEventNoteClass;
 
-    private Double eventBackgroundTransparencyLevel;       
-    private Double eventBackgroundIntensityLevel; // todo: consider moving such event-related attributes to the <o:timetableEvent> tag
     private Integer dragAndDropTransitionPeriod;
     private Integer dragAndDropCancelingPeriod;
     private Integer undroppableStateTransitionPeriod;
@@ -173,8 +170,6 @@ public class DayTable extends OUIObjectIteratorBase {
                 rolloverEventNoteStyle,
                 rolloverEventNoteClass,
 
-                eventBackgroundTransparencyLevel,
-                eventBackgroundIntensityLevel,
                 dragAndDropCancelingPeriod,
                 dragAndDropTransitionPeriod,
                 undroppableStateTransitionPeriod,
@@ -235,8 +230,6 @@ public class DayTable extends OUIObjectIteratorBase {
         rolloverEventNoteStyle = (String) state[i++];
         rolloverEventNoteClass = (String) state[i++];
 
-        eventBackgroundTransparencyLevel = (Double) state[i++];
-        eventBackgroundIntensityLevel = (Double) state[i++];
         dragAndDropTransitionPeriod = (Integer) state[i++];
         dragAndDropCancelingPeriod = (Integer) state[i++];
         undroppableStateTransitionPeriod = (Integer) state[i++];
@@ -590,22 +583,6 @@ public class DayTable extends OUIObjectIteratorBase {
 
     public void setRolloverEventNoteClass(String rolloverEventNoteClass) {
         this.rolloverEventNoteClass = rolloverEventNoteClass;
-    }
-
-    public double getEventBackgroundTransparencyLevel() {
-        return ValueBindings.get(this, "eventBackgroundTransparencyLevel", eventBackgroundTransparencyLevel, 0.2);
-    }
-
-    public void setEventBackgroundTransparencyLevel(double eventBackgroundTransparencyLevel) {
-        this.eventBackgroundTransparencyLevel = eventBackgroundTransparencyLevel;
-    }
-
-    public double getEventBackgroundIntensityLevel() {
-        return ValueBindings.get(this, "eventBackgroundIntensityLevel", eventBackgroundIntensityLevel, 0.25);
-    }
-
-    public void setEventBackgroundIntensityLevel(double eventBackgroundIntensityLevel) {
-        this.eventBackgroundIntensityLevel = eventBackgroundIntensityLevel;
     }
 
     public int getDragAndDropTransitionPeriod() {

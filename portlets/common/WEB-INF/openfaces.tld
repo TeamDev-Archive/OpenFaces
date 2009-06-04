@@ -16,7 +16,7 @@
       manipulate it. It supports all the features of the standard JSF HtmlDataTable component and,
       in addition, provides a number of features of its own. Child tags: {@link column}, {@link selectionColumn},
       {@link checkboxColumn}, {@link singleRowSelection}, {@link multipleRowSelection},
-      {@link dataTablePaginator}, {@link cellStyle}, {@link rowStyle}.
+      {@link dataTablePaginator}, {@link cell}, {@link row}, {@link columnResizing}.
     </description>
     <name>dataTable</name>
     <tag-class>org.openfaces.taglib.jsp.table.DataTableJspTag</tag-class>
@@ -216,7 +216,7 @@
     <attribute>
       <description>The name of the variable under which the current row index is available when declaring
         components
-        inside columns or specifying a condition for the {@link rowStyle} and {@link cellStyle} tags.
+        inside columns or specifying a condition for the {@link row} and {@link cell} tags.
       </description>
       <name>rowIndexVar</name>
       <deferred-value>
@@ -228,7 +228,7 @@
     </attribute>
     <attribute>
       <description>The name of the variable under which the column index is available when specifying
-        a condition for the {@link cellStyle} tag.
+        a condition for the {@link cell} tag.
       </description>
       <name>columnIndexVar</name>
       <deferred-value>
@@ -240,7 +240,7 @@
     </attribute>
     <attribute>
       <description>The name of the variable under which the column identifier is available when specifying
-        a condition for the {@link cellStyle} tag.
+        a condition for the {@link cell} tag.
       </description>
       <name>columnIdVar</name>
       <deferred-value>
@@ -1315,7 +1315,7 @@
       <description>Applicable only when column resizing is enabled for a table. This attribute can be used to disable
         manual resizing for a particular column.
       </description>
-      <name>resizeable</name>
+      <name>resizable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -2141,7 +2141,7 @@
         data
         variable specified in the "var" attribute.
       </description>
-      <name>resizeable</name>
+      <name>resizable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -3676,7 +3676,7 @@
       <description>Applicable only when column resizing is enabled for a table. This attribute can be used to disable
         manual resizing for a particular column.
       </description>
-      <name>resizeable</name>
+      <name>resizable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -4264,7 +4264,7 @@
       <description>Applicable only when column resizing is enabled for a table. This attribute can be used to disable
         manual resizing for a particular column.
       </description>
-      <name>resizeable</name>
+      <name>resizable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -5038,7 +5038,7 @@
       data. In general, the TreeTable provides most of the functionality of the OpenFaces DataTable component. Child
       tags: {@link treeColumn}, {@link staticTreeStructure}, {@link dynamicTreeStructure}, {@link column},
       {@link selectionColumn}, {@link checkboxColumn}, {@link singleNodeSelection}, {@link multipleNodeSelection},
-      {@link cellStyle}, {@link rowStyle}.
+      {@link cell}, {@link row}, {@link columnResizing}.
     </description>
     <name>treeTable</name>
     <tag-class>org.openfaces.taglib.jsp.table.TreeTableJspTag</tag-class>
@@ -6466,7 +6466,7 @@ means that only root nodes and their immediate children are preloaded -->
       <description>Applicable only when column resizing is enabled for a table. This attribute can be used to disable
         manual resizing for a particular column.
       </description>
-      <name>resizeable</name>
+      <name>resizable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -9618,12 +9618,54 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <name>resizeable</name>
+      <name>resizable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the Window component is visible.</description>
+      <name>visible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the Window component is modal.</description>
+      <name>modal</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the visible part of the page which is not covered by the Window component.
+      </description>
+      <name>modalLayerStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the visible part of the page which is not covered by a Window component.
+      </description>
+      <name>modalLayerClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
@@ -9677,7 +9719,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>The minimal width that the Window component can have when the user is resizing the window. This
-        attribute is applicable when "resizeable" attribute is set to "true". This attribute can be specified
+        attribute is applicable when "resizable" attribute is set to "true". This attribute can be specified
         in any units (px, mm, em, etc.) except percent.
       </description>
       <name>minWidth</name>
@@ -9690,7 +9732,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>The minimal height that the Window component can have when the user is resizing the window. This
-        attribute is applicable when "resizeable" attribute is set to "true". This attribute can be specified
+        attribute is applicable when "resizable" attribute is set to "true". This attribute can be specified
         in any units (px, mm, em, etc.) except percent.
       </description>
       <name>minHeight</name>
@@ -10777,7 +10819,7 @@ entering a value and returns a list of suggestions from the server -->
 
     <attribute>
       <description>URL of the image that should be displayed in this button when the button is toggled.</description>
-      <name>minimizeImageUrl</name>
+      <name>restoreImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -10787,7 +10829,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when mouse cursor is over the button.</description>
-      <name>minimizeRolloverImageUrl</name>
+      <name>restoreRolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -10798,7 +10840,7 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>URL of the image that should be displayed in this button when the button is in a toggled state and
         the mouse is pressed over the button, but not released yet.</description>
-      <name>minimizePressedImageUrl</name>
+      <name>restorePressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -10990,8 +11032,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>URL of the image that should be displayed in this button.</description>
-      <name>imageUrl</name>
+      <description>URL of the image that should be displayed in this button when a window is in normal state.</description>
+      <name>minimizeImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -11000,8 +11042,9 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.</description>
-      <name>rolloverImageUrl</name>
+      <description>URL of the image that should be displayed in this button when mouse cursor is over the button,
+        and a window is in normal state.</description>
+      <name>minimizeRolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -11011,8 +11054,40 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when the mouse is pressed over the button,
-        but not released yet.</description>
-      <name>pressedImageUrl</name>
+        but not released yet, and a window is in normal state.</description>
+      <name>minimizePressedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>URL of the image that should be displayed in this button when the button is toggled.</description>
+      <name>restoreImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.</description>
+      <name>restoreRolloverImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL of the image that should be displayed in this button when the button is in a toggled state and
+        the mouse is pressed over the button, but not released yet.</description>
+      <name>restorePressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -12587,6 +12662,16 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>A style for a focused tab.</description>
+      <name>focusedTabStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>A style for a selected tab in the rollover state.</description>
       <name>rolloverSelectedTabStyle</name>
       <deferred-value>
@@ -12630,6 +12715,16 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>A CSS class name for a selected tab.</description>
       <name>selectedTabClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for a focused tab.</description>
+      <name>focusedTabClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -13093,6 +13188,16 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>A style for a focused tab.</description>
+      <name>focusedTabStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>A style for a selected tab in the rollover state.</description>
       <name>rolloverSelectedTabStyle</name>
       <deferred-value>
@@ -13155,6 +13260,16 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>A CSS class name for a selected tab.</description>
       <name>selectedTabClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for a focused tab.</description>
+      <name>focusedTabClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -18601,6 +18716,7 @@ and it is automatically triggered on any form submission. -->
 
   <!-- CommandButton tag declaration -->
   <tag>
+    <description>This component is under construction.</description>
     <name>commandButton</name>
     <tag-class>org.openfaces.taglib.jsp.action.CommandButtonJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -18620,7 +18736,7 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.input.SuggestionField</type>
+        <type>org.openfaces.component.action.CommandButton</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.action. CommandButton -->
       <!-- @default null -->
@@ -18879,6 +18995,45 @@ and it is automatically triggered on any form submission. -->
 
   </tag>
 
+  <!-- CommandButton tag declaration -->
+  <tag>
+    <description>This component is under construction.</description>
+    <name>debug</name>
+    <tag-class>org.openfaces.taglib.jsp.util.DebugJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A value-binding expression that associates the Debug component with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.util.Debug</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.util. Debug -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+  </tag>
 
   <!-- InputText tag declaration -->
   <tag>
@@ -20253,7 +20408,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A default style for content of menu items of the PopupMenu component.</description>
-      <name>contentItemStyle</name>
+      <name>itemContentStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -20263,7 +20418,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A CSS class name for content of menu items of the PopupMenu component.</description>
-      <name>contentItemClass</name>
+      <name>itemContentClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -20293,7 +20448,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A default style for indent area of menu items of the PopupMenu component.</description>
-      <name>indentItemStyle</name>
+      <name>itemIndentStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -20303,7 +20458,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A CSS class name for indent area of menu items of the PopupMenu component.</description>
-      <name>indentItemClass</name>
+      <name>itemIndentClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -20314,7 +20469,7 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>A default style for submenu icon area of menu items of the PopupMenu component.</description>
-      <name>submenuIconItemStyle</name>
+      <name>itemSubmenuIconStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -20324,7 +20479,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A CSS class name for submenu icon area of menu items of the PopupMenu component.</description>
-      <name>submenuIconItemClass</name>
+      <name>itemSubmenuIconClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -20525,17 +20680,6 @@ and it is automatically triggered on any form submission. -->
         <method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
       </deferred-method>
       <!-- @bindingType javax.el.MethodExpression -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>An access key for the menuItem component.</description>
-      <name>accesskey</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -21575,6 +21719,19 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
+      <description>Works only for scrollable DayTables. Specifies the time to which the top DayTable's top edge will be
+        scrolled. The time should be specified as a string in the "HH:mm" format, e.g. "10:00".
+      </description>
+      <name>scrollTime</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>Specifies whether a time is written right against an appropriate hour separator line ("againstMark"),
         or below hour separator line ("underMark" -- default).
       </description>
@@ -21916,34 +22073,6 @@ and it is automatically triggered on any form submission. -->
 
 
     <attribute>
-      <description>Allows customizing transparency effect for events' background. This should be a floating-point number
-        in range 0..1. 0 corresponds to fully opaque background, and 1 corresponds to fully transparent background.
-      </description>
-      <name>eventBackgroundTransparencyLevel</name>
-      <deferred-value>
-        <type>java.lang.Double</type>
-      </deferred-value>
-      <!-- @bindingType double -->
-      <!-- @default 0.2 -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Event background color is calculated automatically based on event color. This attribute allows
-        customizing intensity of event's background color. This should be a floating-point number in range 0..1.
-        0 corresponds to a least-intense color -- white, and 1 corresponds to a fully intense color -- a color specified
-        for this event. The functionality of automatic calculation of background color can be overridden by
-        explicitly specifying background using eventStyle and eventClass attributes.
-      </description>
-      <name>eventBackgroundIntensityLevel</name>
-      <deferred-value>
-        <type>java.lang.Double</type>
-      </deferred-value>
-      <!-- @bindingType double -->
-      <!-- @default 0.25 -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
       <description>Specifies time in milliseconds for smooth transition between time-slots when using drag and drop.
         Smooth transition during drag and drop can be turned off by specifying 0 in this attribute.
       </description>
@@ -22173,6 +22302,33 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
 
+    <attribute>
+      <description>Allows customizing transparency effect for events' background. This should be a floating-point number
+        in range 0..1. 0 corresponds to fully opaque background, and 1 corresponds to fully transparent background.
+      </description>
+      <name>backgroundTransparencyLevel</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.2 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Event background color is calculated automatically based on event color. This attribute allows
+        customizing intensity of event's background color. This should be a floating-point number in range 0..1.
+        0 corresponds to a least-intense color -- white, and 1 corresponds to a fully intense color -- a color specified
+        for this event. The functionality of automatic calculation of background color can be overridden by
+        explicitly specifying background using eventStyle and eventClass attributes.
+      </description>
+      <name>backgroundIntensityLevel</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.25 -->
+      <!-- @el true -->
+    </attribute>
 
     <!-- common client-side events declaration -->
     <attribute>
@@ -23631,7 +23787,7 @@ and it is automatically triggered on any form submission. -->
   </tag>
 
   <tag>
-    <description>The sidePanel component is one side resizeable container.</description>
+    <description>The sidePanel component is one side resizable container.</description>
     <name>sidePanel</name>
     <tag-class>org.openfaces.taglib.jsp.panel.SidePanelJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -23844,7 +24000,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A flag that indicates is it splitter draggable ability enabled.</description>
-      <name>resizeable</name>
+      <name>resizable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -24775,7 +24931,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description></description>
-      <name>varStatus</name>
+      <name>statusVar</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

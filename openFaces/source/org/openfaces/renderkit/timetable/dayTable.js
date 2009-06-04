@@ -38,7 +38,7 @@ O$._initDayTable = function(componentId,
       var initArgs = arguments;
       // postpone initialization to avoid IE failure during page loading
       O$.addLoadEvent(function() {
-        O$._initDayTable.apply(null, initArgs)
+        O$._initDayTable.apply(null, initArgs);
       });
       return;
     }
@@ -106,8 +106,8 @@ O$._initDayTable = function(componentId,
   var escapeEventDescriptions = uiEvent.escapeDescription !== undefined ? uiEvent.escapeDescription : true;
   dayTable._escapeEventDescriptions = escapeEventDescriptions;
 
-  var eventBackgroundIntensityLevel = stylingParams.eventBackgroundIntensityLevel !== undefined ? stylingParams.eventBackgroundIntensityLevel : 0.25;
-  var eventBackgroundTransparencyLevel = stylingParams.eventBackgroundTransparencyLevel !== undefined ? stylingParams.eventBackgroundTransparencyLevel : 0.2;
+  var eventBackgroundIntensityLevel = uiEvent.backgroundIntensityLevel !== undefined ? uiEvent.backgroundIntensityLevel : 0.25;
+  var eventBackgroundTransparencyLevel = uiEvent.backgroundTransparencyLevel !== undefined ? uiEvent.backgroundTransparencyLevel : 0.2;
   var dragAndDropTransitionPeriod = stylingParams.dragAndDropTransitionPeriod !== undefined ? stylingParams.dragAndDropTransitionPeriod : 70;
   var dragAndDropCancelingPeriod = stylingParams.dragAndDropCancelingPeriod !== undefined ? stylingParams.dragAndDropCancelingPeriod : 200;
   var undroppableStateTransitionPeriod = stylingParams.undroppableStateTransitionPeriod !== undefined ? stylingParams.undroppableStateTransitionPeriod : 250;

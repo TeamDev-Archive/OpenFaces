@@ -152,14 +152,6 @@ public class DayTableJspTag extends AbstractComponentJspTag {
     }
 
 
-    public void setEventBackgroundTransparencyLevel(ValueExpression value) {
-        getDelegate().setPropertyValue("eventBackgroundTransparencyLevel", value);
-    }
-
-    public void setEventBackgroundIntensityLevel(ValueExpression eventBackgroundIntensityLevel) {
-        getDelegate().setPropertyValue("eventBackgroundIntensityLevel", eventBackgroundIntensityLevel);
-    }
-
     public void setDragAndDropTransitionPeriod(ValueExpression value) {
         getDelegate().setPropertyValue("dragAndDropTransitionPeriod", value);
     }

@@ -377,8 +377,6 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         RenderingUtil.addJsonParam(stylingParams, "reservedTimeEventColor", dayTable.getDefaultEventColor());
         StyleUtil.addStyleJsonParam(context, dayTable, stylingParams, "reservedTimeEventClass",
                 dayTable.getReservedTimeEventStyle(), dayTable.getReservedTimeEventClass());
-        RenderingUtil.addJsonParam(stylingParams, "eventBackgroundTransparencyLevel", dayTable.getEventBackgroundTransparencyLevel(), 0.2);
-        RenderingUtil.addJsonParam(stylingParams, "eventBackgroundIntensityLevel", dayTable.getEventBackgroundIntensityLevel(), 0.25);
         RenderingUtil.addJsonParam(stylingParams, "dragAndDropTransitionPeriod", dayTable.getDragAndDropTransitionPeriod(), 70);
         RenderingUtil.addJsonParam(stylingParams, "dragAndDropCancelingPeriod", dayTable.getDragAndDropCancelingPeriod(), 200);
         RenderingUtil.addJsonParam(stylingParams, "undroppableStateTransitionPeriod", dayTable.getUndroppableStateTransitionPeriod(), 250);

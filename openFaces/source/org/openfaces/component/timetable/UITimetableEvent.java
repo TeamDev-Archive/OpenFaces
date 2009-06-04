@@ -38,6 +38,9 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
     private String descriptionStyle;
     private String descriptionClass;
 
+    private Double backgroundTransparencyLevel;
+    private Double backgroundIntensityLevel;
+
     private String oncreate;
 
     public UITimetableEvent() {
@@ -105,6 +108,22 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
         this.oncreate = oncreate;
     }
 
+    public double getBackgroundTransparencyLevel() {
+        return ValueBindings.get(this, "backgroundTransparencyLevel", backgroundTransparencyLevel, 0.2);
+    }
+
+    public void setBackgroundTransparencyLevel(double backgroundTransparencyLevel) {
+        this.backgroundTransparencyLevel = backgroundTransparencyLevel;
+    }
+
+    public double getBackgroundIntensityLevel() {
+        return ValueBindings.get(this, "backgroundIntensityLevel", backgroundIntensityLevel, 0.25);
+    }
+
+    public void setBackgroundIntensityLevel(double backgroundIntensityLevel) {
+        this.backgroundIntensityLevel = backgroundIntensityLevel;
+    }
+
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -114,6 +133,8 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
                 nameClass,
                 descriptionStyle,
                 descriptionClass,
+                backgroundTransparencyLevel,
+                backgroundIntensityLevel,
                 oncreate};
     }
 
@@ -127,6 +148,8 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
         nameClass = (String) state[i++];
         descriptionStyle = (String) state[i++];
         descriptionClass = (String) state[i++];
+        backgroundTransparencyLevel = (Double) state[i++];
+        backgroundIntensityLevel = (Double) state[i++];
         oncreate = (String) state[i++];
     }
 
@@ -141,6 +164,8 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
         RenderingUtil.addJsonParam(obj, "escapeName", getEscapeName(), true);
         RenderingUtil.addJsonParam(obj, "escapeDescription", getEscapeDescription(), true);
 
+        RenderingUtil.addJsonParam(obj, "backgroundTransparencyLevel", getBackgroundTransparencyLevel(), 0.2);
+        RenderingUtil.addJsonParam(obj, "backgroundIntensityLevel", getBackgroundIntensityLevel(), 0.25);
 
         RenderingUtil.addJsonParam(obj, "onclick", getOnclick());
         RenderingUtil.addJsonParam(obj, "ondblclick", getOndblclick());
