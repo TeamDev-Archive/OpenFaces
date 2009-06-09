@@ -47,6 +47,7 @@ public class DataTablePaginatorRenderer extends RendererBase {
     private static final String DEFAULT_CLASS = "o_table_paginator";
     private static final String DEFAULT_IMAGE_CLASS = "o_table_paginator_image";
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
         if (!component.isRendered())
@@ -76,6 +77,7 @@ public class DataTablePaginatorRenderer extends RendererBase {
         writer.startElement("td", component);
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
@@ -104,6 +106,7 @@ public class DataTablePaginatorRenderer extends RendererBase {
                 : ResourceUtil.getResourceURL(context, pager.getNextDisabledImageUrl(), DataTablePaginatorRenderer.class, "nextDisabled.gif", false);
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered())
             return;
@@ -287,7 +290,7 @@ public class DataTablePaginatorRenderer extends RendererBase {
         }
     }
 
-
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
         Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
@@ -327,6 +330,7 @@ public class DataTablePaginatorRenderer extends RendererBase {
         action.execute(table);
     }
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         super.encodeEnd(context, component);
         if (!component.isRendered())

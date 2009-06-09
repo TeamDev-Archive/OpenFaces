@@ -29,6 +29,7 @@ import java.util.Map;
  */
 public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         DefaultProgressMessage defaultProgressMessage = (DefaultProgressMessage) component;
 

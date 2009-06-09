@@ -29,6 +29,7 @@ import java.io.IOException;
  */
 public class AjaxSettingsRenderer extends AbstractSettingsRenderer implements AjaxPortionRenderer {
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         AjaxSettings ajaxSettings = (AjaxSettings) component;
         if (!(AjaxUtil.isAjaxRequest(context))) {
@@ -52,6 +53,7 @@ public class AjaxSettingsRenderer extends AbstractSettingsRenderer implements Aj
         return null;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         AjaxSettings ajaxSettings = (AjaxSettings) component;
         if (isAjaxSessionExpirationProcessing(context)) {
@@ -75,6 +77,7 @@ public class AjaxSettingsRenderer extends AbstractSettingsRenderer implements Aj
         }
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }

@@ -86,6 +86,7 @@ public class CalendarRenderer extends RendererBase {
 
     public static final String HIDE_DEFAULT_FOCUS_KEY = "hideDefaultFocusStyle";
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         Calendar calendar = ((Calendar) component);
@@ -95,6 +96,7 @@ public class CalendarRenderer extends RendererBase {
         }
     }
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -691,7 +693,7 @@ public class CalendarRenderer extends RendererBase {
                 rolloverSelectedClassName);
     }
 
-
+    @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Date convertedValue = (Date) RenderingUtil.convertFromString(context, component, (String) submittedValue);
         Calendar calendar = (Calendar) component;

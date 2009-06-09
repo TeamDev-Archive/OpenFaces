@@ -52,14 +52,6 @@ O$._initDropDownInput = function(dropDownId,
   if (dropDown != field)
     field.className = dropDown._fieldClass;
 
-  if (document.compatMode == "CSS1Compat") { // fixes the strict mode issue of assigning 100% width on text-field inside a table
-    if (O$.isOpera9AndLate() || O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/) {
-      field.parentNode.style.paddingBottom = "2px";
-    }
-    if (!O$.isOpera()) {
-      field.parentNode.style.paddingRight = O$.isExplorer() ? "8px" : "4px";
-    }
-  }
   if (O$.isOpera() && !O$.isOpera9AndLate()) { // padding not correct work in Opera8
     field.style.padding = "0px";
   }
@@ -165,6 +157,8 @@ O$._initDropDownInput = function(dropDownId,
 
     dropDown._skipValidation = false;
   }, 100);
+
+  O$.fixInputsWidthStrict(dropDown);
 }
 
 O$._initDropDown = function(dropDownId,

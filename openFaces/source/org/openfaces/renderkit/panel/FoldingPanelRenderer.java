@@ -44,6 +44,7 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
     public static final String CONTENT_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "content";
     private static final String STATE_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "state";
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -90,10 +91,12 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
         }
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -121,6 +124,7 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
         writer.endElement("div");
     }
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         String key = component.getClientId(context) + STATE_SUFFIX;
         String value = context.getExternalContext().getRequestParameterMap().get(key);
@@ -135,6 +139,7 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
         }
     }
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -198,6 +203,7 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
         });
     }
 
+    @Override
     protected void writeAdditionalCaptionCellContent(ResponseWriter writer, ComponentWithCaption component) throws IOException {
         FoldingPanel panel = (FoldingPanel) component;
         FoldingDirection foldingDirection = panel.getFoldingDirection();
@@ -207,6 +213,7 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
         }
     }
 
+    @Override
     protected CaptionArea getDefaultButtonsArea(ComponentWithCaption component) {
         CaptionArea area = super.getDefaultButtonsArea(component);
 

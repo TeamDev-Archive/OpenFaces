@@ -41,6 +41,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
     private static final String JS_SCRIPT_URL = "sidePanel.js";
     private static final String JS_MY_UTIL_SCRIPT_URL = "sidePanelUtil.js";
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         SidePanel sidePanel = (SidePanel) component;
         String clientId = sidePanel.getClientId(context);
@@ -55,6 +56,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         sidePanel.setCollapsed(Boolean.valueOf(collapsed));
     }
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
         super.encodeBegin(context, component);
@@ -104,6 +106,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         encodeInitScript(context, component);
     }
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
         ResponseWriter writer = context.getResponseWriter();
@@ -113,6 +116,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         writer.endElement("div");
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
 
@@ -170,6 +174,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         );
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }

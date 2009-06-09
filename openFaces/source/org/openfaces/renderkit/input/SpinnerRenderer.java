@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SpinnerRenderer extends DropDownComponentRenderer {
-    private static final String DEFAULT_FIELD_CLASS = "o_spinner_field";
+    private static final String DEFAULT_FIELD_CLASS = "o_dropdown_field o_spinner_field";
     private static final String DEFAULT_CLASS = "o_spinner";
 
     protected static final String FIELD_SUFFIX = "::field";
@@ -42,6 +42,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
     private static final String DECREASE_BUTTON_SUFFIX = "::decrease_button";
     private static final String DEFAULT_BUTTON_CLASS = "o_spinner_button";
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         setUpConverter((Spinner) component);
         ComponentUtil.generateIdIfNotSpecified(component);
@@ -104,6 +105,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         });
     }
 
+    @Override
     protected void writeFieldAttributes(ResponseWriter writer, DropDownComponent fieldComponent) throws IOException {
         super.writeFieldAttributes(writer, fieldComponent);
         Spinner spinner = ((Spinner) fieldComponent);
@@ -111,10 +113,12 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
             writeAttribute(writer, "readonly", String.valueOf(!spinner.getTypingAllowed()));
     }
 
+    @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         return RenderingUtil.convertFromString(context, component, (String) submittedValue);
     }
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
         DropDownComponent dropDownComponent = (DropDownComponent) component;
@@ -178,6 +182,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         writer.endElement("tr");
     }
 
+    @Override
     public void encodeScriptsAndStyles(FacesContext facesContext, UIComponent component) throws IOException {
         DropDownComponent dropDown = (DropDownComponent) component;
         // Set field text by script to prevent field expanding after summit in IE 6.0 (if field text is long)
@@ -213,18 +218,22 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
             StyleUtil.renderStyleClasses(facesContext, dropDown);
     }
 
+    @Override
     protected boolean isAutomaticStyleRenderingNeeded() {
         return true;
     }
 
+    @Override
     protected String getDefaultDropDownClass() {
         return DEFAULT_CLASS;
     }
 
+    @Override
     protected String getDefaultFieldClass() {
         return DEFAULT_FIELD_CLASS;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         super.encodeChildren(context, component);
         RenderingUtil.encodeClientActions(context, component);

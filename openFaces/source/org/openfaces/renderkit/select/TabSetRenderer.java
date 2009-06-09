@@ -72,6 +72,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
         return SELECTED_INDEX_SUFFIX;
     }
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -91,10 +92,12 @@ public class TabSetRenderer extends BaseTabSetRenderer {
         writeStandardEvents(writer, tabSet);
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -305,6 +308,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
         return placement;
     }
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;

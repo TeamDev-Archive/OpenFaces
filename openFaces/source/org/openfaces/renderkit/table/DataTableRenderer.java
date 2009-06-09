@@ -23,6 +23,7 @@ import java.util.Map;
  */
 public class DataTableRenderer extends AbstractTableRenderer {
 
+    @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         super.decode(facesContext, uiComponent);
         if (!uiComponent.isRendered())
@@ -38,23 +39,28 @@ public class DataTableRenderer extends AbstractTableRenderer {
             DataTablePaginatorRenderer.executePaginationAction(facesContext, table, pagingAction);
     }
 
+    @Override
     protected boolean getUseKeyboardForPagination(AbstractTable table) {
         DataTable dataTable = (DataTable) table;
         return dataTable.getPageSize() > 0 && dataTable.isPaginationKeyboardSupport();
     }
 
+    @Override
     protected boolean canSelectLastPage(AbstractTable table) {
         return DataTablePaginatorRenderer.canSelectLastPage((DataTable) table);
     }
 
+    @Override
     protected boolean canPageForth(AbstractTable table) {
         return DataTablePaginatorRenderer.canSelectNextPage((DataTable) table);
     }
 
+    @Override
     protected boolean canPageBack(AbstractTable table) {
         return DataTablePaginatorRenderer.canSelectPreviousPage((DataTable) table);
     }
 
+    @Override
     protected String getInitJsAPIFunctionName() {
         return "O$._initDataTableAPI";
     }

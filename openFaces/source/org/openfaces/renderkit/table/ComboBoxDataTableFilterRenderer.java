@@ -42,13 +42,16 @@ public class ComboBoxDataTableFilterRenderer extends AbstractDataTableFilterRend
     private static final String EMPTY = "EMPTY";
     private static final String NON_EMPTY = "NON_EMPTY";
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
     }
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
         ComboBoxDataTableFilter filter = ((ComboBoxDataTableFilter) component);
@@ -151,6 +154,7 @@ public class ComboBoxDataTableFilterRenderer extends AbstractDataTableFilterRend
         writer.endElement("option");
     }
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
         Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();

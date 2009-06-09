@@ -24,23 +24,28 @@ import java.util.List;
  * @author Dmitry Pikhulya
  */
 public class MaximizeWindowButtonRenderer extends ToggleCaptionButtonRenderer {
+    @Override
     protected void checkContainerType(ComponentWithCaption container) {
         if (!(container instanceof AbstractWindow))
             throw new FacesException("<o:maximizeWindowButton> can only be used in <o:window> and <o:confirmation> components.");
     }
 
+    @Override
     protected String getDefaultImageUrl(FacesContext context) {
         return ResourceUtil.getInternalResourceURL(context, AbstractWindowRenderer.class, "maximize.gif");
     }
 
+    @Override
     protected String getDefaultToggleImageUrl(FacesContext context) {
         return ResourceUtil.getInternalResourceURL(context, AbstractWindowRenderer.class, "restore.gif");
     }
 
+    @Override
     protected String getInitFunctionName() {
         return "O$._initMaximizeWindowButton";
     }
 
+    @Override
     protected List<String> getJsLibraries(FacesContext context) {
         List<String> libraries = super.getJsLibraries(context);
         libraries.add(AbstractWindowRenderer.getWindowJs(context));

@@ -29,6 +29,7 @@ public class ReloadComponentsRenderer extends AbstractSettingsRenderer {
 
     private ReloadComponentsRendererHelper helper = new ReloadComponentsRendererHelper();
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ReloadComponents reloadComponents = (ReloadComponents) component;
         if (reloadComponents.isStandalone())

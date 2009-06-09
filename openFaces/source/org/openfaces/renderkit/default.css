@@ -104,6 +104,15 @@
   font-family: MS Shell Dlg, Arial, sans-serif;
 }
 
+.o_fullWidth {
+  width: 100%;
+}
+.o_fullWidthAndHeight {
+  width: 100%;
+  height: 100%;
+}
+
+
 /* == End of Shared among components styles == */
 
 /* Table styles */
@@ -213,9 +222,100 @@
 }
 
 .o_hiddenRow * {
-/* IE doesn't hide absolutely-positioned elements of "display:none" parents, so it should be done explicitly */
+/* IE doesn't hide absolutely-positioned elements of "display: none" parents, so it should be done explicitly */
   display: none !important;
 }
+
+/* Window */
+.o_window {
+  overflow: hidden;
+  border: 2px solid gray;
+  padding: 0 ! important;
+}
+
+.o_window_table {
+  table-layout: fixed;
+}
+
+.o_window_caption {
+  padding-left: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  text-align: left;
+  font-weight: bold;
+  white-space: nowrap;
+  cursor: default;
+}
+
+.o_default_caption_width {
+  width: 100%;
+}
+
+.o_window_content {
+  position: absolute;
+  visibility: hidden;
+
+  overflow: auto;
+  vertical-align: top;
+  text-align: left;
+  padding: 2px;
+}
+
+/* Confirmation */
+.o_confirmation {
+  z-index: 301;
+  overflow: hidden;
+  cursor: default;
+  border: 1px solid gray;
+}
+
+.o_confirmation_icon_backplane {
+  vertical-align: bottom;
+  padding: 15px 15px 5px 15px;
+}
+
+.o_confirmation_text_backplane {
+  height: 100%;
+}
+
+.o_confirmation_header_text {
+  font-weight: bold;
+  text-align: left;
+  vertical-align: middle;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+}
+
+.o_confirmation_button_backplane {
+  padding: 3px;
+}
+
+.o_confirmation_yes_button {
+  padding-left: 5px;
+  padding-right: 5px;
+  width: 100%;
+}
+
+.o_confirmation_no_button {
+  padding-left: 5px;
+  padding-right: 5px;
+  width: 100%;
+}
+
+.o_confirmation_details,
+  .o_confirmation_details_message {
+  text-align: left;
+  vertical-align: top;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+}
+
+.o_confirmation_details_message {
+  padding-top: 0;
+}
+
 
 /* TimeTable styles */
 
@@ -364,11 +464,19 @@
   padding: 4px;
   font-size: 9pt;
   font-family: MS Shell Dlg, Arial, sans-serif;
+  overflow: hidden;
+}
+
+.o_eventEditorDialogContent {
+  padding: 4px;
+  font-size: 9pt;
+  font-family: MS Shell Dlg, Arial, sans-serif;
+  overflow: hidden;
 }
 
 .o_eventEditor_buttonsArea {
   text-align: right;
-  padding: 5px;
+  padding-top: 6px;
 }
 
 .o_eventEditor_modalLayer {
@@ -486,10 +594,6 @@
 }
 
 .o_spinner_field {
-  background-color: transparent;
-  margin: 0;
-  padding: 2px 2px 0 2px;
-  border: 0 solid;
   text-align: right;
 }
 
@@ -498,6 +602,8 @@
   margin: 0;
   padding: 2px 2px 0 2px;
   border: 0 solid;
+  width: 100%;
+  height: 100%;
 }
 
 .o_dropdown_list {
@@ -567,96 +673,6 @@
   padding-left: 2px;
   padding-right: 2px;
   text-align: left;
-}
-
-/* Window */
-.o_window {
-  overflow: hidden;
-  border: 2px solid gray;
-  padding: 0 ! important;
-}
-
-.o_window_table {
-  table-layout: fixed;
-}
-
-.o_window_caption {
-  padding-left: 5px;
-  padding-top: 3px;
-  padding-bottom: 3px;
-  text-align: left;
-  font-weight: bold;
-  white-space: nowrap;
-  cursor: default;
-}
-
-.o_default_caption_width {
-  width: 100%;
-}
-
-.o_window_content {
-  position: absolute;
-  visibility: hidden;
-
-  overflow: auto;
-  vertical-align: top;
-  text-align: left;
-  padding: 2px;
-}
-
-/* Confirmation */
-.o_confirmation {
-  z-index: 301;
-  overflow: hidden;
-  cursor: default;
-  border: 1px solid gray;
-}
-
-.o_confirmation_icon_backplane {
-  vertical-align: bottom;
-  padding: 15px 15px 5px 15px;
-}
-
-.o_confirmation_text_backplane {
-  height: 100%;
-}
-
-.o_confirmation_header_text {
-  font-weight: bold;
-  text-align: left;
-  vertical-align: middle;
-  padding-top: 10px;
-  padding-right: 10px;
-  padding-bottom: 5px;
-}
-
-.o_confirmation_button_backplane {
-  padding: 3px;
-}
-
-.o_confirmation_yes_button {
-  padding-left: 5px;
-  padding-right: 5px;
-  width: 100%;
-}
-
-.o_confirmation_no_button {
-  padding-left: 5px;
-  padding-right: 5px;
-  width: 100%;
-}
-
-.o_confirmation_details,
-  .o_confirmation_details_message {
-  text-align: left;
-  vertical-align: top;
-  padding-bottom: 10px;
-  padding-right: 10px;
-  padding-top: 5px;
-}
-
-.o_confirmation_details_message {
-  padding-top: 0;
 }
 
 /* TwoListSelection */

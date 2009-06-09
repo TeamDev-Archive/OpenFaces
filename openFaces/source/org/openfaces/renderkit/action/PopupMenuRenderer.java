@@ -56,6 +56,7 @@ public class PopupMenuRenderer extends RendererBase {
     private static final String DEFAULT_DISABLED_SUBMENU_IMAGE = "disabledSubmenuImage.gif";
 
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
 
@@ -72,6 +73,7 @@ public class PopupMenuRenderer extends RendererBase {
         writeAttribute(writer, "class", styleClass);
     }
 
+    @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         super.encodeEnd(facesContext, component);
         if (!component.isRendered()) return;
@@ -184,10 +186,12 @@ public class PopupMenuRenderer extends RendererBase {
 
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered())
             return;

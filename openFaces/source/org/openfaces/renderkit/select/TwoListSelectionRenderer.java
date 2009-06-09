@@ -73,6 +73,7 @@ public class TwoListSelectionRenderer extends RendererBase {
 
     private static final String DEFAULT_CLASS = "o_twoListSelection";
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -186,6 +187,7 @@ public class TwoListSelectionRenderer extends RendererBase {
         return captionStyleClass;
     }
 
+    @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         return RenderingUtil.getConvertedUISelectManyValue(context, (UISelectMany) component, submittedValue);
     }
@@ -384,6 +386,7 @@ public class TwoListSelectionRenderer extends RendererBase {
         }
     }
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -479,10 +482,12 @@ public class TwoListSelectionRenderer extends RendererBase {
         RenderingUtil.encodeClientActions(context, component);
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
     }
 
@@ -608,6 +613,7 @@ public class TwoListSelectionRenderer extends RendererBase {
         }
     }
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         if (!component.isRendered()) return;
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();

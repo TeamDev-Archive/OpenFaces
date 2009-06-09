@@ -36,10 +36,12 @@ public class TreeColumnRenderer extends RendererBase {
     private static final String DEFAULT_INDENT_CLASS = "o_treetable_indent";
     private static final String DEFAULT_EXPANSION_TOGGLE_CELL_CLASS = "o_treetable_expansion_toggle_cell";
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         TreeColumn treeColumn = ((TreeColumn) component);
         TableCell customCell = (TableCell) treeColumn.getAttributes().get(ATTR_CUSTOM_CELL);

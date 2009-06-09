@@ -33,6 +33,7 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
     private static final String DEFAULT_PROMPT_CLASS = "o_inputtext_prompt";
     private static final String STATE_PROMPT_SUFFIX = "::statePrompt";
 
+    @Override
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         super.encodeBegin(facesContext, uiComponent);
         if (!uiComponent.isRendered()) return;
@@ -44,6 +45,7 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
         StyleUtil.renderStyleClasses(facesContext, inputText);
     }
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         Map requestMap = context.getExternalContext().getRequestParameterMap();
         OUIInputText inputText = (OUIInputText) component;
@@ -58,6 +60,7 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
     }
 
 
+    @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         return RenderingUtil.convertFromString(context, component, (String) submittedValue);
     }

@@ -212,6 +212,8 @@ O$._initTableStyles = function(columns, commonHeaderExists, filterRowExists, com
   O$._initTableColumnEvents(table);
   O$._initTableColumnStyles(table);
   O$._initTableGridLines(table);
+  if (filterRowExists)
+    O$.fixInputsWidthStrict(table._getHeaderRows()[table._filterRowIndex]);
 
   table._removeAllRows = O$._table_removeAllRows;
   table._insertRowsAfter = O$._table_insertRowsAfter;

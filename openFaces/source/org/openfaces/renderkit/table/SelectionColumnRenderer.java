@@ -26,10 +26,12 @@ import java.io.IOException;
  */
 public class SelectionColumnRenderer extends BaseColumnRenderer {
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered())
             return;

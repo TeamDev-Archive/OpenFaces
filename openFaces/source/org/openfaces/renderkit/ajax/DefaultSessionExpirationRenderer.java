@@ -23,15 +23,18 @@ import java.io.IOException;
  */
 public class DefaultSessionExpirationRenderer extends AbstractSettingsRenderer {
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (isAjaxSessionExpirationProcessing(context)) {
             RenderingUtil.renderChildren(context, component);
         }
     }
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         if (isAjaxSessionExpirationProcessing(context)) {
             DefaultSessionExpiration defaultSessionExpiration = (DefaultSessionExpiration) component;
@@ -47,6 +50,7 @@ public class DefaultSessionExpirationRenderer extends AbstractSettingsRenderer {
         }
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }

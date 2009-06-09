@@ -26,6 +26,7 @@ import java.io.IOException;
  */
 public class ForEachRenderer extends RendererBase {
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
         super.encodeBegin(context, component);
@@ -44,6 +45,7 @@ public class ForEachRenderer extends RendererBase {
         StyleUtil.renderStyleClasses(context, forEach);
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered())
             return;
@@ -56,6 +58,7 @@ public class ForEachRenderer extends RendererBase {
         forEach.setObjectId(null);
     }
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
         super.encodeEnd(context, component);
@@ -67,6 +70,7 @@ public class ForEachRenderer extends RendererBase {
         writer.endElement(wrapperTagName);
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }

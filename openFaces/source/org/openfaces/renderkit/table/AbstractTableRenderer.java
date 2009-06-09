@@ -76,6 +76,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
         return ResourceUtil.getInternalResourceURL(facesContext, AbstractTableRenderer.class, "table.js");
     }
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered())
             return;
@@ -187,10 +188,12 @@ public abstract class AbstractTableRenderer extends RendererBase {
         writeAttribute(writer, "onkeypress", table.getOnkeypress());
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         if (!uiComponent.isRendered())
             return;
@@ -760,6 +763,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
         return (TableStructure) table.getAttributes().get(TABLE_STRUCTURE_ATTR);
     }
 
+    @Override
     public void encodeEnd(final FacesContext facesContext, UIComponent uiComponent) throws IOException {
         if (!uiComponent.isRendered())
             return;
@@ -1014,7 +1018,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
         return TableUtil.getClassWithDefaultStyleClass(table.getApplyDefaultStyle(), DEFAULT_SORTABLE_HEADER_ROLLOVER_CLASS, sortableHeaderRolloverClass);
     }
 
-
+    @Override
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         super.decode(facesContext, uiComponent);
         if (!uiComponent.isRendered())

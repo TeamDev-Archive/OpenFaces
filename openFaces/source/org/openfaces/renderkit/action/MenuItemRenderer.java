@@ -51,6 +51,7 @@ public class MenuItemRenderer extends RendererBase {
     private static final String IMG_FAKE_SPAN_SUFIX = "::imagefakespan";
     private static final String ARROW_FAKE_SPAN_SUFIX = "::arrowfakespan";
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
 
         MenuItem menuItem = (MenuItem) component;
@@ -280,19 +281,23 @@ public class MenuItemRenderer extends RendererBase {
         writeAttribute(writer, "class", styleClass);
     }
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.endElement("li");
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 
     }
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
         String key = component.getClientId(context) + "::clicked";

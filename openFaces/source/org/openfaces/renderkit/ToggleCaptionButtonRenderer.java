@@ -28,6 +28,7 @@ import java.util.List;
  */
 public class ToggleCaptionButtonRenderer extends CaptionButtonRenderer {
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         ToggleCaptionButton img = (ToggleCaptionButton) component;
         String key = getStateFieldName(context, img);
@@ -41,6 +42,7 @@ public class ToggleCaptionButtonRenderer extends CaptionButtonRenderer {
         }
     }
 
+    @Override
     protected void renderAdditionalContent(FacesContext context, CaptionButton btn) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ToggleCaptionButton tbtn = (ToggleCaptionButton) btn;
@@ -49,6 +51,7 @@ public class ToggleCaptionButtonRenderer extends CaptionButtonRenderer {
                 String.valueOf(tbtn.isToggled()));
     }
 
+    @Override
     protected List<Object> getInitParams(FacesContext context, CaptionButton btn) throws IOException {
         ToggleCaptionButton tbtn = (ToggleCaptionButton) btn;
         List<Object> params = new ArrayList<Object>();
@@ -60,6 +63,7 @@ public class ToggleCaptionButtonRenderer extends CaptionButtonRenderer {
         return params;
     }
 
+    @Override
     protected String getInitFunctionName() {
         return "O$._initToggleCaptionButton";
     }

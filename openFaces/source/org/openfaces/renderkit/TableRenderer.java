@@ -97,8 +97,10 @@ public class TableRenderer {
         writer.startElement("tbody", component);
         for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
             writer.startElement("tr", component);
+            writeRowAttributes(writer, rowIndex);
             for (int colIndex = 0; colIndex < colCount; colIndex++) {
                 writer.startElement("td", component);
+                writeCellAttributes(writer, rowIndex, colIndex);
                 encodeCellContents(context, writer, component, rowIndex, colIndex);
                 writer.endElement("td");
             }
@@ -107,6 +109,9 @@ public class TableRenderer {
         writer.endElement("tbody");
         encodeTFoot(writer, component);
         writer.endElement("table");
+    }
+
+    protected void writeRowAttributes(ResponseWriter writer, int rowIndex) throws IOException {
     }
 
     protected void encodeTHead(ResponseWriter writer, UIComponent component) throws IOException {
@@ -153,12 +158,14 @@ public class TableRenderer {
             if (!isRowVisible(rowIndex))
                 continue;
             writer.startElement("tr", parent);
+            writeRowAttributes(writer, rowIndex);
             UIComponent[] rowComponents = components[rowIndex];
             for (int cellIndex = 0, cellCount = rowComponents.length; cellIndex < maxColCount; cellIndex++) {
                 writer.startElement("td", parent);
                 boolean lastCellInIncompleteRow = cellIndex == cellCount - 1 && cellCount < maxColCount;
                 if (lastCellInIncompleteRow)
                     writer.writeAttribute("colspan", String.valueOf(1 + maxColCount - cellCount), null);
+                writeCellAttributes(writer, rowIndex, cellIndex);
 
                 UIComponent cellComponent = rowComponents[cellIndex];
                 if (cellComponent != null)
@@ -173,6 +180,9 @@ public class TableRenderer {
         }
         writer.endElement("tbody");
         writer.endElement("table");
+    }
+
+    protected void writeCellAttributes(ResponseWriter writer, int rowIndex, int cellIndex) throws IOException {
     }
 
     protected boolean isRowVisible(int rowIndex) {

@@ -32,6 +32,7 @@ import java.io.IOException;
  */
 public class SelectAllCheckboxRenderer extends RendererBase {
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered())
             return;
@@ -78,6 +79,7 @@ public class SelectAllCheckboxRenderer extends RendererBase {
         writer.endElement("input");
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }

@@ -52,6 +52,7 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
     private static final String DEFAULT_FOLDING_CLASS = "o_treetable_folding";
     private static final String HIDDEN_ROW_CLASS = "o_hiddenRow";
 
+    @Override
     protected void writeBodyRowAttributes(FacesContext facesContext, AbstractTable table) throws IOException {
         super.writeBodyRowAttributes(facesContext, table);
         TreeTable treeTable = (TreeTable) table;
@@ -62,6 +63,7 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         }
     }
 
+    @Override
     protected String getAdditionalRowClass(FacesContext facesContext, AbstractTable table, Object rowData, int rowIndex) {
         TreeTable treeTable = (TreeTable) table;
         if (!treeTable.isFilteringPerformed())
@@ -88,6 +90,7 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         );
     }
 
+    @Override
     protected void encodeAdditionalFeaturesSupport_buf(FacesContext facesContext, AbstractTable table, ScriptBuilder buf) throws IOException {
         super.encodeAdditionalFeaturesSupport_buf(facesContext, table, buf);
 
@@ -167,6 +170,7 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         return result;
     }
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
         TreeTable treeTable = (TreeTable) component;
@@ -214,10 +218,12 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         return false;
     }
 
+    @Override
     protected String getInitJsAPIFunctionName() {
         return "O$._initTreeTableAPI";
     }
 
+    @Override
     protected String[] getNecessaryJsLibs(FacesContext context) {
         String[] parentLibs = super.getNecessaryJsLibs(context);
         String[] libs = new String[]{
@@ -229,10 +235,12 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         return resultLibs;
     }
 
+    @Override
     protected String getTextStyle(AbstractTable table) {
         return ((TreeTable) table).getTextStyle();
     }
 
+    @Override
     protected String getTextClass(AbstractTable table) {
         return ((TreeTable) table).getTextClass();
     }

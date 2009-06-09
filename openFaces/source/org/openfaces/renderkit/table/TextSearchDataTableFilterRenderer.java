@@ -28,13 +28,16 @@ import java.io.IOException;
  */
 public abstract class TextSearchDataTableFilterRenderer extends AbstractDataTableFilterRenderer {
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
     }
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
         ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getUtilJsURL(context), context);
@@ -51,6 +54,7 @@ public abstract class TextSearchDataTableFilterRenderer extends AbstractDataTabl
 
     protected abstract void configureInputComponent(FacesContext context, DataTableFilter filter, UIInput inputComponent);
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
         TextSearchDataTableFilter filter = (TextSearchDataTableFilter) component;

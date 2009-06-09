@@ -35,6 +35,7 @@ import java.util.List;
 
 public class EventActionBarRenderer extends RendererBase {
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         EventActionBar actionBar = (EventActionBar) component;
         ResponseWriter writer = context.getResponseWriter();
@@ -139,10 +140,12 @@ public class EventActionBarRenderer extends RendererBase {
         return ResourceUtil.getApplicationResourceURL(context, action.getImageUrl());
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
     }
 }

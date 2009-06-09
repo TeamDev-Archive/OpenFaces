@@ -31,6 +31,7 @@ public class MenuSeparatorRenderer extends RendererBase {
     private static final String DEFAULT_MENU_SEPARATOR_CLASS = "o_menu_separator";
     private static final String DIV_PREFIX = "::separator";
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         MenuSeparator menuSeparator = (MenuSeparator) component;
         ResponseWriter writer = context.getResponseWriter();

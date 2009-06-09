@@ -16,10 +16,13 @@ import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.EventEditorDialog;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.TableRenderer;
-import org.openfaces.renderkit.window.PopupLayerRenderer;
+import org.openfaces.renderkit.window.WindowRenderer;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.HTML;
 import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.StyleUtil;
+import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.FunctionCallScript;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlCommandButton;
@@ -34,7 +37,24 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public class EventEditorDialogRenderer extends PopupLayerRenderer {
+public class EventEditorDialogRenderer extends WindowRenderer {
+
+    @Override
+    protected String getDefaultClassName() {
+        return StyleUtil.mergeClassNames(super.getDefaultClassName(), "o_eventEditorDialog");
+    }
+
+    @Override
+    protected String getDefaultModalLayerClass() {
+        return StyleUtil.mergeClassNames(super.getDefaultModalLayerClass(), "o_eventEditor_modalLayer");
+    }
+
+    @Override
+    protected String getDefaultContentClass() {
+        return StyleUtil.mergeClassNames(super.getDefaultContentClass(), "o_eventEditorDialogContent");
+    }
+
+    @Override
     protected void encodeCustomContent(FacesContext context, PopupLayer popupLayer) throws IOException {
         final EventEditorDialog dialog = (EventEditorDialog) popupLayer;
         final DayTable dayTable = (DayTable) dialog.getParent();
@@ -63,6 +83,27 @@ public class EventEditorDialogRenderer extends PopupLayerRenderer {
         };
 
         new TableRenderer() {
+            @Override
+            protected void writeCellAttributes(ResponseWriter writer, int rowIndex, int cellIndex) throws IOException {
+                super.writeCellAttributes(writer, rowIndex, cellIndex);
+                if (rowIndex < 3 && cellIndex == 0)
+                    writer.writeAttribute("style", "width: 0", null);
+            }
+
+            @Override
+            protected void writeTableAttributes(FacesContext context, ResponseWriter writer, UIComponent component) throws IOException {
+                super.writeTableAttributes(context, writer, component);
+                writer.writeAttribute("class", "o_fullWidthAndHeight", null);
+            }
+
+            @Override
+            protected void writeRowAttributes(ResponseWriter writer, int rowIndex) throws IOException {
+                if (rowIndex == 4) {
+                    writer.writeAttribute("style", "height: 100%", null);
+                }
+            }
+
+            @Override
             protected void encodeCellContents(FacesContext context, ResponseWriter writer, UIComponent component, int rowIndex, int colIndex) throws IOException {
                 if (rowIndex == components.length - 1) {
                     writer.startElement("div", component);
@@ -83,20 +124,28 @@ public class EventEditorDialogRenderer extends PopupLayerRenderer {
                             "','" + dialog.getClientId(context) + "');");
                 }
             }
-            
+
         }.render(popupLayer, components);
+    }
+
+    @Override
+    protected void encodeScriptsAndStyles(FacesContext context, PopupLayer component) throws IOException {
+        super.encodeScriptsAndStyles(context, component);
+        RenderingUtil.renderInitScript(context, new ScriptBuilder().functionCall("O$.fixInputsWidthStrict", 
+                new FunctionCallScript("O$", component)));
+
     }
 
     private UIComponent getDescriptionField(FacesContext context, PopupLayer popupLayer) {
         HtmlInputTextarea descriptionField = (HtmlInputTextarea) RenderingUtil.getOrCreateFacet(context, popupLayer,
                 HtmlInputTextarea.COMPONENT_TYPE, "descriptionField", HtmlInputTextarea.class);
-        descriptionField.setStyle("width: 100%; height: 100px;");
+        descriptionField.setStyleClass("o_fullWidthAndHeight");
         return descriptionField;
     }
 
     private UIComponent getNameField(FacesContext context, PopupLayer popupLayer) {
         HtmlInputText nameField = (HtmlInputText) RenderingUtil.getOrCreateFacet(context, popupLayer, HtmlInputText.COMPONENT_TYPE, "nameField", HtmlInputText.class);
-        nameField.setStyle("width: 100%");
+        nameField.setStyleClass("o_fullWidth");
         return nameField;
     }
 

@@ -22,6 +22,7 @@ import java.io.IOException;
 
 public class SuggestionFieldRenderer extends DropDownFieldRenderer {
 
+    @Override
     protected void encodeRootElementStart(ResponseWriter writer, DropDownComponent dropDownComponent) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         writer.startElement("input", dropDownComponent);
@@ -42,6 +43,7 @@ public class SuggestionFieldRenderer extends DropDownFieldRenderer {
         writeFieldAttributes(writer, dropDownComponent);
     }
 
+    @Override
     protected void encodeFieldContentsStart(FacesContext context, DropDownComponent dropDownComponent) throws IOException {
         //this workaround was added for compatibility of all JSF impl and browsers
         //input component need to be closed before all child components will be rendered
@@ -61,35 +63,41 @@ public class SuggestionFieldRenderer extends DropDownFieldRenderer {
         writer.endElement("input");
     }
 
+    @Override
     protected void encodeFieldContentsEnd(ResponseWriter writer) throws IOException {
     }
 
-
+    @Override
     protected void encodeRootElementEnd(ResponseWriter writer) throws IOException {
         // look at encodeFieldContentsStart method
     }
 
-
+    @Override
     protected String getDefaultFieldClass() {
         return null;
     }
 
+    @Override
     protected String getDefaultDisabledFieldClass() {
         return null;
     }
 
+    @Override
     protected String getDefaultDisabledClass() {
         return null;
     }
 
+    @Override
     protected String getDefaultDropDownClass() {
         return null;
     }
 
+    @Override
     protected boolean isManualListOpeningAllowed(DropDownFieldBase dropDownField) {
         return ((SuggestionField) dropDownField).getManualListOpeningAllowed();
     }
 
+    @Override
     protected void writeFieldAttributes(ResponseWriter writer, DropDownComponent fieldComponent) throws IOException {
         super.writeFieldAttributes(writer, fieldComponent);
         SuggestionField suggestionField = ((SuggestionField) fieldComponent);

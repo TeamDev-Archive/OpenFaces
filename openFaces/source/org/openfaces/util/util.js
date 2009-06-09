@@ -3494,6 +3494,40 @@ O$.isAlignmentInsideOfElement = function(horizAlignment, vertAlignment) {
   return insideHorizontaly && insideVertically;
 }
 
+O$.fixInputsWidthStrict = function(container) {
+  if (!O$.isStrictMode())
+    return;
+
+  function processInput(input) {
+    if (input._strictWidthFixed)
+      return;
+    input._strictWidthFixed = true;
+    if (O$.getStyleClassProperty(input.className, "width") == "100%") {
+      var bordersX = O$.getNumericStyleProperty(input, "border-left-width") + O$.getNumericStyleProperty(input, "border-right-width");
+      var paddingsX = O$.getNumericStyleProperty(input, "padding-left") + O$.getNumericStyleProperty(input, "padding-right");
+      var parent = input.parentNode;
+      var parentPaddingRight = O$.getNumericStyleProperty(parent, "padding-right");
+      parent.style.paddingRight = parentPaddingRight + bordersX + paddingsX + "px";
+    }
+    if (O$.getStyleClassProperty(input.className, "height") == "100%") {
+      var bordersY = O$.getNumericStyleProperty(input, "border-top-width") + O$.getNumericStyleProperty(input, "border-bottom-width");
+      var paddingsY = O$.getNumericStyleProperty(input, "padding-top") + O$.getNumericStyleProperty(input, "padding-bottom");
+      var parentPaddingBottom = O$.getNumericStyleProperty(parent, "padding-bottom");
+      parent.style.paddingBottom = parentPaddingBottom + bordersY + paddingsY + "px";
+    }
+  }
+
+  var inputs = container.getElementsByTagName("input");
+  for (var i = 0, count = inputs.length; i < count; i++) {
+    processInput(inputs[i]);
+  }
+  var textAreas = container.getElementsByTagName("textarea");
+  for (i = 0, count = textAreas.length; i < count; i++) {
+    processInput(textAreas[i]);
+  }
+
+}
+
 // ----------------- HIDE <SELECT> CONTROLS UNDER POPUP IN IE ---------------------------------------------------
 
 O$._controlsToHide = O$.isExplorer() ? new Array("select-one", "select-multiple") : null;

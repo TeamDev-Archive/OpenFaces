@@ -36,6 +36,7 @@ public class InputTextareaRenderer extends AbstractInputTextRenderer {
             writeAttribute(writer, "readonly", "readonly");
     }
 
+    @Override
     protected void writeTagContent(FacesContext context, OUIInputText quiInputText) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String value = getConvertedValue(context, quiInputText);

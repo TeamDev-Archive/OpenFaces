@@ -34,9 +34,10 @@ public class PopupLayerRenderer extends RendererBase {
     private static final String VISIBLE_HIDDEN_FIELD_SUFFIX = "::visible";
     private static final String LEFT_HIDDEN_FIELD_SUFFIX = "::left";
     private static final String TOP_HIDDEN_FIELD_SUFFIX = "::top";
-    private static final String DEFAULT_MODEL_DIV_CLASS = "o_popuplayer_modal_layer";
+    private static final String DEFAULT_MODAL_DIV_CLASS = "o_popuplayer_modal_layer";
     public static final String BLOCKING_LAYER_SUFFIX = "::blockingLayer";
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -52,7 +53,7 @@ public class PopupLayerRenderer extends RendererBase {
             String modalDivClass = StyleUtil.getCSSClass(context,
                     component, popup.getModalLayerStyle(),
                     popup.getModalLayerClass());
-            modalDivClass = StyleUtil.mergeClassNames(DEFAULT_MODEL_DIV_CLASS, modalDivClass);
+            modalDivClass = StyleUtil.mergeClassNames(getDefaultModalLayerClass(), modalDivClass);
             writer.writeAttribute("class", modalDivClass, null);
             writer.writeAttribute("style", "position: absolute; display: none;", null);
             writer.endElement("div");
@@ -73,10 +74,15 @@ public class PopupLayerRenderer extends RendererBase {
         writeStandardEvents(writer, popup);
     }
 
+    protected String getDefaultModalLayerClass() {
+        return DEFAULT_MODAL_DIV_CLASS;
+    }
+
     protected String getDefaultClassName() {
         return "o_popuplayer";
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -93,6 +99,7 @@ public class PopupLayerRenderer extends RendererBase {
         return true;
     }
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -193,7 +200,7 @@ public class PopupLayerRenderer extends RendererBase {
             return '\'' + str + '\'';
     }
 
-
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         PopupLayer layer = ((PopupLayer) component);
 

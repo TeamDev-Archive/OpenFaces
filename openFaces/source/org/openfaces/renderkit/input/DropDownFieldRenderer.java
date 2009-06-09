@@ -68,24 +68,25 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
     private static final String LOAD_FILTERED_ROWS_PORTION = "filterCriterion:";
     private static final String[] EMPTY_ARRAY = new String[]{};
 
-
+    @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         return RenderingUtil.convertFromString(context, component, (String) submittedValue);
     }
 
-
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         AjaxUtil.prepareComponentForAjax(context, component);
         super.encodeBegin(context, component);
     }
 
-
+    @Override
     protected void writeFieldAttributes(ResponseWriter writer, DropDownComponent fieldComponent) throws IOException {
         super.writeFieldAttributes(writer, fieldComponent);
         DropDownFieldBase dropDownField = (DropDownFieldBase) fieldComponent;
         writeAttribute(writer, "maxlength", dropDownField.getMaxlength(), Integer.MIN_VALUE);
     }
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         if (AjaxUtil.isAjaxPortionRequest(context, component))
             return;
@@ -122,6 +123,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         }
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent uiComponent) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -192,6 +194,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         return itemValues;
     }
 
+    @Override
     protected String getFieldText(FacesContext facesContext, DropDownComponent dropDown) {
         String result = (String) dropDown.getAttributes().get(CURRENT_FIELD_VALUE_ATTR);
         return result;
@@ -238,6 +241,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         return items;
     }
 
+    @Override
     protected void renderEndTags(FacesContext context, DropDownComponent dropDown) throws IOException {
         super.renderEndTags(context, dropDown);
         ResponseWriter responseWriter = context.getResponseWriter();
@@ -321,6 +325,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         });
     }
 
+    @Override
     protected boolean isAutomaticStyleRenderingNeeded() {
         return false;
     }
@@ -350,6 +355,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         return (List<String[]>) dropDown.getAttributes().get(ITEM_VALUES_ATTR_NAME);
     }
 
+    @Override
     protected void release(DropDownComponent dropDown) {
         super.release(dropDown);
         dropDown.getAttributes().remove(ITEM_VALUES_ATTR_NAME);

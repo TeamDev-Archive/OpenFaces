@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.timetable;
 
-import org.openfaces.component.window.PopupLayer;
+import org.openfaces.component.window.Window;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class EventEditorDialog extends PopupLayer {
+public class EventEditorDialog extends Window {
     public static final String COMPONENT_TYPE = "org.openfaces.EventEditorDialog";
     public static final String COMPONENT_FAMILY = "org.openfaces.EventEditorDialog";
 
@@ -38,15 +38,35 @@ public class EventEditorDialog extends PopupLayer {
 
         setModal(true);
         setDraggable(true);
-        setModalLayerClass("o_eventEditor_modalLayer");
-        setStyleClass("o_eventEditorDialog");
     }
 
 
+    @Override
+    protected String getDefaultWidth() {
+        return "450px";
+    }
+
+    @Override
+    protected String getDefaultHeight() {
+        return "350px";
+    }
+
+    @Override
+    protected String getDefaultMinWidth() {
+        return "300px";
+    }
+
+    @Override
+    protected String getDefaultMinHeight() {
+        return "300px";
+    }
+
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -62,6 +82,7 @@ public class EventEditorDialog extends PopupLayer {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;

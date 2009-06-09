@@ -24,10 +24,12 @@ import java.util.List;
  */
 public class CaptionAreaRenderer extends RendererBase {
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List<UIComponent> children = component.getChildren();

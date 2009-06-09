@@ -47,11 +47,13 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
     }
 
     private ComponentWithCaptionRenderer componentWithCaptionRenderer = new ComponentWithCaptionRenderer() {
+        @Override
         protected String getDefaultCaptionClass(ComponentWithCaption component) {
             return ((AbstractWindow) component).getWidth() == null
                     ? DEFAULT_CAPTION_CLASS : DEFAULT_CAPTION_CLASS + ' ' + DEFAULT_CAPTION_WIDTH_CLASS;
         }
 
+        @Override
         protected void renderCaptionContent(FacesContext context, ComponentWithCaption component, UIComponent captionContent) throws IOException {
             if (captionContent != null)
                 super.renderCaptionContent(context, component, captionContent);
@@ -63,6 +65,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
 
         }
 
+        @Override
         protected void createDefaultAreaButtons(FacesContext context, ComponentWithCaption component, CaptionArea area) {
             area.setAlignment(HorizontalAlignment.RIGHT);
             AbstractWindow win = (AbstractWindow) component;
@@ -81,6 +84,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
         return true;
     }
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -164,6 +168,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
         return null;
     }
 
+    @Override
     protected void encodeScriptsAndStyles(FacesContext context, PopupLayer component) throws IOException {
         super.encodeScriptsAndStyles(context, component);
 
@@ -181,6 +186,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
     }
 
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
 
@@ -196,10 +202,12 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
         }
     }
 
+    @Override
     protected String getDefaultClassName() {
         return StyleUtil.mergeClassNames(super.getDefaultClassName(), "o_window");
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
     }
 }

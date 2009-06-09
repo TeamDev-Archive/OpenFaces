@@ -54,10 +54,12 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
     private static final String DEFAULT_NO_BUTTON_CLASS = "o_confirmation_no_button";
     private static final String DEFAULT_ROLLOVER_BUTTON_CLASS = "";
 
+    @Override
     protected boolean getForceRenderCaptionIfNotSpecified() {
         return false;
     }
 
+    @Override
     protected void encodeFooterPane(ResponseWriter writer, AbstractWindow abstractWindow, String clientId) throws IOException {
         writer.startElement("tr", abstractWindow);
         writer.writeAttribute("id", clientId + "::footerRow", null);
@@ -70,6 +72,7 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
         writer.endElement("tr");
     }
 
+    @Override
     protected void encodeContentPane(FacesContext context, AbstractWindow abstractWindow) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = abstractWindow.getClientId(context);
@@ -206,6 +209,7 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
         writer.endElement("table");
     }
 
+    @Override
     protected String getDefaultClassName() {
         return StyleUtil.mergeClassNames(super.getDefaultClassName(), "o_confirmation");
     }
@@ -214,6 +218,7 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
         return false;
     }
 
+    @Override
     protected void encodeScriptsAndStyles(FacesContext context, PopupLayer component) throws IOException {
         super.encodeScriptsAndStyles(context, component);
 
@@ -290,6 +295,7 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
         });
     }
 
+    @Override
     protected boolean isMinimizeAllowed() {
         return false;
     }

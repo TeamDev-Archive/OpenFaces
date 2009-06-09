@@ -38,6 +38,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
     private static final String JS_SCRIPT_URL = "borderLayoutPanel.js";
     private static final String JS_MY_UTIL_SCRIPT_URL = "sidePanelUtil.js";
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
         super.encodeBegin(context, component);
@@ -67,6 +68,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
         encodeScriptsAndStyles_part2(context, borderLayoutPanel, clientId);
     }
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
         ResponseWriter writer = context.getResponseWriter();
@@ -115,6 +117,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
         RenderingUtil.renderInitScript(context, initScript);
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
         BorderLayoutPanel borderLayoutPanel = (BorderLayoutPanel) component;
@@ -139,6 +142,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
         RenderingUtil.renderComponents(context, sidePanels);
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }

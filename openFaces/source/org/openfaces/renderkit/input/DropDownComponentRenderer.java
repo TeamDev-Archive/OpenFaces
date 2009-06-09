@@ -52,6 +52,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
     protected static final String DEFAULT_DISABLED_BUTTON_CLASS = "o_combo_button_disabled";
     protected static final String DEFAULT_BUTTON_PRESSED_CLASS = "o_combo_button_pressed";
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -119,7 +120,6 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         writer.writeAttribute("name", fieldId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute("style", "height: 100%; width: 100%;", null);
 
         if (fieldComponent.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
@@ -183,6 +183,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         writer.endElement("img");
     }
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent uiComponent) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -368,11 +369,12 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         return DEFAULT_FIELD_CLASS;
     }
 
-
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
     }
 

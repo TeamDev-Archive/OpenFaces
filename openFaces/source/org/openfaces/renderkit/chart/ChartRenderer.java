@@ -36,6 +36,7 @@ import java.util.Map;
  */
 public class ChartRenderer extends RendererBase {
 
+    @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
         ComponentUtil.generateIdIfNotSpecified(component);
         ResponseWriter writer = facesContext.getResponseWriter();
@@ -119,6 +120,7 @@ public class ChartRenderer extends RendererBase {
         writer.endElement("div");
     }
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
         Map requestParameterMap = context.getExternalContext().getRequestParameterMap();

@@ -47,6 +47,7 @@ import java.util.TimeZone;
 public class DateChooserRenderer extends DropDownComponentRenderer {
     public static final String CALENDAR_SUFFIX = RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "calendar";
 
+    @Override
     protected void registerJS(FacesContext facesContext, UIComponent component) throws IOException {
         super.registerJS(facesContext, component);
         DateChooser dateChooser = (DateChooser) component;
@@ -57,6 +58,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         RenderingUtil.registerDateTimeFormatObject(locale);
     }
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         Map requestMap = context.getExternalContext().getRequestParameterMap();
         String clientId = component.getClientId(context) + FIELD_SUFFIX;
@@ -69,6 +71,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         }
     }
 
+    @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         Date convertedValue = (Date) RenderingUtil.convertFromString(context, component, (String) submittedValue);
         DateChooser dataChooser = (DateChooser) component;
@@ -82,12 +85,14 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         return currentValue;
     }
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         setUpConverter((DateChooser) component);
         ComponentUtil.generateIdIfNotSpecified(component);
         super.encodeBegin(context, component);
     }
 
+    @Override
     protected void encodeRootElementStart(ResponseWriter writer, DropDownComponent dropDownComponent) throws IOException {
         super.encodeRootElementStart(writer, dropDownComponent);
         writeAttribute(writer, "style", "visibility: hidden;");
@@ -108,6 +113,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         dateChooser.setConverter(converter);
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;

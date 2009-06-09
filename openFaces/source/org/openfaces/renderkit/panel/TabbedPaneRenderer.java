@@ -64,6 +64,7 @@ public class TabbedPaneRenderer extends BaseTabSetRenderer implements AjaxPortio
         return RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + TAB_SET_SUFFIX + SELECTED_INDEX_SUFFIX;
     }
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -140,10 +141,12 @@ public class TabbedPaneRenderer extends BaseTabSetRenderer implements AjaxPortio
         writer.endElement("table");
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
     }
 

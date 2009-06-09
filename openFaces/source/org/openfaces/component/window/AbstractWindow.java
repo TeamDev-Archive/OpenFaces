@@ -103,7 +103,7 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
     }
 
     public String getMinWidth() {
-        return ValueBindings.get(this, "minWidth", minWidth, "150px");
+        return ValueBindings.get(this, "minWidth", minWidth, getDefaultMinWidth());
     }
 
     public void setMinWidth(String minWidth) {
@@ -111,7 +111,15 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
     }
 
     public String getMinHeight() {
-        return ValueBindings.get(this, "minHeight", minHeight, "80px");
+        return ValueBindings.get(this, "minHeight", minHeight, getDefaultMinHeight());
+    }
+
+    protected String getDefaultMinWidth() {
+        return "150px";
+    }
+
+    protected String getDefaultMinHeight() {
+        return "80px";
     }
 
     public void setMinHeight(String minHeight) {

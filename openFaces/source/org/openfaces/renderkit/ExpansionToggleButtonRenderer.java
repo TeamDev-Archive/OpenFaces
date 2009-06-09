@@ -22,43 +22,53 @@ import javax.faces.context.FacesContext;
  * @author Dmitry Pikhulya
  */
 public class ExpansionToggleButtonRenderer extends ToggleCaptionButtonRenderer {
+    @Override
     protected void checkContainerType(ComponentWithCaption container) {
         if (!(container instanceof FoldingPanel))
             throw new FacesException("<o:expansionToggleButton> can only be used in <o:foldingPanel> component.");
     }
 
+    @Override
     protected String getDefaultImageUrl(FacesContext context) {
         return ResourceUtil.getInternalResourceURL(context, ExpansionToggleButtonRenderer.class, "plus_h.gif");
     }
 
+    @Override
     protected String getDefaultRolloverImageUrl(FacesContext context) {
         return ResourceUtil.getInternalResourceURL(context, ExpansionToggleButtonRenderer.class, "plus_u.gif");
     }
 
+    @Override
     protected String getDefaultPressedImageUrl(FacesContext context) {
         return ResourceUtil.getInternalResourceURL(context, ExpansionToggleButtonRenderer.class, "plus_d.gif");
     }
 
+    @Override
     protected String getDefaultToggleImageUrl(FacesContext context) {
         return ResourceUtil.getInternalResourceURL(context, ExpansionToggleButtonRenderer.class, "minus_h.gif");
     }
 
+    @Override
     protected String getDefaultToggledImageRolloverUrl(FacesContext context) {
         return ResourceUtil.getInternalResourceURL(context, ExpansionToggleButtonRenderer.class, "minus_u.gif");
     }
 
+    @Override
     protected String getDefaultToggledImagePressedUrl(FacesContext context) {
         return ResourceUtil.getInternalResourceURL(context, ExpansionToggleButtonRenderer.class, "minus_d.gif");
     }
 
+    @Override
     protected String getDefaultRolloverClass() {
         return null;
     }
 
+    @Override
     protected String getDefaultPressedClass() {
         return null;
     }
 
+    @Override
     protected String getInitFunctionName() {
         return "O$._initExpansionToggleButton";
     }

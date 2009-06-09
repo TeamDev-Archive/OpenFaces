@@ -24,6 +24,7 @@ import java.io.IOException;
  * @author Dmitry Pikhulya
  */
 public class WindowRenderer extends AbstractWindowRenderer {
+    @Override
     protected void encodeContentPane(FacesContext context, AbstractWindow abstractWindow) throws IOException {
         Window win = (Window) abstractWindow;
         String clientId = win.getClientId(context);
@@ -32,14 +33,17 @@ public class WindowRenderer extends AbstractWindowRenderer {
         writer.writeAttribute("id", clientId + MIDDLE_AREA_SUFFIX, null);
         RenderingUtil.writeStyleAndClassAttributes(writer, win.getContentStyle(), win.getContentClass(), getDefaultContentClass());
         ComponentWithCaptionRenderer.renderChildren(context, abstractWindow);
+        encodeCustomContent(context, abstractWindow);
         writer.endElement("div");
     }
 
+    @Override
     protected String getDefaultContentClass() {
         return "o_window_content";
     }
 
 
+    @Override
     protected String getDefaultTableClass() {
         return "o_window_table";
     }

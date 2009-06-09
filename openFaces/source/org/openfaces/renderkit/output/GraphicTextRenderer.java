@@ -33,6 +33,7 @@ import java.io.IOException;
  */
 public class GraphicTextRenderer extends RendererBase {
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         GraphicText graphicText = (GraphicText) component;
 

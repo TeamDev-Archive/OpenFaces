@@ -25,19 +25,23 @@ import java.util.List;
  */
 public class CloseWindowButtonRenderer extends CaptionButtonRenderer {
 
+    @Override
     protected String getDefaultImageUrl(FacesContext context) {
         return ResourceUtil.getInternalResourceURL(context, AbstractWindowRenderer.class, "close.gif");
     }
 
+    @Override
     protected String getInitFunctionName() {
         return "O$._initCloseWindowButton";
     }
 
+    @Override
     protected void checkContainerType(ComponentWithCaption container) {
         if (!(container instanceof AbstractWindow))
             throw new FacesException("<o:closeWindowButton> can only be used in <o:window> and <o:confirmation> components.");
     }
 
+    @Override
     protected List<String> getJsLibraries(FacesContext context) {
         List<String> libraries = super.getJsLibraries(context);
         libraries.add(AbstractWindowRenderer.getWindowJs(context));

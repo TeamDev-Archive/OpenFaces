@@ -33,6 +33,7 @@ public class HintLabelRenderer extends RendererBase {
 
     public static final String HINT_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "hint";
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
 

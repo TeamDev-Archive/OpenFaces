@@ -31,6 +31,7 @@ import java.io.IOException;
  */
 public class EventPreviewRenderer extends RendererBase {
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         EventPreview eventPreview = (EventPreview) component;
         String clientId = eventPreview.getClientId(context);
@@ -65,6 +66,7 @@ public class EventPreviewRenderer extends RendererBase {
         StyleUtil.renderStyleClasses(context, component);
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }

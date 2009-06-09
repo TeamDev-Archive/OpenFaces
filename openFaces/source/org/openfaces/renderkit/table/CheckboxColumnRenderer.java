@@ -22,10 +22,12 @@ import java.io.IOException;
  * @author Dmitry Pikhulya
  */
 public class CheckboxColumnRenderer extends BaseColumnRenderer {
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered())
             return;

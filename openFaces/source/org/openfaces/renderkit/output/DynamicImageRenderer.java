@@ -32,6 +32,7 @@ public class DynamicImageRenderer extends RendererBase {
     private static final String DIMG_EXTENSION = "dimg";
     public static final String DEFAULT_STYLE_ATTR = "_defaultStyle";
 
+    @Override
     public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {
         if (!component.isRendered())
             return;

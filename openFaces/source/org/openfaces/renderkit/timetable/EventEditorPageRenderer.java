@@ -31,6 +31,7 @@ import java.util.Map;
  */
 public class EventEditorPageRenderer extends RendererBase {
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("span", component);
@@ -51,10 +52,12 @@ public class EventEditorPageRenderer extends RendererBase {
         writer.endElement("span");
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         Map requestParameterMap = context.getExternalContext().getRequestParameterMap();
         String clientId = component.getClientId(context) + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "action";

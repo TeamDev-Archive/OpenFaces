@@ -42,6 +42,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
     private static final String START_TIME = "startTime";
     private static final String END_TIME = "endTime";
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered())
             return;
@@ -147,6 +148,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
             writer.startElement("tr", dayTable);
             writer.startElement("td", dayTable);
             new TableRenderer(clientId + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "resourceHeaders", 0, 0, 0, "o_resourceHeadersTable") {
+                @Override
                 protected void encodeCellContents(FacesContext context, ResponseWriter writer, UIComponent component,
                                                   int rowIndex, int colIndex) throws IOException {
                     if (colIndex == 0 || colIndex == colCount)
@@ -424,13 +426,16 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         writer.endElement("div");
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
     }
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
         DayTable dayTable = (DayTable) component;

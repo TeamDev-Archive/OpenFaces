@@ -26,6 +26,7 @@ import java.io.IOException;
  */
 public class ImageExpansionToggleRenderer extends RendererBase {
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
 

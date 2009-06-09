@@ -32,6 +32,7 @@ import java.util.Map;
  * @author Dmitry Pikhulya
  */
 public class CaptionButtonRenderer extends RendererBase {
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
         CaptionButton btn = (CaptionButton) component;
@@ -144,6 +145,7 @@ public class CaptionButtonRenderer extends RendererBase {
         return "o_captionButton_pressed";
     }
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
         String key = component.getClientId(context) + "::clicked";

@@ -32,6 +32,7 @@ import java.util.Map;
  * @author Dmitry Pikhulya
  */
 public class ColumnResizingRenderer extends RendererBase {
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
         ColumnResizing columnResizing = (ColumnResizing) component;
@@ -76,6 +77,7 @@ public class ColumnResizingRenderer extends RendererBase {
         return table.getClientId(context) + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "colWidths";
     }
 
+    @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
         Map requestParams = context.getExternalContext().getRequestParameterMap();

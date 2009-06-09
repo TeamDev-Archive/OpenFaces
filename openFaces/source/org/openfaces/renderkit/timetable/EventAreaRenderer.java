@@ -28,6 +28,7 @@ import java.io.IOException;
  */
 public class EventAreaRenderer extends RendererBase {
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         EventArea eventArea = (EventArea) component;
         DayTable dayTable = (DayTable) eventArea.getParent();
@@ -49,10 +50,12 @@ public class EventAreaRenderer extends RendererBase {
         writer.endElement("div");
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
     }
 }

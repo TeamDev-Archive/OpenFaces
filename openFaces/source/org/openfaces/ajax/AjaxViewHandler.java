@@ -96,8 +96,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
             UIViewRoot viewRoot = null;
             try {
                 viewRoot = super.restoreView(context, viewId);
-            }
-            catch (RuntimeException e) {
+            } catch (RuntimeException e) {
                 // If exception was caught during our ajax request then we need to process it
                 // and send ajax response with details about exception.
                 if (AjaxUtil.isAjaxRequest(context)) {

@@ -20,6 +20,7 @@ import java.io.IOException;
  */
 public class SilentSessionExpirationRenderer extends AbstractSettingsRenderer {
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (isAjaxSessionExpirationProcessing(context)) {
             String location = getRedirectLocationOnSessionExpired(context);
