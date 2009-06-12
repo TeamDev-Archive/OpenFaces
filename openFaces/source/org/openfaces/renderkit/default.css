@@ -1181,6 +1181,12 @@
   border: 0;
 }
 
+
+.o_debug {
+  z-index: 10000;
+}
+
+
 /* ========== ROLLOVER STYLE GROUP ================== */
 
 /* == Shared among components styles == */
@@ -1258,3 +1264,4 @@
 .o_tabset_selected_rollover_left {
   border-left-color: #c9d8f5;
 }
+

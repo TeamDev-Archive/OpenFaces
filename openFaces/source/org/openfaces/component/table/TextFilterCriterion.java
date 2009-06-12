@@ -22,7 +22,7 @@ public class TextFilterCriterion extends ColumnFilterCriterion {
 
     public TextFilterCriterion(String text) {
         if (text == null) {
-            throw new IllegalArgumentException("text most be not-null");
+            throw new IllegalArgumentException("text must be not-null");
         }
         this.text = text;
     }

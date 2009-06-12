@@ -26,9 +26,9 @@ public class Spinner extends DropDownComponent {
 
     private Boolean cycled;
     private Boolean typingAllowed;
-    private Integer maxValue;
-    private Integer minValue;
-    private Integer step;
+    private Number maxValue;
+    private Number minValue;
+    private Number step;
     private String disabledIncreaseButtonImageUrl;
     private String disabledDecreaseButtonImageUrl;
     private String increaseButtonImageUrl;
@@ -66,27 +66,27 @@ public class Spinner extends DropDownComponent {
         this.typingAllowed = typingAllowed;
     }
 
-    public int getMaxValue() {
-        return ValueBindings.get(this, "maxValue", maxValue, 100);
+    public Number getMaxValue() {
+        return ValueBindings.get(this, "maxValue", maxValue, 100, Number.class);
     }
 
-    public void setMaxValue(int maxValue) {
+    public void setMaxValue(Number maxValue) {
         this.maxValue = maxValue;
     }
 
-    public int getStep() {
-        return ValueBindings.get(this, "step", step, 1);
+    public Number getStep() {
+        return ValueBindings.get(this, "step", step, 1, Number.class);
     }
 
-    public void setStep(int step) {
+    public void setStep(Number step) {
         this.step = step;
     }
 
-    public int getMinValue() {
-        return ValueBindings.get(this, "minValue", minValue, 0);
+    public Number getMinValue() {
+        return ValueBindings.get(this, "minValue", minValue, 0, Number.class);
     }
 
-    public void setMinValue(int minValue) {
+    public void setMinValue(Number minValue) {
         this.minValue = minValue;
     }
 

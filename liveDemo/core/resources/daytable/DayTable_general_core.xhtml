@@ -34,10 +34,11 @@
       }
 
       function initDate(){
-        var date = O$("form:dayTable").getDay();
-        updateDate(date);
+        setTimeout(function() {
+          var date = O$("form:dayTable").getDay();
+          updateDate(date);
+        }, 1);
       }
-
 
     </script>
     <h3 class="CalendarDate"><big><h:commandLink style="text-decoration: none;" onclick="previousDay(); return false;"><h:outputText value="&#8592;&#160;" escape="false" /></h:commandLink></big>

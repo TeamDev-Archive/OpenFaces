@@ -19033,6 +19033,173 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el false -->
     </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the Window component is visible.</description>
+      <name>visible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The x coordinate of the component's upper-left corner
+        relative to the upper-left corner of the document or an absolutely
+        positioned immediate container of the Window component.
+        Note that the "left" attribute should indicate the number of pixels,
+        without the postfix "px".
+      </description>
+      <name>left</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The y coordinate of the component's upper-left corner relative to the upper-left corner of the
+        document or an absolutely positioned immediate container of the Window component. Note that the "top" attribute
+        should indicate the number of pixels, without the postfix "px".
+      </description>
+      <name>top</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The width of the Window component. Can be specified in any units (px, mm, em, etc.).</description>
+      <name>width</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The height of the Window component. Can be specified in any units (px, mm, em, etc.).</description>
+      <name>height</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The minimal width that the Window component can have when the user is resizing the window. This
+        attribute is applicable when "resizable" attribute is set to "true". This attribute can be specified
+        in any units (px, mm, em, etc.) except percent.
+      </description>
+      <name>minWidth</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The minimal height that the Window component can have when the user is resizing the window. This
+        attribute is applicable when "resizable" attribute is set to "true". This attribute can be specified
+        in any units (px, mm, em, etc.) except percent.
+      </description>
+      <name>minHeight</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the entire Window component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire Window component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the entire Window component in the rollover state.</description>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire Window component in the rollover state.</description>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the Window title.</description>
+      <name>captionStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the Window title.</description>
+      <name>captionClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the Window content area.</description>
+      <name>contentStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the Window content area.</description>
+      <name>contentClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <!-- InputText tag declaration -->
@@ -24337,9 +24504,9 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>minValue</name>
       <deferred-value>
-        <type>int</type>
+        <type>java.lang.Number</type>
       </deferred-value>
-      <!-- @bindingType int -->
+      <!-- @bindingType java.lang.Number -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -24348,9 +24515,9 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>maxValue</name>
       <deferred-value>
-        <type>int</type>
+        <type>java.lang.Number</type>
       </deferred-value>
-      <!-- @bindingType int -->
+      <!-- @bindingType java.lang.Number -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -24359,9 +24526,9 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>step</name>
       <deferred-value>
-        <type>int</type>
+        <type>java.lang.Number</type>
       </deferred-value>
-      <!-- @bindingType int -->
+      <!-- @bindingType java.lang.Number -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>

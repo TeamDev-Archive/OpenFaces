@@ -58,8 +58,9 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
 
     protected InitScript renderInitScript(FacesContext context, DropDownComponent dropDown) throws IOException {
         Spinner spinner = (Spinner) dropDown;
-        if (spinner.getStep() <= 0) {
-            throw new FacesException("The 'step' attribute of component " + getClass().getName() + " should be greater then 0.");
+        if (spinner.getStep().doubleValue() <= 0) {
+            throw new FacesException("The 'step' attribute of <o:spinner> with id " + spinner.getClientId(context) +
+                    " should be greater then 0, but was " + spinner.getStep());
         }
 
         String buttonStyle = (String) dropDown.getAttributes().get("buttonStyle");

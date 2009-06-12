@@ -215,13 +215,6 @@ O$._initConfirmation = function(
       }
     }
 
-    confirmation._preAnchor.onfocus = function () {
-      confirmation._cancelButton.focus();
-    }
-    confirmation._postAnchor.onfocus = function () {
-      confirmation._okButton.focus();
-    }
-
     // set focus on button
     if (confirmation._defaultButton == "ok") {
       confirmation._currentFocus = 0;
@@ -239,10 +232,6 @@ O$._initConfirmation = function(
       document.onmousedown = confirmation._oldDocumentOnMouseDown;
     } else {
       document.onclick = confirmation._oldDocumentOnClick;
-    }
-    confirmation._preAnchor.onfocus = function () {
-    }
-    confirmation._postAnchor.onfocus = function () {
     }
 
     confirmation.hide();

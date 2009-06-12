@@ -12,9 +12,6 @@
 
 O$.POPUP_FIRST_EXTERNAL_ANCHOR_SUFFIX = "::firstExternalAnchor";
 O$.POPUP_LAST_EXTERNAL_ANCHOR_SUFFIX = "::lastExternalAnchor";
-O$.POPUP_PRE_FIRST_INTERNAL_ANCHOR_SUFFIX = "::preFirstInternalFocusableAnchor";
-O$.POPUP_FIRST_INTERNAL_ANCHOR_SUFFIX = "::firstInternalFocusableAnchor";
-O$.POPUP_LAST_INTERNAL_ANCHOR_SUFFIX = "::lastInternalFocusableAnchor";
 
 O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidingTimeout, draggable, isAjaxRequest) {
   var popup = O$(id);
@@ -27,6 +24,16 @@ O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidin
   popup.style.display = O$.getElementStyleProperty(popup, "display");
 
   popup.blockingLayer = O$(popup.id + "::blockingLayer");
+  if (popup.blockingLayer)
+    popup.blockingLayer.onclick = function() {
+      var focusable = popup._getDefaultFocusComponent();
+      if (focusable)
+        focusable.focus();
+    }
+
+  popup._getDefaultFocusComponent = function() {
+    return O$.getFirstFocusableControl(popup);
+  }
 
   //  if (popup.blockingLayer) {
   //      // This is needed for situations when blocking layer with style="filter:alpha(opacity: 50)" is positioned inside
@@ -109,8 +116,11 @@ O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidin
       }
       firstExternalAnchor.id = popup.id + O$.POPUP_FIRST_EXTERNAL_ANCHOR_SUFFIX;
       firstExternalAnchor.onfocus = function() {
-        var el = O$(popup.id + O$.POPUP_FIRST_INTERNAL_ANCHOR_SUFFIX);
-        el.focus();
+        var focusable = popup._getDefaultFocusComponent();
+        if (focusable)
+          focusable.focus();
+        else
+          firstExternalAnchor.blur();
       };
 
       var firstDocEl = body.firstChild;
@@ -126,31 +136,36 @@ O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidin
       }
       lastExternalAnchor.id = popup.id + O$.POPUP_LAST_EXTERNAL_ANCHOR_SUFFIX;
       lastExternalAnchor.onfocus = function() {
-        var el = O$(popup.id + O$.POPUP_FIRST_INTERNAL_ANCHOR_SUFFIX);
-        el.focus();
+        var focusable = popup._getDefaultFocusComponent();
+        if (focusable)
+          focusable.focus();
+        else
+          lastExternalAnchor.blur();
       };
       body.appendChild(lastExternalAnchor);
 
-      var firstInternalAnchor = O$.createHiddenFocusElement();
-      firstInternalAnchor.id = popup.id + O$.POPUP_FIRST_INTERNAL_ANCHOR_SUFFIX;
-      var firstPopupEl = popup.firstChild;
-      popup.insertBefore(firstInternalAnchor, firstPopupEl);
-      var preFirstInternalAnchor = O$.createHiddenFocusElement();
-      preFirstInternalAnchor.id = popup.id + O$.POPUP_PRE_FIRST_INTERNAL_ANCHOR_SUFFIX;
-      preFirstInternalAnchor.onfocus = function() {
-        var el = O$(popup.id + O$.POPUP_FIRST_INTERNAL_ANCHOR_SUFFIX);
-        el.focus();
+      popup._firstInternalAnchor = O$.createHiddenFocusElement();
+      popup._firstInternalAnchor._focusControlElement = true;
+      popup.insertBefore(popup._firstInternalAnchor, popup.firstChild);
+      popup._firstInternalAnchor.onfocus = function() {
+        var focusable = O$.getLastFocusableControl(popup);
+        if (focusable)
+          focusable.focus();
+        else
+          this.blur();
       };
-      popup.insertBefore(preFirstInternalAnchor, firstInternalAnchor);
-      firstInternalAnchor.focus();
+      popup._firstInternalAnchor.focus();
 
-      var lastInternalAnchor = O$.createHiddenFocusElement();
-      lastInternalAnchor.id = popup.id + O$.POPUP_LAST_INTERNAL_ANCHOR_SUFFIX;
-      lastInternalAnchor.onfocus = function () {
-        var el = O$(popup.id + O$.POPUP_FIRST_INTERNAL_ANCHOR_SUFFIX);
-        el.focus();
+      popup._lastInternalAnchor = O$.createHiddenFocusElement();
+      popup._lastInternalAnchor._focusControlElement = true;
+      popup._lastInternalAnchor.onfocus = function() {
+        var focusable = O$.getFirstFocusableControl(popup);
+        if (focusable)
+          focusable.focus();
+        else
+          this.blur();
       };
-      popup.appendChild(lastInternalAnchor);
+      popup.appendChild(popup._lastInternalAnchor);
     }
 
     if (popup.anchorElement != undefined) {
@@ -224,17 +239,11 @@ O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidin
       if (lastExtAnc) {
         body.removeChild(lastExtAnc);
       }
-      var el = O$(popup.id + O$.POPUP_FIRST_INTERNAL_ANCHOR_SUFFIX);
-      if (el) {
-        popup.removeChild(el);
+      if (popup._firstInternalAnchor) {
+        popup.removeChild(popup._firstInternalAnchor);
       }
-      el = O$(popup.id + O$.POPUP_LAST_INTERNAL_ANCHOR_SUFFIX);
-      if (el) {
-        popup.removeChild(el);
-      }
-      el = O$(popup.id + O$.POPUP_PRE_FIRST_INTERNAL_ANCHOR_SUFFIX);
-      if (el) {
-        popup.removeChild(el);
+      if (popup._lastInternalAnchor) {
+        popup.removeChild(popup._lastInternalAnchor);
       }
     }
 
@@ -487,4 +496,28 @@ O$._getParentToCalculateScrollOffset = function(popup) {
     parentToCalculate = document.body;
   }
   return parentToCalculate;
+}
+
+O$.getFirstFocusableControl = function(parent) {
+  for (var i = 0, count = parent.childNodes.length; i < count; i++) {
+    var child = parent.childNodes[i];
+    if (!child._focusControlElement && O$.isControlFocusable(child))
+      return child;
+    var focusable = O$.getFirstFocusableControl(child);
+    if (focusable)
+      return focusable;
+  }
+  return null;
+}
+
+O$.getLastFocusableControl = function(parent) {
+  for (var i = parent.childNodes.length - 1; i >= 0; i--) {
+    var child = parent.childNodes[i];
+    if (!child._focusControlElement && O$.isControlFocusable(child))
+      return child;
+    var focusable = O$.getLastFocusableControl(child);
+    if (focusable)
+      return focusable;
+  }
+  return null;
 }

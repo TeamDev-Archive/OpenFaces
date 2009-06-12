@@ -1520,7 +1520,7 @@ O$.initFocus_ = function(trackerFieldId, autoSaveFocus, priority) {
       return;
     O$._focusPriority = priority;
     var trackerField = O$(trackerFieldId);
-    document._of_focusField = trackerField;
+    O$._focusField = trackerField;
     var componentId = trackerField.value;
     var focused = false;
     if (componentId) {
@@ -1532,12 +1532,12 @@ O$.initFocus_ = function(trackerFieldId, autoSaveFocus, priority) {
           O$.scrollRectIntoView(rect);
         } catch(ex) {
         }
-        document._of_activeElement = c;
+        O$._activeElement = c;
         focused = true;
       }
     }
-    if (!focused && document._of_activeElement && document._of_activeElement.blur) {
-      document._of_activeElement.blur();
+    if (!focused && O$._activeElement && O$._activeElement.blur) {
+      O$._activeElement.blur();
     }
 
     if (!autoSaveFocus)
@@ -1567,14 +1567,16 @@ O$.initFocus_ = function(trackerFieldId, autoSaveFocus, priority) {
         setupFocus();
       }
     }
-  });
+  });                                                  
 }
 
 O$._handleOnFocus = function(e) {
-  document._of_activeElement = this;
-  document._of_focusField.value = this.id;
+  O$._activeElement = this;
+  O$._focusField.value = this.id;
   if (this._of_prevOnFocusHandler)
     this._of_prevOnFocusHandler(e);
+  if (O$.onfocuschange)
+    O$.onfocuschange(e);
 };
 
 O$.setupFocusOnTags = function(parent, tagName) {
@@ -1588,12 +1590,14 @@ O$.setupFocusOnTags = function(parent, tagName) {
     element.onfocus = O$._handleOnFocus;
     element._of_prevOnBlurHandler = element.onblur;
     element.onblur = function (e) {
-      if (document._of_activeElement == this) {
-        document._of_activeElement = null;
-        document._of_focusField.value = "";
+      if (O$._of_activeElement == this) {
+        O$._of_activeElement = null;
+        O$._focusField.value = "";
       }
       if (this._of_prevOnBlurHandler)
         this._of_prevOnBlurHandler(e);
+      if (O$.onfocuschange)
+        O$.onfocuschange(e);
     }
   }
 
@@ -2047,12 +2051,14 @@ O$.isControlFocusable = function(control) {
     return false;
 
   if (control._focusable)
+  if (control._focusable)
     return true;
   var tagName = control.tagName;
   if (!tagName)
     return false;
   tagName = tagName.toLowerCase();
-  if (tagName == "input" ||
+  if (
+      (tagName == "input" && control.type != "hidden") ||
       tagName == "select" ||
       tagName == "textarea" ||
       tagName == "button" ||

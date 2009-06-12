@@ -22,12 +22,21 @@ public class TabbedPaneItem extends UIComponentBase implements Serializable {
     public static final String COMPONENT_TYPE = "org.openfaces.TabbedPaneItem";
     public static final String COMPONENT_FAMILY = "org.openfaces.TabbedPaneItem";
 
+    private static final String TAB_FACET_NAME = "tab";
+
+    public TabbedPaneItem() {
+    }
+
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
     public UIComponent getTab() {
-        return getFacet("tab");
+        return getFacet(TAB_FACET_NAME);
+    }
+
+    public void setTab(UIComponent tab) {
+        getFacets().put(TAB_FACET_NAME, tab);
     }
 
 }

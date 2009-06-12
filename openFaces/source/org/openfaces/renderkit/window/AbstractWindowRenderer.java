@@ -38,8 +38,6 @@ import java.util.List;
 public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
     private static final String DEFAULT_CAPTION_CLASS = "o_window_caption";
     private static final String DEFAULT_CAPTION_WIDTH_CLASS = "o_default_caption_width";
-    private static final String PRE_ANCHOR = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "preAnchor";
-    private static final String POST_ANCHOR = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "postAnchor";
     public static final String MIDDLE_AREA_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "content";
 
     public static String getWindowJs(FacesContext context) {
@@ -95,7 +93,6 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
 
         super.encodeBegin(context, component);
 
-        encodeAnchor(context, win, PRE_ANCHOR);
         writer.startElement("table", win);
         writer.writeAttribute("id", clientId + "::table", null);
         writer.writeAttribute("border", "0", null);
@@ -126,8 +123,6 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
         writer.endElement("tr");
         encodeFooterPane(writer, win, clientId);
         writer.endElement("table");
-
-        encodeAnchor(context, win, POST_ANCHOR);
     }
 
     protected void encodeCaption(FacesContext context, AbstractWindow window) throws IOException {

@@ -11,15 +11,19 @@
  */
 package org.openfaces.component.util;
 
+import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.window.Window;
+import org.openfaces.renderkit.CompoundComponentRenderer;
+
+import javax.faces.context.FacesContext;
 
 /**
- * This component is under construction. API is subject to change. Please avoid using this component in a production 
+ * This component is under construction. API is subject to change. Please avoid using this component in a production
  * environment.
  *
  * @author Dmitry Pikhulya
  */
-public class Debug extends Window {
+public class Debug extends Window implements CompoundComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.Debug";
     public static final String COMPONENT_FAMILY = "org.openfaces.Debug";
 
@@ -35,5 +39,9 @@ public class Debug extends Window {
     @Override
     protected String getDefaultCaptionText() {
         return "Debug";
+    }
+
+    public void createSubComponents(FacesContext context) {
+        ((CompoundComponentRenderer) getRenderer(context)).createSubComponents(context, this);
     }
 }

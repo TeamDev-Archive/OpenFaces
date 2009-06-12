@@ -47,13 +47,13 @@ public class CalendarBean implements Serializable {
 
     public static List<LocaleItem> calendarLocales() {
         List<LocaleItem> locales = new ArrayList<LocaleItem>();
-        locales.add(new LocaleItem("English", Locale.ENGLISH, "Today", "None", "Wk"));
-        locales.add(new LocaleItem("French", Locale.FRENCH, "Aujourd'hui", "Aucun", ""));
-        locales.add(new LocaleItem("German", Locale.GERMAN, "Heute", "Kein", ""));
-        locales.add(new LocaleItem("Italian", Locale.ITALY, "Oggi", "Nessun", ""));
-        locales.add(new LocaleItem("Japanese", Locale.JAPAN, "\u4ECA\u65E5", "\u524A\u9664", "\u9031"));
-        locales.add(new LocaleItem("Russian", new Locale("ru"), "\u0421\u0435\u0433\u043E\u0434\u043D\u044F", "\u0421\u0431\u0440\u043E\u0441", ""));
-        locales.add(new LocaleItem("Arabic", new Locale("ar"), "\u0645\u0648\u064A\u0644\u0627", "\u0644\u0627\u0634\u0626", ""));
+        locales.add(new LocaleItem("English", Locale.ENGLISH, "Today", "None"));
+        locales.add(new LocaleItem("French", Locale.FRENCH, "Aujourd'hui", "Aucun"));
+        locales.add(new LocaleItem("German", Locale.GERMAN, "Heute", "Kein"));
+        locales.add(new LocaleItem("Italian", Locale.ITALY, "Oggi", "Nessun"));
+        locales.add(new LocaleItem("Japanese", Locale.JAPAN, "\u4ECA\u65E5", "\u524A\u9664"));
+        locales.add(new LocaleItem("Russian", new Locale("ru"), "\u0421\u0435\u0433\u043E\u0434\u043D\u044F", "\u0421\u0431\u0440\u043E\u0441"));
+        locales.add(new LocaleItem("Arabic", new Locale("ar"), "\u0645\u0648\u064A\u0644\u0627", "\u0644\u0627\u0634\u0626"));
         return locales;
     }
 
@@ -173,9 +173,5 @@ public class CalendarBean implements Serializable {
         return selectedLocaleItem != null ? selectedLocaleItem.getNoneText() : "";
     }
 
-
-    public String getCurrentWkString() {
-        return selectedLocaleItem != null ? selectedLocaleItem.getWkString() : "";
-    }
 
 }

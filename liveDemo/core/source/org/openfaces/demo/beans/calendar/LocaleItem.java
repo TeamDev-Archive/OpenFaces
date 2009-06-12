@@ -19,14 +19,12 @@ public class LocaleItem implements Serializable {
     private Locale locale;
     private String todayText;
     private String noneText;
-    private String wkString;
 
-    public LocaleItem(String localeName, Locale locale, String todayText, String noneText, String wkString) {
+    public LocaleItem(String localeName, Locale locale, String todayText, String noneText) {
         this.localeName = localeName;
         this.locale = locale;
         this.todayText = todayText;
         this.noneText = noneText;
-        this.wkString = wkString;
     }
 
     public String getLocaleName() {
@@ -43,10 +41,6 @@ public class LocaleItem implements Serializable {
 
     public String getNoneText() {
         return noneText;
-    }
-
-    public String getWkString() {
-        return wkString;
     }
 
     public String toString() {
