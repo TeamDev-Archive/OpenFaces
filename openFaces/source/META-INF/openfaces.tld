@@ -22632,6 +22632,26 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
+      <name>newEventCaption</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "New Event" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>editEventCaption</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Edit Event" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <name>nameLabel</name>
       <deferred-value>
         <type>java.lang.String</type>

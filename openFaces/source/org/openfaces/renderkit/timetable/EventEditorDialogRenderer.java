@@ -16,6 +16,7 @@ import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.EventEditorDialog;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.TableRenderer;
+import org.openfaces.renderkit.CompoundComponentRenderer;
 import org.openfaces.renderkit.window.WindowRenderer;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.HTML;
@@ -29,6 +30,7 @@ import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlInputTextarea;
 import javax.faces.component.html.HtmlPanelGrid;
+import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -37,7 +39,13 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public class EventEditorDialogRenderer extends WindowRenderer {
+public class EventEditorDialogRenderer extends WindowRenderer implements CompoundComponentRenderer {
+    public void createSubComponents(FacesContext context, UIComponent component) {
+        EventEditorDialog dialog = (EventEditorDialog) component;
+        HtmlOutputText captionText = ComponentUtil.createOutputText(context, "");
+        captionText.setId(dialog.getId() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "caption");
+        dialog.setCaption(captionText);
+    }
 
     @Override
     protected String getDefaultClassName() {
@@ -120,8 +128,11 @@ public class EventEditorDialogRenderer extends WindowRenderer {
                     cancelButton.encodeAll(context);
                     writer.endElement("div");
 
-                    RenderingUtil.renderInitScript(context, "O$._initEventEditorDialog('" + dayTable.getClientId(context) +
-                            "','" + dialog.getClientId(context) + "');");
+                    RenderingUtil.renderInitScript(context, new ScriptBuilder().functionCall("O$._initEventEditorDialog",
+                            dayTable,
+                            dialog,
+                            dialog.getNewEventCaption(),
+                            dialog.getEditEventCaption()).semicolon());
                 }
             }
 

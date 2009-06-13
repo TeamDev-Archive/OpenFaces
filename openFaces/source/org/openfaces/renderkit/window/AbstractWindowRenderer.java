@@ -169,7 +169,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
 
         AbstractWindow win = (AbstractWindow) component;
         ScriptBuilder sb = new ScriptBuilder();
-        sb.initScript(context, win, "O$._initWindow",
+        sb.initScript(context, win, "O$.Window._init",
                 win.isResizable(),
                 win.isDraggableByContent(),
                 win.getMinWidth(),

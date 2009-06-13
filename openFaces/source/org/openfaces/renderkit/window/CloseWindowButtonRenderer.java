@@ -32,7 +32,7 @@ public class CloseWindowButtonRenderer extends CaptionButtonRenderer {
 
     @Override
     protected String getInitFunctionName() {
-        return "O$._initCloseWindowButton";
+        return "O$.Window._initCloseButton";
     }
 
     @Override

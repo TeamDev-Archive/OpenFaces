@@ -187,7 +187,7 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
                 foldingPanel.getFocusedCaptionStyle(), StyleGroup.selectedStyleGroup(0), foldingPanel.getFocusedCaptionClass(), null);
 
         ScriptBuilder sb = new ScriptBuilder();
-        sb.initScript(context, foldingPanel, "O$._initFoldingPanel",
+        sb.initScript(context, foldingPanel, "O$.FoldingPanel._init",
                 foldingPanel.isExpanded(),
                 foldingPanel.getFoldingDirection(),
                 RenderingUtil.getRolloverClass(context, foldingPanel),

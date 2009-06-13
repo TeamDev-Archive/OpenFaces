@@ -32,6 +32,8 @@ public class EventEditorDialogTag extends AbstractComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        setStringProperty(component, "newEventCaption");
+        setStringProperty(component, "editEventCaption");
         setStringProperty(component, "nameLabel");
         setStringProperty(component, "resourceLabel");
         setStringProperty(component, "startLabel");

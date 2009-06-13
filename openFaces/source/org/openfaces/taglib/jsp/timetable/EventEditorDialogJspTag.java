@@ -25,6 +25,14 @@ public class EventEditorDialogJspTag extends AbstractComponentJspTag {
         super(new EventEditorDialogTag());
     }
 
+    public void setNewEventCaption(ValueExpression value) {
+        getDelegate().setPropertyValue("newEventCaption", value);
+    }
+
+    public void setEditEventCaption(ValueExpression value) {
+        getDelegate().setPropertyValue("editEventCaption", value);
+    }
+
     public void setNameLabel(ValueExpression value) {
         getDelegate().setPropertyValue("nameLabel", value);
     }

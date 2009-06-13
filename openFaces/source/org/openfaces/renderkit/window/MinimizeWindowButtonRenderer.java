@@ -42,7 +42,7 @@ public class MinimizeWindowButtonRenderer extends ToggleCaptionButtonRenderer {
 
     @Override
     protected String getInitFunctionName() {
-        return "O$._initMinimizeWindowButton";
+        return "O$.Window._initMinimizeButton";
     }
 
     @Override

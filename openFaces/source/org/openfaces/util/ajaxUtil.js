@@ -12,7 +12,7 @@
 
 // ================================== PUBLIC API FUNCTIONS
 
-O$.extend(window.OpenFaces, {
+O$.extend(O$, {
   ReloadComponents: O$.createClass(null, {
     constructor: function(componentIds, params) {
       this.componentIds = componentIds;

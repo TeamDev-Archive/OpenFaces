@@ -12,16 +12,21 @@
 package org.openfaces.component.timetable;
 
 import org.openfaces.component.window.Window;
+import org.openfaces.component.CompoundComponent;
 import org.openfaces.util.ValueBindings;
+import org.openfaces.renderkit.CompoundComponentRenderer;
 
 import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class EventEditorDialog extends Window {
+public class EventEditorDialog extends Window implements CompoundComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.EventEditorDialog";
     public static final String COMPONENT_FAMILY = "org.openfaces.EventEditorDialog";
+
+    private String newEventCaption;
+    private String editEventCaption;
 
     private String nameLabel;
     private String resourceLabel;
@@ -70,6 +75,8 @@ public class EventEditorDialog extends Window {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
+                newEventCaption,
+                editEventCaption,
                 nameLabel,
                 resourceLabel,
                 startLabel,
@@ -87,6 +94,8 @@ public class EventEditorDialog extends Window {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
+        newEventCaption = (String) state[i++];
+        editEventCaption = (String) state[i++];
         nameLabel = (String) state[i++];
         resourceLabel = (String) state[i++];
         startLabel = (String) state[i++];
@@ -96,6 +105,22 @@ public class EventEditorDialog extends Window {
         okButtonText = (String) state[i++];
         cancelButtonText = (String) state[i++];
         deleteButtonText = (String) state[i++];
+    }
+
+    public String getNewEventCaption() {
+        return ValueBindings.get(this, "newEventCaption", newEventCaption, "New Event");
+    }
+
+    public void setNewEventCaption(String newEventCaption) {
+        this.newEventCaption = newEventCaption;
+    }
+
+    public String getEditEventCaption() {
+        return ValueBindings.get(this, "editEventCaption", editEventCaption, "Edit Event");
+    }
+
+    public void setEditEventCaption(String editEventCaption) {
+        this.editEventCaption = editEventCaption;
     }
 
     public String getNameLabel() {
@@ -170,5 +195,7 @@ public class EventEditorDialog extends Window {
         deleteButtonText = value;
     }
 
-
+    public void createSubComponents(FacesContext context) {
+        ((CompoundComponentRenderer) getRenderer(context)).createSubComponents(context, this);
+    }
 }

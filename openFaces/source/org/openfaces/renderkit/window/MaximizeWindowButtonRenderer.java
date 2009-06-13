@@ -42,7 +42,7 @@ public class MaximizeWindowButtonRenderer extends ToggleCaptionButtonRenderer {
 
     @Override
     protected String getInitFunctionName() {
-        return "O$._initMaximizeWindowButton";
+        return "O$.Window._initMaximizeButton";
     }
 
     @Override

@@ -1545,7 +1545,7 @@ O$._PreloadedTimetableEvents = function(events) {
   this.setEvents(events);
 }
 
-O$._initEventEditorDialog = function(dayTableId, dialogId) {
+O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, editEventCaption) {
   var dayTable = O$(dayTableId);
   var dialog = O$(dialogId);
   dialog._dayTable = dayTable;
@@ -1560,6 +1560,7 @@ O$._initEventEditorDialog = function(dayTableId, dialogId) {
   dialog._okButton = O$.byIdOrName(dialog.id + "--okButton");
   dialog._cancelButton = O$.byIdOrName(dialog.id + "--cancelButton");
   dialog._deleteButton = O$.byIdOrName(dialog.id + "--deleteButton");
+  dialog._captionText = O$(dialog.id + "--caption");
 
   dialog.run = function(event, mode, listeners) {
     this._event = event;
@@ -1570,7 +1571,11 @@ O$._initEventEditorDialog = function(dayTableId, dialogId) {
     this._endTimeField.value = O$.formatTime(event._end);
     this._color = event.color;
     this._descriptionField.value = event.description;
-    dialog._deleteButton.style.visibility = mode == "update" ? "visible" : "hidden";
+    this._deleteButton.style.visibility = mode == "update" ? "visible" : "hidden";
+    O$.removeAllChildNodes(this._captionText);
+    this._captionText.appendChild(document.createTextNode(mode == "update"
+            ? editEventCaption
+            : newEventCaption));
 
     this._okButton.onclick = function(e) {
       O$.breakEvent(e);

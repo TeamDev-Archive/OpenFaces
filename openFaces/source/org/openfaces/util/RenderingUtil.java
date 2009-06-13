@@ -105,28 +105,33 @@ public class RenderingUtil {
 
     /**
      *
-     * This method checks and create, if needed new facet of parent component.   
+     * This method checks and create, if needed new facet of parent component.
      *
      * @param context {@link FacesContext} for the current request
      * @param parent Method will search fo facet in this component or create it, if needed
      * @param componentType The component type for which to create and return a new {@link UIComponent} instance
      * @param identifier The id identifying the {@link UIComponent} to be returned
      * @param enforceComponentClass If facet with given identifier exist, but it's class doesn't
-     * seem to be equal to enforceComponentClass, facet will be recreated 
+     * seem to be equal to enforceComponentClass, facet will be recreated
      * @return facet of parent component
      */
     public static UIComponent getOrCreateFacet(
             FacesContext context, UIComponent parent, String componentType, String identifier, Class enforceComponentClass) {
+        String id = ComponentUtil.generateIdWithSuffix(parent, identifier);
+        return getOrCreateFacet(context, parent, componentType, identifier, id, enforceComponentClass);
+    }
 
-        UIComponent component = parent.getFacet(identifier);
+    public static UIComponent getOrCreateFacet(
+            FacesContext context, UIComponent parent, String componentType, String facetName, String id, Class enforceComponentClass) {
+
+        UIComponent component = parent.getFacet(facetName);
         if (component != null) {
             if (enforceComponentClass == null || component.getClass().equals(enforceComponentClass))
                 return component;
         }
 
-        String childId = ComponentUtil.generateIdWithSuffix(parent, identifier);
-        component = ComponentUtil.createComponent(context, childId, componentType);
-        parent.getFacets().put(identifier, component);
+        component = ComponentUtil.createComponent(context, id, componentType);
+        parent.getFacets().put(facetName, component);
         return component;
     }
 

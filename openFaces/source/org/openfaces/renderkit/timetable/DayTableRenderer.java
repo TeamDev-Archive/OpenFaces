@@ -102,9 +102,8 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         UIComponent eventEditor = dayTable.getEventEditor();
         if (eventEditor == null) {
             eventEditor = RenderingUtil.getOrCreateFacet(context, dayTable,
-                    EventEditorDialog.COMPONENT_TYPE, "eventEditor", EventEditorDialog.class);
+                    EventEditorDialog.COMPONENT_TYPE, "eventEditor", "_eventEditor", EventEditorDialog.class);
         }
-        eventEditor.setId("_eventEditor");
         if (eventEditor instanceof EventEditorDialog)
             ((EventEditorDialog) eventEditor).setVisible(false);
         eventEditor.encodeAll(context);
