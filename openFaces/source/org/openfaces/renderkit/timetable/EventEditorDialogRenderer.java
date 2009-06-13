@@ -91,12 +91,6 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
         };
 
         new TableRenderer() {
-            @Override
-            protected void writeCellAttributes(ResponseWriter writer, int rowIndex, int cellIndex) throws IOException {
-                super.writeCellAttributes(writer, rowIndex, cellIndex);
-                if (rowIndex < 3 && cellIndex == 0)
-                    writer.writeAttribute("style", "width: 0", null);
-            }
 
             @Override
             protected void writeTableAttributes(FacesContext context, ResponseWriter writer, UIComponent component) throws IOException {
@@ -107,12 +101,22 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
             @Override
             protected void writeRowAttributes(ResponseWriter writer, int rowIndex) throws IOException {
                 if (rowIndex == 4) {
-                    writer.writeAttribute("style", "height: 100%", null);
+                    writer.writeAttribute("style", "height: 100%;", null);
                 }
             }
 
             @Override
+            protected void writeCellAttributes(ResponseWriter writer, int rowIndex, int cellIndex) throws IOException {
+                super.writeCellAttributes(writer, rowIndex, cellIndex);
+                if (rowIndex < 3 && cellIndex == 0)
+                    writer.writeAttribute("style", "width: 0", null);
+                if (rowIndex == 4)
+                    writer.writeAttribute("style", "vertical-align: top;", null);
+            }
+
+            @Override
             protected void encodeCellContents(FacesContext context, ResponseWriter writer, UIComponent component, int rowIndex, int colIndex) throws IOException {
+                super.encodeCellContents(context, writer, component, rowIndex, colIndex);
                 if (rowIndex == components.length - 1) {
                     writer.startElement("div", component);
                     writer.writeAttribute("class", "o_eventEditor_buttonsArea", null);
@@ -151,6 +155,7 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
         HtmlInputTextarea descriptionField = (HtmlInputTextarea) RenderingUtil.getOrCreateFacet(context, popupLayer,
                 HtmlInputTextarea.COMPONENT_TYPE, "descriptionField", HtmlInputTextarea.class);
         descriptionField.setStyleClass("o_fullWidthAndHeight");
+        descriptionField.setStyle("resize: none");
         return descriptionField;
     }
 

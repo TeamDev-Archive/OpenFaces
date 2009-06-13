@@ -1577,7 +1577,9 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
             ? editEventCaption
             : newEventCaption));
 
+    this._closeProcessed = false;
     this._okButton.onclick = function(e) {
+      this._closeProcessed = true;
       O$.breakEvent(e);
       event.name = dialog._nameField.value;
       var startDate = dialog._startDateField.getSelectedDate();
@@ -1590,31 +1592,54 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
         event.color = dialog._color ? dialog._color : "";
         event.description = dialog._descriptionField.value;
         dialog.hide();
-        if (listeners.onclose)
-          listeners.onclose();
         if (listeners.onok)
           listeners.onok();
       }
     }
     this._cancelButton.onclick = function(e) {
+      this._closeProcessed = true;
       O$.breakEvent(e);
       dialog.hide();
-      if (listeners.onclose)
-        listeners.onclose();
       if (listeners.oncancel)
         listeners.oncancel();
     }
     this._deleteButton.onclick = function(e) {
+      this._closeProcessed = true;
       O$.breakEvent(e);
       dialog.hide();
-      if (listeners.onclose)
-        listeners.onclose();
       if (listeners.ondelete)
         listeners.ondelete();
+    }
+    this.onhide = function() {
+      if (listeners.onclose)
+        listeners.onclose();
+      if (!this._closeProcessed)
+        if (listeners.oncancel)
+          listeners.oncancel();
+      if (dialog._textareaHeightUpdateInterval)
+        clearInterval(dialog._textareaHeightUpdateInterval);
+      this._closeProcessed = true;
     }
     if (event.mainElement)
       O$.correctElementZIndex(this, event.mainElement, 5);
     this.showCentered();
+
+    function adjustTextareaHeight(){
+      var size = O$.getElementSize(dialog._descriptionField.parentNode);
+      O$.setElementSize(dialog._descriptionField, size);
+    }
+    if (O$.isExplorer() || O$.isOpera()) {
+      if (dialog._descriptionField.style.position != "absolute") {
+        dialog._descriptionField.style.position = "absolute";
+        var div = document.createElement("div");
+        div.style.height = "100%";
+        dialog._descriptionField.parentNode.appendChild(div);
+      }
+      adjustTextareaHeight();
+      dialog._textareaHeightUpdateInterval = setInterval(adjustTextareaHeight, 50);
+    } else
+      dialog._textareaHeightUpdateInterval = null;
+
   }
 
 }

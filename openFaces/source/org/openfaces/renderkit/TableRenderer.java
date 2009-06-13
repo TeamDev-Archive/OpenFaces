@@ -25,6 +25,7 @@ public class TableRenderer {
     private Integer cellspacing;
     private Integer cellpadding;
     private Integer border;
+    private ThreadLocal<UIComponent> cellComponent = new ThreadLocal<UIComponent>();
 
     public TableRenderer() {
     }
@@ -139,6 +140,9 @@ public class TableRenderer {
     }
 
     protected void encodeCellContents(FacesContext context, ResponseWriter writer, UIComponent component, int rowIndex, int colIndex) throws IOException {
+        UIComponent cellComponent = this.cellComponent.get();
+        if (cellComponent != null)
+            cellComponent.encodeAll(context);
     }
 
     public void render(UIComponent parent, UIComponent[][] components) throws IOException {
@@ -168,9 +172,9 @@ public class TableRenderer {
                 writeCellAttributes(writer, rowIndex, cellIndex);
 
                 UIComponent cellComponent = rowComponents[cellIndex];
-                if (cellComponent != null)
-                    cellComponent.encodeAll(context);
+                this.cellComponent.set(cellComponent);
                 encodeCellContents(context, writer, parent, rowIndex, cellIndex);
+                this.cellComponent.remove();
 
                 writer.endElement("td");
                 if (lastCellInIncompleteRow)
