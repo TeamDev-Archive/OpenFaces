@@ -13,7 +13,10 @@
 
 O$._initDebug = function(clientId) {
   var debug = O$(clientId);
+  debug._pages = O$(clientId + "--pages");
   debug._logText = O$(clientId + "--log");
+  debug._elementProperties = O$(clientId + "--elementProperties");
+
   debug.log = function(text) {
     if (!this.isVisible())
       this.show();
@@ -29,8 +32,8 @@ O$._initDebug = function(clientId) {
     logElement(document.createElement("br"));
     logElement(document.createTextNode(text));
     logElement(document.createTextNode(date + " : "));
+    this._pages.setSelectedIndex(0);
   }
-
   debug.logObject = function(obj) {
     var txt = "";
     for (var fld in obj) {
@@ -41,4 +44,19 @@ O$._initDebug = function(clientId) {
     txt = "[" + txt + "]";
     debug.log(txt);
   }
+  debug.inspectElement = function(element) {
+    this._elementProperties._removeAllRows();
+    if (!element)
+      return;
+    for (var fld in element) {
+      var row = this._elementProperties.body._newRow();
+      row._cells[0].innerHTML = fld;
+      row._cells[1].appendChild(document.createTextNode(element[fld]));
+    }
+  }
+
+  O$.onfocuschange = function() {
+//    debug.inspectElement(O$._activeElement);
+  }
+
 }

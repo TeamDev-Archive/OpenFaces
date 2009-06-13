@@ -1590,8 +1590,8 @@ O$.setupFocusOnTags = function(parent, tagName) {
     element.onfocus = O$._handleOnFocus;
     element._of_prevOnBlurHandler = element.onblur;
     element.onblur = function (e) {
-      if (O$._of_activeElement == this) {
-        O$._of_activeElement = null;
+      if (O$._activeElement == this) {
+        O$._activeElement = null;
         O$._focusField.value = "";
       }
       if (this._of_prevOnBlurHandler)

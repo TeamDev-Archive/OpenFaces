@@ -390,6 +390,11 @@ O$._initTableSection = function(section, table, sectionTagName) {
     }
     return newRow;
   };
+  section._newRow = function(afterRow) {
+    var row = this._createRow();
+    this._addRow(row, afterRow);
+    return row;
+  };
   section._addRow = function(row, afterRow) {
     this._addRows([row], afterRow);
   };

@@ -71,7 +71,7 @@ public class TabbedPaneRenderer extends BaseTabSetRenderer implements AjaxPortio
         ResponseWriter writer = context.getResponseWriter();
         TabbedPane tabbedPane = (TabbedPane) component;
 
-        LoadingMode loadingMode = getLoadingMode(tabbedPane);
+        LoadingMode loadingMode = tabbedPane.getLoadingMode();
         if (LoadingMode.AJAX.equals(loadingMode))
             AjaxUtil.prepareComponentForAjax(context, component);
 
@@ -173,7 +173,7 @@ public class TabbedPaneRenderer extends BaseTabSetRenderer implements AjaxPortio
         String defaultBorderClass = DEFAULT_BORDER_CLASS_PREFIX + tabPlacement;
         String borderClass = StyleUtil.getCSSClass(context, tabbedPane, fullBorderStyle, defaultBorderClass);
 
-        LoadingMode loadingMode = getLoadingMode(tabbedPane);
+        LoadingMode loadingMode = tabbedPane.getLoadingMode();
 
         String focusedClass = StyleUtil.getCSSClass(context, tabbedPane,
                 tabbedPane.getFocusedStyle(), StyleGroup.selectedStyleGroup(1), tabbedPane.getFocusedClass(), null);
@@ -240,7 +240,7 @@ public class TabbedPaneRenderer extends BaseTabSetRenderer implements AjaxPortio
         if (selectedTabIndex == -1)
             return; // if there are no rendered items
 
-        LoadingMode loadingMode = getLoadingMode(tabbedPane);
+        LoadingMode loadingMode = tabbedPane.getLoadingMode();
         if (loadingMode.equals(LoadingMode.SERVER)) {
             encodePageContent(context, tabbedPane, tabbedPaneItems, selectedTabIndex, true, containerClass);
             tabbedPane.setItemRendered(selectedTabIndex, true);
@@ -322,13 +322,6 @@ public class TabbedPaneRenderer extends BaseTabSetRenderer implements AjaxPortio
         writer.endElement("td");
         writer.endElement("tr");
         writer.endElement("table");
-    }
-
-    private LoadingMode getLoadingMode(TabbedPane tabbedPane) {
-        LoadingMode loadingMode = tabbedPane.getLoadingMode();
-        if (loadingMode == null)
-            loadingMode = LoadingMode.AJAX;
-        return loadingMode;
     }
 
     private void encodeComponents(FacesContext context, Collection<UIComponent> components) throws IOException {

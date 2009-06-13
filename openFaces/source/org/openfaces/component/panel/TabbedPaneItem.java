@@ -14,6 +14,7 @@ package org.openfaces.component.panel;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * @author Andrew Palval
@@ -25,6 +26,11 @@ public class TabbedPaneItem extends UIComponentBase implements Serializable {
     private static final String TAB_FACET_NAME = "tab";
 
     public TabbedPaneItem() {
+    }
+
+    public TabbedPaneItem(UIComponent tab, UIComponent... children) {
+        setTab(tab);
+        getChildren().addAll(Arrays.asList(children));
     }
 
     public String getFamily() {
