@@ -21,19 +21,19 @@ import org.openfaces.test.OpenFacesTestCase;
  * @author Darya Shumilina
  */
 public class ScrollPositionTest extends OpenFacesTestCase {
-    @Ignore
     @Test
-    public void _testScrollPositionByPageLoading() {
+    public void testScrollPositionByPageLoading() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/scrollfocus/scrollPosition.jsf");
-        assertEquals("1220", selenium.getEval("window.pageYOffset"));
-        assertEquals("1100", selenium.getEval("window.pageXOffset"));
+        assertEquals("600", selenium.getEval("window.pageYOffset"));
+        assertEquals("700", selenium.getEval("window.pageXOffset"));
     }
 
     @Test
     public void testScrollPositionSaveAfterPageSubmission() {
         testAppFunctionalPage("/components/scrollfocus/scrollPosition.jsf");
 
+        sleep(500);
         ElementInspector inputText = element("formID:inputTextId");
         inputText.focus();
         inputText.setCursorPosition(0);

@@ -22771,6 +22771,202 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
+      <description>A style for the entire EventEditorDialog component in the rollover state.</description>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire EventEditorDialog component in the rollover state.</description>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A flag that indicates whether or not the user can move the window by dragging its title.
+      </description>
+      <name>draggable</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether the window can be dragged by its content area in addition to the usual
+        dragging by window caption. This attribute is only applicable if draggable attribute is set to "true".
+      </description>
+      <name>draggableByContent</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>resizable</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the visible part of the page which is not covered by the EventEditorDialog component.
+      </description>
+      <name>modalLayerStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the visible part of the page which is not covered by a EventEditorDialog component.
+      </description>
+      <name>modalLayerClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The x coordinate of the component's upper-left corner
+        relative to the upper-left corner of the document or an absolutely
+        positioned immediate container of the EventEditorDialog component.
+        Note that the "left" attribute should indicate the number of pixels,
+        without the postfix "px".
+      </description>
+      <name>left</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The y coordinate of the component's upper-left corner relative to the upper-left corner of the
+        document or an absolutely positioned immediate container of the EventEditorDialog component. Note that the "top" attribute
+        should indicate the number of pixels, without the postfix "px".
+      </description>
+      <name>top</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The width of the EventEditorDialog component. Can be specified in any units (px, mm, em, etc.).</description>
+      <name>width</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The height of the EventEditorDialog component. Can be specified in any units (px, mm, em, etc.).</description>
+      <name>height</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The minimal width that the EventEditorDialog component can have when the user is resizing the window. This
+        attribute is applicable when "resizable" attribute is set to "true". This attribute can be specified
+        in any units (px, mm, em, etc.) except percent.
+      </description>
+      <name>minWidth</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The minimal height that the EventEditorDialog component can have when the user is resizing the window. This
+        attribute is applicable when "resizable" attribute is set to "true". This attribute can be specified
+        in any units (px, mm, em, etc.) except percent.
+      </description>
+      <name>minHeight</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the Window title.</description>
+      <name>captionStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the Window title.</description>
+      <name>captionClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the Window content area.</description>
+      <name>contentStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the Window content area.</description>
+      <name>contentClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+
+    <attribute>
       <name>newEventCaption</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -22877,6 +23073,146 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the EventEditorDialog
+        component is displayed on the client side.
+      </description>
+      <name>onshow</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the EventEditorDialog component is hidden on the client side.
+      </description>
+      <name>onhide</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the EventEditorDialog.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the EventEditorDialog.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks
+        over the EventEditorDialog with either mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the EventEditorDialog.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the EventEditorDialog.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        away from the EventEditorDialog.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases the mouse button over the EventEditorDialog.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the EventEditorDialog.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the EventEditorDialog.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a key
+        over the EventEditorDialog.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
