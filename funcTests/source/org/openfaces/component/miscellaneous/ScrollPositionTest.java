@@ -35,6 +35,7 @@ public class ScrollPositionTest extends OpenFacesTestCase {
         testAppFunctionalPage("/components/scrollfocus/scrollPosition.jsf");
 
         ElementInspector inputText = element("formID:inputTextId");
+        inputText.focus();
         inputText.setCursorPosition(0);
         int ordinate = window().evalIntExpression("pageYOffset");
         int abscissa = window().evalIntExpression("pageXOffset");
