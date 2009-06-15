@@ -37,6 +37,7 @@ public class ScrollPositionTest extends OpenFacesTestCase {
         ElementInspector inputText = element("formID:inputTextId");
         inputText.focus();
         inputText.setCursorPosition(0);
+        sleep(500);
         int ordinate = window().evalIntExpression("pageYOffset");
         int abscissa = window().evalIntExpression("pageXOffset");
         inputText.keyPress(13);
