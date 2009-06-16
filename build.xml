@@ -103,8 +103,6 @@
       <classpath>
         <pathelement path="${openfaces-jar.file}"/>
         <pathelement path="${openfaces-inspectors-jar.file}"/>
-        <pathelement path="${patched-selenium-server.file}"/>
-        <pathelement path="${funcTestsFramework-distrib.dir}/selenium-java-client-driver.jar"/>
         <pathelement path="testLib/junit.jar"/>
         <pathelement path="testLib/jai/mlibwrapper_jai.jar"/>
         <pathelement path="testLib/jai/jai_core.jar"/>
@@ -151,8 +149,6 @@
         <pathelement path="${openfaces-jar.file}"/>
         <pathelement location="${funcTests-target.dir}/classes"/>
         <pathelement path="${openfaces-inspectors-jar.file}"/>
-        <pathelement path="${patched-selenium-server.file}"/>
-        <pathelement path="${funcTestsFramework-distrib.dir}/selenium-java-client-driver.jar"/>
         <pathelement path="testLib/junit.jar"/>
         <pathelement path="testLib/jai/mlibwrapper_jai.jar"/>
         <pathelement path="testLib/jai/jai_core.jar"/>
