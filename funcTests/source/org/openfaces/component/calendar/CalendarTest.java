@@ -13,8 +13,9 @@ package org.openfaces.component.calendar;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
-import org.openfaces.test.openfaces.CalendarInspector;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.openfaces.CalendarInspector;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
 
 /**
  * @author Darya Shumilina
@@ -26,7 +27,7 @@ public class CalendarTest extends BaseCalendarTestCase {
 
         for (int i = 0; i < 3; i++) {
             element("formID:refresher").click();
-            waitForAjax4JSF();
+            RichFacesAjaxLoadingMode.getInstance().waitForLoad();
             element("formID:onchangePopup").assertVisible(true);
             element("formID:closer").click();
         }

@@ -11,7 +11,11 @@
  */
 package org.openfaces.test;
 
-import org.openfaces.test.openfaces.*;
+import org.seleniuminspector.SeleniumTestCase;
+import org.seleniuminspector.SeleniumFactory;
+import org.seleniuminspector.SeleniumWithServerAutostartFactory;
+import org.seleniuminspector.SeleniumHolder;
+import org.seleniuminspector.openfaces.*;
 
 import java.io.IOException;
 import java.io.InputStream;

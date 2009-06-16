@@ -15,8 +15,10 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.ConfirmationInspector;
-import org.openfaces.test.openfaces.PopupLayerInspector;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.seleniuminspector.openfaces.ConfirmationInspector;
+import org.seleniuminspector.openfaces.PopupLayerInspector;
+import org.seleniuminspector.LoadingMode;
 
 /**
  * @author Darya Shumilina
@@ -38,7 +40,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
             confirmedPopup.assertVisible(true);
             selenium.click("formID:closer");
             selenium.click("formID:refresher");
-            waitForAjax4JSF();
+            RichFacesAjaxLoadingMode.getInstance().waitForLoad();
             selenium.click("formID:button1");
             String newSource = selenium.getHtmlSource();
             sleep(500);
@@ -65,7 +67,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
             confirmedPopup.assertVisible(true);
             selenium.click("formID:closer_a4j");
             selenium.click("formID:refresher_a4j");
-            waitForAjax4JSF();
+            RichFacesAjaxLoadingMode.getInstance().waitForLoad();
             selenium.click("formID:button1");
             String newSource = selenium.getHtmlSource();
             confirmation.okButton().click();

@@ -12,12 +12,15 @@
 package org.openfaces.component.dropdownfield;
 
 import com.thoughtworks.selenium.Selenium;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.html.InputInspector;
-import org.openfaces.test.html.TableInspector;
-import org.openfaces.test.openfaces.DropDownFieldInspector;
-import org.openfaces.test.openfaces.DropDownPopupInspector;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.LoadingMode;
+import org.seleniuminspector.html.InputInspector;
+import org.seleniuminspector.html.TableInspector;
+import org.seleniuminspector.openfaces.DropDownFieldInspector;
+import org.seleniuminspector.openfaces.DropDownPopupInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +37,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         List<String> oldValues = getDropDownItemTexts(dropDown);
 
         element("formID:refresher").click();
-        waitForAjax4JSF();
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
         List<String> newValues = getDropDownItemTexts(dropDown);
         assertFalse(newValues.equals(oldValues));
     }
@@ -156,12 +159,12 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         DropDownPopupInspector popup = dropDownField.popup();
         popup.itemsTable().assertVisible(false);
         dropDownField.field().keyPress('i');
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         popup.itemsTable().assertVisible(true);
         popup.items().get(0).assertText("Iberis");
 
         dropDownField.field().keyPress('r');
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         popup.items().get(0).assertText("Iresine");
         popup.items().get(1).assertText("Iris");
     }

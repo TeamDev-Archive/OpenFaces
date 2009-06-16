@@ -14,7 +14,7 @@ package org.openfaces.component.popuplayer;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.InputTextInspector;
+import org.seleniuminspector.openfaces.InputTextInspector;
 
 /**
  * @author Darya Shumilina

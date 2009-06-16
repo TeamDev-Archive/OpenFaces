@@ -13,15 +13,15 @@ package org.openfaces.component.foldingpanel;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.DataTableInspector;
-import org.openfaces.test.openfaces.DateChooserInspector;
-import org.openfaces.test.openfaces.FoldingPanelInspector;
-import org.openfaces.test.openfaces.LoadingMode;
-import org.openfaces.test.openfaces.SearchFieldFilterInspector;
-import org.openfaces.test.openfaces.TreeTableInspector;
-import org.openfaces.test.openfaces.TwoListSelectionInspector;
+import org.seleniuminspector.openfaces.DataTableInspector;
+import org.seleniuminspector.openfaces.DateChooserInspector;
+import org.seleniuminspector.openfaces.FoldingPanelInspector;
+import org.seleniuminspector.openfaces.SearchFieldFilterInspector;
+import org.seleniuminspector.openfaces.TreeTableInspector;
+import org.seleniuminspector.openfaces.TwoListSelectionInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
+import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Darya Shumilina
@@ -34,7 +34,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
         ElementInspector calendar = element("fn:calendarID");
         calendar.assertElementExists(false);
 
-        foldingPanel("fn:calendarFoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:calendarFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         assertFalse(getSelenium().isAlertPresent());
         calendar.assertElementExists(true);
     }
@@ -46,7 +46,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
         ElementInspector chart = element("fn:first_chartID");
         chart.assertElementExists(false);
 
-        foldingPanel("fn:chartFoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:chartFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         chart.assertElementExists(true);
         chart.assertVisible(true);
     }
@@ -55,7 +55,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
     public void testConfirmationInside() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foldingpanel/confirmationIn.jsf");
-        foldingPanel("fn:confirmationFoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:confirmationFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         for (int i = 0; i < 2; i++) {
             element("button1").click();
             confirmation("fn:conf1").okButton().click();
@@ -67,7 +67,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
     @Test
     public void testDataTableInside() throws InterruptedException {
         testAppFunctionalPage("/components/foldingpanel/dataTableIn.jsf");
-        foldingPanel("fn:dataTableFoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:dataTableFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
 
         DataTableInspector dataTable = dataTable("fn:dataTableID");
         dataTable.makeAndCheckSingleSelection(1, 1);
@@ -80,7 +80,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
     public void testDateChooserInside() {
         testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
 
-        foldingPanel("fn:dateChooserFoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:dateChooserFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
 
         DateChooserInspector dateChooser = dateChooser("fn:dateChooserID");
         dateChooser.field().assertElementExists();
@@ -92,7 +92,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
     public void testDropDownInside() {
         testAppFunctionalPage("/components/foldingpanel/dropDownIn.jsf");
 
-        foldingPanel("fn:dropDownFoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:dropDownFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
 
         DateChooserInspector dateChooser = dateChooser("fn:dropDownID");
         dateChooser.assertElementExists();
@@ -103,7 +103,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
     @Test
     public void testDynamicImageInside() {
         testAppFunctionalPage("/components/foldingpanel/dynamicImageIn.jsf");
-        foldingPanel("fn:dynamicImageFoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:dynamicImageFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         element("fn:dynamicImageID").assertElementExists();
     }
 
@@ -111,12 +111,12 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
     public void testAjaxFoldingPanelInside() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanelIn.jsf");
 
-        foldingPanel("fn:foldingPanel_FoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:foldingPanel_FoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         FoldingPanelInspector foldingPanel = foldingPanel("fn:insiderFoldingPanel");
         foldingPanel.caption().assertElementExists();
         foldingPanel.content().assertVisible(false);
 
-        foldingPanel.toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel.toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         foldingPanel.caption().assertElementExists();
         foldingPanel.content().assertVisible(true);
     }
@@ -125,7 +125,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
     public void testHintLabelInside() throws InterruptedException {
         testAppFunctionalPage("/components/foldingpanel/hintLabelIn.jsf");
 
-        foldingPanel("fn:hintLabelFoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:hintLabelFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         hintLabel("fn:hintLabelID").checkVisibilityAndContent("HintLabel Value", "HintLabel Title ;-)");
     }
 
@@ -133,7 +133,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
     public void testPopupLayerInside() {
         testAppFunctionalPage("/components/foldingpanel/popupLayerIn.jsf");
 
-        foldingPanel("fn:popupLayerFoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:popupLayerFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
 
         element("fn:header_invoker").click();
         ElementInspector headerPopup = element("fn:header_popup");
@@ -148,7 +148,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
         ElementInspector tabbedPane = element("fn:tabbedPaneID");
         tabbedPane.assertElementExists(false);
 
-        foldingPanel("fn:tabbedPaneFoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:tabbedPaneFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         tabbedPane.assertElementExists(true);
         tabbedPane.assertVisible(true);
         element("fn:firstHeader").assertText("First tab");
@@ -156,7 +156,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
         ElementInspector secondHeader = element("fn:secondHeader");
         secondHeader.assertText("Second tab");
 
-        secondHeader.clickAndWait(LoadingMode.AJAX);
+        secondHeader.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         element("fn:secondContent").assertText("Some text on the second tab");
     }
 
@@ -167,7 +167,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
         ElementInspector tabSet = element("fn:tabSetID");
         tabSet.assertElementExists(false);
 
-        foldingPanel("fn:tabSetFoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:tabSetFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         tabSet.assertElementExists(true);
         tabSet.assertVisible(true);
         element("fn:firstTab").assertText("Client");
@@ -184,13 +184,13 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
 
         TreeTableInspector treeTable = treeTable("fn:treeTableID");
         treeTable.assertElementExists(false);
-        foldingPanel("fn:treeTableFoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:treeTableFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
 
         treeTable.assertElementExists(true);
         treeTable.assertVisible(true);
 
         for (int i = 1; i < 4; i++) {
-            window().document().getElementsByTagName("img").get(i).clickAndWait(LoadingMode.AJAX);
+            window().document().getElementsByTagName("img").get(i).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
 
         treeTable.column(0).makeSorting();
@@ -204,7 +204,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
         TwoListSelectionInspector twoListSelection = twoListSelection("fn:twoListSelectionID");
         twoListSelection.assertElementExists(false);
 
-        foldingPanel("fn:TLSFoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:TLSFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         twoListSelection.assertElementExists(true);
         twoListSelection.assertVisible(true);
 
@@ -221,7 +221,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
         ElementInspector message = element("fn:validationMessage");
         assertFalse(message.elementExists() && message.isVisible());
 
-        foldingPanel("fn:validationFoldingPanel").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:validationFoldingPanel").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         requiredInput.assertVisible(true);
         message.assertVisible(false);
 

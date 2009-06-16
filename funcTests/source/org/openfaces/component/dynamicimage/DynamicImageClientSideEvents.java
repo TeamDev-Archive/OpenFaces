@@ -14,8 +14,8 @@ package org.openfaces.component.dynamicimage;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
+import org.seleniuminspector.ElementInspector;
 
 public class DynamicImageClientSideEvents extends OpenFacesTestCase {
     @Test

@@ -13,10 +13,11 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.html.InputInspector;
-import org.openfaces.test.openfaces.CalendarInspector;
-import org.openfaces.test.openfaces.DropDownFieldInspector;
-import org.openfaces.test.openfaces.InputTextInspector;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.html.InputInspector;
+import org.seleniuminspector.openfaces.CalendarInspector;
+import org.seleniuminspector.openfaces.DropDownFieldInspector;
+import org.seleniuminspector.openfaces.InputTextInspector;
 
 /**
  * @author Tatyana Matveyeva

@@ -14,12 +14,16 @@ package org.openfaces.component.tabbedpane;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.html.InputInspector;
-import org.openfaces.test.openfaces.LoadingMode;
-import org.openfaces.test.openfaces.TabSetInspector;
-import org.openfaces.test.openfaces.TabbedPaneInspector;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.seleniuminspector.ClientLoadingMode;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.LoadingMode;
+import org.seleniuminspector.ServerLoadingMode;
+import org.seleniuminspector.html.InputInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
+import org.seleniuminspector.openfaces.TabSetInspector;
+import org.seleniuminspector.openfaces.TabbedPaneInspector;
 
 /**
  * @author Darya Shumilina
@@ -36,17 +40,19 @@ public class TabbedPaneTest extends OpenFacesTestCase {
         ElementInspector firstContent = element("formID:first_content");
         String oldContentFirst = firstContent.text();
 
-        secondTab.clickAndWait(LoadingMode.AJAX);
+        secondTab.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         ElementInspector secondContent = element("formID:second_content");
         String oldContentSecond = secondContent.text();
 
         element("formID:refresher").click();
-        waitForAjax4JSF();
+
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
+
         String newTabFirst = firstTab.text();
         String newTabSecond = secondTab.text();
         String newContentSecond = secondContent.text();
 
-        firstTab.clickAndWait(LoadingMode.AJAX);
+        firstTab.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         String newContentFirst = firstContent.text();
         assertFalse(newTabFirst.equals(oldTabFirst));
         assertFalse(newTabSecond.equals(oldTabSecond));
@@ -65,17 +71,19 @@ public class TabbedPaneTest extends OpenFacesTestCase {
         ElementInspector firstTabContent = element("formID:first_content_a4j");
         String oldContentFirst = firstTabContent.text();
 
-        secondTab.clickAndWait(LoadingMode.AJAX);
+        secondTab.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         ElementInspector secondTabContent = element("formID:second_content_a4j");
         String oldContentSecond = secondTabContent.text();
 
         element("formID:refresher_a4j").click();
-        waitForAjax4JSF();
+
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
+
         String newTabFirst = firstTab.value();
         String newTabSecond = secondTab.value();
         String newContentSecond = secondTabContent.text();
 
-        firstTab.clickAndWait(LoadingMode.AJAX);
+        firstTab.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         String newContentFirst = firstTabContent.text();
         assertFalse(newTabFirst.equals(oldTabFirst));
         assertFalse(newTabSecond.equals(oldTabSecond));
@@ -87,7 +95,7 @@ public class TabbedPaneTest extends OpenFacesTestCase {
     @Ignore
     @Test
     public void _testTabSelectionChangeClientLoadingMode() {
-        checkSelectionChange("client");
+        checkSelectionChange(ClientLoadingMode.getInstance());
     }
 
     //todo: uncomment when the  JSFC-3629 is fixed
@@ -95,7 +103,7 @@ public class TabbedPaneTest extends OpenFacesTestCase {
     @Test
     public void _testTabSelectionChangeServerLoadingMode() {
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneChangeSelectionStyling.jsf");
-        checkSelectionChange("server");
+        checkSelectionChange(ServerLoadingMode.getInstance());
     }
 
     //todo: uncomment when the  JSFC-3629 is fixed
@@ -103,7 +111,7 @@ public class TabbedPaneTest extends OpenFacesTestCase {
     @Test
     public void _testTabSelectionChangeAjaxLoadingMode() {
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneChangeSelectionStyling.jsf");
-        checkSelectionChange("ajax");
+        checkSelectionChange(OpenFacesAjaxLoadingMode.getInstance());
     }
 
     //todo: uncomment when the  JSFC-3629 is fixed
@@ -131,8 +139,8 @@ public class TabbedPaneTest extends OpenFacesTestCase {
     public void testSelectionChangeListener() {
         //todo: uncomment if JSFC-3001 is in 'fixed' state
         //checkSelectionChangeListener("ajax");
-        checkSelectionChangeListener(LoadingMode.CLIENT);
-        checkSelectionChangeListener(LoadingMode.SERVER);
+        checkSelectionChangeListener(ClientLoadingMode.getInstance());
+        checkSelectionChangeListener(ServerLoadingMode.getInstance());
     }
 
     private void checkSelectionChangeListener(LoadingMode loadingMode) {
@@ -145,15 +153,16 @@ public class TabbedPaneTest extends OpenFacesTestCase {
 
         TabSetInspector loadingModesTabSet = tabSet("formID:loadingModes");
 
-        if (loadingMode == LoadingMode.CLIENT) {
+        if (loadingMode instanceof ClientLoadingMode) {
             loadingModesTabSet.tabs().get(1).clickAndWait();
-        } else if (loadingMode == LoadingMode.SERVER) {
+        } else if (loadingMode instanceof ServerLoadingMode) {
             loadingModesTabSet.tabs().get(2).clickAndWait();
         }
 
         tabbedPane("formID:asAttribute").tabSet().tabs().get(1).clickAndWait(loadingMode);
         tabbedPane("formID:asTag").tabSet().tabs().get(1).clickAndWait(loadingMode);
-        if (loadingMode == LoadingMode.CLIENT || loadingMode == LoadingMode.AJAX) {
+
+        if (loadingMode instanceof  ClientLoadingMode|| loadingMode instanceof OpenFacesAjaxLoadingMode) {
             element("formID:submit").clickAndWait();
         }
 
@@ -164,7 +173,7 @@ public class TabbedPaneTest extends OpenFacesTestCase {
         assertEquals(initialValueAsTag, !resultantValueAsTag);
     }
 
-    private void checkSelectionChange(String loadingMode) {
+    private void checkSelectionChange(LoadingMode loadingMode) {
         testAppFunctionalPage("/components/tabbedpane/tabbedPaneChangeSelectionStyling.jsf");
 
         TabbedPaneInspector tabbedPane = tabbedPane("formID:" + loadingMode + "TP");
@@ -182,19 +191,16 @@ public class TabbedPaneTest extends OpenFacesTestCase {
         firstPane.assertText("First tab content");
 
         secondTab.click();
-        if (loadingMode.equals("server")) {
-            waitForPageToLoad();
-        } else if (loadingMode.equals("ajax")) {
-            waitForAjax();
-        }
+        loadingMode.waitForLoad();
+
         verifyStyles(tabbedPane, 1);
         getSelectedElement.click();
         emptyElement.assertText("1");
         secondPane.assertText("Second tab content");
 
         firstTab.click();
-        if (loadingMode.equals("server")) {
-            waitForPageToLoad();
+        if (loadingMode instanceof ServerLoadingMode) {
+            loadingMode.waitForLoad();
         }
         verifyStyles(tabbedPane, 0);
         getSelectedElement.click();

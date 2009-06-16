@@ -15,6 +15,7 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
 /**
  * @author Darya Shumilina
@@ -84,7 +85,7 @@ public class TabbedPaneClientSideEvents extends OpenFacesTestCase {
 
         //onselectionchange
         tabbedPane("test_form:onselectionchangeTabbedPaneID").tabSet().tabs().get(1).click();
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         assertTrue(selenium.isTextPresent("onselectionchange works"));
         //todo: uncomment if JSFC-1447 and JSFC-1448 fixed
         /*assertTrue(selenium.isTextPresent("selectionchange"));*/

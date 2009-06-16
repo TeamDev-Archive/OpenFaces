@@ -13,10 +13,10 @@ package org.openfaces.component.datatable;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.html.TableCellInspector;
-import org.openfaces.test.html.TableInspector;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.html.TableCellInspector;
+import org.seleniuminspector.html.TableInspector;
 
 /**
  * @author Darya Shumilina

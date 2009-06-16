@@ -11,9 +11,9 @@
  */
 package org.openfaces.component.calendar;
 
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.CalendarInspector;
+import org.seleniuminspector.openfaces.CalendarInspector;
+import org.seleniuminspector.ElementInspector;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

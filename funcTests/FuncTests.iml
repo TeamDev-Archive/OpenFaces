@@ -10,7 +10,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jai" level="project" />
-    <orderEntry type="module" module-name="SeleniumInspector" />
+    <orderEntry type="module" module-name="OpenFacesInspectors" />
     <orderEntry type="module" module-name="OpenFaces" />
   </component>
 </module>

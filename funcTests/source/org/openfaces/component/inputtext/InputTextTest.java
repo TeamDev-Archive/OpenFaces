@@ -14,9 +14,10 @@ package org.openfaces.component.inputtext;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.InputTextInspector;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.seleniuminspector.openfaces.InputTextInspector;
+import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Vladimir Kurganov
@@ -243,7 +244,7 @@ public class InputTextTest extends OpenFacesTestCase {
         inputText.assertValue("ajax4jsf");
         inputText.type("change value");
         element("formID:refresher").click();
-        waitForAjax4JSF();
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
         inputText.assertValue("ajax4jsf");
         inputText.assertWidth(230, 4);
 

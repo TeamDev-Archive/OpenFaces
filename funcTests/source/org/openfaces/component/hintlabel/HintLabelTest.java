@@ -13,9 +13,10 @@ package org.openfaces.component.hintlabel;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.HintLabelInspector;
+import org.seleniuminspector.openfaces.HintLabelInspector;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Darya Shumilina
@@ -34,7 +35,7 @@ public class HintLabelTest extends OpenFacesTestCase {
         String[] oldHintValue = oldHintBody.split("<!--");
         String oldHint = oldHintValue[0];
         element("formID:refresher").click();
-        waitForAjax4JSF();
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
         String newValue = hintLabel.text();
         hintLabel.mouseOver();
         String newHintBody = selenium.getBodyText();

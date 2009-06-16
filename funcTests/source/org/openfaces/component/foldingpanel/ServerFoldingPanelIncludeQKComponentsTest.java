@@ -13,9 +13,10 @@ package org.openfaces.component.foldingpanel;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.*;
+import org.seleniuminspector.openfaces.*;
+import org.seleniuminspector.ServerLoadingMode;
+import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Darya Shumilina
@@ -25,7 +26,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     public void testCalendarInside() {
         testAppFunctionalPage("/components/foldingpanel/calendarIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         ElementInspector calendar = element("fn:calendarID");
         calendar.assertElementExists(false);
         foldingPanel("fn:calendarFoldingPanel").toggle().clickAndWait();
@@ -37,7 +38,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     public void testChartInside() {
         testAppFunctionalPage("/components/foldingpanel/chartIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         ElementInspector chart = element("fn:first_chartID");
         chart.assertElementExists(false);
         foldingPanel("fn:chartFoldingPanel").toggle().clickAndWait();
@@ -50,7 +51,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foldingpanel/confirmationIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         ConfirmationInspector confirmationElement = confirmation("fn:conf1");
         confirmationElement.assertElementExists(false);
         foldingPanel("fn:confirmationFoldingPanel").toggle().clickAndWait();
@@ -68,7 +69,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     public void testDataTableInside() {
         testAppFunctionalPage("/components/foldingpanel/dataTableIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         DataTableInspector dataTable = dataTable("fn:dataTableID");
         dataTable.assertElementExists(false);
         foldingPanel("fn:dataTableFoldingPanel").toggle().clickAndWait();
@@ -83,7 +84,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     public void testDateChooserInside() {
         testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
 
         DateChooserInspector dateChooser = dateChooser("fn:dateChooserID");
         dateChooser.assertElementExists(false);
@@ -100,7 +101,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     public void testDropDownInside() {
         testAppFunctionalPage("/components/foldingpanel/dropDownIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         DropDownFieldInspector dropDownField = dropDownField("fn:dropDownID");
         dropDownField.assertElementExists(false);
 
@@ -115,7 +116,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     public void testDynamicImageInside() {
         testAppFunctionalPage("/components/foldingpanel/dynamicImageIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         ElementInspector dynamicImage = element("fn:dynamicImageID");
         dynamicImage.assertElementExists(false);
         foldingPanel("fn:dynamicImageFoldingPanel").toggle().clickAndWait();
@@ -126,7 +127,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     @Test
     public void testServerFoldingPanelInside() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanelIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         FoldingPanelInspector foldingPanel = foldingPanel("fn:insiderFoldingPanel");
         foldingPanel.assertElementExists(false);
         foldingPanel("fn:foldingPanel_FoldingPanel").toggle().clickAndWait();
@@ -142,7 +143,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     public void testHintLabelInside() throws InterruptedException {
         testAppFunctionalPage("/components/foldingpanel/hintLabelIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         HintLabelInspector hintLabel = hintLabel("fn:hintLabelID");
         hintLabel.assertElementExists(false);
 
@@ -154,7 +155,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     public void testPopupLayerInside() {
         testAppFunctionalPage("/components/foldingpanel/popupLayerIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         ElementInspector headerPopup = element("fn:header_popup");
         headerPopup.assertElementExists(false);
 
@@ -169,7 +170,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     public void testAjaxTabbedPaneInside() {
         testAppFunctionalPage("/components/foldingpanel/tabbedPaneIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         element("fn:tabbedPaneID").assertElementExists(false);
 
         foldingPanel("fn:tabbedPaneFoldingPanel").toggle().clickAndWait();
@@ -178,7 +179,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
         ElementInspector secondHeader = element("fn:secondHeader");
         secondHeader.assertText("Second tab");
 
-        secondHeader.clickAndWait(LoadingMode.AJAX);
+        secondHeader.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         element("fn:secondContent").assertText("Some text on the second tab");
     }
 
@@ -186,7 +187,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     public void testTabSetInside() {
         testAppFunctionalPage("/components/foldingpanel/tabSetIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         ElementInspector tabSet = element("fn:tabSetID");
         tabSet.assertElementExists(false);
 
@@ -204,7 +205,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     public void testTreeTableInside() {
         testAppFunctionalPage("/components/foldingpanel/treeTableIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         TreeTableInspector treeTable = treeTable("fn:treeTableID");
         treeTable.assertElementExists(false);
         foldingPanel("fn:treeTableFoldingPanel").toggle().clickAndWait();
@@ -212,7 +213,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
         treeTable.assertVisible(true);
         for (int i = 1; i < 4; i++) {
             window().document().getElementsByTagName("img").get(i)
-                    .clickAndWait(LoadingMode.AJAX);
+                    .clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
         treeTable.column(0).makeSorting();
         treeTable.column(0).filter(SearchFieldFilterInspector.class).makeFiltering("colors");
@@ -222,7 +223,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     public void testTwoListSelectionInside() {
         testAppFunctionalPage("/components/foldingpanel/twoListSelectionIn.jsf");
 
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         TwoListSelectionInspector twoListSelection = twoListSelection("fn:twoListSelectionID");
         twoListSelection.assertElementExists(false);
 
@@ -242,7 +243,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
         requiredInput.assertElementExists(false);
         ElementInspector message = element("fn:validationMessage");
         message.assertElementExists(false);
-        tabSet("fn:loadingModes").setTabIndex(2, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         assertFalse(requiredInput.elementExists() && requiredInput.isVisible());
         assertFalse(message.elementExists() && message.isVisible());
 

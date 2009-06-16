@@ -12,9 +12,9 @@
 package org.openfaces.requests;
 
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.ConfirmationInspector;
+import org.seleniuminspector.openfaces.ConfirmationInspector;
+import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Darya Shumilina

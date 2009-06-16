@@ -12,11 +12,12 @@
 package org.openfaces.component.tabset;
 
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.html.TableCellInspector;
-import org.openfaces.test.html.TableInspector;
-import org.openfaces.test.openfaces.TabSetInspector;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.html.TableCellInspector;
+import org.seleniuminspector.html.TableInspector;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.seleniuminspector.openfaces.TabSetInspector;
 
 /**
  * @author Darya Shumilina
@@ -33,7 +34,7 @@ public class TabSetTest extends OpenFacesTestCase {
         ElementInspector closerButton = element("formID:closer");
         closerButton.click();
         element("formID:refresher").click();
-        waitForAjax4JSF();
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
         element("formID:first").click();
         onchangePopup.assertVisible(true);
         closerButton.click();
@@ -50,7 +51,7 @@ public class TabSetTest extends OpenFacesTestCase {
         ElementInspector closerButton = element("formID:closer_a4j");
         closerButton.click();
         element("formID:refresher_a4j").click();
-        waitForAjax4JSF();
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
         element("formID:first_a4j").click();
         onchangePopup.assertVisible(true);
         closerButton.click();

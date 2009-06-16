@@ -14,7 +14,7 @@ package org.openfaces.component.twolistselection;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.TwoListSelectionInspector;
+import org.seleniuminspector.openfaces.TwoListSelectionInspector;
 
 /**
  * @author Darya Shumilina

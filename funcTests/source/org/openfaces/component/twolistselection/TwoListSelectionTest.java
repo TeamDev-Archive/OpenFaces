@@ -12,10 +12,11 @@
 package org.openfaces.component.twolistselection;
 
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.html.InputInspector;
-import org.openfaces.test.openfaces.TwoListSelectionInspector;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.html.InputInspector;
+import org.seleniuminspector.openfaces.TwoListSelectionInspector;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class TwoListSelectionTest extends OpenFacesTestCase {
         TwoListSelectionInspector twoListSelection = twoListSelection("formID:TLS_ID");
         twoListSelection.addAllButton().click();
         element("formID:refresher").click();
-        waitForAjax4JSF();
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
 
         twoListSelection.addAllButton().click();
         for (int i = 0; i < oldTLSValues.length; i++) {

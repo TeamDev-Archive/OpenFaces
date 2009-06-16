@@ -14,8 +14,8 @@ package org.openfaces.component.sessionexpiration;
 
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.ConfirmationInspector;
-import org.openfaces.test.openfaces.LoadingMode;
+import org.seleniuminspector.openfaces.ConfirmationInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
 /**
  * @author Eugene Goncharov
@@ -25,7 +25,7 @@ public class SessionExpirationTest extends OpenFacesTestCase {
     public void testSessionExpiration() {
         testAppFunctionalPage("/components/sessionexpiration/rawTesting.jsf");
 
-        element("document.getElementsByTagName('img').item(0);").clickAndWait(LoadingMode.AJAX);
+        element("document.getElementsByTagName('img').item(0);").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
 
         ConfirmationInspector confirmation = confirmation("formID:openfaces_internal_sessionexpiration_confirmation");
         confirmation.assertElementExists();
@@ -38,7 +38,7 @@ public class SessionExpirationTest extends OpenFacesTestCase {
 //    testAppFunctionalPage("/components/sessionexpiration/rawTesting.jsf");
 //
 //    selenium.click("document.getElementsByTagName('img').item(0);");
-//    waitForLoadCompletion(LoadingMode.AJAX);
+//    waitForLoadCompletion(OpenFacesAjaxLoadingMode.getInstance());
 //
 //    ElementInspector confirmation = element("formID:openfaces_internal_sessionexpiration_confirmation");
 //    confirmation.assertElementExists();

@@ -14,9 +14,9 @@ package org.openfaces.component.tabbedpane;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.*;
+import org.seleniuminspector.openfaces.*;
+import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Darya Shumilina
@@ -30,7 +30,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         firstCalendar.assertElementExists();
         firstCalendar.assertVisible(true);
 
-        element("fn:secondHeader").clickAndWait(LoadingMode.AJAX);
+        element("fn:secondHeader").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         ElementInspector secondCalendar = element("fn:secondCalendar");
         secondCalendar.assertElementExists();
         secondCalendar.assertVisible(true);
@@ -54,7 +54,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         assertEquals("done", selenium.getAlert());
         confirmation1.assertVisible(false);
 
-        element("fn:secondTabID").clickAndWait(LoadingMode.AJAX);
+        element("fn:secondTabID").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         confirmation2.assertElementExists(true);
 
         element("button2").click();
@@ -86,7 +86,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         dataTablePaginator("fn:firstDataTableID:firstPaginator").makePagination(3);
         firstDataTable.column(1).filter(DropDownFieldFilterInspector.class).makeFiltering("col2_row1");
         selenium.click("fn:secondTabID");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         secondDataTable.assertElementExists(false);
         secondDataTable.assertVisible(false);
         secondDataTable.makeAndCheckSingleSelection(0, 1);
@@ -108,7 +108,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         secondDataChooser.assertElementExists(false);
         firstDataChooser.field().assertValue("Jul 30, 2006");
 
-        element("fn:secondTabID").clickAndWait(LoadingMode.AJAX);
+        element("fn:secondTabID").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         secondDataChooser.assertVisible(true);
         secondDataChooser.field().assertValue("Jul 30, 2006");
     }
@@ -127,7 +127,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         firstDropDown.popup().items().get(1).click();
         assertTrue(selenium.isTextPresent("Yellow"));
 
-        element("fn:secondTabID").clickAndWait(LoadingMode.AJAX);
+        element("fn:secondTabID").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         secondDropDown.assertElementExists();
         secondDropDown.popup().items().get(1).click();
         firstDropDown.field().assertValue("Yellow");
@@ -144,7 +144,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         ElementInspector secondDynamicImage = element("fn:secondDynamicImageID");
         secondDynamicImage.assertElementExists(false);
 
-        element("fn:secondTabID").clickAndWait(LoadingMode.AJAX);
+        element("fn:secondTabID").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         secondDynamicImage.assertElementExists();
         secondDynamicImage.assertVisible(true);
     }
@@ -162,14 +162,14 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         ElementInspector secondFoldingPanelContent = element("fn:secondFoldingPanelContent");
         secondFoldingPanelCaption.assertElementExists(false);
 
-        foldingPanel("fn:firstFoldingPanelID").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:firstFoldingPanelID").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         firstFoldingPanelContent.assertVisible(true);
 
-        element("fn:secondTabID").clickAndWait(LoadingMode.AJAX);
+        element("fn:secondTabID").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         secondFoldingPanelCaption.assertVisible(true);
         secondFoldingPanelContent.assertElementExists(false);
 
-        foldingPanel("fn:secondFoldingPanelID").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("fn:secondFoldingPanelID").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         secondFoldingPanelContent.assertElementExists();
     }
 
@@ -178,7 +178,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         testAppFunctionalPage("/components/tabbedpane/hintLabelIn.jsf");
         hintLabel("fn:firstHintLabelID").checkVisibilityAndContent("First HintLabel Value :-)", "First HintLabel Title ;-)");
 
-        element("fn:secondTab").clickAndWait(LoadingMode.AJAX);
+        element("fn:secondTab").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         hintLabel("fn:secondHintLabelID").checkVisibilityAndContent("Second HintLabel Value :-)", "Second HintLabel Title ;-)");
     }
 
@@ -195,7 +195,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         element("fn:header_invoker").click();
         headerPopup.assertVisible(true);
 
-        element("fn:secondTabID").clickAndWait(LoadingMode.AJAX);
+        element("fn:secondTabID").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         headerPopup1.assertElementExists();
         headerPopup1.assertVisible(false);
 
@@ -220,18 +220,18 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         assertTrue(selenium.getText("fn:firstItem_secondHeader").equals("Second tab"));
         assertTrue(selenium.getText("fn:firstItem_firstContent").equals("Some text on the first tab"));
         selenium.click("fn:firstItem_secondHeader");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         assertTrue(selenium.getText("fn:firstItem_secondContent").equals("Some text on the second tab"));
 
         selenium.click("fn:secondHeader");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         assertTrue(selenium.isElementPresent("fn:secondItem"));
         assertTrue(selenium.isVisible("fn:secondItem"));
         assertTrue(selenium.getText("fn:secondItem_firstHeader").equals("First tab"));
         assertTrue(selenium.getText("fn:secondItem_secondHeader").equals("Second tab"));
         assertTrue(selenium.getText("fn:secondItem_firstContent").equals("Some text on the first tab"));
         selenium.click("fn:secondItem_secondHeader");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         assertTrue(selenium.getText("fn:secondItem_secondContent").equals("Some text on the second tab"));
     }
 
@@ -245,7 +245,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         firstTabSetSecondTab.click();
         firstTabSetSecondTab.assertText("Server");
 
-        element("fn:secondHeader").clickAndWait(LoadingMode.AJAX);
+        element("fn:secondHeader").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         element("fn:secondTabSet_firstTab").assertText("Client");
         ElementInspector secondTabSetSecondTab = element("fn:secondTabSet_secondTab");
 
@@ -258,16 +258,16 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         testAppFunctionalPage("/components/tabbedpane/treeTableIn.jsf");
         element("fn:firstHeader").assertText("First tab");
         for (int i = 0; i < 3; i++) {
-            window().document().getElementsByTagName("img").get(i).clickAndWait(LoadingMode.AJAX);
+            window().document().getElementsByTagName("img").get(i).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
 
         TreeTableInspector treeTable = treeTable("fn:firstTreeTable");
         treeTable.column(0).makeSorting();
         treeTable.column(0).filter(SearchFieldFilterInspector.class).makeFiltering("color");
         int imagesOnFirstPage = window().document().getElementsByTagName("img").size();
-        element("fn:secondHeader").clickAndWait(LoadingMode.AJAX);
+        element("fn:secondHeader").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         for (int i = 0; i < 3; i++) {
-            window().document().getElementsByTagName("img").get((imagesOnFirstPage + i)).clickAndWait(LoadingMode.AJAX);
+            window().document().getElementsByTagName("img").get((imagesOnFirstPage + i)).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
         TreeTableInspector secondTreeTable = treeTable("fn:secondTreeTable");
         secondTreeTable.column(0).makeSorting();
@@ -287,7 +287,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         firstTls.addAllButton().click();
         firstTls.rightList().assertText("item 1 labelitem 5 labelitem 3 label");
 
-        element("fn:secondHeader").clickAndWait(LoadingMode.AJAX);
+        element("fn:secondHeader").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         secondTls.assertElementExists();
         secondTls.assertVisible(true);
 
@@ -312,7 +312,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         firstMessage.assertVisible(true);
 
         element("fn:secondHeader").click();
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         ElementInspector requiredInput1 = element("fn:required_input1");
         requiredInput1.setCursorPosition(0);
         requiredInput1.keyPress(13);

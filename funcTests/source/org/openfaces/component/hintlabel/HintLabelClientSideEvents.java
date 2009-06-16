@@ -15,7 +15,7 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.HintLabelInspector;
+import org.seleniuminspector.openfaces.HintLabelInspector;
 
 /**
  * @author Darya Shumilina

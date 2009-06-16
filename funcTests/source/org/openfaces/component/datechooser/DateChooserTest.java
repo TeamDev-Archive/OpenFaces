@@ -13,11 +13,12 @@ package org.openfaces.component.datechooser;
 
 import org.junit.Test;
 import org.openfaces.component.calendar.BaseCalendarTestCase;
-import org.openfaces.test.ElementInspector;
-import org.openfaces.test.html.InputInspector;
-import org.openfaces.test.openfaces.CalendarInspector;
-import org.openfaces.test.openfaces.DateChooserInspector;
-import org.openfaces.test.openfaces.TabSetInspector;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.html.InputInspector;
+import org.seleniuminspector.openfaces.CalendarInspector;
+import org.seleniuminspector.openfaces.DateChooserInspector;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.seleniuminspector.openfaces.TabSetInspector;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -46,7 +47,9 @@ public class DateChooserTest extends BaseCalendarTestCase {
         ElementInspector dataChooser = element("formID:dateChooserID");
         String oldValue = dataChooser.text();
         element("formID:refresher").click();
-        waitForAjax4JSF();
+
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
+
         String newValue = dataChooser.text();
         assertFalse(newValue.equals(oldValue));
     }

@@ -14,19 +14,22 @@ package org.openfaces.component.datatable;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.html.TableCellParams;
-import org.openfaces.test.html.TableInspector;
-import org.openfaces.test.html.TableRowInspector;
-import org.openfaces.test.html.TableSectionInspector;
-import org.openfaces.test.openfaces.ComboBoxFilterInspector;
-import org.openfaces.test.openfaces.DataTableInspector;
-import org.openfaces.test.openfaces.DataTablePaginatorInspector;
-import org.openfaces.test.openfaces.DropDownFieldFilterInspector;
-import org.openfaces.test.openfaces.LoadingMode;
-import org.openfaces.test.openfaces.SearchFieldFilterInspector;
-import org.openfaces.test.openfaces.TabSetInspector;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.seleniuminspector.openfaces.TabSetInspector;
+import org.seleniuminspector.openfaces.ComboBoxFilterInspector;
+import org.seleniuminspector.openfaces.DataTableInspector;
+import org.seleniuminspector.openfaces.DataTablePaginatorInspector;
+import org.seleniuminspector.openfaces.DropDownFieldFilterInspector;
+import org.seleniuminspector.openfaces.SearchFieldFilterInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
+import org.seleniuminspector.html.TableCellParams;
+import org.seleniuminspector.html.TableInspector;
+import org.seleniuminspector.html.TableSectionInspector;
+import org.seleniuminspector.html.TableRowInspector;
+import org.seleniuminspector.LoadingMode;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.ServerLoadingMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +52,7 @@ public class DataTableTest extends OpenFacesTestCase {
         selenium.keyPress("formID:dataTableID:dataTablePaginator_A4J--pageNo", "\\8");
         selenium.type("formID:dataTableID:dataTablePaginator_A4J--pageNo", "1");
         selenium.keyPress("formID:dataTableID:dataTablePaginator_A4J--pageNo", "\\13");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         String[] oldTableValues = new String[36];
         int j = 0;
         int n = 1;
@@ -68,17 +71,17 @@ public class DataTableTest extends OpenFacesTestCase {
                 selenium.keyPress("formID:dataTableID:dataTablePaginator_A4J--pageNo", "\\8");
                 if (i == 11) selenium.type("formID:dataTableID:dataTablePaginator_A4J--pageNo", "2");
                 if (i == 23) selenium.type("formID:dataTableID:dataTablePaginator_A4J--pageNo", "3");
-                waitForAjax();
+                OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
                 selenium.keyPress("formID:dataTableID:dataTablePaginator_A4J--pageNo", "\\13");
             }
         }
         selenium.click("formID:refresher");
-        waitForAjax4JSF();
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
         selenium.setCursorPosition("id=formID:dataTableID:dataTablePaginator_A4J--pageNo", "1");
         selenium.keyPress("formID:dataTableID:dataTablePaginator_A4J--pageNo", "\\8");
         selenium.type("formID:dataTableID:dataTablePaginator_A4J--pageNo", "1");
         selenium.keyPress("formID:dataTableID:dataTablePaginator_A4J--pageNo", "\\13");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         String[] newTableValues = new String[36];
         int k = 0;
         int m = 1;
@@ -99,7 +102,7 @@ public class DataTableTest extends OpenFacesTestCase {
                 if (i == 23) selenium.type("formID:dataTableID:dataTablePaginator_A4J--pageNo", "3");
                 selenium.keyPress("formID:dataTableID:dataTablePaginator_A4J--pageNo", "\\13");
                 assertNoAlert("No alert expected, but was: ");
-                waitForAjax();
+                OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
                 assertNoAlert("No alerts are expected when performing ajax request, but the following alert appeared: ");
             }
         }
@@ -119,7 +122,7 @@ public class DataTableTest extends OpenFacesTestCase {
         selenium.keyPress("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "\\8");
         selenium.type("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "1");
         selenium.keyPress("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "\\13");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         String[] oldTableValues = new String[36];
         int j = 0;
         int n = 1;
@@ -138,17 +141,17 @@ public class DataTableTest extends OpenFacesTestCase {
                 selenium.keyPress("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "\\8");
                 if (i == 11) selenium.type("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "2");
                 if (i == 23) selenium.type("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "3");
-                waitForAjax();
+                OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
                 selenium.keyPress("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "\\13");
             }
         }
         selenium.click("formID:refresher");
-        waitForAjax4JSF();
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
         selenium.setCursorPosition("id=formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "1");
         selenium.keyPress("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "\\8");
         selenium.type("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "1");
         selenium.keyPress("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "\\13");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         String[] newTableValues = new String[36];
         int k = 0;
         int m = 1;
@@ -168,7 +171,7 @@ public class DataTableTest extends OpenFacesTestCase {
                 if (i == 11) selenium.type("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "2");
                 if (i == 23) selenium.type("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "3");
                 selenium.keyPress("formID:dataTable_a4j_ID:dataTable_a4j_IDPaginator_A4J--pageNo", "\\13");
-                waitForAjax();
+                OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
             }
         }
 
@@ -179,8 +182,8 @@ public class DataTableTest extends OpenFacesTestCase {
 
     @Test
     public void testPagination() {
-        pagination(LoadingMode.AJAX);
-        pagination(LoadingMode.SERVER);
+        pagination(OpenFacesAjaxLoadingMode.getInstance());
+        pagination(ServerLoadingMode.getInstance());
     }
 
     @Test
@@ -238,7 +241,7 @@ public class DataTableTest extends OpenFacesTestCase {
     @Test
     public void testColumnGroups_styles() {
         testAppFunctionalPage("/components/datatable/dataTableColumnGroups.jsf");
-        tabbedPane("formID:testSelector").setPageIndex(1, LoadingMode.SERVER);
+        tabbedPane("formID:testSelector").setPageIndex(1, ServerLoadingMode.getInstance());
 
         TableInspector table = dataTable("formID:groupStylesTable");
         assertEquals("There should be two header rows", 2, table.header().rowCount());
@@ -272,7 +275,7 @@ public class DataTableTest extends OpenFacesTestCase {
     @Test
     public void testColumnGroups_footers() {
         testAppFunctionalPage("/components/datatable/dataTableColumnGroups.jsf");
-        tabbedPane("formID:testSelector").setPageIndex(2, LoadingMode.SERVER);
+        tabbedPane("formID:testSelector").setPageIndex(2, ServerLoadingMode.getInstance());
 
         TableInspector table = dataTable("formID:twoFootersTable");
         TableSectionInspector body = table.body();
@@ -310,7 +313,7 @@ public class DataTableTest extends OpenFacesTestCase {
     @Test
     public void testColumnGroups_mixed() {
         testAppFunctionalPage("/components/datatable/dataTableColumnGroups.jsf");
-        tabbedPane("formID:testSelector").setPageIndex(3, LoadingMode.SERVER);
+        tabbedPane("formID:testSelector").setPageIndex(3, ServerLoadingMode.getInstance());
 
         TableInspector table = dataTable("formID:mixedHeadersTable");
 
@@ -462,26 +465,26 @@ public class DataTableTest extends OpenFacesTestCase {
 
     @Test
     public void testSortingFeature() {
-        sorting(LoadingMode.AJAX);
-        sorting(LoadingMode.SERVER);
+        sorting(OpenFacesAjaxLoadingMode.getInstance());
+        sorting(ServerLoadingMode.getInstance());
     }
 
     @Test
     public void testFilteringSearchField() {
-        filteringSearchField(LoadingMode.AJAX);
-        filteringSearchField(LoadingMode.SERVER);
+        filteringSearchField(OpenFacesAjaxLoadingMode.getInstance());
+        filteringSearchField(ServerLoadingMode.getInstance());
     }
 
     @Test
     public void testFilteringComboBox() {
-        filteringComboBox(LoadingMode.AJAX);
-        filteringComboBox(LoadingMode.SERVER);
+        filteringComboBox(OpenFacesAjaxLoadingMode.getInstance());
+        filteringComboBox(ServerLoadingMode.getInstance());
     }
 
     @Test
     public void testFilteringDropDown() {
-        filteringDropDown(LoadingMode.AJAX);
-        filteringDropDown(LoadingMode.SERVER);
+        filteringDropDown(OpenFacesAjaxLoadingMode.getInstance());
+        filteringDropDown(ServerLoadingMode.getInstance());
     }
 
     @Test
@@ -524,7 +527,7 @@ public class DataTableTest extends OpenFacesTestCase {
         }
 
         //refresh DataTable
-        element("formID:refresher").clickAndWait(LoadingMode.AJAX);
+        element("formID:refresher").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
 
         //get DataTable footer and header values after refreshing
         String afterRefreshFirstHeader = firstHeader.text();
@@ -556,9 +559,9 @@ public class DataTableTest extends OpenFacesTestCase {
         selenium.click("formID:withoutRowKeyDataTableID:0:withoutRowKeyDataTableID_firstBody");
         selenium.click("formID:withDataTableID:0:withRowKeyDataTableID_firstBody");
         dataTablePaginator("formID:withoutRowKeyDataTableID:dataTablePaginator_A4J").nextPage()
-                .clickAndWait(LoadingMode.AJAX);
+                .clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         dataTablePaginator("formID:withDataTableID:dataTablePaginator_A4J").nextPage()
-                .clickAndWait(LoadingMode.AJAX);
+                .clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         int withoutRowKeyDataTableIndex = dataTable("formID:withoutRowKeyDataTableID").selectedRowIndex();
         int withRowKeyDataTableIndex = dataTable("formID:withDataTableID").selectedRowIndex();
         assertFalse(withRowKeyDataTableIndex == withoutRowKeyDataTableIndex);
@@ -590,8 +593,8 @@ public class DataTableTest extends OpenFacesTestCase {
 
     @Test
     public void testFeaturesCombination() {
-        featuresCombination(LoadingMode.AJAX);
-        featuresCombination(LoadingMode.SERVER);
+        featuresCombination(OpenFacesAjaxLoadingMode.getInstance());
+        featuresCombination(ServerLoadingMode.getInstance());
     }
 
     @Test
@@ -635,9 +638,11 @@ public class DataTableTest extends OpenFacesTestCase {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/datatable/datatablePagination.jsf");
         TabSetInspector loadingModes = tabSet("formID:loadingModes");
-        if (loadingMode == LoadingMode.SERVER) {
+
+        if (loadingMode instanceof ServerLoadingMode) {
             loadingModes.tabs().get(1).clickAndWait();
         }
+
         List<DataTableUtils.TestDataTableItem> referenceDataTableValues = DataTableUtils.TWO_STRING_COLUMN_LIST;
         final String firstColumnHeaderContent = "first column header";
         final String secondColumnHeaderContent = "second column header";
@@ -670,14 +675,15 @@ public class DataTableTest extends OpenFacesTestCase {
             element("formID:paginableDataTable").click();
             //go to the previous page using keyboard
             selenium.getEval("var el = this.page().findElement('formID:paginableDataTable'); var evObj = document.createEvent('KeyEvents'); evObj.initKeyEvent('keypress', true, true, window, false, false, false, false, 33, 0); el.dispatchEvent(evObj);");
-            waitForLoadCompletion(loadingMode);
+
+            loadingMode.waitForLoad();
         }
 
         clientPaginator.lastPage().clickAndWait(loadingMode);
         checkDataTableContents(selenium, referenceDataTableValues, 3);
         clientPaginator.firstPage().clickAndWait(loadingMode);
         checkDataTableContents(selenium, referenceDataTableValues, 1);
-        if (loadingMode == LoadingMode.SERVER) {
+        if (loadingMode instanceof ServerLoadingMode) {
             // reset tab index for possible further tests
             loadingModes.tabs().get(0).clickAndWait();
         }
@@ -704,7 +710,8 @@ public class DataTableTest extends OpenFacesTestCase {
         List<DataTableUtils.TestDataTableItem> referenceDataTableValues = DataTableUtils.TWO_STRING_COLUMN_LIST;
 
         String dataTableID;
-        if (loadingMode == LoadingMode.AJAX) {
+
+        if (loadingMode instanceof OpenFacesAjaxLoadingMode) {
             dataTableID = "sortableDataTable";
         } else {
             dataTableID = "sortableDataTable1";
@@ -737,7 +744,7 @@ public class DataTableTest extends OpenFacesTestCase {
 
         TabSetInspector loadingModes = tabSet("formID:loadingModes");
         DataTableInspector dataTable = dataTable("formID:filterableDataTable_searchField");
-        if (loadingMode == LoadingMode.SERVER) {
+        if (loadingMode instanceof ServerLoadingMode) {
             loadingModes.tabs().get(1).clickAndWait();
         }
 
@@ -769,7 +776,8 @@ public class DataTableTest extends OpenFacesTestCase {
             element("formID:filterableDataTable_searchField:" + i + ":filterableDataTable_searchField_secondBody")
                     .assertElementExists(false);
         }
-        if (loadingMode == LoadingMode.SERVER) {
+
+        if (loadingMode instanceof ServerLoadingMode) {
             // reset tab index for possible further tests
             loadingModes.tabs().get(0).clickAndWait();
         }
@@ -782,9 +790,10 @@ public class DataTableTest extends OpenFacesTestCase {
         TabSetInspector loadingModes = tabSet("formID:loadingModes");
 
         DataTableInspector filterableDataTable = dataTable("formID:filterableDataTable_comboBox");
-        if (loadingMode == LoadingMode.SERVER) {
+        if (loadingMode instanceof ServerLoadingMode) {
             loadingModes.tabs().get(1).clickAndWait();
         }
+
         filterableDataTable.setLoadingMode(loadingMode);
         filterableDataTable.column(0).filter(ComboBoxFilterInspector.class).makeFiltering("col3_row1");
 
@@ -816,7 +825,7 @@ public class DataTableTest extends OpenFacesTestCase {
                     .assertElementExists(false);
         }
 
-        if (loadingMode == LoadingMode.SERVER) {
+        if (loadingMode instanceof ServerLoadingMode) {
             // reset tab index for possible further tests
             loadingModes.tabs().get(0).clickAndWait();
         }
@@ -828,7 +837,7 @@ public class DataTableTest extends OpenFacesTestCase {
 
         TabSetInspector loadingModes = tabSet("formID:loadingModes");
         DataTableInspector filterableDataTable = dataTable("formID:filterableDataTable_dropDownField");
-        if (loadingMode == LoadingMode.SERVER) {
+        if (loadingMode instanceof ServerLoadingMode) {
             loadingModes.tabs().get(1).clickAndWait();
         }
         filterableDataTable.setLoadingMode(loadingMode);
@@ -864,7 +873,7 @@ public class DataTableTest extends OpenFacesTestCase {
                         .assertElementExists(false);
             }
         }
-        if (loadingMode == LoadingMode.SERVER) {
+        if (loadingMode instanceof ServerLoadingMode) {
             // reset tab index for possible further tests
             loadingModes.tabs().get(0).clickAndWait();
         }
@@ -874,13 +883,13 @@ public class DataTableTest extends OpenFacesTestCase {
     private void featuresCombination(LoadingMode loadingMode) {
         testAppFunctionalPage("/components/datatable/datatableFeaturesCombination.jsf");
         TabSetInspector loadingModes = tabSet("formID:loadingModes");
-        if (loadingMode == LoadingMode.SERVER) {
+        if (loadingMode instanceof ServerLoadingMode) {
             loadingModes.tabs().get(1).clickAndWait();
         }
 
         DataTableInspector combinationDataTable = dataTable("formID:featuresCombinationDataTableID");
-        if (loadingMode == LoadingMode.SERVER) {
-            combinationDataTable.setLoadingMode(LoadingMode.SERVER);
+        if (loadingMode instanceof ServerLoadingMode) {
+            combinationDataTable.setLoadingMode(ServerLoadingMode.getInstance());
         }
 
         //perform filtering using comboBox filter kind
@@ -986,7 +995,7 @@ public class DataTableTest extends OpenFacesTestCase {
         element("formID:featuresCombinationDataTableID:0:featuresCombinationDataTableID_fourthBody")
                 .assertText(featuresCombinationTestDataTableItem.getFourthColumn());
 
-        if (loadingMode == LoadingMode.SERVER) {
+        if (loadingMode instanceof ServerLoadingMode) {
             // reset tab index for possible further tests
             loadingModes.tabs().get(0).clickAndWait(loadingMode);
         }

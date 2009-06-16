@@ -12,9 +12,9 @@
 package org.openfaces.requests;
 
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.html.TextAreaInspector;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.html.TextAreaInspector;
 
 /**
  * @author Pavel Kaplin

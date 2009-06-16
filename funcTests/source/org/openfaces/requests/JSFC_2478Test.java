@@ -13,7 +13,7 @@ package org.openfaces.requests;
 
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.DataTableInspector;
+import org.seleniuminspector.openfaces.DataTableInspector;
 
 /**
  * @author Darya Shumilina

@@ -14,7 +14,7 @@ package org.openfaces.component.datechooser;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.DateChooserInspector;
+import org.seleniuminspector.openfaces.DateChooserInspector;
 
 /**
  * @author Darya Shumilina

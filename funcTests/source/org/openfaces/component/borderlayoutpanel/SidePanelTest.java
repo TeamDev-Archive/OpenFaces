@@ -12,10 +12,11 @@
 package org.openfaces.component.borderlayoutpanel;
 
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.LoadingMode;
-import org.openfaces.test.openfaces.SidePanelInspector;
+import org.seleniuminspector.openfaces.SidePanelInspector;
+import org.seleniuminspector.ServerLoadingMode;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.LoadingMode;
 
 /**
  * @author Alexey Tarasyuk
@@ -325,7 +326,7 @@ public class SidePanelTest extends OpenFacesTestCase {
         sidePanel.evalExpression("resize('25.5%')");
         sidePanel.evalExpression("collapse()");
         getSelenium().submit("formID");
-        waitForLoadCompletion(LoadingMode.SERVER);
+        ServerLoadingMode.getInstance().waitForLoad();
         sidePanel.assertExpressionEquals("_size", "7px");
         sidePanel.assertExpressionEquals("_collapsed", true);
         sidePanel.evalExpression("restore()");

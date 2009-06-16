@@ -13,9 +13,9 @@ package org.openfaces.component.treetable;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.TreeTableInspector;
+import org.seleniuminspector.openfaces.TreeTableInspector;
+import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Darya Shumilina

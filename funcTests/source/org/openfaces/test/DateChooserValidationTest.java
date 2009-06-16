@@ -13,8 +13,8 @@ package org.openfaces.test;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.openfaces.DateChooserInspector;
-import org.openfaces.test.openfaces.LoadingMode;
+import org.seleniuminspector.openfaces.DateChooserInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
 /**
  * @author Pavel Kaplin
@@ -74,7 +74,7 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         defaultDateChooser.field().type("Oct 10, 2006");
         mMddDateChooser.field().type("10/17/2006");
         assertPageContainsErrorIcon(false);
-        tabSet("dcForm:localeSelector").setTabIndex(1, LoadingMode.AJAX);
+        tabSet("dcForm:localeSelector").setTabIndex(1, OpenFacesAjaxLoadingMode.getInstance());
         assertEquals("Date Chooser \u2014 OpenFaces Demo", selenium.getTitle());
         assertPageContainsErrorIcon(false);
         defaultDateChooser.field().type("Oct 17, 2006sdfsdf");

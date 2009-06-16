@@ -12,10 +12,11 @@
 package org.openfaces.component.foldingpanel;
 
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.FoldingPanelInspector;
-import org.openfaces.test.openfaces.LoadingMode;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.openfaces.FoldingPanelInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
 /**
  * @author Darya Shumilina
@@ -25,7 +26,7 @@ public class FoldingPanelTest extends OpenFacesTestCase {
     public void testReRenderThroughA4J() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanel_a4j.jsf");
         ElementInspector foldingPanelToggle = foldingPanel("formID:foldingPanelID").toggle();
-        foldingPanelToggle.clickAndWait(LoadingMode.AJAX);
+        foldingPanelToggle.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
 
         ElementInspector foldingPanelCaption = element("formID:foldingPanelCaption");
         ElementInspector foldingPanelContent = element("formID:foldingPanelContent");
@@ -34,8 +35,8 @@ public class FoldingPanelTest extends OpenFacesTestCase {
         String oldContentValue = foldingPanelContent.text();
         foldingPanelToggle.click();
         element("formID:refresher").click();
-        waitForAjax4JSF();
-        foldingPanelToggle.clickAndWait(LoadingMode.AJAX);
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
+        foldingPanelToggle.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         String newCaptionValue = foldingPanelCaption.text();
         String newContentValue = foldingPanelContent.text();
         assertFalse(newCaptionValue.equals(oldCaptionValue));
@@ -45,7 +46,7 @@ public class FoldingPanelTest extends OpenFacesTestCase {
     @Test
     public void testWithA4JControlsInside() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanel_a4j.jsf");
-        foldingPanel("formID:foldingPanel_a4j_ID").toggle().clickAndWait(LoadingMode.AJAX);
+        foldingPanel("formID:foldingPanel_a4j_ID").toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
 
         ElementInspector foldingPanelCaption = element("formID:foldingPanel_a4j_Caption");
         ElementInspector foldingPanelContent = element("formID:foldingPanel_a4j_Content");
@@ -55,8 +56,8 @@ public class FoldingPanelTest extends OpenFacesTestCase {
         FoldingPanelInspector foldingPanel = foldingPanel("formID:foldingPanel_a4j_ID");
         foldingPanel.toggle().click();
         element("formID:refresher_a4j").click();
-        waitForAjax4JSF();
-        foldingPanel.toggle().clickAndWait(LoadingMode.AJAX);
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
+        foldingPanel.toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
 
         String newCaptionValue = foldingPanelCaption.text();
         String newContentValue = foldingPanelContent.text();
@@ -113,7 +114,7 @@ public class FoldingPanelTest extends OpenFacesTestCase {
         ajaxText.assertElementExists(false);
 
         ajaxFoldingPanel.assertElementExists();
-        ajaxFoldingPanel.toggle().clickAndWait(LoadingMode.AJAX);
+        ajaxFoldingPanel.toggle().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         ajaxImage.assertVisible(true);
         ajaxText.assertVisible(true);
         ajaxText.assertText("test ajax loading mode");
@@ -160,7 +161,7 @@ public class FoldingPanelTest extends OpenFacesTestCase {
         toggle.click();
         toggle.mouseOut();
         foldingPanel.mouseMove();
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
 
         foldingPanel.content().assertStyle("background: LightYellow; color: red; border: 2px solid springgreen;");
 

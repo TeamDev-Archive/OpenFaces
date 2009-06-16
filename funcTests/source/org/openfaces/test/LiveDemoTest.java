@@ -14,11 +14,12 @@ package org.openfaces.test;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.html.InputInspector;
-import org.openfaces.test.openfaces.ConfirmationInspector;
-import org.openfaces.test.openfaces.DateChooserInspector;
-import org.openfaces.test.openfaces.LoadingMode;
-import org.openfaces.test.openfaces.TabSetInspector;
+import org.seleniuminspector.openfaces.ConfirmationInspector;
+import org.seleniuminspector.openfaces.DateChooserInspector;
+import org.seleniuminspector.openfaces.TabSetInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.html.InputInspector;
 
 /**
  * @author Darya Shumilina
@@ -110,16 +111,18 @@ public class LiveDemoTest extends OpenFacesTestCase {
         assertEquals("", selenium.getValue("form:allPersons:professionColumn--search_field_o_auto_filter--searchComponent"));
         assertEquals("", selenium.getValue("form:allPersons:hobbyColumn--drop_down_o_auto_filter--searchComponent::field"));
         selenium.select("form:allPersons:ageRangeColumn--combo_box_o_auto_filter", "label=11-20");
-        waitForAjax();
+
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+
         selenium.select("form:allPersons:lifestyleColumn--combo_box_o_auto_filter", "label=Extreme");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         selenium.type("form:allPersons:nameColumn--search_field_o_auto_filter--searchComponent", "r");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         selenium.type("form:allPersons:professionColumn--search_field_o_auto_filter--searchComponent", "D");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         selenium.type("form:allPersons:hobbyColumn--drop_down_o_auto_filter--searchComponent::field", "a");
         selenium.keyPress("form:allPersons:hobbyColumn--drop_down_o_auto_filter--searchComponent::field", "\\13");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
 
         selenium.click("link=Validation");
         waitForPageToLoad();
@@ -203,23 +206,23 @@ public class LiveDemoTest extends OpenFacesTestCase {
         liveDemoPage("/datatable/DataTable_handlingLargeData.jsf");
         ElementInspector tr7Element = element("//*[@id='form:colorTable:queryTable']/tbody/tr[7]");
         tr7Element.assertElementExists(false);
-        element("//*[@id='form:colorTable']/thead/tr[1]/td[2]").clickAndWait(LoadingMode.AJAX);
+        element("//*[@id='form:colorTable']/thead/tr[1]/td[2]").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         tr7Element.assertElementExists(false);
-        element("//*[@id='form:colorTable']/thead/tr[1]/td[3]").clickAndWait(LoadingMode.AJAX);
+        element("//*[@id='form:colorTable']/thead/tr[1]/td[3]").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         tr7Element.assertElementExists(false);
-        element("//*[@id='form:colorTable']/thead/tr[1]/td[4]").clickAndWait(LoadingMode.AJAX);
+        element("//*[@id='form:colorTable']/thead/tr[1]/td[4]").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         tr7Element.assertElementExists(false);
-        element("//*[@id='form:colorTable']/thead/tr[1]/td[5]").clickAndWait(LoadingMode.AJAX);
+        element("//*[@id='form:colorTable']/thead/tr[1]/td[5]").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         tr7Element.assertElementExists(false);
-        element("//*[@id='form:colorTable']/thead/tr[1]/td[6]").clickAndWait(LoadingMode.AJAX);
+        element("//*[@id='form:colorTable']/thead/tr[1]/td[6]").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         tr7Element.assertElementExists(false);
 
         liveDemoPage("/datatable/DataTable_handlingLargeData.jsf");
         selenium.type("form:colorTable:name--search_field_o_auto_filter--searchComponent", "white");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         tr7Element.assertElementExists(false);
         liveDemoPage("/datatable/DataTable_handlingLargeData.jsf");
-        dataTablePaginator("form:colorTable:paginator").nextPage().clickAndWait(LoadingMode.AJAX);
+        dataTablePaginator("form:colorTable:paginator").nextPage().clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         tr7Element.assertElementExists(false);
     }
 

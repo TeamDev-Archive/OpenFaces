@@ -12,9 +12,10 @@
 package org.openfaces.requests;
 
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.TabbedPaneInspector;
+import org.seleniuminspector.openfaces.TabbedPaneInspector;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.LoadingMode;
 
 /**
  * @author Pavel Kaplin

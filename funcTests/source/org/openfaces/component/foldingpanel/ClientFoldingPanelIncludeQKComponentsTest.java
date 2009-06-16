@@ -13,9 +13,10 @@ package org.openfaces.component.foldingpanel;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.*;
+import org.seleniuminspector.openfaces.*;
+import org.seleniuminspector.ServerLoadingMode;
+import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Darya Shumilina
@@ -24,7 +25,7 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     @Test
     public void testCalendarInside() {
         testAppFunctionalPage("/components/foldingpanel/calendarIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(1, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
         ElementInspector calendar = element("fn:calendarID");
         calendar.assertElementExists();
@@ -39,7 +40,7 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     @Test
     public void testChartInside() {
         testAppFunctionalPage("/components/foldingpanel/chartIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(1, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
         ElementInspector chart = element("fn:first_chartID");
         chart.assertElementExists();
@@ -53,7 +54,7 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     public void testConfirmationInside() {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/foldingpanel/confirmationIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(1, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
         ConfirmationInspector confirmationElement = confirmation("fn:conf1");
         confirmationElement.assertElementExists();
@@ -76,7 +77,7 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     @Test
     public void testDataTableInside() {
         testAppFunctionalPage("/components/foldingpanel/dataTableIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(1, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
         DataTableInspector dataTable = dataTable("fn:dataTableID");
         dataTable.assertElementExists(true);
@@ -113,7 +114,7 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     @Test
     public void testDropDownInside() {
         testAppFunctionalPage("/components/foldingpanel/dropDownIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(1, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
         DropDownFieldInspector dropDownField = dropDownField("fn:dropDownID");
         dropDownField.assertElementExists();
@@ -131,7 +132,7 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     @Test
     public void testDynamicImageInside() {
         testAppFunctionalPage("/components/foldingpanel/dynamicImageIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(1, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
         ElementInspector dynamicImage = element("fn:dynamicImageID");
         dynamicImage.assertElementExists();
@@ -146,7 +147,7 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     @Test
     public void testClientFoldingPanelInside() {
         testAppFunctionalPage("/components/foldingpanel/foldingPanelIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(1, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
         FoldingPanelInspector foldingPanel = foldingPanel("fn:insiderFoldingPanel");
         foldingPanel.assertElementExists();
         foldingPanel.assertVisible(false);
@@ -165,7 +166,7 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     @Test
     public void testHintLabelInside() throws InterruptedException {
         testAppFunctionalPage("/components/foldingpanel/hintLabelIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(1, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
         HintLabelInspector hintLabel = hintLabel("fn:hintLabelID");
         hintLabel.assertElementExists();
@@ -181,7 +182,7 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     @Test
     public void testPopupLayerInside() {
         testAppFunctionalPage("/components/foldingpanel/popupLayerIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(1, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
         ElementInspector headerPopup = element("fn:header_popup");
         headerPopup.assertElementExists();
@@ -197,7 +198,7 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     @Test
     public void testAjaxTabbedPaneInside() {
         testAppFunctionalPage("/components/foldingpanel/tabbedPaneIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(1, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
         ElementInspector tabbedPane = element("fn:tabbedPaneID");
         tabbedPane.assertElementExists();
@@ -212,14 +213,14 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
         ElementInspector secondHeader = element("fn:secondHeader");
         secondHeader.assertText("Second tab");
 
-        secondHeader.clickAndWait(LoadingMode.AJAX);
+        secondHeader.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         element("fn:secondContent").assertText("Some text on the second tab");
     }
 
     @Test
     public void testTabSetInside() {
         testAppFunctionalPage("/components/foldingpanel/tabSetIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(1, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
         ElementInspector tabSet = element("fn:tabSetID");
         tabSet.assertElementExists();
@@ -236,7 +237,7 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     @Test
     public void testTreeTableInside() {
         testAppFunctionalPage("/components/foldingpanel/treeTableIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(1, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
         TreeTableInspector treeTable = treeTable("fn:treeTableID");
         treeTable.assertElementExists();
@@ -247,7 +248,7 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
         treeTable.assertVisible(true);
 
         for (int i = 1; i < 4; i++) {
-            window().document().getElementsByTagName("img").get(i).clickAndWait(LoadingMode.AJAX);
+            window().document().getElementsByTagName("img").get(i).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
 
         treeTable.column(0).makeSorting();
@@ -257,7 +258,7 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     @Test
     public void testTwoListSelectionInside() {
         testAppFunctionalPage("/components/foldingpanel/twoListSelectionIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(1, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
         final String twoListSelectionLocator = "fn:twoListSelectionID";
 
@@ -276,7 +277,7 @@ public class ClientFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
     @Test
     public void testValidationInside() {
         testAppFunctionalPage("/components/foldingpanel/validationIn.jsf");
-        tabSet("fn:loadingModes").setTabIndex(1, LoadingMode.SERVER);
+        tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
         ElementInspector requiredInput = element("fn:required_input");
         requiredInput.assertElementExists();

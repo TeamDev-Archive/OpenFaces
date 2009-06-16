@@ -14,8 +14,8 @@ package org.openfaces.component.miscellaneous;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
+import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Darya Shumilina

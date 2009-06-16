@@ -14,6 +14,7 @@ package org.openfaces.component.chart;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
 
 /**
  * @author Darya Shumilina
@@ -26,7 +27,7 @@ public class ChartTest extends OpenFacesTestCase {
         Selenium selenium = getSelenium();
         String oldValue = selenium.getHtmlSource();
         selenium.click("formID:refresher");
-        waitForAjax4JSF();
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
         String newValue = selenium.getHtmlSource();
         assertFalse(newValue.equals(oldValue));
     }

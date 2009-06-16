@@ -12,15 +12,16 @@
 package org.openfaces.component.miscellaneous;
 
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.DropDownFieldFilterInspector;
-import org.openfaces.test.openfaces.DropDownFieldInspector;
-import org.openfaces.test.openfaces.FoldingPanelInspector;
-import org.openfaces.test.openfaces.LoadingMode;
-import org.openfaces.test.openfaces.SuggestionFieldInspector;
-import org.openfaces.test.openfaces.TabSetInspector;
-import org.openfaces.test.openfaces.TabbedPaneInspector;
+import org.seleniuminspector.openfaces.DropDownFieldFilterInspector;
+import org.seleniuminspector.openfaces.DropDownFieldInspector;
+import org.seleniuminspector.openfaces.FoldingPanelInspector;
+import org.seleniuminspector.openfaces.SuggestionFieldInspector;
+import org.seleniuminspector.openfaces.TabSetInspector;
+import org.seleniuminspector.openfaces.TabbedPaneInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
+import org.seleniuminspector.ServerLoadingMode;
+import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Darya Shumilina
@@ -63,7 +64,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
             firstFooterElement.assertText(TODAY_AR);
             secondFooterElement.assertText(WEEK_AR);
 
-            nextPaginationButton.clickAndWait(LoadingMode.AJAX);
+            nextPaginationButton.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
 
         TabSetInspector localeChanger = tabSet("formID:localeChanger");
@@ -71,7 +72,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         // perform sorting by first column and verify data 'es' locale
         localeChanger.tabs().get(1).clickAndWait();
         testAppFunctionalPage("/components/loadbundle/withDataTable.jsf"); // issue a GET request for view to update locale in JSP
-        firstHeaderElement.clickAndWait(LoadingMode.AJAX);
+        firstHeaderElement.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
 
         firstHeaderElement.assertText(TODAY_ES);
         secondHeaderElement.assertText(WEEK_ES);
@@ -85,7 +86,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         // perform sorting by second column and verify data 'ja' locale
         localeChanger.tabs().get(2).clickAndWait();
         testAppFunctionalPage("/components/loadbundle/withDataTable.jsf"); // issue a GET request for view to update locale in JSP
-        secondHeaderElement.clickAndWait(LoadingMode.AJAX);
+        secondHeaderElement.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         firstHeaderElement.assertText(TODAY_JA);
         secondHeaderElement.assertText(WEEK_JA);
         for (int j = 0; j < 3; j++) {
@@ -110,7 +111,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
             firstFooterElement.assertText(TODAY_RU);
             secondFooterElement.assertText(WEEK_RU);
 
-            nextPaginationButton.clickAndWait(LoadingMode.AJAX);
+            nextPaginationButton.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
 
         // reset tab index for further running tests
@@ -160,7 +161,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         // check 'ar' locale
         foldingPanel.caption().assertText(TODAY_AR);
         foldingPanel.setExpanded(true);
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         foldingPanel.content().assertText(TODAY_AR + WEEK_AR);
 
         TabSetInspector localeChanger = tabSet("formID:localeChanger");
@@ -170,7 +171,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         testAppFunctionalPage("/components/loadbundle/withFoldingPanel.jsf"); // issue a GET request for view to update locale in JSP
         foldingPanel.caption().assertText(TODAY_ES);
         foldingPanel.setExpanded(true);
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         foldingPanel.content().assertText(TODAY_ES + WEEK_ES);
 
         // check 'ja' locale
@@ -178,7 +179,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         testAppFunctionalPage("/components/loadbundle/withFoldingPanel.jsf"); // issue a GET request for view to update locale in JSP
         foldingPanel.caption().assertText(TODAY_JA);
         foldingPanel.setExpanded(true);
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         foldingPanel.content().assertText(TODAY_JA + WEEK_JA);
 
         // check 'ru' locale
@@ -186,7 +187,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         testAppFunctionalPage("/components/loadbundle/withFoldingPanel.jsf"); // issue a GET request for view to update locale in JSP
         foldingPanel.caption().assertText(TODAY_RU);
         foldingPanel.setExpanded(true);
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         foldingPanel.content().assertText(TODAY_RU + WEEK_RU);
 
         // reset tab index for further running tests
@@ -245,43 +246,43 @@ public class LoadBundleTest extends OpenFacesTestCase {
 
         tabbedPane.contentPanes().get(0).assertText(WEEK_AR);
         tabbedPane.setPageIndex(1);
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         tabbedPane.contentPanes().get(1).assertText(TODAY_AR);
 
         // check 'es' locale
-        localeChanger.setTabIndex(1, LoadingMode.SERVER);
+        localeChanger.setTabIndex(1, ServerLoadingMode.getInstance());
         testAppFunctionalPage("/components/loadbundle/withTabbedPane.jsf"); // issue a GET request for view to update locale in JSP
-        tabbedPane.setPageIndex(0, LoadingMode.AJAX);
+        tabbedPane.setPageIndex(0, OpenFacesAjaxLoadingMode.getInstance());
         tabSet.tabs().get(0).assertText(TODAY_ES);
         secondTab.assertText(WEEK_ES);
 
         tabbedPane.contentPanes().get(0).assertText(WEEK_ES);
         tabbedPane.setPageIndex(1);
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         tabbedPane.contentPanes().get(1).assertText(TODAY_ES);
 
         // check 'ja' locale
-        localeChanger.setTabIndex(2, LoadingMode.SERVER);
+        localeChanger.setTabIndex(2, ServerLoadingMode.getInstance());
         testAppFunctionalPage("/components/loadbundle/withTabbedPane.jsf"); // issue a GET request for view to update locale in JSP
-        tabbedPane.setPageIndex(0, LoadingMode.AJAX);
+        tabbedPane.setPageIndex(0, OpenFacesAjaxLoadingMode.getInstance());
         tabSet.tabs().get(0).assertText(TODAY_JA);
         secondTab.assertText(WEEK_JA);
 
         tabbedPane.contentPanes().get(0).assertText(WEEK_JA);
         tabbedPane.setPageIndex(1);
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         tabbedPane.contentPanes().get(1).assertText(TODAY_JA);
 
         // check 'ru' locale
-        localeChanger.setTabIndex(3, LoadingMode.SERVER);
+        localeChanger.setTabIndex(3, ServerLoadingMode.getInstance());
         testAppFunctionalPage("/components/loadbundle/withTabbedPane.jsf"); // issue a GET request for view to update locale in JSP
-        tabbedPane.setPageIndex(0, LoadingMode.AJAX);
+        tabbedPane.setPageIndex(0, OpenFacesAjaxLoadingMode.getInstance());
         tabSet.tabs().get(0).assertText(TODAY_RU);
         secondTab.assertText(WEEK_RU);
 
         tabbedPane.contentPanes().get(0).assertText(WEEK_RU);
         tabbedPane.setPageIndex(1);
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         tabbedPane.contentPanes().get(1).assertText(TODAY_RU);
 
         // reset tab index for further running tests
@@ -296,7 +297,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
 
         // check 'ar' locale
         element(treeTableId + ":0:categoryID").assertText(TODAY_AR);
-        window().document().getElementsByTagName("img").get(0).clickAndWait(LoadingMode.AJAX);
+        window().document().getElementsByTagName("img").get(0).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         element(treeTableId + ":1:nameID").assertText(WEEK_AR);
         element(treeTableId + ":2:nameID").assertText(WEEK_AR);
 
@@ -307,7 +308,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         localeChanger.tabs().get(1).clickAndWait();
         testAppFunctionalPage("/components/loadbundle/withTreeTable.jsf"); // issue a GET request for view to update locale in JSP
         element(treeTableId + ":3:categoryID").assertText(TODAY_ES);
-        window().document().getElementsByTagName("img").get(1).clickAndWait(LoadingMode.AJAX);
+        window().document().getElementsByTagName("img").get(1).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         element(treeTableId + ":2:nameID").assertText(WEEK_ES);
         element(treeTableId + ":4:nameID").assertText(WEEK_ES);
 
@@ -316,7 +317,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         localeChanger.tabs().get(2).clickAndWait();
         testAppFunctionalPage("/components/loadbundle/withTreeTable.jsf"); // issue a GET request for view to update locale in JSP
         element(treeTableId + ":5:categoryID").assertText(TODAY_JA);
-        window().document().getElementsByTagName("img").get(2).clickAndWait(LoadingMode.AJAX);
+        window().document().getElementsByTagName("img").get(2).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         element(treeTableId + ":3:nameID").assertText(WEEK_JA);
         element(treeTableId + ":4:nameID").assertText(WEEK_JA);
 
@@ -325,7 +326,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         localeChanger.tabs().get(3).clickAndWait();
         testAppFunctionalPage("/components/loadbundle/withTreeTable.jsf"); // issue a GET request for view to update locale in JSP
         element(treeTableId + ":4:categoryID").assertText(TODAY_RU);
-        window().document().getElementsByTagName("img").get(3).clickAndWait(LoadingMode.AJAX);
+        window().document().getElementsByTagName("img").get(3).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         element(treeTableId + ":4:nameID").assertText(WEEK_RU);
 
         // reset tab index for further running tests

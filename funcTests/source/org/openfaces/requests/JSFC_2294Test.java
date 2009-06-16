@@ -14,8 +14,8 @@ package org.openfaces.requests;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.LoadingMode;
-import org.openfaces.test.openfaces.TreeTableInspector;
+import org.seleniuminspector.openfaces.TreeTableInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 
 /**
  * @author Pavel Kaplin
@@ -30,8 +30,8 @@ public class JSFC_2294Test extends OpenFacesTestCase {
         TreeTableInspector treeTable = treeTable("form1:requestsTreeTable");
         treeTable.bodyRow(1).click();
         treeTable.bodyRow(1).doubleClick();
-        waitForAjax();
-        treeTable.bodyRow(2).clickAndWait(LoadingMode.AJAX);
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
+        treeTable.bodyRow(2).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
 
 
 

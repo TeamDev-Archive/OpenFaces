@@ -14,6 +14,7 @@ package org.openfaces.component.dynamicimage;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
 
 /**
  * @author Darya Shumilina
@@ -25,7 +26,7 @@ public class DynamicImageTest extends OpenFacesTestCase {
         testAppFunctionalPage("/components/dynamicimage/dynamicImage_a4j.jsf");
         String oldValue = selenium.getHtmlSource();
         selenium.click("formID:refresher");
-        waitForAjax4JSF();
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
         String newValue = selenium.getHtmlSource();
         assertFalse(newValue.equals(oldValue));
     }

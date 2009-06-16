@@ -14,11 +14,13 @@ package org.openfaces.component.foreach;
 
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.ForEachInspector;
-import org.openfaces.test.openfaces.InputTextInspector;
-import org.openfaces.test.openfaces.SuggestionFieldInspector;
+import org.seleniuminspector.openfaces.ForEachInspector;
+import org.seleniuminspector.openfaces.InputTextInspector;
+import org.seleniuminspector.openfaces.SuggestionFieldInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.LoadingMode;
 
 /**
  * @author Alexey Tarasyuk
@@ -289,7 +291,7 @@ public class ForEachTest extends OpenFacesTestCase {
         forEach.item(1, "qit1", InputTextInspector.class).type("10.1");
         forEach.item(2, "qit1", InputTextInspector.class).type("ten");
         getSelenium().submit("formID");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
 
         message0.assertVisible(false);
         message1.assertVisible(true);
@@ -317,7 +319,7 @@ public class ForEachTest extends OpenFacesTestCase {
         forEach.item(1, "qit2", InputTextInspector.class).type("12345");
         forEach.item(2, "qit2", InputTextInspector.class).type("123456");
         getSelenium().submit("formID");
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
 
         message0.assertVisible(true);
         message1.assertVisible(false);
@@ -341,7 +343,7 @@ public class ForEachTest extends OpenFacesTestCase {
         dropDownItem1.assertElementExists(false);
         dropDownItem2.assertElementExists(false);
         suggestionField.keyPress('a');
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         dropDownItem0.assertVisible(true);
         dropDownItem1.assertVisible(true);
         dropDownItem2.assertVisible(true);
@@ -362,7 +364,7 @@ public class ForEachTest extends OpenFacesTestCase {
         dropDownItem2.assertElementExists(false);
         sleep(3000);
         suggestionField.keyPress('a');
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         dropDownItem0.assertVisible(true);
         dropDownItem1.assertVisible(true);
         dropDownItem2.assertVisible(true);
@@ -382,7 +384,7 @@ public class ForEachTest extends OpenFacesTestCase {
         dropDownItem1.assertElementExists(false);
         dropDownItem2.assertElementExists(false);
         suggestionField.keyPress('a');
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         dropDownItem0.assertVisible(true);
         dropDownItem1.assertVisible(true);
         dropDownItem2.assertVisible(true);

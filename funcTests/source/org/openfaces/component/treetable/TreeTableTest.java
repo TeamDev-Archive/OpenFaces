@@ -12,11 +12,14 @@
 package org.openfaces.component.treetable;
 
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.LoadingMode;
-import org.openfaces.test.openfaces.TabSetInspector;
-import org.openfaces.test.openfaces.TreeTableInspector;
+import org.seleniuminspector.openfaces.TabSetInspector;
+import org.seleniuminspector.openfaces.TreeTableInspector;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.ServerLoadingMode;
+import org.seleniuminspector.LoadingMode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +35,7 @@ public class TreeTableTest extends OpenFacesTestCase {
         List<ElementInspector> imgs;
         imgs = window().document().getElementsByTagName("img");
         for (int i = 0; i < 12; i++) {
-            imgs.get(i).clickAndWait(LoadingMode.AJAX);
+            imgs.get(i).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
 
         List<ElementInspector> divs = window().document().getElementsByTagName("div");
@@ -46,10 +49,10 @@ public class TreeTableTest extends OpenFacesTestCase {
         }
 
         element("formID:refresher").click();
-        waitForAjax4JSF();
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
         imgs = window().document().getElementsByTagName("img");
         for (int i = 0; i < 12; i++) {
-            imgs.get(i).clickAndWait(LoadingMode.AJAX);
+            imgs.get(i).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
         divs = window().document().getElementsByTagName("div");
         String[] newTreeValues = new String[45];
@@ -65,8 +68,8 @@ public class TreeTableTest extends OpenFacesTestCase {
 
     @Test
     public void testStaticStructure() {
-        staticTreeStructure(LoadingMode.AJAX);
-        staticTreeStructure(LoadingMode.SERVER);
+        staticTreeStructure(OpenFacesAjaxLoadingMode.getInstance());
+        staticTreeStructure(ServerLoadingMode.getInstance());
     }
 
     /**
@@ -74,8 +77,8 @@ public class TreeTableTest extends OpenFacesTestCase {
      */
     @Test
     public void testDynamicStructure() {
-        dynamicTreeStructure(LoadingMode.AJAX);
-        dynamicTreeStructure(LoadingMode.SERVER);
+        dynamicTreeStructure(OpenFacesAjaxLoadingMode.getInstance());
+        dynamicTreeStructure(ServerLoadingMode.getInstance());
     }
 
     /**
@@ -93,7 +96,7 @@ public class TreeTableTest extends OpenFacesTestCase {
             if (i == 1 || i == 4 || i == 16 || i == 19 || i == 21 || i == 24) {
                 //click right arrow to expand first TreeTable node
                 treeTable.keyPress(39);
-                waitForAjax();
+                OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
             }
             //get selected index value
             emptyElement.assertText(String.valueOf(i));
@@ -112,7 +115,7 @@ public class TreeTableTest extends OpenFacesTestCase {
         String indexBeforeSubmitNodePathTreeTable = selectionNodePath.text();
 
         element("formID:singleNodeDataSelectionTreeTableID:1:categoryID").keyPress(39);
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         treeTable.keyPress(40);
         ElementInspector selectionNodeData = element("selectionNodeDataID");
         String indexBeforeSubmitNodeDataTreeTable = selectionNodeData.text();
@@ -142,7 +145,7 @@ public class TreeTableTest extends OpenFacesTestCase {
         emptyElement.assertText("  1 2 3 4 5 6");
 
         for (int i = 0; i < 6; i++) {
-            multipleSelectionTreeTable.getElementsByTagName("img").get(i).clickAndWait(LoadingMode.AJAX);
+            multipleSelectionTreeTable.getElementsByTagName("img").get(i).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
 
         categoryOutput.click();
@@ -153,7 +156,7 @@ public class TreeTableTest extends OpenFacesTestCase {
 
         emptyElement.assertText("  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25");
         for (int i = 0; i < 6; i++) {
-            multipleSelectionTreeTable.getElementsByTagName("img").get(i).clickAndWait(LoadingMode.AJAX);
+            multipleSelectionTreeTable.getElementsByTagName("img").get(i).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
 
         categoryOutput.click();
@@ -186,14 +189,14 @@ public class TreeTableTest extends OpenFacesTestCase {
 
         //click right arrow
         multipleNodePathsTreeTable.keyPress(39);
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         for (int i = 0; i < 3; i++) {
             createEvent(multipleNodePathsTreeTable, null, EventType.KEY, "keypress", 40, true);
         }
 
         element("formID:multipleNodeDatasSelectionTreeTableID:2:categoryID").click();
         multipleNodeDataTreeTable.keyPress(39);
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         for (int i = 0; i < 3; i++) {
             createEvent(multipleNodeDataTreeTable, null, EventType.KEY, "keypress", 40, true);
         }
@@ -208,12 +211,12 @@ public class TreeTableTest extends OpenFacesTestCase {
     //Created two different tests because of JSFC-3572
     @Test
     public void testSortingAjax() {
-        testSorting(LoadingMode.AJAX);
+        testSorting(OpenFacesAjaxLoadingMode.getInstance());
     }
 
     @Test
     public void testSortingServer() {
-        testSorting(LoadingMode.SERVER);
+        testSorting(ServerLoadingMode.getInstance());
     }
 
     @Test
@@ -332,7 +335,7 @@ public class TreeTableTest extends OpenFacesTestCase {
     private void staticTreeStructure(LoadingMode loadingMode) {
         testAppFunctionalPage("/components/treetable/treeTableStaticStructure.jsf");
         TabSetInspector loadingModes = tabSet("formID:loadingModes");
-        if (loadingMode == LoadingMode.SERVER) {
+        if (loadingMode instanceof ServerLoadingMode) {
             loadingModes.tabs().get(1).clickAndWait(loadingMode);
         }
         TreeTableInspector treeTable = treeTable("formID:treeTableStaticStructureID");
@@ -350,7 +353,7 @@ public class TreeTableTest extends OpenFacesTestCase {
         treeTable.bodyRow(5).cell(0).assertText("Blue");
         treeTable.bodyRow(6).cell(0).assertText("Purple");
 
-        if (loadingMode == LoadingMode.SERVER) {
+        if (loadingMode instanceof ServerLoadingMode) {
             // reset page index for further test to run correctly
             loadingModes.tabs().get(0).clickAndWait(loadingMode);
         }
@@ -360,7 +363,7 @@ public class TreeTableTest extends OpenFacesTestCase {
     private void dynamicTreeStructure(LoadingMode loadingMode) {
         testAppFunctionalPage("/components/treetable/treeTableDynamicStructure.jsf");
         TabSetInspector loadingModes = tabSet("formID:loadingModes");
-        if (loadingMode == LoadingMode.SERVER) {
+        if (loadingMode instanceof ServerLoadingMode) {
             loadingModes.tabs().get(1).clickAndWait(loadingMode);
         }
 
@@ -402,7 +405,7 @@ public class TreeTableTest extends OpenFacesTestCase {
         window().document().getElementsByTagName("img").get(5).clickAndWait(loadingMode);
         element("formID:dynamicTreeStructureID:24:nameID").assertText("Ivan Ivanych");
 
-        if (loadingMode == LoadingMode.SERVER) {
+        if (loadingMode instanceof ServerLoadingMode) {
             // reset page index for further test to run correctly
             loadingModes.tabs().get(0).clickAndWait(loadingMode);
         }
@@ -411,7 +414,7 @@ public class TreeTableTest extends OpenFacesTestCase {
     private void testSorting(LoadingMode loadingMode) {
         testAppFunctionalPage("/components/treetable/treeTableSorting.jsf");
         TabSetInspector loadingModes = tabSet("formID:loadingModes");
-        if (loadingMode == LoadingMode.SERVER) {
+        if (loadingMode instanceof ServerLoadingMode) {
             loadingModes.tabs().get(1).clickAndWait(loadingMode);
         }
 
@@ -482,7 +485,7 @@ public class TreeTableTest extends OpenFacesTestCase {
         treeTable5.headerRow(0).cell(0).clickAndWait(loadingMode);
         treeTable5.assertBodyRowTexts("Colors", "Cold colors", "purple", "Purple");
 
-        if (loadingMode == LoadingMode.SERVER) {
+        if (loadingMode instanceof ServerLoadingMode) {
             // reset page index for further test to run correctly
             loadingModes.tabs().get(0).clickAndWait(loadingMode);
         }

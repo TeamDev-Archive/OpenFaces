@@ -13,10 +13,11 @@ package org.openfaces.component.borderlayoutpanel;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.BorderLayoutPanelInspector;
-import org.openfaces.test.openfaces.SidePanelInspector;
+import org.seleniuminspector.openfaces.BorderLayoutPanelInspector;
+import org.seleniuminspector.openfaces.SidePanelInspector;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.LoadingMode;
 
 /**
  * @author Alexey Tarasyuk

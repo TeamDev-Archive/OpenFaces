@@ -12,12 +12,13 @@
 package org.openfaces.component.datatable;
 
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.DataTableInspector;
-import org.openfaces.test.openfaces.HintLabelInspector;
-import org.openfaces.test.openfaces.LoadingMode;
-import org.openfaces.test.openfaces.SearchFieldFilterInspector;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.LoadingMode;
+import org.seleniuminspector.openfaces.DataTableInspector;
+import org.seleniuminspector.openfaces.HintLabelInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
+import org.seleniuminspector.openfaces.SearchFieldFilterInspector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,7 @@ public class DataTableIncludeQKComponentsTest extends OpenFacesTestCase {
 
         //click at hinlLabel placed in the header to perform sorting
 
-//    dataTableColumn(headerHintLabel1.asSeleniumLocator()).makeSorting(LoadingMode.AJAX);
+//    dataTableColumn(headerHintLabel1.asSeleniumLocator()).makeSorting(OpenFacesAjaxLoadingMode.getInstance());
         hintLabelDataTable.column(0).makeSorting();
 
 
@@ -110,7 +111,7 @@ public class DataTableIncludeQKComponentsTest extends OpenFacesTestCase {
                     .checkVisibilityAndContent("Footer hint label value 2", "Footer hint label title 2");
 
             dataTablePaginator("fn:hintLabelDataTable:hintLabelDataTablePaginator").nextPage()
-                    .clickAndWait(LoadingMode.AJAX);
+                    .clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
 
         /* filtering and filtered data verification */
@@ -137,7 +138,7 @@ public class DataTableIncludeQKComponentsTest extends OpenFacesTestCase {
 
         element("fn:popupDataTable:header_invoker").click();
         element("fn:popupDataTable:header_popup").assertVisible(true);
-        waitForAjax();
+        OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         for (int pageNo = 1; pageNo <= pageCount; pageNo++) {
             // execute pagination from first to third page and verify data on every page
             List<DataTableUtils.TestDataTableItem> currentPageValues = DataTableUtils.getCurrentPageFromReferenceValues(popupLayerDataTableValues, pageNo);
@@ -174,7 +175,7 @@ public class DataTableIncludeQKComponentsTest extends OpenFacesTestCase {
             element("fn:popupDataTable:footer_popup1").assertSubtext(0, 29, "this is footer popup layer 2!");
 
             if (pageNo < pageCount)
-                nextPage.clickAndWait(LoadingMode.AJAX);
+                nextPage.clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
         // a little sleep to wait until all visible popupLayers will be hidden
         sleep(4000);

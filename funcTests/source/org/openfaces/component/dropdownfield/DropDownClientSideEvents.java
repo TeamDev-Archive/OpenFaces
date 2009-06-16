@@ -14,7 +14,8 @@ package org.openfaces.component.dropdownfield;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.openfaces.DropDownFieldInspector;
+import org.seleniuminspector.openfaces.DropDownFieldInspector;
+import org.seleniuminspector.LoadingMode;
 
 /**
  * @author Darya Shumilina

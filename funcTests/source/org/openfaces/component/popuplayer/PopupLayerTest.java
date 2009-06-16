@@ -12,10 +12,11 @@
 package org.openfaces.component.popuplayer;
 
 import org.junit.Test;
-import org.openfaces.test.ElementInspector;
 import org.openfaces.test.OpenFacesTestCase;
-import org.openfaces.test.html.InputInspector;
-import org.openfaces.test.openfaces.PopupLayerInspector;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.html.InputInspector;
+import org.seleniuminspector.openfaces.PopupLayerInspector;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
 
 import java.awt.*;
 
@@ -35,7 +36,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
         element("formID:popupCloser").click();
         popupLayer.assertVisible(false);
         element("formID:refresher").click();
-        waitForAjax4JSF();
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
         element("formID:buttonID").click();
         String newValue = popupLayer.text();
         popupLayer.assertVisible(true);
@@ -59,7 +60,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
         popupCloser.click();
         popupLayer.assertVisible(false);
         element("formID:refresher_a4j").click();
-        waitForAjax4JSF();
+        RichFacesAjaxLoadingMode.getInstance().waitForLoad();
         button.click();
         String newValue = popupLayer.text();
         popupLayer.assertVisible(true);
