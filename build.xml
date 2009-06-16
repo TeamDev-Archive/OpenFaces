@@ -147,15 +147,15 @@
     <junit fork="yes" forkmode="once" failureproperty="junit_test_failed" dir="${funcTests-target.dir}">
       <classpath>
         <pathelement path="${openfaces-jar.file}"/>
+        <pathelement path="lib/seleniuminspector/selenium-java-client-driver.jar"/>
+        <pathelement path="lib/seleniuminspector/patched-selenium-server.jar "/>
+        <pathelement path="lib/seleniuminspector/seleniuminspector.jar"/>
         <pathelement location="${funcTests-target.dir}/classes"/>
         <pathelement path="${openfaces-inspectors-jar.file}"/>
         <pathelement path="testLib/junit.jar"/>
         <pathelement path="testLib/jai/mlibwrapper_jai.jar"/>
         <pathelement path="testLib/jai/jai_core.jar"/>
         <pathelement path="testLib/jai/jai_codec.jar"/>
-        <pathelement path="lib/seleniuminspector/selenium-java-client-driver.jar"/>
-        <pathelement path="lib/seleniuminspector/selenium-server.jar"/>
-        <pathelement path="lib/seleniuminspector/seleniuminspector.jar"/>
       </classpath>
       <formatter type="xml"/>
       <formatter usefile="false" type="plain"/>
