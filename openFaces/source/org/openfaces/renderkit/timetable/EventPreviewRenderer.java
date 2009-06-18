@@ -39,7 +39,7 @@ public class EventPreviewRenderer extends RendererBase {
         writer.startElement("div", eventPreview);
         writer.writeAttribute("id", clientId, null);
 
-        PopupLayer popupLayer = (PopupLayer) RenderingUtil.getOrCreateFacet(
+        PopupLayer popupLayer = RenderingUtil.getOrCreateFacet(
                 context, component, PopupLayer.COMPONENT_TYPE, "_popupLayer", PopupLayer.class);
         popupLayer.setId(eventPreview.getId() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "popupLayer");
         popupLayer.setStyle(eventPreview.getStyle());

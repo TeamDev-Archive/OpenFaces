@@ -47,6 +47,10 @@ public class PopupLayerJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("hideOnOuterClick", hideOnOuterClick);
     }
 
+    public void setHideOnEsc(ValueExpression hideOnEsc) {
+        getDelegate().setPropertyValue("hideOnEsc", hideOnEsc);
+    }
+
     public void setVisible(ValueExpression visible) {
         getDelegate().setPropertyValue("visible", visible);
     }

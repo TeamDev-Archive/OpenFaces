@@ -37,7 +37,7 @@ O$._initConfirmation = function(
   confirmation._cancelButton = O$(confirmationId + "::no_button");
 
   confirmation._okButton.onclick = function (event) {
-    confirmation._confirmationHide();
+    confirmation.hide();
     if (confirmation._listenerMode == 0) { // listen to event with eventHandlerName of element with invokerId
       var invoker = confirmation._invoker ? confirmation._invoker : O$(confirmation._invokerId);
       if (!invoker)
@@ -86,15 +86,8 @@ O$._initConfirmation = function(
   }
 
   confirmation._cancelButton.onclick = function () {
-    confirmation._confirmationHide();
+    confirmation.hide();
     return false;
-  }
-
-  if (confirmation._closeButton) {
-    confirmation._closeButton.onclick = function () {
-      confirmation._confirmationHide();
-      return false;
-    }
   }
 
   // Set listener on element
@@ -154,6 +147,12 @@ O$._initConfirmation = function(
     return false;
   }
 
+  confirmation._getDefaultFocusComponent = function() {
+    if (confirmation._defaultButton == "ok")
+      return confirmation._okButton;
+    else
+      return confirmation._cancelButton;
+  }
 
   confirmation._confirmationShow = function () {
     var invoker = O$(confirmation._invokerId);
@@ -182,28 +181,6 @@ O$._initConfirmation = function(
       confirmation._currentFocus = 1;
     }
 
-    if (O$.isOpera()) {
-      confirmation._oldDocumentOnMouseDown = document.onmousedown;
-      document.onmousedown = function () {
-        if (confirmation._currentFocus == 0) {
-          confirmation._okButton.focus();
-        } else {
-          confirmation._cancelButton.focus();
-        }
-      }
-    } else {
-      confirmation._oldDocumentOnClick = document.onclick;
-      document.onclick = function () {
-        if (confirmation.isVisible()) { // needed for IE for cases when hideOnOuterClick == true
-          if (confirmation._currentFocus == 0) {
-            confirmation._okButton.focus();
-          } else {
-            confirmation._cancelButton.focus();
-          }
-        }
-      }
-    }
-
     // Fix for FF, when caption has a border
     if (confirmation._caption) {
       confirmation._caption.style.top = "0px";
@@ -214,40 +191,8 @@ O$._initConfirmation = function(
         }
       }
     }
-
-    // set focus on button
-    if (confirmation._defaultButton == "ok") {
-      confirmation._currentFocus = 0;
-      confirmation._okButton.focus();
-    } else {
-      confirmation._currentFocus = 1;
-      confirmation._cancelButton.focus();
-    }
   }
 
-  confirmation._confirmationHide = function () {
-    if (!this.isVisible()) return;
-
-    if (O$.isOpera()) {
-      document.onmousedown = confirmation._oldDocumentOnMouseDown;
-    } else {
-      document.onclick = confirmation._oldDocumentOnClick;
-    }
-
-    confirmation.hide();
-  }
-
-  // set escape behavior
-  confirmation._okButton.onkeydown = function (e) {
-    var evt = (e != undefined) ? e : (event ? event : null);
-    if (!evt) return;
-    var keyCode = evt.keyCode;
-    if (keyCode == 27) {
-      confirmation._confirmationHide();
-    }
-  }
-
-  confirmation._cancelButton.onkeydown = confirmation._okButton.onkeydown;
 
   confirmation.setTexts = function (messageText, detailsText, okButtonText, cancelButtonText) {
     if (messageText || messageText == "") {

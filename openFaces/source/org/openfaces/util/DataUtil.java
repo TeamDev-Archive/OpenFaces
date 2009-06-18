@@ -184,14 +184,14 @@ public class DataUtil {
         return DataUtil.dataModelAsList(dataModel);
     }
 
-    public static JSONArray arrayToJSONArray(Object[] array, Map<String, TimeZone> params) {
+    public static JSONArray arrayToJSONArray(ConvertibleToJSON[] array, Map<String, TimeZone> params) {
         return listToJSONArray(Arrays.asList(array), params);
     }
 
-    public static JSONArray listToJSONArray(List entries, Map<String, TimeZone> params) {
+    public static JSONArray listToJSONArray(List<? extends ConvertibleToJSON> entries, Map<String, TimeZone> params) {
         JSONArray eventsJsArray = new JSONArray();
         for (int i = 0; i < entries.size(); i++) {
-            ConvertibleToJSON obj = (ConvertibleToJSON) entries.get(i);
+            ConvertibleToJSON obj = entries.get(i);
             try {
                 eventsJsArray.put(i, obj.toJSONObject(params));
             } catch (JSONException e) {

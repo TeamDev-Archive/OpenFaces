@@ -12,6 +12,7 @@
 package org.openfaces.testapp.timetable;
 
 import org.openfaces.component.timetable.TimetableEvent;
+import org.openfaces.util.FacesUtil;
 
 import javax.faces.context.FacesContext;
 import java.text.ParseException;
@@ -26,9 +27,31 @@ import java.util.GregorianCalendar;
 public class EventEditorBean {
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
 
+    private TimetableEvent editedEvent;
+
     public TimetableEvent getEditedEvent() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        return (TimetableEvent) context.getExternalContext().getSessionMap().get("editedEvent");
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        return (TimetableEvent) context.getExternalContext().getSessionMap().get("editedEvent");
+
+
+        if (editedEvent == null) {
+            String mode = (String) FacesUtil.getRequestParameterMapValue("mode");
+            FacesContext context = FacesContext.getCurrentInstance();
+            if (mode == null)
+                return (TimetableEvent) context.getExternalContext().getSessionMap().get("editedEvent");
+            if (mode.equals("create")) {
+                Date eventStart = FacesUtil.getRequestParameterMapValueAsDate("eventStart");
+                Date eventEnd = FacesUtil.getRequestParameterMapValueAsDate("eventEnd");
+                String resourceId = (String) FacesUtil.getRequestParameterMapValue("resourceId");
+                editedEvent = new TimetableEvent(null, eventStart, eventEnd, "", "", null, resourceId);
+            } else {
+                String eventId = (String) FacesUtil.getRequestParameterMapValue("eventId");
+                TimeTableBean timetableBean = getTimeTableBean();
+                editedEvent = (TimetableEvent) timetableBean.eventById(timetableBean.getEvents(), eventId).clone();
+            }
+            context.getExternalContext().getSessionMap().put("editedEvent", editedEvent);
+        }
+        return editedEvent;
     }
 
     public String getStartTime() {

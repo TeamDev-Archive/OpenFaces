@@ -136,9 +136,11 @@ O$._initDayTable = function(componentId,
   var headerColumns = [{className: timeColumnClass}];
   if (useResourceSeparation) {
     dayTable._resourcesByIds = {};
+    dayTable._idsByResourceNames = {};
     for (var resourceIndex = 0; resourceIndex < resources.length; resourceIndex++) {
       var resource = resources[resourceIndex];
       dayTable._resourcesByIds[resource.id] = resource;
+      dayTable._idsByResourceNames[resource.name] = resource.id;
       resource._colIndex = resourceIndex + 1;
       columns.push({});
       headerColumns.push({});
@@ -395,8 +397,6 @@ O$._initDayTable = function(componentId,
   dayTable._getEventEditor = function() {
     if (!editable)
       return null;
-    if (!dayTable._eventEditor)
-      dayTable._eventEditor = O$(dayTable.id + ":_eventEditor");
     return dayTable._eventEditor;
   }
 
@@ -1548,13 +1548,16 @@ O$._PreloadedTimetableEvents = function(events) {
 O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, editEventCaption) {
   var dayTable = O$(dayTableId);
   var dialog = O$(dialogId);
+  dayTable._eventEditor = dialog;
   dialog._dayTable = dayTable;
 
   dialog._nameField = O$.byIdOrName(dialog.id + "--nameField");
+  dialog._resourceField = O$.byIdOrName(dialog.id + "--resourceField");
   dialog._startDateField = O$.byIdOrName(dialog.id + "--startDateField");
   dialog._endDateField = O$.byIdOrName(dialog.id + "--endDateField");
   dialog._startTimeField = O$.byIdOrName(dialog.id + "--startTimeField");
   dialog._endTimeField = O$.byIdOrName(dialog.id + "--endTimeField");
+  dialog._colorField = O$.byIdOrName(dialog.id + "--colorField");
   dialog._color = "";
   dialog._descriptionField = O$.byIdOrName(dialog.id + "--descriptionField");
   dialog._okButton = O$.byIdOrName(dialog.id + "--okButton");
@@ -1564,7 +1567,10 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
 
   dialog.run = function(event, mode, listeners) {
     this._event = event;
-    this._nameField.value = event.name;    
+    this._nameField.value = event.name;
+    var resource = dayTable._getResourceForEvent(event);
+    if (dialog._resourceField)
+      dialog._resourceField.setValue(resource ? resource.name : "");
     this._startDateField.setSelectedDate(event._start);
     this._endDateField.setSelectedDate(event._end);
     this._startTimeField.value = O$.formatTime(event._start);
@@ -1586,9 +1592,10 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
       O$.parseTime(dialog._startTimeField.value, startDate);
       var endDate = dialog._endDateField.getSelectedDate();
       O$.parseTime(dialog._endTimeField.value, endDate);
-      if(startDate && endDate && !isNaN(startDate) && !isNaN(endDate)) {  //in case of wrong values we should allow user to fix input
+      if (startDate && endDate && !isNaN(startDate) && !isNaN(endDate)) { // in case of wrong values we should allow user to fix input
         event.setStart(startDate);
         event.setEnd(endDate);
+        event.resourceId = dayTable._idsByResourceNames[dialog._resourceField.getValue()];
         event.color = dialog._color ? dialog._color : "";
         event.description = dialog._descriptionField.value;
         dialog.hide();
@@ -1648,6 +1655,7 @@ O$._initEventEditorPage = function(dayTableId, thisComponentId, actionDeclared, 
                                    eventIdParamName, eventStartParamName, eventEndParamName, resourceIdParamName) {
   var dayTable = O$(dayTableId);
   var thisComponent = O$(thisComponentId);
+  dayTable._eventEditor = thisComponent;
   thisComponent.run = function(event, mode) {
     if (actionDeclared) {
       var params = (mode == "create") ?

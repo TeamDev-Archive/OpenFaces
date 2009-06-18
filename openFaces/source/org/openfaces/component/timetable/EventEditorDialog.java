@@ -58,7 +58,7 @@ public class EventEditorDialog extends Window implements CompoundComponent {
 
     @Override
     protected String getDefaultMinWidth() {
-        return "300px";
+        return "350px";
     }
 
     @Override

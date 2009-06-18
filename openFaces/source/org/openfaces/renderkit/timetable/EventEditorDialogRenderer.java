@@ -12,8 +12,11 @@
 package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.input.DateChooser;
+import org.openfaces.component.input.DropDownField;
+import org.openfaces.component.input.DropDownItem;
 import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.EventEditorDialog;
+import org.openfaces.component.timetable.TimetableResource;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.TableRenderer;
 import org.openfaces.renderkit.CompoundComponentRenderer;
@@ -66,10 +69,16 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
     protected void encodeCustomContent(FacesContext context, PopupLayer popupLayer) throws IOException {
         final EventEditorDialog dialog = (EventEditorDialog) popupLayer;
         final DayTable dayTable = (DayTable) dialog.getParent();
+        final boolean useResourceSeparationMode = (Boolean) dayTable.getAttributes().
+                get(DayTableRenderer.USE_RESOURCE_SEPARATION_MODE_ATTR);
         final UIComponent[][] components = new UIComponent[][]{
                 {
                         ComponentUtil.composeHtmlOutputText(context, popupLayer, "nameLabel", dialog.getNameLabel()),
                         getNameField(context, popupLayer)
+                },
+                {
+                        ComponentUtil.composeHtmlOutputText(context, popupLayer, "resourceLabel", dialog.getResourceLabel()),
+                        getResourceField(context, popupLayer)
                 },
                 {
                         ComponentUtil.composeHtmlOutputText(context, popupLayer, "startLabel", dialog.getStartLabel()),
@@ -98,9 +107,13 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
                 writer.writeAttribute("class", "o_fullWidthAndHeight", null);
             }
 
+            protected boolean isRowVisible(int rowIndex) {
+                return rowIndex != 1 || useResourceSeparationMode;
+            }
+
             @Override
             protected void writeRowAttributes(ResponseWriter writer, int rowIndex) throws IOException {
-                if (rowIndex == 4) {
+                if (rowIndex == 5) {
                     writer.writeAttribute("style", "height: 100%;", null);
                 }
             }
@@ -108,9 +121,9 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
             @Override
             protected void writeCellAttributes(ResponseWriter writer, int rowIndex, int cellIndex) throws IOException {
                 super.writeCellAttributes(writer, rowIndex, cellIndex);
-                if (rowIndex < 3 && cellIndex == 0)
+                if (rowIndex < 4 && cellIndex == 0)
                     writer.writeAttribute("style", "width: 0", null);
-                if (rowIndex == 4)
+                if (rowIndex == 5)
                     writer.writeAttribute("style", "vertical-align: top;", null);
             }
 
@@ -152,7 +165,7 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
     }
 
     private UIComponent getDescriptionField(FacesContext context, PopupLayer popupLayer) {
-        HtmlInputTextarea descriptionField = (HtmlInputTextarea) RenderingUtil.getOrCreateFacet(context, popupLayer,
+        HtmlInputTextarea descriptionField = RenderingUtil.getOrCreateFacet(context, popupLayer,
                 HtmlInputTextarea.COMPONENT_TYPE, "descriptionField", HtmlInputTextarea.class);
         descriptionField.setStyleClass("o_fullWidthAndHeight");
         descriptionField.setStyle("resize: none");
@@ -160,13 +173,13 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
     }
 
     private UIComponent getNameField(FacesContext context, PopupLayer popupLayer) {
-        HtmlInputText nameField = (HtmlInputText) RenderingUtil.getOrCreateFacet(context, popupLayer, HtmlInputText.COMPONENT_TYPE, "nameField", HtmlInputText.class);
+        HtmlInputText nameField = RenderingUtil.getOrCreateFacet(context, popupLayer, HtmlInputText.COMPONENT_TYPE, "nameField", HtmlInputText.class);
         nameField.setStyleClass("o_fullWidth");
         return nameField;
     }
 
     private UIComponent createDateTimeFields(FacesContext context, PopupLayer popupLayer, String idPrefix) {
-        HtmlPanelGrid container = (HtmlPanelGrid) RenderingUtil.getOrCreateFacet(context, popupLayer,
+        HtmlPanelGrid container = RenderingUtil.getOrCreateFacet(context, popupLayer,
                 HtmlPanelGrid.COMPONENT_TYPE, idPrefix + "Fields", HtmlPanelGrid.class);
         container.setCellpadding("0");
         container.setCellspacing("0");
@@ -177,11 +190,25 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
 
         children.add(RenderingUtil.getOrCreateFacet(context, popupLayer, DateChooser.COMPONENT_TYPE, idPrefix + "DateField", DateChooser.class));
         children.add(ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY, false));
-        HtmlInputText timeField = (HtmlInputText) RenderingUtil.getOrCreateFacet(context, popupLayer, HtmlInputText.COMPONENT_TYPE, idPrefix + "TimeField", HtmlInputText.class);
+        HtmlInputText timeField = RenderingUtil.getOrCreateFacet(context, popupLayer, HtmlInputText.COMPONENT_TYPE, idPrefix + "TimeField", HtmlInputText.class);
         timeField.setStyle("width: 50px");
 
         children.add(timeField);
         return container;
+    }
+
+    private UIComponent getResourceField(FacesContext context, PopupLayer popupLayer) {
+        DropDownField field = RenderingUtil.getOrCreateFacet(context, popupLayer, DropDownField.COMPONENT_TYPE,
+                "resourceField", DropDownField.class);
+
+        List<TimetableResource> resources = (List<TimetableResource>) popupLayer.getAttributes().get(
+                DayTableRenderer.EVENTEDITOR_RESOURCES_ATTR);
+        for (TimetableResource resource : resources) {
+            field.getChildren().add(new DropDownItem(resource.getName()));
+        }
+
+        field.setCustomValueAllowed(false);
+        return field;
     }
 
 }

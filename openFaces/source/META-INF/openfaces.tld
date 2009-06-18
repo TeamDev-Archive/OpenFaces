@@ -9351,6 +9351,19 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>A flag that indicates whether or not the PopupLayer component
+        is automatically dismissed when the user presses Esc on a modal PopupLayer.
+      </description>
+      <name>hideOnEsc</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>The timeout after which the PopupLayer component is automatically hidden.
         The value "-1" means that the PopupLayer component is not hidden automatically.
       </description>
@@ -9668,6 +9681,32 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+
+    <attribute>
+      <description>A flag that indicates whether or not to close the Window component
+        when the user clicks anywhere outside it.
+      </description>
+      <name>hideOnOuterClick</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the Window component
+        is automatically dismissed when the user presses Esc.
+      </description>
+      <name>hideOnEsc</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
 
     <attribute>
       <description>The x coordinate of the component's upper-left corner
@@ -12176,6 +12215,19 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the Confirmation component
+        is automatically dismissed when the user presses Esc.
+      </description>
+      <name>hideOnEsc</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
     <attribute>
       <description>A flag that indicates whether or not to align the Confirmation component
         with the component that calls it. If the Confirmation is aligned with the component
@@ -22738,7 +22790,7 @@ and it is automatically triggered on any form submission. -->
     <tag-class>org.openfaces.taglib.jsp.timetable.EventEditorDialogJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
-      <description>A value-binding expression that associates the EventDetailsDialog with a backing bean property.
+      <description>A value-binding expression that associates the EventEditorDialog with a backing bean property.
       </description>
       <name>binding</name>
       <deferred-value>
@@ -23920,7 +23972,7 @@ and it is automatically triggered on any form submission. -->
     <tag-class>org.openfaces.taglib.jsp.timetable.EventEditorPageJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
-      <description>A value-binding expression that associates the EventDetailsDialog with a backing bean property.
+      <description>A value-binding expression that associates the EventEditorPage with a backing bean property.
       </description>
       <name>binding</name>
       <deferred-value>

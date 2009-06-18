@@ -58,6 +58,7 @@ public class PopupLayerTag extends AbstractComponentTag {
 
         setBooleanProperty(component, "visible");
         setBooleanProperty(component, "hideOnOuterClick");
+        setBooleanProperty(component, "hideOnEsc");
         setBooleanProperty(component, "modal");
     }
 }

@@ -706,10 +706,10 @@ O$.userAgentContains = function(browserName) {
 };
 
 O$.isStrictMode = function() {
-  return document.compatMode == "CSS1Compat";
+  return !O$.isQuirksMode();
 };
 O$.isQuirksMode = function() {
-  return document.compatMode != "CSS1Compat";
+  return document.compatMode == "BackCompat";
 };
 
 O$.isMozillaFF = function() {

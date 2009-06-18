@@ -30,6 +30,7 @@ public class PopupLayer extends OUIPanel {
 
     private Boolean visible;
     private Boolean hideOnOuterClick;
+    private Boolean hideOnEsc;
     private Integer hidingTimeout;
     private Boolean modal;
 
@@ -82,6 +83,14 @@ public class PopupLayer extends OUIPanel {
 
     public void setHideOnOuterClick(boolean hideOnOuterClick) {
         this.hideOnOuterClick = hideOnOuterClick;
+    }
+
+    public boolean getHideOnEsc() {
+        return ValueBindings.get(this, "hideOnEsc", hideOnEsc, true);
+    }
+
+    public void setHideOnEsc(boolean hideOnEsc) {
+        this.hideOnEsc = hideOnEsc;
     }
 
     public boolean isModal() {
@@ -253,6 +262,7 @@ public class PopupLayer extends OUIPanel {
 
                 visible,
                 hideOnOuterClick,
+                hideOnEsc,
                 modal,
         };
     }
@@ -282,6 +292,7 @@ public class PopupLayer extends OUIPanel {
 
         visible = (Boolean) values[i++];
         hideOnOuterClick = (Boolean) values[i++];
+        hideOnEsc = (Boolean) values[i++];
         modal = (Boolean) values[i++];
     }
 }

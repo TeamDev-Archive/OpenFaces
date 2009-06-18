@@ -141,7 +141,7 @@ public class ComponentUtil {
      * @return created or existed output text component
      */
     public static HtmlOutputText composeHtmlOutputText(FacesContext context, UIComponent parent, String idSuffix, String text) {
-        HtmlOutputText outputText = (HtmlOutputText) RenderingUtil.getOrCreateFacet(context, parent,
+        HtmlOutputText outputText = RenderingUtil.getOrCreateFacet(context, parent,
                 HtmlOutputText.COMPONENT_TYPE, idSuffix, HtmlOutputText.class);
         outputText.setValue(text);
         return outputText;
@@ -194,7 +194,7 @@ public class ComponentUtil {
      * @return created or existed command button component
      */
     public static HtmlCommandButton createButtonFacet(FacesContext context, UIComponent parent, String idSuffix, String text) {
-        HtmlCommandButton prevBtn = (HtmlCommandButton) RenderingUtil.getOrCreateFacet(
+        HtmlCommandButton prevBtn = RenderingUtil.getOrCreateFacet(
                 context, parent, HtmlCommandButton.COMPONENT_TYPE, idSuffix, HtmlCommandButton.class);
         prevBtn.setValue(text);
         return prevBtn;

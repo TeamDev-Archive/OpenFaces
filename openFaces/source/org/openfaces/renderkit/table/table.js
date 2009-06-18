@@ -240,7 +240,7 @@ O$._initTableKeyboardNavigation = function(tableId, controlPaging, focusedClassN
   var eventName = (O$.isSafariOnMac() || O$.isOpera() || O$.isMozillaFF()) ? "onkeypress" : "onkeydown";
   table._prevKeyHandler = table[eventName];
   table[eventName] = function (evt) {
-    var e = evt ? evt : event;
+    var e = O$.getEvent(evt);
 
     if (this._prevKeyHandler)
       this._prevKeyHandler(evt);

@@ -115,24 +115,24 @@ public class RenderingUtil {
      * seem to be equal to enforceComponentClass, facet will be recreated
      * @return facet of parent component
      */
-    public static UIComponent getOrCreateFacet(
-            FacesContext context, UIComponent parent, String componentType, String identifier, Class enforceComponentClass) {
+    public static <E extends UIComponent> E getOrCreateFacet(
+            FacesContext context, UIComponent parent, String componentType, String identifier, Class<E> enforceComponentClass) {
         String id = ComponentUtil.generateIdWithSuffix(parent, identifier);
         return getOrCreateFacet(context, parent, componentType, identifier, id, enforceComponentClass);
     }
 
-    public static UIComponent getOrCreateFacet(
-            FacesContext context, UIComponent parent, String componentType, String facetName, String id, Class enforceComponentClass) {
+    public static <E extends UIComponent> E getOrCreateFacet(
+            FacesContext context, UIComponent parent, String componentType, String facetName, String id, Class<E> enforceComponentClass) {
 
         UIComponent component = parent.getFacet(facetName);
         if (component != null) {
             if (enforceComponentClass == null || component.getClass().equals(enforceComponentClass))
-                return component;
+                return (E) component;
         }
 
         component = ComponentUtil.createComponent(context, id, componentType);
         parent.getFacets().put(facetName, component);
-        return component;
+        return (E) component;
     }
 
     /**

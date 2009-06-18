@@ -13,7 +13,9 @@
 O$.POPUP_FIRST_EXTERNAL_ANCHOR_SUFFIX = "::firstExternalAnchor";
 O$.POPUP_LAST_EXTERNAL_ANCHOR_SUFFIX = "::lastExternalAnchor";
 
-O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidingTimeout, draggable, isAjaxRequest) {
+O$.PopupLayer = {};
+
+O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidingTimeout, draggable, hideOnEsc, isAjaxRequest) {
   var popup = O$(id);
 
   O$.initIETransparencyWorkaround(popup);
@@ -21,6 +23,7 @@ O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidin
   popup._visibleField = O$(popup.id + "::visible");
   popup._leftField = O$(popup.id + "::left");
   popup._topField = O$(popup.id + "::top");
+  popup._hideOnEsc = hideOnEsc;
   popup.style.display = O$.getElementStyleProperty(popup, "display");
 
   popup.blockingLayer = O$(popup.id + "::blockingLayer");
@@ -166,14 +169,8 @@ O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidin
           this.blur();
       };
       popup.appendChild(popup._lastInternalAnchor);
-    }
 
-    if (popup.anchorElement != undefined) {
-      O$._popup_moveToAnchor(popup);
-    }
-    //    O$.hideControlsUnderPopup(this);
 
-    if (popup.blockingLayer) { //modal popup
       //todo: rework blocking layer creation to make <body> its parent (to prevent other controls in table cell, when this cell is big, moving up or down)
       //todo: jsfc-1497
       popup.blockingLayer.style.display = "";
@@ -200,7 +197,22 @@ O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidin
         window.addEventListener("resize", O$._popupLayer_resizeModalLayer, true);
       }
 
+      setTimeout(function() {
+        var focusable = popup._getDefaultFocusComponent();
+        if (focusable)
+          focusable.focus();
+      }, 1);
+
+      if (!O$.PopupLayer._modalWindows)
+        O$.PopupLayer._modalWindows = [];
+      O$.PopupLayer._modalWindows.push(popup);
     }
+
+    if (popup.anchorElement != undefined) {
+      O$._popup_moveToAnchor(popup);
+    }
+    //    O$.hideControlsUnderPopup(this);
+
     popup._visibleField.value = "true";
     if (popup.onshow) {
       popup.onshow();
@@ -210,11 +222,11 @@ O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidin
     }
 
     /*
-        if (O$.isExplorer()) {
-          popup.setLeft(popup.startX);
-          popup.setTop(popup.startY);
-        }
-    */
+     if (O$.isExplorer()) {
+     popup.setLeft(popup.startX);
+     popup.setTop(popup.startY);
+     }
+     */
 
     if (popup._hidingTimeout && popup._hidingTimeout > 0) {
       popup.hideTimer = setTimeout(function() {
@@ -269,6 +281,10 @@ O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidin
         document.body.style.visibility = "hidden";
         document.body.style.visibility = "visible";
       }
+
+      var p = O$.PopupLayer._modalWindows.pop();
+      if (p != popup)
+        O$.logError("popup.hide: modal window stack failure: " + p);
     }
     O$.repaintAreaForOpera(document.body, true);
     if (popup._afterHide)
@@ -408,7 +424,6 @@ O$._initPopupLayer = function(id, left, top, width, height, rolloverStyle, hidin
 }
 
 
-
 // -- Standalone popup functions
 
 O$._popup_moveToAnchor = function(popup) {
@@ -521,3 +536,14 @@ O$.getLastFocusableControl = function(parent) {
   }
   return null;
 }
+
+O$.addEventHandler(document, "keypress", function(e) {
+  var evt = O$.getEvent(e);
+  if (evt.keyCode == 27) {
+    if (O$.PopupLayer._modalWindows && O$.PopupLayer._modalWindows.length > 0) {
+      var currentModalWindow = O$.PopupLayer._modalWindows[O$.PopupLayer._modalWindows.length - 1];
+      if (currentModalWindow._hideOnEsc)
+        currentModalWindow.hide();
+    }
+  }
+});

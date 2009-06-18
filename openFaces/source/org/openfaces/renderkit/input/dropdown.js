@@ -203,6 +203,10 @@ O$._initDropDown = function(dropDownId,
     button._dropDown = dropDown;
   popup._dropDown = dropDown;
 
+  O$.addEventHandler(popup, "mousedown", function(e) {
+    O$.stopEvent(e);
+  });
+
   dropDown._buttonClass = O$._dropdown_getClassName(buttonClass);
   if (button)
     button.className = dropDown._buttonClass;

@@ -41,6 +41,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
 
     private static final String START_TIME = "startTime";
     private static final String END_TIME = "endTime";
+    public static final String EVENTEDITOR_RESOURCES_ATTR = "_resources";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -67,7 +68,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         if (dayTable.isDaySwitcherVisible())
             renderNavigationRow(context, dayTable, clientId);
 
-        List resources = renderResourceHeadersRow(context, dayTable, clientId);
+        List<TimetableResource> resources = renderResourceHeadersRow(context, dayTable, clientId);
 
         writer.startElement("tr", dayTable);
         writer.writeAttribute("class", "o_dayTable_tableRow", null);
@@ -75,7 +76,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         writer.writeAttribute("style", "height: 100%", null);
 
         renderContentTable(writer, dayTable, clientId, resources);
-        encodeEventEditor(context, dayTable);
+        encodeEventEditor(context, dayTable, resources);
         encodeActionBar(context, dayTable);
 
         writer.endElement("td");
@@ -98,7 +99,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         }
     }
 
-    private void encodeEventEditor(FacesContext context, DayTable dayTable) throws IOException {
+    private void encodeEventEditor(FacesContext context, DayTable dayTable, List<TimetableResource> resources) throws IOException {
         UIComponent eventEditor = dayTable.getEventEditor();
         if (eventEditor == null) {
             eventEditor = RenderingUtil.getOrCreateFacet(context, dayTable,
@@ -106,7 +107,9 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         }
         if (eventEditor instanceof EventEditorDialog)
             ((EventEditorDialog) eventEditor).setVisible(false);
+        eventEditor.getAttributes().put(EVENTEDITOR_RESOURCES_ATTR, resources);
         eventEditor.encodeAll(context);
+        eventEditor.getAttributes().remove(EVENTEDITOR_RESOURCES_ATTR);
     }
 
 
@@ -136,10 +139,10 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         writer.endElement("tr");
     }
 
-    private List renderResourceHeadersRow(FacesContext context, final DayTable dayTable, String clientId) throws IOException {
+    private List<TimetableResource> renderResourceHeadersRow(FacesContext context, final DayTable dayTable, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ValueExpression resourcesExpression = dayTable.getResourcesValueExpression();
-        final List resources = resourcesExpression != null
+        final List<TimetableResource> resources = resourcesExpression != null
                 ? DataUtil.readDataModelExpressionAsList(context, resourcesExpression)
                 : Collections.EMPTY_LIST;
         if (resources.size() > 0) {
@@ -152,7 +155,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
                                                   int rowIndex, int colIndex) throws IOException {
                     if (colIndex == 0 || colIndex == colCount)
                         return;
-                    TimetableResource resource = (TimetableResource) resources.get(colIndex - 1);
+                    TimetableResource resource = resources.get(colIndex - 1);
                     UIComponent resourceHeader = dayTable.getResourceHeader();
                     if (resourceHeader != null) {
                         Object prevValue = ComponentUtil.setRequestMapValue("resource", resource);
@@ -169,7 +172,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         return resources;
     }
 
-    private void encodeInitScript(FacesContext context, DayTable dayTable, List resources) throws IOException {
+    private void encodeInitScript(FacesContext context, DayTable dayTable, List<TimetableResource> resources) throws IOException {
         Map<String, TimeZone> timeZoneParam = getTimeZoneParamForJSONConverter(dayTable);
         JSONArray resourcesJsArray = DataUtil.listToJSONArray(resources, timeZoneParam);
         dayTable.getAttributes().put(USE_RESOURCE_SEPARATION_MODE_ATTR, resourcesJsArray.length() > 0);
@@ -397,7 +400,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
             ResponseWriter writer,
             final DayTable dayTable,
             final String clientId,
-            final List resources) throws IOException {
+            final List<TimetableResource> resources) throws IOException {
         writer.startElement("div", dayTable);
         writer.writeAttribute("id", clientId + "::scroller", null);
         writer.writeAttribute("class", "o_dayTable_scroller", null);

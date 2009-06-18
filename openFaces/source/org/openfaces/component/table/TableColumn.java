@@ -212,15 +212,15 @@ public class TableColumn extends BaseColumn implements CompoundComponent {
         if (filterKind == null) {
             throw new IllegalStateException("FilterKind property can be set to null only through value binding.");
         } else if (filterKind.equals(FilterKind.COMBO_BOX)) {
-            filter = (DataTableFilter) RenderingUtil.getOrCreateFacet(
+            filter = RenderingUtil.getOrCreateFacet(
                     context, this, ComboBoxDataTableFilter.COMPONENT_TYPE,
                     COMBO_BOX_FILTER_CHILD_ID_SUFFIX, ComboBoxDataTableFilter.class);
         } else if (filterKind.equals(FilterKind.DROP_DOWN_FIELD)) {
-            filter = (DataTableFilter) RenderingUtil.getOrCreateFacet(
+            filter = RenderingUtil.getOrCreateFacet(
                     context, this, DropDownFieldDataTableFilter.COMPONENT_TYPE,
                     DROP_DOWN_FILTER_CHILD_ID_SUFFIX, DropDownFieldDataTableFilter.class);
         } else if (filterKind.equals(FilterKind.SEARCH_FIELD)) {
-            filter = (DataTableFilter) RenderingUtil.getOrCreateFacet(
+            filter = RenderingUtil.getOrCreateFacet(
                     context, this, SearchFieldDataTableFilter.COMPONENT_TYPE,
                     SEARCH_FIELD_FILTER_CHILD_ID_SUFFIX, SearchFieldDataTableFilter.class);
         } else
