@@ -17,6 +17,7 @@ import org.openfaces.component.input.DropDownItem;
 import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.EventEditorDialog;
 import org.openfaces.component.timetable.TimetableResource;
+import org.openfaces.component.timetable.TimetableEditingOptions;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.TableRenderer;
 import org.openfaces.renderkit.CompoundComponentRenderer;
@@ -69,8 +70,10 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
     protected void encodeCustomContent(FacesContext context, PopupLayer popupLayer) throws IOException {
         final EventEditorDialog dialog = (EventEditorDialog) popupLayer;
         final DayTable dayTable = (DayTable) dialog.getParent();
+        TimetableEditingOptions editingOptions = dayTable.getEditingOptions();
         final boolean useResourceSeparationMode = (Boolean) dayTable.getAttributes().
-                get(DayTableRenderer.USE_RESOURCE_SEPARATION_MODE_ATTR);
+                get(DayTableRenderer.USE_RESOURCE_SEPARATION_MODE_ATTR) && (editingOptions != null && editingOptions.isEventResourceEditable());
+        final boolean eventDurationEditable = (editingOptions != null && editingOptions.isEventDurationEditable());
         final UIComponent[][] components = new UIComponent[][]{
                 {
                         ComponentUtil.composeHtmlOutputText(context, popupLayer, "nameLabel", dialog.getNameLabel()),
@@ -108,7 +111,14 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
             }
 
             protected boolean isRowVisible(int rowIndex) {
-                return rowIndex != 1 || useResourceSeparationMode;
+                switch (rowIndex) {
+                    case 1:
+                        return useResourceSeparationMode;
+                    case 3:
+                        return eventDurationEditable;
+                    default:
+                        return true;
+                }
             }
 
             @Override

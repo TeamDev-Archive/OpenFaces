@@ -537,7 +537,7 @@ O$.getLastFocusableControl = function(parent) {
   return null;
 }
 
-O$.addEventHandler(document, "keypress", function(e) {
+O$.addEventHandler(document, "keydown", function(e) {
   var evt = O$.getEvent(e);
   if (evt.keyCode == 27) {
     if (O$.PopupLayer._modalWindows && O$.PopupLayer._modalWindows.length > 0) {

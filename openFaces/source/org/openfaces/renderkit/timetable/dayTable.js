@@ -1551,6 +1551,7 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
   dayTable._eventEditor = dialog;
   dialog._dayTable = dayTable;
 
+  dialog._captionText = O$(dialog.id + "--caption");
   dialog._nameField = O$.byIdOrName(dialog.id + "--nameField");
   dialog._resourceField = O$.byIdOrName(dialog.id + "--resourceField");
   dialog._startDateField = O$.byIdOrName(dialog.id + "--startDateField");
@@ -1563,7 +1564,32 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
   dialog._okButton = O$.byIdOrName(dialog.id + "--okButton");
   dialog._cancelButton = O$.byIdOrName(dialog.id + "--cancelButton");
   dialog._deleteButton = O$.byIdOrName(dialog.id + "--deleteButton");
-  dialog._captionText = O$(dialog.id + "--caption");
+
+  var fixedDurationMode = !dialog._endDateField;
+
+  function okByEnter(fld) {
+    if (!fld)
+      return;
+    if (fld instanceof Array) {
+      for (var i in fld) {
+        var entry = fld[i];
+        okByEnter(entry);
+      }
+      return;
+    }
+    fld.onkeydown = function(e) {
+      var evt = O$.getEvent(e);
+      if (evt.keyCode != 13)
+        return;
+      if (this.nodeName.toLowerCase() == "textarea") {
+        if (!evt.ctrlKey)
+          return;
+      }
+      dialog._okButton.onclick(e);
+    };
+  }
+  okByEnter([dialog._nameField, dialog._resourceField, dialog._startDateField, dialog._endDateField,
+    dialog._startTimeField, dialog._endTimeField, dialog._colorField, dialog._descriptionField]);
 
   dialog.run = function(event, mode, listeners) {
     this._event = event;
@@ -1572,9 +1598,12 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
     if (dialog._resourceField)
       dialog._resourceField.setValue(resource ? resource.name : "");
     this._startDateField.setSelectedDate(event._start);
-    this._endDateField.setSelectedDate(event._end);
+    if (this._endDateField)
+      this._endDateField.setSelectedDate(event._end);
+    var duration = event._end.getTime() - event._start.getTime();
     this._startTimeField.value = O$.formatTime(event._start);
-    this._endTimeField.value = O$.formatTime(event._end);
+    if (this._endTimeField)
+      this._endTimeField.value = O$.formatTime(event._end);
     this._color = event.color;
     this._descriptionField.value = event.description;
     this._deleteButton.style.visibility = mode == "update" ? "visible" : "hidden";
@@ -1589,34 +1618,59 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
       O$.breakEvent(e);
       event.name = dialog._nameField.value;
       var startDate = dialog._startDateField.getSelectedDate();
-      O$.parseTime(dialog._startTimeField.value, startDate);
-      var endDate = dialog._endDateField.getSelectedDate();
-      O$.parseTime(dialog._endTimeField.value, endDate);
-      if (startDate && endDate && !isNaN(startDate) && !isNaN(endDate)) { // in case of wrong values we should allow user to fix input
-        event.setStart(startDate);
-        event.setEnd(endDate);
-        event.resourceId = dayTable._idsByResourceNames[dialog._resourceField.getValue()];
-        event.color = dialog._color ? dialog._color : "";
-        event.description = dialog._descriptionField.value;
-        dialog.hide();
-        if (listeners.onok)
-          listeners.onok();
+      if (!startDate) {
+        dialog._startDateField.focus();
+        return;
       }
-    }
+      O$.parseTime(dialog._startTimeField.value, startDate);
+      var endDate = dialog._endDateField ? dialog._endDateField.getSelectedDate() : null;
+      if (dialog._endTimeField) {
+        if (!endDate) {
+          dialog._endDateField.focus();
+          return;
+        }
+        O$.parseTime(dialog._endTimeField.value, endDate);
+      }
+      if (!startDate || isNaN(startDate)) {
+        dialog._startTimeField.focus();
+        return;
+      }
+      if (!fixedDurationMode && (!endDate || isNaN(endDate))) {
+        dialog._endTimeField.focus();
+        return;
+      }
+      event.setStart(startDate);
+      if (fixedDurationMode) {
+        // fixed duration mode
+        endDate = new Date();
+        endDate.setTime(startDate.getTime() + duration);
+      }
+      event.setEnd(endDate);
+      if (dialog._resourceField)
+        event.resourceId = dayTable._idsByResourceNames[dialog._resourceField.getValue()];
+      event.color = dialog._color ? dialog._color : "";
+      event.description = dialog._descriptionField.value;
+      dialog.hide();
+      if (listeners.onok)
+        listeners.onok();
+    };
+
     this._cancelButton.onclick = function(e) {
       this._closeProcessed = true;
       O$.breakEvent(e);
       dialog.hide();
       if (listeners.oncancel)
         listeners.oncancel();
-    }
+    };
+
     this._deleteButton.onclick = function(e) {
       this._closeProcessed = true;
       O$.breakEvent(e);
       dialog.hide();
       if (listeners.ondelete)
         listeners.ondelete();
-    }
+    };
+
     this.onhide = function() {
       if (listeners.onclose)
         listeners.onclose();
@@ -1626,7 +1680,8 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
       if (dialog._textareaHeightUpdateInterval)
         clearInterval(dialog._textareaHeightUpdateInterval);
       this._closeProcessed = true;
-    }
+    };
+
     if (event.mainElement)
       O$.correctElementZIndex(this, event.mainElement, 5);
     this.showCentered();
