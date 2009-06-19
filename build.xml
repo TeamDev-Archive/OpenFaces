@@ -147,8 +147,8 @@
     <junit fork="yes" forkmode="once" failureproperty="junit_test_failed" dir="${funcTests-target.dir}">
       <classpath>
         <pathelement path="${openfaces-jar.file}"/>
+        <pathelement path="lib/seleniuminspector/patched-selenium-server.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-java-client-driver.jar"/>
-        <pathelement path="lib/seleniuminspector/patched-selenium-server.jar "/>
         <pathelement path="lib/seleniuminspector/seleniuminspector.jar"/>
         <pathelement location="${funcTests-target.dir}/classes"/>
         <pathelement path="${openfaces-inspectors-jar.file}"/>
