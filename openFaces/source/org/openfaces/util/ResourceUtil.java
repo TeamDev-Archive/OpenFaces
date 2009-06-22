@@ -11,11 +11,21 @@
  */
 package org.openfaces.util;
 
+import org.w3c.dom.Node;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.ajax4jsf.renderkit.RendererUtils;
+
 import javax.faces.application.ViewHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.FacesException;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +36,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.Locale;
 
 /**
  * @author Dmitry Pikhulya
@@ -38,6 +50,12 @@ public class ResourceUtil {
 
     private static final String OPENFACES_VERSION = "/META-INF/openFacesVersion.txt";
     private static final String VERSION_PLACEHOLDER_STR = "version";
+
+    private static String SCRIPT = RendererUtils.HTML.SCRIPT_ELEM;
+    private static String SCRIPT_UC = SCRIPT.toUpperCase(Locale.US);
+
+    private static String SRC = RendererUtils.HTML.src_ATTRIBUTE;
+    private static String SRC_UC = SRC.toUpperCase(Locale.US);
 
     private ResourceUtil() {
     }
@@ -118,7 +136,7 @@ public class ResourceUtil {
 
         String packageName = componentClass == null ? "" : getPackageName(componentClass);
         String packagePath = packageName.replace('.', '/');
-        if(packagePath.length() > 0) {
+        if (packagePath.length() > 0) {
             packagePath += "/";
         }
 
@@ -136,7 +154,6 @@ public class ResourceUtil {
     private static String versionString;
 
     /**
-     *
      * Return version of OpenFaces
      *
      * @return requested version of OpenFaces
@@ -158,7 +175,7 @@ public class ResourceUtil {
             } catch (IOException e) {
                 Log.log("Couldn't read version string", e);
             } finally {
-                if(bufferedReader != null) {
+                if (bufferedReader != null) {
                     try {
                         bufferedReader.close();
                     } catch (IOException e) {
@@ -177,7 +194,6 @@ public class ResourceUtil {
     }
 
     /**
-     *
      * Return URL of util.js file
      *
      * @param context {@link FacesContext} for the current request
@@ -199,7 +215,6 @@ public class ResourceUtil {
     }
 
     /**
-     *
      * Return URL of json javascript file
      *
      * @param context {@link FacesContext} for the current request
@@ -213,7 +228,7 @@ public class ResourceUtil {
      * Return full package name for Class
      *
      * @param aClass The Class object
-     * @return full package name for given Class 
+     * @return full package name for given Class
      */
     public static String getPackageName(Class aClass) {
         String className = aClass.getName();
@@ -226,11 +241,10 @@ public class ResourceUtil {
     }
 
     /**
+     * Register javascript library to future adding to response
      *
-     * Register javascript library to future adding to response 
-     *
-     * @param context {@link FacesContext} for the current request
-     * @param baseClass Class, relative to which the resourcePath is specified
+     * @param context        {@link FacesContext} for the current request
+     * @param baseClass      Class, relative to which the resourcePath is specified
      * @param relativeJsPath Path to the javascript file
      */
     public static void registerJavascriptLibrary(FacesContext context, Class baseClass, String relativeJsPath) {
@@ -239,11 +253,10 @@ public class ResourceUtil {
     }
 
     /**
-     *
      * Register javascript library to future adding to response
      *
      * @param facesContext {@link FacesContext} for the current request
-     * @param jsFileUrl Url for the javascript file
+     * @param jsFileUrl    Url for the javascript file
      */
     public static void registerJavascriptLibrary(FacesContext facesContext, String jsFileUrl) {
         Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
@@ -270,6 +283,7 @@ public class ResourceUtil {
 
         String ajax4jsfScriptParameter = (String) ReflectionUtil.getStaticFieldValue(richfacesContextClass, "SCRIPTS_PARAMETER");
         String ajax4jsfStylesParameter = (String) ReflectionUtil.getStaticFieldValue(richfacesContextClass, "STYLES_PARAMETER");
+        String headEventsParameter = (String) ReflectionUtil.getStaticFieldValue(richfacesContextClass, "HEAD_EVENTS_PARAMETER");
 
         if (ajax4jsfStylesParameter != null) {
             Set<String> styles = (Set<String>) requestMap.get(ajax4jsfStylesParameter);
@@ -296,11 +310,100 @@ public class ResourceUtil {
 
             requestMap.put(ajax4jsfScriptParameter, libraries);
         }
+
+        if (headEventsParameter != null) {
+            List<String> ourLibraries = (List<String>) requestMap.get(HEADER_JS_LIBRARIES);
+            final Node[] headerResources = (Node[]) requestMap.get(headEventsParameter);
+            final Node[] ourHeaderNodes = prepareHeaderNodes(ourLibraries);
+
+            if (headerResources != null) {
+                final Node[] mergedNodes = mergeHeadResourceNodes(ourHeaderNodes, headerResources);
+
+                requestMap.put(headEventsParameter, mergedNodes);
+            }
+        }
+    }
+
+
+    private static void mergeHeadResourceNode(List<Node> nodes, Set renderedScripts, Node node) {
+        boolean shouldAdd = true;
+
+        String nodeName = node.getNodeName();
+        if (SCRIPT.equals(nodeName) || SCRIPT_UC.equals(nodeName)) {
+            if (node.getFirstChild() == null) {
+                //no text content etc.
+
+                NamedNodeMap attributes = node.getAttributes();
+                if (attributes != null) {
+                    Node item = attributes.getNamedItem(SRC);
+                    if (item == null) {
+                        attributes.getNamedItem(SRC_UC);
+                    }
+
+                    if (item != null) {
+                        String src = item.getNodeValue();
+                        if (src != null) {
+                            if (renderedScripts.contains(src)) {
+                                shouldAdd = false;
+                            } else {
+                                renderedScripts.add(src);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (shouldAdd) {
+            nodes.add(node);
+        }
+    }
+
+    private static Node[] mergeHeadResourceNodes(Node[] headerJsNodes, Node[] richFacesHeaderNodes) {
+        List<Node> result = new ArrayList<Node>();
+
+        Set scripts = new HashSet();
+
+        for (Node node : richFacesHeaderNodes) {
+            mergeHeadResourceNode(result, scripts, node);
+        }
+
+        for (Node node : headerJsNodes) {
+            mergeHeadResourceNode(result, scripts, node);
+        }
+
+        return result.toArray(new Node[result.size()]);
+    }
+
+    private static Node[] prepareHeaderNodes(List<String> headerLibraries) {
+        try {
+            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            Node node = document.createElement("head");
+            document.appendChild(node);
+
+            for (String headerLibrary : headerLibraries) {
+                Element element = document.createElement("script");
+
+                element.setAttribute("type", "text/javascript");
+                element.setAttribute("src", headerLibrary);
+
+                node.appendChild(element);
+            }
+
+            NodeList childNodes = node.getChildNodes();
+            Node[] list = new Node[childNodes.getLength()];
+            for (int i = 0; i < list.length; i++) {
+                list[i] = childNodes.item(i);
+            }
+
+            return list;
+        } catch (ParserConfigurationException e) {
+            throw new FacesException(e.getLocalizedMessage(), e);
+        }
     }
 
 
     /**
-     *
      * Register OpenFaces javascript library util.js to future adding to response
      *
      * @param facesContext {@link FacesContext} for the current request
@@ -319,8 +422,8 @@ public class ResourceUtil {
         }
 
         return servletRequest.getAttribute(RenderingUtil.ON_LOAD_SCRIPTS_KEY) != null ||
-               servletRequest.getAttribute(HEADER_JS_LIBRARIES) != null || 
-               servletRequest.getAttribute(StyleUtil.DEFAULT_CSS_REQUESTED) != null;
+                servletRequest.getAttribute(HEADER_JS_LIBRARIES) != null ||
+                servletRequest.getAttribute(StyleUtil.DEFAULT_CSS_REQUESTED) != null;
     }
 
     //  public static void registerJavascriptLibrary(RequestFacade servletRequest, String relativeJsPath) {
@@ -352,8 +455,8 @@ public class ResourceUtil {
     /**
      * Render javascript file link, if not rendered early
      *
-     * @param jsFile Javascript file to include 
-     * @param context {@link FacesContext} for the current request 
+     * @param jsFile  Javascript file to include
+     * @param context {@link FacesContext} for the current request
      * @throws IOException if an input/output error occurs
      */
     public static void renderJSLinkIfNeeded(String jsFile, FacesContext context) throws IOException {
@@ -383,7 +486,6 @@ public class ResourceUtil {
     }
 
     /**
-     *
      * Return list of already rendered javascript links
      *
      * @param context {@link FacesContext} for the current request
