@@ -779,7 +779,7 @@
       <module fileurl="file://$PROJECT_DIR$/liveDemo/facelets/LiveDemoFacelets.iml" filepath="$PROJECT_DIR$/liveDemo/facelets/LiveDemoFacelets.iml" group="LiveDemo" />
       <module fileurl="file://$PROJECT_DIR$/liveDemo/jsp/LiveDemoJsp.iml" filepath="$PROJECT_DIR$/liveDemo/jsp/LiveDemoJsp.iml" group="LiveDemo" />
       <module fileurl="file://$PROJECT_DIR$/openFaces/OpenFaces.iml" filepath="$PROJECT_DIR$/openFaces/OpenFaces.iml" />
-      <module fileurl="file://$PROJECT_DIR$/seleniumInspector/OpenFacesInspectors.iml" filepath="$PROJECT_DIR$/seleniumInspector/OpenFacesInspectors.iml" />
+      <module fileurl="file://$PROJECT_DIR$/openFacesInspectors/OpenFacesInspectors.iml" filepath="$PROJECT_DIR$/openFacesInspectors/OpenFacesInspectors.iml" />
       <module fileurl="file://$PROJECT_DIR$/portletBridge/PortletBridge.iml" filepath="$PROJECT_DIR$/portletBridge/PortletBridge.iml" group="Portlets" />
       <module fileurl="file://$PROJECT_DIR$/portlets/common/PortletsCommon.iml" filepath="$PROJECT_DIR$/portlets/common/PortletsCommon.iml" group="Portlets" />
       <module fileurl="file://$PROJECT_DIR$/portlets/jboss/PortletsJBossPortal.iml" filepath="$PROJECT_DIR$/portlets/jboss/PortletsJBossPortal.iml" group="Portlets" />
@@ -924,7 +924,7 @@
     </library>
     <library name="selenium-java-client-driver">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/testLib/selenium-java-client-driver.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/selenium-java-client-driver.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
@@ -933,7 +933,7 @@
     </library>
     <library name="selenium-server">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/testLib/selenium-server.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/seleniuminspector/patched-selenium-server.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>

@@ -14,6 +14,7 @@
     <orderEntry type="library" exported="" name="selenium-java-client-driver" level="project" />
     <orderEntry type="library" exported="" name="selenium-server" level="project" />
     <orderEntry type="module" module-name="OpenFaces" />
+    <orderEntry type="library" exported="" name="SeleniumInspector" level="project" />
   </component>
 </module>
 
