@@ -314,9 +314,9 @@ public class ResourceUtil {
         if (headEventsParameter != null) {
             List<String> ourLibraries = (List<String>) requestMap.get(HEADER_JS_LIBRARIES);
             final Node[] headerResources = (Node[]) requestMap.get(headEventsParameter);
-            final Node[] ourHeaderNodes = prepareHeaderNodes(ourLibraries);
 
-            if (headerResources != null) {
+            if (headerResources != null && ourLibraries != null) {
+                final Node[] ourHeaderNodes = prepareHeaderNodes(ourLibraries);
                 final Node[] mergedNodes = mergeHeadResourceNodes(ourHeaderNodes, headerResources);
 
                 requestMap.put(headEventsParameter, mergedNodes);
