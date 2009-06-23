@@ -138,7 +138,7 @@ public class PopupLayerRenderer extends RendererBase {
         }
 
         ScriptBuilder sb = new ScriptBuilder();
-        sb.initScript(context, popup, "O$._initPopupLayer",
+        sb.initScript(context, popup, "O$.PopupLayer._init",
                 popup.getLeft(),
                 popup.getTop(),
                 popup.getWidth(),

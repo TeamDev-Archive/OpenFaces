@@ -98,12 +98,10 @@ O$.extend(O$, { /* Rectangle class */
       return this.y;
     },
     getMaxX: function() {
-      var result = this.x + this.width;
-      return result;
+      return this.x + this.width;
     },
     getMaxY: function() {
-      var result = this.y + this.height;
-      return result;
+      return this.y + this.height;
     },
 
     addRectangle: function(rect) {
@@ -1412,7 +1410,7 @@ O$.initScrollPosition_ = function(scrollPosFieldId, autoSaveScrollPos, priority,
     var scrollPosFieldId = targetComponent._of_scrollPosTrackingParams.fieldId;
     var autoSaveScrollPos = targetComponent._of_scrollPosTrackingParams.autoSave;
     targetComponent._of_scrollPosTrackingParams = null;
-    var fld = O$(scrollPosFieldId)
+    var fld = O$(scrollPosFieldId);
     if (targetComponent == window) {
       document._of_scrollPositionField = fld;
     } else {
@@ -1434,7 +1432,7 @@ O$.initScrollPosition_ = function(scrollPosFieldId, autoSaveScrollPos, priority,
       }
     });
   });
-}
+};
 
 O$.saveScrollPositionIfNeeded = function() {
   // needed for saving scroll position between ajax request under Mozilla Firefox
@@ -1447,7 +1445,7 @@ O$.saveScrollPositionIfNeeded = function() {
     var fld = O$(scrollPosFieldId);
     document._of_scrollPositionBeforeAjaxRequest = fld.value;
   }
-}
+};
 
 O$.retoreScrollPositionIfNeeded = function() {
   var isMozilla = O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/;
@@ -1458,7 +1456,7 @@ O$.retoreScrollPositionIfNeeded = function() {
     var scrollPos = document._of_scrollPositionBeforeAjaxRequest;
     O$.scrollToPosition(window, scrollPos);
   }
-}
+};
 
 O$.scrollToPosition = function(scrollableComponent, scrollPos) {
   var x, y, separatorIndex, currentScrollPos;
@@ -1477,7 +1475,7 @@ O$.scrollToPosition = function(scrollableComponent, scrollPos) {
     scrollableComponent.scrollTo(x, y);
     if (O$.isExplorer()) {
       setTimeout(function() {
-        scrollableComponent.scrollTo(x, y)
+        scrollableComponent.scrollTo(x, y);
       }, 10);
     }
   } else if (scrollPos && scrollPos != "") {
@@ -1503,16 +1501,16 @@ O$.scrollToPosition = function(scrollableComponent, scrollPos) {
       }, 10);
     }
   }
-}
+};
 
 O$.initDefaultFocus = function(trackerFieldId, focusedComponentId) {
   O$.addHiddenField(null, trackerFieldId, focusedComponentId);
   O$.initFocus_(trackerFieldId, true, 1);
-}
+};
 
 O$.initFocus = function(trackerFieldId, autoSaveFocus) {
   O$.initFocus_(trackerFieldId, autoSaveFocus, 2);
-}
+};
 
 O$.initFocus_ = function(trackerFieldId, autoSaveFocus, priority) {
   function setupFocus() {
@@ -1565,10 +1563,10 @@ O$.initFocus_ = function(trackerFieldId, autoSaveFocus, priority) {
           prevAjaxEnd();
         O$._autoSavingFocusInitialized = false;
         setupFocus();
-      }
+      };
     }
-  });                                                  
-}
+  });
+};
 
 O$._handleOnFocus = function(e) {
   O$._activeElement = this;
@@ -1598,10 +1596,10 @@ O$.setupFocusOnTags = function(parent, tagName) {
         this._of_prevOnBlurHandler(e);
       if (O$.onfocuschange)
         O$.onfocuschange(e);
-    }
+    };
   }
 
-}
+};
 
 O$.addLoadEvent(function() {
   for (var i = 0, count = document.forms.length; i < count; i++) {
@@ -1626,7 +1624,7 @@ O$.addLoadEvent(function() {
         }, 100);
       }
       this._of_prevSubmit();
-    }
+    };
   }
 
 });
@@ -1643,10 +1641,11 @@ O$.initMouseListenerUtils = function() {
       result = document._of_prevMouseMove(e);
     }
 
+    var element;
     var evt = O$.getEvent(e);
     var elementList = new Array();
     if (document._of_elementUnderMouse) {
-      for (var element = document._of_elementUnderMouse; element; element = element.parentNode) {
+      for (element = document._of_elementUnderMouse; element; element = element.parentNode) {
         element._of_mouseInside = false;
         element._of_fireMouseOut = true;
         elementList.push(element);
@@ -1654,7 +1653,7 @@ O$.initMouseListenerUtils = function() {
     }
     document._of_elementUnderMouse = evt.target ? evt.target : evt.srcElement;
     if (document._of_elementUnderMouse) {
-      for (var element = document._of_elementUnderMouse; element; element = element.parentNode) {
+      for (element = document._of_elementUnderMouse; element; element = element.parentNode) {
         element._of_mouseInside = true;
         element._of_fireMouseOver = true;
         elementList.push(element);
@@ -1670,18 +1669,19 @@ O$.initMouseListenerUtils = function() {
         el._of_fireMouseOver = undefined;
         continue;
       }
+      var listener, listenerIndex, listenerCount;
       if (el._of_fireMouseOut) {
         if (el._of_mouseOutListeners)
-          for (var listenerIndex = 0, listenerCount = el._of_mouseOutListeners.length; listenerIndex < listenerCount; listenerIndex++) {
-            var listener = el._of_mouseOutListeners[listenerIndex];
+          for (listenerIndex = 0, listenerCount = el._of_mouseOutListeners.length; listenerIndex < listenerCount; listenerIndex++) {
+            listener = el._of_mouseOutListeners[listenerIndex];
             listener(e);
           }
         el._of_fireMouseOut = undefined;
       }
       if (el._of_fireMouseOver) {
         if (el._of_mouseOverListeners)
-          for (var listenerIndex = 0, listenerCount = el._of_mouseOverListeners.length; listenerIndex < listenerCount; listenerIndex++) {
-            var listener = el._of_mouseOverListeners[listenerIndex];
+          for (listenerIndex = 0, listenerCount = el._of_mouseOverListeners.length; listenerIndex < listenerCount; listenerIndex++) {
+            listener = el._of_mouseOverListeners[listenerIndex];
             listener(e);
           }
         el._of_fireMouseOver = undefined;
@@ -1689,8 +1689,8 @@ O$.initMouseListenerUtils = function() {
     }
 
     return result;
-  }
-}
+  };
+};
 
 O$.waitForCondition = function(conditionFunction, func, conditionCheckInterval) {
   if (!conditionCheckInterval)
@@ -1701,7 +1701,7 @@ O$.waitForCondition = function(conditionFunction, func, conditionCheckInterval) 
     clearInterval(intervalId);
     func();
   }, conditionCheckInterval);
-}
+};
 
 O$.invokeFunctionAfterDelay = function(func, delay, actionId) {
   // Invokes the specified function after the specified delay in milliseconds. If another invocation request comes for
@@ -1728,7 +1728,7 @@ O$.invokeFunctionAfterDelay = function(func, delay, actionId) {
     if (actionReference._delayedInvocationCount == 0)
       func();
   }, delay);
-}
+};
 
 O$.setupHoverAndPressStateFunction = function(element, fn) {
   var state = {
@@ -1755,7 +1755,7 @@ O$.setupHoverAndPressStateFunction = function(element, fn) {
     state._update();
   });
   return state;
-}
+};
 
 O$.setupHoverStateFunction = function(element, fn) {
   O$.addMouseOverListener(element, function() {
@@ -1764,7 +1764,7 @@ O$.setupHoverStateFunction = function(element, fn) {
   O$.addMouseOutListener(element, function() {
     fn(false, element);
   });
-}
+};
 
 O$.setupMousePressedStateFunction = function(element, fn) {
   O$.addEventHandler(element, "mousedown", function() {
@@ -1773,7 +1773,7 @@ O$.setupMousePressedStateFunction = function(element, fn) {
   O$.addEventHandler(element, "mouseup", function() {
     fn(false, element);
   });
-}
+};
 
 O$.addMouseOverListener = function(element, listener) {
   if (O$.isExplorer()) {
@@ -1784,7 +1784,7 @@ O$.addMouseOverListener = function(element, listener) {
   if (!element._of_mouseOverListeners)
     element._of_mouseOverListeners = new Array();
   element._of_mouseOverListeners.push(listener);
-}
+};
 
 O$.addMouseOutListener = function(element, listener) {
   if (O$.isExplorer()) {
@@ -1795,7 +1795,7 @@ O$.addMouseOutListener = function(element, listener) {
   if (!element._of_mouseOutListeners)
     element._of_mouseOutListeners = new Array();
   element._of_mouseOutListeners.push(listener);
-}
+};
 
 O$.isEventFromInsideOfElement = function(e, element) {
   var evt = O$.getEvent(e);
@@ -1805,7 +1805,7 @@ O$.isEventFromInsideOfElement = function(e, element) {
       return true;
   }
   return false;
-}
+};
 
 O$.disabledContextMenuFor = function(element) {
   if (element) {
@@ -1816,7 +1816,7 @@ O$.disabledContextMenuFor = function(element) {
     };
     element._isDisabledContextMenu = true;
   }
-}
+};
 
 O$.enabledContextMenuFor = function(element) {
   if (element) {
@@ -1827,7 +1827,7 @@ O$.enabledContextMenuFor = function(element) {
     };
     element._isDisabledContextMenu = false;
   }
-}
+};
 
 
 O$.getTargetComponentHasOwnMouseBehavior = function(evt) {
@@ -1854,7 +1854,7 @@ O$.getTargetComponentHasOwnMouseBehavior = function(evt) {
     }(element);
   }
   return elementHasItsOwnMouseBehavior;
-}
+};
 
 O$.startDragAndDrop = function(e, draggable, simulateDblClickForElement) {
   var evt = O$.getEvent(e);
@@ -1894,7 +1894,7 @@ O$.startDragAndDrop = function(e, draggable, simulateDblClickForElement) {
   O$.breakEvent(evt);
   if (document._fireDocumentClicked)
     document._fireDocumentClicked(evt);
-}
+};
 
 
 O$.handleDragMove = function(e) {
@@ -1936,7 +1936,7 @@ O$.handleDragMove = function(e) {
   draggable._lastDragOffsetTop = offsetTopAfterDragging;
 
   O$.breakEvent(evt);
-}
+};
 
 O$.handleDragEnd = function(e) {
   var evt = O$.getEvent(e);
@@ -1954,7 +1954,7 @@ O$.handleDragEnd = function(e) {
     O$.breakEvent(evt);
   }
   draggable._draggingInProgress = false;
-}
+};
 
 /**
  * Avoids IE issue where mouse events on an absolute element without backgroud and content "leak" to the underlying layer
@@ -1966,7 +1966,7 @@ O$.fixIEEventsForTransparentLayer = function(layerElement) {
     layerElement.style.background = "white";
     O$.setOpacityLevel(layerElement, 0);
   }
-}
+};
 
 O$._enableIFrameFix = function () {
   if (document._of_transparentLayer) {
@@ -1997,18 +1997,18 @@ O$._enableIFrameFix = function () {
       O$.sendEvent(document, "mousemove");
     }, false);
   }
-}
+};
 
 O$._disableIframeFix = function () {
   if (document._of_transparentLayer) {
     document._of_transparentLayer.style.display = "none";
   }
-}
+};
 
 O$._simulateFixedPosForBlockingLayer = function() {
   return O$.isExplorer() /* ie doesn't support fixed pos */ ||
          O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/ /* mozilla's blocking layer hides cursor of text-field in fixed-pos popup-layer (JSFC-1930) */;
-}
+};
 
 
 O$.showFocusOutline = function(component, outlineStyleClass) {
@@ -2031,18 +2031,18 @@ O$.showFocusOutline = function(component, outlineStyleClass) {
               width + outlineToControlSpacingPx * 2,
               height + outlineToControlSpacingPx * 2
               ));
-    }
+    };
     component._focusOutline = outline;
   }
   component._focusOutline._updatePosition();
   component._focusOutline.show();
-}
+};
 
 O$.hideFocusOutline = function(component) {
   if (!component._focusOutline)
     return;
   component._focusOutline.hide();
-}
+};
 
 O$._tableBlurCounter = 0;
 
@@ -2051,24 +2051,19 @@ O$.isControlFocusable = function(control) {
     return false;
 
   if (control._focusable)
-  if (control._focusable)
     return true;
   var tagName = control.tagName;
   if (!tagName)
     return false;
   tagName = tagName.toLowerCase();
-  if (
-      (tagName == "input" && control.type != "hidden") ||
-      tagName == "select" ||
-      tagName == "textarea" ||
-      tagName == "button" ||
-      tagName == "a" ||
-      (tagName == "span" && O$.checkClassNameUsed(control, "rich-inplace-select")) ||
-      (tagName == "div" && O$.checkClassNameUsed(control, "rich-inplace")))
-    return true;
-  else
-    return false;
-}
+  return (tagName == "input" && control.type != "hidden") ||
+         tagName == "select" ||
+         tagName == "textarea" ||
+         tagName == "button" ||
+         tagName == "a" ||
+         (tagName == "span" && O$.checkClassNameUsed(control, "rich-inplace-select")) ||
+         (tagName == "div" && O$.checkClassNameUsed(control, "rich-inplace"));
+};
 
 O$.setupArtificialFocus = function(component, focusedClassName, tabindex) {
   component._focused = false;
@@ -2083,12 +2078,12 @@ O$.setupArtificialFocus = function(component, focusedClassName, tabindex) {
       O$.showFocusOutline(this, null);
     else
       O$.hideFocusOutline(this);
-  }
+  };
 
   component._blockOutlineUpdate = function() {
     this._outlineUpdateBlocked = true;
     this._focusedBeforeBlocking = this._focused;
-  }
+  };
 
   component._unblockOutlineUpdate = function () {
     if (!O$._tableBlurCounter)
@@ -2100,7 +2095,7 @@ O$.setupArtificialFocus = function(component, focusedClassName, tabindex) {
     } else {
       component._doUnblockOutlineUpdate();
     }
-  }
+  };
   component._doUnblockOutlineUpdate = function() {
     this._outlineUpdateBlocked = false;
     if (this._focusedBeforeBlocking != null && this._focusedBeforeBlocking != this._focused) {
@@ -2114,7 +2109,7 @@ O$.setupArtificialFocus = function(component, focusedClassName, tabindex) {
       }
     }
     this._updateOutline();
-  }
+  };
 
   component._prevOnfocusHandler_af = component.onfocus;
   component._prevOnblurHandler_af = component.onblur;
@@ -2127,7 +2122,7 @@ O$.setupArtificialFocus = function(component, focusedClassName, tabindex) {
       this._prevOnfocusHandler_af(evt);
 
     component._updateOutline();
-  }
+  };
   component.onblur = function(evt) {
     if (this._submitting)
       return;
@@ -2141,7 +2136,7 @@ O$.setupArtificialFocus = function(component, focusedClassName, tabindex) {
     } else {
       component._updateOutline();
     }
-  }
+  };
 
   var focusControl = O$.createHiddenFocusElement(tabindex);
 
@@ -2160,20 +2155,20 @@ O$.setupArtificialFocus = function(component, focusedClassName, tabindex) {
     this._prevStatusText = window.status;
     window.status = "";
     return fireEvent(this._destComponent, "onfocus", evt);
-  }
+  };
   focusControl.onblur = function(evt) {
     window.status = this._prevStatusText;
     return fireEvent(this._destComponent, "onblur", evt);
-  }
+  };
   focusControl.onkeydown = function(evt) {
     return fireEvent(this._destComponent, "onkeydown", evt);
-  }
+  };
   focusControl.onkeyup = function(evt) {
     return fireEvent(this._destComponent, "onkeyup", evt);
-  }
+  };
   focusControl.onkeypress = function(evt) {
     return fireEvent(this._destComponent, "onkeypress", evt);
-  }
+  };
 
 
   component._focusControl = focusControl;
@@ -2197,7 +2192,7 @@ O$.setupArtificialFocus = function(component, focusedClassName, tabindex) {
     this._preventPageScrolling = true;
     this.focus();
     this._preventPageScrolling = false;
-  }
+  };
 
   component._focusable = true;
   component.focus = function() {
@@ -2214,11 +2209,11 @@ O$.setupArtificialFocus = function(component, focusedClassName, tabindex) {
     } catch(e) {
       //in IE hidden element can't receive focus 
     }
-  }
+  };
 
   component.blur = function() {
     this._focusControl.blur();
-  }
+  };
 
   O$.addEventHandlerSimple(component, "click", "_focusOnClick");
   O$.addEventHandlerSimple(component, "mousedown", "_blockOutlineUpdate");
@@ -2233,8 +2228,8 @@ O$.setupArtificialFocus = function(component, focusedClassName, tabindex) {
       oldUnloadHandler();
     if (component._focusOutline)
       component._focusOutline.remove();
-  }
-}
+  };
+};
 
 // ----------------- STYLE UTILITIES ---------------------------------------------------
 
@@ -2243,7 +2238,7 @@ O$.addCssRules = function(ruleArray) {
     var rule = ruleArray[i];
     O$.addCssRule(rule);
   }
-}
+};
 
 O$.getLocalStyleSheet = function() {
   var styleSheets = document.styleSheets;
@@ -2286,7 +2281,7 @@ O$.getLocalStyleSheet = function() {
     }
   }
   return document._of_localStyleSheet;
-}
+};
 
 O$.addCssRule = function(strRule) {
   var styleSheet = O$.getLocalStyleSheet();
@@ -2311,7 +2306,7 @@ O$.addCssRule = function(strRule) {
     throw e;
   }
 
-}
+};
 
 O$._dynamicRulesCreated = 0;
 O$.createCssClass = function(declaration, disableCaching) {
@@ -2329,7 +2324,7 @@ O$.createCssClass = function(declaration, disableCaching) {
     document._cachedDynamicCssRules[declaration] = className;
   }
   return className;
-}
+};
 
 O$.findCssRule = function(selector) {
   var rules = O$.findCssRules([selector]);
@@ -2338,7 +2333,7 @@ O$.findCssRule = function(selector) {
   if (rules.length == 0)
     return null;
   return rules[0];
-}
+};
 
 /**
  * Searches for CSS rules with the specified selectors, and returns an array of CSSStyleRule (or CSSRule) objects
@@ -2349,7 +2344,7 @@ O$.findCssRules = function(selectors) {
   if (!styleSheets)
     return undefined;
 
-  var selectorCount = selectors.length
+  var selectorCount = selectors.length;
   if (selectorCount == 0)
     return [];
 
@@ -2379,19 +2374,20 @@ O$.findCssRules = function(selectors) {
     }
   }
   return rulesFound;
-}
+};
 
 O$.getStyleClassProperty = function(styleClass, propertyName) {
   var propertyValues = O$.getStyleClassProperties(styleClass, [propertyName]);
   return propertyValues[propertyName];
-}
+};
 
 O$.getStyleClassProperties = function(styleClass, propertyNames) {
   if (!styleClass || propertyNames.length == 0)
     return {};
   var classNames = styleClass.split(" ");
   var classSelectors = new Array();
-  for (var i = 0, count = classNames.length; i < count; i++) {
+  var i, count;
+  for (i = 0, count = classNames.length; i < count; i++) {
     var className = classNames[i];
     if (className)
       classSelectors.push("." + className);
@@ -2403,7 +2399,7 @@ O$.getStyleClassProperties = function(styleClass, propertyNames) {
   var propertyCount = propertyNames.length;
   var propertyValues = new Object();
   var propertyImportantFlags = new Array();
-  for (var i = 0, count = cssRules.length; i < count; i++) {
+  for (i = 0, count = cssRules.length; i < count; i++) {
     var cssRule = cssRules[i];
     var ruleStyle = cssRule.style;
     for (var propertyIndex = 0; propertyIndex < propertyCount; propertyIndex++) {
@@ -2428,7 +2424,7 @@ O$.getStyleClassProperties = function(styleClass, propertyNames) {
   }
 
   return propertyValues;
-}
+};
 
 //
 
@@ -2439,9 +2435,8 @@ O$.combineClassNames = function(classNames) {
     if (className)
       nonNullClassNames.push(className);
   }
-  var result = nonNullClassNames.join(" ");
-  return result;
-}
+  return nonNullClassNames.join(" ");
+};
 
 O$.appendClassNames = function(element, classesToAppend) {
   var oldClassName = element.className;
@@ -2451,7 +2446,7 @@ O$.appendClassNames = function(element, classesToAppend) {
   if (newClassName != oldClassName)
     element.className = newClassName;
   return oldClassName;
-}
+};
 
 O$.checkClassNameUsed = function(element, className) {
   var classNames = element.className.split(" ");
@@ -2462,7 +2457,7 @@ O$.checkClassNameUsed = function(element, className) {
   }
 
   return false;
-}
+};
 
 O$.excludeClassNames = function(element, classesToExclude) {
   var newClassesToExclude = new Array();
@@ -2494,7 +2489,7 @@ O$.excludeClassNames = function(element, classesToExclude) {
   if (element.className != newClsName)
     element.className = newClsName;
   return someClassesExcluded;
-}
+};
 
 O$.getElementOwnStyle = function(element) {
   var styleMappings = element._styleMappings;
@@ -2502,7 +2497,7 @@ O$.getElementOwnStyle = function(element) {
     return element.className;
   else
     return styleMappings.__initialStyle;
-}
+};
 
 O$.setElementOwnStyle = function(element, value) {
   var styleMappings = element._styleMappings;
@@ -2510,7 +2505,7 @@ O$.setElementOwnStyle = function(element, value) {
     return element.className = value;
   else
     return styleMappings.__initialStyle = value;
-}
+};
 
 O$.setElementStyleMappings = function(element, styleMappings) {
   if (!element._styleMappings)
@@ -2543,12 +2538,12 @@ O$.setElementStyleMappings = function(element, styleMappings) {
     if (element._classNameChangeHandler)
       element._classNameChangeHandler();
   }
-}
+};
 
 O$.getElementStyleProperty = function(element, propertyName, enableValueCaching) {
   var propertyValues = O$.getElementStyleProperties(element, [propertyName], enableValueCaching);
   return propertyValues[propertyName];
-}
+};
 
 O$.getElementStyleProperties = function(element, propertyNames, enableValueCaching) {
   if (enableValueCaching) {
@@ -2586,7 +2581,7 @@ O$.getElementStyleProperties = function(element, propertyNames, enableValueCachi
   }
 
   return propertyValues;
-}
+};
 
 
 O$.capitalizeCssPropertyName = function(propertyName) {
@@ -2604,7 +2599,7 @@ O$.capitalizeCssPropertyName = function(propertyName) {
     }
     propertyName = firstPart + secondPart;
   }
-}
+};
 
 O$.repaintAreaForOpera = function(element, deferredRepainting) {
   if (!O$.isOpera())
@@ -2628,7 +2623,7 @@ O$.repaintAreaForOpera = function(element, deferredRepainting) {
   element.style.backgroundColor = "white";
   element.style.backgroundColor = "#fefefe";
   element.style.backgroundColor = oldBackgroundColor;
-}
+};
 
 // JSFC-3270
 O$.repaintWindowForSafari = function(deferredRepainting) {
@@ -2644,22 +2639,22 @@ O$.repaintWindowForSafari = function(deferredRepainting) {
     return;
   }
   var tempDiv = document.createElement("div");
-  tempDiv.innerHTML = "<div> <style type='text/css'> .d_u_m_p_c_l_a_s_s_ { background: black; filter: alpha( opacity = 50 ); opacity: .50; } </style> </div>"
-}
+  tempDiv.innerHTML = "<div> <style type='text/css'> .d_u_m_p_c_l_a_s_s_ { background: black; filter: alpha( opacity = 50 ); opacity: .50; } </style> </div>";
+};
 
 O$.preloadImage = function(imageUrl) {
   if (!imageUrl)
     return;
   var image = new Image();
   image.src = imageUrl;
-}
+};
 
 O$.preloadImages = function(imageUrls) {
   for (var i = 0, count = imageUrls.length; i < count; i++) {
     var imageUrl = imageUrls[i];
     O$.preloadImage(imageUrl);
   }
-}
+};
 
 O$.blendColors = function(colorString1, colorString2, color2Proportion) {
   if (color2Proportion < 0)
@@ -2667,7 +2662,7 @@ O$.blendColors = function(colorString1, colorString2, color2Proportion) {
   else if (color2Proportion > 1)
     color2Proportion = 1;
   return new O$.Color(colorString1).blendWith(new O$.Color(colorString2), color2Proportion).toHtmlColorString();
-}
+};
 
 O$.Color = function(htmlColorString) {
   if (!O$.stringStartsWith(htmlColorString, "#"))
@@ -2685,7 +2680,7 @@ O$.Color = function(htmlColorString) {
     }
 
     return "#" + intTo2DigitHex(this.r) + intTo2DigitHex(this.g) + intTo2DigitHex(this.b);
-  }
+  };
 
   this.blendWith = function(anotherColor, anotherColorPortion) {
     function blendValues(val1, val2, val2Portion) {
@@ -2696,13 +2691,13 @@ O$.Color = function(htmlColorString) {
     this.g = blendValues(this.g, anotherColor.g, anotherColorPortion);
     this.b = blendValues(this.b, anotherColor.b, anotherColorPortion);
     return this;
-  }
+  };
 
-}
+};
 
 O$.getOpacityLevel = function(element) {
   return element._of_opacity !== undefined ? element._of_opacity : 1;
-}
+};
 
 O$.setOpacityLevel = function(element, opacity) {
   if (opacity < 0)
@@ -2721,7 +2716,7 @@ O$.setOpacityLevel = function(element, opacity) {
     element.style.KhtmlOpacity = "";
   }
   element._of_opacity = opacity;
-}
+};
 
 /*
  Ensures that z-index of the specified element is greater than that of the specified reference element.
@@ -2733,7 +2728,7 @@ O$.correctElementZIndex = function(element, referenceElement, zIndexIncrement) {
   var refZIndex = referenceElement._maxZIndex ? referenceElement._maxZIndex : O$.getElementZIndex(referenceElement);
   if (zIndex <= refZIndex)
     element.style.zIndex = refZIndex + zIndexIncrement;
-}
+};
 
 /*
  Calculates z-index for the specified element, or if it is not a positioned element itself,
@@ -2745,7 +2740,7 @@ O$.getElementZIndex = function(element) {
     return 0;
   var zIndex = O$.getNumericStyleProperty(container, "z-index");
   return zIndex;
-}
+};
 
 O$.getContainingBlock = function(element, ignoreThisElement) {
   for (var el = !ignoreThisElement ? element : element.parentNode; el; el = el.parentNode) {
@@ -2753,7 +2748,7 @@ O$.getContainingBlock = function(element, ignoreThisElement) {
       return el;
   }
   return null;
-}
+};
 
 // ----------------- DATE/TIME UTILITIES ---------------------------------------------------
 
@@ -2766,25 +2761,25 @@ O$.initDateTimeFormatObject = function(months, shortMonths, days, shortDays, loc
     this._dateTimeFormatLocales.push(localeStr);
   }
 
-}
+};
 
 O$.getDateTimeFormatObject = function(locale) {
   if (this._dateTimeFormatMap)
     return this._dateTimeFormatMap[locale];
   return null;
-}
+};
 
 O$.parseDateTime = function(str) {
   var fields = str.split(" ");
   var dateStr = fields[0];
   var timeStr = fields[1];
 
-  var dtf = O$.getDateTimeFormatObject(this._dateTimeFormatLocales[0])
+  var dtf = O$.getDateTimeFormatObject(this._dateTimeFormatLocales[0]);
   var date = dtf.parse(dateStr, "dd/MM/yyyy");
 
   O$.parseTime(timeStr, date);
   return date;
-}
+};
 
 O$.parseTime = function(timeStr, destDate) {
   if (!destDate)
@@ -2795,7 +2790,7 @@ O$.parseTime = function(timeStr, destDate) {
   destDate.setHours(hours, minutes, 0, 0);
   return destDate;
 
-}
+};
 
 O$.formatDateTime = function(date) {
   if (!date)
@@ -2804,7 +2799,7 @@ O$.formatDateTime = function(date) {
   var str = dtf.format(date, "dd/MM/yyyy");
   str += " " + O$.formatTime(date);
   return str;
-}
+};
 
 O$.formatTime = function(date) {
   if (!date)
@@ -2814,7 +2809,7 @@ O$.formatTime = function(date) {
   if (minutes < 10)
     minutes = "0" + minutes;
   return hours + ":" + minutes;
-}
+};
 
 // ----------------- ABSOLUTE POSITIONING / METRICS UTILITIES ---------------------------------------------------
 
@@ -2828,7 +2823,7 @@ O$.getDefaultAbsolutePositionParent = function() {
       prnt = document.documentElement;
   }
   return prnt;
-}
+};
 
 O$.createAbsolutePositionedElement = function(parent) {
   var elt = document.createElement("div");
@@ -2837,7 +2832,7 @@ O$.createAbsolutePositionedElement = function(parent) {
     parent = O$.getDefaultAbsolutePositionParent();
   parent.appendChild(elt);
   return elt;
-}
+};
 
 /*
  O$.calculateNumericStyleProperty doesn't work when calculating margin on a table under Mozilla 2 for some reason,
@@ -2856,7 +2851,7 @@ O$.calculateMozillaMargins = function(element) {
   marginTop = Math.max(marginTop, O$.calculateNumericCSSValue(element.style.marginTop));
   marginBottom = Math.max(marginBottom, O$.calculateNumericCSSValue(element.style.marginBottom));
   return {marginLeft: marginLeft, marginRight: marginRight, marginTop: marginTop, marginBottom: marginBottom};
-}
+};
 
 /*
  Returns an object {left, top} that points to the top-left corner of the specified element. This method takes into account
@@ -3003,7 +2998,7 @@ O$.getElementPos = function(element, relativeToNearestContainingBlock) {
     element = offsetParent;
   }
   return {left: left, top: top};
-}
+};
 
 O$.getCuttingContainingRectangle = function(element, cachedDataContainer) {
   var left, right, top, bottom;
@@ -3030,7 +3025,7 @@ O$.getCuttingContainingRectangle = function(element, cachedDataContainer) {
   var visibleAreaRect = O$.getVisibleAreaRectangle();
   result.intersectWith(visibleAreaRect);
   return result;
-}
+};
 
 O$.getVisibleElementBorderRectangle = function(element, relativeToNearestContainingBlock, cachedDataContainer) {
   var rect = O$.getElementBorderRectangle(element, relativeToNearestContainingBlock, cachedDataContainer);
@@ -3045,7 +3040,7 @@ O$.getVisibleElementBorderRectangle = function(element, relativeToNearestContain
   }
   rect.intersectWith(cuttingRect);
   return rect;
-}
+};
 
 /*
  Returns the O$.Rectangle object that corresponds to the bounding rectangle of the passed element. This method takes
@@ -3080,7 +3075,7 @@ O$.getElementBorderRectangle = function(element, relativeToNearestContainingBloc
     element._of_getElementRectangle._cachedValue = rect;
   }
   return rect;
-}
+};
 
 O$.getElementSize = function(element) {
   var width = element.offsetWidth;
@@ -3092,7 +3087,7 @@ O$.getElementSize = function(element) {
     height -= margins.marginTop + margins.marginBottom;
   }
   return {width: width, height: height};
-}
+};
 
 O$.getElementPaddingRectangle = function(element, relativeToNearestContainngBlock, cachedDataContainer) {
   var rect = O$.getElementBorderRectangle(element, relativeToNearestContainngBlock, cachedDataContainer);
@@ -3105,7 +3100,7 @@ O$.getElementPaddingRectangle = function(element, relativeToNearestContainngBloc
   rect.width -= borderLeftWidth + borderRightWidth;
   rect.height -= borderTopWidth + borderBottomWidth;
   return rect;
-}
+};
 
 /*
  Moves the specified element to the specified position (specified as {left, top} object). More exactly the top-left
@@ -3116,7 +3111,7 @@ O$.getElementPaddingRectangle = function(element, relativeToNearestContainngBloc
 O$.setElementPos = function(element, pos) {
   element.style.left = pos.left + "px";
   element.style.top = pos.top + "px";
-}
+};
 
 O$.setElementSize = function(element, size, _paddingsHaveBeenReset) {
   var width = size.width;
@@ -3125,10 +3120,14 @@ O$.setElementSize = function(element, size, _paddingsHaveBeenReset) {
   if (!_paddingsHaveBeenReset)
     O$.excludeClassNames(element, ["o_zeroPaddings"]);
   if (!O$.isExplorer() || O$.isStrictMode()) {
-    width -= O$.getNumericStyleProperty(element, "padding-left") + O$.getNumericStyleProperty(element, "padding-right");
-    height -= O$.getNumericStyleProperty(element, "padding-top") + O$.getNumericStyleProperty(element, "padding-bottom");
-    width -= O$.getNumericStyleProperty(element, "border-left-width") + O$.getNumericStyleProperty(element, "border-right-width");
-    height -= O$.getNumericStyleProperty(element, "border-top-width") + O$.getNumericStyleProperty(element, "border-bottom-width");
+    if (width != null) {
+      width -= O$.getNumericStyleProperty(element, "padding-left") + O$.getNumericStyleProperty(element, "padding-right");
+      width -= O$.getNumericStyleProperty(element, "border-left-width") + O$.getNumericStyleProperty(element, "border-right-width");
+    }
+    if (height != null) {
+      height -= O$.getNumericStyleProperty(element, "padding-top") + O$.getNumericStyleProperty(element, "padding-bottom");
+      height -= O$.getNumericStyleProperty(element, "border-top-width") + O$.getNumericStyleProperty(element, "border-bottom-width");
+    }
   }
   if (!_paddingsHaveBeenReset && (width < 0 || height < 0)) {
     // make it possible to specify element rectangle less than the size of element's paddings
@@ -3140,9 +3139,11 @@ O$.setElementSize = function(element, size, _paddingsHaveBeenReset) {
     width = 0;
   if (height < 0)
     height = 0;
-  element.style.width = width + "px";
-  element.style.height = height + "px";
-}
+  if (width != null)
+    element.style.width = width + "px";
+  if (height != null)
+    element.style.height = height + "px";
+};
 
 /*
  Changes size and position of the specified element according to the specified rectangle. The rectangle speicifies
@@ -3150,10 +3151,10 @@ O$.setElementSize = function(element, size, _paddingsHaveBeenReset) {
 
  See also: O$.getElementBorderRectangle, O$.getElementPos, O$.setElementPos.
  */
-O$.setElementBorderRectangle = function(element, rect, _paddingsHaveBeenReset) {
+O$.setElementBorderRectangle = function(element, rect) {
   O$.setElementSize(element, {width: rect.width, height: rect.height});
   O$.setElementPos(element, {left: rect.x, top: rect.y});
-}
+};
 
 /**
  * Introduced according to CSS spec http://www.w3.org/TR/REC-CSS2/visudet.html#containing-block-details
@@ -3169,7 +3170,7 @@ O$.isContainingBlock = function(elt) {
   var position = O$.getElementStyleProperty(elt, "position");
   if (!position) return false;
   return position != "static";
-}
+};
 
 
 O$.getVisibleAreaSize = function() {
@@ -3196,7 +3197,7 @@ O$.getVisibleAreaSize = function() {
     height = document.body.clientHeight;
   }
   return {width : width, height : height};
-}
+};
 
 O$.getVisibleAreaRectangle = function() {
   var pageScrollPos = O$.getPageScrollPos();
@@ -3206,7 +3207,7 @@ O$.getVisibleAreaRectangle = function() {
   var width = visibleAreaSize.width;
   var height = visibleAreaSize.height;
   return new O$.Rectangle(x, y, width, height);
-}
+};
 
 O$.scrollElementIntoView = function(element, cachedDataContainer) {
   var scrollingOccured = false;
@@ -3240,7 +3241,7 @@ O$.scrollElementIntoView = function(element, cachedDataContainer) {
     }
   }
   return scrollingOccured;
-}
+};
 
 O$.scrollRectIntoView = function(rect) {
   var visibleRect = O$.getVisibleAreaRectangle();
@@ -3264,7 +3265,7 @@ O$.scrollRectIntoView = function(rect) {
     dy = rect.getMinY() - newMinY;
 
   window.scrollBy(dx, dy);
-}
+};
 
 O$.getScrollPos = function(scrollableComponent) {
   var x = 0;
@@ -3281,7 +3282,7 @@ O$.getScrollPos = function(scrollableComponent) {
   }
 
   return {x: x, y: y};
-}
+};
 
 O$.getPageScrollPos = function() {
   var x = 0;
@@ -3300,11 +3301,11 @@ O$.getPageScrollPos = function() {
     x = document.documentElement.scrollLeft;
   }
   return {x: x, y: y};
-}
+};
 
 O$.setPageScrollPos = function(scrollPos) {
   window.scrollTo(scrollPos.x, scrollPos.y);
-}
+};
 
 O$.getNumericStyleProperty = function(element, propertyName, enableValueCaching) {
   if (O$.isExplorer() || O$.isOpera()) {
@@ -3320,7 +3321,7 @@ O$.getNumericStyleProperty = function(element, propertyName, enableValueCaching)
   var str = O$.getElementStyleProperty(element, propertyName, enableValueCaching);
   var result = O$.calculateNumericCSSValue(str);
   return result;
-}
+};
 
 O$.calculateNumericCSSValue = function(value) {
   if (!value)
@@ -3341,7 +3342,7 @@ O$.calculateNumericCSSValue = function(value) {
   pixelValue = O$.calculateLineWidth(value + " solid white");
   O$._nonPixelValueMeasurements[value] = pixelValue;
   return pixelValue;
-}
+};
 
 O$.calculateLineWidth = function(lineStyleStr) {
   if (!lineStyleStr)
@@ -3372,7 +3373,7 @@ O$.calculateLineWidth = function(lineStyleStr) {
   document.body.removeChild(outerDiv);
   window._of_lineWidthValueMeasurements[lineStyleStr] = width;
   return width;
-}
+};
 
 O$.CENTER = "center";
 O$.LEFT = "left";
@@ -3492,35 +3493,81 @@ O$.alignPopupByElement = function(popup, element, horizAlignment, vertAlignment,
   }
   if (repositioningAttempt)
     return true;
-}
+};
 
 O$.isAlignmentInsideOfElement = function(horizAlignment, vertAlignment) {
   var insideHorizontaly = horizAlignment == O$.LEFT_EDGE || horizAlignment == O$.CENTER || horizAlignment == O$.RIGHT_EDGE;
   var insideVertically = vertAlignment == O$.TOP_EDGE || vertAlignment == O$.CENTER || vertAlignment == O$.BOTTOM_EDGE;
   return insideHorizontaly && insideVertically;
-}
+};
 
 O$.fixInputsWidthStrict = function(container) {
   if (!O$.isStrictMode())
     return;
 
+  function addFieldForAutocorrection(field, widthCorrection, heightCorrection) {
+    if (!O$._fieldsForAutocorrection)
+      O$._fieldsForAutocorrection = [];
+    O$._fieldsForAutocorrection.push(field);
+    field._autocorrectSize = function() {
+      var container = field.parentNode;
+      var containerSize = O$.getElementSize(container);
+      var fieldSize = O$.getElementSize(field);
+      if (widthCorrection) {
+        fieldSize.width = containerSize.width - widthCorrection;
+        fieldSize.width -= O$.getNumericStyleProperty(container, "padding-left") + O$.getNumericStyleProperty(container, "padding-right");
+      } else
+        fieldSize.width = null;
+      if (heightCorrection) {
+        fieldSize.height = containerSize.height - heightCorrection;
+        fieldSize.height -= O$.getNumericStyleProperty(container, "padding-top") + O$.getNumericStyleProperty(container, "padding-bottom");
+      } else
+        fieldSize.height = null;
+      O$.setElementSize(field, fieldSize);
+    };
+    if (!O$._fieldSizeAutocorrectionInterval)
+      O$._fieldSizeAutocorrectionInterval = setInterval(function() {
+        for (var i in O$._fieldsForAutocorrection) {
+          var f = O$._fieldsForAutocorrection[i];
+          if (typeof f != "function")
+            f._autocorrectSize();
+        }
+      }, 100);
+    field._autocorrectSize();
+  }
+
   function processInput(input) {
     if (input._strictWidthFixed)
       return;
     input._strictWidthFixed = true;
+    var widthCorrection;
     if (O$.getStyleClassProperty(input.className, "width") == "100%") {
       var bordersX = O$.getNumericStyleProperty(input, "border-left-width") + O$.getNumericStyleProperty(input, "border-right-width");
       var paddingsX = O$.getNumericStyleProperty(input, "padding-left") + O$.getNumericStyleProperty(input, "padding-right");
       var parent = input.parentNode;
-      var parentPaddingRight = O$.getNumericStyleProperty(parent, "padding-right");
-      parent.style.paddingRight = parentPaddingRight + bordersX + paddingsX + "px";
+      widthCorrection = bordersX + paddingsX;
     }
+    var heightCorrection;
     if (O$.getStyleClassProperty(input.className, "height") == "100%") {
       var bordersY = O$.getNumericStyleProperty(input, "border-top-width") + O$.getNumericStyleProperty(input, "border-bottom-width");
       var paddingsY = O$.getNumericStyleProperty(input, "padding-top") + O$.getNumericStyleProperty(input, "padding-bottom");
-      var parentPaddingBottom = O$.getNumericStyleProperty(parent, "padding-bottom");
-      parent.style.paddingBottom = parentPaddingBottom + bordersY + paddingsY + "px";
+      heightCorrection = bordersY + paddingsY;
     }
+
+//    if (!O$.isExplorer()) {
+      if (widthCorrection) {
+        var parentPaddingRight = O$.getNumericStyleProperty(parent, "padding-right");
+        parent.style.paddingRight = parentPaddingRight + widthCorrection + "px";
+      }
+      if (heightCorrection) {
+        var parentPaddingBottom = O$.getNumericStyleProperty(parent, "padding-bottom");
+        parent.style.paddingBottom = parentPaddingBottom + heightCorrection + "px";
+      }
+//    } else {
+//      if (widthCorrection || heightCorrection)
+//        addFieldForAutocorrection(input, widthCorrection, heightCorrection);
+//    }
+
   }
 
   var inputs = container.getElementsByTagName("input");
@@ -3532,7 +3579,7 @@ O$.fixInputsWidthStrict = function(container) {
     processInput(textAreas[i]);
   }
 
-}
+};
 
 // ----------------- HIDE <SELECT> CONTROLS UNDER POPUP IN IE ---------------------------------------------------
 
@@ -3546,7 +3593,7 @@ O$.walkControlsToHide = function(popup, runFunction) {
       runFunction.call(this, control);
     }
   }
-}
+};
 
 O$.hideControlsUnderPopup = function(popup) {
   if (O$.isExplorer() && O$._controlsToHide && O$._controlsToHide.length > 0) {
@@ -3556,7 +3603,7 @@ O$.hideControlsUnderPopup = function(popup) {
       controlData.visibility = control.style.visibility;
       O$._controlsHiddenControlsMap[control.id] = controlData;
       control.style.visibility = "hidden";
-    }
+    };
 
     var rectangle = new O$.Rectangle(popup.offsetLeft, popup.offsetTop, popup.offsetWidth, popup.offsetHeight);
     popup._coveredControls = new Array();
@@ -3578,7 +3625,7 @@ O$.hideControlsUnderPopup = function(popup) {
 
     O$.walkControlsToHide(popup, runFunction);
   }
-}
+};
 
 O$.unhideControlsUnderPopup = function(popup) {
   if (O$.isExplorer() && O$._controlsToHide && O$._controlsToHide.length > 0) {
@@ -3587,11 +3634,11 @@ O$.unhideControlsUnderPopup = function(popup) {
       if (controlData && (controlData.id == popup.id)) {
         control.style.visibility = controlData.visibility;
       }
-    }
+    };
     O$.walkControlsToHide(popup, runFunction);
     popup._coveredControls = null;
   }
-}
+};
 
 O$.initIETransparencyWorkaround = function(popup) {
   if (!O$.isExplorer() || O$.isExplorer7())
@@ -3615,7 +3662,7 @@ O$.initIETransparencyWorkaround = function(popup) {
     iframe.style.height = popup.offsetHeight + "px";
     iframe.style.left = popup.offsetLeft + "px";
     iframe.style.top = popup.offsetTop + "px";
-  }
+  };
 
   var popupZIndex = O$.getElementStyleProperty(popup, "z-index");
   if (!popupZIndex) {
@@ -3627,7 +3674,7 @@ O$.initIETransparencyWorkaround = function(popup) {
   iframe.style.display = "none";
   popup.parentNode.insertBefore(iframe, popup);
   popup._preCreatedIETransparencyControl = iframe;
-}
+};
 
 O$.addIETransparencyControl = function(popup) {
   if (!popup._requireTransparencyWorkaround)
@@ -3643,7 +3690,7 @@ O$.addIETransparencyControl = function(popup) {
   iframe.style.display = "";
   iframe._updatePositionAndSize();
   popup._ieTransparencyControl = iframe;
-}
+};
 
 O$.removeIETransparencyControl = function(popup) {
   if (!popup._requireTransparencyWorkaround || !popup._ieTransparencyControl)
@@ -3651,14 +3698,14 @@ O$.removeIETransparencyControl = function(popup) {
 
   popup._ieTransparencyControl.style.display = "none";
   popup._ieTransparencyControl = undefined;
-}
+};
 
 O$.isInvisible = function(element) {
   if (!element.style) {
     return false;
   }
   return element.style.display == "none" || element.style.visibility == "hidden";
-}
+};
 
 O$.isVisibleRecursive = function(element) {
   if (O$.isInvisible(element))
@@ -3669,7 +3716,7 @@ O$.isVisibleRecursive = function(element) {
     return true;
 
   return O$.isVisibleRecursive(parentNode);
-}
+};
 
 
 // ----------------- EFFECTS ---------------------------------------------------
@@ -3701,7 +3748,7 @@ O$.getInterpolatedValue = function(value1, value2, value2Proportion) {
   value1 = O$.calculateNumericCSSValue(value1);
   value2 = O$.calculateNumericCSSValue(value2);
   return value1 + (value2 - value1) * value2Proportion + "px";
-}
+};
 
 /*
  Similar to O$.calculateElementStyleProperty, but it supports some "pseudo" properties for the sake of simplicity and
@@ -3716,7 +3763,7 @@ O$.getElementEffectProperty = function(element, property) {
     return O$.getElementBorderRectangle(element, true);
 
   return O$.getElementStyleProperty(element, property);
-}
+};
 
 O$.setElementEffectProperty = function(element, property, value) {
   if (property == "opacity")
@@ -3727,7 +3774,7 @@ O$.setElementEffectProperty = function(element, property, value) {
       O$.setElementBorderRectangle(element, value);
     else
       element.style[property] = value;
-}
+};
 
 O$.runTransitionEffect = function(element, propertyNames, newValues, transitionPeriod, updateInterval, events) {
   if (transitionPeriod === undefined || transitionPeriod < 0)
@@ -3793,7 +3840,7 @@ O$.runTransitionEffect = function(element, propertyNames, newValues, transitionP
           transition.oncomplete();
       }
     }, updateInterval)
-  }
+  };
   O$.assignEvents(transition, events, true);
 
   if (!element._of_performingTransitionForProperties)
@@ -3811,4 +3858,4 @@ O$.runTransitionEffect = function(element, propertyNames, newValues, transitionP
   }
 
   return transition;
-}
+};

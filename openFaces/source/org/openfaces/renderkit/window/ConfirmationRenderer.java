@@ -234,7 +234,7 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
             invokerId = null;
 
         ScriptBuilder sb = new ScriptBuilder();
-        sb.initScript(context, confirmation, "O$._initConfirmation",
+        sb.initScript(context, confirmation, "O$.Confirmation._init",
                 invokerId,
                 confirmation.getEvent(),
                 confirmation.getDefaultButton(),
@@ -274,7 +274,7 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
         String rolloverCancelButtonStyle = StyleUtil.getCSSClass(context, component, confirmation.getRolloverCancelButtonStyle(), StyleGroup.rolloverStyleGroup(), confirmation.getRolloverCancelButtonClass(), DEFAULT_ROLLOVER_BUTTON_CLASS);
         rolloverCancelButtonStyle = StyleUtil.mergeClassNames(cancelButtonStyle, rolloverCancelButtonStyle);
 
-        sb.initScript(context, confirmation, "O$._initConfirmationInnerStyles",// todo: remove separate style initialization function
+        sb.initScript(context, confirmation, "O$.Confirmation._initInnerStyles",// todo: remove separate style initialization function
                 iconAreaStyle,
                 rolloverIconAreaStyle,
                 textAreaStyle,

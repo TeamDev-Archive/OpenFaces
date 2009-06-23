@@ -10,11 +10,10 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-O$.WINDOW_NORMAL = "normal";
-O$.WINDOW_MAXIMIZED = "maximized";
-O$.WINDOW_MINIMIZED = "minimized";
-
 O$.Window = {
+  STATE_NORMAL: "normal",
+  STATE_MAXIMIZED: "maximized",
+  STATE_MINIMIZED: "minimized",
 
   _init: function(windowId, resizable, draggableByContent, minWidth, minHeight) {
     var win = O$(windowId);
@@ -35,15 +34,17 @@ O$.Window = {
     win._contentRow = O$(windowId + "::contentRow");
     win._footerRow = O$(windowId + "::footerRow");
 
-    win._state = O$.WINDOW_NORMAL;
+    win._state = O$.Window.STATE_NORMAL;
     win._declaredResizable = resizable;
 
     if (win._caption && !draggableByContent)
       win._caption.onmousedown = function(e) {
+        if (win._draggingDisabled)
+          return;
         O$._enableIFrameFix();
         O$.addEventHandler(document, "mouseup", O$._disableIframeFix, true);
         O$.startDragAndDrop(e, win, win._caption);
-      }
+      };
 
     O$.Window._processCaptionStyle(win);
 
@@ -53,7 +54,7 @@ O$.Window = {
           win.restore();
         else
           win.maximize();
-      }
+      };
 
     win._resizable = false;
     win._setResizable = function(resizable) {
@@ -64,13 +65,13 @@ O$.Window = {
         O$.Window._createResizers(win);
       else
         O$.Window._removeResizers(win);
-    }
+    };
     win._setResizable(win._declaredResizable);
 
     win._setPos = function(left, top) {
       win.setLeft(left);
       win.setTop(top);
-    }
+    };
 
     win._setSize = function(width, height) {
       O$.setElementSize(win, {width: width, height: height});
@@ -81,7 +82,7 @@ O$.Window = {
       }
       if (this._sizeChanged)
         this._sizeChanged();
-    }
+    };
 
     win._setRect = function(rect) {
       this._rect = rect;
@@ -90,7 +91,7 @@ O$.Window = {
       this._setSize(rect.width, rect.height);
       if (resizable)
         this._updateResizersPos();
-    }
+    };
 
     win._afterShow = function() {
       if (win._postponedInitialization) {
@@ -103,17 +104,17 @@ O$.Window = {
       if (resizable)
         win._updateResizersPos();
       win._updateContentPos();
-    }
+    };
 
     win._afterHide = function() {
       if (resizable)
         this._updateResizersPos();
-    }
+    };
 
     win._positionChanged = function() {
       if (resizable)
         this._updateResizersPos();
-    }
+    };
 
     win._updateContentPos = function() {
       if (O$.getElementStyleProperty(this._content, "position", true) != "absolute")
@@ -132,30 +133,30 @@ O$.Window = {
               this._rect.height - borderTop - borderBottom - captionHeight
               ));
       this._content.style.visibility = "visible";
-    }
+    };
 
     win._sizeChanged = function() {
       this._updateContentPos();
-    }
+    };
 
     win.isMinimized = function() {
-      return this._state == O$.WINDOW_MINIMIZED;
-    }
+      return this._state == O$.Window.STATE_MINIMIZED;
+    };
 
     win.isNormal = function() {
-      return this._state == O$.WINDOW_NORMAL;
-    }
+      return this._state == O$.Window.STATE_NORMAL;
+    };
 
     win.isMaximized = function() {
-      return this._state == O$.WINDOW_MAXIMIZED;
-    }
+      return this._state == O$.Window.STATE_MAXIMIZED;
+    };
 
     win.minimize = function() {
-      if (this._state == O$.WINDOW_MINIMIZED)
+      if (this._state == O$.Window.STATE_MINIMIZED)
         return;
       this.restore();
       this._setResizable(false);
-      this._setState(O$.WINDOW_MINIMIZED);
+      this._setState(O$.Window.STATE_MINIMIZED);
       this._normalSize = O$.getElementSize(this);
       var contentSize = O$.getElementSize(this._content);
       var footerSize = this._footerRow ? O$.getElementSize(this._footerRow) : null;
@@ -168,13 +169,14 @@ O$.Window = {
       var rect = O$.getElementBorderRectangle(this, true);
       var newHeight = rect.height - contentSize.height - (this._footerRow ? footerSize.height : 0);
       this._setRect(new O$.Rectangle(rect.x, rect.y, rect.width, newHeight));
-    }
+    };
     win.maximize = function() {
-      if (this._state == O$.WINDOW_MAXIMIZED)
+      if (this._state == O$.Window.STATE_MAXIMIZED)
         return;
       this.restore();
       this._setResizable(false);
-      this._setState(O$.WINDOW_MAXIMIZED);
+      this._draggingDisabled = true;
+      this._setState(O$.Window.STATE_MAXIMIZED);
 
       this._normalRectangle = O$.getElementBorderRectangle(this, true);
       var rect = O$.getVisibleAreaRectangle();
@@ -185,11 +187,11 @@ O$.Window = {
         rect.y -= containerPos.y;
       }
       this._setRect(rect);
-    }
+    };
     win.restore = function() {
-      if (this._state == O$.WINDOW_NORMAL)
+      if (this._state == O$.Window.STATE_NORMAL)
         return;
-      if (this._state == O$.WINDOW_MINIMIZED) {
+      if (this._state == O$.Window.STATE_MINIMIZED) {
         this._contentRow.style.display = this._contentRow._originalDisplay;
         if (this._footerRow)
           this._footerRow.style.display = this._footerRow._originalDisplay;
@@ -197,13 +199,14 @@ O$.Window = {
         this._setRect(new O$.Rectangle(rect.x, rect.y, this._normalSize.width, this._normalSize.height));
         this._normalSize = null;
       }
-      if (this._state == O$.WINDOW_MAXIMIZED) {
+      if (this._state == O$.Window.STATE_MAXIMIZED) {
         this._setRect(this._normalRectangle);
         this._normalRectangle = null;
       }
-      this._setState(O$.WINDOW_NORMAL);
+      this._setState(O$.Window.STATE_NORMAL);
       win._setResizable(win._declaredResizable);
-    }
+      this._draggingDisabled = false;
+    };
 
     win._setState = function(state) {
       this._state = state;
@@ -213,7 +216,7 @@ O$.Window = {
         var listener = this._stateChangeListeners[i];
         listener(this);
       }
-    }
+    };
   },
 
   _addStateChangeListener: function(win, listener) {
@@ -298,18 +301,18 @@ O$.Window = {
         var rect = resizerRectFromWindowRect(windowRect);
         O$.setElementBorderRectangle(resizer, rect);
         this._rect = rect;
-      }
+      };
       resizer.onmousedown = function (e) {
         O$._enableIFrameFix();
         O$.addEventHandler(document, "mouseup", O$._disableIframeFix, true);
         O$.startDragAndDrop(e, this);
-      }
+      };
 
       resizer.setPosition = function(x, y, dx, dy) {
         var rect = O$.getElementBorderRectangle(win, true);
         this._resizeFunction(rect, dx, dy);
         win._setRect(rect);
-      }
+      };
       resizer.onmousemove = function(e) {
         if (this._draggingInProgress)
           return;
@@ -324,10 +327,10 @@ O$.Window = {
           this._resizeFunction = resizeCorner2;
           this._getPositionLeft = function() {
             return this._rect.getMaxX();
-          }
+          };
           this._getPositionTop = function() {
             return this._rect.getMaxY();
-          }
+          };
         } else if (coord < adjustedCornerLength) {
           this.style.cursor = corner1Cursor;
           this._resizeFunction = resizeCorner1;
@@ -338,7 +341,7 @@ O$.Window = {
           this._getPositionLeft = this._getPositionTop = null;
         }
 
-      }
+      };
       return resizer;
     }
 
@@ -363,35 +366,35 @@ O$.Window = {
     win._resizeTopLeftCorner = function(rect, dx, dy) {
       win._resizeTopEdge(rect, dx, dy);
       win._resizeLeftEdge(rect, dx, dy);
-    }
+    };
     win._resizeTopRightCorner = function(rect, dx, dy) {
       win._resizeTopEdge(rect, dx, dy);
       win._resizeRightEdge(rect, dx, dy);
-    }
+    };
     win._resizeBottomLeftCorner = function(rect, dx, dy) {
       win._resizeBottomEdge(rect, dx, dy);
       win._resizeLeftEdge(rect, dx, dy);
-    }
+    };
     win._resizeBottomRightCorner = function(rect, dx, dy) {
       win._resizeBottomEdge(rect, dx, dy);
       win._resizeRightEdge(rect, dx, dy);
-    }
+    };
 
 
     var topResizer = createResizer(function(rect) {
-      return new O$.Rectangle(rect.x - halfResizerWidth, rect.y - halfResizerWidth, rect.width + resizerWidth, resizerWidth)
+      return new O$.Rectangle(rect.x - halfResizerWidth, rect.y - halfResizerWidth, rect.width + resizerWidth, resizerWidth);
     }, true, win._resizeTopEdge, win._resizeTopLeftCorner, win._resizeTopRightCorner, "n-resize", "nw-resize", "ne-resize");
 
     var bottomResizer = createResizer(function(rect) {
-      return new O$.Rectangle(rect.x - halfResizerWidth, rect.getMaxY() - halfResizerWidth, rect.width + resizerWidth, resizerWidth)
+      return new O$.Rectangle(rect.x - halfResizerWidth, rect.getMaxY() - halfResizerWidth, rect.width + resizerWidth, resizerWidth);
     }, true, win._resizeBottomEdge, win._resizeBottomLeftCorner, win._resizeBottomRightCorner, "s-resize", "sw-resize", "se-resize");
 
     var leftResizer = createResizer(function(rect) {
-      return new O$.Rectangle(rect.x - halfResizerWidth, rect.y + halfResizerWidth, resizerWidth, rect.height - resizerWidth)
+      return new O$.Rectangle(rect.x - halfResizerWidth, rect.y + halfResizerWidth, resizerWidth, rect.height - resizerWidth);
     }, false, win._resizeLeftEdge, win._resizeTopLeftCorner, win._resizeBottomLeftCorner, "w-resize", "nw-resize", "sw-resize");
 
     var rightResizer = createResizer(function(rect) {
-      return new O$.Rectangle(rect.getMaxX() - halfResizerWidth, rect.y + halfResizerWidth, resizerWidth, rect.height - resizerWidth)
+      return new O$.Rectangle(rect.getMaxX() - halfResizerWidth, rect.y + halfResizerWidth, resizerWidth, rect.height - resizerWidth);
     }, false, win._resizeRightEdge, win._resizeTopRightCorner, win._resizeBottomRightCorner, "e-resize", "ne-resize", "se-resize");
 
     win._resizers = [topResizer, bottomResizer, leftResizer, rightResizer];
@@ -405,7 +408,7 @@ O$.Window = {
         O$.correctElementZIndex(resizer, win);
         return true;
       });
-    }
+    };
     win._updateResizersPos();
   },
 
@@ -428,4 +431,4 @@ O$.Window = {
     win._caption.style.paddingLeft = win._caption.style.paddingRight =
                                      win._caption.style.paddingTop = win._caption.style.paddingBottom = "0";
   }
-}
+};
