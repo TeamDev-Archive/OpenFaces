@@ -35,6 +35,7 @@ public class ScrollPositionTest extends OpenFacesTestCase {
 
         sleep(500);
         ElementInspector inputText = element("formID:inputTextId");
+        window().setCursorPosition(0);
         inputText.focus();
         inputText.setCursorPosition(0);
         sleep(500);
