@@ -29,6 +29,19 @@
               timetableChangeListener="#{TimeTableBean.processTimetableChanges1}"
               preloadedEvents="none"
               scrollTime="#{TimeTableBean.scrollTime}">
+        <f:facet name="eventEditor">
+          <o:eventEditorDialog labelStyle="font: normal 10pt Tahoma, Arial; color: gray" captionStyle="font: normal 12pt Tahoma, Arial; color: gray" deleteButtonStyle="color: red;">
+            <f:facet name="nameField">
+              <h:inputText style="color: blue"/>
+            </f:facet>
+            <f:facet name="startDateField">
+              <o:dateChooser fieldStyle="color: blue" calendarStyle="border: 1px solid blue"/>
+            </f:facet>
+            <f:facet name="descriptionArea">
+              <o:inputTextarea promptText="Enter event description here"/>
+            </f:facet>
+          </o:eventEditorDialog>
+        </f:facet>
         <o:eventArea horizontalAlignment="rightEdge" verticalAlignment="topEdge" style="margin: 0; padding: 0;">
           <o:dropDownField id="colorField"
                            value="#{TimeTableBean.eventColor1}"

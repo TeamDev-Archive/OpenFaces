@@ -23079,16 +23079,6 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <name>colorLabel</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default "Color:" -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
       <name>descriptionLabel</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -23120,6 +23110,86 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <name>deleteButtonText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>labelStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>labelClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>okButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>okButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>cancelButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>cancelButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>deleteButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>deleteButtonClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

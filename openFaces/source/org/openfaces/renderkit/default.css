@@ -474,6 +474,10 @@
   overflow: hidden;
 }
 
+.o_eventEditor_timeField {
+  width: 50px;
+}
+
 .o_eventEditor_buttonsArea {
   text-align: right;
   padding-top: 6px;

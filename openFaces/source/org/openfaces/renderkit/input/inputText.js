@@ -40,7 +40,7 @@ O$._initInputText = function(componentId,
 
   if (inputText._promptText) {
     if (inputText.value.length == 0 ||
-        ((inputText.value == inputText._promptText) && inputText._statePrompt.value == 'true')) {   // needed for FireFox, when press F5 key
+        ((inputText.value == inputText._promptText) && inputText._statePrompt.value == "true")) {   // needed for FireFox, when press F5 key
       inputText.value = inputText._promptText;
       inputText._addInClassName(inputText._promptTextClass);
       inputText._statePrompt.value = true;
@@ -48,12 +48,38 @@ O$._initInputText = function(componentId,
   } else
     inputText._statePrompt.value = false;
 
-  O$.addEventHandler(inputText, 'focus', function() {
+  inputText.getValue = function() {
+    if (inputText._focused)
+      return inputText.value;
+
+    if (inputText._statePrompt.value == "true")
+      return "";
+    return inputText.value;
+  }
+
+  inputText.setValue = function(value) {
+    if (!value)
+      value = "";
+    inputText.value = value;
+    if (inputText._focused)
+      return;
+    inputText._statePrompt.value = !value;
+    if (value)
+      inputText._removeOfClassName(inputText._promptTextClass);
+    else {
+      inputText._addInClassName(inputText._promptTextClass);
+      if (inputText._promptText)
+        inputText.value = inputText._promptText;
+    }
+  }
+
+  O$.addEventHandler(inputText, "focus", function() {
+    inputText._focused = true;
     if (focusedClass)
       inputText._addInClassName(inputText._focusedClass);
 
     if (inputText._promptText) {
-      if ((inputText.value == inputText._promptText) && (inputText._statePrompt.value == 'true')) {
+      if ((inputText.value == inputText._promptText) && (inputText._statePrompt.value == "true")) {
         inputText.value = "";
         if (promptTextClass)
           inputText._removeOfClassName(inputText._promptTextClass);
@@ -62,7 +88,8 @@ O$._initInputText = function(componentId,
     }
   });
 
-  O$.addEventHandler(inputText, 'blur', function() {
+  O$.addEventHandler(inputText, "blur", function() {
+    inputText._focused = false;
     if (focusedClass)
       inputText._removeOfClassName(inputText._focusedClass);
 
@@ -78,16 +105,16 @@ O$._initInputText = function(componentId,
   });
 
   if (rolloverClass && (!isDisable)) {
-    O$.addEventHandler(inputText, 'mouseover', function() {
+    O$.addEventHandler(inputText, "mouseover", function() {
       inputText._addInClassName(inputText._rolloverClass);
     });
-    O$.addEventHandler(inputText, 'mouseout', function() {
+    O$.addEventHandler(inputText, "mouseout", function() {
       inputText._removeOfClassName(inputText._rolloverClass);
     });
   }
 
   if (O$.isMozillaFF())
-    O$.addEventHandler(inputText, 'keyup', function(evt) {
+    O$.addEventHandler(inputText, "keyup", function(evt) {
       if (evt.keyCode == 27) { // ESC key
         if (inputText.value == inputText._promptText) {
           inputText.value = "";
@@ -98,5 +125,5 @@ O$._initInputText = function(componentId,
 }
 
 O$._inputText_getClassName = function(param) {
-  return (param == null) ? '' : param;
+  return (param == null) ? "" : param;
 }

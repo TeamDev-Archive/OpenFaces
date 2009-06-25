@@ -16,20 +16,21 @@ import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItem;
 import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.EventEditorDialog;
-import org.openfaces.component.timetable.TimetableResource;
 import org.openfaces.component.timetable.TimetableEditingOptions;
+import org.openfaces.component.timetable.TimetableResource;
 import org.openfaces.component.window.PopupLayer;
-import org.openfaces.renderkit.TableRenderer;
 import org.openfaces.renderkit.CompoundComponentRenderer;
+import org.openfaces.renderkit.TableRenderer;
 import org.openfaces.renderkit.window.WindowRenderer;
 import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.FunctionCallScript;
 import org.openfaces.util.HTML;
 import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.StyleUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.FunctionCallScript;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlInputTextarea;
@@ -45,10 +46,6 @@ import java.util.List;
  */
 public class EventEditorDialogRenderer extends WindowRenderer implements CompoundComponentRenderer {
     public void createSubComponents(FacesContext context, UIComponent component) {
-        EventEditorDialog dialog = (EventEditorDialog) component;
-        HtmlOutputText captionText = ComponentUtil.createOutputText(context, "");
-        captionText.setId(dialog.getId() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "caption");
-        dialog.setCaption(captionText);
     }
 
     @Override
@@ -76,26 +73,26 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
         final boolean eventDurationEditable = (editingOptions != null && editingOptions.isEventDurationEditable());
         final UIComponent[][] components = new UIComponent[][]{
                 {
-                        ComponentUtil.composeHtmlOutputText(context, popupLayer, "nameLabel", dialog.getNameLabel()),
-                        getNameField(context, popupLayer)
+                        createLabelComponent(context, dialog, "nameLabel", dialog.getNameLabel()),
+                        getNameField(context, dialog)
                 },
                 {
-                        ComponentUtil.composeHtmlOutputText(context, popupLayer, "resourceLabel", dialog.getResourceLabel()),
-                        getResourceField(context, popupLayer)
+                        createLabelComponent(context, dialog, "resourceLabel", dialog.getResourceLabel()),
+                        getResourceField(context, dialog)
                 },
                 {
-                        ComponentUtil.composeHtmlOutputText(context, popupLayer, "startLabel", dialog.getStartLabel()),
-                        createDateTimeFields(context, popupLayer, "start")
+                        createLabelComponent(context, dialog, "startLabel", dialog.getStartLabel()),
+                        createDateTimeFields(context, dialog, "start")
                 },
                 {
-                        ComponentUtil.composeHtmlOutputText(context, popupLayer, "endLabel", dialog.getEndLabel()),
-                        createDateTimeFields(context, popupLayer, "end")
+                        createLabelComponent(context, dialog, "endLabel", dialog.getEndLabel()),
+                        createDateTimeFields(context, dialog, "end")
                 },
                 {
-                        ComponentUtil.composeHtmlOutputText(context, popupLayer, "descriptionLabel", dialog.getDescriptionLabel()),
+                        createLabelComponent(context, dialog, "descriptionLabel", dialog.getDescriptionLabel()),
                 },
                 {
-                        getDescriptionField(context, popupLayer)
+                        getDescriptionField(context, dialog)
                 },
                 {
                         null
@@ -145,13 +142,18 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
                     writer.writeAttribute("class", "o_eventEditor_buttonsArea", null);
 
                     HtmlCommandButton deleteButton = ComponentUtil.createButtonFacet(context, dialog, "deleteButton", dialog.getDeleteButtonText());
-                    deleteButton.setStyle("float: left");
+                    deleteButton.setStyle(StyleUtil.mergeStyles("float: left", dialog.getDeleteButtonStyle()));
+                    deleteButton.setStyleClass(dialog.getDeleteButtonClass());
                     deleteButton.encodeAll(context);
 
                     HtmlCommandButton okButton = ComponentUtil.createButtonFacet(context, dialog, "okButton", dialog.getOkButtonText());
+                    okButton.setStyle(dialog.getOkButtonStyle());
+                    okButton.setStyleClass(dialog.getOkButtonClass());
                     okButton.encodeAll(context);
                     HtmlCommandButton cancelButton = ComponentUtil.createButtonFacet(context, dialog, "cancelButton", dialog.getCancelButtonText());
                     writer.write(HTML.NBSP_ENTITY);
+                    cancelButton.setStyle(dialog.getCancelButtonStyle());
+                    cancelButton.setStyleClass(dialog.getCancelButtonClass());
                     cancelButton.encodeAll(context);
                     writer.endElement("div");
 
@@ -166,30 +168,37 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
         }.render(popupLayer, components);
     }
 
+    private HtmlOutputText createLabelComponent(FacesContext context, EventEditorDialog dialog, String id, String text) {
+        HtmlOutputText outputText = ComponentUtil.composeHtmlOutputText(context, dialog, id, text);
+        outputText.setStyle(dialog.getLabelStyle());
+        outputText.setStyleClass(dialog.getLabelClass());
+        return outputText;
+    }
+
     @Override
     protected void encodeScriptsAndStyles(FacesContext context, PopupLayer component) throws IOException {
         super.encodeScriptsAndStyles(context, component);
-        RenderingUtil.renderInitScript(context, new ScriptBuilder().functionCall("O$.fixInputsWidthStrict", 
+        RenderingUtil.renderInitScript(context, new ScriptBuilder().functionCall("O$.fixInputsWidthStrict",
                 new FunctionCallScript("O$", component)));
 
     }
 
-    private UIComponent getDescriptionField(FacesContext context, PopupLayer popupLayer) {
-        HtmlInputTextarea descriptionField = RenderingUtil.getOrCreateFacet(context, popupLayer,
-                HtmlInputTextarea.COMPONENT_TYPE, "descriptionField", HtmlInputTextarea.class);
-        descriptionField.setStyleClass("o_fullWidthAndHeight");
-        descriptionField.setStyle("resize: none");
+    private UIComponent getDescriptionField(FacesContext context, EventEditorDialog dialog) {
+        UIInput descriptionField = RenderingUtil.getOrCreateFacet(context, dialog,
+                HtmlInputTextarea.COMPONENT_TYPE, "descriptionArea", UIInput.class);
+        descriptionField.getAttributes().put("styleClass", "o_fullWidthAndHeight");
+        descriptionField.getAttributes().put("style", "resize: none");
         return descriptionField;
     }
 
-    private UIComponent getNameField(FacesContext context, PopupLayer popupLayer) {
-        HtmlInputText nameField = RenderingUtil.getOrCreateFacet(context, popupLayer, HtmlInputText.COMPONENT_TYPE, "nameField", HtmlInputText.class);
-        nameField.setStyleClass("o_fullWidth");
+    private UIComponent getNameField(FacesContext context, EventEditorDialog dialog) {
+        UIInput nameField = RenderingUtil.getOrCreateFacet(context, dialog, HtmlInputText.COMPONENT_TYPE, "nameField", UIInput.class);
+        nameField.getAttributes().put("styleClass", "o_fullWidth");
         return nameField;
     }
 
-    private UIComponent createDateTimeFields(FacesContext context, PopupLayer popupLayer, String idPrefix) {
-        HtmlPanelGrid container = RenderingUtil.getOrCreateFacet(context, popupLayer,
+    private UIComponent createDateTimeFields(FacesContext context, EventEditorDialog dialog, String idPrefix) {
+        HtmlPanelGrid container = RenderingUtil.getOrCreateFacet(context, dialog,
                 HtmlPanelGrid.COMPONENT_TYPE, idPrefix + "Fields", HtmlPanelGrid.class);
         container.setCellpadding("0");
         container.setCellspacing("0");
@@ -198,20 +207,21 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
         List<UIComponent> children = container.getChildren();
         children.clear();
 
-        children.add(RenderingUtil.getOrCreateFacet(context, popupLayer, DateChooser.COMPONENT_TYPE, idPrefix + "DateField", DateChooser.class));
+        children.add(RenderingUtil.getOrCreateFacet(context, dialog, DateChooser.COMPONENT_TYPE, idPrefix + "DateField", DateChooser.class));
         children.add(ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY, false));
-        HtmlInputText timeField = RenderingUtil.getOrCreateFacet(context, popupLayer, HtmlInputText.COMPONENT_TYPE, idPrefix + "TimeField", HtmlInputText.class);
-        timeField.setStyle("width: 50px");
+        UIInput timeField = RenderingUtil.getOrCreateFacet(context, dialog, HtmlInputText.COMPONENT_TYPE, idPrefix + "TimeField", UIInput.class);
+        String timeCls = StyleUtil.mergeClassNames((String) timeField.getAttributes().get("styleClass"), "o_eventEditor_timeField");
+        timeField.getAttributes().put("styleClass", timeCls);
 
         children.add(timeField);
         return container;
     }
 
-    private UIComponent getResourceField(FacesContext context, PopupLayer popupLayer) {
-        DropDownField field = RenderingUtil.getOrCreateFacet(context, popupLayer, DropDownField.COMPONENT_TYPE,
+    private UIComponent getResourceField(FacesContext context, EventEditorDialog dialog) {
+        DropDownField field = RenderingUtil.getOrCreateFacet(context, dialog, DropDownField.COMPONENT_TYPE,
                 "resourceField", DropDownField.class);
 
-        List<TimetableResource> resources = (List<TimetableResource>) popupLayer.getAttributes().get(
+        List<TimetableResource> resources = (List<TimetableResource>) dialog.getAttributes().get(
                 DayTableRenderer.EVENTEDITOR_RESOURCES_ATTR);
         for (TimetableResource resource : resources) {
             field.getChildren().add(new DropDownItem(resource.getName()));

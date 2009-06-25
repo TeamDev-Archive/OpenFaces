@@ -1551,7 +1551,6 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
   dayTable._eventEditor = dialog;
   dialog._dayTable = dayTable;
 
-  dialog._captionText = O$(dialog.id + "--caption");
   dialog._nameField = O$.byIdOrName(dialog.id + "--nameField");
   dialog._resourceField = O$.byIdOrName(dialog.id + "--resourceField");
   dialog._startDateField = O$.byIdOrName(dialog.id + "--startDateField");
@@ -1560,7 +1559,7 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
   dialog._endTimeField = O$.byIdOrName(dialog.id + "--endTimeField");
   dialog._colorField = O$.byIdOrName(dialog.id + "--colorField");
   dialog._color = "";
-  dialog._descriptionField = O$.byIdOrName(dialog.id + "--descriptionField");
+  dialog._descriptionArea = O$.byIdOrName(dialog.id + "--descriptionArea");
   dialog._okButton = O$.byIdOrName(dialog.id + "--okButton");
   dialog._cancelButton = O$.byIdOrName(dialog.id + "--cancelButton");
   dialog._deleteButton = O$.byIdOrName(dialog.id + "--deleteButton");
@@ -1589,11 +1588,24 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
     };
   }
   okByEnter([dialog._nameField, dialog._resourceField, dialog._startDateField, dialog._endDateField,
-    dialog._startTimeField, dialog._endTimeField, dialog._colorField, dialog._descriptionField]);
+    dialog._startTimeField, dialog._endTimeField, dialog._colorField, dialog._descriptionArea]);
+
+  function getFieldText(field) {
+    if (field.getValue)
+      return field.getValue();
+    return field.value;
+  }
+
+  function setFieldText(field, text) {
+    if (field.setValue)
+      field.setValue(text);
+    else
+      field.value = text;
+  }
 
   dialog.run = function(event, mode, listeners) {
     this._event = event;
-    this._nameField.value = event.name;
+    setFieldText(this._nameField, event.name);
     var resource = dayTable._getResourceForEvent(event);
     if (dialog._resourceField)
       dialog._resourceField.setValue(resource ? resource.name : "");
@@ -1601,14 +1613,14 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
     if (this._endDateField)
       this._endDateField.setSelectedDate(event._end);
     var duration = event._end.getTime() - event._start.getTime();
-    this._startTimeField.value = O$.formatTime(event._start);
+    setFieldText(this._startTimeField, O$.formatTime(event._start));
     if (this._endTimeField)
-      this._endTimeField.value = O$.formatTime(event._end);
+      setFieldText(this._endTimeField, O$.formatTime(event._end));
     this._color = event.color;
-    this._descriptionField.value = event.description;
+    setFieldText(this._descriptionArea, event.description);
     this._deleteButton.style.visibility = mode == "update" ? "visible" : "hidden";
-    O$.removeAllChildNodes(this._captionText);
-    this._captionText.appendChild(document.createTextNode(mode == "update"
+    O$.removeAllChildNodes(this._captionContent);
+    this._captionContent.appendChild(document.createTextNode(mode == "update"
             ? editEventCaption
             : newEventCaption));
 
@@ -1616,20 +1628,20 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
     this._okButton.onclick = function(e) {
       this._closeProcessed = true;
       O$.breakEvent(e);
-      event.name = dialog._nameField.value;
+      event.name = getFieldText(dialog._nameField);
       var startDate = dialog._startDateField.getSelectedDate();
       if (!startDate) {
         dialog._startDateField.focus();
         return;
       }
-      O$.parseTime(dialog._startTimeField.value, startDate);
+      O$.parseTime(getFieldText(dialog._startTimeField), startDate);
       var endDate = dialog._endDateField ? dialog._endDateField.getSelectedDate() : null;
       if (dialog._endTimeField) {
         if (!endDate) {
           dialog._endDateField.focus();
           return;
         }
-        O$.parseTime(dialog._endTimeField.value, endDate);
+        O$.parseTime(getFieldText(dialog._endTimeField), endDate);
       }
       if (!startDate || isNaN(startDate)) {
         dialog._startTimeField.focus();
@@ -1649,7 +1661,7 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
       if (dialog._resourceField)
         event.resourceId = dayTable._idsByResourceNames[dialog._resourceField.getValue()];
       event.color = dialog._color ? dialog._color : "";
-      event.description = dialog._descriptionField.value;
+      event.description = getFieldText(dialog._descriptionArea);
       dialog.hide();
       if (listeners.onok)
         listeners.onok();
@@ -1687,15 +1699,15 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
     this.showCentered();
 
     function adjustTextareaHeight(){
-      var size = O$.getElementSize(dialog._descriptionField.parentNode);
-      O$.setElementSize(dialog._descriptionField, size);
+      var size = O$.getElementSize(dialog._descriptionArea.parentNode);
+      O$.setElementSize(dialog._descriptionArea, size);
     }
     if (O$.isExplorer() || O$.isOpera()) {
-      if (dialog._descriptionField.style.position != "absolute") {
-        dialog._descriptionField.style.position = "absolute";
+      if (dialog._descriptionArea.style.position != "absolute") {
+        dialog._descriptionArea.style.position = "absolute";
         var div = document.createElement("div");
         div.style.height = "100%";
-        dialog._descriptionField.parentNode.appendChild(div);
+        dialog._descriptionArea.parentNode.appendChild(div);
       }
       adjustTextareaHeight();
       dialog._textareaHeightUpdateInterval = setInterval(adjustTextareaHeight, 50);

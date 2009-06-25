@@ -13,10 +13,13 @@ package org.openfaces.component.timetable;
 
 import org.openfaces.component.window.Window;
 import org.openfaces.component.CompoundComponent;
+import org.openfaces.component.input.DropDownField;
+import org.openfaces.component.input.DateChooser;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.renderkit.CompoundComponentRenderer;
 
 import javax.faces.context.FacesContext;
+import javax.faces.component.UIInput;
 
 /**
  * @author Dmitry Pikhulya
@@ -24,6 +27,14 @@ import javax.faces.context.FacesContext;
 public class EventEditorDialog extends Window implements CompoundComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.EventEditorDialog";
     public static final String COMPONENT_FAMILY = "org.openfaces.EventEditorDialog";
+
+    private static final String FACET_NAME_FIELD = "nameField";
+    private static final String FACET_RESOURCE_FIELD = "resourceField";
+    private static final String FACET_START_DATE_FIELD = "startDateField";
+    private static final String FACET_END_DATE_FIELD = "endDateField";
+    private static final String FACET_START_TIME_FIELD = "startTimeField";
+    private static final String FACET_END_TIME_FIELD = "endTimeField";
+    private static final String FACET_DESCRIPTION_AREA = "descriptionArea";
 
     private String newEventCaption;
     private String editEventCaption;
@@ -37,6 +48,16 @@ public class EventEditorDialog extends Window implements CompoundComponent {
     private String okButtonText;
     private String cancelButtonText;
     private String deleteButtonText;
+
+    private String labelStyle;
+    private String labelClass;
+    private String okButtonStyle;
+    private String okButtonClass;
+    private String cancelButtonStyle;
+    private String cancelButtonClass;
+    private String deleteButtonStyle;
+    private String deleteButtonClass;
+
 
     public EventEditorDialog() {
         setRendererType("org.openfaces.EventEditorDialogRenderer");
@@ -85,7 +106,15 @@ public class EventEditorDialog extends Window implements CompoundComponent {
                 descriptionLabel,
                 okButtonText,
                 cancelButtonText,
-                deleteButtonText
+                deleteButtonText,
+                labelStyle,
+                labelClass,
+                okButtonStyle,
+                okButtonClass,
+                cancelButtonStyle,
+                cancelButtonClass,
+                deleteButtonStyle,
+                deleteButtonClass
         };
     }
 
@@ -105,6 +134,14 @@ public class EventEditorDialog extends Window implements CompoundComponent {
         okButtonText = (String) state[i++];
         cancelButtonText = (String) state[i++];
         deleteButtonText = (String) state[i++];
+        labelStyle = (String) state[i++];
+        labelClass = (String) state[i++];
+        okButtonStyle = (String) state[i++];
+        okButtonClass = (String) state[i++];
+        cancelButtonStyle = (String) state[i++];
+        cancelButtonClass = (String) state[i++];
+        deleteButtonStyle = (String) state[i++];
+        deleteButtonClass = (String) state[i++];
     }
 
     public String getNewEventCaption() {
@@ -198,4 +235,127 @@ public class EventEditorDialog extends Window implements CompoundComponent {
     public void createSubComponents(FacesContext context) {
         ((CompoundComponentRenderer) getRenderer(context)).createSubComponents(context, this);
     }
+
+    public String getLabelStyle() {
+        return ValueBindings.get(this, "labelStyle", labelStyle);
+    }
+
+    public void setLabelStyle(String labelStyle) {
+        this.labelStyle = labelStyle;
+    }
+
+    public String getLabelClass() {
+        return ValueBindings.get(this, "labelClass", labelClass);
+    }
+
+    public void setLabelClass(String labelClass) {
+        this.labelClass = labelClass;
+    }
+
+    public String getOkButtonStyle() {
+        return ValueBindings.get(this, "okButtonStyle", okButtonStyle);
+    }
+
+    public void setOkButtonStyle(String okButtonStyle) {
+        this.okButtonStyle = okButtonStyle;
+    }
+
+    public String getOkButtonClass() {
+        return ValueBindings.get(this, "okButtonClass", okButtonClass);
+    }
+
+    public void setOkButtonClass(String okButtonClass) {
+        this.okButtonClass = okButtonClass;
+    }
+
+    public String getCancelButtonStyle() {
+        return ValueBindings.get(this, "cancelButtonStyle", cancelButtonStyle);
+    }
+
+    public void setCancelButtonStyle(String cancelButtonStyle) {
+        this.cancelButtonStyle = cancelButtonStyle;
+    }
+
+    public String getCancelButtonClass() {
+        return ValueBindings.get(this, "cancelButtonClass", cancelButtonClass);
+    }
+
+    public void setCancelButtonClass(String cancelButtonClass) {
+        this.cancelButtonClass = cancelButtonClass;
+    }
+
+    public String getDeleteButtonStyle() {
+        return ValueBindings.get(this, "deleteButtonStyle", deleteButtonStyle);
+    }
+
+    public void setDeleteButtonStyle(String deleteButtonStyle) {
+        this.deleteButtonStyle = deleteButtonStyle;
+    }
+
+    public String getDeleteButtonClass() {
+        return ValueBindings.get(this, "deleteButtonClass", deleteButtonClass);
+    }
+
+    public void setDeleteButtonClass(String deleteButtonClass) {
+        this.deleteButtonClass = deleteButtonClass;
+    }
+
+    public UIInput getNameField() {
+        return (UIInput) getFacet(FACET_NAME_FIELD);
+    }
+
+    public void setNameField(UIInput nameField) {
+        getFacets().put(FACET_NAME_FIELD, nameField);
+    }
+
+    public DropDownField getResourceField() {
+        return (DropDownField) getFacet(FACET_RESOURCE_FIELD);
+    }
+
+    public void setResourceField(DropDownField resourceField){
+        getFacets().put(FACET_RESOURCE_FIELD, resourceField);
+    }
+
+    public DateChooser getStartDateField() {
+        return (DateChooser) getFacet(FACET_START_DATE_FIELD);
+    }
+
+    public void setStartDateField(DateChooser startDateField) {
+        getFacets().put(FACET_START_DATE_FIELD, startDateField);
+    }
+
+    public DateChooser getEndDateField() {
+        return (DateChooser) getFacet(FACET_END_DATE_FIELD);
+    }
+
+    public void setEndDateField(DateChooser endDateField) {
+        getFacets().put(FACET_END_DATE_FIELD, endDateField);
+    }
+
+    public UIInput getStartTimeField() {
+        return (UIInput) getFacet(FACET_START_TIME_FIELD);
+    }
+
+    public void setStartTimeField(UIInput startTimeField) {
+        getFacets().put(FACET_START_TIME_FIELD, startTimeField);
+    }
+
+    public UIInput getEndTimeField() {
+        return (UIInput) getFacet(FACET_END_TIME_FIELD);
+    }
+
+    public void setEndTimeField(UIInput endTimeField) {
+        getFacets().put(FACET_END_TIME_FIELD, endTimeField);
+    }
+
+    public UIInput getDescriptionArea() {
+        return (UIInput) getFacet(FACET_DESCRIPTION_AREA);
+    }
+
+    public void setDescriptionArea(UIInput descriptionArea) {
+        getFacets().put(FACET_DESCRIPTION_AREA, descriptionArea);
+    }
+
+
+
 }

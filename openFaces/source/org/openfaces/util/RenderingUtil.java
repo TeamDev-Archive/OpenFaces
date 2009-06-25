@@ -126,8 +126,11 @@ public class RenderingUtil {
 
         UIComponent component = parent.getFacet(facetName);
         if (component != null) {
-            if (enforceComponentClass == null || component.getClass().equals(enforceComponentClass))
+            if (enforceComponentClass == null || enforceComponentClass.isAssignableFrom(component.getClass())) {
+                if (!id.equals(component.getId()))
+                    component.setId(id);
                 return (E) component;
+            }
         }
 
         component = ComponentUtil.createComponent(context, id, componentType);

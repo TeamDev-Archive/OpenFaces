@@ -12,14 +12,14 @@
 package org.openfaces.taglib.jsp.timetable;
 
 import org.openfaces.taglib.internal.timetable.EventEditorDialogTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
+import org.openfaces.taglib.jsp.window.WindowJspTag;
 
 import javax.el.ValueExpression;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class EventEditorDialogJspTag extends AbstractComponentJspTag {
+public class EventEditorDialogJspTag extends WindowJspTag {
 
     public EventEditorDialogJspTag() {
         super(new EventEditorDialogTag());
@@ -70,4 +70,35 @@ public class EventEditorDialogJspTag extends AbstractComponentJspTag {
     }
 
 
+    public void setLabelStyle(ValueExpression labelStyle) {
+        getDelegate().setPropertyValue("labelStyle", labelStyle);
+    }
+
+    public void setLabelClass(ValueExpression labelClass) {
+        getDelegate().setPropertyValue("labelClass", labelClass);
+    }
+
+    public void setOkButtonStyle(ValueExpression okButtonStyle) {
+        getDelegate().setPropertyValue("okButtonStyle", okButtonStyle);
+    }
+
+    public void setOkButtonClass(ValueExpression okButtonClass) {
+        getDelegate().setPropertyValue("okButtonClass", okButtonClass);
+    }
+
+    public void setCancelButtonStyle(ValueExpression cancelButtonStyle) {
+        getDelegate().setPropertyValue("cancelButtonStyle", cancelButtonStyle);
+    }
+
+    public void setCancelButtonClass(ValueExpression cancelButtonClass) {
+        getDelegate().setPropertyValue("cancelButtonClass", cancelButtonClass);
+    }
+
+    public void setDeleteButtonStyle(ValueExpression deleteButtonStyle) {
+        getDelegate().setPropertyValue("deleteButtonStyle", deleteButtonStyle);
+    }
+
+    public void setDeleteButtonClass(ValueExpression deleteButtonClass) {
+        getDelegate().setPropertyValue("deleteButtonClass", deleteButtonClass);
+    }
 }

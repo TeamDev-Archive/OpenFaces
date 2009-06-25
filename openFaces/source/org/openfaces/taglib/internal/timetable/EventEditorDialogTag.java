@@ -12,7 +12,7 @@
 package org.openfaces.taglib.internal.timetable;
 
 import org.openfaces.component.timetable.EventEditorDialog;
-import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.taglib.internal.window.WindowTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -20,7 +20,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class EventEditorDialogTag extends AbstractComponentTag {
+public class EventEditorDialogTag extends WindowTag {
     public String getComponentType() {
         return EventEditorDialog.COMPONENT_TYPE;
     }
@@ -43,5 +43,13 @@ public class EventEditorDialogTag extends AbstractComponentTag {
         setStringProperty(component, "okButtonText");
         setStringProperty(component, "cancelButtonText");
         setStringProperty(component, "deleteButtonText");
+        setStringProperty(component, "labelStyle");
+        setStringProperty(component, "labelClass");
+        setStringProperty(component, "okButtonStyle");
+        setStringProperty(component, "okButtonClass");
+        setStringProperty(component, "cancelButtonStyle");
+        setStringProperty(component, "cancelButtonClass");
+        setStringProperty(component, "deleteButtonStyle");
+        setStringProperty(component, "deleteButtonClass");
     }
 }
