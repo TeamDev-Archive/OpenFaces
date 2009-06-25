@@ -305,7 +305,7 @@ O$._initDayTable = function(componentId,
   table.body._overrideVerticalGridline(0, timeColumnSeparator);
   if (useResourceSeparation) {
     resourceHeadersTable.body._overrideVerticalGridline(0, timeColumnSeparator);
-    resourceHeadersTable.body._overrideVerticalGridline(headerColumns.length - 2, (O$.isExplorer() && !O$.isExplorer7()) ? "1px solid white" : "1px solid transparent");
+    resourceHeadersTable.body._overrideVerticalGridline(headerColumns.length - 2, O$.isExplorer6() ? "1px solid white" : "1px solid transparent");
   }
 
   dayTable._getLayoutCache = function() {

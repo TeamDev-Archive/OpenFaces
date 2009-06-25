@@ -1,246 +1,300 @@
 @charset "utf-8";
 /* CSS Document */
 
-html{
-	font-size:75%;
-	height:100%;
-}
-body{
-	margin:0;
-	padding:0;
-	background:#191e22 url(../../images/backgrounds/page_right.jpg) repeat-x left top;
-	position:relative;
-	min-width:995px;
-	font: normal 1em/1.5 "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
-	color:#5b5a5a;
+html {
+  font-size: 75%;
+  height: 100%;
 }
 
-h1,h2,h3,h4,h5,h6{
-	margin: 0;
-	padding:0;
-	font-weight:normal;
-	font-family: "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+body {
+  margin: 0;
+  padding: 0;
+  background: #191e22 url(../../images/backgrounds/page_right.jpg) repeat-x left top;
+  position: relative;
+  min-width: 995px;
+  font: normal 1em / 1.5 "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+  color: #5b5a5a;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  font-family: "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
 
 }
 
-h2{	font-size: 24pt; }
-h3{	font-size: 20pt; }
-h3 small{	font-size: 9pt; }
-h4{	font-size: 14pt; }
-
-a{
-	color:#455560;
-}
-a:hover{
-	color:#0093d0;
-}
-a img{
-	border:0;
+h2 {
+  font-size: 24pt;
 }
 
-#PageBackground{
-	position:absolute;
-	left:0;
-	right:50%;
-	top:0;
-	height:1017px;
-	width:50%;
-	background:url(../../images/backgrounds/page_left.jpg) repeat-x left top;
-	z-index:1;
-}
-#PageBackground div{
-	position:absolute;
-	left:0; top:0;
-	height:100%;
-	width:199%;
-	background:url(../../images/backgrounds/page.jpg) no-repeat center top;
+h3 {
+  font-size: 20pt;
 }
 
-#Page{
-	position:relative;
-	left:50%;
-	margin-left:-498px;
-	min-height:100%;
-	width:990px;
-	padding: 75px 0 0 0;
-	z-index:10;
+h3 small {
+  font-size: 9pt;
 }
 
-#Logo{
-	display:block;
-	color:white;
-	font-size:2em;
-	padding:0;
-	position:absolute;
-	top:10px; right:.25em;
-	height:62px;
-	width:auto;
-	background:url(../../images/backgrounds/logo_glow.png) no-repeat left top;
-	z-index:100;
-}
-#Logo img{display:block; padding:16px;}
-
-#Navigation{
-	position:absolute;
-	top:0;
-	left:-2000px;
-	height:21px;
-	background:#e9e9e9 url(../../images/backgrounds/navigation.png) repeat-x 0 0;
-	min-width:2010px;
+h4 {
+  font-size: 14pt;
 }
 
-#Title{
-	height:53px;
-	margin: 0 0 10px 0;
-	overflow:hidden;
-	color:white;
-	background:#428bad url(../../images/backgrounds/title.jpg) repeat-x 0 0;
-	border-top: 1px solid #8ad3e7;
-	border-right: 1px solid #1bb6d3;
-	border-bottom: 1px solid #19b8d4;
-	border-left: 1px solid #85e5f1;
+a {
+  color: #455560;
 }
 
-#Title h2{
-	padding:2px 5px 0 12px;
-	line-height:50px;
-	vertical-align:middle;
-	font-size:32px;
-	font-weight:normal;
-	float:left;
-	width:217px;
-}
-#Title h2 img{margin:11px 0 0 0;}
-
-#LeftPannel{
-	position:relative; z-index:1;
-	float:left;
-	width:217px;
-	color:white;
+a:hover {
+  color: #0093d0;
 }
 
-#Shadow{
-	position:absolute;
-	left:-40px;
-	bottom:-12px;
-	height:25px;
-	width:305px;
-	z-index:1;
-	background:url(../../images/backgrounds/floor_shadow.png) no-repeat center top;
+a img {
+  border: 0;
 }
 
-#Features{
-	min-height:250px;
-	font-size:8pt;
-}
-#Features ul{
-	margin: 10px 0 0 14px;
-	padding:0;
-	list-style:none;
-}
-#Features ul li{
-	background:url(../../images/bullets/dash_white.png) no-repeat left -2px;
-	padding-left:10px;
-	margin-left:-10px;
-	padding-top:3px;
-	margin-bottom:0;
+#PageBackground {
+  position: absolute;
+  left: 0;
+  right: 50%;
+  top: 0;
+  height: 1017px;
+  width: 50%;
+  background: url(../../images/backgrounds/page_left.jpg) repeat-x left top;
+  z-index: 1;
 }
 
-#Components{
-	background:#2f393e url(../../images/backgrounds/components.png) repeat-y 0 0;
-	border-top: 1px solid #aec9d5;
-	border-right: 1px solid #34b6c7;
-	border-bottom: 1px solid #7f9599;
-	border-left: 1px solid #acc8d3;
-	position:relative;  z-index:10;
-	bottom:0;
+#PageBackground div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 199%;
+  background: url(../../images/backgrounds/page.jpg) no-repeat center top;
 }
 
-#Content{
-	margin: 0 0 0 235px;
-	background:#f6f7f8;
-	border-top: 1px solid white;
-	border-right: 1px solid #d6d6d7;
-	border-bottom: 1px solid #d7d7d8;
-	border-left: 1px solid white;
-	position:relative; z-index:100;
+#Page {
+  position: relative;
+  left: 50%;
+  margin-left: -498px;
+  min-height: 100%;
+  width: 990px;
+  padding: 75px 0 0 0;
+  z-index: 20;
+}
+
+#Logo {
+  display: block;
+  color: white;
+  font-size: 2em;
+  padding: 0;
+  position: absolute;
+  top: 10px;
+  right: .25em;
+  height: 62px;
+  width: auto;
+  background: url(../../images/backgrounds/logo_glow.png) no-repeat left top;
+  z-index: 100;
+}
+
+#Logo img {
+  display: block;
+  padding: 16px;
+}
+
+#Navigation {
+  position: absolute;
+  top: 0;
+  left: -2000px;
+  height: 21px;
+  background: #e9e9e9 url(../../images/backgrounds/navigation.png) repeat-x 0 0;
+  min-width: 2010px;
+}
+
+#Title {
+  height: 53px;
+  margin: 0 0 10px 0;
+  overflow: hidden;
+  color: white;
+  background: #428bad url(../../images/backgrounds/title.jpg) repeat-x 0 0;
+  border-top: 1px solid #8ad3e7;
+  border-right: 1px solid #1bb6d3;
+  border-bottom: 1px solid #19b8d4;
+  border-left: 1px solid #85e5f1;
+}
+
+#Title h2 {
+  padding: 2px 5px 0 12px;
+  line-height: 50px;
+  vertical-align: middle;
+  font-size: 32px;
+  font-weight: normal;
+  float: left;
+  width: 217px;
+}
+
+#Title h2 img {
+  margin: 11px 0 0 0;
+}
+
+#LeftPannel {
+  position: relative;
+  z-index: 1;
+  float: left;
+  width: 217px;
+  color: white;
+}
+
+#Shadow {
+  position: absolute;
+  left: -40px;
+  bottom: -12px;
+  height: 25px;
+  width: 305px;
+  z-index: 1;
+  background: url(../../images/backgrounds/floor_shadow.png) no-repeat center top;
+}
+
+#Features {
+  min-height: 250px;
+  font-size: 8pt;
+}
+
+#Features ul {
+  margin: 10px 0 0 14px;
+  padding: 0;
+  list-style: none;
+}
+
+#Features ul li {
+  background: url(../../images/bullets/dash_white.png) no-repeat left -2px;
+  padding-left: 10px;
+  margin-left: -10px;
+  padding-top: 3px;
+  margin-bottom: 0;
+}
+
+#Components {
+  background: #2f393e url(../../images/backgrounds/components.png) repeat-y 0 0;
+  border-top: 1px solid #aec9d5;
+  border-right: 1px solid #34b6c7;
+  border-bottom: 1px solid #7f9599;
+  border-left: 1px solid #acc8d3;
+  position: relative;
+  z-index: 10;
+  bottom: 0;
+}
+
+#Content {
+  margin: 0 0 0 235px;
+  background: #f6f7f8;
+  border-top: 1px solid white;
+  border-right: 1px solid #d6d6d7;
+  border-bottom: 1px solid #d7d7d8;
+  border-left: 1px solid white;
+  position: relative;
+  z-index: 100;
   zoom: 1;
 }
 
-#Demo{
-	padding:20px 10px 20px 20px;
-	background:url(../../images/backgrounds/content_demo.png) repeat-x 0 bottom;
-  width: 720px;  
+#Demo {
+  padding: 20px 10px 20px 20px;
+  background: url(../../images/backgrounds/content_demo.png) repeat-x 0 bottom;
+  width: 720px;
 }
 
-#Description{
-	padding:20px 32px;
-	font-family: Georgia, "Times New Roman", Times, serif;
+#Description {
+  padding: 20px 32px;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 
-#Floor{
-	position:relative;
-	background:url(../../images/backgrounds/floor_reflection.png) no-repeat center top;
-	height:90px;
-	width:100%;
-	z-index:1;
-	margin-top:-14px;
+#Floor {
+  position: relative;
+  background: url(../../images/backgrounds/floor_reflection.png) no-repeat center top;
+  height: 90px;
+  width: 100%;
+  z-index: 1;
+  margin-top: -14px;
 }
 
-#Footer{
-	position:relative;
-	margin-top:-60px;
-	height:40px;
-	width:100%;
-	background:url(../../images/backgrounds/footer.png) no-repeat center top;
-	z-index:10;
+#Footer {
+  position: relative;
+  margin-top: -60px;
+  height: 40px;
+  width: 100%;
+  background: url(../../images/backgrounds/footer.png) no-repeat center top;
+  z-index: 10;
 }
 
-#Footer dl{
-	display:block;
-	width:990px;
-	margin:0 auto;
-	color:#b6babb;
-	overflow:hidden;
-	font-size:8pt;
-	line-height:24px;
-}
-#Footer dl dt{float:left;}
-#Footer dl dd{margin-left:40%; text-align:right; padding:0 2em;}
-#Footer a{color:#b6babb;}
-
-ul.hang{
-	margin: 10px 0 0 0;
-	padding:0;
-	list-style:none;
-}
-ul.hang li{
-	background:url(../../images/bullets/dash_black.png) no-repeat left -2px;
-	padding-left:10px;
-	margin-left:-10px;
-	padding-top:1px;
-	padding-bottom:5px;
-	margin-bottom:0;
+#Footer dl {
+  display: block;
+  width: 990px;
+  margin: 0 auto;
+  color: #b6babb;
+  overflow: hidden;
+  font-size: 8pt;
+  line-height: 24px;
 }
 
+#Footer dl dt {
+  float: left;
+}
+
+#Footer dl dd {
+  margin-left: 40%;
+  text-align: right;
+  padding: 0 2em;
+}
+
+#Footer a {
+  color: #b6babb;
+}
+
+ul.hang {
+  margin: 10px 0 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+ul.hang li {
+  background: url(../../images/bullets/dash_black.png) no-repeat left -2px;
+  padding-left: 10px;
+  margin-left: -10px;
+  padding-top: 1px;
+  padding-bottom: 5px;
+  margin-bottom: 0;
+}
 
 /*******************  Common styles   *********************/
 
-.clear{ clear:both; }
-.clearfix {zoom:1;}
-.clearfix:after {
-	content: ' ';
-	clear:both;
-	display: block;
-	width: 0; height: 0;
-	overflow: hidden;
-	font-size: 0;
+.clear {
+  clear: both;
 }
 
-.relative{	position:relative; }
-.thin{	font-weight:normal; }
-.png24_alt{display:none;}
+.clearfix {
+  zoom: 1;
+}
 
+.clearfix:after {
+  content: ' ';
+  clear: both;
+  display: block;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  font-size: 0;
+}
+
+.relative {
+  position: relative;
+}
+
+.thin {
+  font-weight: normal;
+}
+
+.png24_alt {
+  display: none;
+}
 
 .modalLayer {
   filter: alpha(opacity = 75);
@@ -266,20 +320,25 @@ ul.hang li{
 }
 
 /******************Daytable pages*************************/
-.eventWithBackground{
+.eventWithBackground {
   background-image: url(../../images/daytable/daytable-gradient.png);
   background-position: left top;
   background-repeat: repeat-x;
 }
-.CalendarDate{
-  text-align:center;
-	position:relative;
-	padding:0 .5em 0 0 !important;
-	line-height:25px;
+
+.CalendarDate {
+  text-align: center;
+  position: relative;
+  padding: 0 .5em 0 0 !important;
+  line-height: 25px;
 }
-.CalendarDate .dayOfWeek{
-	font-size:10px;
-	line-height:10px;
-	padding: 0 .25em;
+
+.CalendarDate .dayOfWeek {
+  font-size: 10px;
+  line-height: 10px;
+  padding: 0 .25em;
 }
-.CalendarDate .date{line-height:1.5em;}
+
+.CalendarDate .date {
+  line-height: 1.5em;
+}

@@ -74,10 +74,10 @@ O$._initTable = function(tableId, structureAndStyleParams, useAjax, rolloverClas
     }
 
     var filtersToHide = this._filtersToHide;
-    if (!O$.isExplorer() || O$.isExplorer7() || !filtersToHide)
+    if (!O$.isExplorer6() || !filtersToHide)
       return false;
 
-    for (i = 0,count = filtersToHide.length; i < count; i++) {
+    for (i = 0, count = filtersToHide.length; i < count; i++) {
       var filter = filtersToHide[i];
       filter.style.visibility = "hidden";
     }

@@ -15,7 +15,7 @@ O$.Window = {
   STATE_MAXIMIZED: "maximized",
   STATE_MINIMIZED: "minimized",
 
-  _init: function(windowId, resizable, draggableByContent, minWidth, minHeight) {
+  _init: function(windowId, resizable, draggableByContent, minWidth, minHeight, desktopElementId) {
     var win = O$(windowId);
     win._form = O$.findParentNode(win, "form");
     win._draggableByContent = draggableByContent;
@@ -33,6 +33,7 @@ O$.Window = {
     win._captionContent = O$(windowId + "::caption_content");
     win._contentRow = O$(windowId + "::contentRow");
     win._footerRow = O$(windowId + "::footerRow");
+    win._desktopElement = desktopElementId ? O$(desktopElementId) : null;
 
     win._state = O$.Window.STATE_NORMAL;
     win._declaredResizable = resizable;
@@ -179,12 +180,19 @@ O$.Window = {
       this._setState(O$.Window.STATE_MAXIMIZED);
 
       this._normalRectangle = O$.getElementBorderRectangle(this, true);
-      var rect = O$.getVisibleAreaRectangle();
-      var container = O$.getContainingBlock(this, true);
-      if (container) {
-        var containerPos = O$.getElementBorderRectangle(container, false);
-        rect.x -= containerPos.x;
-        rect.y -= containerPos.y;
+      var rect = this._desktopElement ? O$.getElementPaddingRectangle(this._desktopElement) : O$.getVisibleAreaRectangle();
+      if (this._desktopElement || O$.isExplorer6() || O$.isExplorer7()) {
+        var container = O$.getContainingBlock(this, true);
+        if (container) {
+          var containerPos = O$.getElementBorderRectangle(container, false);
+          rect.x -= containerPos.x;
+          rect.y -= containerPos.y;
+        }
+      } else {
+        var scrollPos = O$.getPageScrollPos();
+        rect.x -= scrollPos.x;
+        rect.y -= scrollPos.y;
+        this.style.position = "fixed";
       }
       this._setRect(rect);
     };
@@ -200,6 +208,8 @@ O$.Window = {
         this._normalSize = null;
       }
       if (this._state == O$.Window.STATE_MAXIMIZED) {
+        if (!this._desktopElement)
+          this.style.position = "absolute";
         this._setRect(this._normalRectangle);
         this._normalRectangle = null;
       }

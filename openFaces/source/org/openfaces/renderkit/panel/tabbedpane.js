@@ -149,6 +149,10 @@ O$._initTabbedPane = function(clientId, rolloverClass,
     tabbedPane.setSelectedIndex(pageNo);
   }
 
+  tabbedPane.getPageCount = function() {
+    return tabbedPane._tabSet.getTabCount();
+  }
+
   tabbedPane.getSelectedIndex = function () {
     return tabbedPane._tabSet.getSelectedIndex();
   }

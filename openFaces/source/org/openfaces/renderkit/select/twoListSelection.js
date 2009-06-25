@@ -137,6 +137,15 @@ O$._initTwoListSelection = function(controlId,
         O$._tls_sortSelection(tls);
       }
     }
+
+    tls.selectAll = function() {
+      O$._tls_moveAllRight(tls);
+    }
+
+    tls.unselectAll = function() {
+      O$._tls_moveAllLeft(tls);
+    }
+
     // value getter
     tls.getValue = function () {
       return O$._getTLSValue(tls.id);
@@ -247,12 +256,13 @@ O$._tls_updateButtons = function(tls, isSubmit) {
   var leftListSize = leftListOptions.length;
   var rightListSize = rightListOptions.length;
   tls._selectBtn.disabled = !leftSelectionField.value;
+  var value, valueIndex, option, otionIndex;
   if (isSubmit && leftSelectionField.value) {
     var values = O$.getArrayFromString(leftSelectionField.value, ",");
-    for (var valueIndex = 0, valueCount = values.length; valueIndex < valueCount; valueIndex++) {
-      var value = values[valueIndex];
-      for (var optionIndex = 0; optionIndex < leftListSize; optionIndex++) {
-        var option = leftListOptions[optionIndex];
+    for (valueIndex = 0, valueCount = values.length; valueIndex < valueCount; valueIndex++) {
+      value = values[valueIndex];
+      for (optionIndex = 0; optionIndex < leftListSize; optionIndex++) {
+        option = leftListOptions[optionIndex];
         if (option.value == value) {
           option.selected = true;
           break;
@@ -270,10 +280,10 @@ O$._tls_updateButtons = function(tls, isSubmit) {
     var highlightedValues = O$.getArrayFromString(rightSelectionField.value, ",");
     var firstSelectedIndex = -1;
     var lastSelectedIndex = -1;
-    for (var valueIndex = 0; valueIndex < highlightedValues.length; valueIndex++) {
-      var value = highlightedValues[valueIndex];
-      for (var optionIndex = 0; optionIndex < rightListSize; optionIndex++) {
-        var option = rightListOptions[optionIndex];
+    for (valueIndex = 0; valueIndex < highlightedValues.length; valueIndex++) {
+      value = highlightedValues[valueIndex];
+      for (optionIndex = 0; optionIndex < rightListSize; optionIndex++) {
+        option = rightListOptions[optionIndex];
         if (option.value != value)
           continue;
 

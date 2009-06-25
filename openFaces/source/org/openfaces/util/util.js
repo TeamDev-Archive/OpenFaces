@@ -733,7 +733,7 @@ O$.isExplorer = function() {
 };
 
 O$.isExplorer6 = function() {
-  return O$.isExplorer() && !O$.isExplorer7();
+  return O$.isExplorer() && !O$.isExplorer7() && !O$.isExplorer8();
 };
 
 O$.isExplorer7 = function() {
@@ -741,6 +741,12 @@ O$.isExplorer7 = function() {
     O$._explorer7 = O$.isExplorer() && O$.userAgentContains("MSIE 7");
   return O$._explorer7;
 };
+
+O$.isExplorer8 = function() {
+  if (O$._explorer8 == undefined)
+    O$._explorer8 = O$.isExplorer() && O$.userAgentContains("MSIE 8");
+  return O$._explorer8;
+}
 
 O$.isOpera9AndLate = function() {
   if (O$._opera9 == undefined) {
@@ -3641,7 +3647,7 @@ O$.unhideControlsUnderPopup = function(popup) {
 };
 
 O$.initIETransparencyWorkaround = function(popup) {
-  if (!O$.isExplorer() || O$.isExplorer7())
+  if (!O$.isExplorer6())
     return;
   popup._requireTransparencyWorkaround = true;
   if (popup._preCreatedIETransparencyControl)
