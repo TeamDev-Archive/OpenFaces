@@ -54,7 +54,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Richfaces 3.3.0" level="project" />
+    <orderEntry type="library" name="RichFaces" level="project" />
   </component>
 </module>
 

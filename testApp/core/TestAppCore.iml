@@ -26,7 +26,7 @@
             <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
-          <containerElement type="library" name="Richfaces 3.3.0" level="project">
+          <containerElement type="library" name="RichFaces" level="project">
             <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
@@ -146,7 +146,7 @@
     <orderEntry type="library" exported="" name="tomahawk12-1.1.8" level="project" />
     <orderEntry type="library" exported="" name="JSF Implementation - Mojarra 1.2" level="project" />
     <orderEntry type="library" exported="" name="jbpm-jpdl" level="project" />
-    <orderEntry type="library" exported="" name="Richfaces 3.3.0" level="project" />
+    <orderEntry type="library" exported="" name="RichFaces" level="project" />
     <orderEntry type="library" exported="" name="JBoss Seam 2.1" level="project" />
     <orderEntry type="module" module-name="OpenFaces" exported="" />
     <orderEntry type="library" name="JEE" level="project" />

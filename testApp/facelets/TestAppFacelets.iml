@@ -12,8 +12,8 @@
         <building>
           <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/../../target/exploded/TestAppFaceletsWeb" />
           <setting name="EXPLODED_ENABLED" value="true" />
-          <setting name="JAR_URL" value="file://" />
-          <setting name="JAR_ENABLED" value="false" />
+          <setting name="JAR_URL" value="file://$MODULE_DIR$/../../out/TestAppFacelets.war" />
+          <setting name="JAR_ENABLED" value="true" />
           <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
         </building>
         <packaging>
@@ -67,7 +67,7 @@
             <attribute name="method" value="0" />
             <attribute name="URI" value="&lt;N/A&gt;" />
           </containerElement>
-          <containerElement type="library" name="richfaces" level="project">
+          <containerElement type="library" name="RichFaces" level="project">
             <attribute name="method" value="0" />
             <attribute name="URI" value="&lt;N/A&gt;" />
           </containerElement>
