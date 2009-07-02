@@ -222,7 +222,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
             formatDate = dateFormat.format(date);
         }
 
-        ScriptBuilder sb = new ScriptBuilder().initScript(context, dc, "O$._initDateChooser",
+        ScriptBuilder sb = new ScriptBuilder().initScript(context, dc, "O$.DateChooser._init",
                 pattern,
                 formatDate,
                 dc.getLocale(),

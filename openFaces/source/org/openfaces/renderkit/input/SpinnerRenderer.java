@@ -88,7 +88,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
             }
         }
 
-        ScriptBuilder sb = new ScriptBuilder().initScript(context, spinner, "O$._initSpinner",
+        ScriptBuilder sb = new ScriptBuilder().initScript(context, spinner, "O$.Spinner._init",
                 spinner.getMinValue(),
                 spinner.getMaxValue(),
                 spinner.getStep(),

@@ -101,7 +101,7 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
         encodePromptInfo(facesContext, inputText);
 
         String promptText = inputText.getPromptText();
-        Script initScript = new ScriptBuilder().initScript(facesContext, inputText, "O$._initInputText",
+        Script initScript = new ScriptBuilder().initScript(facesContext, inputText, "O$.InputText._init",
                 promptText,
                 styleClass,
                 promptTextStyleClass,
