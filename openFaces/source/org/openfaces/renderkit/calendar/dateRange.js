@@ -70,12 +70,12 @@ O$.SimpleDateRange = function(fromDate, toDate, styleClassName, rolloverStyleCla
   this._toDate = toDate;
   O$.AbstractDateRange.apply(this, [styleClassName, rolloverStyleClassName, selectedDayStyleClassName,
     rolloverSelectedDayStyleClassName]);
-}
+};
 O$.SimpleDateRange.prototype = new O$.AbstractDateRange;
 
 O$.SimpleDateRange.prototype.isDateInRange = function(date) {
   if (!date) return false;
-  if (O$._calendar_compareDates(date, this._fromDate) >= 0 && O$._calendar_compareDates(date, this._toDate) <= 0) return true;
+  if (O$.Calendar._compareDates(date, this._fromDate) >= 0 && O$.Calendar._compareDates(date, this._toDate) <= 0) return true;
   return false;
 };
 //O$.SimpleDateRange object declaration end

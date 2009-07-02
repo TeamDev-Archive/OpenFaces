@@ -228,7 +228,7 @@ public class CalendarRenderer extends RendererBase {
 
         Script rangesArray = getJSDateRangesArray(context, calendar);
 
-        sb.initScript(context, calendar, "O$._initCalendar",
+        sb.initScript(context, calendar, "O$.Calendar._init",
                 selectedDateParam,
                 todayDateStr,
                 RenderingUtil.getRolloverClass(context, calendar),

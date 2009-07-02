@@ -123,7 +123,7 @@ O$._initDateChooser = function(dateChooserId,
         dc._keyDownEvent = null;
         return;
       case 13: // enter
-        dc._dateChangeListener(O$._getSelectedDate(cal.id));
+        dc._dateChangeListener(O$.Calendar._getSelectedDate(cal.id));
         return false;
     }
     cal._prevKeyHandler_DC(evt)
@@ -174,9 +174,9 @@ O$._initDateChooser = function(dateChooserId,
 
     dc._isSetDateFromInput = true;
     if (O$.trim(dc._field.value).length > 0)
-      O$._setSelectedDate(dc._calendar.id, date);
+      O$.Calendar._setSelectedDate(dc._calendar.id, date);
     else
-      O$._noneClick(dc._calendar);
+      O$.Calendar._noneClick(dc._calendar);
     dc._isSetDateFromInput = false;
     if (dc._field._oldValueHolder != dc._field.value) {
       if (!dc._updatingField && dc.onchange) {
@@ -212,7 +212,7 @@ O$._initDateChooser = function(dateChooserId,
     if (!dtf) return;
     var sDate = dtf.parse(calendarDate, "dd/MM/yyyy");
     cal._valueHolder.value = sDate.getTime();
-    O$._updateCalendar(cal, sDate);
+    O$.Calendar._updateCalendar(cal, sDate);
   }
 
   dc.getSelectedDate = function () {
@@ -291,13 +291,13 @@ O$._dc_updateDCField = function(dc, date) {
 
 O$._getDateChooserDate = function(dcId) {
   var dc = O$(dcId);
-  var date = O$._getSelectedDate(dc._calendar.id);
+  var date = O$.Calendar._getSelectedDate(dc._calendar.id);
   return date;
 }
 
 O$._setDateChooserDate = function(dcId, date) {
   var dc = O$(dcId);
-  O$._setSelectedDate(dc._calendar.id, date);
+  O$.Calendar._setSelectedDate(dc._calendar.id, date);
 }
 
 O$._dateChooser_checkCalendarWidth = function(dc) {
