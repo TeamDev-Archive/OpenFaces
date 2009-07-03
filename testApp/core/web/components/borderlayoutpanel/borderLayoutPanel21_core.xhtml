@@ -1,0 +1,68 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+
+  <a href="../../main.jsf">Back to the main page</a><br/>
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+  <style type="text/css">
+    .testClass {
+      width: 60%;
+      height: 10%;
+      border: 3px solid orange;
+    }
+  </style>
+
+  <br/>
+
+  <h4>&lt;o:borderLayoutPanel id="testID" style="border: 2px solid red; width: 100px; height: 100px;"&gt;&lt;/o:borderLayoutPanel&gt;</h4>
+  <o:borderLayoutPanel id="testID" style="border: 2px solid red; width: 100px; height: 100px;"></o:borderLayoutPanel>
+  <br/>
+  <h4>
+    &lt;div style="display: block; width:200px; height: 200px;"&gt;<br/>
+    &lt;o:borderLayoutPanel id="borderLayoutPanel" style="border: 1px solid blue;"&gt;&lt;/o:borderLayoutPanel&gt;<br/>
+    &lt;/div&gt;
+  </h4>
+
+  <div style="display: block; width:200px; height: 200px;">
+    <o:borderLayoutPanel id="borderLayoutPanel" style="border: 1px solid blue;"></o:borderLayoutPanel>
+  </div>
+  <br/>
+  <h4>
+    <table>
+      <tr>
+        <td>
+          &lt;o:borderLayoutPanel styleClass="testClass"&gt;<br/>
+           &lt;o:sidePanel size="30%"&gt;<br/>
+              &lt;h:outputText value="SidePanel #1"/&gt;<br/>
+            &lt;/o:sidePanel&gt;<br/>
+            &lt;o:sidePanel size="50%"&gt;<br/>
+              &lt;h:outputText value="SidePanel #2" style="color: red;"/&gt;<br/>
+            &lt;/o:sidePanel&gt;<br/>
+            &lt;h:outputText value="some text"/&gt;<br/>
+          &lt;/o:borderLayoutPanel&gt;<br/>
+        </td>
+        <td>
+          .testClass {<br/>
+            width: 60%;<br/>
+            height: 10%;<br/>
+            border: 3px solid orange;<br/>
+          }<br/>
+        </td>
+      </tr>
+    </table>
+  </h4>
+  <o:borderLayoutPanel styleClass="testClass">
+    <o:sidePanel size="30%">
+      <h:outputText value="SidePanel #1"/>
+    </o:sidePanel>
+    <o:sidePanel size="50%">
+      <h:outputText value="SidePanel #2" style="color: red;"/>
+    </o:sidePanel>
+    <h:outputText value="some text"/>
+  </o:borderLayoutPanel>
+
+</div>

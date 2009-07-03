@@ -158,7 +158,7 @@ O$._initSidePanel_style = function(sidePanel, rolloverClass, splitterRolloverCla
   //todo calculate sidePanel._newStyle.width and sidePanel._newStyle.height via panel.style.width and panel.style.height
 
   //splitter
-  sidePanel._splitterCursor_normalState = O$._evaluateStyleOrClassProperty(splitter, "cursor");
+  sidePanel._splitterCursor_normalState = O$.getElementStyleProperty(splitter, "cursor");
   if (sidePanel._collapsible) {
     sidePanel._splitterCursor_collapsedState = "pointer";
   } else {

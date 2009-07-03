@@ -21,7 +21,7 @@ O$._calculateOffsetWidth = function(element, useDoubleBuffering) {
   } else {
     return offsetWidth;
   }
-}
+};
 
 O$._calculateOffsetHeight = function(element, useDoubleBuffering) {
   var offsetHeight = element.offsetHeight;
@@ -32,7 +32,7 @@ O$._calculateOffsetHeight = function(element, useDoubleBuffering) {
   } else {
     return offsetHeight;
   }
-}
+};
 
 O$._calculateNumericInnerWidth = function(element, useDoubleBuffering) {
   var offsetWidth = O$._calculateOffsetWidth(element, useDoubleBuffering);
@@ -46,7 +46,7 @@ O$._calculateNumericInnerWidth = function(element, useDoubleBuffering) {
     paddingsAndBordersWidth = leftBorderSize + rightBorderSize + leftPaddingSize + rightPaddingSize;
   }
   return offsetWidth - paddingsAndBordersWidth;
-}
+};
 
 O$._calculateNumericInnerHeight = function(element, useDoubleBuffering) {
   var offsetHeight = O$._calculateOffsetHeight(element, useDoubleBuffering);
@@ -60,7 +60,7 @@ O$._calculateNumericInnerHeight = function(element, useDoubleBuffering) {
     paddingsAndBordersHeight = topBorderSize + bottomBorderSize + topPaddingSize + bottomPaddingSize;
   }
   return offsetHeight - paddingsAndBordersHeight;
-}
+};
 
 O$._calculateNumericWidth = function(element, useDoubleBuffering) {
   if (useDoubleBuffering && element._newStyle && element._newStyle.width) {
@@ -93,7 +93,7 @@ O$._calculateNumericWidth = function(element, useDoubleBuffering) {
   else {
     return parseInt(width);
   }
-}
+};
 
 O$._calculateNumericHeight = function(element, useDoubleBuffering) {
   if (useDoubleBuffering && element._newStyle && element._newStyle.height) {
@@ -128,7 +128,7 @@ O$._calculateNumericHeight = function(element, useDoubleBuffering) {
   else {
     return parseInt(height);
   }
-}
+};
 
 O$._calculateNumericWidthFactor = function(element, useDoubleBuffering) {
   var parent = element.parentNode;
@@ -138,7 +138,7 @@ O$._calculateNumericWidthFactor = function(element, useDoubleBuffering) {
     widthFactor = O$._calculateNumericWidth(parent, false); //todo need testing
   }
   return widthFactor;
-}
+};
 
 O$._calculateNumericHeightFactor = function(element, useDoubleBuffering) {
   var parent = element.parentNode;
@@ -148,7 +148,7 @@ O$._calculateNumericHeightFactor = function(element, useDoubleBuffering) {
     heightFactor = O$._calculateNumericHeight(parent, false); //todo need testing
   }
   return heightFactor;
-}
+};
 
 O$._storeSizeProperties = function(element) {
   //todo don't support "cm", "in", etc. yet
@@ -184,7 +184,7 @@ O$._storeSizeProperties = function(element) {
   element._storedSizeProperties.paddingsAndBordersHeight = topBorderSize + topPaddingSize + bottomBorderSize + bottomPaddingSize;
   element._storedSizeProperties.paddingsAndBordersAndMarginsWidth = leftBorderSize + leftPaddingSize + leftMarginSize + rightBorderSize + rightPaddingSize + rightMarginSize;
   element._storedSizeProperties.paddingsAndBordersAndMarginsHeight = topBorderSize + topPaddingSize + topMarginSize + bottomBorderSize + bottomPaddingSize + bottomMarginSize;
-}
+};
 
 O$._setInnerElementOuterWidth = function(element, outerWidth, useDoubleBuffering) { //elementOuterWidth must be a number
 
@@ -199,7 +199,7 @@ O$._setInnerElementOuterWidth = function(element, outerWidth, useDoubleBuffering
   } else {
     element.style.width = width;
   }
-}
+};
 
 O$._setInnerElementOuterHeight = function(element, outerHeight, useDoubleBuffering) { //elementOuterHeight must be a number
   if (O$._isExplorerQuirksMode()) {
@@ -213,7 +213,7 @@ O$._setInnerElementOuterHeight = function(element, outerHeight, useDoubleBufferi
   } else {
     element.style.height = height;
   }
-}
+};
 
 O$._setInnerElementOuterLeftTopCorner = function(element, outerLeft, outerTop, useDoubleBuffering) { //outerLeft and outerTop must be a number
   var parent = element.parentNode;
@@ -227,7 +227,7 @@ O$._setInnerElementOuterLeftTopCorner = function(element, outerLeft, outerTop, u
     element.style.left = left;
     element.style.top = top;
   }
-}
+};
 
 O$._setInnerElementOuterRightTopCorner = function(element, outerRight, outerTop, useDoubleBuffering) { //outerRight and outerTop must be a number
   var parent = element.parentNode;
@@ -241,7 +241,7 @@ O$._setInnerElementOuterRightTopCorner = function(element, outerRight, outerTop,
     element.style.right = right;
     element.style.top = top;
   }
-}
+};
 
 O$._setInnerElementOuterRightBottomCorner = function(element, outerRight, outerBottom, useDoubleBuffering) { //outerRight and outerBottom must be a number
   var parent = element.parentNode;
@@ -255,7 +255,7 @@ O$._setInnerElementOuterRightBottomCorner = function(element, outerRight, outerB
     element.style.right = right;
     element.style.bottom = bottom;
   }
-}
+};
 
 // to fix bugs
 
@@ -268,13 +268,13 @@ O$._isCanBeDoubleBufferedElement = function(element) {
     }
     return O$._isCanBeDoubleBufferedElement(element.parentNode);
   }
-}
+};
 
 O$._checkAsRootDoubleBufferedElement = function(element) {
   if (!O$._isCanBeDoubleBufferedElement(element.parentNode)) {
     element._isRootDoubleBufferedElement = true;
   }
-}
+};
 
 O$._bugFix_divNegativeSizeBug = function(element, useDoubleBuffering) {
   if (useDoubleBuffering) {
@@ -299,7 +299,7 @@ O$._bugFix_divNegativeSizeBug = function(element, useDoubleBuffering) {
       element.style.display = "none";
     }
   }
-}
+};
 
 O$._IE_getIFramePos = function(iframeWindow) {
   var iframe = iframeWindow.frameElement;
@@ -311,7 +311,7 @@ O$._IE_getIFramePos = function(iframeWindow) {
     position.top = parentWindowPos.top + iframeWindowPos.top;
   }
   return position;
-}
+};
 
 //------------------  resizableElement methods  -------------------
 
@@ -328,23 +328,23 @@ O$._subscribeToOnresizeEvent = function(element, func) {
       return;
     }
     else if (targetElement == document) {
-      O$._subscribeToTargetOnresizeEvent(element, window, func);
-      return;
-    } else {
-      var width = O$._evaluateStyleOrClassProperty(targetElement, "width", false);
-      var height = O$._evaluateStyleOrClassProperty(targetElement, "height", false);
-      if (O$._isPixelValue(width)) {
-        widthIsNotFixed = false;
+        O$._subscribeToTargetOnresizeEvent(element, window, func);
+        return;
+      } else {
+        var width = O$.getElementStyleProperty(targetElement, "width", false);
+        var height = O$.getElementStyleProperty(targetElement, "height", false);
+        if (O$._isPixelValue(width)) {
+          widthIsNotFixed = false;
+        }
+        if (O$._isPixelValue(height)) {
+          heightIsNotFixed = false;
+        }
+        targetElement = targetElement.parentNode;
       }
-      if (O$._isPixelValue(height)) {
-        heightIsNotFixed = false;
-      }
-      targetElement = targetElement.parentNode;
-    }
   }
   element._isNotResizableElement = true;
 
-}
+};
 
 O$._subscribeToTargetOnresizeEvent = function(element, targetElement, func) {
   if (O$.isExplorer()) {
@@ -367,7 +367,7 @@ O$._subscribeToTargetOnresizeEvent = function(element, targetElement, func) {
     }
   }
   element._isResizableElement = true;
-}
+};
 
 O$._sendResizeEvent = function(element, phase) {
   if (O$.isExplorer()) {
@@ -383,7 +383,7 @@ O$._sendResizeEvent = function(element, phase) {
     event.phase = phase;
     element.dispatchEvent(event);
   }
-}
+};
 
 //-------------------  General purpose methods  --------------------
 
@@ -403,7 +403,7 @@ O$._mouseButton = function(event) {
             : ((event.which == 3) ? "right"
             : "NaN"));
   return button;
-}
+};
 
 O$._disableMouseSelection = function() {
   if (O$.isMozillaFF())
@@ -415,7 +415,7 @@ O$._disableMouseSelection = function() {
     document.onselectstart = function () {
       return false;
     };
-}
+};
 
 O$._enableMouseSelection = function() {
   if (O$.isMozillaFF())
@@ -425,7 +425,7 @@ O$._enableMouseSelection = function() {
   } //todo implement enableMouseSelection in Opera
   else
     document.onselectstart = "";
-}
+};
 
 O$._createPseudoCSSStyle = function(cssStyle) {
   for (var index in cssStyle) {
@@ -438,35 +438,27 @@ O$._createPseudoCSSStyle = function(cssStyle) {
         result += index + ": " + this[index] + "; ";
     }
     return result;
-  }
+  };
   this.applyTo = function(style) {
     for (index in this) {
       if (index != "toString" && index != "applyTo") {
         style[index] = this[index];
       }
     }
-  }
+  };
   return this;
-}
+};
 
 O$._isPercentageValue = function(str) {
   return (str.indexOf(parseFloat(str).toString() + "%") != -1);
-}
+};
 
 O$._isPixelValue = function(str) {
   if (!str) {
     return false;
   }
   return (str.indexOf(parseInt(str).toString() + "px") != -1);
-}
-
-O$._evaluateStyleOrClassProperty = function(element, propertyName) {
-  var result = element.style[propertyName];
-  if (!result) {
-    result = O$.getStyleClassProperty(element.className, propertyName);
-  }
-  return result;
-}
+};
 
 O$._setAbsoluteCenterPosition = function(element) {
   element.style.position = "absolute";
@@ -474,15 +466,15 @@ O$._setAbsoluteCenterPosition = function(element) {
   element.style.top = "50%";
   element.style.marginLeft = "-" + Math.round(element.offsetWidth / 2) + "px";
   element.style.marginTop = "-" + Math.round(element.offsetHeight / 2) + "px";
-}
+};
 
 O$._setImageAbsoluteCenterPosition = function(imgElement) {
   if (imgElement.readyState == "complete") {
     O$._setAbsoluteCenterPosition(imgElement);
-  } else  {
+  } else {
     setTimeout(O$._setImageAbsoluteCenterPosition(imgElement), 100);
   }
-}
+};
 
 O$._createMouseSattelite = function(element, imgSrc) { //element must be absolute positioned
   function addFunction() {
@@ -518,7 +510,7 @@ O$._createMouseSattelite = function(element, imgSrc) { //element must be absolut
   } else {
     addFunction();
   }
-}
+};
 
 O$._mouseSatteliteOnmousemove = function(mouseSattelite) {
   return function(event) {
@@ -532,8 +524,8 @@ O$._mouseSatteliteOnmousemove = function(mouseSattelite) {
     } else {
       mouseSattelite.style.top = (mouseSattelite._posY + mouseSattelite._shiftY) + "px";
     }
-  }
-}
+  };
+};
 
 O$._mouseSatteliteShow = function(mouseSattelite) {
   mouseSattelite._visible = true;
@@ -542,7 +534,7 @@ O$._mouseSatteliteShow = function(mouseSattelite) {
     O$._mouseSatteliteOnmousemove(mouseSattelite);
   }
   mouseSattelite.style.display = "visible";
-}
+};
 
 O$._mouseSatteliteHide = function(mouseSattelite) {
   mouseSattelite.style.display = "none";
@@ -550,28 +542,28 @@ O$._mouseSatteliteHide = function(mouseSattelite) {
   if (mouseSattelite._mouseTracking) {
     mouseSattelite._onmousemoveHandler = O$.removeEventHandler(mouseSattelite.parentNode, "mousemove", O$._mouseSatteliteOnmousemove(mouseSattelite), false);
   }
-}
+};
 
 O$._mouseSatteliteTrackMouse = function(mouseSattelite) {
   mouseSattelite._mouseTracking = true;
   if (mouseSattelite._visible) {
     mouseSattelite._onmousemoveHandler = O$.addEventHandler(mouseSattelite.parentNode, "mousemove", O$._mouseSatteliteOnmousemove(mouseSattelite), false);
   }
-}
+};
 
 O$._mouseSatteliteUntrackMouse = function(mouseSattelite) {
   mouseSattelite._mouseTracking = false;
   if (mouseSattelite._visible) {
     mouseSattelite._onmousemoveHandler = O$.removeEventHandler(mouseSattelite.parentNode, "mousemove", O$._mouseSatteliteOnmousemove(mouseSattelite), false);
   }
-}
+};
 
 O$._bugFix_IEPng = function(imageElement) {
   if (!O$.isExplorer())
     return;
   imageElement.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + imageElement.src + "')";
   imageElement.src = "clear.gif";
-}
+};
 
 O$._isExplorerQuirksMode = function() {
   if (window._of_isExplorerQuirksMode == undefined)
@@ -579,18 +571,17 @@ O$._isExplorerQuirksMode = function() {
   if (result)
     window._of_isExplorerQuirksMode = true;
   return window._of_isExplorerQuirksMode;
-}
+};
 
 O$._applyEventsObjectToElement = function(eventsObject, element) {
   for (var index in eventsObject) {
     element[index] = eventsObject[index];
   }
-}
+};
 
 O$._setupRolloverClass = function(element, rolloverClass) {
   if (!rolloverClass) return;
   O$.setupHoverStateFunction(element, function(mouseInside) {
     O$.setElementStyleMappings(element, {_rolloverStyle: mouseInside ? rolloverClass : null});
   });
-}
-
+};

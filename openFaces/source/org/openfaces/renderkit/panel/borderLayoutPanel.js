@@ -12,7 +12,7 @@
 
 //--------------------------------------  BorderLayoutPanel init method
 
-O$._initBorderLayoutPanel_part1 = function(borderLayoutPanelId) {
+O$._initBorderLayoutPanel = function(borderLayoutPanelId) {
   var couplingEnabled = true; //todo remove this stub
   var borderLayoutPanel = O$(borderLayoutPanelId);
   borderLayoutPanel._isBorderLayoutPanel = true;
@@ -20,8 +20,8 @@ O$._initBorderLayoutPanel_part1 = function(borderLayoutPanelId) {
   borderLayoutPanel._isNotResizableComponent = true;
   borderLayoutPanel._isCoupled = couplingEnabled && borderLayoutPanel.parentNode._isCouplingElement;
   borderLayoutPanel._newStyle = new O$._createPseudoCSSStyle();
-  borderLayoutPanel._newStyle.width = O$._evaluateStyleOrClassProperty(borderLayoutPanel, "width");
-  borderLayoutPanel._newStyle.height = O$._evaluateStyleOrClassProperty(borderLayoutPanel, "height");
+  borderLayoutPanel._newStyle.width = O$.getElementStyleProperty(borderLayoutPanel, "width");
+  borderLayoutPanel._newStyle.height = O$.getElementStyleProperty(borderLayoutPanel, "height");
 
   O$._storeSizeProperties(borderLayoutPanel);
   O$._subscribeToOnresizeEvent(borderLayoutPanel, function() {
@@ -33,11 +33,11 @@ O$._initBorderLayoutPanel_part1 = function(borderLayoutPanelId) {
   borderLayoutPanel.style.height = O$._calculateNumericHeight(borderLayoutPanel, true) + "px";
 
   if (borderLayoutPanel._isCoupled) {
-    var borderLayoutPanelLeft = O$._evaluateStyleOrClassProperty(borderLayoutPanel, "left");
+    var borderLayoutPanelLeft = O$.getElementStyleProperty(borderLayoutPanel, "left");
     if (!borderLayoutPanelLeft) {
       borderLayoutPanelLeft = "0";
     }
-    var borderLayoutPanelTop = O$._evaluateStyleOrClassProperty(borderLayoutPanel, "top");
+    var borderLayoutPanelTop = O$.getElementStyleProperty(borderLayoutPanel, "top");
     if (!borderLayoutPanelTop) {
       borderLayoutPanelTop = "0";
     }
@@ -47,9 +47,9 @@ O$._initBorderLayoutPanel_part1 = function(borderLayoutPanelId) {
   } else {
     O$._checkAsRootDoubleBufferedElement(borderLayoutPanel);
   }
-}
+};
 
-O$._initBorderLayoutPanel_part2 = function(borderLayoutPanelId, rolloverClass, events) {
+O$._initBorderLayoutPanel_content = function(borderLayoutPanelId, rolloverClass, events) {
   var borderLayoutPanel = O$(borderLayoutPanelId);
   borderLayoutPanel._content = O$(borderLayoutPanelId + "::content");
   borderLayoutPanel._content._newStyle = new O$._createPseudoCSSStyle();
@@ -86,19 +86,19 @@ O$._initBorderLayoutPanel_part2 = function(borderLayoutPanelId, rolloverClass, e
         }
         O$._recalculateBorderLayoutPanel(borderLayoutPanel);
         O$._repaintBorderLayoutPanel(borderLayoutPanel);
-      }
+      };
       sidePanel._forBorderLayoutPanel.oncollapse = sidePanel.oncollapse;
       sidePanel.oncollapse = function(sidePanel) {
         if (sidePanel._forBorderLayoutPanel.oncollapse)
           sidePanel._forBorderLayoutPanel.oncollapse(sidePanel);
         borderLayoutPanel.refresh();
-      }
+      };
       sidePanel._forBorderLayoutPanel.onrestore = sidePanel.onrestore;
       sidePanel.onrestore = function(sidePanel) {
         if (sidePanel._forBorderLayoutPanel.onrestore)
           sidePanel._forBorderLayoutPanel.onrestore(sidePanel);
         borderLayoutPanel.refresh();
-      }
+      };
     }
   }
   O$._calculateBorderLayoutPanelContentRect(borderLayoutPanel, true);
@@ -108,7 +108,7 @@ O$._initBorderLayoutPanel_part2 = function(borderLayoutPanelId, rolloverClass, e
       borderLayoutPanel.refresh();
     }, 1);
   O$._applyEventsObjectToElement(events, borderLayoutPanel);
-}
+};
 
 //--------------------------------------  private functions
 
@@ -134,7 +134,7 @@ O$._recalculateBorderLayoutPanel = function(borderLayoutPanel) {
   }
   O$._recalculateInnerSidePanels(borderLayoutPanel);
   O$._recalculateContent(borderLayoutPanel);
-}
+};
 
 O$._repaintBorderLayoutPanel = function(borderLayoutPanel) {
   if ((parseInt(borderLayoutPanel._content._newStyle.height) < parseInt(borderLayoutPanel._content.style.height)) || (parseInt(borderLayoutPanel._content._newStyle.width) < parseInt(borderLayoutPanel._content.style.width))) {
@@ -149,7 +149,7 @@ O$._repaintBorderLayoutPanel = function(borderLayoutPanel) {
     O$._repaintInnerSidePanels(borderLayoutPanel);
     O$._repaintContent(borderLayoutPanel);
   }
-}
+};
 
 O$._calculateBorderLayoutPanelContentRect = function(borderLayoutPanel, useDoubleBuffering) {
   var contentRectTop = 0;
@@ -177,7 +177,7 @@ O$._calculateBorderLayoutPanelContentRect = function(borderLayoutPanel, useDoubl
           borderLayoutPanelWidth - (contentRectLeft + contentRectRight),
           borderLayoutPanelHeight - (contentRectTop + contentRectBottom));
   return borderLayoutPanel._contentRect;
-}
+};
 
 O$._recalculateInnerSidePanels = function(borderLayoutPanel, isDecrase) {
   var topSidePanelOffset = 0;
@@ -231,14 +231,14 @@ O$._recalculateInnerSidePanels = function(borderLayoutPanel, isDecrase) {
       O$._recalculateSidePanel(sidePanel);
     }
   }
-}
+};
 
 O$._recalculateContent = function(borderLayoutPanel) {
   O$._setInnerElementOuterLeftTopCorner(borderLayoutPanel._content, borderLayoutPanel._contentRect.x, borderLayoutPanel._contentRect.y, true);
   O$._setInnerElementOuterWidth(borderLayoutPanel._content, borderLayoutPanel._contentRect.width, true);
   O$._setInnerElementOuterHeight(borderLayoutPanel._content, borderLayoutPanel._contentRect.height, true);
   O$._bugFix_divNegativeSizeBug(borderLayoutPanel._content, true);
-}
+};
 
 O$._repaintInnerSidePanels = function(borderLayoutPanel) {
   for (var index = 0; index < borderLayoutPanel.sidePanels.length; index++) {
@@ -248,14 +248,14 @@ O$._repaintInnerSidePanels = function(borderLayoutPanel) {
       O$._sidePanelSaveState(sidePanel, sidePanel._forBorderLayoutPanel._beforeTruncationSize + ";" + sidePanel._collapsed);
     }
   }
-}
+};
 
 O$._repaintContent = function(borderLayoutPanel) {
   borderLayoutPanel._content._newStyle.applyTo(borderLayoutPanel._content.style);
   O$._sendResizeEvent(borderLayoutPanel._content);
   if (borderLayoutPanel.oncontentresize)
     borderLayoutPanel.oncontentresize();
-}
+};
 
 O$._setCorrectedSidePanelNewSize = function(sidePanel, borderLayoutPanel) {
   var sidePanelSize = O$._calculateNumericSizeValue(sidePanel, sidePanel._size, true);
@@ -281,7 +281,7 @@ O$._setCorrectedSidePanelNewSize = function(sidePanel, borderLayoutPanel) {
       sidePanel._size = parseInt(sidePanel._size) + freeSpace + "px";
     }
   }
-}
+};
 
 //--------------------------------------  truncated mode functions
 O$._truncateMode_recalculateBorderLayoutPanel = function(borderLayoutPanel, useDoubleBuffering) {
@@ -292,7 +292,7 @@ O$._truncateMode_recalculateBorderLayoutPanel = function(borderLayoutPanel, useD
     borderLayoutPanel._truncateMode_Hor = O$._truncateMode_recalculateHorizontalSidePanels(borderLayoutPanel, useDoubleBuffering);
   }
   borderLayoutPanel._truncateMode = borderLayoutPanel._truncateMode_Vert || borderLayoutPanel._truncateMode_Hor;
-}
+};
 
 O$._truncateMode_recalculateVerticalSidePanels = function(borderLayoutPanel, useDoubleBuffering) {
   var freeSpace = borderLayoutPanel._contentRect.width;
@@ -336,7 +336,7 @@ O$._truncateMode_recalculateVerticalSidePanels = function(borderLayoutPanel, use
     return !(freeSpace > 0);
   }
   return undefined;
-}
+};
 
 O$._truncateMode_recalculateHorizontalSidePanels = function(borderLayoutPanel, useDoubleBuffering) {
   var freeSpace = borderLayoutPanel._contentRect.height;
@@ -380,7 +380,7 @@ O$._truncateMode_recalculateHorizontalSidePanels = function(borderLayoutPanel, u
     return !(freeSpace > 0);
   }
   return undefined;
-}
+};
 
 O$._truncateMode_collectSidePanelsSortedList = function(borderLayoutPanel, isVertDirection, isTruncateOp) {
   // make sorted sidePanels array to truncate it
@@ -405,7 +405,7 @@ O$._truncateMode_collectSidePanelsSortedList = function(borderLayoutPanel, isVer
   }
 
   return sidePanels;
-}
+};
 
 O$._truncateMode_calculateSidePanelPriority = function(sidePanel, isTruncateOp) {
   var sidePanelSize = O$._calculateNumericSizeValue(sidePanel, sidePanel._size);
@@ -439,7 +439,7 @@ O$._truncateMode_calculateSidePanelPriority = function(sidePanel, isTruncateOp) 
     priority = priority + 7;
   }
   return priority;
-}
+};
 
 O$._truncateMode_truncateSidePanel = function(sidePanel, freeSpace, useDoubleBuffering, force) {
   var needSpace = -freeSpace;
@@ -463,7 +463,7 @@ O$._truncateMode_truncateSidePanel = function(sidePanel, freeSpace, useDoubleBuf
   sidePanel._size = (sidePanelSize - truncationSize) + "px";
   sidePanel._forBorderLayoutPanel._truncateMode = true;
   return -(needSpace - truncationSize);
-}
+};
 
 O$._truncateMode_untruncateSidePanel = function(sidePanel, freeSpace, useDoubleBuffering, force) {
   if (sidePanel._forBorderLayoutPanel._truncateMode) {
@@ -495,4 +495,4 @@ O$._truncateMode_untruncateSidePanel = function(sidePanel, freeSpace, useDoubleB
     }
   }
   return freeSpace;
-}
+};
