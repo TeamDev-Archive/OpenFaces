@@ -24522,26 +24522,6 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the BorderLayoutPanel receives focus.</description>
-      <name>onfocus</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>JavaScript code that should be executed when the BorderLayoutPanel loses focus.</description>
-      <name>onblur</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
       <description>JavaScript code that should be executed when the user presses a key over the BorderLayoutPanel.
       </description>
       <name>onkeydown</name>
