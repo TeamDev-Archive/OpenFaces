@@ -18,17 +18,18 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public class ChartNoDataMessageTag extends AbstractStyledComponentTag {
-    public void setComponentProperties(FacesContext facesContext, UIComponent uiComponent) {
-        super.setComponentProperties(facesContext, uiComponent);
-
-        setStringProperty(uiComponent, "text");
-    }
-
     public String getComponentType() {
         return "org.openfaces.ChartNoDataMessage";
     }
 
     public String getRendererType() {
         return null;
+    }
+
+    @Override
+    public void setComponentProperties(FacesContext facesContext, UIComponent uiComponent) {
+        super.setComponentProperties(facesContext, uiComponent);
+
+        setStringProperty(uiComponent, "text");
     }
 }

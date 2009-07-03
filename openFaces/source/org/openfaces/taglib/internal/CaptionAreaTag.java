@@ -30,6 +30,7 @@ public class CaptionAreaTag extends AbstractComponentTag {
         return "org.openfaces.CaptionAreaRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

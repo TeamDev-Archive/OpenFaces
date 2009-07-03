@@ -18,17 +18,18 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public class ChartLabelsTag extends AbstractStyledComponentTag {
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
-
-        setStringProperty(component, "text");
-    }
-
     public String getComponentType() {
         return "org.openfaces.ChartLabels";
     }
 
     public String getRendererType() {
         return null;
+    }
+
+    @Override
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
+
+        setStringProperty(component, "text");
     }
 }

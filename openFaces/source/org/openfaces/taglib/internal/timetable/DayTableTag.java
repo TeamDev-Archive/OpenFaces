@@ -32,6 +32,7 @@ public class DayTableTag extends AbstractComponentTag {
         return "org.openfaces.DayTableRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

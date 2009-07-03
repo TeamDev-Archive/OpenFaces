@@ -29,6 +29,7 @@ public class CaptionButtonTag extends OUICommandTag {
         return "org.openfaces.CaptionButtonRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext context, UIComponent component) {
         super.setComponentProperties(context, component);
 

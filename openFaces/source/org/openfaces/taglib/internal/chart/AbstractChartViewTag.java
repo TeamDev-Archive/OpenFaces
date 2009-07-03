@@ -20,6 +20,15 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public abstract class AbstractChartViewTag extends AbstractStyledComponentTag {
+    public String getComponentType() {
+        return "org.openfaces.ChartView";
+    }
+
+    public String getRendererType() {
+        return null;
+    }
+
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
@@ -35,13 +44,5 @@ public abstract class AbstractChartViewTag extends AbstractStyledComponentTag {
 
         setActionProperty(facesContext, (ChartView) component);
         setActionListener(facesContext, view);
-    }
-
-    public String getComponentType() {
-        return "org.openfaces.ChartView";
-    }
-
-    public String getRendererType() {
-        return null;
     }
 }

@@ -30,6 +30,7 @@ public class ColumnResizingTag extends AbstractComponentTag {
         return "org.openfaces.ColumnResizingRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

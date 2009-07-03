@@ -22,6 +22,17 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public abstract class GridChartViewTag extends AbstractChartViewTag {
+    @Override
+    public String getComponentType() {
+        return "org.openfaces.GridChartView";
+    }
+
+    @Override
+    public String getRendererType() {
+        return null;
+    }
+
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
@@ -40,13 +51,5 @@ public abstract class GridChartViewTag extends AbstractChartViewTag {
         view.setKeyAxisLabel(keyAxisLabel);
         String valueAxisLabel = getPropertyValue("valueAxisLabel");
         view.setValueAxisLabel(valueAxisLabel);
-    }
-
-    public String getComponentType() {
-        return "org.openfaces.GridChartView";
-    }
-
-    public String getRendererType() {
-        return null;
     }
 }

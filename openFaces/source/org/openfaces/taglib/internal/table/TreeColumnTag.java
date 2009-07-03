@@ -21,14 +21,17 @@ import javax.faces.context.FacesContext;
  */
 public class TreeColumnTag extends TableColumnTag {
 
+    @Override
     public String getComponentType() {
         return TreeColumn.COMPONENT_TYPE;
     }
 
+    @Override
     public String getRendererType() {
         return "org.openfaces.TreeColumnRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setStringProperty(component, "levelIndent");

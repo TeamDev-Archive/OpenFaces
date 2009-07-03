@@ -20,17 +20,20 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public class ChartCategoryAxisTag extends ChartAxisTag {
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
-
-        setEnumerationProperty(component, "position", CategoryAxisLabelPosition.class);
-    }
-
+    @Override
     public String getComponentType() {
         return "org.openfaces.ChartCategoryAxis";
     }
 
+    @Override
     public String getRendererType() {
         return null;
+    }
+
+    @Override
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
+
+        setEnumerationProperty(component, "position", CategoryAxisLabelPosition.class);
     }
 }

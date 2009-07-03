@@ -29,6 +29,7 @@ public class ImageExpansionToggleTag extends AbstractComponentTag {
         return "org.openfaces.ImageExpansionToggleRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setStringProperty(component, "expandedImageUrl");

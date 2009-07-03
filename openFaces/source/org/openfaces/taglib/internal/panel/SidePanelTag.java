@@ -29,6 +29,7 @@ public class SidePanelTag extends AbstractPanelWithCaptionTag {
         return "org.openfaces.SidePanelRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

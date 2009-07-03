@@ -29,6 +29,7 @@ public class TwoListSelectionTag extends AbstractUIInputTag {
         return "org.openfaces.TwoListSelectionRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

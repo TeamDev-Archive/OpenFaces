@@ -30,6 +30,7 @@ public class HintLabelTag extends AbstractComponentTag {
         return "org.openfaces.HintLabelRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

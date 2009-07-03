@@ -20,18 +20,19 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public class MultipleRowSelectionTag extends AbstractTableSelectionTag {
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
-
-        setCollectionProperty(component, "rowIndexes");
-        setCollectionProperty(component, "rowDatas");
-    }
-
     public String getComponentType() {
         return MultipleRowSelection.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
         return null;
+    }
+
+    @Override
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
+
+        setCollectionProperty(component, "rowIndexes");
+        setCollectionProperty(component, "rowDatas");
     }
 }

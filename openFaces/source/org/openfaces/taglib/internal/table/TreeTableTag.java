@@ -42,6 +42,7 @@ public class TreeTableTag extends AbstractTableTag {
         return "org.openfaces.TreeTableRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         TreeTable treeTable = ((TreeTable) component);

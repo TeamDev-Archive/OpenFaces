@@ -22,14 +22,17 @@ import javax.faces.component.UIComponent;
  */
 public class DebugTag extends WindowTag {
 
+    @Override
     public String getComponentType() {
         return Debug.COMPONENT_TYPE;
     }
 
+    @Override
     public String getRendererType() {
         return "org.openfaces.DebugRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
     }

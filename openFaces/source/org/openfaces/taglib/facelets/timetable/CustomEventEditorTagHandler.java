@@ -9,19 +9,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.internal.chart;
+package org.openfaces.taglib.facelets.timetable;
+
+import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.timetable.CustomEventEditorTag;
+import com.sun.facelets.tag.jsf.ComponentConfig;
 
 /**
- * @author Pavel Kaplin
+ * @author Dmitry Pikhulya
  */
-public class BarChartViewTag extends GridChartViewTag {
-    @Override
-    public String getComponentType() {
-        return "org.openfaces.BarChartView";
-    }
-
-    @Override
-    public String getRendererType() {
-        return null;
+public class CustomEventEditorTagHandler extends AbstractFaceletsComponentHandler {
+    public CustomEventEditorTagHandler(ComponentConfig componentConfig) {
+        super(componentConfig, new CustomEventEditorTag());
     }
 }

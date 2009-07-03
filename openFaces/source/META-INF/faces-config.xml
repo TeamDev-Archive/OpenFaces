@@ -130,6 +130,12 @@
   </component>
 
   <component>
+    <component-type>org.openfaces.CustomEventEditor</component-type>
+    <component-class>org.openfaces.component.timetable.CustomEventEditor</component-class>
+  </component>
+
+
+  <component>
     <component-type>org.openfaces.EventActionBar</component-type>
     <component-class>org.openfaces.component.timetable.EventActionBar</component-class>
   </component>
@@ -826,6 +832,12 @@
       <component-family>org.openfaces.EventEditorPage</component-family>
       <renderer-type>org.openfaces.EventEditorPageRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.timetable.EventEditorPageRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>org.openfaces.CustomEventEditor</component-family>
+      <renderer-type>org.openfaces.CustomEventEditorRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.timetable.CustomEventEditorRenderer</renderer-class>
     </renderer>
 
     <renderer>

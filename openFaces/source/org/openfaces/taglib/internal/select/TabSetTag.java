@@ -35,6 +35,7 @@ public class TabSetTag extends AbstractUIInputTag {
         return RENDERER_TYPE;
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

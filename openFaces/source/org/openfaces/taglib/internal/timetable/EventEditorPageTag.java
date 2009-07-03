@@ -29,6 +29,7 @@ public class EventEditorPageTag extends AbstractComponentTag {
         return "org.openfaces.EventEditorPageRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

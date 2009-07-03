@@ -34,6 +34,7 @@ public class TabbedPaneTag extends AbstractComponentTag {
         return "org.openfaces.TabbedPaneRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

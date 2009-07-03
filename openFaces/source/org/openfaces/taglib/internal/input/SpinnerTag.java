@@ -31,10 +31,12 @@ public class SpinnerTag extends DropDownComponentTag {
         return "org.openfaces.SpinnerRenderer";
     }
 
+    @Override
     protected boolean isAutomaticValueAttributeHandling() {
         return false;
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setIntProperty(component, "value");

@@ -233,6 +233,15 @@
   </tag>
 
   <tag>
+    <tag-name>customEventEditor</tag-name>
+    <component>
+      <component-type>org.openfaces.CustomEventEditor</component-type>
+      <renderer-type>org.openfaces.CustomEventEditorRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.CustomEventEditorTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
     <tag-name>eventActionBar</tag-name>
     <component>
       <component-type>org.openfaces.EventActionBar</component-type>

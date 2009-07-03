@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
  */
 public abstract class AbstractStyledComponentTag extends AbstractComponentTag {
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent uiComponent) {
         super.setComponentProperties(facesContext, uiComponent);
         checkJFreeChart();

@@ -18,6 +18,7 @@ import javax.faces.context.FacesContext;
  * @author Dmitry Pikhulya
  */
 public abstract class OUIInputTextTag extends AbstractUIInputTag {
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

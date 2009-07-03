@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public abstract class DropDownComponentTag extends OUIInputTextTag {
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

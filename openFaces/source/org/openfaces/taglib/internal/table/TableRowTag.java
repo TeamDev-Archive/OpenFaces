@@ -30,6 +30,7 @@ public class TableRowTag extends AbstractComponentTag {
         return null;
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setBooleanProperty(component, "condition");

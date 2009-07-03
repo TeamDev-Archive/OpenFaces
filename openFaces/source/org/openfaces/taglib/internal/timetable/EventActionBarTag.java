@@ -26,6 +26,7 @@ public class EventActionBarTag extends AbstractComponentTag {
         return "org.openfaces.EventActionBarRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

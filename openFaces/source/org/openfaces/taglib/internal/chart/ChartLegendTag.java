@@ -20,17 +20,18 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public class ChartLegendTag extends AbstractStyledComponentTag {
-    public void setComponentProperties(FacesContext facesContext, UIComponent componnet) {
-        super.setComponentProperties(facesContext, componnet);
-
-        setEnumerationProperty(componnet, "position", LegendPosition.class);
-    }
-
     public String getComponentType() {
         return "org.openfaces.ChartLegend";
     }
 
     public String getRendererType() {
         return null;
+    }
+
+    @Override
+    public void setComponentProperties(FacesContext facesContext, UIComponent componnet) {
+        super.setComponentProperties(facesContext, componnet);
+
+        setEnumerationProperty(componnet, "position", LegendPosition.class);
     }
 }

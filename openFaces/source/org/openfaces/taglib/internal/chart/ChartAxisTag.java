@@ -22,7 +22,15 @@ import javax.faces.context.FacesContext;
  */
 public class ChartAxisTag extends AbstractStyledComponentTag {
 
+    public String getComponentType() {
+        return "org.openfaces.ChartAxis";
+    }
 
+    public String getRendererType() {
+        return null;
+    }
+
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
@@ -39,13 +47,5 @@ public class ChartAxisTag extends AbstractStyledComponentTag {
         String ticksLabelsVisible = getPropertyValue("ticksLabelsVisible");
         if (ticksLabelsVisible != null)
             axis.setTickLabelsVisible(Boolean.valueOf(ticksLabelsVisible));
-    }
-
-    public String getComponentType() {
-        return "org.openfaces.ChartAxis";
-    }
-
-    public String getRendererType() {
-        return null;
     }
 }

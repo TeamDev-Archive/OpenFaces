@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public abstract class AbstractTableTag extends AbstractComponentTag {
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

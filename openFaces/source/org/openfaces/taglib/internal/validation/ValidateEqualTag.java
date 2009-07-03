@@ -18,6 +18,7 @@ import org.openfaces.validator.EqualValidator;
  * @author Pavel Kaplin
  */
 public class ValidateEqualTag extends AbstractCustomValidatorTag {
+    @Override
     public void setProperties(AbstractCustomValidator abstractCustomValidator) {
         super.setProperties(abstractCustomValidator);
         EqualValidator equalValidator = (EqualValidator) abstractCustomValidator;

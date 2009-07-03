@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public class ValidateCustomTag extends AbstractCustomValidatorTag {
+    @Override
     public void setProperties(AbstractCustomValidator abstractCustomValidator) {
         super.setProperties(abstractCustomValidator);
         CustomValidator customValidator = (CustomValidator) abstractCustomValidator;

@@ -22,10 +22,12 @@ import javax.faces.context.FacesContext;
  */
 public class CloseWindowButtonTag extends CaptionButtonTag {
 
+    @Override
     public String getComponentType() {
         return CloseWindowButton.COMPONENT_TYPE;
     }
 
+    @Override
     public String getRendererType() {
         return "org.openfaces.CloseWindowButtonRenderer";
     }

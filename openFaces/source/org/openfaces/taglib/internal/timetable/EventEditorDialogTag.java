@@ -21,14 +21,17 @@ import javax.faces.context.FacesContext;
  * @author Dmitry Pikhulya
  */
 public class EventEditorDialogTag extends WindowTag {
+    @Override
     public String getComponentType() {
         return EventEditorDialog.COMPONENT_TYPE;
     }
 
+    @Override
     public String getRendererType() {
         return "org.openfaces.EventEditorDialogRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

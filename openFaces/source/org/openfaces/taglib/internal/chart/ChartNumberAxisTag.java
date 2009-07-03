@@ -20,6 +20,17 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public class ChartNumberAxisTag extends ChartAxisTag {
+    @Override
+    public String getComponentType() {
+        return "org.openfaces.ChartNumberAxis";
+    }
+
+    @Override
+    public String getRendererType() {
+        return null;
+    }
+
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
@@ -36,13 +47,5 @@ public class ChartNumberAxisTag extends ChartAxisTag {
         String upperBound = getPropertyValue("upperBound");
         if (upperBound != null)
             axis.setUpperBound(Double.parseDouble(upperBound));
-    }
-
-    public String getComponentType() {
-        return "org.openfaces.ChartNumberAxis";
-    }
-
-    public String getRendererType() {
-        return null;
     }
 }

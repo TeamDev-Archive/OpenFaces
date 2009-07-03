@@ -28,6 +28,7 @@ public class DataTableTag extends AbstractTableTag {
         return "org.openfaces.DataTableRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

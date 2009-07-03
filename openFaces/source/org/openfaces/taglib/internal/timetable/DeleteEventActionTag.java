@@ -20,14 +20,17 @@ import javax.faces.context.FacesContext;
  * @author Dmitry Pikhulya
  */
 public class DeleteEventActionTag extends EventActionTag {
+    @Override
     public String getComponentType() {
         return DeleteEventAction.COMPONENT_TYPE;
     }
 
+    @Override
     public String getRendererType() {
         return null;
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

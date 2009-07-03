@@ -28,6 +28,7 @@ public class CheckboxColumnTag extends AbstractColumnTag {
         return "org.openfaces.CheckboxColumnRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setBooleanProperty(component, "sortable");

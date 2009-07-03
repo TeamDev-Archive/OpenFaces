@@ -23,14 +23,17 @@ public class WindowTag extends AbstractWindowTag {
     private static final String COMPONENT_TYPE = "org.openfaces.Window";
     private static final String RENDERER_TYPE = "org.openfaces.WindowRenderer";
 
+    @Override
     public String getComponentType() {
         return COMPONENT_TYPE;
     }
 
+    @Override
     public String getRendererType() {
         return RENDERER_TYPE;
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

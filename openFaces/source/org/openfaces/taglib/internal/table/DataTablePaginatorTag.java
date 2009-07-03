@@ -29,6 +29,7 @@ public class DataTablePaginatorTag extends AbstractComponentTag {
         return "org.openfaces.DataTablePaginatorRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setBooleanProperty(component, "showIfOnePage");

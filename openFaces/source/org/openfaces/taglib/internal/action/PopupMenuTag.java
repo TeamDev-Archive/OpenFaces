@@ -29,6 +29,7 @@ public class PopupMenuTag extends AbstractComponentTag {
         return "org.openfaces.PopupMenuRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent uiComponent) {
         super.setComponentProperties(facesContext, uiComponent);
 

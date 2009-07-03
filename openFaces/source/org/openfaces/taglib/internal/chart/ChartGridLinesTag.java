@@ -22,6 +22,15 @@ import javax.faces.context.FacesContext;
  */
 public class ChartGridLinesTag extends AbstractStyledComponentTag {
 
+    public String getComponentType() {
+        return "org.openfaces.ChartGridLines";
+    }
+
+    public String getRendererType() {
+        return null;
+    }
+
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
@@ -32,13 +41,5 @@ public class ChartGridLinesTag extends AbstractStyledComponentTag {
         String visible = getPropertyValue("visible");
         if (visible != null)
             gridLines.setVisible(Boolean.valueOf(visible));
-    }
-
-    public String getComponentType() {
-        return "org.openfaces.ChartGridLines";
-    }
-
-    public String getRendererType() {
-        return null;
     }
 }

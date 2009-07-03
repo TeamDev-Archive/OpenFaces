@@ -21,14 +21,17 @@ import javax.faces.context.FacesContext;
  */
 public class PieChartViewTag extends AbstractChartViewTag {
 
+    @Override
     public String getComponentType() {
         return "org.openfaces.PieChartView";
     }
 
+    @Override
     public String getRendererType() {
         return null;
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

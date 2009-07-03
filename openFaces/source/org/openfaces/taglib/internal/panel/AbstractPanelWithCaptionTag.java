@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 
 public abstract class AbstractPanelWithCaptionTag extends AbstractComponentTag {
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

@@ -22,14 +22,17 @@ import javax.faces.context.FacesContext;
  */
 public class MaximizeWindowButtonTag extends ToggleCaptionButtonTag {
 
+    @Override
     public String getComponentType() {
         return MaximizeWindowButton.COMPONENT_TYPE;
     }
 
+    @Override
     public String getRendererType() {
         return "org.openfaces.MaximizeWindowButtonRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

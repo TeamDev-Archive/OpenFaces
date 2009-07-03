@@ -29,6 +29,7 @@ public class CalendarTag extends AbstractUIInputTag {
         return "org.openfaces.CalendarRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

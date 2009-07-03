@@ -20,6 +20,17 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public class ChartDateTimeAxisTag extends ChartAxisTag {
+    @Override
+    public String getComponentType() {
+        return "org.openfaces.ChartDateAxis";
+    }
+
+    @Override
+    public String getRendererType() {
+        return null;
+    }
+
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent uiComponent) {
         super.setComponentProperties(facesContext, uiComponent);
 
@@ -28,13 +39,5 @@ public class ChartDateTimeAxisTag extends ChartAxisTag {
         setObjectProperty(axis, "lowerBound");
         setObjectProperty(axis, "upperBound");
         setObjectProperty(axis, "dateFormat");
-    }
-
-    public String getComponentType() {
-        return "org.openfaces.ChartDateAxis";
-    }
-
-    public String getRendererType() {
-        return null;
     }
 }

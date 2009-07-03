@@ -25,6 +25,15 @@ public class ChartTag extends AbstractStyledComponentTag {
 
     public static final String RENDERER_TYPE = "org.openfaces.ChartRenderer";
 
+    public String getComponentType() {
+        return "org.openfaces.Chart";
+    }
+
+    public String getRendererType() {
+        return RENDERER_TYPE;
+    }
+
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         Chart chart = (Chart) component;
@@ -44,13 +53,5 @@ public class ChartTag extends AbstractStyledComponentTag {
         setIntProperty(chart, "height");
         setIntProperty(chart, "width");
         setBooleanProperty(chart, "legendVisible");
-    }
-
-    public String getComponentType() {
-        return "org.openfaces.Chart";
-    }
-
-    public String getRendererType() {
-        return RENDERER_TYPE;
     }
 }

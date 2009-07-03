@@ -28,6 +28,7 @@ public class SelectionColumnTag extends AbstractColumnTag {
         return "org.openfaces.SelectionColumnRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

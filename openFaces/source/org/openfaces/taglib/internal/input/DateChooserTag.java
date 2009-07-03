@@ -26,6 +26,7 @@ public class DateChooserTag extends DropDownComponentTag {
         return "org.openfaces.DateChooserRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setIntProperty(component, "firstDayOfWeek");

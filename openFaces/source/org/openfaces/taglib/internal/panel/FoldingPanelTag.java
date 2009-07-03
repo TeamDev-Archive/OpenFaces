@@ -31,6 +31,7 @@ public class FoldingPanelTag extends AbstractComponentTag {
         return "org.openfaces.FoldingPanelRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setEnumerationProperty(component, "loadingMode", LoadingMode.class);

@@ -31,6 +31,7 @@ public class MessageTag extends AbstractComponentTag {
         return RENDERER_TYPE;
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setStringProperty(component, "for");

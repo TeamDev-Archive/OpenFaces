@@ -24,6 +24,15 @@ public class FloatingIconMessageTag extends AbstractComponentTag {
 
     private static final String RENDERER_TYPE = "org.openfaces.FloatingIconMessage";
 
+    public String getComponentType() {
+        return FloatingIconMessage.COMPONENT_TYPE;
+    }
+
+    public String getRendererType() {
+        return RENDERER_TYPE;
+    }
+
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
@@ -37,13 +46,5 @@ public class FloatingIconMessageTag extends AbstractComponentTag {
 
         setBooleanProperty(component, "noImage");
         setBooleanProperty(component, "noStyle");
-    }
-
-    public String getComponentType() {
-        return FloatingIconMessage.COMPONENT_TYPE;
-    }
-
-    public String getRendererType() {
-        return RENDERER_TYPE;
     }
 }

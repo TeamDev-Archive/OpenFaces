@@ -22,14 +22,17 @@ import javax.faces.context.FacesContext;
  */
 public class MinimizeWindowButtonTag extends CaptionButtonTag {
 
+    @Override
     public String getComponentType() {
         return MinimizeWindowButton.COMPONENT_TYPE;
     }
 
+    @Override
     public String getRendererType() {
         return "org.openfaces.MinimizeWindowButtonRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

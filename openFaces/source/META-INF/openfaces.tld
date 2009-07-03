@@ -23341,6 +23341,13 @@ and it is automatically triggered on any form submission. -->
   </tag>
 
   <tag>
+    <name>customEventEditor</name>
+    <tag-class>org.openfaces.taglib.jsp.timetable.CustomEventEditorJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+
+
+  <tag>
     <name>eventActionBar</name>
     <tag-class>org.openfaces.taglib.jsp.timetable.EventActionBarJspTag</tag-class>
     <body-content>JSP</body-content>

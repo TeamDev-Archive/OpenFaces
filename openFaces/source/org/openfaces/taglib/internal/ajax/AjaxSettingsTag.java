@@ -30,6 +30,7 @@ public class AjaxSettingsTag extends AbstractComponentTag {
         return "org.openfaces.AjaxSettingsRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setStringProperty(component, "onerror");

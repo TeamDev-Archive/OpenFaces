@@ -29,6 +29,7 @@ public class ReloadComponentsTag extends AbstractComponentTag {
         return "org.openfaces.ReloadComponentsRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setStringProperty(component, "event");

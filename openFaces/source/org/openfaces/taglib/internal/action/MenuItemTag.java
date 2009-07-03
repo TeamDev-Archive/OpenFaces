@@ -30,6 +30,7 @@ public class MenuItemTag extends AbstractComponentTag {
         return "org.openfaces.MenuItemRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent uiComponent) {
 
         super.setComponentProperties(facesContext, uiComponent);

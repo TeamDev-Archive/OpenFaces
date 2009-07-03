@@ -20,6 +20,16 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public class LinePropertiesTag extends AbstractStyledComponentTag {
+    public String getComponentType() {
+        return "org.openfaces.LineProperties";
+    }
+
+    public String getRendererType() {
+        return null;
+    }
+
+
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
@@ -30,14 +40,5 @@ public class LinePropertiesTag extends AbstractStyledComponentTag {
         setBooleanProperty(lineProperties, "hideSeries");
         setBooleanProperty(lineProperties, "labelsVisible");
         setPropertyBinding(lineProperties, "condition");
-    }
-
-
-    public String getComponentType() {
-        return "org.openfaces.LineProperties";
-    }
-
-    public String getRendererType() {
-        return null;
     }
 }

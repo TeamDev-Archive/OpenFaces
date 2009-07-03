@@ -18,14 +18,17 @@ import javax.faces.context.FacesContext;
 
 public class SuggestionFieldTag extends DropDownFieldTag {
 
+    @Override
     public String getComponentType() {
         return SuggestionField.COMPONENT_TYPE;
     }
 
+    @Override
     public String getRendererType() {
         return "org.openfaces.SuggestionFieldRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

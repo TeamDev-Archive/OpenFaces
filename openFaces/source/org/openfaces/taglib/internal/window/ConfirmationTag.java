@@ -23,14 +23,17 @@ public class ConfirmationTag extends AbstractWindowTag {
     private static final String COMPONENT_TYPE = "org.openfaces.Confirmation";
     private static final String RENDERER_TYPE = "org.openfaces.ConfirmationRenderer";
 
+    @Override
     public String getComponentType() {
         return COMPONENT_TYPE;
     }
 
+    @Override
     public String getRendererType() {
         return RENDERER_TYPE;
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

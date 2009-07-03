@@ -21,19 +21,20 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public class ClientValidationSupportTag extends AbstractComponentTag {
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
-
-        setEnumerationProperty(component, "clientValidation", ClientValidationMode.class);
-        setBooleanProperty(component, "useDefaultClientValidationPresentation");
-        setBooleanProperty(component, "useDefaultServerValidationPresentation");
-    }
-
     public String getComponentType() {
         return "org.openfaces.ClientValidationSupport";
     }
 
     public String getRendererType() {
         return null;
+    }
+
+    @Override
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
+
+        setEnumerationProperty(component, "clientValidation", ClientValidationMode.class);
+        setBooleanProperty(component, "useDefaultClientValidationPresentation");
+        setBooleanProperty(component, "useDefaultServerValidationPresentation");
     }
 }

@@ -30,6 +30,7 @@ public class MenuSeparatorTag extends AbstractComponentTag {
         return "org.openfaces.MenuSeparatorRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent uiComponent) {
         super.setComponentProperties(facesContext, uiComponent);
         setStringProperty(uiComponent, "indentStyle");

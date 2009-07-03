@@ -31,6 +31,7 @@ public class InputTextareaTag extends OUIInputTextTag {
         return RENDERER_TYPE;
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent uiComponent) {
         super.setComponentProperties(facesContext, uiComponent);
         setIntProperty(uiComponent, "rows");

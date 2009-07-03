@@ -20,14 +20,17 @@ import javax.faces.context.FacesContext;
  * @author Dmitry Pikhulya
  */
 public class ExpansionToggleButtonTag extends ToggleCaptionButtonTag {
+    @Override
     public String getComponentType() {
         return ExpansionToggleButton.COMPONENT_TYPE;
     }
 
+    @Override
     public String getRendererType() {
         return "org.openfaces.ExpansionToggleButtonRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 

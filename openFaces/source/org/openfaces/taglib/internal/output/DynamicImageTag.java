@@ -20,6 +20,15 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public class DynamicImageTag extends AbstractComponentTag {
+    public String getComponentType() {
+        return "org.openfaces.DynamicImage";
+    }
+
+    public String getRendererType() {
+        return "org.openfaces.DynamicImageRenderer";
+    }
+
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
@@ -30,13 +39,5 @@ public class DynamicImageTag extends AbstractComponentTag {
         setIntProperty(component, "width");
         setIntProperty(component, "height");
 
-    }
-
-    public String getComponentType() {
-        return "org.openfaces.DynamicImage";
-    }
-
-    public String getRendererType() {
-        return "org.openfaces.DynamicImageRenderer";
     }
 }

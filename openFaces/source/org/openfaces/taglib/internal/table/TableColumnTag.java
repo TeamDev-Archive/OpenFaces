@@ -36,6 +36,7 @@ public class TableColumnTag extends AbstractColumnTag {
         return null;
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         TableColumn column = ((TableColumn) component);

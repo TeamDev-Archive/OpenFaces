@@ -20,17 +20,18 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public class SingleNodeSelectionTag extends AbstractTableSelectionTag {
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
-        setObjectProperty(component, "nodeData");
-        setObjectProperty(component, "nodePath");
-    }
-
     public String getComponentType() {
         return SingleNodeSelection.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
         return null;
+    }
+
+    @Override
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
+        setObjectProperty(component, "nodeData");
+        setObjectProperty(component, "nodePath");
     }
 }

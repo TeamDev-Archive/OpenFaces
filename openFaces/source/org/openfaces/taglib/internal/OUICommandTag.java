@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
  * @author Dmitry Pikhulya
  */
 public abstract class OUICommandTag extends AbstractComponentTag {
+    @Override
     public void setComponentProperties(FacesContext context, UIComponent component) {
         super.setComponentProperties(context, component);
 

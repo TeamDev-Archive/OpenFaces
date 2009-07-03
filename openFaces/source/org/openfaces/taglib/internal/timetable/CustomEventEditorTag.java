@@ -9,29 +9,28 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.internal.table;
+package org.openfaces.taglib.internal.timetable;
 
-import org.openfaces.component.table.MultipleNodeSelection;
+import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.component.timetable.CustomEventEditor;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.component.UIComponent;
 
 /**
- * @author Pavel Kaplin
+ * @author Dmitry Pikhulya
  */
-public class MultipleNodeSelectionTag extends AbstractTableSelectionTag {
+public class CustomEventEditorTag extends AbstractComponentTag {
     public String getComponentType() {
-        return MultipleNodeSelection.COMPONENT_TYPE;
+        return CustomEventEditor.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return null;
+        return "org.openfaces.CustomEventEditorRednerer";
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
-        setCollectionProperty(component, "nodeDatas");
-        setCollectionProperty(component, "nodePaths");
     }
 }

@@ -20,17 +20,18 @@ import javax.faces.context.FacesContext;
  * @author Pavel Kaplin
  */
 public class SingleRowSelectionTag extends AbstractTableSelectionTag {
-    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
-        super.setComponentProperties(facesContext, component);
-        setObjectProperty(component, "rowIndex");
-        setObjectProperty(component, "rowData");
-    }
-
     public String getComponentType() {
         return SingleRowSelection.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
         return null;
+    }
+
+    @Override
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
+        setObjectProperty(component, "rowIndex");
+        setObjectProperty(component, "rowData");
     }
 }

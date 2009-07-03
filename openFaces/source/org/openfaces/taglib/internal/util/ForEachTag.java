@@ -30,6 +30,7 @@ public class ForEachTag extends AbstractComponentTag {
         return "org.openfaces.ForEachRenderer";
     }
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
         setPropertyBinding(component, "items");

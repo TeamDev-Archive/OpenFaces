@@ -19,6 +19,7 @@ import javax.faces.context.FacesContext;
  */
 public class AbstractWindowTag extends PopupLayerTag {
 
+    @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
