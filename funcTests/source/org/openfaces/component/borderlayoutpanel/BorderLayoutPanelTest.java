@@ -281,7 +281,8 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
     }
 
     @Test
-    public void _testContentResizeOnParentResize() {
+    @Ignore
+    public void testContentResizeOnParentResize() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
         ElementInspector content1 = borderLayoutPanel("formID:borderLayoutPanel21").content();
         ElementInspector content2 = borderLayoutPanel("formID:borderLayoutPanel22").content();
@@ -328,7 +329,8 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
     }
 
     @Test
-    public void _testTruncatedMode() {
+    @Ignore
+    public void testTruncatedMode() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
         ElementInspector sidePanel30Splitter = sidePanel("formID:sidePanel30").splitter();
         ElementInspector sidePanel1 = element("formID:sidePanel32");
