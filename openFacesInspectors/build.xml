@@ -10,9 +10,10 @@
   <property name="openfaces-inspectors-source-jar.file" location="${distrib.dir}/openfaces-inspectors-sources.jar"/>
   <property name="patched-selenium-server.file" location="${distrib.dir}/patched-selenium-server.jar"/>
   <property name="manifest.file" location="${target.dir}/manifest.mf"/>
-  <property name="lib.dir" location="../testLib"/>
+  <property name="lib.dir" location="../lib"/>
   <property name="temp.dir" location="temp"/>
   <property name="openfaces-jar.file" location="../openFaces/target/openfaces.jar"/>
+  <property name="openFacesInspectors-zip.file" location="${distrib.dir}/openFacesInspectors.zip"/>
 
   <target name="init">
     <tstamp/>
@@ -23,28 +24,26 @@
     <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" source="1.5" target="1.5">
       <classpath>
         <fileset dir="${lib.dir}">
-          <include name="selenium-java-client-driver.jar"/>
-          <include name="selenium-server.jar"/>
-          <include name="seleniuminspector.jar"/>
-          <include name="junit.jar"/>
+          <include name="seleniuminspector/selenium-java-client-driver.jar"/>
+          <include name="seleniuminspector/patched-selenium-server.jar"/>
+          <include name="seleniuminspector/seleniuminspector.jar"/>
         </fileset>
+        <fileset file="../testLib/junit.jar"/>
         <fileset file="${openfaces-jar.file}"/>
       </classpath>
     </javac>
   </target>
 
   <target name="create-source-lib">
-      <jar jarfile="${openfaces-inspectors-source-jar.file}">
-          <fileset dir="${src.dir}">
-            <exclude name="funcTestUtil.js"/>
-          </fileset>
-      </jar>
+    <jar jarfile="${openfaces-inspectors-source-jar.file}">
+      <fileset dir="${src.dir}">
+        <exclude name="funcTestUtil.js"/>
+      </fileset>
+    </jar>
   </target>
 
   <target name="build" description="Generate the distribution">
     <antcall target="-build"/>
-    <antcall target="patch-selenium"/>
-    <antcall target="copy-client"/>
     <antcall target="create-source-lib"/>
   </target>
 
@@ -52,21 +51,13 @@
     <delete dir="${target.dir}"/>
   </target>
 
-  <target name="patch-selenium" description="Add changes to Selenium">
-    <unzip src="${lib.dir}/selenium-server.jar" dest="${temp.dir}" overwrite="true"/>
-    <copy file="${src.dir}/funcTestsUtil.js" tofile="${temp.dir}/core/scripts/user-extensions.js" overwrite="true"/>
-    <jar basedir="${temp.dir}" destfile="${patched-selenium-server.file}"/>
-    <copy file="${patched-selenium-server.file}" tofile="${lib.dir}/selenium-server.jar" overwrite="true"/>
-    <delete dir="${temp.dir}"/>
-  </target>
-
-  <target name="copy-client">
-    <copy file="${lib.dir}/selenium-java-client-driver.jar" todir="${distrib.dir}"/>
+  <target name="copy-documentation">
+    <copydir src="documentation/" dest="${distrib.dir}/documentation/"/>
   </target>
 
   <!-- *** Utility Targets *** -->
 
-   <target name="-set-cc-properties" unless="label">
+  <target name="-set-cc-properties" unless="label">
     <property name="label" value="build.${build.number}"/>
     <property name="cvstimestamp" value="${TODAY}"/>
   </target>
@@ -80,6 +71,9 @@
     <delete dir="${distrib.dir}"/>
     <mkdir dir="${distrib.dir}"/>
     <jar jarfile="${openfaces-inspectors-jar.file}" basedir="${classes.dir}" manifest="${manifest.file}"/>
+    <antcall target="copy-documentation"/>
+    <antcall target="javadoc"/>
+    <zip destfile="${openFacesInspectors-zip.file}" basedir="${distrib.dir}"/>
   </target>
 
   <target name="-delete-classes-dir" unless="retain.classes.dir">
@@ -98,5 +92,30 @@
   <target name="-fail-if-no-openfaces-jar" unless="openfaces-jar.file">
     <fail>"openfaces-jar.file" property must be specified</fail>
   </target>
+
+
+  <target name="javadoc" description="Create Javadocs for OpenFaces Inspectors">
+        <mkdir dir="${distrib.dir}/documentation/apiReference/"/>
+        <javadoc destdir="${distrib.dir}/documentation/apiReference/" source="1.5"
+                 useexternalfile="yes"
+                 author="false"
+                 version="false"
+                 use="true"
+                 windowtitle="OpenFaces Inspectors API Documentation"
+                 protected="true">
+            <classpath>
+                <fileset dir="${lib.dir}">
+                    <include name="selenium-java-client-driver.jar"/>
+                    <include name="selenium-server.jar"/>
+                    <include name="junit.jar"/>
+                </fileset>
+            </classpath>
+            <fileset dir="${src.dir}" includes="**/*.java"/>
+
+            <doctitle><![CDATA[<h1>OpenFaces Inspectors API Documentation</h1>]]></doctitle>
+            <bottom><![CDATA[<i>Copyright &#169; 1998-2009 TeamDev Ltd. All Rights Reserved.</i>]]></bottom>
+            <tag name="todo" scope="all" description="To do:"/>
+        </javadoc>
+    </target>
 
 </project>
