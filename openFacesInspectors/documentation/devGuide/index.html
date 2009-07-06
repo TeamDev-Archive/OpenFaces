@@ -25,12 +25,30 @@
         	<li>Add openfaces-inspectors.jar to the application libraries</li>
         </ol>
     </p>
+    
+    <H2><A name="Getting-Started"></A>Getting Started</H2>
+    <p>
+    	After you have done all the installation and configuration steps described in the section above, you can start to create test case classes or modify existing ones. 
+    </p>
 	
-    <H2><A name="Index-Installation"></A>Element Inspectors for OpenFaces JSF components</H2>
+    <H2><A name="OpenFaces-Element-Inspectors"></A>Element Inspectors for OpenFaces JSF components</H2>
     <p>
 		Similarly to HTML element inspectors provided by Selenium Inspector library, there are inspectors for the whole OpenFaces JSF components, so you have to know less about how OpenFaces components are rendered when testing applications with them. </p>
 	<p>
-		The idea is similar to HTML element inspectors – there's an inspector class for each OpenFaces JSF component (implementation in progress currently), and each inspector provides convenience methods for accessing component's portions, data, and manipulating with components. For example TabSetInspector has the List&lt;<a href="http://seleniuminspector.org/documentation/apiReference/org/seleniuminspector/ElementInspector.html">ElementInspector</a>&gt; tabs(), setTabIndex(int pageIndex), int getTabIndex() methods among others, DropDownFieldInspector has field(), button(), popup() methods for accessing portions of the component, etc. </p>
+		The idea is similar to HTML element inspectors – there's an inspector class for each OpenFaces JSF component (implementation in progress currently), and each inspector provides convenience methods for accessing component's portions, data, and manipulating with components. For example <a href="../apiReference/org/seleniuminspector/openfaces/TabSetInspector.html">TabSetInspector</a> has the List&lt;<a href="http://seleniuminspector.org/documentation/apiReference/org/seleniuminspector/ElementInspector.html">ElementInspector</a>&gt; tabs(), setTabIndex(int pageIndex), int getTabIndex() methods among others, <a href="../apiReference/org/seleniuminspector/openfaces/DropDownFieldInspector.html">DropDownFieldInspector</a> has field(), button(), popup() methods for accessing portions of the component, etc. </p>
+    <pre class="code_area">
+        TabSetInspector tabSetInspector = new TabSetInspector(<span class="code_area_values">"tabSetElementId"</span>);
+        tabSetInspector.tabs().get(<span class="code_area_values">1</span>).click();
+        assertEquals(<span class="code_area_values">1</span>, tabSetInspector.getTabIndex());
+    </pre>
+    <p> Here is a small example of <a href="../apiReference/org/seleniuminspector/openfaces/DropDownFieldInspector.html">DropDownFieldInspector</a> usage:
+    	<pre class="code_area">
+        DropDownFieldInspector dropDownComponent = new DropDownFieldInspector(<span class="code_area_values">"dropDownFieldId"</span>);
+       	InputInspector field = dropDownComponent.field();
+        field.keyPress(<span class="code_area_values">'w'</span>);
+        field.keyPress(<span class="code_area_values">'h'</span>);
+        </pre>
+    </p>        
 <p>        Please study the OpenFaces component inspector classes to see all of the possibilities.</p>
 <p>		Like HTML element inspectors, component inspectors can be created directly by instantiating an appropriate class. There're usually two constructors: one receiving element locator, and one receiving <a href="http://seleniuminspector.org/documentation/apiReference/org/seleniuminspector/ElementInspector.html">ElementInspector</a> (that will be adapted to the instantiated inspector).
     </p>
