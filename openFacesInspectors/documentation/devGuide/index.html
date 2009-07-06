@@ -28,7 +28,55 @@
     
     <H2><A name="Getting-Started"></A>Getting Started</H2>
     <p>
-    	After you have done all the installation and configuration steps described in the section above, you can start to create test case classes or modify existing ones. 
+    	After you have done all the installation and configuration steps described in the section above, you can start to create test case classes or modify existing ones. Your test case classes can extend <a href="../apiReference/org/seleniuminspector/SeleniumTestCase.html">SeleniumTestCase</a> class, base class for test cases that contains useful methods for page opening, element and window inspection. Please refer to sections below for an overview of <a href="http://seleniuminspector.org/documentation/apiReference/org/seleniuminspector/SeleniumTestCase.html">SeleniumTestCase</a> class. </p>
+    <p>As a small start example of how your code will look like with OpenFaces Inspectors &ndash; we will show you how to perform simple checks over an example page containing OpenFaces JSF components. Let's say you have a page with DropDownField and submit button on it.
+        <pre class="code_area">
+            &lt;%@ page contentType=<span class="code_area_values">"text/html;charset=UTF-8"</span> language=<span class="code_area_values">"java"</span> %&gt;
+            &lt;%@ taglib uri=<span class="code_area_values">"http://java.sun.com/jsf/html"</span> prefix=<span class="code_area_values">"h"</span> %&gt;
+            &lt;%@ taglib uri=<span class="code_area_values">"http://java.sun.com/jsf/core"</span> prefix=<span class="code_area_values">"f"</span> %&gt;
+            &lt;%@ taglib uri=<span class="code_area_values">"http://openfaces.org/"</span> prefix=<span class="code_area_values">"o"</span> %&gt;
+            
+            &lt;html&gt;
+            &lt;head&gt;
+              &lt;title&gt;<span class="code_area_values">Simple Test Page</span>&lt;/title&gt;
+            &lt;/head&gt;
+            
+            &lt;body&gt;
+            &lt;f:view&gt;
+              &lt;h:form id=<span class="code_area_values">"form1"</span>&gt;
+                &lt;o:dropDownField id=<span class="code_area_values">"dropDownFieldId"</span>&gt;
+                    &lt;o:dropDownItem value=<span class="code_area_values">"Red"</span>/&gt;
+                    &lt;o:dropDownItem value=<span class="code_area_values">"Yellow"</span>/&gt;
+                    &lt;o:dropDownItem value=<span class="code_area_values">"Blue"</span>/&gt;
+                &lt;/o:dropDownField&gt;
+            
+                &lt;h:commandButton id=<span class="code_area_values">"submitButton"</span> value=<span class="code_area_values">"Submit"</span>/&gt;
+              &lt;/h:form&gt;
+            &lt;/f:view&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;
+        </pre>
+		The test case to perform simple check over this page can look like the following code:
+        <pre class="code_area">
+            public class SimpleTestCase extends SeleniumTestCase {
+            
+                <span style="color:#C59D27">@Test</span>
+                public void submitData() {
+                    openAndWait(<span class="code_area_values">"/yourApplication/simpleTestPage.html"</span>);
+            
+                    DropDownFieldInspector dropDownFieldInspector = new DropDownFieldInspector(<span class="code_area_values">"formId:dropDownFieldId"</span>);
+                    dropDownFieldInspector.assertElementExists();
+            
+                    dropDownFieldInspector.field().type(<span class="code_area_values">"Red"</span>);
+                    dropDownFieldInspector.field().assertValue(<span class="code_area_values">"Red"</span>);
+            
+                    element(<span class="code_area_values">"formId:submitButton"</span>).clickAndWait();
+            
+                    dropDownFieldInspector.field().assertValue(<span class="code_area_values">"Red"</span>);
+                }
+            }
+        </pre>
+        
     </p>
 	
     <H2><A name="OpenFaces-Element-Inspectors"></A>Element Inspectors for OpenFaces JSF components</H2>
