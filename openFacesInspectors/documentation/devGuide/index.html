@@ -11,16 +11,29 @@
 	<H2><A name="Index-Overview"></A>What is OpenFaces Inspectors</H2>
 
 	<p>OpenFaces Inspectors is a package of so called inspectors created specially to make it easier and faster to test OpenFaces JSF components with Selenium.</p>
-    <p>OpenFaces Inspectors uses Selenium Inspector open-source library and extends it's functionality to better meet the requirements for testing of OpenFaces JSF components. Selenium Inspector library itself is an add-on on top of Selenium for simplifying automated testing of Web components, pages and applications, especially those written using JSF.   
-	Selenium Inspector provides an API similar to that of Selenium in many respects, but is simpler to use in many cases and provides a bit higher level of abstraction. <br/>You can find more details about Selenium Inspector library by visiting <a href="http://www.seleniuminspector.org">http://www.seleniuminspector.org</a>.</p>
+    <p>OpenFaces Inspectors uses Selenium Inspector open-source library and extends it's functionality to better meet the requirements for testing of OpenFaces JSF components. Selenium Inspector library itself is an add-on on top of Selenium for simplifying automated testing of Web components, pages and applications, especially those written using JSF. Selenium Inspector provides an API similar to that of Selenium in many respects, but is simpler to use in many cases and provides a bit higher level of abstraction. You can find more details about Selenium Inspector library by visiting <a href="http://www.seleniuminspector.org">http://www.seleniuminspector.org</a>.<br/>
+    Please note that OpenFaces Inspectors project is not finished yet and is being created.
+    </p>
     
-	<H2><A name="Index-GettingStarted"></A>Getting Started with OpenFaces Inspectors</H2>
-    <p>In order to start using OpenFaces Inspectors &ndash; you will have to do the following steps:
-    	<ol>
-        	<li><a href="http://www.seleniuminspector.org/downloads/">Download Selenium Inspector</a> library from Selenium Inspector site or check out source code from <a href="http://svn.seleniuminspector.org/">Selenium Inspector SVN</a></li>
+	<H2><A name="Index-Installation"></A>Installation and Configuration</H2>
+    <p>In order to start using OpenFaces Inspectors &ndash; you will have to <a href="http://www.seleniuminspector.org/downloads/">download Selenium Inspector</a> library from Selenium Inspector site or check out Selenium Inspector source code from <a href="http://svn.seleniuminspector.org/">Selenium Inspector SVN</a>.</p>
+	<p>
+    	Provided that you already have a JSF application with OpenFaces JSF components, the following steps will allow you to start using OpenFaces Inspectors for testing of OpenFaces components in your application:	
+        <ol>
+	        <li>Download and add seleniuminspector.jar to the application libraries</li>
+            <li>Add patched-selenium-server.jar and selenium-java-client-driver.jar to the application libraries from distribution of Selenium Inspector library</li>
+        	<li>Add openfaces-inspectors.jar to the application libraries</li>
         </ol>
     </p>
-
+	
+    <H2><A name="Index-Installation"></A>Element Inspectors for OpenFaces JSF components</H2>
+    <p>
+		Similarly to HTML element inspectors provided by Selenium Inspector library, there are inspectors for the whole OpenFaces JSF components, so you have to know less about how OpenFaces components are rendered when testing applications with them. </p>
+	<p>
+		The idea is similar to HTML element inspectors – there's an inspector class for each OpenFaces JSF component (implementation in progress currently), and each inspector provides convenience methods for accessing component's portions, data, and manipulating with components. For example TabSetInspector has the List&lt;<a href="http://seleniuminspector.org/documentation/apiReference/org/seleniuminspector/ElementInspector.html">ElementInspector</a>&gt; tabs(), setTabIndex(int pageIndex), int getTabIndex() methods among others, DropDownFieldInspector has field(), button(), popup() methods for accessing portions of the component, etc. </p>
+<p>        Please study the OpenFaces component inspector classes to see all of the possibilities.</p>
+<p>		Like HTML element inspectors, component inspectors can be created directly by instantiating an appropriate class. There're usually two constructors: one receiving element locator, and one receiving <a href="http://seleniuminspector.org/documentation/apiReference/org/seleniuminspector/ElementInspector.html">ElementInspector</a> (that will be adapted to the instantiated inspector).
+    </p>
     </div>
 </BODY>
 </HTML>
