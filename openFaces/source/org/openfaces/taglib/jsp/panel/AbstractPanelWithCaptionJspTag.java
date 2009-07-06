@@ -27,7 +27,7 @@ public abstract class AbstractPanelWithCaptionJspTag extends AbstractComponentJs
         super(delegate);
     }
 
-    public void setCaptionStyle(String captionStyle) {
+    public void setCaptionStyle(ValueExpression captionStyle) {
         getDelegate().setPropertyValue("captionStyle", captionStyle);
     }
 
