@@ -13,7 +13,7 @@
   <property name="lib.dir" location="../lib"/>
   <property name="temp.dir" location="temp"/>
   <property name="openfaces-jar.file" location="../openFaces/target/openfaces.jar"/>
-  <property name="openFacesInspectors-zip.file" location="${distrib.dir}/openFacesInspectors.zip"/>
+  <property name="openFacesInspectors-zip.file" location="${distrib.dir}/openfaces-inspectors.zip"/>
 
   <target name="init">
     <tstamp/>
