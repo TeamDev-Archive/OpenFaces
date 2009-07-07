@@ -12,14 +12,14 @@
 package org.openfaces.renderkit.panel;
 
 import org.openfaces.component.panel.SidePanel;
-import org.openfaces.util.RawScript;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.RawScript;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
@@ -66,43 +66,47 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         writer.startElement("div", sidePanel);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", "o_sidepanel_container o_sidepanel_container_" + sidePanel.getAlignment().toString(), null);
+
         //splitter
         writer.startElement("div", sidePanel);
         writer.writeAttribute("id", clientId + SPLITTER_SUFFIX, null);
-        String classStr = StyleUtil.getCSSClass(context,
+        String splitterDefaultClass = StyleUtil.getCSSClass(context,
                 sidePanel, sidePanel.getSplitterStyle(),
                 "o_sidepanel_splitter o_sidepanel_splitter_" + sidePanel.getAlignment().toString(), sidePanel.getSplitterClass()
         );
-        writer.writeAttribute("class", classStr, null);
+        writer.writeAttribute("class", splitterDefaultClass, null);
         writer.endElement("div");
+
         //panel
         writer.startElement("div", sidePanel);
         writer.writeAttribute("id", clientId + PANEL_SUFFIX, null);
         writeStandardEvents(writer, sidePanel);
-        classStr = StyleUtil.getCSSClass(context,
+        String panelDefaultClass = StyleUtil.getCSSClass(context,
                 sidePanel, sidePanel.getStyle(),
                 "o_sidepanel_panel o_sidepanel_panel_" + sidePanel.getAlignment().toString(), sidePanel.getStyleClass()
         );
-        writer.writeAttribute("class", classStr, null);
+        writer.writeAttribute("class", panelDefaultClass, null);
         if (sidePanel.getCaption() != null) {
             writer.startElement("div", sidePanel);
             writer.writeAttribute("id", clientId + CAPTION_SUFFIX, null);
-            classStr = StyleUtil.getCSSClass(context,
+            panelDefaultClass = StyleUtil.getCSSClass(context,
                     sidePanel, sidePanel.getCaptionStyle(),
                     "o_sidepanel_caption", sidePanel.getCaptionClass()
             );
-            writer.writeAttribute("class", classStr, null);
+            writer.writeAttribute("class", panelDefaultClass, null);
             sidePanel.getCaption().encodeAll(context);
             writer.endElement("div");
         }
+
+        //content
         writer.startElement("div", sidePanel);
         writer.writeAttribute("id", clientId + CONTENT_SUFFIX, "id");
-        classStr = StyleUtil.getCSSClass(context,
+        String contentDefaultClass = StyleUtil.getCSSClass(context,
                 sidePanel, sidePanel.getContentStyle(),
                 "o_sidepanel_content", sidePanel.getContentClass()
         );
-        writer.writeAttribute("class", classStr, null);
-        StyleUtil.renderStyleClasses(context, sidePanel);
+        writer.writeAttribute("class", contentDefaultClass, null);
+
         encodeInitScript(context, component);
     }
 
@@ -110,6 +114,8 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
         ResponseWriter writer = context.getResponseWriter();
+
+        StyleUtil.renderStyleClasses(context, component);
 
         writer.endElement("div");
         writer.endElement("div");
@@ -144,6 +150,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
             initScript.append("O$('").append(clientId).append("').style.visibility = 'hidden';\n");
             initScript.append("O$.addLoadEvent( function() {\n");
         }
+
         initScript.initScript(context, sidePanel, "O$._initSidePanel",
                 sidePanel.getAlignment(),
                 sidePanel.getSize(),
@@ -152,7 +159,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
                 sidePanel.isCollapsible(),
                 sidePanel.isResizable(),
                 sidePanel.getCollapsed(),
-                RenderingUtil.getRolloverClass(context, sidePanel),
+                getRolloverClass(context, sidePanel),
                 getSplitterRolloverClass(context, sidePanel),
                 new RawScript(events.toString()));
 
@@ -168,9 +175,16 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
                 });
     }
 
+    private String getRolloverClass(FacesContext context, SidePanel sidePanel) {
+        return StyleUtil.getCSSClass(context,
+                sidePanel, sidePanel.getRolloverStyle(), StyleGroup.rolloverStyleGroup(),
+                sidePanel.getRolloverClass());
+    }
+
     private String getSplitterRolloverClass(FacesContext context, SidePanel sidePanel) {
         return StyleUtil.getCSSClass(context,
-                sidePanel, sidePanel.getSplitterRolloverStyle(), StyleGroup.rolloverStyleGroup(), sidePanel.getSplitterRolloverClass()
+                sidePanel, sidePanel.getSplitterRolloverStyle(), StyleGroup.rolloverStyleGroup(),
+                sidePanel.getSplitterRolloverClass()
         );
     }
 
