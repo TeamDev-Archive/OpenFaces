@@ -16,15 +16,15 @@ import org.openfaces.component.calendar.DateRanges;
 import org.openfaces.component.input.DateChooser;
 import org.openfaces.component.input.DateChooserPopup;
 import org.openfaces.component.input.DropDownComponent;
+import org.openfaces.renderkit.calendar.CalendarRenderer;
+import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.DataUtil;
 import org.openfaces.util.InitScript;
 import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.RequestFacade;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.renderkit.calendar.CalendarRenderer;
-import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.RequestFacade;
-import org.openfaces.util.ComponentUtil;
 import org.openfaces.validator.ClientValidatorUtil;
 
 import javax.faces.component.EditableValueHolder;
@@ -97,7 +97,6 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         super.encodeRootElementStart(writer, dropDownComponent);
         writeAttribute(writer, "style", "visibility: hidden;");
     }
-
 
     private void setUpConverter(DateChooser dateChooser) {
         DateTimeConverter converter = new DateTimeConverter();
@@ -236,5 +235,14 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
                 ResourceUtil.getInternalResourceURL(context, DateChooserRenderer.class, "dateChooser.js")
         });
     }
+
+    @Override
+    protected void writeFieldAttributes(ResponseWriter writer, DropDownComponent fieldComponent) throws IOException {
+        super.writeFieldAttributes(writer, fieldComponent);
+        DateChooser spinner = ((DateChooser) fieldComponent);
+        if (!spinner.isTypingAllowed())
+            writeAttribute(writer, "readonly", String.valueOf(!spinner.isTypingAllowed()));
+    }
+
 
 }

@@ -12,9 +12,9 @@
 package org.openfaces.component.input;
 
 import org.openfaces.component.HorizontalAlignment;
-import org.openfaces.util.ValueBindings;
 import org.openfaces.util.CalendarUtil;
 import org.openfaces.util.MessageUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -91,6 +91,7 @@ public class DateChooser extends DropDownComponent {
 
     private Boolean keepTime;
     private Boolean showFooter;
+    private Boolean typingAllowed;
 
     public DateChooser() {
         setRendererType("org.openfaces.DateChooserRenderer");
@@ -109,7 +110,7 @@ public class DateChooser extends DropDownComponent {
                 rolloverInactiveMonthDayClass, selectedDayClass, rolloverSelectedDayClass, todayClass,
                 rolloverTodayClass, disabledDayClass, rolloverDisabledDayClass, weekendDayClass,
                 rolloverWeekendDayClass, daysHeaderClass, headerClass, footerClass, firstDayOfWeek, dateFormat,
-                pattern, locale, timeZone, todayText, noneText, keepTime, showFooter
+                pattern, locale, timeZone, todayText, noneText, keepTime, showFooter, typingAllowed
         };
     }
 
@@ -161,6 +162,7 @@ public class DateChooser extends DropDownComponent {
         noneText = (String) values[i++];
         keepTime = (Boolean) values[i++];
         showFooter = (Boolean) values[i++];
+        typingAllowed = (Boolean) values[i++];
     }
 
     public void validate(FacesContext context) {
@@ -537,6 +539,14 @@ public class DateChooser extends DropDownComponent {
 
     public void setShowFooter(boolean showFooter) {
         this.showFooter = valueOf(showFooter);
+    }
+
+    public boolean isTypingAllowed() {
+        return ValueBindings.get(this, "typingAllowed", typingAllowed, true);
+    }
+
+    public void setTypingAllowed(boolean typingAllowed) {
+        this.typingAllowed = typingAllowed;
     }
 
     public String getListClass() {

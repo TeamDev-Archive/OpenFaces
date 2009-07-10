@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <taglib xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
-    version="2.1">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
   <description>Tags for the OpenFaces library</description>
   <tlib-version>__OpenFacesVersion__</tlib-version>
   <short-name>o</short-name>
@@ -180,7 +180,8 @@
     </attribute>
 
     <attribute>
-      <description>The sorting order of the data in the DataTable component. The "true" value means the table is sorted in ascending order.
+      <description>The sorting order of the data in the DataTable component. The "true" value means the table is sorted
+        in ascending order.
       </description>
       <name>sortAscending</name>
       <deferred-value>
@@ -4771,13 +4772,13 @@
   </tag>
 
   <tag>
-  <description>The dataTablePaginator component allows the user to see the current page of the
-    table records and jump from it to any other. The component displays the total
-    number of pages, the number of the current page, a text field to type in the number
-    of the page to go to, and a set of the Previous, Next, First and Last images to navigate
-    between the pages. It should be placed within the {@link dataTable} component,
-    inside any of its facets.
-  </description>
+    <description>The dataTablePaginator component allows the user to see the current page of the
+      table records and jump from it to any other. The component displays the total
+      number of pages, the number of the current page, a text field to type in the number
+      of the page to go to, and a set of the Previous, Next, First and Last images to navigate
+      between the pages. It should be placed within the {@link dataTable} component,
+      inside any of its facets.
+    </description>
     <name>dataTablePaginator</name>
     <tag-class>org.openfaces.taglib.jsp.table.DataTablePaginatorJspTag</tag-class>
     <body-content>empty</body-content>
@@ -5093,7 +5094,8 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The sorting order of the data in the TreeTable component. The "true" value means the table is sorted in ascending order.
+      <description>The sorting order of the data in the TreeTable component. The "true" value means the table is sorted
+        in ascending order.
       </description>
       <name>sortAscending</name>
       <deferred-value>
@@ -7401,7 +7403,8 @@ means that only root nodes and their immediate children are preloaded -->
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -8382,7 +8385,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10206,7 +10210,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.</description>
+      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.
+      </description>
       <name>rolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10217,7 +10222,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when the mouse is pressed over the button,
-        but not released yet.</description>
+        but not released yet.
+      </description>
       <name>pressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10526,7 +10532,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the button's image when a container is collapsed and the mouse is pressed over the button, but
-        not released yet.</description>
+        not released yet.
+      </description>
       <name>collapsedPressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10559,7 +10566,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the button's image when a container is collapsed and the mouse is pressed over the button, but
-        not released yet.</description>
+        not released yet.
+      </description>
       <name>expandedPressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10761,7 +10769,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.</description>
+      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.
+      </description>
       <name>rolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10772,7 +10781,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when the mouse is pressed over the button,
-        but not released yet.</description>
+        but not released yet.
+      </description>
       <name>pressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10963,7 +10973,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>URL of the image that should be displayed in this button when a window is in normal state.</description>
+      <description>URL of the image that should be displayed in this button when a window is in normal state.
+      </description>
       <name>maximizeImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10974,7 +10985,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when mouse cursor is over the button,
-        and a window is in normal state.</description>
+        and a window is in normal state.
+      </description>
       <name>maximizeRolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10985,7 +10997,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when the mouse is pressed over the button,
-        but not released yet, and a window is in normal state.</description>
+        but not released yet, and a window is in normal state.
+      </description>
       <name>maximizePressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -11006,7 +11019,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.</description>
+      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.
+      </description>
       <name>restoreRolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -11017,7 +11031,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when the button is in a toggled state and
-        the mouse is pressed over the button, but not released yet.</description>
+        the mouse is pressed over the button, but not released yet.
+      </description>
       <name>restorePressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -11210,7 +11225,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>URL of the image that should be displayed in this button when a window is in normal state.</description>
+      <description>URL of the image that should be displayed in this button when a window is in normal state.
+      </description>
       <name>minimizeImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -11221,7 +11237,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when mouse cursor is over the button,
-        and a window is in normal state.</description>
+        and a window is in normal state.
+      </description>
       <name>minimizeRolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -11232,7 +11249,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when the mouse is pressed over the button,
-        but not released yet, and a window is in normal state.</description>
+        but not released yet, and a window is in normal state.
+      </description>
       <name>minimizePressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -11253,7 +11271,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.</description>
+      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.
+      </description>
       <name>restoreRolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -11264,7 +11283,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when the button is in a toggled state and
-        the mouse is pressed over the button, but not released yet.</description>
+        the mouse is pressed over the button, but not released yet.
+      </description>
       <name>restorePressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -11663,17 +11683,20 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-    <description>Turns on the "standalone" mode where the Confirmation is not attached to other component automatically,
-     and can be used via the public API instead. The default value is false, which means that the component is attached
-     to the parent component, or a component referred to by the "for" attribute if it is specified.</description>
-     <name>standalone</name>
-     <deferred-value>
-       <type>boolean</type>
-     </deferred-value>
-     <!-- @bindingType false -->
-     <!-- @default true -->
-     <!-- @el true -->
-   </attribute>
+      <description>Turns on the "standalone" mode where the Confirmation is not attached to other component
+        automatically,
+        and can be used via the public API instead. The default value is false, which means that the component is
+        attached
+        to the parent component, or a component referred to by the "for" attribute if it is specified.
+      </description>
+      <name>standalone</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType false -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>Defines which of the two buttons has focus when the Confirmation component opens.</description>
@@ -14230,7 +14253,8 @@ on the first switch to the tab. Once requested, the content is stored on the cli
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -14918,7 +14942,8 @@ and it is automatically triggered on any form submission. -->
       <name>serverFunction</name>
       <deferred-method>
         <method-signature>
-          boolean customValidatorTest(javax.faces.context.FacesContext, javax.faces.component.UIComponent, java.lang.Object)
+          boolean customValidatorTest(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
+          java.lang.Object)
         </method-signature>
       </deferred-method>
       <!-- @bindingType java.lang.String -->
@@ -15415,8 +15440,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style that is used when generating an image for the Chart component. It should be used for 
-        specifying font and color properties. See also the style and styleClass attributes.</description>
+      <description>A style that is used when generating an image for the Chart component. It should be used for
+        specifying font and color properties. See also the style and styleClass attributes.
+      </description>
       <name>textStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -16946,7 +16972,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -17986,9 +18013,23 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+
+    <attribute>
+      <description>
+      </description>
+      <name>typingAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -18541,7 +18582,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description> Time zone in which to interpret any time information in the date String. Value must be either a VB
+      <description>Time zone in which to interpret any time information in the date String. Value must be either a VB
         expression that evaluates to a java.util.TimeZone instance, or a String that is a timezone ID as described in
         the javadocs for java.util.TimeZone.getTimeZone().
       </description>
@@ -19658,7 +19699,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -20199,7 +20241,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -20504,8 +20547,10 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>Turns on the "standalone" mode where the PopupMenu is not attached to other component automatically,
-      and can be used via the public API instead. The default value is false, which means that the component is attached
-      to the parent component, or a component referred to by the "for" attribute if it is specified.</description>
+        and can be used via the public API instead. The default value is false, which means that the component is
+        attached
+        to the parent component, or a component referred to by the "for" attribute if it is specified.
+      </description>
       <name>standalone</name>
       <deferred-value>
         <type>boolean</type>
@@ -21712,17 +21757,20 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-    <description>Turns on the "standalone" mode where the ReloadComponents is not attached to other component automatically,
-     and can be used via the public API instead. The default value is false, which means that the component is attached
-     to the parent component, or a component referred to by the "for" attribute if it is specified.</description>
-     <name>standalone</name>
-     <deferred-value>
-       <type>boolean</type>
-     </deferred-value>
-     <!-- @bindingType false -->
-     <!-- @default true -->
-     <!-- @el true -->
-   </attribute>
+      <description>Turns on the "standalone" mode where the ReloadComponents is not attached to other component
+        automatically,
+        and can be used via the public API instead. The default value is false, which means that the component is
+        attached
+        to the parent component, or a component referred to by the "for" attribute if it is specified.
+      </description>
+      <name>standalone</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType false -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
     <attribute>
       <description>Similar to the "action" attribute of the HTMLCommandButton component. It can be defined as a
         MethodBinding that should point to an action method that is called when the user fire an event.
@@ -21776,14 +21824,14 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <!--<attribute>-->
-      <!--<name>submitInvoker</name>-->
-      <!--<description>A flag that indicates whether or not the component to which this ReloadComponents component is-->
-        <!--attached should be submitted in addition to the reloaded component(s), and components specified with the-->
-        <!--submittedComponentIds attribute.-->
-      <!--</description>-->
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
-      <!-- @el true -->
+    <!--<name>submitInvoker</name>-->
+    <!--<description>A flag that indicates whether or not the component to which this ReloadComponents component is-->
+    <!--attached should be submitted in addition to the reloaded component(s), and components specified with the-->
+    <!--submittedComponentIds attribute.-->
+    <!--</description>-->
+    <!-- @bindingType boolean -->
+    <!-- @default true -->
+    <!-- @el true -->
     <!--</attribute>-->
     <attribute>
       <description>Disable default action for component. (Append "return false;" to javascript)
@@ -22017,7 +22065,8 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>timetableChangeListener</name>
       <deferred-method>
-        <method-signature>void timetableChangeListener(org.openfaces.component.timetable.TimetableChangeEvent)</method-signature>
+        <method-signature>void timetableChangeListener(org.openfaces.component.timetable.TimetableChangeEvent)
+        </method-signature>
       </deferred-method>
       <!-- @bindingType javax.el.MethodExpression -->
       <!-- @default null -->
@@ -22889,7 +22938,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the visible part of the page which is not covered by a EventEditorDialog component.
+      <description>A CSS class name for the visible part of the page which is not covered by a EventEditorDialog
+        component.
       </description>
       <name>modalLayerClass</name>
       <deferred-value>
@@ -22917,7 +22967,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>The y coordinate of the component's upper-left corner relative to the upper-left corner of the
-        document or an absolutely positioned immediate container of the EventEditorDialog component. Note that the "top" attribute
+        document or an absolutely positioned immediate container of the EventEditorDialog component. Note that the "top"
+        attribute
         should indicate the number of pixels, without the postfix "px".
       </description>
       <name>top</name>
@@ -22929,7 +22980,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The width of the EventEditorDialog component. Can be specified in any units (px, mm, em, etc.).</description>
+      <description>The width of the EventEditorDialog component. Can be specified in any units (px, mm, em, etc.).
+      </description>
       <name>width</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -22939,7 +22991,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The height of the EventEditorDialog component. Can be specified in any units (px, mm, em, etc.).</description>
+      <description>The height of the EventEditorDialog component. Can be specified in any units (px, mm, em, etc.).
+      </description>
       <name>height</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -22949,7 +23002,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The minimal width that the EventEditorDialog component can have when the user is resizing the window. This
+      <description>The minimal width that the EventEditorDialog component can have when the user is resizing the window.
+        This
         attribute is applicable when "resizable" attribute is set to "true". This attribute can be specified
         in any units (px, mm, em, etc.) except percent.
       </description>
@@ -22962,7 +23016,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The minimal height that the EventEditorDialog component can have when the user is resizing the window. This
+      <description>The minimal height that the EventEditorDialog component can have when the user is resizing the
+        window. This
         attribute is applicable when "resizable" attribute is set to "true". This attribute can be specified
         in any units (px, mm, em, etc.) except percent.
       </description>
@@ -23211,7 +23266,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the EventEditorDialog component is hidden on the client side.
+      <description>JavaScript code that should be executed when the EventEditorDialog component is hidden on the client
+        side.
       </description>
       <name>onhide</name>
       <deferred-value>
@@ -23259,7 +23315,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the EventEditorDialog.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the
+        EventEditorDialog.
       </description>
       <name>onmouseover</name>
       <deferred-value>
@@ -23270,7 +23327,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer over the EventEditorDialog.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the
+        EventEditorDialog.
       </description>
       <name>onmousemove</name>
       <deferred-value>
@@ -23293,7 +23351,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases the mouse button over the EventEditorDialog.
+      <description>JavaScript code that should be executed when the user releases the mouse button over the
+        EventEditorDialog.
       </description>
       <name>onmouseup</name>
       <deferred-value>
@@ -23467,7 +23526,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the EventActionBar.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the
+        EventActionBar.
       </description>
       <name>onmouseover</name>
       <deferred-value>
@@ -23478,7 +23538,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer over the EventActionBar.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the
+        EventActionBar.
       </description>
       <name>onmousemove</name>
       <deferred-value>
@@ -25052,7 +25113,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>

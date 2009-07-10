@@ -262,4 +262,9 @@ public class DateChooserJspTag extends DropDownComponentJspTag {
     public void setDisabledFieldStyle(ValueExpression disabledFieldStyle) {
         super.setDisabledFieldStyle(disabledFieldStyle);
     }
+
+    public void setTypingAllowed(ValueExpression typingAllowed) {
+        getDelegate().setPropertyValue("typingAllowed", typingAllowed);
+    }
+
 }

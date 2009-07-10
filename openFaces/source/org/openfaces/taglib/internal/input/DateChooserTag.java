@@ -40,6 +40,7 @@ public class DateChooserTag extends DropDownComponentTag {
         setStringProperty(component, "noneText");
         setBooleanProperty(component, "keepTime");
         setBooleanProperty(component, "showFooter");
+        setBooleanProperty(component, "typingAllowed");
 
         setStringProperty(component, "calendarStyle");
         setStringProperty(component, "dayStyle");
