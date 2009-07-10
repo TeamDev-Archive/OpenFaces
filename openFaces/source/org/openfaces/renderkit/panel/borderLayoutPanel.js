@@ -20,8 +20,12 @@ O$._initBorderLayoutPanel = function(borderLayoutPanelId) {
   borderLayoutPanel._isNotResizableComponent = true;
   borderLayoutPanel._isCoupled = couplingEnabled && borderLayoutPanel.parentNode._isCouplingElement;
   borderLayoutPanel._newStyle = new O$._createPseudoCSSStyle();
-  borderLayoutPanel._newStyle.width = O$.getElementStyleProperty(borderLayoutPanel, "width");
-  borderLayoutPanel._newStyle.height = O$.getElementStyleProperty(borderLayoutPanel, "height");
+  /*
+   borderLayoutPanel._newStyle.width = O$.getElementStyleProperty(borderLayoutPanel, "width");
+   borderLayoutPanel._newStyle.height = O$.getElementStyleProperty(borderLayoutPanel, "height");
+   */
+  borderLayoutPanel._newStyle.width = borderLayoutPanel.style.width;
+  borderLayoutPanel._newStyle.height = borderLayoutPanel.style.height;
 
   O$._storeSizeProperties(borderLayoutPanel);
   O$._subscribeToOnresizeEvent(borderLayoutPanel, function() {
@@ -164,9 +168,9 @@ O$._calculateBorderLayoutPanelContentRect = function(borderLayoutPanel, useDoubl
       } else if (sidePanel._alignment == "right") {
         contentRectRight = contentRectRight + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering);
       } else if (sidePanel._alignment == "top") {
-          contentRectTop = contentRectTop + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering);
+        contentRectTop = contentRectTop + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering);
       } else if (sidePanel._alignment == "bottom") {
-          contentRectBottom = contentRectBottom + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering);
+        contentRectBottom = contentRectBottom + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, useDoubleBuffering);
       }
     }
   }
@@ -220,13 +224,13 @@ O$._recalculateInnerSidePanels = function(borderLayoutPanel, isDecrase) {
         sidePanel._newStyle.height = borderLayoutPanel._contentRect.height + "px";
         rightSidePanelOffset = rightSidePanelOffset + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, false);
       } else if (sidePanel._alignment == "top") {
-          O$._setInnerElementOuterLeftTopCorner(sidePanel, 0, topSidePanelOffset, true);
-          sidePanel._newStyle.width = O$._calculateNumericInnerWidth(borderLayoutPanel, false) + "px";
-          topSidePanelOffset = topSidePanelOffset + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, false);
+        O$._setInnerElementOuterLeftTopCorner(sidePanel, 0, topSidePanelOffset, true);
+        sidePanel._newStyle.width = O$._calculateNumericInnerWidth(borderLayoutPanel, false) + "px";
+        topSidePanelOffset = topSidePanelOffset + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, false);
       } else if (sidePanel._alignment == "bottom") {
-          O$._setInnerElementOuterRightBottomCorner(sidePanel, 0, bottomSidePanelOffset, true);
-          sidePanel._newStyle.width = O$._calculateNumericInnerWidth(borderLayoutPanel, false) + "px";
-          bottomSidePanelOffset = bottomSidePanelOffset + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, false);
+        O$._setInnerElementOuterRightBottomCorner(sidePanel, 0, bottomSidePanelOffset, true);
+        sidePanel._newStyle.width = O$._calculateNumericInnerWidth(borderLayoutPanel, false) + "px";
+        bottomSidePanelOffset = bottomSidePanelOffset + O$._calculateNumericSizeValue(sidePanel, sidePanel._size, false);
       }
       O$._recalculateSidePanel(sidePanel);
     }

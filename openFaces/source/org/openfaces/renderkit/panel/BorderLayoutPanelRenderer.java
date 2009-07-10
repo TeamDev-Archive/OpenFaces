@@ -13,13 +13,13 @@ package org.openfaces.renderkit.panel;
 
 import org.openfaces.component.panel.BorderLayoutPanel;
 import org.openfaces.component.panel.SidePanel;
-import org.openfaces.util.RawScript;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.RawScript;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleUtil;
-import org.openfaces.util.EnvironmentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -55,7 +55,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
         writer.writeAttribute("class", classStr, null);
 
         writeStandardEvents(writer, borderLayoutPanel);
-        encodeScriptsAndStyles(context, clientId);
+        encodeScriptsAndStyles(context, borderLayoutPanel);
         encodeSidePanels(context, borderLayoutPanel);
 
         writer.startElement("div", borderLayoutPanel);
@@ -78,15 +78,18 @@ public class BorderLayoutPanelRenderer extends RendererBase {
         writer.endElement("div");
     }
 
-    private void encodeScriptsAndStyles(FacesContext context, String clientId) throws IOException {
+    private void encodeScriptsAndStyles(FacesContext context, BorderLayoutPanel borderLayoutPanel) throws IOException {
         ScriptBuilder initScript = new ScriptBuilder();
 
         if (EnvironmentUtil.isMozillaFF2(context)) { // fix bug with FF2 + Faceletes + JSF 1.2 context  // todo add isFacelets() filter
-            initScript.append("O$('").append(clientId).append("').style.visibility = 'hidden';\n");
+            initScript.append("O$('").append(borderLayoutPanel.getId()).append("').style.visibility = 'hidden';\n");
             initScript.append("O$.addLoadEvent(function() {\n");
         }
 
-        initScript.functionCall("O$._initBorderLayoutPanel", clientId).semicolon();
+        initScript.initScript(context,
+                borderLayoutPanel,
+                "O$._initBorderLayoutPanel",
+                borderLayoutPanel.getId());
 
         if (EnvironmentUtil.isMozillaFF2(context)) { // fix bug with FF2 + Faceletes + JSF 1.2 context  // todo add isFacelets() filter
             initScript.append("});\n");
