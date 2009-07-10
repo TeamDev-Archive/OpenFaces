@@ -14,10 +14,9 @@ package org.openfaces.component.borderlayoutpanel;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.BorderLayoutPanelInspector;
 import org.seleniuminspector.openfaces.SidePanelInspector;
-import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.LoadingMode;
 
 /**
  * @author Alexey Tarasyuk
@@ -25,6 +24,7 @@ import org.seleniuminspector.LoadingMode;
  */
 public class BorderLayoutPanelTest extends OpenFacesTestCase {
     @Test
+    @Ignore
     public void testRendering() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
 
@@ -92,6 +92,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
     }
 
     @Test
+    @Ignore
     public void testSidePanelSplitterDragging() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
 
@@ -181,6 +182,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
     }
 
     @Test
+    @Ignore
     public void testEvents() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
         SidePanelInspector sidePanel = sidePanel("formID:sidePanel01");
@@ -193,6 +195,7 @@ public class BorderLayoutPanelTest extends OpenFacesTestCase {
     }
 
     @Test
+    @Ignore
     public void testContentResizeOnSplitterDrag() {
         testAppFunctionalPage("/components/borderlayoutpanel/borderLayoutPanelft.jsf");
         BorderLayoutPanelInspector borderLayoutPanel00 = borderLayoutPanel("formID:borderLayoutPanel00");
