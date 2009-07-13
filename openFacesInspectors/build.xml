@@ -1,4 +1,4 @@
-<project name="OpenFaces SeleniumInspector" default="build" basedir=".">
+<project name="OpenFaces Inspectors" default="build" basedir=".">
 
   <buildnumber file="build.number"/>
 
@@ -82,7 +82,7 @@
 
   <target name="-prepare-manifest-and-version" depends="-set-cc-properties">
     <manifest file="${manifest.file}">
-      <attribute name="Implementation-Title" value="OpenFaces SeleniumInspector"/>
+      <attribute name="Implementation-Title" value="OpenFaces Inspectors"/>
       <attribute name="Implementation-Vendor" value="TeamDev Ltd."/>
       <attribute name="Build-Label" value="${label}"/>
       <attribute name="Build-Timestamp" value="${cvstimestamp}"/>
