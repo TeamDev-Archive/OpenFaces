@@ -48,7 +48,6 @@ public class ReloadComponentsInitializer {
                     continue;
                 }
 
-                Log.log(context, "ReloadComponentsInitializer: Component by id '" + componentId + "' is " + component);
                 if (component instanceof UIData) {
                     UIData uiData = (UIData) component;
                     int savedRowIndex = uiData.getRowIndex();
