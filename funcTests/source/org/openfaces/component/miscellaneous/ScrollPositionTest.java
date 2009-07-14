@@ -12,7 +12,6 @@
 package org.openfaces.component.miscellaneous;
 
 import com.thoughtworks.selenium.Selenium;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -42,7 +41,12 @@ public class ScrollPositionTest extends OpenFacesTestCase {
         int abscissa = window().evalIntExpression("pageXOffset");
         inputText.keyPress(13);
         waitForPageToLoad();
-        window().assertExpressionEquals("pageYOffset", ordinate);
-        window().assertExpressionEquals("pageXOffset", abscissa);
+//        window().assertExpressionEquals("pageYOffset", ordinate);
+//        window().assertExpressionEquals("pageXOffset", abscissa);
+        int ordinateAfterSubmission = window().evalIntExpression("pageYOffset");
+        int abscissaAfterSubmission = window().evalIntExpression("pageXOffset");
+
+        assertTrue(ordinate == ordinateAfterSubmission);
+        assertTrue(abscissa == abscissaAfterSubmission);
     }
 }
