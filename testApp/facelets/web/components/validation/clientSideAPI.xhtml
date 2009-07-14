@@ -62,17 +62,17 @@
     }
 
     function validateComponents() {
-      O$.validate(document.getElementById('testForm:required'));
-      O$.validate(document.getElementById('testForm:c'));
-      O$.validate(document.getElementById('testForm:dch'));
-      O$.validate(document.getElementById('testForm:tls'));
-      O$.validate(document.getElementById('testForm:ddf'));
-      O$.validate(document.getElementById('testForm:validDR'));
-      O$.validate(document.getElementById('testForm:equal2'));
-      O$.validate(document.getElementById('testForm:url'));
-      O$.validate(document.getElementById('testForm:email'));
-      O$.validate(document.getElementById('testForm:regExp'));
-      O$.validate(document.getElementById('testForm:custom'));
+      O$.validate(O$('testForm:required'));
+      O$.validate(O$('testForm:c'));
+      O$.validate(O$('testForm:dch'));
+      O$.validate(O$('testForm:tls'));
+      O$.validate(O$('testForm:ddf'));
+      O$.validate(O$('testForm:validDR'));
+      O$.validate(O$('testForm:equal2'));
+      O$.validate(O$('testForm:url'));
+      O$.validate(O$('testForm:email'));
+      O$.validate(O$('testForm:regExp'));
+      O$.validate(O$('testForm:custom'));
       return false;
     }
 
@@ -82,9 +82,9 @@
 <body>
 <f:view>
   <h:form id="testForm">
-  <ui:include src="clientSideAPI_core.xhtml"/>
-</h:form>
+    <ui:include src="clientSideAPI_core.xhtml"/>
+  </h:form>
 </f:view>
 
 </body>
-        </html>
+</html>

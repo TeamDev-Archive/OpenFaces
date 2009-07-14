@@ -18004,19 +18004,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>An advisory title for the text field of the DateChooser component.</description>
-      <name>title</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>
-      </description>
+      <description></description>
       <name>typingAllowed</name>
       <deferred-value>
         <type>boolean</type>
@@ -18026,6 +18014,16 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
 
+    <attribute>
+      <description>An advisory title for the text field of the DateChooser component.</description>
+      <name>title</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
         this component in the same way as for the standard &lt;h:inputText> component.
