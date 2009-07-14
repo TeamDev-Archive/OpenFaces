@@ -31,22 +31,14 @@ public class ScrollPositionTest extends OpenFacesTestCase {
     @Test
     public void testScrollPositionSaveAfterPageSubmission() {
         testAppFunctionalPage("/components/scrollfocus/scrollPosition.jsf");
-
-        sleep(500);
-        ElementInspector inputText = element("formID:inputTextId");
-        inputText.focus();
-        inputText.setCursorPosition(0);
+        ElementInspector button = element("formID:clickIt");
+        button.focus();
         sleep(500);
         int ordinate = window().evalIntExpression("pageYOffset");
         int abscissa = window().evalIntExpression("pageXOffset");
-        inputText.keyPress(13);
+        button.keyPress(13);
         waitForPageToLoad();
-//        window().assertExpressionEquals("pageYOffset", ordinate);
-//        window().assertExpressionEquals("pageXOffset", abscissa);
-        int ordinateAfterSubmission = window().evalIntExpression("pageYOffset");
-        int abscissaAfterSubmission = window().evalIntExpression("pageXOffset");
-
-        assertTrue(ordinate == ordinateAfterSubmission);
-        assertTrue(abscissa == abscissaAfterSubmission);
+        window().assertExpressionEquals("pageYOffset", ordinate);
+        window().assertExpressionEquals("pageXOffset", abscissa);
     }
 }
