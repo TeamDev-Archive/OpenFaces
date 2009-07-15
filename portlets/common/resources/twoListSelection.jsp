@@ -15,7 +15,7 @@
             value="#{util.selectedItems}"
             leftListboxHeader="Available items"
             rightListboxHeader="Selected items"
-            allowSorting="true"
+            sortingAllowed="true"
             onremove="alert('onremove');"
             addText="Add ->"
             removeText="<- Remove"

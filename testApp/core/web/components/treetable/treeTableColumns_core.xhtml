@@ -20,8 +20,8 @@
                                 value="#{TreeTableColumnsBean.selectedColumns}"
                                 onadd="document.forms['form1'].submit();"
                                 onremove="document.forms['form1'].submit();"
-                                allowItemsOrdering="true"
-                                allowSorting="true"
+                                reorderingAllowed="true"
+                                sortingAllowed="true"
                                 leftListboxHeader="Available columns"
                                 rightListboxHeader="Selected columns">
                 <f:selectItems value="#{TreeTableColumnsBean.availableColumns}"/>
@@ -30,8 +30,8 @@
         <td>
             <o:twoListSelection id="tlsRendered"
                                 value="#{TreeTableColumnsBean.renderedColumns}"
-                                allowItemsOrdering="false"
-                                allowSorting="false"
+                                reorderingAllowed="false"
+                                sortingAllowed="false"
                                 leftListboxHeader="Available columns"
                                 rightListboxHeader="Rendered columns">
                 <f:selectItems value="#{TreeTableColumnsBean.usedColumns}"/>

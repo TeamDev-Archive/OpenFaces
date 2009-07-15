@@ -25,8 +25,8 @@ public class TwoListSelectionJspTag extends UIInputJspTag {
         super(new TwoListSelectionTag());
     }
 
-    public void setAllowItemsOrdering(ValueExpression allowItemsOrdering) {
-        getDelegate().setPropertyValue("allowItemsOrdering", allowItemsOrdering);
+    public void setReorderingAllowed(ValueExpression reorderingAllowed) {
+        getDelegate().setPropertyValue("reorderingAllowed", reorderingAllowed);
     }
 
     public void setMoveUpHint(ValueExpression moveUpHint) {
@@ -69,8 +69,8 @@ public class TwoListSelectionJspTag extends UIInputJspTag {
         getDelegate().setPropertyValue("listClass", listClass);
     }
 
-    public void setAllowSorting(ValueExpression allowSorting) {
-        getDelegate().setPropertyValue("allowSorting", allowSorting);
+    public void setSortingAllowed(ValueExpression sortingAllowed) {
+        getDelegate().setPropertyValue("sortingAllowed", sortingAllowed);
     }
 
     public void setOnadd(ValueExpression onadd) {

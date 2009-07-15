@@ -14319,7 +14319,7 @@ on the first switch to the tab. Once requested, the content is stored on the cli
       <description>A flag that indicates whether or not sorting is enabled. Sorting is allowed only in the right list.
         This attribute makes sense only if the text to be displayed in the header of the right list is specified.
       </description>
-      <name>allowSorting</name>
+      <name>sortingAllowed</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -14331,7 +14331,7 @@ on the first switch to the tab. Once requested, the content is stored on the cli
       <description>A flag that indicates whether or not the ordering feature is enabled.
         Ordering is allowed only in the right list.
       </description>
-      <name>allowItemsOrdering</name>
+      <name>reorderingAllowed</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
@@ -23072,12 +23072,12 @@ and it is automatically triggered on any form submission. -->
 
 
     <attribute>
-      <name>newEventCaption</name>
+      <name>createEventCaption</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default "New Event" -->
+      <!-- @default "Create Event" -->
       <!-- @el true -->
     </attribute>
 

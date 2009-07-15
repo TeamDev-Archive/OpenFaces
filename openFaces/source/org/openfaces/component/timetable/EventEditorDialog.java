@@ -36,7 +36,7 @@ public class EventEditorDialog extends Window implements CompoundComponent {
     private static final String FACET_END_TIME_FIELD = "endTimeField";
     private static final String FACET_DESCRIPTION_AREA = "descriptionArea";
 
-    private String newEventCaption;
+    private String createEventCaption;
     private String editEventCaption;
 
     private String nameLabel;
@@ -96,7 +96,7 @@ public class EventEditorDialog extends Window implements CompoundComponent {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
-                newEventCaption,
+                createEventCaption,
                 editEventCaption,
                 nameLabel,
                 resourceLabel,
@@ -123,7 +123,7 @@ public class EventEditorDialog extends Window implements CompoundComponent {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-        newEventCaption = (String) state[i++];
+        createEventCaption = (String) state[i++];
         editEventCaption = (String) state[i++];
         nameLabel = (String) state[i++];
         resourceLabel = (String) state[i++];
@@ -144,12 +144,12 @@ public class EventEditorDialog extends Window implements CompoundComponent {
         deleteButtonClass = (String) state[i++];
     }
 
-    public String getNewEventCaption() {
-        return ValueBindings.get(this, "newEventCaption", newEventCaption, "New Event");
+    public String getCreateEventCaption() {
+        return ValueBindings.get(this, "createEventCaption", createEventCaption, "Create Event");
     }
 
-    public void setNewEventCaption(String newEventCaption) {
-        this.newEventCaption = newEventCaption;
+    public void setCreateEventCaption(String createEventCaption) {
+        this.createEventCaption = createEventCaption;
     }
 
     public String getEditEventCaption() {
@@ -355,7 +355,6 @@ public class EventEditorDialog extends Window implements CompoundComponent {
     public void setDescriptionArea(UIInput descriptionArea) {
         getFacets().put(FACET_DESCRIPTION_AREA, descriptionArea);
     }
-
 
 
 }

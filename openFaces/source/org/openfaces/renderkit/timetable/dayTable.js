@@ -973,14 +973,7 @@ O$._initDayTable = function(componentId,
           return;
         if (event.type == "reserved")
           return;
-        dayTable._getEventEditor().run(event, "update", {
-          onok: function() {
-            dayTable.registerEventChanges(event);
-          },
-          ondelete: function() {
-            dayTable.deleteEvent(event);
-          }
-        });
+        dayTable._getEventEditor().run(event, "update");
       }
     }
 
@@ -1067,7 +1060,17 @@ O$._initDayTable = function(componentId,
     actionBar._actionsArea.style.visibility = "hidden";
   }
 
+  dayTable.cancelEventCreation = function(event) {
+    event._creationInProgress = undefined;
+    removeEventElement(event);
+  }
+
   dayTable.addEvent = function(event) {
+    if (event._creationInProgress) {
+      event._creationInProgress = undefined;
+      removeEventElement(event);
+    }
+
     eventProvider.addEvent(event);
     dayTable._updateEventElements(true);
     putTimetableChanges([event], null, null);
@@ -1263,15 +1266,7 @@ O$._initDayTable = function(componentId,
     O$._initEvent(event);
     addEventElement(event);
     event._creationInProgress = true;
-    dayTable._getEventEditor().run(event, "create", {
-      onclose: function() {
-        event._creationInProgress = undefined;
-        removeEventElement(event);
-      },
-      onok: function() {
-        dayTable.addEvent(event);
-      }
-    });
+    dayTable._getEventEditor().run(event, "create");
   }
 
   dayTable.updateLayout = function() {
@@ -1603,7 +1598,7 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
       field.value = text;
   }
 
-  dialog.run = function(event, mode, listeners) {
+  dialog.run = function(event, mode) {
     this._event = event;
     setFieldText(this._nameField, event.name);
     var resource = dayTable._getResourceForEvent(event);
@@ -1624,9 +1619,9 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
             ? editEventCaption
             : newEventCaption));
 
-    this._closeProcessed = false;
+    this._okPressed = false;
     this._okButton.onclick = function(e) {
-      this._closeProcessed = true;
+      this._okProcessed = true;
       O$.breakEvent(e);
       event.name = getFieldText(dialog._nameField);
       var startDate = dialog._startDateField.getSelectedDate();
@@ -1663,35 +1658,31 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
       event.color = dialog._color ? dialog._color : "";
       event.description = getFieldText(dialog._descriptionArea);
       dialog.hide();
-      if (listeners.onok)
-        listeners.onok();
+      if (mode == "create")
+        dayTable.addEvent(event);
+      else
+        dayTable.registerEventChanges(event);
     };
 
     this._cancelButton.onclick = function(e) {
-      this._closeProcessed = true;
       O$.breakEvent(e);
       dialog.hide();
-      if (listeners.oncancel)
-        listeners.oncancel();
+      if (mode == "create")
+        dayTable.cancelEventCreation(event);
     };
 
     this._deleteButton.onclick = function(e) {
-      this._closeProcessed = true;
       O$.breakEvent(e);
       dialog.hide();
-      if (listeners.ondelete)
-        listeners.ondelete();
+      if (mode == "update")
+        dayTable.deleteEvent(event);
     };
 
     this.onhide = function() {
-      if (listeners.onclose)
-        listeners.onclose();
-      if (!this._closeProcessed)
-        if (listeners.oncancel)
-          listeners.oncancel();
+      if (!this._okProcessed && mode == "create")
+        dayTable.cancelEventCreation(event);
       if (dialog._textareaHeightUpdateInterval)
         clearInterval(dialog._textareaHeightUpdateInterval);
-      this._closeProcessed = true;
     };
 
     if (event.mainElement)

@@ -24,8 +24,8 @@
                                     moveDownText="#{TLSStylingBean.moveDownText}"
                                     moveUpText="#{TLSStylingBean.moveUpText}"
                                     allowAddRemoveAll="#{TLSStylingBean.allowAddRemoveAll}"
-                                    allowItemsOrdering="#{TLSStylingBean.allowOrdering}"
-                                    allowSorting="#{TLSStylingBean.allowSorting}"
+                                    reorderingAllowed="#{TLSStylingBean.allowOrdering}"
+                                    sortingAllowed="#{TLSStylingBean.allowSorting}"
                                     buttonStyle="#{TLSStylingBean.buttonStyle}"
                                     headerStyle="#{TLSStylingBean.captionStyle}"
                                     listStyle="#{TLSStylingBean.listStyle}"
@@ -49,8 +49,8 @@
                                     leftListboxHeader="Available Options"
                                     rightListboxHeader="Applied Options"
                                     value="#{TLSStylingBean.selectedCustomizations}"
-                                    allowItemsOrdering="false"
-                                    allowSorting="false">
+                                    reorderingAllowed="false"
+                                    sortingAllowed="false">
                   <f:selectItems value="#{TLSStylingBean.customizations}"/>
 
                   <o:reloadComponents event="onchange" componentIds="tasksTLS"/>

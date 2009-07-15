@@ -21,8 +21,8 @@
                           value="#{TableColumnsBean.selectedColumns}"
                           onadd="document.forms['form1'].submit();"
                           onremove="document.forms['form1'].submit();"
-                          allowItemsOrdering="true"
-                          allowSorting="true"
+                          reorderingAllowed="true"
+                          sortingAllowed="true"
                           leftListboxHeader="Available columns"
                           rightListboxHeader="Selected columns">
         <f:selectItems value="#{TableColumnsBean.availableColumns}"/>
@@ -31,8 +31,8 @@
     <td>
       <o:twoListSelection id="tlsRendered"
                           value="#{TableColumnsBean.renderedColumns}"
-                          allowItemsOrdering="false"
-                          allowSorting="false"
+                          reorderingAllowed="false"
+                          sortingAllowed="false"
                           leftListboxHeader="Available columns"
                           rightListboxHeader="Rendered columns">
         <f:selectItems value="#{TableColumnsBean.usedColumns}"/>

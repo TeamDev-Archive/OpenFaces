@@ -160,7 +160,7 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
                     RenderingUtil.renderInitScript(context, new ScriptBuilder().functionCall("O$._initEventEditorDialog",
                             dayTable,
                             dialog,
-                            dialog.getNewEventCaption(),
+                            dialog.getCreateEventCaption(),
                             dialog.getEditEventCaption()).semicolon());
                 }
             }

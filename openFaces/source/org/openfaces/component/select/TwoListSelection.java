@@ -41,8 +41,8 @@ public class TwoListSelection extends OUISelectMany {
     private String leftListboxHeader;
     private String rightListboxHeader;
 
-    private Boolean allowSorting;
-    private Boolean allowItemsOrdering;
+    private Boolean sortingAllowed;
+    private Boolean reorderingAllowed;
 
     private String onadd;
     private String onremove;
@@ -91,8 +91,8 @@ public class TwoListSelection extends OUISelectMany {
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context),
                 leftListboxSelectedItems, rightListboxSelectedItems, leftListboxHeader, rightListboxHeader,
-                headerStyle, headerClass, size, tabindex, listStyle, listClass, allowSorting,
-                allowItemsOrdering, onadd, onremove, allowAddRemoveAll, addAllHint, addHint, removeAllHint,
+                headerStyle, headerClass, size, tabindex, listStyle, listClass, sortingAllowed,
+                reorderingAllowed, onadd, onremove, allowAddRemoveAll, addAllHint, addHint, removeAllHint,
                 removeHint, moveUpHint, moveDownHint, addAllText, addText, removeAllText, removeText,
                 moveUpText, moveDownText, buttonStyle, buttonClass, disabledHeaderStyle, disabledHeaderClass,
                 disabledStyle, disabledClass, disabledListStyle, disabledListClass, disabledButtonStyle,
@@ -115,8 +115,8 @@ public class TwoListSelection extends OUISelectMany {
         tabindex = (String) values[i++];
         listStyle = (String) values[i++];
         listClass = (String) values[i++];
-        allowSorting = (Boolean) values[i++];
-        allowItemsOrdering = (Boolean) values[i++];
+        sortingAllowed = (Boolean) values[i++];
+        reorderingAllowed = (Boolean) values[i++];
         onadd = (String) values[i++];
         onremove = (String) values[i++];
         allowAddRemoveAll = (Boolean) values[i++];
@@ -147,12 +147,12 @@ public class TwoListSelection extends OUISelectMany {
         disabledButtonClass = (String) values[i++];
     }
 
-    public boolean getAllowItemsOrdering() {
-        return ValueBindings.get(this, "allowItemsOrdering", allowItemsOrdering, true);
+    public boolean getReorderingAllowed() {
+        return ValueBindings.get(this, "reorderingAllowed", reorderingAllowed, true);
     }
 
-    public void setAllowItemsOrdering(boolean allowItemsOrdering) {
-        this.allowItemsOrdering = allowItemsOrdering;
+    public void setReorderingAllowed(boolean reorderingAllowed) {
+        this.reorderingAllowed = reorderingAllowed;
     }
 
     public String getMoveUpHint() {
@@ -251,12 +251,12 @@ public class TwoListSelection extends OUISelectMany {
         this.listClass = listClass;
     }
 
-    public boolean isAllowSorting() {
-        return ValueBindings.get(this, "allowSorting", allowSorting, false);
+    public boolean isSortingAllowed() {
+        return ValueBindings.get(this, "sortingAllowed", sortingAllowed, false);
     }
 
-    public void setAllowSorting(boolean allowSorting) {
-        this.allowSorting = allowSorting;
+    public void setSortingAllowed(boolean sortingAllowed) {
+        this.sortingAllowed = sortingAllowed;
     }
 
     public String getOnadd() {

@@ -25,8 +25,8 @@ public class EventEditorDialogJspTag extends WindowJspTag {
         super(new EventEditorDialogTag());
     }
 
-    public void setNewEventCaption(ValueExpression value) {
-        getDelegate().setPropertyValue("newEventCaption", value);
+    public void setCreateEventCaption(ValueExpression value) {
+        getDelegate().setPropertyValue("createEventCaption", value);
     }
 
     public void setEditEventCaption(ValueExpression value) {

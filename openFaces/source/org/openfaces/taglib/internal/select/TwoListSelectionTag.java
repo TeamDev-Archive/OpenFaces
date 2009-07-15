@@ -41,8 +41,8 @@ public class TwoListSelectionTag extends AbstractUIInputTag {
         setStringProperty(component, "tabindex");
         setStringProperty(component, "listStyle");
         setStringProperty(component, "listClass");
-        setBooleanProperty(component, "allowSorting");
-        setBooleanProperty(component, "allowItemsOrdering");
+        setBooleanProperty(component, "sortingAllowed");
+        setBooleanProperty(component, "reorderingAllowed");
         setStringProperty(component, "onadd");
         setStringProperty(component, "onremove");
         setBooleanProperty(component, "allowAddRemoveAll");

@@ -110,7 +110,7 @@ public class TwoListSelectionRenderer extends RendererBase {
         writer.startElement("col", tls);
         writer.writeAttribute("style", "width: 50%;", null);
         writer.endElement("col");
-        if (tls.getAllowItemsOrdering()) {
+        if (tls.getReorderingAllowed()) {
             writer.startElement("col", tls);
             writer.writeAttribute("style", "width: 1px;", null);
             writer.endElement("col");
@@ -133,7 +133,7 @@ public class TwoListSelectionRenderer extends RendererBase {
         renderRightList(tls, context);
         writer.endElement("td");
 
-        if (tls.getAllowItemsOrdering()) {
+        if (tls.getReorderingAllowed()) {
             writer.startElement("td", tls);
             renderOrderingButtons(context, tls);
             writer.endElement("td");
@@ -163,7 +163,7 @@ public class TwoListSelectionRenderer extends RendererBase {
         renderRightCaption(tls, context);
 
         writer.endElement("td");
-        if (tls.getAllowItemsOrdering()) {
+        if (tls.getReorderingAllowed()) {
             writer.startElement("td", tls);
             writer.write(HTML.NBSP_ENTITY);
             writer.endElement("td");
@@ -333,13 +333,13 @@ public class TwoListSelectionRenderer extends RendererBase {
     }
 
     private boolean isHeaderRowNeeded(TwoListSelection tls) {
-        return !RenderingUtil.isNullOrEmpty(tls.getLeftListboxHeader()) || !RenderingUtil.isNullOrEmpty(tls.getLeftListboxHeader()) || tls.isAllowSorting();
+        return !RenderingUtil.isNullOrEmpty(tls.getLeftListboxHeader()) || !RenderingUtil.isNullOrEmpty(tls.getLeftListboxHeader()) || tls.isSortingAllowed();
     }
 
     private void renderRightCaption(TwoListSelection tls, FacesContext context) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = tls.getClientId(context);
-        boolean allowSorting = tls.isAllowSorting();
+        boolean allowSorting = tls.isSortingAllowed();
         writer.startElement("table", tls);
         writer.writeAttribute("id", tls.getClientId(context) + RIGHT_LIST_HEADER_SUFFIX, null);
         writer.writeAttribute("cellspacing", "0", null);
@@ -471,7 +471,7 @@ public class TwoListSelectionRenderer extends RendererBase {
         sb.initScript(context, tls, "O$._initTwoListSelection",
                 RenderingUtil.getEventsParam(tls, "onadd", "onremove", "onchange"),
                 tls.isAllowAddRemoveAll(),
-                tls.getAllowItemsOrdering(),
+                tls.getReorderingAllowed(),
                 tls.isDisabled(),
                 RenderingUtil.getRolloverClass(context, tls));
 

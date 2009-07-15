@@ -35,7 +35,7 @@ public class EventEditorDialogTag extends WindowTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setStringProperty(component, "newEventCaption");
+        setStringProperty(component, "createEventCaption");
         setStringProperty(component, "editEventCaption");
         setStringProperty(component, "nameLabel");
         setStringProperty(component, "resourceLabel");
