@@ -11,7 +11,10 @@
  */
 package org.openfaces.component.timetable;
 
+import org.openfaces.util.ValueBindings;
+
 import javax.faces.component.UIComponentBase;
+import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
@@ -20,11 +23,48 @@ public class CustomEventEditor extends UIComponentBase {
     public static final String COMPONENT_TYPE = "org.openfaces.CustomEventEditor";
     public static final String COMPONENT_FAMILY = "org.openfaces.CustomEventEditor";
 
+    private String oncreate;
+    private String onedit;
+
     public CustomEventEditor() {
         setRendererType("org.openfaces.CustomEventEditorRenderer");
     }
 
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    public String getOncreate() {
+        return ValueBindings.get(this, "oncreate", oncreate);
+    }
+
+    public void setOncreate(String oncreate) {
+        this.oncreate = oncreate;
+    }
+
+    public String getOnedit() {
+        return ValueBindings.get(this, "onedit", onedit);
+    }
+
+    public void setOnedit(String onedit) {
+        this.onedit = onedit;
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        return new Object[] {
+                super.saveState(context),
+                oncreate,
+                onedit
+        };
+    }
+
+    @Override
+    public void restoreState(FacesContext context, Object state) {
+        Object[] stateArr = (Object[]) state;
+        int i = 0;
+        super.restoreState(context, stateArr[i++]);
+        oncreate = (String) stateArr[i++];
+        onedit = (String) stateArr[i++];
     }
 }

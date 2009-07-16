@@ -14,11 +14,21 @@ package org.openfaces.taglib.jsp.timetable;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 import org.openfaces.taglib.internal.timetable.CustomEventEditorTag;
 
+import javax.el.ValueExpression;
+
 /**
  * @author Dmitry Pikhulya
  */
 public class CustomEventEditorJspTag extends AbstractComponentJspTag {
     public CustomEventEditorJspTag() {
         super(new CustomEventEditorTag());
+    }
+
+    public void setOncreate(ValueExpression oncreate) {
+        getDelegate().setPropertyValue("oncreate", oncreate);
+    }
+
+    public void setOnedit(ValueExpression onedit) {
+        getDelegate().setPropertyValue("onedit", onedit);
     }
 }

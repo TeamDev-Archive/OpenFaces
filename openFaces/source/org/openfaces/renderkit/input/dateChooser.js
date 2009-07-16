@@ -220,7 +220,7 @@ O$.DateChooser = {
     };
 
     dc.setSelectedDate = function (date) {
-      O$._setDate(dc.id, date);
+      O$.DateChooser._setDate(dc.id, date);
     };
   },
 

@@ -1540,7 +1540,7 @@ O$._PreloadedTimetableEvents = function(events) {
   this.setEvents(events);
 }
 
-O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, editEventCaption) {
+O$._initEventEditorDialog = function(dayTableId, dialogId, createEventCaption, editEventCaption) {
   var dayTable = O$(dayTableId);
   var dialog = O$(dialogId);
   dayTable._eventEditor = dialog;
@@ -1617,7 +1617,7 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, newEventCaption, edit
     O$.removeAllChildNodes(this._captionContent);
     this._captionContent.appendChild(document.createTextNode(mode == "update"
             ? editEventCaption
-            : newEventCaption));
+            : createEventCaption));
 
     this._okPressed = false;
     this._okButton.onclick = function(e) {
@@ -1742,6 +1742,19 @@ O$._initEventEditorPage = function(dayTableId, thisComponentId, actionDeclared, 
     }
     window.location = newPageUrl;
   }
+}
+
+O$._initCustomEventEditor = function(dayTableId, thisComponentId, oncreate, onedit) {
+  var dayTable = O$(dayTableId);
+  var thisComponent = O$(thisComponentId);
+  dayTable._eventEditor = thisComponent;
+  thisComponent.run = function(event, mode) {
+    if (mode == "create")
+      oncreate(dayTable, event);
+    else
+      onedit(dayTable, event);
+  };
+  
 }
 
 O$._datesEqual = function(date1, date2) {

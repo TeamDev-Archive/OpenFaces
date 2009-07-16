@@ -12,9 +12,40 @@
 package org.openfaces.renderkit.timetable;
 
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.component.timetable.DayTable;
+import org.openfaces.component.timetable.CustomEventEditor;
+import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.AnonymousFunction;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.component.UIComponent;
+import java.io.IOException;
 
 /**
  * @author Dmitry Pikhulya
  */
 public class CustomEventEditorRenderer extends RendererBase {
+    @Override
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("span", component);
+        writeIdAttribute(context, component);
+        writer.writeAttribute("style", "display: none", null);
+
+        CustomEventEditor editor = (CustomEventEditor) component;
+        DayTable dayTable = (DayTable) editor.getParent();
+        RenderingUtil.renderInitScript(context, new ScriptBuilder().initScript(context, dayTable, "O$._initCustomEventEditor",
+                editor,
+                new AnonymousFunction(editor.getOncreate(), "dayTable", "timetableEvent"),
+                new AnonymousFunction(editor.getOnedit(), "dayTable", "timetableEvent")).semicolon());
+        writer.endElement("span");
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
+
 }

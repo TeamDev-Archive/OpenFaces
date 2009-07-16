@@ -26,11 +26,13 @@ public class CustomEventEditorTag extends AbstractComponentTag {
     }
 
     public String getRendererType() {
-        return "org.openfaces.CustomEventEditorRednerer";
+        return "org.openfaces.CustomEventEditorRenderer";
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
+        setStringProperty(component, "oncreate");
+        setStringProperty(component, "onedit");
     }
 }

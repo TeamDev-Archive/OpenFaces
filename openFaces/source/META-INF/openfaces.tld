@@ -23401,6 +23401,42 @@ and it is automatically triggered on any form submission. -->
     <name>customEventEditor</name>
     <tag-class>org.openfaces.taglib.jsp.timetable.CustomEventEditorJspTag</tag-class>
     <body-content>JSP</body-content>
+
+    <attribute>
+      <description>A value-binding expression that associates the EventEditorPage with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.timetable.CustomEventEditor</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.timetable. CustomEventEditor-->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should show the custom editor for event creation.
+      </description>
+      <name>oncreate</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should show the custom editor for event editing.  
+      </description>
+      <name>onedit</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
   </tag>
 
 
