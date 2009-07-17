@@ -39,6 +39,8 @@ public class EventEditorDialog extends Window implements CompoundComponent {
     private String createEventCaption;
     private String editEventCaption;
 
+    private Boolean centered;
+
     private String nameLabel;
     private String resourceLabel;
     private String startLabel;
@@ -96,6 +98,7 @@ public class EventEditorDialog extends Window implements CompoundComponent {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
+                centered,
                 createEventCaption,
                 editEventCaption,
                 nameLabel,
@@ -123,6 +126,7 @@ public class EventEditorDialog extends Window implements CompoundComponent {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
+        centered = (Boolean) state[i++];
         createEventCaption = (String) state[i++];
         editEventCaption = (String) state[i++];
         nameLabel = (String) state[i++];
@@ -142,6 +146,14 @@ public class EventEditorDialog extends Window implements CompoundComponent {
         cancelButtonClass = (String) state[i++];
         deleteButtonStyle = (String) state[i++];
         deleteButtonClass = (String) state[i++];
+    }
+
+    public boolean isCentered() {
+        return ValueBindings.get(this, "centered", centered, true);
+    }
+
+    public void setCentered(boolean centered) {
+        this.centered = centered;
     }
 
     public String getCreateEventCaption() {

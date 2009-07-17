@@ -22925,6 +22925,21 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
+      <description>A flag that indicates whether or not the dialog is centered on the screen when it is shown. If this
+        attribute is set to false then the dialog is shown at a position defined by the left and top CSS attributes
+        defined in the dialog's style. 
+      </description>
+      <name>centered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+
+    <attribute>
       <description>A style for the visible part of the page which is not covered by the EventEditorDialog component.
       </description>
       <name>modalLayerStyle</name>

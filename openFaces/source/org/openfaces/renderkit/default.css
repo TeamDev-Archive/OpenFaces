@@ -465,6 +465,8 @@
   font-size: 9pt;
   font-family: MS Shell Dlg, Arial, sans-serif;
   overflow: hidden;
+  left: 0;
+  top: 0;
 }
 
 .o_eventEditorDialogContent {

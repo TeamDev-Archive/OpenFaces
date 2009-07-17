@@ -54,5 +54,7 @@ public class EventEditorDialogTag extends WindowTag {
         setStringProperty(component, "cancelButtonClass");
         setStringProperty(component, "deleteButtonStyle");
         setStringProperty(component, "deleteButtonClass");
+
+        setBooleanProperty(component, "centered");
     }
 }

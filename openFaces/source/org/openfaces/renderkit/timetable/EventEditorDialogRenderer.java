@@ -161,7 +161,8 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
                             dayTable,
                             dialog,
                             dialog.getCreateEventCaption(),
-                            dialog.getEditEventCaption()).semicolon());
+                            dialog.getEditEventCaption(),
+                            dialog.isCentered()).semicolon());
                 }
             }
 

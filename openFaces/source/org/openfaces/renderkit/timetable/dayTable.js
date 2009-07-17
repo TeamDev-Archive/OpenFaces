@@ -1540,7 +1540,7 @@ O$._PreloadedTimetableEvents = function(events) {
   this.setEvents(events);
 }
 
-O$._initEventEditorDialog = function(dayTableId, dialogId, createEventCaption, editEventCaption) {
+O$._initEventEditorDialog = function(dayTableId, dialogId, createEventCaption, editEventCaption, centered) {
   var dayTable = O$(dayTableId);
   var dialog = O$(dialogId);
   dayTable._eventEditor = dialog;
@@ -1687,7 +1687,10 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, createEventCaption, e
 
     if (event.mainElement)
       O$.correctElementZIndex(this, event.mainElement, 5);
-    this.showCentered();
+    if (centered)
+      this.showCentered();
+    else
+      this.show();
 
     function adjustTextareaHeight(){
       var size = O$.getElementSize(dialog._descriptionArea.parentNode);

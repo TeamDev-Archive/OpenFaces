@@ -101,4 +101,8 @@ public class EventEditorDialogJspTag extends WindowJspTag {
     public void setDeleteButtonClass(ValueExpression deleteButtonClass) {
         getDelegate().setPropertyValue("deleteButtonClass", deleteButtonClass);
     }
+
+    public void setCentered(ValueExpression centered) {
+        getDelegate().setPropertyValue("centered", centered);
+    }
 }
