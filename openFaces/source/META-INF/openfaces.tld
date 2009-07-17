@@ -14942,8 +14942,7 @@ and it is automatically triggered on any form submission. -->
       <name>serverFunction</name>
       <deferred-method>
         <method-signature>
-          boolean customValidatorTest(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
-          java.lang.Object)
+          boolean customValidatorTest(javax.faces.context.FacesContext, javax.faces.component.UIComponent, java.lang.Object)
         </method-signature>
       </deferred-method>
       <!-- @bindingType java.lang.String -->
