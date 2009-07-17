@@ -239,9 +239,9 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
     @Override
     protected void writeFieldAttributes(ResponseWriter writer, DropDownComponent fieldComponent) throws IOException {
         super.writeFieldAttributes(writer, fieldComponent);
-        DateChooser spinner = ((DateChooser) fieldComponent);
-        if (!spinner.isTypingAllowed())
-            writeAttribute(writer, "readonly", String.valueOf(!spinner.isTypingAllowed()));
+        DateChooser dateChooser = ((DateChooser) fieldComponent);
+        if (!dateChooser.isTypingAllowed())
+            writeAttribute(writer, "readonly", String.valueOf(!dateChooser.isTypingAllowed()));
     }
 
 
