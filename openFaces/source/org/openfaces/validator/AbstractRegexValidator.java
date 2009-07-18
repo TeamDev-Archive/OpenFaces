@@ -13,6 +13,7 @@ package org.openfaces.validator;
 
 import org.openfaces.util.NewInstanceScript;
 import org.openfaces.util.Script;
+import org.openfaces.util.RenderingUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -32,17 +33,14 @@ public abstract class AbstractRegexValidator extends AbstractCustomValidator {
         addJavascriptLibrary(new ValidationJavascriptLibrary("regexValidator.js", this.getClass()));
     }
 
-    protected boolean matchesRegex(Object value) {
-        Pattern p = Pattern.compile(getPattern());
-        Matcher matcher = p.matcher((String) value);
-        return matcher.matches();
-    }
-
     public boolean customServerValidate(FacesContext context, UIComponent component, Object value, Object[] args) {
+        String strValue = RenderingUtil.convertToString(context, component, value);
         if (isTrimNeeded()) {
-            value = ((String) value).trim();
+            strValue = strValue.trim();
         }
-        return matchesRegex(value);
+        Pattern p = Pattern.compile(getPattern());
+        Matcher matcher = p.matcher(strValue);
+        return matcher.matches();
     }
 
     protected boolean isTrimNeeded() {
