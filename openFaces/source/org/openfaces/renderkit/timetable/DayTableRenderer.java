@@ -521,7 +521,8 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
             event.setStart(DataUtil.parseDateTimeFromJs(startStr, timeZone));
             String endStr = eventObj.getString("endStr");
             event.setEnd(DataUtil.parseDateTimeFromJs(endStr, timeZone));
-            String colorStr = (String) eventObj.opt("color");
+            Object colorObj = eventObj.opt("color");
+            String colorStr = JSONObject.NULL != colorObj ? (String) colorObj : null;
             event.setColor(CSSUtil.parseColor(colorStr));
 
             targetArray[i] = event;

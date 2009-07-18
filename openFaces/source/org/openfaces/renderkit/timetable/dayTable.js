@@ -1066,6 +1066,8 @@ O$._initDayTable = function(componentId,
   };
 
   dayTable.addEvent = function(event) {
+    event.setStart(event.start, event.startStr);
+    event.setEnd(event.end, event.endStr);
     if (event._creationInProgress) {
       event._creationInProgress = undefined;
       removeEventElement(event);
@@ -1087,6 +1089,9 @@ O$._initDayTable = function(componentId,
   };
 
   dayTable.updateEvent = function(event) {
+    event.setStart(event.start, event.startStr);
+    event.setEnd(event.end, event.endStr);
+
     event.updatePresentation();
     putTimetableChanges(null, [event], null);
   };
