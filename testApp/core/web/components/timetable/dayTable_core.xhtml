@@ -155,10 +155,53 @@
               timeSuffixPattern=" a"
               rowStyle="height: 10px">
         <f:facet name="eventEditor">
-          <o:customEventEditor oncreate="alert('create'); dayTable.addEvent(timetableEvent);" onedit="alert('edit'); if (!timetableEvent.color) timetableEvent.color='#b0e080'; else timetableEvent.color=null; dayTable.registerEventChanges(timetableEvent);"/>
+          <o:customEventEditor oncreate="createEvent(dayTable, timetableEvent);" onedit="editEvent(dayTable, timetableEvent);"/>
         </f:facet>
         <o:timetableEditingOptions autoSaveChanges="false"/>
       </o:dayTable>
+      <script>
+        function createEvent(dayTable, event) {
+          var popup = O$('form:customEventEditor');
+          O$('form:nameField').value = event.name;
+          var editingConfirmed = false;
+          O$('form:okButton').onclick = function() {
+            event.name = O$('form:nameField').value;
+            dayTable.addEvent(event);
+            editingConfirmed = true;
+            popup.hide();
+          };
+          O$('form:cancelButton').onclick = function() {
+            popup.hide();
+          };
+          popup.onhide = function() {
+            if (!editingConfirmed)
+              dayTable.cancelEventCreation(event);
+          };
+          popup.showCentered();
+        }
+
+        function editEvent(dayTable, event) {
+          var popup = O$('form:customEventEditor');
+          O$('form:nameField').value = event.name;
+          O$('form:okButton').onclick = function() {
+            event.name = O$('form:nameField').value;
+            dayTable.updateEvent(event);
+            popup.hide();
+          };
+          O$('form:cancelButton').onclick = function() {
+            popup.hide();
+          };
+          popup.onhide = function() {
+          };
+          popup.showCentered();
+        }
+      </script>
+
+      <o:popupLayer id="customEventEditor" modal="true">
+        <o:inputText id="nameField" promptText="Event name"/>
+        <h:commandButton id="okButton" value="OK"/>
+        <h:commandButton id="cancelButton" value="Cancel"/>
+      </o:popupLayer>
     </o:tabbedPaneItem>
 
     <o:tabbedPaneItem>

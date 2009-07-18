@@ -154,7 +154,7 @@ O$._initDayTable = function(componentId,
       return null;
     var resource = dayTable._resourcesByIds[event.resourceId];
     return resource;
-  }
+  };
 
   var rowHeight = O$.getStyleClassProperty(dayTableRowClass, "height");
   var duplicatedRows = showTimeAgainstMark;
@@ -216,7 +216,7 @@ O$._initDayTable = function(componentId,
     row._updateTime = function(day) {
       this._time = O$.cloneDate(day);
       this._time.setHours(Math.floor(this._intervalStartMinutes / 60), this._intervalStartMinutes % 60, 0, 0);
-    }
+    };
     if (row2) row2._updateTime = row._updateTime;
     row._updateTime(now);
 
@@ -275,13 +275,13 @@ O$._initDayTable = function(componentId,
           return;
         if (editable)
           dayTable._addEvent(this._row._time, this._resource ? this._resource.id : null);
-      }
+      };
 
       if (cell2) {
         cell2._cell = cell;
         cell2.onclick = function() {
           this._cell.onclick();
-        }
+        };
       }
     }
 
@@ -312,15 +312,15 @@ O$._initDayTable = function(componentId,
     if (!dayTable._cachedPositions)
       dayTable._cachedPositions = {};
     return dayTable._cachedPositions;
-  }
+  };
   dayTable._getScrollingCache = function() {
     if (!dayTable._cachedScrollPositions)
       dayTable._cachedScrollPositions = {};
     return dayTable._cachedScrollPositions;
-  }
+  };
   dayTable._resetScrollingCache = function() {
     dayTable._cachedScrollPositions = {};
-  }
+  };
 
   function adjustRolloverPaddings() {
     var tempDiv = document.createElement("div");
@@ -380,25 +380,25 @@ O$._initDayTable = function(componentId,
     O$.setElementBorderRectangle(absoluteElementsParentNode, rect);
     if (ieEventHandlerLayer)
       O$.setElementBorderRectangle(ieEventHandlerLayer, rect);
-  }
+  };
   absoluteElementsParentNode.onclick = function(e) {
     var clickPoint = O$.getEventPoint(e);
     var cell = table._cellFromPoint(clickPoint.x, clickPoint.y, false);
     if (cell && cell.onclick)
       cell.onclick(e);
-  }
+  };
   if (ieEventHandlerLayer) {
     O$.fixIEEventsForTransparentLayer(ieEventHandlerLayer);
     ieEventHandlerLayer.onclick = function(e) {
       absoluteElementsParentNode.onclick(e);
-    }
+    };
   }
 
   dayTable._getEventEditor = function() {
     if (!editable)
       return null;
     return dayTable._eventEditor;
-  }
+  };
 
 
   function getNearestTimeslotForPosition(x, y) {
@@ -530,9 +530,9 @@ O$._initDayTable = function(componentId,
         area._settings = areaSettings;
         area._updatePos = function() {
           O$.alignPopupByElement(this, eventElement, this._settings.horizontalAlignment, this._settings.verticalAlignment, 0, 0, true, true);
-        }
+        };
       }
-    }
+    };
     eventElement._attachAreas();
 
     eventElement._updateAreaPositions = function(forceInsideAreasUpdate) {
@@ -541,7 +541,7 @@ O$._initDayTable = function(componentId,
         if (!area._insideElement || forceInsideAreasUpdate)
           area._updatePos();
       }
-    }
+    };
     eventElement._updateAreaZIndexes = function(eventZIndex) {
       if (eventZIndex === undefined)
         eventZIndex = O$.getNumericStyleProperty(event.mainElement, "z-index");
@@ -550,7 +550,7 @@ O$._initDayTable = function(componentId,
         var area = this._areas[areaIndex];
         area.style.zIndex = eventZIndex + 1;
       }
-    }
+    };
 
     O$.assignEvents(eventElement, uiEvent, true, {timetableEvent: event});
     eventElement._onmouseover = eventElement.onmouseover;
@@ -601,7 +601,7 @@ O$._initDayTable = function(componentId,
           eventElement._lastValidResourceId = event.resourceId;
         }
         eventElement._setDropAllowed(dropAllowed);
-      }
+      };
       eventElement._setDropAllowed = function(value) {
         if (this._dropAllowed == value)
           return;
@@ -613,7 +613,7 @@ O$._initDayTable = function(componentId,
               O$.setOpacityLevel(eventElement._backgroundElement, this.propertyValues.opacity * (1 - eventBackgroundTransparencyLevel));
           }
         });
-      }
+      };
       eventElement.onmousedown = function (e) {
         dayTable._resetScrollingCache();
         eventElement._bringToFront();
@@ -623,7 +623,7 @@ O$._initDayTable = function(componentId,
         eventElement._initialResourceId = eventElement._lastValidResourceId = event.resourceId;
         eventElement._originalCursor = O$.getElementStyleProperty(eventElement, "cursor");
         eventElement._dropAllowed = true;
-      }
+      };
 
       function hideExcessiveElementsWhileDragging() {
         if (eventPreview)
@@ -670,7 +670,7 @@ O$._initDayTable = function(componentId,
           });
 
         }
-      }
+      };
       eventElement.ondragend = function() {
         if (topResizeHandle)
           topResizeHandle.style.display = "";
@@ -712,7 +712,7 @@ O$._initDayTable = function(componentId,
           }
 
         }, 10);
-      }
+      };
       eventElement._updateResizersPos = function(draggingInProgress) {
         if (!draggingInProgress) {
           var eventRect = event.mainElement._rect;
@@ -722,7 +722,7 @@ O$._initDayTable = function(componentId,
             O$.setElementBorderRectangle(bottomResizeHandle, new O$.Rectangle(eventRect.x, eventRect.getMaxY() - eventResizeHandleHeight / 2, eventRect.width, eventResizeHandleHeight));
         }
         this._updateZIndex();
-      }
+      };
       eventElement._updateZIndex = function(eventZIndex) {
         if (eventZIndex === undefined)
           eventZIndex = O$.getNumericStyleProperty(event.mainElement, "z-index");
@@ -731,7 +731,7 @@ O$._initDayTable = function(componentId,
         if (bottomResizeHandle)
           bottomResizeHandle.style.zIndex = eventZIndex + 2;
         this._updateAreaZIndexes();
-      }
+      };
 
       if (editingOptions.eventDurationEditable) {
         var topResizeHandle = editingOptions.eventDurationEditable ? document.createElement("div") : null;
@@ -746,7 +746,7 @@ O$._initDayTable = function(componentId,
 
         topResizeHandle.onclick = bottomResizeHandle.onclick = function(e) {
           O$.breakEvent(e);
-        }
+        };
         topResizeHandle.onmousedown = bottomResizeHandle.onmousedown = eventElement.onmousedown;
         topResizeHandle.setPosition = bottomResizeHandle.setPosition = function(left, top) {
           var nearestTimeslot = getNearestTimeslotForPosition(left, top + eventResizeHandleHeight / 2);
@@ -780,7 +780,7 @@ O$._initDayTable = function(componentId,
             hideExcessiveElementsWhileDragging();
           }
           eventElement._updateResizersPos();
-        }
+        };
         topResizeHandle.ondragend = bottomResizeHandle.ondragend = eventElement.ondragend;
 
         function setResizerHoverState(mouseInside, resizer) {
@@ -810,7 +810,7 @@ O$._initDayTable = function(componentId,
             continue; // don't add an area back to document if it was already removed by Ajax 
           hiddenArea.appendChild(area);
         }
-      }
+      };
     }
 
     if (event.type != "reserved" && editable) {
@@ -841,7 +841,7 @@ O$._initDayTable = function(componentId,
       O$.setOpacityLevel(eventElement._backgroundElement, 1 - eventBackgroundTransparencyLevel);
       eventElement.style.color = userSpecifiedStyles.color ? userSpecifiedStyles.color : eventElement._color;
       eventElement.style.borderColor = userSpecifiedStyles.borderColor ? userSpecifiedStyles.borderColor : eventElement._color;
-    }
+    };
     eventElement._updatePos = function(draggingInProgress, transitionPeriod, transitionEvents) {
       var resourceColIndex;
       if (event.resourceId) {
@@ -883,7 +883,7 @@ O$._initDayTable = function(componentId,
           eventElement._currentRect = currentRect;
           eventElement._updateAreaPositions(false);
         }
-      }
+      };
       if (transitionEvents)
         events.oncomplete = transitionEvents.oncomplete;
       this._lastRectangleTransition = O$.runTransitionEffect(this, ["rectangle"], [rect], transitionPeriod, 20, events);
@@ -897,14 +897,14 @@ O$._initDayTable = function(componentId,
       else
         O$.excludeClassNames(this, ["o_truncatedTimetableEvent"]);
       this._updateAreaPositions(true);
-    }
+    };
     eventElement._bringToFront = function() {
       var index = O$.findValueInArray(this, dayTable._eventElements);
       O$.assert(index != -1, "eventElement._bringToFront. Can't find element in _eventElements array.");
       dayTable._eventElements.splice(index, 1);
       dayTable._eventElements.push(this);
       dayTable._updateEventZIndexes();
-    }
+    };
 
     event._updateRolloverState = function() {
       var eventElement = event.mainElement;
@@ -918,7 +918,7 @@ O$._initDayTable = function(componentId,
       event._setMouseInside(eventElement._mouseInside ||
                             elementResizable && (eventElement._topResizeHandle._mouseInside || eventElement._bottomResizeHandle._mouseInside) ||
                             (actionBar._event == event && actionBar._actionsArea._mouseInside));
-    }
+    };
 
     var eventPreview = getEventPreview();
     event._setMouseInside = function(value) {
@@ -957,7 +957,7 @@ O$._initDayTable = function(componentId,
           eventElement._onmouseout(O$.createEvent("mouseout"));
         }
       }
-    }
+    };
 
     O$.setupHoverStateFunction(eventElement, function(mouseInside) {
       if (event._creationInProgress)
@@ -974,7 +974,7 @@ O$._initDayTable = function(componentId,
         if (event.type == "reserved")
           return;
         dayTable._getEventEditor().run(event, "update");
-      }
+      };
     }
 
     if (eventElement.oncreate)
@@ -1063,7 +1063,7 @@ O$._initDayTable = function(componentId,
   dayTable.cancelEventCreation = function(event) {
     event._creationInProgress = undefined;
     removeEventElement(event);
-  }
+  };
 
   dayTable.addEvent = function(event) {
     if (event._creationInProgress) {
@@ -1074,30 +1074,30 @@ O$._initDayTable = function(componentId,
     eventProvider.addEvent(event);
     dayTable._updateEventElements(true);
     putTimetableChanges([event], null, null);
-  }
+  };
 
   dayTable.deleteEvent = function(event) {
     eventProvider.deleteEvent(event);
     dayTable._updateEventElements(true);
     putTimetableChanges(null, null, [event.id]);
-  }
+  };
 
   dayTable.getEventById = function(eventId) {
     return eventProvider.getEventById(eventId);
-  }
+  };
 
-  dayTable.registerEventChanges = function(event) {
+  dayTable.updateEvent = function(event) {
     event.updatePresentation();
     putTimetableChanges(null, [event], null);
-  }
+  };
 
   dayTable.refreshEvents = function(serverAction) {
     this._saveChanges(true, serverAction, dayTable._startTime, dayTable._endTime);
-  }
+  };
 
   dayTable.saveChanges = function() {
     this._saveChanges(false, null, dayTable._startTime, dayTable._endTime);
-  }
+  };
 
   dayTable._saveChanges = function(reloadAllEvents, serverAction, reloadStartTime, reloadEndTime) {
     O$.requestComponentPortions(dayTable.id, ["saveEventChanges"], JSON.stringify(
@@ -1143,13 +1143,13 @@ O$._initDayTable = function(componentId,
     }, function () {
       alert('Error saving the last timetable change');
     }, serverAction);
-  }
+  };
 
   dayTable._dayTextElement = O$(dayTable.id + "::dayText");
 
   dayTable.getDay = function() {
     return dayTable._day;
-  }
+  };
 
   dayTable.setDay = function(day) {
     if (O$._datesEqual(dayTable._day, day))
@@ -1175,7 +1175,7 @@ O$._initDayTable = function(componentId,
       var row = rows[rowIndex];
       row._updateTime(day);
     }
-  }
+  };
 
   dayTable._updateEventElements = function(reacquireDayEvents, refreshAreasAfterReload) {
     dayTable._baseZIndex = O$.getElementZIndex(dayTable);
@@ -1197,7 +1197,7 @@ O$._initDayTable = function(componentId,
       dayTable._eventElements.push(addEventElement(event));
     }
     dayTable._updateEventZIndexes();
-  }
+  };
 
   dayTable._baseZIndex = O$.getElementZIndex(dayTable);
   dayTable._maxZIndex = dayTable._baseZIndex + 10;
@@ -1213,22 +1213,22 @@ O$._initDayTable = function(componentId,
         eventElement._updateZIndex(eventZIndex);
     }
     dayTable._maxZIndex = eventZIndex + 10;
-  }
+  };
 
   dayTable.previous = function() {
     var prevDay = O$.incDay(dayTable._day, -1);
     dayTable.setDay(prevDay);
-  }
+  };
 
   dayTable.next = function() {
     var nextDay = O$.incDay(dayTable._day, 1);
     dayTable.setDay(nextDay);
-  }
+  };
 
   dayTable.today = function() {
     var today = new Date();
     dayTable.setDay(today);
-  }
+  };
 
   if (daySwitcherVisible) {
     var prevButton = O$.byIdOrName(dayTable.id + ":_prev");
@@ -1236,17 +1236,17 @@ O$._initDayTable = function(componentId,
     prevButton.onclick = function(e) {
       O$.breakEvent(e);
       dayTable.previous();
-    }
+    };
     var nextButton = O$.byIdOrName(dayTable.id + ":_next");
     nextButton.onclick = function(e) {
       O$.breakEvent(e);
       dayTable.next();
-    }
+    };
     var todayButton = O$.byIdOrName(dayTable.id + ":_today");
     todayButton.onclick = function (e) {
       O$.breakEvent(e);
       dayTable.today();
-    }
+    };
   }
 
   var dtf = O$.getDateTimeFormatObject(locale);
@@ -1262,12 +1262,12 @@ O$._initDayTable = function(componentId,
       _end: endTime,
       color: null,
       description: ""
-    }
+    };
     O$._initEvent(event);
     addEventElement(event);
     event._creationInProgress = true;
     dayTable._getEventEditor().run(event, "create");
-  }
+  };
 
   dayTable.updateLayout = function() {
     dayTable._cachedPositions = {};
@@ -1291,7 +1291,7 @@ O$._initDayTable = function(componentId,
       event.updatePresentation();
     }
 
-  }
+  };
 
   O$.addEventHandler(window, "resize", function() {
     dayTable.updateLayout();
@@ -1413,7 +1413,7 @@ O$._initDayTable = function(componentId,
 
   putTimetableChanges(null, null, null, true);
   O$.assignEvents(dayTable, {onchange: onchange}, true);
-}
+};
 
 O$._findEventById = function(events, id) {
   if (events._cachedEventsByIds) {
@@ -1427,7 +1427,7 @@ O$._findEventById = function(events, id) {
       return event;
   }
   return null;
-}
+};
 
 O$._LazyLoadedTimetableEvents = function(preloadedEvents, preloadedStartTime, preloadedEndTime) {
   O$._PreloadedTimetableEvents.call(this, []);
@@ -1443,7 +1443,7 @@ O$._LazyLoadedTimetableEvents = function(preloadedEvents, preloadedStartTime, pr
       preloadedEndTime = preloadedEndTime ? O$.parseDateTime(preloadedEndTime).getTime() : null;
     this._loadedTimeRangeMap.addRange(preloadedStartTime, preloadedEndTime);
     this._loadingTimeRangeMap.addRange(preloadedStartTime, preloadedEndTime);
-  }
+  };
   this.setEvents(preloadedEvents, preloadedStartTime, preloadedEndTime);
 
   this._getEventsForPeriod_raw = this._getEventsForPeriod;
@@ -1484,8 +1484,8 @@ O$._LazyLoadedTimetableEvents = function(preloadedEvents, preloadedStartTime, pr
       alert('Error loading timetable events');
     });
     return this._getEventsForPeriod_raw(start, end);
-  }
-}
+  };
+};
 
 O$._PreloadedTimetableEvents = function(events) {
 
@@ -1503,7 +1503,7 @@ O$._PreloadedTimetableEvents = function(events) {
       result.push(event);
     }
     return result;
-  }
+  };
 
   this.setEvents = function(newEvents) {
     this._events = newEvents;
@@ -1512,7 +1512,7 @@ O$._PreloadedTimetableEvents = function(events) {
       O$._initEvent(event);
     }
     this._events._cachedEventsByIds = null;
-  }
+  };
 
   this.getEventById = function(eventId) {
     for (var i = 0, count = this._events.length; i < count; i++) {
@@ -1521,24 +1521,24 @@ O$._PreloadedTimetableEvents = function(events) {
         return evt;
     }
     return null;
-  }
+  };
 
   this.addEvent = function(event) {
     if (this._events._cachedEventsByIds && event.id)
       this._events._cachedEventsByIds[event.id] = event;
     O$._initEvent(event);
     this._events.push(event);
-  }
+  };
   this.deleteEvent = function(event) {
     if (this._events._cachedEventsByIds && event.id)
       this._events._cachedEventsByIds[event.id] = undefined;
 
     var eventIndex = O$.findValueInArray(event, this._events);
     this._events.splice(eventIndex, 1);
-  }
+  };
 
   this.setEvents(events);
-}
+};
 
 O$._initEventEditorDialog = function(dayTableId, dialogId, createEventCaption, editEventCaption, centered) {
   var dayTable = O$(dayTableId);
@@ -1661,7 +1661,7 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, createEventCaption, e
       if (mode == "create")
         dayTable.addEvent(event);
       else
-        dayTable.registerEventChanges(event);
+        dayTable.updateEvent(event);
     };
 
     this._cancelButton.onclick = function(e) {
@@ -1708,9 +1708,9 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, createEventCaption, e
     } else
       dialog._textareaHeightUpdateInterval = null;
 
-  }
+  };
 
-}
+};
 
 O$._initEventEditorPage = function(dayTableId, thisComponentId, actionDeclared, url, modeParamName,
                                    eventIdParamName, eventStartParamName, eventEndParamName, resourceIdParamName) {
@@ -1744,8 +1744,8 @@ O$._initEventEditorPage = function(dayTableId, thisComponentId, actionDeclared, 
       newPageUrl += eventIdParamName + "=" + encodeURIComponent(event.id);
     }
     window.location = newPageUrl;
-  }
-}
+  };
+};
 
 O$._initCustomEventEditor = function(dayTableId, thisComponentId, oncreate, onedit) {
   var dayTable = O$(dayTableId);
@@ -1758,7 +1758,7 @@ O$._initCustomEventEditor = function(dayTableId, thisComponentId, oncreate, oned
       onedit(dayTable, event);
   };
   
-}
+};
 
 O$._datesEqual = function(date1, date2) {
   if (!date1)
@@ -1768,7 +1768,7 @@ O$._datesEqual = function(date1, date2) {
   return date1.getDate() == date2.getDate() &&
          date1.getMonth() == date2.getMonth() &&
          date1.getFullYear() == date2.getFullYear();
-}
+};
 
 O$._initEvent = function(event) {
   event.setStart = function(asDate, asString) {
@@ -1781,7 +1781,7 @@ O$._initEvent = function(event) {
         event._start = O$.parseDateTime(asString);
       } else
         throw "event.setStart: either asDate parameter, or asTime parameter should be specified";
-  }
+  };
   event.setEnd = function(asDate, asString) {
     if (asDate) {
       event._end = asDate;
@@ -1792,7 +1792,7 @@ O$._initEvent = function(event) {
         event._end = O$.parseDateTime(asString);
       } else
         throw "event.setEnd: either asDate parameter, or asTime parameter should be specified";
-  }
+  };
   event._copyFrom = function(otherEvent) {
     this.id = otherEvent.id;
     this.setStart(otherEvent._start, otherEvent.start);
@@ -1801,25 +1801,25 @@ O$._initEvent = function(event) {
     this.description = otherEvent.description;
     this.resourceId = otherEvent.resourceId;
     this.color = otherEvent.color;
-  }
+  };
   event.updatePresentation = function(transitionPeriod) {
     if (event.mainElement) {
       event.mainElement._update(transitionPeriod);
       event.mainElement._updateAreaPositions(true);
     }
-  }
+  };
   event._scrollIntoView = function() {
 /*    return; //todo: finish auto-scrolling functionality
     var dayTable = event.mainElement._dayTable;
     var scrollingOccured = O$.scrollElementIntoView(event.mainElement, dayTable._getScrollingCache());
     if (scrollingOccured)
       dayTable._resetScrollingCache();*/
-  }
+  };
   if (event._start || event.start)
     event.setStart(event._start, event.start);
   if (event._end || event.end)
     event.setEnd(event._end, event.end);
-}
+};
 
 O$._initEventPreview = function(eventPreviewId, dayTableId, showingDelay, popupClass,
                                 eventNameClass, eventDescriptionClass,
@@ -1863,12 +1863,12 @@ O$._initEventPreview = function(eventPreviewId, dayTableId, showingDelay, popupC
     else
       popupLayer.showByElement(event.mainElement,
               horizontalAlignment, verticalAlignment, horizontalDistance, verticalDistance);
-  }
+  };
 
   eventPreview.hide = function() {
     popupLayer.hide();
-  }
-}
+  };
+};
 
 
 O$._initEventActionBar = function(actionBarId, dayTableId, backgroundIntensityLevel, userSpecifiedClass, actions,
@@ -1878,7 +1878,7 @@ O$._initEventActionBar = function(actionBarId, dayTableId, backgroundIntensityLe
     var initArgs = arguments;
     // postpone initialization to avoid FF2 failure of finding actionBar element in some cases
     setTimeout(function() {
-      O$._initEventActionBar.apply(null, initArgs)
+      O$._initEventActionBar.apply(null, initArgs);
     }, 100);
     return;
   }
@@ -1919,11 +1919,11 @@ O$._initEventActionBar = function(actionBarId, dayTableId, backgroundIntensityLe
     O$.preloadImage(action.image[1]);
     O$.preloadImage(action.image[2]);
     cell._userClickHandler = cell.onclick;
-    cell.onmousedown = function(e) {
+    cell.onmousedown = function() {
       this._timetableEvent = actionBar._event ? actionBar._event : actionBar._lastEditedEvent;
       this._dayTable = O$(dayTableId);
       this._timetableEvent.mainElement._bringToFront();
-    }
+    };
     cell.onclick = function(e) {
       e = O$.getEvent(e);
       e._timetableEvent = this._timetableEvent;
@@ -1969,11 +1969,11 @@ O$._initEventActionBar = function(actionBarId, dayTableId, backgroundIntensityLe
           imageUrl = action.image[1];
       }
       this._image = imageUrl;
-    }
+    };
   }
   actionsTable.onclick = function(e) {
     O$.breakEvent(e); // avoid passing event to the absoluteElementsParentNode
-  }
+  };
   actionBar._actionsArea = actionsTable;
   actionBar._actionsArea.style.position = "absolute";
   actionBar._actionsArea.style.visibility = "hidden";
@@ -1982,7 +1982,7 @@ O$._initEventActionBar = function(actionBarId, dayTableId, backgroundIntensityLe
       this._height = O$.getElementSize(this).height;
     }
     return this._height;
-  }
+  };
   actionBar.appendChild(actionsTable);
 
   actionBar._update = function() {
@@ -2010,30 +2010,30 @@ O$._initEventActionBar = function(actionBarId, dayTableId, backgroundIntensityLe
     this.style.height = actionBarSize.height + "px";
 
     O$.correctElementZIndex(this, dayTable);
-  }
-}
+  };
+};
 
 /*
  This function is invoked from the "delete event" action button. Don't invoke this function directly.
  */
 O$._deleteCurrentTimetableEvent = function(event) {
-  var e = O$.getEvent(event)
+  var e = O$.getEvent(event);
   var timetableEvent = e._timetableEvent;
   e._dayTable.deleteEvent(timetableEvent);
   e.returnValue = false;
-}
+};
 
 O$._RangeMap = function() {
   this._disjointRanges = [];
-}
+};
 O$._RangeMap.prototype._rangesIntersect = function(range1, range2) {
   // Returns true if the ranges intersect. End-point intersection is also not considered as an intersection.
   return range2.end >= range1.start && range2.start <= range1.end;
-}
+};
 O$._RangeMap.prototype._rangeContainsRange = function(range1, range2) {
   // Returns true if range2 is entirely in range1. Equal ranges result in returning true as well.
   return range2.start >= range1.start && range2.end <= range1.end;
-}
+};
 O$._RangeMap.prototype._mergeRanges = function(range1, range2) {
   if (!this._rangesIntersect(range1, range2))
     throw "An attempt to merge non-intersecting ranges";
@@ -2041,7 +2041,7 @@ O$._RangeMap.prototype._mergeRanges = function(range1, range2) {
     start: Math.min(range1.start, range2.start),
     end: Math.max(range1.end, range2.end)
   };
-}
+};
 O$._RangeMap.prototype.addRange = function(start, end) {
   if (!start && !end) {
     this._infiniteRange = true;
@@ -2056,7 +2056,7 @@ O$._RangeMap.prototype.addRange = function(start, end) {
   for (var i = 0; i < this._disjointRanges.length;) {
     var range = this._disjointRanges[i];
     if (!this._rangesIntersect(range, addedRange)) {
-      i++
+      i++;
       continue;
     }
     if (!this._rangeContainsRange(addedRange, range)) {
@@ -2065,7 +2065,7 @@ O$._RangeMap.prototype.addRange = function(start, end) {
     this._disjointRanges.splice(i, 1);
   }
   this._disjointRanges.push(extendedRange);
-}
+};
 O$._RangeMap.prototype.isRangeFullyInMap = function(start, end) {
   if (this._infiniteRange)
     return true;
@@ -2076,4 +2076,4 @@ O$._RangeMap.prototype.isRangeFullyInMap = function(start, end) {
       return true;
   }
   return false;
-}
+};
