@@ -1407,7 +1407,7 @@ O$._initDayTable = function(componentId,
 
   function updateTimetableChangesField() {
     var changesAsString = JSON.stringify({addedEvents: dayTable._addedEvents, editedEvents: dayTable._editedEvents, removedEventIds: dayTable._removedEventIds},
-            ["addedEvents", "editedEvents", "removedEventIds", "id", "name", "description", "resourceId", "start", "end", "color"]);
+            ["addedEvents", "editedEvents", "removedEventIds", "id", "name", "description", "resourceId", "startStr", "endStr", "color"]);
     O$.addHiddenField(dayTable, dayTable.id + "::timetableChanges", changesAsString);
   }
 
@@ -1723,8 +1723,8 @@ O$._initEventEditorPage = function(dayTableId, thisComponentId, actionDeclared, 
                    [
                      [thisComponentId + "::action", "action"],
                      [modeParamName, mode],
-                     [eventStartParamName, event.start],
-                     [eventEndParamName, event.end],
+                     [eventStartParamName, event.startStr],
+                     [eventEndParamName, event.endStr],
                      [resourceIdParamName, event.resourceId]
                    ] :
                    [
@@ -1737,8 +1737,8 @@ O$._initEventEditorPage = function(dayTableId, thisComponentId, actionDeclared, 
     }
     var newPageUrl = url + "?" + modeParamName + "=" + mode + "&";
     if (mode == "create") {
-      newPageUrl += eventStartParamName + "=" + encodeURIComponent(event.start) + "&";
-      newPageUrl += eventEndParamName + "=" + encodeURIComponent(event.end) + "&";
+      newPageUrl += eventStartParamName + "=" + encodeURIComponent(event.startStr) + "&";
+      newPageUrl += eventEndParamName + "=" + encodeURIComponent(event.endStr) + "&";
       newPageUrl += resourceIdParamName + "=" + encodeURIComponent(event.resourceId);
     } else if (mode == "update") {
       newPageUrl += eventIdParamName + "=" + encodeURIComponent(event.id);
@@ -1774,10 +1774,10 @@ O$._initEvent = function(event) {
   event.setStart = function(asDate, asString) {
     if (asDate) {
       event.startDate = asDate;
-      event.start = O$.formatDateTime(asDate);
+      event.startStr = O$.formatDateTime(asDate);
     } else
       if (asString) {
-        event.start = asString;
+        event.startStr = asString;
         event.startDate = O$.parseDateTime(asString);
       } else
         throw "event.setStart: either asDate parameter, or asTime parameter should be specified";
@@ -1785,18 +1785,18 @@ O$._initEvent = function(event) {
   event.setEnd = function(asDate, asString) {
     if (asDate) {
       event.endDate = asDate;
-      event.end = O$.formatDateTime(asDate);
+      event.endStr = O$.formatDateTime(asDate);
     } else
       if (asString) {
-        event.end = asString;
+        event.endStr = asString;
         event.endDate = O$.parseDateTime(asString);
       } else
         throw "event.setEnd: either asDate parameter, or asTime parameter should be specified";
   };
   event._copyFrom = function(otherEvent) {
     this.id = otherEvent.id;
-    this.setStart(otherEvent.startDate, otherEvent.start);
-    this.setEnd(otherEvent.endDate, otherEvent.end);
+    this.setStart(otherEvent.startDate, otherEvent.startStr);
+    this.setEnd(otherEvent.endDate, otherEvent.endStr);
     this.name = otherEvent.name;
     this.description = otherEvent.description;
     this.resourceId = otherEvent.resourceId;
@@ -1815,10 +1815,10 @@ O$._initEvent = function(event) {
     if (scrollingOccured)
       dayTable._resetScrollingCache();*/
   };
-  if (event.startDate || event.start)
-    event.setStart(event.startDate, event.start);
-  if (event.endDate || event.end)
-    event.setEnd(event.endDate, event.end);
+  if (event.startDate || event.startStr)
+    event.setStart(event.startDate, event.startStr);
+  if (event.endDate || event.endStr)
+    event.setEnd(event.endDate, event.endStr);
 };
 
 O$._initEventPreview = function(eventPreviewId, dayTableId, showingDelay, popupClass,

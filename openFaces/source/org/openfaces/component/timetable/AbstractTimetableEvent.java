@@ -108,8 +108,8 @@ public abstract class AbstractTimetableEvent implements ConvertibleToJSON, Clone
         obj.put("id", id);
         if (resourceId != null)
             obj.put("resourceId", resourceId);
-        obj.put("start", DataUtil.formatDateTimeForJs(start, timeZone));
-        obj.put("end", DataUtil.formatDateTimeForJs(end, timeZone));
+        obj.put("startStr", DataUtil.formatDateTimeForJs(start, timeZone));
+        obj.put("endStr", DataUtil.formatDateTimeForJs(end, timeZone));
         if (customProperties != null) {
             JSONObject properties = new JSONObject();
             obj.put("customProperties", properties);
