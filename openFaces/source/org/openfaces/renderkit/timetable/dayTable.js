@@ -570,8 +570,8 @@ O$._initDayTable = function(componentId,
     event.backgroundElement = eventElement._backgroundElement;
 
     function canEventBeDropppedHere(event) {
-      var startTime = event.startDate.getTime();
-      var endTime = event.endDate.getTime();
+      var startTime = event.start.getTime();
+      var endTime = event.end.getTime();
       var resourceId = event.resourceId;
       for (var i = 0, count = dayTable._dayEvents.length; i < count; i++) {
         var currEvent = dayTable._dayEvents[i];
@@ -582,8 +582,8 @@ O$._initDayTable = function(componentId,
         if (currEvent.resourceId && resourceId && currEvent.resourceId != resourceId)
           continue;
         var timeSpansIntersect =
-                currEvent.endDate.getTime() > startTime &&
-                currEvent.startDate.getTime() < endTime;
+                currEvent.end.getTime() > startTime &&
+                currEvent.start.getTime() < endTime;
         if (timeSpansIntersect)
           return false;
       }
@@ -596,8 +596,8 @@ O$._initDayTable = function(componentId,
       eventElement._updateDropAllowed = function() {
         var dropAllowed = canEventBeDropppedHere(event);
         if (dropAllowed) {
-          eventElement._lastValidStart = event.startDate;
-          eventElement._lastValidEnd = event.endDate;
+          eventElement._lastValidStart = event.start;
+          eventElement._lastValidEnd = event.end;
           eventElement._lastValidResourceId = event.resourceId;
         }
         eventElement._setDropAllowed(dropAllowed);
@@ -618,8 +618,8 @@ O$._initDayTable = function(componentId,
         dayTable._resetScrollingCache();
         eventElement._bringToFront();
         O$.startDragAndDrop(e, this);
-        eventElement._initialStart = eventElement._lastValidStart = event.startDate;
-        eventElement._initialEnd = eventElement._lastValidEnd = event.endDate;
+        eventElement._initialStart = eventElement._lastValidStart = event.start;
+        eventElement._initialEnd = eventElement._lastValidEnd = event.end;
         eventElement._initialResourceId = eventElement._lastValidResourceId = event.resourceId;
         eventElement._originalCursor = O$.getElementStyleProperty(eventElement, "cursor");
         eventElement._dropAllowed = true;
@@ -648,9 +648,9 @@ O$._initDayTable = function(componentId,
             eventUpdated = true;
           }
         }
-        var timeIncrement = newStartTime.getTime() - event.startDate.getTime();
+        var timeIncrement = newStartTime.getTime() - event.start.getTime();
         if (timeIncrement != 0) {
-          var newEndTime = O$.dateByTimeMillis(event.endDate.getTime() + timeIncrement);
+          var newEndTime = O$.dateByTimeMillis(event.end.getTime() + timeIncrement);
           event.setStart(newStartTime);
           event.setEnd(newEndTime);
           eventUpdated = true;
@@ -690,8 +690,8 @@ O$._initDayTable = function(componentId,
             eventElement._setDropAllowed(true);
             eventElement.style.cursor = eventElement._originalCursor;
 
-            if (event.startDate.getTime() >= dayTable._endTime.getTime() ||
-                event.endDate.getTime() <= dayTable._startTime.getTime()) {
+            if (event.start.getTime() >= dayTable._endTime.getTime() ||
+                event.end.getTime() <= dayTable._startTime.getTime()) {
               dayTable._updateEventElements(true);
             } else {
               event.mainElement._updatePos(false, dragAndDropCancelingPeriod, {
@@ -752,16 +752,16 @@ O$._initDayTable = function(componentId,
           var nearestTimeslot = getNearestTimeslotForPosition(left, top + eventResizeHandleHeight / 2);
           var eventUpdated = false;
           if (this == topResizeHandle) {
-            if (event.endDate.getTime() - nearestTimeslot.time < shortestEventTimeWhileResizing)
-              nearestTimeslot.time = O$.dateByTimeMillis(event.endDate.getTime() - shortestEventTimeWhileResizing);
-            if (event.startDate.getTime() != nearestTimeslot.time) {
+            if (event.end.getTime() - nearestTimeslot.time < shortestEventTimeWhileResizing)
+              nearestTimeslot.time = O$.dateByTimeMillis(event.end.getTime() - shortestEventTimeWhileResizing);
+            if (event.start.getTime() != nearestTimeslot.time) {
               event.setStart(nearestTimeslot.time);
               eventUpdated = true;
             }
           } else {
-            if (nearestTimeslot.time - event.startDate.getTime() < shortestEventTimeWhileResizing)
-              nearestTimeslot.time = O$.dateByTimeMillis(event.startDate.getTime() + shortestEventTimeWhileResizing);
-            if (event.endDate.getTime() != nearestTimeslot.time) {
+            if (nearestTimeslot.time - event.start.getTime() < shortestEventTimeWhileResizing)
+              nearestTimeslot.time = O$.dateByTimeMillis(event.start.getTime() + shortestEventTimeWhileResizing);
+            if (event.end.getTime() != nearestTimeslot.time) {
               event.setEnd(nearestTimeslot.time);
               eventUpdated = true;
             }
@@ -856,8 +856,8 @@ O$._initDayTable = function(componentId,
       var firstDataRow = table.body._getRows()[0];
       var leftColBoundaries = O$.getElementBorderRectangle(firstDataRow._cells[resourceColIndex != undefined ? resourceColIndex : 1], true, dayTable._getLayoutCache());
       var rightColBoundaries = O$.getElementBorderRectangle(firstDataRow._cells[resourceColIndex != undefined ? resourceColIndex : columns.length - 1], true, dayTable._getLayoutCache());
-      var top = getVertOffsetByTime(event.startDate);
-      var bottom = getVertOffsetByTime(event.endDate);
+      var top = getVertOffsetByTime(event.start);
+      var bottom = getVertOffsetByTime(event.end);
       var x1 = leftColBoundaries.getMinX() + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
       var x2 = rightColBoundaries.getMaxX() - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
       if (O$.isExplorer() && O$.isStrictMode() && (resourceColIndex === undefined || resourceColIndex == columns.length - 1)) {
@@ -1258,8 +1258,8 @@ O$._initDayTable = function(componentId,
     var event = {
       name: "",
       resourceId: resourceId,
-      startDate: startTime,
-      endDate: endTime,
+      start: startTime,
+      end: endTime,
       color: null,
       description: ""
     };
@@ -1495,10 +1495,10 @@ O$._PreloadedTimetableEvents = function(events) {
     var endTime = end.getTime();
     for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
       var event = this._events[eventIndex];
-      if (event.endDate.getTime() < event.startDate.getTime())
+      if (event.end.getTime() < event.start.getTime())
         continue;
-      if (event.endDate.getTime() <= startTime ||
-          event.startDate.getTime() >= endTime)
+      if (event.end.getTime() <= startTime ||
+          event.start.getTime() >= endTime)
         continue;
       result.push(event);
     }
@@ -1604,13 +1604,13 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, createEventCaption, e
     var resource = dayTable._getResourceForEvent(event);
     if (dialog._resourceField)
       dialog._resourceField.setValue(resource ? resource.name : "");
-    this._startDateField.setSelectedDate(event.startDate);
+    this._startDateField.setSelectedDate(event.start);
     if (this._endDateField)
-      this._endDateField.setSelectedDate(event.endDate);
-    var duration = event.endDate.getTime() - event.startDate.getTime();
-    setFieldText(this._startTimeField, O$.formatTime(event.startDate));
+      this._endDateField.setSelectedDate(event.end);
+    var duration = event.end.getTime() - event.start.getTime();
+    setFieldText(this._startTimeField, O$.formatTime(event.start));
     if (this._endTimeField)
-      setFieldText(this._endTimeField, O$.formatTime(event.endDate));
+      setFieldText(this._endTimeField, O$.formatTime(event.end));
     this._color = event.color;
     setFieldText(this._descriptionArea, event.description);
     this._deleteButton.style.visibility = mode == "update" ? "visible" : "hidden";
@@ -1773,30 +1773,30 @@ O$._datesEqual = function(date1, date2) {
 O$._initEvent = function(event) {
   event.setStart = function(asDate, asString) {
     if (asDate) {
-      event.startDate = asDate;
+      event.start = asDate;
       event.startStr = O$.formatDateTime(asDate);
     } else
       if (asString) {
         event.startStr = asString;
-        event.startDate = O$.parseDateTime(asString);
+        event.start = O$.parseDateTime(asString);
       } else
         throw "event.setStart: either asDate parameter, or asTime parameter should be specified";
   };
   event.setEnd = function(asDate, asString) {
     if (asDate) {
-      event.endDate = asDate;
+      event.end = asDate;
       event.endStr = O$.formatDateTime(asDate);
     } else
       if (asString) {
         event.endStr = asString;
-        event.endDate = O$.parseDateTime(asString);
+        event.end = O$.parseDateTime(asString);
       } else
         throw "event.setEnd: either asDate parameter, or asTime parameter should be specified";
   };
   event._copyFrom = function(otherEvent) {
     this.id = otherEvent.id;
-    this.setStart(otherEvent.startDate, otherEvent.startStr);
-    this.setEnd(otherEvent.endDate, otherEvent.endStr);
+    this.setStart(otherEvent.start, otherEvent.startStr);
+    this.setEnd(otherEvent.end, otherEvent.endStr);
     this.name = otherEvent.name;
     this.description = otherEvent.description;
     this.resourceId = otherEvent.resourceId;
@@ -1815,10 +1815,10 @@ O$._initEvent = function(event) {
     if (scrollingOccured)
       dayTable._resetScrollingCache();*/
   };
-  if (event.startDate || event.startStr)
-    event.setStart(event.startDate, event.startStr);
-  if (event.endDate || event.endStr)
-    event.setEnd(event.endDate, event.endStr);
+  if (event.start || event.startStr)
+    event.setStart(event.start, event.startStr);
+  if (event.end || event.endStr)
+    event.setEnd(event.end, event.endStr);
 };
 
 O$._initEventPreview = function(eventPreviewId, dayTableId, showingDelay, popupClass,
