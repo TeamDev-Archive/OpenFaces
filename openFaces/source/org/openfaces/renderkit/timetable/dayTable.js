@@ -1410,9 +1410,25 @@ O$._initDayTable = function(componentId,
       dayTable.saveChanges();
   }
 
+  // RichFaces-OpenFaces-JSON compatibility workaround
+  // Since some of RichFaces components use JavaScript defining Array.prototype.toJSON method,
+  // JSON.stringify([1, 2]) call will produce '"[1,2]"' string instead of expected '["1","2"]'.
+  // Therefore perform manual array conversion here.
   function updateTimetableChangesField() {
-    var changesAsString = JSON.stringify({addedEvents: dayTable._addedEvents, editedEvents: dayTable._editedEvents, removedEventIds: dayTable._removedEventIds},
-            ["addedEvents", "editedEvents", "removedEventIds", "id", "name", "description", "resourceId", "startStr", "endStr", "color", "type"]);
+
+	var properties = ["id", "name", "description", "resourceId", "startStr", "endStr", "color", "type"];
+    function arrayToJSON(name, source) {
+      var result = new Array(source.length);
+      for (var i = 0; i < source.length; i++)
+        result[i] = JSON.stringify(source[i], properties);
+      return JSON.stringify(name) + ":[" + result.join(",") + "]";
+    }
+
+	var events = new Array(3);
+    events[0] = arrayToJSON("addedEvents", dayTable._addedEvents, properties);
+    events[1] = arrayToJSON("editedEvents", dayTable._editedEvents, properties);
+    events[2] = arrayToJSON("removedEventIds", dayTable._removedEventIds, properties);
+    var changesAsString = "{" + events.join(",") + "}";
     O$.addHiddenField(dayTable, dayTable.id + "::timetableChanges", changesAsString);
   }
 
