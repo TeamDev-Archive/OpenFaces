@@ -1220,12 +1220,12 @@ O$._initDayTable = function(componentId,
     dayTable._maxZIndex = eventZIndex + 10;
   };
 
-  dayTable.previous = function() {
+  dayTable.previousDay = function() {
     var prevDay = O$.incDay(dayTable._day, -1);
     dayTable.setDay(prevDay);
   };
 
-  dayTable.next = function() {
+  dayTable.nextDay = function() {
     var nextDay = O$.incDay(dayTable._day, 1);
     dayTable.setDay(nextDay);
   };
@@ -1240,12 +1240,12 @@ O$._initDayTable = function(componentId,
 
     prevButton.onclick = function(e) {
       O$.breakEvent(e);
-      dayTable.previous();
+      dayTable.previousDay();
     };
     var nextButton = O$.byIdOrName(dayTable.id + ":_next");
     nextButton.onclick = function(e) {
       O$.breakEvent(e);
-      dayTable.next();
+      dayTable.nextDay();
     };
     var todayButton = O$.byIdOrName(dayTable.id + ":_today");
     todayButton.onclick = function (e) {
@@ -1412,7 +1412,7 @@ O$._initDayTable = function(componentId,
 
   function updateTimetableChangesField() {
     var changesAsString = JSON.stringify({addedEvents: dayTable._addedEvents, editedEvents: dayTable._editedEvents, removedEventIds: dayTable._removedEventIds},
-            ["addedEvents", "editedEvents", "removedEventIds", "id", "name", "description", "resourceId", "startStr", "endStr", "color"]);
+            ["addedEvents", "editedEvents", "removedEventIds", "id", "name", "description", "resourceId", "startStr", "endStr", "color", "type"]);
     O$.addHiddenField(dayTable, dayTable.id + "::timetableChanges", changesAsString);
   }
 

@@ -6,13 +6,13 @@
       function previousDay() {
         O$.reloadComponents(['form:dayOfWeek', 'form:date', 'form:suffix', 'form:year'],
         {action : 'DayTableBean2.previousDay'});
-        O$("form:dayTable").previous();
+        O$("form:dayTable").previousDay();
       }
 
       function nextDay() {
         O$.reloadComponents(['form:dayOfWeek', 'form:date', 'form:suffix', 'form:year'],
         {action : 'DayTableBean2.nextDay'});
-        O$("form:dayTable").next();
+        O$("form:dayTable").nextDay();
       }
 
       function addBorder(element, red, green, blue) {

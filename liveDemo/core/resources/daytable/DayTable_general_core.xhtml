@@ -7,7 +7,7 @@
       var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       function previousDay() {
         var dayTable = O$("form:dayTable");
-        dayTable.previous();
+        dayTable.previousDay();
         var date = dayTable.getDay();
         updateDate(date);
       }
@@ -28,7 +28,7 @@
 
       function nextDay() {
         var dayTable = O$("form:dayTable");
-        dayTable.next();
+        dayTable.nextDay();
         var date = dayTable.getDay();
         updateDate(date);
       }
