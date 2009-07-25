@@ -233,7 +233,7 @@ O$.DateChooser = {
     } else {
       dc.validateInputAndUpdateCalendar();
       popup._prepareForRearrangementBeforeShowing();
-      O$._dropDown_initPopup(dc, calendar);
+      O$.DropDown._initPopup(dc, calendar);
       O$.correctElementZIndex(popup, dc);
       popup.show();
       dc._calendar.focus();

@@ -67,7 +67,7 @@ public class HintLabelRenderer extends RendererBase {
         String clientId = component.getClientId(context);
         writer.writeAttribute("id", clientId + "::innerscripts", null);
         ScriptBuilder sb = new ScriptBuilder();
-        sb.initScript(context, hintLabel, "O$._initHintLabel",
+        sb.initScript(context, hintLabel, "O$.HintLabel._init",
                 hintLabel.getHintTimeout(),
                 hintClass,
                 RenderingUtil.getRolloverClass(context, hintLabel));

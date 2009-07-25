@@ -205,7 +205,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         params.addAll(rendererInputStyles(facesContext, dropDown));
         params.add(promptText);
         params.add(promptTextStyleClass);
-        ScriptBuilder buf = new ScriptBuilder().initScript(facesContext, dropDown, "O$._initDropDownInput", params.toArray());
+        ScriptBuilder buf = new ScriptBuilder().initScript(facesContext, dropDown, "O$.DropDown._initInput", params.toArray());
 
         InitScript commonInitScript = new InitScript(buf, new String[]{
                 ResourceUtil.getUtilJsURL(facesContext),

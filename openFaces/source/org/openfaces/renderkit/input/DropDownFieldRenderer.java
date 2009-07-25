@@ -262,7 +262,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         DropDownPopup popup = dropDownField.getPopup();
 
         ScriptBuilder buf = new ScriptBuilder();
-        buf.initScript(context, dropDownField, "O$._initDropDownField",
+        buf.initScript(context, dropDownField, "O$.DropDownField._init",
                 dropDownField.getTimeout(),
                 dropDownField.getListAlignment(),
 
@@ -286,7 +286,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         if (!dropDown.isDisabled()) {  // todo: write the event parameters more economically
             String onValueChanged = dropDownField.getOnchange();
             if (onValueChanged != null) {
-                buf.append("O$._setFieldOnChange('");
+                buf.append("O$.DropDownField._setFieldOnChange('");
                 buf.append(clientId);
                 buf.append("', function(event){");
                 buf.append(onValueChanged);
@@ -294,7 +294,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
             }
             String onKeyPressed = dropDownField.getOnkeypress();
             if (onKeyPressed != null) {
-                buf.append("O$._setDropDownOnKeyPress('");
+                buf.append("O$.DropDownField._setOnKeyPress('");
                 buf.append(clientId);
                 buf.append("', function(event){");
                 buf.append(onKeyPressed);
@@ -302,7 +302,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
             }
             String onDropDown = dropDownField.getOndropdown();
             if (onDropDown != null) {
-                buf.append("O$._setDropDownOnDropDown('");
+                buf.append("O$.DropDownField._setOnDropDown('");
                 buf.append(clientId);
                 buf.append("', function(event){");
                 buf.append(onDropDown);
@@ -310,7 +310,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
             }
             String onCloseUp = dropDownField.getOncloseup();
             if (onCloseUp != null) {
-                buf.append("O$._setDropDownOnCloseUp('");
+                buf.append("O$.DropDownField._setOnCloseUp('");
                 buf.append(clientId);
                 buf.append("', function(event){");
                 buf.append(onCloseUp);
@@ -411,7 +411,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         }
 
         ScriptBuilder sb = new ScriptBuilder();
-        sb.functionCall("O$._acceptLoadedDropDownItems",
+        sb.functionCall("O$.DropDownField._acceptLoadedItems",
                 dropDownField,
                 new NewInstanceScript("Array", null, null, getItemValuesArray(itemValues))
         );
