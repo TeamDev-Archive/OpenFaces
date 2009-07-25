@@ -1323,17 +1323,44 @@ if (!window.O$) {
     return pos;
   };
 
+  O$.addInternalLoadEvent = function(func) {
+    if (O$._documentLoaded) {
+      func();
+      return;
+    }
+    if (O$._internalLoadEventCount == undefined)
+      O$._internalLoadEventCount = 0;
+    if (!O$._internalLoadHandlers)
+      O$._internalLoadHandlers = [];
+    O$._internalLoadHandlers.push(func);
 
-  O$.addLoadEvent = function(func, _isAjaxRequest) {
-    if (O$._documentLoaded || _isAjaxRequest) {
+  };
+
+
+  O$.addLoadEvent = function(func) {
+    if (O$._documentLoaded) {
       func();
     } else {
-      O$.addEventHandler(window, "load", function() {
-        O$._documentLoaded = true;
-        func();
-      });
+      if (!O$._loadHandlers)
+        O$._loadHandlers = [];
+      O$._loadHandlers.push(func);
     }
   };
+
+  O$.addEventHandler(window, "load", function() {
+    O$._documentLoaded = true;
+    var i, count;
+    if (O$._internalLoadHandlers)
+      for (i = 0, count = O$._internalLoadHandlers.length; i < count; i++) {
+        var internalLoadHandler = O$._internalLoadHandlers[i];
+        internalLoadHandler();
+      }
+    if (O$._loadHandlers)
+      for (i = 0, count = O$._loadHandlers.length; i < count; i++) {
+        var loadHandler = O$._loadHandlers[i];
+        loadHandler();
+      }
+  });
 
   O$.addUnloadEvent = function(func) {
     var invokeOnUnloadHandlersFunction = function() {

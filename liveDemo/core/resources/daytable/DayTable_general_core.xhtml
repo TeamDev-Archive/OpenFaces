@@ -53,9 +53,9 @@
                 majorTimeStyle="font-family: MS Shell Dlg,Arial,sans-serif; font-size: 14pt;"
                 timeSuffixStyle="font-size: 7pt; line-height: 1em;"
             >
-      <o:timetableEvent style="text-align:center;" descriptionStyle="color: #5f5f5f;" escapeDescription="false" escapeName="false"/>
+      <o:timetableEvent style="text-align: center;" descriptionStyle="color: #5f5f5f;" escapeDescription="false" escapeName="false"/>
       <o:eventArea horizontalAlignment="rightEdge" verticalAlignment="above">
-        <h:commandLink title="Postpone training for 1 hour" style="margin: 10px">
+        <h:commandLink id="doLater" title="Postpone training for 1 hour" style="margin: 10px">
           <h:outputText value="1&#160;hour&#160;later" escape="false"/>
           <o:reloadComponents componentIds=":form:dayTable" action="#{DayTableBean1.doLater}" disableDefault="true"/>
         </h:commandLink>

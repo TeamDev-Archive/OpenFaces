@@ -37,8 +37,7 @@ public abstract class AbstractSettingsRenderer extends RendererBase {
     }
 
     protected void renderInitScript(FacesContext context, String javaScript) throws IOException {
-        boolean isAjaxRequest = AjaxUtil.isAjaxRequest(context);
-        String initScript = "O$.addLoadEvent(function(){" + javaScript + "}," + isAjaxRequest + ");";
+        String initScript = "O$.addLoadEvent(function(){" + javaScript + "});";
 
         RenderingUtil.renderInitScript(context, initScript, new String[]{
                 ResourceUtil.getUtilJsURL(context),

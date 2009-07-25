@@ -534,7 +534,7 @@ O$.setAjaxMessageHTML = function(messageHTML) {
                 document._ajaxInProgressMessage.style.visibility = "";
               }
             }, 1000);
-  })
+  });
 }
 
 O$.showAjaxProgressMessage = function() {

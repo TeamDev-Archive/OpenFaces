@@ -37,7 +37,7 @@ O$._initDayTable = function(componentId,
       dayTable._initScheduled = true;
       var initArgs = arguments;
       // postpone initialization to avoid IE failure during page loading
-      O$.addLoadEvent(function() {
+      O$.addInternalLoadEvent(function() {
         O$._initDayTable.apply(null, initArgs);
       });
       return;
@@ -1301,7 +1301,7 @@ O$._initDayTable = function(componentId,
   O$.addEventHandler(window, "resize", function() {
     dayTable.updateLayout();
   });
-  O$.addLoadEvent(function() {
+  O$.addInternalLoadEvent(function() {
     dayTable.updateLayout(); // update positions after layout changes that might have had place during loading
 
     var scrollOffset = getVertOffsetByTime(scrollTime).y;
