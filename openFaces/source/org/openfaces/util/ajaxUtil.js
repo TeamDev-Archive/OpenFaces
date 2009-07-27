@@ -64,7 +64,7 @@ O$.extend(O$, {
  */
 O$.reloadComponents = function(componentIds, args) {
   O$._reloadComponent(componentIds, args);
-}
+};
 
 // ================================== IMPLEMENTATION
 
@@ -119,7 +119,7 @@ O$.setCommonAjaxEventHandler = function(eventName, func) {
     OpenFaces.Ajax.Page[eventName] = function(event) {
       if (oldEventHandlerFunction(event) !== false)
         func(event);
-    }
+    };
   }
 
   if (!document.__commonAjaxEventHandlerInitialized) {
@@ -174,7 +174,7 @@ O$.reloadPage = function(loc) {
 }
 
 O$._reloadComponent = function(componentIds, args) {
-  if (!args) args = {}
+  if (!args) args = {};
   var params = args.additionalParams ? args.additionalParams : [];
   var ids = new Array();
   if (args.action)
@@ -741,7 +741,7 @@ O$.AjaxObject = function(componentIds) {
 
 
     document._of_page_is_already_initialized = null;
-  }
+  };
   this._processUpdatesWhenReady = function() {
     try {
       var jsIncludes = this._jsIncludes;
@@ -769,7 +769,7 @@ O$.AjaxObject = function(componentIds) {
     this._styles = undefined;
     this._cssFiles = undefined;
     this._request = false;
-  }
+  };
 
   this._processUpdates = function() {
     var updatables = this._updatables;
@@ -937,7 +937,7 @@ O$.AjaxObject = function(componentIds) {
     O$.assert(component, "Couldn't find component by id: " + componentId);
     var portionData = portionDataStr ? eval("(" + portionDataStr + ")") : null;
     this._customProcessor(component, portionName, portionHTML, portionScripts, portionData);
-  }
+  };
 
 }
 

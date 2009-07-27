@@ -574,6 +574,10 @@
     <component-class>org.openfaces.component.util.ForEach</component-class>
   </component>
 
+  <component>
+    <component-type>org.openfaces.SelectBooleanCheckbox</component-type>
+    <component-class>org.openfaces.component.input.SelectBooleanCheckbox</component-class>
+  </component>
 
   <lifecycle>
     <phase-listener>org.openfaces.component.validation.RenderKitReplacerPhaseListener</phase-listener>
@@ -963,6 +967,12 @@
       <component-family>org.openfaces.ForEach</component-family>
       <renderer-type>org.openfaces.ForEachRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.util.ForEachRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>org.openfaces.SelectBooleanCheckbox</component-family>
+      <renderer-type>org.openfaces.SelectBooleanCheckboxRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.input.SelectBooleanCheckboxRenderer</renderer-class>
     </renderer>
 
   </render-kit>
