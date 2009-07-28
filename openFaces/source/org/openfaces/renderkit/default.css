@@ -395,6 +395,10 @@
 
   cursor: default;
   border: 1px solid gray;
+
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
 }
 
 .o_timetableEvent {

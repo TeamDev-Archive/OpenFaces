@@ -838,6 +838,11 @@ O$._initDayTable = function(componentId,
               ["color", "background-color", "border-color"]);
       eventElement._backgroundElement.style.backgroundColor = userSpecifiedStyles.backgroundColor
               ? userSpecifiedStyles.backgroundColor : eventElement._backgroundColor;
+      var elementStyles = O$.getElementStyleProperties(eventElement, ["border-radius", "-moz-border-radius-topleft", "-webkit-border-top-left-radius"]);
+      eventElement._backgroundElement.style.borderRadius = elementStyles.borderRadius;
+      eventElement._backgroundElement.style.MozBorderRadius = elementStyles.MozBorderRadiusTopleft;
+      eventElement._backgroundElement.style.WebkitBorderRadius = elementStyles.WebkitBorderTopLeftRadius;
+
       O$.setOpacityLevel(eventElement._backgroundElement, 1 - eventBackgroundTransparencyLevel);
       eventElement.style.color = userSpecifiedStyles.color ? userSpecifiedStyles.color : eventElement._color;
       eventElement.style.borderColor = userSpecifiedStyles.borderColor ? userSpecifiedStyles.borderColor : eventElement._color;
