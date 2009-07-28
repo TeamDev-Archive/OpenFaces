@@ -42,11 +42,11 @@
         <o:forEach items="#{TaskBean.tasks}" id="undoneTasks" var="task" statusVar="taskListStatus">
           <h:panelGrid id="taskListItem" onmouseover="this.className='rollover';"
                        onmouseout="this.className='';" columns="3" cellspacing="0" cellpadding="0">
-            <h:outputLink value="#" styleClass="styledCheckbox #{task.completed?'checked':''}"
-                          onclick="check(this); return false;">
-              <h:selectBooleanCheckbox value="#{task.completed}">
-              </h:selectBooleanCheckbox>
-            </h:outputLink>
+            <o:selectBooleanCheckbox value="#{task.completed}"
+                                     onclick="O$('form:updateTasks').run();"
+                                     styleClass="styledCheckbox"
+                                     selectedImageUrl="../images/ajax/checked.png"
+                                     unselectedImageUrl="../images/ajax/unchecked.png"/>
             <h:outputText styleClass="taskText" value="#{task.name}"/>
             <h:commandLink styleClass="delete" id="delete">
               <h:graphicImage value="../images/ajax/delete.png" alt="Delete Task">
@@ -70,7 +70,7 @@
                          styleClass="taskInput addTask"/>
           </h:panelGroup>
           <h:commandButton image="../images/ajax/plus.png" alt="Add Task" styleClass="left"
-                           style="margin: 3px 0 0 6px; display:none;"
+                           style="margin: 3px 0 0 6px; display: none;"
                            id="addTask">
             <o:reloadComponents action="#{TaskBean.addTask}"
                                 submittedComponentIds=":form:newTask"
@@ -90,11 +90,11 @@
         <o:forEach items="#{TaskBean.doneTasks}" var="task" id="doneTasks" statusVar="taskListStatus">
           <h:panelGrid onmouseover="this.className='rollover';"
                        onmouseout="this.className='';" columns="3" cellspacing="0" cellpadding="0">
-            <h:outputLink value="#" styleClass="left styledCheckbox #{task.completed?'checked':''}"
-                          onclick="check(this); return false;">
-              <h:selectBooleanCheckbox value="#{task.completed}">
-              </h:selectBooleanCheckbox>
-            </h:outputLink>
+            <o:selectBooleanCheckbox value="#{task.completed}"
+                                     onclick="O$('form:updateTasks').run();"
+                                     styleClass="left styledCheckbox"
+                                     selectedImageUrl="../images/ajax/checked.png"
+                                     unselectedImageUrl="../images/ajax/unchecked.png"/>
             <h:outputText styleClass="taskText" value="#{task.name}"/>
             <h:commandLink styleClass="delete" id="delete">
               <h:graphicImage value="../images/ajax/delete.png" alt="Delete Task">
@@ -108,6 +108,9 @@
           </h:panelGrid>
         </o:forEach>
       </h:panelGroup></div>
+
+    <o:reloadComponents id="updateTasks" standalone="true"
+                        componentIds="taskList, doneList, doneListCaption" immediate="true" requestDelay="500"/>
 
   </div>
 

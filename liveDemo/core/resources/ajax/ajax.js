@@ -10,63 +10,6 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-function removeClassName(element, className) {
-  if (element.className) {
-    var arrList = element.className.split(" ");
-    var classNameInLowerCase = className.toLowerCase();
-    for (var i = 0; i < arrList.length; i++)
-    {
-      if (arrList[i].toLowerCase() == classNameInLowerCase)
-      {
-        arrList.splice(i, 1);
-        i--;
-      }
-    }
-    element.className = arrList.join(" ");
-  }
-}
-
-
-function addClassName(element, className)
-{
-  if (element.className) {
-    var arrList = element.className.split(" ");
-    var classNameInLowerCase = className.toLowerCase();
-    for (var i = 0; i < arrList.length; i++) {
-      if (arrList[i].toLowerCase() == classNameInLowerCase) {
-        arrList.splice(i, 1);
-        i--;
-      }
-    }
-    arrList[arrList.length] = className;
-    element.className = arrList.join(" ");
-  } else {
-    element.className = className;
-  }
-}
-
-
-function check(element) {
-  var childnotes = element.childNodes;
-  for (var i = 0; i < childnotes.length; i++) {
-    if (childnotes[i].type == "checkbox") {
-      var checkbox = childnotes[i];
-      var checked = !checkbox.checked;
-      checkbox.checked = checked;
-      if (checked) {
-        addClassName(element, "checked", true);
-      } else {
-        removeClassName(element, "checked");
-      }
-      O$.reloadComponents([ "form:taskList", "form:doneList", "form:doneListCaption" ], {
-        requestDelay: 500,
-        immediate :true
-      });
-      break;
-    }
-  }
-}
-
 var clickAddTask = function() {
   O$("form:addTask").click();
 };

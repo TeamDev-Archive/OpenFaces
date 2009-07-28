@@ -16,19 +16,13 @@ h5 {
 }
 
 .styledCheckbox {
+  cursor: pointer;
   display: block;
+  margin-top: 5px;
+  margin-left: 5px;
   width: 22px;
   height: 30px;
-  margin-left: 5px;
-  background: url("../images/ajax/unchecked.png") no-repeat 0 5px;
-}
 
-.checked {
-  background: url("../images/ajax/checked.png") no-repeat 0 5px !important;
-}
-
-.styledCheckbox input {
-  display: none;
 }
 
 .rollover {
