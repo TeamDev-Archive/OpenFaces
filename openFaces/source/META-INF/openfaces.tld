@@ -25994,6 +25994,9 @@ and it is automatically triggered on any form submission. -->
 
   <!-- SelectBooleanCheckbox TAG DECLARATION -->
   <tag>
+    <description>The SelectBooleanCheckbox component is an extended version of the standard 
+      &lt;h:selectBooleanCheckbox&gt; component that adds such possibilities as tri-state support, customizing checkbox
+      images and state-dependent styles.</description>
     <name>selectBooleanCheckbox</name>
     <tag-class>org.openfaces.taglib.jsp.input.SelectBooleanCheckboxJspTag</tag-class>
     <body-content>JSP</body-content>
