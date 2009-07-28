@@ -28,7 +28,7 @@ O$.Spinner = {
     var decreaseButton = spinner._decreaseButton;
     var field = spinner._field;
 
-    spinner._buttonClass = O$._dropdown_getClassName(buttonClass);
+    spinner._buttonClass = O$.DropDown._getClassName(buttonClass);
 
     if (increaseButton && decreaseButton) {
       increaseButton.className = spinner._buttonClass;
