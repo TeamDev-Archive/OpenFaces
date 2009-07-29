@@ -19,7 +19,7 @@
 
   <%@ include file="../template/keywords.xhtml" %>
 
-  <title>Spinner &#8212; OpenFaces Demo</title>
+  <title>Select Boolean Checkbox &#8212; OpenFaces Demo</title>
   <link rel="stylesheet" href="../design/css/style.css" type="text/css" media="screen,projection"/>
   <link rel="stylesheet" href="../design/css/menu.css" type="text/css" media="screen,projection"/>
   <link rel="stylesheet" href="../design/css/print.css" type="text/css" media="print"/>
@@ -65,7 +65,7 @@
 
       <div id="Content">
         <!-- start content -->
-        <%@ include file="Spinner_core.xhtml" %>
+        <%@ include file="SelectBooleanCheckbox_core.xhtml" %>
         <!-- end content -->
       </div>
     </h:form>

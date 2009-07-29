@@ -452,6 +452,26 @@
     </demos>
   </menuItem>
   <menuItem>
+    <name>Select Boolean Checkbox</name>
+    <componentName>Select Boolean Checkbox</componentName>
+    <url>/selectbooleancheckbox/SelectBooleanCheckbox.jsf</url>
+    <shortPath>/selectbooleancheckbox/</shortPath>
+    <image>SelectBooleanCheckbox</image>
+    <selectedImage>/images/components/titles/SelectBooleanCheckbox.png</selectedImage>
+    <keyFeatures>
+      <feature>All features of the standard &lt;h:selectBooleanCheckbox&gt; component</feature>
+      <feature>Tri-state mode</feature>
+      <feature>Customizing appearance with images</feature>
+      <feature>Customizing state-dependent styles</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/selectbooleancheckbox/SelectBooleanCheckbox.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
     <name>Spinner</name>
     <componentName>Spinner</componentName>
     <url>/spinner/Spinner.jsf</url>

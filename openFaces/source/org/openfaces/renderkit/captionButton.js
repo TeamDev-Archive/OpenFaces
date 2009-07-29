@@ -45,7 +45,7 @@ O$._initCaptionButton = function(componentId,
     O$.setElementStyleMappings(btn, {
       rollover: mouseInside ? rolloverStyle : null,
       pressed: mousePressed ? pressedStyle : null});
-  }
+  };
 
   O$.setupHoverAndPressStateFunction(btn, function(mouseInside, mousePressed) {
     btn._updateImage(mouseInside, mousePressed);
@@ -57,7 +57,7 @@ O$._initCaptionButton = function(componentId,
     if (btn._prevOnmousedown)
       btn._prevOnmousedown(e);
     O$.breakEvent(e);
-  }
+  };
   if (supportActionAttribute)
     O$.addEventHandler(btn, "click", function() {
       O$.submitFormWithAdditionalParam(btn, componentId + "::clicked", "true");
@@ -104,7 +104,7 @@ O$._initToggleCaptionButton = function(controlId,
     O$.setElementStyleMappings(btn, {
       rollover: mouseInside ? rolloverStyle : null,
       pressed: mousePressed ? pressedStyle : null});
-  }
+  };
   btn._updateImage(false, false);
 
   var oldToggleBtnClickHandler = btn.onclick;
@@ -112,7 +112,7 @@ O$._initToggleCaptionButton = function(controlId,
     this.setToggleState(!this._toggled);
     if (oldToggleBtnClickHandler)
       oldToggleBtnClickHandler();
-  }
+  };
   btn.ondblclick = O$.repeatClickOnDblclick;
 
 
@@ -121,7 +121,7 @@ O$._initToggleCaptionButton = function(controlId,
       this._stateChangeListeners = [];
 
     this._stateChangeListeners.push(listenerObjectFunction);
-  }
+  };
 
   btn.setToggleState = function(expanded, skipListenerNotifications) {
     this._toggled = expanded;
@@ -130,7 +130,7 @@ O$._initToggleCaptionButton = function(controlId,
     this._updateImage();
     if (!skipListenerNotifications)
       O$._notifyToggleStateChange(this);
-  }
+  };
 }
 
 O$._initExpansionToggleButton = function(clientId) {

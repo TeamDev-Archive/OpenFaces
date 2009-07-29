@@ -14,28 +14,28 @@
 O$._initDataTableAPI = function(table) {
   table.selectAllRows = function() {
     this.__selectAllRows();
-  }
+  };
   table.clearSelection = function() {
     this.__clearSelection();
-  }
+  };
   table.isSelectionEmpty = function() {
     return this.__isSelectionEmpty();
-  }
+  };
   table.getSelectedRowIndex = function() {
     return this.__getSelectedRowIndex();
-  }
+  };
   table.setSelectedRowIndex = function(rowIndex) {
     this.__setSelectedRowIndex(rowIndex);
-  }
+  };
   table.getSelectedRowIndexes = function() {
     return this.__getSelectedRowIndexes();
-  }
+  };
   table.setSelectedRowIndexes = function(rowIndexes) {
     this.__setSelectedRowIndexes(rowIndexes);
-  }
+  };
   table.getRowCount = function() {
     return this.__getRowCount();
-  }
+  };
   table._of_dataTableComponentMarker = true;
 }
 
@@ -64,7 +64,7 @@ O$._initTable = function(tableId, structureAndStyleParams, useAjax, rolloverClas
     O$.setElementStyleMappings(this, {
       rollover: this._mouseIsOver ? this._rolloverClass : null
     });
-  }
+  };
 
   table._unloadHandlers = [];
   var i, count;
@@ -82,7 +82,7 @@ O$._initTable = function(tableId, structureAndStyleParams, useAjax, rolloverClas
       filter.style.visibility = "hidden";
     }
     return true;
-  }
+  };
   if (apiInitializationFunctionName) {
     var initFunction = eval(apiInitializationFunctionName);
     if (initFunction)
@@ -93,7 +93,7 @@ O$._initTable = function(tableId, structureAndStyleParams, useAjax, rolloverClas
     table._bodyRows = new Array();
     table._headerRows = new Array();
     table._footerRows = new Array();
-  }
+  };
 }
 
 
@@ -107,12 +107,12 @@ O$._initTableMouseOvers = function(table) {
   table._mouseOverHandler = function() {
     this._mouseIsOver = true;
     this._updateStyle();
-  }
+  };
 
   table._mouseOutHandler = function() {
     this._mouseIsOver = false;
     this._updateStyle();
-  }
+  };
 }
 
 O$._setCellProperty = function(cell, propertyName, propertyValue) {
@@ -135,16 +135,16 @@ O$._initApiFunctions = function(table) {
     if (!this._multipleSelectionAllowed)
       throw "selectAllRows: The table is not set up for multiple selection. Table's clientId is: " + this.id;
     this._selectAllItems();
-  }
+  };
   table.__clearSelection = function() {
     this._unselectAllItems();
-  }
+  };
   table.__isSelectionEmpty = function() {
     var selectedItems = this._getSelectedItems();
     if (!selectedItems || selectedItems.length == 0)
       return true;
     return selectedItems[0] == -1;
-  }
+  };
   table.__getSelectedRowIndex = function() {
     if (this._selectableItems != "rows")
       throw "getSelectedRowIndex: The specified table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
@@ -155,7 +155,7 @@ O$._initApiFunctions = function(table) {
     if (selectedItems.length == 0)
       return -1;
     return selectedItems[0];
-  }
+  };
   table.__setSelectedRowIndex = function(rowIndex) {
     if (this._selectableItems != "rows")
       throw "setSelectedRowIndex: The specified table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
@@ -165,7 +165,7 @@ O$._initApiFunctions = function(table) {
     if ((rowIndex != -1) && (rowIndex < 0 || rowIndex >= bodyRows.length))
       throw "setSelectedRowIndex parameter is out of range (" + rowIndex + "); table's clientId is: " + this.id + "; number of rows is: " + bodyRows.length;
     this._setSelectedItems(rowIndex != -1 ? [rowIndex] : []);
-  }
+  };
   table.__getSelectedRowIndexes = function() {
     if (this._selectableItems != "rows")
       throw "getSelectedRowIndexes: The specified table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
@@ -176,7 +176,7 @@ O$._initApiFunctions = function(table) {
     if (!selectedItems || (selectedItems.length == 1 && selectedItems[0] == -1))
       selectedItems = [];
     return selectedItems;
-  }
+  };
   table.__setSelectedRowIndexes = function(rowIndexes) {
     if (this._selectableItems != "rows")
       throw "setSelectedRowIndexes: The specified table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
@@ -192,13 +192,13 @@ O$._initApiFunctions = function(table) {
         throw "setSelectedRowIndexes parameter is out of range (" + rowIndex + "); table's clientId is: " + this.id + "; number of rows is: " + bodyRows.length;
     }
     this._setSelectedItems(rowIndexes);
-  }
+  };
   table.__getRowCount = function() {
     if (this._noDataRows)
       return 0;
     var bodyRows = this._getBodyRows();
     return bodyRows.length;
-  }
+  };
 }
 
 // -------------------------- KEYBOARD NAVIGATION SUPPORT
@@ -219,23 +219,23 @@ O$._initTableKeyboardNavigation = function(tableId, controlPaging, focusedClassN
   table._performPagingAction = function(actionStr) {
     O$.addHiddenField(this, this.id + "::paging", actionStr);
     O$._submitTableInternal(this);
-  }
+  };
 
   table._nextPage = function() {
     if (this._canPageForth) this._performPagingAction("selectNextPage");
-  }
+  };
   table._previousPage = function() {
     if (this._canPageBack) this._performPagingAction("selectPrevPage");
-  }
+  };
   table._firstPage = function() {
     if (this._canPageBack) this._performPagingAction("selectFirstPage");
-  }
+  };
   table._lastPage = function() {
     if (this._canSelectLastPage) this._performPagingAction("selectLastPage");
-  }
+  };
   table._selectPageNo = function(pageNo) {
     this._performPagingAction("selectPageNo:" + pageNo);
-  }
+  };
 
   var eventName = (O$.isSafariOnMac() || O$.isOpera() || O$.isMozillaFF()) ? "onkeypress" : "onkeydown";
   table._prevKeyHandler = table[eventName];
@@ -414,7 +414,7 @@ O$._initTableKeyboardNavigation = function(tableId, controlPaging, focusedClassN
       // allow focus traversal with Tab key while the table is focused
       return true;
     }
-  }
+  };
 
   table._prevOnfocus_kn = table.onfocus;
   table.onfocus = function(e) {
@@ -424,7 +424,7 @@ O$._initTableKeyboardNavigation = function(tableId, controlPaging, focusedClassN
       this._prevOnfocus_kn(e);
     var focusFld = O$(this.id + "::focused");
     focusFld.value = "true";
-  }
+  };
 
   table._prevOnblur_kn = table.onblur;
   table.onblur = function(e) {
@@ -434,12 +434,12 @@ O$._initTableKeyboardNavigation = function(tableId, controlPaging, focusedClassN
       this._prevOnblur_kn(e);
     var focusFld = O$(this.id + "::focused");
     focusFld.value = "false";
-  }
+  };
 
   var focusFld = O$(table.id + "::focused");
   if (focusFld.value == "true") {
     setTimeout(function() {
-      table.focus()
+      table.focus();
     }, 1);
   }
 
@@ -602,13 +602,13 @@ O$._initTableSelection = function(tableId, enabled, selectableItems,
     if (!this._selectedItems)
       this._selectedItems = [];
     return this._selectedItems;
-  }
+  };
   table._setSelectionFieldValue = function (value) {
     var selectionFieldId = this.id + "::selection";
     var selectionField = O$(selectionFieldId);
     O$.assert(selectionField, "Couldn't find selectionField by id: " + selectionFieldId);
     selectionField.value = value;
-  }
+  };
   table._setSelectedItems = function(items, forceUpdate) {
     var changesArray = new Array();
     var changesArrayIndexes = new Array();
@@ -680,7 +680,7 @@ O$._initTableSelection = function(tableId, enabled, selectableItems,
         }, 1);
       }
     }
-  }
+  };
 
   table._selectAllItems = function() {
     O$.assert(this._multipleSelectionAllowed, "table._selectAllItems: multiple selection is not allowed for table: " + this.id);
@@ -694,16 +694,16 @@ O$._initTableSelection = function(tableId, enabled, selectableItems,
         allItems[i] = i;
       this._setSelectedItems(allItems);
     }
-  }
+  };
 
   table._unselectAllItems = function() {
     this._setSelectedItems([]);
-  }
+  };
 
   table._isItemSelected = function(item) {
     var result = O$.findValueInArray(item, selectedItems) != -1;
     return result;
-  }
+  };
 
   table._toggleItemSelected = function(itemIndex) {
     if (itemIndex == -1) {
@@ -720,7 +720,7 @@ O$._initTableSelection = function(tableId, enabled, selectableItems,
     if (newArray.length == selectedIndexes.length)
       newArray.push(itemIndex);
     this._setSelectedItems(newArray);
-  }
+  };
 
   // run initialization code
   if (selectableItems == "rows") {
@@ -739,7 +739,7 @@ O$._initTableSelection = function(tableId, enabled, selectableItems,
     // checking _of_event is needed if this is a bubbled event from some child
     table._fireOnSelectionChange = function() {
       O$.sendEvent(table, "change");
-    }
+    };
     O$._addTableSelectionChangeHandler(table, [table, "_fireOnSelectionChange"]);
   }
   table._postEventOnSelectionChange = postEventOnSelectionChange;
@@ -840,7 +840,7 @@ O$._initSelectionCell = function(cell) {
     } finally {
       cell._handlingClick = false;
     }
-  }
+  };
   cell.ondblclick = O$.repeatClickOnDblclick;
 
   checkBox.onclick = function(evt) {
@@ -865,12 +865,12 @@ O$._initSelectionCell = function(cell) {
       checkBoxTable._toggleItemSelected(row._index);
       event.cancelBubble = true;
     }
-  }
+  };
   checkBox.ondblclick = function(evt) {
     if (O$.isExplorer())
       this.click(evt);
     event.cancelBubble = true;
-  }
+  };
 
   var cellRow = cell._row;
   if (!cellRow._selectionCheckBoxes)
@@ -1005,13 +1005,13 @@ O$._initCheckboxColHeader = function(headerId, colId) {
     col._updateSubmissionField();
     var evt = O$.getEvent(e);
     evt.cancelBubble = true;
-  }
+  };
   header.ondblclick = function(e) {
     if (O$.isExplorer())
       this.click();
     var evt = O$.getEvent(e);
     evt.cancelBubble = true;
-  }
+  };
 }
 
 O$._setAllCheckboxes = function(col, checked) {
@@ -1060,7 +1060,7 @@ O$._initSelectionHeader = function(headerId) {
       this.click();
     var evt = O$.getEvent(e);
     evt.cancelBubble = true;
-  }
+  };
 }
 
 // -------------------------- CHECKBOX COLUMN SUPPORT
@@ -1090,7 +1090,7 @@ O$._initCheckboxCol = function(tableId, colIndex, colId, checkedRowIndexes) {
       }
     }
     tableColumn._updateSubmissionField();
-  }
+  };
 
   tableColumn._updateSubmissionField = function() {
     var bodyCells = tableColumn.body ? tableColumn.body._cells : [];
@@ -1106,7 +1106,7 @@ O$._initCheckboxCol = function(tableId, colIndex, colId, checkedRowIndexes) {
       }
     }
     this._submissionField.value = selectedRows;
-  }
+  };
 
   columnObj._setCheckedIndexes(checkedRowIndexes);
 
@@ -1121,7 +1121,7 @@ O$._initCheckboxCol = function(tableId, colIndex, colId, checkedRowIndexes) {
       var header = this._headers[i];
       header._updateFromCheckboxes(tableCol);
     }
-  }
+  };
 
   columnObj._updateHeaderCheckBoxes();
 }
@@ -1148,7 +1148,7 @@ O$._initCheckboxCell = function(cell, colField) {
     this._processCheckboxChange();
     event.cancelBubble = true;
     return false;
-  }
+  };
   cell.ondblclick = O$.repeatClickOnDblclick;
 
   checkBox.onclick = function(evt) {
@@ -1158,18 +1158,18 @@ O$._initCheckboxCell = function(cell, colField) {
     checkBoxCell._processCheckboxChange();
     event._checkBoxClickProcessed = true;
     event.cancelBubble = true;
-  }
+  };
   checkBox.ondblclick = function(e) {
     if (O$.isExplorer())
       this.click(e);
     event.cancelBubble = true;
-  }
+  };
 
   cell._processCheckboxChange = function() {
     var columnObj = this._columnObj;
     columnObj._updateHeaderCheckBoxes();
     cell._column._updateSubmissionField();
-  }
+  };
 }
 
 // -------------------------- TABLE SORTING SUPPORT
@@ -1189,7 +1189,7 @@ O$._initTableSorting = function(tableId, columnSortableFlags, sortedColIndex, so
     var columnSortable = columnSortableFlags[i];
     if (!columnSortable)
       continue;
-    var column = table._columns[i]
+    var column = table._columns[i];
     var colHeader = column.header ? column.header._cell : null;
     if (!colHeader)
       continue;
@@ -1200,11 +1200,11 @@ O$._initTableSorting = function(tableId, columnSortableFlags, sortedColIndex, so
     var clickHandler = function() {
       if (this._prevOnclick)
         this._prevOnclick();
-      var focusField = O$(table.id + "::focused")
+      var focusField = O$(table.id + "::focused");
       if (focusField)
         focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
       O$._toggleColumnSorting(this._table, this._index);
-    }
+    };
 
     colHeader._prevOnclick = colHeader.onclick;
     colHeader.onclick = clickHandler;
@@ -1212,10 +1212,10 @@ O$._initTableSorting = function(tableId, columnSortableFlags, sortedColIndex, so
     table._sortableHeaderRolloverClass = sortableHeaderRolloverClass;
     colHeader._headerMouseOver = function() {
       O$.setElementStyleMappings(this, {_sortedHeaderRolloverClass: table._sortableHeaderRolloverClass});
-    }
+    };
     colHeader._headerMouseOut = function() {
       O$.setElementStyleMappings(this, {_sortedHeaderRolloverClass: null});
-    }
+    };
     O$.addEventHandlerSimple(colHeader, "mouseover", "_headerMouseOver", colHeader);
     O$.addEventHandlerSimple(colHeader, "mouseout", "_headerMouseOut", colHeader);
   }
@@ -1269,7 +1269,7 @@ O$._submitTableWithField = function(tableId, focusedField, additionalParams) {
       } catch(e) {
         // ignore failed focus attempts
       }
-  }
+  };
   O$._submitTableInternal(table, function() {
     setTimeout(focusFilterField, 1);
   }, additionalParams);
@@ -1377,7 +1377,7 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
     }
 
     function getColWidths() {
-      var colWidths = []
+      var colWidths = [];
       for (var i = 0, count = table._columns.length; i < count; i++) {
         var column = table._columns[i];
         var columnWidth = column.getWidth();
@@ -1499,7 +1499,7 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
         if (this.footer)
           setCellWidth(this.footer._cell, width);
         return width;
-      }
+      };
       column.getWidth = function() {
         if (this.header && this.header._cell)
           return this.header._cell.offsetWidth;
@@ -1514,7 +1514,7 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
         if (this.footer && this.footer._cell)
           return this.footer._cell.offsetWidth;
         return this._colTag.offsetWidth;
-      }
+      };
 
       if (!column.header || !column.header._cell)
         continue;
@@ -1535,7 +1535,7 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
       if (!column._resizable)
         continue;
       var resizeHandle = document.createElement("div");
-      resizeHandle.style.cursor = "e-resize"
+      resizeHandle.style.cursor = "e-resize";
       resizeHandle.style.position = "absolute";
       resizeHandle.style.border = "0px none transparent";//"1px solid black";
 
@@ -1543,7 +1543,7 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
         // IE needs an explicit background because otherwise this absolute div will "leak" some events to the underlying
         // component (when a mouse is directly over any of table's gridline)
         resizeHandle.style.background = "silver";
-        resizeHandle.style.filter = "alpha(opacity=0)"
+        resizeHandle.style.filter = "alpha(opacity=0)";
       }
 
       column.header._cell.appendChild(resizeHandle);
@@ -1556,13 +1556,13 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
           this.parentNode.removeChild(this);
         else
           this._updatePos();
-      }
+      };
       resizeHandle.onmousedown = function (e) {
         O$.startDragAndDrop(e, this);
-      }
+      };
       resizeHandle.onclick = function(e) {
         O$.breakEvent(e);
-      }
+      };
       resizeHandle.ondragstart = function() {
         table._columnResizingInProgress = true;
         var resizeDecorator = document.createElement("div");
@@ -1581,11 +1581,11 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
           this.style.left = cellPos.getMaxX() + "px";
           this.style.width = "0px";//"1px";
           this.style.height = tablePos.top + table.offsetHeight - cellPos.getMinY() + "px";
-        }
+        };
         resizeDecorator._updatePos();
         var headerCell = this._column.header._cell;
         this._dragStartCellPos = O$.getElementBorderRectangle(headerCell, true);
-      }
+      };
       resizeHandle.setLeft = function(left) {
         this.style.left = left + "px";
         var newColRightEdge = left + Math.floor(resizeHandleWidth / 2) + 1;
@@ -1625,10 +1625,10 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
         this._column._resizeDecorator._updatePos();
         O$.repaintAreaForOpera(table);
         table._fixFF3ColResizingIssue();
-      }
+      };
       resizeHandle.setTop = function(top) {
         this.style.top = top + "px";
-      }
+      };
       resizeHandle.ondragend = function() {
         table._columnResizingInProgress = false;
         this._column._resizeDecorator.parentNode.removeChild(this._column._resizeDecorator);
@@ -1649,7 +1649,7 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
           if (!table._focused)
             table.focus();
         }
-      }
+      };
       resizeHandle._updatePos = function() {
         var parentColumn = null;
         for (var col = this._column; col._parentColumn; col = col._parentColumn) {
@@ -1669,7 +1669,7 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
         this.style.left = bottomCellPos.getMaxX() - Math.floor(resizeHandleWidth / 2) - 1 + "px";
         this.style.width = resizeHandleWidth + "px";
         this.style.height = bottomCellPos.getMaxY() - minY + "px";
-      }
+      };
 
       column._resizeHandle._updatePos();
     }
@@ -1690,7 +1690,7 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
         if (column._resizeHandle)
           column._resizeHandle._updatePos();
       }
-    }
+    };
 
     O$.addEventHandler(window, "resize", table._updateResizeHandlePositions);
     O$.addEventHandler(table, "mouseover", function() {
@@ -1700,7 +1700,7 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
 
     table._unloadHandlers.push(function() {
       O$.removeEventHandler(window, "resize", table._updateResizeHandlePositions);
-    })
+    });
 
     table._fixFF3ColResizingIssue = function() { // See JSFC-3720
       if (! (O$.isMozillaFF3() && O$.isQuirksMode()))
@@ -1710,7 +1710,7 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
         table.style.width = "0";
         table.styleWidth = prevWidth;
       }
-    }
+    };
 
 
   });

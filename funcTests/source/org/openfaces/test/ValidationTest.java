@@ -55,7 +55,6 @@ public class ValidationTest extends OpenFacesTestCase {
 
     @Test
     public void testOFInputComponents() {
-        Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/validation/openFacesInputComponents.jsf");
         String formName;
         //Client-side validation

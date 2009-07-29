@@ -19,19 +19,19 @@ O$._initTreeTableAPI = function(table) {
       return 0;
     var result = selectedItems.length;
     return result;
-  }
+  };
   table.__setSelectedNodeIndexes = function (nodeIndexes) {
     this.__setSelectedRowIndexes(nodeIndexes);
-  }
+  };
   table.__setSelectedNodeIndex = function (nodeIndex) {
     this.__setSelectedRowIndex(nodeIndex);
-  }
+  };
   table.isSelectionEmpty = function() {
     return this.__isSelectionEmpty();
-  }
+  };
   table.getSelectedNodeCount = function() {
     return this.__getSelectedNodeCount();
-  }
+  };
   table._of_treeTableComponentMarker = true;
 }
 
@@ -91,7 +91,7 @@ O$._initTreeTableFolding = function(tableId, toggleClassName, clientFoldingParam
       }
     }
     field.value = expandedRowIndexes;
-  }
+  };
 
   var rows = table._getBodyRows();
   for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
@@ -124,7 +124,7 @@ O$._initTreeTableFolding = function(tableId, toggleClassName, clientFoldingParam
     }
 
     return true;
-  }
+  };
 }
 
 O$._treeTable_processRowVisibility = function(rows, rowIndexToChildCount, rowIndex, rowCount, currentLevelVisible) {
@@ -196,10 +196,10 @@ O$._initTreeTableRow = function(row) {
     } else {
       rowTable._updateRowVisibility();
     }
-  }
+  };
   row._isExpanded = function() {
     return this._toggled;
-  }
+  };
   var expandedToggles = O$.findChildNodesByClass(row, "o_toggle_e");
   var collapsedToggles = O$.findChildNodesByClass(row, "o_toggle_c");
   var expanded = expandedToggles && expandedToggles.length > 0;
@@ -231,11 +231,11 @@ O$._initTreeTableRow = function(row) {
       }
       evt.cancelBubble = true;
       return false;
-    }
+    };
     toggle.ondblclick = function(e) {
       O$.repeatClickOnDblclick.apply(this, [e]);
       O$.cancelBubble(e);
-    }
+    };
   }
 }
 
