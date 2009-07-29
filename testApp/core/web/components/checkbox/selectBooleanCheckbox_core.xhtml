@@ -6,6 +6,12 @@
      xmlns:t="http://myfaces.apache.org/tomahawk"
         >
   <a href="../../main.jsf">Back to the main page</a>
-
+  <br/>
+  <o:selectBooleanCheckbox id="normalCheckbox"/>
+  <h:outputLabel for="normalCheckbox" value="Normal checkbox"/>
+  <br/>
+  <o:selectBooleanCheckbox id="triStateCheckbox" triStateAllowed="true"/>
+  <h:outputLabel for="triStateCheckbox" value="Tri-state checkbox"/>
+  <br/>
   <o:selectBooleanCheckbox/>
 </div>
