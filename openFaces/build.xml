@@ -51,6 +51,9 @@
           <include name="jfreechart-1.0.12.jar"/>
           <include name="jcommon-1.0.15.jar"/>
           <include name="ss_css2-0.9.4.jar"/>
+          <include name="hibernate-commons-annotations.jar"/>
+          <include name="hibernate-validator.jar"/>
+          <include name="jboss-el.jar"/>
         </fileset>
         <fileset dir="${richfaces.lib.dir}">
           <include name="richfaces-api-3.3.1.GA.jar"/>
