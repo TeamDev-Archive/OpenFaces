@@ -1,0 +1,34 @@
+.Content{
+    position:absolute;
+    left:251px;
+    top:66px;
+    bottom:0;
+    right:0;
+    z-index:100;
+    overflow:hidden;
+    overflow-y:auto;
+}
+
+.TableHeader{
+    background: url('../images/treetable/header1.gif') repeat-x;
+    height: 25px;
+    text-align: left;
+    color: #515151;
+}
+
+.SortedColumn{
+    background: #f2f5f6;
+}
+
+.SourceViewModalLayer{
+    filter: alpha(opacity = 75);
+    -moz-opacity: .75;
+    opacity: .75;
+    background: #f8f8ff;
+}
+
+.SourceView{
+    font-size: 12px;
+    overflow-y:scroll;
+    height:500px;
+}

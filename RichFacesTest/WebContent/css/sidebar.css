@@ -1,0 +1,115 @@
+.Sidebar{
+	background:#808080;
+	border-top:solid 1px #a5a5a5;
+	border-left:solid 1px #a3a3a3;
+	border-right:solid 1px #4f4f4f;
+	border-bottom:solid 1px #4f4f4f;
+	min-width:250px;
+	width:250px;
+	position:absolute;
+	overflow:hidden;
+	overflow-y:auto;
+	top:66px;
+	bottom:0;
+	left:0;
+}
+
+.Sidebar .Sidebar-content{padding: 20px 20px 10px 5px;}
+
+.Sidebar .SidebarFooter{
+	background:#808080;
+	position:absolute;
+	bottom:0;
+	left:0;
+	right:0;
+	padding:10px;
+	font-size:9pt;
+	text-shadow:#aaa 0 1px 0;
+}
+
+.Sidebar .SidebarFooter .ButtonPageSource{
+	border:solid 1px #886600;
+	display:block;
+	text-decoration:none;
+}
+.Sidebar .SidebarFooter .ButtonPageSource span{
+	background:#fed45a url(../images/backgrounds/button-source.png) repeat-x 0 0;
+	border:solid 1px #fff0c5;
+	color:#714500;
+	display:block;
+	font-family:"Lucida Console", Monaco, monospace;
+	font-size:12px;
+	padding:2px;
+	text-align:center;
+	text-shadow:#fff 0 1px 0;
+}
+.Sidebar .SidebarFooter .ButtonPageSource:hover span{
+	background-color:#fee17d;
+	background-position:0 -25px;
+}
+.Sidebar .SidebarFooter .ButtonPageSource:active{margin-bottom:-1px; margin-top:1px;}
+.Sidebar .SidebarFooter .ButtonPageSource:active span{
+	background-color:#e5c76b;
+	background-position:0 -50px;
+}
+
+
+.Sidebar table{border-collapse:collapse; width:100%;}
+
+.Sidebar table.tree-level-top{}
+.Sidebar table.tree-level-top tr td{
+	line-height:30px;
+	padding:5px 0;
+	text-align:left;
+	vertical-align:top;
+}
+.Sidebar table.tree-level-top tr td a{
+	display:block;
+	font-size:14pt;
+	color:white;
+	text-shadow:#446 0 -1px 1px;
+	text-decoration:none;
+	hight:32px;
+	outline:none;
+	padding-bottom:3px;
+}
+
+.Sidebar table.tree-level-top tr.selected td a{
+	background:#6d8ca4 url(../images/backgrounds/sidebar-selected.png) repeat-x 0 center;
+	border-top:solid 1px #a4b7c5;
+	border-right:solid 1px #425665;
+	border-bottom:solid 1px #425665;
+	border-left:solid 1px #93a9ba;
+}
+
+
+.Sidebar table tr td.rich-tree-node-handleicon{width:16px;}
+.Sidebar table tr td.rich-tree-node-handleicon a{
+	background:none !important; border:none !important;
+}
+.Sidebar table tr td.rich-tree-node-handleicon img{margin-top:7px;}
+
+.Sidebar table tr td.rich-tree-node-icon{width:42px;}
+.Sidebar table tr td.rich-tree-node-icon a{border-right:none !important;}
+.Sidebar table tr td.rich-tree-node-icon img{margin-top:-2px; margin-left:-1px;}
+
+.Sidebar table tr td.rich-tree-node-text a{border-left:none !important;}
+
+
+.Sidebar table.tree-inserted{}
+.Sidebar table.tree-inserted tr td{
+	line-height:12px;
+	padding:0 0 7px 0;
+}
+
+.Sidebar table.tree-inserted tr td a{
+	display:block;
+	font-size:10pt;
+	color:white;
+	text-shadow:#446 0 -1px 1px;
+	text-decoration:none;
+	hight:16px;
+	outline:none;
+	padding-bottom:3px;
+}
+.Sidebar table.tree-inserted tr td.rich-tree-node-icon{width:20px;}

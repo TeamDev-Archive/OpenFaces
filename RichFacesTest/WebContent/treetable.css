@@ -1,0 +1,270 @@
+.siteMapText, .siteMapLink, .siteMapLink:hover {
+  font-family: verdana, Helvetica, sans-serif;
+  font-size: 11px;
+  margin-left: 4px;
+}
+
+.siteMapText {
+  color: rgb(100, 135, 140);
+  cursor: default;
+  text-decoration: none ! important;
+}
+
+.siteMapLink {
+  color: rgb(17, 86, 185);
+  text-decoration: none ! important;
+  border-bottom: none ! important;
+}
+
+.siteMapLink:hover {
+  color: rgb(17, 86, 185);
+  text-decoration: underline ! important;
+  border-bottom: none ! important;
+}
+
+.HotKeys {
+  text-align: center;
+  width: 450px;
+  color: #4d4d4d;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 11px;
+  height: 70px;
+  background: transparent url(../images/treetable/HK_bg.gif) repeat-x;
+  display: block;
+  margin-top: 25px;
+  left: 50%;
+  margin-left: -225px;
+  position: absolute;
+}
+
+#HotKeys table {
+  border-collapse: collapse;
+  width: 420px;
+  height: 60px;
+}
+
+#HotKeys table td {
+  text-align: center;
+  font-size: 12px;
+}
+
+.HK_box_left {
+  height: 70px;
+  background: transparent url(../images/treetable/HK_bg_left.gif) no-repeat left;
+  display: block;
+}
+
+.HK_box_right {
+  height: 70px;
+  background: transparent url(../images/treetable/HK_bg_right.gif) no-repeat right;
+  display: block;
+}
+
+.HK_box_content {
+  text-align: center;
+  padding: 4px 15px 0 15px;
+  display: block;
+}
+
+a.HK_holder,
+  a.HK_holder_inactive {
+  display: block;
+  height: 60px;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+a.HK_holder {
+  color: #4d4d4d;
+  background: transparent;
+  cursor: pointer;
+  *cursor: hand;
+}
+
+a.HK_holder:hover {
+  color: #4d4d4d;
+  background: transparent url(../images/treetable/HK_hovered_bg.gif) repeat-x;
+}
+
+a.HK_holder_inactive {
+  color: #c8c8c8;
+  cursor: default;
+}
+
+.HK_holder_right {
+  position: relative;
+}
+
+.HK_holder_left,
+  .HK_holder_right {
+  height: 60px;
+  background: transparent;
+}
+
+a.HK_holder:hover .HK_holder_left {
+  background: transparent url(../images/treetable/HK_hovered_bg_left.gif) no-repeat left;
+}
+
+a.HK_holder:hover .HK_holder_right {
+  background: transparent url(../images/treetable/HK_hovered_bg_right.gif) no-repeat right;
+}
+
+.HK_holder_text {
+  padding: 40px 5px 0;
+  text-align: center;
+}
+
+.HK_icon_del_req {
+  width: 34px;
+  height: 31px;
+  position: absolute;
+  left: 50%;
+  margin: 5px 0 0 -17px;
+  background: transparent url(../images/treetable/key_Del.gif) no-repeat;
+  display: block;
+}
+
+.HK_icon_edit_req {
+  width: 34px;
+  height: 31px;
+  position: absolute;
+  left: 50%;
+  margin: 5px 0 0 -17px;
+  background: transparent url(../images/treetable/key_E.gif) no-repeat;
+  display: block;
+}
+
+.HK_icon_add_sub_req {
+  width: 34px;
+  height: 31px;
+  position: absolute;
+  left: 50%;
+  margin: 5px 0 0 -17px;
+  background: transparent url(../images/treetable/key_S.gif) no-repeat;
+  display: block;
+}
+
+.HK_icon_add_req {
+  width: 34px;
+  height: 31px;
+  position: absolute;
+  left: 50%;
+  margin: 5px 0 0 -17px;
+  background: transparent url(../images/treetable/key_A.gif) no-repeat;
+  display: block;
+}
+
+.HK_icon_save_changes {
+  width: 100px;
+  height: 31px;
+  position: absolute;
+  left: 50%;
+  margin: 5px 0 0 -50px;
+  background: transparent url(../images/treetable/key_Ctrl+Enter.gif) no-repeat;
+  display: block;
+}
+
+.HK_icon_edit_req_inactive {
+  width: 34px;
+  height: 31px;
+  position: absolute;
+  left: 50%;
+  margin: 5px 0 0 -17px;
+  background: transparent url(../images/treetable/key_E_inactive.gif) no-repeat;
+  display: block;
+}
+
+.HK_icon_del_req_inactive {
+  width: 34px;
+  height: 31px;
+  position: absolute;
+  left: 50%;
+  margin: 5px 0 0 -17px;
+  background: transparent url(../images/treetable/key_Del_inactive.gif) no-repeat;
+  display: block;
+}
+
+.HK_icon_add_sub_req_inactive {
+  width: 34px;
+  height: 31px;
+  position: absolute;
+  left: 50%;
+  margin: 5px 0 0 -17px;
+  background: transparent url(../images/treetable/key_S_inactive.gif) no-repeat;
+  display: block;
+}
+
+.HK_description {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 9px;
+  color: #9b9b9b;
+  margin: 5px;
+  display: block;
+  position: absolute;
+  top: 95px;
+  left: 50%;
+  margin-left: -250px;
+  white-space: nowrap;
+}
+
+.customize_columns {
+  width: 100%;
+  height: 40px;
+  margin-top: -15px;
+  vertical-align: middle;
+}
+
+.select_columns_popup {
+  background: transparent;
+  z-index: 200;
+  border: 3px solid #a8c9e0;
+}
+
+.select_columns_ok {
+  width: 75px;
+  padding: 3px;
+  margin-bottom: 10px;
+}
+
+.select_columns_cancel {
+  margin-left: 10px;
+  width: 75px;
+  padding: 3px;
+  margin-bottom: 10px;
+}
+
+.select_columns_button_area {
+  background: url(../images/treetable/command_area.gif) repeat-x white;
+  text-align: right;
+  padding-right: 15px;
+  padding-top: 10px;
+  height: 34px;
+  display: block;
+}
+
+.select_columns_middle_area {
+  background-color: white;
+  padding: 15px 15px 15px 15px;
+  display: block;
+  text-align: center;
+}
+
+.select_columns_header {
+  background: url(../images/treetable/header_tls.gif) repeat-x;
+  height: 20px;
+  font-weight: bold;
+  padding-left: 15px;
+  padding-top: 4px;
+  display: block;
+}
+
+.category_name {
+  border-bottom: 1px solid #93a0aa !important;
+  padding-top: 7px;
+  color: #758795;
+  font-weight: bold;
+  font-size: 14px;
+  font-family: Tahoma;
+}
+
+.filterInput input {width: 98% !important;}
