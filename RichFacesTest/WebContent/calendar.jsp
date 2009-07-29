@@ -21,21 +21,34 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon"/>
     <link rel="icon" href="favicon.ico" type="image/vnd.microsoft.icon"/>
     <link rel="stylesheet" href="treetable.css" type="text/css" media="screen,projection"/>
-    <link rel="stylesheet" href="css/mail.css" type="text/css" media="screen,projection"/>
+    <link rel="stylesheet" href="css/calendar.css" type="text/css" media="screen,projection"/>
     <script type="text/javascript">
-        function updateLayout() {
-            var dayTable = O$("form:dayTable");
-            if (dayTable != null) {
-                if (dayTable.updateLayout) {
-                    dayTable.updateLayout();
-                } else {
-                    setTimeout(updateLayout, 1500);
-                }
+        function initCalendar() {
+            var calendar = O$("form:calendar");
+            var rows = calendar.tBodies[0].rows;
+            for (var r = 0; r != rows.length; r++) {
+                var row = rows[r];
+                var cells = row.cells;
+                for (var c = 0; c != cells.length; c++)
+                    if (cells[c].className.indexOf("rich-calendar-select") != -1) {
+                    	updateCurrentWeek(row);
+                    	return;
+                    }
             }
+        }
+        function updateCurrentWeek(tr) {
+            var tbody = tr.parentNode;
+            if (tbody._of_calendar_currentweek)
+            	tbody._of_calendar_currentweek.className = null;
+        	tr.className = "calendar-currentweek";
+        	tbody._of_calendar_currentweek = tr;
+        }
+        function updateCalendarStyles(td) {
+            updateCurrentWeek(td.parentNode);
         }
     </script>
 </head>
-<body>
+<body onload="initCalendar()">
 <f:view>
     <h:form id="form">
 
@@ -62,12 +75,14 @@
 
         <div id="Sidebar" class="Sidebar">
             <div class="Sidebar-content">
-                <rich:calendar id="calendar" popup="false" showApplyButton="false" cellWidth="24px" cellHeight="22px"
-                               style="width:200px"
-                               value="#{DayTableBean.calendarDate}" dataModel="#{DayTableBean}">
-                    <a4j:support event="onchanged" reRender="dayTable">
+                <rich:calendar id="calendar" popup="false" showApplyButton="false" cellWidth="30px" cellHeight="19px"
+                               styleClass="calendar-current" showWeeksBar="false" showFooter="false"
+                               value="#{DayTableBean.calendarDate}" dataModel="#{DayTableBean}"
+                               mode="ajax" ondateselect="updateCalendarStyles(this);">
+                    <a4j:support event="onchanged" reRender="dayTableToolBar,dayTable">
                         <f:param name="dateChangeEventSource" value="calendar"/>
                     </a4j:support>
+                    <h:outputText value="{day}" styleClass="inner"/>
                 </rich:calendar>
             </div>
 
@@ -83,6 +98,27 @@
         </div>
 
         <div id="Content" class="Content">
+        	<rich:toolBar itemSeparator="none" styleClass="day-table-toolbar">
+        		<a4j:commandLink reRender="dayTable,calendar,dayTableToolBar" oncomplete="initCalendar()"
+        				actionListener="#{DayTableBean.prevDayEventActionListener}">
+        			<h:outputText value="&lt;" escape="false"/>
+        		</a4j:commandLink>
+       			<h:graphicImage url="images/calendar/daytable-tool-separator.png"/>
+       			<h:panelGroup id="dayTableToolBar" styleClass="date">
+        			<h:outputText value="#{DayTableBean.dayOfWeek}" styleClass="day-of-week"/>
+        			<h:panelGroup styleClass="day-of-month">
+        				<h:outputText value="#{DayTableBean.dayOfMonth}"/>
+        				<h:outputText value=" "/>
+	        			<h:outputText value="#{DayTableBean.month}"/>
+        			</h:panelGroup>
+        		</h:panelGroup>
+       			<h:graphicImage url="images/calendar/daytable-tool-separator.png"/>
+        		<a4j:commandLink reRender="dayTable,calendar,dayTableToolBar" oncomplete="initCalendar()"
+        				actionListener="#{DayTableBean.nextDayEventActionListener}">
+        			<h:outputText value="&gt;" escape="false"/>
+        		</a4j:commandLink>
+        	</rich:toolBar>
+
             <o:dayTable id="dayTable"
                         events="#{DayTableBean.events}"
                         day="#{DayTableBean.dayTableDate}"
@@ -92,8 +128,8 @@
                         timeSuffixStyle="font-size: 7pt; line-height: 1em;">
                 <o:timetableEvent style="text-align:center;" descriptionStyle="color: #5f5f5f;"
                                   escapeDescription="false" escapeName="false"/>
-                <o:eventArea horizontalAlignment="rightEdge" verticalAlignment="above">
-                    <h:commandLink title="Postpone training for 1 hour" style="margin: 10px">
+                <o:eventArea id="eventArea" horizontalAlignment="rightEdge" verticalAlignment="above">
+                    <h:commandLink id="postponeOneHour" title="Postpone training for 1 hour" style="margin: 10px">
                         <h:outputText value="1&#160;hour&#160;later" escape="false"/>
                         <o:reloadComponents componentIds=":form:dayTable" action="#{DayTableBean.doLater}"
                                             disableDefault="true"/>
@@ -105,6 +141,7 @@
                                    imageUrl="images/daytable/customAction1.gif"
                                    hint="Postpone for 1 day"/>
                 </o:eventActionBar>
+                <o:reloadComponents componentIds=":form:calendar" event="onchange" disableDefault="false"/>
             </o:dayTable>
         </div>
 

@@ -14,14 +14,19 @@ import java.io.*;
 import java.util.*;
 import java.util.List;
 import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.component.UIComponent;
+import javax.faces.event.ActionEvent;
 
 public class DayTableBean implements CalendarDataModel, Serializable {
+
+	private static final long MS_IN_ONE_DAY = 1000 * 60 * 60 * 24;
+
     private static int eventIdCounter = 0;
 
     List<AbstractTimetableEvent> events = new ArrayList<AbstractTimetableEvent>();
@@ -146,7 +151,15 @@ public class DayTableBean implements CalendarDataModel, Serializable {
         }
     }
 
-    public void doLater() {
+    public void nextDayEventActionListener(ActionEvent event) {
+    	date = new Date(date.getTime() + MS_IN_ONE_DAY);
+    }
+
+    public void prevDayEventActionListener(ActionEvent event) {
+    	date = new Date(date.getTime() - MS_IN_ONE_DAY);
+    }
+    
+	public void doLater() {
         TimetableEvent modifiedEvent = getEvent();
         if (modifiedEvent != null) {
             AbstractTimetableEvent event = eventById(events, modifiedEvent.getId());
@@ -170,14 +183,6 @@ public class DayTableBean implements CalendarDataModel, Serializable {
     }
 
     private Date date = new Date();
-
-    public void previousDay() {
-        date = modifyDate(date, Calendar.DAY_OF_YEAR, -1);
-    }
-
-    public void nextDay() {
-        date = modifyDate(date, Calendar.DAY_OF_YEAR, 1);
-    }
 
     private static String getDateChangeEventSource() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -203,7 +208,25 @@ public class DayTableBean implements CalendarDataModel, Serializable {
         if ("dayTable".equals(getDateChangeEventSource()))
             this.date = date;
     }
+    
+    public String getDayOfWeek() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+    	return new DateFormatSymbols().getWeekdays()[cal.get(Calendar.DAY_OF_WEEK)];
+    }
 
+    public int getDayOfMonth() {
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(date);
+    	return cal.get(Calendar.DAY_OF_MONTH);
+    }
+    
+    public String getMonth() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+    	return new DateFormatSymbols().getMonths()[cal.get(Calendar.MONTH)];
+    }
+    
     protected Date modifyDate(Date date, int field, int amount) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -242,7 +265,18 @@ public class DayTableBean implements CalendarDataModel, Serializable {
         return null;
     }
 
-    private static final CalendarDataModelItem FREE_DAY = new CalendarDataModelItem() {
+    private static final class CalendarItemStyle implements CalendarDataModelItem {
+    	
+    	private static final String DAY_WITH_EVENT_CLASS_NAME = "calendar-day-with-event";
+    	
+    	private final String styleClass;
+    	
+    	private CalendarItemStyle(boolean hasEvents) {
+    		if (hasEvents)
+   				styleClass = DAY_WITH_EVENT_CLASS_NAME;
+    		else
+   				styleClass = null;
+    	}
 
         public boolean isEnabled() {
             return true;
@@ -257,34 +291,7 @@ public class DayTableBean implements CalendarDataModel, Serializable {
         }
 
         public String getStyleClass() {
-            return null;
-        }
-
-        public int getDay() {
-            return 0;
-        }
-
-        public Object getData() {
-            return null;
-        }
-    };
-
-    private static final CalendarDataModelItem BUSY_DAY = new CalendarDataModelItem() {
-
-        public boolean isEnabled() {
-            return true;
-        }
-
-        public boolean hasToolTip() {
-            return false;
-        }
-
-        public Object getToolTip() {
-            return null;
-        }
-
-        public String getStyleClass() {
-            return "ofBusyDay";
+            return styleClass;
         }
 
         public int getDay() {
@@ -300,14 +307,14 @@ public class DayTableBean implements CalendarDataModel, Serializable {
         HashSet<Long> daysWithEvents = new HashSet<Long>();
         for (int i = 0; i != events.size(); i++) {
             AbstractTimetableEvent event = events.get(i);
-            long date = event.getStart().getTime() / (long) (1000 * 60 * 60 * 24);
+            long date = event.getStart().getTime() / MS_IN_ONE_DAY;
             daysWithEvents.add(date);
         }
 
         CalendarDataModelItem[] items = new CalendarDataModelItem[dates.length];
         for (int i = 0; i != dates.length; i++) {
-            long date = dates[i].getTime() / (long) (1000 * 60 * 60 * 24) + 1;
-            items[i] = daysWithEvents.contains(date) ? BUSY_DAY : FREE_DAY;
+            long date = dates[i].getTime() / MS_IN_ONE_DAY + 1;
+            items[i] = new CalendarItemStyle(daysWithEvents.contains(date));
         }
 
         return items;
