@@ -35,6 +35,11 @@ O$.Checkbox = {
       checkbox._tristate = tristate;
       checkbox._disabled = disabled;
 
+      if (disabled) {
+        checkbox._tabIndex = checkbox.tabIndex;
+        checkbox.tabIndex = -1;
+      }
+
       for (stateKey in images) {
         var effects = images[stateKey];
         for (effectKey in effects) {
@@ -44,40 +49,53 @@ O$.Checkbox = {
 
       updateImage(checkbox); // Firefox page reload keeps form values
 
-      checkbox.setDisabled = function(flag) {
-        this._disabled = flag;
-        updateImage(this);
-      }
-
       // using "getDisabled" instead of "isDisabled "
       // because of standard "isDisabled" property
       checkbox.getDisabled = function() {
         return this._disabled;
       }
 
-      checkbox.setSelected = function(flag) {
-        this._state.value = flag ? "on" : "off";
-        updateImage(checkbox);
+      checkbox.setDisabled = function(flag) {
+        if (this._disabled !== flag) {
+          this._disabled = flag;
+          if (flag) {
+            checkbox._tabIndex = checkbox.tabIndex;
+            checkbox.tabIndex = -1;
+          } else {
+            checkbox.tabIndex = checkbox._tabIndex;
+          }
+          updateImage(this);
+        }
       }
 
       checkbox.isSelected = function() {
         return this._state.value === "on";
       }
 
-      checkbox.setDefined = function(flag) {
-        if (flag) {
-          if (this._state.value === "nil") {
-            this._state.value = "off";
-          }
-        } else {
-          this._state.value = "nil";
+      checkbox.setSelected = function(flag) {
+        if (this.isSelected() !== flag) {
+          this._state.value = flag ? "on" : "off"
+          updateImage(checkbox);
         }
-        updateImage(checkbox);
       }
 
       checkbox.isDefined = function() {
         return this._state.value !== "nil";
       }
+
+      checkbox.setDefined = function(flag) {
+        if (this.isDefined() !== flag) {
+          if (flag) {
+            if (this._state.value === "nil") {
+              this._state.value = "off";
+            }
+          } else {
+            this._state.value = "nil";
+          }
+          updateImage(checkbox);
+        }
+      }
+
 
       O$.addEventHandler(checkbox, "click",
         function(e) {
