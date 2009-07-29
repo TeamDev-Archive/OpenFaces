@@ -26566,4 +26566,11 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
   </tag>
+  
+  
+   <tag>
+    <name>validateAll</name>
+    <tag-class>org.openfaces.taglib.jsp.validation.AnnotationValidationJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
 </taglib>

@@ -860,5 +860,14 @@
       <handler-class>org.openfaces.taglib.facelets.input.SelectBooleanCheckboxTagHandler</handler-class>
     </component>
   </tag>
+  
+   <tag>
+    <tag-name>validateAll</tag-name>
+    <component>
+      <component-type>org.openfaces.validation.AnnotationValidation</component-type>
+      <renderer-type>org.openfaces.validation.AnnotationValidationRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.validation.AnnotationValidationTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>
