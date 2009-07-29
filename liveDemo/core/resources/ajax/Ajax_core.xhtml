@@ -46,7 +46,11 @@
                                      onclick="O$('form:updateTasks').run();"
                                      styleClass="styledCheckbox"
                                      selectedImageUrl="../images/ajax/checked.png"
-                                     unselectedImageUrl="../images/ajax/unchecked.png"/>
+                                     rolloverSelectedImageUrl="../images/ajax/checked-rollover.png"
+                                     pressedSelectedImageUrl="../images/ajax/checked-pressed.png"
+                                     unselectedImageUrl="../images/ajax/unchecked.png"
+                                     rolloverUnselectedImageUrl="../images/ajax/unchecked-rollover.png"
+                                     pressedUnselectedImageUrl="../images/ajax/unchecked-pressed.png"/>
             <h:outputText styleClass="taskText" value="#{task.name}"/>
             <h:commandLink styleClass="delete" id="delete">
               <h:graphicImage value="../images/ajax/delete.png" alt="Delete Task">
@@ -93,8 +97,11 @@
             <o:selectBooleanCheckbox value="#{task.completed}"
                                      onclick="O$('form:updateTasks').run();"
                                      styleClass="left styledCheckbox"
-                                     selectedImageUrl="../images/ajax/checked.png"
-                                     unselectedImageUrl="../images/ajax/unchecked.png"/>
+                                     rolloverSelectedImageUrl="../images/ajax/checked-rollover.png"
+                                     pressedSelectedImageUrl="../images/ajax/checked-pressed.png"
+                                     unselectedImageUrl="../images/ajax/unchecked.png"
+                                     rolloverUnselectedImageUrl="../images/ajax/unchecked-rollover.png"
+                                     pressedUnselectedImageUrl="../images/ajax/unchecked-pressed.png"/>
             <h:outputText styleClass="taskText" value="#{task.name}"/>
             <h:commandLink styleClass="delete" id="delete">
               <h:graphicImage value="../images/ajax/delete.png" alt="Delete Task">
