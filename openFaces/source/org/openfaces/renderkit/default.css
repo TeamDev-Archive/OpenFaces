@@ -1275,3 +1275,7 @@
   border-left-color: #c9d8f5;
 }
 
+/* Checkbox */
+.o_checkbox_image {
+  cursor: default;
+}

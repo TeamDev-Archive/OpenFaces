@@ -12,6 +12,7 @@
 package org.openfaces.component.input;
 
 import javax.faces.context.FacesContext;
+import javax.faces.convert.ConverterException;
 
 import org.openfaces.component.OUIInputBase;
 import org.openfaces.util.ValueBindings;
@@ -20,6 +21,11 @@ import org.openfaces.util.ValueBindings;
  * @author Roman Porotnikov
  */
 public class SelectBooleanCheckbox extends OUIInputBase {
+
+    public enum BooleanObjectValue {
+        TRUE, FALSE, NULL
+    }
+
     public static final String COMPONENT_TYPE = "org.openfaces.SelectBooleanCheckbox";
     public static final String COMPONENT_FAMILY = "org.openfaces.SelectBooleanCheckbox";
 
@@ -61,15 +67,6 @@ public class SelectBooleanCheckbox extends OUIInputBase {
     private String selectedClass;
     private String unselectedStyle;
     private String unselectedClass;
-
-    @Override
-    public Object getValue() {
-        if (isLocalValueSet()) {
-            return getLocalValue();
-        } else {
-            return super.getValue();
-        }
-    }
 
     public boolean isSelected() {
         return (Boolean.TRUE.equals(getValue()));
@@ -332,6 +329,20 @@ public class SelectBooleanCheckbox extends OUIInputBase {
         selectedClass = (String) values[i++];
         unselectedStyle = (String) values[i++];
         unselectedClass = (String) values[i++];
+    }
+
+    @Override
+    protected Object getConvertedValue(FacesContext context, Object newSubmittedValue) throws ConverterException {
+        BooleanObjectValue booleanObjectValue = (BooleanObjectValue) newSubmittedValue;
+
+        switch(booleanObjectValue) {
+        case TRUE:
+            return Boolean.TRUE;
+        case FALSE:
+            return Boolean.FALSE;
+        default:
+            return null;
+        }
     }
 
 }

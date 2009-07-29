@@ -11,17 +11,28 @@
  */
 O$.Checkbox = {
 
-  _init: function(checkboxId, stateCount, images, disabled) {
+  _init: function(checkboxId, images, styles, tristate, disabled) {
 
     var checkbox = O$(checkboxId);
+
+    function getClassName(classKey) {
+      var className = styles ? styles[classKey] : null;
+      return (className == null) ? "" : className;
+    }
+
+    checkbox._styleClass = getClassName("styleClass");
+    checkbox._rolloverClass = getClassName("rolloverClass");
+    checkbox._focusedClass = getClassName("focusedClass");
+    checkbox._selectedClass = getClassName("selectedClass");
+    checkbox._unselectedClass = getClassName("unselectedClass");
 
     if (images) {
 
       // image-based checkbox
 
       checkbox._state = O$(checkboxId + "::state");
-      checkbox._stateCount = stateCount;
       checkbox._images = images;
+      checkbox._tristate = tristate;
       checkbox._disabled = disabled;
 
       for (stateKey in images) {
@@ -33,14 +44,14 @@ O$.Checkbox = {
 
       updateImage(checkbox); // Firefox page reload keeps form values
 
-      // using "disabledState" instead of "disabled"
-      // because of standard "isDisabled" property
-      checkbox.setDisabledState = function(flag) {
+      checkbox.setDisabled = function(flag) {
         this._disabled = flag;
         updateImage(this);
       }
 
-      checkbox.isDisabledState = function() {
+      // using "getDisabled" instead of "isDisabled "
+      // because of standard "isDisabled" property
+      checkbox.getDisabled = function() {
         return this._disabled;
       }
 
@@ -52,9 +63,6 @@ O$.Checkbox = {
       checkbox.isSelected = function() {
         return this._state.value === "on";
       }
-
-      checkbox.setChecked = checkbox.setSelected; // alias
-      checkbox.isChecked = checkbox.isSelected; // alias
 
       checkbox.setDefined = function(flag) {
         if (flag) {
@@ -140,29 +148,67 @@ O$.Checkbox = {
         );
       }
 
-      //...
-
     } else {
 
       // html checkbox
 
-      checkbox.setDisabledState = function(flag) { this.disabled = flag; }
-      checkbox.isDisabledState = function() { return this.disabled; }
+      checkbox.setDisabled = function(flag) { this.disabled = flag; }
+      checkbox.getDisabled = function() { return this.disabled; }
       checkbox.setSelected = function(flag) { this.checked = flag; }
       checkbox.isSelected = function() { return this.checked; }
-      checkbox.setChecked = checkbox.setSelected; // alias
-      checkbox.isChecked = checkbox.isSelected; // alias
       checkbox.setDefined = function() { } // do nothing
       checkbox.isDefined = function() { return true; }
 
+      if (checkbox._selectedClass || checkbox._unselectedClass) {
+        O$.addEventHandler(checkbox, "click", function() {
+          updateStateStyle(checkbox);
+        });
+      }
+
+    }
+
+    updateStateStyle(checkbox);
+
+    if (checkbox._focusedClass) {
+      O$.addEventHandler(checkbox, "focus", function() {
+        if (!checkbox.getDisabled()) {
+          O$.setElementStyleMappings(checkbox, { focused: checkbox._focusedClass });
+        }
+      });
+      O$.addEventHandler(checkbox, "blur", function() {
+        if (!checkbox.getDisabled()) {
+          O$.setElementStyleMappings(checkbox, { focused: null });
+        }
+      });
+    }
+
+    if (checkbox._rolloverClass) {
+      O$.addEventHandler(checkbox, "mouseover", function() {
+        if (!checkbox.getDisabled()) {
+          O$.setElementStyleMappings(checkbox, { rollover: checkbox._rolloverClass });
+        }
+      });
+      O$.addEventHandler(checkbox, "mouseout", function() {
+        if (!checkbox.getDisabled()) {
+          O$.setElementStyleMappings(checkbox, { rollover: null });
+        }
+      });
+    }
+
+    if (checkbox._selectedClass || checkbox._unselectedClass) {
+      O$.addEventHandler(checkbox, "click", function() {
+        if (!checkbox.getDisabled()) { // disabled image-based checkbox receives clicks
+          updateStateStyle(checkbox);
+        }
+      });
     }
 
     var stateTable = {
-      2: {
+      "bistate": {
         "off": "on",
         "on": "off"
       },
-      3: {
+      "tristate": {
         "off": "nil",
         "nil": "on",
         "on": "off"
@@ -170,8 +216,9 @@ O$.Checkbox = {
     }
 
     function nextState(checkbox) {
-      checkbox._state.value = stateTable[checkbox._stateCount][checkbox._state.value];
+      checkbox._state.value = stateTable[checkbox._tristate ? "tristate" : "bistate"][checkbox._state.value];
       updateImage(checkbox);
+      updateStateStyle(checkbox);
     }
 
     function updateImage(checkbox) {
@@ -186,6 +233,15 @@ O$.Checkbox = {
         effect = "plain";
       }
       checkbox.src = checkbox._images[checkbox._state.value][effect];
+    }
+
+    function updateStateStyle(checkbox) {
+      if (checkbox._selectedClass || checkbox._unselectedClass) {
+        O$.setElementStyleMappings(checkbox, {
+          selected: checkbox.isSelected() ? checkbox._selectedClass : null,
+          unselected: (checkbox.isDefined() && !checkbox.isSelected()) ? checkbox._unselectedClass : null,
+        });
+      }
     }
 
     function isSpacebar(e) {
