@@ -17,12 +17,8 @@ h5 {
 
 .styledCheckbox {
   cursor: pointer;
-  display: block;
   margin-top: 5px;
   margin-left: 5px;
-  width: 22px;
-  height: 30px;
-
 }
 
 .rollover {
