@@ -1,0 +1,7 @@
+<%-- 
+Please DO NOT delete this file. This file is used
+to trick tomcat to detect mail.jsf as the 
+welcome file and will load mail.jsp instead.
+Thanks for lamekisser (http://forums.sun.com/profile.jspa?userID=550699)
+Look at http://forums.sun.com/thread.jspa?messageID=4045226#4045226 for details.
+--%>

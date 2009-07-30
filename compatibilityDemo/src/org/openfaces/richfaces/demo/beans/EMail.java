@@ -24,14 +24,16 @@ public class EMail implements Serializable {
     private final EMailImportance importance;
     private final boolean hasAttachment;
     private final String path;
+    private final String content;
 
-    public EMail(String sender, String subject, Date receivedDate, EMailImportance importance, boolean hasAttachment, String path) {
+    public EMail(String sender, String subject, Date receivedDate, EMailImportance importance, boolean hasAttachment, String path, String content) {
     	this.sender = sender;
     	this.subject = subject;
     	this.receivedDate = receivedDate;
     	this.importance = importance;
     	this.hasAttachment = hasAttachment;
     	this.path = path;
+    	this.content = content;
     }
     
     public String getSender() {
@@ -56,6 +58,10 @@ public class EMail implements Serializable {
 
     public String getPath() {
     	return path;
+    }
+    
+    public String getContent() {
+    	return content;
     }
     
     public boolean equals(Object o) {

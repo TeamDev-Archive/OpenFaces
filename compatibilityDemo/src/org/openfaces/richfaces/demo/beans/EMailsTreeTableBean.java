@@ -160,6 +160,8 @@ public class EMailsTreeTableBean {
             "Christine Cesio"};
 
     private static final Map<String, EMailImportance> IMPORTANCES_BY_NAMES = new HashMap<String, EMailImportance>();
+    
+    private static final String DEFAULT_MESSAGE_TEXT = "Message body content.";
 
     static {
         IMPORTANCES_BY_NAMES.put(EMailImportance.LOW.toString(), EMailImportance.LOW);
@@ -247,7 +249,7 @@ public class EMailsTreeTableBean {
             String sender = SENDER_NAMES[i % SENDER_NAMES.length];
             String subject = SUBJECTS[i % SUBJECTS.length];
             if (PATHS[i % SENDER_NAMES.length].equals(path)) {
-            	EMail email = new EMail(sender, subject, generatedDate, EMailImportance.NORMAL, false, path);
+            	EMail email = new EMail(sender, subject, generatedDate, EMailImportance.NORMAL, false, path, DEFAULT_MESSAGE_TEXT);
             	result.add(email);
             }
         }
@@ -289,7 +291,7 @@ public class EMailsTreeTableBean {
             }
             Date reDate = generateDate(dateRangeName, originalEmailDateRange.getStartDate(), originalEmailDateRange.getEndDate(), true, receivedDate, rand);
 
-            newEMail = new EMail(sender, subject, reDate, EMailImportance.NORMAL, false, email.getPath());
+            newEMail = new EMail(sender, subject, reDate, EMailImportance.NORMAL, false, email.getPath(), DEFAULT_MESSAGE_TEXT);
             result.add(newEMail);
         }
 
@@ -339,7 +341,7 @@ public class EMailsTreeTableBean {
         for (int i = 0; i < result.size(); i++) {
             EMail email = result.get(i);
             EMailImportance importance = getImportance(allImportancesMap, i);
-            withImportancies.add(new EMail(email.getSender(), email.getSubject(), email.getReceivedDate(), importance, false, email.getPath()));
+            withImportancies.add(new EMail(email.getSender(), email.getSubject(), email.getReceivedDate(), importance, false, email.getPath(), DEFAULT_MESSAGE_TEXT));
         }
         result.clear();
         result.addAll(withImportancies);
@@ -375,7 +377,7 @@ public class EMailsTreeTableBean {
         for (int i = 0; i < result.size(); i++) {
             EMail email = result.get(i);
             boolean attachment = getAttachment(allAttachmentsMap, i);
-            withAttachments.add(new EMail(email.getSender(), email.getSubject(), email.getReceivedDate(), email.getImportance(), attachment, email.getPath()));
+            withAttachments.add(new EMail(email.getSender(), email.getSubject(), email.getReceivedDate(), email.getImportance(), attachment, email.getPath(), DEFAULT_MESSAGE_TEXT));
         }
         result.clear();
         result.addAll(withAttachments);
@@ -676,7 +678,7 @@ public class EMailsTreeTableBean {
     public EMail getSelectedEMail() {
         return selectedEMail;
     }
-
+    
     public void setSelectedEMail(Object selectedEMail) {
         this.selectedEMail = selectedEMail instanceof EMail ? (EMail) selectedEMail : null;
     }

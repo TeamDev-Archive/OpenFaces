@@ -29,11 +29,11 @@ public final class EMailBean {
 	}
 	
 	public void saveMailListener(ActionEvent event) {
-		drafts.getContent().addEMail(new EMail(messageAddress, messageSubject, new Date(), EMailImportance.NORMAL, false, "Drafts"));
+		drafts.getContent().addEMail(new EMail(messageAddress, messageSubject, new Date(), EMailImportance.NORMAL, false, "Drafts", messageText));
 	}
 	
 	public void sendMailListener(ActionEvent event) {
-		sent.getContent().addEMail(new EMail(messageAddress, messageSubject, new Date(), EMailImportance.NORMAL, false, "Sent"));
+		sent.getContent().addEMail(new EMail(messageAddress, messageSubject, new Date(), EMailImportance.NORMAL, false, "Sent", messageText));
 	}
 	
 	public EMailFolderBean getFolder() {
@@ -78,5 +78,13 @@ public final class EMailBean {
 	
 	public EMailFolderBean getSent() {
 		return sent;
+	}
+	
+	public Object getSelectedEMail() {
+		return selectedFolder.getContent().getSelectedEMail();
+	}
+	
+	public void setSelectedEMail(Object selectedEMail) {
+		selectedFolder.getContent().setSelectedEMail(selectedEMail);
 	}
 }

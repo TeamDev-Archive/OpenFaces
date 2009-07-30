@@ -11,7 +11,6 @@
 	    <title>Email</title>
 	    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon"/>
 	    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen,projection"/>
-		<link rel="stylesheet" href="treetable.css" type="text/css" media="screen,projection"/>
 		<link rel="stylesheet" href="css/mail.css" type="text/css" media="screen,projection"/>
 
 		<script type="text/javascript">
@@ -25,7 +24,7 @@
 				});
 			}
 			function saveMessage(ed) {
-				O$("form:editor").onsave2();
+				O$("form:newMessage").onsave2();
 			}
 		</script>
 	</head>
@@ -67,8 +66,8 @@
     			</tr>
     		</table>
     	</o:window>
-		<o:reloadComponents for="editor" actionListener="#{EMailBean.saveMailListener}" disableDefault="true" event="onsave2" componentIds="emailsTreeTable" onajaxend="O$('form:newMessage').hide();"/>
-		<o:reloadComponents for="editor" actionListener="#{EMailBean.sendMailListener}" disableDefault="true" event="onsend" componentIds="emailsTreeTable" onajaxend="O$('form:newMessage').hide();"/>
+		<o:reloadComponents for="newMessage" actionListener="#{EMailBean.saveMailListener}" disableDefault="true" event="onsave2" componentIds="emailsTreeTable" onajaxend="O$('form:newMessage').hide();"/>
+		<o:reloadComponents for="newMessage" actionListener="#{EMailBean.sendMailListener}" disableDefault="true" event="onsend" componentIds="emailsTreeTable" onajaxend="O$('form:newMessage').hide();"/>
 
     	<o:borderLayoutPanel>
     		<o:sidePanel alignment="top" resizable="false" collapsible="false" size="72px">
@@ -104,7 +103,7 @@
     		<o:sidePanel alignment="left" size="230px" contentClass="Sidebar" >
                 <rich:tree id="emailFolders" switchType="ajax" ajaxSubmitSelection="true" styleClass="email-folders">
                     <rich:recursiveTreeNodesAdaptor roots="#{EMailBean.drafts}" var="folder" nodes="#{folder.children}" >
-                        <rich:treeNode data="#{folder}" nodeSelectListener="#{EMailBean.nodeSelectListener}" reRender="emailsTreeTable">
+                        <rich:treeNode data="#{folder}" nodeSelectListener="#{EMailBean.nodeSelectListener}" reRender="emailsTreeTable,emailDetails">
 							<h:outputText value="Drafts" />
 							<f:facet name="icon">
 								<h:graphicImage url="/images/mail/sidebar-mail-drafts.png" styleClass="icon" />
@@ -115,7 +114,7 @@
                         </rich:treeNode>
                     </rich:recursiveTreeNodesAdaptor>
                     <rich:recursiveTreeNodesAdaptor roots="#{EMailBean.inbox}" var="folder" nodes="#{folder.children}">
-                        <rich:treeNode data="#{folder}" nodeSelectListener="#{EMailBean.nodeSelectListener}" reRender="emailsTreeTable">
+                        <rich:treeNode data="#{folder}" nodeSelectListener="#{EMailBean.nodeSelectListener}" reRender="emailsTreeTable,emailDetails">
                         	<h:outputText value="#{folder.name}"/>
 		                   	<f:facet name="icon">
 		                   		<h:graphicImage url="/images/mail/sidebar-mail-#{folder.subfolder ? 'folder' : 'inbox'}.png" styleClass="icon"/>
@@ -126,7 +125,7 @@
                         </rich:treeNode>
                     </rich:recursiveTreeNodesAdaptor>
                     <rich:recursiveTreeNodesAdaptor roots="#{EMailBean.sent}" var="folder" nodes="#{folder.children}" >
-                        <rich:treeNode data="#{folder}" nodeSelectListener="#{EMailBean.nodeSelectListener}" reRender="emailsTreeTable">
+                        <rich:treeNode data="#{folder}" nodeSelectListener="#{EMailBean.nodeSelectListener}" reRender="emailsTreeTable,emailDetails">
 							<h:outputText value="Sent" />
 							<f:facet name="icon">
 								<h:graphicImage url="/images/mail/sidebar-mail-sent.png" styleClass="icon" />
@@ -154,99 +153,108 @@
 	                </div>
 	            </div>
     		</o:sidePanel>
-            <o:treeTable id="emailsTreeTable"
-                         var="email"
-                         style="width:100%;border:1px solid white;table-layout:fixed;max-height:300px;overflow:scroll"
-                         expansionState="allExpanded"
-                         sortAscending="#{EMailBean.selection.sortAscending}"
-                         sortColumnId="#{EMailBean.selection.sortedColumnId}"
-                         rolloverRowStyle="background: #b6cfec;"
-                         horizontalGridLines="1px solid #eef0f2"
-                         headerRowClass="TableHeader"
-                         sortedAscendingImageUrl="images/treetable/sort_a.gif"
-                         sortedDescendingImageUrl="images/treetable/sort_d.gif"
-                         sortedColumnHeaderStyle="background: url('images/treetable/header_selected.gif') repeat-x;"
-                         sortedColumnClass="SortedColumn"
-                         focusedStyle="border: 1px dotted black !important;"
-                         columnIdVar="columnId" nodeLevelVar="level">
-                <o:row condition="#{level == 0}" style="background: white !important;">
-                    <o:cell span="6" styleClass="category_name">
-                        <h:outputText value="#{email}" style="padding-left: 5px;"/>
-                    </o:cell>
-                </o:row>
-                <o:singleNodeSelection
-                        style="background:url('images/treetable/selection.gif') repeat-x #168aff !important; color: white !important;"
-                        nodeData="#{EMailBean.selection.selectedEMail}" >
-                </o:singleNodeSelection>
-                <o:dynamicTreeStructure nodeChildren="#{EMailBean.selection.EMailsTreeChildren}"/>
-                <o:treeColumn id="importance"
-                              expandedToggleImageUrl="images/treetable/expanded4.gif"
-                              collapsedToggleImageUrl="images/treetable/collapsed4.gif"
-                              width="32px"
-                              headerStyle="text-align: right !important;"
-                              sortingExpression="#{EMailBean.selection.sortByImportance}"
-                              levelIndent="10px">
-                    <f:facet name="header">
-                        <h:graphicImage url="images/treetable/sort_prioity.gif"/>
-                    </f:facet>
-                    <h:graphicImage url="#{EMailBean.selection.importanceIcon}"/>
-                </o:treeColumn>
-                <o:column id="attachment"
-                          width="32px"
-                          style="text-align: center;"
-                          headerStyle="text-align: center !important;"
-                          sortingExpression="#{EMailBean.selection.sortByAttachmentExpression}">
-                    <f:facet name="header">
-                        <h:graphicImage url="images/treetable/attachment.gif"/>
-                    </f:facet>
-                    <h:graphicImage url="images/treetable/attachment.gif"
-                                    rendered="#{email.hasAttachment}"/>
-                </o:column>
-                <o:column width="16px"
-                          style="text-align: center;">
-                    <f:facet name="header">
-                        <h:outputText value=""/>
-                    </f:facet>
-                    <h:graphicImage url="images/treetable/letter.gif"/>
-                </o:column>
-                <o:column id="sender"
-                          width="21%"
-                          style="padding-left: 5px;"
-                          sortingExpression="#{EMailBean.selection.sortBySenderExpression}">
-                    <f:facet name="header">
-                        <h:outputText value="#{EMailBean.folder.incoming ? 'From' : 'To'}"/>
-                    </f:facet>
-                    <h:outputText value="#{email.sender}" style="margin-left: 5px;"/>
-                </o:column>
-                <o:column id="subject"
-                          width="61%"
-                          bodyStyle="text-align: left;"
-                          style="padding-left: 5px;"
-                          sortingExpression="#{EMailBean.selection.sortBySubjectExpression}">
-                    <f:facet name="header">
-                        <h:outputText value="Subject"/>
-                    </f:facet>
-                    <h:outputText value="#{email.subject}" style="margin-left: 5px;"/>
-                </o:column>
-                <o:column id="date"
-                          width="16%"
-                          style="padding-left: 5px;"
-                          sortingExpression="#{EMailBean.selection.sortByDateExpression}">
-                    <f:facet name="header">
-                        <h:outputText value="#{EMailBean.folder.incoming ? 'Received' : 'Sent'}"/>
-                    </f:facet>
-                    <h:outputText value="#{email.receivedDate}" style="margin-left: 5px;"
-                                  converter="#{EMailBean.selection.receivedDateConverter}"/>
-                </o:column>
-            </o:treeTable>
-            <o:reloadComponents for="emailsTreeTable" event="onchange" componentIds="emailDetails"
-                                disableDefault="false"/>
-            <h:panelGroup layout="block" id="emailDetails">
-            	<h:panelGroup rendered="#{EMailBean.selection.selectedEMail != null}">
-	            	<div><h:outputText value="Subject: #{EMailBean.selection.selectedEMail.subject}" /></div>
-	            	<div><h:outputText value="From: #{EMailBean.selection.selectedEMail.sender}" /></div>
-                    <h:panelGroup layout="block" style="overflow:scroll; border-top:solid 1px black;"/>
-            	</h:panelGroup>
+    		<h:panelGroup layout="block" style="height:50%;overflow:scroll">
+	            <o:treeTable id="emailsTreeTable"
+	                         var="email"
+	                         style="width:100%;border:1px solid white;table-layout:fixed"
+	                         expansionState="allExpanded"
+	                         sortAscending="#{EMailBean.selection.sortAscending}"
+	                         sortColumnId="#{EMailBean.selection.sortedColumnId}"
+	                         rolloverRowStyle="background: #b6cfec;"
+	                         horizontalGridLines="1px solid #eef0f2"
+	                         headerRowClass="TableHeader"
+	                         sortedAscendingImageUrl="images/treetable/sort_a.gif"
+	                         sortedDescendingImageUrl="images/treetable/sort_d.gif"
+	                         sortedColumnHeaderStyle="background: url('images/treetable/header_selected.gif') repeat-x;"
+	                         sortedColumnClass="SortedColumn"
+	                         focusedStyle="border: 1px dotted black !important;"
+	                         columnIdVar="columnId" nodeLevelVar="level">
+	                <o:row condition="#{level == 0}" style="background: white !important;">
+	                    <o:cell span="6" styleClass="category-name">
+	                        <h:outputText value="#{email}" style="padding-left: 5px;"/>
+	                    </o:cell>
+	                </o:row>
+	                <o:singleNodeSelection 
+	                        style="background:url('images/treetable/selection.gif') repeat-x #168aff !important; color: white !important;"
+	                        nodeData="#{EMailBean.selectedEMail}">
+			            <a4j:support event="onchange" process=":form:emailsTreeTable" reRender="emailDetails"/>
+	                </o:singleNodeSelection>
+	                <o:dynamicTreeStructure nodeChildren="#{EMailBean.selection.EMailsTreeChildren}"/>
+	                <o:treeColumn id="importance"
+	                              expandedToggleImageUrl="images/treetable/expanded4.gif"
+	                              collapsedToggleImageUrl="images/treetable/collapsed4.gif"
+	                              width="32px"
+	                              headerStyle="text-align: right !important;"
+	                              sortingExpression="#{EMailBean.selection.sortByImportance}"
+	                              levelIndent="10px">
+	                    <f:facet name="header">
+	                        <h:graphicImage url="images/treetable/sort_prioity.gif"/>
+	                    </f:facet>
+	                    <h:graphicImage url="#{EMailBean.selection.importanceIcon}"/>
+	                </o:treeColumn>
+	                <o:column id="attachment"
+	                          width="32px"
+	                          style="text-align: center;"
+	                          headerStyle="text-align: center !important;"
+	                          sortingExpression="#{EMailBean.selection.sortByAttachmentExpression}">
+	                    <f:facet name="header">
+	                        <h:graphicImage url="images/treetable/attachment.gif"/>
+	                    </f:facet>
+	                    <h:graphicImage url="images/treetable/attachment.gif"
+	                                    rendered="#{email.hasAttachment}"/>
+	                </o:column>
+	                <o:column width="16px"
+	                          style="text-align: center;">
+	                    <f:facet name="header">
+	                        <h:outputText value=""/>
+	                    </f:facet>
+	                    <h:graphicImage url="images/treetable/letter.gif"/>
+	                </o:column>
+	                <o:column id="sender"
+	                          width="21%"
+	                          style="padding-left: 5px;"
+	                          sortingExpression="#{EMailBean.selection.sortBySenderExpression}">
+	                    <f:facet name="header">
+	                        <h:outputText value="#{EMailBean.folder.incoming ? 'From' : 'To'}"/>
+	                    </f:facet>
+	                    <h:outputText value="#{email.sender}" style="margin-left: 5px;"/>
+	                </o:column>
+	                <o:column id="subject"
+	                          width="61%"
+	                          bodyStyle="text-align: left;"
+	                          style="padding-left: 5px;"
+	                          sortingExpression="#{EMailBean.selection.sortBySubjectExpression}">
+	                    <f:facet name="header">
+	                        <h:outputText value="Subject"/>
+	                    </f:facet>
+	                    <h:outputText value="#{email.subject}" style="margin-left: 5px;"/>
+	                </o:column>
+	                <o:column id="date"
+	                          width="16%"
+	                          style="padding-left: 5px;"
+	                          sortingExpression="#{EMailBean.selection.sortByDateExpression}">
+	                    <f:facet name="header">
+	                        <h:outputText value="#{EMailBean.folder.incoming ? 'Received' : 'Sent'}"/>
+	                    </f:facet>
+	                    <h:outputText value="#{email.receivedDate}" style="margin-left: 5px;"
+	                                  converter="#{EMailBean.selection.receivedDateConverter}"/>
+	                </o:column>
+	            </o:treeTable>
+    		</h:panelGroup>
+            <h:panelGroup layout="block" id="emailDetails" style="height:300px">
+	           	<h:panelGroup rendered="#{EMailBean.selectedEMail != null}">
+	           		<h:panelGroup layout="block" style="padding-top:20px">
+	            		<h:outputText value="Subject: " styleClass="email-field email-field-caption"/>
+		            	<h:outputText value="#{EMailBean.selectedEMail.subject}" styleClass="email-field"/>
+	           		</h:panelGroup>
+	           		<h:panelGroup layout="block" style="padding-top:5px">
+	   	        		<h:outputText value="#{EMailBean.folder.incoming ? 'From' : 'To'}: " styleClass="email-field email-field-caption"/>
+		            	<h:outputText value="#{EMailBean.selectedEMail.sender}" styleClass="email-field"/>
+	           		</h:panelGroup>
+	           		<h:panelGroup layout="block" style="padding-top:40px">
+	           			<h:outputText value="#{EMailBean.selectedEMail.content}" styleClass="email-field" escape="false"/>
+	           		</h:panelGroup>
+	           	</h:panelGroup>
             </h:panelGroup>
     	</o:borderLayoutPanel>
 

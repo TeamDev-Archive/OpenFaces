@@ -20,7 +20,7 @@ a {outline:none}
 
 body {margin:0px}
 
-.email-folders td.dr-tree-h-text {width:auto}
+.email-folders td.dr-tree-h-text {width:auto;cursor:pointer}
 
 .email-folders img.icon-collapsed {border-style:none;margin-left:5px}
 .email-folders img.icon-expanded {border-style:none;margin-left:3px}
@@ -30,8 +30,8 @@ body {margin:0px}
 .email-folders div.dr-tree-h-ic-line {background-image:none}
 .email-folders td.dr-tree-h-ic-line-node {background-image:none}
 .email-folders td.dr-tree-h-ic-line-last {background-image:none}
-.email-folders td.dr-tree-h-ic-line-clp {background-image:none}
-.email-folders td.dr-tree-h-ic-line-exp {background-image:none}
+.email-folders td.dr-tree-h-ic-line-clp {background-image:none;cursor:pointer}
+.email-folders td.dr-tree-h-ic-line-exp {background-image:none;cursor:pointer}
 
 .navigation-panel-mail {background-image:url(../images/backgrounds/mail.png);background-repeat:repeat-x;border-top:solid 1px #565656;border-bottom:solid 1px #4f4f4f;border-right-style:none;border-left-style:none}
 .navigation-panel-mail span.caption {color:white;text-shadow:black 1px -1px 1px;font-size:24pt;font-weight:normal;padding:0 12px}
@@ -108,3 +108,6 @@ body {margin:0px}
   font-family: Tahoma;
 }
 
+.email-field {font-size:14px;font-family:Tahoma;margin-top:5px}
+
+.email-field-caption {font-weight:bold;color:#758795}
