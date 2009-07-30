@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
  * of value and method expressions.
  * 
  * @author Gavin King
+ * @author Eugene Goncharov
  * 
  */
 public class Expressions implements Serializable {

@@ -22,6 +22,7 @@ import org.jboss.el.lang.VariableMapperImpl;
  * An instance of JBoss EL.
  * 
  * @author Gavin King
+ * @author Eugene Goncharov
  * 
  */
 public class EL {

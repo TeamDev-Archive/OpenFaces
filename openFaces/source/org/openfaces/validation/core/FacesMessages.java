@@ -16,6 +16,7 @@ import org.hibernate.validator.InvalidValue;
  * to creating {@link FacesMessage} instances and adding them to {@link FacesContext}
  *
  * @author Gavin King
+ * @author Eugene Goncharov
  */
 public class FacesMessages implements Serializable {
     private static final long serialVersionUID = -5395975397632138270L;
