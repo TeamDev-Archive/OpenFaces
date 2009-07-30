@@ -38,7 +38,7 @@ public class ScrollPositionTest extends OpenFacesTestCase {
         int abscissa = window().evalIntExpression("pageXOffset");
         button.keyPress(13);
         waitForPageToLoad();
-        window().assertExpressionEquals("pageYOffset", ordinate);
+        window().assertExpressionEquals("pageYOffset", ordinate, 22);
         window().assertExpressionEquals("pageXOffset", abscissa);
     }
 }
