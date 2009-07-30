@@ -12,24 +12,32 @@
 
 package org.openfaces.renderkit.validation;
 
+import org.hibernate.validator.InvalidValue;
+import org.openfaces.component.validation.ClientValidationMode;
 import org.openfaces.component.validation.UIValidation;
+import org.openfaces.component.validation.ValidationProcessor;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.validation.CoreValidator;
 import org.openfaces.validation.core.CoreValidatorImpl;
 import org.openfaces.validation.validators.AnnotationValidator;
 import org.openfaces.validator.ClientValidator;
-import org.hibernate.validator.InvalidValue;
+import org.openfaces.validator.ClientValidatorUtil;
+import org.openfaces.validator.ValidationJavascriptLibrary;
 
 import javax.el.ELContext;
 import javax.el.ELException;
 import javax.el.ValueExpression;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.Validator;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -129,31 +137,96 @@ public class AnnotationValidationRenderer extends RendererBase {
         if (component.isRendered()) {
             UIValidation validateAll = (UIValidation) component;
 
-
-            renderClientValidators(validateAll.getChildren(), context);
+            renderClientValidatorsIfNeeded(component, validateAll.getChildren(), context);
 
         }
     }
 
-    private void renderClientValidators(List<UIComponent> children, FacesContext context) {
-        for (Object child : children) {
+    private void renderClientValidatorsIfNeeded(UIComponent component, List<UIComponent> children, FacesContext context) throws IOException {
+        UIForm parentForm = ComponentUtil.getEnclosingForm(component);
+        ValidationProcessor processor = ValidationProcessor.getInstance(context);
+        ClientValidationMode validationMode = processor.getClientValidationRuleForForm(parentForm);
+        if (!validationMode.equals(ClientValidationMode.OFF)) {
+            renderClientValidators(parentForm, validationMode, children, context);
+        }
+    }
+
+    private void renderClientValidators(UIForm parentForm, ClientValidationMode validationMode, List<UIComponent> children, FacesContext context) throws IOException {
+        for (UIComponent child : children) {
             if (child instanceof EditableValueHolder) {
-                EditableValueHolder evh = (EditableValueHolder) child;
                 ELContext elContext = context.getELContext();
-
-                List<ClientValidator> clientValidators = ourValidator.getClientValidatorsForComponent(((UIComponent) child), elContext);
-
+                List<ClientValidator> clientValidators = ourValidator.getClientValidatorsForComponent(child, elContext);
+                // Render client validator scripts here
                 if (clientValidators != null) {
+                    List<String> clientValidatorsScripts = new ArrayList<String>();
+                    List<String> javascriptLibraries = new ArrayList<String>();
+                    List<String> messagesScripts = new ArrayList<String>();
+
                     for (ClientValidator validator : clientValidators) {
+                        String clientId = child.getClientId(context);
+                        clientValidatorsScripts.add(validator.getClientScript(context, child).toString());
 
-                        // Render client validator scripts here
+                        ValidationJavascriptLibrary[] jsLibraries = validator.getJavascriptLibraries();
+                        for (ValidationJavascriptLibrary jsLibrary : jsLibraries) {
+                            javascriptLibraries.add(jsLibrary.getUrl(context));
+                        }
+
+                        Iterator<FacesMessage> messageIterator = context.getMessages(clientId);
+                        while (messageIterator.hasNext()) {
+                            String messageScript = ClientValidatorUtil.getScriptAddMessageById(messageIterator.next(), clientId).toString();
+                            messagesScripts.add(messageScript);
+                        }
                     }
-                }
 
+
+                    StringBuilder commonScript = new StringBuilder();
+
+                    if (clientValidatorsScripts.size() > 0) {
+                        commonScript.append("O$.addValidatorsById('").append(child.getClientId(context)).append("',[\n");
+
+                        Object[] scripts = clientValidatorsScripts.toArray();
+                        int scriptCount = scripts.length;
+                        if (scriptCount > 0) {
+                            for (int i = 0; i < scriptCount - 1; i++) {
+                                String script = (String) scripts[i];
+                                commonScript.append(script).append(",\n");
+                            }
+
+                            String script = (String) scripts[scriptCount - 1];
+                            commonScript.append(script);
+                        }
+                        commonScript.append("]");
+
+                        commonScript.append(");\n");
+                    }
+
+                    if (messagesScripts.size() > 0) {
+                        for (String s : messagesScripts) {
+                            commonScript.append(s).append("\n");
+                        }
+                    }
+                    String[] javascriptLibrariesArray = javascriptLibraries.toArray(new String[javascriptLibraries.size()]);
+                    RenderingUtil.renderInitScript(context, commonScript.toString(), javascriptLibrariesArray);
+
+                    if (validationMode.equals(ClientValidationMode.ON_SUBMIT)) {
+                        String formClientId = parentForm.getClientId(context);
+                        RenderingUtil.renderInitScript(context, "O$.addOnSubmitEvent(O$._autoValidateForm,'" + formClientId + "');\n", new String[]{
+                                ValidatorUtil.getValidatorUtilJsUrl(context)
+                        });
+
+                    } else if (validationMode.equals(ClientValidationMode.ON_DEMAND)) {
+                        RenderingUtil.renderInitScript(context, "O$.addNotValidatedInput('" + child.getClientId(context) + "');", new String[]{
+                                ValidatorUtil.getValidatorUtilJsUrl(context)
+                        });
+                    }
+
+
+                }
             } else if (child instanceof UIComponent) {
-                renderClientValidators(((UIComponent) child).getChildren(), context);
+                renderClientValidators(parentForm, validationMode, child.getChildren(), context);
             }
         }
+
     }
 
     @Override

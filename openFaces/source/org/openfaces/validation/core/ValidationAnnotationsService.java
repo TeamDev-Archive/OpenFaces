@@ -82,7 +82,7 @@ public class ValidationAnnotationsService {
 
         if (validationAnnotations != null) {
             for (Annotation validationAnnotation : validationAnnotations) {
-                ClientValidator validator = ClientValidatorsRegistry.getInstance().getValidator(validationAnnotation.annotationType());
+                ClientValidator validator = ClientValidatorsRegistry.getInstance().getValidator(validationAnnotation);
 
                 if (validator != null) {
                     if (clientValidators.isEmpty()) {

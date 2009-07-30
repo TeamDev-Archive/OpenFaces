@@ -16,6 +16,9 @@ import org.hibernate.validator.NotNull;
 import org.hibernate.validator.NotEmpty;
 import org.hibernate.validator.Past;
 import org.hibernate.validator.Email;
+import org.hibernate.validator.Pattern;
+import org.hibernate.validator.Digits;
+import org.hibernate.validator.Length;
 
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
@@ -35,20 +38,41 @@ public class ValidateAllBean {
     private static final Converter COUNTRY_CONVERTER = new CountryConverter();
     private static final Collection<Country> COUNTRIES = EnumSet.allOf(Country.class);
 
-    private Country country;
     private String name;
-    private Date joinDate;
+    private int age;
+    private Date registrationDate;
+    private Country country;
     private String email;
+    private String url;
 
 
-    @NotNull
-    @NotEmpty
+    /*@NotNull
+    @NotEmpty*/
+    @Length(min = 3, max=10)
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Digits(integerDigits = 2, fractionalDigits = 0)
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Pattern(regex="^(http|https|ftp)\\://([a-zA-Z0-9\\.\\-]+(\\:[a-zA-Z0-9\\.&%\\$\\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|localhost|([a-zA-Z0-9\\-]+\\.)*[a-zA-Z0-9\\-]+\\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(\\:[0-9]+)*(/($|[a-zA-Z0-9\\.\\,\\?\\'\\\\\\+&%\\$#\\=\\~_\\-]+))*$")
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @NotNull
@@ -61,12 +85,12 @@ public class ValidateAllBean {
     }
 
     @Past
-    public Date getJoinDate() {
-        return joinDate;
+    public Date getRegistrationDate() {
+        return registrationDate;
     }
 
-    public void setJoinDate(Date joinDate) {
-        this.joinDate = joinDate;
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
     }
 
     @Email

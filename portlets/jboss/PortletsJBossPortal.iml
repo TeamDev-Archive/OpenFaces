@@ -4,7 +4,6 @@
     <facet type="web" name="PortletsJBossPortal">
       <configuration>
         <descriptors>
-          <deploymentDescriptor name="jboss-web.xml" url="file://$MODULE_DIR$/WEB-INF/jboss-web.xml" optional="false" version="4.2" />
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/WEB-INF/web.xml" optional="false" version="2.5" />
         </descriptors>
         <webroots>

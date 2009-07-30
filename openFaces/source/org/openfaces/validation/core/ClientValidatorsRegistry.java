@@ -12,20 +12,28 @@
 
 package org.openfaces.validation.core;
 
+import org.hibernate.validator.Digits;
+import org.hibernate.validator.Email;
+import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
+import org.hibernate.validator.Pattern;
 import org.openfaces.validator.ClientValidator;
+import org.openfaces.validator.EMailValidator;
+import org.openfaces.validator.LengthClientValidator;
+import org.openfaces.validator.NumberConverterClientValidator;
 import org.openfaces.validator.RequiredClientValidator;
+import org.openfaces.validator.RegexValidator;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.faces.convert.NumberConverter;
+import javax.faces.validator.LengthValidator;
 import java.lang.annotation.Annotation;
 
 public class ClientValidatorsRegistry {
     private static final ClientValidatorsRegistry REGISTRY = new ClientValidatorsRegistry();
-    private Map<Class<? extends Annotation>, ClientValidator> validators = new HashMap<Class<? extends Annotation>, ClientValidator>();
 
     private ClientValidatorsRegistry() {
-        validators.put(NotNull.class, new RequiredClientValidator());
+
+
     }
 
     public static ClientValidatorsRegistry getInstance() {
@@ -37,12 +45,26 @@ public class ClientValidatorsRegistry {
      * Method should return proper client validator for validation annotation
      * or null if there is no client validator registered for particular annotation
      *
-     * @param annotationClass
+     * @param annotation
      * @return client validator
      */
-    public ClientValidator getValidator(Class<? extends Annotation> annotationClass) {
-        if (validators.containsKey(annotationClass)) {
-            return validators.get(annotationClass);
+    public ClientValidator getValidator(Annotation annotation) {
+        Class<? extends Annotation> annotationClass = annotation.annotationType();
+        if (annotationClass.equals(NotNull.class)) {
+            return new RequiredClientValidator();
+        } else if (annotationClass.equals(Email.class)) {
+            return new EMailValidator();
+        } else if (annotationClass.equals(Length.class)) {
+            Length length = (Length) annotation;
+            LengthValidator lengthValidator = new LengthValidator(length.max(), length.min());
+            LengthClientValidator lengthClientValidator = new LengthClientValidator();
+            lengthClientValidator.setLengthValidator(lengthValidator);
+            return lengthClientValidator;
+        } else if (annotationClass.equals(Pattern.class)) {
+            Pattern pattern = (Pattern) annotation;
+            RegexValidator regexValidator = new RegexValidator();
+            regexValidator.setPattern(pattern.regex());
+            return regexValidator;
         }
 
         return null;

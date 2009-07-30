@@ -5,18 +5,30 @@
      xmlns:rich="http://richfaces.org/rich">
   <a href="../../main.jsf">Back to the main page</a>
   <br/>
-  <o:clientValidationSupport clientValidation="onDemand"/>
+  <o:clientValidationSupport clientValidation="onSubmit">
+    <o:floatingIconMessage showDetail="true" showSummary="true" style="background: red;"/>
+  </o:clientValidationSupport>
   <br/>
   <br/>
   <o:validateAll>
     Name<br/>
     <h:inputText id="name" value="#{ValidateAllBean.name}"/><br/>
+    <h:message id="nameMessage" for="name" showSummary="true" showDetail="false"/><br/>
+    Age<br/>
+    <h:inputText id="age" value="#{ValidateAllBean.age}"/>      
     <br/>
+    <h:message id="ageMessage" for="age" showSummary="true" showDetail="false"/><br/>
     Email<br/>
     <h:inputText id="email" value="#{ValidateAllBean.email}"/><br/>
+    <h:message id="emailMessage" for="email" showSummary="true" showDetail="false"/><br/>
+    <br/>
+    Web site<br/>
+    <h:inputText id="webSite" value="#{ValidateAllBean.url}"/><br/>
+    <h:message id="webSiteMessage" for="webSite" showDetail="false" showSummary="true"/><br/>
     <br/>
     Join Date<br/>
-    <o:dateChooser id="joinDate" value="#{ValidateAllBean.joinDate}" pattern="dd/MM/yyyy"/><br/>
+    <o:dateChooser id="registrationDate" value="#{ValidateAllBean.registrationDate}" pattern="dd/MM/yyyy"/><br/>
+    <h:message id="registrationDateMessage" for="registrationDate" showDetail="false" showSummary="true"/><br/>
     <br/>
     Country<br/>
     <o:dropDownField id="country" value="#{ValidateAllBean.country}" converter="#{ValidateAllBean.countryConverter}">
@@ -24,7 +36,7 @@
     </o:dropDownField><br/>
 
   </o:validateAll>
-  <h:messages/>
+  
   <br/>
   <h:commandButton value="Submit" id="fmSubmit"/>
   <br/>
