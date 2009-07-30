@@ -11,11 +11,12 @@
  */
 package org.openfaces.component.input;
 
+import org.openfaces.component.OUIInputBase;
+import org.openfaces.util.NullTypeELResolver;
+import org.openfaces.util.ValueBindings;
+
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
-
-import org.openfaces.component.OUIInputBase;
-import org.openfaces.util.ValueBindings;
 
 /**
  * @author Roman Porotnikov
@@ -335,14 +336,29 @@ public class SelectBooleanCheckbox extends OUIInputBase {
     protected Object getConvertedValue(FacesContext context, Object newSubmittedValue) throws ConverterException {
         BooleanObjectValue booleanObjectValue = (BooleanObjectValue) newSubmittedValue;
 
-        switch(booleanObjectValue) {
-        case TRUE:
-            return Boolean.TRUE;
-        case FALSE:
-            return Boolean.FALSE;
-        default:
-            return null;
+        switch (booleanObjectValue) {
+            case TRUE:
+                return Boolean.TRUE;
+            case FALSE:
+                return Boolean.FALSE;
+            default:
+                return null;
         }
     }
 
+    @Override
+    public void updateModel(FacesContext context) {
+        boolean intercept = isLocalValueSet() && getLocalValue() == null && !NullTypeELResolver.isActive();
+
+        if (intercept) {
+            NullTypeELResolver.setActive(true);
+        }
+        try {
+            super.updateModel(context);
+        } finally {
+            if (intercept) {
+                NullTypeELResolver.setActive(false);
+            }
+        }
+    }
 }
