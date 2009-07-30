@@ -1,0 +1,33 @@
+<html>
+
+<head>
+    <meta http-equiv=Content-Type content="text/html; charset=windows-1251">
+
+</head>
+
+<body>
+<p>
+This is a source code for the OpenFaces compatibility demo. This demo is intended to show OpenFaces library compatibility with RichFaces library and give an example of building OpenFaces application with Maven tool. The demo can run on Tomcat 6.0 application server without any changes.
+</p>
+<p>
+To start compatibility demo execute maven script placed in project's root - it will build the demo war-file, which is ready for deploying and running.
+</p>
+<p>
+Note: since OpenFaces library is not available in the public repository yet, you should add it to your local repository. To install OpenFaces library to your local repository use the following command:
+<pre>
+mvn install:install-file -DgroupId= org.openfaces
+
+                         -DartifactId=openfaces
+
+                         -Dversion= 2.0.EAP2
+
+                         -Dpackaging=jar
+
+                         -Dfile=/path/to/openfaces/lib
+
+                         -DgeneratePom=true
+</pre>
+</p>
+</body>
+
+</html>
