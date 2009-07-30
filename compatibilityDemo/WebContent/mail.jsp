@@ -236,8 +236,8 @@
                     <f:facet name="header">
                         <h:outputText value="#{EMailBean.folder.incoming ? 'Received' : 'Sent'}"/>
                     </f:facet>
-                    <%--h:outputText value="#{email.receivedDate}" style="margin-left: 5px;"
-                                  converter="#{EMailBean.selection.receivedDateConverter}"/--%>
+                    <h:outputText value="#{email.receivedDate}" style="margin-left: 5px;"
+                                  converter="#{EMailBean.selection.receivedDateConverter}"/>
                 </o:column>
             </o:treeTable>
             <o:reloadComponents for="emailsTreeTable" event="onchange" componentIds="emailDetails"
