@@ -241,7 +241,7 @@
 	                </o:column>
 	            </o:treeTable>
     		</h:panelGroup>
-            <h:panelGroup layout="block" id="emailDetails" style="height:300px">
+            <h:panelGroup layout="block" id="emailDetails" style="height:300px;padding-left:20px">
 	           	<h:panelGroup rendered="#{EMailBean.selectedEMail != null}">
 	           		<h:panelGroup layout="block" style="padding-top:20px">
 	            		<h:outputText value="Subject: " styleClass="email-field email-field-caption"/>
