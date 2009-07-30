@@ -3,7 +3,6 @@
 	<name>RichFacesTest</name>
 	<comment></comment>
 	<projects>
-		<project>OpenFaces</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
