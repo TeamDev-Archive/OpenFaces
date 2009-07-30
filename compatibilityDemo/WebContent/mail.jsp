@@ -7,14 +7,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Email</title>
-    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen,projection"/>
-    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon"/>
-    <link rel="icon" href="favicon.ico" type="image/vnd.microsoft.icon"/>
+	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	    <title>Email</title>
+	    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon"/>
+	    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen,projection"/>
 		<link rel="stylesheet" href="treetable.css" type="text/css" media="screen,projection"/>
 		<link rel="stylesheet" href="css/mail.css" type="text/css" media="screen,projection"/>
-		<script src="treetable.js" type="text/javascript"></script>
+
 		<script type="text/javascript">
 			function addSendButton(ed) {
 				ed.addButton("sendMail", {

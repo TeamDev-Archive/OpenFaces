@@ -22,7 +22,19 @@
     <link rel="icon" href="favicon.ico" type="image/vnd.microsoft.icon"/>
     <link rel="stylesheet" href="treetable.css" type="text/css" media="screen,projection"/>
     <link rel="stylesheet" href="css/mail.css" type="text/css" media="screen,projection"/>
-    <script src="treetable.js" type="text/javascript"></script>
+    <script type="text/javascript">
+		function refreshButtons() {
+			var saveChangesBtn = O$('form:saveChangesLink');
+			var inEditingState = saveChangesBtn != null;
+			return inEditingState;
+		}
+		function requestsSelectionChanged() {
+			var inEditingState = refreshButtons();
+	
+			if (inEditingState)
+				O$('form:saveChangesLink').onclick();
+		}
+	</script>
 </head>
 <body onload="refreshButtons();">
 <f:view>

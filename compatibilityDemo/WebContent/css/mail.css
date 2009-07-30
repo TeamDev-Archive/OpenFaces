@@ -99,4 +99,12 @@ body {margin:0px}
 	background-position:0 -50px;
 }
 
+.category-name {
+  border-bottom: 1px solid #93a0aa !important;
+  padding-top: 7px;
+  color: #758795;
+  font-weight: bold;
+  font-size: 14px;
+  font-family: Tahoma;
+}
 
