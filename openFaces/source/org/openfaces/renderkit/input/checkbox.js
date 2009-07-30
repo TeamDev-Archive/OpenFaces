@@ -257,7 +257,7 @@ O$.Checkbox = {
       if (checkbox._selectedClass || checkbox._unselectedClass) {
         O$.setElementStyleMappings(checkbox, {
           selected: checkbox.isSelected() ? checkbox._selectedClass : null,
-          unselected: (checkbox.isDefined() && !checkbox.isSelected()) ? checkbox._unselectedClass : null,
+          unselected: (checkbox.isDefined() && !checkbox.isSelected()) ? checkbox._unselectedClass : null
         });
       }
     }

@@ -19,21 +19,21 @@ import org.openfaces.util.ResourceUtil;
 
 public class SelectBooleanCheckboxImageManager {
 
-    public static final String DEFAULT_SELECTED_IMAGE = "selectedCheckbox.gif";
-    public static final String DEFAULT_UNSELECTED_IMAGE = "unselectedCheckbox.gif";
-    public static final String DEFAULT_UNDEFINED_IMAGE = "undefinedCheckbox.gif";
+    public static final String DEFAULT_SELECTED_IMAGE = "selectedCheckbox.png";
+    public static final String DEFAULT_UNSELECTED_IMAGE = "unselectedCheckbox.png";
+    public static final String DEFAULT_UNDEFINED_IMAGE = "undefinedCheckbox.png";
 
-    public static final String DEFAULT_ROLLOVER_SELECTED_IMAGE = "rolloverSelectedCheckbox.gif";
-    public static final String DEFAULT_ROLLOVER_UNSELECTED_IMAGE = "rolloverUnselectedCheckbox.gif";
-    public static final String DEFAULT_ROLLOVER_UNDEFINED_IMAGE = "rolloverUndefinedCheckbox.gif";
+    public static final String DEFAULT_ROLLOVER_SELECTED_IMAGE = "rolloverSelectedCheckbox.png";
+    public static final String DEFAULT_ROLLOVER_UNSELECTED_IMAGE = "rolloverUnselectedCheckbox.png";
+    public static final String DEFAULT_ROLLOVER_UNDEFINED_IMAGE = "rolloverUndefinedCheckbox.png";
 
-    public static final String DEFAULT_PRESSED_SELECTED_IMAGE = "pressedSelectedCheckbox.gif";
-    public static final String DEFAULT_PRESSED_UNSELECTED_IMAGE = "pressedUnselectedCheckbox.gif";
-    public static final String DEFAULT_PRESSED_UNDEFINED_IMAGE = "pressedUndefinedCheckbox.gif";
+    public static final String DEFAULT_PRESSED_SELECTED_IMAGE = "pressedSelectedCheckbox.png";
+    public static final String DEFAULT_PRESSED_UNSELECTED_IMAGE = "pressedUnselectedCheckbox.png";
+    public static final String DEFAULT_PRESSED_UNDEFINED_IMAGE = "pressedUndefinedCheckbox.png";
 
-    public static final String DEFAULT_DISABLED_SELECTED_IMAGE = "disabledSelectedCheckbox.gif";
-    public static final String DEFAULT_DISABLED_UNSELECTED_IMAGE = "disabledUnselectedCheckbox.gif";
-    public static final String DEFAULT_DISABLED_UNDEFINED_IMAGE = "disabledUndefinedCheckbox.gif";
+    public static final String DEFAULT_DISABLED_SELECTED_IMAGE = "disabledSelectedCheckbox.png";
+    public static final String DEFAULT_DISABLED_UNSELECTED_IMAGE = "disabledUnselectedCheckbox.png";
+    public static final String DEFAULT_DISABLED_UNDEFINED_IMAGE = "disabledUndefinedCheckbox.png";
 
 
     public static boolean hasImages(SelectBooleanCheckbox checkbox) {
