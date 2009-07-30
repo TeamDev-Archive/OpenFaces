@@ -168,6 +168,12 @@
   </managed-bean>
 
   <managed-bean>
+    <managed-bean-name>CheckboxTest</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.selectbooleancheckbox.CheckboxTest</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
     <managed-bean-name>ColorListBean</managed-bean-name>
     <managed-bean-class>org.openfaces.testapp.datatable.ColorListBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
