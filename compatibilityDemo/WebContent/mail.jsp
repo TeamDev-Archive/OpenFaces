@@ -74,21 +74,21 @@
     	<o:borderLayoutPanel>
     		<o:sidePanel alignment="top" resizable="false" collapsible="false" size="72px">
                 <rich:toolBar height="64px" styleClass="navigation-panel-mail" itemSeparator="none">
-                	<rich:toolBarGroup style="width:215px">
+                	<rich:toolBarGroup style="text-align:left">
 	    				<h:graphicImage url="images/logo.png" alt="OpenFaces"/>
-	    				<h:outputText value="Email" styleClass="caption"/>
+	    				<h:outputText value="Email" styleClass="caption" style="padding-right:50px"/>
                 	</rich:toolBarGroup>
                 	<rich:toolBarGroup styleClass="buttons">
 	                    <h:outputLink value="#" onclick="O$('form:newMessage').showCentered(); return false;">
-		    				<h:graphicImage url="images/mail/navigation-mail-new.png"/>
+		    				<h:panelGroup layout="block" styleClass="new-message"/>
 		    				<h:outputText value="New message"/>
 	                    </h:outputLink>
 	                    <h:outputLink value="#">
-		    				<h:graphicImage url="images/mail/navigation-mail-reply.png"/>
+		    				<h:panelGroup layout="block" styleClass="reply"/>
 		    				<h:outputText value="Reply"/>
 	                    </h:outputLink>
 	                    <h:outputLink value="#">
-		    				<h:graphicImage url="images/mail/navigation-mail-forward.png"/>
+		    				<h:panelGroup layout="block" styleClass="forward"/>
 		    				<h:outputText value="Forward"/>
 	                    </h:outputLink>
 		    		</rich:toolBarGroup>
