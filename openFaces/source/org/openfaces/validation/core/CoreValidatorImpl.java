@@ -9,16 +9,16 @@ import javax.el.ELContext;
 import javax.el.ELException;
 import javax.el.ELResolver;
 import javax.el.ValueExpression;
-import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import java.beans.FeatureDescriptor;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
-import java.lang.annotation.Annotation;
 
 /**
  * <p>
@@ -75,7 +75,7 @@ public class CoreValidatorImpl implements CoreValidator {
 
         ClassValidator<T> validator = null;
         if (modelClass != null) {
-            validator = getValidator(modelClass);
+            validator = getValidatorByClass(modelClass);
         }
         return validator;
     }
@@ -87,7 +87,7 @@ public class CoreValidatorImpl implements CoreValidator {
      */
 
     @SuppressWarnings("unchecked")
-    public <T> ClassValidator<T> getValidator(Class<T> modelClass) {
+    public <T> ClassValidator<T> getValidatorByClass(Class<T> modelClass) {
         Key key = new Key(modelClass, new Locale("en"));
 
         ClassValidator<T> result = (ClassValidator<T>) ourClassValidators
@@ -123,8 +123,8 @@ public class CoreValidatorImpl implements CoreValidator {
         ELContext decoratedContext = EL.createELContext(elContext,
                 validationAnnotationsELResolver);
         valueExpression.setValue(decoratedContext, value);
-//        return validationAnnotationsELResolver.getInvalidValues();
-        return new InvalidValue[]{};
+        return validationAnnotationsELResolver.getInvalidValues();
+        //return new InvalidValue[]{};
     }
 
 
@@ -133,7 +133,6 @@ public class CoreValidatorImpl implements CoreValidator {
         ValidationAnnotationsELResolver validationAnnotationsELResolver = new ValidationAnnotationsELResolver(elContext.getELResolver());
         ELContext decoratedContext = EL.createELContext(elContext,
                 validationAnnotationsELResolver);
-
         String emptyValue = new String("");
         valueExpression.setValue(decoratedContext, emptyValue);
 
@@ -144,6 +143,7 @@ public class CoreValidatorImpl implements CoreValidator {
         private ELResolver delegate;
         private boolean clientValidationMode;
         private List<ClientValidator> clientValidators;
+        private InvalidValue[] invalidValues;
 
         public ValidationAnnotationsELResolver(ELResolver delegate) {
             this.delegate = delegate;
@@ -191,6 +191,10 @@ public class CoreValidatorImpl implements CoreValidator {
             return clientValidators;
         }
 
+        public InvalidValue[] getInvalidValues() {
+            return invalidValues;
+        }
+
         @Override
         public void setValue(ELContext context, Object base, Object property,
                              Object value) throws NullPointerException, ELException {
@@ -209,6 +213,13 @@ public class CoreValidatorImpl implements CoreValidator {
 
                 if (skipValidation)
                     return;
+
+                context.setPropertyResolved(true);
+                String propertyNameString = property.toString();
+
+                ClassValidator<Object> classValidator = getValidator(base);
+                invalidValues = classValidator
+                        .getPotentialInvalidValues(propertyNameString, value);
 
                 List<Annotation> annotations = validationAnnotationsService.
                         findValidationAnnotationsOnProperty(base.getClass(), property.toString());

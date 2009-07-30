@@ -7,6 +7,7 @@
   <property name="openfaces-dependencies.lib.dir" location="${lib.dir}/openfaces-dependencies"/>
   <property name="tomahawk.lib.dir" location="${lib.dir}/tomahawk"/>
   <property name="richfaces.lib.dir" location="${lib.dir}/richfaces"/>
+  <property name="hibernate.lib.dir" location="../../lib/hibernate"/>
   <property name="jsf.lib.dir" location="${lib.dir}/mojarra"/>
   <property name="src.dir" location="../core/source"/>
   <property name="web-inf.dir" location="web/WEB-INF"/>
@@ -53,6 +54,11 @@
     <include name="richfaces-impl-3.3.1.GA.jar"/>
     <include name="richfaces-ui-3.3.1.GA.jar"/>
   </fileset>
+
+  <fileset id="hibernate-libs" dir="${hibernate.lib.dir}">
+     <include name="hibernate3.jar"/>
+     <include name="hibernate-annotations.jar"/>
+   </fileset>  
 
   <fileset id="mojarra-1.2" dir="${jsf.lib.dir}">
     <include name="jsf-api-1.2_12-b01.jar"/>
@@ -111,6 +117,7 @@
       <lib refid="openfaces-dependencies"/>
       <lib refid="tomahawk-libs"/>
       <lib refid="richfaces-libs"/>
+      <lib refid="hibernate-libs"/>
       <lib refid="mojarra-1.2"/>
       <classes dir="${classes.dir}"/>
     </war>
@@ -130,6 +137,7 @@
           <include name="openfaces-dependencies/jdom-1.0.jar"/>
           <include name="openfaces-dependencies/jfreechart-1.0.12.jar"/>
           <include name="openfaces-dependencies/jcommon-1.0.15.jar"/>
+          <include name="openfaces-dependencies/hibernate-validator.jar"/>
           <include name="jstl-1.1.0.jar"/>
           <include name="openfaces-dependencies/ss_css2-0.9.4.jar"/>
           <include name="richfaces/richfaces-api-3.3.1.GA.jar"/>

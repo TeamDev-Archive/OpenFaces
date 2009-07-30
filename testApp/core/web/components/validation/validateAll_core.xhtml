@@ -1,0 +1,31 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich">
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  <o:clientValidationSupport clientValidation="onDemand"/>
+  <br/>
+  <br/>
+  <o:validateAll>
+    Name<br/>
+    <h:inputText id="name" value="#{ValidateAllBean.name}"/><br/>
+    <br/>
+    Email<br/>
+    <h:inputText id="email" value="#{ValidateAllBean.email}"/><br/>
+    <br/>
+    Join Date<br/>
+    <o:dateChooser id="joinDate" value="#{ValidateAllBean.joinDate}" pattern="dd/MM/yyyy"/><br/>
+    <br/>
+    Country<br/>
+    <o:dropDownField id="country" value="#{ValidateAllBean.country}" converter="#{ValidateAllBean.countryConverter}">
+      <o:dropDownItems value="#{ValidateAllBean.countries}"/>
+    </o:dropDownField><br/>
+
+  </o:validateAll>
+  <h:messages/>
+  <br/>
+  <h:commandButton value="Submit" id="fmSubmit"/>
+  <br/>
+</div>

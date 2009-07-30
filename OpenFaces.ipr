@@ -752,7 +752,7 @@
   </component>
   <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
-    <option name="state" value="http://svn-new/TeamDev/OpenFaces/trunk/OpenFaces.ipr" />
+    <option name="state" value="project://C:\Projects\OpenFaces\trunk\OpenFaces.ipr" />
   </component>
   <component name="ProjectModuleManager">
     <modules>
@@ -1168,6 +1168,14 @@
       <SOURCES>
         <root url="jar://$PROJECT_DIR$/libsrc/seleniuminspector-sources.jar!/" />
       </SOURCES>
+    </library>
+    <library name="hibernate">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/hibernate/hibernate3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/hibernate/hibernate-annotations.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
     </library>
   </component>
 </project>

@@ -679,17 +679,17 @@
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
 
-    <managed-bean>
-      <managed-bean-name>JSFC2321</managed-bean-name>
-      <managed-bean-class>org.openfaces.testapp.requests.JSFC2321</managed-bean-class>
-      <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+  <managed-bean>
+    <managed-bean-name>JSFC2321</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.requests.JSFC2321</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
 
-    <managed-bean>
-      <managed-bean-name>JSFC2167</managed-bean-name>
-      <managed-bean-class>org.openfaces.testapp.requests.JSFC2167</managed-bean-class>
-      <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+  <managed-bean>
+    <managed-bean-name>JSFC2167</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.requests.JSFC2167</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
 
   <managed-bean>
     <managed-bean-name>DefaultViewTestBean</managed-bean-name>
@@ -766,6 +766,12 @@
   <managed-bean>
     <managed-bean-name>ForEachBean</managed-bean-name>
     <managed-bean-class>org.openfaces.testapp.foreach.ForEachBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ValidateAllBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.validation.ValidateAllBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
 

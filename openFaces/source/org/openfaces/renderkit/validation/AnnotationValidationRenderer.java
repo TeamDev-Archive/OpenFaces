@@ -19,10 +19,14 @@ import org.openfaces.validation.CoreValidator;
 import org.openfaces.validation.core.CoreValidatorImpl;
 import org.openfaces.validation.validators.AnnotationValidator;
 import org.openfaces.validator.ClientValidator;
+import org.hibernate.validator.InvalidValue;
 
 import javax.el.ELContext;
+import javax.el.ELException;
+import javax.el.ValueExpression;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
 import java.io.IOException;
@@ -50,10 +54,73 @@ public class AnnotationValidationRenderer extends RendererBase {
         }
     }
 
+
     protected void processChildren(FacesContext context, UIComponent component) throws IOException {
+        UIValidation validateAll = (UIValidation) component;
+        if (!validateAll.isValidatorsAdded()) {
+            addValidators(validateAll.getChildren(), context);
+            validateAll.setValidatorsAdded(true);
+        }
 
         RenderingUtil.renderChildren(context, component);
     }
+
+    private boolean isValueRequired(FacesContext context, Object child) {
+        ELContext elContext = context.getELContext();
+        ValueExpression valueExpression = ((UIComponent) child)
+                .getValueExpression("value");
+
+        if (valueExpression != null) {
+            Object value = valueExpression.getValue(elContext);
+
+            InvalidValue[] invalidValues = null;
+            try {
+                invalidValues = ourValidator.validate(
+                        valueExpression, elContext, null);
+            } catch (ELException ele) {
+                // Attempt to set null value failed,this means that value is
+                // required for this component
+                return true;
+            } finally {
+                // restore the value
+                valueExpression.setValue(elContext, value);
+            }
+
+            if (invalidValues != null && invalidValues.length > 0) {
+                // Attempt to set null value failed,this means that value is
+                // required for this component
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    private void addValidators(List<UIComponent> children, FacesContext context) {
+        for (Object child : children) {
+            if (child instanceof EditableValueHolder) {
+                EditableValueHolder evh = (EditableValueHolder) child;
+                if (evh.getValidators().length == 0) {
+
+                    evh.addValidator(new AnnotationValidator());
+                    if (isValueRequired(context, child)) {
+                        evh.setRequired(true);
+                        if (child instanceof UIInput) {
+                            ((UIInput) child)
+                                    .setRequiredMessage("Value is required for component with id "
+                                            + ((UIInput) child)
+                                            .getId() + "");
+                        }
+                    }
+
+                }
+            } else if (child instanceof UIComponent) {
+                addValidators(((UIComponent) child).getChildren(), context);
+            }
+        }
+    }
+
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -62,9 +129,9 @@ public class AnnotationValidationRenderer extends RendererBase {
         if (component.isRendered()) {
             UIValidation validateAll = (UIValidation) component;
 
-            if (!validateAll.isValidatorsAdded()) {
-                renderClientValidators(validateAll.getChildren(), context);
-            }
+
+            renderClientValidators(validateAll.getChildren(), context);
+
         }
     }
 

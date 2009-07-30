@@ -9,6 +9,7 @@
   <property name="tomahawk.lib.dir" location="../../lib/tomahawk"/>
   <property name="facelets.lib.dir" location="../../lib/facelets"/>
   <property name="richfaces.lib.dir" location="../../lib/richfaces"/>
+  <property name="hibernate.lib.dir" location="../../lib/hibernate"/>
   <property name="jsf.lib.dir" location="../../lib/mojarra"/>
   <property name="src.dir" location="../core/source"/>
   <property name="web-inf.dir" location="web/WEB-INF"/>
@@ -61,6 +62,10 @@
     <include name="jsf-impl-1.2_12-b01.jar"/>
   </fileset>
 
+  <fileset id="hibernate-libs" dir="${hibernate.lib.dir}">
+    <include name="hibernate3.jar"/>
+    <include name="hibernate-annotations.jar"/>
+  </fileset>
 
   <fileset id="facelets" dir="${facelets.lib.dir}">
     <include name="jsf-facelets-1.1.14.jar"/>
@@ -124,6 +129,7 @@
       <lib refid="mojarra-1.2"/>
       <lib refid="el-ri"/>
       <lib refid="facelets"/>
+      <lib refid="hibernate-libs"/>
       <classes dir="${classes.dir}"/>
     </war>
   </target>
@@ -144,7 +150,8 @@
           <include name="apache/commons-logging-1.0.4.jar"/>
           <include name="openfaces-dependencies/jdom-1.0.jar"/>
           <include name="openfaces-dependencies/jfreechart-1.0.12.jar"/>
-          <include name="openfaces-dependencies/jcommon-1.0.15.jar"/>
+          <include name="openfaces-dependencies/jcommon-1.0.15.jar"/>          
+          <include name="openfaces-dependencies/hibernate-validator.jar"/>
           <include name="jstl-1.1.0.jar"/>
           <include name="openfaces-dependencies/ss_css2-0.9.4.jar"/>
           <include name="facelets/jsf-facelets-1.1.14.jar"/>
