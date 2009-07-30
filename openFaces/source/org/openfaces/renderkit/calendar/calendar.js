@@ -604,7 +604,7 @@ O$.Calendar = {
       }
     }
     if (calendar._onPeriodChange) {
-      var e = O$.createEvent("onperiodchange");
+      var e = O$.createEvent("periodchange");
       calendar._onPeriodChange(e);
     }
     calendar._dropsInitialized = false;
