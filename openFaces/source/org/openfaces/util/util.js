@@ -760,6 +760,21 @@ if (!window.O$) {
     return O$._safari3;
   };
 
+  O$.isSafari4AndLate = function() {
+    if (O$._safari4 == undefined)
+      if (O$.isSafari()) {
+        O$._safari4 = /\bversion(\s|\/)(\d{2,}|[4-9]{1})/i.test(navigator.userAgent);
+      }
+    return O$._safari4;
+  };
+
+  O$.isSafari3 = function() {
+    if (O$._safari3only == undefined) {
+      O$._safari3only = O$.isSafari3AndLate() && !O$.isSafari4AndLate();
+    }
+    return O$._safari3only;
+  };
+
   O$.isSafariOnMac = function() {
     if (O$._safariOnMac == undefined) {
       O$._safariOnMac = O$.isSafari() && O$.userAgentContains("Macintosh");

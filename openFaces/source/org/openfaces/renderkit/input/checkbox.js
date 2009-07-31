@@ -55,11 +55,18 @@ O$.Checkbox = {
 
       updateImage(checkbox); // Firefox page reload keeps form values
 
+      checkbox._indents = {};
+      checkbox._defaultIndents = {
+        marginLeft: O$.getNumericStyleProperty(checkbox, "margin-left") + "px",
+        marginRight: O$.getNumericStyleProperty(checkbox, "margin-right") + "px",
+        marginBottom: O$.getNumericStyleProperty(checkbox, "margin-bottom") + "px"
+      };
+
       // using "getDisabled" instead of "isDisabled "
       // because of standard "isDisabled" property
       checkbox.getDisabled = function() {
         return this._disabled;
-      }
+      };
 
       checkbox.setDisabled = function(flag) {
         if (this._disabled !== flag) {
@@ -73,23 +80,23 @@ O$.Checkbox = {
           updateImage(this);
           updateStyles(this);
         }
-      }
+      };
 
       checkbox.isSelected = function() {
         return this._state.value === "on";
-      }
+      };
 
       checkbox.setSelected = function(flag) {
         if (this.isSelected() !== flag) {
-          this._state.value = flag ? "on" : "off"
+          this._state.value = flag ? "on" : "off";
           updateImage(this);
           updateStyles(this);
         }
-      }
+      };
 
       checkbox.isDefined = function() {
         return this._state.value !== "nil";
-      }
+      };
 
       checkbox.setDefined = function(flag) {
         if (this.isDefined() !== flag) {
@@ -103,7 +110,7 @@ O$.Checkbox = {
           updateImage(this);
           updateStyles(this);
         }
-      }
+      };
 
       O$.addEventHandler(checkbox, "mousedown", function() {
         if (!checkbox._disabled) {
@@ -138,18 +145,13 @@ O$.Checkbox = {
 
       // html checkbox
 
-      checkbox.setDisabled = function(flag) { this.disabled = flag; updateStyles(this); }
-      checkbox.getDisabled = function() { return this.disabled; }
-      checkbox.setSelected = function(flag) { this.checked = flag; updateStyles(this); }
-      checkbox.isSelected = function() { return this.checked; }
-      checkbox.setDefined = function() { } // do nothing
-      checkbox.isDefined = function() { return true; }
+      checkbox.setDisabled = function(flag) { this.disabled = flag; updateStyles(this); };
+      checkbox.getDisabled = function() { return this.disabled; };
+      checkbox.setSelected = function(flag) { this.checked = flag; updateStyles(this); };
+      checkbox.isSelected = function() { return this.checked; };
+      checkbox.setDefined = function() { }; // do nothing
+      checkbox.isDefined = function() { return true; };
 
-    }
-
-    if (needFixPosition(checkbox)) {
-      checkbox._indents = {};
-      checkbox._defaultIndent = O$.getNumericStyleProperty(checkbox, "margin-left") + "px";
     }
 
     updateStyles(checkbox);
@@ -222,7 +224,7 @@ O$.Checkbox = {
         "nil": "on",
         "on": "off"
       }
-    }
+    };
 
     function nextState(checkbox) {
       checkbox._state.value = stateTable[checkbox._tristate ? "tristate" : "bistate"][checkbox._state.value];
@@ -263,9 +265,8 @@ O$.Checkbox = {
     }
 
     function updateStyles(checkbox) {
-      if (needFixPosition(checkbox)) {
-        checkbox.style.marginLeft = checkbox._defaultIndent;
-      }
+      resetPosition(checkbox);
+
       O$.setElementStyleMappings(checkbox, {
         selected: checkbox.isSelected() ? checkbox._selectedClass : null,
         unselected: (checkbox.isDefined() && !checkbox.isSelected()) ? checkbox._unselectedClass : null,
@@ -273,23 +274,48 @@ O$.Checkbox = {
         rollover: checkbox._rollover ? checkbox._rolloverClass : null,
         focused: checkbox._focused ? checkbox._focusedClass : null
       });
+
       fixPosition(checkbox);
     }
 
-    function fixPosition(checkbox) {
-      if (needFixPosition(checkbox)) {
-        var styleKey = getStyleKey(checkbox);
-        var indent = checkbox._indents[styleKey];
-        if (!indent) {
-          indent = (4 + O$.getNumericStyleProperty(checkbox, "margin-left")) + "px";
-          checkbox._indents[styleKey] = indent;
+    function resetPosition(checkbox) {
+      if (checkbox._images) {
+        for (indentKey in checkbox._defaultIndents) {
+          checkbox.style[indentKey] = checkbox._defaultIndents[indentKey];
         }
-        checkbox.style.marginLeft = indent;
       }
     }
 
-    function needFixPosition(checkbox) {
-      return !isOpera && checkbox._images;
+    function fixPosition(checkbox) {
+      if (checkbox._images) {
+        var styleKey = getStyleKey(checkbox);
+        var indent = checkbox._indents[styleKey];
+
+        if (!indent) {
+          indent = getIndentData(checkbox);
+          checkbox._indents[styleKey] = indent;
+        }
+
+        for (indentKey in indent) {
+          checkbox.style[indentKey] = indent[indentKey];
+        }
+      }
+    }
+
+    function getIndentData(checkbox) {
+      var indent = {};
+      var delta = O$.Checkbox.indentDelta;
+
+      if (delta.marginLeft) {
+        indent.marginLeft = (delta.marginLeft + O$.getNumericStyleProperty(checkbox, "margin-left")) + "px";
+      }
+      if (delta.marginRight) {
+        indent.marginRight = (delta.marginRight + O$.getNumericStyleProperty(checkbox, "margin-right")) + "px";
+      }
+      if (delta.marginBottom) {
+        indent.marginBottom = (delta.marginBottom + O$.getNumericStyleProperty(checkbox, "margin-bottom")) + "px";
+      }
+      return indent;
     }
 
     function getStyleKey(checkbox) {
@@ -299,6 +325,32 @@ O$.Checkbox = {
       return result;
     }
 
-  }
+  },
+
+  indentDelta :
+    // in-place call
+    function() {
+      var delta = {};
+
+      if (O$.isExplorer8()) {
+        delta.marginLeft = 3;
+      } else if (!O$.isOpera()) {
+        delta.marginLeft = 4;
+      }
+
+      if (O$.isSafari3()) {
+        delta.marginRight = 1;
+      } else {
+        delta.marginRight = 3;
+      }
+
+      if (O$.isExplorer7() || O$.isExplorer6() || O$.isOpera()) {
+        delta.marginBottom = -1;
+      } else if (O$.isSafari3()) {
+        delta.marginBottom = -3;
+      }
+
+      return delta;
+    } ()
 
 };
