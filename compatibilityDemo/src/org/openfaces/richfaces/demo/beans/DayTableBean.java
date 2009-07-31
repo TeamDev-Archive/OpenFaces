@@ -4,7 +4,6 @@ import org.openfaces.component.timetable.AbstractTimetableEvent;
 import org.openfaces.component.timetable.TimetableChangeEvent;
 import org.openfaces.component.timetable.TimetableEvent;
 import org.openfaces.component.timetable.EventActionEvent;
-import org.openfaces.component.table.DataTable;
 import org.openfaces.util.FacesUtil;
 import org.richfaces.model.CalendarDataModel;
 import org.richfaces.model.CalendarDataModelItem;
@@ -34,8 +33,7 @@ public class DayTableBean implements CalendarDataModel, Serializable {
     private TaskDateConverter taskDateConverter = new TaskDateConverter();
     private Task currentlyEditedTask;
     private Task selectedTask;
-    private DataTable tasksTable;
-    private String currentDescription;
+    private Task cachedTask;
 
     private boolean summaryColumnRendered = true;
     private boolean startTimeColumnRendered = true;
@@ -265,6 +263,14 @@ public class DayTableBean implements CalendarDataModel, Serializable {
         return null;
     }
 
+    public Task getCachedTask() {
+        return cachedTask;
+    }
+
+    public void setCachedTask(Task cachedTask) {
+        this.cachedTask = cachedTask;
+    }
+
     private static final class CalendarItemStyle implements CalendarDataModelItem {
     	
     	private static final String DAY_WITH_EVENT_CLASS_NAME = "calendar-day-with-event";
@@ -358,29 +364,9 @@ public class DayTableBean implements CalendarDataModel, Serializable {
         this.currentlyEditedTask = currentlyEditedTask;
     }
 
-    public DataTable getTasksTable() {
-        return tasksTable;
-    }
-
-    public void setTasksTable(DataTable tasksTable) {
-        this.tasksTable = tasksTable;
-    }
-
-    public int getCurrentRowIndex() {
-        return getTasksTable().getRowIndex();
-    }
-
     public boolean isEditingThisRow() {
         Task task = fetchTaskVariable();
         return task.equals(currentlyEditedTask);
-    }
-
-    public String getCurrentDescription() {
-        return currentDescription;
-    }
-
-    public void setCurrentDescription(String currentDescription) {
-        this.currentDescription = currentDescription;
     }
 
     public boolean isSummaryColumnRendered() {
@@ -451,20 +437,12 @@ public class DayTableBean implements CalendarDataModel, Serializable {
         return locale;
     }
 
-    public void refreshCurrentDescription() {
-        Task rowData = (Task) getTasksTable().getRowData();
-        if (rowData != null) {
-            currentDescription = rowData.getDescription();
-        } else {
-            currentDescription = "";
-        }
-    }
-
     private Task fetchTaskVariable() {
         return (Task) FacesUtil.getRequestMapValue("task");
     }
 
     public void editTask() {
+        cachedTask = new Task(selectedTask.getName(), selectedTask.getStartDate(), selectedTask.getEndDate(), selectedTask.getDescription());
         currentlyEditedTask = selectedTask;
     }
 
@@ -483,6 +461,16 @@ public class DayTableBean implements CalendarDataModel, Serializable {
     public void saveChanges() {
         currentlyEditedTask = null;
     }
+
+    public void cancelEditing(){
+        currentlyEditedTask.setName(cachedTask.getName());
+        currentlyEditedTask.setStartDate(cachedTask.getStartDate());
+        currentlyEditedTask.setEndDate(cachedTask.getEndDate());
+        currentlyEditedTask.setDescription(cachedTask.getDescription());
+        currentlyEditedTask = null;
+    }
+
+
 
     private class TaskDateConverter implements Converter, Serializable {
         public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
