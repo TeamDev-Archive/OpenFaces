@@ -7,17 +7,6 @@
 <br/>
 <o:clientValidationSupport clientValidation="onSubmit"/>
 <h3>Client side</h3>
-validate All component
-<br/>
-<o:validateAll>
-<h:inputText id="name" value="#{ValidateAllBean.name}"/>
-</o:validateAll>
-<br/>
-<h:message id="NameMessage" for="name" showDetail="false" showSummary="true" tooltip="true"
-           style="color:red;"/>
-
-<br/>
-
 required="true"
 <br/>
 <h:inputText id="required" value="#{ValidBean.required}" required="true"/>
@@ -119,7 +108,6 @@ Number converter (convertNumber)
 <h:message id="NumberConvMessage" for="numberConv" showDetail="false" showSummary="true" tooltip="true"
            style="color:red;"/>
 <br/>
-
 <h:commandButton id="submitBt" type="submit" value="Submit"></h:commandButton>
 <h:commandButton id="fillValid" onclick="fillValidData('clientValidation:'); return false;"
                  value="Fill Valid Data"/>
