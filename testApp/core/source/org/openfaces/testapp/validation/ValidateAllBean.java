@@ -12,13 +12,7 @@
 
 package org.openfaces.testapp.validation;
 
-import org.hibernate.validator.NotNull;
-import org.hibernate.validator.NotEmpty;
-import org.hibernate.validator.Past;
-import org.hibernate.validator.Email;
-import org.hibernate.validator.Pattern;
-import org.hibernate.validator.Digits;
-import org.hibernate.validator.Length;
+import org.hibernate.validator.*;
 
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
@@ -45,10 +39,7 @@ public class ValidateAllBean {
     private String email;
     private String url;
 
-
-    /*@NotNull
-    @NotEmpty*/
-    @Length(min = 3, max=10)
+    @NotEmpty    
     public String getName() {
         return name;
     }
@@ -57,7 +48,7 @@ public class ValidateAllBean {
         this.name = name;
     }
 
-    @Digits(integerDigits = 2, fractionalDigits = 0)
+    @Min(value = 10)
     public int getAge() {
         return age;
     }
