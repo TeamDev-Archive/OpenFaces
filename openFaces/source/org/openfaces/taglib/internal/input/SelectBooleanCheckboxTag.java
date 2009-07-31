@@ -59,6 +59,8 @@ public class SelectBooleanCheckboxTag extends AbstractUIInputTag {
         setStringProperty(uiComponent, "selectedClass");
         setStringProperty(uiComponent, "unselectedStyle");
         setStringProperty(uiComponent, "unselectedClass");
+        setStringProperty(uiComponent, "undefinedStyle");
+        setStringProperty(uiComponent, "undefinedClass");
     }
 
 }

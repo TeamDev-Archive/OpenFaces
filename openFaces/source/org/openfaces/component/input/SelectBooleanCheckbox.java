@@ -68,6 +68,8 @@ public class SelectBooleanCheckbox extends OUIInputBase {
     private String selectedClass;
     private String unselectedStyle;
     private String unselectedClass;
+    private String undefinedStyle;
+    private String undefinedClass;
 
     public boolean isSelected() {
         return (Boolean.TRUE.equals(getValue()));
@@ -275,6 +277,22 @@ public class SelectBooleanCheckbox extends OUIInputBase {
         this.unselectedClass = unselectedClass;
     }
 
+    public String getUndefinedStyle() {
+    	return ValueBindings.get(this, "undefinedStyle", undefinedStyle);
+    }
+
+    public void setUndefinedStyle(String undefinedStyle) {
+    	this.undefinedStyle = undefinedStyle;
+    }
+
+    public String getUndefinedClass() {
+    	return ValueBindings.get(this, "undefinedClass", undefinedClass);
+    }
+
+    public void setUndefinedClass(String undefinedClass) {
+    	this.undefinedClass = undefinedClass;
+    }
+
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context),
                 accesskey,
@@ -299,7 +317,9 @@ public class SelectBooleanCheckbox extends OUIInputBase {
                 selectedStyle,
                 selectedClass,
                 unselectedStyle,
-                unselectedClass
+                unselectedClass,
+                undefinedStyle,
+                undefinedClass
         };
     }
 
@@ -330,6 +350,8 @@ public class SelectBooleanCheckbox extends OUIInputBase {
         selectedClass = (String) values[i++];
         unselectedStyle = (String) values[i++];
         unselectedClass = (String) values[i++];
+        undefinedStyle = (String) values[i++];
+        undefinedClass = (String) values[i++];
     }
 
     @Override

@@ -25994,7 +25994,7 @@ and it is automatically triggered on any form submission. -->
 
   <!-- SelectBooleanCheckbox TAG DECLARATION -->
   <tag>
-    <description>The SelectBooleanCheckbox component is an extended version of the standard 
+    <description>The SelectBooleanCheckbox component is an extended version of the standard
       &lt;h:selectBooleanCheckbox&gt; component that adds such possibilities as tri-state support, customizing checkbox
       images and state-dependent styles.</description>
     <name>selectBooleanCheckbox</name>
@@ -26565,10 +26565,29 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>A style for the SelectBooleanCheckbox component in the undefined state.</description>
+      <name>undefinedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the SelectBooleanCheckbox component in the undefined state.</description>
+      <name>undefinedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
-  
-  
-   <tag>
+
+  <tag>
     <name>validateAll</name>
     <tag-class>org.openfaces.taglib.jsp.validation.AnnotationValidationJspTag</tag-class>
     <body-content>JSP</body-content>

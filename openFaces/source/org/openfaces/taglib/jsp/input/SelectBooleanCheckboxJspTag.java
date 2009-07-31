@@ -129,4 +129,12 @@ public class SelectBooleanCheckboxJspTag extends UIInputJspTag {
         getDelegate().setPropertyValue("unselectedClass", unselectedClass);
     }
 
+    public void setUndefinedStyle(ValueExpression undefinedStyle) {
+    	getDelegate().setPropertyValue("undefinedStyle", undefinedStyle);
+    }
+
+    public void setUndefinedClass(ValueExpression undefinedClass) {
+    	getDelegate().setPropertyValue("undefinedClass", undefinedClass);
+    }
+
 }
