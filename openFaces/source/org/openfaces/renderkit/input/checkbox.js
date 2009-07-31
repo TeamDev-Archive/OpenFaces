@@ -281,7 +281,7 @@ O$.Checkbox = {
         var styleKey = getStyleKey(checkbox);
         var indent = checkbox._indents[styleKey];
         if (!indent) {
-          indent = 4 + O$.getNumericStyleProperty(checkbox, "margin-left");
+          indent = (4 + O$.getNumericStyleProperty(checkbox, "margin-left")) + "px";
           checkbox._indents[styleKey] = indent;
         }
         checkbox.style.marginLeft = indent;
