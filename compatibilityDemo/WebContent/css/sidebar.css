@@ -31,6 +31,7 @@
 	border:solid 1px #886600;
 	display:block;
 	text-decoration:none;
+	cursor:pointer;
 }
 .Sidebar .SidebarFooter .ButtonPageSource span{
 	background:#fed45a url(../images/backgrounds/button-source.png) repeat-x 0 0;

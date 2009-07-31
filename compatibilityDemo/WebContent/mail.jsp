@@ -10,6 +10,7 @@
 	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	    <title>Email</title>
 	    <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon"/>
+	    <link rel="stylesheet" href="css/content.css" type="text/css" media="screen,projection"/>
 	    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen,projection"/>
 		<link rel="stylesheet" href="css/mail.css" type="text/css" media="screen,projection"/>
 
@@ -201,7 +202,7 @@
 	                        <h:graphicImage url="images/treetable/attachment.gif"/>
 	                    </f:facet>
 	                    <h:graphicImage url="images/treetable/attachment.gif"
-	                                    rendered="#{email.hasAttachment}"/>
+	                                    rendered="#{EMailBean.selection.hasAttachment}"/>
 	                </o:column>
 	                <o:column width="16px"
 	                          style="text-align: center;">

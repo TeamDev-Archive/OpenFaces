@@ -656,6 +656,15 @@ public class EMailsTreeTableBean {
         }
     }
 
+    public boolean getHasAttachment() {
+    	Object node = getEmailVar();
+    	if (!(node instanceof EMail))
+    		return false;
+    	
+    	EMail email = (EMail) node;
+    	return email.getHasAttachment();
+    }
+    
     public String getSortedColumnId() {
         return sortedColumnId;
     }

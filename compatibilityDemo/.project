@@ -3,6 +3,7 @@
 	<name>CompatibilityDemo</name>
 	<comment></comment>
 	<projects>
+		<project>OpenFaces</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

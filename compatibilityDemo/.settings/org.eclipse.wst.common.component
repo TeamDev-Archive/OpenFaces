@@ -3,6 +3,36 @@
     <wb-module deploy-name="CompatibilityDemo">
         <wb-resource deploy-path="/" source-path="/WebContent"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="OpenFaces.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/OpenFaces/OpenFaces">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/richfaces/richfaces-impl-3.3.1.GA.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/apache/commons-collections-3.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/apache/commons-beanutils-1.7.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/apache/commons-collections-3.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/apache/commons-digester-1.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/apache/commons-el-1.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/apache/commons-logging-1.1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/mojarra/jsf-impl-1.2_12-b01.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/Libs/jstl-1.1.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="CompatibilityDemo"/>
         <property name="java-output-path"/>
     </wb-module>
