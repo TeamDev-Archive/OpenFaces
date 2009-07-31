@@ -52,7 +52,7 @@
 <f:view>
     <h:form id="form">
 
-        <div id="Navigation" class="NavigationSelected-Calendar">
+        <div id="Navigation" class="NavigationSelected-Calendar" style="z-index:0">
             <div class="NavigationPanel" id="Navigation-Email">
                 <h1>
                     <img src="images/logo.png" alt="OpenFaces"/>

@@ -52,3 +52,5 @@ table.calendar-current td.calendar-day-with-event {font-style:italic;font-weight
 .day-table-toolbar .date .day-of-week {display:block;font-size:7pt;font-weight:lighter}
 .day-table-toolbar .date .day-of-month {display:block;font-size:16pt;font-weight:lighter}
 .day-table-toolbar a {text-decoration:none;border-style:none}
+
+.o_eventEditorDialog {position:fixed}
