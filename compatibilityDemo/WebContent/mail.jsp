@@ -259,13 +259,13 @@
             </h:panelGroup>
     	</o:borderLayoutPanel>
 
-        <o:popupLayer id="pageSource"
+        <o:window id="pageSource" width="70%" height="70%"
                       styleClass="SourceView"
                       modal="true"
                       modalLayerClass="SourceViewModalLayer">
-            <h:commandButton onclick="O$('form:pageSource').hide(); return false" value="hide"/>
+    		<f:facet name="caption"><h:outputText value="mail.jsp"/></f:facet>
             <rich:insert src="/mail.jsp" highlight="xhtml"/>
-        </o:popupLayer>
+        </o:window>
 
     </h:form>
 </f:view>

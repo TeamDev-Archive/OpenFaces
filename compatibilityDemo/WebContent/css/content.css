@@ -29,7 +29,4 @@
 
 .SourceView{
     font-size: 12px;
-    overflow-y:scroll;
-    height:500px;
-    max-width:90%;
 }

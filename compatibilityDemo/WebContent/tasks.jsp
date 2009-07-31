@@ -20,7 +20,6 @@
 
     <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon"/>
     <link rel="icon" href="favicon.ico" type="image/vnd.microsoft.icon"/>
-    <link rel="stylesheet" href="treetable.css" type="text/css" media="screen,projection"/>
     <link rel="stylesheet" href="css/mail.css" type="text/css" media="screen,projection"/>
     <script type="text/javascript">
 		function refreshButtons() {
@@ -220,13 +219,13 @@
             </o:dataTable>
         </div>
 
-        <o:popupLayer id="pageSource"
+        <o:window id="pageSource" width="70%" height="70%"
                       styleClass="SourceView"
                       modal="true"
                       modalLayerClass="SourceViewModalLayer">
-            <h:commandButton onclick="O$('form:pageSource').hide(); return false" value="hide"/>
+    		<f:facet name="caption"><h:outputText value="tasks.jsp"/></f:facet>
             <rich:insert src="/tasks.jsp" highlight="xhtml"/>
-        </o:popupLayer>
+        </o:window>
     </h:form>
 </f:view>
 </body>

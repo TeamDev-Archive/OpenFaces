@@ -145,14 +145,13 @@
             </o:dayTable>
         </div>
 
-        <o:popupLayer id="pageSource"
+        <o:window id="pageSource" width="70%" height="70%"
                       styleClass="SourceView"
                       modal="true"
                       modalLayerClass="SourceViewModalLayer">
-            <h:commandButton onclick="O$('form:pageSource').hide(); return false" value="hide"/>
+    		<f:facet name="caption"><h:outputText value="calendar.jsp"/></f:facet>
             <rich:insert src="/calendar.jsp" highlight="xhtml"/>
-        </o:popupLayer>
-
+        </o:window>
     </h:form>
 </f:view>
 </body>
