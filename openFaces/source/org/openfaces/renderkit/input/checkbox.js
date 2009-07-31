@@ -149,7 +149,7 @@ O$.Checkbox = {
 
     if (needFixPosition(checkbox)) {
       checkbox._indents = {};
-      checkbox._defaultIndent = O$.getNumericStyleProperty(checkbox, "margin-left");
+      checkbox._defaultIndent = O$.getNumericStyleProperty(checkbox, "margin-left") + "px";
     }
 
     updateStyles(checkbox);
