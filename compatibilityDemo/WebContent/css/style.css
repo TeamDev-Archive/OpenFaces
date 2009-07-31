@@ -48,5 +48,4 @@ a img{
 .relative{	position:relative; }
 .thin{	font-weight:normal; }
 
-
-table.rich-calendar-popup td {color:black;}
+.EditableRow{color:black !important;}
