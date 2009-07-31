@@ -47,3 +47,6 @@ a img{
 .clear{ clear:both; }
 .relative{	position:relative; }
 .thin{	font-weight:normal; }
+
+
+table.rich-calendar-popup td {color:black;}
