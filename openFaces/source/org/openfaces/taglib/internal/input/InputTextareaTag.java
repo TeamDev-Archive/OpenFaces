@@ -40,6 +40,8 @@ public class InputTextareaTag extends OUIInputTextTag {
         setStringProperty(uiComponent, "dir");
         setStringProperty(uiComponent, "lang");
         setStringProperty(uiComponent, "onselect");
+
         setBooleanProperty(uiComponent, "readonly");
+        setBooleanProperty(uiComponent, "autoGrowing");
     }
 }

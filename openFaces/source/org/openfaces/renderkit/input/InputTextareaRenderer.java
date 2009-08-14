@@ -13,6 +13,9 @@ package org.openfaces.renderkit.input;
 
 import org.openfaces.component.OUIInputText;
 import org.openfaces.component.input.InputTextarea;
+import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ResourceUtil;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -23,6 +26,8 @@ import java.io.IOException;
  */
 public class InputTextareaRenderer extends AbstractInputTextRenderer {
 
+    private static final String JS_SCRIPT_URL = "inputTextarea.js";
+
     protected String getTagName() {
         return "textarea";
     }
@@ -32,8 +37,19 @@ public class InputTextareaRenderer extends AbstractInputTextRenderer {
         InputTextarea inputTextarea = (InputTextarea) input;
         writeAttribute(writer, "cols", inputTextarea.getCols(), Integer.MIN_VALUE);
         writeAttribute(writer, "rows", inputTextarea.getRows(), Integer.MIN_VALUE);
+
         if (inputTextarea.isReadonly())
             writeAttribute(writer, "readonly", "readonly");
+        writer.endElement("textarea");
+        if (inputTextarea.isAutoGrowing()) {
+            ScriptBuilder scriptBuilder = new ScriptBuilder();
+            scriptBuilder.initScript(context, inputTextarea, "O$.InputTextarea._autoGrowing", inputTextarea.getId());
+            RenderingUtil.renderInitScript(context, scriptBuilder,
+                    new String[]{
+                            ResourceUtil.getUtilJsURL(context),
+                            ResourceUtil.getInternalResourceURL(context, InputTextareaRenderer.class, JS_SCRIPT_URL)
+                    });
+        }
     }
 
     @Override

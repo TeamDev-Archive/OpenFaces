@@ -29,6 +29,7 @@ public class InputTextarea extends OUIInputText {
     private String lang;
     private String onselect;
     private Boolean readonly;
+    private Boolean autoGrowing;
 
     public InputTextarea() {
         setRendererType("org.openfaces.InputTextareaRenderer");
@@ -62,6 +63,9 @@ public class InputTextarea extends OUIInputText {
         this.readonly = readonly;
     }
 
+    public void setAutoGrowing(Boolean autoGrowing) {
+        this.autoGrowing = autoGrowing;
+    }
 
     public String getDir() {
         return ValueBindings.get(this, "dir", dir);
@@ -85,6 +89,10 @@ public class InputTextarea extends OUIInputText {
 
     public boolean isReadonly() {
         return ValueBindings.get(this, "readonly", readonly, false);
+    }
+
+    public Boolean isAutoGrowing() {
+        return ValueBindings.get(this, "autoGrowing", autoGrowing, false);
     }
 
     public Object saveState(FacesContext context) {
@@ -111,6 +119,5 @@ public class InputTextarea extends OUIInputText {
         onselect = (String) values[i++];
         readonly = (Boolean) values[i++];
     }
-
 
 }

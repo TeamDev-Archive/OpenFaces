@@ -48,4 +48,8 @@ public class InputTextareaJspTag extends OUIInputTextJspTag {
     public void setReadonly(ValueExpression readonly) {
         getDelegate().setPropertyValue("readonly", readonly);
     }
+
+    public void setAutoGrowing(ValueExpression autoGrowing){
+        getDelegate().setPropertyValue("autoGrowing", autoGrowing);
+    }
 }

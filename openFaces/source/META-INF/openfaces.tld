@@ -20180,6 +20180,16 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
+      <name>autoGrowing</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>A flag that indicates whether or not the component is visible.</description>
       <name>rendered</name>
       <deferred-value>
