@@ -139,8 +139,6 @@ public class ValidationProcessor extends UIComponentBase {
 
     /**
      * This method need for case when ViewRoot not recreate after phase RESTORE_VIEW.
-     *
-     * @param context
      */
     public static void resetVerifiableComponents(FacesContext context) {
         // JSFC-2524

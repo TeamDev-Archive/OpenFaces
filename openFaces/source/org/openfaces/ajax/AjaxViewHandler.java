@@ -261,9 +261,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
     * So, we need to comply with inheritance hierarchy.
     */
     private UIViewRoot getAjaxViewRoot(UIViewRoot root, FacesContext context) {
-        UIViewRoot riRoot;// HACK - since only RI 1.1 use new for create ViewRoot instead
-        // of Application.createComponent,
-        // we can use it as flag for custom creation.
+        UIViewRoot riRoot;
         Class ajax4jsfViewRootClass = null;
         try {
             ajax4jsfViewRootClass = Class.forName("org.ajax4jsf.framework.ajax.AjaxViewRoot");
