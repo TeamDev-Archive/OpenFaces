@@ -1369,61 +1369,7 @@ O$.restoreDocumentWrite = function(placeHolderId) {
   document._tempAjaxStr = undefined;
 }
 
-O$.updateViewStateSequenceForMyFaces = function(viewStateSequence) {
-  for (var facesViewStateFieldIndex = 0; facesViewStateFieldIndex < document.getElementsByName('javax.faces.ViewState').length; facesViewStateFieldIndex++) {
-    if (document.getElementsByName('javax.faces.ViewState')[facesViewStateFieldIndex]) {
-      document.getElementsByName('javax.faces.ViewState')[facesViewStateFieldIndex].value = viewStateSequence;
-    }
-  }
-}
-
-O$.updateOrCreateMyFacesStateFields = function(stateId, viewId) {
-  for (var jsfTreeIndex = 0; jsfTreeIndex < document.forms.length; jsfTreeIndex++) {
-    if (document.getElementsByName('jsf_tree')[jsfTreeIndex]) {
-      document.getElementsByName('jsf_tree')[jsfTreeIndex].value = stateId;
-    }
-  }
-
-  for (var jsfViewIdIndex = 0; jsfViewIdIndex < document.forms.length; jsfViewIdIndex++) {
-    if (document.getElementsByName('jsf_viewid')[jsfViewIdIndex]) {
-      document.getElementsByName('jsf_viewid')[jsfViewIdIndex].value = viewId;
-    }
-  }
-
-  var formsCount = document.forms.length;
-  var jsfTreeHiddenFieldCount = document.getElementsByName('jsf_tree').length;
-  var jsfViewIdHiddenFieldCount = document.getElementsByName('jsf_viewid').length;
-
-  if (jsfTreeHiddenFieldCount < formsCount && jsfViewIdHiddenFieldCount < formsCount) {
-    for (var fieldIndex = 0; fieldIndex < document.forms.length; fieldIndex++) {
-      var jsfTreeHiddenField = document.createElement("input");
-      jsfTreeHiddenField.id = "jsf_tree";
-      jsfTreeHiddenField.name = "jsf_tree";
-      jsfTreeHiddenField.type = "hidden";
-      jsfTreeHiddenField.value = stateId;
-
-      document.forms[fieldIndex].insertBefore(jsfTreeHiddenField, document.forms[fieldIndex].lastChild);
-
-      var jsfViewIdHiddenField = document.createElement("input");
-      jsfViewIdHiddenField.id = "jsf_viewid";
-      jsfViewIdHiddenField.name = "jsf_viewid";
-      jsfViewIdHiddenField.type = "hidden";
-      jsfViewIdHiddenField.value = viewId;
-
-      document.forms[fieldIndex].insertBefore(jsfViewIdHiddenField, document.forms[fieldIndex].lastChild);
-    }
-  }
-}
-
-O$.updateJsfSequenceForMyFaces = function(jsfSequence) {
-  for (var jsfSequenceIndex = 0; jsfSequenceIndex < document.getElementsByName('jsf_sequence').length; jsfSequenceIndex++) {
-    if (document.getElementsByName('jsf_sequence')[jsfSequenceIndex]) {
-      document.getElementsByName('jsf_sequence')[jsfSequenceIndex].value = jsfSequence;
-    }
-  }
-}
-
-O$.updateViewIdForRI = function(viewId) {
+O$.updateViewId = function(viewId) {
   if (document.getElementsByName('javax.faces.ViewState')) {
     for (var facesViewStateFieldIndex = 0; facesViewStateFieldIndex < document.getElementsByName('javax.faces.ViewState').length; facesViewStateFieldIndex++) {
       if (document.getElementsByName('javax.faces.ViewState')[facesViewStateFieldIndex]) {

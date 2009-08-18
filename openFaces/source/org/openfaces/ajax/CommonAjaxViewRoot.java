@@ -22,10 +22,6 @@ import org.openfaces.component.util.AjaxLoadBundleComponent;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
-import org.openfaces.util.StringInspector;
-import org.openfaces.util.StyleUtil;
 import org.openfaces.util.*;
 
 import javax.el.ELContext;
@@ -56,8 +52,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -85,7 +79,6 @@ public abstract class CommonAjaxViewRoot {
     // a copy of org.apache.myfaces.shared_impl.renderkit.RendererUtils.SEQUENCE_PARAM
     private static final String MYFACES_SEQUENCE_PARAM = "jsf_sequence";
     public static final long MAX_PORTLET_PARALLEL_REQUEST_TIMEOUT = 20 * 1000;
-    private static final String COM_SUN_FACES_FORM_CLIENT_ID_ATTR = "com.sun.faces.FORM_CLIENT_ID_ATTR";
     private static final String VALUE_ATTR_STRING = "value=\"";
 
     private static long tempIdCounter = 0;
@@ -137,8 +130,7 @@ public abstract class CommonAjaxViewRoot {
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
-        }
-        catch (Error e) {
+        } catch (Error e) {
             processExceptionDuringAjax(e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
@@ -169,8 +161,7 @@ public abstract class CommonAjaxViewRoot {
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
-        }
-        catch (Error e) {
+        } catch (Error e) {
             processExceptionDuringAjax(e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
@@ -201,8 +192,7 @@ public abstract class CommonAjaxViewRoot {
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
-        }
-        catch (Error e) {
+        } catch (Error e) {
             processExceptionDuringAjax(e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
@@ -233,8 +223,7 @@ public abstract class CommonAjaxViewRoot {
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
-        }
-        catch (Error e) {
+        } catch (Error e) {
             processExceptionDuringAjax(e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
@@ -347,12 +336,10 @@ public abstract class CommonAjaxViewRoot {
         String componentId = request.getParameter(AjaxUtil.PARAM_COMPONENT_IDS);
         assertComponentId(componentId);
         String[] componentIds = componentId.split(";");
-        if(componentIds == null) {
+        if (componentIds == null) {
             throw new IllegalStateException(AjaxUtil.PARAM_COMPONENT_IDS + " not found at request");
         }
         String[] submittedComponentIds = extractSubmittedComponentIds(request);
-
-
 
 
         UIViewRoot viewRoot = context.getViewRoot();
@@ -505,7 +492,7 @@ public abstract class CommonAjaxViewRoot {
         Object originalResponse = externalContext.getResponse();
         ResponseFacade response = ResponseFacade.getInstance(originalResponse);
         Integer sequence = getSequenceIdForMyFaces(context);
-        finishProcessAjaxRequest(context, request, response, components, true, sequence);
+        finishProcessAjaxRequest(context, request, response, components, sequence);
 
         releaseSyncObject();
 
@@ -700,7 +687,7 @@ public abstract class CommonAjaxViewRoot {
         UIViewRoot delegate = ((WrappedAjaxRoot) viewRoot).getDelegate();
 
         if (children == null || children.isEmpty() && delegate != null) {
-            List delegateChildren = delegate.getChildren();
+            List<UIComponent> delegateChildren = delegate.getChildren();
             if (children == null) {
                 children = new ArrayList<UIComponent>();
             }
@@ -723,8 +710,6 @@ public abstract class CommonAjaxViewRoot {
     /**
      * Find all instances of {@link org.openfaces.component.util.LoadBundle} in view tree and load bundles
      * to request-scope map.
-     *
-     * @param context
      */
     private void loadBundles(FacesContext context) {
         loadBundles(context, context.getViewRoot());
@@ -733,8 +718,6 @@ public abstract class CommonAjaxViewRoot {
     /**
      * Recursive helper for {@link #loadBundles(FacesContext)}
      *
-     * @param context
-     * @param component
      */
     private void loadBundles(FacesContext context, UIComponent component) {
         // Iterate over cildrens
@@ -747,10 +730,6 @@ public abstract class CommonAjaxViewRoot {
         }
     }
 
-    /**
-     * @param context
-     * @param child
-     */
     private void loadChildBundles(FacesContext context, UIComponent child) {
         if (child instanceof AjaxLoadBundleComponent) {
             try {
@@ -899,7 +878,7 @@ public abstract class CommonAjaxViewRoot {
             RequestFacade request = RequestFacade.getInstance(externalContext.getRequest());
             ResponseFacade response = ResponseFacade.getInstance(externalContext.getResponse());
             try {
-                finishProcessAjaxRequest(context, request, response, components, false, sequenceId);
+                finishProcessAjaxRequest(context, request, response, components, sequenceId);
             } catch (IOException e) {
                 throw new FacesException(e);
             }
@@ -926,14 +905,11 @@ public abstract class CommonAjaxViewRoot {
             RequestFacade request,
             ResponseFacade response,
             UIComponent[] components,
-            boolean nonPortletAjaxRequest, Integer sequence) throws IOException {
+            Integer sequence) throws IOException {
         AjaxResponse ajaxResponse = ajaxRenderResponse(request, context, components);
 
         AjaxSavedStateIdxHolder stateIdxHolder = ajaxSaveState(context, request, ajaxResponse, components, sequence);
 
-        if (sequence != null) {
-            stateIdxHolder.setJSFSequence(sequence);
-        }
         ajaxResponse.setStateIdxHolder(stateIdxHolder);
 
         ajaxResponse.write(response);
@@ -1070,13 +1046,6 @@ public abstract class CommonAjaxViewRoot {
             addForeignCSSFiles(ajaxResponse, cssFiles);
         }
         return ajaxResponse;
-    }
-
-    private UIForm getParentForm(UIComponent component) {
-        UIComponent c = component;
-        while (c != null && !(c instanceof UIForm))
-            c = c.getParent();
-        return (UIForm) c;
     }
 
     private void renderPortionUpdate(RequestFacade request, FacesContext context, UIComponent component, AjaxResponse ajaxResponse, StringBuilder initializationScripts, List<String> updatePortions) throws IOException {
@@ -1247,15 +1216,11 @@ public abstract class CommonAjaxViewRoot {
     /**
      * Save state for processed ajaxs request
      *
-     * @param context
-     * @param request
-     * @param ajaxResponse
-     * @param components
-     * @param sequence
      * @return If there is server side state saving, return serializid view state. Otherwise, return null.
      *         Serialized view state is used for adjusting "com.sun.faces.VIEW" for RI faces implementation
-     * @throws java.io.IOException
+     *
      */
+    @SuppressWarnings({"deprecation"})
     private AjaxSavedStateIdxHolder ajaxSaveState(
             FacesContext context,
             RequestFacade request,
@@ -1279,55 +1244,51 @@ public abstract class CommonAjaxViewRoot {
                 restoreWriter(context, originalWriter);
             }
         } else {
-            // TODO [sanders] (Apr 1, 2009, 7:32 AM): Fix deprecation
-            Object view = stateManager.saveSerializedView(context);
+            StateManager.SerializedView view = stateManager.saveSerializedView(context);
 
-            if (EnvironmentUtil.isMyFaces() &&
-                    !EnvironmentUtil.isRichFacesStateManager(stateManager)
-                    && !EnvironmentUtil.isFacelets(context)) {
-                obtainViewStateSequenceForMyFaces12(context, request, sequence, savedStateStructure);
+            boolean myFaces = EnvironmentUtil.isMyFaces();
+            boolean richFaces = EnvironmentUtil.isRichFacesStateManager(stateManager);
+            boolean facelets = EnvironmentUtil.isFacelets(context);
+
+            if (myFaces && !richFaces && !facelets) {
+                obtainViewStateSequenceForMyFaces(context, request, sequence, savedStateStructure);
             }
-            // This case is for MyFaces 1.1.5 viewState sequence updating on client-side
-            // We need to get value of viewState sequence and save it for futher processing when response will be rendered to the client
-            if (!EnvironmentUtil.isMyFaces() && view instanceof StateManager.SerializedView) {
+
+            if (!myFaces && view != null) {
                 obtainViewStateSequence(context, request, view, savedStateStructure);
-            } else {
-                if (EnvironmentUtil.isMyFaces()
-                        && EnvironmentUtil.isRichFacesStateManager(stateManager)
-                        && view instanceof StateManager.SerializedView) {
+            } else if (myFaces) {
+                if (richFaces && view != null) {
                     obtainViewStateSequence(context, request, view, savedStateStructure);
                 } else {
-                    if (EnvironmentUtil.isMyFaces() && EnvironmentUtil.isFacelets(context)) {
-                        obtainViewStateSequenceForMyFaces12(context, request, sequence, savedStateStructure);
+                    if (facelets) {
+                        obtainViewStateSequenceForMyFaces(context, request, sequence, savedStateStructure);
                     }
                 }
             }
 
-            if (view instanceof StateManager.SerializedView) {
-                StateManager.SerializedView serializedView = (StateManager.SerializedView) view;
-                savedStateStructure.setViewStructureId(serializedView.getStructure());
+            if (view != null) {
+                savedStateStructure.setViewStructureId(view.getStructure());
             }
         }
         return savedStateStructure;
     }
 
-    private void obtainViewStateSequence(FacesContext context, RequestFacade request, Object view,
+    private void obtainViewStateSequence(FacesContext context, RequestFacade request, StateManager.SerializedView view,
                                          AjaxSavedStateIdxHolder stateIdxHolder) throws IOException {
         StringWriter stringWriter = new StringWriter();
         ResponseWriter originalWriter = substituteResponseWriter(context, request, stringWriter);
 
-        StateManager.SerializedView serializedView = (StateManager.SerializedView) view;
         ResponseStateManager responseStateManager = context.getRenderKit().getResponseStateManager();
-        responseStateManager.writeState(context, serializedView);
+        responseStateManager.writeState(context, view);
 
         restoreWriter(context, originalWriter);
 
         String stateString = stringWriter.getBuffer().toString();
         // This is necessarry to obtain valid state key for updating it on client side
-        parseStateString(stateString, context, stateIdxHolder);
+        parseStateString(stateString, stateIdxHolder);
     }
 
-    private void obtainViewStateSequenceForMyFaces12(FacesContext context, RequestFacade request, Integer sequence,
+    private void obtainViewStateSequenceForMyFaces(FacesContext context, RequestFacade request, Integer sequence,
                                                      AjaxSavedStateIdxHolder stateIdxHolder)
             throws IOException {
         StringWriter stringWriter = new StringWriter();
@@ -1336,69 +1297,30 @@ public abstract class CommonAjaxViewRoot {
         if (!EnvironmentUtil.isFacelets(context)) {
             context.getApplication().getViewHandler().writeState(context);
         } else {
-            try {
-                ResponseStateManager responseStateManager = context.getRenderKit().getResponseStateManager();
-                Method method =
-                        responseStateManager.getClass().getMethod("writeState", FacesContext.class, Object.class);
-                Object[] state = new Object[2];
-                state[0] = Integer.toString(sequence, Character.MAX_RADIX);
+            ResponseStateManager responseStateManager = context.getRenderKit().getResponseStateManager();
 
-                method.invoke(responseStateManager, context, state);
-            } catch (NoSuchMethodException e) {
-                Log.log(context, e.getMessage(), e);
-            } catch (InvocationTargetException e) {
-                Log.log(context, e.getMessage(), e);
-            } catch (IllegalAccessException e) {
-                Log.log(context, e.getMessage(), e);
-            }
+            Object[] state = new Object[2];
+            state[0] = Integer.toString(sequence, Character.MAX_RADIX);
+
+            responseStateManager.writeState(context, state);
         }
         restoreWriter(context, originalWriter);
 
         String stateString = stringWriter.getBuffer().toString();
         // This is necessarry to obtain valid state key for updating it on client side
-        parseStateString(stateString, context, stateIdxHolder);
+        parseStateString(stateString, stateIdxHolder);
     }
 
-    private void parseStateString(String stateString, FacesContext context, AjaxSavedStateIdxHolder stateIdxHolder) {
-        // This method check state string for fields that is used by MyFaces 1.1.5 ,which contains valid state key.
-        checkForMyFaces115State(stateString, stateIdxHolder);
-        // This method check state string for fields that is used by MyFaces 1.1.3 - 1.1.4, which contains valid state keys.
-        checkForMyFacesStateFields(stateString, stateIdxHolder);
-    }
-
-    private void checkForMyFacesStateFields(String stateString,
-                                            AjaxSavedStateIdxHolder stateIdxHolder) {
-        if (stateString != null) {
-            int indexOfJsfTree = stateString.indexOf("jsf_tree");
-            int indexOfJsfViewId = stateString.indexOf("jsf_viewid");
-
-            if (indexOfJsfTree != -1 && indexOfJsfViewId != -1) {
-                int indexOfJsfTreeValue = stateString.indexOf(VALUE_ATTR_STRING, indexOfJsfTree);
-                int indexOfJsfViewIdValue = stateString.indexOf(VALUE_ATTR_STRING, indexOfJsfViewId);
-
-                int fiOfJsfTreeValue = indexOfJsfTreeValue + VALUE_ATTR_STRING.length();
-                String jsfTreeString = stateString.substring(fiOfJsfTreeValue, stateString.indexOf("\"", fiOfJsfTreeValue));
-
-                int fiOfJsfViewIdValue = indexOfJsfViewIdValue + VALUE_ATTR_STRING.length();
-                String jsfViewIdString = stateString.substring(fiOfJsfViewIdValue, stateString.indexOf("\"", fiOfJsfViewIdValue));
-
-                stateIdxHolder.setMyFacesStateId(jsfTreeString);
-                stateIdxHolder.setMyFacesViewId(jsfViewIdString);
-            }
-        }
-    }
-
-    private void checkForMyFaces115State(String code,
-                                         AjaxSavedStateIdxHolder stateIdxHolder) {
-        if (code == null) {
+    private void parseStateString(String stateString, AjaxSavedStateIdxHolder stateIdxHolder) {
+        if (stateString == null) {
             return;
         }
 
-        int indexOfValue = code.indexOf(VALUE_ATTR_STRING);
-        int indexOfViewState = code.indexOf("javax.faces.ViewState");
+        int indexOfValue = stateString.indexOf(VALUE_ATTR_STRING);
+        int indexOfViewState = stateString.indexOf("javax.faces.ViewState");
         if (indexOfValue != -1 && indexOfViewState != -1) {
             int firstIndex = indexOfValue + VALUE_ATTR_STRING.length();
-            String viewStateString = code.substring(firstIndex, code.lastIndexOf("\""));
+            String viewStateString = stateString.substring(firstIndex, stateString.lastIndexOf("\""));
 
             stateIdxHolder.setViewStateIdentifier(viewStateString);
         }
@@ -1559,8 +1481,7 @@ public abstract class CommonAjaxViewRoot {
                 UIComponent source = event.getComponent();
                 try {
                     source.broadcast(event);
-                }
-                catch (AbortProcessingException e) {
+                } catch (AbortProcessingException e) {
                     // abort event processing
                     // Page 3-30 of JSF 1.1 spec: "Throw an AbortProcessingException, to tell the JSF implementation
                     //  that no further broadcast of this event, or any further events, should take place."
@@ -1570,8 +1491,7 @@ public abstract class CommonAjaxViewRoot {
 
                     try {
                         listiterator.remove();
-                    }
-                    catch (ConcurrentModificationException cme) {
+                    } catch (ConcurrentModificationException cme) {
                         int eventIndex = listiterator.previousIndex();
                         events.remove(eventIndex);
                         listiterator = events.listIterator();

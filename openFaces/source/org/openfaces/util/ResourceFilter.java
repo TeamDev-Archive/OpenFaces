@@ -25,6 +25,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.faces.application.ViewExpiredException;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -104,17 +105,14 @@ public class ResourceFilter implements Filter {
                         exception = (Exception) ((ServletException) exception).getRootCause();
                     }
 
-                    boolean isViewExpiredException = false;
-                    try {
-                        Class viewExpiredExceptionClass = Class.forName("javax.faces.application.ViewExpiredException");
-                        isViewExpiredException = viewExpiredExceptionClass.isAssignableFrom(exception.getClass());
-                    } catch (ClassNotFoundException e1) {
-                        // todo: remove all JSF 1.1-specific code
-                        // ViewExpiredException is a JSF 1.2 specific class, and JSF 1.1 session expiration is handled in a
-                        // different way (null viewroot upon restoring state).
-                    }
+//                    try {
+//                    } catch (ClassNotFoundException e1) {
+//                        // todo: remove all JSF 1.1-specific code
+//                        // ViewExpiredException is a JSF 1.2 specific class, and JSF 1.1 session expiration is handled in a
+//                        // different way (null viewroot upon restoring state).
+//                    }
 
-                    if (isViewExpiredException) {
+                    if (exception instanceof ViewExpiredException) {
                         String requestURI = getDecodedResourcePath((HttpServletRequest) servletRequest);
                         String ajaxParameters;
                         StringBuilder stringBuffer = new StringBuilder();

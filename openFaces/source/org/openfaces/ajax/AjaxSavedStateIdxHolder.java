@@ -19,13 +19,9 @@ public class AjaxSavedStateIdxHolder {
     // see JSFC-1898 JS error if try to expand nodes in the TreeTable (JSF RI 1.2 and server state saving)
     // compound id for view state (actual for R.I. server side state saving
     private Object viewStructureId;
-    //javax.faces.ViewState  - sequence string for MyFaces 1.1.5
-    // This case is for MyFaces 1.1.5 viewState sequence updating on client-side
+    //javax.faces.ViewState  - sequence string for MyFaces
+    // This case is for MyFaces viewState sequence updating on client-side
     private String viewStateIdentifier;
-    private String facesStateId;
-    private String facesViewId;
-    //jsf_sequence for MyFaces 1.1 - 1.1.4
-    private Integer jsfSequence;
 
     public Object getViewStructureId() {
         return viewStructureId;
@@ -43,27 +39,4 @@ public class AjaxSavedStateIdxHolder {
         this.viewStateIdentifier = viewStateIdentifier;
     }
 
-    public String getMyFacesStateId() {
-        return facesStateId;
-    }
-
-    public void setMyFacesStateId(String facesStateId) {
-        this.facesStateId = facesStateId;
-    }
-
-    public String getMyFacesViewId() {
-        return facesViewId;
-    }
-
-    public void setMyFacesViewId(String facesViewId) {
-        this.facesViewId = facesViewId;
-    }
-
-    public Integer getJSFSequence() {
-        return jsfSequence;
-    }
-
-    public void setJSFSequence(Integer jsfSequence) {
-        this.jsfSequence = jsfSequence;
-    }
 }

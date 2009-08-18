@@ -272,7 +272,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
         }
         boolean isAjax4jsf = (ajax4jsfViewRootClass != null);
         if (isAjax4jsf)
-            throw new IllegalArgumentException("The old Ajax4jsf framework is not supported. Use RichFaces that now incorporates this framework instead.");
+            throw new IllegalArgumentException("OpenFaces warning: The old Ajax4jsf framework is not supported. Use RichFaces that now incorporates this framework instead.");
 
         Class richFacesAjaxViewRootClass = null;
         try {

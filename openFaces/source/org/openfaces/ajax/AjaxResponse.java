@@ -123,25 +123,20 @@ class AjaxResponse {
      * see JSFC-1898 JS error if try to expand nodes in the TreeTable (JSF RI 1.2 and server state saving)
      */
     private void updateViewVariable() {
-        if (stateIdxHolder.getViewStructureId() == null && stateIdxHolder.getJSFSequence() == null) {
+        Object viewStructureId = stateIdxHolder.getViewStructureId();
+        if (viewStructureId == null) {
             return;
         }
 
         String script;
 
-        if (stateIdxHolder.getViewStructureId() != null && stateIdxHolder.getViewStateIdentifier() != null) {
-            script = "O$.updateViewStateSequenceForMyFaces('" + stateIdxHolder.getViewStateIdentifier() + "');";
+        if (stateIdxHolder.getViewStateIdentifier() != null) {
+            script = "O$.updateViewId('" + stateIdxHolder.getViewStateIdentifier() + "');";
         } else {
-            if (stateIdxHolder.getViewStructureId() != null && EnvironmentUtil.isRI()) {
-                script = "O$.updateViewIdForRI('" + stateIdxHolder.getViewStructureId() + "');";
+            if (EnvironmentUtil.isRI()) {
+                script = "O$.updateViewId('" + viewStructureId + "');";
             } else {
-                final String invariantScript = "O$.updateJsfSequenceForMyFaces('" + stateIdxHolder.getJSFSequence() + "');";
-                if (stateIdxHolder.getMyFacesStateId() != null && stateIdxHolder.getMyFacesViewId() != null) {
-                    script = invariantScript + "O$.updateOrCreateMyFacesStateFields('" + stateIdxHolder.getMyFacesStateId() +
-                            "','" + stateIdxHolder.getMyFacesViewId() + "');";
-                } else {
-                    script = invariantScript;
-                }
+                script = "";
             }
         }
 
