@@ -53,17 +53,8 @@
 
   <repositories>
     <repository>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-        <updatePolicy>never</updatePolicy>
-      </snapshots>
-      <id>m2proxy.atlassian.com</id>
-      <name>Atlassian Repository for Maven</name>
-      <url>https://m2proxy.atlassian.com/repository/public/</url>
-      <layout>default</layout>
+      <id>org.openfaces</id>
+      <url>http://repository.openfaces.org/repository</url>
     </repository>
     <repository>
       <id>javax.faces</id>
