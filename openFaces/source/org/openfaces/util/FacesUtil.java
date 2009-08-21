@@ -13,6 +13,7 @@ package org.openfaces.util;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.el.ELContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,13 +47,11 @@ public class FacesUtil {
     }
 
 
-    /*
     public static Object var(String varName) {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext elContext = context.getELContext();
         return elContext.getELResolver().getValue(elContext, null, varName);
     }
-    */
 
     /**
      * This method retrieve value from request parameters map by key.

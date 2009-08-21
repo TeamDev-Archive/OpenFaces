@@ -35,6 +35,7 @@ import java.util.Set;
  * such advanced features as sorting, interactive filtering, node selection (both multiple
  * and single), keyboard navigation, and dynamic data loading (using Ajax). You can also
  * specify a node preloading mode for expanding TreeTable nodes on the client or server side.
+ *
  * @author Dmitry Pikhulya
  */
 public class TreeTable extends AbstractTable {

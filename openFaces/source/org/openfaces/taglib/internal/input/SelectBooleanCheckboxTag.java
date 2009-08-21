@@ -13,6 +13,7 @@ package org.openfaces.taglib.internal.input;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.FacesException;
 
 import org.openfaces.component.input.SelectBooleanCheckbox;
 import org.openfaces.taglib.internal.AbstractUIInputTag;
@@ -31,36 +32,54 @@ public class SelectBooleanCheckboxTag extends AbstractUIInputTag {
         return RENDERER_TYPE;
     }
 
-    public void setComponentProperties(FacesContext facesContext, UIComponent uiComponent) {
-        super.setComponentProperties(facesContext, uiComponent);
-        setStringProperty(uiComponent, "accesskey");
-        setStringProperty(uiComponent, "tabindex");
-        setStringProperty(uiComponent, "title");
-        setStringProperty(uiComponent, "dir");
-        setStringProperty(uiComponent, "lang");
-        setStringProperty(uiComponent, "onselect");
-        setBooleanProperty(uiComponent, "disabled");
-        setStringProperty(uiComponent, "disabledStyle");
-        setStringProperty(uiComponent, "disabledClass");
-        setBooleanProperty(uiComponent, "triStateAllowed");
-        setStringProperty(uiComponent, "selectedImageUrl");
-        setStringProperty(uiComponent, "unselectedImageUrl");
-        setStringProperty(uiComponent, "undefinedImageUrl");
-        setStringProperty(uiComponent, "rolloverSelectedImageUrl");
-        setStringProperty(uiComponent, "rolloverUnselectedImageUrl");
-        setStringProperty(uiComponent, "rolloverUndefinedImageUrl");
-        setStringProperty(uiComponent, "pressedSelectedImageUrl");
-        setStringProperty(uiComponent, "pressedUnselectedImageUrl");
-        setStringProperty(uiComponent, "pressedUndefinedImageUrl");
-        setStringProperty(uiComponent, "disabledSelectedImageUrl");
-        setStringProperty(uiComponent, "disabledUnselectedImageUrl");
-        setStringProperty(uiComponent, "disabledUndefinedImageUrl");
-        setStringProperty(uiComponent, "selectedStyle");
-        setStringProperty(uiComponent, "selectedClass");
-        setStringProperty(uiComponent, "unselectedStyle");
-        setStringProperty(uiComponent, "unselectedClass");
-        setStringProperty(uiComponent, "undefinedStyle");
-        setStringProperty(uiComponent, "undefinedClass");
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
+
+        SelectBooleanCheckbox sbc = (SelectBooleanCheckbox) component;
+        String valueDeclaration = getPropertyValue("value");
+        if (!setPropertyAsBinding(component, "value", valueDeclaration)) {
+            if (valueDeclaration.equals("true"))
+                sbc.setValue(true);
+            else if(valueDeclaration.equals("false"))
+                sbc.setValue(false);
+            else if (valueDeclaration.equals("undefined"))
+                sbc.setValue(null);
+            else
+                throw new FacesException("Unknown value attribute specification for <o:selectBooleanCheckbox>: " + valueDeclaration + "; it should be either a value binding expression or one of: \"true\", \"false\", or \"undefined\"");
+        }
+
+        setStringProperty(component, "accesskey");
+        setStringProperty(component, "tabindex");
+        setStringProperty(component, "title");
+        setStringProperty(component, "dir");
+        setStringProperty(component, "lang");
+        setStringProperty(component, "onselect");
+        setBooleanProperty(component, "disabled");
+        setStringProperty(component, "disabledStyle");
+        setStringProperty(component, "disabledClass");
+        setBooleanProperty(component, "triStateAllowed");
+        setStringProperty(component, "selectedImageUrl");
+        setStringProperty(component, "unselectedImageUrl");
+        setStringProperty(component, "undefinedImageUrl");
+        setStringProperty(component, "rolloverSelectedImageUrl");
+        setStringProperty(component, "rolloverUnselectedImageUrl");
+        setStringProperty(component, "rolloverUndefinedImageUrl");
+        setStringProperty(component, "pressedSelectedImageUrl");
+        setStringProperty(component, "pressedUnselectedImageUrl");
+        setStringProperty(component, "pressedUndefinedImageUrl");
+        setStringProperty(component, "disabledSelectedImageUrl");
+        setStringProperty(component, "disabledUnselectedImageUrl");
+        setStringProperty(component, "disabledUndefinedImageUrl");
+        setStringProperty(component, "selectedStyle");
+        setStringProperty(component, "selectedClass");
+        setStringProperty(component, "unselectedStyle");
+        setStringProperty(component, "unselectedClass");
+        setStringProperty(component, "undefinedStyle");
+        setStringProperty(component, "undefinedClass");
     }
 
+    @Override
+    protected boolean isAutomaticValueAttributeHandling() {
+        return false;
+    }
 }

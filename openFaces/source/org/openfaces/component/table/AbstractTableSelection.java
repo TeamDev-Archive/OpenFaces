@@ -50,7 +50,6 @@ public abstract class AbstractTableSelection extends UICommand {
     private Boolean mouseSupport;
     private Boolean keyboardSupport;
     private String onchange;
-//  private boolean myModelUpdateNeeded;
 
     protected AbstractTableSelection() {
         setRendererType(null);
@@ -151,15 +150,8 @@ public abstract class AbstractTableSelection extends UICommand {
 
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
-//    if (myModelUpdateNeeded) {
         writeSelectionToBinding();
-//      myModelUpdateNeeded = false;
-//    }
     }
-
-    /*protected void scheduleModelUpdate() {
-//    myModelUpdateNeeded = true;
-    }*/
 
     public TableDataModel getModel() {
         return model;
@@ -293,7 +285,7 @@ public abstract class AbstractTableSelection extends UICommand {
             indexes.add(Integer.valueOf(item));
         }
         decodeSelectionFromIndexes(indexes);
-//        scheduleModelUpdate();
+
         String eventNoStr = requestParameterMap.get(getSelectionEventFieldName(context, table));
         if (eventNoStr != null && eventNoStr.length() > 0) {
             int eventNo = Integer.parseInt(eventNoStr);

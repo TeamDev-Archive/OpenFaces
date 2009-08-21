@@ -270,7 +270,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
      * @param component        component
      * @param propertyName     property name
      * @param valueDeclaration value declaration
-     * @return false if explicit setter invokation is required
+     * @return false if value declaration is not a value expression, so explicit setter invokation is required
      */
     protected boolean setPropertyAsBinding(
             UIComponent component,

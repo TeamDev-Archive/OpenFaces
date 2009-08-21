@@ -24,9 +24,14 @@ public class TestBean {
     private String field1;
     private int field2;
     private boolean booleanField;
-    private Map customFields = new HashMap();
+    private Map<String, String> customFields = new HashMap<String, String>();
 
     private static Map<String, TestBean> idToBeanMap = new HashMap<String, TestBean>();
+
+    public static TestBean createRandom() {
+        Random r = new Random();
+        return new TestBean(Long.toString(r.nextLong(), 36), r.nextInt(100));
+    }
 
     public TestBean(String field1, int field2) {
         this.field1 = field1;
@@ -41,7 +46,7 @@ public class TestBean {
         }
     }
 
-    public Map getCustomFields() {
+    public Map<String, String> getCustomFields() {
         return customFields;
     }
 

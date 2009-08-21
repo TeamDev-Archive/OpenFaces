@@ -28,7 +28,7 @@ public abstract class DataTableSelection extends AbstractTableSelection {
 
     public void setParent(UIComponent parent) {
         if (parent != null && !(parent instanceof DataTable))
-            throw new FacesException(getClass().getName() + " component can only be placed in a DataTable component, but it was placed into a component with class: " + parent.getClass().getName() + "; if you need to add selection support to TreeTable use SingleNodeSelection or MultipleNodeSelection component instead.");
+            throw new FacesException(getClass().getName() + " component can only be placed in a DataTable component, but it was placed into a component with class: " + parent.getClass().getName() + "; if you need to add selection support to a TreeTable use SingleNodeSelection or MultipleNodeSelection component instead.");
         super.setParent(parent);
     }
 

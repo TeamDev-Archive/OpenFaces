@@ -1,0 +1,34 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+  <br/>
+
+  <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
+
+  <br/>
+
+  <input type="submit" value="Submit"/>
+
+  <o:forEach var="table" items="#{EmbeddedDatatablesBean.tables}">
+    <o:dataTable var="record" value="#{table.records}">
+      <o:singleRowSelection rowData="#{table.selectedRecord}"/>
+      <o:selectionColumn/>
+      <o:column sortingExpression="#{record.field1}" filterExpression="#{record.field1}">
+        <f:facet name="header">
+          <h:outputText value="Field 1"/>
+        </f:facet>
+        <h:inputText value="#{record.field1}"/>
+      </o:column>
+      <o:column sortingExpression="#{record.field2}" filterExpression="#{record.field2}">
+        <f:facet name="header">
+          <h:outputText value="Field 2"/>
+        </f:facet>
+        <h:inputText value="#{record.field2}"/>
+      </o:column>
+    </o:dataTable>
+  </o:forEach>
+</div>

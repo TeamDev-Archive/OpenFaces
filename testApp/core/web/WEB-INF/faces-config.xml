@@ -324,6 +324,18 @@
   </managed-bean>
 
   <managed-bean>
+    <managed-bean-name>EmbeddedDatatablesBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.datatable.EmbeddedDatatablesBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>EmbeddedTreetablesBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.treetable.EmbeddedTreetablesBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
     <managed-bean-name>DataTableLoadingModeBean</managed-bean-name>
     <managed-bean-class>org.openfaces.testapp.datatable.DataTableLoadingModeBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>

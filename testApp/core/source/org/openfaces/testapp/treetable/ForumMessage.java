@@ -26,7 +26,7 @@ import java.util.Map;
 public class ForumMessage implements Serializable {
     private static int messagesCreated;
     private static Map<Object, ForumMessage> messagesById = new HashMap<Object, ForumMessage>();
-    private Object id = "message" + messagesCreated++;
+    private Object id = "messagem" + messagesCreated++;
     private String subject;
     private Date date;
     private User author;

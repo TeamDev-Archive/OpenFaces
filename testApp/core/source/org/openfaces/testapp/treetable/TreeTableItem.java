@@ -31,16 +31,27 @@ public class TreeTableItem implements Serializable {
     private String stringField2;
     private int intField1;
     private int intField2;
-    private Map dynamicColumns = new HashMap();
-    private List children;
+    private Map<String, Serializable> dynamicColumns = new HashMap<String, Serializable>();
+    private List<TreeTableItem> children;
 
-    public TreeTableItem(String name, String stringField1, String stringField2, int intField1, int intField2, List children) {
+    public static TreeTableItem createRandom() {
+        Random r = new Random();
+        return new TreeTableItem(
+                Long.toString(r.nextLong(), 36),
+                Long.toString(r.nextLong(), 36),
+                Long.toString(r.nextLong(), 36),
+                r.nextInt(10),
+                r.nextInt(100),
+                null);
+    }
+
+    public TreeTableItem(String name, String stringField1, String stringField2, int intField1, int intField2, List<TreeTableItem> children) {
         this.name = name;
         this.stringField1 = stringField1;
         this.stringField2 = stringField2;
         this.intField1 = intField1;
         this.intField2 = intField2;
-        this.children = children != null ? new ArrayList(children) : null;
+        this.children = children != null ? new ArrayList<TreeTableItem>(children) : null;
         Random random = new Random();
         for (int i = 0; i < 8; i++) {
             String columnName = String.valueOf(i);
@@ -68,19 +79,19 @@ public class TreeTableItem implements Serializable {
         this.name = name;
     }
 
-    public Map getDynamicColumns() {
+    public Map<String, Serializable> getDynamicColumns() {
         return dynamicColumns;
     }
 
-    public void setDynamicColumns(Map dynamicColumns) {
+    public void setDynamicColumns(Map<String, Serializable> dynamicColumns) {
         this.dynamicColumns = dynamicColumns;
     }
 
-    public List getChildren() {
+    public List<TreeTableItem> getChildren() {
         return children;
     }
 
-    public void setChildren(List children) {
+    public void setChildren(List<TreeTableItem> children) {
         this.children = children;
     }
 
