@@ -57,7 +57,7 @@ public class EmbeddedTreetablesBean {
         }
 
         public List<TreeTableItem> getChildNodes() {
-            TreeTableItem parent = (TreeTableItem) FacesUtil.var("node");
+            TreeTableItem parent = (TreeTableItem) FacesUtil.getRequestMapValue("node");
             if(parent == null)
                 return rootNodes;
             else
@@ -87,7 +87,7 @@ public class EmbeddedTreetablesBean {
     }
 
     public void testAction () {
-        TreeTableItem node = (TreeTableItem) FacesUtil.var("node");
+        TreeTableItem node = (TreeTableItem) FacesUtil.getRequestMapValue("node");
         System.out.println("Node name: " + node.getName());
     }
 

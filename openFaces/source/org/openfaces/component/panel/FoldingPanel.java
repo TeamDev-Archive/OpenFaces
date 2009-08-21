@@ -15,6 +15,7 @@ import org.openfaces.component.CaptionArea;
 import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.ExpansionToggleButton;
 import org.openfaces.component.LoadingMode;
+import org.openfaces.component.EditableStateHolder;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.event.StateChangeListener;
 import org.openfaces.util.AjaxUtil;
@@ -23,6 +24,10 @@ import org.openfaces.util.RenderingUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.el.MethodBinding;
+import javax.faces.validator.Validator;
+import javax.faces.event.ValueChangeListener;
+import javax.faces.convert.Converter;
 
 /**
  *
@@ -33,7 +38,7 @@ import javax.faces.context.FacesContext;
  * 
  * @author Kharchenko
  */
-public class FoldingPanel extends AbstractPanelWithCaption implements CompoundComponent {
+public class FoldingPanel extends AbstractPanelWithCaption implements CompoundComponent, EditableStateHolder {
     public static final String COMPONENT_TYPE = "org.openfaces.FoldingPanel";
     public static final String COMPONENT_FAMILY = "org.openfaces.FoldingPanel";
 
@@ -252,4 +257,91 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
         ComponentUtil.createChildComponent(context, captionArea, ExpansionToggleButton.COMPONENT_TYPE, "toggle");
     }
 
+    public Object getSubmittedValue() {
+        return expanded;
+    }
+
+    public void setSubmittedValue(Object value) {
+        expanded = (Boolean) value;
+    }
+
+    public Object getLocalValue() {
+        return null;
+    }
+
+    public boolean isLocalValueSet() {
+        return false;
+    }
+
+    public void setLocalValueSet(boolean localValueSet) {
+    }
+
+    public boolean isValid() {
+        return false;
+    }
+
+    public void setValid(boolean valid) {
+    }
+
+    public boolean isRequired() {
+        return false;
+    }
+
+    public void setRequired(boolean required) {
+    }
+
+    public boolean isImmediate() {
+        return false;
+    }
+
+    public void setImmediate(boolean immediate) {
+    }
+
+    public MethodBinding getValidator() {
+        return null;
+    }
+
+    public void setValidator(MethodBinding validatorBinding) {
+    }
+
+    public MethodBinding getValueChangeListener() {
+        return null;
+    }
+
+    public void setValueChangeListener(MethodBinding valueChangeMethod) {
+    }
+
+    public void addValidator(Validator validator) {
+    }
+
+    public Validator[] getValidators() {
+        return new Validator[0];
+    }
+
+    public void removeValidator(Validator validator) {
+    }
+
+    public void addValueChangeListener(ValueChangeListener listener) {
+    }
+
+    public ValueChangeListener[] getValueChangeListeners() {
+        return new ValueChangeListener[0];
+    }
+
+    public void removeValueChangeListener(ValueChangeListener listener) {
+    }
+
+    public Object getValue() {
+        return null;
+    }
+
+    public void setValue(Object value) {
+    }
+
+    public Converter getConverter() {
+        return null;
+    }
+
+    public void setConverter(Converter converter) {
+    }
 }
