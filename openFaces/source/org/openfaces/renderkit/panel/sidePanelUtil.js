@@ -582,6 +582,6 @@ O$._applyEventsObjectToElement = function(eventsObject, element) {
 O$._setupRolloverClass = function(element, rolloverClass) {
   if (!rolloverClass) return;
   O$.setupHoverStateFunction(element, function(mouseInside) {
-    O$.setElementStyleMappings(element, {_rolloverStyle: mouseInside ? rolloverClass : null});
+    O$.setStyleMappings(element, {_rolloverStyle: mouseInside ? rolloverClass : null});
   });
 };

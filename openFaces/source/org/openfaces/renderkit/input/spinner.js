@@ -63,13 +63,13 @@ O$.Spinner = {
       };
 
       increaseButton.onmouseup = function () {
-        O$.setElementStyleMappings(increaseButton, {
+        O$.setStyleMappings(increaseButton, {
           pressed: null
         });
       };
 
       decreaseButton.onmouseup = function () {
-        O$.setElementStyleMappings(decreaseButton, {
+        O$.setStyleMappings(decreaseButton, {
           pressed: null
         });
       };
@@ -115,7 +115,7 @@ O$.Spinner = {
       spinner._increaseButton.onmousedown = function(e) {
         checkValueForBounds(spinner);
 
-        O$.setElementStyleMappings(increaseButton, {
+        O$.setStyleMappings(increaseButton, {
           pressed: spinner._pressedButtonClass
         });
 
@@ -140,7 +140,7 @@ O$.Spinner = {
 
         checkValueForBounds(spinner);
 
-        O$.setElementStyleMappings(decreaseButton, {
+        O$.setStyleMappings(decreaseButton, {
           pressed: spinner._pressedButtonClass
         });
 
@@ -201,11 +201,11 @@ O$.Spinner = {
         if (spinner != field && spinner._fieldClass != spinner._rolloverFieldClass)
           field.className = spinner._rolloverFieldClass;
         if (increaseButton && decreaseButton && spinner._buttonClass != spinner._rolloverButtonClass) {
-          O$.setElementStyleMappings(increaseButton, {
+          O$.setStyleMappings(increaseButton, {
             mouseover: spinner._rolloverButtonClass
           });
 
-          O$.setElementStyleMappings(decreaseButton, {
+          O$.setStyleMappings(decreaseButton, {
             mouseover: spinner._rolloverButtonClass
           });
         }
@@ -219,11 +219,11 @@ O$.Spinner = {
           field.className = spinner._fieldClass;
         if (increaseButton && decreaseButton && spinner._buttonClass != spinner._rolloverButtonClass) {
 
-          O$.setElementStyleMappings(increaseButton, {
+          O$.setStyleMappings(increaseButton, {
             mouseover: null
           });
 
-          O$.setElementStyleMappings(decreaseButton, {
+          O$.setStyleMappings(decreaseButton, {
             mouseover: null
           });
         }

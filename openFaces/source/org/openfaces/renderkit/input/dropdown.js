@@ -314,7 +314,7 @@ O$.DropDown = {
 
   },
 
-  _addInClassName: function(classDest, className) { // todo: remove this method and replace usages with O$.appendClassNames or O$.setElementStyleMappings
+  _addInClassName: function(classDest, className) { // todo: remove this method and replace usages with O$.appendClassNames or O$.setStyleMappings
     if (classDest.length > 0) {
       classDest = classDest + " " + className;
     } else {
@@ -323,7 +323,7 @@ O$.DropDown = {
     return classDest;
   },
 
-  _removeOfClassName: function(classDest, className) { // todo: remove this method and replace usages with O$.excludeClassNames or O$.setElementStyleMappings
+  _removeOfClassName: function(classDest, className) { // todo: remove this method and replace usages with O$.excludeClassNames or O$.setStyleMappings
     if (classDest.length > 0) {
       classDest = classDest.replace(className, "");
     }

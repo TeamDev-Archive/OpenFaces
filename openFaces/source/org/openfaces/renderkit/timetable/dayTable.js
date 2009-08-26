@@ -935,7 +935,7 @@ O$._initDayTable = function(componentId,
       if (event.type == "reserved")
         return;
       if (value) {
-        O$.setElementStyleMappings(eventElement, {_rolloverStyle: rolloverEventClass});
+        O$.setStyleMappings(eventElement, {_rolloverStyle: rolloverEventClass});
         O$.setElementBorderRectangle(eventElement, eventElement._rect);
         eventElement._updateAreaPositions(true);
         showEventActionBar(event);
@@ -950,7 +950,7 @@ O$._initDayTable = function(componentId,
           eventElement._onmouseover(O$.createEvent("mouseover"));
         }
       } else {
-        O$.setElementStyleMappings(eventElement, {_rolloverStyle: null});
+        O$.setStyleMappings(eventElement, {_rolloverStyle: null});
         O$.setElementBorderRectangle(eventElement, eventElement._currentRect);
         eventElement._updateAreaPositions(true);
         hideEventActionBar();
@@ -1975,7 +1975,7 @@ O$._initEventActionBar = function(actionBarId, dayTableId, backgroundIntensityLe
     cell._update = function() {
       var mouseInside = this._mouseInside;
       var pressed = this._pressed;
-      O$.setElementStyleMappings(this, {
+      O$.setStyleMappings(this, {
         _rolloverStyle: mouseInside ? this._action.style[1] : null,
         _pressedStyle: pressed ? this._action.style[2] : null});
       var userSpecifiedBackground = O$.getStyleClassProperty(this.className, "background-color");

@@ -267,7 +267,7 @@ O$.Checkbox = {
     function updateStyles(checkbox) {
       resetPosition(checkbox);
 
-      O$.setElementStyleMappings(checkbox, {
+      O$.setStyleMappings(checkbox, {
         selected: checkbox.isSelected() ? checkbox._selectedClass : null,
         unselected: (checkbox.isDefined() && !checkbox.isSelected()) ? checkbox._unselectedClass : null,
         _undefined: checkbox.isDefined() ? null  : checkbox._undefinedClass,

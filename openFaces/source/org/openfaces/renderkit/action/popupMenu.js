@@ -123,7 +123,7 @@ O$._initPopupMenu = function(popupMenuId,
     O$._updateMenuItemBackground(menuItem);
 
     if (!menuItem._isSeparator()) {
-      O$.setElementStyleMappings(menuItem._anchor, {
+      O$.setStyleMappings(menuItem._anchor, {
         defaultClass:  menuItem._anchor._defaultItemClass
       });
 
@@ -257,7 +257,7 @@ O$.setMenuItemEnabled = function(menuItemId, enabled, selectDisabledItems) {
 
   /* Update icons and styles if user chaged enabling of the MenuItem */
   if (enabled) {
-    O$.setElementStyleMappings(menuItem._anchor, {
+    O$.setStyleMappings(menuItem._anchor, {
       disabled: null
     });
     if (menuItem._icon) {
@@ -272,7 +272,7 @@ O$.setMenuItemEnabled = function(menuItemId, enabled, selectDisabledItems) {
       menuItem._arrow.src = menuItem._arrow.arrowImage;
   } else {
     var disabledClass = O$.combineClassNames([menuItem._properties.disabledClass, menuItem._anchor._defaultDisabledClass]);
-    O$.setElementStyleMappings(menuItem._anchor, {
+    O$.setStyleMappings(menuItem._anchor, {
       disabled: disabledClass
     });
     if (menuItem._icon) {
@@ -335,7 +335,7 @@ O$._setHighlightMenuItem = function(popupMenu, anchor, selectDisabledItems) {
     popupMenu.focus();
 
     /*if (keepParentItemSelected && popupMenu._parentPopupMenuItem) {
-     O$.setElementStyleMappings(popupMenu._parentPopupMenuItem, {
+     O$.setStyleMappings(popupMenu._parentPopupMenuItem, {
      select:  popupMenu._parentPopupMenuItem.parentNode.selectedClass
      });
      var arrow = popupMenu._parentPopupMenuItem.parentNode._arrow
@@ -348,7 +348,7 @@ O$._setHighlightMenuItem = function(popupMenu, anchor, selectDisabledItems) {
      */
 
     if (!menuItem._disabled) {
-      O$.setElementStyleMappings(anchor, {
+      O$.setStyleMappings(anchor, {
         select: menuItem.selectedClass
       });
       if (menuItem._icon && menuItem._icon.imageSelectedSrc)
@@ -356,7 +356,7 @@ O$._setHighlightMenuItem = function(popupMenu, anchor, selectDisabledItems) {
 
     } else {
       if (selectDisabledItems) {
-        O$.setElementStyleMappings(anchor, {
+        O$.setStyleMappings(anchor, {
           select:  menuItem.selectedDisabledClass
         });
         if (menuItem._icon && menuItem._icon.disabledImgSelectedSrc)
@@ -389,7 +389,7 @@ O$._unselectMenuItem = function(menuItem) {
     if (!menuItem._isSeparator()) {
       menuItem._popupMenu._selectedIndex = null;
 
-      O$.setElementStyleMappings(menuItem._anchor, {
+      O$.setStyleMappings(menuItem._anchor, {
         select:  null
       });
 

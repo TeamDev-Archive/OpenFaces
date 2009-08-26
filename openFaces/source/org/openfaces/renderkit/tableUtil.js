@@ -499,7 +499,7 @@ O$._setRowStyle = function(row, styleMappings) {
       O$._setCellStyleMappings(cell, styleMappings);
     }
   } else {
-    O$.setElementStyleMappings(row, styleMappings);
+    O$.setStyleMappings(row, styleMappings);
     O$._handleUnsupportedRowStyleProperties(row);
   }
 }
@@ -530,7 +530,7 @@ O$._initTableRow = function(row, table, rowIndex, visibleRowsBefore) {
     this._visible = visible;
     if (this.style.display)
       this.style.display = "";
-    O$.setElementStyleMappings(this, {_rowVisibilityStyle: visible ? "" : "o_hiddenRow"});
+    O$.setStyleMappings(this, {_rowVisibilityStyle: visible ? "" : "o_hiddenRow"});
     O$._updateCellWrappersStyleForRow(this);
   };
 
@@ -560,7 +560,7 @@ O$._initTableRow = function(row, table, rowIndex, visibleRowsBefore) {
     O$._calculateInitialRowClass(row, table, visibleRowsBefore);
     if (!table._forceUsingCellStyles) {
       var individualRowClass = table._rowStylesMap[row._index];
-      O$.setElementStyleMappings(row, {_initialClass: row._initialClass, _individualRowClass: individualRowClass});
+      O$.setStyleMappings(row, {_initialClass: row._initialClass, _individualRowClass: individualRowClass});
       O$._handleUnsupportedRowStyleProperties(row);
     }
   }
@@ -606,7 +606,7 @@ O$._initTableRow = function(row, table, rowIndex, visibleRowsBefore) {
     var opera = O$.isOpera();
 
     if (!rowTable._forceUsingCellStyles) {
-      O$.setElementStyleMappings(row, {_rolloverAndSelectionClass: addedClassName});
+      O$.setStyleMappings(row, {_rolloverAndSelectionClass: addedClassName});
       O$._updateCellWrappersStyleForRow(row);
       if (opera) {
         var oldBackground = row.style.background;
@@ -635,7 +635,7 @@ O$._initTableRow = function(row, table, rowIndex, visibleRowsBefore) {
         var col = cell._column;
         if (!rowTable._forceUsingCellStyles && !(col.body && col.body._getCompoundClassName()) && !col._useCellStyles)
           continue;
-        O$.setElementStyleMappings(cell, {_rolloverAndSelectionClass: addedClassName});
+        O$.setStyleMappings(cell, {_rolloverAndSelectionClass: addedClassName});
         O$._updateCellWrapperStyle(cell);
         if (opera) {
           var oldBackground = cell.style.background;
@@ -1254,7 +1254,7 @@ O$._initTableBodyCell = function(cell, column) {
         cellStyleMappings._columnBodyClass = compoundBodyClassName;
       }
     }
-    O$.setElementStyleMappings(cell, cellStyleMappings);
+    O$.setStyleMappings(cell, cellStyleMappings);
     O$._updateCellWrapperStyle(cell);
   };
 
@@ -1425,7 +1425,7 @@ O$._prepareCellStylesForColStyleSimulation = function(column) {
     // use cell styles for this column to solve color CSS attribute precedence issue in Mozilla (JSFC-2823)
     column._useCellStyles = true;
     if (column.body)
-      O$.setElementStyleMappings(column.body, {_colTagClassName: colTagClassName});
+      O$.setStyleMappings(column.body, {_colTagClassName: colTagClassName});
     cellStyles = null;
   } else {
     if (!(cellStyles._textAlign || cellStyles._verticalAlign ||
@@ -1475,7 +1475,7 @@ O$._setCellRightBorder = function(cell, borderValue) {
 }
 
 O$._setCellStyleMappings = function(cell, styleMappings) {
-  O$.setElementStyleMappings(cell, styleMappings);
+  O$.setStyleMappings(cell, styleMappings);
   O$._updateCellWrapperStyle(cell);
 }
 

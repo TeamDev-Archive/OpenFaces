@@ -61,7 +61,7 @@ O$._initTable = function(tableId, structureAndStyleParams, useAjax, rolloverClas
 
   table._originalClassName = table.className;
   table._updateStyle = function() {
-    O$.setElementStyleMappings(this, {
+    O$.setStyleMappings(this, {
       rollover: this._mouseIsOver ? this._rolloverClass : null
     });
   };
@@ -1194,7 +1194,7 @@ O$._initTableSorting = function(tableId, columnSortableFlags, sortedColIndex, so
     if (!colHeader)
       continue;
 
-    O$.setElementStyleMappings(colHeader, {_sortableHeaderClass: sortableHeaderClass});
+    O$.setStyleMappings(colHeader, {_sortableHeaderClass: sortableHeaderClass});
     O$._setCellProperty(colHeader, "_table", table);
     O$._setCellProperty(colHeader, "_index", i);
     var clickHandler = function() {
@@ -1211,10 +1211,10 @@ O$._initTableSorting = function(tableId, columnSortableFlags, sortedColIndex, so
 
     table._sortableHeaderRolloverClass = sortableHeaderRolloverClass;
     colHeader._headerMouseOver = function() {
-      O$.setElementStyleMappings(this, {_sortedHeaderRolloverClass: table._sortableHeaderRolloverClass});
+      O$.setStyleMappings(this, {_sortedHeaderRolloverClass: table._sortableHeaderRolloverClass});
     };
     colHeader._headerMouseOut = function() {
-      O$.setElementStyleMappings(this, {_sortedHeaderRolloverClass: null});
+      O$.setStyleMappings(this, {_sortedHeaderRolloverClass: null});
     };
     O$.addEventHandlerSimple(colHeader, "mouseover", "_headerMouseOver", colHeader);
     O$.addEventHandlerSimple(colHeader, "mouseout", "_headerMouseOut", colHeader);
@@ -1233,8 +1233,8 @@ O$._initTableSorting = function(tableId, columnSortableFlags, sortedColIndex, so
         _sortedColClass: (table._forceUsingCellStyles || column._useCellStyles) ? sortedColClass : null,
         _sortedColHeaderClass: sortedColHeaderClass});
 
-    O$.setElementStyleMappings(column, {_sortedColClass: table._sortedColClass});
-    O$.setElementStyleMappings(column.body, {_sortedColBodyClass: table._sortedColBodyClass});
+    O$.setStyleMappings(column, {_sortedColClass: table._sortedColClass});
+    O$.setStyleMappings(column.body, {_sortedColBodyClass: table._sortedColBodyClass});
     column._updateStyle();
 
     var footerCell = column.footer ? column.footer._cell : null;
@@ -1359,8 +1359,8 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
       var totalWidth = 0;
       for (var i = 0, count = table._columns.length; i < count; i++) {
         var column = table._columns[i];
-        var columnWidth = colWidths ? colWidths[i] : column.getWidth();
-        totalWidth += columnWidth;
+        var thisColumnWidth = colWidths ? colWidths[i] : column.getWidth();
+        totalWidth += thisColumnWidth;
       }
 
       var borderLeft = O$.getNumericStyleProperty(table, "border-left-width", true);
@@ -1380,8 +1380,7 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
       var colWidths = [];
       for (var i = 0, count = table._columns.length; i < count; i++) {
         var column = table._columns[i];
-        var columnWidth = column.getWidth();
-        colWidths[i] = columnWidth;
+        colWidths[i] = column.getWidth();
       }
       return colWidths;
     }
@@ -1390,18 +1389,21 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
 
     for (var i = 0; i < colCount; i++) {
       var col = table._columns[i];
+      col._allCellsClassName = O$.createCssClass("overflow: hidden", true);
+      col._allCellsClass = O$.findCssRule("." + col._allCellsClassName);
+      O$.setStyleMappings(col._colTag, {resizingClass: col._allCellsClassName});
       if (col.header && col.header._cell)
-        col.header._cell.style.overflow = "hidden";
+        O$.setStyleMappings(col.header._cell, {resizingClass: col._allCellsClassName});
       if (col.filter && col.filter._cell)
-        col.filter._cell.style.overflow = "hidden";
+        O$.setStyleMappings(col.filter._cell, {resizingClass: col._allCellsClassName});
       if (col.footer && col.footer._cell)
-        col.footer._cell.style.overflow = "hidden";
+        O$.setStyleMappings(col.footer._cell, {resizingClass: col._allCellsClassName});
       var bodyCells = col.body._cells;
       for (var j = 0, jCount = bodyCells.length; j < jCount; j++) {
         var cell = bodyCells[j];
         if (!cell || cell.colSpan > 1)
           continue;
-        cell.style.overflow = "hidden";
+        O$.setStyleMappings(cell, {resizingClass: col._allCellsClassName});
       }
 
       var thisColumnParams = columnParams[colIndex];
@@ -1426,6 +1428,9 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
       var column = table._columns[colIndex];
 
       column.setWidth = function(width, additionalAttempts) {
+        this._allCellsClass.style.width = width + "px";
+        this._colTag.style.width = width + "px";
+        return width;
         if (!O$.isOpera())
           additionalAttempts = 0;
         if (additionalAttempts) {

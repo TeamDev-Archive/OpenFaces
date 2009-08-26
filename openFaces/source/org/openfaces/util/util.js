@@ -52,7 +52,7 @@ if (!window.O$) {
     if (styles) {
       if (styles.rollover)
         O$.setupHoverStateFunction(component, function(mouseInside) {
-          O$.setElementStyleMappings(component, {_rolloverStyle: mouseInside ? styles.rollover : null});
+          O$.setStyleMappings(component, {_rolloverStyle: mouseInside ? styles.rollover : null});
         });
     }
     if (events) {
@@ -2116,7 +2116,7 @@ if (!window.O$) {
     component._updateOutline = function() {
       if (this._outlineUpdateBlocked)
         return;
-      O$.setElementStyleMappings(this, {
+      O$.setStyleMappings(this, {
         focused: this._focused ? focusedClassName : null
       });
 
@@ -2553,7 +2553,7 @@ if (!window.O$) {
       return styleMappings.__initialStyle = value;
   };
 
-  O$.setElementStyleMappings = function(element, styleMappings) {
+  O$.setStyleMappings = function(element, styleMappings) {
     if (!element._styleMappings)
       element._styleMappings = {__initialStyle: element.className};
     var elementStyleMappings = element._styleMappings;

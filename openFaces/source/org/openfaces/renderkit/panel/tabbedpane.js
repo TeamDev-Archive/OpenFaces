@@ -57,13 +57,13 @@ O$._initTabbedPane = function(clientId, rolloverClass,
       tabbedPane._tabSet._preventPageScrolling = false;
     });
     O$.addEventHandler(tabbedPane._tabSet, "focus", function () {
-      O$.setElementStyleMappings(tabbedPane, {
+      O$.setStyleMappings(tabbedPane, {
         focused: focusedClass
       });
     });
 
     O$.addEventHandler(tabbedPane._tabSet, "blur", function () {
-      O$.setElementStyleMappings(tabbedPane, {
+      O$.setStyleMappings(tabbedPane, {
         focused: null
       });
     });

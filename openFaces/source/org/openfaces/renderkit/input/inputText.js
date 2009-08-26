@@ -37,7 +37,7 @@ O$.InputText = {
       } else {
         inputText.className = className;
       }
-    }; // todo: replace usages of these methods with O$.setElementStyleMappings
+    }; // todo: replace usages of these methods with O$.setStyleMappings
     inputText._removeOfClassName = function (className) {
       if (inputText.className.length > 0) {
         inputText.className = inputText.className.replace(className, "");

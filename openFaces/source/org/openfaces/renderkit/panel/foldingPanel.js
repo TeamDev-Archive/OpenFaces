@@ -80,20 +80,20 @@ O$.FoldingPanel = {
           this._prevOnfocus(e);
 
         if (focusedContentClass) {
-          O$.setElementStyleMappings(contentHolder, {focused: focusedContentClass});
+          O$.setStyleMappings(contentHolder, {focused: focusedContentClass});
         }
         if (focusedCaptionClass) {
-          O$.setElementStyleMappings(captionContent, {focused: focusedCaptionClass});
+          O$.setStyleMappings(captionContent, {focused: focusedCaptionClass});
         }
       }
       fp.onblur = function(e) {
         if (this._prevOnBlur)
           this._prevOnBlur(e);
         if (focusedContentClass) {
-          O$.setElementStyleMappings(contentHolder, {focused: null});
+          O$.setStyleMappings(contentHolder, {focused: null});
         }
         if (focusedCaptionClass) {
-          O$.setElementStyleMappings(captionContent, {focused: null});
+          O$.setStyleMappings(captionContent, {focused: null});
         }
       }
     }

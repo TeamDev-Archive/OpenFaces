@@ -42,7 +42,7 @@ O$._initCaptionButton = function(componentId,
       btn._image.src = btn._rolloverUrl;
     else
       btn._image.src = btn._pressedUrl;
-    O$.setElementStyleMappings(btn, {
+    O$.setStyleMappings(btn, {
       rollover: mouseInside ? rolloverStyle : null,
       pressed: mousePressed ? pressedStyle : null});
   };
@@ -101,7 +101,7 @@ O$._initToggleCaptionButton = function(controlId,
       btn._image.src = btn._toggled ? btn._toggleRolloverUrl : btn._rolloverUrl;
     else
       btn._image.src = btn._toggled ? btn._togglePressedUrl : btn._pressedUrl;
-    O$.setElementStyleMappings(btn, {
+    O$.setStyleMappings(btn, {
       rollover: mouseInside ? rolloverStyle : null,
       pressed: mousePressed ? pressedStyle : null});
   };

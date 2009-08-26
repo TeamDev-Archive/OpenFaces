@@ -41,27 +41,27 @@ O$._initTabSet = function(tabSetId, tabIds, selectedIndex, placement,
       if (this._absoluteIndex == tabset._index) {
         if (this._tabbedPaneCall == null)
         {
-          O$.setElementStyleMappings(this, {
+          O$.setStyleMappings(this, {
             mouseover: tabset._rolloverTabClass
           });
         } else {
-          O$.setElementStyleMappings(this, {
+          O$.setStyleMappings(this, {
             mouseover_TP: tabset._rolloverTabClass
           });
         }
-        O$.setElementStyleMappings(this, {
+        O$.setStyleMappings(this, {
           mouseoverSelected: tabset._rolloverSelectTabClass
         });
 
-        O$.setElementStyleMappings(this, {
+        O$.setStyleMappings(this, {
           border:  tabset.frontBorderClass
         });
       }
       else {
-        O$.setElementStyleMappings(this, {
+        O$.setStyleMappings(this, {
           mouseover:  tabset._rolloverTabClass
         });
-        O$.setElementStyleMappings(this, {
+        O$.setStyleMappings(this, {
           border:  this._borderClass
         });
       }
@@ -75,34 +75,34 @@ O$._initTabSet = function(tabSetId, tabIds, selectedIndex, placement,
       }
 
       if (this._absoluteIndex == tabset._index) {
-        O$.setElementStyleMappings(this, {
+        O$.setStyleMappings(this, {
           mouseoverSelected: null
         });
 
         if (this._tabbedPaneCall == null)
         {
-          O$.setElementStyleMappings(this, {
+          O$.setStyleMappings(this, {
             mouseover: null
           });
         } else {
-          O$.setElementStyleMappings(this, {
+          O$.setStyleMappings(this, {
             mouseover_TP: null
           });
         }
 
-        O$.setElementStyleMappings(this, {
+        O$.setStyleMappings(this, {
           border:  tabset.frontBorderClass
         });
       }
       else {
-        O$.setElementStyleMappings(this, {
+        O$.setStyleMappings(this, {
           border: this._borderClass
         });
       }
-      O$.setElementStyleMappings(this, {
+      O$.setStyleMappings(this, {
         mouseover:  null
       });
-      O$.setElementStyleMappings(this, {
+      O$.setStyleMappings(this, {
         mouseover_TP: null
       });
       this._tabbedPaneCall = null;
@@ -111,7 +111,7 @@ O$._initTabSet = function(tabSetId, tabIds, selectedIndex, placement,
 
     O$.assignEventHandlerField(tab, "onclick", function () {
       tabset.setSelectedIndex(this._absoluteIndex, true);
-      O$.setElementStyleMappings(this, {
+      O$.setStyleMappings(this, {
         mouseoverSelected: tabset._rolloverSelectTabClass
       });
     });
@@ -139,16 +139,16 @@ O$._initTabSet = function(tabSetId, tabIds, selectedIndex, placement,
 
   tabset.setSelectedIndex = function (index, cancellable) {
     if (focusable) {
-      O$.setElementStyleMappings(tabset._tabs[tabset._index].childNodes[0], {
+      O$.setStyleMappings(tabset._tabs[tabset._index].childNodes[0], {
         focused:  null
       });
-      O$.setElementStyleMappings(tabset._tabs[tabset._index], {
+      O$.setStyleMappings(tabset._tabs[tabset._index], {
         focused: null
       });
-      O$.setElementStyleMappings(tabset._tabs[index].childNodes[0], {
+      O$.setStyleMappings(tabset._tabs[index].childNodes[0], {
         focused:  focusAreaClass
       });
-      O$.setElementStyleMappings(tabset._tabs[index], {
+      O$.setStyleMappings(tabset._tabs[index], {
         focused: tabset._focusedTabClass
       });
 
@@ -160,13 +160,13 @@ O$._initTabSet = function(tabSetId, tabIds, selectedIndex, placement,
     if (index == tabset._index)
       return;
 
-    O$.setElementStyleMappings(tabset._tabs[tabset._index], {
+    O$.setStyleMappings(tabset._tabs[tabset._index], {
       selected:  null
     });
-    O$.setElementStyleMappings(tabset._tabs[tabset._index], {
+    O$.setStyleMappings(tabset._tabs[tabset._index], {
       mouseoverSelected: null
     });
-    O$.setElementStyleMappings(tabset._tabs[tabset._index], {
+    O$.setStyleMappings(tabset._tabs[tabset._index], {
       mouseover_TP: null
     });
 
@@ -183,7 +183,7 @@ O$._initTabSet = function(tabSetId, tabIds, selectedIndex, placement,
       }
     }
     if (tabset._indexOver != null && tabset._indexOver == index) {
-      O$.setElementStyleMappings(tabset._tabs[index], {
+      O$.setStyleMappings(tabset._tabs[index], {
         mouseoverSelected: tabset._rolloverSelectTabClass
       });
     }
@@ -221,27 +221,27 @@ O$._initTabSet = function(tabSetId, tabIds, selectedIndex, placement,
 
     for (var i = 0, tabCount = tabset._tabs.length; i < tabCount; i++) {
       var tab = tabset._tabs[i];
-      O$.setElementStyleMappings(tab, {
+      O$.setStyleMappings(tab, {
         main: tabset._tabClass
       });
       if (tab._absoluteIndex < tabset._index) {
-        O$.setElementStyleMappings(tab, {
+        O$.setStyleMappings(tab, {
           border: tabset.backBorderClass1
         });
         initTabStyles(tab, tabset.backBorderClass1);
       }
       else if (tab._absoluteIndex == tabset._index) {
-        O$.setElementStyleMappings(tab, {
+        O$.setStyleMappings(tab, {
           selected: tabset._selectTabClass
         });
 
-        O$.setElementStyleMappings(tab, {
+        O$.setStyleMappings(tab, {
           border: tabset.frontBorderClass
         });
         initTabStyles(tab, tabset.frontBorderClass);
       }
       else {
-        O$.setElementStyleMappings(tab, {
+        O$.setStyleMappings(tab, {
           border: tabset.backBorderClass2
         });
         initTabStyles(tab, tabset.backBorderClass2);
@@ -283,10 +283,10 @@ O$._initTabSet = function(tabSetId, tabIds, selectedIndex, placement,
     tabset.onfocus = function(e) {
       if (tabset._oldfocus)
         tabset._oldfocus(e);
-      O$.setElementStyleMappings(tabset._tabs[tabset._index].childNodes[0], {
+      O$.setStyleMappings(tabset._tabs[tabset._index].childNodes[0], {
         focused:  focusAreaClass
       });
-      O$.setElementStyleMappings(tabset._tabs[tabset._index], {
+      O$.setStyleMappings(tabset._tabs[tabset._index], {
         focused: tabset._focusedTabClass
       });
     };
@@ -295,7 +295,7 @@ O$._initTabSet = function(tabSetId, tabIds, selectedIndex, placement,
     tabset.onblur = function(e) {
       if (tabset._oldblur)
         tabset._oldblur(e);
-      O$.setElementStyleMappings(tabset._tabs[tabset._index].childNodes[0], {
+      O$.setStyleMappings(tabset._tabs[tabset._index].childNodes[0], {
         focused:  null
       });
     };
