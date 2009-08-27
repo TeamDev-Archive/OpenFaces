@@ -207,7 +207,7 @@ public abstract class AbstractTableSelection extends UICommand {
 
         boolean postEvent = getActionExpression() != null;
 
-        ScriptBuilder buf = new ScriptBuilder().initScript(context, table, "O$._initTableSelection",
+        ScriptBuilder buf = new ScriptBuilder().initScript(context, table, "O$.Table._initSelection",
                 isEnabled(),
                 "rows",
                 isMultipleSelectionAllowed(),

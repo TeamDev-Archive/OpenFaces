@@ -30,7 +30,7 @@ public class AbstractDataTableFilterRenderer extends RendererBase {
     protected String getFilterSubmissionScript(DataTableFilter filter, FacesContext context) {
         AbstractTable table = getTable(filter);
         String tableId = table.getClientId(context);
-        return "O$._filterDataTable('" + tableId + "', this);";
+        return "O$.Table._filterDataTable('" + tableId + "', this);";
     }
 
     AbstractTable getTable(DataTableFilter filter) {

@@ -269,7 +269,7 @@ public class CheckboxColumn extends BaseColumn {
     public void encodeOnAjaxNodeFolding(FacesContext context) throws IOException {
         if (selectedRows instanceof MultipleNodeSelection) {
             List<Integer> selectedRowIndexes = selectedRows.encodeSelectionIntoIndexes();
-            ScriptBuilder buf = new ScriptBuilder().functionCall("O$._setCheckboxColIndexes",
+            ScriptBuilder buf = new ScriptBuilder().functionCall("O$.Table._setCheckboxColIndexes",
                     this, selectedRowIndexes).semicolon();
             RenderingUtil.renderInitScript(context, buf, new String[]{
                     ResourceUtil.getUtilJsURL(context),

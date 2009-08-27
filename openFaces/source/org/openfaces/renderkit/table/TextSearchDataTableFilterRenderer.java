@@ -69,7 +69,7 @@ public abstract class TextSearchDataTableFilterRenderer extends AbstractDataTabl
     protected String getFilterOnEnterScript(FacesContext context, DataTableFilter filter) {
         AbstractTable table = getTable(filter);
         String tableId = table.getClientId(context);
-        return "return O$._filterFieldKeyPressHandler('" + tableId + "', this, event);";
+        return "return O$.Table._filterFieldKeyPressHandler('" + tableId + "', this, event);";
     }
 
     protected String getStringValue(DataTableFilter filter) {

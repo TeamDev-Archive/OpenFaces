@@ -846,7 +846,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
         boolean noDataRows = table.getRowCount() == 0;
         TableStyles defaultStyles = getDefaultStyles(table);
 
-        buf.initScript(facesContext, table, "O$._initTable",
+        buf.initScript(facesContext, table, "O$.Table._init",
                 TableUtil.getStructureAndStyleParams(
                         facesContext, table, defaultStyles, table, rowStylesMap, cellStylesMap,
                         columns, tableStructure, noDataRows),
@@ -890,7 +890,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
         boolean canPageBack = tableIsPaginated && canPageBack(table);
         boolean canPageForth = tableIsPaginated && canPageForth(table);
         boolean canSelectLastPage = tableIsPaginated && canSelectLastPage(table);
-        buf.initScript(facesContext, table, "O$._initTableKeyboardNavigation",
+        buf.initScript(facesContext, table, "O$.Table._initKeyboardNavigation",
                 tableIsPaginated,
                 focusedClass,
                 canPageBack,
@@ -960,7 +960,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
             preloadedImageUrls.put(anotherSortingDirectionImageUrl);
         }
 
-        buf.initScript(context, table, "O$._initTableSorting",
+        buf.initScript(context, table, "O$.Table._initSorting",
                 columnSortableFlags,
                 table.getSortColumnIndex(),
                 StyleUtil.getCSSClass(context, table, table.getSortableHeaderStyle(), StyleGroup.regularStyleGroup(), getSortableHeaderClass(table)),
@@ -1097,7 +1097,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
                 checkedRowIndexes.put(checkedRowIdx);
             }
 
-            buf.initScript(facesContext, table, "O$._initCheckboxCol",
+            buf.initScript(facesContext, table, "O$.Table._initCheckboxCol",
                     colIndex,
                     col.getClientId(facesContext),
                     checkedRowIndexes);

@@ -2291,8 +2291,17 @@ if (!window.O$) {
     if (!styleSheets)
       return null;
 
-    if (document._of_localStyleSheet)
-      return document._of_localStyleSheet;
+    if (document._of_localStyleSheet) {
+      if (styleSheets)
+        for (var i = 0, count = styleSheets.length; i < count; i++) {
+          var ss = styleSheets[i];
+          if (ss == document._of_localStyleSheet)
+            return ss;
+        }
+      // previously located local style sheet may have been removed if it resided inside of a component that was
+      // reloaded with Ajax, so we must relocate it
+      document._of_localStyleSheet = null;
+    }
 
     function locateLocalStyleSheet() {
       var documentLocation = document.location;

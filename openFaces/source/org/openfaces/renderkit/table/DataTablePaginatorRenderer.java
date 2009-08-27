@@ -259,7 +259,7 @@ public class DataTablePaginatorRenderer extends RendererBase {
     private static String getSubmitComponentWithParamScript(
             FacesContext context, boolean useAjax, UIComponent table, String paramName, String paramValue) {
         String submitScript = useAjax
-                ? "O$._performPagerAction('" + table.getClientId(context) + "', this, '" + paramName + "', " + paramValue + "); "
+                ? "O$.Table._performPaginatorAction('" + table.getClientId(context) + "', this, '" + paramName + "', " + paramValue + "); "
                 : "O$.submitFormWithAdditionalParam(this, '" + paramName + "', " + paramValue + "); ";
         return submitScript;
     }

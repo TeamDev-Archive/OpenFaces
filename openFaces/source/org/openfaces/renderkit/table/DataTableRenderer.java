@@ -62,7 +62,7 @@ public class DataTableRenderer extends AbstractTableRenderer {
 
     @Override
     protected String getInitJsAPIFunctionName() {
-        return "O$._initDataTableAPI";
+        return "O$.Table._initDataTableAPI";
     }
 
 }

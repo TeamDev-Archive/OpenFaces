@@ -118,7 +118,7 @@ public class ComboBoxDataTableFilterRenderer extends AbstractDataTableFilterRend
 
         AbstractTable table = getTable(component);
 
-        RenderingUtil.renderInitScript(context, new ScriptBuilder().functionCall("O$._showTableFilter",
+        RenderingUtil.renderInitScript(context, new ScriptBuilder().functionCall("O$.Table._showFilter",
                 table, clientId).semicolon(),
                 new String[]{
                         ResourceUtil.getUtilJsURL(context),

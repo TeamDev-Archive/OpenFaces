@@ -64,7 +64,7 @@ public class ColumnResizingRenderer extends RendererBase {
             }
         }
 
-        ScriptBuilder buf = new ScriptBuilder().initScript(context, table, "O$._initTableColumnResizing",
+        ScriptBuilder buf = new ScriptBuilder().initScript(context, table, "O$.Table._initColumnResizing",
                 columnResizing.getRetainTableWidth(),
                 columnResizing.getMinColWidth(),
                 columnResizing.getResizeHandleWidth(),
