@@ -1054,7 +1054,7 @@ O$._initSelectionHeader = function(headerId) {
     }
     var evt = O$.getEvent(e);
     evt.cancelBubble = true;
-  }
+  };
   header.ondblclick = function(e) {
     if (O$.isExplorer())
       this.click();
@@ -1427,83 +1427,9 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
     for (var colIndex = 0; colIndex < colCount; colIndex++) {
       var column = table._columns[colIndex];
 
-      column.setWidth = function(width, additionalAttempts) {
+      column.setWidth = function(width) {
         this._allCellsClass.style.width = width + "px";
         this._colTag.style.width = width + "px";
-        return width;
-        if (!O$.isOpera())
-          additionalAttempts = 0;
-        if (additionalAttempts) {
-          this.setWidth(width, 0);
-          var actualWidth;
-          // additional attempts are needed because at least Opera doesn't always set the specified width from
-          // the first attempt
-          for (var attempt = 0; attempt < additionalAttempts; attempt++) {
-            actualWidth = this.getWidth();
-            if (actualWidth == width)
-              break;
-            this.setWidth(width, 0);
-          }
-          if (actualWidth != width)
-            this.setWidth(actualWidth, 0);
-          return actualWidth;
-        }
-
-        function measureColRightBorder(col) {
-          if (col.header && col.header._cell)
-            return O$.getNumericStyleProperty(col.header._cell, "border-right-width", true);
-          if (col.filter && col.filter._cell)
-            return O$.getNumericStyleProperty(col.filter._cell, "border-right-width", true);
-          if (!table._noDataRows && col.body._cells.length > 0)
-            return O$.getNumericStyleProperty(col.body._cells[0], "border-right-width", true);
-          if (col.footer && col.footer._cell)
-            return O$.getNumericStyleProperty(col.footer._cell, "border-right-width", true);
-          return 0;
-        }
-
-        var strictMode = O$.isStrictMode();
-        var explorer = O$.isExplorer();
-        var paddingLeft = O$.isOpera() || (explorer && strictMode) ? tableCellPadding : 0;
-        var paddingRight = O$.isOpera() || (explorer && strictMode) ? tableCellPadding : 0;
-        var colTagWidth = width - paddingLeft - paddingRight;
-        if (explorer && strictMode)
-          colTagWidth -= measureColRightBorder(this);
-        this._colTag.style.width = colTagWidth + "px";
-        if (strictMode && (explorer || O$.isMozillaFF()))
-          return width;
-        function setCellWidth(cell, width) {
-          if (!cell)
-            return;
-          var w = width;
-          if (!O$.isExplorer()) {
-            var paddingLeft = O$.getNumericStyleProperty(cell, "padding-left", true);
-            var paddingRight = O$.getNumericStyleProperty(cell, "padding-right", true);
-            if (!paddingLeft) paddingLeft = tableCellPadding;
-            if (!paddingRight) paddingRight = tableCellPadding;
-            w -= paddingLeft + paddingRight;
-            var borderRight = O$.getNumericStyleProperty(cell, "border-right-width", true);
-            w -= borderRight;
-            if (!tableBordersCollapsed) {
-              var borderLeft = O$.getNumericStyleProperty(cell, "border-left-width", true);
-              w -= borderLeft;
-            }
-          }
-          cell.style.width = w + "px";
-        }
-
-        if (this.header)
-          setCellWidth(this.header._cell, width);
-        if (this.filter)
-          setCellWidth(this.filter._cell, width);
-        for (var i = 0, count = this.body._cells.length; i < count; i++) {
-          var cell = this.body._cells[i];
-          if (!cell || cell.colSpan > 1)
-            continue;
-          setCellWidth(cell, width);
-        }
-        if (this.footer)
-          setCellWidth(this.footer._cell, width);
-        return width;
       };
       column.getWidth = function() {
         if (this.header && this.header._cell)
@@ -1610,18 +1536,13 @@ O$._initTableColumnResizing = function(tableId, retainTableWidth, minColWidth, r
           var maxWidthForThisCol = thisAndNextColWidth - nextCol._minResizingWidth;
           if (newColWidth > maxWidthForThisCol)
             newColWidth = maxWidthForThisCol;
-          var actualNextColWidth = nextCol.setWidth(thisAndNextColWidth - newColWidth, 3);
-          colWidths[widthCompensationColIndex] = actualNextColWidth;
-          newColWidth = thisAndNextColWidth - actualNextColWidth;
+          var newNextColWidth = thisAndNextColWidth - newColWidth;
+          nextCol.setWidth(newNextColWidth);
+          colWidths[widthCompensationColIndex] = newNextColWidth;
         }
 
-        var actualColWidth = this._column.setWidth(newColWidth, 3);
-        colWidths[this._column._colIndex] = actualColWidth;
-        if (widthCompensationColIndex != -1) {
-          if (actualColWidth != newColWidth) {
-            colWidths[widthCompensationColIndex] = nextCol.setWidth(thisAndNextColWidth - actualColWidth, 3);
-          }
-        }
+        this._column.setWidth(newColWidth);
+        colWidths[this._column._colIndex] = newColWidth;
 
         if (!retainTableWidth)
           recalculateTableWidth(colWidths);
