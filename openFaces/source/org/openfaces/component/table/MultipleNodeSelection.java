@@ -286,7 +286,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
         AbstractTable table = getTable();
 
         List<Integer> selectedRowIndexes = encodeSelectionIntoIndexes();
-        ScriptBuilder buf = new ScriptBuilder().functionCall("O$._setSelectedNodeIndexes",
+        ScriptBuilder buf = new ScriptBuilder().functionCall("O$.TreeTable._setSelectedNodeIndexes",
                 table,
                 selectedRowIndexes).semicolon();
 
