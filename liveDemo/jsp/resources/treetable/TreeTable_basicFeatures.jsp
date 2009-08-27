@@ -8,7 +8,6 @@
 
 <html>
 <head>
-  <!--<link rel="STYLESHEET" type="text/css" href="datatable.css"/>-->
   <link rel="SHORTCUT ICON" href="../images/icons/favicon.ico"/>
 
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>

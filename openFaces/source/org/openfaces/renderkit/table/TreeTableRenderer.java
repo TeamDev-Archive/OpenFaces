@@ -109,7 +109,7 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         ResponseWriter writer = context.getResponseWriter();
         RenderingUtil.renderHiddenField(writer, getExpandedNodesFieldName(context, treeTable), null);
 
-        buf.initScript(context, treeTable, "O$._initTreeTableFolding",
+        buf.initScript(context, treeTable, "O$.TreeTable._initFolding",
                 DEFAULT_FOLDING_CLASS,
                 getClientFoldingParams(context, treeTable));
     }
@@ -220,7 +220,7 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
 
     @Override
     protected String getInitJsAPIFunctionName() {
-        return "O$._initTreeTableAPI";
+        return "O$.TreeTable._initTreeTableAPI";
     }
 
     @Override
@@ -300,7 +300,7 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         treeTable.setRowIndex(-1);
 
         ScriptBuilder sb = new ScriptBuilder();
-        sb.initScript(context, treeTable, "O$._insertSubrows", newNodesInitInfo);
+        sb.initScript(context, treeTable, "O$.TreeTable._insertSubrows", newNodesInitInfo);
 
         RenderingUtil.renderInitScript(context, sb, null);
         responseWriter.write(stringWriter.toString());
