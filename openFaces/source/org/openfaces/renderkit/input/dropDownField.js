@@ -788,10 +788,6 @@ O$.DropDownField = {
         return dropDown.client_onkeypress(evt);
     }
 
-    if (keyCode == 38 || keyCode == 40) { // Up || Down
-      needCancelBubble = true;
-    }
-
     if (needCancelBubble) {
       evt.cancelBubble = true;
       return false;
