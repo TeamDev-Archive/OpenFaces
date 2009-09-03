@@ -16,13 +16,13 @@ import org.seleniuminspector.LoadingMode;
 /**
  * @author Andrii Gorbatov
  */
-public class SearchFieldFilterInspector extends DataTableFilterInspector {
+public class InputTextFilterInspector extends AbstractFilterInspector {
 
-  public SearchFieldFilterInspector(String locator, LoadingMode loadingMode) {
+  public InputTextFilterInspector(String locator, LoadingMode loadingMode) {
     super(locator, loadingMode);
   }
 
-  public InputTextInspector searchComponent() {
+    public InputTextInspector searchComponent() {
     return new InputTextInspector(getLocator());
   }
 

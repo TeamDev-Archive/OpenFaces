@@ -28,22 +28,20 @@ public abstract class ColumnFilterCriterion extends FilterCriterion {
         this.columnId = columnId;
     }
 
-    public boolean equals(Object obj) {
-        if (!(obj instanceof ColumnFilterCriterion))
-            return false;
-        ColumnFilterCriterion that = (ColumnFilterCriterion) obj;
-        if (this.columnId == null) {
-            return that.columnId == null;
-        } else {
-            return this.columnId.equals(that.columnId);
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ColumnFilterCriterion that = (ColumnFilterCriterion) o;
+
+        if (columnId != null ? !columnId.equals(that.columnId) : that.columnId != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        if(columnId != null) {
-            return columnId.hashCode();
-        }
-        return super.hashCode();
+        return columnId != null ? columnId.hashCode() : 0;
     }
 }

@@ -14,7 +14,7 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItem;
 import org.openfaces.component.input.DropDownItems;
-import org.openfaces.component.table.DataTableFilter;
+import org.openfaces.component.table.AbstractFilter;
 import org.openfaces.util.StyleUtil;
 import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
@@ -31,8 +31,8 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public class DropDownFieldDataTableFilterRenderer extends TextSearchDataTableFilterRenderer {
-    protected void configureInputComponent(FacesContext context, DataTableFilter filter, UIInput inputComponent) {
+public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
+    protected void configureInputComponent(FacesContext context, AbstractFilter filter, UIInput inputComponent) {
         DropDownField field = (DropDownField) inputComponent;
         field.setOnchange(getFilterSubmissionScript(filter, context));
         field.setOnkeypress(getFilterOnEnterScript(context, filter));
@@ -51,20 +51,21 @@ public class DropDownFieldDataTableFilterRenderer extends TextSearchDataTableFil
 
         int childrenCount = field.getChildren().size();
         if (childrenCount != 1) {
-            throw new IllegalStateException("Search component of DropDownFieldDataTableFilter should have exactly one child component - " +
+            throw new IllegalStateException("Search component of DropDownFieldFilter should have exactly one child component - " +
                     "the DropDownItems component. children.size = " + childrenCount);
         }
         Object dropDownFieldItems = field.getChildren().get(0);
         if (!(dropDownFieldItems instanceof DropDownItems)) {
-            throw new IllegalStateException("Search component of DropDownFieldDataTableFilter should have exactly one child component - " +
+            throw new IllegalStateException("Search component of DropDownFieldFilter should have exactly one child component - " +
                     "instace of DropDownItems component. But was  - " + dropDownFieldItems.toString());
         }
         DropDownItems dropDownItems = (DropDownItems) dropDownFieldItems;
-        Collection<String> possibleValuesCollection = filter.calculateAllCriterionNames(context);
+        Collection<Object> possibleValuesCollection = filter.calculateAllCriterionNames(context);
         possibleValuesCollection.remove("");
-        List<String> availableItems = new ArrayList<String>(possibleValuesCollection);
+        List<Object> availableItems = new ArrayList<Object>(possibleValuesCollection);
         List<DropDownItem> itemList = new ArrayList<DropDownItem>(availableItems.size());
-        for (String itemStr : availableItems) {
+        for (Object itemObj : availableItems) {
+            String itemStr = itemObj != null ? itemObj.toString() : "";
             DropDownItem item = createDropDownItem(context, itemStr);
             itemList.add(item);
         }

@@ -14,11 +14,10 @@ package org.openfaces.component.datatable;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.LoadingMode;
 import org.seleniuminspector.openfaces.DataTableInspector;
 import org.seleniuminspector.openfaces.HintLabelInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
-import org.seleniuminspector.openfaces.SearchFieldFilterInspector;
+import org.seleniuminspector.openfaces.InputTextFilterInspector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,7 +115,7 @@ public class DataTableIncludeQKComponentsTest extends OpenFacesTestCase {
 
         /* filtering and filtered data verification */
         final String filterCriterion = "col4_row1";
-        hintLabelDataTable.column(2).filter(SearchFieldFilterInspector.class).makeFiltering(filterCriterion);
+        hintLabelDataTable.column(2).filter(InputTextFilterInspector.class).makeFiltering(filterCriterion);
         HintLabelInspector hintLabel = hintLabel("fn:hintLabelDataTable:0:body_hinLabel_2");
         hintLabel.mouseOver();
         sleep(250);
@@ -181,7 +180,7 @@ public class DataTableIncludeQKComponentsTest extends OpenFacesTestCase {
         sleep(4000);
         /* filtering */
         final String filterCriterion = "col4_row1";
-        dataTable("fn:popupDataTable").column(2).filter(SearchFieldFilterInspector.class).makeFiltering(filterCriterion);
+        dataTable("fn:popupDataTable").column(2).filter(InputTextFilterInspector.class).makeFiltering(filterCriterion);
         element("fn:popupDataTable:0:body_invoker1").click();
         element("fn:popupDataTable:0:body_popup1").assertSubtext(0, 9, filterCriterion);
     }

@@ -23,7 +23,7 @@ import org.openfaces.component.table.AllNodesCollapsed;
 import org.openfaces.component.table.AllNodesExpanded;
 import org.openfaces.component.table.ExpansionState;
 import org.openfaces.component.table.SeveralLevelsExpanded;
-import org.openfaces.component.table.TextFilterCriterion;
+import org.openfaces.component.table.ContainsFilterCriterion;
 
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
@@ -58,7 +58,7 @@ public class SeamTreeTableBean implements Serializable, SeamTreeTable {
     private ExpansionState forumTreeTableExpansionState1 = new SeveralLevelsExpanded(1);
     private ExpansionState forumTreeTableExpansionState2 = new AllNodesExpanded();
     private ExpansionState forumTreeTableExpansionState3 = new AllNodesCollapsed();
-    private TextFilterCriterion filterValue = new TextFilterCriterion("2006");
+    private ContainsFilterCriterion filterValue = new ContainsFilterCriterion("2006");
 
     public List getNodeChildren() {
         TreeTableItem item = (TreeTableItem) FacesUtil.getRequestMapValue("item");
@@ -102,11 +102,11 @@ public class SeamTreeTableBean implements Serializable, SeamTreeTable {
         return simpleDateFormat.format(date);
     }
 
-    public TextFilterCriterion getFilterValue() {
+    public ContainsFilterCriterion getFilterValue() {
         return filterValue;
     }
 
-    public void setFilterValue(TextFilterCriterion filterValue) {
+    public void setFilterValue(ContainsFilterCriterion filterValue) {
         this.filterValue = filterValue;
     }
 

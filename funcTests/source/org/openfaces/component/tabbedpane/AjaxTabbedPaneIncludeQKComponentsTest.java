@@ -263,7 +263,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
 
         TreeTableInspector treeTable = treeTable("fn:firstTreeTable");
         treeTable.column(0).makeSorting();
-        treeTable.column(0).filter(SearchFieldFilterInspector.class).makeFiltering("color");
+        treeTable.column(0).filter(InputTextFilterInspector.class).makeFiltering("color");
         int imagesOnFirstPage = window().document().getElementsByTagName("img").size();
         element("fn:secondHeader").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         for (int i = 0; i < 3; i++) {

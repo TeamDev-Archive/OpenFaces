@@ -1229,7 +1229,7 @@
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. TextFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
       <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
       <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
       <!-- @default null -->
@@ -1773,6 +1773,23 @@
   </tag>
 
   <tag>
+    <name>inputTextFilter</name>
+    <tag-class>org.openfaces.taglib.jsp.table.InputTextFilterJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <name>dropDownFieldFilter</name>
+    <tag-class>org.openfaces.taglib.jsp.table.DropDownFieldFilterJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <name>comboBoxFilter</name>
+    <tag-class>org.openfaces.taglib.jsp.table.ComboBoxFilterJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+
+
+  <tag>
     <description>The Columns component is used to specify dynamic number of columns in the {@link dataTable} or
       {@link treeTable} components. Child components of the &lt;o:columns&gt; tag are used to render each cell.
       All of the attributes of &lt;o:columns&gt; tag are analogous to their counterparts in the &lt;o:column&gt;
@@ -1919,7 +1936,7 @@
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. TextFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
       <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
       <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
       <!-- @default null -->
@@ -6349,7 +6366,7 @@ means that only root nodes and their immediate children are preloaded -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. TextFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
       <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
       <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
       <!-- @default null -->

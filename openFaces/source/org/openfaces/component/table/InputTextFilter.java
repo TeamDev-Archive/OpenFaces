@@ -11,13 +11,25 @@
  */
 package org.openfaces.component.table;
 
-import java.io.Serializable;
+import org.openfaces.component.input.InputText;
 
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class FilterCriterion implements Serializable {
-    public abstract boolean acceptsAll();
+public class InputTextFilter extends TextSearchFilter {
+    public static final String COMPONENT_TYPE = "org.openfaces.InputTextFilter";
+    public static final String COMPONENT_FAMILY = "org.openfaces.InputTextFilter";
 
-    public abstract boolean acceptsValue(Object value);
+    public InputTextFilter() {
+        setRendererType("org.openfaces.InputTextFilterRenderer");
+    }
+
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+    protected String getInputComponentType() {
+        return InputText.COMPONENT_TYPE;
+    }
+
 }

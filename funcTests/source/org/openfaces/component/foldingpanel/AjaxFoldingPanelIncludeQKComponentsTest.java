@@ -17,7 +17,7 @@ import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.openfaces.DataTableInspector;
 import org.seleniuminspector.openfaces.DateChooserInspector;
 import org.seleniuminspector.openfaces.FoldingPanelInspector;
-import org.seleniuminspector.openfaces.SearchFieldFilterInspector;
+import org.seleniuminspector.openfaces.InputTextFilterInspector;
 import org.seleniuminspector.openfaces.TreeTableInspector;
 import org.seleniuminspector.openfaces.TwoListSelectionInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
@@ -73,7 +73,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
         dataTable.makeAndCheckSingleSelection(1, 1);
         dataTable.column(0).makeSorting();
         dataTablePaginator("fn:dataTableID:dataTablePaginator_A4J").makePagination(3);
-        dataTable.column(1).filter(SearchFieldFilterInspector.class).makeFiltering("col2_row1");
+        dataTable.column(1).filter(InputTextFilterInspector.class).makeFiltering("col2_row1");
     }
 
     @Test
@@ -194,7 +194,7 @@ public class AjaxFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
         }
 
         treeTable.column(0).makeSorting();
-        treeTable.column(0).filter(SearchFieldFilterInspector.class).makeFiltering("colors");
+        treeTable.column(0).filter(InputTextFilterInspector.class).makeFiltering("colors");
     }
 
     @Test

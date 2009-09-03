@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.datatable;
 
-import org.openfaces.component.table.TextFilterCriterion;
+import org.openfaces.component.table.ContainsFilterCriterion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -177,9 +177,9 @@ public class ColorDB {
     private String getFilterCriteriaQueryText(List filterCriteria) {
         StringBuffer buf = new StringBuffer();
         for (Iterator iterator = filterCriteria.iterator(); iterator.hasNext();) {
-            TextFilterCriterion criterion = (TextFilterCriterion) iterator.next();
+            ContainsFilterCriterion criterion = (ContainsFilterCriterion) iterator.next();
             String columnId = criterion.getColumnId();
-            String text = criterion.getText();
+            String text = criterion.getValue().toString();
             String criterionText = columnId + " CONTAINS \"" + text + "\"";
             buf.append(criterionText);
             if (iterator.hasNext())
@@ -248,8 +248,8 @@ public class ColorDB {
         for (Color tempColor : colorsToFilter) {
             boolean colorAccepted = true;
             for (Object aCriteria : criteria) {
-                TextFilterCriterion criterion = (TextFilterCriterion) aCriteria;
-                String criterionUC = criterion.getText().toUpperCase();
+                ContainsFilterCriterion criterion = (ContainsFilterCriterion) aCriteria;
+                String criterionUC = criterion.getValue().toString().toUpperCase();
                 String colorNameUC = tempColor.getName().toUpperCase();
                 if (colorNameUC.indexOf(criterionUC) == -1) {
                     colorAccepted = false;

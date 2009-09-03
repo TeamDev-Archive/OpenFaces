@@ -45,17 +45,17 @@ public class DataTableColumnInspector extends TableColumnInspector {
     }
 
 
-    public <T extends DataTableFilterInspector> T filter(Class<T> filterTypeClass) {
+    public <T extends AbstractFilterInspector> T filter(Class<T> filterTypeClass) {
         T filter = null;
 
         ElementInspector rawFilter = null;
 
         if (filterTypeClass == DropDownFieldFilterInspector.class) {
-            rawFilter = getRawFilter(DataTableFilterInspector.FilterType.DROP_DOWN_FIELD);
-        } else if (filterTypeClass == SearchFieldFilterInspector.class) {
-            rawFilter = getRawFilter(DataTableFilterInspector.FilterType.SEARCH_FIELD);
+            rawFilter = getRawFilter(AbstractFilterInspector.FilterType.DROP_DOWN_FIELD);
+        } else if (filterTypeClass == InputTextFilterInspector.class) {
+            rawFilter = getRawFilter(AbstractFilterInspector.FilterType.SEARCH_FIELD);
         } else if (filterTypeClass == ComboBoxFilterInspector.class) {
-            rawFilter = getRawFilter(DataTableFilterInspector.FilterType.COMBO_BOX);
+            rawFilter = getRawFilter(AbstractFilterInspector.FilterType.COMBO_BOX);
         }
 
         if (rawFilter != null) {
@@ -71,7 +71,7 @@ public class DataTableColumnInspector extends TableColumnInspector {
     }
 
     private ElementInspector getRawFilter
-            (DataTableFilterInspector.FilterType
+            (AbstractFilterInspector.FilterType
                     filterType) {
 
         for (int i = 0; i < getHeaderCellCount(); i++) {
@@ -88,7 +88,7 @@ public class DataTableColumnInspector extends TableColumnInspector {
         return null;
     }
 
-//    private String getFilterXPath(DataTableFilterInspector.FilterType filterType) {
+//    private String getFilterXPath(AbstractFilterInspector.FilterType filterType) {
 //
 //        TableCellInspector headerCell = headerCell(1);
 //        List<ElementInspector> children = headerCell.childNodes();

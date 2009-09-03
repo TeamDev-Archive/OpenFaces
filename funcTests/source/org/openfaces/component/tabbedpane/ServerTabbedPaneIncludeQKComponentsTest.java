@@ -268,7 +268,7 @@ public class ServerTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
 
         TreeTableInspector firstTreeTable = treeTable("fn:firstTreeTable");
         firstTreeTable.column(0).makeSorting();
-        firstTreeTable.column(0).filter(SearchFieldFilterInspector.class).makeFiltering("color");
+        firstTreeTable.column(0).filter(InputTextFilterInspector.class).makeFiltering("color");
 
         element("fn:secondHeader").clickAndWait();
         for (int i = 0; i < 3; i++) {

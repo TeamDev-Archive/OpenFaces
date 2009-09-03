@@ -12,11 +12,11 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.ComboBoxDataTableFilter;
+import org.openfaces.component.table.ComboBoxFilter;
 import org.openfaces.component.table.EmptyRecordsCriterion;
 import org.openfaces.component.table.FilterCriterion;
 import org.openfaces.component.table.NonEmptyRecordsCriterion;
-import org.openfaces.component.table.TextFilterCriterion;
+import org.openfaces.component.table.ContainsFilterCriterion;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.StyleUtil;
@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * @author Dmitry Pikhulya
  */
-public class ComboBoxDataTableFilterRenderer extends AbstractDataTableFilterRenderer {
+public class ComboBoxFilterRenderer extends AbstractFilterRenderer {
     private static final String USER_CRITERION_PREFIX = "u-";
     private static final String PREDEFINED_CRITERION_PREFIX = "p-";
     private static final String ALL = "ALL";
@@ -54,9 +54,9 @@ public class ComboBoxDataTableFilterRenderer extends AbstractDataTableFilterRend
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
-        ComboBoxDataTableFilter filter = ((ComboBoxDataTableFilter) component);
+        ComboBoxFilter filter = ((ComboBoxFilter) component);
 
-        FilterCriterion currentCriterionName = filter.getSearchString();
+        FilterCriterion currentCriterionName = filter.getCriterion();
 
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("select", component);
@@ -69,11 +69,11 @@ public class ComboBoxDataTableFilterRenderer extends AbstractDataTableFilterRend
         writer.writeAttribute("onclick", "event.cancelBubble = true;", null);
         writer.writeAttribute("onkeydown", "O$.cancelBubble(event);", null);
 
-        Collection<String> criterionNamesCollection = filter.calculateAllCriterionNames(context);
+        Collection<Object> criterionNamesCollection = filter.calculateAllCriterionNames(context);
         boolean thereAreEmptyItems = criterionNamesCollection.contains("");
         if (thereAreEmptyItems)
             criterionNamesCollection.remove("");
-        List<String> criterionNames = new ArrayList<String>(criterionNamesCollection);
+        List<Object> criterionNames = new ArrayList<Object>(criterionNamesCollection);
 
         String allRecordsCriterionName = filter.getAllRecordsCriterionName();
 
@@ -95,11 +95,10 @@ public class ComboBoxDataTableFilterRenderer extends AbstractDataTableFilterRend
         }
 
         boolean textCriterionSelected = false;
-        for (String criterionName : criterionNames) {
-            if (criterionName == null)
-                criterionName = "";
-            boolean selected = currentCriterionName instanceof TextFilterCriterion &&
-                    ((TextFilterCriterion) currentCriterionName).getText().equals(criterionName);
+        for (Object criterionObj : criterionNames) {
+            String criterionName = criterionObj != null ? criterionObj.toString() : "";
+            boolean selected = currentCriterionName instanceof ContainsFilterCriterion &&
+                    ((ContainsFilterCriterion) currentCriterionName).getValue().equals(criterionName);
             writeOption(writer, component,
                     USER_CRITERION_PREFIX + criterionName,
                     criterionName,
@@ -107,9 +106,9 @@ public class ComboBoxDataTableFilterRenderer extends AbstractDataTableFilterRend
             if (selected)
                 textCriterionSelected = true;
         }
-        boolean noRecordsWithSelectedCriterion = currentCriterionName instanceof TextFilterCriterion && !textCriterionSelected;
+        boolean noRecordsWithSelectedCriterion = currentCriterionName instanceof ContainsFilterCriterion && !textCriterionSelected;
         if (noRecordsWithSelectedCriterion) {
-            String criterionName = ((TextFilterCriterion) currentCriterionName).getText();
+            String criterionName = ((ContainsFilterCriterion) currentCriterionName).getValue().toString();
             writeOption(writer, component,
                     USER_CRITERION_PREFIX + criterionName,
                     criterionName,
@@ -161,10 +160,10 @@ public class ComboBoxDataTableFilterRenderer extends AbstractDataTableFilterRend
         String selectedCriterion = requestParameterMap.get(component.getClientId(context));
         if (selectedCriterion == null)
             return;
-        ComboBoxDataTableFilter comboBoxDataTableFilter = ((ComboBoxDataTableFilter) component);
+        ComboBoxFilter comboBoxFilter = ((ComboBoxFilter) component);
         if (selectedCriterion.startsWith(USER_CRITERION_PREFIX)) {
             String searchString = selectedCriterion.substring(USER_CRITERION_PREFIX.length());
-            setDecodedSearchString(comboBoxDataTableFilter, new TextFilterCriterion(searchString));
+            setDecodedSearchString(comboBoxFilter, new ContainsFilterCriterion(searchString));
         } else if (selectedCriterion.startsWith(PREDEFINED_CRITERION_PREFIX)) {
             String criterion = selectedCriterion.substring(PREDEFINED_CRITERION_PREFIX.length());
             FilterCriterion newCriterion;
@@ -176,7 +175,7 @@ public class ComboBoxDataTableFilterRenderer extends AbstractDataTableFilterRend
                 newCriterion = new NonEmptyRecordsCriterion();
             else
                 throw new IllegalStateException("Unknown predefined criterion came from client: " + criterion);
-            setDecodedSearchString(comboBoxDataTableFilter, newCriterion);
+            setDecodedSearchString(comboBoxFilter, newCriterion);
         } else
             throw new IllegalStateException("Improperly formatted criterion came from client: " + selectedCriterion);
     }

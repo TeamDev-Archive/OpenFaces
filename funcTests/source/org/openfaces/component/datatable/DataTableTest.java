@@ -21,7 +21,7 @@ import org.seleniuminspector.openfaces.ComboBoxFilterInspector;
 import org.seleniuminspector.openfaces.DataTableInspector;
 import org.seleniuminspector.openfaces.DataTablePaginatorInspector;
 import org.seleniuminspector.openfaces.DropDownFieldFilterInspector;
-import org.seleniuminspector.openfaces.SearchFieldFilterInspector;
+import org.seleniuminspector.openfaces.InputTextFilterInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 import org.seleniuminspector.html.TableCellParams;
 import org.seleniuminspector.html.TableInspector;
@@ -603,12 +603,12 @@ public class DataTableTest extends OpenFacesTestCase {
 
         //check default string for the no data corresponding to filter criterion
         DataTableInspector noDataDefaultDateTable = dataTable("formID:noDataDefaultID");
-        noDataDefaultDateTable.column(0).filter(SearchFieldFilterInspector.class).makeFiltering("www");
+        noDataDefaultDateTable.column(0).filter(InputTextFilterInspector.class).makeFiltering("www");
         noDataDefaultDateTable.body().row(0).cell(0).assertText("No records satisfying the filtering criteria");
 
         //check is message string for the no data corresponding to filter criterion visible
         DataTableInspector noDataMessageDataTable = dataTable("formID:noDataMessageAllowedID");
-        noDataMessageDataTable.column(0).filter(SearchFieldFilterInspector.class).makeFiltering("www");
+        noDataMessageDataTable.column(0).filter(InputTextFilterInspector.class).makeFiltering("www");
         assertEquals("There should be one invisible fake row", 1, noDataMessageDataTable.body().rowCount());
         noDataMessageDataTable.body().row(0).assertCellParams(new TableCellParams[]{
                 new TableCellParams(null, 2, 1, "display: none")
@@ -616,7 +616,7 @@ public class DataTableTest extends OpenFacesTestCase {
 
         //check custom message for the no data corresponding to filter criterion
         DataTableInspector customNoDataMessageTable = dataTable("formID:customNoDataMessageID");
-        customNoDataMessageTable.column(0).filter(SearchFieldFilterInspector.class).makeFiltering("www");
+        customNoDataMessageTable.column(0).filter(InputTextFilterInspector.class).makeFiltering("www");
         element("formID:customNoDataMessageID:noFilteredDataCustomMessageID").assertText("Test no filtered data");
 
         //check default string for the no data corresponding to filter criterion
@@ -749,7 +749,7 @@ public class DataTableTest extends OpenFacesTestCase {
         }
 
         dataTable.setLoadingMode(loadingMode);
-        dataTable.column(0).filter(SearchFieldFilterInspector.class).makeFiltering("col3_row1");
+        dataTable.column(0).filter(InputTextFilterInspector.class).makeFiltering("col3_row1");
 
         element("formID:filterableDataTable_searchField:filterableDataTable_searchField_firstHeader")
                 .assertText("first column header");
@@ -979,7 +979,7 @@ public class DataTableTest extends OpenFacesTestCase {
         /* perform filtering using searchField filter */
         combinationDataTable.checkSelectedIndex(0);
 
-        combinationDataTable.column(1).filter(SearchFieldFilterInspector.class).makeFiltering("id_1");
+        combinationDataTable.column(1).filter(InputTextFilterInspector.class).makeFiltering("id_1");
 
         combinationDataTable.checkSelectedIndex(0);
 

@@ -63,7 +63,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     private List<Object> allRetrievedRowKeys;
     private int extractedRowIndex = -1;
     private List<SortingRule> sortingRules;
-    private List<DataTableFilter> filters;
+    private List<AbstractFilter> filters;
     private int pageSize;
     private int pageIndex;
     private AbstractTable table;
@@ -73,7 +73,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     private boolean internalIteration;
     private List<RowInfo> allRetrievedRows;
     private List<boolean[]> allRetrievedRowFilteringFlags;
-    private List<DataTableFilter> currentlyAppliedFilters;
+    private List<AbstractFilter> currentlyAppliedFilters;
     private Integer totalRowCount;
     private int updateInProgress;
     private List<Object> previousRowKeys;
@@ -307,7 +307,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         return filters;
     }
 
-    public void setFilters(List<DataTableFilter> filters) {
+    public void setFilters(List<AbstractFilter> filters) {
         boolean oldFiltersSpecified = this.filters != null;
         this.filters = filters;
         boolean newFiltersSpecified = this.filters != null;
@@ -383,8 +383,8 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
 
         filteredRows = new ArrayList<RowInfo>(rows);
         currentlyAppliedFilters = filters != null
-                ? new ArrayList<DataTableFilter>(filters)
-                : Collections.<DataTableFilter>emptyList();
+                ? new ArrayList<AbstractFilter>(filters)
+                : Collections.<AbstractFilter>emptyList();
 
         if (totalRowCount == null)
             totalRowCount = filteredRows.size();
@@ -439,7 +439,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         List<FilterCriterion> criteria = new ArrayList<FilterCriterion>();
         int filterCount = filters != null ? filters.size() : 0;
         for (int i = 0; i < filterCount; i++) {
-            DataTableFilter filter = filters.get(i);
+            AbstractFilter filter = filters.get(i);
             if (filter.isAcceptingAllRecords())
                 continue;
             FilterCriterion filterCriterion = filter.getFilterCriterion();
@@ -558,7 +558,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
             ((ValueExpressionDataModel) sourceDataModel).readData();
     }
 
-    public static List<RowInfo> filterRows(List<DataTableFilter> filters, List<RowInfo> sortedRows, List<boolean[]> filteringFlags) {
+    public static List<RowInfo> filterRows(List<AbstractFilter> filters, List<RowInfo> sortedRows, List<boolean[]> filteringFlags) {
         FacesContext context = FacesContext.getCurrentInstance();
         List<RowInfo> result = new ArrayList<RowInfo>();
         int sortedRowCount = sortedRows.size();
@@ -574,13 +574,13 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         return result;
     }
 
-    public static boolean filterRow(FacesContext context, List<DataTableFilter> filters, Object rowObj, boolean[] flagsArray) {
+    public static boolean filterRow(FacesContext context, List<AbstractFilter> filters, Object rowObj, boolean[] flagsArray) {
         Object data = (rowObj instanceof RowInfo)
                 ? ((RowInfo) rowObj).getRowData() // RowInfo for DataTable (for storing original row indexes)
                 : rowObj; // row data object for TreeTable (for there's no notion of index in TreeTable)
         boolean rowAccepted = true;
         for (int filterIndex = 0, filterCount = filters.size(); filterIndex < filterCount; filterIndex++) {
-            DataTableFilter filter = filters.get(filterIndex);
+            AbstractFilter filter = filters.get(filterIndex);
             boolean filterAcceptsData = filter.acceptsData(context, data);
             if (!filterAcceptsData)
                 rowAccepted = false;
@@ -788,12 +788,12 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         return new RowInfo(rowData, -1);
     }
 
-    public List<Object> getRowListForFiltering(DataTableFilter filter) {
+    public List<Object> getRowListForFiltering(AbstractFilter filter) {
         return getRowListForFiltering(filter, currentlyAppliedFilters, allRetrievedRows, allRetrievedRowFilteringFlags);
     }
 
     public static List<Object> getRowListForFiltering(
-            DataTableFilter filter, List<DataTableFilter> lastFilteringFilters, List<?> allRows, List<boolean[]> allRowFilteringFlags) {
+            AbstractFilter filter, List<AbstractFilter> lastFilteringFilters, List<?> allRows, List<boolean[]> allRowFilteringFlags) {
         if (lastFilteringFilters != null && lastFilteringFilters.size() > 0) {
             if (allRowFilteringFlags == null)
                 return rowDatasFromRowInfos(allRows);

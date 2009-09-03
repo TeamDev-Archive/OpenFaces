@@ -16,7 +16,7 @@ import org.openfaces.component.table.ColumnFilterCriterion;
 import org.openfaces.component.table.EmptyRecordsCriterion;
 import org.openfaces.component.table.FilterKind;
 import org.openfaces.component.table.NonEmptyRecordsCriterion;
-import org.openfaces.component.table.TextFilterCriterion;
+import org.openfaces.component.table.ContainsFilterCriterion;
 
 import javax.faces.event.ValueChangeEvent;
 import java.awt.*;
@@ -241,7 +241,7 @@ public class TableTestBean {
     }
 
     private List filterCollection(List sortedList, List filterCriteria) {
-        String s = ((filterCriteria.size() > 0 && (filterCriteria.get(0) instanceof TextFilterCriterion)) ? ((TextFilterCriterion) filterCriteria.get(0)).getText() : "<none>");
+        String s = ((filterCriteria.size() > 0 && (filterCriteria.get(0) instanceof ContainsFilterCriterion)) ? ((ContainsFilterCriterion) filterCriteria.get(0)).getValue().toString() : "<none>");
         List result = new ArrayList();
         for (Object record : sortedList) {
             boolean recordAccepted = true;
@@ -269,8 +269,8 @@ public class TableTestBean {
         if (criterion instanceof EmptyRecordsCriterion) {
             return fieldValue == null || fieldValue.length() == 0;
         }
-        if (criterion instanceof TextFilterCriterion) {
-            String filterText = ((TextFilterCriterion) criterion).getText();
+        if (criterion instanceof ContainsFilterCriterion) {
+            String filterText = ((ContainsFilterCriterion) criterion).getValue().toString();
             if (filterText == null) {
                 return fieldValue == null;
             }

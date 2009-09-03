@@ -9,15 +9,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.table;
+package org.openfaces.taglib.jsp.table;
 
-import java.io.Serializable;
+import org.openfaces.taglib.jsp.AbstractComponentJspTag;
+import org.openfaces.taglib.internal.table.ComboBoxFilterTag;
 
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class FilterCriterion implements Serializable {
-    public abstract boolean acceptsAll();
-
-    public abstract boolean acceptsValue(Object value);
+public class ComboBoxFilterJspTag extends AbstractComponentJspTag {
+    public ComboBoxFilterJspTag() {
+        super(new ComboBoxFilterTag());
+    }
 }

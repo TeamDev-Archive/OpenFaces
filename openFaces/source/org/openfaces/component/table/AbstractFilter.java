@@ -28,21 +28,25 @@ import java.util.TreeSet;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class DataTableFilter extends UIComponentBase implements CompoundComponent {
+public abstract class AbstractFilter extends UIComponentBase implements CompoundComponent {
     private static final String DEFAULT_ALL_RECORDS_CRITERION_NAME = "<All>";
     private static final String DEFAULT_EMPTY_RECORDS_CRITERION_NAME = "<Empty>";
     private static final String DEFAULT_NON_EMPTY_RECORDS_CRITERION_NAME = "<Non-empty>";
+
+    private FilterCriterion criterion;
+    private boolean searchStringModelUpdateRequired;
+
+    private AbstractTable table;
 
     private String style;
     private String styleClass;
     private String predefinedCriterionStyle;
     private String predefinedCriterionClass;
-    private AbstractTable table;
+    private Boolean caseSensitive;
+
     protected String allRecordsCriterionName;
     protected String emptyRecordsCriterionName;
     protected String nonEmptyRecordsCriterionName;
-    private FilterCriterion searchString;
-    private boolean searchStringModelUpdateRequired;
 
     private String promptText;
 
@@ -52,7 +56,7 @@ public abstract class DataTableFilter extends UIComponentBase implements Compoun
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, style, styleClass, predefinedCriterionStyle, predefinedCriterionClass,
-                searchString, allRecordsCriterionName, emptyRecordsCriterionName, nonEmptyRecordsCriterionName,
+                criterion, allRecordsCriterionName, emptyRecordsCriterionName, nonEmptyRecordsCriterionName,
                 promptText, promptTextStyle, promptTextClass};
     }
 
@@ -64,7 +68,7 @@ public abstract class DataTableFilter extends UIComponentBase implements Compoun
         styleClass = (String) state[i++];
         predefinedCriterionStyle = (String) state[i++];
         predefinedCriterionClass = (String) state[i++];
-        searchString = (FilterCriterion) state[i++];
+        criterion = (FilterCriterion) state[i++];
         allRecordsCriterionName = (String) state[i++];
         emptyRecordsCriterionName = (String) state[i++];
         nonEmptyRecordsCriterionName = (String) state[i++];
@@ -72,6 +76,14 @@ public abstract class DataTableFilter extends UIComponentBase implements Compoun
         promptText = (String) state[i++];
         promptTextStyle = (String) state[i++];
         promptTextClass = (String) state[i++];
+    }
+
+    public Boolean isCaseSensitive() {
+        return caseSensitive;
+    }
+
+    public void setCaseSensitive(Boolean caseSensitive) {
+        this.caseSensitive = caseSensitive;
     }
 
     public String getStyle() {
@@ -131,21 +143,19 @@ public abstract class DataTableFilter extends UIComponentBase implements Compoun
     }
 
     public boolean acceptsData(FacesContext facesContext, Object data) {
-        String filteredValueString = getFilteredValueStringByData(facesContext, getTable(), data);
-        return acceptsString(filteredValueString, getSearchString());
+        Object filteredValue = getFilteredValueByData(facesContext, getTable(), data);
+        return criterion == null || criterion.acceptsValue(filteredValue);
     }
 
-    private String getFilteredValueStringByData(FacesContext facesContext, AbstractTable table, Object data) {
+    private Object getFilteredValueByData(FacesContext facesContext, AbstractTable table, Object data) {
         ValueExpression criterionNameExpression = getFilterValuesExpressionExpression();
         Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
         String var = getTable().getVar();
-        return getFilteredValueStringByData(table, facesContext, criterionNameExpression, requestMap, var, data);
+        return table.getFilteredValueByData(facesContext, requestMap, criterionNameExpression, var, data);
     }
 
-    abstract protected boolean acceptsString(String filteredValueString, FilterCriterion searchString);
-
     public boolean isAcceptingAllRecords() {
-        return getSearchString() == null;
+        return getCriterion() == null;
     }
 
     protected AbstractTable getTable() {
@@ -199,22 +209,6 @@ public abstract class DataTableFilter extends UIComponentBase implements Compoun
         nonEmptyRecordsCriterionName = value;
     }
 
-    protected String getFilteredValueStringByData(
-            AbstractTable table,
-            FacesContext facesContext,
-            ValueExpression criterionNameExpression,
-            Map<String, Object> requestMap,
-            String var,
-            Object data) {
-        Object filterValueForRow = table.getFilteredValueByData(facesContext, requestMap, criterionNameExpression, var, data);
-        return filterValueToString(filterValueForRow);
-    }
-
-    private String filterValueToString(Object filterValue) {
-        String result = (filterValue == null) ? "" : filterValue.toString();
-        return result.trim();
-    }
-
     public ValueExpression getFilterValuesExpression() {
         return getValueExpression("filterValues");
     }
@@ -234,15 +228,14 @@ public abstract class DataTableFilter extends UIComponentBase implements Compoun
         return false;
     }
 
-    public Collection<String> calculateAllCriterionNames(FacesContext context) {
+    public Collection<Object> calculateAllCriterionNames(FacesContext context) {
         ValueExpression valuesExpression = getFilterValuesExpression();
         if (valuesExpression != null) {
-            List<String> result = new ArrayList<String>();
-            Collection values = (Collection) valuesExpression.getValue(context.getELContext());
+            Iterable  values = (Iterable) valuesExpression.getValue(context.getELContext());
+            List<Object> result = new ArrayList<Object>();
             if (values != null) {
                 for (Object value : values) {
-                    String valueString = filterValueToString(value);
-                    result.add(valueString);
+                    result.add(value);
                 }
             }
             return result;
@@ -250,12 +243,12 @@ public abstract class DataTableFilter extends UIComponentBase implements Compoun
         ValueExpression expression = getFilterValuesExpressionExpression();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String var = getTable().getVar();
-        Set<String> criterionNamesSet = new TreeSet<String>();
+        Set<Object> criterionNamesSet = new TreeSet<Object>();
         List originalRowList = getTable().getRowListForFiltering(this);
         AbstractTable table = getTable();
         for (Object data : originalRowList) {
-            String criterionName = getFilteredValueStringByData(table, context, expression, requestMap, var, data);
-            criterionNamesSet.add(criterionName);
+            Object value = table.getFilteredValueByData(context, requestMap, expression, var, data);
+            criterionNamesSet.add(value);
         }
         return criterionNamesSet;
     }
@@ -263,15 +256,15 @@ public abstract class DataTableFilter extends UIComponentBase implements Compoun
     public void updateSearchStringFromBinding(FacesContext context) {
         ValueExpression valueExpression = getSearchStringExpression();
         if (valueExpression != null)
-            searchString = (FilterCriterion) valueExpression.getValue(context.getELContext());
+            criterion = (FilterCriterion) valueExpression.getValue(context.getELContext());
     }
 
-    public FilterCriterion getSearchString() {
-        return searchString;
+    public FilterCriterion getCriterion() {
+        return criterion;
     }
 
-    public void setSearchString(FilterCriterion searchString) {
-        this.searchString = searchString;
+    public void setCriterion(FilterCriterion criterion) {
+        this.criterion = criterion;
     }
 
     /**
@@ -280,7 +273,7 @@ public abstract class DataTableFilter extends UIComponentBase implements Compoun
      *         criterion
      */
     public boolean changeSearchString(FilterCriterion newCriterion) {
-        FilterCriterion oldCriterion = getSearchString();
+        FilterCriterion oldCriterion = getCriterion();
         setColumnId(newCriterion);
         searchStringModelUpdateRequired = true;
 
@@ -289,15 +282,12 @@ public abstract class DataTableFilter extends UIComponentBase implements Compoun
                 return false;
         } else if (newCriterion.equals(oldCriterion))
             return false;
-        setSearchString(newCriterion);
+        setCriterion(newCriterion);
         return true;
     }
 
     private boolean isAllRecordsCriterion(FilterCriterion criterion) {
-        if (criterion == null)
-            return true;
-
-        return criterion instanceof TextFilterCriterion && ((TextFilterCriterion) criterion).getText().length() == 0;
+        return criterion == null || criterion.acceptsAll();
     }
 
     public void setSearchStringExpression(ValueExpression filterValueExpression) {
@@ -315,13 +305,13 @@ public abstract class DataTableFilter extends UIComponentBase implements Compoun
 
         ValueExpression valueExpression = getSearchStringExpression();
         if (valueExpression != null) {
-            valueExpression.setValue(context.getELContext(), searchString);
+            valueExpression.setValue(context.getELContext(), criterion);
             searchStringModelUpdateRequired = false;
         }
     }
 
     public FilterCriterion getFilterCriterion() {
-        FilterCriterion searchString = getSearchString();
+        FilterCriterion searchString = getCriterion();
         setColumnId(searchString);
         return searchString;
     }

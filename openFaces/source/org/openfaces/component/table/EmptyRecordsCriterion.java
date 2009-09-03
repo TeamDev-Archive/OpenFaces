@@ -16,8 +16,14 @@ package org.openfaces.component.table;
  */
 public class EmptyRecordsCriterion extends ColumnFilterCriterion {
 
-    public boolean equals(Object obj) {
-        boolean superEquals = super.equals(obj);
-        return superEquals && obj instanceof EmptyRecordsCriterion;
+    @Override
+    public boolean acceptsAll() {
+        return false;
     }
+
+    @Override
+    public boolean acceptsValue(Object value) {
+        return value == null || value.equals("");
+    }
+
 }

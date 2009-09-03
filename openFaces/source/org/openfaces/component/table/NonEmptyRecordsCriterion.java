@@ -15,9 +15,15 @@ package org.openfaces.component.table;
  * @author Dmitry Pikhulya
  */
 public class NonEmptyRecordsCriterion extends ColumnFilterCriterion {
-    public boolean equals(Object obj) {
-        boolean superEquals = super.equals(obj);
-        return superEquals && obj instanceof NonEmptyRecordsCriterion;
+
+    @Override
+    public boolean acceptsAll() {
+        return false;
+    }
+
+    @Override
+    public boolean acceptsValue(Object value) {
+        return value != null && !value.equals("");
     }
 
 }

@@ -12,9 +12,9 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.DataTableFilter;
-import org.openfaces.component.table.TextFilterCriterion;
-import org.openfaces.component.table.TextSearchDataTableFilter;
+import org.openfaces.component.table.AbstractFilter;
+import org.openfaces.component.table.ContainsFilterCriterion;
+import org.openfaces.component.table.TextSearchFilter;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.StyleUtil;
 
@@ -26,7 +26,7 @@ import java.io.IOException;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class TextSearchDataTableFilterRenderer extends AbstractDataTableFilterRenderer {
+public abstract class TextSearchFilterRenderer extends AbstractFilterRenderer {
 
     @Override
     public boolean getRendersChildren() {
@@ -41,7 +41,7 @@ public abstract class TextSearchDataTableFilterRenderer extends AbstractDataTabl
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
         ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getUtilJsURL(context), context);
-        TextSearchDataTableFilter filter = (TextSearchDataTableFilter) component;
+        TextSearchFilter filter = (TextSearchFilter) component;
 
         UIInput inputComponent = (UIInput) filter.getSearchComponent();
         inputComponent.setValue(getStringValue(filter));
@@ -52,27 +52,27 @@ public abstract class TextSearchDataTableFilterRenderer extends AbstractDataTabl
         StyleUtil.renderStyleClasses(context, component);
     }
 
-    protected abstract void configureInputComponent(FacesContext context, DataTableFilter filter, UIInput inputComponent);
+    protected abstract void configureInputComponent(FacesContext context, AbstractFilter filter, UIInput inputComponent);
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
-        TextSearchDataTableFilter filter = (TextSearchDataTableFilter) component;
+        TextSearchFilter filter = (TextSearchFilter) component;
         UIInput input = (UIInput) filter.getSearchComponent();
         String newSearchString = (String) input.getSubmittedValue();
         if (newSearchString == null) {
             newSearchString = "";
         }
-        setDecodedSearchString(filter, new TextFilterCriterion(newSearchString));
+        setDecodedSearchString(filter, new ContainsFilterCriterion(newSearchString));
     }
 
-    protected String getFilterOnEnterScript(FacesContext context, DataTableFilter filter) {
+    protected String getFilterOnEnterScript(FacesContext context, AbstractFilter filter) {
         AbstractTable table = getTable(filter);
         String tableId = table.getClientId(context);
         return "return O$.Table._filterFieldKeyPressHandler('" + tableId + "', this, event);";
     }
 
-    protected String getStringValue(DataTableFilter filter) {
-        return ((TextSearchDataTableFilter) filter).getStringValue();
+    protected String getStringValue(AbstractFilter filter) {
+        return ((TextSearchFilter) filter).getStringValue();
     }
 }

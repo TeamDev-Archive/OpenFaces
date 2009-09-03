@@ -16,7 +16,7 @@ import org.seleniuminspector.LoadingMode;
 /**
  * @author Andrii Gorbatov
  */
-public class ComboBoxFilterInspector extends DataTableFilterInspector {
+public class ComboBoxFilterInspector extends AbstractFilterInspector {
 
     public ComboBoxFilterInspector(String locator, LoadingMode loadingMode) {
         super(locator, loadingMode);

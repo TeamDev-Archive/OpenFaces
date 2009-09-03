@@ -912,8 +912,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
             return;
         if (getRowIndex() != -1)
             setRowIndex(-1);
-        List<DataTableFilter> filters = findFilters(true);
-        for (DataTableFilter filter : filters) {
+        List<AbstractFilter> filters = findFilters(true);
+        for (AbstractFilter filter : filters) {
             filter.processValidators(context);
         }
         AbstractTableSelection tableSelection = getSelection();
@@ -938,8 +938,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
         if (sortAscendingExpression != null)
             sortAscendingExpression.setValue(elContext, isSortAscending());
 
-        List<DataTableFilter> filters = findFilters(true);
-        for (DataTableFilter filter : filters) {
+        List<AbstractFilter> filters = findFilters(true);
+        for (AbstractFilter filter : filters) {
             filter.processUpdates(context);
         }
 
@@ -980,10 +980,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
         cachedAllColumns = null;
         cachedColumnsForRendering = null;
 
-        List<DataTableFilter> filters = findFilters(true);
+        List<AbstractFilter> filters = findFilters(true);
         int i = 0;
         while (i < filters.size()) {
-            DataTableFilter filter = filters.get(i);
+            AbstractFilter filter = filters.get(i);
             filter.updateSearchStringFromBinding(context);
             i++;
         }
@@ -1306,22 +1306,22 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
         return new RowComparator(facesContext, sortingExpression, valueComparator, requestMap, sortAscending);
     }
 
-    protected List<DataTableFilter> getActiveFilters() {
+    protected List<AbstractFilter> getActiveFilters() {
         return findFilters(false);
     }
 
-    protected List<DataTableFilter> findFilters(boolean includeAllRecordsFilters) {
-        List<DataTableFilter> filters = new ArrayList<DataTableFilter>();
+    protected List<AbstractFilter> findFilters(boolean includeAllRecordsFilters) {
+        List<AbstractFilter> filters = new ArrayList<AbstractFilter>();
 
         List<BaseColumn> columns = getAllColumns();
         for (BaseColumn column : columns) {
             if (column instanceof TableColumn)
                 ((TableColumn) column).getSubHeader();
             for (UIComponent child : column.getFacets().values()) {
-                if (!child.isRendered() || !(child instanceof DataTableFilter))
+                if (!child.isRendered() || !(child instanceof AbstractFilter))
                     continue;
 
-                DataTableFilter filter = (DataTableFilter) child;
+                AbstractFilter filter = (AbstractFilter) child;
                 if (!includeAllRecordsFilters)
                     if (filter.isAcceptingAllRecords())
                         continue;
@@ -1332,7 +1332,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
         return filters;
     }
 
-    public abstract List getRowListForFiltering(DataTableFilter filter);
+    public abstract List getRowListForFiltering(AbstractFilter filter);
 
     public Object getFilteredValueByData(
             FacesContext facesContext,

@@ -13,7 +13,7 @@
 package org.openfaces.testapp.jBossSeam.treetable;
 
 import org.openfaces.component.table.ExpansionState;
-import org.openfaces.component.table.TextFilterCriterion;
+import org.openfaces.component.table.ContainsFilterCriterion;
 
 import java.util.List;
 
@@ -37,9 +37,9 @@ public interface SeamTreeTable {
 
     public String getDateCategory();
 
-    public TextFilterCriterion getFilterValue();
+    public ContainsFilterCriterion getFilterValue();
 
-    public void setFilterValue(TextFilterCriterion filterValue);
+    public void setFilterValue(ContainsFilterCriterion filterValue);
 
     public String sortByFirstColumn();
 

@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.jBossSeam.datatable;
 
-import org.openfaces.component.table.TextFilterCriterion;
+import org.openfaces.component.table.ContainsFilterCriterion;
 
 import javax.ejb.Local;
 import java.util.Date;
@@ -32,9 +32,9 @@ public interface SeamTable {
 
     public List<String> getFilterValues();
 
-    public TextFilterCriterion getFilterValue();
+    public ContainsFilterCriterion getFilterValue();
 
-    public void setFilterValue(TextFilterCriterion filterValue);
+    public void setFilterValue(ContainsFilterCriterion filterValue);
 
     public String getCurrentItem();
 

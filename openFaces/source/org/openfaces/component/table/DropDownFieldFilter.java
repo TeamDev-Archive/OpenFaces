@@ -20,12 +20,12 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class DropDownFieldDataTableFilter extends TextSearchDataTableFilter {
-    public static final String COMPONENT_TYPE = "org.openfaces.DropDownFieldDataTableFilter";
-    public static final String COMPONENT_FAMILY = "org.openfaces.DropDownFieldDataTableFilter";
+public class DropDownFieldFilter extends TextSearchFilter {
+    public static final String COMPONENT_TYPE = "org.openfaces.DropDownFieldFilter";
+    public static final String COMPONENT_FAMILY = "org.openfaces.DropDownFieldFilter";
 
-    public DropDownFieldDataTableFilter() {
-        setRendererType("org.openfaces.DropDownFieldDataTableFilterRenderer");
+    public DropDownFieldFilter() {
+        setRendererType("org.openfaces.DropDownFieldFilterRenderer");
     }
 
     public String getFamily() {

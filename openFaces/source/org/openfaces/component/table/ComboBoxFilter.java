@@ -11,13 +11,22 @@
  */
 package org.openfaces.component.table;
 
-import java.io.Serializable;
-
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class FilterCriterion implements Serializable {
-    public abstract boolean acceptsAll();
+public class ComboBoxFilter extends AbstractFilter {
+    public static final String COMPONENT_FAMILY = "org.openfaces.ComboBoxFilter";
+    public static final String COMPONENT_TYPE = "org.openfaces.ComboBoxFilter";
 
-    public abstract boolean acceptsValue(Object value);
+    public ComboBoxFilter() {
+        setRendererType("org.openfaces.ComboBoxFilterRenderer");
+    }
+
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+    protected boolean isShowingPredefinedCriterionNames() {
+        return true;
+    }
 }

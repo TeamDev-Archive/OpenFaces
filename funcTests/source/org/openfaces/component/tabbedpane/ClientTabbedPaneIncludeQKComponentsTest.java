@@ -18,7 +18,6 @@ import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.openfaces.*;
 import org.seleniuminspector.ServerLoadingMode;
 import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.LoadingMode;
 
 /**
  * @author Darya Shumilina
@@ -281,7 +280,7 @@ public class ClientTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
 
         TreeTableInspector firstTreeTable = treeTable("fn:firstTreeTable");
         firstTreeTable.column(0).makeSorting();
-        firstTreeTable.column(0).filter(SearchFieldFilterInspector.class).makeFiltering("color");
+        firstTreeTable.column(0).filter(InputTextFilterInspector.class).makeFiltering("color");
         element("fn:secondHeader").click();
         for (int i = 0; i < imagesPerPage; i++) {
             window().document().getElementsByTagName("img").get(imagesPerPage + i).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());

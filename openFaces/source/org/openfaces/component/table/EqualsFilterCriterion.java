@@ -11,13 +11,15 @@
  */
 package org.openfaces.component.table;
 
-import java.io.Serializable;
-
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class FilterCriterion implements Serializable {
-    public abstract boolean acceptsAll();
+public class EqualsFilterCriterion extends OneParameterCriterion {
+    public boolean acceptsValue(Object value) {
+        Object filterValue = getValue();
+        if (!(value instanceof String) || isCaseSensitive())
+            return value.equals(filterValue);
+        return value.equals(filterValue.toString());
 
-    public abstract boolean acceptsValue(Object value);
+    }
 }

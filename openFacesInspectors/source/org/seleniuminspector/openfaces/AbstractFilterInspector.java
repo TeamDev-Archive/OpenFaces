@@ -19,7 +19,7 @@ import org.seleniuminspector.LoadingMode;
 /**
  * @author Andrii Gorbatov
  */
-public abstract class DataTableFilterInspector extends ElementByLocatorInspector {
+public abstract class AbstractFilterInspector extends ElementByLocatorInspector {
 
     public enum FilterType {
         DROP_DOWN_FIELD(RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + TableColumn.DROP_DOWN_FILTER_CHILD_ID_SUFFIX),
@@ -39,7 +39,7 @@ public abstract class DataTableFilterInspector extends ElementByLocatorInspector
 
     private LoadingMode loadingMode;
 
-    public DataTableFilterInspector(String locator, LoadingMode loadingMode) {
+    public AbstractFilterInspector(String locator, LoadingMode loadingMode) {
         super(locator);
         this.loadingMode = loadingMode;
     }

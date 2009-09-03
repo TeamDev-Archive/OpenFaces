@@ -98,18 +98,18 @@
   </component>
 
   <component>
-    <component-type>org.openfaces.ComboBoxDataTableFilter</component-type>
-    <component-class>org.openfaces.component.table.ComboBoxDataTableFilter</component-class>
+    <component-type>org.openfaces.ComboBoxFilter</component-type>
+    <component-class>org.openfaces.component.table.ComboBoxFilter</component-class>
   </component>
 
   <component>
-    <component-type>org.openfaces.DropDownFieldDataTableFilter</component-type>
-    <component-class>org.openfaces.component.table.DropDownFieldDataTableFilter</component-class>
+    <component-type>org.openfaces.DropDownFieldFilter</component-type>
+    <component-class>org.openfaces.component.table.DropDownFieldFilter</component-class>
   </component>
 
   <component>
-    <component-type>org.openfaces.SearchFieldDataTableFilter</component-type>
-    <component-class>org.openfaces.component.table.SearchFieldDataTableFilter</component-class>
+    <component-type>org.openfaces.InputTextFilter</component-type>
+    <component-class>org.openfaces.component.table.InputTextFilter</component-class>
   </component>
 
   <!-- TIMETABLE-RELATED COMPONENTS -->
@@ -637,19 +637,19 @@
       <renderer-class>org.openfaces.renderkit.table.DataTablePaginatorRenderer</renderer-class>
     </renderer>
     <renderer>
-      <component-family>org.openfaces.ComboBoxDataTableFilter</component-family>
-      <renderer-type>org.openfaces.ComboBoxDataTableFilterRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.table.ComboBoxDataTableFilterRenderer</renderer-class>
+      <component-family>org.openfaces.ComboBoxFilter</component-family>
+      <renderer-type>org.openfaces.ComboBoxFilterRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.ComboBoxFilterRenderer</renderer-class>
     </renderer>
     <renderer>
-      <component-family>org.openfaces.DropDownFieldDataTableFilter</component-family>
-      <renderer-type>org.openfaces.DropDownFieldDataTableFilterRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.table.DropDownFieldDataTableFilterRenderer</renderer-class>
+      <component-family>org.openfaces.DropDownFieldFilter</component-family>
+      <renderer-type>org.openfaces.DropDownFieldFilterRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.DropDownFieldFilterRenderer</renderer-class>
     </renderer>
     <renderer>
-      <component-family>org.openfaces.SearchFieldDataTableFilter</component-family>
-      <renderer-type>org.openfaces.SearchFieldDataTableFilterRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.table.SearchFieldDataTableFilterRenderer</renderer-class>
+      <component-family>org.openfaces.InputTextFilter</component-family>
+      <renderer-type>org.openfaces.InputTextFilterRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.InputTextFilterRenderer</renderer-class>
     </renderer>
     <!-- DROPDOWN COMPONENTS DECLARATION -->
     <renderer>

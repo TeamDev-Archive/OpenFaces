@@ -11,7 +11,7 @@
  */
 package org.openfaces.portlets;
 
-import org.openfaces.component.table.TextFilterCriterion;
+import org.openfaces.component.table.ContainsFilterCriterion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 public class PeopleList {
 
   private List myPerson = new ArrayList();
-  private TextFilterCriterion myFilterValue = new TextFilterCriterion("a");
+  private ContainsFilterCriterion myFilterValue = new ContainsFilterCriterion("a");
   private Person mySelectedRow1;
   private Person mySelectedRow2;
   private List mySelectedRows = new ArrayList();
@@ -153,11 +153,11 @@ public class PeopleList {
   }
 
 
-  public TextFilterCriterion getFilterValue() {
+  public ContainsFilterCriterion getFilterValue() {
     return myFilterValue;
   }
 
-  public void setFilterValue(TextFilterCriterion filterValue) {
+  public void setFilterValue(ContainsFilterCriterion filterValue) {
     myFilterValue = filterValue;
   }
 

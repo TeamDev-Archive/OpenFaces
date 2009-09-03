@@ -11,14 +11,14 @@
  */
 package org.seleniuminspector.openfaces;
 
-import org.openfaces.component.table.TextSearchDataTableFilter;
+import org.openfaces.component.table.TextSearchFilter;
 import org.openfaces.util.RenderingUtil;
 import org.seleniuminspector.LoadingMode;
 
 /**
  * @author Andrii Gorbatov
  */
-public class DropDownFieldFilterInspector extends DataTableFilterInspector {
+public class DropDownFieldFilterInspector extends AbstractFilterInspector {
 
     public DropDownFieldFilterInspector(String locator, LoadingMode loadingMode) {
         super(locator, loadingMode);
@@ -28,7 +28,7 @@ public class DropDownFieldFilterInspector extends DataTableFilterInspector {
     public DropDownFieldInspector searchComponentOld() {
         return new DropDownFieldInspector(getLocator()
                 + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR
-                + TextSearchDataTableFilter.SEARCH_COMPONENT_SUFFIX);
+                + TextSearchFilter.SEARCH_COMPONENT_SUFFIX);
     }
 
     public DropDownFieldInspector searchComponent() {

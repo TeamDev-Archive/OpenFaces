@@ -20,26 +20,20 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class TextSearchDataTableFilter extends DataTableFilter {
+public abstract class TextSearchFilter extends AbstractFilter {
 
     public static final String SEARCH_COMPONENT_SUFFIX = "searchComponent";
 
-    protected boolean acceptsString(String filteredValueString, FilterCriterion filterCriterion) {
-        String text = getStringValue().toLowerCase();
-        filteredValueString = filteredValueString.toLowerCase();
-        return filteredValueString.indexOf(text) != -1;
-    }
-
     public String getStringValue() {
-        FilterCriterion filterCriterion = getSearchString();
+        FilterCriterion filterCriterion = getCriterion();
         if (filterCriterion == null) {
             return "";
         }
-        if (!(filterCriterion instanceof TextFilterCriterion)) {
+        if (!(filterCriterion instanceof ContainsFilterCriterion)) {
             throw new IllegalStateException("Illegal filter criterion: " + filterCriterion);
         }
-        TextFilterCriterion textFilterCriterion = (TextFilterCriterion) filterCriterion;
-        return textFilterCriterion.getText();
+        ContainsFilterCriterion containsFilterCriterion = (ContainsFilterCriterion) filterCriterion;
+        return containsFilterCriterion.getValue().toString();
     }
 
     public void createSubComponents(FacesContext context) {
@@ -52,7 +46,7 @@ public abstract class TextSearchDataTableFilter extends DataTableFilter {
     public UIComponent getSearchComponent() {
         List children = getChildren();
         if (children.size() != 1)
-            throw new IllegalStateException("TextSearchDataTableFilter should have exactly one child component - " +
+            throw new IllegalStateException("TextSearchFilter should have exactly one child component - " +
                     "the search component. children.size = " + children.size());
         UIComponent searchComponent = (UIComponent) children.get(0);
         return searchComponent;

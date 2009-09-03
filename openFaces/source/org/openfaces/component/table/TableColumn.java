@@ -143,7 +143,7 @@ public class TableColumn extends BaseColumn implements CompoundComponent {
         filterPromptTextClass = promptTextClass;
     }
 
-    public DataTableFilter getSubHeader() {
+    public AbstractFilter getSubHeader() {
         ValueExpression filterExpression = getFilterExpression();
         ValueExpression filterValuesExpression = getFilterValuesExpression();
         ValueExpression filterValueExpression = getFilterValueExpression();
@@ -151,23 +151,23 @@ public class TableColumn extends BaseColumn implements CompoundComponent {
             return null;
 
         FilterKind filterKind = this.getFilterKind();
-        DataTableFilter filter;
+        AbstractFilter filter;
         if (filterKind == null) {
             return null;
         } else if (filterKind.equals(FilterKind.COMBO_BOX)) {
-            filter = (DataTableFilter) RenderingUtil.getFacet(
-                    this, COMBO_BOX_FILTER_CHILD_ID_SUFFIX, ComboBoxDataTableFilter.class);
+            filter = (AbstractFilter) RenderingUtil.getFacet(
+                    this, COMBO_BOX_FILTER_CHILD_ID_SUFFIX, ComboBoxFilter.class);
         } else if (filterKind.equals(FilterKind.DROP_DOWN_FIELD)) {
-            filter = (DataTableFilter) RenderingUtil.getFacet(
-                    this, DROP_DOWN_FILTER_CHILD_ID_SUFFIX, DropDownFieldDataTableFilter.class);
+            filter = (AbstractFilter) RenderingUtil.getFacet(
+                    this, DROP_DOWN_FILTER_CHILD_ID_SUFFIX, DropDownFieldFilter.class);
 
             filter.setPromptText(getFilterPromptText());
             filter.setPromptTextStyle(getFilterPromptTextStyle());
             filter.setPromptTextClass(getFilterPromptTextClass());
 
         } else if (filterKind.equals(FilterKind.SEARCH_FIELD)) {
-            filter = (DataTableFilter) RenderingUtil.getFacet(
-                    this, SEARCH_FIELD_FILTER_CHILD_ID_SUFFIX, SearchFieldDataTableFilter.class);
+            filter = (AbstractFilter) RenderingUtil.getFacet(
+                    this, SEARCH_FIELD_FILTER_CHILD_ID_SUFFIX, InputTextFilter.class);
 
             filter.setPromptText(getFilterPromptText());
             filter.setPromptTextStyle(getFilterPromptTextStyle());
@@ -208,21 +208,21 @@ public class TableColumn extends BaseColumn implements CompoundComponent {
 
     private void createSingleFilter(FacesContext context) {
         FilterKind filterKind = getFilterKind();
-        DataTableFilter filter;
+        AbstractFilter filter;
         if (filterKind == null) {
             throw new IllegalStateException("FilterKind property can be set to null only through value binding.");
         } else if (filterKind.equals(FilterKind.COMBO_BOX)) {
             filter = RenderingUtil.getOrCreateFacet(
-                    context, this, ComboBoxDataTableFilter.COMPONENT_TYPE,
-                    COMBO_BOX_FILTER_CHILD_ID_SUFFIX, ComboBoxDataTableFilter.class);
+                    context, this, ComboBoxFilter.COMPONENT_TYPE,
+                    COMBO_BOX_FILTER_CHILD_ID_SUFFIX, ComboBoxFilter.class);
         } else if (filterKind.equals(FilterKind.DROP_DOWN_FIELD)) {
             filter = RenderingUtil.getOrCreateFacet(
-                    context, this, DropDownFieldDataTableFilter.COMPONENT_TYPE,
-                    DROP_DOWN_FILTER_CHILD_ID_SUFFIX, DropDownFieldDataTableFilter.class);
+                    context, this, DropDownFieldFilter.COMPONENT_TYPE,
+                    DROP_DOWN_FILTER_CHILD_ID_SUFFIX, DropDownFieldFilter.class);
         } else if (filterKind.equals(FilterKind.SEARCH_FIELD)) {
             filter = RenderingUtil.getOrCreateFacet(
-                    context, this, SearchFieldDataTableFilter.COMPONENT_TYPE,
-                    SEARCH_FIELD_FILTER_CHILD_ID_SUFFIX, SearchFieldDataTableFilter.class);
+                    context, this, InputTextFilter.COMPONENT_TYPE,
+                    SEARCH_FIELD_FILTER_CHILD_ID_SUFFIX, InputTextFilter.class);
         } else
             throw new IllegalStateException("Unknown filter kind: " + filterKind);
 
@@ -230,25 +230,25 @@ public class TableColumn extends BaseColumn implements CompoundComponent {
     }
 
     private void createMultipleFilters() {
-        createFilter(ComboBoxDataTableFilter.COMPONENT_TYPE,
-                COMBO_BOX_FILTER_CHILD_ID_SUFFIX, ComboBoxDataTableFilter.class);
-        createFilter(DropDownFieldDataTableFilter.COMPONENT_TYPE,
-                DROP_DOWN_FILTER_CHILD_ID_SUFFIX, DropDownFieldDataTableFilter.class);
-        createFilter(SearchFieldDataTableFilter.COMPONENT_TYPE,
-                SEARCH_FIELD_FILTER_CHILD_ID_SUFFIX, SearchFieldDataTableFilter.class);
+        createFilter(ComboBoxFilter.COMPONENT_TYPE,
+                COMBO_BOX_FILTER_CHILD_ID_SUFFIX, ComboBoxFilter.class);
+        createFilter(DropDownFieldFilter.COMPONENT_TYPE,
+                DROP_DOWN_FILTER_CHILD_ID_SUFFIX, DropDownFieldFilter.class);
+        createFilter(InputTextFilter.COMPONENT_TYPE,
+                SEARCH_FIELD_FILTER_CHILD_ID_SUFFIX, InputTextFilter.class);
     }
 
     private void createFilter(String componentType, String identifier, Class componentClass) {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        DataTableFilter dataTableFilter = (DataTableFilter) RenderingUtil.getOrCreateFacet(
+        AbstractFilter filter = (AbstractFilter) RenderingUtil.getOrCreateFacet(
                 context, this, componentType,
                 identifier, componentClass);
 
-        initializeFilter(dataTableFilter);
+        initializeFilter(filter);
     }
 
-    private void initializeFilter(DataTableFilter filter) {
+    private void initializeFilter(AbstractFilter filter) {
         filter.setStyle("width: 100%");
         filter.setRendered(false);
     }

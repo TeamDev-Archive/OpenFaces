@@ -246,7 +246,7 @@ public class DataTable extends AbstractTable {
     }
 
 
-    public List getRowListForFiltering(DataTableFilter filter) {
+    public List getRowListForFiltering(AbstractFilter filter) {
         TableDataModel tableDataModel = (TableDataModel) getUiDataValue();
         List result = tableDataModel.getRowListForFiltering(filter);
         return result;

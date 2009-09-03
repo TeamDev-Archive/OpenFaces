@@ -12,7 +12,7 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.input.InputText;
-import org.openfaces.component.table.DataTableFilter;
+import org.openfaces.component.table.AbstractFilter;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -20,8 +20,8 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class SearchFieldDataTableFilterRenderer extends TextSearchDataTableFilterRenderer {
-    protected void configureInputComponent(FacesContext context, DataTableFilter filter, UIInput inputComponent) {
+public class InputTextFilterRenderer extends TextSearchFilterRenderer {
+    protected void configureInputComponent(FacesContext context, AbstractFilter filter, UIInput inputComponent) {
         InputText input = (InputText) inputComponent;
         input.setOnkeypress(getFilterOnEnterScript(context, filter));
         input.setOnchange(getFilterSubmissionScript(filter, context));

@@ -77,7 +77,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
         dataTable.makeAndCheckSingleSelection(1, 1);
         dataTable.column(0).makeSorting();
         dataTablePaginator("fn:dataTableID:dataTablePaginator_A4J").makePagination(3);
-        dataTable.column(1).filter(SearchFieldFilterInspector.class).makeFiltering("col2_row1");
+        dataTable.column(1).filter(InputTextFilterInspector.class).makeFiltering("col2_row1");
     }
 
     @Test
@@ -216,7 +216,7 @@ public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase
                     .clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
         treeTable.column(0).makeSorting();
-        treeTable.column(0).filter(SearchFieldFilterInspector.class).makeFiltering("colors");
+        treeTable.column(0).filter(InputTextFilterInspector.class).makeFiltering("colors");
     }
 
     @Test

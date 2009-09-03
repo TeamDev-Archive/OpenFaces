@@ -13,7 +13,7 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.DataTable;
-import org.openfaces.component.table.DataTableFilter;
+import org.openfaces.component.table.AbstractFilter;
 import org.openfaces.component.table.FilterCriterion;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.StyleUtil;
@@ -24,16 +24,16 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class AbstractDataTableFilterRenderer extends RendererBase {
+public class AbstractFilterRenderer extends RendererBase {
     protected static final String DEFAULT_PREDEFINED_CRITERION_CLASS = "o_table_filter_predefined_criterion";
 
-    protected String getFilterSubmissionScript(DataTableFilter filter, FacesContext context) {
+    protected String getFilterSubmissionScript(AbstractFilter filter, FacesContext context) {
         AbstractTable table = getTable(filter);
         String tableId = table.getClientId(context);
         return "O$.Table._filterDataTable('" + tableId + "', this);";
     }
 
-    AbstractTable getTable(DataTableFilter filter) {
+    AbstractTable getTable(AbstractFilter filter) {
         for (UIComponent parent = filter.getParent(); parent != null; parent = parent.getParent()) {
             if (parent instanceof AbstractTable)
                 return (AbstractTable) parent;
@@ -41,12 +41,12 @@ public class AbstractDataTableFilterRenderer extends RendererBase {
         throw new IllegalStateException("Couldn't find DataTable or TreeTable where this filter is embedded. Filter's clientId = " + filter.getClientId(FacesContext.getCurrentInstance()));
     }
 
-    protected String getPredefinedCriterionClass(FacesContext context, DataTableFilter filter) {
+    protected String getPredefinedCriterionClass(FacesContext context, AbstractFilter filter) {
         String predefinedCriterionStyle = filter.getPredefinedCriterionStyle();
         return StyleUtil.getCSSClass(context, filter, predefinedCriterionStyle, DEFAULT_PREDEFINED_CRITERION_CLASS, filter.getPredefinedCriterionClass());
     }
 
-    protected void setDecodedSearchString(DataTableFilter filter, FilterCriterion newCriterion) {
+    protected void setDecodedSearchString(AbstractFilter filter, FilterCriterion newCriterion) {
         if (!filter.changeSearchString(newCriterion))
             return;
         AbstractTable table = getTable(filter);

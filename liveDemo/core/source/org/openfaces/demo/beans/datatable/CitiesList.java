@@ -13,7 +13,7 @@ package org.openfaces.demo.beans.datatable;
 
 import org.openfaces.util.FacesUtil;
 import org.openfaces.component.table.ColumnFilterCriterion;
-import org.openfaces.component.table.TextFilterCriterion;
+import org.openfaces.component.table.ContainsFilterCriterion;
 import org.openfaces.demo.beans.util.City;
 
 import javax.faces.context.FacesContext;
@@ -68,10 +68,10 @@ public class CitiesList implements Serializable {
             ColumnFilterCriterion criterion = (ColumnFilterCriterion) aFilterCriteria;
             String columnId = criterion.getColumnId();
             if (columnId.equals("name")) {
-                String searchString = ((TextFilterCriterion) criterion).getText();
+                String searchString = ((ContainsFilterCriterion) criterion).getValue().toString();
                 filterConditions.setCityNameSearchString(searchString);
             } else if (columnId.equals("population")) {
-                String searchString = ((TextFilterCriterion) criterion).getText();
+                String searchString = ((ContainsFilterCriterion) criterion).getValue().toString();
                 String[] result = searchString.split(" \u2013 ");
 
                 String[] minLimit = result[0].split(",");
@@ -91,7 +91,7 @@ public class CitiesList implements Serializable {
                 filterConditions.setMinPopulation(min);
                 filterConditions.setMaxPopulation(max);
             } else if (columnId.equals("country")) {
-                String searchString = ((TextFilterCriterion) criterion).getText();
+                String searchString = ((ContainsFilterCriterion) criterion).getValue().toString();
                 filterConditions.setCountry(searchString);
             }
         }

@@ -11,25 +11,25 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.component.input.InputText;
-
 /**
  * @author Dmitry Pikhulya
  */
-public class SearchFieldDataTableFilter extends TextSearchDataTableFilter {
-    public static final String COMPONENT_TYPE = "org.openfaces.SearchFieldDataTableFilter";
-    public static final String COMPONENT_FAMILY = "org.openfaces.SearchFieldDataTableFilter";
+public class ContainsFilterCriterion extends OneParameterCriterion {
 
-    public SearchFieldDataTableFilter() {
-        setRendererType("org.openfaces.SearchFieldDataTableFilterRenderer");
+    public ContainsFilterCriterion() {
     }
 
-    public String getFamily() {
-        return COMPONENT_FAMILY;
+    public ContainsFilterCriterion(Object value) {
+        super(value);
     }
 
-    protected String getInputComponentType() {
-        return InputText.COMPONENT_TYPE;
+    public ContainsFilterCriterion(Object value, boolean caseSensitive) {
+        super(value, caseSensitive);
+    }
+
+
+    public boolean acceptsValue(Object value) {
+        return objectToString(value).contains(objectToString(getValue()));
     }
 
 }

@@ -31,6 +31,32 @@
   </tag>
 
   <tag>
+    <tag-name>inputTextFilter</tag-name>
+    <component>
+      <component-type>org.openfaces.InputTextFilter</component-type>
+      <renderer-type>org.openfaces.InputTextFilterRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.InputTextFilterTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>dropDownFieldFilter</tag-name>
+    <component>
+      <component-type>org.openfaces.DropDownFieldFilter</component-type>
+      <renderer-type>org.openfaces.DropDownFieldFilterRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.DropDownFieldFilterTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>comboBoxFilter</tag-name>
+    <component>
+      <component-type>org.openfaces.ComboBoxFilter</component-type>
+      <renderer-type>org.openfaces.ComboBoxFilterRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.ComboBoxFilterTagHandler</handler-class>
+    </component>
+  </tag>
+
+
+  <tag>
     <tag-name>column</tag-name>
     <component>
       <component-type>org.openfaces.TableColumn</component-type>

@@ -1228,7 +1228,7 @@
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. TextFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
       <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
       <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
       <!-- @default null -->
@@ -1918,7 +1918,7 @@
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. TextFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
       <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
       <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
       <!-- @default null -->
@@ -6347,7 +6347,7 @@ means that only root nodes and their immediate children are preloaded -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. TextFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
       <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
       <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
       <!-- @default null -->
