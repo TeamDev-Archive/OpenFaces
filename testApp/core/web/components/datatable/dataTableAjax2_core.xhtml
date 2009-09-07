@@ -9,11 +9,12 @@
                pageSize="5" var="person" value="#{PeopleBean.person}"
                rolloverRowStyle="background:#F0F0F0">
     <o:column sortingExpression="#{person.name}"
-              sortingComparator="caseInsensitiveText"
-              filterExpression="#{person.name}"
-              filterKind="searchField">
+              sortingComparator="caseInsensitiveText">
       <f:facet name="header">
         <h:outputText value="Name"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{person.name}"/>
       </f:facet>
       <h:inputText id="inputName2" required="true" value="#{person.name}"/>
       <f:verbatim><br/></f:verbatim>
@@ -21,10 +22,12 @@
       <f:verbatim><br/></f:verbatim>
       <h:message id="nameMessage2" for="inputName2" style="color:red;"/>
     </o:column>
-    <o:column filterExpression="#{person.profession}"
-              filterKind="dropDownField" sortingExpression="#{person.profession}">
+    <o:column sortingExpression="#{person.profession}">
       <f:facet name="header">
         <h:outputText value="Profession"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:dropDownFieldFilter expression="#{person.profession}"/>
       </f:facet>
       <h:inputText id="inputProfession2" required="true" value="#{person.profession}"/>
       <h:message id="professionQKMessage2" for="inputProfession2" style="color:blue;"/>

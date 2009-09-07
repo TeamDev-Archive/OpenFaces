@@ -55,10 +55,12 @@
   </f:facet>
   <o:checkboxColumn/>
   <o:column id="col1"
-            sortingExpression="#{row.name}"
-            filterExpression="#{row.name}">
+            sortingExpression="#{row.name}">
     <f:facet name="header">
       <h:outputText value="Name"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:inputTextFilter expression="#{row.name}"/>
     </f:facet>
     <f:facet name="footer">
       <h:outputText value="Name"/>
@@ -71,12 +73,12 @@
              columnRendered="#{TableColumnsBean.columnRendered}"
              style="#{TableColumnsBean.columnStyle}"
              sortingEnabled="#{TableColumnsBean.sortingEnabled}"
-             sortingExpression="#{row.dynamicColumns[col]}"
-             filterExpression="#{row.dynamicColumns[col]}"
-             filterKind="#{TableColumnsBean.filterKind}"
-             filterValues="#{TableColumnsBean.filterValues}">
+             sortingExpression="#{row.dynamicColumns[col]}">
     <f:facet name="header">
       <h:outputText value="Column #{col}"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:inputTextFilter expression="#{row.dynamicColumns[col]}" />
     </f:facet>
     <f:facet name="footer">
       <h:outputText value="Column #{col}"/>
@@ -97,10 +99,12 @@
         </f:facet>
         <o:checkboxColumn/>
         <o:column id="col1"
-                  sortingExpression="#{row.name}"
-                  filterExpression="#{row.name}">
+                  sortingExpression="#{row.name}">
           <f:facet name="header">
             <h:outputText value="Name"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{row.name}"/>
           </f:facet>
           <f:facet name="footer">
             <h:outputText value="Name"/>
@@ -111,12 +115,12 @@
                    var="col"
                    columnId="dynamicCol#{col}"
                    sortingEnabled="true"
-                   sortingExpression="#{row.dynamicColumns[col]}"
-                   filterExpression="#{row.dynamicColumns[col]}"
-                   filterKind="#{TableColumnsBean.filterKind}"
-                   filterValues="#{TableColumnsBean.filterValues}">
+                   sortingExpression="#{row.dynamicColumns[col]}">
           <f:facet name="header">
             <h:outputText value="Column #{col}"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{row.dynamicColumns[col]}"/>
           </f:facet>
           <f:facet name="footer">
             <h:outputText value="Column #{col}"/>
@@ -141,10 +145,12 @@
         </f:facet>
         <o:checkboxColumn/>
         <o:column id="col1"
-                  sortingExpression="#{row.name}"
-                  filterExpression="#{row.name}">
+                  sortingExpression="#{row.name}">
           <f:facet name="header">
             <h:outputText value="Name"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{row.name}"/>
           </f:facet>
           <f:facet name="footer">
             <h:outputText value="Name"/>
@@ -155,12 +161,12 @@
                    var="col"
                    columnId="dynamicCol#{col}"
                    sortingEnabled="true"
-                   sortingExpression="#{row.dynamicColumns[col]}"
-                   filterExpression="#{row.dynamicColumns[col]}"
-                   filterKind="#{TableColumnsBean.filterKind}"
-                   filterValues="#{TableColumnsBean.filterValues}">
+                   sortingExpression="#{row.dynamicColumns[col]}">
           <f:facet name="header">
             <h:outputText value="Column #{col}"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{row.dynamicColumns[col]}"/>
           </f:facet>
           <f:facet name="footer">
             <h:outputText value="Column #{col}"/>
@@ -180,10 +186,12 @@
         </f:facet>
         <o:checkboxColumn/>
         <o:column id="col1"
-                  sortingExpression="#{row.name}"
-                  filterExpression="#{row.name}">
+                  sortingExpression="#{row.name}">
           <f:facet name="header">
             <h:outputText value="Name"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{row.name}"/>
           </f:facet>
           <f:facet name="footer">
             <h:outputText value="Name"/>
@@ -194,12 +202,12 @@
                    var="col"
                    columnId="dynamicCol#{col}"
                    sortingEnabled="true"
-                   sortingExpression="#{row.dynamicColumns[col]}"
-                   filterExpression="#{row.dynamicColumns[col]}"
-                   filterKind="#{TableColumnsBean.filterKind}"
-                   filterValues="#{TableColumnsBean.filterValues}">
+                   sortingExpression="#{row.dynamicColumns[col]}">
           <f:facet name="header">
             <h:outputText value="Column #{col}"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{row.dynamicColumns[col]}"/>
           </f:facet>
           <f:facet name="footer">
             <h:outputText value="Column #{col}"/>

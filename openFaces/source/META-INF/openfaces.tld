@@ -1200,87 +1200,6 @@
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
-    <attribute>
-      <description>Specifies the value by which the data is filtered. Is used to provide filtering for the column.
-      </description>
-      <name>filterExpression</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.Object -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>The filter values that appear in the "comboBox" or "dropDownField" filter components
-        instead of displaying all of the possible values.
-      </description>
-      <name>filterValues</name>
-      <deferred-value>
-        <type>java.util.Collection</type>
-      </deferred-value>
-      <!-- @bindingType java.util.Collection -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>The current filter value.</description>
-      <name>filterValue</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
-      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
-      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>The type of filter component for filtering the data.</description>
-      <name>filterKind</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. FilterKind -->
-      <!-- @default "comboBox" -->
-      <!-- @value "searchField" is displayed as a text field-->
-      <!-- @value "comboBox" is displayed as a combo box that contains all the unique values returned by the filterExpression attribute for that column -->
-      <!-- @value "dropDownField" is displayed as a drop-down field which, like "comboBox", displays all the unique values and also allows the user to enter text manually-->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>This prompt text will be shown when value of component is empty.</description>
-      <name>filterPromptText</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>A style for the prompt text.</description>
-      <name>filterPromptTextStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>A CSS class name for the prompt text.</description>
-      <name>filterPromptTextClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
 
     <attribute>
       <description>The width of the column. Can be specified in any units (px, mm, em, etc.).</description>
@@ -1776,16 +1695,375 @@
     <name>inputTextFilter</name>
     <tag-class>org.openfaces.taglib.jsp.table.InputTextFilterJspTag</tag-class>
     <body-content>JSP</body-content>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates the component with a backing bean property.</description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.DataTable</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. DataTable -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Defines an expression that is used to obtain a record's value by which records are to be filtered.
+      </description>
+      <name>expression</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The current filtering criterion selected in this filter component.</description>
+      <name>criterion</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
+      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the entire filter component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire filter component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This prompt text will be shown when value of component is empty.</description>
+      <name>promptText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the prompt text.</description>
+      <name>promptTextStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name for the prompt text.</description>
+      <name>promptTextClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
   </tag>
+
   <tag>
     <name>dropDownFieldFilter</name>
     <tag-class>org.openfaces.taglib.jsp.table.DropDownFieldFilterJspTag</tag-class>
     <body-content>JSP</body-content>
+
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates the component with a backing bean property.</description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.DataTable</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. DataTable -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Defines an expression that is used to obtain a record's value by which records are to be filtered.
+      </description>
+      <name>expression</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The current filtering criterion selected in this filter component.</description>
+      <name>criterion</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
+      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The filtering options that appear in the filter's drop-down list instead of displaying all of the
+        possible values.
+      </description>
+      <name>options</name>
+      <deferred-value>
+        <type>java.util.Collection</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Collection -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the entire filter component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire filter component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This prompt text will be shown when value of component is empty.</description>
+      <name>promptText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the prompt text.</description>
+      <name>promptTextStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name for the prompt text.</description>
+      <name>promptTextClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Text that is displayed instead of "&lt;All&gt;" in the filter's drop-down list.
+      </description>
+      <name>allRecordsText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "<All>" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Text that is displayed instead of "&lt;Empty&gt;" in the filter's drop-down list.
+      </description>
+      <name>emptyRecordsText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "<Empty>" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Text that is displayed instead of "&lt;Non-empty&gt;" in the filter's drop-down list.
+      </description>
+      <name>nonEmptyRecordsText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "<Non-empty>"  -->
+      <!-- @el true -->
+    </attribute>
+
   </tag>
+
   <tag>
     <name>comboBoxFilter</name>
     <tag-class>org.openfaces.taglib.jsp.table.ComboBoxFilterJspTag</tag-class>
     <body-content>JSP</body-content>
+
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates the component with a backing bean property.</description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.DataTable</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. DataTable -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>Defines an expression that is used to obtain a record's value by which records are to be filtered.
+      </description>
+      <name>expression</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The current filtering criterion selected in this filter component.</description>
+      <name>criterion</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
+      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>The filtering options that appear in the filter's drop-down list instead of displaying all of the
+        possible values.
+      </description>
+      <name>options</name>
+      <deferred-value>
+        <type>java.util.Collection</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Collection -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the entire filter component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire filter component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Text that is displayed instead of "&lt;All&gt;" in the filter's drop-down list.
+      </description>
+      <name>allRecordsText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "<All>" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Text that is displayed instead of "&lt;Empty&gt;" in the filter's drop-down list.
+      </description>
+      <name>emptyRecordsText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "<Empty>" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Text that is displayed instead of "&lt;Non-empty&gt;" in the filter's drop-down list.
+      </description>
+      <name>nonEmptyRecordsText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "<Non-empty>"  -->
+      <!-- @el true -->
+    </attribute>
+
   </tag>
 
 
@@ -1898,99 +2176,6 @@
       <!-- @bindingType java.util.Comparator -->
       <!-- @default null -->
       <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>A value-binding expression that should reference the value by which the data in each dynamic
-        column is filtered. You can use a column data variable specified in the "var" in the expression for
-        this attribute. Specifying this attribute makes all columns in this o:columns tag to be filterable.
-        Some dynamic columns can be made non-filterable using the filterKind attribute if needed.
-      </description>
-      <name>filterExpression</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.Object -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>A value-binding expression that should reference a collection of the filter values that
-        appear in the "comboBox" or "dropDownField" filter components instead of displaying all of the
-        possible values. You can use a column data variable specified in the "var" in the expression
-        for this attribute. If returns null, the default filter values calculation mechanism is used
-        for the corresponding dynamic columns.
-      </description>
-      <name>filterValues</name>
-      <deferred-value>
-        <type>java.util.Collection</type>
-      </deferred-value>
-      <!-- @bindingType java.util.Collection -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>A value-binding expression that should reference the current filter value for each dynamic
-        column. You can use a column data variable specified in the "var" in the expression for this attribute.
-      </description>
-      <name>filterValue</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
-      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
-      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>The type of filter component for filtering the data. Can be specified
-        right on the page (one and the same value for all dynamic columns is used) or as a value-binding
-        expression. You can use a column data variable specified in the "var" in the expression for this
-        attribute. Returning null makes the corresponding dynamic columns non-filterable.
-      </description>
-      <name>filterKind</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. FilterKind -->
-      <!-- @default "comboBox" -->
-      <!-- @value "searchField" is displayed as a text field-->
-      <!-- @value "comboBox" is displayed as a combo box that contains all the unique values returned by the filterExpression attribute for that column -->
-      <!-- @value "dropDownField" is displayed as a drop-down field which, like "comboBox", displays all the unique values and also allows the user to enter text manually-->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>This prompt text will be shown when value of component is empty.</description>
-      <name>filterPromptText</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>A style for the prompt text.</description>
-      <name>filterPromptTextStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>A CSS class name for the prompt text.</description>
-      <name>filterPromptTextClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
     </attribute>
 
     <attribute>
@@ -6337,87 +6522,7 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
-    <attribute>
-      <description>Specifies the value by which the data is filtered. Is used to provide filtering for a column.
-      </description>
-      <name>filterExpression</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.Object -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>The filter values that appear in the "comboBox" or "dropDownField"
-        instead of displaying all of the possible values.
-      </description>
-      <name>filterValues</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>The current filter value.</description>
-      <name>filterValue</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
-      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
-      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>Type of a filter component for filtering the data.</description>
-      <name>filterKind</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. FilterKind -->
-      <!-- @default "comboBox" -->
-      <!-- @value "searchField" is displayed as a text field-->
-      <!-- @value "comboBox" is displayed as a combo box that contains all the unique values returned by the filterExpression attribute for that column -->
-      <!-- @value "dropDownField" is displayed as a drop-down field which, like "comboBox", displays all the unique values and also allows the user to enter text manually-->
-      <!-- @el true -->
-    </attribute>
 
-    <attribute>
-      <description>This prompt text will be shown when value of component is empty.</description>
-      <name>filterPromptText</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>A style for the prompt text.</description>
-      <name>filterPromptTextStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>A CSS class name for the prompt text.</description>
-      <name>filterPromptTextClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
     <attribute>
       <description>The horizontal offset between the node levels. Can be
         specified in pixels (px), millimeters (mm), em dash (em), etc.

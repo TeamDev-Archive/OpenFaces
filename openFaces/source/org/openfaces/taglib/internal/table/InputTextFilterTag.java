@@ -12,7 +12,6 @@
 package org.openfaces.taglib.internal.table;
 
 import org.openfaces.component.table.InputTextFilter;
-import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -20,7 +19,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class InputTextFilterTag extends AbstractComponentTag {
+public class InputTextFilterTag extends AbstractFilterTag {
     public String getComponentType() {
         return InputTextFilter.COMPONENT_TYPE;
     }
@@ -34,4 +33,5 @@ public class InputTextFilterTag extends AbstractComponentTag {
         super.setComponentProperties(facesContext, component);
 
     }
+
 }

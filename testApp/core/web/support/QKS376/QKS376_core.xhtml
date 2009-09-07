@@ -18,10 +18,12 @@
           <a4j:support event="onchange" reRender="treeTable" action="#{QKS376.updateTreeTable}"/>
         </h:selectBooleanCheckbox>
       </o:treeColumn>
-      <o:column sortingExpression="#{tree.name}" filterExpression="#{tree.name}"
-                filterKind="comboBox">
+      <o:column sortingExpression="#{tree.name}">
         <f:facet name="header">
           <h:outputText value="From"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter expression="#{tree.name}"/>
         </f:facet>
         <h:outputText value="#{tree.name}"/>
       </o:column>

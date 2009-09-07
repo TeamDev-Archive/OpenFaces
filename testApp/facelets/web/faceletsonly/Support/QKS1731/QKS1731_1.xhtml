@@ -15,20 +15,24 @@
                  headerRowClass="mainDatatblHead" filterRowClass="mainDatatblFilhead"
                  var="NewItemMessage" value="#{TableTestBean.collection1}" rowKey="#{NewItemMessage.id}" pageSize="5"
              columnsOrder="#{QKS1731.colOrder}">
-      <o:column id="col1" sortingExpression="#{NewItemMessage.field1}" filterExpression="#{NewItemMessage.field1}"
-                filterKind="dropDownField">
+      <o:column id="col1" sortingExpression="#{NewItemMessage.field1}">
         <f:facet name="header">
           <h:outputText value="Letters"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:dropDownFieldFilter expression="#{NewItemMessage.field1}"/>
         </f:facet>
         <f:facet name="footer">
           <h:outputText value="Total Letters"/>
         </f:facet>
         <h:outputText value="#{NewItemMessage.field1}"/>
       </o:column>
-       <o:column id="col2" sortingExpression="#{NewItemMessage.field2}" filterExpression="#{NewItemMessage.field2}"
-                 filterKind="dropDownField">
+       <o:column id="col2" sortingExpression="#{NewItemMessage.field2}">
          <f:facet name="header">
            <h:outputText value="Letters"/>
+         </f:facet>
+         <f:facet name="subHeader">
+           <o:dropDownFieldFilter expression="#{NewItemMessage.field2}"/>
          </f:facet>
          <f:facet name="footer">
            <h:outputText value="Total Letters"/>

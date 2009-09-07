@@ -17,15 +17,21 @@
     <o:dataTable var="record" value="#{table.records}">
       <o:singleRowSelection rowData="#{table.selectedRecord}"/>
       <o:selectionColumn/>
-      <o:column sortingExpression="#{record.field1}" filterExpression="#{record.field1}">
+      <o:column sortingExpression="#{record.field1}">
         <f:facet name="header">
           <h:outputText value="Field 1"/>
         </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{record.field1}"/>
+        </f:facet>
         <h:inputText value="#{record.field1}"/>
       </o:column>
-      <o:column sortingExpression="#{record.field2}" filterExpression="#{record.field2}">
+      <o:column sortingExpression="#{record.field2}">
         <f:facet name="header">
           <h:outputText value="Field 2"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{record.field2}"/>
         </f:facet>
         <h:inputText value="#{record.field2}"/>
       </o:column>

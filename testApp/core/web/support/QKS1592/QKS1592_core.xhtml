@@ -33,17 +33,21 @@
                  preloadedNodes="levelsPreloaded:2"
                  useAjax="true">
       <o:dynamicTreeStructure nodeChildren="#{TreeTableBean.nodeChildren}"/>
-      <o:treeColumn id="subject" showAsTree="#{!TreeTableBean.booleanSwitch}" sortingExpression="#{message.subject}"
-                    filterExpression="#{message.subject}" filterKind="searchField">
+      <o:treeColumn id="subject" showAsTree="#{!TreeTableBean.booleanSwitch}" sortingExpression="#{message.subject}">
         <f:facet name="header">
           <h:outputText value="Subject"/>
         </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{message.subject}"/>
+        </f:facet>
         <h:outputText value="#{message.subject}"/>
       </o:treeColumn>
-      <o:column id="author" sortingExpression="#{message.author}" filterExpression="#{message.author}"
-                filterKind="comboBox">
+      <o:column id="author" sortingExpression="#{message.author}">
         <f:facet name="header">
           <h:outputText value="From"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter expression="#{message.author}"/>
         </f:facet>
         <h:outputText value="#{message.author}"/>
       </o:column>

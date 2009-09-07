@@ -38,11 +38,12 @@
     <f:facet name="header">
       <h:outputText value="It is a common header"/>
     </f:facet>
-    <o:column id="col_one"
-              filterKind="searchField"
-              filterExpression="#{table_events.firstColumn}">
+    <o:column id="col_one">
       <f:facet name="header">
         <h:outputText value="Col1 header"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{table_events.firstColumn}"/>
       </f:facet>
       <h:outputText value="#{table_events.firstColumn}"/>
       <f:facet name="footer">
@@ -167,11 +168,12 @@
       <f:facet name="header">
         <h:outputText value="It is a common header"/>
       </f:facet>
-      <o:column id="col_one"
-                filterKind="searchField"
-                filterExpression="#{table_events.firstColumn}">
+      <o:column id="col_one">
         <f:facet name="header">
           <h:outputText value="Col1 header"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{table_events.firstColumn}"/>
         </f:facet>
         <h:outputText value="#{table_events.firstColumn}"/>
         <f:facet name="footer">

@@ -159,35 +159,39 @@
           <o:column bodyStyle="background: #eaeaea;" style="width: 100px;">
             <h:outputText value="#{payments.quarter}"/>
           </o:column>
-          <o:column style="width: 100px; text-align: right;"
-                    filterExpression="#{StylingBean.paymentRangeDept1}"
-                    filterKind="comboBox"
-                    filterValues="#{StylingBean.paymentsFilterValues}">
+          <o:column style="width: 100px; text-align: right;">
             <f:facet name="header">
               <h:outputText value="Thomas Dept"/>
             </f:facet>
+            <f:facet name="subHeader">
+              <o:comboBoxFilter expression="#{StylingBean.paymentRangeDept1}" options="#{StylingBean.paymentsFilterValues}"/>
+            </f:facet>
             <h:outputText value="#{payments.dept1}"/>
           </o:column>
-          <o:column style="width: 100px;"
-                    filterExpression="#{StylingBean.paymentRangeDept2}"
-                    filterKind="comboBox"
-                    filterValues="#{StylingBean.paymentsFilterValues}">
+          <o:column style="width: 100px;">
             <f:facet name="header">
               <h:outputText value="John Dept"/>
             </f:facet>
+            <f:facet name="subHeader">
+              <o:comboBoxFilter expression="#{StylingBean.paymentRangeDept2}" options="#{StylingBean.paymentsFilterValues}"/>
+            </f:facet>
             <h:outputText value="#{payments.dept2}"/>
           </o:column>
-          <o:column style="width: 100px;" filterExpression="#{StylingBean.paymentRangeDept3}"
-                    filterKind="comboBox" filterValues="#{StylingBean.paymentsFilterValues}">
+          <o:column style="width: 100px;">
             <f:facet name="header">
               <h:outputText value="Bob Dept"/>
             </f:facet>
+            <f:facet name="subHeader">
+              <o:comboBoxFilter expression="#{StylingBean.paymentRangeDept3}" options="#{StylingBean.paymentsFilterValues}"/>
+            </f:facet>
             <h:outputText value="#{payments.dept3}"/>
           </o:column>
-          <o:column style="font-weight: bold; width: 100px;" filterExpression="#{StylingBean.paymentRangeDept4}"
-                    filterKind="comboBox" filterValues="#{StylingBean.paymentsFilterValues}">
+          <o:column style="font-weight: bold; width: 100px;">
             <f:facet name="header">
               <h:outputText value="Johnson Dept"/>
+            </f:facet>
+            <f:facet name="subHeader">
+              <o:comboBoxFilter expression="#{StylingBean.paymentRangeDept4}" options="#{StylingBean.paymentsFilterValues}"/>
             </f:facet>
             <h:outputText value="#{payments.dept4}"/>
           </o:column>

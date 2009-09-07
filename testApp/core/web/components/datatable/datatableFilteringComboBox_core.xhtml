@@ -26,11 +26,12 @@
                        useAjax="#{DataTableLoadingModeBean.useAjax}"
                        value="#{TestEventsBean.tableTestCollection}"
                        verticalGridLines="1px solid gray">
-            <o:column id="col_first" style="padding: 10px 10px 10px 10px;"
-                      filterExpression="#{filterable_comboBox.thirdColumn}"
-                      filterKind="comboBox">
+            <o:column id="col_first" style="padding: 10px 10px 10px 10px;">
               <f:facet name="header">
                 <h:outputText value="first column header" id="filterableDataTable_comboBox_firstHeader"/>
+              </f:facet>
+              <f:facet name="subHeader">
+                <o:comboBoxFilter id="filter1" expression="#{filterable_comboBox.thirdColumn}"/> 
               </f:facet>
               <h:outputText value="#{filterable_comboBox.thirdColumn}" id="filterableDataTable_comboBox_firstBody"/>
               <f:facet name="footer">

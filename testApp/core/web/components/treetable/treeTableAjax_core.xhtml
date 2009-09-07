@@ -10,10 +10,12 @@
                  expansionState="#{TreeTableBean.forumTreeTableExpansionState}"
                  nodeLevelVar="level">
       <o:dynamicTreeStructure nodeChildren="#{TreeTableBean.nodeChildren}"/>
-      <o:treeColumn showAsTree="true" sortingExpression="#{message.subject}"
-                    filterExpression="#{message.subject}" filterKind="searchField">
+      <o:treeColumn showAsTree="true" sortingExpression="#{message.subject}">
         <f:facet name="header">
           <h:outputText value="Subject"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{message.subject}"/>
         </f:facet>
         <h:inputText required="true" id="subjectInput" value="#{message.subject}"/>
         <f:verbatim><br/></f:verbatim>
@@ -21,10 +23,12 @@
         <f:verbatim><br/></f:verbatim>
         <h:message id="subjectMessage" for="subjectInput" style="color:red;"/>
       </o:treeColumn>
-      <o:column sortingExpression="#{message.author}" filterExpression="#{message.author}"
-                filterKind="comboBox">
+      <o:column sortingExpression="#{message.author}">
         <f:facet name="header">
           <h:outputText value="From"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter expression="#{message.author}"/>
         </f:facet>
         <h:inputText required="true" id="authorInput" value="#{message.author}"/>
         <f:verbatim><br/></f:verbatim>
@@ -32,10 +36,12 @@
         <f:verbatim><br/></f:verbatim>
         <h:message id="authorMessage" for="authorInput" style="color:red;"/>
       </o:column>
-      <o:column sortingExpression="#{message.mail}" filterExpression="#{message.mail}"
-                filterKind="searchField">
+      <o:column sortingExpression="#{message.mail}">
         <f:facet name="header">
           <h:outputText value="Mail"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{message.mail}"/>
         </f:facet>
         <h:inputText id="inputMail" value="#{message.mail}">
           <o:validateEmail/>

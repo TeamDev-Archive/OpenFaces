@@ -9,9 +9,12 @@
   <br/>
   
     <o:dataTable pageSize="2" var="test" binding="#{QKS30.dataTable}" value="#{QKS30.dataTableList}">
-      <o:column filterExpression="#{test.userName}">
+      <o:column>
         <f:facet name="header">
           <h:outputText value="Name"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{test.userName}"/>
         </f:facet>
         <h:outputText value="#{test.userName}"/>
       </o:column>
@@ -30,12 +33,17 @@
 
       <o:dynamicTreeStructure nodeChildren="#{QKS30.nodeChildren}"/>
 
-      <o:treeColumn sortingExpression="#{treetest.subject}" filterExpression="#{treetest.subject}"
-                    filterKind="searchField">
+      <o:treeColumn sortingExpression="#{treetest.subject}">
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{treetest.subject}"/>
+        </f:facet>
         <h:outputText value="#{treetest.subject}"/>
       </o:treeColumn>
 
-      <o:column sortingExpression="#{treetest.author}" filterExpression="#{treetest.author}" filterKind="searchField">
+      <o:column sortingExpression="#{treetest.author}">
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{treetest.author}"/>
+        </f:facet>
         <h:outputText value="#{treetest.author}"/>
       </o:column>
       <f:facet name="footer">

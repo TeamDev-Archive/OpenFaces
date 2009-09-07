@@ -40,21 +40,30 @@
         </f:facet>
         <h:outputText value="#{row.id}"/>
       </o:column>
-      <o:column sortingExpression="#{row.text}" filterExpression="#{row.text}" filterKind="comboBox">
+      <o:column sortingExpression="#{row.text}">
         <f:facet name="header">
           <h:outputText value="Text (Текст)"/>
         </f:facet>
-        <h:outputText value="#{row.text}"/>
-      </o:column>
-      <o:column sortingExpression="#{row.text}" filterExpression="#{row.text}" filterKind="dropDownField">
-        <f:facet name="header">
-          <h:outputText value="Text (Текст)"/>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter expression="#{row.text}"/>
         </f:facet>
         <h:outputText value="#{row.text}"/>
       </o:column>
-      <o:column sortingExpression="#{row.text}" filterExpression="#{row.text}" filterKind="searchField">
+      <o:column sortingExpression="#{row.text}">
+        <f:facet name="header">
+          <h:outputText value="Text (Текст)"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:dropDownFieldFilter expression="#{row.text}"/>
+        </f:facet>
+        <h:outputText value="#{row.text}"/>
+      </o:column>
+      <o:column sortingExpression="#{row.text}">
         <f:facet name="header">
           <h:outputText value="Téxt (Тёкст)"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{row.text}"/>
         </f:facet>
         <h:outputText value="#{row.text}"/>
       </o:column>

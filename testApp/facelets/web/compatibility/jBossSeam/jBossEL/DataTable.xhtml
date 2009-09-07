@@ -13,30 +13,39 @@
   <h:form id="form1">
     <o:dataTable id="table"
                  var="row" value="#{itemsList}" pageSize="4" binding="#{seamtesttable.dataTable}">
-      <o:column id="col1" sortingExpression="#{row.column1}" filterExpression="#{row.column1}"
-                filterKind="dropDownField" filterValue="#{seamTable.filterValue}"
-                filterValues="#{seamTable.filterValues}">
+      <o:column id="col1" sortingExpression="#{row.column1}">
         <f:facet name="header">
           <h:outputText id="tableCol1Header" value="Column_1"/>
         </f:facet>
+        <f:facet name="subHeader">
+          <o:dropDownFieldFilter expression="#{row.column1}" criterion="#{seamTable.filterValue}" options="#{seamTable.filterValues}"/>
+        </f:facet>
         <h:outputText id="tableCol1Value" value="#{row.column1}"/>
       </o:column>
-      <o:column id="col2" sortingExpression="#{row.column2}" filterExpression="#{row.column2}"
-                filterKind="dropDownField">
+      <o:column id="col2" sortingExpression="#{row.column2}">
         <f:facet name="header">
           <h:outputText id="tableCol2Header" value="Column_2"/>
         </f:facet>
+        <f:facet name="subHeader">
+          <o:dropDownFieldFilter expression="#{row.column2}"/>
+        </f:facet>
         <h:outputText id="tableCol2Value" value="#{row.column2}"/>
       </o:column>
-      <o:column id="col3" sortingExpression="#{row.column3}" filterExpression="#{row.column3}" filterKind="comboBox">
+      <o:column id="col3" sortingExpression="#{row.column3}">
         <f:facet name="header">
           <h:outputText id="tableCol3Header" value="Column_3"/>
         </f:facet>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter expression="#{row.column3}"/>
+        </f:facet>
         <h:outputText id="tableCol3Value" value="#{row.column3}"/>
       </o:column>
-      <o:column id="col4" sortingExpression="#{row.column4}" filterExpression="#{row.column4}">
+      <o:column id="col4" sortingExpression="#{row.column4}">
         <f:facet name="header">
           <h:outputText id="tableCol4Header" value="Column_4"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{row.column4}"/>
         </f:facet>
         <h:outputText id="tableCol4Value" value="#{row.column4}"/>
       </o:column>

@@ -22,11 +22,13 @@
 		      <o:selectAllCheckbox />
 		    </f:facet>
 		  </o:checkboxColumn>
-	    <o:column filterExpression="#{user.name}"
-	              filterKind="searchField">
+	    <o:column>
 	      <f:facet name="header">
 	        <h:outputText value="Name" />
 	      </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{user.name}"/>
+        </f:facet>
 	      <h:outputText value="#{user.name}" />
 	    </o:column>
 		</o:dataTable>

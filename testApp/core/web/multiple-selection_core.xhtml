@@ -32,9 +32,12 @@
             </f:facet>
             <o:multipleRowSelection rowDatas="#{SelectionBean.selectedRows}"/>
             <o:selectionColumn/>
-            <o:column id="col_first" style="padding: 10px 10px 10px 10px;" filterExpression="#{multipleSelectionWithRowDatas.firstColumn}" sortingExpression="#{multipleSelectionWithRowDatas.firstColumn}">
+            <o:column id="col_first" style="padding: 10px 10px 10px 10px;" sortingExpression="#{multipleSelectionWithRowDatas.firstColumn}">
               <f:facet name="header">
                 <h:outputText value="first column header" id="withRowDatasDataTableID_firstHeader"/>
+              </f:facet>
+              <f:facet name="subHeader">
+                <o:inputTextFilter expression="#{multipleSelectionWithRowDatas.firstColumn}"/>
               </f:facet>
               <h:outputText value="#{multipleSelectionWithRowDatas.firstColumn}"
                             id="withRowDatasDataTableID_firstBody"/>
@@ -42,9 +45,12 @@
                 <h:outputText value="first column footer" id="withRowDatasDataTableID_firstFooter"/>
               </f:facet>
             </o:column>
-            <o:column id="col_second" style="padding: 10px 10px 10px 10px;" filterExpression="#{multipleSelectionWithRowDatas.secondColumn}" sortingExpression="#{multipleSelectionWithRowDatas.secondColumn}">
+            <o:column id="col_second" style="padding: 10px 10px 10px 10px;" sortingExpression="#{multipleSelectionWithRowDatas.secondColumn}">
               <f:facet name="header">
                 <h:outputText value="second column header" id="withRowDatasDataTableID_secondHeader"/>
+              </f:facet>
+              <f:facet name="subHeader">
+                <o:inputTextFilter expression="#{multipleSelectionWithRowDatas.secondColumn}"/>
               </f:facet>
               <h:outputText value="#{multipleSelectionWithRowDatas.secondColumn}"
                             id="withRowDatasDataTableID_secondBody"/>

@@ -57,9 +57,12 @@
         <h:outputText value="Footer 1" />
       </f:facet>
     </o:treeColumn>
-    <o:treeColumn filterExpression="#{colorStyle}" filterKind="searchField">
+    <o:treeColumn>
       <f:facet name="header">
         <h:outputText value="Header 2"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{colorStyle}"/>
       </f:facet>
       <h:outputText value="#{colorStyle}" />
       <f:facet name="footer">
@@ -146,9 +149,12 @@
         <h:outputText value="Footer 1" />
       </f:facet>
     </o:treeColumn>
-    <o:treeColumn filterExpression="#{colorStyle}" filterKind="searchField">
+    <o:treeColumn>
       <f:facet name="header">
         <h:outputText value="Header 2"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{colorStyle}"/>
       </f:facet>
       <h:outputText value="#{colorStyle}" />
       <f:facet name="footer">

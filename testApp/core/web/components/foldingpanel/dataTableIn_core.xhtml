@@ -43,9 +43,12 @@
                 </f:facet>
                 <h:outputText value="#{table_events.firstColumn}" id="firstColumnID"/>
               </o:column>
-              <o:column id="col_two" filterExpression="#{table_events.secondColumn}" filterKind="searchField">
+              <o:column id="col_two">
                 <f:facet name="header">
                   <h:outputText value="Col2" id="secondColumnHeaderID"/>
+                </f:facet>
+                <f:facet name="subHeader">
+                  <o:inputTextFilter id="filter1" expression="#{table_events.secondColumn}"/>
                 </f:facet>
                 <h:outputText value="#{table_events.secondColumn}" id="secondColumnID"/>
               </o:column>

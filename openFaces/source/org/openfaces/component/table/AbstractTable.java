@@ -1315,8 +1315,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
 
         List<BaseColumn> columns = getAllColumns();
         for (BaseColumn column : columns) {
-            if (column instanceof TableColumn)
-                ((TableColumn) column).getSubHeader();
             for (UIComponent child : column.getFacets().values()) {
                 if (!child.isRendered() || !(child instanceof AbstractFilter))
                     continue;

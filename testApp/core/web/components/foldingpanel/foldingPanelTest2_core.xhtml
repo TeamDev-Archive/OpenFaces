@@ -233,10 +233,12 @@
       </f:facet>
       <h:panelGrid style="background: #{color.hex};"/>
     </o:column>
-    <o:column id="name" sortingExpression="#{color.name}" filterValues="#{ColorListBean.colorsNames}"
-              filterKind="dropDownField">
+    <o:column id="name" sortingExpression="#{color.name}">
       <f:facet name="header">
         <h:outputText value="Color Name"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:dropDownFieldFilter expression="#{color.name}" options="#{ColorListBean.colorsNames}"/>
       </f:facet>
       <h:outputText value="#{color.name}"/>
     </o:column>

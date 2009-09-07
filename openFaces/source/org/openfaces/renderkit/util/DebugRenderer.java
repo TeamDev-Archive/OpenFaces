@@ -11,13 +11,12 @@
  */
 package org.openfaces.renderkit.util;
 
+import org.openfaces.component.LoadingMode;
 import org.openfaces.component.panel.TabbedPane;
 import org.openfaces.component.panel.TabbedPaneItem;
-import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.TableColumn;
 import org.openfaces.component.window.PopupLayer;
-import org.openfaces.component.LoadingMode;
 import org.openfaces.renderkit.CompoundComponentRenderer;
 import org.openfaces.renderkit.window.WindowRenderer;
 import org.openfaces.util.ComponentUtil;
@@ -61,11 +60,9 @@ public class DebugRenderer extends WindowRenderer implements CompoundComponentRe
         TableColumn col1 = new TableColumn();
         col1.setStyle("width: 150px");
         col1.setHeader(ComponentUtil.createOutputText(context, "Property"));
-        col1.createSubComponents(context);
         elementProperties.getChildren().add(col1);
         TableColumn col2 = new TableColumn();
         col2.setHeader(ComponentUtil.createOutputText(context, "Value"));
-        col2.createSubComponents(context);
         elementProperties.getChildren().add(col2);
     }
 

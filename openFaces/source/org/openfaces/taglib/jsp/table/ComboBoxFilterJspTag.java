@@ -11,13 +11,12 @@
  */
 package org.openfaces.taglib.jsp.table;
 
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 import org.openfaces.taglib.internal.table.ComboBoxFilterTag;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class ComboBoxFilterJspTag extends AbstractComponentJspTag {
+public class ComboBoxFilterJspTag extends AbstractFilterJspTag {
     public ComboBoxFilterJspTag() {
         super(new ComboBoxFilterTag());
     }

@@ -14,24 +14,30 @@
       <o:dynamicTreeStructure nodeChildren="#{ForumTreeTableBean.nodeChildren}"
                               nodeHasChildren="#{ForumTreeTableBean.nodeHasChildren}" nodeKey="#{message.id}"/>
       <o:columnResizing/>
-      <o:treeColumn id="subject" sortingExpression="#{message.subject}" filterExpression="#{message.subject}"
-                    filterKind="searchField"  bodyStyle="text-align: left;">
+      <o:treeColumn id="subject" sortingExpression="#{message.subject}" bodyStyle="text-align: left;">
         <f:facet name="header">
           <h:outputText value="Subject"/>
         </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{message.subject}"/>
+        </f:facet>
         <h:outputText value="#{message.subject}" styleClass="treeTableText"/>
       </o:treeColumn>
-      <o:column id="author" sortingExpression="#{message.author}" filterExpression="#{message.author}"
-                filterKind="dropDownField" width="120px;">
+      <o:column id="author" sortingExpression="#{message.author}" width="120px;">
         <f:facet name="header">
           <h:outputText value="From"/>
         </f:facet>
+        <f:facet name="subHeader">
+          <o:dropDownFieldFilter expression="#{message.author}"/>
+        </f:facet>
         <h:outputText value="#{message.author}" styleClass="treeTableText"/>
       </o:column>
-      <o:column id="date" sortingExpression="#{message.date}" filterExpression="#{ForumTreeTableBean.dateCategory}"
-                filterKind="dropDownField" width="120px;">
+      <o:column id="date" sortingExpression="#{message.date}" width="120px;">
         <f:facet name="header">
           <h:outputText value="Sent"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:dropDownFieldFilter expression="#{ForumTreeTableBean.dateCategory}"/>
         </f:facet>
         <h:outputText value="#{message.date}" styleClass="treeTableText">
           <f:convertDateTime type="date" dateStyle="medium"/>

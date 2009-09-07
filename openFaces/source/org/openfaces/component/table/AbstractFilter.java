@@ -18,12 +18,14 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import javax.faces.FacesException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.io.IOException;
 
 /**
  * @author Dmitry Pikhulya
@@ -34,7 +36,7 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
     private static final String DEFAULT_NON_EMPTY_RECORDS_CRITERION_NAME = "<Non-empty>";
 
     private FilterCriterion criterion;
-    private boolean searchStringModelUpdateRequired;
+    private boolean criterionModelUpdateRequired;
 
     private AbstractTable table;
 
@@ -44,9 +46,9 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
     private String predefinedCriterionClass;
     private Boolean caseSensitive;
 
-    protected String allRecordsCriterionName;
-    protected String emptyRecordsCriterionName;
-    protected String nonEmptyRecordsCriterionName;
+    protected String allRecordsText;
+    protected String emptyRecordsText;
+    protected String nonEmptyRecordsText;
 
     private String promptText;
 
@@ -56,7 +58,7 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, style, styleClass, predefinedCriterionStyle, predefinedCriterionClass,
-                criterion, allRecordsCriterionName, emptyRecordsCriterionName, nonEmptyRecordsCriterionName,
+                criterion, allRecordsText, emptyRecordsText, nonEmptyRecordsText,
                 promptText, promptTextStyle, promptTextClass};
     }
 
@@ -69,9 +71,9 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
         predefinedCriterionStyle = (String) state[i++];
         predefinedCriterionClass = (String) state[i++];
         criterion = (FilterCriterion) state[i++];
-        allRecordsCriterionName = (String) state[i++];
-        emptyRecordsCriterionName = (String) state[i++];
-        nonEmptyRecordsCriterionName = (String) state[i++];
+        allRecordsText = (String) state[i++];
+        emptyRecordsText = (String) state[i++];
+        nonEmptyRecordsText = (String) state[i++];
 
         promptText = (String) state[i++];
         promptTextStyle = (String) state[i++];
@@ -148,7 +150,7 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
     }
 
     private Object getFilteredValueByData(FacesContext facesContext, AbstractTable table, Object data) {
-        ValueExpression criterionNameExpression = getFilterValuesExpressionExpression();
+        ValueExpression criterionNameExpression = getFilterExpression();
         Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
         String var = getTable().getVar();
         return table.getFilteredValueByData(facesContext, requestMap, criterionNameExpression, var, data);
@@ -168,59 +170,70 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
         return table;
     }
 
-    public ValueExpression getFilterValuesExpressionExpression() {
-        return getValueExpression("filterValuesExpression");
+    private ValueExpression getFilterExpression() {
+        return getValueExpression("expression");
     }
 
-    public void setFilterValuesExpressionExpression(ValueExpression expression) {
-        setValueExpression("filterValuesExpression", expression);
-    }
-
-    public String getAllRecordsCriterionName() {
-        String result = ValueBindings.get(this, "allRecordsCriterionName", allRecordsCriterionName);
+    public String getAllRecordsText() {
+        String result = ValueBindings.get(this, "allRecordsCriterionName", allRecordsText);
+        if (result == null) {
+            AbstractTable table = getTable();
+            if (table != null)
+                result = table.getAllRecordsFilterName();
+        }
         if (result == null)
             result = DEFAULT_ALL_RECORDS_CRITERION_NAME;
         return result;
     }
 
-    public void setAllRecordsCriterionName(String allRecordsCriterionName) {
-        this.allRecordsCriterionName = allRecordsCriterionName;
+    public void setAllRecordsText(String allRecordsText) {
+        this.allRecordsText = allRecordsText;
     }
 
-    public String getEmptyRecordsCriterionName() {
-        String result = ValueBindings.get(this, "emptyRecordsCriterionName", emptyRecordsCriterionName);
+    public String getEmptyRecordsText() {
+        String result = ValueBindings.get(this, "emptyRecordsCriterionName", emptyRecordsText);
+        if (result == null) {
+            AbstractTable table = getTable();
+            if (table != null)
+                result = table.getEmptyRecordsFilterName();
+        }
         if (result == null)
             result = DEFAULT_EMPTY_RECORDS_CRITERION_NAME;
         return result;
     }
 
-    public void setEmptyRecordsCriterionName(String value) {
-        emptyRecordsCriterionName = value;
+    public void setEmptyRecordsText(String value) {
+        emptyRecordsText = value;
     }
 
-    public String getNonEmptyRecordsCriterionName() {
-        String result = ValueBindings.get(this, "nonEmptyRecordsCriterionName", nonEmptyRecordsCriterionName);
+    public String getNonEmptyRecordsText() {
+        String result = ValueBindings.get(this, "nonEmptyRecordsCriterionName", nonEmptyRecordsText);
+        if (result == null) {
+            AbstractTable table = getTable();
+            if (table != null)
+                result = table.getNonEmptyRecordsFilterName();
+        }
         if (result == null)
             result = DEFAULT_NON_EMPTY_RECORDS_CRITERION_NAME;
         return result;
     }
 
-    public void setNonEmptyRecordsCriterionName(String value) {
-        nonEmptyRecordsCriterionName = value;
+    public void setNonEmptyRecordsText(String value) {
+        nonEmptyRecordsText = value;
     }
 
-    public ValueExpression getFilterValuesExpression() {
-        return getValueExpression("filterValues");
+    public ValueExpression getOptionsExpression() {
+        return getValueExpression("options");
     }
 
-    public void setFilterValuesExpression(ValueExpression valuesBinding) {
-        setValueExpression("filterValues", valuesBinding);
+    public void setOptionsExpression(ValueExpression optionsExpression) {
+        setValueExpression("options", optionsExpression);
     }
 
     public boolean getWantsRowList() {
         if (!isShowingPredefinedCriterionNames())
             return false;
-        ValueExpression filterValuesExpression = getFilterValuesExpression();
+        ValueExpression filterValuesExpression = getOptionsExpression();
         return filterValuesExpression == null;
     }
 
@@ -229,7 +242,7 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
     }
 
     public Collection<Object> calculateAllCriterionNames(FacesContext context) {
-        ValueExpression valuesExpression = getFilterValuesExpression();
+        ValueExpression valuesExpression = getOptionsExpression();
         if (valuesExpression != null) {
             Iterable  values = (Iterable) valuesExpression.getValue(context.getELContext());
             List<Object> result = new ArrayList<Object>();
@@ -240,7 +253,7 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
             }
             return result;
         }
-        ValueExpression expression = getFilterValuesExpressionExpression();
+        ValueExpression expression = getFilterExpression();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String var = getTable().getVar();
         Set<Object> criterionNamesSet = new TreeSet<Object>();
@@ -248,13 +261,14 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
         AbstractTable table = getTable();
         for (Object data : originalRowList) {
             Object value = table.getFilteredValueByData(context, requestMap, expression, var, data);
-            criterionNamesSet.add(value);
+            if (value != null)
+                criterionNamesSet.add(value);
         }
         return criterionNamesSet;
     }
 
     public void updateSearchStringFromBinding(FacesContext context) {
-        ValueExpression valueExpression = getSearchStringExpression();
+        ValueExpression valueExpression = getCriterionExpression();
         if (valueExpression != null)
             criterion = (FilterCriterion) valueExpression.getValue(context.getELContext());
     }
@@ -274,8 +288,8 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
      */
     public boolean changeSearchString(FilterCriterion newCriterion) {
         FilterCriterion oldCriterion = getCriterion();
-        setColumnId(newCriterion);
-        searchStringModelUpdateRequired = true;
+        setCriterionColumnId(newCriterion);
+        criterionModelUpdateRequired = true;
 
         if (isAllRecordsCriterion(newCriterion)) {
             if (isAllRecordsCriterion(oldCriterion))
@@ -290,35 +304,35 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
         return criterion == null || criterion.acceptsAll();
     }
 
-    public void setSearchStringExpression(ValueExpression filterValueExpression) {
-        setValueExpression("searchString", filterValueExpression);
+    public void setCriterionExpression(ValueExpression expression) {
+        setValueExpression("criterion", expression);
     }
 
-    public ValueExpression getSearchStringExpression() {
-        return getValueExpression("searchString");
+    public ValueExpression getCriterionExpression() {
+        return getValueExpression("criterion");
     }
 
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
-        if (!searchStringModelUpdateRequired)
+        if (!criterionModelUpdateRequired)
             return;
 
-        ValueExpression valueExpression = getSearchStringExpression();
-        if (valueExpression != null) {
-            valueExpression.setValue(context.getELContext(), criterion);
-            searchStringModelUpdateRequired = false;
+        ValueExpression criterionExpression = getCriterionExpression();
+        if (criterionExpression != null) {
+            criterionExpression.setValue(context.getELContext(), criterion);
+            criterionModelUpdateRequired = false;
         }
     }
 
     public FilterCriterion getFilterCriterion() {
-        FilterCriterion searchString = getCriterion();
-        setColumnId(searchString);
-        return searchString;
+        FilterCriterion criterion = getCriterion();
+        setCriterionColumnId(criterion);
+        return criterion;
     }
 
-    private void setColumnId(FilterCriterion searchString) {
-        if (searchString instanceof ColumnFilterCriterion) {
-            ((ColumnFilterCriterion) searchString).setColumnId(getColumnId());
+    private void setCriterionColumnId(FilterCriterion criterion) {
+        if (criterion instanceof ColumnFilterCriterion) {
+            ((ColumnFilterCriterion) criterion).setColumnId(getColumnId());
         }
     }
 
@@ -329,5 +343,12 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
 
 
     public void createSubComponents(FacesContext context) {
+    }
+
+    @Override
+    public void encodeBegin(FacesContext context) throws IOException {
+//        if (getFilterExpression() == null)
+//            throw new FacesException("The filter's \"expression\" attribute must be specified. Filter's clientId: " + getClientId(getFacesContext()));
+        super.encodeBegin(context);
     }
 }

@@ -11,7 +11,6 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.FilterKind;
 import org.openfaces.component.table.TableColumns;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
@@ -57,11 +56,6 @@ public class TableColumnsTag extends AbstractComponentTag {
             columns.setValueExpression("sortingComparator", comparatorExpression);
         }
 
-        setPropertyBinding(component, "filterExpression");
-        setPropertyBinding(component, "filterValues");
-        setPropertyBinding(component, "filterValue");
-        setEnumerationProperty(component, "filterKind", FilterKind.class);
-
         setStringProperty(component, "width");
         setStringProperty(component, "align");
         setStringProperty(component, "valign");
@@ -101,10 +95,5 @@ public class TableColumnsTag extends AbstractComponentTag {
         setStringProperty(component, "footerOnmousemove");
         setStringProperty(component, "footerOnmouseout");
         setStringProperty(component, "footerOnmouseup");
-
-        setStringProperty(component, "filterPromptText");
-
-        setStringProperty(component, "filterPromptTextStyle");
-        setStringProperty(component, "filterPromptTextClass");
     }
 }

@@ -45,11 +45,12 @@
                   </o:treeNode>
                 </o:staticTreeStructure>
                 <o:treeColumn id="first_treeTableColumnID"
-                              sortingExpression="#{color}"
-                              filterExpression="#{color}"
-                              filterKind="searchField">
+                              sortingExpression="#{color}">
                   <f:facet name="header">
                     <h:outputText value="Subject" id="first_treeTableHeaderID"/>
+                  </f:facet>
+                  <f:facet name="subHeader">
+                    <o:inputTextFilter id="filter1" expression="#{color}"/>
                   </f:facet>
                   <h:outputText value="#{color}" id="first_treeTableContent">
                   </h:outputText>
@@ -77,11 +78,12 @@
                   </o:treeNode>
                 </o:staticTreeStructure>
                 <o:treeColumn id="second_treeTableColumnID"
-                              sortingExpression="#{color1}"
-                              filterExpression="#{color1}"
-                              filterKind="dropDownField">
+                              sortingExpression="#{color1}">
                   <f:facet name="header">
                     <h:outputText value="Subject" id="second_treeTableHeaderID"/>
+                  </f:facet>
+                  <f:facet name="subHeader">
+                    <o:dropDownFieldFilter id="filter1" expression="#{color1}"/>
                   </f:facet>
                   <h:outputText value="#{color1}" id="second_treeTableContent">
                   </h:outputText>

@@ -12,7 +12,6 @@
 package org.openfaces.taglib.internal.table;
 
 import org.openfaces.component.table.CaseInsensitiveTextComparator;
-import org.openfaces.component.table.FilterKind;
 import org.openfaces.component.table.TableColumn;
 
 import javax.el.ELContext;
@@ -56,15 +55,6 @@ public class TableColumnTag extends AbstractColumnTag {
             column.setSortingComparatorExpression(comparatorExpression);
         }
 
-        setPropertyBinding(component, "filterExpression");
-        setPropertyBinding(component, "filterValues");
-        setPropertyBinding(component, "filterValue");
-        setEnumerationProperty(component, "filterKind", FilterKind.class);
-
-        setStringProperty(component, "filterPromptText");
-
-        setStringProperty(component, "filterPromptTextStyle");
-        setStringProperty(component, "filterPromptTextClass");
     }
 
     static class CaseInsensitiveComparatorBinding extends ValueExpression implements Serializable {

@@ -63,7 +63,7 @@ public class ComboBoxFilterRenderer extends AbstractFilterRenderer {
         String clientId = writeIdAttribute(context, component);
         writeNameAttribute(context, component);
         writer.writeAttribute("size", "1", null);
-        RenderingUtil.writeStyleAndClassAttributes(writer, filter.getStyle(), filter.getStyleClass());
+        RenderingUtil.writeStyleAndClassAttributes(writer, filter.getStyle(), filter.getStyleClass(), "o_fullWidth");
         String submitScript = getFilterSubmissionScript(filter, context);
         writer.writeAttribute("onchange", submitScript, null);
         writer.writeAttribute("onclick", "event.cancelBubble = true;", null);
@@ -75,19 +75,19 @@ public class ComboBoxFilterRenderer extends AbstractFilterRenderer {
             criterionNamesCollection.remove("");
         List<Object> criterionNames = new ArrayList<Object>(criterionNamesCollection);
 
-        String allRecordsCriterionName = filter.getAllRecordsCriterionName();
+        String allRecordsCriterionName = filter.getAllRecordsText();
 
         String predefinedCriterionsClass = getPredefinedCriterionClass(context, filter);
         writeOption(writer, component, PREDEFINED_CRITERION_PREFIX + ALL, allRecordsCriterionName,
                 currentCriterionName == null,
                 predefinedCriterionsClass);
         if (thereAreEmptyItems) {
-            String emptyRecordsCriterionName = filter.getEmptyRecordsCriterionName();
+            String emptyRecordsCriterionName = filter.getEmptyRecordsText();
             writeOption(writer, component, PREDEFINED_CRITERION_PREFIX + EMPTY, emptyRecordsCriterionName,
                     currentCriterionName instanceof EmptyRecordsCriterion,
                     predefinedCriterionsClass);
 
-            String nonEmptyRecordsCriterionName = filter.getNonEmptyRecordsCriterionName();
+            String nonEmptyRecordsCriterionName = filter.getNonEmptyRecordsText();
             writeOption(writer, component, PREDEFINED_CRITERION_PREFIX + NON_EMPTY,
                     nonEmptyRecordsCriterionName,
                     currentCriterionName instanceof NonEmptyRecordsCriterion,

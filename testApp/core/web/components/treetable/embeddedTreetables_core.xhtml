@@ -20,15 +20,21 @@
 
         <o:singleNodeSelection nodeData="#{treetable.selectedNode}"/>
         <o:selectionColumn/>
-        <o:treeColumn sortingExpression="#{node.name}" filterExpression="#{node.name}">
+        <o:treeColumn sortingExpression="#{node.name}">
           <f:facet name="header">
             <h:outputText value="Name"/>
           </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{node.name}"/>
+          </f:facet>
           <h:inputText value="#{node.name}"/>
         </o:treeColumn>
-        <o:column sortingExpression="#{node.intField1}" filterExpression="#{node.intField1}">
+        <o:column sortingExpression="#{node.intField1}">
           <f:facet name="header">
             <h:outputText value="Int Field 1"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{node.intField1}"/>
           </f:facet>
           <h:inputText value="#{node.intField1}"/>
         </o:column>

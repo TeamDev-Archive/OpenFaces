@@ -33,11 +33,12 @@
             <o:selectionColumn/>
             <o:column id="col_first"
                       style="padding: 10px 10px 10px 10px;"
-                      sortingExpression="#{featuresCombination.firstColumn}"
-                      filterExpression="#{featuresCombination.firstColumn}"
-                      filterKind="searchField">
+                      sortingExpression="#{featuresCombination.firstColumn}">
               <f:facet name="header">
                 <h:outputText value="first column header" id="featuresCombinationDataTableID_firstHeader"/>
+              </f:facet>
+              <f:facet name="subHeader">
+                <o:inputTextFilter id="filter1" expression="#{featuresCombination.firstColumn}"/>
               </f:facet>
               <h:outputText value="#{featuresCombination.firstColumn}" id="featuresCombinationDataTableID_firstBody"/>
               <f:facet name="footer">
@@ -45,11 +46,12 @@
               </f:facet>
             </o:column>
             <o:column id="col_second" style="padding: 10px 10px 10px 10px;"
-                      sortingExpression="#{featuresCombination.secondColumn}"
-                      filterExpression="#{featuresCombination.secondColumn}"
-                      filterKind="comboBox">
+                      sortingExpression="#{featuresCombination.secondColumn}">
               <f:facet name="header">
                 <h:outputText value="second column header" id="featuresCombinationDataTableID_secondHeader"/>
+              </f:facet>
+              <f:facet name="subHeader">
+                <o:comboBoxFilter id="filter2" expression="#{featuresCombination.secondColumn}"/>
               </f:facet>
               <h:outputText value="#{featuresCombination.secondColumn}" id="featuresCombinationDataTableID_secondBody"/>
               <f:facet name="footer">
@@ -57,11 +59,12 @@
               </f:facet>
             </o:column>
             <o:column id="col_third" style="padding: 10px 10px 10px 10px;"
-                      sortingExpression="#{featuresCombination.thirdColumn}"
-                      filterExpression="#{featuresCombination.thirdColumn}"
-                      filterKind="dropDownField">
+                      sortingExpression="#{featuresCombination.thirdColumn}">
               <f:facet name="header">
                 <h:outputText value="third column header" id="featuresCombinationDataTableID_thirdHeader"/>
+              </f:facet>
+              <f:facet name="subHeader">
+                <o:dropDownFieldFilter id="filter3" expression="#{featuresCombination.thirdColumn}"/>
               </f:facet>
               <h:outputText value="#{featuresCombination.thirdColumn}" id="featuresCombinationDataTableID_thirdBody"/>
               <f:facet name="footer">

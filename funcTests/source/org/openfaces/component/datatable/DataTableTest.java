@@ -603,12 +603,12 @@ public class DataTableTest extends OpenFacesTestCase {
 
         //check default string for the no data corresponding to filter criterion
         DataTableInspector noDataDefaultDateTable = dataTable("formID:noDataDefaultID");
-        noDataDefaultDateTable.column(0).filter(InputTextFilterInspector.class).makeFiltering("www");
+        noDataDefaultDateTable.column(0).filter(InputTextFilterInspector.class, "formID:noDataDefaultID:filter1").makeFiltering("www");
         noDataDefaultDateTable.body().row(0).cell(0).assertText("No records satisfying the filtering criteria");
 
         //check is message string for the no data corresponding to filter criterion visible
         DataTableInspector noDataMessageDataTable = dataTable("formID:noDataMessageAllowedID");
-        noDataMessageDataTable.column(0).filter(InputTextFilterInspector.class).makeFiltering("www");
+        noDataMessageDataTable.column(0).filter(InputTextFilterInspector.class, "formID:noDataMessageAllowedID:filter1").makeFiltering("www");
         assertEquals("There should be one invisible fake row", 1, noDataMessageDataTable.body().rowCount());
         noDataMessageDataTable.body().row(0).assertCellParams(new TableCellParams[]{
                 new TableCellParams(null, 2, 1, "display: none")
@@ -616,7 +616,7 @@ public class DataTableTest extends OpenFacesTestCase {
 
         //check custom message for the no data corresponding to filter criterion
         DataTableInspector customNoDataMessageTable = dataTable("formID:customNoDataMessageID");
-        customNoDataMessageTable.column(0).filter(InputTextFilterInspector.class).makeFiltering("www");
+        customNoDataMessageTable.column(0).filter(InputTextFilterInspector.class,"formID:customNoDataMessageID:filter1").makeFiltering("www");
         element("formID:customNoDataMessageID:noFilteredDataCustomMessageID").assertText("Test no filtered data");
 
         //check default string for the no data corresponding to filter criterion
@@ -749,7 +749,7 @@ public class DataTableTest extends OpenFacesTestCase {
         }
 
         dataTable.setLoadingMode(loadingMode);
-        dataTable.column(0).filter(InputTextFilterInspector.class).makeFiltering("col3_row1");
+        dataTable.column(0).filter(InputTextFilterInspector.class, "formID:filterableDataTable_searchField:filter1").makeFiltering("col3_row1");
 
         element("formID:filterableDataTable_searchField:filterableDataTable_searchField_firstHeader")
                 .assertText("first column header");
@@ -795,7 +795,7 @@ public class DataTableTest extends OpenFacesTestCase {
         }
 
         filterableDataTable.setLoadingMode(loadingMode);
-        filterableDataTable.column(0).filter(ComboBoxFilterInspector.class).makeFiltering("col3_row1");
+        filterableDataTable.column(0).filter(ComboBoxFilterInspector.class, "formID:filterableDataTable_comboBox:filter1").makeFiltering("col3_row1");
 
         element("formID:filterableDataTable_comboBox:filterableDataTable_comboBox_firstHeader")
                 .assertText("first column header");
@@ -842,7 +842,7 @@ public class DataTableTest extends OpenFacesTestCase {
         }
         filterableDataTable.setLoadingMode(loadingMode);
 
-        filterableDataTable.column(0).filter(DropDownFieldFilterInspector.class).makeFiltering("col3_row1");
+        filterableDataTable.column(0).filter(DropDownFieldFilterInspector.class, "formID:filterableDataTable_dropDownField:filter1").makeFiltering("col3_row1");
 
         element("formID:filterableDataTable_dropDownField:filterableDataTable_dropDownField_firstHeader")
                 .assertText("first column header");
@@ -893,7 +893,7 @@ public class DataTableTest extends OpenFacesTestCase {
         }
 
         //perform filtering using comboBox filter kind
-        combinationDataTable.column(2).filter(ComboBoxFilterInspector.class).makeFiltering("criterion_1,2,3");
+        combinationDataTable.column(2).filter(ComboBoxFilterInspector.class, "formID:featuresCombinationDataTableID:filter2").makeFiltering("criterion_1,2,3");
 
         //get reference data for checking filtered data
         List referenceDataAfterComboboxFilter = DataTableUtils.getFilteredValuesFeaturesCombinationTable("criterion_1,2,3");
@@ -954,10 +954,10 @@ public class DataTableTest extends OpenFacesTestCase {
         combinationDataTable.checkSelectedIndex(0);
 
         /* perform filtering using dropDown filter */
-        combinationDataTable.column(2).filter(ComboBoxFilterInspector.class).makeFiltering("<All>");
+        combinationDataTable.column(2).filter(ComboBoxFilterInspector.class, "formID:featuresCombinationDataTableID:filter2").makeFiltering("<All>");
 
         combinationDataTable.checkSelectedIndex(0);
-        combinationDataTable.column(3).filter(DropDownFieldFilterInspector.class).makeFiltering("criterion_1,4,7");
+        combinationDataTable.column(3).filter(DropDownFieldFilterInspector.class, "formID:featuresCombinationDataTableID:filter3").makeFiltering("criterion_1,4,7");
 
         combinationDataTable.checkSelectedIndex(0);
 
@@ -979,7 +979,7 @@ public class DataTableTest extends OpenFacesTestCase {
         /* perform filtering using searchField filter */
         combinationDataTable.checkSelectedIndex(0);
 
-        combinationDataTable.column(1).filter(InputTextFilterInspector.class).makeFiltering("id_1");
+        combinationDataTable.column(1).filter(InputTextFilterInspector.class, "formID:featuresCombinationDataTableID:filter1").makeFiltering("id_1");
 
         combinationDataTable.checkSelectedIndex(0);
 

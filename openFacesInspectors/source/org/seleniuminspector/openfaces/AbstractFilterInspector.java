@@ -11,8 +11,6 @@
  */
 package org.seleniuminspector.openfaces;
 
-import org.openfaces.component.table.TableColumn;
-import org.openfaces.util.RenderingUtil;
 import org.seleniuminspector.ElementByLocatorInspector;
 import org.seleniuminspector.LoadingMode;
 
@@ -22,19 +20,9 @@ import org.seleniuminspector.LoadingMode;
 public abstract class AbstractFilterInspector extends ElementByLocatorInspector {
 
     public enum FilterType {
-        DROP_DOWN_FIELD(RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + TableColumn.DROP_DOWN_FILTER_CHILD_ID_SUFFIX),
-        COMBO_BOX(RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + TableColumn.COMBO_BOX_FILTER_CHILD_ID_SUFFIX),
-        SEARCH_FIELD(RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + TableColumn.SEARCH_FIELD_FILTER_CHILD_ID_SUFFIX);
-
-        private String suffix;
-
-        private FilterType(String suffix) {
-            this.suffix = suffix;
-        }
-
-        public String getSuffix() {
-            return this.suffix;
-        }
+        DROP_DOWN_FIELD,
+        COMBO_BOX,
+        SEARCH_FIELD
     }
 
     private LoadingMode loadingMode;

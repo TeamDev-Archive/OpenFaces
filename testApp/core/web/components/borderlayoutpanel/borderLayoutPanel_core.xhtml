@@ -319,12 +319,18 @@
           </h:selectOneMenu>
         </h:panelGroup>
       </f:facet>
-      <o:column filterExpression="#{user.userName}" filterKind="dropDownField">
+      <o:column>
         <f:facet name="header"><h:outputText value="User Name"/></f:facet>
+        <f:facet name="subHeader">
+          <o:dropDownFieldFilter expression="#{user.userName}"/>
+        </f:facet>
         <h:outputText value="#{user.userName}"/>
       </o:column>
-      <o:column filterExpression="#{user.category}" filterKind="comboBox">
+      <o:column>
         <f:facet name="header"><h:outputText value="User Category"/></f:facet>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter expression="#{user.category}"/>
+        </f:facet>
         <h:outputText value="#{user.category}"/>
       </o:column>
     </o:dataTable>

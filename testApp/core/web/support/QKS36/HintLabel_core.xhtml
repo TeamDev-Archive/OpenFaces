@@ -14,18 +14,21 @@
     <o:dataTable pageSize="5" var="person" value="#{PeopleListBean.person}"
                  rolloverRowStyle="background:#F0F0F0" style="width:100px; table-layout: fixed;">
       <o:column sortingExpression="#{person.name}"
-                sortingComparator="caseInsensitiveText"
-                filterExpression="#{person.name}"
-                filterKind="searchField">
+                sortingComparator="caseInsensitiveText">
         <f:facet name="header">
           <h:outputText value="Name" style="width:30px"/>
         </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{person.name}"/>
+        </f:facet>
         <o:hintLabel value="#{person.name}"/>
       </o:column>
-      <o:column filterExpression="#{person.profession}"
-                filterKind="dropDownField">
+      <o:column>
         <f:facet name="header">
           <h:outputText value="Profession"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:dropDownFieldFilter expression="#{person.profession}"/>
         </f:facet>
         <h:outputText value="#{person.profession}"/>
       </o:column>
@@ -48,17 +51,21 @@
       <o:selectionColumn style="width:25px">
         <f:facet name="header"><o:selectAllCheckbox/></f:facet>
       </o:selectionColumn>
-      <o:treeColumn showAsTree="#{!TreeTableBean.booleanSwitch}" sortingExpression="#{message.subject}"
-                    filterExpression="#{message.subject}" filterKind="searchField">
+      <o:treeColumn showAsTree="#{!TreeTableBean.booleanSwitch}" sortingExpression="#{message.subject}">
         <f:facet name="header">
           <h:outputText value="Subject"/>
         </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{message.subject}"/>
+        </f:facet>
         <o:hintLabel value="#{message.subject}" style="width:50px"/>
       </o:treeColumn>
-      <o:column sortingExpression="#{message.author}" filterExpression="#{message.author}"
-                filterKind="comboBox">
+      <o:column sortingExpression="#{message.author}">
         <f:facet name="header">
           <h:outputText value="From"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter expression="#{message.author}"/>
         </f:facet>
         <o:hintLabel value="#{message.author}"/>
       </o:column>

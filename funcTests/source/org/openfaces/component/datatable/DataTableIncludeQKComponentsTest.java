@@ -115,7 +115,7 @@ public class DataTableIncludeQKComponentsTest extends OpenFacesTestCase {
 
         /* filtering and filtered data verification */
         final String filterCriterion = "col4_row1";
-        hintLabelDataTable.column(2).filter(InputTextFilterInspector.class).makeFiltering(filterCriterion);
+        hintLabelDataTable.column(2).filter(InputTextFilterInspector.class, "fn:hintLabelDataTable:filter1").makeFiltering(filterCriterion);
         HintLabelInspector hintLabel = hintLabel("fn:hintLabelDataTable:0:body_hinLabel_2");
         hintLabel.mouseOver();
         sleep(250);
@@ -180,7 +180,7 @@ public class DataTableIncludeQKComponentsTest extends OpenFacesTestCase {
         sleep(4000);
         /* filtering */
         final String filterCriterion = "col4_row1";
-        dataTable("fn:popupDataTable").column(2).filter(InputTextFilterInspector.class).makeFiltering(filterCriterion);
+        dataTable("fn:popupDataTable").column(2).filter(InputTextFilterInspector.class, "fn:popupDataTable:filter1").makeFiltering(filterCriterion);
         element("fn:popupDataTable:0:body_invoker1").click();
         element("fn:popupDataTable:0:body_popup1").assertSubtext(0, 9, filterCriterion);
     }

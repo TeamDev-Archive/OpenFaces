@@ -42,11 +42,12 @@
       <f:facet name="below">
         <o:dataTablePaginator id="dataTablePaginator_A4J"/>
       </f:facet>
-      <o:column id="col_one" filterKind="searchField"
-                filterExpression="#{table_events.firstColumn}"
-                style="width: 150px;">
+      <o:column id="col_one" style="width: 150px;">
         <f:facet name="header">
           <h:outputText value="Col1"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{table_events.firstColumn}"/>
         </f:facet>
         <h:outputText value="#{table_events.firstColumn}" id="col1_content"/>
         <f:facet name="footer">
@@ -200,11 +201,12 @@
         <f:facet name="below">
           <o:dataTablePaginator id="dataTable_a4j_IDPaginator_A4J"/>
         </f:facet>
-        <o:column id="col_one" filterKind="searchField"
-                  filterExpression="#{table_events.firstColumn}"
-                  style="width: 150px;">
+        <o:column id="col_one" style="width: 150px;">
           <f:facet name="header">
             <h:outputText value="Col1"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{table_events.firstColumn}"/>
           </f:facet>
           <a4j:commandLink value="#{table_events.firstColumn}" id="col1_content_a4j"/>
           <f:facet name="footer">

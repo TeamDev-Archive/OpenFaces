@@ -23,9 +23,12 @@
         <h:outputText value="#{row.id}"/>
       </o:column>
 
-      <o:column sortingExpression="#{row.text}" filterExpression="#{row.text}" filterKind="comboBox">
+      <o:column sortingExpression="#{row.text}">
         <f:facet name="header">
           <h:outputText value="Text"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter expression="#{row.text}"/>
         </f:facet>
         <h:outputText value="#{row.text}"/>
       </o:column>
@@ -45,9 +48,12 @@
         <h:outputText value="#{row.id}"/>
       </o:column>
 
-      <o:column sortingExpression="#{row.text}" filterExpression="#{row.text}" filterKind="dropDownField">
+      <o:column sortingExpression="#{row.text}">
         <f:facet name="header">
           <h:outputText value="Text"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:dropDownFieldFilter expression="#{row.text}"/>
         </f:facet>
         <h:outputText value="#{row.text}"/>
       </o:column>
@@ -67,9 +73,12 @@
         <h:outputText value="#{row.id}"/>
       </o:column>
 
-      <o:column sortingExpression="#{row.text}" filterExpression="#{row.text}" filterKind="searchField">
+      <o:column sortingExpression="#{row.text}">
         <f:facet name="header">
           <h:outputText value="Text"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{row.text}"/>
         </f:facet>
         <h:outputText value="#{row.text}"/>
       </o:column>

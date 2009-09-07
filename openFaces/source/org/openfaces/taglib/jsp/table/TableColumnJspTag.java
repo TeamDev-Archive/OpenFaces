@@ -33,36 +33,10 @@ public class TableColumnJspTag extends AbstractColumnJspTag {
         getDelegate().setPropertyValue("sortingExpression", sortingExpression);
     }
 
-    public void setFilterExpression(ValueExpression filterExpression) {
-        getDelegate().setPropertyValue("filterExpression", filterExpression);
-    }
-
-    public void setFilterKind(ValueExpression filterKind) {
-        getDelegate().setPropertyValue("filterKind", filterKind);
-    }
-
-    public void setFilterValues(ValueExpression filterValues) {
-        getDelegate().setPropertyValue("filterValues", filterValues);
-    }
-
-    public void setFilterValue(ValueExpression filterValue) {
-        getDelegate().setPropertyValue("filterValue", filterValue);
-    }
-
     public void setSortingComparator(ValueExpression sortingComparator) {
         getDelegate().setPropertyValue("sortingComparator", sortingComparator);
     }
 
-    public void setFilterPromptText(ValueExpression promptText) {
-        getDelegate().setPropertyValue("filterPromptText", promptText);
-    }
 
-    public void setFilterPromptTextStyle(ValueExpression promptTextStyle) {
-        getDelegate().setPropertyValue("filterPromptTextStyle", promptTextStyle);
-    }
-
-    public void setFilterPromptTextClass(ValueExpression promptTextClass) {
-        getDelegate().setPropertyValue("filterPromptTextClass", promptTextClass);
-    }
 
 }

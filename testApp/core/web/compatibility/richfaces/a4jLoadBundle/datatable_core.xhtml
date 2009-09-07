@@ -25,11 +25,12 @@
       <o:dataTablePaginator id="paginator"/>
     </f:facet>
     <o:column id="firstColumn"
-              sortingExpression="#{item.firstColumn}"
-              filterExpression="#{bundle.today}"
-              filterKind="dropDownField">
+              sortingExpression="#{item.firstColumn}">
       <f:facet name="header">
         <h:outputText value="#{bundle.today}" id="first_header"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:dropDownFieldFilter expression="#{bundle.today}"/>
       </f:facet>
       <h:outputText value="#{bundle.today}" id="first_body"/>
       <f:facet name="footer">

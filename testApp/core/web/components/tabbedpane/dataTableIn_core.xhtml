@@ -43,9 +43,12 @@
                   </f:facet>
                   <h:outputText value="#{table_events.firstColumn}" id="firstDataTable_firstContent"/>
                 </o:column>
-                <o:column id="col_two" filterExpression="#{table_events.secondColumn}" filterKind="dropDownField">
+                <o:column id="col_two">
                   <f:facet name="header">
                     <h:outputText value="Col2"/>
+                  </f:facet>
+                  <f:facet name="subHeader">
+                    <o:dropDownFieldFilter id="filter1" expression="#{table_events.secondColumn}"/>
                   </f:facet>
                   <h:outputText value="#{table_events.secondColumn}" id="firstDataTable_secondContent"/>
                 </o:column>
@@ -70,10 +73,14 @@
                 <f:facet name="below">
                   <o:dataTablePaginator id="secondPaginator"/>
                 </f:facet>
-                <o:column id="col_one" filterExpression="#{table_events1.firstColumn}" filterKind="comboBox">
+                <o:column id="col_one">
                   <f:facet name="header">
                     <h:outputText value="Col1"/>
                   </f:facet>
+                  <f:facet name="subHeader">
+                    <o:comboBoxFilter id="filter1" expression="#{table_events1.firstColumn}"/>
+                  </f:facet>
+
                   <h:outputText value="#{table_events1.firstColumn}" id="secondDataTable_firstContent"/>
                 </o:column>
                 <o:column id="col_two">

@@ -26,11 +26,12 @@
       <f:facet name="noDataMessage">
         <h:outputText id="noDataDefaultMessageID"/>
       </f:facet>
-      <o:column id="col_first" style="padding: 10px 10px 10px 10px;"
-                filterExpression="#{noDataDefault.thirdColumn}"
-                filterKind="searchField">
+      <o:column id="col_first" style="padding: 10px 10px 10px 10px;">
         <f:facet name="header">
           <h:outputText value="first column header" id="noDataDefaultID_firstHeader"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter id="filter1" expression="#{noDataDefault.thirdColumn}"/>
         </f:facet>
         <h:outputText value="#{noDataDefault.thirdColumn}" id="noDataDefaultID_firstBody"/>
         <f:facet name="footer">
@@ -54,11 +55,12 @@
                  value="#{TestEventsBean.tableTestCollection}"
                  noDataMessageAllowed="false"
                  verticalGridLines="1px solid gray">
-      <o:column id="col_first" style="padding: 10px 10px 10px 10px;"
-                filterExpression="#{noDataMessageAllowed.thirdColumn}"
-                filterKind="searchField">
+      <o:column id="col_first" style="padding: 10px 10px 10px 10px;">
         <f:facet name="header">
           <h:outputText value="first column header" id="noDataMessageAllowedID_firstHeader"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter id="filter1" expression="#{noDataMessageAllowed.thirdColumn}"/>
         </f:facet>
         <h:outputText value="#{noDataMessageAllowed.thirdColumn}" id="noDataMessageAllowedID_firstBody"/>
         <f:facet name="footer">
@@ -90,11 +92,12 @@
       <f:facet name="noFilterDataMessage">
         <h:outputText id="noFilteredDataCustomMessageID" value="Test no filtered data"/>
       </f:facet>
-      <o:column id="col_first" style="padding: 10px 10px 10px 10px;"
-                filterExpression="#{customNoDataMessage.thirdColumn}"
-                filterKind="searchField">
+      <o:column id="col_first" style="padding: 10px 10px 10px 10px;">
         <f:facet name="header">
           <h:outputText value="first column header" id="customNoDataMessageID_firstHeader"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter id="filter1" expression="#{customNoDataMessage.thirdColumn}"/>
         </f:facet>
         <h:outputText value="#{customNoDataMessage.thirdColumn}" id="customNoDataMessageID_firstBody"/>
         <f:facet name="footer">

@@ -104,15 +104,6 @@
   font-family: MS Shell Dlg, Arial, sans-serif;
 }
 
-.o_fullWidth {
-  width: 100%;
-}
-.o_fullWidthAndHeight {
-  width: 100%;
-  height: 100%;
-}
-
-
 /* == End of Shared among components styles == */
 
 /* Table styles */
@@ -1278,4 +1269,15 @@
 /* Checkbox */
 .o_checkbox_image {
   cursor: default;
+}
+
+
+/* == Shared among components styles (higher priority than usual component's default styles) == */
+
+.o_fullWidth {
+  width: 100%;
+}
+.o_fullWidthAndHeight {
+  width: 100%;
+  height: 100%;
 }

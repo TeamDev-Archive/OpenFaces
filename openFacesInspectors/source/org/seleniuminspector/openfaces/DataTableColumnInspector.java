@@ -13,14 +13,10 @@ package org.seleniuminspector.openfaces;
 
 
 import org.junit.Assert;
-import org.openfaces.util.RenderingUtil;
-import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.LoadingMode;
-import org.seleniuminspector.html.TableCellInspector;
 import org.seleniuminspector.html.TableColumnInspector;
 
 import java.lang.reflect.Constructor;
-import java.util.List;
 
 /**
  * @author Andrii Gorbatov
@@ -45,47 +41,17 @@ public class DataTableColumnInspector extends TableColumnInspector {
     }
 
 
-    public <T extends AbstractFilterInspector> T filter(Class<T> filterTypeClass) {
-        T filter = null;
+    public <T extends AbstractFilterInspector> T filter(Class<T> filterTypeClass, String filterId) {
+        T filter;
 
-        ElementInspector rawFilter = null;
-
-        if (filterTypeClass == DropDownFieldFilterInspector.class) {
-            rawFilter = getRawFilter(AbstractFilterInspector.FilterType.DROP_DOWN_FIELD);
-        } else if (filterTypeClass == InputTextFilterInspector.class) {
-            rawFilter = getRawFilter(AbstractFilterInspector.FilterType.SEARCH_FIELD);
-        } else if (filterTypeClass == ComboBoxFilterInspector.class) {
-            rawFilter = getRawFilter(AbstractFilterInspector.FilterType.COMBO_BOX);
-        }
-
-        if (rawFilter != null) {
-            try {
-                Constructor<T> filterConstructor = filterTypeClass.getConstructor(String.class, LoadingMode.class);
-                filter = filterConstructor.newInstance(rawFilter.id(), loadingMode);
-            } catch (Exception ex) {
-                throw new RuntimeException("Filter inspector creating failure", ex);
-            }
+        try {
+            Constructor<T> filterConstructor = filterTypeClass.getConstructor(String.class, LoadingMode.class);
+            filter = filterConstructor.newInstance(filterId, loadingMode);
+        } catch (Exception ex) {
+            throw new RuntimeException("Filter inspector creating failure", ex);
         }
 
         return filter;
-    }
-
-    private ElementInspector getRawFilter
-            (AbstractFilterInspector.FilterType
-                    filterType) {
-
-        for (int i = 0; i < getHeaderCellCount(); i++) {
-            TableCellInspector headerCell = headerCell(i);
-            List<ElementInspector> children = headerCell.childNodes();
-            for (ElementInspector child : children) {
-                if (child.id().contains(filterType.getSuffix())
-                        && !child.id().contains(RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR)) {
-                    return child;
-                }
-            }
-        }
-
-        return null;
     }
 
 //    private String getFilterXPath(AbstractFilterInspector.FilterType filterType) {

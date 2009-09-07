@@ -34,33 +34,39 @@
           </h:panelGroup>
         </h:panelGroup>
       </f:facet>
-      <o:column id="name" sortingExpression="#{city.name}" filterKind="searchField" filterExpression="#{city.name}"
+      <o:column id="name" sortingExpression="#{city.name}"
                 filterCellClass="citiesfilter"
                 bodyStyle="padding-left: 10px;">
         <f:facet name="header">
           <h:outputText value="City"/>
         </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{city.name}"/>
+        </f:facet>
         <h:outputText value="#{city.name}"/>
       </o:column>
       <o:column id="population"
                 sortingExpression="#{city.population}"
-                filterValues="#{CitiesList.ranges}"
-                filterKind="comboBox"
                 filterCellClass="citiesfilter"
                 style="width: 20%;"
                 bodyStyle="text-align: right; padding-right: 15px;">
         <f:facet name="header">
           <h:outputText value="Population"/>
         </f:facet>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter options="#{CitiesList.ranges}"/>
+        </f:facet>
         <h:outputText value="#{city.population}">
           <f:convertNumber type="number"/>
         </h:outputText>
       </o:column>
-      <o:column id="country" sortingExpression="#{city.country}" filterKind="searchField"
-                filterExpression="#{city.country}"
+      <o:column id="country" sortingExpression="#{city.country}"
                 filterCellClass="citiesfilter" style="width: 40%;" bodyStyle="padding-left: 10px;">
         <f:facet name="header">
           <h:outputText value="Country"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{city.country}"/>
         </f:facet>
         <h:outputText value="#{city.country}"/>
       </o:column>

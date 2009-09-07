@@ -82,17 +82,22 @@
   <o:row condition="#{level == 0}">
     <o:cell span="5"/>
   </o:row>
-  <o:treeColumn sortingExpression="#{message.subject}" filterExpression="#{message.subject}" filterKind="searchField">
+  <o:treeColumn sortingExpression="#{message.subject}">
     <f:facet name="header">
       <h:outputText value="Subject"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:inputTextFilter expression="#{message.subject}"/>
     </f:facet>
     <h:outputText value="#{message.subject}"/>
   </o:treeColumn>
 
-  <o:column id="author" sortingExpression="#{message.author.userName}" filterExpression="#{message.author.userName}"
-            filterKind="comboBox" style="width: 200px">
+  <o:column id="author" sortingExpression="#{message.author.userName}" style="width: 200px">
     <f:facet name="header">
       <h:outputText value="From"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:comboBoxFilter expression="#{message.author.userName}"/>
     </f:facet>
     <h:outputText value="#{message.author.userName}"/>
   </o:column>

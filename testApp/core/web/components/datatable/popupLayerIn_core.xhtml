@@ -65,8 +65,7 @@
         </h:panelGroup>
       </f:facet>
     </o:column>
-    <o:column id="col_second" style="padding: 15px 15px 15px 15px;"
-              filterExpression="#{table8.fourthColumn}" filterKind="searchField">
+    <o:column id="col_second" style="padding: 15px 15px 15px 15px;">
       <f:facet name="header">
         <h:panelGroup>
           <h:commandButton id="header_invoker1" value="Header Popup"
@@ -79,6 +78,9 @@
             <h:outputText value="this is header popup layer!"/>
           </o:popupLayer>
         </h:panelGroup>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter id="filter1" expression="#{table8.fourthColumn}"/>
       </f:facet>
       <h:panelGroup>
         <h:commandButton id="body_invoker1"

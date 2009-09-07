@@ -45,11 +45,12 @@
                 </o:treeNode>
               </o:staticTreeStructure>
               <o:treeColumn id="treeTableColumnID"
-                            sortingExpression="#{color}"
-                            filterExpression="#{color}"
-                            filterKind="searchField">
+                            sortingExpression="#{color}">
                 <f:facet name="header">
                   <h:outputText value="Subject" id="treeTableHeaderID"/>
+                </f:facet>
+                <f:facet name="subHeader">
+                  <o:inputTextFilter id="filter1" expression="#{color}"/>
                 </f:facet>
                 <h:outputText value="#{color}" id="contentID">
                 </h:outputText>

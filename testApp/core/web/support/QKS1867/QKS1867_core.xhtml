@@ -30,11 +30,12 @@
         <o:column id="personIDColumn"
                   sortingExpression="#{Person.id}"
                   sortingComparator="caseInsensitiveText"
-                  filterExpression="#{Person.id}"
-                  filterKind="dropDownField"
                   bodyStyle="text-align:left;">
           <f:facet name="header">
             <h:outputText value="personID"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:dropDownFieldFilter expression="#{Person.id}"/>
           </f:facet>
           <h:outputText value="#{Person.id}"/>
         </o:column>

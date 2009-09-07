@@ -11,13 +11,12 @@
  */
 package org.openfaces.taglib.jsp.table;
 
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 import org.openfaces.taglib.internal.table.DropDownFieldFilterTag;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class DropDownFieldFilterJspTag extends AbstractComponentJspTag {
+public class DropDownFieldFilterJspTag extends AbstractFilterJspTag {
     public DropDownFieldFilterJspTag() {
         super(new DropDownFieldFilterTag());
     }

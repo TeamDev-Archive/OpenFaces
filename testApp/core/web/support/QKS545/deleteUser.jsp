@@ -16,11 +16,13 @@
 					<o:selectAllCheckbox/>
 				</f:facet>
 			</o:checkboxColumn>
-		    <o:column filterExpression="#{delUser.name}"
-		              filterKind="searchField">
-				<f:facet name="header">
+		    <o:column>
+				  <f:facet name="header">
 			    	<h:outputText value="Name" />
 			    </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{delUser.name}"/>
+          </f:facet>
 			    <h:outputText value="#{delUser.name}" />
 		    </o:column>
 		</o:dataTable>

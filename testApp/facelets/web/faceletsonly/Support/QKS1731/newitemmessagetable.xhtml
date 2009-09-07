@@ -11,10 +11,12 @@
                  id="newItemsListExpanded" styleClass="standard100"
                  headerRowClass="mainDatatblHead" filterRowClass="mainDatatblFilhead"
                  var="NewItemMessage" value="#{TableTestBean.collection1}" rowKey="#{NewItemMessage.id}" pageSize="5">
-      <o:column id="col1" sortingExpression="#{NewItemMessage.field1}" filterExpression="#{NewItemMessage.field1}"
-                filterKind="dropDownField">
+      <o:column id="col1" sortingExpression="#{NewItemMessage.field1}">
         <f:facet name="header">
           <h:outputText value="Letters"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:dropDownFieldFilter expression="#{NewItemMessage.field1}"/>
         </f:facet>
         <f:facet name="footer">
           <h:outputText value="Total Letters"/>

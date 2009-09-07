@@ -51,11 +51,13 @@
              columnIdVar="columnId">
     <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
                             nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
-    <o:treeColumn id="name" sortingExpression="#{node.name}" filterExpression="#{node.name}"
-                  filterKind="searchField">
+    <o:treeColumn id="name" sortingExpression="#{node.name}">
         <f:facet name="header">
             <h:outputText value="name"/>
         </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{node.name}"/>
+      </f:facet>
         <h:outputText value="#{node.name}"/>
     </o:treeColumn>
     <o:columns value="#{TreeTableColumnsBean.dynamicColumns}"
@@ -64,13 +66,13 @@
                columnRendered="#{TreeTableColumnsBean.columnRendered}"
                style="#{TreeTableColumnsBean.columnStyle}"
                sortingEnabled="#{TreeTableColumnsBean.sortingEnabled}"
-               sortingExpression="#{node.dynamicColumns[col]}"
-               filterExpression="#{node.dynamicColumns[col]}"
-               filterKind="#{TreeTableColumnsBean.filterKind}"
-               filterValues="#{TreeTableColumnsBean.filterValues}">
+               sortingExpression="#{node.dynamicColumns[col]}">
         <f:facet name="header">
             <h:outputText value="Column #{col}"/>
         </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{node.dynamicColumns[col]}"/>
+      </f:facet>
         <f:facet name="footer">
             <h:outputText value="Column #{col}"/>
         </f:facet>
@@ -96,11 +98,13 @@
                          columnIdVar="columnId">
                 <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
                                         nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
-                <o:treeColumn id="name" sortingExpression="#{node.name}" filterExpression="#{node.name}"
-                              filterKind="searchField">
+                <o:treeColumn id="name" sortingExpression="#{node.name}">
                     <f:facet name="header">
                         <h:outputText value="name"/>
                     </f:facet>
+                  <f:facet name="subHeader">
+                    <o:inputTextFilter expression="#{node.name}"/>
+                  </f:facet>
                     <o:hintLabel style="width:75px;"
                                  value="#{node.name}  Veee eeee eee eee eee eee eee ry looo ooooooooo oooooo oooooo ooo ooong text"/>
                 </o:treeColumn>
@@ -125,11 +129,13 @@
                          columnIdVar="columnId">
                 <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
                                         nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
-                <o:treeColumn id="name" sortingExpression="#{node.name}" filterExpression="#{node.name}"
-                              filterKind="searchField">
+                <o:treeColumn id="name" sortingExpression="#{node.name}">
                     <f:facet name="header">
                         <h:outputText value="name"/>
                     </f:facet>
+                  <f:facet name="subHeader">
+                    <o:inputTextFilter expression="#{node.name}"/>
+                  </f:facet>
                     <h:outputText value="#{node.name}"/>
                 </o:treeColumn>
                 <o:columns value="#{TreeTableColumnsBean.dynamicColumns1}"

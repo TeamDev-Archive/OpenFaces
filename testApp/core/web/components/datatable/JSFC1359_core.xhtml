@@ -43,12 +43,13 @@
               <h:graphicImage url="#{link.linkCategory}" rendered="#{!LinkListBean.addingOrEditingLink}"/>
               <h:graphicImage url="empty.gif" rendered="#{LinkListBean.addingOrEditingLink}" />
             </o:column>
-            <o:column filterExpression="#{link.name}"
-                      sortingExpression="#{link.name}"
-                      filterKind="comboBox"
+            <o:column sortingExpression="#{link.name}"
                       style="width: 187px;">
               <f:facet name="header">
                 <h:outputText value="Link" />
+              </f:facet>
+              <f:facet name="subHeader">
+                <o:comboBoxFilter expression="#{link.name}"/>
               </f:facet>
               <h:outputLink rendered="#{!LinkListBean.addingOrEditingLink}" value="javascript:small_window('#{link.url}')">
                 <h:outputText value="#{link.name}" style="font-size: 12px;"/>

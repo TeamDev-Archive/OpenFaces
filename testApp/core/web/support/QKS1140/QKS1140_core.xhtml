@@ -32,9 +32,12 @@
   </f:facet>
   <h:outputText value="#{rec.column1}"/>
 </o:column>
-<o:column filterExpression="#{rec.column2}">
+<o:column>
   <f:facet name="header">
     <h:outputText value="Column2"/>
+  </f:facet>
+  <f:facet name="subHeader">
+    <o:inputTextFilter expression="#{rec.column2}"/>
   </f:facet>
   <h:outputText value="#{rec.column2}"/>
 </o:column>

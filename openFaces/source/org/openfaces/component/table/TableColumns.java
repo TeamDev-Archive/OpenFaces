@@ -44,8 +44,6 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
     private String var;
     private Boolean sortingEnabled;
     private Comparator sortingComparator;
-    private FilterKind filterKind;
-    private String filterPromptText;
 
     private String align;
     private String valign;
@@ -64,8 +62,6 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
     private String bodyClass;
     private String footerStyle;
     private String footerClass;
-    private String filterPromptTextStyle;
-    private String filterPromptTextClass;
 
     private String onclick;
     private String ondblclick;
@@ -113,11 +109,10 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context), prevValueFromBinding,
-                columnRendered, var, sortingEnabled, sortingComparator, filterKind, filterPromptText,
+                columnRendered, var, sortingEnabled, sortingComparator,
                 align, valign, width, resizable, minResizingWidth,
                 style, styleClass, headerStyle, headerClass,
                 filterCellStyle, filterCellClass, bodyStyle, bodyClass, footerStyle, footerClass,
-                filterPromptTextStyle, filterPromptTextClass,
                 onclick, ondblclick, onmousedown, onmouseover, onmousemove,
                 onmouseout, onmouseup, headerOnclick, headerOndblclick, headerOnmousedown, headerOnmouseover,
                 headerOnmousemove, headerOnmouseout, headerOnmouseup, bodyOnclick, bodyOndblclick,
@@ -136,8 +131,6 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         var = (String) state[i++];
         sortingEnabled = (Boolean) state[i++];
         sortingComparator = (Comparator) state[i++];
-        filterKind = (FilterKind) state[i++];
-        filterPromptText = (String) state[i++];
 
         align = (String) state[i++];
         valign = (String) state[i++];
@@ -154,8 +147,6 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         bodyClass = (String) state[i++];
         footerStyle = (String) state[i++];
         footerClass = (String) state[i++];
-        filterPromptTextStyle = (String) state[i++];
-        filterPromptTextClass = (String) state[i++];
         onclick = (String) state[i++];
         ondblclick = (String) state[i++];
         onmousedown = (String) state[i++];
@@ -241,63 +232,6 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
     public void setSortingComparator(Comparator sortingComparator) {
         this.sortingComparator = sortingComparator;
     }
-
-    public FilterKind getFilterKind() {
-        return ValueBindings.get(this, "filterKind", filterKind, FilterKind.SEARCH_FIELD, true, FilterKind.class);
-    }
-
-    public void setFilterKind(FilterKind filterKind) {
-        this.filterKind = filterKind;
-    }
-
-    public ValueExpression getFilterExpression() {
-        return getValueExpression("filterExpression");
-    }
-
-    public void setFilterExpression(ValueExpression sortingExpressionExpression) {
-        setValueExpression("filterExpression", sortingExpressionExpression);
-    }
-
-    public void setFilterValuesExpression(ValueExpression filterValuesExpression) {
-        setValueExpression("filterValues", filterValuesExpression);
-    }
-
-    public ValueExpression getFilterValuesExpression() {
-        return getValueExpression("filterValues");
-    }
-
-    public void setFilterValueExpression(ValueExpression filterValueExpression) {
-        setValueExpression("filterValue", filterValueExpression);
-    }
-
-    public ValueExpression getFilterValueExpression() {
-        return getValueExpression("filterValue");
-    }
-
-    public String getFilterPromptText() {
-        return ValueBindings.get(this, "filterPromptText", filterPromptText);
-    }
-
-    public void setFilterPromptText(String promptText) {
-        filterPromptText = promptText;
-    }
-
-    public String getFilterPromptTextStyle() {
-        return ValueBindings.get(this, "filterPomptTextStyle", filterPromptTextStyle);
-    }
-
-    public void setFilterPromptTextStyle(String promptTextStyle) {
-        filterPromptTextStyle = promptTextStyle;
-    }
-
-    public String getFilterPromptTextClass() {
-        return ValueBindings.get(this, "filterPromptTextClass", filterPromptTextClass);
-    }
-
-    public void setFilterPromptTextClass(String promptTextClass) {
-        filterPromptTextClass = promptTextClass;
-    }
-
 
     public String getAlign() {
         return ValueBindings.get(this, "align", align);
@@ -734,8 +668,6 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
             }
             applySortingParameters(column);
             applyFilteringParameters(context, column);
-            if (!justUpdateColDatas)
-                column.createSubComponents(context);
 
             requestMap.put(var, prevVarValue);
         }
@@ -747,23 +679,24 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
     }
 
     private void applyFilteringParameters(FacesContext context, DynamicTableColumn column) {
-        FilterKind filterKind = getFilterKind();
-        if (filterKind != null) {
-            column.setFilterKind(filterKind);
-            ValueExpression filterExpressionExpression = getFilterExpression();
-            if (filterExpressionExpression != null)
-                column.setFilterExpression(new FilterExpressionExpression(column, filterExpressionExpression));
-            ValueExpression filterValuesBinding = getFilterValuesExpression();
-            if (filterValuesBinding != null) {
-                Object filterValues = filterValuesBinding.getValue(context.getELContext());
-                if (filterValues != null)
-                    column.setFilterValuesExpression(new ConstantValueExpression(Object.class, filterValues));
-            }
-            ValueExpression filterValueExpression = getFilterValueExpression();
-            if (filterValueExpression != null) {
-                column.setFilterValueExpression(new FilterValueExpression(column, filterValueExpression));
-            }
-        }
+        // todo: review this with new filtering API
+//        FilterKind filterKind = getFilterKind();
+//        if (filterKind != null) {
+//            column.setFilterKind(filterKind);
+//            ValueExpression filterExpressionExpression = getFilterExpression();
+//            if (filterExpressionExpression != null)
+//                column.setFilterExpression(new FilterExpressionExpression(column, filterExpressionExpression));
+//            ValueExpression filterValuesBinding = getFilterValuesExpression();
+//            if (filterValuesBinding != null) {
+//                Object filterValues = filterValuesBinding.getValue(context.getELContext());
+//                if (filterValues != null)
+//                    column.setFilterValuesExpression(new ConstantValueExpression(Object.class, filterValues));
+//            }
+//            ValueExpression filterValueExpression = getFilterValueExpression();
+//            if (filterValueExpression != null) {
+//                column.setFilterValueExpression(new FilterValueExpression(column, filterValueExpression));
+//            }
+//        }
     }
 
     private boolean objectsEqual(Object o1, Object o2) {

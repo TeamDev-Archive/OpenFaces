@@ -14,17 +14,21 @@
                  expansionState="#{QKS174.treeTableExpansionState}"
                  nodeLevelVar="level" style="width:300px">
       <o:dynamicTreeStructure nodeChildren="#{QKS174.nodeChildren}" nodeKey="#{message.id}"/>
-      <o:treeColumn showAsTree="true" sortingExpression="#{message.subject}"
-                    filterExpression="#{message.subject}" filterKind="searchField">
+      <o:treeColumn showAsTree="true" sortingExpression="#{message.subject}">
         <f:facet name="header">
           <h:outputText value="Subject"/>
         </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{message.subject}"/>
+        </f:facet>
         <h:outputText value="#{message.subject}"/>
       </o:treeColumn>
-      <o:column sortingExpression="#{message.author}" filterExpression="#{message.author}"
-                filterKind="comboBox">
+      <o:column sortingExpression="#{message.author}">
         <f:facet name="header">
           <h:outputText value="From"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter expression="#{message.author}"/>
         </f:facet>
         <h:outputText value="#{message.author}"/>
       </o:column>

@@ -37,7 +37,7 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
         field.setOnchange(getFilterSubmissionScript(filter, context));
         field.setOnkeypress(getFilterOnEnterScript(context, filter));
         field.setStyle(filter.getStyle());
-        field.setStyleClass(filter.getStyleClass());
+        field.setStyleClass(StyleUtil.mergeClassNames(filter.getStyleClass(), "o_fullWidth"));
         field.setListStyle("font-weight: normal;");
 
         field.setPromptText(filter.getPromptText());
@@ -70,7 +70,7 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
             itemList.add(item);
         }
         DropDownItem allRecordsItem = createDropDownItem(context, "");
-        String allRecordsCriterionName = filter.getAllRecordsCriterionName();
+        String allRecordsCriterionName = filter.getAllRecordsText();
         HtmlOutputText outputText = ComponentUtil.createOutputText(context, allRecordsCriterionName);
         String predefinedCriterionsClass = getPredefinedCriterionClass(context, filter);
         outputText.setStyleClass(predefinedCriterionsClass);

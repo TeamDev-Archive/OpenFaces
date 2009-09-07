@@ -7,15 +7,21 @@
 <a href="../../main.jsf">Return to main page</a> <input type="submit" value="Submit"/>
 
   <o:dataTable id="table1" var="DATA_ROW" value="#{TableTestBean.collection2}">
-    <o:column sortingExpression="#{DATA_ROW.field1}" filterExpression="#{DATA_ROW.field1}">
+    <o:column sortingExpression="#{DATA_ROW.field1}">
       <f:facet name="header">
         <h:outputText value="Field 1"/>
       </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{DATA_ROW.field1}"/>
+      </f:facet>
       <h:outputText value="#{DATA_ROW.field1}"/>
     </o:column>
-    <o:column sortingExpression="#{DATA_ROW.field2}" filterExpression="#{DATA_ROW.field2}">
+    <o:column sortingExpression="#{DATA_ROW.field2}">
       <f:facet name="header">
         <h:outputText value="Field 2"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{DATA_ROW.field2}"/>
       </f:facet>
       <h:outputText value="#{DATA_ROW.field2}"/>
     </o:column>

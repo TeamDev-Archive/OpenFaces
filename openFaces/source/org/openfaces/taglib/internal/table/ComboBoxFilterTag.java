@@ -11,16 +11,15 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.component.table.ComboBoxFilter;
 
-import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class ComboBoxFilterTag extends AbstractComponentTag {
+public class ComboBoxFilterTag extends AbstractFilterTag {
     public String getComponentType() {
         return ComboBoxFilter.COMPONENT_TYPE;
     }

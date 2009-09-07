@@ -25,11 +25,13 @@
     </o:staticTreeStructure>
 
     <o:selectionColumn/>
-    <o:treeColumn filterExpression="#{node}" filterKind="searchField"
-                  expansionToggleCellStyle="vertical-align: top; padding-top: 4px; "
+    <o:treeColumn expansionToggleCellStyle="vertical-align: top; padding-top: 4px;"
                   levelIndent="30px">
       <f:facet name="header">
         <h:outputText value="Column 1"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{node}"/>
       </f:facet>
       <h:outputText value="#{node}" style="background: #f0f0f0; border: 1px solid gray; display: block; width: 100%; height: 40px;"/>
     </o:treeColumn>
@@ -64,30 +66,41 @@
         <o:selectionColumn>
           <f:facet name="header"><o:selectAllCheckbox/></f:facet>
         </o:selectionColumn>
-        <o:treeColumn showAsTree="#{!TreeTableTestBean.booleanSwitch}" sortingExpression="#{message.subject}" filterExpression="#{message.subject}" filterKind="searchField">
+        <o:treeColumn showAsTree="#{!TreeTableTestBean.booleanSwitch}" sortingExpression="#{message.subject}">
           <f:facet name="header">
             <h:outputText value="Subject"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{message.subject}"/>
           </f:facet>
           <h:inputText value="#{message.subject}"/>
         </o:treeColumn>
 
-        <o:column sortingExpression="#{message.author.userName}" filterExpression="#{message.author.userName}" filterKind="comboBox">
+        <o:column sortingExpression="#{message.author.userName}">
           <f:facet name="header">
             <h:outputText value="From"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:comboBoxFilter expression="#{message.author.userName}"/>
           </f:facet>
           <h:outputText value="#{message.author.userName}"/>
         </o:column>
 
-        <o:column sortingExpression="#{message.date}" filterExpression="#{message.date}" filterKind="searchField">
+        <o:column sortingExpression="#{message.date}">
           <f:facet name="header">
             <h:outputText value="Sent"/>
           </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{message.date}"/>
+          </f:facet>
           <h:outputText value="#{message.date}"/>
         </o:column>
-        <o:treeColumn sortingExpression="#{message.subject}" filterExpression="#{message.subject}" filterKind="searchField"
-                      showAsTree="#{TreeTableTestBean.booleanSwitch}" >
+        <o:treeColumn sortingExpression="#{message.subject}" showAsTree="#{TreeTableTestBean.booleanSwitch}">
           <f:facet name="header">
             <h:outputText value="Spare Column"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{message.subject}"/>
           </f:facet>
           <h:inputText value="fixed text"/>
         </o:treeColumn>

@@ -19,26 +19,31 @@
                      sortColumnId="date"
                      binding="#{seamtesttree.treeTable}">
             <o:dynamicTreeStructure nodeChildren="#{seamTreeTable.findChildren(item)}"/>
-            <o:treeColumn id="subject" sortingExpression="#{item.subject}" filterExpression="#{item.subject}"
-                          filterKind="searchField" style="text-align: left;">
+            <o:treeColumn id="subject" sortingExpression="#{item.subject}" style="text-align: left;">
                 <f:facet name="header">
                     <h:outputText value="Subject"/>
                 </f:facet>
+              <f:facet name="subHeader">
+                <o:inputTextFilter expression="#{item.subject}"/>
+              </f:facet>
                 <h:outputText value="#{item.subject}"/>
             </o:treeColumn>
-            <o:column id="author" sortingExpression="#{item.author}" filterExpression="#{item.author}"
-                      filterKind="dropDownField" style="width: 120px; text-align: left;">
+            <o:column id="author" sortingExpression="#{item.author}" style="width: 120px; text-align: left;">
                 <f:facet name="header">
                     <h:outputText value="From"/>
                 </f:facet>
+              <f:facet name="subHeader">
+                <o:dropDownFieldFilter expression="#{item.author}"/>
+              </f:facet>
                 <h:outputText value="#{item.author}"/>
             </o:column>
-            <o:column id="date" sortingExpression="#{item.date}" filterExpression="#{seamTreeTable.dateCategory}"
-                      filterKind="comboBox" style="width: 120px; text-align: left;"
-                      filterValue="#{seamTreeTable.filterValue}">
+            <o:column id="date" sortingExpression="#{item.date}" style="width: 120px; text-align: left;">
                 <f:facet name=  "header">
                     <h:outputText value="Sent"/>
                 </f:facet>
+              <f:facet name="subHeader">
+                <o:comboBoxFilter expression="#{seamTreeTable.dateCategory}" criterion="#{seamTreeTable.filterValue}"/>
+              </f:facet>
                 <h:outputText value="#{item.date}">
                     <f:convertDateTime type="date" dateStyle="medium"/>
                 </h:outputText>

@@ -54,7 +54,6 @@ public class TreeColumn extends TableColumn implements CompoundComponent {
 
 
     public void createSubComponents(FacesContext context) {
-        super.createSubComponents(context);
         RenderingUtil.getOrCreateFacet(context, this, ImageExpansionToggle.COMPONENT_TYPE, "expansionToggle", ImageExpansionToggle.class);
     }
 

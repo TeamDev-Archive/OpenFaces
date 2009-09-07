@@ -21,9 +21,12 @@
         </f:facet>
         <h:outputText value="#{item.column1}"/>
       </o:column>
-      <o:column filterExpression="#{item.column2}" width="100px">
+      <o:column width="100px">
         <f:facet name="header">
           <h:outputText value="Column2"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{item.column2}"/>
         </f:facet>
         <h:outputText value="#{item.column2}"/>
       </o:column>

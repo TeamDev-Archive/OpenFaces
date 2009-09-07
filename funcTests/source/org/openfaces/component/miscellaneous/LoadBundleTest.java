@@ -99,7 +99,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         // perform filtering by first column and verify data 'ru' locale
         localeChanger.tabs().get(3).clickAndWait();
         testAppFunctionalPage("/components/loadbundle/withDataTable.jsf"); // issue a GET request for view to update locale in JSP
-        dataTable("formID:loadbundleDataTable").column(0).filter(DropDownFieldFilterInspector.class).makeFiltering(TODAY_RU);
+        dataTable("formID:loadbundleDataTable").column(0).filter(DropDownFieldFilterInspector.class, "formID:loadbundleDataTable:filter1").makeFiltering(TODAY_RU);
 
         for (int i = 0; i < 2; i++) {
             firstHeaderElement.assertText(TODAY_RU);

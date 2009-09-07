@@ -13,6 +13,7 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.input.InputText;
 import org.openfaces.component.table.AbstractFilter;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -26,7 +27,7 @@ public class InputTextFilterRenderer extends TextSearchFilterRenderer {
         input.setOnkeypress(getFilterOnEnterScript(context, filter));
         input.setOnchange(getFilterSubmissionScript(filter, context));
         input.setStyle(filter.getStyle());
-        input.setStyleClass(filter.getStyleClass());
+        input.setStyleClass(StyleUtil.mergeClassNames(filter.getStyleClass(), "o_fullWidth"));
 
         input.setPromptText(filter.getPromptText());
         input.setPromptTextClass(filter.getPromptTextClass());

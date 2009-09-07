@@ -11,14 +11,15 @@
  */
 package org.openfaces.taglib.jsp.table;
 
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 import org.openfaces.taglib.internal.table.InputTextFilterTag;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class InputTextFilterJspTag extends AbstractComponentJspTag {
+public class InputTextFilterJspTag extends AbstractFilterJspTag {
     public InputTextFilterJspTag() {
         super(new InputTextFilterTag());
     }
+
+
 }

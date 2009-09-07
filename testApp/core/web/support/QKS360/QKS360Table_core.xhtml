@@ -29,32 +29,40 @@
           <o:selectAllCheckbox/>
         </f:facet>
       </o:selectionColumn>
-      <o:column id="colPath" sortingExpression="#{person.name}" sortingComparator="caseInsensitiveText"
-                filterExpression="#{person.name}" filterKind="searchField">
+      <o:column id="colPath" sortingExpression="#{person.name}" sortingComparator="caseInsensitiveText">
         <f:facet name="header">
           <h:outputText value="Area"/>
         </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{person.name}"/>
+        </f:facet>
         <h:outputText value="#{person.name}"/>
       </o:column>
-      <o:column id="colStatus" sortingExpression="#{person.profession}" sortingComparator="caseInsensitiveText"
-                filterExpression="#{person.profession}" filterKind="comboBox">
+      <o:column id="colStatus" sortingExpression="#{person.profession}" sortingComparator="caseInsensitiveText">
         <f:facet name="header">
           <h:outputText value="Status"/>
         </f:facet>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter expression="#{person.profession}"/>
+        </f:facet>
         <h:outputText value="#{person.profession}"/>
       </o:column>
-      <o:column id="colOwner" sortingExpression="#{person.hobby}" sortingComparator="caseInsensitiveText"
-                filterExpression="#{person.hobby}" filterKind="comboBox">
+      <o:column id="colOwner" sortingExpression="#{person.hobby}" sortingComparator="caseInsensitiveText">
         <f:facet name="header">
           <h:outputText value="Owner"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter expression="#{person.hobby}"/>
         </f:facet>
         <h:outputText value="#{person.hobby}"/>
       </o:column>
       <o:column id="colAllocation" sortingExpression="#{person.name}"
-                sortingComparator="caseInsensitiveText"
-                filterExpression="#{person.name}" filterKind="comboBox">
+                sortingComparator="caseInsensitiveText">
         <f:facet name="header">
           <h:outputText value="AllocationUnit"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter expression="#{person.name}"/>
         </f:facet>
         <h:outputText value="#{person.name}"/>
       </o:column>

@@ -84,7 +84,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         firstDataTable.makeAndCheckSingleSelection(1, 1);
         firstDataTable.column(0).makeSorting();
         dataTablePaginator("fn:firstDataTableID:firstPaginator").makePagination(3);
-        firstDataTable.column(1).filter(DropDownFieldFilterInspector.class).makeFiltering("col2_row1");
+        firstDataTable.column(1).filter(DropDownFieldFilterInspector.class, "fn:firstDataTableID:filter1").makeFiltering("col2_row1");
         selenium.click("fn:secondTabID");
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         secondDataTable.assertElementExists(false);
@@ -92,7 +92,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         secondDataTable.makeAndCheckSingleSelection(0, 1);
         secondDataTable.column(2).makeSorting();
         dataTablePaginator("fn:secondDataTableID:secondPaginator").makePagination(3);
-        secondDataTable.column(0).filter(ComboBoxFilterInspector.class).makeFiltering("col1_row1");
+        secondDataTable.column(0).filter(ComboBoxFilterInspector.class, "fn:secondDataTableID:filter1").makeFiltering("col1_row1");
     }
 
 
@@ -263,7 +263,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
 
         TreeTableInspector treeTable = treeTable("fn:firstTreeTable");
         treeTable.column(0).makeSorting();
-        treeTable.column(0).filter(InputTextFilterInspector.class).makeFiltering("color");
+        treeTable.column(0).filter(InputTextFilterInspector.class, "fn:firstTreeTable:filter1").makeFiltering("color");
         int imagesOnFirstPage = window().document().getElementsByTagName("img").size();
         element("fn:secondHeader").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         for (int i = 0; i < 3; i++) {
@@ -271,7 +271,7 @@ public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
         }
         TreeTableInspector secondTreeTable = treeTable("fn:secondTreeTable");
         secondTreeTable.column(0).makeSorting();
-        secondTreeTable.column(0).filter(DropDownFieldFilterInspector.class).makeFiltering("color");
+        secondTreeTable.column(0).filter(DropDownFieldFilterInspector.class, "fn:secondTreeTable:filter1").makeFiltering("color");
     }
 
     @Test

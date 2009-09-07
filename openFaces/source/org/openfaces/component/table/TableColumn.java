@@ -11,31 +11,16 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.component.CompoundComponent;
-import org.openfaces.util.ValueBindings;
-import org.openfaces.util.RenderingUtil;
-
-import javax.el.ELContext;
 import javax.el.ValueExpression;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class TableColumn extends BaseColumn implements CompoundComponent {
+public class TableColumn extends BaseColumn {
     public static final String COMPONENT_TYPE = "org.openfaces.TableColumn";
     public static final String COMPONENT_FAMILY = "org.openfaces.TableColumn";
-
-    public static final String COMBO_BOX_FILTER_CHILD_ID_SUFFIX = "combo_box_o_auto_filter";
-    public static final String DROP_DOWN_FILTER_CHILD_ID_SUFFIX = "drop_down_o_auto_filter";
-    public static final String SEARCH_FIELD_FILTER_CHILD_ID_SUFFIX = "search_field_o_auto_filter";
-
-    private FilterKind filterKind = FilterKind.SEARCH_FIELD;
-
-    private String filterPromptText;
-
-    private String filterPromptTextStyle;
-    private String filterPromptTextClass;
 
     public TableColumn() {
     }
@@ -46,36 +31,13 @@ public class TableColumn extends BaseColumn implements CompoundComponent {
 
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, filterKind, filterPromptText, filterPromptTextStyle, filterPromptTextClass};
+        return new Object[]{superState};
     }
 
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-        filterKind = (FilterKind) state[i++];
-
-        filterPromptText = (String) state[i++];
-
-        filterPromptTextStyle = (String) state[i++];
-        filterPromptTextClass = (String) state[i++];
-    }
-
-    public FilterKind getFilterKind() {
-        ValueExpression ve = getValueExpression("filterKind");
-        FilterKind filterKind = null;
-        if (ve != null) {
-            ELContext elContext = FacesContext.getCurrentInstance().getELContext();
-            filterKind = (FilterKind) ve.getValue(elContext);
-        }
-
-        return (ve != null) ? filterKind : this.filterKind;
-    }
-
-    public void setFilterKind(FilterKind filterKind) {
-        if (filterKind == null)
-            throw new IllegalArgumentException("FilterKind property can be set to null only through value binding.");
-        this.filterKind = filterKind;
     }
 
     public ValueExpression getSortingExpression() {
@@ -95,161 +57,8 @@ public class TableColumn extends BaseColumn implements CompoundComponent {
     }
 
 
-    public ValueExpression getFilterExpression() {
-        return getValueExpression("filterExpression");
+    public UIComponent getSubHeader() {
+        return getFacet("subHeader");
     }
 
-    public void setFilterExpression(ValueExpression filterExpression) {
-        setValueExpression("filterExpression", filterExpression);
-    }
-
-    public void setFilterValuesExpression(ValueExpression filterValuesExpression) {
-        setValueExpression("filterValues", filterValuesExpression);
-    }
-
-    public ValueExpression getFilterValuesExpression() {
-        return getValueExpression("filterValues");
-    }
-
-    public void setFilterValueExpression(ValueExpression filterValueExpression) {
-        setValueExpression("filterValue", filterValueExpression);
-    }
-
-    public ValueExpression getFilterValueExpression() {
-        return getValueExpression("filterValue");
-    }
-
-    public String getFilterPromptText() {
-        return ValueBindings.get(this, "filterPromptText", filterPromptText);
-    }
-
-    public void setFilterPromptText(String promptText) {
-        filterPromptText = promptText;
-    }
-
-    public String getFilterPromptTextStyle() {
-        return ValueBindings.get(this, "filterPomptTextStyle", filterPromptTextStyle);
-    }
-
-    public void setFilterPromptTextStyle(String promptTextStyle) {
-        filterPromptTextStyle = promptTextStyle;
-    }
-
-    public String getFilterPromptTextClass() {
-        return ValueBindings.get(this, "filterPromptTextClass", filterPromptTextClass);
-    }
-
-    public void setFilterPromptTextClass(String promptTextClass) {
-        filterPromptTextClass = promptTextClass;
-    }
-
-    public AbstractFilter getSubHeader() {
-        ValueExpression filterExpression = getFilterExpression();
-        ValueExpression filterValuesExpression = getFilterValuesExpression();
-        ValueExpression filterValueExpression = getFilterValueExpression();
-        if (filterExpression == null && filterValuesExpression == null)
-            return null;
-
-        FilterKind filterKind = this.getFilterKind();
-        AbstractFilter filter;
-        if (filterKind == null) {
-            return null;
-        } else if (filterKind.equals(FilterKind.COMBO_BOX)) {
-            filter = (AbstractFilter) RenderingUtil.getFacet(
-                    this, COMBO_BOX_FILTER_CHILD_ID_SUFFIX, ComboBoxFilter.class);
-        } else if (filterKind.equals(FilterKind.DROP_DOWN_FIELD)) {
-            filter = (AbstractFilter) RenderingUtil.getFacet(
-                    this, DROP_DOWN_FILTER_CHILD_ID_SUFFIX, DropDownFieldFilter.class);
-
-            filter.setPromptText(getFilterPromptText());
-            filter.setPromptTextStyle(getFilterPromptTextStyle());
-            filter.setPromptTextClass(getFilterPromptTextClass());
-
-        } else if (filterKind.equals(FilterKind.SEARCH_FIELD)) {
-            filter = (AbstractFilter) RenderingUtil.getFacet(
-                    this, SEARCH_FIELD_FILTER_CHILD_ID_SUFFIX, InputTextFilter.class);
-
-            filter.setPromptText(getFilterPromptText());
-            filter.setPromptTextStyle(getFilterPromptTextStyle());
-            filter.setPromptTextClass(getFilterPromptTextClass());
-        } else
-            throw new IllegalStateException("Unknown filter kind: " + filterKind);
-
-        filter.setFilterValuesExpressionExpression(filterExpression);
-        filter.setFilterValuesExpression(filterValuesExpression);
-        filter.setSearchStringExpression(filterValueExpression);
-
-        AbstractTable table = getTable();
-        if (table != null) {
-            filter.setAllRecordsCriterionName(table.getAllRecordsFilterName());
-            filter.setEmptyRecordsCriterionName(table.getEmptyRecordsFilterName());
-            filter.setNonEmptyRecordsCriterionName(table.getNonEmptyRecordsFilterName());
-        }
-
-        filter.setRendered(true);
-
-        return filter;
-    }
-
-    public void createSubComponents(FacesContext context) {
-        ValueExpression filterExpression = getFilterExpression();
-        ValueExpression filterValuesExpression = getFilterValuesExpression();
-        if (filterExpression == null && filterValuesExpression == null)
-            return;
-
-        ValueExpression filterKindExpression = getValueExpression("filterKind");
-
-        if (filterKindExpression == null) {
-            createSingleFilter(context);
-        } else {
-            createMultipleFilters();
-        }
-    }
-
-    private void createSingleFilter(FacesContext context) {
-        FilterKind filterKind = getFilterKind();
-        AbstractFilter filter;
-        if (filterKind == null) {
-            throw new IllegalStateException("FilterKind property can be set to null only through value binding.");
-        } else if (filterKind.equals(FilterKind.COMBO_BOX)) {
-            filter = RenderingUtil.getOrCreateFacet(
-                    context, this, ComboBoxFilter.COMPONENT_TYPE,
-                    COMBO_BOX_FILTER_CHILD_ID_SUFFIX, ComboBoxFilter.class);
-        } else if (filterKind.equals(FilterKind.DROP_DOWN_FIELD)) {
-            filter = RenderingUtil.getOrCreateFacet(
-                    context, this, DropDownFieldFilter.COMPONENT_TYPE,
-                    DROP_DOWN_FILTER_CHILD_ID_SUFFIX, DropDownFieldFilter.class);
-        } else if (filterKind.equals(FilterKind.SEARCH_FIELD)) {
-            filter = RenderingUtil.getOrCreateFacet(
-                    context, this, InputTextFilter.COMPONENT_TYPE,
-                    SEARCH_FIELD_FILTER_CHILD_ID_SUFFIX, InputTextFilter.class);
-        } else
-            throw new IllegalStateException("Unknown filter kind: " + filterKind);
-
-        initializeFilter(filter);
-    }
-
-    private void createMultipleFilters() {
-        createFilter(ComboBoxFilter.COMPONENT_TYPE,
-                COMBO_BOX_FILTER_CHILD_ID_SUFFIX, ComboBoxFilter.class);
-        createFilter(DropDownFieldFilter.COMPONENT_TYPE,
-                DROP_DOWN_FILTER_CHILD_ID_SUFFIX, DropDownFieldFilter.class);
-        createFilter(InputTextFilter.COMPONENT_TYPE,
-                SEARCH_FIELD_FILTER_CHILD_ID_SUFFIX, InputTextFilter.class);
-    }
-
-    private void createFilter(String componentType, String identifier, Class componentClass) {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        AbstractFilter filter = (AbstractFilter) RenderingUtil.getOrCreateFacet(
-                context, this, componentType,
-                identifier, componentClass);
-
-        initializeFilter(filter);
-    }
-
-    private void initializeFilter(AbstractFilter filter) {
-        filter.setStyle("width: 100%");
-        filter.setRendered(false);
-    }
 }

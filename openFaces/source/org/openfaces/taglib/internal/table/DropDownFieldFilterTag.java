@@ -11,16 +11,15 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.component.table.DropDownFieldFilter;
 
-import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class DropDownFieldFilterTag extends AbstractComponentTag {
+public class DropDownFieldFilterTag extends AbstractFilterTag {
     public String getComponentType() {
         return DropDownFieldFilter.COMPONENT_TYPE;
     }

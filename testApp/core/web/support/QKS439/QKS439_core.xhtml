@@ -28,18 +28,21 @@
           <h:outputText value=" "/>
         </f:facet>
         <o:column sortingExpression="#{person.name}"
-                  sortingComparator="caseInsensitiveText"
-                  filterExpression="#{person.name}"
-                  filterKind="searchField">
+                  sortingComparator="caseInsensitiveText">
           <f:facet name="header">
             <h:outputText value="Name"/>
           </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{person.name}"/>
+          </f:facet>
           <h:outputText value="#{person.name}"/>
         </o:column>
-        <o:column filterExpression="#{person.profession}"
-                  filterKind="dropDownField">
+        <o:column>
           <f:facet name="header">
             <h:outputText value="Profession"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:dropDownFieldFilter expression="#{person.profession}"/>
           </f:facet>
           <h:outputText value="#{person.profession}"/>
         </o:column>

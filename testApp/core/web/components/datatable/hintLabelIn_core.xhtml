@@ -46,14 +46,16 @@
               </f:facet>
             </o:column>
             <o:column id="col_second"
-                      style="padding: 15px 15px 15px 15px;"
-                      filterExpression="#{hintLabelTable.fourthColumn}" filterKind="searchField">
+                      style="padding: 15px 15px 15px 15px;">
               <f:facet name="header">
                 <o:hintLabel id="header_hintLabel_2"
                              style="width: 140px; font-weight: 18px; border: 2px solid black;"
                              hintStyle="padding: 10px 10px 10px 10px; color: gray; font-weight: 18px; border: 1px solid gray;"
                              value="Header hint label value 2"
                              hint="Header hint label title 2"/>
+              </f:facet>
+              <f:facet name="subHeader">
+                <o:inputTextFilter id="filter1" expression="#{hintLabelTable.fourthColumn}"/>
               </f:facet>
               <o:hintLabel id="body_hinLabel_2"
                            style="width: 140px; font-weight: 18px; border: 2px solid black;"

@@ -33,9 +33,12 @@
       <o:selectionColumn>
         <f:facet name="header"><o:selectAllCheckbox/></f:facet>
       </o:selectionColumn>
-      <o:column id="col1" sortingExpression="#{row.field1}" filterExpression="#{row.field1}" filterKind="comboBox">
+      <o:column id="col1" sortingExpression="#{row.field1}">
         <f:facet name="header">
           <h:outputText value="Letters"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter expression="#{row.field1}"/>
         </f:facet>
         <f:facet name="footer">
           <h:outputText value="Total Letters"/>

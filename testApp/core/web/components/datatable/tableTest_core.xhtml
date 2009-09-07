@@ -33,15 +33,21 @@
 
 <o:dataTable id="dataFetchTestTable" var="DATA_ROW" value="#{TableTestBean.collection2}" pageSize="5" rowIndexVar="row">
   <f:attribute name="forceRowsDecoding" value="false"/>
-  <o:column sortingExpression="#{DATA_ROW.field1}" filterExpression="#{DATA_ROW.field1}">
+  <o:column sortingExpression="#{DATA_ROW.field1}">
     <f:facet name="header">
       <h:outputText value="Field 1"/>
     </f:facet>
+    <f:facet name="subHeader">
+      <o:inputTextFilter expression="#{DATA_ROW.field1}"/>
+    </f:facet>
     <h:outputText value="#{DATA_ROW.field1}"/>
   </o:column>
-  <o:column sortingExpression="#{DATA_ROW.field2}" filterExpression="#{DATA_ROW.field2}">
+  <o:column sortingExpression="#{DATA_ROW.field2}">
     <f:facet name="header">
       <h:outputText value="Field 2"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:inputTextFilter expression="#{DATA_ROW.field2}"/>
     </f:facet>
     <h:outputText value="#{DATA_ROW.field2}"/>
   </o:column>
@@ -83,18 +89,24 @@
     </o:row>
 
     <o:checkboxColumn sortable="true"/>
-    <o:column id="col1" sortingExpression="#{row.field1}" filterExpression="#{row.field1}" filterValue="#{TableTestBean.filterValue1}">
+    <o:column id="col1" sortingExpression="#{row.field1}">
       <f:facet name="header">
         <h:outputText value="First Name"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{row.field1}" criterion="TableTestBean.filterValue1"/>
       </f:facet>
       <f:facet name="footer">
         <h:outputText value="footer"/>
       </f:facet>
       <h:outputText value="#{row.field1}"/>
     </o:column>
-    <o:column id="col2" sortingExpression="#{row.field2}" filterExpression="#{row.field2}" filterValue="#{TableTestBean.filterValue2}">
+    <o:column id="col2" sortingExpression="#{row.field2}">
       <f:facet name="header">
         <h:outputText value="Last Name"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{row.field2}" criterion="#{TableTestBean.filterValue2}"/>
       </f:facet>
       <f:facet name="footer">
         <h:outputText value="footer"/>
@@ -104,11 +116,12 @@
     <o:columns value="#{TableTestBean.testColumns}" var="col"
                columnId="customCol#{col}" columnRendered="#{TableTestBean.columnRendered}"
                sortingEnabled="#{TableTestBean.sortingEnabled}" sortingExpression="#{row.customFields[col]}"
-               style="width: 75px; text-align: right;"
-               filterExpression="#{row.customFields[col]}" filterKind="comboBox" filterValues="#{TableTestBean.filterValues}"
-               filterValue="#{TableTestBean.filterValue[col]}">
+               style="width: 75px; text-align: right;">
       <f:facet name="header">
         <h:outputText value="Header #{col}"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{row.customFields[col]}" criterion="#{TableTestBean.filterValue[col]}"/>
       </f:facet>
       <f:facet name="footer">
         <h:outputText value="Footer #{col}"/>
@@ -166,9 +179,12 @@
         <f:verbatim></f:verbatim>
       </f:facet>
     </o:selectionColumn>
-    <o:column id="col1" sortingExpression="#{row.field1}" filterExpression="#{row.field1}" filterKind="dropDownField">
+    <o:column id="col1" sortingExpression="#{row.field1}">
       <f:facet name="header">
         <h:outputText id="letterTxt" value="Letters"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:dropDownFieldFilter expression="#{row.field1}"/>
       </f:facet>
       <f:facet name="footer">
         <h:outputText value="Total Letters"/>
@@ -182,11 +198,14 @@
       </f:facet>
       <h:selectBooleanCheckbox value="#{row.booleanField}"/>
     </o:column>
-    <o:column id="col2" sortingExpression="#{row.field2}" filterExpression="#{TableTestBean.field2Range}" style="width: 200px;" filterKind="comboBox"
+    <o:column id="col2" sortingExpression="#{row.field2}"style="width: 200px;"
                headerStyle="background: #98ddea" bodyStyle="background: #eeffd8" footerStyle="background: #f0d0c0"
             headerOnclick="alert('col2header')" bodyOnclick="alert('col2body')" footerOnclick="alert('col2footer')" onclick="alert('col2');">
       <f:facet name="header">
         <h:outputText value="Numbers"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:comboBoxFilter expression="#{TableTestBean.field2Range}"/>
       </f:facet>
       <f:facet name="footer">
         <h:outputText value="Total Numbers"/>
@@ -223,9 +242,12 @@ Page size: <h:inputText value="#{TableTestBean.pageSize}"/>
   <o:selectionColumn>
     <f:facet name="header"><o:selectAllCheckbox/></f:facet>
   </o:selectionColumn>
-  <o:column id="col1" sortingExpression="#{row.field1}" sortingComparator="caseInsensitiveText" filterExpression="#{row.field1}" filterKind="comboBox">
+  <o:column id="col1" sortingExpression="#{row.field1}" sortingComparator="caseInsensitiveText">
     <f:facet name="header">
       <h:outputText value="Letters"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:comboBoxFilter expression="#{row.field1}"/>
     </f:facet>
     <f:facet name="footer">
       <h:outputText value="Total Letters"/>
@@ -233,9 +255,12 @@ Page size: <h:inputText value="#{TableTestBean.pageSize}"/>
 
     <h:outputText value="#{row.field1}"/>
   </o:column>
-  <o:column id="col2" sortingExpression="#{row.field2}" filterExpression="#{row.field2}" filterKind="searchField">
+  <o:column id="col2" sortingExpression="#{row.field2}">
     <f:facet name="header">
       <h:outputText value="Numbers"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:inputTextFilter expression="#{row.field2}"/>
     </f:facet>
     <f:facet name="footer">
       <h:outputText value="Total Numbers"/>
@@ -282,9 +307,12 @@ Page size: <h:inputText value="#{TableTestBean.pageSize}"/>
         <f:facet name="footer"><h:panelGroup style="background: gray"><f:verbatim>[</f:verbatim><o:selectAllCheckbox/><o:selectAllCheckbox/><f:verbatim>]</f:verbatim></h:panelGroup></f:facet>
       </o:selectionColumn>
 
-      <o:column id="col1" sortingExpression="#{row.field1}" filterValues="#{TableTestBean.col1FilterValues}" filterKind="comboBox">
+      <o:column id="col1" sortingExpression="#{row.field1}">
         <f:facet name="header">
           <h:outputText value="Letters"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:comboBoxFilter expression="#{row.field1}" options="#{TableTestBean.col1FilterValues}"/>
         </f:facet>
         <f:facet name="footer">
           <h:outputText value="Total Letters"/>
@@ -292,9 +320,12 @@ Page size: <h:inputText value="#{TableTestBean.pageSize}"/>
         <h:inputText value="#{row.field1}"/>
       </o:column>
 
-      <o:column id="col2" sortingExpression="#{row.field2}" filterValues="#{TableTestBean.col2FilterValues}" filterKind="dropDownField">
+      <o:column id="col2" sortingExpression="#{row.field2}">
         <f:facet name="header">
           <h:outputText value="Numbers"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:dropDownFieldFilter expression="#{row.field2}" options="#{TableTestBean.col2FilterValues}"/>
         </f:facet>
         <f:facet name="footer">
           <h:outputText value="Total Numbers"/>

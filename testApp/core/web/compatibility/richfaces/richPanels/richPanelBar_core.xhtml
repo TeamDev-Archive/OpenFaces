@@ -51,37 +51,45 @@
     <o:checkboxColumn/>
 
     <o:column id="col1"
-              sortingExpression="#{row.stringField1}"
-              filterExpression="#{row.stringField1}">
+              sortingExpression="#{row.stringField1}">
       <f:facet name="header">
         <h:outputText id="id2" value="stringField1"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{row.stringField1}"/>
       </f:facet>
       <h:outputText id="outputCol1" value="#{row.stringField1}"/>
     </o:column>
 
     <o:column id="col2"
-              sortingExpression="#{row.stringField2}"
-              filterExpression="#{row.stringField2}">
+              sortingExpression="#{row.stringField2}">
       <f:facet name="header">
         <h:outputText id="id3" value="stringField2"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{row.stringField2}"/>
       </f:facet>
       <h:outputText id="outputCol2" value="#{row.stringField2}"/>
     </o:column>
 
     <o:column id="col3"
-              sortingExpression="#{row.intField1}"
-              filterExpression="#{row.intField1}">
+              sortingExpression="#{row.intField1}">
       <f:facet name="header">
         <h:outputText id="id4" value="intField1"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{row.intField1}"/>
       </f:facet>
       <h:outputText id="outputCol3" value="#{row.intField1}"/>
     </o:column>
 
     <o:column id="col4"
-              sortingExpression="#{row.intField2}"
-              filterExpression="#{row.intField2}">
+              sortingExpression="#{row.intField2}">
       <f:facet name="header">
         <h:outputText id="id5" value="intField2"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{row.intField2}"/>
       </f:facet>
       <h:outputText id="outputCol4" value="#{row.intField2}"/>
     </o:column>
@@ -182,46 +190,56 @@
     <o:dynamicTreeStructure nodeChildren="#{TreeTableColumnsBean.nodeChildren}"
                             nodeHasChildren="#{TreeTableColumnsBean.nodeHasChildren}"/>
 
-    <o:treeColumn id="name" sortingExpression="#{node.name}" filterExpression="#{node.name}"
-                  filterKind="searchField">
+    <o:treeColumn id="name" sortingExpression="#{node.name}">
       <f:facet name="header">
         <h:outputText id="nameHeader" value="name"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{node.name}"/>
       </f:facet>
       <h:outputText id="nameField" value="#{node.name}"/>
     </o:treeColumn>
 
     <o:column id="col1"
-              sortingExpression="#{node.stringField1}"
-              filterExpression="#{node.stringField1}">
+              sortingExpression="#{node.stringField1}">
       <f:facet name="header">
         <h:outputText id="id2" value="stringField1"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{node.stringField1}"/>
       </f:facet>
       <h:outputText id="outputCol1" value="#{node.stringField1}"/>
     </o:column>
 
     <o:column id="col2"
-              sortingExpression="#{node.stringField2}"
-              filterExpression="#{node.stringField2}">
+              sortingExpression="#{node.stringField2}">
       <f:facet name="header">
         <h:outputText id="id3" value="stringField2"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{node.stringField2}"/>
       </f:facet>
       <h:outputText id="outputCol2" value="#{node.stringField2}"/>
     </o:column>
 
     <o:column id="col3"
-              sortingExpression="#{node.intField1}"
-              filterExpression="#{node.intField1}">
+              sortingExpression="#{node.intField1}">
       <f:facet name="header">
         <h:outputText id="id4" value="intField1"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{node.intField1}"/>
       </f:facet>
       <h:outputText id="outputCol3" value="#{node.intField1}"/>
     </o:column>
 
     <o:column id="col4"
-              sortingExpression="#{node.intField2}"
-              filterExpression="#{node.intField2}">
+              sortingExpression="#{node.intField2}">
       <f:facet name="header">
         <h:outputText id="id5" value="intField2"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{node.intField2}"/>
       </f:facet>
       <h:outputText id="outputCol4" value="#{node.intField2}"/>
     </o:column>

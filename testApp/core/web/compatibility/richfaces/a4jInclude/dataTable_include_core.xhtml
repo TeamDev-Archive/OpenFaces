@@ -14,20 +14,22 @@
              useAjax="true" sortAscending="false" sortColumnId="name">
   <o:column id="name"
             sortingExpression="#{person.name}"
-            sortingComparator="caseInsensitiveText"
-            filterExpression="#{person.name}"
-            filterKind="searchField">
+            sortingComparator="caseInsensitiveText">
     <f:facet name="header">
       <h:outputText value="Name"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:inputTextFilter expression="#{person.name}"/>
     </f:facet>
     <h:outputText value="#{person.name}"/>
   </o:column>
   <o:column id="profession"
-            sortingExpression="#{person.profession}"
-            filterExpression="#{person.profession}"
-            filterKind="dropDownField">
+            sortingExpression="#{person.profession}">
     <f:facet name="header">
       <h:outputText value="Profession"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:dropDownFieldFilter expression="#{person.profession}"/>
     </f:facet>
     <h:outputText value="#{person.profession}"/>
   </o:column>
@@ -49,20 +51,22 @@
   <o:multipleRowSelection rowDatas="#{PeopleListBean.selectedRows}" style="background: #a4aec5; color: white"/>
   <o:column id="name"
             sortingExpression="#{person.name}"
-            sortingComparator="caseInsensitiveText"
-            filterExpression="#{person.name}"
-            filterKind="searchField">
+            sortingComparator="caseInsensitiveText">
     <f:facet name="header">
       <h:outputText value="Name"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:inputTextFilter expression="#{person.name}"/>
     </f:facet>
     <h:outputText value="#{person.name}"/>
   </o:column>
   <o:column id="profession"
-            sortingExpression="#{person.profession}"
-            filterExpression="#{person.profession}"
-            filterKind="dropDownField">
+            sortingExpression="#{person.profession}">
     <f:facet name="header">
       <h:outputText value="Profession"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:dropDownFieldFilter expression="#{person.profession}"/>
     </f:facet>
     <h:outputText value="#{person.profession}"/>
   </o:column>
@@ -109,11 +113,12 @@
   <o:singleRowSelection rowData="#{PeopleListBean.selectedRow}" style="background: #a4aec5; color: white"/>
   <o:column id="name"
             sortingExpression="#{person.name}"
-            sortingComparator="caseInsensitiveText"
-            filterExpression="#{person.name}"
-            filterKind="searchField">
+            sortingComparator="caseInsensitiveText">
     <f:facet name="header">
       <h:outputText value="Name"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:inputTextFilter expression="#{person.name}"/>
     </f:facet>
     <h:outputText value="#{person.name}"/>
     <f:facet name="footer">
@@ -121,11 +126,12 @@
     </f:facet>
   </o:column>
   <o:column id="profession"
-            sortingExpression="#{person.profession}"
-            filterExpression="#{person.profession}"
-            filterKind="dropDownField">
+            sortingExpression="#{person.profession}">
     <f:facet name="header">
       <h:outputText value="Profession"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:dropDownFieldFilter expression="#{person.profession}"/>
     </f:facet>
     <h:outputText value="#{person.profession}"/>
     <f:facet name="footer">

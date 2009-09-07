@@ -135,27 +135,36 @@
   <o:selectionColumn>
     <f:facet name="header"><o:selectAllCheckbox/></f:facet>
   </o:selectionColumn>
-  <o:column sortingExpression="#{DATA_ROW.field1}" filterExpression="#{DATA_ROW.field1}" >
+  <o:column sortingExpression="#{DATA_ROW.field1}">
     <f:facet name="header">
       <h:outputText value="First Name"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:inputTextFilter expression="#{DATA_ROW.field1}"/>
     </f:facet>
     <f:facet name="footer">
       <h:outputText value="Col1"/>
     </f:facet>
     <h:outputText value="#{DATA_ROW.field1}"/>
   </o:column>
-  <o:column sortingExpression="#{DATA_ROW.field2}" filterExpression="#{DATA_ROW.field2}" filterKind="comboBox">
+  <o:column sortingExpression="#{DATA_ROW.field2}">
     <f:facet name="header">
       <h:outputText value="Last Name"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:comboBoxFilter expression="#{DATA_ROW.field2}"/>
     </f:facet>
     <f:facet name="footer">
       <h:outputText value="Col2"/>
     </f:facet>
     <h:outputText value="#{DATA_ROW.field2}"/>
   </o:column>
-  <o:column sortingExpression="#{DATA_ROW.field2}" filterExpression="#{DATA_ROW.field2}" filterKind="dropDownField">
+  <o:column sortingExpression="#{DATA_ROW.field2}">
     <f:facet name="header">
       <h:outputText value="Last Name"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:dropDownFieldFilter expression="#{DATA_ROW.field2}"/>
     </f:facet>
     <f:facet name="footer">
       <h:outputText value="Col3"/>
@@ -175,9 +184,12 @@
   <f:facet name="header">
     <h:outputText value="Common Header"/>
   </f:facet>
-  <o:treeColumn sortingExpression="#{message.subject}" filterExpression="#{message.subject}" filterKind="searchField">
+  <o:treeColumn sortingExpression="#{message.subject}">
     <f:facet name="header">
       <h:outputText value="Subject"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:inputTextFilter expression="#{message.subject}"/>
     </f:facet>
     <h:outputText value="#{message.subject}"/>
     <f:facet name="footer">
@@ -185,9 +197,12 @@
     </f:facet>
   </o:treeColumn>
 
-  <o:column sortingExpression="#{message.author.userName}" filterExpression="#{message.author.userName}" filterKind="comboBox">
+  <o:column sortingExpression="#{message.author.userName}">
     <f:facet name="header">
       <h:outputText value="From"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:comboBoxFilter expression="#{message.author.userName}"/>
     </f:facet>
     <h:outputText value="#{message.author.userName}"/>
     <f:facet name="footer">
@@ -195,9 +210,12 @@
     </f:facet>
   </o:column>
 
-  <o:column sortingExpression="#{message.date}" filterExpression="#{message.date}" filterKind="dropDownField">
+  <o:column sortingExpression="#{message.date}">
     <f:facet name="header">
       <h:outputText value="Sent"/>
+    </f:facet>
+    <f:facet name="subHeader">
+      <o:dropDownFieldFilter expression="#{message.date}"/>
     </f:facet>
     <h:outputText value="#{message.date}"/>
     <f:facet name="footer">
