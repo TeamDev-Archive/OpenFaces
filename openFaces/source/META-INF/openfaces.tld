@@ -9450,7 +9450,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean -->
-      <!-- @default true -->
+      <!-- @default false -->
       <!-- @el only -->
     </attribute>
     <attribute>
