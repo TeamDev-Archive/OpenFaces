@@ -94,7 +94,7 @@
         <h:outputText value="First Name"/>
       </f:facet>
       <f:facet name="subHeader">
-        <o:inputTextFilter expression="#{row.field1}" criterion="TableTestBean.filterValue1"/>
+        <o:inputTextFilter expression="#{row.field1}" criterion="#{TableTestBean.filterValue1}"/>
       </f:facet>
       <f:facet name="footer">
         <h:outputText value="footer"/>
@@ -198,7 +198,7 @@
       </f:facet>
       <h:selectBooleanCheckbox value="#{row.booleanField}"/>
     </o:column>
-    <o:column id="col2" sortingExpression="#{row.field2}"style="width: 200px;"
+    <o:column id="col2" sortingExpression="#{row.field2}" style="width: 200px"
                headerStyle="background: #98ddea" bodyStyle="background: #eeffd8" footerStyle="background: #f0d0c0"
             headerOnclick="alert('col2header')" bodyOnclick="alert('col2body')" footerOnclick="alert('col2footer')" onclick="alert('col2');">
       <f:facet name="header">

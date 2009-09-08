@@ -15,6 +15,8 @@ package org.seleniuminspector.openfaces;
 import org.junit.Assert;
 import org.seleniuminspector.LoadingMode;
 import org.seleniuminspector.html.TableColumnInspector;
+import org.openfaces.component.table.TextSearchFilter;
+import org.openfaces.util.RenderingUtil;
 
 import java.lang.reflect.Constructor;
 
@@ -44,30 +46,16 @@ public class DataTableColumnInspector extends TableColumnInspector {
     public <T extends AbstractFilterInspector> T filter(Class<T> filterTypeClass, String filterId) {
         T filter;
 
+        if (!ComboBoxFilterInspector.class.isAssignableFrom(filterTypeClass))
+            filterId += RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + TextSearchFilter.SEARCH_COMPONENT_SUFFIX;
         try {
             Constructor<T> filterConstructor = filterTypeClass.getConstructor(String.class, LoadingMode.class);
             filter = filterConstructor.newInstance(filterId, loadingMode);
         } catch (Exception ex) {
-            throw new RuntimeException("Filter inspector creating failure", ex);
+            throw new RuntimeException("Filter inspector creation failure", ex);
         }
 
         return filter;
     }
 
-//    private String getFilterXPath(AbstractFilterInspector.FilterType filterType) {
-//
-//        TableCellInspector headerCell = headerCell(1);
-//        List<ElementInspector> children = headerCell.childNodes();
-//        for (ElementInspector child : children) {
-//            String id = child.id();
-//            int x = 32 + 2;
-//        }
-//
-//        StringBuilder filterXPath = new StringBuilder("//");
-//        filterXPath.append("*[@id='").append(id()).append("']");
-//        filterXPath.append(" and (contains(@id, '").append(RendererUtil.CLIENT_ID_SUFFIX_SEPARATOR).append("') = false)");
-//        filterXPath.append(" and contains(@id, '").append(filterType.getSuffix()).append("')");
-//
-//        return filterXPath.toString();
-//    }
 }
