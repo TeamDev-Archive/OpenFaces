@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Iterator;
 
 /**
  * @author Dmitry Pikhulya
@@ -69,10 +70,15 @@ public class ComboBoxFilterRenderer extends AbstractFilterRenderer {
         writer.writeAttribute("onclick", "event.cancelBubble = true;", null);
         writer.writeAttribute("onkeydown", "O$.cancelBubble(event);", null);
 
+        boolean thereAreEmptyItems = false;
         Collection<Object> criterionNamesCollection = filter.calculateAllCriterionNames(context);
-        boolean thereAreEmptyItems = criterionNamesCollection.contains("");
-        if (thereAreEmptyItems)
-            criterionNamesCollection.remove("");
+        for (Iterator<Object> criterionIterator = criterionNamesCollection.iterator(); criterionIterator.hasNext();) {
+            Object criterionObj = criterionIterator.next();
+            if (isEmptyItem(criterionObj)) {
+                thereAreEmptyItems = true;
+                criterionIterator.remove();
+            }
+        }
         List<Object> criterionNames = new ArrayList<Object>(criterionNamesCollection);
 
         String allRecordsCriterionName = filter.getAllRecordsText();
@@ -179,4 +185,5 @@ public class ComboBoxFilterRenderer extends AbstractFilterRenderer {
         } else
             throw new IllegalStateException("Improperly formatted criterion came from client: " + selectedCriterion);
     }
+
 }

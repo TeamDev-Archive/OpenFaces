@@ -27,6 +27,7 @@ import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Iterator;
 
 /**
  * @author Dmitry Pikhulya
@@ -61,7 +62,13 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
         }
         DropDownItems dropDownItems = (DropDownItems) dropDownFieldItems;
         Collection<Object> possibleValuesCollection = filter.calculateAllCriterionNames(context);
-        possibleValuesCollection.remove("");
+        for (Iterator<Object> criterionIterator = possibleValuesCollection.iterator(); criterionIterator.hasNext();) {
+            Object criterionObj = criterionIterator.next();
+            if (isEmptyItem(criterionObj)) {
+                criterionIterator.remove();
+            }
+        }
+        
         List<Object> availableItems = new ArrayList<Object>(possibleValuesCollection);
         List<DropDownItem> itemList = new ArrayList<DropDownItem>(availableItems.size());
         for (Object itemObj : availableItems) {

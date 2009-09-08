@@ -18,14 +18,14 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
-import javax.faces.FacesException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.TreeSet;
-import java.io.IOException;
 
 /**
  * @author Dmitry Pikhulya
@@ -244,7 +244,7 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
     public Collection<Object> calculateAllCriterionNames(FacesContext context) {
         ValueExpression valuesExpression = getOptionsExpression();
         if (valuesExpression != null) {
-            Iterable  values = (Iterable) valuesExpression.getValue(context.getELContext());
+            Iterable values = (Iterable) valuesExpression.getValue(context.getELContext());
             List<Object> result = new ArrayList<Object>();
             if (values != null) {
                 for (Object value : values) {
@@ -259,12 +259,19 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
         Set<Object> criterionNamesSet = new TreeSet<Object>();
         List originalRowList = getTable().getRowListForFiltering(this);
         AbstractTable table = getTable();
+        boolean thereAreNullValues = false;
         for (Object data : originalRowList) {
             Object value = table.getFilteredValueByData(context, requestMap, expression, var, data);
-            if (value != null)
+            if (value == null)
+                thereAreNullValues = true;
+            else
                 criterionNamesSet.add(value);
         }
-        return criterionNamesSet;
+        List<Object> list = new ArrayList<Object>();
+        if (thereAreNullValues)
+            list.add(null);
+        list.addAll(criterionNamesSet);
+        return list;
     }
 
     public void updateSearchStringFromBinding(FacesContext context) {

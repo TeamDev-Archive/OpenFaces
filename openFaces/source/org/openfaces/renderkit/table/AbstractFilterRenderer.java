@@ -56,4 +56,8 @@ public class AbstractFilterRenderer extends RendererBase {
                 dataTable.setPageIndex(0);
         }
     }
+
+    protected boolean isEmptyItem(Object item) {
+        return item == null || item.equals("");
+    }
 }
