@@ -178,9 +178,8 @@ public class ColorDB {
         StringBuffer buf = new StringBuffer();
         for (Iterator iterator = filterCriteria.iterator(); iterator.hasNext();) {
             ContainsFilterCriterion criterion = (ContainsFilterCriterion) iterator.next();
-            String columnId = criterion.getColumnId();
             String text = criterion.getValue().toString();
-            String criterionText = columnId + " CONTAINS \"" + text + "\"";
+            String criterionText = "color" + " CONTAINS \"" + text + "\"";
             buf.append(criterionText);
             if (iterator.hasNext())
                 buf.append(" AND ");

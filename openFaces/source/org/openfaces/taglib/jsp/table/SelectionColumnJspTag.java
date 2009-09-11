@@ -18,7 +18,7 @@ import javax.el.ValueExpression;
 /**
  * @author Dmitry Pikhulya
  */
-public class SelectionColumnJspTag extends AbstractColumnJspTag {
+public class SelectionColumnJspTag extends BaseColumnJspTag {
 
     public SelectionColumnJspTag() {
         super(new SelectionColumnTag());

@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.jsp.table;
 
-import org.openfaces.taglib.internal.table.AbstractColumnTag;
+import org.openfaces.taglib.internal.table.BaseColumnTag;
 import org.openfaces.taglib.internal.table.TableColumnTag;
 
 import javax.el.ValueExpression;
@@ -19,9 +19,9 @@ import javax.el.ValueExpression;
 /**
  * @author Dmitry Pikhulya
  */
-public class TableColumnJspTag extends AbstractColumnJspTag {
+public class TableColumnJspTag extends BaseColumnJspTag {
 
-    public TableColumnJspTag(AbstractColumnTag delegate) {
+    public TableColumnJspTag(BaseColumnTag delegate) {
         super(delegate);
     }
 

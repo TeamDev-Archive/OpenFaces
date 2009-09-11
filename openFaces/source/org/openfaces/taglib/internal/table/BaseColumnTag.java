@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Pavel Kaplin
  */
-public abstract class AbstractColumnTag extends AbstractComponentTag {
+public abstract class BaseColumnTag extends AbstractComponentTag {
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
@@ -33,8 +33,8 @@ public abstract class AbstractColumnTag extends AbstractComponentTag {
 
         setStringProperty(component, "headerStyle");
         setStringProperty(component, "headerClass");
-        setStringProperty(component, "filterCellStyle");
-        setStringProperty(component, "filterCellClass");
+        setStringProperty(component, "subHeaderStyle");
+        setStringProperty(component, "subHeaderClass");
         setStringProperty(component, "footerStyle");
         setStringProperty(component, "footerClass");
         setStringProperty(component, "bodyStyle");

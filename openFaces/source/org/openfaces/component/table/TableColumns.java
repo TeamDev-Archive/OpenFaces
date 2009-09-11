@@ -56,8 +56,8 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
     private String styleClass;
     private String headerStyle;
     private String headerClass;
-    private String filterCellStyle;
-    private String filterCellClass;
+    private String subHeaderStyle;
+    private String subHeaderClass;
     private String bodyStyle;
     private String bodyClass;
     private String footerStyle;
@@ -114,7 +114,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
                 columnRendered, var, sortingEnabled, sortingComparator,
                 align, valign, width, resizable, minResizingWidth,
                 style, styleClass, headerStyle, headerClass,
-                filterCellStyle, filterCellClass, bodyStyle, bodyClass, footerStyle, footerClass,
+                subHeaderStyle, subHeaderClass, bodyStyle, bodyClass, footerStyle, footerClass,
                 onclick, ondblclick, onmousedown, onmouseover, onmousemove,
                 onmouseout, onmouseup, headerOnclick, headerOndblclick, headerOnmousedown, headerOnmouseover,
                 headerOnmousemove, headerOnmouseout, headerOnmouseup, bodyOnclick, bodyOndblclick,
@@ -144,8 +144,8 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         styleClass = (String) state[i++];
         headerStyle = (String) state[i++];
         headerClass = (String) state[i++];
-        filterCellStyle = (String) state[i++];
-        filterCellClass = (String) state[i++];
+        subHeaderStyle = (String) state[i++];
+        subHeaderClass = (String) state[i++];
         bodyStyle = (String) state[i++];
         bodyClass = (String) state[i++];
         footerStyle = (String) state[i++];
@@ -293,12 +293,12 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
     }
 
 
-    public String getFilterCellStyle() {
-        return ValueBindings.get(this, "filterCellStyle", filterCellStyle);
+    public String getSubHeaderStyle() {
+        return ValueBindings.get(this, "subHeaderStyle", subHeaderStyle);
     }
 
-    public void setFilterCellStyle(String filterCellStyle) {
-        this.filterCellStyle = filterCellStyle;
+    public void setSubHeaderStyle(String subHeaderStyle) {
+        this.subHeaderStyle = subHeaderStyle;
     }
 
     public String getBodyStyle() {
@@ -333,12 +333,12 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         this.headerClass = headerClass;
     }
 
-    public String getFilterCellClass() {
-        return ValueBindings.get(this, "filterCellClass", filterCellClass);
+    public String getSubHeaderClass() {
+        return ValueBindings.get(this, "subHeaderClass", subHeaderClass);
     }
 
-    public void setFilterCellClass(String filterCellClass) {
-        this.filterCellClass = filterCellClass;
+    public void setSubHeaderClass(String subHeaderClass) {
+        this.subHeaderClass = subHeaderClass;
     }
 
     public String getBodyClass() {
@@ -655,7 +655,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
                 column.setRendered(getColumnRendered());
 
                 String[] copiedAttributes = new String[]{"width", "align", "valign", "resizable", "minResizingWidth",
-                        "style", "styleClass", "headerStyle", "headerClass", "filterCellStyle", "filterCellClass",
+                        "style", "styleClass", "headerStyle", "headerClass", "subHeaderStyle", "subHeaderClass",
                         "bodyStyle", "bodyClass", "footerStyle", "footerClass",
                         "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove", "onmouseout", "onmouseup",
                         "headerOnclick", "headerOndblclick", "headerOnmousedown", "headerOnmouseover",

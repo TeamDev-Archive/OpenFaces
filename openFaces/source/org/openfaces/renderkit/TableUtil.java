@@ -263,7 +263,7 @@ public class TableUtil {
             JSONObject filter = new JSONObject();
             columnObj.put("filter", filter);
             filter.put("pos", new CellCoordinates(tableHeader.getSubHeaderRowIndex(), colIndex).asJSArray());
-            filter.put("className", StyleUtil.getCSSClass(context, styleOwnerComponent, columnOrGroup.getFilterCellStyle(), columnOrGroup.getFilterCellClass()));
+            filter.put("className", StyleUtil.getCSSClass(context, styleOwnerComponent, columnOrGroup.getSubHeaderStyle(), columnOrGroup.getSubHeaderClass()));
         }
         if (!noDataRows) {
             JSONObject body = new JSONObject();

@@ -80,12 +80,12 @@ public class TableColumnsJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("headerClass", headerClass);
     }
 
-    public void setFilterCellStyle(ValueExpression filterCellStyle) {
-        getDelegate().setPropertyValue("filterCellStyle", filterCellStyle);
+    public void setSubHeaderStyle(ValueExpression subHeaderStyle) {
+        getDelegate().setPropertyValue("subHeaderStyle", subHeaderStyle);
     }
 
-    public void setFilterCellClass(ValueExpression filterCellClass) {
-        getDelegate().setPropertyValue("filterCellClass", filterCellClass);
+    public void setSubHeaderClass(ValueExpression subHeaderClass) {
+        getDelegate().setPropertyValue("subHeaderClass", subHeaderClass);
     }
 
     public void setBodyStyle(ValueExpression bodyStyle) {

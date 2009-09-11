@@ -65,8 +65,8 @@ public class TableColumnsTag extends AbstractComponentTag {
 
         setStringProperty(component, "headerStyle");
         setStringProperty(component, "headerClass");
-        setStringProperty(component, "filterCellStyle");
-        setStringProperty(component, "filterCellClass");
+        setStringProperty(component, "subHeaderStyle");
+        setStringProperty(component, "subHeaderClass");
         setStringProperty(component, "footerStyle");
         setStringProperty(component, "footerClass");
         setStringProperty(component, "bodyStyle");

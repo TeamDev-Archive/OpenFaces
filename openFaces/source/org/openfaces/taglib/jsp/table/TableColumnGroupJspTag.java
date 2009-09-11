@@ -16,7 +16,7 @@ import org.openfaces.taglib.internal.table.TableColumnGroupTag;
 /**
  * @author Dmitry Pikhulya
  */
-public class TableColumnGroupJspTag extends AbstractColumnJspTag {
+public class TableColumnGroupJspTag extends BaseColumnJspTag {
 
     public TableColumnGroupJspTag() {
         super(new TableColumnGroupTag());

@@ -33,8 +33,8 @@ public class BaseColumn extends UIColumn {
     private String styleClass;
     private String headerStyle;
     private String headerClass;
-    private String filterCellStyle;
-    private String filterCellClass;
+    private String subHeaderStyle;
+    private String subHeaderClass;
     private String bodyStyle;
     private String bodyClass;
     private String footerStyle;
@@ -77,7 +77,7 @@ public class BaseColumn extends UIColumn {
         Object superState = super.saveState(context);
         return new Object[]{superState, align, valign, width, resizable, minResizingWidth,
                 style, styleClass, headerStyle, headerClass,
-                filterCellStyle, filterCellClass, bodyStyle, bodyClass, footerStyle, footerClass,
+                subHeaderStyle, subHeaderClass, bodyStyle, bodyClass, footerStyle, footerClass,
                 onclick, ondblclick, onmousedown, onmouseover, onmousemove,
                 onmouseout, onmouseup, headerOnclick, headerOndblclick, headerOnmousedown, headerOnmouseover,
                 headerOnmousemove, headerOnmouseout, headerOnmouseup, bodyOnclick, bodyOndblclick,
@@ -100,8 +100,8 @@ public class BaseColumn extends UIColumn {
         styleClass = (String) state[i++];
         headerStyle = (String) state[i++];
         headerClass = (String) state[i++];
-        filterCellStyle = (String) state[i++];
-        filterCellClass = (String) state[i++];
+        subHeaderStyle = (String) state[i++];
+        subHeaderClass = (String) state[i++];
         bodyStyle = (String) state[i++];
         bodyClass = (String) state[i++];
         footerStyle = (String) state[i++];
@@ -193,12 +193,12 @@ public class BaseColumn extends UIColumn {
     }
 
 
-    public String getFilterCellStyle() {
-        return ValueBindings.get(this, "filterCellStyle", filterCellStyle);
+    public String getSubHeaderStyle() {
+        return ValueBindings.get(this, "subHeaderStyle", subHeaderStyle);
     }
 
-    public void setFilterCellStyle(String filterCellStyle) {
-        this.filterCellStyle = filterCellStyle;
+    public void setSubHeaderStyle(String subHeaderStyle) {
+        this.subHeaderStyle = subHeaderStyle;
     }
 
     public String getBodyStyle() {
@@ -233,12 +233,12 @@ public class BaseColumn extends UIColumn {
         this.headerClass = headerClass;
     }
 
-    public String getFilterCellClass() {
-        return ValueBindings.get(this, "filterCellClass", filterCellClass);
+    public String getSubHeaderClass() {
+        return ValueBindings.get(this, "subHeaderClass", subHeaderClass);
     }
 
-    public void setFilterCellClass(String filterCellClass) {
-        this.filterCellClass = filterCellClass;
+    public void setSubHeaderClass(String subHeaderClass) {
+        this.subHeaderClass = subHeaderClass;
     }
 
     public String getBodyClass() {

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <taglib xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
-    version="2.1">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
   <description>Tags for the OpenFaces library</description>
   <tlib-version>__OpenFacesVersion__</tlib-version>
   <short-name>o</short-name>
@@ -180,7 +180,8 @@
     </attribute>
 
     <attribute>
-      <description>The sorting order of the data in the DataTable component. The "true" value means the table is sorted in ascending order.
+      <description>The sorting order of the data in the DataTable component. The "true" value means the table is sorted
+        in ascending order.
       </description>
       <name>sortAscending</name>
       <deferred-value>
@@ -1199,87 +1200,6 @@
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
-    <attribute>
-      <description>Specifies the value by which the data is filtered. Is used to provide filtering for the column.
-      </description>
-      <name>filterExpression</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.Object -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>The filter values that appear in the "comboBox" or "dropDownField" filter components
-        instead of displaying all of the possible values.
-      </description>
-      <name>filterValues</name>
-      <deferred-value>
-        <type>java.util.Collection</type>
-      </deferred-value>
-      <!-- @bindingType java.util.Collection -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>The current filter value.</description>
-      <name>filterValue</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
-      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
-      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>The type of filter component for filtering the data.</description>
-      <name>filterKind</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. FilterKind -->
-      <!-- @default "comboBox" -->
-      <!-- @value "searchField" is displayed as a text field-->
-      <!-- @value "comboBox" is displayed as a combo box that contains all the unique values returned by the filterExpression attribute for that column -->
-      <!-- @value "dropDownField" is displayed as a drop-down field which, like "comboBox", displays all the unique values and also allows the user to enter text manually-->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>This prompt text will be shown when value of component is empty.</description>
-      <name>filterPromptText</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>A style for the prompt text.</description>
-      <name>filterPromptTextStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>A CSS class name for the prompt text.</description>
-      <name>filterPromptTextClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
 
     <attribute>
       <description>The width of the column. Can be specified in any units (px, mm, em, etc.).</description>
@@ -1376,8 +1296,8 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the cell in the filter row (row that contains the filter components).</description>
-      <name>filterCellStyle</name>
+      <description>A style for the cell in the sub-header row.</description>
+      <name>subHeaderStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -1386,9 +1306,9 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the cell in the filter row (row that contains the filter components).
+      <description>A CSS class name for the cell in the sub-header row.
       </description>
-      <name>filterCellClass</name>
+      <name>subHeaderClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -1772,6 +1692,382 @@
   </tag>
 
   <tag>
+    <name>inputTextFilter</name>
+    <tag-class>org.openfaces.taglib.jsp.table.InputTextFilterJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates the component with a backing bean property.</description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.DataTable</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. DataTable -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Defines an expression that is used to obtain a record's value by which records are to be filtered.
+      </description>
+      <name>expression</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The current filtering criterion selected in this filter component.</description>
+      <name>criterion</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
+      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the entire filter component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire filter component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This prompt text will be shown when value of component is empty.</description>
+      <name>promptText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the prompt text.</description>
+      <name>promptTextStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name for the prompt text.</description>
+      <name>promptTextClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+  </tag>
+
+  <tag>
+    <name>dropDownFieldFilter</name>
+    <tag-class>org.openfaces.taglib.jsp.table.DropDownFieldFilterJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates the component with a backing bean property.</description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.DataTable</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. DataTable -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Defines an expression that is used to obtain a record's value by which records are to be filtered.
+      </description>
+      <name>expression</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The current filtering criterion selected in this filter component.</description>
+      <name>criterion</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
+      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The filtering options that appear in the filter's drop-down list instead of displaying all of the
+        possible values.
+      </description>
+      <name>options</name>
+      <deferred-value>
+        <type>java.util.Collection</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Collection -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the entire filter component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire filter component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>This prompt text will be shown when value of component is empty.</description>
+      <name>promptText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the prompt text.</description>
+      <name>promptTextStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name for the prompt text.</description>
+      <name>promptTextClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Text that is displayed instead of "&lt;All&gt;" in the filter's drop-down list.
+      </description>
+      <name>allRecordsText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "<All>" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Text that is displayed instead of "&lt;Empty&gt;" in the filter's drop-down list.
+      </description>
+      <name>emptyRecordsText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "<Empty>" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Text that is displayed instead of "&lt;Non-empty&gt;" in the filter's drop-down list.
+      </description>
+      <name>nonEmptyRecordsText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "<Non-empty>"  -->
+      <!-- @el true -->
+    </attribute>
+
+  </tag>
+
+  <tag>
+    <name>comboBoxFilter</name>
+    <tag-class>org.openfaces.taglib.jsp.table.ComboBoxFilterJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates the component with a backing bean property.</description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.DataTable</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. DataTable -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>Defines an expression that is used to obtain a record's value by which records are to be filtered.
+      </description>
+      <name>expression</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The current filtering criterion selected in this filter component.</description>
+      <name>criterion</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
+      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>The filtering options that appear in the filter's drop-down list instead of displaying all of the
+        possible values.
+      </description>
+      <name>options</name>
+      <deferred-value>
+        <type>java.util.Collection</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Collection -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the entire filter component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire filter component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Text that is displayed instead of "&lt;All&gt;" in the filter's drop-down list.
+      </description>
+      <name>allRecordsText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "<All>" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Text that is displayed instead of "&lt;Empty&gt;" in the filter's drop-down list.
+      </description>
+      <name>emptyRecordsText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "<Empty>" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Text that is displayed instead of "&lt;Non-empty&gt;" in the filter's drop-down list.
+      </description>
+      <name>nonEmptyRecordsText</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "<Non-empty>"  -->
+      <!-- @el true -->
+    </attribute>
+
+  </tag>
+
+
+  <tag>
     <description>The Columns component is used to specify dynamic number of columns in the {@link dataTable} or
       {@link treeTable} components. Child components of the &lt;o:columns&gt; tag are used to render each cell.
       All of the attributes of &lt;o:columns&gt; tag are analogous to their counterparts in the &lt;o:column&gt;
@@ -1881,99 +2177,6 @@
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
-    <attribute>
-      <description>A value-binding expression that should reference the value by which the data in each dynamic
-        column is filtered. You can use a column data variable specified in the "var" in the expression for
-        this attribute. Specifying this attribute makes all columns in this o:columns tag to be filterable.
-        Some dynamic columns can be made non-filterable using the filterKind attribute if needed.
-      </description>
-      <name>filterExpression</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.Object -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>A value-binding expression that should reference a collection of the filter values that
-        appear in the "comboBox" or "dropDownField" filter components instead of displaying all of the
-        possible values. You can use a column data variable specified in the "var" in the expression
-        for this attribute. If returns null, the default filter values calculation mechanism is used
-        for the corresponding dynamic columns.
-      </description>
-      <name>filterValues</name>
-      <deferred-value>
-        <type>java.util.Collection</type>
-      </deferred-value>
-      <!-- @bindingType java.util.Collection -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>A value-binding expression that should reference the current filter value for each dynamic
-        column. You can use a column data variable specified in the "var" in the expression for this attribute.
-      </description>
-      <name>filterValue</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
-      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
-      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>The type of filter component for filtering the data. Can be specified
-        right on the page (one and the same value for all dynamic columns is used) or as a value-binding
-        expression. You can use a column data variable specified in the "var" in the expression for this
-        attribute. Returning null makes the corresponding dynamic columns non-filterable.
-      </description>
-      <name>filterKind</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. FilterKind -->
-      <!-- @default "comboBox" -->
-      <!-- @value "searchField" is displayed as a text field-->
-      <!-- @value "comboBox" is displayed as a combo box that contains all the unique values returned by the filterExpression attribute for that column -->
-      <!-- @value "dropDownField" is displayed as a drop-down field which, like "comboBox", displays all the unique values and also allows the user to enter text manually-->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>This prompt text will be shown when value of component is empty.</description>
-      <name>filterPromptText</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>A style for the prompt text.</description>
-      <name>filterPromptTextStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>A CSS class name for the prompt text.</description>
-      <name>filterPromptTextClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
 
     <attribute>
       <description>A style for the entire dynamic column. Can be specified as a value-binding expression
@@ -2024,11 +2227,11 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the cell in the filter row (row that contains the filter components).
+      <description>A style for the cell in the sub-header row.
         Can be specified as a value-binding expression that uses a column data variable specified
         in the "var" attribute.
       </description>
-      <name>filterCellStyle</name>
+      <name>subHeaderStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -2037,11 +2240,11 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the cell in the filter row (row that contains the filter components).
+      <description>A CSS class name for the cell in the sub-header row.
         Can be specified as a value-binding expression that uses a column data variable specified
         in the "var" attribute.
       </description>
-      <name>filterCellClass</name>
+      <name>subHeaderClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -3737,8 +3940,8 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the cell in the filter row (row that contains the filter components).</description>
-      <name>filterCellStyle</name>
+      <description>A style for the cell in the sub-header row.</description>
+      <name>subHeaderStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -3747,9 +3950,9 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the cell in the filter row (row that contains the filter components).
+      <description>A CSS class name for the cell in the sub-header row.
       </description>
-      <name>filterCellClass</name>
+      <name>subHeaderClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -4325,8 +4528,8 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the cell in the filter row (row that contains the filter components).</description>
-      <name>filterCellStyle</name>
+      <description>A style for the cell in the sub-header row.</description>
+      <name>subHeaderStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -4335,9 +4538,9 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the cell in the filter row (row that contains the filter components).
+      <description>A CSS class name for the cell in the sub-header row.
       </description>
-      <name>filterCellClass</name>
+      <name>subHeaderClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -4771,13 +4974,13 @@
   </tag>
 
   <tag>
-  <description>The dataTablePaginator component allows the user to see the current page of the
-    table records and jump from it to any other. The component displays the total
-    number of pages, the number of the current page, a text field to type in the number
-    of the page to go to, and a set of the Previous, Next, First and Last images to navigate
-    between the pages. It should be placed within the {@link dataTable} component,
-    inside any of its facets.
-  </description>
+    <description>The dataTablePaginator component allows the user to see the current page of the
+      table records and jump from it to any other. The component displays the total
+      number of pages, the number of the current page, a text field to type in the number
+      of the page to go to, and a set of the Previous, Next, First and Last images to navigate
+      between the pages. It should be placed within the {@link dataTable} component,
+      inside any of its facets.
+    </description>
     <name>dataTablePaginator</name>
     <tag-class>org.openfaces.taglib.jsp.table.DataTablePaginatorJspTag</tag-class>
     <body-content>empty</body-content>
@@ -5093,7 +5296,8 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The sorting order of the data in the TreeTable component. The "true" value means the table is sorted in ascending order.
+      <description>The sorting order of the data in the TreeTable component. The "true" value means the table is sorted
+        in ascending order.
       </description>
       <name>sortAscending</name>
       <deferred-value>
@@ -5266,7 +5470,7 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the line that separates the filter row and the column header.</description>
+      <description>A style for the line that separates the sub-header row.</description>
       <name>filterRowSeparator</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -6318,87 +6522,7 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
-    <attribute>
-      <description>Specifies the value by which the data is filtered. Is used to provide filtering for a column.
-      </description>
-      <name>filterExpression</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.Object -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>The filter values that appear in the "comboBox" or "dropDownField"
-        instead of displaying all of the possible values.
-      </description>
-      <name>filterValues</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>The current filter value.</description>
-      <name>filterValue</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
-      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
-      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>Type of a filter component for filtering the data.</description>
-      <name>filterKind</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. FilterKind -->
-      <!-- @default "comboBox" -->
-      <!-- @value "searchField" is displayed as a text field-->
-      <!-- @value "comboBox" is displayed as a combo box that contains all the unique values returned by the filterExpression attribute for that column -->
-      <!-- @value "dropDownField" is displayed as a drop-down field which, like "comboBox", displays all the unique values and also allows the user to enter text manually-->
-      <!-- @el true -->
-    </attribute>
 
-    <attribute>
-      <description>This prompt text will be shown when value of component is empty.</description>
-      <name>filterPromptText</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>A style for the prompt text.</description>
-      <name>filterPromptTextStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
-      <description>A CSS class name for the prompt text.</description>
-      <name>filterPromptTextClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
     <attribute>
       <description>The horizontal offset between the node levels. Can be
         specified in pixels (px), millimeters (mm), em dash (em), etc.
@@ -6527,8 +6651,8 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the cell in the filter row (row that contains the filter components).</description>
-      <name>filterCellStyle</name>
+      <description>A style for the cell in the sub-header row.</description>
+      <name>subHederStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -6537,9 +6661,9 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the cell in the filter row (row that contains the filter components).
+      <description>A CSS class name for the cell in the sub-header row.
       </description>
-      <name>filterCellClass</name>
+      <name>subHeaderClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -7401,7 +7525,8 @@ means that only root nodes and their immediate children are preloaded -->
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -8382,7 +8507,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -9324,7 +9450,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean -->
-      <!-- @default true -->
+      <!-- @default false -->
       <!-- @el only -->
     </attribute>
     <attribute>
@@ -9350,6 +9476,19 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the PopupLayer component
+        is automatically dismissed when the user presses Esc on a modal PopupLayer.
+      </description>
+      <name>hideOnEsc</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
     <attribute>
       <description>The timeout after which the PopupLayer component is automatically hidden.
         The value "-1" means that the PopupLayer component is not hidden automatically.
@@ -9670,6 +9809,32 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
+      <description>A flag that indicates whether or not to close the Window component
+        when the user clicks anywhere outside it.
+      </description>
+      <name>hideOnOuterClick</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the Window component
+        is automatically dismissed when the user presses Esc.
+      </description>
+      <name>hideOnEsc</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+
+    <attribute>
       <description>The x coordinate of the component's upper-left corner
         relative to the upper-left corner of the document or an absolutely
         positioned immediate container of the Window component.
@@ -9827,6 +9992,145 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
 
+    <attribute>
+      <description>JavaScript code that should be executed when the Window
+        component is displayed on the client side.
+      </description>
+      <name>onshow</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the Window component is hidden on the client side.
+      </description>
+      <name>onhide</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the Window.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the Window.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks
+        over the Window with either mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the Window.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the Window.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        away from the Window.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases the mouse button over the Window.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the Window.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the Window.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a key
+        over the Window.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 
@@ -10028,7 +10332,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.</description>
+      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.
+      </description>
       <name>rolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10039,7 +10344,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when the mouse is pressed over the button,
-        but not released yet.</description>
+        but not released yet.
+      </description>
       <name>pressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10348,7 +10654,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the button's image when a container is collapsed and the mouse is pressed over the button, but
-        not released yet.</description>
+        not released yet.
+      </description>
       <name>collapsedPressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10381,7 +10688,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the button's image when a container is collapsed and the mouse is pressed over the button, but
-        not released yet.</description>
+        not released yet.
+      </description>
       <name>expandedPressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10583,7 +10891,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.</description>
+      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.
+      </description>
       <name>rolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10594,7 +10903,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when the mouse is pressed over the button,
-        but not released yet.</description>
+        but not released yet.
+      </description>
       <name>pressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10785,7 +11095,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>URL of the image that should be displayed in this button when a window is in normal state.</description>
+      <description>URL of the image that should be displayed in this button when a window is in normal state.
+      </description>
       <name>maximizeImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10796,7 +11107,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when mouse cursor is over the button,
-        and a window is in normal state.</description>
+        and a window is in normal state.
+      </description>
       <name>maximizeRolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10807,7 +11119,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when the mouse is pressed over the button,
-        but not released yet, and a window is in normal state.</description>
+        but not released yet, and a window is in normal state.
+      </description>
       <name>maximizePressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10828,7 +11141,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.</description>
+      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.
+      </description>
       <name>restoreRolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10839,7 +11153,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when the button is in a toggled state and
-        the mouse is pressed over the button, but not released yet.</description>
+        the mouse is pressed over the button, but not released yet.
+      </description>
       <name>restorePressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -11032,7 +11347,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>URL of the image that should be displayed in this button when a window is in normal state.</description>
+      <description>URL of the image that should be displayed in this button when a window is in normal state.
+      </description>
       <name>minimizeImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -11043,7 +11359,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when mouse cursor is over the button,
-        and a window is in normal state.</description>
+        and a window is in normal state.
+      </description>
       <name>minimizeRolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -11054,7 +11371,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when the mouse is pressed over the button,
-        but not released yet, and a window is in normal state.</description>
+        but not released yet, and a window is in normal state.
+      </description>
       <name>minimizePressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -11075,7 +11393,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.</description>
+      <description>URL of the image that should be displayed in this button when mouse cursor is over the button.
+      </description>
       <name>restoreRolloverImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -11086,7 +11405,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>URL of the image that should be displayed in this button when the button is in a toggled state and
-        the mouse is pressed over the button, but not released yet.</description>
+        the mouse is pressed over the button, but not released yet.
+      </description>
       <name>restorePressedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -11485,17 +11805,20 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-    <description>Turns on the "standalone" mode where the Confirmation is not attached to other component automatically,
-     and can be used via the public API instead. The default value is false, which means that the component is attached
-     to the parent component, or a component referred to by the "for" attribute if it is specified.</description>
-     <name>standalone</name>
-     <deferred-value>
-       <type>boolean</type>
-     </deferred-value>
-     <!-- @bindingType false -->
-     <!-- @default true -->
-     <!-- @el true -->
-   </attribute>
+      <description>Turns on the "standalone" mode where the Confirmation is not attached to other component
+        automatically,
+        and can be used via the public API instead. The default value is false, which means that the component is
+        attached
+        to the parent component, or a component referred to by the "for" attribute if it is specified.
+      </description>
+      <name>standalone</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType false -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>Defines which of the two buttons has focus when the Confirmation component opens.</description>
@@ -12037,6 +12360,19 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the Confirmation component
+        is automatically dismissed when the user presses Esc.
+      </description>
+      <name>hideOnEsc</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
     <attribute>
       <description>A flag that indicates whether or not to align the Confirmation component
         with the component that calls it. If the Confirmation is aligned with the component
@@ -14039,7 +14375,8 @@ on the first switch to the tab. Once requested, the content is stored on the cli
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -15225,7 +15562,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A style that is used when generating an image for the Chart component. It should be used for
-        specifying font and color properties. See also the style and styleClass attributes.</description>
+        specifying font and color properties. See also the style and styleClass attributes.
+      </description>
       <name>textStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -16755,7 +17093,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -17786,6 +18125,17 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
+      <description></description>
+      <name>typingAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>An advisory title for the text field of the DateChooser component.</description>
       <name>title</name>
       <deferred-value>
@@ -17797,7 +18147,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -18350,7 +18701,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description> Time zone in which to interpret any time information in the date String. Value must be either a VB
+      <description>Time zone in which to interpret any time information in the date String. Value must be either a VB
         expression that evaluates to a java.util.TimeZone instance, or a String that is a timezone ID as described in
         the javadocs for java.util.TimeZone.getTimeZone().
       </description>
@@ -19033,6 +19384,173 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el false -->
     </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the Window component is visible.</description>
+      <name>visible</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The x coordinate of the component's upper-left corner
+        relative to the upper-left corner of the document or an absolutely
+        positioned immediate container of the Window component.
+        Note that the "left" attribute should indicate the number of pixels,
+        without the postfix "px".
+      </description>
+      <name>left</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The y coordinate of the component's upper-left corner relative to the upper-left corner of the
+        document or an absolutely positioned immediate container of the Window component. Note that the "top" attribute
+        should indicate the number of pixels, without the postfix "px".
+      </description>
+      <name>top</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The width of the Window component. Can be specified in any units (px, mm, em, etc.).</description>
+      <name>width</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The height of the Window component. Can be specified in any units (px, mm, em, etc.).</description>
+      <name>height</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The minimal width that the Window component can have when the user is resizing the window. This
+        attribute is applicable when "resizable" attribute is set to "true". This attribute can be specified
+        in any units (px, mm, em, etc.) except percent.
+      </description>
+      <name>minWidth</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The minimal height that the Window component can have when the user is resizing the window. This
+        attribute is applicable when "resizable" attribute is set to "true". This attribute can be specified
+        in any units (px, mm, em, etc.) except percent.
+      </description>
+      <name>minHeight</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the entire Window component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire Window component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the entire Window component in the rollover state.</description>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire Window component in the rollover state.</description>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the Window title.</description>
+      <name>captionStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the Window title.</description>
+      <name>captionClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the Window content area.</description>
+      <name>contentStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the Window content area.</description>
+      <name>contentClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <!-- InputText tag declaration -->
@@ -19300,7 +19818,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -19783,6 +20302,16 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
+      <name>autoGrowing</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>A flag that indicates whether or not the component is visible.</description>
       <name>rendered</name>
       <deferred-value>
@@ -19841,7 +20370,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -20146,8 +20676,10 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>Turns on the "standalone" mode where the PopupMenu is not attached to other component automatically,
-      and can be used via the public API instead. The default value is false, which means that the component is attached
-      to the parent component, or a component referred to by the "for" attribute if it is specified.</description>
+        and can be used via the public API instead. The default value is false, which means that the component is
+        attached
+        to the parent component, or a component referred to by the "for" attribute if it is specified.
+      </description>
       <name>standalone</name>
       <deferred-value>
         <type>boolean</type>
@@ -21354,17 +21886,20 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-    <description>Turns on the "standalone" mode where the ReloadComponents is not attached to other component automatically,
-     and can be used via the public API instead. The default value is false, which means that the component is attached
-     to the parent component, or a component referred to by the "for" attribute if it is specified.</description>
-     <name>standalone</name>
-     <deferred-value>
-       <type>boolean</type>
-     </deferred-value>
-     <!-- @bindingType false -->
-     <!-- @default true -->
-     <!-- @el true -->
-   </attribute>
+      <description>Turns on the "standalone" mode where the ReloadComponents is not attached to other component
+        automatically,
+        and can be used via the public API instead. The default value is false, which means that the component is
+        attached
+        to the parent component, or a component referred to by the "for" attribute if it is specified.
+      </description>
+      <name>standalone</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType false -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
     <attribute>
       <description>Similar to the "action" attribute of the HTMLCommandButton component. It can be defined as a
         MethodBinding that should point to an action method that is called when the user fire an event.
@@ -21418,14 +21953,14 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <!--<attribute>-->
-      <!--<name>submitInvoker</name>-->
-      <!--<description>A flag that indicates whether or not the component to which this ReloadComponents component is-->
-        <!--attached should be submitted in addition to the reloaded component(s), and components specified with the-->
-        <!--submittedComponentIds attribute.-->
-      <!--</description>-->
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
-      <!-- @el true -->
+    <!--<name>submitInvoker</name>-->
+    <!--<description>A flag that indicates whether or not the component to which this ReloadComponents component is-->
+    <!--attached should be submitted in addition to the reloaded component(s), and components specified with the-->
+    <!--submittedComponentIds attribute.-->
+    <!--</description>-->
+    <!-- @bindingType boolean -->
+    <!-- @default true -->
+    <!-- @el true -->
     <!--</attribute>-->
     <attribute>
       <description>Disable default action for component. (Append "return false;" to javascript)
@@ -21659,7 +22194,8 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>timetableChangeListener</name>
       <deferred-method>
-        <method-signature>void timetableChangeListener(org.openfaces.component.timetable.TimetableChangeEvent)</method-signature>
+        <method-signature>void timetableChangeListener(org.openfaces.component.timetable.TimetableChangeEvent)
+        </method-signature>
       </deferred-method>
       <!-- @bindingType javax.el.MethodExpression -->
       <!-- @default null -->
@@ -22432,7 +22968,7 @@ and it is automatically triggered on any form submission. -->
     <tag-class>org.openfaces.taglib.jsp.timetable.EventEditorDialogJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
-      <description>A value-binding expression that associates the EventDetailsDialog with a backing bean property.
+      <description>A value-binding expression that associates the EventEditorDialog with a backing bean property.
       </description>
       <name>binding</name>
       <deferred-value>
@@ -22461,6 +22997,243 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the entire EventEditorDialog component in the rollover state.</description>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the entire EventEditorDialog component in the rollover state.</description>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A flag that indicates whether or not the user can move the window by dragging its title.
+      </description>
+      <name>draggable</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether the window can be dragged by its content area in addition to the usual
+        dragging by window caption. This attribute is only applicable if draggable attribute is set to "true".
+      </description>
+      <name>draggableByContent</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>resizable</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A flag that indicates whether or not the dialog is centered on the screen when it is shown. If this
+        attribute is set to false then the dialog is shown at a position defined by the left and top CSS attributes
+        defined in the dialog's style.
+      </description>
+      <name>centered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+
+    <attribute>
+      <description>A style for the visible part of the page which is not covered by the EventEditorDialog component.
+      </description>
+      <name>modalLayerStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the visible part of the page which is not covered by a EventEditorDialog
+        component.
+      </description>
+      <name>modalLayerClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The x coordinate of the component's upper-left corner
+        relative to the upper-left corner of the document or an absolutely
+        positioned immediate container of the EventEditorDialog component.
+        Note that the "left" attribute should indicate the number of pixels,
+        without the postfix "px".
+      </description>
+      <name>left</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The y coordinate of the component's upper-left corner relative to the upper-left corner of the
+        document or an absolutely positioned immediate container of the EventEditorDialog component. Note that the "top"
+        attribute
+        should indicate the number of pixels, without the postfix "px".
+      </description>
+      <name>top</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The width of the EventEditorDialog component. Can be specified in any units (px, mm, em, etc.).
+      </description>
+      <name>width</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The height of the EventEditorDialog component. Can be specified in any units (px, mm, em, etc.).
+      </description>
+      <name>height</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The minimal width that the EventEditorDialog component can have when the user is resizing the window.
+        This
+        attribute is applicable when "resizable" attribute is set to "true". This attribute can be specified
+        in any units (px, mm, em, etc.) except percent.
+      </description>
+      <name>minWidth</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The minimal height that the EventEditorDialog component can have when the user is resizing the
+        window. This
+        attribute is applicable when "resizable" attribute is set to "true". This attribute can be specified
+        in any units (px, mm, em, etc.) except percent.
+      </description>
+      <name>minHeight</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the Window title.</description>
+      <name>captionStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the Window title.</description>
+      <name>captionClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the Window content area.</description>
+      <name>contentStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the Window content area.</description>
+      <name>contentClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+
+    <attribute>
+      <name>createEventCaption</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Create Event" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>editEventCaption</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Edit Event" -->
       <!-- @el true -->
     </attribute>
 
@@ -22505,16 +23278,6 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <name>colorLabel</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default "Color:" -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
       <name>descriptionLabel</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -22554,7 +23317,274 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
 
+    <attribute>
+      <name>labelStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>labelClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>okButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>okButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>cancelButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>cancelButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>deleteButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>deleteButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "Delete" -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the EventEditorDialog
+        component is displayed on the client side.
+      </description>
+      <name>onshow</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the EventEditorDialog component is hidden on the client
+        side.
+      </description>
+      <name>onhide</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the EventEditorDialog.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the EventEditorDialog.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks
+        over the EventEditorDialog with either mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the
+        EventEditorDialog.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the
+        EventEditorDialog.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        away from the EventEditorDialog.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases the mouse button over the
+        EventEditorDialog.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the EventEditorDialog.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the EventEditorDialog.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a key
+        over the EventEditorDialog.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
   </tag>
+
+  <tag>
+    <name>customEventEditor</name>
+    <tag-class>org.openfaces.taglib.jsp.timetable.CustomEventEditorJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>A value-binding expression that associates the EventEditorPage with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.timetable.CustomEventEditor</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.timetable. CustomEventEditor-->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should show the custom editor for event creation.
+      </description>
+      <name>oncreate</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should show the custom editor for event editing.
+      </description>
+      <name>onedit</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+  </tag>
+
 
   <tag>
     <name>eventActionBar</name>
@@ -22676,7 +23706,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the EventActionBar.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the
+        EventActionBar.
       </description>
       <name>onmouseover</name>
       <deferred-value>
@@ -22687,7 +23718,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer over the EventActionBar.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the
+        EventActionBar.
       </description>
       <name>onmousemove</name>
       <deferred-value>
@@ -23258,7 +24290,7 @@ and it is automatically triggered on any form submission. -->
     <tag-class>org.openfaces.taglib.jsp.timetable.EventEditorPageJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
-      <description>A value-binding expression that associates the EventDetailsDialog with a backing bean property.
+      <description>A value-binding expression that associates the EventEditorPage with a backing bean property.
       </description>
       <name>binding</name>
       <deferred-value>
@@ -23723,26 +24755,6 @@ and it is automatically triggered on any form submission. -->
         over the BorderLayoutPanel.
       </description>
       <name>onmouseup</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>JavaScript code that should be executed when the BorderLayoutPanel receives focus.</description>
-      <name>onfocus</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>JavaScript code that should be executed when the BorderLayoutPanel loses focus.</description>
-      <name>onblur</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -24281,7 +25293,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>A localized user presentable name for this component. Used when constructing validation messages for
-      this component in the same way as for the standard &lt;h:inputText> component.</description>
+        this component in the same way as for the standard &lt;h:inputText> component.
+      </description>
       <name>label</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -24337,9 +25350,9 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>minValue</name>
       <deferred-value>
-        <type>int</type>
+        <type>java.lang.Number</type>
       </deferred-value>
-      <!-- @bindingType int -->
+      <!-- @bindingType java.lang.Number -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -24348,9 +25361,9 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>maxValue</name>
       <deferred-value>
-        <type>int</type>
+        <type>java.lang.Number</type>
       </deferred-value>
-      <!-- @bindingType int -->
+      <!-- @bindingType java.lang.Number -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -24359,9 +25372,9 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>step</name>
       <deferred-value>
-        <type>int</type>
+        <type>java.lang.Number</type>
       </deferred-value>
-      <!-- @bindingType int -->
+      <!-- @bindingType java.lang.Number -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
@@ -25109,5 +26122,606 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+  </tag>
+
+  <!-- SelectBooleanCheckbox TAG DECLARATION -->
+  <tag>
+    <description>The SelectBooleanCheckbox component is an extended version of the standard
+      &lt;h:selectBooleanCheckbox&gt; component that adds such possibilities as tri-state support, customizing checkbox
+      images and state-dependent styles.</description>
+    <name>selectBooleanCheckbox</name>
+    <tag-class>org.openfaces.taglib.jsp.input.SelectBooleanCheckboxJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates the SelectBooleanCheckbox with a backing bean property.</description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.input.SelectBooleanCheckbox</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.input.SelectBooleanCheckbox-->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The current value of the SelectBooleanCheckbox component.</description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.Boolean</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Boolean -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the SelectBooleanCheckbox requires a value.</description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that enabled or disabled SelectBooleanCheckbox.</description>
+      <name>disabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A localized user presentable name for this component.</description>
+      <name>label</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the SelectBooleanCheckbox component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the SelectBooleanCheckbox component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the SelectBooleanCheckbox component in the disabled state.</description>
+      <name>disabledStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the SelectBooleanCheckbox component in the disabled state.</description>
+      <name>disabledClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the SelectBooleanCheckbox component in the rollover state.</description>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the SelectBooleanCheckbox component in the rollover state.</description>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style of the SelectBooleanCheckbox component when it is focused.</description>
+      <name>focusedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name of the SelectBooleanCheckbox component when it is focused.</description>
+      <name>focusedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the value of the SelectBooleanCheckbox has changed.
+      </description>
+      <name>onchange</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a key
+        over the SelectBooleanCheckbox.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the SelectBooleanCheckbox.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the SelectBooleanCheckbox.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks over
+        the SelectBooleanCheckbox with either mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the SelectBooleanCheckbox.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the SelectBooleanCheckbox.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the SelectBooleanCheckbox.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases the mouse button over the SelectBooleanCheckbox.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the SelectBooleanCheckbox receives focus.</description>
+      <name>onfocus</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the SelectBooleanCheckbox loses focus.</description>
+      <name>onblur</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the SelectBooleanCheckbox.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the SelectBooleanCheckbox.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>An access key for the SelectBooleanCheckbox component.
+      </description>
+      <name>accesskey</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Position of the SelectBooleanCheckbox component in the tabbing order for the current document.
+      </description>
+      <name>tabindex</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An advisory title for the SelectBooleanCheckbox component.
+      </description>
+      <name>title</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Direction of the SelectBooleanCheckbox text.
+      </description>
+      <name>dir</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Language code for the SelectBooleanCheckbox.
+      </description>
+      <name>lang</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when text within the component is selected by the user.
+      </description>
+      <name>onselect</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A flag that indicates whether or not the user is allowed
+      	to cycle through the undefined state of the SelectBooleanCheckbox.
+      </description>
+      <name>triStateAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>URL to the image file that is used to render the image
+        that corresponds to the selected state of the SelectBooleanCheckbox.
+      </description>
+      <name>selectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file that is used to render the image
+        that corresponds to the unselected state of the SelectBooleanCheckbox.
+      </description>
+      <name>unselectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file that is used to render the image
+        that corresponds to the undefined state of the SelectBooleanCheckbox.
+      </description>
+      <name>undefinedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>URL to the image file that is used to render the image
+        that corresponds to the selected and rolled over state of the SelectBooleanCheckbox.
+      </description>
+      <name>rolloverSelectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file that is used to render the image
+        that corresponds to the unselected and rolled over state of the SelectBooleanCheckbox.
+      </description>
+      <name>rolloverUnselectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file that is used to render the image
+        that corresponds to the undefined and rolled over state of the SelectBooleanCheckbox.
+      </description>
+      <name>rolloverUndefinedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>URL to the image file that is used to render the image
+        that corresponds to the selected and pressed state of the SelectBooleanCheckbox.
+      </description>
+      <name>pressedSelectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file that is used to render the image
+        that corresponds to the unselected and pressed state of the SelectBooleanCheckbox.
+      </description>
+      <name>pressedUnselectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file that is used to render the image
+        that corresponds to the undefined and pressed state of the SelectBooleanCheckbox.
+      </description>
+      <name>pressedUndefinedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>URL to the image file that is used to render the image
+        that corresponds to the selected and disabled state of the SelectBooleanCheckbox.
+      </description>
+      <name>disabledSelectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file that is used to render the image
+        that corresponds to the unselected and disabled state of the SelectBooleanCheckbox.
+      </description>
+      <name>disabledUnselectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file that is used to render the image
+        that corresponds to the undefined and disabled state of the SelectBooleanCheckbox.
+      </description>
+      <name>disabledUndefinedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the SelectBooleanCheckbox component in the selected state.</description>
+      <name>selectedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the SelectBooleanCheckbox component in the selected state.</description>
+      <name>selectedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the SelectBooleanCheckbox component in the unselected state.</description>
+      <name>unselectedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the SelectBooleanCheckbox component in the unselected state.</description>
+      <name>unselectedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the SelectBooleanCheckbox component in the undefined state.</description>
+      <name>undefinedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the SelectBooleanCheckbox component in the undefined state.</description>
+      <name>undefinedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>validateAll</name>
+    <tag-class>org.openfaces.taglib.jsp.validation.AnnotationValidationJspTag</tag-class>
+    <body-content>JSP</body-content>
   </tag>
 </taglib>

@@ -24,7 +24,7 @@ import java.util.Comparator;
 /**
  * @author Pavel Kaplin
  */
-public class TableColumnTag extends AbstractColumnTag {
+public class TableColumnTag extends BaseColumnTag {
     public static final String CASE_INSENSITIVE_TEXT_COMPARATOR = "caseInsensitiveText";
 
     public String getComponentType() {

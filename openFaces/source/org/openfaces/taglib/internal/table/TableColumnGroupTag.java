@@ -16,7 +16,7 @@ import org.openfaces.component.table.TableColumnGroup;
 /**
  * @author Dmitry Pikhulya
  */
-public class TableColumnGroupTag extends AbstractColumnTag {
+public class TableColumnGroupTag extends BaseColumnTag {
 
     public String getComponentType() {
         return TableColumnGroup.COMPONENT_TYPE;

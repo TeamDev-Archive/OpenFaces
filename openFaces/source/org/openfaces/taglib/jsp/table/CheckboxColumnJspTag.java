@@ -18,7 +18,7 @@ import javax.el.ValueExpression;
 /**
  * @author Dmitry Pikhulya
  */
-public class CheckboxColumnJspTag extends AbstractColumnJspTag {
+public class CheckboxColumnJspTag extends BaseColumnJspTag {
 
     public CheckboxColumnJspTag() {
         super(new CheckboxColumnTag());

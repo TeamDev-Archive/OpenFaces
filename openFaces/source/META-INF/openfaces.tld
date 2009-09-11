@@ -1296,8 +1296,8 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the cell in the filter row (row that contains the filter components).</description>
-      <name>filterCellStyle</name>
+      <description>A style for the cell in the sub-header row.</description>
+      <name>subHeaderStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -1306,9 +1306,9 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the cell in the filter row (row that contains the filter components).
+      <description>A CSS class name for the cell in the sub-header row.
       </description>
-      <name>filterCellClass</name>
+      <name>subHeaderClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -2227,11 +2227,11 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the cell in the filter row (row that contains the filter components).
+      <description>A style for the cell in the sub-header row.
         Can be specified as a value-binding expression that uses a column data variable specified
         in the "var" attribute.
       </description>
-      <name>filterCellStyle</name>
+      <name>subHeaderStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -2240,11 +2240,11 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the cell in the filter row (row that contains the filter components).
+      <description>A CSS class name for the cell in the sub-header row.
         Can be specified as a value-binding expression that uses a column data variable specified
         in the "var" attribute.
       </description>
-      <name>filterCellClass</name>
+      <name>subHeaderClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -3940,8 +3940,8 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the cell in the filter row (row that contains the filter components).</description>
-      <name>filterCellStyle</name>
+      <description>A style for the cell in the sub-header row.</description>
+      <name>subHeaderStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -3950,9 +3950,9 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the cell in the filter row (row that contains the filter components).
+      <description>A CSS class name for the cell in the sub-header row.
       </description>
-      <name>filterCellClass</name>
+      <name>subHeaderClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -4528,8 +4528,8 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the cell in the filter row (row that contains the filter components).</description>
-      <name>filterCellStyle</name>
+      <description>A style for the cell in the sub-header row.</description>
+      <name>subHeaderStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -4538,9 +4538,9 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the cell in the filter row (row that contains the filter components).
+      <description>A CSS class name for the cell in the sub-header row.
       </description>
-      <name>filterCellClass</name>
+      <name>subHeaderClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -5470,7 +5470,7 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the line that separates the filter row and the column header.</description>
+      <description>A style for the line that separates the sub-header row.</description>
       <name>filterRowSeparator</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -6651,8 +6651,8 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the cell in the filter row (row that contains the filter components).</description>
-      <name>filterCellStyle</name>
+      <description>A style for the cell in the sub-header row.</description>
+      <name>subHederStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -6661,9 +6661,9 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the cell in the filter row (row that contains the filter components).
+      <description>A CSS class name for the cell in the sub-header row.
       </description>
-      <name>filterCellClass</name>
+      <name>subHeaderClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

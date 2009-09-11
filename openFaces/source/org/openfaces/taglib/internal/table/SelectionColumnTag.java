@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Pavel Kaplin
  */
-public class SelectionColumnTag extends AbstractColumnTag {
+public class SelectionColumnTag extends BaseColumnTag {
     public String getComponentType() {
         return SelectionColumn.COMPONENT_TYPE;
     }

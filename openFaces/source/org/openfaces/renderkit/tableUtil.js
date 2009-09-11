@@ -1084,7 +1084,7 @@ O$._initTableColumnOrGroup = function(column, table) {
     var columnFilterPos = column.filter.pos;
     var row = headRows[columnFilterPos.row];
     var cell = column.filter._cell = row._cells[columnFilterPos.cell];
-    O$._initTableFilterCell(cell, column);
+    O$._initTableSubHeaderCell(cell, column);
   }
 
   var footRows = table._getFooterRows();
@@ -1130,9 +1130,9 @@ O$._initTableColumnOrGroup = function(column, table) {
     if (headerCell)
       headerCell._updateStyle();
 
-    var filterCell = column.filter ? column.filter._cell : null;
-    if (filterCell)
-      filterCell._updateStyle();
+    var subHeaderCell = column.filter ? column.filter._cell : null;
+    if (subHeaderCell)
+      subHeaderCell._updateStyle();
 
     var footerCell = column.footer ? column.footer._cell : null;
     if (footerCell)
@@ -1194,7 +1194,7 @@ O$._initTableHeaderCell = function(cell, column) {
 
 }
 
-O$._initTableFilterCell = function(cell, column) {
+O$._initTableSubHeaderCell = function(cell, column) {
   cell._column = column;
   cell._colIndex = column._colIndex;
 
@@ -1323,9 +1323,9 @@ O$._initTableColumnEvents = function(table) {
       if (headerCell)
         O$._assignColumnCellEvents(headerCell, compoundGeneralEvents, column.header);
 
-      var filterCell = column.filter ? column.filter._cell : null;
-      if (filterCell)
-        O$._assignColumnCellEvents(filterCell, compoundGeneralEvents, column.filter);
+      var subHeaderCell = column.filter ? column.filter._cell : null;
+      if (subHeaderCell)
+        O$._assignColumnCellEvents(subHeaderCell, compoundGeneralEvents, column.filter);
 
       if (!column.subColumns && column.body && !table._noDataRows) {
         var bodyCells = column.body ? column.body._cells : [];

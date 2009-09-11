@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.jsp.table;
 
-import org.openfaces.taglib.internal.table.AbstractColumnTag;
+import org.openfaces.taglib.internal.table.BaseColumnTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
 import javax.el.ValueExpression;
@@ -19,9 +19,9 @@ import javax.el.ValueExpression;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class AbstractColumnJspTag extends AbstractComponentJspTag {
+public abstract class BaseColumnJspTag extends AbstractComponentJspTag {
 
-    protected AbstractColumnJspTag(AbstractColumnTag delegate) {
+    protected BaseColumnJspTag(BaseColumnTag delegate) {
         super(delegate);
     }
 
@@ -53,12 +53,12 @@ public abstract class AbstractColumnJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("headerClass", headerClass);
     }
 
-    public void setFilterCellStyle(ValueExpression filterCellStyle) {
-        getDelegate().setPropertyValue("filterCellStyle", filterCellStyle);
+    public void setSubHeaderStyle(ValueExpression subHeaderStyle) {
+        getDelegate().setPropertyValue("subHeaderStyle", subHeaderStyle);
     }
 
-    public void setFilterCellClass(ValueExpression filterCellClass) {
-        getDelegate().setPropertyValue("filterCellClass", filterCellClass);
+    public void setSubHeaderClass(ValueExpression subHeaderClass) {
+        getDelegate().setPropertyValue("subHeaderClass", subHeaderClass);
     }
 
     public void setBodyStyle(ValueExpression bodyStyle) {

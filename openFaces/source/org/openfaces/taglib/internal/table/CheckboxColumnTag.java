@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Pavel Kaplin
  */
-public class CheckboxColumnTag extends AbstractColumnTag {
+public class CheckboxColumnTag extends BaseColumnTag {
     public String getComponentType() {
         return CheckboxColumn.COMPONENT_TYPE;
     }
