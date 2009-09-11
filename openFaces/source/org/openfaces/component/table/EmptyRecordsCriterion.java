@@ -26,4 +26,8 @@ public class EmptyRecordsCriterion extends FilterCriterion {
         return value == null || value.equals("");
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof EmptyRecordsCriterion;
+    }
 }
