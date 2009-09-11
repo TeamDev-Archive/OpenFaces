@@ -13,12 +13,14 @@
 package org.openfaces.testapp.datatable;
 
 import org.openfaces.component.table.ContainsFilterCriterion;
+import org.openfaces.component.table.FilterCriterion;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class ColorDB {
 
@@ -168,20 +170,22 @@ public class ColorDB {
         colors.add(new Color(139, "YellowGreen", 154, 205, 50, "#9ACD32"));
     }
 
-    public int getFilteredColorCount(List filterCriteria) {
+    public int getFilteredColorCount(Map<String, FilterCriterion> filterCriteria) {
         List<Color> filteredCollection = filterRows(colors, filterCriteria);
         queries.add("Calculate filtered collection size: " + getFilterCriteriaQueryText(filterCriteria));
         return filteredCollection.size();
     }
 
-    private String getFilterCriteriaQueryText(List filterCriteria) {
+    private String getFilterCriteriaQueryText(Map<String, FilterCriterion> filterCriteria) {
         StringBuffer buf = new StringBuffer();
-        for (Iterator iterator = filterCriteria.iterator(); iterator.hasNext();) {
-            ContainsFilterCriterion criterion = (ContainsFilterCriterion) iterator.next();
+        for (Iterator<Map.Entry<String, FilterCriterion>> it = filterCriteria.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<String, FilterCriterion> entry = it.next();
+            String filterId = entry.getKey();
+            ContainsFilterCriterion criterion = (ContainsFilterCriterion) entry.getValue();
             String text = criterion.getValue().toString();
-            String criterionText = "color" + " CONTAINS \"" + text + "\"";
+            String criterionText = filterId + " CONTAINS \"" + text + "\"";
             buf.append(criterionText);
-            if (iterator.hasNext())
+            if (it.hasNext())
                 buf.append(" AND ");
         }
         return buf.toString();
@@ -196,7 +200,7 @@ public class ColorDB {
         return null;
     }
 
-    public List findColorsForPage(List filterCriteria, final String sortColumnID, boolean sortAscending,
+    public List findColorsForPage(Map<String, FilterCriterion> filterCriteria, final String sortColumnID, boolean sortAscending,
                                   int pageStart, int pageSize) {
         List filteredCollection = filterRows(colors, filterCriteria);
         if (sortColumnID != null)
@@ -239,15 +243,15 @@ public class ColorDB {
         return resultingCollection;
     }
 
-    private static List<Color> filterRows(List<Color> colorsToFilter, List criteria) {
+    private static List<Color> filterRows(List<Color> colorsToFilter, Map<String, FilterCriterion> criteria) {
         if (criteria == null) {
             return new ArrayList<Color>(colorsToFilter);
         }
         List<Color> filtered = new ArrayList<Color>();
         for (Color tempColor : colorsToFilter) {
             boolean colorAccepted = true;
-            for (Object aCriteria : criteria) {
-                ContainsFilterCriterion criterion = (ContainsFilterCriterion) aCriteria;
+            for (Map.Entry<String, FilterCriterion> entry: criteria.entrySet()) {
+                ContainsFilterCriterion criterion = (ContainsFilterCriterion) entry.getValue();
                 String criterionUC = criterion.getValue().toString().toUpperCase();
                 String colorNameUC = tempColor.getName().toUpperCase();
                 if (colorNameUC.indexOf(criterionUC) == -1) {
