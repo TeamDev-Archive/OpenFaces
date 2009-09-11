@@ -50,12 +50,14 @@ public class SingleRowSelection extends DataTableSelection {
         return rowKey != null ? Collections.singletonList(rowKey) : Collections.EMPTY_LIST;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         rememberByKeys();
         Object superState = super.saveState(context);
         return new Object[]{superState, rowKey};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);
@@ -173,6 +175,7 @@ public class SingleRowSelection extends DataTableSelection {
         setRowIndex(itemIndex);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

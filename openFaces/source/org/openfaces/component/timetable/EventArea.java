@@ -52,6 +52,7 @@ public class EventArea extends OUIPanel {
         this.verticalAlignment = verticalAlignment;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -60,6 +61,7 @@ public class EventArea extends OUIPanel {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
 
@@ -77,18 +79,21 @@ public class EventArea extends OUIPanel {
         return getDayTable().getEvent();
     }
 
+    @Override
     public void processDecodes(FacesContext context) {
         if (!(getEvent() instanceof TimetableEvent))
             return;
         super.processDecodes(context);
     }
 
+    @Override
     public void processValidators(FacesContext context) {
         if (!(getEvent() instanceof TimetableEvent))
             return;
         super.processValidators(context);
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         if (!(getEvent() instanceof TimetableEvent))
             return;

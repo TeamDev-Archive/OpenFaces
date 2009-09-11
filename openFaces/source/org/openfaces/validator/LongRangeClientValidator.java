@@ -37,7 +37,7 @@ public class LongRangeClientValidator extends AbstractClientValidator {
         return "O$._LongRangeValidator";
     }
 
-
+    @Override
     protected Object[] getJsValidatorParameteresAsString(FacesContext context, UIComponent component) {
         long minimum = longRangeValidator.getMinimum();
         long maximum = longRangeValidator.getMaximum();

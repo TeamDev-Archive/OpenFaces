@@ -48,6 +48,7 @@ public class ColumnResizing extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context),
                 enabled,
@@ -67,6 +68,7 @@ public class ColumnResizing extends UIComponentBase {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;
@@ -144,6 +146,7 @@ public class ColumnResizing extends UIComponentBase {
         this.retainTableWidth = retainTableWidth;
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
 

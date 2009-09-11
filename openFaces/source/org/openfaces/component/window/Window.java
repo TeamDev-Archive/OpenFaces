@@ -24,33 +24,40 @@ public class Window extends AbstractWindow {
         setRendererType("org.openfaces.WindowRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     protected boolean getShowCloseButtonByDefault() {
         return true;
     }
 
+    @Override
     protected boolean isDraggableByDefault() {
         return true;
     }
 
+    @Override
     protected String getDefaultWidth() {
         return "300px";
     }
 
+    @Override
     protected String getDefaultHeight() {
         return "200px";
     }
 
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;

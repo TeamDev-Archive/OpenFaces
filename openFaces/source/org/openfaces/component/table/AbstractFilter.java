@@ -12,19 +12,20 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.CompoundComponent;
+import org.openfaces.component.FilterableComponent;
 import org.openfaces.util.ValueBindings;
+import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.SelfScheduledAction;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashSet;
 import java.util.TreeSet;
 
 /**
@@ -38,7 +39,7 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
     private FilterCriterion criterion;
     private boolean criterionModelUpdateRequired;
 
-    private AbstractTable table;
+    private FilterableComponent filteredComponent;
 
     private String style;
     private String styleClass;
@@ -55,6 +56,7 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
     private String promptTextStyle;
     private String promptTextClass;
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, style, styleClass, predefinedCriterionStyle, predefinedCriterionClass,
@@ -62,6 +64,7 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
                 promptText, promptTextStyle, promptTextClass};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;
@@ -145,29 +148,29 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
     }
 
     public boolean acceptsData(FacesContext facesContext, Object data) {
-        Object filteredValue = getFilteredValueByData(facesContext, getTable(), data);
+        Object filteredValue = getFilteredValueByData(facesContext, getFilteredComponent(), data);
         return criterion == null || criterion.acceptsValue(filteredValue);
     }
 
-    private Object getFilteredValueByData(FacesContext facesContext, AbstractTable table, Object data) {
+    private Object getFilteredValueByData(FacesContext facesContext, FilterableComponent filteredComponent, Object data) {
         ValueExpression criterionNameExpression = getFilterExpression();
         Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
-        String var = getTable().getVar();
-        return table.getFilteredValueByData(facesContext, requestMap, criterionNameExpression, var, data);
+        String var = getFilteredComponent().getVar();
+        return filteredComponent.getFilteredValueByData(facesContext, requestMap, criterionNameExpression, var, data);
     }
 
     public boolean isAcceptingAllRecords() {
         return getCriterion() == null;
     }
 
-    protected AbstractTable getTable() {
-        if (table == null) {
+    protected FilterableComponent getFilteredComponent() {
+        if (filteredComponent == null) {
             UIComponent component = getParent();
-            while (component != null && !(component instanceof AbstractTable))
+            while (component != null && !(component instanceof FilterableComponent))
                 component = component.getParent();
-            table = (AbstractTable) component;
+            filteredComponent = (FilterableComponent) component;
         }
-        return table;
+        return filteredComponent;
     }
 
     private ValueExpression getFilterExpression() {
@@ -177,9 +180,9 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
     public String getAllRecordsText() {
         String result = ValueBindings.get(this, "allRecordsCriterionName", allRecordsText);
         if (result == null) {
-            AbstractTable table = getTable();
-            if (table != null)
-                result = table.getAllRecordsFilterName();
+            FilterableComponent filteredComponent = getFilteredComponent();
+            if (filteredComponent != null)
+                result = filteredComponent.getAllRecordsFilterName();
         }
         if (result == null)
             result = DEFAULT_ALL_RECORDS_CRITERION_NAME;
@@ -193,9 +196,9 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
     public String getEmptyRecordsText() {
         String result = ValueBindings.get(this, "emptyRecordsCriterionName", emptyRecordsText);
         if (result == null) {
-            AbstractTable table = getTable();
-            if (table != null)
-                result = table.getEmptyRecordsFilterName();
+            FilterableComponent filteredComponent = getFilteredComponent();
+            if (filteredComponent != null)
+                result = filteredComponent.getEmptyRecordsFilterName();
         }
         if (result == null)
             result = DEFAULT_EMPTY_RECORDS_CRITERION_NAME;
@@ -209,9 +212,9 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
     public String getNonEmptyRecordsText() {
         String result = ValueBindings.get(this, "nonEmptyRecordsCriterionName", nonEmptyRecordsText);
         if (result == null) {
-            AbstractTable table = getTable();
-            if (table != null)
-                result = table.getNonEmptyRecordsFilterName();
+            FilterableComponent filteredComponent = getFilteredComponent();
+            if (filteredComponent != null)
+                result = filteredComponent.getNonEmptyRecordsFilterName();
         }
         if (result == null)
             result = DEFAULT_NON_EMPTY_RECORDS_CRITERION_NAME;
@@ -255,13 +258,13 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
         }
         ValueExpression expression = getFilterExpression();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        String var = getTable().getVar();
+        String var = getFilteredComponent().getVar();
         Set<Object> criterionNamesSet = new TreeSet<Object>();
-        List originalRowList = getTable().getRowListForFiltering(this);
-        AbstractTable table = getTable();
+        FilterableComponent filteredComponent = getFilteredComponent();
+        List originalRowList = filteredComponent.getRowListForFiltering(this);
         boolean thereAreNullValues = false;
         for (Object data : originalRowList) {
-            Object value = table.getFilteredValueByData(context, requestMap, expression, var, data);
+            Object value = filteredComponent.getFilteredValueByData(context, requestMap, expression, var, data);
             if (value == null)
                 thereAreNullValues = true;
             else
@@ -295,7 +298,6 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
      */
     public boolean changeSearchString(FilterCriterion newCriterion) {
         FilterCriterion oldCriterion = getCriterion();
-        setCriterionColumnId(newCriterion);
         criterionModelUpdateRequired = true;
 
         if (isAllRecordsCriterion(newCriterion)) {
@@ -319,6 +321,7 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
         return getValueExpression("criterion");
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
         if (!criterionModelUpdateRequired)
@@ -332,30 +335,26 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
     }
 
     public FilterCriterion getFilterCriterion() {
-        FilterCriterion criterion = getCriterion();
-        setCriterionColumnId(criterion);
-        return criterion;
+        return getCriterion();
     }
-
-    private void setCriterionColumnId(FilterCriterion criterion) {
-        if (criterion instanceof ColumnFilterCriterion) {
-            ((ColumnFilterCriterion) criterion).setColumnId(getColumnId());
-        }
-    }
-
-    protected String getColumnId() {
-        TableColumn col = (TableColumn) getParent();
-        return col.getId();
-    }
-
 
     public void createSubComponents(FacesContext context) {
     }
 
-    @Override
-    public void encodeBegin(FacesContext context) throws IOException {
-//        if (getFilterExpression() == null)
-//            throw new FacesException("The filter's \"expression\" attribute must be specified. Filter's clientId: " + getClientId(getFacesContext()));
-        super.encodeBegin(context);
+    public void setParent(UIComponent parent) {
+        super.setParent(parent);
+
+        ComponentUtil.runWhenReady(new SelfScheduledAction() {
+            public boolean executeIfReady() {
+                FilterableComponent filteredComponent = getFilteredComponent();
+                if (filteredComponent == null)
+                    return false;
+                List<AbstractFilter> filters = filteredComponent.getFilters();
+                if (!filters.contains(AbstractFilter.this))
+                    filters.add(AbstractFilter.this);
+                return true;
+            }
+        });
     }
+
 }

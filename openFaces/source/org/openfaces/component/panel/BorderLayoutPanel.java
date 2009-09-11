@@ -60,6 +60,7 @@ public class BorderLayoutPanel extends OUIPanel {
         this.oncontentresize = oncontentresize;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -67,6 +68,7 @@ public class BorderLayoutPanel extends OUIPanel {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         int i = 0;

@@ -126,6 +126,7 @@ public class SimpleDateRange extends AbstractDateRange {
                 rolloverSelectedDayClass};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
         int i = 0;

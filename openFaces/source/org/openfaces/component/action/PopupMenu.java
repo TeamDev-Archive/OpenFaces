@@ -69,24 +69,28 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction {
     private String onshow;
     private String onhide;
 
+    @Override
     public String getStyle() {
         String result = ValueBindings.get(this, "style", style);
         if (result == null && getPopupMenuParent() != null) result = getPopupMenuParent().style;
         return result == null ? ValueBindings.get(this, "style", style) : result;
     }
 
+    @Override
     public String getStyleClass() {
         String result = ValueBindings.get(this, "styleClass", styleClass);
         if (result == null && getPopupMenuParent() != null) result = getPopupMenuParent().styleClass;
         return result == null ? ValueBindings.get(this, "styleClass", styleClass) : result;
     }
 
+    @Override
     public String getRolloverStyle() {
         String result = ValueBindings.get(this, "rolloverStyle", rolloverStyle);
         if (result == null && getPopupMenuParent() != null) result = getPopupMenuParent().rolloverStyle;
         return result == null ? ValueBindings.get(this, "rolloverStyle", rolloverStyle) : result;
     }
 
+    @Override
     public String getRolloverClass() {
         String result = ValueBindings.get(this, "rolloverClass", rolloverClass);
         if (result == null && getPopupMenuParent() != null) result = getPopupMenuParent().rolloverClass;

@@ -39,12 +39,14 @@ public class TabbedPaneItems extends UIComponentBase implements Serializable {
     }
 
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
                 value};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);

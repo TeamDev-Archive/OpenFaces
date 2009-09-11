@@ -31,18 +31,22 @@ public class EventWrapperForIterator extends FacesEvent {
         this.objectId = objectId;
     }
 
+    @Override
     public PhaseId getPhaseId() {
         return originalEvent.getPhaseId();
     }
 
+    @Override
     public void setPhaseId(PhaseId phaseId) {
         originalEvent.setPhaseId(phaseId);
     }
 
+    @Override
     public void queue() {
         originalEvent.queue();
     }
 
+    @Override
     public String toString() {
         return originalEvent.toString();
     }

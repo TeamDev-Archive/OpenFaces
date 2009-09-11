@@ -44,10 +44,12 @@ public class RegexValidator extends AbstractRegexValidator {
         return (String) ve.getValue(elContext);
     }
 
+    @Override
     public String getValidatorMessageID() {
         return REGEX_VALIDATOR_MESSAGE_ID;
     }
 
+    @Override
     public Object saveState(FacesContext facesContext) {
         Object superState = super.saveState(facesContext);
 
@@ -58,6 +60,7 @@ public class RegexValidator extends AbstractRegexValidator {
         };
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

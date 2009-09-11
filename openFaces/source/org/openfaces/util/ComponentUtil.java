@@ -26,12 +26,14 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Iterator;
 
 /**
  * @author Dmitry Pikhulya
  */
 public class ComponentUtil {
     private static final String AUTO_ID_PREFIX = "j_id";
+    private static final String POSTPONED_ACTIONS_ATTR = "org.openfaces.postponedActions";
 
     private ComponentUtil() {
     }
@@ -293,4 +295,29 @@ public class ComponentUtil {
         String childId = generateIdWithSuffix(component, idSuffix);
         return component.findComponent(childId);
     }
+
+    public static void runWhenReady(SelfScheduledAction action) {
+        if (action.executeIfReady())
+            return;
+        Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        List<SelfScheduledAction> postponedActions = (List) requestMap.get(POSTPONED_ACTIONS_ATTR);
+        if (postponedActions == null) {
+            postponedActions = new ArrayList<SelfScheduledAction>();
+            requestMap.put(POSTPONED_ACTIONS_ATTR, postponedActions);
+        }
+        postponedActions.add(action);
+    }
+
+    public static void runScheduledActions() {
+        Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        List<SelfScheduledAction> postponedActions = (List) requestMap.get(POSTPONED_ACTIONS_ATTR);
+        if (postponedActions == null)
+            return;
+        for (Iterator<SelfScheduledAction> actionIterator = postponedActions.iterator(); actionIterator.hasNext();) {
+            SelfScheduledAction action = actionIterator.next();
+            if (action.executeIfReady())
+                actionIterator.remove();
+        }
+    }
+
 }

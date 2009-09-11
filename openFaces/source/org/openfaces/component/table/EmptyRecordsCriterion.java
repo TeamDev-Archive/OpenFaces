@@ -14,7 +14,7 @@ package org.openfaces.component.table;
 /**
  * @author Dmitry Pikhulya
  */
-public class EmptyRecordsCriterion extends ColumnFilterCriterion {
+public class EmptyRecordsCriterion extends FilterCriterion {
 
     @Override
     public boolean acceptsAll() {

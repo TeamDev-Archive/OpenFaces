@@ -68,6 +68,7 @@ public class TimetableResource implements ConvertibleToJSON, Cloneable {
         return resourceObj;
     }
 
+    @Override
     public Object clone() {
         try {
             return super.clone();

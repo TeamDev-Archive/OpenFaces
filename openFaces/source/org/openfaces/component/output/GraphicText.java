@@ -51,6 +51,7 @@ public class GraphicText extends OUIOutput implements StyledComponent {
         setRendererType("org.openfaces.GraphicTextRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

@@ -38,6 +38,7 @@ public class TabSetItems extends UIComponentBase implements Serializable {
         this.value = value;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -46,6 +47,7 @@ public class TabSetItems extends UIComponentBase implements Serializable {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);

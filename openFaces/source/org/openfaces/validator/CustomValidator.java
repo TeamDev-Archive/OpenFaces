@@ -53,6 +53,7 @@ public class CustomValidator extends AbstractCustomValidator {
         return (Boolean) serverFunction.invoke(context.getELContext(), args);
     }
 
+    @Override
     public Script getClientScript(FacesContext context, UIComponent component) {
         String dynamicClientFunction = (String) getDynamicValue(clientFunction);
 
@@ -64,6 +65,7 @@ public class CustomValidator extends AbstractCustomValidator {
                         "input", "value"));
     }
 
+    @Override
     public Object saveState(FacesContext facesContext) {
         Object superState = super.saveState(facesContext);
 
@@ -74,6 +76,7 @@ public class CustomValidator extends AbstractCustomValidator {
         };
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

@@ -82,6 +82,7 @@ public class ScrollPosition extends UIComponentBase {
         _for = aFor;
     }
 
+    @Override
     public void encodeBegin(FacesContext context) throws IOException {
         int scrollX = getScrollX();
         int scrollY = getScrollY();
@@ -132,6 +133,7 @@ public class ScrollPosition extends UIComponentBase {
         return new Point(x, y);
     }
 
+    @Override
     public void decode(FacesContext context) {
         super.decode(context);
         if (!getAutoSaveScrollPos())
@@ -143,11 +145,13 @@ public class ScrollPosition extends UIComponentBase {
         scrollY = point.y;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, scrollX, scrollY, autoSaveScrollPos, _for};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);
@@ -157,6 +161,7 @@ public class ScrollPosition extends UIComponentBase {
         _for = (String) stateArray[4];
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
         if (scrollX != null && ValueBindings.set(this, "scrollX", scrollX))

@@ -124,6 +124,7 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
         this.backgroundIntensityLevel = backgroundIntensityLevel;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -138,6 +139,7 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
                 oncreate};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

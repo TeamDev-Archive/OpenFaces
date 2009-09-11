@@ -40,11 +40,13 @@ public class AjaxSettings extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, onerror, onsessionexpired, onajaxstart, onajaxend};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);

@@ -17,5 +17,5 @@ import javax.faces.component.UIComponentBase;
  * @author Eugene Goncharov
  */
 public abstract class ErrorMessage extends UIComponentBase {
-    public abstract String getFamily();
+    
 }

@@ -27,6 +27,7 @@ public class AbstractCalendarPopup extends AbstractPopup {
     protected void encodeContent(FacesContext context) throws IOException {
     }
 
+    @Override
     public void encodeOpeningTags(FacesContext context) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("table", this);
@@ -39,6 +40,7 @@ public class AbstractCalendarPopup extends AbstractPopup {
         writer.writeAttribute("style", getPopupStyle(), null);
     }
 
+    @Override
     protected void encodeClosingTags(FacesContext context) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.endElement("table");

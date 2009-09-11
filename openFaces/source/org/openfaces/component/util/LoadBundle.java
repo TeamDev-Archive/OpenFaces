@@ -41,6 +41,7 @@ public class LoadBundle extends UIComponentBase implements Serializable, AjaxLoa
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
         loadBundle(context);
@@ -212,6 +213,7 @@ public class LoadBundle extends UIComponentBase implements Serializable, AjaxLoa
         this.var = var;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -220,6 +222,7 @@ public class LoadBundle extends UIComponentBase implements Serializable, AjaxLoa
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         int i = 0;

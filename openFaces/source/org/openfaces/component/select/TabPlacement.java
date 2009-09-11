@@ -28,6 +28,7 @@ public enum TabPlacement {
         this.opposite = opposite;
     }
 
+    @Override
     public String toString() {
         return position;
     }

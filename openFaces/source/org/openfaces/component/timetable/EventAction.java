@@ -41,10 +41,12 @@ public class EventAction extends UICommand {
     private String onclick;
     private String hint;
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -53,6 +55,7 @@ public class EventAction extends UICommand {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;
@@ -169,6 +172,7 @@ public class EventAction extends UICommand {
         return result;
     }
 
+    @Override
     public void decode(FacesContext context) {
         super.decode(context);
 

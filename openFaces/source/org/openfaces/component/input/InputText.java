@@ -93,10 +93,12 @@ public class InputText extends OUIInputText {
         setRendererType("org.openfaces.InputTextRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context),
                 dir,
@@ -109,6 +111,7 @@ public class InputText extends OUIInputText {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
         int i = 0;

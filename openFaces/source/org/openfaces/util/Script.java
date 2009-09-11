@@ -23,6 +23,7 @@ public abstract class Script implements JSONString {
         return getScript();
     }
 
+    @Override
     public String toString() {
         return getScript();
     }

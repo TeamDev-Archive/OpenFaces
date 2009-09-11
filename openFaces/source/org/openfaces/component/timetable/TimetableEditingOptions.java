@@ -36,6 +36,7 @@ public class TimetableEditingOptions extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -47,6 +48,7 @@ public class TimetableEditingOptions extends UIComponentBase {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;

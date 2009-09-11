@@ -266,6 +266,7 @@ public class VerifiableComponent {
         return new VerifiableComponent(component, clientId);
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -278,6 +279,7 @@ public class VerifiableComponent {
         return true;
     }
 
+    @Override
     public int hashCode() {
         int result;
         result = (component != null ? component.hashCode() : 0);

@@ -31,6 +31,7 @@ public enum LegendPosition {
         this.rectangleEdge = rectangleEdge;
     }
 
+    @Override
     public String toString() {
         return name;
     }

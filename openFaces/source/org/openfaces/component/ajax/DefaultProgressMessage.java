@@ -45,11 +45,13 @@ public class DefaultProgressMessage extends ProgressMessage {
         setRendererType("org.openfaces.DefaultProgressMessageRenderer");
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, text, imageUrl, style, styleClass};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);

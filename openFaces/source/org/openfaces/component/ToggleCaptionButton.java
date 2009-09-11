@@ -35,6 +35,7 @@ public class ToggleCaptionButton extends CaptionButton {
         setRendererType("org.openfaces.ToggleCaptionButtonRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -71,6 +72,7 @@ public class ToggleCaptionButton extends CaptionButton {
         this.toggled = toggled;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -81,6 +83,7 @@ public class ToggleCaptionButton extends CaptionButton {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
         int i = 0;
@@ -95,6 +98,7 @@ public class ToggleCaptionButton extends CaptionButton {
         return Collections.emptyMap();
     }
 
+    @Override
     public void setValueExpression(String name, ValueExpression binding) {
         String delegateName = getPropertyMappings().get(name);
         if (delegateName != null)
@@ -103,6 +107,7 @@ public class ToggleCaptionButton extends CaptionButton {
             super.setValueExpression(name, binding);
     }
 
+    @Override
     public ValueExpression getValueExpression(String name) {
         String delegateName = getPropertyMappings().get(name);
         if (delegateName != null)

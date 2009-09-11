@@ -61,6 +61,7 @@ public class Focus extends UIComponentBase {
         this.autoSaveFocus = autoSaveFocus;
     }
 
+    @Override
     public void encodeBegin(FacesContext context) throws IOException {
         String componentId = ComponentUtil.referenceIdToClientId(context, this, getFocusedComponentId());
 
@@ -75,6 +76,7 @@ public class Focus extends UIComponentBase {
         );
     }
 
+    @Override
     public void decode(FacesContext context) {
         super.decode(context);
         if (!getAutoSaveFocus())
@@ -85,11 +87,13 @@ public class Focus extends UIComponentBase {
 
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, focusedComponentId, autoSaveFocus};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);
@@ -97,6 +101,7 @@ public class Focus extends UIComponentBase {
         autoSaveFocus = (Boolean) stateArray[2];
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
         if (focusedComponentId != null && ValueBindings.set(this, "focusedComponentId", focusedComponentId))

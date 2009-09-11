@@ -84,10 +84,12 @@ public class TwoListSelection extends OUISelectMany {
         setRendererType("org.openfaces.TwoListSelectionRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context),
                 leftListboxSelectedItems, rightListboxSelectedItems, leftListboxHeader, rightListboxHeader,
@@ -100,6 +102,7 @@ public class TwoListSelection extends OUISelectMany {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
         int i = 0;

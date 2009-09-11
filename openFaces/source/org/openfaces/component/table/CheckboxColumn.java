@@ -46,10 +46,12 @@ public class CheckboxColumn extends BaseColumn {
         getAttributes().put("defaultStyle", DEFAULT_CLASS);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{
@@ -59,6 +61,7 @@ public class CheckboxColumn extends BaseColumn {
                 sortable};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         super.restoreState(context, state[0]);
@@ -197,6 +200,7 @@ public class CheckboxColumn extends BaseColumn {
             throw new IllegalStateException("selectedRows is " + (selectedRows != null ? selectedRows.getClass().getName() : "null"));
     }
 
+    @Override
     public void encodeBegin(FacesContext context) throws IOException {
         if (selectedRows == null || selectedRows.getModel() == null)
             assignDataModel();
@@ -204,12 +208,14 @@ public class CheckboxColumn extends BaseColumn {
         super.encodeBegin(context);
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
         selectedRows.processUpdates(context);
         selectedRows.beforeInvokeApplication();
     }
 
+    @Override
     public void setValueExpression(String name, ValueExpression expression) {
         if (MultipleRowSelection.ROW_INDEXES_PROPERTY.equals(name) ||
                 MultipleRowSelection.ROW_DATAS_PROPERTY.equals(name) ||
@@ -249,6 +255,7 @@ public class CheckboxColumn extends BaseColumn {
             throw new IllegalStateException("selection is " + (selection != null ? selection.getClass().getName() : "null"));
     }
 
+    @Override
     public ValueExpression getValueExpression(String name) {
         if (MultipleRowSelection.ROW_INDEXES_PROPERTY.equals(name) ||
                 MultipleRowSelection.ROW_DATAS_PROPERTY.equals(name) ||

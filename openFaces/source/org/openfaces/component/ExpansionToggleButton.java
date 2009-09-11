@@ -36,6 +36,7 @@ public class ExpansionToggleButton extends ToggleCaptionButton {
         setRendererType("org.openfaces.ExpansionToggleButtonRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -88,6 +89,7 @@ public class ExpansionToggleButton extends ToggleCaptionButton {
         super.setPressedImageUrl(pressedImageUrl);
     }
 
+    @Override
     protected Map<String, String> getPropertyMappings() {
         return OUR_PROPERTY_MAPPINGS;
     }

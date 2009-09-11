@@ -67,7 +67,7 @@ public class ValidationProcessor extends UIComponentBase {
         setRendered(false);
     }
 
-
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -78,7 +78,7 @@ public class ValidationProcessor extends UIComponentBase {
         };
     }
 
-
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         int i = 0;

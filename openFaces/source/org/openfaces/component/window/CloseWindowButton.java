@@ -24,6 +24,7 @@ public class CloseWindowButton extends CaptionButton {
         setRendererType("org.openfaces.CloseWindowButtonRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

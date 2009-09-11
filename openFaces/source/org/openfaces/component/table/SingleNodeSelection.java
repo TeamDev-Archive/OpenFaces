@@ -36,6 +36,7 @@ public class SingleNodeSelection extends TreeTableSelection {
     private TreePath nodePath;
     private TreePath nodeKeyPath;
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -117,12 +118,14 @@ public class SingleNodeSelection extends TreeTableSelection {
         return null;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         rememberByKeys();
         Object superState = super.saveState(context);
         return new Object[]{superState, nodeKeyPath};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);

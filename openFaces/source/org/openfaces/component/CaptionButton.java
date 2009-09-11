@@ -88,6 +88,7 @@ public class CaptionButton extends OUICommand {
         this.hint = hint;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -100,6 +101,7 @@ public class CaptionButton extends OUICommand {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
         int i = 0;

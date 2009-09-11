@@ -36,10 +36,12 @@ public abstract class AbstractPopup extends UIPanel {
     protected AbstractPopup() {
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public void encodeBegin(FacesContext context) throws IOException {
         if (!isRendered()) return;
         encodeOpeningTags(context);
@@ -56,11 +58,13 @@ public abstract class AbstractPopup extends UIPanel {
         return POPUP_STYLE;
     }
 
+    @Override
     public void encodeChildren(FacesContext context) throws IOException {
         if (!isRendered()) return;
         encodeContent(context);
     }
 
+    @Override
     public void encodeEnd(FacesContext context) throws IOException {
         if (!isRendered()) return;
         encodeClosingTags(context);
@@ -78,7 +82,7 @@ public abstract class AbstractPopup extends UIPanel {
      */
     protected abstract void encodeContent(FacesContext context) throws IOException;
 
-
+    @Override
     public boolean getRendersChildren() {
         return true;
     }

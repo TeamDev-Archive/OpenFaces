@@ -36,6 +36,7 @@ public abstract class TextSearchFilter extends AbstractFilter {
         return containsFilterCriterion.getValue().toString();
     }
 
+    @Override
     public void createSubComponents(FacesContext context) {
         super.createSubComponents(context);
         ComponentUtil.createChildComponent(context, this, getInputComponentType(), SEARCH_COMPONENT_SUFFIX);

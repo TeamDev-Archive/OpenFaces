@@ -74,11 +74,13 @@ public abstract class AbstractTableSelection extends UICommand {
 
     protected abstract void decodeSelectionFromIndexes(List<Integer> indexes);
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, enabled, mouseSupport, keyboardSupport, style, styleClass, onchange};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         int i = 0;
@@ -198,6 +200,7 @@ public abstract class AbstractTableSelection extends UICommand {
         getAttributes().put("_selectionCls_", selectionCls);
     }
 
+    @Override
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
 

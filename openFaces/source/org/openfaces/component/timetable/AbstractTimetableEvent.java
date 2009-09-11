@@ -128,6 +128,7 @@ public abstract class AbstractTimetableEvent implements ConvertibleToJSON, Clone
     }
 
 
+    @Override
     public Object clone() {
         try {
             return super.clone();

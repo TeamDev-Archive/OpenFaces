@@ -25,15 +25,18 @@ public class TableColumn extends BaseColumn {
     public TableColumn() {
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;
@@ -59,6 +62,10 @@ public class TableColumn extends BaseColumn {
 
     public UIComponent getSubHeader() {
         return getFacet("subHeader");
+    }
+
+    public void setSubHeader(UIComponent component) {
+        getFacets().put("subHeader", component);
     }
 
 }

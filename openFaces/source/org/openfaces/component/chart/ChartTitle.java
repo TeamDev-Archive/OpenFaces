@@ -75,6 +75,7 @@ public class ChartTitle extends UICommand implements StyledComponent {
         return getTextStyle();
     }
 
+    @Override
     public void setParent(UIComponent uiComponent) {
         super.setParent(uiComponent);
         if (this.getParent() instanceof Chart) {
@@ -99,6 +100,7 @@ public class ChartTitle extends UICommand implements StyledComponent {
         return null;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState,
@@ -110,6 +112,7 @@ public class ChartTitle extends UICommand implements StyledComponent {
 
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

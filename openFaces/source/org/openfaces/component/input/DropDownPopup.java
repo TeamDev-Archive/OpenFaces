@@ -215,6 +215,7 @@ public class DropDownPopup extends AbstractPopup {
         this.dropDownList = dropDownList;
     }
 
+    @Override
     public void encodeOpeningTags(FacesContext context) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", this);
@@ -230,12 +231,14 @@ public class DropDownPopup extends AbstractPopup {
         writer.writeAttribute("width", "100%", null);
     }
 
+    @Override
     protected void encodeClosingTags(FacesContext context) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.endElement("table");
         writer.endElement("div");
     }
 
+    @Override
     protected boolean getUseDisplayNoneByDefault() {
         return EnvironmentUtil.isExplorer() || EnvironmentUtil.isMozilla();
     }

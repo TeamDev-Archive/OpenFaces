@@ -87,6 +87,7 @@ public class StyleGroup implements Serializable, Comparable {
         allGroups.add(this);
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -99,6 +100,7 @@ public class StyleGroup implements Serializable, Comparable {
         return true;
     }
 
+    @Override
     public int hashCode() {
         int result;
         result = (groupType != null ? groupType.hashCode() : 0);
@@ -118,6 +120,7 @@ public class StyleGroup implements Serializable, Comparable {
         return this.index - that.index;
     }
 
+    @Override
     public String toString() {
         String result = groupType;
         if (index > 0)

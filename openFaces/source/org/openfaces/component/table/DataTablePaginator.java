@@ -69,6 +69,7 @@ public class DataTablePaginator extends UIComponentBase {
         throw new RuntimeException("<o:DataTablePaginator> should be embedded into a <o:dataTable>");
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, style, styleClass, activeLinkStyle, activeLinkClass,
@@ -79,6 +80,7 @@ public class DataTablePaginator extends UIComponentBase {
                 nextDisabledImageUrl, showDisabledImages};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;

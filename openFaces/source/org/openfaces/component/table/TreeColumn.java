@@ -34,15 +34,18 @@ public class TreeColumn extends TableColumn implements CompoundComponent {
         setRendererType("org.openfaces.TreeColumnRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context), levelIndent, expansionToggleCellStyle, expansionToggleCellClass,
                 showAsTree};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         super.restoreState(context, state[0]);
@@ -88,7 +91,8 @@ public class TreeColumn extends TableColumn implements CompoundComponent {
         ((ImageExpansionToggle) getExpansionToggle()).setCollapsedImageUrl(value);
     }
 
-
+    
+    @Override
     public void setValueExpression(String name, ValueExpression expression) {
         if ("expandedToggleImageUrl".equals(name))
             getExpansionToggle().setValueExpression("expandedImageUrl", expression);
@@ -97,6 +101,7 @@ public class TreeColumn extends TableColumn implements CompoundComponent {
         super.setValueExpression(name, expression);
     }
 
+    @Override
     public ValueExpression getValueExpression(String name) {
         if ("expandedToggleImageUrl".equals(name))
             return getExpansionToggle().getValueExpression("expandedImageUrl");

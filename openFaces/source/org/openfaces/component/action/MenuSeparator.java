@@ -33,6 +33,7 @@ public class MenuSeparator extends UIOutput {
         setRendererType("org.openfaces.MenuSeparatorRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -71,6 +72,7 @@ public class MenuSeparator extends UIOutput {
     }
 
 
+    @Override
     public Object saveState(FacesContext facesContext) {
         return new Object[]{
                 super.saveState(facesContext),
@@ -78,6 +80,7 @@ public class MenuSeparator extends UIOutput {
         };
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object state) {
         Object[] values = (Object[]) state;
         int i = 0;

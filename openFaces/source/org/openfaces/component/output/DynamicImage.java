@@ -102,6 +102,7 @@ public class DynamicImage extends OUIComponentBase {
         setValueExpression("data", dataExpression);
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
 
@@ -116,6 +117,7 @@ public class DynamicImage extends OUIComponentBase {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

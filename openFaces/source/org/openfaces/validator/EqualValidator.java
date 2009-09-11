@@ -56,6 +56,7 @@ public class EqualValidator extends AbstractCustomValidator {
         return "O$._EqualValidator";
     }
 
+    @Override
     public Script getClientScript(FacesContext context, UIComponent component) {
         UIComponent forComponent = getForComponent(_for, component);
         return new NewInstanceScript(getJsValidatorName(),
@@ -64,10 +65,12 @@ public class EqualValidator extends AbstractCustomValidator {
                 forComponent != null ? forComponent.getClientId(context) : null);
     }
 
+    @Override
     public String getValidatorMessageID() {
         return EQUAL_VALIDATOR_MESSAGE_ID;
     }
 
+    @Override
     public Object saveState(FacesContext facesContext) {
         Object superState = super.saveState(facesContext);
 
@@ -77,6 +80,7 @@ public class EqualValidator extends AbstractCustomValidator {
         };
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;
@@ -84,6 +88,7 @@ public class EqualValidator extends AbstractCustomValidator {
         _for = (String) state[i++];
     }
 
+    @Override
     public Object[] getImplicitParams(UIComponent uiComponent) {
         String id = null;
         FacesContext context = FacesContext.getCurrentInstance();

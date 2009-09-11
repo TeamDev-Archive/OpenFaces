@@ -81,14 +81,17 @@ public class Confirmation extends AbstractWindow implements OUIClientAction {
         setRendererType("org.openfaces.ConfirmationRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public boolean isModal() {
         return true; // always modal
     }
 
+    @Override
     public String getWidth() {
         return ValueBindings.get(this, "width", super.getWidth(), "275px");
     }
@@ -389,15 +392,18 @@ public class Confirmation extends AbstractWindow implements OUIClientAction {
         this.standalone = standalone;
     }
 
+    @Override
     protected boolean isResizableByDefault() {
         return false;
     }
 
+    @Override
     public void setParent(UIComponent parent) {
         super.setParent(parent);
         OUIClientActionHelper.ensureComponentIdSpecified(parent);
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context),
                 _for,
@@ -445,6 +451,7 @@ public class Confirmation extends AbstractWindow implements OUIClientAction {
                 alignToInvoker};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         int i = 0;

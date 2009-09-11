@@ -38,6 +38,7 @@ public class MinimizeWindowButton extends ToggleCaptionButton {
         setRendererType("org.openfaces.MinimizeWindowButtonRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

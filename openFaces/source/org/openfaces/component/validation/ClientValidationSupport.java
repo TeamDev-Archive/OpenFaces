@@ -106,6 +106,7 @@ public class ClientValidationSupport extends UIComponentBase {
         this.useDefaultServerValidationPresentation = useDefaultServerValidationPresentation;
     }
 
+    @Override
     public Object saveState(FacesContext facesContext) {
         Object superState = super.saveState(facesContext);
 
@@ -118,6 +119,7 @@ public class ClientValidationSupport extends UIComponentBase {
         };
     }
 
+    @Override
     public void setParent(UIComponent parent) {
         super.setParent(parent);
         if (parent != null) {
@@ -129,6 +131,7 @@ public class ClientValidationSupport extends UIComponentBase {
         }
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;
@@ -139,10 +142,12 @@ public class ClientValidationSupport extends UIComponentBase {
         defaultPresentation = (UIMessage) restoreAttachedState(facesContext, state[i++]);
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context) throws IOException {
         List children = getChildren();
         if (children.size() > 1) {

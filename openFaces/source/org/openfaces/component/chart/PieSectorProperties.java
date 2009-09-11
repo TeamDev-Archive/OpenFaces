@@ -71,6 +71,7 @@ public class PieSectorProperties extends UIOutput implements StyledComponent {
         return getTextStyle();
     }
 
+    @Override
     public void setParent(UIComponent uiComponent) {
         super.setParent(uiComponent);
 
@@ -96,6 +97,7 @@ public class PieSectorProperties extends UIOutput implements StyledComponent {
         return null;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, style, pulled
@@ -103,6 +105,7 @@ public class PieSectorProperties extends UIOutput implements StyledComponent {
 
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

@@ -73,10 +73,12 @@ public class TreeTable extends AbstractTable {
         setRendererType("org.openfaces.TreeTableRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_TYPE;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, nodeLevelVar, nodePathVar, nodeHasChildrenVar, expansionState,
@@ -85,6 +87,7 @@ public class TreeTable extends AbstractTable {
                 textStyle, textClass};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;
@@ -104,6 +107,7 @@ public class TreeTable extends AbstractTable {
         textClass = (String) state[i++];
     }
 
+    @Override
     protected void beforeProcessDecodes(FacesContext context) {
         super.beforeProcessDecodes(context);
         TableDataModel model = getModel();
@@ -246,6 +250,7 @@ public class TreeTable extends AbstractTable {
         return treeStructure;
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
         ValueExpression expansionStateExpression = getValueExpression("expansionState");
@@ -253,6 +258,7 @@ public class TreeTable extends AbstractTable {
             expansionStateExpression.setValue(context.getELContext(), expansionState);
     }
 
+    @Override
     public void encodeBegin(FacesContext context) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -271,6 +277,7 @@ public class TreeTable extends AbstractTable {
     }
 
 
+    @Override
     public void encodeChildren(FacesContext context) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -278,6 +285,7 @@ public class TreeTable extends AbstractTable {
     }
 
 
+    @Override
     public void encodeEnd(FacesContext context) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -537,7 +545,7 @@ public class TreeTable extends AbstractTable {
         if (rowValuesForFilteringNeeded != null)
             return rowValuesForFilteringNeeded;
 
-        List<AbstractFilter> filters = findFilters(true);
+        List<AbstractFilter> filters = getFilters();
         boolean rowListNeeded = false;
         for (AbstractFilter filter : filters) {
             if (filter.getWantsRowList()) {
@@ -563,6 +571,7 @@ public class TreeTable extends AbstractTable {
         Collections.sort(thisLevelArrays, sortingComparator);
     }
 
+    @Override
     protected RowComparator createRowComparator(
             FacesContext facesContext,
             ValueExpression sortingExpression,
@@ -644,6 +653,7 @@ public class TreeTable extends AbstractTable {
 
     }
 
+    @Override
     public void setRowIndex(int rowIndex) {
         super.setRowIndex(rowIndex);
         boolean rowAvailable = isRowAvailable();
@@ -811,6 +821,7 @@ public class TreeTable extends AbstractTable {
         return result;
     }
 
+    @Override
     public Object getFilteredValueByData(
             FacesContext facesContext,
             Map<String, Object> requestMap,

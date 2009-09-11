@@ -37,6 +37,7 @@ public class DoubleRangeClientValidator extends AbstractClientValidator {
         return "O$._DoubleRangeValidator";
     }
 
+    @Override
     protected Object[] getJsValidatorParameteresAsString(FacesContext context, UIComponent component) {
         double minimum = doubleRangeValidator.getMinimum();
         double maximum = doubleRangeValidator.getMaximum();

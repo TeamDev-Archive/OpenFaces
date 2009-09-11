@@ -301,18 +301,22 @@ public class ForEach extends OUIObjectIteratorBase {
         this.setIndex(null);
     }
 
+    @Override
     public void processDecodes(FacesContext faces) {
         this.process(faces, PhaseId.APPLY_REQUEST_VALUES);
     }
 
+    @Override
     public void processUpdates(FacesContext faces) {
         this.process(faces, PhaseId.UPDATE_MODEL_VALUES);
     }
 
+    @Override
     public void processValidators(FacesContext faces) {
         this.process(faces, PhaseId.PROCESS_VALIDATIONS);
     }
 
+    @Override
     public java.lang.Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -326,6 +330,7 @@ public class ForEach extends OUIObjectIteratorBase {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         int i = 0;
@@ -388,10 +393,12 @@ public class ForEach extends OUIObjectIteratorBase {
         }
     }
 
+    @Override
     public void queueEvent(FacesEvent event) {
         super.queueEvent(new IndexedEvent(this, event, getIndex()));
     }
 
+    @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         if (event instanceof IndexedEvent) {
             IndexedEvent indexedEvent = (IndexedEvent) event;

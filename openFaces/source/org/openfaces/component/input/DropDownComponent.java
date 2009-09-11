@@ -234,6 +234,7 @@ public abstract class DropDownComponent extends OUIInputText {
         this.buttonImageUrl = buttonImageUrl;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -267,6 +268,7 @@ public abstract class DropDownComponent extends OUIInputText {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         int i = 0;

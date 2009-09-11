@@ -41,6 +41,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
         outStream = new ByteArrayOutputStream(1000);
     }
 
+    @Override
     public PrintWriter getWriter() throws IOException {
         if (outWriter == null) {
             OutputStreamWriter writer = new OutputStreamWriter(outStream, Charset.forName(getCharacterEncoding()));
@@ -49,6 +50,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
         return outWriter;
     }
 
+    @Override
     public void addCookie(Cookie cookie) {
         cookies.add(cookie);
         super.addCookie(cookie);
@@ -58,6 +60,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
         return cookies;
     }
 
+    @Override
     public void addHeader(String name, String value) {
         if ("Content-Type".equals(name)) {
             setContentType(value);
@@ -70,6 +73,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
     /* (non-Javadoc)
     * @see javax.servlet.http.HttpServletResponse#setHeader(java.lang.String, java.lang.String)
     */
+    @Override
     public void setHeader(String name, String value) {
         // HACK - weblogic do not use setContentType, instead directly set header !
         if ("Content-Type".equals(name)) {
@@ -84,6 +88,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
         return headers;
     }
 
+    @Override
     public void sendRedirect(String redirectLocation) throws IOException {
         // TODO Auto-generated method stub
         this.redirectLocation = redirectLocation;
@@ -111,6 +116,7 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
         }
     }
 
+    @Override
     public javax.servlet.ServletOutputStream getOutputStream() throws IOException {
         return new ServletOutputStream(outStream);
     }

@@ -77,6 +77,7 @@ public class TabSet extends OUIInputBase implements TabSelectionHolder {
         setRendererType("org.openfaces.TabSetRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -271,6 +272,7 @@ public class TabSet extends OUIInputBase implements TabSelectionHolder {
         removeFacesListener(changeListener);
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -305,6 +307,7 @@ public class TabSet extends OUIInputBase implements TabSelectionHolder {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         int i = 0;
@@ -340,6 +343,7 @@ public class TabSet extends OUIInputBase implements TabSelectionHolder {
         selectionChangeListener = (MethodExpression) restoreAttachedState(context, values[i++]);
     }
 
+    @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         uiInput_broadcast(event);
         if (selectionChangeListener != null && event instanceof SelectionChangeEvent) {
@@ -379,6 +383,7 @@ public class TabSet extends OUIInputBase implements TabSelectionHolder {
         }
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         ValueExpression ve = getValueExpression("value");
         boolean itemStorableInValueExpression = ve != null && !ve.isReadOnly(context.getELContext());

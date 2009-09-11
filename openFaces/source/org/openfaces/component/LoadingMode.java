@@ -25,6 +25,7 @@ public enum LoadingMode {
         this.mode = mode;
     }
 
+    @Override
     public String toString() {
         return mode;
     }

@@ -26,6 +26,7 @@ public class ComboBoxFilter extends AbstractFilter {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     protected boolean isShowingPredefinedCriterionNames() {
         return true;
     }

@@ -63,6 +63,7 @@ public abstract class OUIObjectIteratorBase extends OUIComponentBase implements 
         return false;
     }
 
+    @Override
     public String getClientId(FacesContext context) {
         String clientId = super.getClientId(context);
         String objectId = getObjectId();
@@ -72,12 +73,14 @@ public abstract class OUIObjectIteratorBase extends OUIComponentBase implements 
         return clientId + OBJECT_ID_SEPARATOR + objectId;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;
@@ -85,10 +88,12 @@ public abstract class OUIObjectIteratorBase extends OUIComponentBase implements 
 
     }
 
+    @Override
     public void queueEvent(FacesEvent event) {
         super.queueEvent(new EventWrapperForIterator(event, getObjectId(), this));
     }
 
+    @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         if (!(event instanceof EventWrapperForIterator)) {
             super.broadcast(event);

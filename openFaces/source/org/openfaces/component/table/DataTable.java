@@ -50,10 +50,12 @@ public class DataTable extends AbstractTable {
         setRendererType("org.openfaces.DataTableRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public void setValueExpression(String name, ValueExpression expression) {
         super.setValueExpression(name, expression);
         if ("rowKey".equals(name))
@@ -62,12 +64,14 @@ public class DataTable extends AbstractTable {
             getModel().setRowDataByKeyExpression(expression);
     }
 
+    @Override
     public Object saveState(FacesContext facesContext) {
         Object superState = super.saveState(facesContext);
         return new Object[]{superState, rowIndexVar, pageSize, pageIndex, paginationKeyboardSupport,
                 customDataProviding};
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;
@@ -79,6 +83,7 @@ public class DataTable extends AbstractTable {
         customDataProviding = (Boolean) state[i++];
     }
 
+    @Override
     protected void beforeProcessDecodes(FacesContext context) {
         super.beforeProcessDecodes(context);
         TableDataModel model = getModel();
@@ -149,6 +154,7 @@ public class DataTable extends AbstractTable {
         setValueExpression("value", value);
     }
 
+    @Override
     protected void processModelUpdates(FacesContext context) {
         super.processModelUpdates(context);
 
@@ -168,6 +174,7 @@ public class DataTable extends AbstractTable {
         getAttributes().put(RENDERED_PAGE_COUNT_ATTR, renderedPageCount);
     }
 
+    @Override
     public void encodeBegin(FacesContext facesContext) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(facesContext))
             return;
@@ -177,6 +184,7 @@ public class DataTable extends AbstractTable {
         super.encodeBegin(facesContext);
     }
 
+    @Override
     public void encodeChildren(FacesContext context) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
@@ -184,12 +192,14 @@ public class DataTable extends AbstractTable {
     }
 
 
+    @Override
     public void encodeEnd(FacesContext context) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
         super.encodeEnd(context);
     }
 
+    @Override
     protected void beforeRenderResponse(FacesContext context) {
         super.beforeRenderResponse(context);
         updateModel(true, true, true);

@@ -32,6 +32,7 @@ public class DropDownFieldFilter extends TextSearchFilter {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     protected boolean isShowingPredefinedCriterionNames() {
         return true;
     }
@@ -40,6 +41,7 @@ public class DropDownFieldFilter extends TextSearchFilter {
         return DropDownField.COMPONENT_TYPE;
     }
 
+    @Override
     public void createSubComponents(FacesContext context) {
         super.createSubComponents(context);
         ComponentUtil.createChildComponent(context, getSearchComponent(), DropDownItems.COMPONENT_TYPE, "dropdownItems");

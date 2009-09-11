@@ -30,6 +30,7 @@ public abstract class AbstractDynamicColumnExpression extends ValueExpression im
         this.expressionFromColumnsComponent = expressionFromColumnsComponent;
     }
 
+    @Override
     public abstract Object getValue(ELContext elContext);
 
     public void setValue(ELContext elContext, Object value) {

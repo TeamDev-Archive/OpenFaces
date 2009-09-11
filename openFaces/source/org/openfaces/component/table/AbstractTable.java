@@ -13,10 +13,12 @@ package org.openfaces.component.table;
 
 import org.openfaces.component.OUIData;
 import org.openfaces.component.TableStyles;
+import org.openfaces.component.FilterableComponent;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.ComponentUtil;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -38,7 +40,7 @@ import java.util.Map;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class AbstractTable extends OUIData implements TableStyles {
+public abstract class AbstractTable extends OUIData implements TableStyles, FilterableComponent {
     /*
    Implementation notes:
    - the full life-cycle for the selection child is intentionally ensured. Although implementation of
@@ -132,11 +134,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
     private List<BaseColumn> cachedAllColumns;
     private List<BaseColumn> cachedColumnsForRendering;
     private String cachedClientId;
+    private List<AbstractFilter> myFilters = new ArrayList<AbstractFilter>();
 
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
     }
 
+    @Override
     public Object processSaveState(FacesContext context) {
         AbstractTableSelection selection = getSelection();
         if (selection != null && selection.getModel() == null) {
@@ -148,6 +152,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
         return super.processSaveState(context);
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, saveAttachedState(context, sortingRules),
@@ -169,6 +174,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;
@@ -281,6 +287,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
         beforeProcessDecodes(context);
     }
 
+    @Override
     public void processRestoreState(FacesContext context, Object state) {
         Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
         super.processRestoreState(context, ajaxState != null ? ajaxState : state);
@@ -291,6 +298,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
         return (TableDataModel) getUiDataValue();
     }
 
+    @Override
     public Object getValue() { // needed for UISeamCommandBase to work with DataTable/TreeTable correctly (JSFC-2585)
         Object data = getModel().getWrappedData();
         if (data instanceof ValueExpression) {
@@ -300,6 +308,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
         return data;
     }
 
+    @Override
     public void setValue(Object value) {
         getModel().setWrappedData(value);
     }
@@ -897,6 +906,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
         return columnsComponents;
     }
 
+    @Override
     public void processDecodes(FacesContext context) {
         beforeProcessDecodes(context);
         super.processDecodes(context);
@@ -906,13 +916,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
             setRowIndex(-1);
     }
 
+    @Override
     public void processValidators(FacesContext context) {
         super.processValidators(context);
         if (!isRendered())
             return;
         if (getRowIndex() != -1)
             setRowIndex(-1);
-        List<AbstractFilter> filters = findFilters(true);
+        List<AbstractFilter> filters = getFilters();
         for (AbstractFilter filter : filters) {
             filter.processValidators(context);
         }
@@ -921,6 +932,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
             tableSelection.processValidators(context);
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
         if (!isRendered())
@@ -938,7 +950,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
         if (sortAscendingExpression != null)
             sortAscendingExpression.setValue(elContext, isSortAscending());
 
-        List<AbstractFilter> filters = findFilters(true);
+        List<AbstractFilter> filters = getFilters();
         for (AbstractFilter filter : filters) {
             filter.processUpdates(context);
         }
@@ -980,7 +992,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
         cachedAllColumns = null;
         cachedColumnsForRendering = null;
 
-        List<AbstractFilter> filters = findFilters(true);
+        List<AbstractFilter> filters = getFilters();
         int i = 0;
         while (i < filters.size()) {
             AbstractFilter filter = filters.get(i);
@@ -1025,6 +1037,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
         return false;
     }
 
+    @Override
     public void encodeBegin(FacesContext context) throws IOException {
         List<TableColumns> columnsComponents = findColumnsComponents();
         for (TableColumns tableColumns : columnsComponents) {
@@ -1307,30 +1320,27 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
     }
 
     protected List<AbstractFilter> getActiveFilters() {
-        return findFilters(false);
-    }
-
-    protected List<AbstractFilter> findFilters(boolean includeAllRecordsFilters) {
         List<AbstractFilter> filters = new ArrayList<AbstractFilter>();
 
-        List<BaseColumn> columns = getAllColumns();
-        for (BaseColumn column : columns) {
-            for (UIComponent child : column.getFacets().values()) {
-                if (!child.isRendered() || !(child instanceof AbstractFilter))
-                    continue;
-
-                AbstractFilter filter = (AbstractFilter) child;
-                if (!includeAllRecordsFilters)
-                    if (filter.isAcceptingAllRecords())
-                        continue;
-                filters.add(filter);
-            }
-
+        List<AbstractFilter> allFilters = getFilters();
+        for (AbstractFilter filter : allFilters) {
+            if (filter.isAcceptingAllRecords())
+                continue;
+            filters.add(filter);
         }
         return filters;
     }
 
-    public abstract List getRowListForFiltering(AbstractFilter filter);
+    @Override
+    public void setParent(UIComponent parent) {
+        super.setParent(parent);
+        // register filters if not registered yet
+        ComponentUtil.runScheduledActions();
+    }
+
+    public List<AbstractFilter> getFilters() {
+        return myFilters;
+    }
 
     public Object getFilteredValueByData(
             FacesContext facesContext,
@@ -1564,6 +1574,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
         }
     }
 
+    @Override
     public String getClientId(FacesContext context) {
         String clientId = getStandardClientId(context);
         int rowIndex = getRowIndex();
@@ -1573,6 +1584,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles {
             return clientId + NamingContainer.SEPARATOR_CHAR + rowIndex;
     }
 
+    @Override
     public void setId(String id) {
         super.setId(id);
         cachedClientId = null;

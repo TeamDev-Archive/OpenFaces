@@ -50,16 +50,19 @@ public class MultipleRowSelection extends DataTableSelection {
         return getRowKeys();
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         rememberByKeys();
         Object superState = super.saveState(context);
         return new Object[]{superState, saveAttachedState(context, rowKeys)};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);

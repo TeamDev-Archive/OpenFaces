@@ -44,6 +44,7 @@ public class MultipleNodeSelection extends TreeTableSelection {
     private List<TreePath> nodePaths;
     private List<TreePath> nodeKeyPaths;
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

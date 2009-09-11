@@ -38,6 +38,7 @@ public class DefaultRowKey implements Serializable {
         return rowIndexInOriginalList;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -49,6 +50,7 @@ public class DefaultRowKey implements Serializable {
         return true;
     }
 
+    @Override
     public int hashCode() {
         return rowIndex;
     }

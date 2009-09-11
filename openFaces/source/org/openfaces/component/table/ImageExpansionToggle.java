@@ -39,11 +39,13 @@ public class ImageExpansionToggle extends ExpansionToggle {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, expandedImageUrl, collapsedImageUrl};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);
@@ -74,6 +76,7 @@ public class ImageExpansionToggle extends ExpansionToggle {
         return url;
     }
 
+    @Override
     public Object encodeExpansionDataAsJsObject(FacesContext context) {
         JSONArray result = new JSONArray();
         result.put(getToggleImageUrl(context, true));

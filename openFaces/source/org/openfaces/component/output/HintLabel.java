@@ -39,6 +39,7 @@ public class HintLabel extends OUIOutput {
         setRendererType("org.openfaces.HintLabelRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -83,6 +84,7 @@ public class HintLabel extends OUIOutput {
         this.hint = hint;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context),
                 hintStyle,
@@ -94,6 +96,7 @@ public class HintLabel extends OUIOutput {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
         int i = 0;

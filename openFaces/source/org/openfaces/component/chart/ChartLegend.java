@@ -80,6 +80,7 @@ public class ChartLegend extends UIOutput implements StyledComponent, HasLabels 
         return null;
     }
 
+    @Override
     public void setParent(UIComponent parent) {
         super.setParent(parent);
         if (this.getParent() instanceof Chart) {
@@ -88,11 +89,13 @@ public class ChartLegend extends UIOutput implements StyledComponent, HasLabels 
         }
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, style, position};
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

@@ -236,6 +236,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
         return chain;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, style,
@@ -249,6 +250,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
         };
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

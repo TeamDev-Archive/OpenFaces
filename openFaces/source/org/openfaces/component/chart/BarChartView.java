@@ -30,6 +30,7 @@ import org.openfaces.component.chart.impl.renderers.XYBarRendererAdapter;
  */
 public class BarChartView extends GridChartView {
 
+    @Override
     public String getFamily() {
         return "org.openfaces.BarChartView";
     }

@@ -135,12 +135,14 @@ public class DateRanges extends UIComponentBase {
         this.rolloverSelectedDayClass = rolloverSelectedDayClass;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context), disableExcludes, disableIncludes, dayStyle, rolloverDayStyle,
                 value, dayClass, rolloverDayClass, selectedDayStyle, rolloverSelectedDayStyle,
                 selectedDayClass, rolloverSelectedDayClass};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
         int i = 0;

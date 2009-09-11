@@ -72,7 +72,7 @@ public class BaseColumn extends UIColumn {
     private String footerOnmouseout;
     private String footerOnmouseup;
 
-
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, align, valign, width, resizable, minResizingWidth,
@@ -86,6 +86,7 @@ public class BaseColumn extends UIColumn {
                 footerOnmouseout, footerOnmouseup};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;
@@ -494,6 +495,7 @@ public class BaseColumn extends UIColumn {
         return (AbstractTable) parent;
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         ValueExpression widthExpression = getValueExpression("width");
         if (widthExpression != null && !widthExpression.isReadOnly(context.getELContext())) {

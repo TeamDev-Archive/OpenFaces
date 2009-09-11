@@ -24,10 +24,12 @@ public class DeleteEventAction extends EventAction {
 
     private Boolean showConfirmation;
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -35,6 +37,7 @@ public class DeleteEventAction extends EventAction {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;
@@ -50,6 +53,7 @@ public class DeleteEventAction extends EventAction {
         this.showConfirmation = showConfirmation;
     }
 
+    @Override
     protected String getDefaultHint() {
         return "Delete";
     }

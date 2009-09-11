@@ -78,6 +78,7 @@ public class ChartGridLines extends UIOutput implements StyledComponent {
         return "border";
     }
 
+    @Override
     public void setParent(UIComponent parent) {
         super.setParent(parent);
         if (this.getParent() instanceof ChartView) {
@@ -87,6 +88,7 @@ public class ChartGridLines extends UIOutput implements StyledComponent {
 
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, style,
@@ -95,6 +97,7 @@ public class ChartGridLines extends UIOutput implements StyledComponent {
 
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

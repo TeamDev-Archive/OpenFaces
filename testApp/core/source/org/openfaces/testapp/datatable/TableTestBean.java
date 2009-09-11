@@ -12,11 +12,11 @@
 package org.openfaces.testapp.datatable;
 
 import org.openfaces.util.FacesUtil;
-import org.openfaces.component.table.ColumnFilterCriterion;
 import org.openfaces.component.table.EmptyRecordsCriterion;
 import org.openfaces.component.table.FilterKind;
 import org.openfaces.component.table.NonEmptyRecordsCriterion;
 import org.openfaces.component.table.ContainsFilterCriterion;
+import org.openfaces.component.table.FilterCriterion;
 
 import javax.faces.event.ValueChangeEvent;
 import java.awt.*;
@@ -78,12 +78,12 @@ public class TableTestBean {
         collection2.addAll(collection1);
     }
 
-    public List getCollection1() {
+    public List<TestBean> getCollection1() {
         logger.info("getCollection1() invoked");
         return collection1;
     }
 
-    public List getCollection2() {
+    public List<TestBean> getCollection2() {
         logger.info("getCollection2() invoked");
         return collection2;
     }
@@ -200,7 +200,7 @@ public class TableTestBean {
     }
 
     private List requestSortedAndFilteredCollection() {
-        List filterCriteria = (List) FacesUtil.getRequestMapValue("filterCriteria");
+        Map<String, FilterCriterion> filterCriteria = (Map<String, FilterCriterion>) FacesUtil.getRequestMapValue("filterCriteria");
         String sortColumnId = (String) FacesUtil.getRequestMapValue("sortColumnId");
         final boolean sortAscending = (Boolean) FacesUtil.getRequestMapValue("sortAscending");
 
@@ -240,14 +240,14 @@ public class TableTestBean {
         return (filterCriteria != null) ? filterCollection(sortedList, filterCriteria) : sortedList;
     }
 
-    private List filterCollection(List sortedList, List filterCriteria) {
-        String s = ((filterCriteria.size() > 0 && (filterCriteria.get(0) instanceof ContainsFilterCriterion)) ? ((ContainsFilterCriterion) filterCriteria.get(0)).getValue().toString() : "<none>");
-        List result = new ArrayList();
-        for (Object record : sortedList) {
+    private List<TestBean> filterCollection(List<TestBean> sortedList, Map<String, FilterCriterion> filterCriteria) {
+        List<TestBean> result = new ArrayList<TestBean>();
+        for (TestBean record : sortedList) {
             boolean recordAccepted = true;
-            for (Object aFilterCriteria : filterCriteria) {
-                ColumnFilterCriterion criterion = (ColumnFilterCriterion) aFilterCriteria;
-                if (!filterAcceptsRecord(criterion, record)) {
+            for (Map.Entry<String, FilterCriterion> entry : filterCriteria.entrySet()) {
+                String filterId = entry.getKey();
+                FilterCriterion criterion = entry.getValue();
+                if (!filterAcceptsRecord(filterId, criterion, record)) {
                     recordAccepted = false;
                     break;
                 }
@@ -259,10 +259,8 @@ public class TableTestBean {
         return result;
     }
 
-    private boolean filterAcceptsRecord(ColumnFilterCriterion criterion, Object record) {
-        String columnId = criterion.getColumnId();
-        TestBean b = (TestBean) record;
-        String fieldValue = columnId.equals("col1") ? b.getField1() : String.valueOf(b.getField2());
+    private boolean filterAcceptsRecord(String filterId, FilterCriterion criterion, TestBean record) {
+        String fieldValue = filterId.equals("col1Filter") ? record.getField1() : String.valueOf(record.getField2());
         if (criterion instanceof NonEmptyRecordsCriterion) {
             return fieldValue != null && fieldValue.length() > 0;
         }
@@ -292,7 +290,7 @@ public class TableTestBean {
         return Arrays.asList(new Object[]{null, "a", "b", "c", "d", "e", "f", "Chetyre", "Four"});
     }
 
-    public Collection getCol2FilterValues() {
+    public Collection<String> getCol2FilterValues() {
         // in real application this would be queried from a datables
         return Arrays.asList("0", "1", "2", "3", "4", "11", "33");
     }

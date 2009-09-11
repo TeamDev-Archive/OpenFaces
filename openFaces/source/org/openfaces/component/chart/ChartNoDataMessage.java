@@ -73,6 +73,7 @@ public class ChartNoDataMessage extends UIOutput implements StyledComponent {
         return null;
     }
 
+    @Override
     public void setParent(UIComponent parent) {
         super.setParent(parent);
         if (this.getParent() instanceof Chart) {
@@ -82,12 +83,14 @@ public class ChartNoDataMessage extends UIOutput implements StyledComponent {
             throw new IllegalStateException("Inccorect place for ChartNoDataMessage tag. Parent component must be Chart. Currently defined component: " + getParent());
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, style,
                 text};
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;
@@ -98,6 +101,7 @@ public class ChartNoDataMessage extends UIOutput implements StyledComponent {
         text = (String) state[i++];
     }
 
+    @Override
     public String getFamily() {
         return "org.openfaces.ChartNoDataMessage";
     }

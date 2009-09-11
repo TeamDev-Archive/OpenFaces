@@ -31,14 +31,17 @@ public class SelectionColumn extends BaseColumn {
         getAttributes().put("defaultStyle", DEFAULT_CLASS);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context), sortable};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         super.restoreState(context, state[0]);

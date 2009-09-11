@@ -56,6 +56,7 @@ public class StringInspector {
         return new StringInspector(str.substring(beginIndex, endIndex), uppercaseStr != null ? uppercaseStr.substring(beginIndex, endIndex) : null);
     }
 
+    @Override
     public String toString() {
         return str;
     }

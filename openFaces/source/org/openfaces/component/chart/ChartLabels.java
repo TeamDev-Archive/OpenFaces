@@ -100,6 +100,7 @@ public class ChartLabels extends UIOutput implements StyledComponent {
         return null;
     }
 
+    @Override
     public void setParent(UIComponent parent) {
         super.setParent(parent);
         if (this.getParent() instanceof HasLabels) {
@@ -109,11 +110,13 @@ public class ChartLabels extends UIOutput implements StyledComponent {
             throw new IllegalStateException("Inccorect place for Label tag. Parent component must implement HasLabel interface. Currently defined component: " + getParent());
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, style, text};
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

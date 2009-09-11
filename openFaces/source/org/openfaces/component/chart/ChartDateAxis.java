@@ -50,6 +50,7 @@ public class ChartDateAxis extends ChartAxis {
         this.upperBound = upperBound;
     }
 
+    @Override
     public void setParent(UIComponent parent) {
         super.setParent(parent);
         if (getParent() instanceof ChartView) {
@@ -59,6 +60,7 @@ public class ChartDateAxis extends ChartAxis {
 
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState,
@@ -68,6 +70,7 @@ public class ChartDateAxis extends ChartAxis {
         };
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

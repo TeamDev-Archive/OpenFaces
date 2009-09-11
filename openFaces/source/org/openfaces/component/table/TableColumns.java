@@ -102,10 +102,12 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
     public TableColumns() {
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context), prevValueFromBinding,
@@ -122,6 +124,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;
@@ -745,6 +748,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         }
     }
 
+    @Override
     public void processDecodes(FacesContext context) {
 //    columnList = null;
         List<DynamicTableColumn> columns = toColumnList(context);
@@ -755,6 +759,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         }
     }
 
+    @Override
     public void processValidators(FacesContext context) {
         List<DynamicTableColumn> columns = toColumnList(context);
         for (DynamicTableColumn column : columns) {
@@ -764,6 +769,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         }
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         List<DynamicTableColumn> columns = toColumnList(context);
         for (DynamicTableColumn column : columns) {

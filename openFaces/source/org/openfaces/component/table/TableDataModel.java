@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+import java.util.HashMap;
 
 /**
  * @author Dmitry Pikhulya
@@ -436,14 +437,14 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     }
 
     private void setFilteringCriteriaToRequestVariable() {
-        List<FilterCriterion> criteria = new ArrayList<FilterCriterion>();
+        Map<String, FilterCriterion> criteria = new HashMap<String, FilterCriterion>();
         int filterCount = filters != null ? filters.size() : 0;
         for (int i = 0; i < filterCount; i++) {
             AbstractFilter filter = filters.get(i);
             if (filter.isAcceptingAllRecords())
                 continue;
-            FilterCriterion filterCriterion = filter.getFilterCriterion();
-            criteria.add(filterCriterion);
+            FilterCriterion filterCriterion = filter.getCriterion();
+            criteria.put(filter.getId(), filterCriterion);
         }
         setRequestVariable(VAR_FILTER_CRITERIA, criteria);
     }

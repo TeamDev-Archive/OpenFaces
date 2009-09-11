@@ -32,18 +32,22 @@ public class SuggestionField extends DropDownFieldBase {
         setRendererType("org.openfaces.SuggestionFieldRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     protected SuggestionMode getDefaultSuggestionMode() {
         return SuggestionMode.STRING_START;
     }
 
+    @Override
     protected boolean getDefaultAutoComplete() {
         return true;
     }
 
+    @Override
     protected int getDefaultSuggestionMinChars() {
         return 2;
     }
@@ -56,14 +60,17 @@ public class SuggestionField extends DropDownFieldBase {
         this.manualListOpeningAllowed = manualListOpeningAllowed;
     }
 
+    @Override
     public void setSize(int size) {
         super.setSize(size);
     }
 
+    @Override
     public int getSize() {
         return super.getSize();
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -71,6 +78,7 @@ public class SuggestionField extends DropDownFieldBase {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);

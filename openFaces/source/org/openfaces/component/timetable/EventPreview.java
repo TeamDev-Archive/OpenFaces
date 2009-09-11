@@ -47,6 +47,7 @@ public class EventPreview extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -56,6 +57,7 @@ public class EventPreview extends UIComponentBase {
                 showingDelay};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
         int i = 0;

@@ -38,6 +38,7 @@ public class MaximizeWindowButton extends ToggleCaptionButton {
         setRendererType("org.openfaces.MaximizeWindowButtonRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

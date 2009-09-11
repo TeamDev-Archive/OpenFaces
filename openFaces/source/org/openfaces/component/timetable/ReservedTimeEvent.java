@@ -28,6 +28,7 @@ public class ReservedTimeEvent extends AbstractTimetableEvent {
         super(id, resourceId, start, end);
     }
 
+    @Override
     public JSONObject toJSONObject(Map params) throws JSONException {
         JSONObject obj = super.toJSONObject(params);
         obj.put("type", "reserved");

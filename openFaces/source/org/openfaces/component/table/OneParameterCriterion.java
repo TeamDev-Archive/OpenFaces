@@ -14,7 +14,7 @@ package org.openfaces.component.table;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class OneParameterCriterion extends ColumnFilterCriterion {
+public abstract class OneParameterCriterion extends FilterCriterion {
     private Object value = "";
     private boolean caseSensitive;
 

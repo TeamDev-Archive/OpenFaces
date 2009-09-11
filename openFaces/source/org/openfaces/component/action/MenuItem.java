@@ -220,6 +220,7 @@ public class MenuItem extends OUICommand {
         contentAreaStyle = contentStyle;
     }
 
+    @Override
     public Object saveState(FacesContext facesContext) {
         return new Object[]{
                 super.saveState(facesContext),
@@ -249,6 +250,7 @@ public class MenuItem extends OUICommand {
         };
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object state) {
         Object[] values = (Object[]) state;
         int i = 0;

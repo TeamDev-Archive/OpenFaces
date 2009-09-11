@@ -35,6 +35,7 @@ public class InputTextarea extends OUIInputText {
         setRendererType("org.openfaces.InputTextareaRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -95,6 +96,7 @@ public class InputTextarea extends OUIInputText {
         return ValueBindings.get(this, "autoGrowing", autoGrowing, false);
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -107,6 +109,7 @@ public class InputTextarea extends OUIInputText {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         int i = 0;

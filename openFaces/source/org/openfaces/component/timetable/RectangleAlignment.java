@@ -63,6 +63,7 @@ public class RectangleAlignment implements Serializable {
         this.borderRectangleKind = borderRectangleKind;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -81,6 +82,7 @@ public class RectangleAlignment implements Serializable {
         return true;
     }
 
+    @Override
     public int hashCode() {
         int result;
         long temp;

@@ -38,6 +38,7 @@ public abstract class OUIPanel extends UIPanel implements OUIComponent {
     private String onkeyup;
     private String onkeypress;
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, style, styleClass, rolloverStyle, rolloverClass, onclick, ondblclick,
@@ -47,6 +48,7 @@ public abstract class OUIPanel extends UIPanel implements OUIComponent {
 
     public abstract String getFamily();
 
+    @Override
     public void restoreState(FacesContext context, Object object) {
         Object[] values = (Object[]) object;
         int i = 0;

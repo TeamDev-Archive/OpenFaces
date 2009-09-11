@@ -33,6 +33,7 @@ public class DoubleConverterClientValidator extends AbstractClientValidator {
         return "O$._DoubleConverterValidator";
     }
 
+    @Override
     protected Object[] getJsValidatorParameteresAsString(FacesContext context, UIComponent component) {
         Object[] args = {component.getId()};
         FacesMessage message = MessageUtil.getMessage(context, FacesMessage.SEVERITY_ERROR,

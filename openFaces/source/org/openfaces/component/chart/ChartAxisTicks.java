@@ -31,6 +31,7 @@ public class ChartAxisTicks extends UIOutput implements StyledComponent, HasLabe
         setRendererType(null);
     }
 
+    @Override
     public void setParent(UIComponent parent) {
         super.setParent(parent);
         if (this.getParent() instanceof ChartAxis) {
@@ -77,6 +78,7 @@ public class ChartAxisTicks extends UIOutput implements StyledComponent, HasLabe
         return "border";
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, style,
@@ -84,6 +86,7 @@ public class ChartAxisTicks extends UIOutput implements StyledComponent, HasLabe
         };
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

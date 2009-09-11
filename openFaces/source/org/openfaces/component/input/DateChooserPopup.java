@@ -36,6 +36,7 @@ public class DateChooserPopup extends AbstractPopup {
     public DateChooserPopup() {
     }
 
+    @Override
     protected void encodeOpeningTags(FacesContext context) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", this);
@@ -65,10 +66,12 @@ public class DateChooserPopup extends AbstractPopup {
         this.calendarIdSuffix = calendarIdSuffix;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context), calendar, calendarIdSuffix};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] vals = (Object[]) state;
         int i = 0;

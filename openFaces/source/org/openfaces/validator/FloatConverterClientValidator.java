@@ -33,6 +33,7 @@ public class FloatConverterClientValidator extends AbstractClientValidator {
         return "O$._FloatConverterValidator";
     }
 
+    @Override
     protected Object[] getJsValidatorParameteresAsString(FacesContext context, UIComponent component) {
         Object[] args = {component.getId()};
         FacesMessage message = MessageUtil.getMessage(context, FacesMessage.SEVERITY_ERROR,

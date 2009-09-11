@@ -186,6 +186,7 @@ public abstract class GridChartView extends ChartView {
         this.showAxes = showAxes;
     }
 
+    @Override
     public String getFamily() {
         return "org.openfaces.GridChartView";
     }
@@ -206,6 +207,7 @@ public abstract class GridChartView extends ChartView {
         this.valueAxisLabel = valueAxisLabel;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, labelsVisible,
@@ -219,6 +221,7 @@ public abstract class GridChartView extends ChartView {
 
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

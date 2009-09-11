@@ -41,7 +41,7 @@
           <h:outputText value="City"/>
         </f:facet>
         <f:facet name="subHeader">
-          <o:inputTextFilter expression="#{city.name}"/>
+          <o:inputTextFilter id="nameFilter" expression="#{city.name}"/>
         </f:facet>
         <h:outputText value="#{city.name}"/>
       </o:column>
@@ -54,7 +54,7 @@
           <h:outputText value="Population"/>
         </f:facet>
         <f:facet name="subHeader">
-          <o:comboBoxFilter options="#{CitiesList.ranges}"/>
+          <o:comboBoxFilter id="populationFilter" options="#{CitiesList.ranges}"/>
         </f:facet>
         <h:outputText value="#{city.population}">
           <f:convertNumber type="number"/>
@@ -66,7 +66,7 @@
           <h:outputText value="Country"/>
         </f:facet>
         <f:facet name="subHeader">
-          <o:inputTextFilter expression="#{city.country}"/>
+          <o:inputTextFilter id="countryFilter" expression="#{city.country}"/>
         </f:facet>
         <h:outputText value="#{city.country}"/>
       </o:column>

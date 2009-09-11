@@ -39,7 +39,7 @@ public abstract class AbstractComponentJspTag extends UIComponentELTag {
         getDelegate().setComponentProperties(facesContext, component);
     }
 
-
+    @Override
     public void release() {
         super.release();
         getDelegate().cleanUp();
@@ -65,6 +65,7 @@ public abstract class AbstractComponentJspTag extends UIComponentELTag {
         return delegate;
     }
 
+    @Override
     protected void setProperties(UIComponent component) {
         // super.setProperties shouldn't be called for facelets support. JspTagComponentWrapper substitutes FacesContext
         // in this class, but super.setProperties uses FacesContext from its own private field which we can't influence,
@@ -75,6 +76,7 @@ public abstract class AbstractComponentJspTag extends UIComponentELTag {
         TagUtil.initComponentChildren(facesContext, component);
     }
 
+    @Override
     public void setRendered(ValueExpression rendered) {
         super.setRendered(rendered);
         getDelegate().setPropertyValue("rendered", rendered);

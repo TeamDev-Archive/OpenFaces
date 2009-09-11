@@ -29,6 +29,7 @@ public class CaptionArea extends UIPanel {
         setRendererType("org.openfaces.CaptionAreaRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -42,6 +43,7 @@ public class CaptionArea extends UIPanel {
         this.alignment = alignment;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -49,6 +51,7 @@ public class CaptionArea extends UIPanel {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

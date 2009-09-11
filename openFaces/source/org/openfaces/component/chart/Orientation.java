@@ -24,6 +24,7 @@ public enum Orientation {
         this.name = name;
     }
 
+    @Override
     public String toString() {
         return name;
     }

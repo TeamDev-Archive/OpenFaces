@@ -139,6 +139,7 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
     }
 
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context),
                 resizable,
@@ -152,6 +153,7 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
                 captionText};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object stateObj) {
         Object state[] = (Object[]) stateObj;
         int i = 0;

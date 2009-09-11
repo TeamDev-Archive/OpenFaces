@@ -29,11 +29,13 @@ public abstract class AbstractPanelWithCaption extends OUIPanel implements Compo
     private String contentStyle;
     private String contentClass;
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, captionStyle, captionClass, contentStyle, contentClass};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object object) {
         Object[] values = (Object[]) object;
         int i = 0;

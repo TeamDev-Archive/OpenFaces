@@ -97,10 +97,12 @@ public class DateChooser extends DropDownComponent {
         setRendererType("org.openfaces.DateChooserRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context), calendarStyle, dayStyle,
                 rolloverDayStyle, inactiveMonthDayStyle, rolloverInactiveMonthDayStyle, selectedDayStyle,
@@ -114,6 +116,7 @@ public class DateChooser extends DropDownComponent {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
         int i = 0;
@@ -165,6 +168,7 @@ public class DateChooser extends DropDownComponent {
         typingAllowed = (Boolean) values[i++];
     }
 
+    @Override
     public void validate(FacesContext context) {
         Object submittedValue = getSubmittedValue();
         if (submittedValue == null && isRequired()) {
@@ -549,156 +553,194 @@ public class DateChooser extends DropDownComponent {
         this.typingAllowed = typingAllowed;
     }
 
+    @Override
     public String getListClass() {
         return super.getListClass();
     }
 
+    @Override
     public void setListClass(String listClass) {
         super.setListClass(listClass);
     }
 
+    @Override
     public String getRolloverListClass() {
         return super.getRolloverListClass();
     }
 
+    @Override
     public void setRolloverListClass(String rolloverListClass) {
         super.setRolloverButtonClass(rolloverListClass);
     }
 
+    @Override
     public String getListStyle() {
         return super.getListStyle();
     }
 
+    @Override
     public void setListStyle(String listStyle) {
         super.setListStyle(listStyle);
     }
 
+    @Override
     public String getRolloverListStyle() {
         return super.getRolloverButtonClass();
     }
 
+    @Override
     public void setRolloverListStyle(String rolloverListStyle) {
         super.setRolloverButtonClass(rolloverListStyle);
     }
 
+    @Override
     public String getFieldStyle() {
         return super.getFieldStyle();
     }
 
+    @Override
     public void setFieldStyle(String fieldStyle) {
         super.setFieldStyle(fieldStyle);
     }
 
+    @Override
     public String getRolloverFieldStyle() {
         return super.getRolloverFieldStyle();
     }
 
+    @Override
     public void setRolloverFieldStyle(String rolloverFieldStyle) {
         super.setRolloverFieldStyle(rolloverFieldStyle);
     }
 
 
+    @Override
     public String getFieldClass() {
         return super.getFieldClass();
     }
 
+    @Override
     public void setFieldClass(String fieldClass) {
         super.setFieldClass(fieldClass);
     }
 
+    @Override
     public String getRolloverFieldClass() {
         return super.getRolloverFieldClass();
     }
 
+    @Override
     public void setRolloverFieldClass(String rolloverFieldClass) {
         super.setRolloverFieldClass(rolloverFieldClass);
     }
 
 
+    @Override
     public String getButtonStyle() {
         return super.getButtonStyle();
     }
 
+    @Override
     public void setButtonStyle(String buttonStyle) {
         super.setButtonStyle(buttonStyle);
     }
 
+    @Override
     public String getRolloverButtonStyle() {
         return super.getRolloverButtonStyle();
     }
 
+    @Override
     public void setRolloverButtonStyle(String rolloverButtonStyle) {
         super.setRolloverButtonStyle(rolloverButtonStyle);
     }
 
+    @Override
     public String getButtonImageUrl() {
         return super.getButtonImageUrl();
     }
 
+    @Override
     public void setButtonImageUrl(String buttonImageUrl) {
         super.setButtonImageUrl(buttonImageUrl);
     }
 
+    @Override
     public String getPressedButtonStyle() {
         return super.getPressedButtonStyle();
     }
 
+    @Override
     public void setPressedButtonStyle(String pressedButtonStyle) {
         super.setPressedButtonStyle(pressedButtonStyle);
     }
 
+    @Override
     public String getPressedButtonClass() {
         return super.getPressedButtonClass();
     }
 
+    @Override
     public void setPressedButtonClass(String pressedButtonClass) {
         super.setPressedButtonClass(pressedButtonClass);
     }
 
+    @Override
     public String getButtonClass() {
         return super.getButtonClass();
     }
 
+    @Override
     public void setButtonClass(String buttonClass) {
         super.setButtonClass(buttonClass);
     }
 
+    @Override
     public String getRolloverButtonClass() {
         return super.getRolloverButtonClass();
     }
 
+    @Override
     public void setRolloverButtonClass(String rolloverButtonClass) {
         super.setRolloverButtonClass(rolloverButtonClass);
     }
 
+    @Override
     public HorizontalAlignment getButtonAlignment() {
         return super.getButtonAlignment();
     }
 
+    @Override
     public void setButtonAlignment(HorizontalAlignment buttonAlignment) {
         super.setButtonAlignment(buttonAlignment);
     }
 
+    @Override
     public void setDisabledButtonClass(String disabledButtonClass) {
         super.setDisabledButtonClass(disabledButtonClass);
     }
 
+    @Override
     public void setDisabledButtonImageUrl(String disabledButtonImageUrl) {
         super.setDisabledButtonImageUrl(disabledButtonImageUrl);
     }
 
+    @Override
     public void setDisabledButtonStyle(String disabledButtonStyle) {
         super.setDisabledButtonStyle(disabledButtonStyle);
     }
 
+    @Override
     public String getDisabledButtonClass() {
         return super.getDisabledButtonClass();
     }
 
+    @Override
     public String getDisabledButtonImageUrl() {
         return super.getDisabledButtonImageUrl();
     }
 
+    @Override
     public String getDisabledButtonStyle() {
         return super.getDisabledButtonStyle();
     }

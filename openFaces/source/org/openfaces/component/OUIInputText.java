@@ -77,6 +77,7 @@ public class OUIInputText extends OUIInputBase {
         this.tabindex = tabindex;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context),
                 promptText,
@@ -90,6 +91,7 @@ public class OUIInputText extends OUIInputBase {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
         int i = 0;

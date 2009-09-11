@@ -58,6 +58,7 @@ public class LineChartView extends GridChartView {
         linePropertiesList.add(lineProperties);
     }
 
+    @Override
     public String getFamily() {
         return "org.openfaces.LineChartView";
     }
@@ -66,6 +67,7 @@ public class LineChartView extends GridChartView {
         return null;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{
@@ -77,6 +79,7 @@ public class LineChartView extends GridChartView {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

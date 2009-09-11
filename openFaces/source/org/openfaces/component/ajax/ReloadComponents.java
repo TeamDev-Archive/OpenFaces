@@ -50,10 +50,12 @@ public class ReloadComponents extends UICommand implements OUIClientAction {
         setRendererType("org.openfaces.ReloadComponentsRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public void setParent(UIComponent parent) {
         super.setParent(parent);
         if (parent != null)
@@ -160,6 +162,7 @@ public class ReloadComponents extends UICommand implements OUIClientAction {
     }
 
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         if (!(getParent() instanceof HtmlCommandLink)) {
@@ -181,6 +184,7 @@ public class ReloadComponents extends UICommand implements OUIClientAction {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         int i = 0;

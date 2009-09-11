@@ -42,11 +42,13 @@ public class UIValidation extends UIComponentBase {
         return myValidatorsAdded;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, myValidatorsAdded};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);

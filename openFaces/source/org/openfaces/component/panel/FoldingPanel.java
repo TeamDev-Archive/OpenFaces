@@ -168,12 +168,14 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
         this.loadingMode = loadingMode;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, expanded, onstatechange, foldingDirection, loadingMode,
                 focusable, focusedStyle, focusedClass};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object object) {
         Object[] values = (Object[]) object;
         int i = 0;
@@ -187,11 +189,13 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
         focusedClass = (String) values[i++];
     }
 
+    @Override
     public void processRestoreState(FacesContext context, Object state) {
         Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
         super.processRestoreState(context, ajaxState != null ? ajaxState : state);
     }
 
+    @Override
     public void processDecodes(FacesContext context) {
         if (!isRendered()) return;
         for (UIComponent facet : getFacets().values()) {
@@ -214,6 +218,7 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
         }
     }
 
+    @Override
     public void processValidators(FacesContext context) {
         if (!isRendered()) return;
         for (UIComponent facet : getFacets().values()) {
@@ -229,6 +234,7 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
         }
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         if (!isRendered()) return;
         for (Object o : getFacets().values()) {

@@ -114,6 +114,7 @@ public class ChartAxis extends UIOutput implements StyledComponent, HasLabels {
         return "border";
     }
 
+    @Override
     public void setParent(UIComponent parent) {
         super.setParent(parent);
         if (getParent() instanceof ChartView) {
@@ -123,6 +124,7 @@ public class ChartAxis extends UIOutput implements StyledComponent, HasLabels {
         }
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, style,
@@ -135,6 +137,7 @@ public class ChartAxis extends UIOutput implements StyledComponent, HasLabels {
 
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

@@ -36,6 +36,7 @@ public class DynamicTableColumn extends TableColumn implements DynamicColumn {
     public DynamicTableColumn() {
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -52,22 +53,27 @@ public class DynamicTableColumn extends TableColumn implements DynamicColumn {
         this.colIndex = colIndex;
     }
 
+    @Override
     protected AbstractTable getTable() {
         return columns.getTable();
     }
 
+    @Override
     public UIComponent getHeader() {
         return columns.getHeader();
     }
 
+    @Override
     public void setHeader(UIComponent header) {
         columns.setHeader(header);
     }
 
+    @Override
     public UIComponent getFooter() {
         return columns.getFooter();
     }
 
+    @Override
     public void setFooter(UIComponent footer) {
         columns.setFooter(footer);
     }
@@ -87,18 +93,22 @@ public class DynamicTableColumn extends TableColumn implements DynamicColumn {
         columns.setColumnIndex(-1);
     }
 
+    @Override
     public void encodeBegin(FacesContext context) throws IOException {
         declareContextVariables();
     }
 
+    @Override
     public boolean getRendersChildren() {
         return true;
     }
 
+    @Override
     public void encodeChildren(FacesContext context) throws IOException {
         RenderingUtil.renderChildren(context, columns);
     }
 
+    @Override
     public void encodeEnd(FacesContext context) throws IOException {
         undeclareContextVariables();
     }
@@ -111,6 +121,7 @@ public class DynamicTableColumn extends TableColumn implements DynamicColumn {
         return columns.getFacets();
     }
 
+    @Override
     public void processDecodes(FacesContext context) {
         declareContextVariables();
         Collection<UIComponent> facets = getFacetCollection();
@@ -134,6 +145,7 @@ public class DynamicTableColumn extends TableColumn implements DynamicColumn {
         return facets;
     }
 
+    @Override
     public void processValidators(FacesContext context) {
         declareContextVariables();
         Collection<UIComponent> facets = getFacetCollection();
@@ -143,6 +155,7 @@ public class DynamicTableColumn extends TableColumn implements DynamicColumn {
         undeclareContextVariables();
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         declareContextVariables();
         Collection<UIComponent> facets = getFacetCollection();

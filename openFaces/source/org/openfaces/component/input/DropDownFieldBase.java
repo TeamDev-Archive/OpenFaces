@@ -52,6 +52,7 @@ public abstract class DropDownFieldBase extends DropDownComponent implements Com
     private Integer maxlength;
     private Integer size;
 
+    @Override
     public void setId(String id) {
         super.setId(id);
         DropDownPopup popup = getPopup();
@@ -303,6 +304,7 @@ public abstract class DropDownFieldBase extends DropDownComponent implements Com
         this.autoComplete = autoComplete;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context),
                 customValueAllowed,
@@ -344,6 +346,7 @@ public abstract class DropDownFieldBase extends DropDownComponent implements Com
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         int i = 0;
@@ -387,6 +390,7 @@ public abstract class DropDownFieldBase extends DropDownComponent implements Com
         size = (Integer) values[i++];
     }
 
+    @Override
     public void processRestoreState(FacesContext context, Object state) {
         Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
         super.processRestoreState(context, ajaxState != null ? ajaxState : state);

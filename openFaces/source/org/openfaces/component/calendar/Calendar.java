@@ -98,14 +98,17 @@ public class Calendar extends OUIInputBase {
         setRendererType("org.openfaces.CalendarRenderer");
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public void setConverter(Converter converter) {
         throw new IllegalStateException("Converter for Calendar component shouldn't be set");
     }
 
+    @Override
     public Converter getConverter() {
         return DATE_CONVERTER;
     }
@@ -490,6 +493,7 @@ public class Calendar extends OUIInputBase {
         this.showFooter = showFooter;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context), dayStyle, disabledStyle, rolloverDayStyle, inactiveMonthDayStyle,
                 rolloverInactiveMonthDayStyle, selectedDayStyle, rolloverSelectedDayStyle, todayStyle,
@@ -503,6 +507,7 @@ public class Calendar extends OUIInputBase {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
         int i = 0;
@@ -554,6 +559,7 @@ public class Calendar extends OUIInputBase {
         focusable = (Boolean) values[i++];
     }
 
+    @Override
     protected boolean compareValues(Object previous, Object value) {
         if (previous == null) {
             return (value != null);

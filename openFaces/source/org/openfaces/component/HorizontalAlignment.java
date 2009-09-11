@@ -25,6 +25,7 @@ public enum HorizontalAlignment {
         this.align = align;
     }
 
+    @Override
     public String toString() {
         return align;
     }

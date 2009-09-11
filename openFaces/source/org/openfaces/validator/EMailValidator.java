@@ -23,6 +23,7 @@ public class EMailValidator extends AbstractRegexValidator {
         return "^([a-zA-Z0-9_\\.\\-])+\\@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,4})+$";
     }
 
+    @Override
     public String getValidatorMessageID() {
         return EMAIL_VALIDATOR_MESSAGE_ID;
     }
@@ -31,6 +32,7 @@ public class EMailValidator extends AbstractRegexValidator {
         return "email";
     }
 
+    @Override
     protected boolean isTrimNeeded() {
         return true;
     }

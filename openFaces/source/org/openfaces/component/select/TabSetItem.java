@@ -39,10 +39,12 @@ public class TabSetItem extends UIComponentBase implements Serializable {
         return ve != null ? ve.getValue(getFacesContext().getELContext()) : null;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{super.saveState(context), itemValue};
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);

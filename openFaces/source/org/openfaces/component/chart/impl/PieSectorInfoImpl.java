@@ -80,6 +80,7 @@ public class PieSectorInfoImpl implements PieSectorInfo, Serializable {
      *
      * @return An int
      */
+    @Override
     public int hashCode() {
         return key.hashCode() + value.hashCode();
     }
@@ -91,6 +92,7 @@ public class PieSectorInfoImpl implements PieSectorInfo, Serializable {
      * @param obj the other object.
      * @return A boolean.
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;

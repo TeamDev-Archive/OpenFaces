@@ -24,6 +24,7 @@ public enum TabAlignment {
         value = alignment;
     }
 
+    @Override
     public String toString() {
         return value;
     }

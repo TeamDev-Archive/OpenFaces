@@ -41,6 +41,7 @@ public class PieChartView extends ChartView {
         return selectedSector;
     }
 
+    @Override
     public String getFamily() {
         return "org.openfaces.PieChartView";
     }
@@ -82,6 +83,7 @@ public class PieChartView extends ChartView {
         this.queueEvent(new PieSectorEvent(this, info));
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{
@@ -92,6 +94,7 @@ public class PieChartView extends ChartView {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

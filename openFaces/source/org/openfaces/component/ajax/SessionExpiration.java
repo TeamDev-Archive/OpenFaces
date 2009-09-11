@@ -18,6 +18,4 @@ import javax.faces.component.UIComponentBase;
  */
 public abstract class SessionExpiration extends UIComponentBase {
 
-    public abstract String getFamily();
-
 }

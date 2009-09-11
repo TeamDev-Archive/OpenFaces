@@ -363,6 +363,7 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
         removeFacesListener(changeListener);
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -403,6 +404,7 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
         int i = 0;
@@ -443,6 +445,7 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
         selectionChangeListener = (MethodExpression) restoreAttachedState(context, values[i++]);
     }
 
+    @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         super.broadcast(event);
         if (selectionChangeListener != null && event instanceof SelectionChangeEvent) {
@@ -493,6 +496,7 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
         return renderedItemsList;
     }
 
+    @Override
     public void processRestoreState(FacesContext context, Object state) {
         Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
         super.processRestoreState(context, ajaxState != null ? ajaxState : state);
@@ -533,6 +537,7 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
         }
     }
 
+    @Override
     public void processDecodes(FacesContext context) {
         if (!isRendered()) return;
         processPhaseForItems(context, new DecodesComponentPhaseProcessor());
@@ -545,11 +550,13 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
         }
     }
 
+    @Override
     public void processValidators(FacesContext context) {
         if (!isRendered()) return;
         processPhaseForItems(context, new ValidatorComponentPhaseProcessor());
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         if (!isRendered()) return;
         processPhaseForItems(context, new UpdateComponentPhaseProcessor());

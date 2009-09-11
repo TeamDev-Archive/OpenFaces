@@ -9,30 +9,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
+package org.openfaces.util;
 
 /**
- * @author Ekaterina Shliakhovetskaya
- */
-package org.openfaces.component.chart;
-
-/**
- * @author Ekaterina Shliakhovetskaya
- */
-public enum ChartDomain {
-    KEY("key"),
-    VALUE("value"),
-    BOTH("both"),
-    NONE("none");
-
-    private String name;
-
-    ChartDomain(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
+ * @author Dmitry Pikhulya
+*/
+public interface SelfScheduledAction {
+    boolean executeIfReady();
 }

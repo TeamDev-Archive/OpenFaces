@@ -191,6 +191,7 @@ public class Chart extends OUIComponentBase implements StyledComponent {
         this.imageBytes = imageBytes;
     }
 
+    @Override
     public Object saveState(FacesContext facesContext) {
         Object superState = super.saveState(facesContext);
 
@@ -207,6 +208,7 @@ public class Chart extends OUIComponentBase implements StyledComponent {
         };
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

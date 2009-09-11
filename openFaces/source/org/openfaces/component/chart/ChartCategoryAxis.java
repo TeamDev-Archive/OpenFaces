@@ -31,6 +31,7 @@ public class ChartCategoryAxis extends ChartAxis {
         this.position = position;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState,
@@ -38,6 +39,7 @@ public class ChartCategoryAxis extends ChartAxis {
         };
     }
 
+    @Override
     public void restoreState(FacesContext facesContext, Object object) {
         Object[] state = (Object[]) object;
         int i = 0;

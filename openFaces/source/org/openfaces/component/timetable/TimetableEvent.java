@@ -77,6 +77,7 @@ public class TimetableEvent extends AbstractTimetableEvent {
         this.color = color;
     }
 
+    @Override
     public void copyStateFrom(AbstractTimetableEvent e) {
         TimetableEvent timetableEvent = (TimetableEvent) e;
         super.copyStateFrom(timetableEvent);
@@ -85,6 +86,7 @@ public class TimetableEvent extends AbstractTimetableEvent {
         color = timetableEvent.getColor();
     }
 
+    @Override
     public JSONObject toJSONObject(Map params) throws JSONException {
         JSONObject obj = super.toJSONObject(params);
         obj.put("name", name);

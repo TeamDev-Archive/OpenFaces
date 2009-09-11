@@ -33,6 +33,7 @@ public class TreePath implements Serializable {
         return parentPath;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -46,6 +47,7 @@ public class TreePath implements Serializable {
         return true;
     }
 
+    @Override
     public int hashCode() {
         int result;
         result = (value != null ? value.hashCode() : 0);

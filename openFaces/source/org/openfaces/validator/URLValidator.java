@@ -25,6 +25,7 @@ public class URLValidator extends AbstractRegexValidator {
         //return "^(((ht|f)tp(s?))\\://)?((([a-zA-Z0-9_\\-]{2,}\\.)+[a-zA-Z]{2,})|((?:(?:25[0-5]|2[0-4]\\d|[01]\\d\\d|\\d?\\d)(?(\\.?\\d)\\.)){4}))(:[a-zA-Z0-9]+)?(/[a-zA-Z0-9\\-\\._\\?\\,\\'/\\\\\\+&amp;%\\$#\\=~]*)?$";
     }
 
+    @Override
     public String getValidatorMessageID() {
         return URL_VALIDATOR_MESSAGE_ID;
     }
@@ -33,6 +34,7 @@ public class URLValidator extends AbstractRegexValidator {
         return "url";
     }
 
+    @Override
     protected boolean isTrimNeeded() {
         return true;
     }

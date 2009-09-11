@@ -225,6 +225,7 @@ public class PopupLayer extends OUIPanel {
         this.hidingTimeout = hidingTimeout;
     }
 
+    @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
         if (left != null && ValueBindings.set(this, "left", left))
@@ -237,6 +238,7 @@ public class PopupLayer extends OUIPanel {
             height = null;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -267,6 +269,7 @@ public class PopupLayer extends OUIPanel {
         };
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         int i = 0;
