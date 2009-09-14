@@ -19,8 +19,8 @@ import javax.el.ValueExpression;
 /**
  * @author Dmitry Pikhulya
  */
-public class AbstractFilterJspTag extends AbstractComponentJspTag {
-    public AbstractFilterJspTag(AbstractComponentTag delegate) {
+public class FilterJspTag extends AbstractComponentJspTag {
+    public FilterJspTag(AbstractComponentTag delegate) {
         super(delegate);
     }
 

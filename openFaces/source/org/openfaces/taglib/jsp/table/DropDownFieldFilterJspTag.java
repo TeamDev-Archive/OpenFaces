@@ -16,7 +16,7 @@ import org.openfaces.taglib.internal.table.DropDownFieldFilterTag;
 /**
  * @author Dmitry Pikhulya
  */
-public class DropDownFieldFilterJspTag extends AbstractFilterJspTag {
+public class DropDownFieldFilterJspTag extends FilterJspTag {
     public DropDownFieldFilterJspTag() {
         super(new DropDownFieldFilterTag());
     }

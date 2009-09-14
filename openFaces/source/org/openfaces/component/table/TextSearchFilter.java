@@ -29,10 +29,10 @@ public abstract class TextSearchFilter extends Filter {
         if (filterCriterion == null) {
             return "";
         }
-        if (!(filterCriterion instanceof ContainsFilterCriterion)) {
+        if (!(filterCriterion instanceof OneParameterCriterion)) {
             throw new IllegalStateException("Illegal filter criterion: " + filterCriterion);
         }
-        ContainsFilterCriterion containsFilterCriterion = (ContainsFilterCriterion) filterCriterion;
+        OneParameterCriterion containsFilterCriterion = (OneParameterCriterion) filterCriterion;
         return containsFilterCriterion.getValue().toString();
     }
 

@@ -16,7 +16,7 @@ import org.openfaces.taglib.internal.table.InputTextFilterTag;
 /**
  * @author Dmitry Pikhulya
  */
-public class InputTextFilterJspTag extends AbstractFilterJspTag {
+public class InputTextFilterJspTag extends FilterJspTag {
     public InputTextFilterJspTag() {
         super(new InputTextFilterTag());
     }

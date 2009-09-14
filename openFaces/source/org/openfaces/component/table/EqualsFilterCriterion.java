@@ -29,7 +29,7 @@ public class EqualsFilterCriterion extends OneParameterCriterion {
 
     public boolean acceptsValue(Object value) {
         Object filterValue = getValue();
-        if (filterValue == null)
+        if (filterValue == null || filterValue.equals(""))
             return true;
         if (!(value instanceof String) || isCaseSensitive())
             return value.equals(filterValue);

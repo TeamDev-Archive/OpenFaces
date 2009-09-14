@@ -16,7 +16,7 @@ import org.openfaces.taglib.internal.table.ComboBoxFilterTag;
 /**
  * @author Dmitry Pikhulya
  */
-public class ComboBoxFilterJspTag extends AbstractFilterJspTag {
+public class ComboBoxFilterJspTag extends FilterJspTag {
     public ComboBoxFilterJspTag() {
         super(new ComboBoxFilterTag());
     }

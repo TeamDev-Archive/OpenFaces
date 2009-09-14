@@ -5,20 +5,34 @@
 package org.openfaces.taglib.internal.table;
 
 import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.component.table.Filter;
+import org.openfaces.component.table.EqualsFilterCriterion;
+import org.openfaces.component.table.ContainsFilterCriterion;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.FacesException;
 
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class AbstractFilterTag extends AbstractComponentTag {
+public abstract class FilterTag extends AbstractComponentTag {
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        Filter filter = (Filter) component;
         setPropertyBinding(component, "expression");
-        setPropertyBinding(component, "criterion");
+        String criterion = getPropertyValue("criterion");
+        if (!setPropertyAsBinding(component, "criterion", criterion)) {
+            if (criterion.equals("equals"))
+                filter.setCriterion(new EqualsFilterCriterion());
+            else if (criterion.equals("contains"))
+                filter.setCriterion(new ContainsFilterCriterion());
+            else
+                throw new FacesException("Unknown filter's criterion attribute value: \"" + criterion + "\"; it should be one of: \"equals\" or \"contains\"");
+
+        }
         setPropertyBinding(component, "options");
 
         setStringProperty(component, "allRecordsText");

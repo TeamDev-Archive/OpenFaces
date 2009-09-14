@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class InputTextFilterTag extends AbstractFilterTag {
+public class InputTextFilterTag extends FilterTag {
     public String getComponentType() {
         return InputTextFilter.COMPONENT_TYPE;
     }

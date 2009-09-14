@@ -72,6 +72,6 @@ public abstract class OneParameterCriterion extends FilterCriterion {
 
     @Override
     public boolean acceptsAll() {
-        return value == null;
+        return value == null || value.equals("");
     }
 }

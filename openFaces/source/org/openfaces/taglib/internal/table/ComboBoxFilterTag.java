@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class ComboBoxFilterTag extends AbstractFilterTag {
+public class ComboBoxFilterTag extends FilterTag {
     public String getComponentType() {
         return ComboBoxFilter.COMPONENT_TYPE;
     }

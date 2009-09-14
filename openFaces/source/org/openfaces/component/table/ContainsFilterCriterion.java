@@ -35,14 +35,10 @@ public class ContainsFilterCriterion extends OneParameterCriterion {
 
     public boolean acceptsValue(Object value) {
         Object filterValue = getValue();
-        if (filterValue == null)
+        if (filterValue == null || filterValue.equals(""))
             return true;
 
         return objectToString(value).contains(objectToString(filterValue));
     }
 
-    @Override
-    public boolean acceptsAll() {
-        return super.acceptsAll() || "".equals(getValue());
-    }
 }

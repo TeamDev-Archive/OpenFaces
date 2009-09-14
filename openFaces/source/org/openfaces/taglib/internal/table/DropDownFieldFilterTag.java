@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class DropDownFieldFilterTag extends AbstractFilterTag {
+public class DropDownFieldFilterTag extends FilterTag {
     public String getComponentType() {
         return DropDownFieldFilter.COMPONENT_TYPE;
     }
