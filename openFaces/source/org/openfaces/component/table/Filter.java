@@ -31,7 +31,7 @@ import java.util.TreeSet;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class AbstractFilter extends UIComponentBase implements CompoundComponent {
+public abstract class Filter extends UIComponentBase implements CompoundComponent {
     private static final String DEFAULT_ALL_RECORDS_CRITERION_NAME = "<All>";
     private static final String DEFAULT_EMPTY_RECORDS_CRITERION_NAME = "<Empty>";
     private static final String DEFAULT_NON_EMPTY_RECORDS_CRITERION_NAME = "<Non-empty>";
@@ -83,11 +83,11 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
         promptTextClass = (String) state[i++];
     }
 
-    public Boolean isCaseSensitive() {
-        return caseSensitive;
+    public boolean isCaseSensitive() {
+        return ValueBindings.get(this, "caseSensitive", caseSensitive, false);
     }
 
-    public void setCaseSensitive(Boolean caseSensitive) {
+    public void setCaseSensitive(boolean caseSensitive) {
         this.caseSensitive = caseSensitive;
     }
 
@@ -163,7 +163,7 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
         return getCriterion() == null;
     }
 
-    protected FilterableComponent getFilteredComponent() {
+    public FilterableComponent getFilteredComponent() {
         if (filteredComponent == null) {
             UIComponent component = getParent();
             while (component != null && !(component instanceof FilterableComponent))
@@ -296,7 +296,7 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
      * @return true if the new criterion results in the different filtering behavior as opposed to this filter's previous
      *         criterion
      */
-    public boolean changeSearchString(FilterCriterion newCriterion) {
+    public boolean changeCriterion(FilterCriterion newCriterion) {
         FilterCriterion oldCriterion = getCriterion();
         criterionModelUpdateRequired = true;
 
@@ -349,9 +349,9 @@ public abstract class AbstractFilter extends UIComponentBase implements Compound
                 FilterableComponent filteredComponent = getFilteredComponent();
                 if (filteredComponent == null)
                     return false;
-                List<AbstractFilter> filters = filteredComponent.getFilters();
-                if (!filters.contains(AbstractFilter.this))
-                    filters.add(AbstractFilter.this);
+                List<Filter> filters = filteredComponent.getFilters();
+                if (!filters.contains(Filter.this))
+                    filters.add(Filter.this);
                 return true;
             }
         });

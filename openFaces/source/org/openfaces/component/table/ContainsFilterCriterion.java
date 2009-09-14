@@ -27,9 +27,22 @@ public class ContainsFilterCriterion extends OneParameterCriterion {
         super(value, caseSensitive);
     }
 
-
-    public boolean acceptsValue(Object value) {
-        return objectToString(value).contains(objectToString(getValue()));
+    @Override
+    public OneParameterCriterion setValue(Object value) {
+        return new ContainsFilterCriterion(value, isCaseSensitive());
     }
 
+
+    public boolean acceptsValue(Object value) {
+        Object filterValue = getValue();
+        if (filterValue == null)
+            return true;
+
+        return objectToString(value).contains(objectToString(filterValue));
+    }
+
+    @Override
+    public boolean acceptsAll() {
+        return super.acceptsAll() || "".equals(getValue());
+    }
 }

@@ -12,7 +12,7 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.input.InputText;
-import org.openfaces.component.table.AbstractFilter;
+import org.openfaces.component.table.Filter;
 import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIInput;
@@ -22,7 +22,7 @@ import javax.faces.context.FacesContext;
  * @author Dmitry Pikhulya
  */
 public class InputTextFilterRenderer extends TextSearchFilterRenderer {
-    protected void configureInputComponent(FacesContext context, AbstractFilter filter, UIInput inputComponent) {
+    protected void configureInputComponent(FacesContext context, Filter filter, UIInput inputComponent) {
         InputText input = (InputText) inputComponent;
         input.setOnkeypress(getFilterOnEnterScript(context, filter));
         input.setOnchange(getFilterSubmissionScript(filter, context));

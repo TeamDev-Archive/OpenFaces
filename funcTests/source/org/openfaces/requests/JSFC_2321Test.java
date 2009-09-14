@@ -20,7 +20,7 @@ import org.openfaces.test.OpenFacesTestCase;
  */
 public class JSFC_2321Test extends OpenFacesTestCase {
     @Test
-    public void testGlobalMessagesAreShowed() throws Exception {
+    public void testGlobalMessagesAreShown() throws Exception {
         Selenium selenium = getSelenium();
         testAppFunctionalPage("/requests/JSFC-2321.jsf");
         element("fm:btn").clickAndWait();

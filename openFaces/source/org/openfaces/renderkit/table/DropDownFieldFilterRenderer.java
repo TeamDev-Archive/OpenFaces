@@ -14,7 +14,7 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItem;
 import org.openfaces.component.input.DropDownItems;
-import org.openfaces.component.table.AbstractFilter;
+import org.openfaces.component.table.Filter;
 import org.openfaces.util.StyleUtil;
 import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
@@ -33,7 +33,7 @@ import java.util.Iterator;
  * @author Dmitry Pikhulya
  */
 public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
-    protected void configureInputComponent(FacesContext context, AbstractFilter filter, UIInput inputComponent) {
+    protected void configureInputComponent(FacesContext context, Filter filter, UIInput inputComponent) {
         DropDownField field = (DropDownField) inputComponent;
         field.setOnchange(getFilterSubmissionScript(filter, context));
         field.setOnkeypress(getFilterOnEnterScript(context, filter));

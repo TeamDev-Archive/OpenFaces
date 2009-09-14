@@ -17,6 +17,8 @@ import org.openfaces.component.table.EmptyRecordsCriterion;
 import org.openfaces.component.table.FilterCriterion;
 import org.openfaces.component.table.NonEmptyRecordsCriterion;
 import org.openfaces.component.table.ContainsFilterCriterion;
+import org.openfaces.component.table.EqualsFilterCriterion;
+import org.openfaces.component.table.Filter;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.StyleUtil;
@@ -36,7 +38,7 @@ import java.util.Iterator;
 /**
  * @author Dmitry Pikhulya
  */
-public class ComboBoxFilterRenderer extends AbstractFilterRenderer {
+public class ComboBoxFilterRenderer extends FilterRenderer {
     private static final String USER_CRITERION_PREFIX = "u-";
     private static final String PREDEFINED_CRITERION_PREFIX = "p-";
     private static final String ALL = "ALL";
@@ -121,7 +123,7 @@ public class ComboBoxFilterRenderer extends AbstractFilterRenderer {
                     true, null);
         }
 
-        AbstractTable table = getTable(component);
+        AbstractTable table = (AbstractTable) filter.getFilteredComponent();
 
         RenderingUtil.renderInitScript(context, new ScriptBuilder().functionCall("O$.Table._showFilter",
                 table, clientId).semicolon(),
@@ -135,12 +137,6 @@ public class ComboBoxFilterRenderer extends AbstractFilterRenderer {
         writer.endElement("select");
     }
 
-    private AbstractTable getTable(UIComponent c) {
-        for (UIComponent component = c.getParent(); component != null; component = component.getParent())
-            if (component instanceof AbstractTable)
-                return (AbstractTable) component;
-        throw new RuntimeException("Couldn't find parent table");
-    }
 
     private void writeOption(
             ResponseWriter writer,
@@ -166,10 +162,10 @@ public class ComboBoxFilterRenderer extends AbstractFilterRenderer {
         String selectedCriterion = requestParameterMap.get(component.getClientId(context));
         if (selectedCriterion == null)
             return;
-        ComboBoxFilter comboBoxFilter = ((ComboBoxFilter) component);
+        ComboBoxFilter filter = ((ComboBoxFilter) component);
         if (selectedCriterion.startsWith(USER_CRITERION_PREFIX)) {
             String searchString = selectedCriterion.substring(USER_CRITERION_PREFIX.length());
-            setDecodedSearchString(comboBoxFilter, new ContainsFilterCriterion(searchString));
+            setDecodedString(filter, searchString);
         } else if (selectedCriterion.startsWith(PREDEFINED_CRITERION_PREFIX)) {
             String criterion = selectedCriterion.substring(PREDEFINED_CRITERION_PREFIX.length());
             FilterCriterion newCriterion;
@@ -181,9 +177,13 @@ public class ComboBoxFilterRenderer extends AbstractFilterRenderer {
                 newCriterion = new NonEmptyRecordsCriterion();
             else
                 throw new IllegalStateException("Unknown predefined criterion came from client: " + criterion);
-            setDecodedSearchString(comboBoxFilter, newCriterion);
+            setDecodedCriterion(filter, newCriterion);
         } else
             throw new IllegalStateException("Improperly formatted criterion came from client: " + selectedCriterion);
+    }
+
+    protected FilterCriterion createDefaultCriterion(Filter filter, String searchString) {
+        return new EqualsFilterCriterion(searchString, filter.isCaseSensitive());
     }
 
 }

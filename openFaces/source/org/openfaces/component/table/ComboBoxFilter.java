@@ -14,7 +14,7 @@ package org.openfaces.component.table;
 /**
  * @author Dmitry Pikhulya
  */
-public class ComboBoxFilter extends AbstractFilter {
+public class ComboBoxFilter extends Filter {
     public static final String COMPONENT_FAMILY = "org.openfaces.ComboBoxFilter";
     public static final String COMPONENT_TYPE = "org.openfaces.ComboBoxFilter";
 

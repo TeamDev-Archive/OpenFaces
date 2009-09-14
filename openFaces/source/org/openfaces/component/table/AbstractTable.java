@@ -134,7 +134,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private List<BaseColumn> cachedAllColumns;
     private List<BaseColumn> cachedColumnsForRendering;
     private String cachedClientId;
-    private List<AbstractFilter> myFilters = new ArrayList<AbstractFilter>();
+    private List<Filter> myFilters = new ArrayList<Filter>();
 
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
@@ -923,8 +923,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             return;
         if (getRowIndex() != -1)
             setRowIndex(-1);
-        List<AbstractFilter> filters = getFilters();
-        for (AbstractFilter filter : filters) {
+        List<Filter> filters = getFilters();
+        for (Filter filter : filters) {
             filter.processValidators(context);
         }
         AbstractTableSelection tableSelection = getSelection();
@@ -950,8 +950,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         if (sortAscendingExpression != null)
             sortAscendingExpression.setValue(elContext, isSortAscending());
 
-        List<AbstractFilter> filters = getFilters();
-        for (AbstractFilter filter : filters) {
+        List<Filter> filters = getFilters();
+        for (Filter filter : filters) {
             filter.processUpdates(context);
         }
 
@@ -992,10 +992,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         cachedAllColumns = null;
         cachedColumnsForRendering = null;
 
-        List<AbstractFilter> filters = getFilters();
+        List<Filter> filters = getFilters();
         int i = 0;
         while (i < filters.size()) {
-            AbstractFilter filter = filters.get(i);
+            Filter filter = filters.get(i);
             filter.updateSearchStringFromBinding(context);
             i++;
         }
@@ -1319,11 +1319,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return new RowComparator(facesContext, sortingExpression, valueComparator, requestMap, sortAscending);
     }
 
-    protected List<AbstractFilter> getActiveFilters() {
-        List<AbstractFilter> filters = new ArrayList<AbstractFilter>();
+    protected List<Filter> getActiveFilters() {
+        List<Filter> filters = new ArrayList<Filter>();
 
-        List<AbstractFilter> allFilters = getFilters();
-        for (AbstractFilter filter : allFilters) {
+        List<Filter> allFilters = getFilters();
+        for (Filter filter : allFilters) {
             if (filter.isAcceptingAllRecords())
                 continue;
             filters.add(filter);
@@ -1338,7 +1338,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         ComponentUtil.runScheduledActions();
     }
 
-    public List<AbstractFilter> getFilters() {
+    public List<Filter> getFilters() {
         return myFilters;
     }
 

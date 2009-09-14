@@ -64,7 +64,7 @@ public class TreeTable extends AbstractTable {
     private String textClass;
 
 
-    private List<AbstractFilter> collectedFilters;
+    private List<Filter> collectedFilters;
     private List<NodeInfoForRow> nodeInfoForRows_unfiltered;
     private int deepestLevel;
     private Boolean rowValuesForFilteringNeeded;
@@ -310,7 +310,7 @@ public class TreeTable extends AbstractTable {
         List<NodeInfoForRow> nodeInfoForRows = new ArrayList<NodeInfoForRow>();
         List<NodeInfoForRow> nodeInfoForRows_unfiltered = new ArrayList<NodeInfoForRow>();
         int sortLevel = getSortLevel();
-        List<AbstractFilter> filters = getActiveFilters();
+        List<Filter> filters = getActiveFilters();
         deepestLevel = 0;
         int childNodeCount = collectTreeNodeDatas(treeStructure, filters, nodeInfoForRows, null, nodeInfoForRows_unfiltered,
                 nodeKeyPath.getLevel() + 1, sortLevel, nodePath, nodeKeyPath, true);
@@ -386,7 +386,7 @@ public class TreeTable extends AbstractTable {
         List<NodeInfoForRow> nodeInfoForRows = new ArrayList<NodeInfoForRow>();
         List<NodeInfoForRow> nodeInfoForRows_unfiltered = new ArrayList<NodeInfoForRow>();
         int sortLevel = getSortLevel();
-        List<AbstractFilter> filters = getActiveFilters();
+        List<Filter> filters = getActiveFilters();
         deepestLevel = 0;
         rowValuesForFilteringNeeded = null;
         int rootNodeCount = proceedWithReadingData
@@ -436,7 +436,7 @@ public class TreeTable extends AbstractTable {
         return rowIndexToExpansionData;
     }
 
-    private int collectTreeNodeDatas(TreeStructure treeStructure, List<AbstractFilter> activeFilters, // todo: too much parameters. review this method
+    private int collectTreeNodeDatas(TreeStructure treeStructure, List<Filter> activeFilters, // todo: too much parameters. review this method
                                      List<NodeInfoForRow> nodeInfosForRendering,
                                      List<NodeInfoForRow> nodeInfosAllFiltered,
                                      List<NodeInfoForRow> nodeInfos_unfiltered,
@@ -545,9 +545,9 @@ public class TreeTable extends AbstractTable {
         if (rowValuesForFilteringNeeded != null)
             return rowValuesForFilteringNeeded;
 
-        List<AbstractFilter> filters = getFilters();
+        List<Filter> filters = getFilters();
         boolean rowListNeeded = false;
-        for (AbstractFilter filter : filters) {
+        for (Filter filter : filters) {
             if (filter.getWantsRowList()) {
                 rowListNeeded = true;
                 break;
@@ -791,7 +791,7 @@ public class TreeTable extends AbstractTable {
     public boolean isFilteringPerformed() {
         if (collectedFilters == null || collectedFilters.size() == 0)
             return false;
-        for (AbstractFilter filter : collectedFilters) {
+        for (Filter filter : collectedFilters) {
             if (!filter.isAcceptingAllRecords())
                 return true;
         }
@@ -812,7 +812,7 @@ public class TreeTable extends AbstractTable {
         expansionState.setNodeExpanded(keyPath, expanded);
     }
 
-    public List getRowListForFiltering(AbstractFilter filter) {
+    public List getRowListForFiltering(Filter filter) {
         List<boolean[]> allRowFilteringFlags = new ArrayList<boolean[]>();
         for (NodeInfoForRow info : nodeInfoForRows_unfiltered) {
             allRowFilteringFlags.add(info.getNodeFilteringFlags());

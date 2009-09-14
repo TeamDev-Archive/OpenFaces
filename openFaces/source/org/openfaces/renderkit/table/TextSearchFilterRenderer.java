@@ -12,8 +12,7 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.AbstractFilter;
-import org.openfaces.component.table.ContainsFilterCriterion;
+import org.openfaces.component.table.Filter;
 import org.openfaces.component.table.TextSearchFilter;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.StyleUtil;
@@ -26,7 +25,7 @@ import java.io.IOException;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class TextSearchFilterRenderer extends AbstractFilterRenderer {
+public abstract class TextSearchFilterRenderer extends FilterRenderer {
 
     @Override
     public boolean getRendersChildren() {
@@ -52,7 +51,7 @@ public abstract class TextSearchFilterRenderer extends AbstractFilterRenderer {
         StyleUtil.renderStyleClasses(context, component);
     }
 
-    protected abstract void configureInputComponent(FacesContext context, AbstractFilter filter, UIInput inputComponent);
+    protected abstract void configureInputComponent(FacesContext context, Filter filter, UIInput inputComponent);
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -63,16 +62,16 @@ public abstract class TextSearchFilterRenderer extends AbstractFilterRenderer {
         if (newSearchString == null) {
             newSearchString = "";
         }
-        setDecodedSearchString(filter, new ContainsFilterCriterion(newSearchString));
+        setDecodedString(filter, newSearchString);
     }
 
-    protected String getFilterOnEnterScript(FacesContext context, AbstractFilter filter) {
-        AbstractTable table = getTable(filter);
+    protected String getFilterOnEnterScript(FacesContext context, Filter filter) {
+        AbstractTable table = (AbstractTable) filter.getFilteredComponent();
         String tableId = table.getClientId(context);
         return "return O$.Table._filterFieldKeyPressHandler('" + tableId + "', this, event);";
     }
 
-    protected String getStringValue(AbstractFilter filter) {
+    protected String getStringValue(Filter filter) {
         return ((TextSearchFilter) filter).getStringValue();
     }
 }

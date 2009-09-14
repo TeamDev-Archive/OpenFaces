@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class TextSearchFilter extends AbstractFilter {
+public abstract class TextSearchFilter extends Filter {
 
     public static final String SEARCH_COMPONENT_SUFFIX = "searchComponent";
 

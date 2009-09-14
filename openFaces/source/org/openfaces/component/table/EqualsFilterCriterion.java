@@ -15,11 +15,30 @@ package org.openfaces.component.table;
  * @author Dmitry Pikhulya
  */
 public class EqualsFilterCriterion extends OneParameterCriterion {
+
+    public EqualsFilterCriterion() {
+    }
+
+    public EqualsFilterCriterion(Object value) {
+        super(value);
+    }
+
+    public EqualsFilterCriterion(Object value, boolean caseSensitive) {
+        super(value, caseSensitive);
+    }
+
     public boolean acceptsValue(Object value) {
         Object filterValue = getValue();
+        if (filterValue == null)
+            return true;
         if (!(value instanceof String) || isCaseSensitive())
             return value.equals(filterValue);
         return value.equals(filterValue.toString());
 
+    }
+
+    @Override
+    public OneParameterCriterion setValue(Object value) {
+        return new EqualsFilterCriterion(value, isCaseSensitive());
     }
 }

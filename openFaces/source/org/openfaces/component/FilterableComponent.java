@@ -11,7 +11,7 @@
  */
 package org.openfaces.component;
 
-import org.openfaces.component.table.AbstractFilter;
+import org.openfaces.component.table.Filter;
 
 import javax.faces.context.FacesContext;
 import javax.el.ValueExpression;
@@ -25,7 +25,7 @@ public interface FilterableComponent {
     /**
      * @return a modifiable set of filters attached to this component.
      */
-    List<AbstractFilter> getFilters();
+    List<Filter> getFilters();
 
     /**
      * @return name of a variable that refers to a current record in this component.
@@ -53,7 +53,7 @@ public interface FilterableComponent {
     String getNonEmptyRecordsFilterName();
     void setNonEmptyRecordsFilterName(String nonEmptyRecordsFilterName);
 
-    public List getRowListForFiltering(AbstractFilter filter);
+    public List getRowListForFiltering(Filter filter);
 
     Object getFilteredValueByData(
             FacesContext facesContext,

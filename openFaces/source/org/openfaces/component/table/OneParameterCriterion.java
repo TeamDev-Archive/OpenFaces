@@ -26,10 +26,6 @@ public abstract class OneParameterCriterion extends FilterCriterion {
     }
 
     protected OneParameterCriterion(Object value, boolean caseSensitive) {
-        if (value == null) {
-            throw new IllegalArgumentException("text must be not-null");
-        }
-
         this.value = value;
         this.caseSensitive = caseSensitive;
     }
@@ -37,6 +33,8 @@ public abstract class OneParameterCriterion extends FilterCriterion {
     public Object getValue() {
         return value;
     }
+
+    public abstract OneParameterCriterion setValue(Object value);
 
     public boolean isCaseSensitive() {
         return caseSensitive;
@@ -74,6 +72,6 @@ public abstract class OneParameterCriterion extends FilterCriterion {
 
     @Override
     public boolean acceptsAll() {
-        return value == null || value.equals("");
+        return value == null;
     }
 }
