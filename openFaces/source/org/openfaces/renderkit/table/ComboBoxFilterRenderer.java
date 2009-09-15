@@ -14,16 +14,16 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.ComboBoxFilter;
 import org.openfaces.component.table.EmptyRecordsCriterion;
-import org.openfaces.component.table.FilterCriterion;
-import org.openfaces.component.table.NonEmptyRecordsCriterion;
-import org.openfaces.component.table.ContainsFilterCriterion;
 import org.openfaces.component.table.EqualsFilterCriterion;
 import org.openfaces.component.table.Filter;
+import org.openfaces.component.table.FilterCriterion;
+import org.openfaces.component.table.NonEmptyRecordsCriterion;
+import org.openfaces.component.table.OneParameterCriterion;
+import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
-import org.openfaces.util.StyleUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -31,9 +31,9 @@ import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Iterator;
 
 /**
  * @author Dmitry Pikhulya
@@ -105,8 +105,8 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
         boolean textCriterionSelected = false;
         for (Object criterionObj : criterionNames) {
             String criterionName = criterionObj != null ? criterionObj.toString() : "";
-            boolean selected = currentCriterionName instanceof ContainsFilterCriterion &&
-                    ((ContainsFilterCriterion) currentCriterionName).getValue().equals(criterionName);
+            boolean selected = currentCriterionName instanceof OneParameterCriterion &&
+                    ((OneParameterCriterion) currentCriterionName).getValue().equals(criterionName);
             writeOption(writer, component,
                     USER_CRITERION_PREFIX + criterionName,
                     criterionName,
@@ -114,9 +114,9 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
             if (selected)
                 textCriterionSelected = true;
         }
-        boolean noRecordsWithSelectedCriterion = currentCriterionName instanceof ContainsFilterCriterion && !textCriterionSelected;
+        boolean noRecordsWithSelectedCriterion = currentCriterionName instanceof OneParameterCriterion && !textCriterionSelected;
         if (noRecordsWithSelectedCriterion) {
-            String criterionName = ((ContainsFilterCriterion) currentCriterionName).getValue().toString();
+            String criterionName = ((OneParameterCriterion) currentCriterionName).getValue().toString();
             writeOption(writer, component,
                     USER_CRITERION_PREFIX + criterionName,
                     criterionName,
