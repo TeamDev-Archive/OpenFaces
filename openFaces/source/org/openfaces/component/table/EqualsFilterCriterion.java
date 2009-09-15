@@ -33,7 +33,7 @@ public class EqualsFilterCriterion extends OneParameterCriterion {
             return true;
         if (!(value instanceof String) || isCaseSensitive())
             return value.equals(filterValue);
-        return value.equals(filterValue.toString());
+        return objectToString(value).equals(objectToString(filterValue));
 
     }
 
