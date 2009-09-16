@@ -85,9 +85,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private String filterRowStyle;
     private String filterRowClass;
     private String filterRowSeparator;
-    private String allRecordsFilterName;
-    private String emptyRecordsFilterName;
-    private String nonEmptyRecordsFilterName;
+    private String allRecordsFilterText;
+    private String emptyRecordsFilterText;
+    private String nonEmptyRecordsFilterText;
 
     private String rolloverRowStyle;
     private String rolloverRowClass;
@@ -167,7 +167,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 horizontalGridLines, verticalGridLines, commonHeaderSeparator, commonFooterSeparator,
                 headerHorizSeparator, headerVertSeparator, multiHeaderSeparator, multiFooterSeparator,
                 footerHorizSeparator, footerVertSeparator,
-                useAjax, allRecordsFilterName, emptyRecordsFilterName, nonEmptyRecordsFilterName,
+                useAjax, allRecordsFilterText, emptyRecordsFilterText, nonEmptyRecordsFilterText,
                 filterRowStyle, filterRowClass, filterRowSeparator, focusedStyle, focusedClass,
                 rolloverRowStyle, rolloverRowClass, noDataRowStyle, noDataRowClass,
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
@@ -235,9 +235,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
         useAjax = (Boolean) state[i++];
 
-        allRecordsFilterName = (String) state[i++];
-        emptyRecordsFilterName = (String) state[i++];
-        nonEmptyRecordsFilterName = (String) state[i++];
+        allRecordsFilterText = (String) state[i++];
+        emptyRecordsFilterText = (String) state[i++];
+        nonEmptyRecordsFilterText = (String) state[i++];
         filterRowStyle = (String) state[i++];
         filterRowClass = (String) state[i++];
         filterRowSeparator = (String) state[i++];
@@ -1108,28 +1108,28 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         this.filterRowSeparator = filterRowSeparator;
     }
 
-    public String getAllRecordsFilterName() {
-        return ValueBindings.get(this, "allRecordsFilterName", allRecordsFilterName);
+    public String getAllRecordsFilterText() {
+        return ValueBindings.get(this, "allRecordsFilterText", allRecordsFilterText);
     }
 
-    public void setAllRecordsFilterName(String allRecordsFilterName) {
-        this.allRecordsFilterName = allRecordsFilterName;
+    public void setAllRecordsFilterText(String allRecordsFilterText) {
+        this.allRecordsFilterText = allRecordsFilterText;
     }
 
-    public String getEmptyRecordsFilterName() {
-        return ValueBindings.get(this, "emptyRecordsFilterName", emptyRecordsFilterName);
+    public String getEmptyRecordsFilterText() {
+        return ValueBindings.get(this, "emptyRecordsFilterText", emptyRecordsFilterText);
     }
 
-    public void setEmptyRecordsFilterName(String emptyRecordsFilterName) {
-        this.emptyRecordsFilterName = emptyRecordsFilterName;
+    public void setEmptyRecordsFilterText(String emptyRecordsFilterText) {
+        this.emptyRecordsFilterText = emptyRecordsFilterText;
     }
 
-    public String getNonEmptyRecordsFilterName() {
-        return ValueBindings.get(this, "nonEmptyRecordsFilterName", nonEmptyRecordsFilterName);
+    public String getNonEmptyRecordsFilterText() {
+        return ValueBindings.get(this, "nonEmptyRecordsFilterText", nonEmptyRecordsFilterText);
     }
 
-    public void setNonEmptyRecordsFilterName(String nonEmptyRecordsFilterName) {
-        this.nonEmptyRecordsFilterName = nonEmptyRecordsFilterName;
+    public void setNonEmptyRecordsFilterText(String nonEmptyRecordsFilterText) {
+        this.nonEmptyRecordsFilterText = nonEmptyRecordsFilterText;
     }
 
     public String getSortColumnId() {

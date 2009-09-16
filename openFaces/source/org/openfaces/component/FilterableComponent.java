@@ -36,22 +36,22 @@ public interface FilterableComponent {
      * @return the default text for the "all records" filters in this component. This text
      * can also be customized on a per-filter basis for individual customization.
      */
-    String getAllRecordsFilterName();
-    void setAllRecordsFilterName(String allRecordsFilterName);
+    String getAllRecordsFilterText();
+    void setAllRecordsFilterText(String allRecordsFilterText);
 
     /**
      * @return the default text for the "empty records" filters in this component. This text
      * can also be customized on a per-filter basis for individual customization.
      */
-    String getEmptyRecordsFilterName();
-    void setEmptyRecordsFilterName(String emptyRecordsFilterName);
+    String getEmptyRecordsFilterText();
+    void setEmptyRecordsFilterText(String emptyRecordsFilterText);
 
     /**
      * @return the default text for the "non-empty records" filters in this component. This text
      * can also be customized on a per-filter basis for individual customization.
      */
-    String getNonEmptyRecordsFilterName();
-    void setNonEmptyRecordsFilterName(String nonEmptyRecordsFilterName);
+    String getNonEmptyRecordsFilterText();
+    void setNonEmptyRecordsFilterText(String nonEmptyRecordsFilterText);
 
     public List getRowListForFiltering(Filter filter);
 

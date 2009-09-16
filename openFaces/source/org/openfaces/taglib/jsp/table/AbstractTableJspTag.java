@@ -242,16 +242,16 @@ public abstract class AbstractTableJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("useAjax", useAjax);
     }
 
-    public void setAllRecordsFilterName(ValueExpression allRecordsFilterName) {
-        getDelegate().setPropertyValue("allRecordsFilterName", allRecordsFilterName);
+    public void setAllRecordsFilterText(ValueExpression allRecordsFilterText) {
+        getDelegate().setPropertyValue("allRecordsFilterText", allRecordsFilterText);
     }
 
-    public void setEmptyRecordsFilterName(ValueExpression emptyRecordsFilterName) {
-        getDelegate().setPropertyValue("emptyRecordsFilterName", emptyRecordsFilterName);
+    public void setEmptyRecordsFilterText(ValueExpression emptyRecordsFilterText) {
+        getDelegate().setPropertyValue("emptyRecordsFilterText", emptyRecordsFilterText);
     }
 
-    public void setNonEmptyRecordsFilterName(ValueExpression nonEmptyRecordsFilterName) {
-        getDelegate().setPropertyValue("nonEmptyRecordsFilterName", nonEmptyRecordsFilterName);
+    public void setNonEmptyRecordsFilterText(ValueExpression nonEmptyRecordsFilterText) {
+        getDelegate().setPropertyValue("nonEmptyRecordsFilterText", nonEmptyRecordsFilterText);
     }
 
     public void setFilterRowStyle(ValueExpression filterRowStyle) {

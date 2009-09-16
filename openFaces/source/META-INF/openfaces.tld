@@ -344,7 +344,7 @@
       <description>Text that is displayed instead of "&lt;All&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
-      <name>allRecordsFilterName</name>
+      <name>allRecordsFilterText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -356,7 +356,7 @@
       <description>Text that is displayed instead of "&lt;Empty&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
-      <name>emptyRecordsFilterName</name>
+      <name>emptyRecordsFilterText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -368,7 +368,7 @@
       <description>Text that is displayed instead of "&lt;Non-empty&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
-      <name>nonEmptyRecordsFilterName</name>
+      <name>nonEmptyRecordsFilterText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -5408,7 +5408,7 @@ means that only root nodes and their immediate children are preloaded -->
       <description>The text that is displayed instead of "&lt;All&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
-      <name>allRecordsFilterName</name>
+      <name>allRecordsFilterText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -5420,7 +5420,7 @@ means that only root nodes and their immediate children are preloaded -->
       <description>The text that is displayed instead of "&lt;Empty&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
-      <name>emptyRecordsFilterName</name>
+      <name>emptyRecordsFilterText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -5432,7 +5432,7 @@ means that only root nodes and their immediate children are preloaded -->
       <description>The text that is displayed instead of "&lt;Non-empty&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
-      <name>nonEmptyRecordsFilterName</name>
+      <name>nonEmptyRecordsFilterText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

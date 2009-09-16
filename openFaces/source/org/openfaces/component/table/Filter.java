@@ -183,7 +183,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         if (result == null) {
             FilterableComponent filteredComponent = getFilteredComponent();
             if (filteredComponent != null)
-                result = filteredComponent.getAllRecordsFilterName();
+                result = filteredComponent.getAllRecordsFilterText();
         }
         if (result == null)
             result = DEFAULT_ALL_RECORDS_CRITERION_NAME;
@@ -199,7 +199,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         if (result == null) {
             FilterableComponent filteredComponent = getFilteredComponent();
             if (filteredComponent != null)
-                result = filteredComponent.getEmptyRecordsFilterName();
+                result = filteredComponent.getEmptyRecordsFilterText();
         }
         if (result == null)
             result = DEFAULT_EMPTY_RECORDS_CRITERION_NAME;
@@ -215,7 +215,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         if (result == null) {
             FilterableComponent filteredComponent = getFilteredComponent();
             if (filteredComponent != null)
-                result = filteredComponent.getNonEmptyRecordsFilterName();
+                result = filteredComponent.getNonEmptyRecordsFilterText();
         }
         if (result == null)
             result = DEFAULT_NON_EMPTY_RECORDS_CRITERION_NAME;

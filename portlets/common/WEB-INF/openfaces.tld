@@ -344,7 +344,7 @@
       <description>Text that is displayed instead of "&lt;All&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
-      <name>allRecordsFilterName</name>
+      <name>allRecordsFilterText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -356,7 +356,7 @@
       <description>Text that is displayed instead of "&lt;Empty&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
-      <name>emptyRecordsFilterName</name>
+      <name>emptyRecordsFilterText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -368,7 +368,7 @@
       <description>Text that is displayed instead of "&lt;Non-empty&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
-      <name>nonEmptyRecordsFilterName</name>
+      <name>nonEmptyRecordsFilterText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -1738,6 +1738,16 @@
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
+    <attribute>
+      <description>Specifies whether letter case should be exactly matched when obtaining filtering results.</description>
+      <name>caseSensitive</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean-->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>A style for the entire filter component.</description>
@@ -1854,6 +1864,16 @@
       <!-- @bindingType java.util.Collection -->
       <!-- @default null -->
       <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether letter case should be exactly matched when obtaining filtering results.</description>
+      <name>caseSensitive</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean-->
+      <!-- @default false -->
+      <!-- @el true -->
     </attribute>
 
     <attribute>
@@ -1995,7 +2015,6 @@
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
-
     <attribute>
       <description>The filtering options that appear in the filter's drop-down list instead of displaying all of the
         possible values.
@@ -2007,6 +2026,16 @@
       <!-- @bindingType java.util.Collection -->
       <!-- @default null -->
       <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether letter case should be exactly matched when obtaining filtering results.</description>
+      <name>caseSensitive</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean-->
+      <!-- @default false -->
+      <!-- @el true -->
     </attribute>
 
     <attribute>
@@ -5379,7 +5408,7 @@ means that only root nodes and their immediate children are preloaded -->
       <description>The text that is displayed instead of "&lt;All&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
-      <name>allRecordsFilterName</name>
+      <name>allRecordsFilterText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -5391,7 +5420,7 @@ means that only root nodes and their immediate children are preloaded -->
       <description>The text that is displayed instead of "&lt;Empty&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
-      <name>emptyRecordsFilterName</name>
+      <name>emptyRecordsFilterText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -5403,7 +5432,7 @@ means that only root nodes and their immediate children are preloaded -->
       <description>The text that is displayed instead of "&lt;Non-empty&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
-      <name>nonEmptyRecordsFilterName</name>
+      <name>nonEmptyRecordsFilterText</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

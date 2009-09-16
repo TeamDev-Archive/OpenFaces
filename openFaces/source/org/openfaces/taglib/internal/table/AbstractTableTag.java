@@ -86,9 +86,9 @@ public abstract class AbstractTableTag extends AbstractComponentTag {
 
         setBooleanProperty(component, "useAjax");
 
-        setStringProperty(component, "allRecordsFilterName");
-        setStringProperty(component, "emptyRecordsFilterName");
-        setStringProperty(component, "nonEmptyRecordsFilterName");
+        setStringProperty(component, "allRecordsFilterText");
+        setStringProperty(component, "emptyRecordsFilterText");
+        setStringProperty(component, "nonEmptyRecordsFilterText");
 
         setStringProperty(component, "filterRowStyle");
         setStringProperty(component, "filterRowClass");
