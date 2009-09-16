@@ -32,6 +32,11 @@ public class ContainsFilterCriterion extends OneParameterCriterion {
         return new ContainsFilterCriterion(value, isCaseSensitive());
     }
 
+    @Override
+    public OneParameterCriterion setCaseSensitive(boolean caseSensitive) {
+        return new ContainsFilterCriterion(getValue(), caseSensitive);
+    }
+
 
     public boolean acceptsValue(Object value) {
         Object filterValue = getValue();

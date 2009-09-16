@@ -64,7 +64,7 @@ public class InputTextarea extends OUIInputText {
         this.readonly = readonly;
     }
 
-    public void setAutoGrowing(Boolean autoGrowing) {
+    public void setAutoGrowing(boolean autoGrowing) {
         this.autoGrowing = autoGrowing;
     }
 
@@ -92,7 +92,7 @@ public class InputTextarea extends OUIInputText {
         return ValueBindings.get(this, "readonly", readonly, false);
     }
 
-    public Boolean isAutoGrowing() {
+    public boolean isAutoGrowing() {
         return ValueBindings.get(this, "autoGrowing", autoGrowing, false);
     }
 

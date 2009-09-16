@@ -993,11 +993,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         cachedColumnsForRendering = null;
 
         List<Filter> filters = getFilters();
-        int i = 0;
-        while (i < filters.size()) {
-            Filter filter = filters.get(i);
-            filter.updateSearchStringFromBinding(context);
-            i++;
+        for (Filter filter : filters) {
+            filter.updateCriterionFromBinding(context);
         }
 
         AbstractTableSelection selection = getSelection();

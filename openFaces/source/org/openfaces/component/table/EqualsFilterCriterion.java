@@ -41,4 +41,9 @@ public class EqualsFilterCriterion extends OneParameterCriterion {
     public OneParameterCriterion setValue(Object value) {
         return new EqualsFilterCriterion(value, isCaseSensitive());
     }
+
+    @Override
+    public OneParameterCriterion setCaseSensitive(boolean caseSensitive) {
+        return new EqualsFilterCriterion(getValue(), caseSensitive);
+    }
 }

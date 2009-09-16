@@ -59,7 +59,7 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
         super.encodeBegin(context, component);
         ComboBoxFilter filter = ((ComboBoxFilter) component);
 
-        FilterCriterion currentCriterionName = filter.getCriterion();
+        FilterCriterion currentCriterion = filter.getCriterion();
 
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("select", component);
@@ -87,26 +87,26 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
 
         String predefinedCriterionsClass = getPredefinedCriterionClass(context, filter);
         writeOption(writer, component, PREDEFINED_CRITERION_PREFIX + ALL, allRecordsCriterionName,
-                currentCriterionName == null,
+                currentCriterion == null,
                 predefinedCriterionsClass);
         if (thereAreEmptyItems) {
             String emptyRecordsCriterionName = filter.getEmptyRecordsText();
             writeOption(writer, component, PREDEFINED_CRITERION_PREFIX + EMPTY, emptyRecordsCriterionName,
-                    currentCriterionName instanceof EmptyRecordsCriterion,
+                    currentCriterion instanceof EmptyRecordsCriterion,
                     predefinedCriterionsClass);
 
             String nonEmptyRecordsCriterionName = filter.getNonEmptyRecordsText();
             writeOption(writer, component, PREDEFINED_CRITERION_PREFIX + NON_EMPTY,
                     nonEmptyRecordsCriterionName,
-                    currentCriterionName instanceof NonEmptyRecordsCriterion,
+                    currentCriterion instanceof NonEmptyRecordsCriterion,
                     predefinedCriterionsClass);
         }
 
         boolean textCriterionSelected = false;
         for (Object criterionObj : criterionNames) {
             String criterionName = criterionObj != null ? criterionObj.toString() : "";
-            boolean selected = currentCriterionName instanceof OneParameterCriterion &&
-                    ((OneParameterCriterion) currentCriterionName).getValue().equals(criterionName);
+            boolean selected = currentCriterion instanceof OneParameterCriterion &&
+                    ((OneParameterCriterion) currentCriterion).getValue().equals(criterionName);
             writeOption(writer, component,
                     USER_CRITERION_PREFIX + criterionName,
                     criterionName,
@@ -114,9 +114,9 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
             if (selected)
                 textCriterionSelected = true;
         }
-        boolean noRecordsWithSelectedCriterion = currentCriterionName instanceof OneParameterCriterion && !textCriterionSelected;
+        boolean noRecordsWithSelectedCriterion = currentCriterion instanceof OneParameterCriterion && !textCriterionSelected;
         if (noRecordsWithSelectedCriterion) {
-            String criterionName = ((OneParameterCriterion) currentCriterionName).getValue().toString();
+            String criterionName = ((OneParameterCriterion) currentCriterion).getValue().toString();
             writeOption(writer, component,
                     USER_CRITERION_PREFIX + criterionName,
                     criterionName,

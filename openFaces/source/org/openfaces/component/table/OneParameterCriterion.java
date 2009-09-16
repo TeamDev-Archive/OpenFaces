@@ -36,6 +36,8 @@ public abstract class OneParameterCriterion extends FilterCriterion {
 
     public abstract OneParameterCriterion setValue(Object value);
 
+    public abstract OneParameterCriterion setCaseSensitive(boolean caseSensitive);
+
     public boolean isCaseSensitive() {
         return caseSensitive;
     }

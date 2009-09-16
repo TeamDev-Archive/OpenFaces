@@ -14,6 +14,8 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.Filter;
 import org.openfaces.component.table.TextSearchFilter;
+import org.openfaces.component.table.FilterCriterion;
+import org.openfaces.component.table.OneParameterCriterion;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.StyleUtil;
 
@@ -72,6 +74,14 @@ public abstract class TextSearchFilterRenderer extends FilterRenderer {
     }
 
     protected String getStringValue(Filter filter) {
-        return ((TextSearchFilter) filter).getStringValue();
+        FilterCriterion filterCriterion = filter.getCriterion();
+        if (filterCriterion == null) {
+            return "";
+        }
+        if (!(filterCriterion instanceof OneParameterCriterion)) {
+            throw new IllegalStateException("Illegal filter criterion: " + filterCriterion);
+        }
+        OneParameterCriterion oneParameterCriterion = (OneParameterCriterion) filterCriterion;
+        return oneParameterCriterion.getValue().toString();
     }
 }

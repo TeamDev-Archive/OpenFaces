@@ -24,18 +24,6 @@ public abstract class TextSearchFilter extends Filter {
 
     public static final String SEARCH_COMPONENT_SUFFIX = "searchComponent";
 
-    public String getStringValue() {
-        FilterCriterion filterCriterion = getCriterion();
-        if (filterCriterion == null) {
-            return "";
-        }
-        if (!(filterCriterion instanceof OneParameterCriterion)) {
-            throw new IllegalStateException("Illegal filter criterion: " + filterCriterion);
-        }
-        OneParameterCriterion containsFilterCriterion = (OneParameterCriterion) filterCriterion;
-        return containsFilterCriterion.getValue().toString();
-    }
-
     @Override
     public void createSubComponents(FacesContext context) {
         super.createSubComponents(context);

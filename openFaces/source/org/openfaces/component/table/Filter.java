@@ -61,7 +61,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         Object superState = super.saveState(context);
         return new Object[]{superState, style, styleClass, predefinedCriterionStyle, predefinedCriterionClass,
                 criterion, allRecordsText, emptyRecordsText, nonEmptyRecordsText,
-                promptText, promptTextStyle, promptTextClass};
+                promptText, promptTextStyle, promptTextClass, caseSensitive};
     }
 
     @Override
@@ -81,6 +81,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         promptText = (String) state[i++];
         promptTextStyle = (String) state[i++];
         promptTextClass = (String) state[i++];
+        caseSensitive = (Boolean) state[i++];
     }
 
     public boolean isCaseSensitive() {
@@ -277,10 +278,18 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         return list;
     }
 
-    public void updateSearchStringFromBinding(FacesContext context) {
-        ValueExpression valueExpression = getCriterionExpression();
-        if (valueExpression != null)
-            criterion = (FilterCriterion) valueExpression.getValue(context.getELContext());
+    public void updateCriterionFromBinding(FacesContext context) {
+        ValueExpression criterionExpression = getCriterionExpression();
+        if (criterionExpression != null)
+            criterion = (FilterCriterion) criterionExpression.getValue(context.getELContext());
+        else {
+            if (criterion instanceof OneParameterCriterion) {
+                boolean caseSensitive = isCaseSensitive();
+                OneParameterCriterion opc = (OneParameterCriterion) criterion;
+                if (opc.isCaseSensitive() != caseSensitive)
+                    criterion = opc.setCaseSensitive(caseSensitive);
+            }
+        }
     }
 
     public FilterCriterion getCriterion() {
@@ -332,10 +341,6 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
             criterionExpression.setValue(context.getELContext(), criterion);
             criterionModelUpdateRequired = false;
         }
-    }
-
-    public FilterCriterion getFilterCriterion() {
-        return getCriterion();
     }
 
     public void createSubComponents(FacesContext context) {
