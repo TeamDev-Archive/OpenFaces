@@ -11,8 +11,8 @@
  */
 package org.openfaces.renderkit.filter;
 
-import org.openfaces.component.input.InputText;
 import org.openfaces.component.filter.Filter;
+import org.openfaces.component.input.InputText;
 import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIInput;

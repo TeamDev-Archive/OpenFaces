@@ -11,7 +11,9 @@
  */
 package org.openfaces.taglib.internal.table;
 
+import org.openfaces.component.HorizontalAlignment;
 import org.openfaces.component.filter.DropDownFieldFilter;
+import org.openfaces.taglib.internal.filter.AutoCompleteFilterTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -19,7 +21,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class DropDownFieldFilterTag extends FilterTag {
+public class DropDownFieldFilterTag extends AutoCompleteFilterTag {
     public String getComponentType() {
         return DropDownFieldFilter.COMPONENT_TYPE;
     }
@@ -32,6 +34,31 @@ public class DropDownFieldFilterTag extends FilterTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        setEnumerationProperty(component, "buttonAlignment", HorizontalAlignment.class);
+        setStringProperty(component, "fieldStyle");
+        setStringProperty(component, "disabledFieldStyle");
+        setStringProperty(component, "rolloverFieldStyle");
+        setStringProperty(component, "buttonStyle");
+        setStringProperty(component, "disabledButtonStyle");
+        setStringProperty(component, "rolloverButtonStyle");
+        setStringProperty(component, "disabledStyle");
+
+        setStringProperty(component, "fieldClass");
+        setStringProperty(component, "disabledFieldClass");
+        setStringProperty(component, "rolloverFieldClass");
+        setStringProperty(component, "disabledClass");
+        setStringProperty(component, "buttonClass");
+        setStringProperty(component, "disabledButtonClass");
+        setStringProperty(component, "rolloverButtonClass");
+
+        setStringProperty(component, "buttonImageUrl");
+        setStringProperty(component, "disabledButtonImageUrl");
+
+        setStringProperty(component, "pressedButtonStyle");
+        setStringProperty(component, "pressedButtonClass");
+
+        setStringProperty(component, "rolloverStyle");
+        setStringProperty(component, "rolloverClass");
     }
 
 }

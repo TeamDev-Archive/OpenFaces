@@ -11,14 +11,14 @@
  */
 package org.openfaces.renderkit.filter;
 
+import org.openfaces.component.filter.Filter;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItem;
 import org.openfaces.component.input.DropDownItems;
-import org.openfaces.component.filter.Filter;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -26,13 +26,55 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Dmitry Pikhulya
  */
 public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
+    private static final String[] DROP_DOWN_FIELD_ATTRIBUTES = {
+            "rolloverStyle",
+            "rolloverClass",
+            "autoComplete",
+            "listAlignment",
+            "customValueAllowed",
+            "suggestionMode",
+            "suggestionDelay",
+            "timeout",
+            "horizontalGridLines",
+            "listItemStyle",
+            "listItemClass",
+            "rolloverListItemStyle",
+            "rolloverListItemClass",
+            "oddListItemStyle",
+            "oddListItemClass",
+            "suggestionMinChars",
+
+            "maxlength",
+            "size",
+
+            "buttonAlignment",
+
+            "fieldStyle",
+            "rolloverFieldStyle",
+            "buttonStyle",
+            "rolloverButtonStyle",
+            "pressedButtonStyle",
+            "listStyle",
+            "rolloverListStyle",
+
+            "fieldClass",
+            "rolloverFieldClass",
+            "buttonClass",
+            "rolloverButtonClass",
+            "pressedButtonClass",
+            "listClass",
+            "rolloverListClass",
+
+            "buttonImageUrl"
+    };
+
     protected void configureInputComponent(FacesContext context, Filter filter, UIInput inputComponent) {
         DropDownField field = (DropDownField) inputComponent;
         field.setOnchange(getFilterSubmissionScript(filter));
@@ -40,6 +82,11 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
         field.setStyle(filter.getStyle());
         field.setStyleClass(StyleUtil.mergeClassNames(filter.getStyleClass(), "o_fullWidth"));
         field.setListStyle("font-weight: normal;");
+        for (String attrName : DROP_DOWN_FIELD_ATTRIBUTES) {
+            Object attrValue = filter.getAttributes().get(attrName);
+            if (attrValue != null)
+                field.getAttributes().put(attrName, attrValue);
+        }
 
         field.setPromptText(filter.getPromptText());
         field.setPromptTextClass(filter.getPromptTextClass());
@@ -68,7 +115,7 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
                 criterionIterator.remove();
             }
         }
-        
+
         List<Object> availableItems = new ArrayList<Object>(possibleValuesCollection);
         List<DropDownItem> itemList = new ArrayList<DropDownItem>(availableItems.size());
         for (Object itemObj : availableItems) {

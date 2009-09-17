@@ -11,19 +11,19 @@
  */
 package org.openfaces.renderkit.filter;
 
+import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.filter.ContainsFilterCriterion;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.OneParameterCriterion;
-import org.openfaces.component.FilterableComponent;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.RawScript;
 import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.RawScript;
+import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.StyleUtil;
 
-import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
