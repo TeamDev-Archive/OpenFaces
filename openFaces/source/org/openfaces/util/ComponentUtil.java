@@ -55,14 +55,7 @@ public class ComponentUtil {
         if (refId == null)
             return refId;
 
-        UIComponent focusedComponent;
-        try {
-            focusedComponent = component.findComponent(refId);
-        } catch (IllegalArgumentException iae) {
-            // refId can refer to non-JSF components with "::" symbols as part of Id, which results in an exception
-            // from findComponent (see QKS-6242 - interoperation of DropDownField with Focus component).
-            focusedComponent = null;
-        }
+        UIComponent focusedComponent = referenceIdToComponent(component, refId);
 
         if (focusedComponent != null) {
             refId = focusedComponent.getClientId(context);
@@ -71,6 +64,20 @@ public class ComponentUtil {
                 refId = refId.substring(1);
         }
         return refId;
+    }
+
+    public static UIComponent referenceIdToComponent(UIComponent component, String refId) {
+        if (refId == null)
+            return null;
+        UIComponent focusedComponent;
+        try {
+            focusedComponent = component.findComponent(refId);
+        } catch (IllegalArgumentException iae) {
+            // refId can refer to non-JSF components with "::" symbols as part of Id, which results in an exception
+            // from findComponent (see QKS-6242 - interoperation of DropDownField with Focus component).
+            focusedComponent = null;
+        }
+        return focusedComponent;
     }
 
 
@@ -320,4 +327,10 @@ public class ComponentUtil {
         }
     }
 
+    public static boolean isChildComponent(UIComponent child, UIComponent parent) {
+        for (UIComponent c = child.getParent(); c != null; c = c.getParent())
+            if (c == parent)
+                return true;
+        return false;
+    }
 }

@@ -21,6 +21,7 @@ import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import javax.faces.FacesException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -35,6 +36,8 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
     private static final String DEFAULT_ALL_RECORDS_CRITERION_NAME = "<All>";
     private static final String DEFAULT_EMPTY_RECORDS_CRITERION_NAME = "<Empty>";
     private static final String DEFAULT_NON_EMPTY_RECORDS_CRITERION_NAME = "<Non-empty>";
+
+    private String _for;
 
     private FilterCriterion criterion;
     private boolean criterionModelUpdateRequired;
@@ -59,7 +62,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, style, styleClass, predefinedCriterionStyle, predefinedCriterionClass,
+        return new Object[]{superState, _for, style, styleClass, predefinedCriterionStyle, predefinedCriterionClass,
                 criterion, allRecordsText, emptyRecordsText, nonEmptyRecordsText,
                 promptText, promptTextStyle, promptTextClass, caseSensitive};
     }
@@ -69,6 +72,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
+        _for = (String) state[i++];
         style = (String) state[i++];
         styleClass = (String) state[i++];
         predefinedCriterionStyle = (String) state[i++];
@@ -82,6 +86,14 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         promptTextStyle = (String) state[i++];
         promptTextClass = (String) state[i++];
         caseSensitive = (Boolean) state[i++];
+    }
+
+    public String getFor() {
+        return _for;
+    }
+
+    public void setFor(String aFor) {
+        _for = aFor;
     }
 
     public boolean isCaseSensitive() {
@@ -166,10 +178,18 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
 
     public FilterableComponent getFilteredComponent() {
         if (filteredComponent == null) {
-            UIComponent component = getParent();
-            while (component != null && !(component instanceof FilterableComponent))
-                component = component.getParent();
-            filteredComponent = (FilterableComponent) component;
+            String aFor = getFor();
+            if (aFor != null) {
+                UIComponent referredComponent = ComponentUtil.referenceIdToComponent(this, aFor);
+                if (referredComponent != null && !(referredComponent instanceof FilterableComponent))
+                    throw new FacesException("Filter's \"for\" attribute must refer to a filterable component (DataTable or TreeTable)");
+                filteredComponent = (FilterableComponent) referredComponent;
+            } else {
+                UIComponent component = getParent();
+                while (component != null && !(component instanceof FilterableComponent))
+                    component = component.getParent();
+                filteredComponent = (FilterableComponent) component;
+            }
         }
         return filteredComponent;
     }

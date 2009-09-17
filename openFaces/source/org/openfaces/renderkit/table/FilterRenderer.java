@@ -20,8 +20,12 @@ import org.openfaces.component.table.OneParameterCriterion;
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.StyleUtil;
+import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.RawScript;
+import org.openfaces.util.ComponentUtil;
 
 import javax.faces.context.FacesContext;
+import javax.faces.component.UIComponent;
 
 /**
  * @author Dmitry Pikhulya
@@ -29,10 +33,11 @@ import javax.faces.context.FacesContext;
 public class FilterRenderer extends RendererBase {
     protected static final String DEFAULT_PREDEFINED_CRITERION_CLASS = "o_table_filter_predefined_criterion";
 
-    protected String getFilterSubmissionScript(Filter filter, FacesContext context) {
-        AbstractTable table = (AbstractTable) filter.getFilteredComponent();
-        String tableId = table.getClientId(context);
-        return "O$.Table._filterDataTable('" + tableId + "', this);";
+    protected String getFilterSubmissionScript(Filter filter) {
+        UIComponent table = (UIComponent) filter.getFilteredComponent();
+        Filter submittedFilter = ComponentUtil.isChildComponent(filter, table) ? null : filter;
+        return new ScriptBuilder().functionCall("O$.Table._filterComponent", table, submittedFilter, new RawScript("this")).
+                semicolon().toString();
     }
 
     protected String getPredefinedCriterionClass(FacesContext context, Filter filter) {

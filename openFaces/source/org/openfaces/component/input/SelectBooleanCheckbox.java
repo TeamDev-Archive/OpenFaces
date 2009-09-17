@@ -23,6 +23,10 @@ import javax.faces.convert.ConverterException;
  */
 public class SelectBooleanCheckbox extends OUIInputBase {
 
+    /**
+     * This enumeration is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+     * by any application code.
+     */
     public enum BooleanObjectValue {
         TRUE, FALSE, NULL
     }
@@ -278,19 +282,19 @@ public class SelectBooleanCheckbox extends OUIInputBase {
     }
 
     public String getUndefinedStyle() {
-    	return ValueBindings.get(this, "undefinedStyle", undefinedStyle);
+        return ValueBindings.get(this, "undefinedStyle", undefinedStyle);
     }
 
     public void setUndefinedStyle(String undefinedStyle) {
-    	this.undefinedStyle = undefinedStyle;
+        this.undefinedStyle = undefinedStyle;
     }
 
     public String getUndefinedClass() {
-    	return ValueBindings.get(this, "undefinedClass", undefinedClass);
+        return ValueBindings.get(this, "undefinedClass", undefinedClass);
     }
 
     public void setUndefinedClass(String undefinedClass) {
-    	this.undefinedClass = undefinedClass;
+        this.undefinedClass = undefinedClass;
     }
 
     @Override

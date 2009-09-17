@@ -1716,6 +1716,19 @@
       <!-- @el only -->
     </attribute>
     <attribute>
+      <description>ID of a filterable component that should be filtered with this component. It should be defined in
+        the same way as the "for" property of the standard HTMLOutputLabel component. If this attribute is not specified
+        then this filter component should be located inside of a filterable component (DataTable or TreeTable).
+      </description>
+      <name>for</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
       <description>Defines an expression that is used to obtain a record's value by which records are to be filtered.
       </description>
       <name>expression</name>
@@ -1829,6 +1842,19 @@
       <!-- @bindingType org.openfaces.component.table. DataTable -->
       <!-- @default null -->
       <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>ID of a filterable component that should be filtered with this component. It should be defined in
+        the same way as the "for" property of the standard HTMLOutputLabel component. If this attribute is not specified
+        then this filter component should be located inside of a filterable component (DataTable or TreeTable).
+      </description>
+      <name>for</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
     </attribute>
     <attribute>
       <description>Defines an expression that is used to obtain a record's value by which records are to be filtered.
@@ -1992,6 +2018,19 @@
       <!-- @el only -->
     </attribute>
 
+    <attribute>
+      <description>ID of a filterable component that should be filtered with this component. It should be defined in
+        the same way as the "for" property of the standard HTMLOutputLabel component. If this attribute is not specified
+        then this filter component should be located inside of a filterable component (DataTable or TreeTable).
+      </description>
+      <name>for</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
     <attribute>
       <description>Defines an expression that is used to obtain a record's value by which records are to be filtered.
       </description>
@@ -11757,7 +11796,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>An id of the scrollable component.If specified - the scroll position of the scrollable component will
+      <description>An id of the scrollable component. If specified - the scroll position of the scrollable component will
         be saved, otherwise the scroll position of the page will be saved.
       </description>
       <name>for</name>

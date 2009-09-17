@@ -1254,9 +1254,9 @@ O$.Table = {
     O$.Table._submitInternal(table);
   },
 
-  _submitTableWithField: function(tableId, focusedField, additionalParams) {
+  _submitComponentWithField: function(componentId, focusedField, additionalParams, submittedComponentIds) {
     var focusedFieldId = focusedField ? focusedField.id : null;
-    var table = O$(tableId);
+    var component = O$(componentId);
     var focusFilterField = function() {
       if (!focusedFieldId)
         return;
@@ -1270,16 +1270,16 @@ O$.Table = {
           // ignore failed focus attempts
         }
     };
-    O$.Table._submitInternal(table, function() {
+    O$.Table._submitInternal(component, function() {
       setTimeout(focusFilterField, 1);
-    }, additionalParams);
+    }, additionalParams, submittedComponentIds);
   },
 
   _performPaginatorAction: function(tableId, field, paramName, paramValue) {
-    O$.Table._submitTableWithField(tableId, field, [[paramName, paramValue]]);
+    O$.Table._submitComponentWithField(tableId, field, [[paramName, paramValue]]);
   },
 
-  _submitInternal: function(table, completionCallback, additionalParams) {
+  _submitInternal: function(table, completionCallback, additionalParams, submittedComponentIds) {
     var useAjax = table._useAjax;
     if (!useAjax) {
       if (additionalParams)
@@ -1289,16 +1289,19 @@ O$.Table = {
         }
       O$.submitEnclosingForm(table);
     } else {
-      O$.reloadComponents([table.id], {onajaxend: completionCallback, additionalParams: additionalParams});
+      O$.reloadComponents([table.id], {
+        onajaxend: completionCallback, 
+        additionalParams: additionalParams,
+        submittedComponentIds: submittedComponentIds});
     }
   },
 
-  _filterFieldKeyPressHandler: function(tableId, filterField, event) {
+  _filterFieldKeyPressHandler: function(tableId, filterId, filterField, event) {
     if (event.keyCode == 13) {
       // filter only in cases when onchange is not fired by pressing Enter to avoid double filter requests
       var onchangeFired = filterField.nodeName.toUpperCase() != "INPUT";
       if (!onchangeFired)
-        O$.Table._filterDataTable(tableId, filterField);
+        O$.Table._filterComponent(tableId, filterId, filterField);
 
       event.cancelBubble = true;
       return false;
@@ -1309,19 +1312,19 @@ O$.Table = {
     return true;
   },
 
-  _filterDataTable: function(tableId, filterField) {
+  _filterComponent: function(componentId, filterId, filterField) {
     // setTimeout in the following script is needed to avoid page blinking when using combo-box filter in IE (JSFC-2263)
     setTimeout(function() {
-      O$.Table._submitDropDownFilter(tableId, filterField);
+      O$.Table._submitFilter(componentId, filterId, filterField);
     }, 1);
   },
 
-  _submitDropDownFilter: function(tableId, filter) {
-    var table = O$(tableId);
-    if (table._useAjax)
-      O$.Table._submitTableWithField(tableId, filter);
+  _submitFilter: function(componentId, filterId, filterField) {
+    var filteredComponent = O$(componentId);
+    if (filteredComponent._useAjax)
+      O$.Table._submitComponentWithField(componentId, filterField, null, filterId ? [filterId] : []);
     else
-      O$.submitEnclosingForm(table);
+      O$.submitEnclosingForm(filteredComponent);
   },
 
 

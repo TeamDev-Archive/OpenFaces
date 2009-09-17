@@ -24,6 +24,10 @@ public class FilterJspTag extends AbstractComponentJspTag {
         super(delegate);
     }
 
+    public void setFor(ValueExpression forValue) {
+        getDelegate().setPropertyValue("for", forValue);
+    }
+
     public void setExpression(ValueExpression expression) {
         getDelegate().setPropertyValue("expression", expression);
     }

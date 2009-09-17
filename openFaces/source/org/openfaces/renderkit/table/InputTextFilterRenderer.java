@@ -24,8 +24,8 @@ import javax.faces.context.FacesContext;
 public class InputTextFilterRenderer extends TextSearchFilterRenderer {
     protected void configureInputComponent(FacesContext context, Filter filter, UIInput inputComponent) {
         InputText input = (InputText) inputComponent;
-        input.setOnkeypress(getFilterOnEnterScript(context, filter));
-        input.setOnchange(getFilterSubmissionScript(filter, context));
+        input.setOnkeypress(getFilterOnEnterScript(filter));
+        input.setOnchange(getFilterSubmissionScript(filter));
         input.setStyle(filter.getStyle());
         input.setStyleClass(StyleUtil.mergeClassNames(filter.getStyleClass(), "o_fullWidth"));
 

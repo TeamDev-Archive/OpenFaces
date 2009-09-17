@@ -34,7 +34,7 @@ public abstract class FilterTag extends AbstractComponentTag {
 
         }
         setPropertyBinding(component, "options");
-        setBooleanProperty(component, "caseSensitive");
+        setStringProperty(component, "for", false, false);
 
         setStringProperty(component, "allRecordsText");
         setStringProperty(component, "emptyRecordsText");

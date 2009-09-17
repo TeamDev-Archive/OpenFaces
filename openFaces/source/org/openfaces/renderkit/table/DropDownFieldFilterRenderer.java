@@ -35,8 +35,8 @@ import java.util.Iterator;
 public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
     protected void configureInputComponent(FacesContext context, Filter filter, UIInput inputComponent) {
         DropDownField field = (DropDownField) inputComponent;
-        field.setOnchange(getFilterSubmissionScript(filter, context));
-        field.setOnkeypress(getFilterOnEnterScript(context, filter));
+        field.setOnchange(getFilterSubmissionScript(filter));
+        field.setOnkeypress(getFilterOnEnterScript(filter));
         field.setStyle(filter.getStyle());
         field.setStyleClass(StyleUtil.mergeClassNames(filter.getStyleClass(), "o_fullWidth"));
         field.setListStyle("font-weight: normal;");

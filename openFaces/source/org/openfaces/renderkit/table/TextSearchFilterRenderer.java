@@ -18,6 +18,8 @@ import org.openfaces.component.table.FilterCriterion;
 import org.openfaces.component.table.OneParameterCriterion;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.StyleUtil;
+import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.RawScript;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -67,10 +69,13 @@ public abstract class TextSearchFilterRenderer extends FilterRenderer {
         setDecodedString(filter, newSearchString);
     }
 
-    protected String getFilterOnEnterScript(FacesContext context, Filter filter) {
+    protected String getFilterOnEnterScript(Filter filter) {
         AbstractTable table = (AbstractTable) filter.getFilteredComponent();
-        String tableId = table.getClientId(context);
-        return "return O$.Table._filterFieldKeyPressHandler('" + tableId + "', this, event);";
+        return new ScriptBuilder().append("return ").functionCall("O$.Table._filterFieldKeyPressHandler", 
+                table,
+                filter,
+                new RawScript("this"),
+                new RawScript("event")).semicolon().toString();
     }
 
     protected String getStringValue(Filter filter) {

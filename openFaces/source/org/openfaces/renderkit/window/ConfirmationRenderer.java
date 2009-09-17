@@ -227,7 +227,7 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
         String invokerId;
         String aFor = confirmation.getFor();
         if (aFor != null)
-            invokerId = ComponentUtil.referenceIdToClientId(context, component, aFor);
+            invokerId = ComponentUtil.referenceIdToClientId(context, confirmation, aFor);
         else if (!confirmation.isStandalone())
             invokerId = confirmation.getParent().getClientId(context);
         else

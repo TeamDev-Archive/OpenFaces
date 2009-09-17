@@ -67,7 +67,7 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
         writeNameAttribute(context, component);
         writer.writeAttribute("size", "1", null);
         RenderingUtil.writeStyleAndClassAttributes(writer, filter.getStyle(), filter.getStyleClass(), "o_fullWidth");
-        String submitScript = getFilterSubmissionScript(filter, context);
+        String submitScript = getFilterSubmissionScript(filter);
         writer.writeAttribute("onchange", submitScript, null);
         writer.writeAttribute("onclick", "event.cancelBubble = true;", null);
         writer.writeAttribute("onkeydown", "O$.cancelBubble(event);", null);
