@@ -12,11 +12,11 @@
 package org.openfaces.testapp.datatable;
 
 import org.openfaces.util.FacesUtil;
-import org.openfaces.component.table.EmptyRecordsCriterion;
+import org.openfaces.component.filter.EmptyRecordsCriterion;
 import org.openfaces.component.table.FilterKind;
-import org.openfaces.component.table.NonEmptyRecordsCriterion;
-import org.openfaces.component.table.ContainsFilterCriterion;
-import org.openfaces.component.table.FilterCriterion;
+import org.openfaces.component.filter.NonEmptyRecordsCriterion;
+import org.openfaces.component.filter.ContainsFilterCriterion;
+import org.openfaces.component.filter.FilterCriterion;
 
 import javax.faces.event.ValueChangeEvent;
 import java.awt.*;

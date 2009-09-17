@@ -219,7 +219,7 @@ O$.Table = {
       pagingFld.value = "";
     table._performPagingAction = function(actionStr) {
       O$.addHiddenField(this, this.id + "::paging", actionStr);
-      O$.Table._submitInternal(this);
+      O$._submitInternal(this);
     };
 
     table._nextPage = function() {
@@ -1251,92 +1251,12 @@ O$.Table = {
     var sortingFieldId = table.id + "::sorting";
     var sortingField = O$(sortingFieldId);
     sortingField.value = "" + columnIndex;
-    O$.Table._submitInternal(table);
-  },
-
-  _submitComponentWithField: function(componentId, focusedField, additionalParams, submittedComponentIds) {
-    var focusedFieldId = focusedField ? focusedField.id : null;
-    var component = O$(componentId);
-    var focusFilterField = function() {
-      if (!focusedFieldId)
-        return;
-      var field = O$(focusedFieldId);
-      if (!field)
-        return;
-      if (field.focus)
-        try {
-          field.focus();
-        } catch(e) {
-          // ignore failed focus attempts
-        }
-    };
-    O$.Table._submitInternal(component, function() {
-      setTimeout(focusFilterField, 1);
-    }, additionalParams, submittedComponentIds);
+    O$._submitInternal(table);
   },
 
   _performPaginatorAction: function(tableId, field, paramName, paramValue) {
-    O$.Table._submitComponentWithField(tableId, field, [[paramName, paramValue]]);
+    O$._submitComponentWithField(tableId, field, [[paramName, paramValue]]);
   },
-
-  _submitInternal: function(table, completionCallback, additionalParams, submittedComponentIds) {
-    var useAjax = table._useAjax;
-    if (!useAjax) {
-      if (additionalParams)
-        for (var i = 0, count = additionalParams.length; i < count; i++) {
-          var paramEntry = additionalParams[i];
-          O$.addHiddenField(table, paramEntry[0], paramEntry[1]);
-        }
-      O$.submitEnclosingForm(table);
-    } else {
-      O$.reloadComponents([table.id], {
-        onajaxend: completionCallback, 
-        additionalParams: additionalParams,
-        submittedComponentIds: submittedComponentIds});
-    }
-  },
-
-  _filterFieldKeyPressHandler: function(tableId, filterId, filterField, event) {
-    if (event.keyCode == 13) {
-      // filter only in cases when onchange is not fired by pressing Enter to avoid double filter requests
-      var onchangeFired = filterField.nodeName.toUpperCase() != "INPUT";
-      if (!onchangeFired)
-        O$.Table._filterComponent(tableId, filterId, filterField);
-
-      event.cancelBubble = true;
-      return false;
-    }
-    var inFieldNavigation = (event.keyCode >= 35 && event.keyCode <= 40);
-    if (inFieldNavigation)
-      event.cancelBubble = true;
-    return true;
-  },
-
-  _filterComponent: function(componentId, filterId, filterField) {
-    // setTimeout in the following script is needed to avoid page blinking when using combo-box filter in IE (JSFC-2263)
-    setTimeout(function() {
-      O$.Table._submitFilter(componentId, filterId, filterField);
-    }, 1);
-  },
-
-  _submitFilter: function(componentId, filterId, filterField) {
-    var filteredComponent = O$(componentId);
-    if (filteredComponent._useAjax)
-      O$.Table._submitComponentWithField(componentId, filterField, null, filterId ? [filterId] : []);
-    else
-      O$.submitEnclosingForm(filteredComponent);
-  },
-
-
-  _showFilter: function(tableId, filterId) {
-    var table = O$(tableId);
-    var f = O$(filterId);
-
-    if (!table._filtersToHide)
-      table._filtersToHide = new Array();
-    table._filtersToHide.push(f);
-  },
-
 
   // -------------------------- COLUMN RESIZING SUPPORT
 

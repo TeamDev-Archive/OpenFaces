@@ -9,17 +9,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.renderkit.table;
+package org.openfaces.renderkit.filter;
 
-import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.Filter;
-import org.openfaces.component.table.TextSearchFilter;
-import org.openfaces.component.table.FilterCriterion;
-import org.openfaces.component.table.OneParameterCriterion;
-import org.openfaces.util.ResourceUtil;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.util.ScriptBuilder;
+import org.openfaces.component.filter.Filter;
+import org.openfaces.component.filter.FilterCriterion;
+import org.openfaces.component.filter.OneParameterCriterion;
+import org.openfaces.component.filter.TextSearchFilter;
 import org.openfaces.util.RawScript;
+import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -44,6 +43,7 @@ public abstract class TextSearchFilterRenderer extends FilterRenderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
         ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getUtilJsURL(context), context);
+        ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getFiltersJsURL(context), context);
         TextSearchFilter filter = (TextSearchFilter) component;
 
         UIInput inputComponent = (UIInput) filter.getSearchComponent();
@@ -70,9 +70,9 @@ public abstract class TextSearchFilterRenderer extends FilterRenderer {
     }
 
     protected String getFilterOnEnterScript(Filter filter) {
-        AbstractTable table = (AbstractTable) filter.getFilteredComponent();
-        return new ScriptBuilder().append("return ").functionCall("O$.Table._filterFieldKeyPressHandler", 
-                table,
+        UIComponent component = (UIComponent) filter.getFilteredComponent();
+        return new ScriptBuilder().append("return ").functionCall("O$.Filters._filterFieldKeyPressHandler",
+                component,
                 filter,
                 new RawScript("this"),
                 new RawScript("event")).semicolon().toString();

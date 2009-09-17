@@ -14,6 +14,7 @@ package org.openfaces.component.table;
 /**
  * @author Dmitry Pikhulya
  */
+// todo: obsolete class -- remove it 
 public enum FilterKind {
     COMBO_BOX("comboBox"),
     SEARCH_FIELD("searchField"),

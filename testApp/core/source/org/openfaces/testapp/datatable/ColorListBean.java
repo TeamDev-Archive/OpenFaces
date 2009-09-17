@@ -13,7 +13,7 @@
 package org.openfaces.testapp.datatable;
 
 import org.openfaces.util.FacesUtil;
-import org.openfaces.component.table.FilterCriterion;
+import org.openfaces.component.filter.FilterCriterion;
 
 import java.util.ArrayList;
 import java.util.List;

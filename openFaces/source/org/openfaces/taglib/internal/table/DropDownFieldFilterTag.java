@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.DropDownFieldFilter;
+import org.openfaces.component.filter.DropDownFieldFilter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

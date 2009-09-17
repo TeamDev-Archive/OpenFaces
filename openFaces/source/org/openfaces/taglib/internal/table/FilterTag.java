@@ -5,9 +5,9 @@
 package org.openfaces.taglib.internal.table;
 
 import org.openfaces.taglib.internal.AbstractComponentTag;
-import org.openfaces.component.table.Filter;
-import org.openfaces.component.table.EqualsFilterCriterion;
-import org.openfaces.component.table.ContainsFilterCriterion;
+import org.openfaces.component.filter.Filter;
+import org.openfaces.component.filter.EqualsFilterCriterion;
+import org.openfaces.component.filter.ContainsFilterCriterion;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

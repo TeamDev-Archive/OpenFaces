@@ -13,7 +13,7 @@
 package org.openfaces.testapp.support.QKS247;
 
 import org.openfaces.component.table.DataTable;
-import org.openfaces.component.table.ContainsFilterCriterion;
+import org.openfaces.component.filter.ContainsFilterCriterion;
 import org.openfaces.testapp.screenshot.Person;
 
 import java.util.ArrayList;

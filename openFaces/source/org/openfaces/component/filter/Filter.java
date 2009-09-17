@@ -9,19 +9,19 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.table;
+package org.openfaces.component.filter;
 
 import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.FilterableComponent;
-import org.openfaces.util.ValueBindings;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.SelfScheduledAction;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
-import javax.faces.FacesException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

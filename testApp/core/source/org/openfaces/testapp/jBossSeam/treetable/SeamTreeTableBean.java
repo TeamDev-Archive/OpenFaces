@@ -23,7 +23,7 @@ import org.openfaces.component.table.AllNodesCollapsed;
 import org.openfaces.component.table.AllNodesExpanded;
 import org.openfaces.component.table.ExpansionState;
 import org.openfaces.component.table.SeveralLevelsExpanded;
-import org.openfaces.component.table.ContainsFilterCriterion;
+import org.openfaces.component.filter.ContainsFilterCriterion;
 
 import javax.ejb.Remove;
 import javax.ejb.Stateful;

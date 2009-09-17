@@ -15,7 +15,7 @@ package org.seleniuminspector.openfaces;
 import org.junit.Assert;
 import org.seleniuminspector.LoadingMode;
 import org.seleniuminspector.html.TableColumnInspector;
-import org.openfaces.component.table.TextSearchFilter;
+import org.openfaces.component.filter.TextSearchFilter;
 import org.openfaces.util.RenderingUtil;
 
 import java.lang.reflect.Constructor;

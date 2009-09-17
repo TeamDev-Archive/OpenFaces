@@ -9,10 +9,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.renderkit.table;
+package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.input.InputText;
-import org.openfaces.component.table.Filter;
+import org.openfaces.component.filter.Filter;
 import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIInput;

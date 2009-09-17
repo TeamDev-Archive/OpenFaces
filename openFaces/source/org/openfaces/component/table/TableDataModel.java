@@ -13,6 +13,8 @@ package org.openfaces.component.table;
 
 import org.openfaces.util.ValueBindings;
 import org.openfaces.util.DataUtil;
+import org.openfaces.component.filter.Filter;
+import org.openfaces.component.filter.FilterCriterion;
 
 import javax.el.ValueExpression;
 import javax.faces.context.ExternalContext;

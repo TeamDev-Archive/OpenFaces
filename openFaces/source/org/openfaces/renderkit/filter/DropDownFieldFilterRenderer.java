@@ -9,12 +9,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.renderkit.table;
+package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItem;
 import org.openfaces.component.input.DropDownItems;
-import org.openfaces.component.table.Filter;
+import org.openfaces.component.filter.Filter;
 import org.openfaces.util.StyleUtil;
 import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;

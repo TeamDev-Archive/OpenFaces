@@ -11,7 +11,7 @@
  */
 package org.openfaces.component;
 
-import org.openfaces.component.table.Filter;
+import org.openfaces.component.filter.Filter;
 
 import javax.faces.context.FacesContext;
 import javax.el.ValueExpression;
@@ -61,4 +61,6 @@ public interface FilterableComponent {
             ValueExpression criterionNameExpression,
             String var,
             Object data);
+
+    void filterChanged(Filter filter);
 }

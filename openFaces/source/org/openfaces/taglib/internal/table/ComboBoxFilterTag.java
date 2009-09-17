@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.ComboBoxFilter;
+import org.openfaces.component.filter.ComboBoxFilter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

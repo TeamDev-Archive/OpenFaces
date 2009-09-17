@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.jBossSeam.datatable;
 
-import org.openfaces.component.table.ContainsFilterCriterion;
+import org.openfaces.component.filter.ContainsFilterCriterion;
 
 import javax.ejb.Local;
 import java.util.Date;

@@ -1366,12 +1366,12 @@ if (!window.O$) {
     O$._documentLoaded = true;
     var i, count;
     if (O$._internalLoadHandlers)
-      for (i = 0, count = O$._internalLoadHandlers.length; i < count; i++) {
+      for (i = 0,count = O$._internalLoadHandlers.length; i < count; i++) {
         var internalLoadHandler = O$._internalLoadHandlers[i];
         internalLoadHandler();
       }
     if (O$._loadHandlers)
-      for (i = 0, count = O$._loadHandlers.length; i < count; i++) {
+      for (i = 0,count = O$._loadHandlers.length; i < count; i++) {
         var loadHandler = O$._loadHandlers[i];
         loadHandler();
       }
@@ -3915,3 +3915,44 @@ if (!window.O$) {
     return transition;
   };
 }
+
+// ----------------- COMPONENT UTILS -------------------------------------------
+
+O$._submitComponentWithField = function(componentId, focusedField, additionalParams, submittedComponentIds) {
+  var focusedFieldId = focusedField ? focusedField.id : null;
+  var component = O$(componentId);
+  var focusFilterField = function() {
+    if (!focusedFieldId)
+      return;
+    var field = O$(focusedFieldId);
+    if (!field)
+      return;
+    if (field.focus)
+      try {
+        field.focus();
+      } catch(e) {
+        // ignore failed focus attempts
+      }
+  };
+  O$._submitInternal(component, function() {
+    setTimeout(focusFilterField, 1);
+  }, additionalParams, submittedComponentIds);
+};
+
+O$._submitInternal = function(component, completionCallback, additionalParams, submittedComponentIds) {
+  var useAjax = component._useAjax;
+  if (!useAjax) {
+    if (additionalParams)
+      for (var i = 0, count = additionalParams.length; i < count; i++) {
+        var paramEntry = additionalParams[i];
+        O$.addHiddenField(component, paramEntry[0], paramEntry[1]);
+      }
+    O$.submitEnclosingForm(component);
+  } else {
+    O$.reloadComponents([component.id], {
+      onajaxend: completionCallback,
+      additionalParams: additionalParams,
+      submittedComponentIds: submittedComponentIds});
+  }
+};
+

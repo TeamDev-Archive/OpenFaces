@@ -9,14 +9,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.renderkit.table;
+package org.openfaces.renderkit.filter;
 
-import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.ContainsFilterCriterion;
-import org.openfaces.component.table.DataTable;
-import org.openfaces.component.table.Filter;
-import org.openfaces.component.table.FilterCriterion;
-import org.openfaces.component.table.OneParameterCriterion;
+import org.openfaces.component.filter.ContainsFilterCriterion;
+import org.openfaces.component.filter.Filter;
+import org.openfaces.component.filter.FilterCriterion;
+import org.openfaces.component.filter.OneParameterCriterion;
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.StyleUtil;
@@ -34,9 +32,9 @@ public class FilterRenderer extends RendererBase {
     protected static final String DEFAULT_PREDEFINED_CRITERION_CLASS = "o_table_filter_predefined_criterion";
 
     protected String getFilterSubmissionScript(Filter filter) {
-        UIComponent table = (UIComponent) filter.getFilteredComponent();
-        Filter submittedFilter = ComponentUtil.isChildComponent(filter, table) ? null : filter;
-        return new ScriptBuilder().functionCall("O$.Table._filterComponent", table, submittedFilter, new RawScript("this")).
+        UIComponent component = (UIComponent) filter.getFilteredComponent();
+        Filter submittedFilter = ComponentUtil.isChildComponent(filter, component) ? null : filter;
+        return new ScriptBuilder().functionCall("O$.Filters._filterComponent", component, submittedFilter, new RawScript("this")).
                 semicolon().toString();
     }
 
@@ -49,11 +47,7 @@ public class FilterRenderer extends RendererBase {
         if (!filter.changeCriterion(newCriterion))
             return;
         FilterableComponent filteredComponent = filter.getFilteredComponent();
-        if (filteredComponent instanceof DataTable) {
-            DataTable dataTable = ((DataTable) filteredComponent);
-            if (dataTable.getPageIndex() > 0)
-                dataTable.setPageIndex(0);
-        }
+        filteredComponent.filterChanged(filter);
     }
 
     protected boolean isEmptyItem(Object item) {

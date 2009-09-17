@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.InputTextFilter;
+import org.openfaces.component.filter.InputTextFilter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

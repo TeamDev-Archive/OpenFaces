@@ -9,25 +9,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.table;
+package org.openfaces.component.filter;
+
+import java.io.Serializable;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class EmptyRecordsCriterion extends FilterCriterion {
+public abstract class FilterCriterion implements Serializable {
+    public abstract boolean acceptsAll();
 
-    @Override
-    public boolean acceptsAll() {
-        return false;
-    }
-
-    @Override
-    public boolean acceptsValue(Object value) {
-        return value == null || value.equals("");
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof EmptyRecordsCriterion;
-    }
+    public abstract boolean acceptsValue(Object value);
 }

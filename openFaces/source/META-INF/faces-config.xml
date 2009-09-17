@@ -99,17 +99,17 @@
 
   <component>
     <component-type>org.openfaces.ComboBoxFilter</component-type>
-    <component-class>org.openfaces.component.table.ComboBoxFilter</component-class>
+    <component-class>org.openfaces.component.filter.ComboBoxFilter</component-class>
   </component>
 
   <component>
     <component-type>org.openfaces.DropDownFieldFilter</component-type>
-    <component-class>org.openfaces.component.table.DropDownFieldFilter</component-class>
+    <component-class>org.openfaces.component.filter.DropDownFieldFilter</component-class>
   </component>
 
   <component>
     <component-type>org.openfaces.InputTextFilter</component-type>
-    <component-class>org.openfaces.component.table.InputTextFilter</component-class>
+    <component-class>org.openfaces.component.filter.InputTextFilter</component-class>
   </component>
 
   <!-- TIMETABLE-RELATED COMPONENTS -->
@@ -639,17 +639,17 @@
     <renderer>
       <component-family>org.openfaces.ComboBoxFilter</component-family>
       <renderer-type>org.openfaces.ComboBoxFilterRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.table.ComboBoxFilterRenderer</renderer-class>
+      <renderer-class>org.openfaces.renderkit.filter.ComboBoxFilterRenderer</renderer-class>
     </renderer>
     <renderer>
       <component-family>org.openfaces.DropDownFieldFilter</component-family>
       <renderer-type>org.openfaces.DropDownFieldFilterRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.table.DropDownFieldFilterRenderer</renderer-class>
+      <renderer-class>org.openfaces.renderkit.filter.DropDownFieldFilterRenderer</renderer-class>
     </renderer>
     <renderer>
       <component-family>org.openfaces.InputTextFilter</component-family>
       <renderer-type>org.openfaces.InputTextFilterRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.table.InputTextFilterRenderer</renderer-class>
+      <renderer-class>org.openfaces.renderkit.filter.InputTextFilterRenderer</renderer-class>
     </renderer>
     <!-- DROPDOWN COMPONENTS DECLARATION -->
     <renderer>

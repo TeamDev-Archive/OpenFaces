@@ -9,12 +9,12 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.table;
+package org.openfaces.component.filter;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class NonEmptyRecordsCriterion extends FilterCriterion {
+public class EmptyRecordsCriterion extends FilterCriterion {
 
     @Override
     public boolean acceptsAll() {
@@ -23,11 +23,11 @@ public class NonEmptyRecordsCriterion extends FilterCriterion {
 
     @Override
     public boolean acceptsValue(Object value) {
-        return value != null && !value.equals("");
+        return value == null || value.equals("");
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof NonEmptyRecordsCriterion;
+        return obj instanceof EmptyRecordsCriterion;
     }
 }

@@ -11,7 +11,7 @@
  */
 package org.seleniuminspector.openfaces;
 
-import org.openfaces.component.table.TextSearchFilter;
+import org.openfaces.component.filter.TextSearchFilter;
 import org.openfaces.util.RenderingUtil;
 import org.seleniuminspector.LoadingMode;
 

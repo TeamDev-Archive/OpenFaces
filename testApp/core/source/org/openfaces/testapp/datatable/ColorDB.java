@@ -12,8 +12,8 @@
 
 package org.openfaces.testapp.datatable;
 
-import org.openfaces.component.table.ContainsFilterCriterion;
-import org.openfaces.component.table.FilterCriterion;
+import org.openfaces.component.filter.ContainsFilterCriterion;
+import org.openfaces.component.filter.FilterCriterion;
 
 import java.util.ArrayList;
 import java.util.Collections;

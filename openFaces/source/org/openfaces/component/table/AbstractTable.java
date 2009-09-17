@@ -14,6 +14,7 @@ package org.openfaces.component.table;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.FilterableComponent;
+import org.openfaces.component.filter.Filter;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
@@ -1349,6 +1350,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         requestMap.put(var, data);
         Object result = criterionNameExpression.getValue(facesContext.getELContext());
         return result;
+    }
+
+    public void filterChanged(Filter filter) {
     }
 
     public String getRolloverRowStyle() {

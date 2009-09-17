@@ -9,25 +9,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.table;
+package org.openfaces.component.filter;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class ComboBoxFilter extends Filter {
-    public static final String COMPONENT_FAMILY = "org.openfaces.ComboBoxFilter";
-    public static final String COMPONENT_TYPE = "org.openfaces.ComboBoxFilter";
+public class NonEmptyRecordsCriterion extends FilterCriterion {
 
-    public ComboBoxFilter() {
-        setRendererType("org.openfaces.ComboBoxFilterRenderer");
-    }
-
-    public String getFamily() {
-        return COMPONENT_FAMILY;
+    @Override
+    public boolean acceptsAll() {
+        return false;
     }
 
     @Override
-    protected boolean isShowingPredefinedCriterionNames() {
-        return true;
+    public boolean acceptsValue(Object value) {
+        return value != null && !value.equals("");
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof NonEmptyRecordsCriterion;
     }
 }

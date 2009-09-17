@@ -11,10 +11,10 @@
  */
 package org.openfaces.demo.beans.datatable;
 
-import org.openfaces.util.FacesUtil;
-import org.openfaces.component.table.ContainsFilterCriterion;
-import org.openfaces.component.table.FilterCriterion;
+import org.openfaces.component.filter.FilterCriterion;
+import org.openfaces.component.filter.OneParameterCriterion;
 import org.openfaces.demo.beans.util.City;
+import org.openfaces.util.FacesUtil;
 
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Darya Shumilina
@@ -65,14 +64,14 @@ public class CitiesList implements Serializable {
 
     private CitiesDB.CitySelectionCriteria calculateFilterConditions(Map<String, FilterCriterion> filterCriteria) {
         CitiesDB.CitySelectionCriteria filterConditions = new CitiesDB.CitySelectionCriteria();
-        for (Map.Entry<String,FilterCriterion> entry : filterCriteria.entrySet()) {
+        for (Map.Entry<String, FilterCriterion> entry : filterCriteria.entrySet()) {
             String filterId = entry.getKey();
             FilterCriterion criterion = entry.getValue();
             if (filterId.equals("nameFilter")) {
-                String searchString = ((ContainsFilterCriterion) criterion).getValue().toString();
+                String searchString = ((OneParameterCriterion) criterion).getValue().toString();
                 filterConditions.setCityNameSearchString(searchString);
             } else if (filterId.equals("populationFilter")) {
-                String searchString = ((ContainsFilterCriterion) criterion).getValue().toString();
+                String searchString = ((OneParameterCriterion) criterion).getValue().toString();
                 String[] result = searchString.split(" \u2013 ");
 
                 String[] minLimit = result[0].split(",");
@@ -92,7 +91,7 @@ public class CitiesList implements Serializable {
                 filterConditions.setMinPopulation(min);
                 filterConditions.setMaxPopulation(max);
             } else if (filterId.equals("countryFilter")) {
-                String searchString = ((ContainsFilterCriterion) criterion).getValue().toString();
+                String searchString = ((OneParameterCriterion) criterion).getValue().toString();
                 filterConditions.setCountry(searchString);
             }
         }

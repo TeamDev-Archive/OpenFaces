@@ -9,17 +9,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.renderkit.table;
+package org.openfaces.renderkit.filter;
 
-import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.ComboBoxFilter;
-import org.openfaces.component.table.EmptyRecordsCriterion;
-import org.openfaces.component.table.EqualsFilterCriterion;
-import org.openfaces.component.table.Filter;
-import org.openfaces.component.table.FilterCriterion;
-import org.openfaces.component.table.NonEmptyRecordsCriterion;
-import org.openfaces.component.table.OneParameterCriterion;
+import org.openfaces.component.filter.ComboBoxFilter;
+import org.openfaces.component.filter.EmptyRecordsCriterion;
+import org.openfaces.component.filter.EqualsFilterCriterion;
+import org.openfaces.component.filter.Filter;
+import org.openfaces.component.filter.FilterCriterion;
+import org.openfaces.component.filter.NonEmptyRecordsCriterion;
+import org.openfaces.component.filter.OneParameterCriterion;
 import org.openfaces.renderkit.TableUtil;
+import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
@@ -123,12 +123,13 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
                     true, null);
         }
 
-        AbstractTable table = (AbstractTable) filter.getFilteredComponent();
+        UIComponent filteredComponent = (UIComponent) filter.getFilteredComponent();
 
-        RenderingUtil.renderInitScript(context, new ScriptBuilder().functionCall("O$.Table._showFilter",
-                table, clientId).semicolon(),
+        RenderingUtil.renderInitScript(context, new ScriptBuilder().functionCall("O$.Filters._showFilter",
+                filteredComponent, clientId).semicolon(),
                 new String[]{
                         ResourceUtil.getUtilJsURL(context),
+                        ResourceUtil.getFiltersJsURL(context),
                         TableUtil.getTableUtilJsURL(context),
                         AbstractTableRenderer.getTableJsURL(context)}
         );

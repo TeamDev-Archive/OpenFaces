@@ -14,6 +14,7 @@ package org.openfaces.component.table;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.FacesUtil;
+import org.openfaces.component.filter.Filter;
 
 import javax.el.ValueExpression;
 import javax.faces.context.ExternalContext;
@@ -307,4 +308,9 @@ public class DataTable extends AbstractTable {
             throw new IllegalArgumentException("Unkown column type: " + (column != null ? column.getClass().getName() : "null"));
     }
 
+    @Override
+    public void filterChanged(Filter filter) {
+        if (getPageIndex() > 0)
+            setPageIndex(0);
+    }
 }
