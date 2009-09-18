@@ -104,10 +104,6 @@ public class AutoCompleteFilterJspTagBase extends FilterJspTag {
         getDelegate().setPropertyValue("suggestionMinChars", suggestionMinChars);
     }
 
-    protected void setSize(ValueExpression size) {
-        getDelegate().setPropertyValue("size", size);
-    }
-
     public void setMaxlength(ValueExpression maxlength) {
         getDelegate().setPropertyValue("maxlength", maxlength);
     }

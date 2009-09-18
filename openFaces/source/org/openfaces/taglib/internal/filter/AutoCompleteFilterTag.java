@@ -61,7 +61,6 @@ public abstract class AutoCompleteFilterTag extends FilterTag {
         setLineStyleProperty(component, "footerHorizSeparator");
         setLineStyleProperty(component, "footerVertSeparator");
 
-        setIntProperty(component, "size");
         setIntProperty(component, "maxlength");
     }
 }

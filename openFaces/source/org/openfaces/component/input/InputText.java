@@ -31,7 +31,24 @@ public class InputText extends OUIInputText {
     private Boolean readonly;
     private Integer maxlength;
     private Integer size;
-    //todo: add autocomplete attribute (as it was added to HtmlInputText in JSF 1.2)
+    private String autocomplete;
+
+    public InputText() {
+        setRendererType("org.openfaces.InputTextRenderer");
+    }
+
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+    public String getAutocomplete() {
+        return ValueBindings.get(this, "autocomplete", autocomplete);
+    }
+
+    public void setAutocomplete(String autocomplete) {
+        this.autocomplete = autocomplete;
+    }
 
     public int getSize() {
         return ValueBindings.get(this, "size", size, Integer.MIN_VALUE);
@@ -43,10 +60,6 @@ public class InputText extends OUIInputText {
 
     public boolean isReadonly() {
         return ValueBindings.get(this, "readonly", readonly, false);
-    }
-
-    public int getMaxlength() {
-        return ValueBindings.get(this, "maxLength", maxlength, Integer.MIN_VALUE);
     }
 
     public String getDir() {
@@ -85,18 +98,15 @@ public class InputText extends OUIInputText {
         this.readonly = readonly;
     }
 
+    public int getMaxlength() {
+        return ValueBindings.get(this, "maxLength", maxlength, Integer.MIN_VALUE);
+    }
+
+
     public void setMaxlength(int maxlength) {
         this.maxlength = maxlength;
     }
 
-    public InputText() {
-        setRendererType("org.openfaces.InputTextRenderer");
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
 
     @Override
     public Object saveState(FacesContext context) {
@@ -107,7 +117,8 @@ public class InputText extends OUIInputText {
                 onselect,
                 readonly,
                 maxlength,
-                size
+                size,
+                autocomplete
         };
     }
 
@@ -124,6 +135,7 @@ public class InputText extends OUIInputText {
         readonly = (Boolean) values[i++];
         maxlength = (Integer) values[i++];
         size = (Integer) values[i++];
+        autocomplete = (String) values[i++];
     }
 
 }

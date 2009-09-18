@@ -13,6 +13,8 @@ package org.openfaces.taglib.jsp.table;
 
 import org.openfaces.taglib.internal.table.ComboBoxFilterTag;
 
+import javax.el.ValueExpression;
+
 /**
  * @author Dmitry Pikhulya
  */
@@ -20,4 +22,13 @@ public class ComboBoxFilterJspTag extends FilterJspTag {
     public ComboBoxFilterJspTag() {
         super(new ComboBoxFilterTag());
     }
+
+    public void setLang(ValueExpression lang) {
+        getDelegate().setPropertyValue("lang", lang);
+    }
+
+    public void setDir(ValueExpression dir) {
+        getDelegate().setPropertyValue("dir", dir);
+    }
+    
 }

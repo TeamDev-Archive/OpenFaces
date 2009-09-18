@@ -67,4 +67,17 @@ public class FilterJspTag extends AbstractComponentJspTag {
     public void setPromptTextClass(ValueExpression promptTextClass) {
         getDelegate().setPropertyValue("promptTextClass", promptTextClass);
     }
+    
+    public void setTitle(ValueExpression title) {
+        getDelegate().setPropertyValue("title", title);
+    }
+
+    public void setAccesskey(ValueExpression accesskey) {
+        getDelegate().setPropertyValue("accesskey", accesskey);
+    }
+
+    public void setTabindex(ValueExpression tabindex) {
+        getDelegate().setPropertyValue("tabindex", tabindex);
+    }
+
 }

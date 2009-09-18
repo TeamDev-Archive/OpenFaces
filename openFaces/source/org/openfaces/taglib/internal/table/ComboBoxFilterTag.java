@@ -32,6 +32,8 @@ public class ComboBoxFilterTag extends FilterTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        setStringProperty(component, "dir");
+        setStringProperty(component, "lang");
     }
 
 }

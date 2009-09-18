@@ -55,16 +55,18 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
     protected String nonEmptyRecordsText;
 
     private String promptText;
-
     private String promptTextStyle;
     private String promptTextClass;
+    private String accesskey;
+    private String tabindex;
+    private String title;
 
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, _for, style, styleClass, predefinedCriterionStyle, predefinedCriterionClass,
                 criterion, allRecordsText, emptyRecordsText, nonEmptyRecordsText,
-                promptText, promptTextStyle, promptTextClass, caseSensitive};
+                promptText, promptTextStyle, promptTextClass, caseSensitive, accesskey, tabindex, title};
     }
 
     @Override
@@ -86,6 +88,9 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         promptTextStyle = (String) state[i++];
         promptTextClass = (String) state[i++];
         caseSensitive = (Boolean) state[i++];
+        accesskey = (String) state[i++];
+        tabindex = (String) state[i++];
+        title = (String) state[i++];
     }
 
     public String getFor() {
@@ -159,6 +164,8 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
     public void setPromptTextClass(String promptTextClass) {
         this.promptTextClass = promptTextClass;
     }
+
+
 
     public boolean acceptsData(FacesContext facesContext, Object data) {
         Object filteredValue = getFilteredValueByData(facesContext, getFilteredComponent(), data);

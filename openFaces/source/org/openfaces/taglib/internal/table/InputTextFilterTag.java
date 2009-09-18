@@ -32,6 +32,14 @@ public class InputTextFilterTag extends FilterTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        setStringProperty(component, "focusedStyle");
+        setStringProperty(component, "focusedClass");
+        setStringProperty(component, "dir");
+        setStringProperty(component, "lang");
+        setStringProperty(component, "alt");
+        setIntProperty(component, "maxlength");
+        setIntProperty(component, "size");
+        setStringProperty(component, "autocomplete");
     }
 
 }

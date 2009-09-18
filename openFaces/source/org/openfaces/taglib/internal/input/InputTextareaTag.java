@@ -32,16 +32,16 @@ public class InputTextareaTag extends OUIInputTextTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent uiComponent) {
-        super.setComponentProperties(facesContext, uiComponent);
-        setIntProperty(uiComponent, "rows");
-        setIntProperty(uiComponent, "cols");
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
+        setIntProperty(component, "rows");
+        setIntProperty(component, "cols");
 
-        setStringProperty(uiComponent, "dir");
-        setStringProperty(uiComponent, "lang");
-        setStringProperty(uiComponent, "onselect");
+        setStringProperty(component, "dir");
+        setStringProperty(component, "lang");
+        setStringProperty(component, "onselect");
 
-        setBooleanProperty(uiComponent, "readonly");
-        setBooleanProperty(uiComponent, "autoGrowing");
+        setBooleanProperty(component, "readonly");
+        setBooleanProperty(component, "autoGrowing");
     }
 }

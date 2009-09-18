@@ -49,10 +49,6 @@ public class SelectBooleanCheckboxJspTag extends UIInputJspTag {
         getDelegate().setPropertyValue("onselect", onselect);
     }
 
-    public void setDisabled(ValueExpression disabled) {
-        getDelegate().setPropertyValue("disabled", disabled);
-    }
-
     public void setDisabledStyle(ValueExpression disabledStyle) {
         getDelegate().setPropertyValue("disabledStyle", disabledStyle);
     }

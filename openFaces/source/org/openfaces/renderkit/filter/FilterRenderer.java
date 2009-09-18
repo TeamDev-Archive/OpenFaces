@@ -23,12 +23,13 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class FilterRenderer extends RendererBase {
+public abstract class FilterRenderer extends RendererBase {
     protected static final String DEFAULT_PREDEFINED_CRITERION_CLASS = "o_table_filter_predefined_criterion";
 
     protected String getFilterSubmissionScript(Filter filter) {

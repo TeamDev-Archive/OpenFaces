@@ -36,6 +36,11 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
     private static final String[] DROP_DOWN_FIELD_ATTRIBUTES = {
             "rolloverStyle",
             "rolloverClass",
+            "focusedStyle",
+            "focusedClass",
+            "promptText",
+            "promptTextStyle",
+            "promptTextClass",
             "autoComplete",
             "listAlignment",
             "customValueAllowed",
@@ -82,15 +87,6 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
         field.setStyle(filter.getStyle());
         field.setStyleClass(StyleUtil.mergeClassNames(filter.getStyleClass(), "o_fullWidth"));
         field.setListStyle("font-weight: normal;");
-        for (String attrName : DROP_DOWN_FIELD_ATTRIBUTES) {
-            Object attrValue = filter.getAttributes().get(attrName);
-            if (attrValue != null)
-                field.getAttributes().put(attrName, attrValue);
-        }
-
-        field.setPromptText(filter.getPromptText());
-        field.setPromptTextClass(filter.getPromptTextClass());
-        field.setPromptTextStyle(filter.getPromptTextStyle());
 
         String rolloverItemClass = StyleUtil.getCSSClass(context,
                 filter, "background: " + DefaultStyles.getSelectionBackgroundColor() +
@@ -134,6 +130,10 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
         List<UIComponent> children = field.getChildren();
         children.clear();
         children.add(dropDownItems);
+    }
+
+    protected String[] getCopiedFilterAttributes() {
+        return DROP_DOWN_FIELD_ATTRIBUTES;
     }
 
     private DropDownItem createDropDownItem(FacesContext context, String text) {

@@ -32,17 +32,15 @@ public class InputTextTag extends OUIInputTextTag {
     }
 
     @Override
-    public void setComponentProperties(FacesContext facesContext, UIComponent uiComponent) {
-        super.setComponentProperties(facesContext, uiComponent);
-        setStringProperty(uiComponent, "dir");
-        setStringProperty(uiComponent, "lang");
-        setStringProperty(uiComponent, "title");
-        setStringProperty(uiComponent, "accesskey");
-        setStringProperty(uiComponent, "alt");
-        setStringProperty(uiComponent, "onselect");
-        setStringProperty(uiComponent, "tabindex");
-        setBooleanProperty(uiComponent, "readonly");
-        setIntProperty(uiComponent, "maxlength");
-        setIntProperty(uiComponent, "size");
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
+        setStringProperty(component, "dir");
+        setStringProperty(component, "lang");
+        setStringProperty(component, "alt");
+        setStringProperty(component, "onselect");
+        setBooleanProperty(component, "readonly");
+        setIntProperty(component, "maxlength");
+        setIntProperty(component, "size");
+        setStringProperty(component, "autocomplete");
     }
 }

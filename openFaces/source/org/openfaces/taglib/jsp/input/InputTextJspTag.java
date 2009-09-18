@@ -53,4 +53,8 @@ public class InputTextJspTag extends OUIInputTextJspTag {
     public void setDir(ValueExpression dir) {
         getDelegate().setPropertyValue("dir", dir);
     }
+
+    public void setAutocomplete(ValueExpression autocomplete) {
+        getDelegate().setPropertyValue("autocomplete", autocomplete);
+    }
 }

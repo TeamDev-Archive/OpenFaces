@@ -37,8 +37,6 @@ public abstract class AutoCompleteFilter extends TextSearchFilter {
     private String oddListItemClass;
     private Integer suggestionMinChars;
 
-    private Integer maxlength;
-    private Integer size;
 
     @Override
     public Object saveState(FacesContext context) {
@@ -59,10 +57,7 @@ public abstract class AutoCompleteFilter extends TextSearchFilter {
 
                 horizontalGridLines,
                 oddListItemStyle,
-                oddListItemClass,
-
-                maxlength,
-                size
+                oddListItemClass
         };
     }
 
@@ -89,25 +84,6 @@ public abstract class AutoCompleteFilter extends TextSearchFilter {
         horizontalGridLines = (String) values[i++];
         oddListItemStyle = (String) values[i++];
         oddListItemClass = (String) values[i++];
-
-        maxlength = (Integer) values[i++];
-        size = (Integer) values[i++];
-    }
-
-    public int getMaxlength() {
-        return ValueBindings.get(this, "maxlength", maxlength, Integer.MIN_VALUE);
-    }
-
-    public void setMaxlength(int maxlength) {
-        this.maxlength = maxlength;
-    }
-
-    protected int getSize() {
-        return ValueBindings.get(this, "size", size, Integer.MIN_VALUE);
-    }
-
-    protected void setSize(int size) {
-        this.size = size;
     }
 
     public boolean getCustomValueAllowed() {

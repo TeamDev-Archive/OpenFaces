@@ -1784,6 +1784,142 @@
     </attribute>
 
     <attribute>
+      <description>A style for the filter component in the rollover state.</description>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name for the filter component in the rollover state.</description>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style of the filter component when it is focused.</description>
+      <name>focusedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name of the filter component when it is focused.</description>
+      <name>focusedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Specifies whether the "autocomplete" attribute is rendered for this input element, which
+      makes a browser provide suggestions based on the previosly typed values.</description>
+      <name>autocomplete</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+
+    <attribute>
+      <description>The base direction of directionally neutral text.</description>
+      <name>dir</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "ltr" -->
+      <!-- @value "ltr" left to right -->
+      <!-- @value "rtl" right to left -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
+      <name>lang</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>An advisory title for the filter component.</description>
+      <name>title</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>An access key for the filter component.</description>
+      <name>accesskey</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Alternate textual description of the element rendered by this component.</description>
+      <name>alt</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Position of the filter component in the tabbing order for the current document.</description>
+      <name>tabindex</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The maximum number of characters that can be entered in the filter.</description>
+      <name>maxlength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default Integer.MIN_VALUE -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>This prompt text will be shown when value of component is empty.</description>
       <name>promptText</name>
       <deferred-value>
@@ -1902,6 +2038,36 @@
       <!-- @el true -->
     </attribute>
 
+    <attribute>
+      <description>An advisory title for the text field of this filter component.</description>
+      <name>title</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Position of this component in the tabbing order for the current document.</description>
+      <name>tabindex</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An access key for the filter component.</description>
+      <name>accesskey</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
     <attribute>
       <description>The maximum number of characters that can be entered in the filter field.
         It is still possible to select any text from the drop-down list no matter how long it is.
@@ -2488,6 +2654,30 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType boolean-->
       <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The base direction of directionally neutral text.</description>
+      <name>dir</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "ltr" -->
+      <!-- @value "ltr" left to right -->
+      <!-- @value "rtl" right to left -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
+      <name>lang</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
@@ -20265,6 +20455,19 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
+      <description>Specifies whether the "autocomplete" attribute is rendered for this input element, which
+      makes a browser provide suggestions based on the previosly typed values.</description>
+      <name>autocomplete</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+
+    <attribute>
       <description>The base direction of directionally neutral text.</description>
       <name>dir</name>
       <deferred-value>
@@ -20278,7 +20481,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>The base language for the Message component. Should be specified as language code.</description>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
       <name>lang</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -20830,7 +21033,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>The base language for the Message component. Should be specified as language code.</description>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
       <name>lang</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -22134,7 +22337,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The base language for Messages. Should be specified as language code.</description>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
       <name>lang</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -26956,8 +27159,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Language code for the SelectBooleanCheckbox.
-      </description>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
       <name>lang</name>
       <deferred-value>
         <type>java.lang.String</type>

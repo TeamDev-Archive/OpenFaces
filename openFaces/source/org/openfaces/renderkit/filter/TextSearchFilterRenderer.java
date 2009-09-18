@@ -49,6 +49,7 @@ public abstract class TextSearchFilterRenderer extends FilterRenderer {
         UIInput inputComponent = (UIInput) filter.getSearchComponent();
         inputComponent.setValue(getStringValue(filter));
         configureInputComponent(context, filter, inputComponent);
+        configureInputFromFilter(filter, inputComponent);
 
         inputComponent.encodeAll(context);
 
@@ -89,4 +90,15 @@ public abstract class TextSearchFilterRenderer extends FilterRenderer {
         OneParameterCriterion oneParameterCriterion = (OneParameterCriterion) filterCriterion;
         return oneParameterCriterion.getValue().toString();
     }
+
+    private void configureInputFromFilter(Filter filter, UIInput input) {
+        for (String attrName : getCopiedFilterAttributes()) {
+            Object attrValue = filter.getAttributes().get(attrName);
+            if (attrValue != null)
+                input.getAttributes().put(attrName, attrValue);
+        }
+    }
+
+    protected abstract String[] getCopiedFilterAttributes();
+
 }

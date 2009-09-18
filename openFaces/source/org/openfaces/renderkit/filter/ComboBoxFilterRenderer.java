@@ -71,6 +71,8 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
         writer.writeAttribute("onchange", submitScript, null);
         writer.writeAttribute("onclick", "event.cancelBubble = true;", null);
         writer.writeAttribute("onkeydown", "O$.cancelBubble(event);", null);
+        writer.writeAttribute("dir", filter.getDir(), "dir");
+        writer.writeAttribute("lang", filter.getLang(), "lang");
 
         boolean thereAreEmptyItems = false;
         Collection<Object> criterionNamesCollection = filter.calculateAllCriterionNames(context);

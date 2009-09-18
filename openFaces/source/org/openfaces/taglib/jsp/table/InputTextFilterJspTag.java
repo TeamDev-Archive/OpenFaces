@@ -13,6 +13,8 @@ package org.openfaces.taglib.jsp.table;
 
 import org.openfaces.taglib.internal.table.InputTextFilterTag;
 
+import javax.el.ValueExpression;
+
 /**
  * @author Dmitry Pikhulya
  */
@@ -21,5 +23,28 @@ public class InputTextFilterJspTag extends FilterJspTag {
         super(new InputTextFilterTag());
     }
 
+    public void setSize(ValueExpression size) {
+        getDelegate().setPropertyValue("size", size);
+    }
+
+    public void setMaxlength(ValueExpression maxlength) {
+        getDelegate().setPropertyValue("maxlength", maxlength);
+    }
+
+    public void setAlt(ValueExpression alt) {
+        getDelegate().setPropertyValue("alt", alt);
+    }
+
+    public void setLang(ValueExpression lang) {
+        getDelegate().setPropertyValue("lang", lang);
+    }
+
+    public void setDir(ValueExpression dir) {
+        getDelegate().setPropertyValue("dir", dir);
+    }
+
+    public void setAutocomplete(ValueExpression autocomplete) {
+        getDelegate().setPropertyValue("autocomplete", autocomplete);
+    }
 
 }

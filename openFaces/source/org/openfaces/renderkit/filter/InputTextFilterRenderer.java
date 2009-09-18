@@ -22,6 +22,25 @@ import javax.faces.context.FacesContext;
  * @author Dmitry Pikhulya
  */
 public class InputTextFilterRenderer extends TextSearchFilterRenderer {
+    private static final String[] COPIED_ATTRIBUTES = {
+            "rolloverStyle",
+            "rolloverClass",
+            "focusedStyle",
+            "focusedClass",
+            "promptText",
+            "promptTextStyle",
+            "promptTextClass",
+
+            "accesskey",
+            "tabindex",
+            "title",
+            "maxlength",
+            "dir",
+            "lang",
+            "alt",
+            "autocomplete"
+    };
+
     protected void configureInputComponent(FacesContext context, Filter filter, UIInput inputComponent) {
         InputText input = (InputText) inputComponent;
         input.setOnkeypress(getFilterOnEnterScript(filter));
@@ -29,11 +48,10 @@ public class InputTextFilterRenderer extends TextSearchFilterRenderer {
         input.setStyle(filter.getStyle());
         input.setStyleClass(StyleUtil.mergeClassNames(filter.getStyleClass(), "o_fullWidth"));
 
-        input.setPromptText(filter.getPromptText());
-        input.setPromptTextClass(filter.getPromptTextClass());
-        input.setPromptTextStyle(filter.getPromptTextStyle());
-
         input.setOnkeydown("O$.cancelBubble(event);");
     }
 
+    protected String[] getCopiedFilterAttributes() {
+        return COPIED_ATTRIBUTES;
+    }
 }

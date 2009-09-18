@@ -43,5 +43,9 @@ public abstract class FilterTag extends AbstractComponentTag {
         setStringProperty(component, "promptText");
         setStringProperty(component, "promptTextStyle");
         setStringProperty(component, "promptTextClass");
+
+        setStringProperty(component, "title");
+        setStringProperty(component, "accesskey");
+        setStringProperty(component, "tabindex");
     }
 }

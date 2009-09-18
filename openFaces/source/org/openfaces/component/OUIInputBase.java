@@ -61,11 +61,11 @@ public class OUIInputBase extends UIInput implements OUIInput {
     }
 
     public String getFocusedStyle() {
-        return focusedStyle;
+        return ValueBindings.get(this, "focusedStyle", focusedStyle);
     }
 
     public String getFocusedClass() {
-        return focusedClass;
+        return ValueBindings.get(this, "focusedClass", focusedClass);
     }
 
     public void setFocusedStyle(String focusedStyle) {
