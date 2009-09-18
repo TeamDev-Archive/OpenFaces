@@ -31,10 +31,7 @@ public class EqualsFilterCriterion extends OneParameterCriterion {
         Object filterValue = getValue();
         if (filterValue == null || filterValue.equals(""))
             return true;
-        if (!(value instanceof String) || isCaseSensitive())
-            return value.equals(filterValue);
         return objectToString(value).equals(objectToString(filterValue));
-
     }
 
     @Override

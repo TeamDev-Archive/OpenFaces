@@ -71,7 +71,7 @@
         <h:outputText style="white-space: normal;" value="Certificate Number"/>
       </f:facet>
       <f:facet name="subHeader">
-        <o:inputTextFilter id="filter2" expression="#{bank.certificateNumber}" criterion="equals"/>
+        <o:inputTextFilter id="filter2" expression="#{bank.certificateNumber}" maxlength="5" criterion="equals"/>
       </f:facet>
       <h:outputText value="#{bank.certificateNumber}"/>
     </o:column>
