@@ -43,12 +43,10 @@ public class InputTextFilterRenderer extends TextSearchFilterRenderer {
 
     protected void configureInputComponent(FacesContext context, Filter filter, UIInput inputComponent) {
         InputText input = (InputText) inputComponent;
-        input.setOnkeypress(getFilterOnEnterScript(filter));
+        input.setOnkeydown(getFilterOnEnterScript(filter) + "O$.cancelBubble(event);");
         input.setOnchange(getFilterSubmissionScript(filter));
         input.setStyle(filter.getStyle());
         input.setStyleClass(StyleUtil.mergeClassNames(filter.getStyleClass(), "o_fullWidth"));
-
-        input.setOnkeydown("O$.cancelBubble(event);");
     }
 
     protected String[] getCopiedFilterAttributes() {
