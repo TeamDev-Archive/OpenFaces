@@ -341,6 +341,18 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the delay in milliseconds when the filtering is performed automatically after the user has
+        entered some value in an associated filter, or turns off automatic filtering in case -1 is specified as a value
+        for this attribute.</description>
+      <name>autoFilterDelay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int-->
+      <!-- @default 700 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Text that is displayed instead of "&lt;All&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
@@ -1716,6 +1728,18 @@
       <!-- @el only -->
     </attribute>
     <attribute>
+      <description>Specifies the delay in milliseconds when the filtering is performed automatically after the user has
+        entered some value in the filter, or turns off automatic filtering in case -1 is specified as a value for this
+        attribute.</description>
+      <name>autoFilterDelay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int-->
+      <!-- @default 700 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>ID of a filterable component that should be filtered with this component. It should be defined in
         the same way as the "for" property of the standard HTMLOutputLabel component. If this attribute is not specified
         then this filter component should be located inside of a filterable component (DataTable or TreeTable).
@@ -1978,6 +2002,18 @@
       <!-- @bindingType org.openfaces.component.table. DataTable -->
       <!-- @default null -->
       <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Specifies the delay in milliseconds when the filtering is performed automatically after the user has
+        entered some value in the filter, or turns off automatic filtering in case -1 is specified as a value for this
+        attribute.</description>
+      <name>autoFilterDelay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int-->
+      <!-- @default 700 -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>ID of a filterable component that should be filtered with this component. It should be defined in
@@ -6047,6 +6083,18 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
 
+    <attribute>
+      <description>Specifies the delay in milliseconds when the filtering is performed automatically after the user has
+        entered some value in an associated filter, or turns off automatic filtering in case -1 is specified as a value
+        for this attribute.</description>
+      <name>autoFilterDelay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int-->
+      <!-- @default 700 -->
+      <!-- @el true -->
+    </attribute>
     <attribute>
       <description>The text that is displayed instead of "&lt;All&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.

@@ -23,7 +23,6 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
 /**

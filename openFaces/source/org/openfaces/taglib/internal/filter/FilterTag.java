@@ -47,5 +47,6 @@ public abstract class FilterTag extends AbstractComponentTag {
         setStringProperty(component, "title");
         setStringProperty(component, "accesskey");
         setStringProperty(component, "tabindex");
+        setIntProperty(component, "autoFilterDelay");
     }
 }

@@ -1758,22 +1758,47 @@ if (!window.O$) {
     // canceling the previous action and scheduling the new one.
     var actionReference = func;
     if (typeof actionId == "string") {
-      if (!OpenFaces._actionReferendes)
-        OpenFaces._actionReferendes = {};
-      actionReference = OpenFaces._actionReferendes[actionId];
+      if (!OpenFaces._actionReferences)
+        OpenFaces._actionReferences = {};
+      actionReference = OpenFaces._actionReferences[actionId];
       if (!actionReference) {
         actionReference = {};
-        OpenFaces._actionReferendes[actionId] = actionReference;
+        OpenFaces._actionReferences[actionId] = actionReference;
       }
     }
     if (!actionReference._delayedInvocationCount)
       actionReference._delayedInvocationCount = 0;
     actionReference._delayedInvocationCount++;
-    setTimeout(function() {
+    if (!actionReference._timeoutIds)
+      actionReference._timeoutIds = [];
+    actionReference._timeoutIds.push(setTimeout(function() {
       actionReference._delayedInvocationCount--;
-      if (actionReference._delayedInvocationCount == 0)
+      if (actionReference._delayedInvocationCount == 0) {
+        actionReference._timeoutIds = [];
         func();
-    }, delay);
+      }
+    }, delay));
+  };
+
+  O$.cancelDelayedAction = function(func, actionId) {
+    var actionReference = func;
+    if (typeof actionId == "string") {
+      if (!OpenFaces._actionReferences)
+        OpenFaces._actionReferences = {};
+      actionReference = OpenFaces._actionReferences[actionId];
+      if (!actionReference) {
+        actionReference = {};
+        OpenFaces._actionReferences[actionId] = actionReference;
+      }
+    }
+    if (!actionReference._timeoutIds)
+      return;
+    for (var i = 0, count = actionReference._timeoutIds.length; i < count; i++) {
+      clearTimeout(actionReference._timeoutIds[i]);
+      actionReference._timeoutIds = [];
+      actionReference._delayedInvocationCount = 0;
+    }
+
   };
 
   O$.setupHoverAndPressStateFunction = function(element, fn) {

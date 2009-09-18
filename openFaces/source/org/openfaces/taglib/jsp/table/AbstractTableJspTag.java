@@ -307,4 +307,8 @@ public abstract class AbstractTableJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("sortedDescendingImageUrl", value);
     }
 
+    public void setAutoFilterDelay(ValueExpression autoFilterDelay) {
+        getDelegate().setPropertyValue("autoFilterDelay", autoFilterDelay);
+    }
+
 }

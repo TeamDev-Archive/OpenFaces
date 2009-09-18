@@ -53,6 +53,10 @@ public interface FilterableComponent {
     String getNonEmptyRecordsFilterText();
     void setNonEmptyRecordsFilterText(String nonEmptyRecordsFilterText);
 
+    int getAutoFilterDelay();
+    void setAutoFilterDelay(int autoFilterDelay);
+
+
     public List getRowListForFiltering(Filter filter);
 
     Object getFilteredValueByData(
@@ -63,4 +67,5 @@ public interface FilterableComponent {
             Object data);
 
     void filterChanged(Filter filter);
+
 }

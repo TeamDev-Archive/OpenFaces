@@ -136,6 +136,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private List<BaseColumn> cachedColumnsForRendering;
     private String cachedClientId;
     private List<Filter> myFilters = new ArrayList<Filter>();
+    private Integer autoFilterDelay;
 
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
@@ -172,7 +173,8 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 filterRowStyle, filterRowClass, filterRowSeparator, focusedStyle, focusedClass,
                 rolloverRowStyle, rolloverRowClass, noDataRowStyle, noDataRowClass,
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
-                sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId};
+                sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
+        autoFilterDelay};
     }
 
     @Override
@@ -257,6 +259,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         sortedAscendingImageUrl = (String) state[i++];
         sortedDescendingImageUrl = (String) state[i++];
         cachedClientId = (String) state[i++];
+        autoFilterDelay = (Integer) state[i++];
 
         beforeUpdateValuesPhase = true;
         toggleColumnSorting = -1;
@@ -1353,6 +1356,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public void filterChanged(Filter filter) {
+    }
+
+    public int getAutoFilterDelay() {
+        return ValueBindings.get(this, "autoFilterDelay", autoFilterDelay, 700);
+    }
+
+    public void setAutoFilterDelay(int autoFilterDelay) {
+        this.autoFilterDelay = autoFilterDelay;
     }
 
     public String getRolloverRowStyle() {

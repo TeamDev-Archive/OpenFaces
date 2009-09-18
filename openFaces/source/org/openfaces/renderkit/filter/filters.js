@@ -21,6 +21,7 @@ O$.Filters = {
   },
 
   _filterComponent: function(componentId, filterId, filterField) {
+    O$.cancelDelayedAction(null, componentId);
     // setTimeout in the following script is needed to avoid page blinking when using combo-box filter in IE (JSFC-2263)
     setTimeout(function() {
       O$.Filters._submitFilter(componentId, filterId, filterField);
@@ -35,8 +36,9 @@ O$.Filters = {
       O$.submitEnclosingForm(filteredComponent);
   },
 
-  _filterFieldKeyPressHandler: function(componentId, filterId, filterField, event) {
+  _filterFieldKeyPressHandler: function(componentId, filterId, filterField, event, autoFilteringDelay) {
     if (event.keyCode == 13) {
+
       // filter only in cases when onchange is not fired by pressing Enter to avoid double filter requests
       var onchangeFired = filterField.nodeName.toUpperCase() != "INPUT";
       if (!onchangeFired)
@@ -44,6 +46,17 @@ O$.Filters = {
 
       event.cancelBubble = true;
       return false;
+    } else if (autoFilteringDelay != -1) {
+      var valueBefore = filterField.getValue ? filterField.getValue() : filterField.value;
+      setTimeout(function() {
+        var valueAfter = filterField.getValue ? filterField.getValue() : filterField.value;
+        if (valueBefore == valueAfter)
+          return;
+        O$.invokeFunctionAfterDelay(function() {
+          O$.Filters._filterComponent(componentId, filterId, filterField);
+        }, autoFilteringDelay, componentId);
+      }, 1);
+
     }
     var inFieldNavigation = (event.keyCode >= 35 && event.keyCode <= 40);
     if (inFieldNavigation)

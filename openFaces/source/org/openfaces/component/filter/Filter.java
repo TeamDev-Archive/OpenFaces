@@ -60,13 +60,15 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
     private String accesskey;
     private String tabindex;
     private String title;
+    private Integer autoFilterDelay;
 
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, _for, style, styleClass, predefinedCriterionStyle, predefinedCriterionClass,
                 criterion, allRecordsText, emptyRecordsText, nonEmptyRecordsText,
-                promptText, promptTextStyle, promptTextClass, caseSensitive, accesskey, tabindex, title};
+                promptText, promptTextStyle, promptTextClass, caseSensitive, accesskey, tabindex, title, autoFilterDelay
+        };
     }
 
     @Override
@@ -91,6 +93,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         accesskey = (String) state[i++];
         tabindex = (String) state[i++];
         title = (String) state[i++];
+        autoFilterDelay = (Integer) state[i++];
     }
 
     public String getFor() {
@@ -164,7 +167,6 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
     public void setPromptTextClass(String promptTextClass) {
         this.promptTextClass = promptTextClass;
     }
-
 
 
     public boolean acceptsData(FacesContext facesContext, Object data) {
@@ -325,6 +327,14 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
 
     public void setCriterion(FilterCriterion criterion) {
         this.criterion = criterion;
+    }
+
+    public int getAutoFilterDelay() {
+        return ValueBindings.get(this, "autoFilterDelay", autoFilterDelay, getFilteredComponent().getAutoFilterDelay());
+    }
+
+    public void setAutoFilterDelay(int autoFilterDelay) {
+        this.autoFilterDelay = autoFilterDelay;
     }
 
     /**

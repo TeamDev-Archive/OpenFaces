@@ -114,5 +114,7 @@ public abstract class AbstractTableTag extends AbstractComponentTag {
         setStringProperty(component, "onkeyup");
         setStringProperty(component, "onkeypress");
         setPropertyBinding(component, "columnsOrder");
+
+        setIntProperty(component, "autoFilterDelay");
     }
 }

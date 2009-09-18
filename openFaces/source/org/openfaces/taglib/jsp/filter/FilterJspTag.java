@@ -80,4 +80,8 @@ public class FilterJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("tabindex", tabindex);
     }
 
+    public void setAutoFilterDelay(ValueExpression autoFilterDelay) {
+        getDelegate().setPropertyValue("autoFilterDelay", autoFilterDelay);
+    }
+
 }

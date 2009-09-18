@@ -76,7 +76,8 @@ public abstract class TextSearchFilterRenderer extends FilterRenderer {
                 component,
                 filter,
                 new RawScript("this"),
-                new RawScript("event")).semicolon().toString();
+                new RawScript("event"),
+                filter.getAutoFilterDelay()).semicolon().toString();
     }
 
     protected String getStringValue(Filter filter) {
