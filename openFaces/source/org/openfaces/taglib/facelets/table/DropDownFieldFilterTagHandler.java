@@ -13,7 +13,7 @@ package org.openfaces.taglib.facelets.table;
 
 import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
-import org.openfaces.taglib.internal.table.DropDownFieldFilterTag;
+import org.openfaces.taglib.internal.filter.DropDownFieldFilterTag;
 
 /**
  * @author Dmitry Pikhulya

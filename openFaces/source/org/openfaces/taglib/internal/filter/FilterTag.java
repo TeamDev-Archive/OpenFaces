@@ -2,7 +2,7 @@
  * Copyright (c) 1998-2009 TeamDev Ltd. All Rights Reserved.
  * Use is subject to license terms.
  */
-package org.openfaces.taglib.internal.table;
+package org.openfaces.taglib.internal.filter;
 
 import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.component.filter.Filter;

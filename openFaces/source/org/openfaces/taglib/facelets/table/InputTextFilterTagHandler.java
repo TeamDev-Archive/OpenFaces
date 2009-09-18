@@ -12,7 +12,7 @@
 package org.openfaces.taglib.facelets.table;
 
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
-import org.openfaces.taglib.internal.table.InputTextFilterTag;
+import org.openfaces.taglib.internal.filter.InputTextFilterTag;
 import com.sun.facelets.tag.jsf.ComponentConfig;
 
 /**

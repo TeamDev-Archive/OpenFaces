@@ -1693,7 +1693,7 @@
 
   <tag>
     <name>inputTextFilter</name>
-    <tag-class>org.openfaces.taglib.jsp.table.InputTextFilterJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.filter.InputTextFilterJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
       <description>The component identifier.</description>
@@ -1956,7 +1956,7 @@
 
   <tag>
     <name>dropDownFieldFilter</name>
-    <tag-class>org.openfaces.taglib.jsp.table.DropDownFieldFilterJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.filter.DropDownFieldFilterJspTag</tag-class>
     <body-content>JSP</body-content>
 
     <attribute>
@@ -2574,7 +2574,7 @@ entering a value and returns a list of suggestions from the server -->
 
   <tag>
     <name>comboBoxFilter</name>
-    <tag-class>org.openfaces.taglib.jsp.table.ComboBoxFilterJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.filter.ComboBoxFilterJspTag</tag-class>
     <body-content>JSP</body-content>
 
     <attribute>

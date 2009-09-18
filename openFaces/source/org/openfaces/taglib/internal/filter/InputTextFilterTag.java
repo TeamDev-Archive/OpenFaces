@@ -9,9 +9,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.internal.table;
+package org.openfaces.taglib.internal.filter;
 
-import org.openfaces.component.filter.ComboBoxFilter;
+import org.openfaces.component.filter.InputTextFilter;
+import org.openfaces.taglib.internal.filter.FilterTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -19,21 +20,27 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class ComboBoxFilterTag extends FilterTag {
+public class InputTextFilterTag extends FilterTag {
     public String getComponentType() {
-        return ComboBoxFilter.COMPONENT_TYPE;
+        return InputTextFilter.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.ComboBoxFilterRenderer";
+        return "org.openfaces.InputTextFilterRenderer";
     }
 
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        setStringProperty(component, "focusedStyle");
+        setStringProperty(component, "focusedClass");
         setStringProperty(component, "dir");
         setStringProperty(component, "lang");
+        setStringProperty(component, "alt");
+        setIntProperty(component, "maxlength");
+        setIntProperty(component, "size");
+        setStringProperty(component, "autocomplete");
     }
 
 }

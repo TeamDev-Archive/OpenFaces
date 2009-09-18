@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.internal.filter;
 
-import org.openfaces.taglib.internal.table.FilterTag;
+import org.openfaces.taglib.internal.filter.FilterTag;
 import org.openfaces.component.HorizontalAlignment;
 import org.openfaces.component.input.SuggestionMode;
 
