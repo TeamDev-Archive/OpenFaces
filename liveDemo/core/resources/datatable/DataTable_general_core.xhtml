@@ -5,15 +5,23 @@
 
 <div id="Demo">
 
-  <h3>U.S. Banks Directory
-    <small>(an extract, full list: <a href="http://www.fdic.gov" target="_blank">FDIC</a>)</small>
-  </h3>
+  <table style="width: 100%" cellspacing="0" cellpadding="0" borer="0">
+    <tr>
+      <td>
+        <h3>U.S. Banks Directory
+          <small>(an extract, full list: <a href="http://www.fdic.gov" target="_blank">FDIC</a>)</small>
+        </h3>
+      </td>
+      <td style="padding-right: 6px; padding-top: 5px; width: 250px;">
+        <o:inputTextFilter for="banks"
+                           expression="#{bank.institutionName},#{bank.certificateNumber},#{bank.city},#{bank.state},#{bank.zip},#{bank.county},#{bank.averageAssets}"
+                           promptText="Search all fields"/>
 
-  <div style="padding-right: 6px">
-    <o:inputTextFilter for="banks"
-                       expression="#{bank.institutionName},#{bank.certificateNumber},#{bank.city},#{bank.state},#{bank.zip},#{bank.county},#{bank.averageAssets}"
-                       promptText="Search all fields"/>
-  </div>
+      </td>
+    </tr>
+
+  </table>
+
   <o:dataTable id="banks" var="bank"
                value="#{BanksList.banks}"
                pageSize="14"
