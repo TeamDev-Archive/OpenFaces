@@ -27561,7 +27561,7 @@ and it is automatically triggered on any form submission. -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @required -->
+      <!-- @required true-->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -27571,7 +27571,7 @@ and it is automatically triggered on any form submission. -->
         <type>java.lang.String</type>
       </deferred-value>
      <!-- @bindingType java.lang.String -->
-      <!-- @required -->
+      <!-- @required true-->
       <!-- @el false -->
     </attribute>
     <attribute>
@@ -27581,7 +27581,7 @@ and it is automatically triggered on any form submission. -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @required -->
+      <!-- @required true-->
       <!-- @el true -->
     </attribute>
     <attribute>
