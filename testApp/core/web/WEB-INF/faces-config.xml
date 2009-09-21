@@ -17,6 +17,9 @@
       <supported-locale>ja</supported-locale>
       <supported-locale>ch</supported-locale>
     </locale-config>
+    <message-bundle>
+      org.openfaces.testapp.filter.MessageResources
+    </message-bundle>
   </application>
 
   <managed-bean>
@@ -798,4 +801,12 @@
     <managed-bean-class>org.openfaces.testapp.support.QKS5060.QKS5060</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
+
+
+  <managed-bean>
+    <managed-bean-name>CompositeFilterBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.filter.CompositeFilterBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  
 </faces-config>

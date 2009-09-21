@@ -1,0 +1,73 @@
+/*
+ * OpenFaces - JSF Component Library 2.0
+ * Copyright (C) 2007-2009, TeamDev Ltd.
+ * licensing@openfaces.org
+ * Unless agreed in writing the contents of this file are subject to
+ * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * Please visit http://openfaces.org/licensing/ for more details.
+ */
+
+package org.openfaces.renderkit.filter.param;
+
+import org.openfaces.component.filter.CompositeFilter;
+import org.openfaces.component.filter.FilterProperty;
+import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.input.Spinner;
+import org.openfaces.util.ComponentUtil;
+import org.openfaces.renderkit.filter.FilterRow;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import java.io.Serializable;
+
+public class SpinnerParametersEditor extends ParametersEditor implements Serializable {
+
+    private static final String SPINNER_ID_SUFFIX = "spinner";
+
+    public SpinnerParametersEditor() {
+    }
+
+    public SpinnerParametersEditor(FilterProperty filterProperty, OperationType operation) {
+        super(filterProperty, operation);
+    }
+
+    private Spinner getSpinner(FacesContext context, UIComponent container) {
+        return (Spinner) ComponentUtil.getChildBySuffix(container, SPINNER_ID_SUFFIX);
+    }
+
+    private Spinner createSpinner(FacesContext context, UIComponent container) {
+        clearContainer(container);
+        Spinner spinner = (Spinner) ComponentUtil.createChildComponent(context, container, Spinner.COMPONENT_TYPE, SPINNER_ID_SUFFIX);
+        spinner.setStep(filterProperty.getStep());
+        spinner.setMinValue(filterProperty.getMinValue());
+        spinner.setMaxValue(filterProperty.getMaxValue());
+        //spinner.setStyleClass(FilterRow.DEFAULT_PARAMETER_CLASS);
+        //spinner.setStyle("width: 70px;");
+        return spinner;
+    }
+
+    private void initSpinner(FacesContext context, Spinner spinner) {
+        spinner.setValue(criterion.getParameter());
+    }
+
+    public void prepare(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {
+        super.prepare(context, compositeFilter, filterRow, container);
+        Spinner spinner = getSpinner(context, container);
+        if (spinner == null) {
+            spinner = createSpinner(context, container);
+        }
+        initSpinner(context, spinner);
+    }
+
+    public void update(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {
+        Spinner spinner = getSpinner(context, container);
+        if (spinner == null) {
+            return;
+        }
+        Number param = (Number) spinner.getValue();
+        criterion.setParameter(param);
+    }
+}

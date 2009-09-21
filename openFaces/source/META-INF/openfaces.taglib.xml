@@ -896,4 +896,22 @@
     </component>
   </tag>
 
+   <tag>
+    <tag-name>compositeFilter</tag-name>
+    <component>
+      <component-type>org.openfaces.CompositeFilter</component-type>
+      <renderer-type>org.openfaces.CompositeFilterRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.filter.CompositeFilterTagHandler</handler-class>
+    </component>
+  </tag>
+
+   <tag>
+    <tag-name>filterProperty</tag-name>
+    <component>
+      <component-type>org.openfaces.FilterProperty</component-type>
+      <renderer-type>org.openfaces.FilterPropertyRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.filter.FilterPropertyTagHandler</handler-class>
+    </component>
+  </tag>
+
 </facelet-taglib>

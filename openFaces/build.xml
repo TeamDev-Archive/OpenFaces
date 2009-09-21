@@ -60,6 +60,13 @@
           <include name="richfaces-impl-3.3.1.GA.jar"/>
           <include name="richfaces-ui-3.3.1.GA.jar"/>
         </fileset>
+        <fileset dir="${apache.lib.dir}">
+          <include name="commons-collections-3.2.jar"/>
+          <include name="commons-beanutils-1.7.0.jar"/>
+        </fileset>
+        <fileset dir="${seam.lib.dir}">
+          <include name="hibernate-all.jar"/>
+        </fileset>
 
       </classpath>
     </javac>
@@ -84,6 +91,7 @@
     <property name="richfaces.lib.dir" location="${lib.dir}/richfaces"/>
     <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
     <property name="apache.lib.dir" location="${lib.dir}/apache"/>
+    <property name="seam.lib.dir" location="${lib.dir}/jboss-seam"/>
     <antcall target="-build"/>
   </target>
 
@@ -100,6 +108,7 @@
     <property name="richfaces.lib.dir" location="${lib.dir}/richfaces"/>
     <property name="myfaces.lib.dir" location="${lib.dir}/myfaces"/>
     <property name="apache.lib.dir" location="${lib.dir}/apache"/>
+    <property name="seam.lib.dir" location="${lib.dir}/jboss-seam"/>
     <property file="ofversion.properties"/>
     <antcall target="-build" inheritall="true"/>
   </target>

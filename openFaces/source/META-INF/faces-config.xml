@@ -582,6 +582,16 @@
     <component-type>org.openfaces.SelectBooleanCheckbox</component-type>
     <component-class>org.openfaces.component.input.SelectBooleanCheckbox</component-class>
   </component>
+  <component>
+    <component-type>org.openfaces.CompositeFilter</component-type>
+    <component-class>org.openfaces.component.filter.CompositeFilter</component-class>
+  </component>
+
+   <component>
+    <component-type>org.openfaces.FilterProperty</component-type>
+    <component-class>org.openfaces.component.filter.FilterProperty</component-class>
+  </component>
+
 
   <component>
     <component-type>org.openfaces.validation.AnnotationValidation</component-type>
@@ -983,6 +993,12 @@
       <component-family>org.openfaces.SelectBooleanCheckbox</component-family>
       <renderer-type>org.openfaces.SelectBooleanCheckboxRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.input.SelectBooleanCheckboxRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>org.openfaces.CompositeFilter</component-family>
+      <renderer-type>org.openfaces.CompositeFilterRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.filter.CompositeFilterRenderer</renderer-class>
     </renderer>
 
     <renderer>

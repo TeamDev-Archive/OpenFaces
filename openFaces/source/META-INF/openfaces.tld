@@ -27456,4 +27456,225 @@ and it is automatically triggered on any form submission. -->
     <tag-class>org.openfaces.taglib.jsp.validation.AnnotationValidationJspTag</tag-class>
     <body-content>JSP</body-content>
   </tag>
+
+  <!-- COMPOSITE FILTER TAG DECLARATION -->
+  <tag>
+    <name>compositeFilter</name>
+    <tag-class>org.openfaces.taglib.jsp.filter.CompositeFilterJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates the CompositeFilter with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.filter.CompositeFilter</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.filter.CompositeFilter-->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Set of criteria.</description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType array -->
+      <!-- @bindingType java.util.Collection -->
+      <!-- @bindingType java.sql.ResultSet -->
+      <!-- @bindingType javax.servlet.jsp.jstl.sql.Result -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+     <attribute>
+      <description>No filter text.</description>
+      <name>noFilterMessage</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+  </tag>
+
+  <!-- FILTER PROPERTY TAG DECLARATION -->
+  <tag>
+    <name>filterProperty</name>
+    <tag-class>org.openfaces.taglib.jsp.filter.FilterPropertyJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates the FilterProperty with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.filter.FilterProperty</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.filter.FilterProperty-->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description></description>
+      <name>name</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @required -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Property type (tetx, number, date or select) </description>
+      <name>type</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+     <!-- @bindingType java.lang.String -->
+      <!-- @required -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>Display name for property.</description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @required -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies a data provider.</description>
+      <name>dataProvider</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType array -->
+      <!-- @bindingType java.util.Collection -->
+      <!-- @bindingType java.sql.ResultSet -->
+      <!-- @bindingType javax.servlet.jsp.jstl.sql.Result -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Converter</description>
+      <name>converter</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+      </description>
+      <name>minValue</name>
+      <deferred-value>
+        <type>java.lang.Number</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Number -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+      </description>
+      <name>maxValue</name>
+      <deferred-value>
+        <type>java.lang.Number</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Number -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+      </description>
+      <name>step</name>
+      <deferred-value>
+        <type>java.lang.Number</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Number -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The date format with the pattern similar to that in the java.text.SimpleDateFormat class.
+      </description>
+      <name>pattern</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+     <attribute>
+      <description>Time zone in which to interpret any time information in the date String. Value must be either a VB
+        expression that evaluates to a java.util.TimeZone instance, or a String that is a timezone ID as described in
+        the javadocs for java.util.TimeZone.getTimeZone().
+      </description>
+      <name>timeZone</name>
+      <deferred-value>
+        <type>java.util.TimeZone</type>
+      </deferred-value>
+      <!-- @bindingType java.util.TimeZone -->
+      <!-- @default The server's default time zone -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description></description>
+      <name>caseSensitive</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el false -->
+    </attribute>
+
+  </tag>
+
 </taglib>

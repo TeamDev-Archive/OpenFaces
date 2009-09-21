@@ -148,6 +148,7 @@
           <include name="jboss-seam/jboss-ejb3-all.jar"/>
           <include name="jboss-seam/jboss-seam-2.1.1.GA.jar"/>
           <include name="tomahawk/tomahawk12-1.1.8.jar"/>
+          <include name="apache/commons-collections-3.2.jar"/>
         </fileset>
         <fileset file="${components-jar.file}"/>
       </classpath>

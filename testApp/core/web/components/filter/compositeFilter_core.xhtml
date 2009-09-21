@@ -1,0 +1,70 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  <br/>    
+
+  <h:commandButton onclick="O$.Filter.add('form1:cf'); return false;" value="Add Filter"/>  
+
+  <o:loadBundle basename="org.openfaces.testapp.filter.MessageResources" var="messages"/>
+
+
+<o:compositeFilter id="cf" value="#{CompositeFilterBean.criterions}" labels="#{messages}">
+    <o:filterProperty name="firstName" value="#{CompositeFilterBean.firstNameLabel}" type="text" dataProvider="#{CompositeFilterBean.names}" caseSensitive="false"/>
+    <o:filterProperty name="age" value="Age" type="number" rendered="#{CompositeFilterBean.ageRendered}"/>
+    <o:filterProperty name="dateOfBirth" value="Date Of Birth" type="date" pattern="dd-MM-yyyy" timeZone="GMT"/>
+    <o:filterProperty name="placeOfBirth.country" value="Country" type="select"
+                      dataProvider="#{CompositeFilterBean.countries}"
+                      converter="#{CompositeFilterBean.countryConverter}"/>
+  </o:compositeFilter>
+
+
+  <br/>
+  <br/>
+  <h:commandButton action="sbmt" value="Submit"/>
+  <h:commandButton onclick="O$.Filter.clear('form1:cf'); return false;" value="Clear Filter"/>
+  <h:commandButton action="#{CompositeFilterBean.clearFilter}" value="Clear and Submit Filter"/>
+
+
+  <o:dataTable value="#{CompositeFilterBean.users}" var="user">
+    <o:column>
+      <f:facet name="header">
+        <h:outputText value="Name"/>
+      </f:facet>
+      <h:outputText value="#{user.firstName}, #{user.lastName}"/>
+    </o:column>
+    <o:column>
+      <f:facet name="header">
+        <h:outputText value="Age"/>
+      </f:facet>
+      <h:outputText value="#{user.age}"/>
+    </o:column>
+    <o:column>
+      <f:facet name="header">
+        <h:outputText value="Date Of Birth"/>
+      </f:facet>
+      <h:outputText value="#{user.dateOfBirth}">
+        <f:convertDateTime pattern="dd-MM-yyyy z" timeZone="GMT"/>
+      </h:outputText>
+    </o:column>
+    <o:column>
+      <f:facet name="header">
+        <h:outputText value="Place Of Birth"/>
+      </f:facet>
+      <h:outputText value="#{user.placeOfBirth.country}, #{user.placeOfBirth.city}">
+      </h:outputText>
+    </o:column>
+
+  </o:dataTable>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+
+
+
+</div>

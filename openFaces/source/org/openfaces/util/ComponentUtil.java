@@ -176,6 +176,25 @@ public class ComponentUtil {
 
     /**
      *
+     * This method add child to parent component at the specified position
+     *
+     * @param context {@link javax.faces.context.FacesContext} for the current request
+     * @param parent Method will create child for this component
+     * @param componentType The class for child creation
+     * @param idSuffix The suffix identifying the child {@link javax.faces.component.UIComponent} to be returned
+     * @param i index at which the specified child is to be inserted to paranet's child list
+     * @return created child
+     */
+    public static UIComponent createChildComponent(
+            FacesContext context, UIComponent parent, String componentType, String idSuffix, int i) {
+        String childId = generateIdWithSuffix(parent, idSuffix);
+        UIComponent component = createComponent(context, childId, componentType);
+        parent.getChildren().add(i,component);
+        return component;
+    }
+
+    /**
+     *
      * This method create components with given name and class and create, if needed, its subcomponents
      *
      * @param context {@link javax.faces.context.FacesContext} for the current request

@@ -1266,6 +1266,62 @@
   border-left-color: #c9d8f5;
 }
 
+.o_filter_row {
+  padding-top: 5px;
+  width: 100%;
+  clear: both;
+}
+
+.o_filter_row: after {
+  content: '';
+  clear: both;
+  display: block;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  font-size: 0;
+}
+
+.o_filter_row_item {
+  margin-right: 5px;
+  float: left;
+}
+
+.o_filter_no_text{
+  margin-top: 5px;
+  margin-right:10px;
+  font-style: italic;
+}
+
+.o_filter_row_item_input {
+  margin-top: 3px;
+}
+
+.o_filter_row_item_checkbox {
+  width:20px;
+}
+
+.o_filter_parameter {
+  margin-right: 5px;
+  float: left;
+}
+
+.o_filter_add_button,
+.o_filter_delete_button {
+  width: 25px;
+  padding-top: 0;
+}
+
+.o_filter_inverse_checkbox {
+  height: 16px;
+}
+
+.o_filter_inverse_label {
+  font-size:9px;
+  left: 5px;
+  position: relative;
+  top:-7px;
+}
 /* Checkbox */
 .o_checkbox_image {
   cursor: default;
