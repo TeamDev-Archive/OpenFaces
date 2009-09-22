@@ -71,9 +71,6 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
 
     protected void renderInputComponent(FacesContext facesContext, OUIInputText inputText) throws IOException {
         String styleClass = StyleUtil.getCSSClass(facesContext, inputText, inputText.getStyle(), StyleGroup.regularStyleGroup(), inputText.getStyleClass(), null);
-        String promptTextStyleClass = StyleUtil.getCSSClass(facesContext, inputText, inputText.getPromptTextStyle(), StyleGroup.regularStyleGroup(1), inputText.getPromptTextClass(), DEFAULT_PROMPT_CLASS);
-        String rolloverStyleClass = StyleUtil.getCSSClass(facesContext, inputText, inputText.getRolloverStyle(), StyleGroup.regularStyleGroup(2), inputText.getRolloverClass(), null);
-        String focusedStyleClass = StyleUtil.getCSSClass(facesContext, inputText, inputText.getFocusedStyle(), StyleGroup.regularStyleGroup(3), inputText.getFocusedClass(), null);
 
         ResponseWriter writer = facesContext.getResponseWriter();
 
@@ -100,10 +97,16 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
 
         encodePromptInfo(facesContext, inputText);
 
+        encodeInitScript(facesContext, inputText);
+    }
+
+    protected void encodeInitScript(FacesContext facesContext, OUIInputText inputText) throws IOException {
         String promptText = inputText.getPromptText();
+        String promptTextStyleClass = StyleUtil.getCSSClass(facesContext, inputText, inputText.getPromptTextStyle(), StyleGroup.regularStyleGroup(1), inputText.getPromptTextClass(), DEFAULT_PROMPT_CLASS);
+        String rolloverStyleClass = StyleUtil.getCSSClass(facesContext, inputText, inputText.getRolloverStyle(), StyleGroup.regularStyleGroup(2), inputText.getRolloverClass(), null);
+        String focusedStyleClass = StyleUtil.getCSSClass(facesContext, inputText, inputText.getFocusedStyle(), StyleGroup.regularStyleGroup(3), inputText.getFocusedClass(), null);
         Script initScript = new ScriptBuilder().initScript(facesContext, inputText, "O$.InputText._init",
                 promptText,
-                styleClass,
                 promptTextStyleClass,
                 rolloverStyleClass,
                 focusedStyleClass,

@@ -36,10 +36,11 @@
   </fileset>
 
   <fileset id="openfaces-dependencies" dir="${openfaces-dependencies.lib.dir}">
-    <include name="jfreechart-1.0.12.jar"/>
-    <include name="jcommon-1.0.15.jar"/>
+    <include name="jfreechart-1.0.13.jar"/>
+    <include name="jcommon-1.0.16.jar"/>
     <include name="jdom-1.0.jar"/>
-    <include name="ss_css2-0.9.4.jar"/>
+    <include name="cssparser-0.9.5.jar"/>
+    <include name="sac.jar"/>
   </fileset>
 
   <fileset id="el-ri" dir="${el.lib.dir}">
@@ -108,10 +109,11 @@
           <include name="apache/commons-digester-1.6.jar"/>
           <include name="apache/commons-lang-2.1.jar"/>
           <include name="openfaces-dependencies/jdom-1.0.jar"/>
-          <include name="openfaces-dependencies/jfreechart-1.0.12.jar"/>
-          <include name="openfaces-dependencies/jcommon-1.0.15.jar"/>
+          <include name="openfaces-dependencies/jfreechart-1.0.13.jar"/>
+          <include name="openfaces-dependencies/jcommon-1.0.16.jar"/>
           <include name="jstl-1.1.0.jar"/>
-          <include name="openfaces-dependencies/ss_css2-0.9.4.jar"/>
+          <include name="openfaces-dependencies/cssparser-0.9.5.jar"/>
+          <include name="openfaces-dependencies/sac.jar"/>
           <include name="facelets/jsf-facelets-1.1.14.jar"/>
           <include name="el/el-api-1.5.0.jar"/>
           <include name="el/el-ri-1.5.0.jar"/>

@@ -978,10 +978,11 @@
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jdom-1.0.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jcommon-1.0.15.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jfreechart-1.0.12.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/ss_css2-0.9.4.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jboss-el.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/hibernate-validator.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/hibernate-commons-annotations.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/cssparser-0.9.5.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/sac.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

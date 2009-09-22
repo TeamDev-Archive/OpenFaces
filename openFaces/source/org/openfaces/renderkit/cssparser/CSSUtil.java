@@ -92,11 +92,11 @@ public class CSSUtil {
         if (cssString.length() == 0)
             return null;
 
-        if (!cssString.startsWith("{"))
-            cssString = "{" + cssString;
+        if (cssString.startsWith("{"))
+            cssString = cssString.substring(1);
 
-        if (!cssString.endsWith("}"))
-            cssString = cssString + "}";
+        if (cssString.endsWith("}"))
+            cssString = cssString.substring(0, cssString.length() - 1);
 
         if (hint != null && cssString.indexOf(hint) == -1) {
             String startBlock = cssString.substring(0, 1);

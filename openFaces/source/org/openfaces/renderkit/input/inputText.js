@@ -13,7 +13,6 @@
 O$.InputText = {
   _init: function(componentId,
                   promptText,
-                  styleClass,
                   promptTextClass,
                   rolloverClass,
                   focusedClass,
@@ -26,7 +25,6 @@ O$.InputText = {
       return (param == null) ? "" : param;
     }
 
-    inputText._styleClass = getClassName(styleClass);
     inputText._focusedClass = getClassName(focusedClass);
     inputText._rolloverClass = getClassName(rolloverClass);
     inputText._promptTextClass = getClassName(promptTextClass);

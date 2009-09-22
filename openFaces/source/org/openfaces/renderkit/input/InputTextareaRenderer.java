@@ -40,10 +40,15 @@ public class InputTextareaRenderer extends AbstractInputTextRenderer {
 
         if (inputTextarea.isReadonly())
             writeAttribute(writer, "readonly", "readonly");
-        writer.endElement("textarea");
+    }
+
+    @Override
+    protected void encodeInitScript(FacesContext context, OUIInputText inputText) throws IOException {
+        super.encodeInitScript(context, inputText);
+        InputTextarea inputTextarea = (InputTextarea) inputText;
         if (inputTextarea.isAutoGrowing()) {
             ScriptBuilder scriptBuilder = new ScriptBuilder();
-            scriptBuilder.initScript(context, inputTextarea, "O$.InputTextarea._autoGrowing", inputTextarea.getId());
+            scriptBuilder.initScript(context, inputTextarea, "O$.InputTextarea._init", inputTextarea.getId());
             RenderingUtil.renderInitScript(context, scriptBuilder,
                     new String[]{
                             ResourceUtil.getUtilJsURL(context),

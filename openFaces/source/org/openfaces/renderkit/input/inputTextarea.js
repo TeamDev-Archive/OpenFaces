@@ -12,24 +12,23 @@
 
 O$.InputTextarea = {
   
-  _autoGrowing: function (inputTextareaId) {
-    
+  _init: function (inputTextareaId) {
     var inputtextarea = O$(inputTextareaId);
 
     if (O$.isExplorer()){
-      inputtextarea.style.overflowY = 'visible';
+      inputtextarea.style.overflowY = "visible";
     } else {
-      inputtextarea.style.overflowY = 'hidden';
-      inputtextarea.style.resize = 'none';
+      inputtextarea.style.overflowY = "hidden";
+      inputtextarea.style.resize = "none";
     }
 
     O$.addEventHandler(inputtextarea, "keyup", function() {
       inputtextarea.scrollTop = 0;
       while (inputtextarea.scrollHeight > inputtextarea.offsetHeight) {
-        var rows = inputtextarea.getAttribute('rows');
+        var rows = inputtextarea.getAttribute("rows");
         if (rows == null)
           rows = 2;
-        inputtextarea.setAttribute('rows', parseInt(rows) + 1);
+        inputtextarea.setAttribute("rows", parseInt(rows) + 1);
       }
     });
 

@@ -16,11 +16,12 @@
 		<param-name>com.sun.faces.validateXml</param-name>
 		<param-value>false</param-value>
 	</context-param>
-  
+
   <listener>
-      <listener-class>com.liferay.util.bridges.jsf.sun.LiferayConfigureListener</listener-class>
+      <!--suppress WebProperties -->
+    <listener-class>com.liferay.util.bridges.jsf.sun.LiferayConfigureListener</listener-class>
   </listener>
-  
+
   <filter>
     <filter-name>ResourceFilter</filter-name>
     <filter-class>org.openfaces.util.ResourceFilter</filter-class>
