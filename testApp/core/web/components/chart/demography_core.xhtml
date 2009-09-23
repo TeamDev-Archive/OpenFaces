@@ -22,19 +22,19 @@
                             colors="#FFD700, #8B0000, #FFA07A"
                             onclick="go_there();">
               <o:pieSectorProperties condition="#{PieChartViewBean.selectedSector || PieChartViewBean.defaultSector}" pulled="0.1f"/>
-              <o:chartLabels style="background: white; font:15pt;"></o:chartLabels>
+              <o:chartLabels style="background: white; font:15pt;"/>
             </o:pieChartView>
             <o:chartTitle text="People PopulationBean in Different Countries"
                           actionListener="#{PieChartViewBean.onTitleClickActionListener}"
                           tooltip="it's tooltip for title"/>
             <o:chartNoDataMessage text="!!!!no data!!!!"
-                                  style="color: red; font-size: 20pt;"></o:chartNoDataMessage>
+                                  style="color: red; font-size: 20pt;"/>
           </o:chart>
         </div>
 
         <div style="width:100%; text-align:center;">
           <h:outputText value="click on the pie sector to view detailed information"
-                        style="font-size: 8pt; color:gray"></h:outputText>
+                        style="font-size: 8pt; color:gray"/>
         </div>
       </td>
     </tr>
@@ -53,7 +53,7 @@
                           style="color: gray; font: 12pt;"
                           showAxes="both">
 
-            <o:chartGridLines style="dashed 1px gray;"></o:chartGridLines>
+            <o:chartGridLines style="dashed 1px gray;"/>
             <o:categoryAxis domain="key" position="up_45"/>
             <o:numberAxis domain="value" lowerBound="100000" upperBound="800000"/>
             <o:chartLabels style="font: 8pt;"/>
@@ -77,7 +77,7 @@
           <o:lineChartView shapesVisible="true" valueAxisLabel="temperature, C"
                            binding="#{PieChartViewBean.lineView}" labelsVisible="true">
             <o:lineProperties condition="#{point.series.key=='Ukraine'}" shapesVisible="true" showInLegend="true"
-                              style="border:none;"></o:lineProperties>
+                              style="border:none;"/>
             <o:dateAxis dateFormat="#{PieChartViewBean.sampleDateFormat}" domain="key"/>
             <o:chartLabels style="color:red; font-size: 8pt;"/>
             <o:chartAxis domain="value"/>
@@ -85,7 +85,7 @@
 
           <o:chartTitle text="Temperature Distribution During a Year for #{PieChartViewBean.pieInfo.key}" style="font: 15pt"/>
 
-          <o:chartNoDataMessage text="!!!!no data!!!!"></o:chartNoDataMessage>
+          <o:chartNoDataMessage text="!!!!no data!!!!"/>
 
         </o:chart>
       </td>
