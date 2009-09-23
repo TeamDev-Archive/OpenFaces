@@ -1,7 +1,7 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-     style="win-height:700px;">
+     style="win-height: 700px;">
   <div id="Demo">
     <o:dataTable id="citiesTable"
                  var="city"
@@ -41,7 +41,7 @@
           <h:outputText value="City"/>
         </f:facet>
         <f:facet name="subHeader">
-          <o:inputTextFilter id="nameFilter" expression="#{city.name}"/>
+          <o:inputTextFilter id="nameFilter"/>
         </f:facet>
         <h:outputText value="#{city.name}"/>
       </o:column>
@@ -66,7 +66,7 @@
           <h:outputText value="Country"/>
         </f:facet>
         <f:facet name="subHeader">
-          <o:inputTextFilter id="countryFilter" expression="#{city.country}"/>
+          <o:inputTextFilter id="countryFilter"/>
         </f:facet>
         <h:outputText value="#{city.country}"/>
       </o:column>
