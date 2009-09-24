@@ -26,14 +26,14 @@ O$._MessagesRenderer = function(clientId, title, tooltip, showSummary, showDetai
   this.renderAllMessages = function() {
     var innerHTML = "";
     var spanElement = O$.byIdOrName(this.clientId);
+    if (!spanElement)
+      return;
     spanElement.innerHTML = "";
 
     var messages = O$.getAllMessages(this.globalOnly);
-    if (messages && messages.length > 0)
-    {
+    if (messages && messages.length > 0) {
       var outerElement = spanElement.appendChild(this.addOuterElement(spanElement));
-      for (var i = 0; i < messages.length; i++)
-      {
+      for (var i = 0; i < messages.length; i++) {
         var message = messages[i];
         var messageSpan = this.addInnerElement(outerElement);
         this.updateMessageSpan(message, css, messageSpan);

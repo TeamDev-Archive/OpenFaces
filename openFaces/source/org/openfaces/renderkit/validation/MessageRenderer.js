@@ -26,6 +26,8 @@ O$._MessageRenderer = function(clientId, forClientId, title, tooltip, showSummar
 
 O$._MessageRenderer.prototype.update = function() {
   var spanElement = O$(this.clientId);
+  if (!spanElement)
+    return;
   while (spanElement.firstChild) {
     spanElement.removeChild(spanElement.firstChild);
     spanElement.title = null;
@@ -89,7 +91,8 @@ O$._MessageRenderer.prototype.update = function() {
       }
     }
   }
-}
+};
+
 O$._MessageRenderer.prototype.getSeverityStyle = function(severity) {
 
   if (!severity)
@@ -107,6 +110,7 @@ O$._MessageRenderer.prototype.getSeverityStyle = function(severity) {
   return this.style;
 
 }
+
 O$._MessageRenderer.prototype.getSeverityClass = function(severity) {
 
   if (!severity)
