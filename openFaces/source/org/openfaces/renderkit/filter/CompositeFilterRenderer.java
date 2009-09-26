@@ -42,8 +42,7 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
 
         encodeJsLinks(context);
 
-
-        compositeFilter.synchronizeFilterRowsWithCriterions();
+        compositeFilter.synchronizeFilterRowsWithCriteria();
         ResponseWriter writer = context.getResponseWriter();
         String clientId = compositeFilter.getClientId(context);
         writer.startElement("div", compositeFilter);

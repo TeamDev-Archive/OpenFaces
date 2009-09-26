@@ -2,7 +2,6 @@ package org.openfaces.component.filter;
 
 import org.openfaces.component.OUIComponentBase;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
-import org.openfaces.renderkit.CompoundComponentRenderer;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
@@ -28,18 +27,9 @@ import java.util.Set;
  * @author Natalia Zolochevska
  */
 public class CompositeFilter extends OUIComponentBase {
-
-
     public static final String COMPONENT_FAMILY = "org.openfaces.CompositeFilter";
     public static final String COMPONENT_TYPE = "org.openfaces.CompositeFilter";
     public static final String RENDERER_TYPE = "org.openfaces.CompositeFilterRenderer";
-
-
-    public static final String ROW_ID_SUFFIX = "row";
-    public static final String PROPERTY_SELECTOR_ID_SUFFIX = "propertySelector";
-    public static final String OPERATION_SELECTOR_ID_SUFFIX = "operationSelector";
-    public static final String DROP_DOWN_ITEMS_ID_SUFFIX = "items";
-    public static final String ADD_BUTTON_SUFFIX = "add";
 
     private static final String DEFAULT_NO_FILTER_MESSAGE = "No filter";
 
@@ -57,11 +47,6 @@ public class CompositeFilter extends OUIComponentBase {
     private LinkedHashMap<String, FilterProperty> filterPropertyNamesMap = null;
 
 
-    public void createSubComponents(FacesContext context) {
-        ((CompoundComponentRenderer) getRenderer(context)).createSubComponents(context, this);
-    }
-
-
     public CompositeFilter() {
         setRendererType(RENDERER_TYPE);
     }
@@ -70,6 +55,7 @@ public class CompositeFilter extends OUIComponentBase {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState,
@@ -77,6 +63,7 @@ public class CompositeFilter extends OUIComponentBase {
     }
 
 
+    @Override
     @SuppressWarnings("unchecked")
     public void restoreState(FacesContext context, Object stateObj) {
         Object[] state = (Object[]) stateObj;
@@ -90,6 +77,7 @@ public class CompositeFilter extends OUIComponentBase {
         operationConverter = (Converter) state[i++];
     }
 
+    @Override
     public void processRestoreState(FacesContext context, Object state) {
         Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
         super.processRestoreState(context, ajaxState != null ? ajaxState : state);
@@ -218,12 +206,12 @@ public class CompositeFilter extends OUIComponentBase {
     }
 
 
-    public void synchronizeFilterRowsWithCriterions() {
+    public void synchronizeFilterRowsWithCriteria() {
         @SuppressWarnings("unchecked")
-        Iterable<PropertyFilterCriterion> criterions = (Iterable<PropertyFilterCriterion>) getValue();
+        Iterable<PropertyFilterCriterion> criteria = (Iterable<PropertyFilterCriterion>) getValue();
         Iterator<Integer> rowIterator = filterRows.keySet().iterator();
-        if (criterions != null) {
-            for (PropertyFilterCriterion criterion : criterions) {
+        if (criteria != null) {
+            for (PropertyFilterCriterion criterion : criteria) {
 
                 PropertyFilterCriterion rowCriterion = null;
                 FilterRow filterRow = null;
@@ -251,15 +239,15 @@ public class CompositeFilter extends OUIComponentBase {
     }
 
     public void _processUpdates(FacesContext context) {
-        List<PropertyFilterCriterion> criterions = new ArrayList<PropertyFilterCriterion>();
+        List<PropertyFilterCriterion> criteria = new ArrayList<PropertyFilterCriterion>();
         for (FilterRow filterRow : filterRows.values()) {
             filterRow.updateRowModelFromEditors(context, this);
             PropertyFilterCriterion criterion = filterRow.getCriterion();
             if (criterion != null) {
-                criterions.add(criterion);
+                criteria.add(criterion);
             }
         }
-        ValueBindings.setFromList(this, "value", criterions);
+        ValueBindings.setFromList(this, "value", criteria);
 
     }
 

@@ -6,15 +6,16 @@
      xmlns:t="http://myfaces.apache.org/tomahawk">
   <a href="../../main.jsf">Back to the main page</a>
   <br/>
-  <br/>    
+  <br/>
 
-  <h:commandButton onclick="O$.Filter.add('form1:cf'); return false;" value="Add Filter"/>  
+  <h:commandButton onclick="O$.Filter.add('form1:cf'); return false;" value="Add Filter"/>
 
   <o:loadBundle basename="org.openfaces.testapp.filter.MessageResources" var="messages"/>
 
 
-<o:compositeFilter id="cf" value="#{CompositeFilterBean.criterions}" labels="#{messages}">
-    <o:filterProperty name="firstName" value="#{CompositeFilterBean.firstNameLabel}" type="text" dataProvider="#{CompositeFilterBean.names}" caseSensitive="false"/>
+  <o:compositeFilter id="cf" value="#{CompositeFilterBean.criteria}" labels="#{messages}">
+    <o:filterProperty name="firstName" value="#{CompositeFilterBean.firstNameLabel}" type="text"
+                      dataProvider="#{CompositeFilterBean.names}" caseSensitive="false"/>
     <o:filterProperty name="age" value="Age" type="number" rendered="#{CompositeFilterBean.ageRendered}"/>
     <o:filterProperty name="dateOfBirth" value="Date Of Birth" type="date" pattern="dd-MM-yyyy" timeZone="GMT"/>
     <o:filterProperty name="placeOfBirth.country" value="Country" type="select"
@@ -64,7 +65,6 @@
   <br/>
   <br/>
   <br/>
-
 
 
 </div>

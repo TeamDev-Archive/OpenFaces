@@ -27506,13 +27506,23 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
-     <attribute>
+    <attribute>
       <description>No filter text.</description>
       <name>noFilterMessage</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A map where custom operation name texts can be supplied, e.g. for localization purposes.</description>
+      <name>labels</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Map<String, String> -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>

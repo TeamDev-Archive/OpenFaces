@@ -53,10 +53,10 @@ public class CompositeFilterBean {
 
     private Collection<Country> countries = EnumSet.allOf(Country.class);
     private Collection<String> names = Arrays.asList("Tom", "David");
-    private Collection<PropertyFilterCriterion> criterions = new ArrayList<PropertyFilterCriterion>();
+    private Collection<PropertyFilterCriterion> criteria = new ArrayList<PropertyFilterCriterion>();
 
     public List<User> getUsers() {
-        Predicate predicate = PredicateAdapter.convertToPredicate(criterions);
+        Predicate predicate = PredicateAdapter.convertToPredicate(criteria);
         ArrayList<User> result = new ArrayList<User>(users);
         CollectionUtils.filter(result, predicate);
         return result;
@@ -74,12 +74,12 @@ public class CompositeFilterBean {
         return names;
     }
 
-    public Collection<PropertyFilterCriterion> getCriterions() {
-        return criterions;
+    public Collection<PropertyFilterCriterion> getCriteria() {
+        return criteria;
     }
 
-    public void setCriterions(Collection<PropertyFilterCriterion> criterions) {
-        this.criterions = criterions;
+    public void setCriteria(Collection<PropertyFilterCriterion> criteria) {
+        this.criteria = criteria;
     }
 
     public String getFirstNameLabel() {
@@ -243,11 +243,11 @@ public class CompositeFilterBean {
     }
 
     public void clearFilter(){
-        criterions = new ArrayList<PropertyFilterCriterion>();
+        criteria = new ArrayList<PropertyFilterCriterion>();
     }
 
     public boolean isAgeRendered(){
-        return (criterions.size() % 2 == 0);
+        return (criteria.size() % 2 == 0);
     }
 
 }

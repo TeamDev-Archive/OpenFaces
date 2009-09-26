@@ -17,8 +17,8 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.collections.functors.AllPredicate;
 import org.apache.commons.collections.functors.AnyPredicate;
-import org.apache.commons.collections.functors.NotPredicate;
 import org.apache.commons.collections.functors.EqualPredicate;
+import org.apache.commons.collections.functors.NotPredicate;
 import org.openfaces.component.filter.OperationType;
 
 import java.util.ArrayList;
@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 
@@ -36,8 +37,9 @@ public class PredicateAdapter {
     private static final Comparator<Date> COMPARABLE_COMPARATOR = new ComparableComparator();
 
 
-    private static HashMap<String, Collection<PropertyFilterCriterion>> buildCriterionsMap(Collection<PropertyFilterCriterion> criterionList) {
-        HashMap<String, Collection<PropertyFilterCriterion>> result = new HashMap<String, Collection<PropertyFilterCriterion>>();
+    private static Map<String, Collection<PropertyFilterCriterion>> buildCriterionsMap(
+            Collection<PropertyFilterCriterion> criterionList) {
+        Map<String, Collection<PropertyFilterCriterion>> result = new HashMap<String, Collection<PropertyFilterCriterion>>();
         for (PropertyFilterCriterion criterion : criterionList) {
             String property = criterion.getProperty();
             Collection<PropertyFilterCriterion> list = result.get(property);
@@ -187,7 +189,7 @@ public class PredicateAdapter {
 
     public static Predicate convertToPredicate(Collection<PropertyFilterCriterion> criterionList) {
         List<Predicate> conjuction = new ArrayList<Predicate>();
-        HashMap<String, Collection<PropertyFilterCriterion>> map = buildCriterionsMap(criterionList);
+        Map<String, Collection<PropertyFilterCriterion>> map = buildCriterionsMap(criterionList);
         for (Collection<PropertyFilterCriterion> list : map.values()) {
             List<Predicate> disjunction = new ArrayList<Predicate>(list.size());
             for (PropertyFilterCriterion propertyFilterCriterion : list) {
@@ -209,7 +211,7 @@ public class PredicateAdapter {
             if (o1 != null && o2 == null)
                 return new Double(o1.doubleValue()).compareTo(0d);
             return new Double(o1.doubleValue())
-                    .compareTo(new Double(o2.doubleValue()));
+                    .compareTo(o2.doubleValue());
         }
     }
 
