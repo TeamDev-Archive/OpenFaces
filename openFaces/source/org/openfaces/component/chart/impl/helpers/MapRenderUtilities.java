@@ -114,8 +114,11 @@ public class MapRenderUtilities {
 
             tag.append(" shape=\"").append(entity.getShapeType()).append("\"" + " coords=\"").append(entity.getShapeCoords()).append("\"");
 
-            if (hasToolTip)
-                tag.append(toolTipTagFragmentGenerator.generateToolTipFragment(entity.getToolTipText()));
+            if (hasToolTip) {
+                String toolTipText = entity.getToolTipText();
+                if (toolTipText != null)
+                    tag.append(toolTipTagFragmentGenerator.generateToolTipFragment(toolTipText));
+            }
 
             if (hasURL && !hasAction)
                 tag.append(urlTagFragmentGenerator.generateURLFragment(entity.getURLText()));
