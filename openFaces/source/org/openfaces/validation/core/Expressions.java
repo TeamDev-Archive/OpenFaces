@@ -13,10 +13,10 @@ package org.openfaces.validation.core;
 
 import static org.openfaces.validation.core.EL.EL_CONTEXT;
 
-import javax.el.ExpressionFactory;
-import java.io.Serializable;
 import javax.el.ELContext;
+import javax.el.ExpressionFactory;
 import javax.faces.context.FacesContext;
+import java.io.Serializable;
 
 /**
  * <p><strong>Expressions</strong></p> is a utility class that is used to creating and parsing
@@ -177,7 +177,7 @@ public class Expressions implements Serializable {
      * @author Gavin King
      * @param <T> the type of the value
      */
-    public static interface ValueExpression<T> extends Serializable {
+    public static interface ValueExpression<T> extends Serializable { // todo: see if this custom ValueExpression implementation is really necessary
         public T getValue();
 
         public void setValue(T value);
@@ -200,7 +200,7 @@ public class Expressions implements Serializable {
      * @author Gavin King
      * @param <T> the method return type
      */
-    public static interface MethodExpression<T> extends Serializable {
+    public static interface MethodExpression<T> extends Serializable { // todo: see if this custom ValueExpression implementation is really necessary
         public T invoke(Object... args);
 
         public String getExpressionString();

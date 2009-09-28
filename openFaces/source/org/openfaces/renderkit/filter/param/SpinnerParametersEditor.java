@@ -16,8 +16,8 @@ import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.OperationType;
 import org.openfaces.component.input.Spinner;
-import org.openfaces.util.ComponentUtil;
 import org.openfaces.renderkit.filter.FilterRow;
+import org.openfaces.util.ComponentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -50,7 +50,7 @@ public class SpinnerParametersEditor extends ParametersEditor implements Seriali
     }
 
     private void initSpinner(FacesContext context, Spinner spinner) {
-        spinner.setValue(criterion.getParameter());
+        spinner.setValue(criterion.getArg1());
     }
 
     public void prepare(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {
@@ -68,6 +68,6 @@ public class SpinnerParametersEditor extends ParametersEditor implements Seriali
             return;
         }
         Number param = (Number) spinner.getValue();
-        criterion.setParameter(param);
+        criterion.setArg1(param);
     }
 }

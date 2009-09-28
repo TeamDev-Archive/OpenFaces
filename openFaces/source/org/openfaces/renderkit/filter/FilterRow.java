@@ -427,7 +427,7 @@ public class FilterRow implements Serializable {
     }
 
     public void updateRowModelFromCriterion(PropertyFilterCriterion criterion, CompositeFilter compositeFilter) {
-        property = compositeFilter.getFilterPropertyByName(criterion.getProperty());
+        property = compositeFilter.getFilterPropertyByName(criterion.getPropertyLocator());
         operation = criterion.getOperation();
         inverse = criterion.isInverse();
         parametersEditorType = ParametersEditor.getParameterEditorType(property, operation);

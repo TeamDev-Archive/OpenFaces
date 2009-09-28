@@ -16,15 +16,11 @@ import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.OperationType;
 import org.openfaces.component.input.DateChooser;
-import org.openfaces.util.ComponentUtil;
 import org.openfaces.renderkit.filter.FilterRow;
+import org.openfaces.util.ComponentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.Serializable;
 
 public class DateChooserParametersEditor extends ParametersEditor implements Serializable {
@@ -38,7 +34,7 @@ public class DateChooserParametersEditor extends ParametersEditor implements Ser
         super(filterProperty, operation);
     }
 
-    private DateChooser getDateChooser(FacesContext context, UIComponent container) {
+    private DateChooser getDateChooser(UIComponent container) {
         return (DateChooser) ComponentUtil.getChildBySuffix(container, DATE_CHOOSER_ID_SUFFIX);
     }
 
@@ -50,32 +46,28 @@ public class DateChooserParametersEditor extends ParametersEditor implements Ser
         return dateChooser;
     }
 
-    private void initDateChooser(FacesContext context, DateChooser dateChooser) {
-        dateChooser.setValue(criterion.getParameter());
+    private void initDateChooser(DateChooser dateChooser) {
+        dateChooser.setValue(criterion.getArg1());
         dateChooser.setTimeZone(filterProperty.getTimeZone());
         dateChooser.setPattern(filterProperty.getPattern());        
     }
 
     public void prepare(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {
         super.prepare(context, compositeFilter, filterRow, container);
-        DateChooser dateChooser = getDateChooser(context, container);
+        DateChooser dateChooser = getDateChooser(container);
         if (dateChooser == null) {
             dateChooser = createDateChooser(context, container);
         }
-        initDateChooser(context, dateChooser);
+        initDateChooser(dateChooser);
     }
 
     public void update(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {
-        DateChooser dateChooser = getDateChooser(context, container);
+        DateChooser dateChooser = getDateChooser(container);
         if (dateChooser == null) {
             return;
         }
-        Date param1 = (Date) dateChooser.getValue();
-        TimeZone param2 = filterProperty.getTimeZone();
-        List<Object> parameters = new ArrayList<Object>(2);
-        parameters.add(param1);
-        parameters.add(param2);
-        criterion.setParameters(parameters);
+        criterion.setArg1(dateChooser.getValue());
+        criterion.getParameters().put("timeZone", filterProperty.getTimeZone());
     }
 
 }

@@ -12,7 +12,6 @@
 
 package org.openfaces.component.filter.criterion;
 
-import org.apache.commons.beanutils.BeanPredicate;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.collections.functors.AllPredicate;
@@ -37,11 +36,12 @@ public class PredicateAdapter {
     private static final Comparator<Date> COMPARABLE_COMPARATOR = new ComparableComparator();
 
 
-    private static Map<String, Collection<PropertyFilterCriterion>> buildCriterionsMap(
+    private static Map<PropertyLocator, Collection<PropertyFilterCriterion>> buildCriterionsMap(
             Collection<PropertyFilterCriterion> criterionList) {
-        Map<String, Collection<PropertyFilterCriterion>> result = new HashMap<String, Collection<PropertyFilterCriterion>>();
+        Map<PropertyLocator, Collection<PropertyFilterCriterion>> result =
+                new HashMap<PropertyLocator, Collection<PropertyFilterCriterion>>();
         for (PropertyFilterCriterion criterion : criterionList) {
-            String property = criterion.getProperty();
+            PropertyLocator property = criterion.getPropertyLocator();
             Collection<PropertyFilterCriterion> list = result.get(property);
             if (list == null) {
                 list = new ArrayList<PropertyFilterCriterion>();
@@ -66,15 +66,15 @@ public class PredicateAdapter {
 
     private static Predicate convertToPredicate(PropertyFilterCriterion propertyFilterCriterion) {
         OperationType operation = propertyFilterCriterion.getOperation();
-        Predicate predicateFunctor;
-        Object parameter = propertyFilterCriterion.getParameter();
+        final Predicate predicateFunctor;
+        Object parameter = propertyFilterCriterion.getArg1();
         switch (operation) {
 
 
             case EQ: {
                 Comparator comparator = getComparatorForParameter(parameter);
                 if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameter(1);
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
                     Date dayStart = ParametersInterpretator.dayStart((Date) parameter, timeZone);
                     Predicate preficateForBefore = new SimpleComparePredicate(dayStart, OperationType.GE, comparator);
                     Date dayEnd = ParametersInterpretator.dayEnd((Date) parameter, timeZone);
@@ -89,7 +89,7 @@ public class PredicateAdapter {
             case GE: {
                 Comparator comparator = getComparatorForParameter(parameter);
                 if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameter(1);
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
                     parameter = ParametersInterpretator.dayStart((Date) parameter, timeZone);
                 }
                 predicateFunctor = new SimpleComparePredicate(parameter, operation, comparator);
@@ -98,7 +98,7 @@ public class PredicateAdapter {
             case GT: {
                 Comparator comparator = getComparatorForParameter(parameter);
                 if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameter(1);
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
                     parameter = ParametersInterpretator.dayEnd((Date) parameter, timeZone);
                 }
                 predicateFunctor = new SimpleComparePredicate(parameter, operation, comparator);
@@ -107,7 +107,7 @@ public class PredicateAdapter {
             case LE: {
                 Comparator comparator = getComparatorForParameter(parameter);
                 if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameter(1);
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
                     parameter = ParametersInterpretator.dayEnd((Date) parameter, timeZone);
                 }
                 predicateFunctor = new SimpleComparePredicate(parameter, operation, comparator);
@@ -116,7 +116,7 @@ public class PredicateAdapter {
             case LT: {
                 Comparator comparator = getComparatorForParameter(parameter);
                 if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameter(1);
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
                     parameter = ParametersInterpretator.dayStart((Date) parameter, timeZone);
                 }
                 predicateFunctor = new SimpleComparePredicate(parameter, operation, comparator);
@@ -125,9 +125,9 @@ public class PredicateAdapter {
             }
             case BETWEEN: {
                 Comparator comparator = getComparatorForParameter(parameter);
-                Object parameter2 = propertyFilterCriterion.getParameter(1);
+                Object parameter2 = propertyFilterCriterion.getArg2();
                 if (parameter instanceof Date && parameter2 instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameter(2);
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
                     parameter = ParametersInterpretator.dayStart((Date) parameter, timeZone);
                     parameter2 = ParametersInterpretator.dayEnd((Date) parameter, timeZone);
                 }
@@ -142,7 +142,7 @@ public class PredicateAdapter {
                     break;
                 }
             case EQUALS: {
-                Boolean caseSensitive = (Boolean) propertyFilterCriterion.getParameter(1);
+                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
                 predicateFunctor = new AbstractStringPredicate(parameter.toString(), caseSensitive) {
                     public boolean evaluate(String parameter, String value) {
                         return value.equals(parameter);
@@ -151,7 +151,7 @@ public class PredicateAdapter {
                 break;
             }
             case BEGINS: {
-                Boolean caseSensitive = (Boolean) propertyFilterCriterion.getParameter(1);
+                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
                 predicateFunctor = new AbstractStringPredicate(parameter.toString(), caseSensitive) {
                     public boolean evaluate(String parameter, String value) {
                         return value.startsWith(parameter);
@@ -160,7 +160,7 @@ public class PredicateAdapter {
                 break;
             }
             case ENDS: {
-                Boolean caseSensitive = (Boolean) propertyFilterCriterion.getParameter(1);
+                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
                 predicateFunctor = new AbstractStringPredicate(parameter.toString(), caseSensitive) {
                     public boolean evaluate(String parameter, String value) {
                         return value.endsWith(parameter);
@@ -169,7 +169,7 @@ public class PredicateAdapter {
                 break;
             }
             case CONTAINS: {
-                Boolean caseSensitive = (Boolean) propertyFilterCriterion.getParameter(1);
+                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
                 predicateFunctor = new AbstractStringPredicate(parameter.toString(), caseSensitive) {
                     public boolean evaluate(String parameter, String value) {
                         return value.contains(parameter);
@@ -181,15 +181,19 @@ public class PredicateAdapter {
                 throw new UnsupportedOperationException("Unsupported operation operation: " + propertyFilterCriterion.getOperation());
         }
 
-        String property = propertyFilterCriterion.getProperty();
-        Predicate predicate = new BeanPredicate(property, predicateFunctor);
+        final PropertyLocator propertyLocator = propertyFilterCriterion.getPropertyLocator();
+        Predicate predicate = new Predicate() {
+            public boolean evaluate(Object o) {
+                return predicateFunctor.evaluate(propertyLocator.getPropertyValue(o));
+            }
+        };
 
         return (propertyFilterCriterion.isInverse()) ? new NotPredicate(predicate) : predicate;
     }
 
     public static Predicate convertToPredicate(Collection<PropertyFilterCriterion> criterionList) {
         List<Predicate> conjuction = new ArrayList<Predicate>();
-        Map<String, Collection<PropertyFilterCriterion>> map = buildCriterionsMap(criterionList);
+        Map<PropertyLocator, Collection<PropertyFilterCriterion>> map = buildCriterionsMap(criterionList);
         for (Collection<PropertyFilterCriterion> list : map.values()) {
             List<Predicate> disjunction = new ArrayList<Predicate>(list.size());
             for (PropertyFilterCriterion propertyFilterCriterion : list) {

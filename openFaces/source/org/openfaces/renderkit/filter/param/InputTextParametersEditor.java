@@ -22,8 +22,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class InputTextParametersEditor extends ParametersEditor implements Serializable {
 
@@ -36,7 +34,7 @@ public class InputTextParametersEditor extends ParametersEditor implements Seria
         super(filterProperty, operation);
     }
 
-    private HtmlInputText getInputText(FacesContext context, UIComponent container) {
+    private HtmlInputText getInputText(UIComponent container) {
         return (HtmlInputText) ComponentUtil.getChildBySuffix(container, INPUT_TEXT_ID_SUFFIX);
     }
 
@@ -48,30 +46,26 @@ public class InputTextParametersEditor extends ParametersEditor implements Seria
         return inputText;
     }
 
-    private void initInputText(FacesContext context, HtmlInputText inputText) {
-        inputText.setValue(criterion.getParameter());
+    private void initInputText(HtmlInputText inputText) {
+        inputText.setValue(criterion.getArg1());
     }
 
     public void prepare(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {
         super.prepare(context, compositeFilter, filterRow, container);
         clearContainer(container);
-        HtmlInputText inputText = getInputText(context, container);
+        HtmlInputText inputText = getInputText(container);
         if (inputText == null) {
             inputText = createInputText(context, container);
         }
-        initInputText(context, inputText);
+        initInputText(inputText);
     }
 
     public void update(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {
-        HtmlInputText inputText = getInputText(context, container);
+        HtmlInputText inputText = getInputText(container);
         if (inputText == null) {
             return;
         }
-        String param1 = (String) inputText.getValue();
-        boolean param2 = filterProperty.isCaseSensitive();
-        List<Object> parameters = new ArrayList<Object>(2);
-        parameters.add(param1);
-        parameters.add(param2);
-        criterion.setParameters(parameters);
+        criterion.setArg1(inputText.getValue());
+        criterion.setCaseSensitive(filterProperty.isCaseSensitive());
     }
 }

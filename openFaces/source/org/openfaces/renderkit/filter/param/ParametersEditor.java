@@ -15,12 +15,12 @@ package org.openfaces.renderkit.filter.param;
 import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.criterion.NamedPropertyLocator;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.renderkit.filter.FilterRow;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ParametersEditor {
@@ -44,7 +44,8 @@ public abstract class ParametersEditor {
     }
 
     public void setParameters(PropertyFilterCriterion criterion) {
-        this.criterion.setParameters(new ArrayList<Object>(criterion.getParameters()));
+        this.criterion.getParameters().clear();
+        this.criterion.getParameters().putAll(criterion.getParameters());
     }
 
     public ParametersEditor() {
@@ -53,7 +54,7 @@ public abstract class ParametersEditor {
 
     protected ParametersEditor(FilterProperty filterProperty, OperationType operation) {
         this.filterProperty = filterProperty;
-        criterion.setProperty(filterProperty.getName());
+        criterion.setPropertyLocator(new NamedPropertyLocator(filterProperty.getName()));
         criterion.setOperation(operation);
     }
 

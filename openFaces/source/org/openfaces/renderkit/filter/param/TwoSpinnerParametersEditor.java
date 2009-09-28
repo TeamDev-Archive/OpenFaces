@@ -22,11 +22,8 @@ import org.openfaces.util.ComponentUtil;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TwoSpinnerParametersEditor extends ParametersEditor implements Serializable {
-
     private static final String SPINNER_BEFORE_ID_SUFFIX = "spinnerBefore";
     private static final String SPINNER_AFTER_ID_SUFFIX = "spinnerAfter";
 
@@ -37,7 +34,7 @@ public class TwoSpinnerParametersEditor extends ParametersEditor implements Seri
         super(filterProperty, operation);
     }
 
-    private Spinner getSpinnerBefore(FacesContext context, UIComponent container) {
+    private Spinner getSpinnerBefore(UIComponent container) {
         return (Spinner) ComponentUtil.getChildBySuffix(container, SPINNER_BEFORE_ID_SUFFIX);
     }
 
@@ -49,12 +46,12 @@ public class TwoSpinnerParametersEditor extends ParametersEditor implements Seri
         return spinner;
     }
 
-    private void initSpinnerBefore(FacesContext context, Spinner spinner) {
-        spinner.setValue(criterion.getParameter(0));
+    private void initSpinnerBefore(Spinner spinner) {
+        spinner.setValue(criterion.getArg1());
     }
 
 
-    private Spinner getSpinnerAfter(FacesContext context, UIComponent container) {
+    private Spinner getSpinnerAfter(UIComponent container) {
         return (Spinner) ComponentUtil.getChildBySuffix(container, SPINNER_AFTER_ID_SUFFIX);
     }
 
@@ -65,42 +62,39 @@ public class TwoSpinnerParametersEditor extends ParametersEditor implements Seri
         return spinner;
     }
 
-    private void initSpinnerAfter(FacesContext context, Spinner spinner) {
-        spinner.setValue(criterion.getParameter(1));
+    private void initSpinnerAfter(Spinner spinner) {
+        spinner.setValue(criterion.getArg2());
     }
 
 
     public void prepare(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {
         super.prepare(context, compositeFilter, filterRow, container);
-        Spinner spinnerBefore = getSpinnerBefore(context, container);
+        Spinner spinnerBefore = getSpinnerBefore(container);
         if (spinnerBefore == null) {
             spinnerBefore = createSpinnerBefore(context, container);
         }
-        initSpinnerBefore(context, spinnerBefore);
+        initSpinnerBefore(spinnerBefore);
 
-        Spinner spinnerAfter = getSpinnerAfter(context, container);
+        Spinner spinnerAfter = getSpinnerAfter(container);
         if (spinnerAfter == null) {
             spinnerAfter = createSpinnerAfter(context, container);
         }
-        initSpinnerAfter(context, spinnerAfter);
+        initSpinnerAfter(spinnerAfter);
 
     }
 
     public void update(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {
-        Spinner spinnerBefore = getSpinnerBefore(context, container);
+        Spinner spinnerBefore = getSpinnerBefore(container);
         if (spinnerBefore == null) {
             return;
         }
-        Number param1 = (Number) spinnerBefore.getValue();
-        Spinner spinnerAfter = getSpinnerAfter(context, container);
+        criterion.setArg1(spinnerBefore.getValue());
+
+        Spinner spinnerAfter = getSpinnerAfter(container);
         if (spinnerAfter == null) {
             return;
         }
-        Number param2 = (Number) spinnerAfter.getValue();
-        List<Object> parameters = new ArrayList<Object>(2);
-        parameters.add(param1);
-        parameters.add(param2);
-        criterion.setParameters(parameters);
+        criterion.setArg2(spinnerAfter.getValue());
     }
 
 }

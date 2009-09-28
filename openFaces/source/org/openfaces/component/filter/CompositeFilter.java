@@ -2,6 +2,8 @@ package org.openfaces.component.filter;
 
 import org.openfaces.component.OUIComponentBase;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.criterion.PropertyLocator;
+import org.openfaces.component.filter.criterion.NamedPropertyLocator;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
@@ -158,8 +160,11 @@ public class CompositeFilter extends OUIComponentBase {
         return result;
     }
 
-    public FilterProperty getFilterPropertyByName(String propertyName) {
+    public FilterProperty getFilterPropertyByName(PropertyLocator propertyLocator) {
         Map<String, FilterProperty> propertyNamesMap = getFilterPropertyNamesMap();
+        if (! (propertyLocator instanceof NamedPropertyLocator))
+            throw new IllegalArgumentException("CompositeFilter can work only with NamedPropertyLocators, but the following locator was found: " + propertyLocator.getClass().getName());
+        String propertyName = ((NamedPropertyLocator) propertyLocator).getName();
         FilterProperty result = propertyNamesMap.get(propertyName);
         return result;
     }

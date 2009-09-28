@@ -1,36 +1,52 @@
 package org.openfaces.component.filter.criterion;
 
+import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.OperationType;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Natalia Zolochevska
  */
-public class PropertyFilterCriterion implements Serializable {
-    private String property;
+public class PropertyFilterCriterion extends FilterCriterion {
+    private static final String PARAM_ARG1 = "arg1";
+    private static final String PARAM_ARG2 = "arg2";
+    private static final String PARAM_CASE_SENSITIVE = "caseSensitive";
+
+    private PropertyLocator propertyLocator;
     private OperationType operation;
-    private List<Object> parameters;    
+    private Map<String, Object> parameters = new HashMap<String, Object>(2);
     private boolean inverse;
 
     public PropertyFilterCriterion() {
     }
 
+    public boolean acceptsAll() {
+        for (Object parameter : parameters.values()) {
+            if (parameter != null && !parameter.equals(""))
+                return false;
+        }
+        return true;
+    }
+
+    public boolean acceptsValue(Object value) {
+        return false; // todo: should this method be removed from FilterCriterion?
+    }
+
     public PropertyFilterCriterion(PropertyFilterCriterion criterion) {
-        this.property = criterion.property;
+        this.propertyLocator = criterion.propertyLocator;
         this.operation = criterion.operation;
         this.inverse = criterion.inverse;
-        this.parameters = new ArrayList<Object>(criterion.parameters);
+        this.parameters = new HashMap<String, Object>(criterion.parameters);
     }
 
-    public String getProperty() {
-        return property;
+    public PropertyLocator getPropertyLocator() {
+        return propertyLocator;
     }
 
-    public void setProperty(String property) {
-        this.property = property;
+    public void setPropertyLocator(PropertyLocator propertyLocator) {
+        this.propertyLocator = propertyLocator;
     }
 
     public OperationType getOperation() {
@@ -41,31 +57,34 @@ public class PropertyFilterCriterion implements Serializable {
         this.operation = operation;
     }
 
-    public List<Object> getParameters() {
+    public Map<String, Object> getParameters() {
         return parameters;
     }
 
-    public void setParameters(List<Object> parameters) {
-        this.parameters = parameters;
+    public void setArg1(Object parameter) {
+        parameters.put(PARAM_ARG1, parameter);
     }
 
-    public void setParameter(Object parameter) {
-        parameters = new ArrayList<Object>(1);
-        parameters.add(parameter);
+    public Object getArg1() {
+        return parameters.get(PARAM_ARG1);
     }
 
-    public Object getParameter() {
-        return getParameter(0);
+    public void setArg2(Object parameter) {
+        parameters.put(PARAM_ARG2, parameter);
     }
 
-    public Object getParameter(int index) {
-        if (parameters == null || parameters.size() <= index) {
-            return null;
-        }
-        Object result = parameters.get(index);
-        return result;
+    public Object getArg2() {
+        return parameters.get(PARAM_ARG2);
     }
 
+    public boolean isCaseSensitive() {
+        Object paramValue = parameters.get(PARAM_CASE_SENSITIVE);
+        return paramValue != null && (Boolean) paramValue;
+    }
+
+    public void setCaseSensitive(boolean caseSensitive) {
+        parameters.put(PARAM_CASE_SENSITIVE, caseSensitive);
+    }
 
     public boolean isInverse() {
         return inverse;
@@ -85,14 +104,14 @@ public class PropertyFilterCriterion implements Serializable {
         if (inverse != criterion.inverse) return false;
         if (operation != criterion.operation) return false;
         if (parameters != null ? !parameters.equals(criterion.parameters) : criterion.parameters != null) return false;
-        if (property != null ? !property.equals(criterion.property) : criterion.property != null) return false;
+        if (propertyLocator != null ? !propertyLocator.equals(criterion.propertyLocator) : criterion.propertyLocator != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = property != null ? property.hashCode() : 0;
+        int result = propertyLocator != null ? propertyLocator.hashCode() : 0;
         result = 31 * result + (operation != null ? operation.hashCode() : 0);
         result = 31 * result + (parameters != null ? parameters.hashCode() : 0);
         result = 31 * result + (inverse ? 1 : 0);

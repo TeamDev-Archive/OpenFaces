@@ -25,8 +25,6 @@ import org.openfaces.util.ComponentUtil;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DropDownParametersEditor extends ParametersEditor implements Serializable {
 
@@ -40,12 +38,12 @@ public class DropDownParametersEditor extends ParametersEditor implements Serial
         super(filterProperty, operation);
     }
 
-    private DropDownField getDropDown(FacesContext context, UIComponent container) {
+    private DropDownField getDropDown(UIComponent container) {
         return (DropDownField) ComponentUtil.getChildBySuffix(container, DROP_SOWN_ID_SUFFIX);
     }
 
 
-    private DropDownItems getDropDownItems(FacesContext context, DropDownField dropDown) {
+    private DropDownItems getDropDownItems(DropDownField dropDown) {
         return (DropDownItems) ComponentUtil.getChildBySuffix(dropDown, DROP_DOWN_ITEMS_ID_SUFFIX);
     }
 
@@ -63,11 +61,11 @@ public class DropDownParametersEditor extends ParametersEditor implements Serial
         return dropDown;
     }
 
-    private void initDropDown(FacesContext context, DropDownField dropDown) {
+    private void initDropDown(DropDownField dropDown) {
         if (criterion != null) {
-            dropDown.setValue(criterion.getParameter());
+            dropDown.setValue(criterion.getArg1());
         }
-        DropDownItems items = getDropDownItems(context, dropDown);
+        DropDownItems items = getDropDownItems(dropDown);
         items.setValue(filterProperty.getDataProvider());
         dropDown.setConverter(filterProperty.getConverter());
 
@@ -75,33 +73,29 @@ public class DropDownParametersEditor extends ParametersEditor implements Serial
 
     public void prepare(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {
         super.prepare(context, compositeFilter, filterRow, container);
-        DropDownField dropDown = getDropDown(context, container);
+        DropDownField dropDown = getDropDown(container);
         if (dropDown == null) {
             dropDown = createDropDown(context, container);
         }
-        initDropDown(context, dropDown);
+        initDropDown(dropDown);
     }
 
 
     public void update(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {
-        DropDownField dropDown = getDropDown(context, container);
+        DropDownField dropDown = getDropDown(container);
         if (dropDown == null) {
             return;
         }
-        Object param1 = dropDown.getValue();
+        criterion.setArg1(dropDown.getValue());
 
-        List<Object> parameters = new ArrayList<Object>(2);
-        parameters.add(param1);
         if (filterProperty.getType() == FilterType.TEXT) {
-            boolean param2 = filterProperty.isCaseSensitive();
-            parameters.add(param2);
+            criterion.setCaseSensitive(filterProperty.isCaseSensitive());
         }
-        criterion.setParameters(parameters);
     }
 
     @Override
     public PropertyFilterCriterion getCriterion() {
-        if (filterProperty.getType() == FilterType.SELECT && criterion.getParameter()==null) {
+        if (filterProperty.getType() == FilterType.SELECT && criterion.getArg1()==null) {
                 return null;            
         }
         return super.getCriterion();    //To change body of overridden methods use File | Settings | File Templates.
