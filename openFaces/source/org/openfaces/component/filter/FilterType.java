@@ -10,14 +10,12 @@ import java.util.Map;
  * @author Natalia Zolochevska
  */
 public enum FilterType {
-
     TEXT("text", EnumSet.of(EQUALS, CONTAINS, BEGINS, ENDS)),
-    NUMBER("number", EnumSet.of(EQ, LE, GE, GT, LT, BETWEEN)),
-    SELECT("select", EnumSet.of(EXACT)),
-    DATE("date", EnumSet.of(EQ, LE, GE, GT, LT, BETWEEN));
+    NUMBER("number", EnumSet.of(EQUALS, LE, GE, GT, LT, BETWEEN)),
+    SELECT("select", EnumSet.of(EQUALS)),
+    DATE("date", EnumSet.of(EQUALS, LE, GE, GT, LT, BETWEEN));
 
-    private final static Map<String, FilterType> stringToEnum
-            = new HashMap<String, FilterType>();
+    private final static Map<String, FilterType> stringToEnum = new HashMap<String, FilterType>();
 
     static {
         for (FilterType filterType : values())

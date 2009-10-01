@@ -147,10 +147,11 @@ public class CompositeFilter extends OUIComponentBase {
     }
 
     public EnumSet<OperationType> getOperations(FilterProperty filterProperty) {
-        EnumSet<OperationType> operations = EnumSet.copyOf(filterProperty.getType().getOperations());
-        if (operations.contains(OperationType.EXACT)) {
+        FilterType filterType = filterProperty.getType();
+        EnumSet<OperationType> operations = EnumSet.copyOf(filterType.getOperations());
+        if (filterType.equals(FilterType.SELECT) && operations.contains(OperationType.EQUALS)) {
             if (filterProperty.getDataProvider() == null) {
-                operations.remove(OperationType.EXACT);
+                operations.remove(OperationType.EQUALS);
             }
         }
         return operations;

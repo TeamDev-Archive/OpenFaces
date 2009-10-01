@@ -69,9 +69,6 @@ public abstract class ParametersEditor {
 
     public static ParameterEditorType getParameterEditorType(FilterProperty filterProperty, OperationType operation) {
         switch (operation) {
-            case EXACT:
-                return ParameterEditorType.DROP_DOWN_PARAMETERS_EDITOR;
-            case EQ:
             case LE:
             case GE:
             case GT:
@@ -94,10 +91,20 @@ public abstract class ParametersEditor {
                         throw new UnsupportedOperationException();
                 }
             case EQUALS: {
-                if (filterProperty.getDataProvider() != null) {
-                    return ParameterEditorType.DROP_DOWN_PARAMETERS_EDITOR;
-                } else {
-                    return ParameterEditorType.INPUT_TEXT_PARAMETRS_EDITOR;
+
+                switch (filterProperty.getType()) {
+                    case DATE:
+                        return ParameterEditorType.DATE_CHOOSER_PARAMETERS_EDITOR;
+                    case NUMBER:
+                        return ParameterEditorType.SPINNER_PARAMETRS_EDITOR;
+                    case SELECT:
+                        return ParameterEditorType.DROP_DOWN_PARAMETERS_EDITOR;
+                    default:
+                        if (filterProperty.getDataProvider() != null) {
+                            return ParameterEditorType.DROP_DOWN_PARAMETERS_EDITOR;
+                        } else {
+                            return ParameterEditorType.INPUT_TEXT_PARAMETRS_EDITOR;
+                        }
                 }
             }
             case CONTAINS:

@@ -71,34 +71,6 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
         Object parameter = propertyFilterCriterion.getArg1();
         Criterion result;
         switch (propertyFilterCriterion.getOperation()) {
-            case EXACT: {
-                if (parameter == null) {
-                    result = Restrictions.isNull(property);
-                    break;
-                } else if (parameter instanceof String) {
-                    boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
-                    if (!caseSensitive) {
-                        result = Restrictions.like(property, parameter).ignoreCase();
-                    } else {
-                        result = Restrictions.like(property, parameter);
-                    }
-                    break;
-                } else {
-                    result = Restrictions.eq(property, parameter);
-                    break;
-                }
-            }
-            case EQ:
-                if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
-                    Date dayStart = ParametersInterpretator.dayStart((Date) parameter, timeZone);
-                    Date dayEnd = ParametersInterpretator.dayEnd((Date) parameter, timeZone);
-                    result = Restrictions.and(Restrictions.ge(property, dayStart), Restrictions.le(property, dayEnd));
-                    break;
-                } else {
-                    result = Restrictions.eq(property, parameter);
-                    break;
-                }
             case GE:
                 if (parameter instanceof Date) {
                     TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
@@ -129,15 +101,28 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
                 break;
             case EQUALS: {
                 if (parameter == null) {
-                    parameter = "";
+                    result = Restrictions.isNull(property);
+                    break;
                 }
-                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
-                if (!caseSensitive) {
-                    result = Restrictions.like(property, parameter.toString().toLowerCase()).ignoreCase();
+
+                if (parameter instanceof Date) {
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    Date dayStart = ParametersInterpretator.dayStart((Date) parameter, timeZone);
+                    Date dayEnd = ParametersInterpretator.dayEnd((Date) parameter, timeZone);
+                    result = Restrictions.and(Restrictions.ge(property, dayStart), Restrictions.le(property, dayEnd));
+                    break;
+                } else if (parameter instanceof String) {
+                    boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
+                    if (!caseSensitive) {
+                        result = Restrictions.like(property, parameter.toString().toLowerCase()).ignoreCase();
+                    } else {
+                        result = Restrictions.like(property, parameter);
+                    }
+                    break;
                 } else {
-                    result = Restrictions.like(property, parameter);
+                    result = Restrictions.eq(property, parameter);
+                    break;
                 }
-                break;
             }
             case BEGINS: {
                 boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
