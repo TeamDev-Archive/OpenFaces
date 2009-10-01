@@ -55,7 +55,7 @@ public abstract class FilterRenderer extends RendererBase {
     }
 
     protected void setDecodedString(Filter filter, String searchString) {
-        FilterCriterion oldCriterion = filter.getCriterion();
+        FilterCriterion oldCriterion = filter.getValue();
         FilterCriterion newCriterion;
         if (oldCriterion instanceof OneParameterCriterion)
             newCriterion = ((OneParameterCriterion) oldCriterion).setValue(searchString);

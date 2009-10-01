@@ -79,7 +79,7 @@
         <h:outputText style="white-space: normal;" value="Certificate Number"/>
       </f:facet>
       <f:facet name="subHeader">
-        <o:inputTextFilter id="filter2" expression="#{bank.certificateNumber}" maxlength="5" criterion="equals"/>
+        <o:inputTextFilter id="filter2" expression="#{bank.certificateNumber}" maxlength="5" value="equals"/>
       </f:facet>
       <h:outputText value="#{bank.certificateNumber}"/>
     </o:column>
@@ -110,7 +110,7 @@
           <h:outputText value="State"/>
         </f:facet>
         <f:facet name="subHeader">
-          <o:dropDownFieldFilter id="filter4" expression="#{bank.state}" criterion="equals" maxlength="2"/>
+          <o:dropDownFieldFilter id="filter4" expression="#{bank.state}" value="equals" maxlength="2"/>
         </f:facet>
         <h:outputText value="#{bank.state}"/>
       </o:column>
@@ -123,7 +123,7 @@
           <h:outputText value="Zip"/>
         </f:facet>
         <f:facet name="subHeader">
-          <o:inputTextFilter id="filter5" expression="#{bank.zip}" maxlength="5" criterion="equals"/>
+          <o:inputTextFilter id="filter5" expression="#{bank.zip}" maxlength="5" value="equals"/>
         </f:facet>
         <h:outputText value="#{bank.zip}"/>
       </o:column>

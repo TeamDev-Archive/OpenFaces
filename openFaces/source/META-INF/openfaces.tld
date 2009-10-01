@@ -1765,7 +1765,7 @@
     </attribute>
     <attribute>
       <description>The current filtering criterion selected in this filter component.</description>
-      <name>criterion</name>
+      <name>value</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
@@ -2041,7 +2041,7 @@
     </attribute>
     <attribute>
       <description>The current filtering criterion selected in this filter component.</description>
-      <name>criterion</name>
+      <name>value</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
@@ -2660,7 +2660,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>The current filtering criterion selected in this filter component.</description>
-      <name>criterion</name>
+      <name>value</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>

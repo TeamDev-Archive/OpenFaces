@@ -81,7 +81,7 @@ public abstract class TextSearchFilterRenderer extends FilterRenderer {
     }
 
     protected String getStringValue(Filter filter) {
-        FilterCriterion filterCriterion = filter.getCriterion();
+        FilterCriterion filterCriterion = filter.getValue();
         if (filterCriterion == null) {
             return "";
         }

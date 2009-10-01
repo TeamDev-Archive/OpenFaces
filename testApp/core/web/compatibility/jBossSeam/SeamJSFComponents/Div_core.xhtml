@@ -35,7 +35,7 @@
             <h:outputText value="Column_1"/>
           </f:facet>
           <f:facet name="subHeader">
-            <o:dropDownFieldFilter expression="#{row.column1}" criterion="#{seamTable.filterValue}" options="#{seamTable.filterValues}"/>
+            <o:dropDownFieldFilter expression="#{row.column1}" value="#{seamTable.filterValue}" options="#{seamTable.filterValues}"/>
           </f:facet>
           <h:outputText value="#{row.column1}"/>
         </o:column>
@@ -102,7 +102,7 @@
             <h:outputText value="Sent"/>
           </f:facet>
           <f:facet name="subHeader">
-            <o:comboBoxFilter expression="#{seamTreeTable.dateCategory}" criterion="#{seamTreeTable.filterValue}"/>
+            <o:comboBoxFilter expression="#{seamTreeTable.dateCategory}" value="#{seamTreeTable.filterValue}"/>
           </f:facet>
           <h:outputText value="#{item.date}">
             <f:convertDateTime type="date" dateStyle="medium"/>

@@ -18,7 +18,7 @@
           <h:outputText id="tableCol1Header" value="Column_1"/>
         </f:facet>
         <f:facet name="subHeader">
-          <o:dropDownFieldFilter expression="#{row.column1}" criterion="#{seamTable.filterValue}" options="#{seamTable.filterValues}"/>
+          <o:dropDownFieldFilter expression="#{row.column1}" value="#{seamTable.filterValue}" options="#{seamTable.filterValues}"/>
         </f:facet>
         <h:outputText id="tableCol1Value" value="#{row.column1}"/>
       </o:column>

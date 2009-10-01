@@ -78,7 +78,7 @@
       <h:outputText value="Name"/>
     </f:facet>
     <f:facet name="subHeader">
-      <o:inputTextFilter expression="#{person.name}" criterion="#{peopleList.filterValue}"/>
+      <o:inputTextFilter expression="#{person.name}" value="#{peopleList.filterValue}"/>
     </f:facet>
     <h:outputText value="#{person.name}"/>
   </o:column>

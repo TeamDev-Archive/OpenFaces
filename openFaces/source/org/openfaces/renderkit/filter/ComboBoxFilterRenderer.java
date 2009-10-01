@@ -59,7 +59,7 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
         super.encodeBegin(context, component);
         ComboBoxFilter filter = ((ComboBoxFilter) component);
 
-        FilterCriterion currentCriterion = filter.getCriterion();
+        FilterCriterion currentCriterion = filter.getValue();
 
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("select", component);

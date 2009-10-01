@@ -341,6 +341,18 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Specifies the delay in milliseconds when the filtering is performed automatically after the user has
+        entered some value in an associated filter, or turns off automatic filtering in case -1 is specified as a value
+        for this attribute.</description>
+      <name>autoFilterDelay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int-->
+      <!-- @default 700 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Text that is displayed instead of "&lt;All&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
@@ -1716,6 +1728,31 @@
       <!-- @el only -->
     </attribute>
     <attribute>
+      <description>Specifies the delay in milliseconds when the filtering is performed automatically after the user has
+        entered some value in the filter, or turns off automatic filtering in case -1 is specified as a value for this
+        attribute.</description>
+      <name>autoFilterDelay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int-->
+      <!-- @default 700 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>ID of a filterable component that should be filtered with this component. It should be defined in
+        the same way as the "for" property of the standard HTMLOutputLabel component. If this attribute is not specified
+        then this filter component should be located inside of a filterable component (DataTable or TreeTable).
+      </description>
+      <name>for</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
       <description>Defines an expression that is used to obtain a record's value by which records are to be filtered.
       </description>
       <name>expression</name>
@@ -1728,7 +1765,7 @@
     </attribute>
     <attribute>
       <description>The current filtering criterion selected in this filter component.</description>
-      <name>criterion</name>
+      <name>value</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
@@ -1767,6 +1804,142 @@
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the filter component in the rollover state.</description>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name for the filter component in the rollover state.</description>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style of the filter component when it is focused.</description>
+      <name>focusedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name of the filter component when it is focused.</description>
+      <name>focusedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Specifies whether the "autocomplete" attribute is rendered for this input element, which
+      makes a browser provide suggestions based on the previosly typed values.</description>
+      <name>autocomplete</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+
+    <attribute>
+      <description>The base direction of directionally neutral text.</description>
+      <name>dir</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "ltr" -->
+      <!-- @value "ltr" left to right -->
+      <!-- @value "rtl" right to left -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
+      <name>lang</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>An advisory title for the filter component.</description>
+      <name>title</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>An access key for the filter component.</description>
+      <name>accesskey</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Alternate textual description of the element rendered by this component.</description>
+      <name>alt</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Position of the filter component in the tabbing order for the current document.</description>
+      <name>tabindex</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The maximum number of characters that can be entered in the filter.</description>
+      <name>maxlength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default Integer.MIN_VALUE -->
       <!-- @el true -->
     </attribute>
 
@@ -1831,6 +2004,31 @@
       <!-- @el only -->
     </attribute>
     <attribute>
+      <description>Specifies the delay in milliseconds when the filtering is performed automatically after the user has
+        entered some value in the filter, or turns off automatic filtering in case -1 is specified as a value for this
+        attribute.</description>
+      <name>autoFilterDelay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int-->
+      <!-- @default 700 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>ID of a filterable component that should be filtered with this component. It should be defined in
+        the same way as the "for" property of the standard HTMLOutputLabel component. If this attribute is not specified
+        then this filter component should be located inside of a filterable component (DataTable or TreeTable).
+      </description>
+      <name>for</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
       <description>Defines an expression that is used to obtain a record's value by which records are to be filtered.
       </description>
       <name>expression</name>
@@ -1843,7 +2041,7 @@
     </attribute>
     <attribute>
       <description>The current filtering criterion selected in this filter component.</description>
-      <name>criterion</name>
+      <name>value</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
@@ -1877,6 +2075,161 @@
     </attribute>
 
     <attribute>
+      <description>An advisory title for the text field of this filter component.</description>
+      <name>title</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Position of this component in the tabbing order for the current document.</description>
+      <name>tabindex</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An access key for the filter component.</description>
+      <name>accesskey</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The maximum number of characters that can be entered in the filter field.
+        It is still possible to select any text from the drop-down list no matter how long it is.
+      </description>
+      <name>maxlength</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default Integer.MIN_VALUE -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Specifies whether the field completes incompletely entered text
+        as the user types it. The text is completed to the first drop-down item that
+        starts with the typed text. The part that was added as a result of auto-completion
+        is marked as selected. See also the suggestionMinChars and suggestionDelay
+        attributes which define when auto-completion starts.
+      </description>
+      <name>autoComplete</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Specifies whether and how the drop-down list with suggestions should
+        be shown when typing in the field. Any value except "none" means that suggestions
+        are displayed. See also the suggestionMinChars and suggestionDelay attributes which
+        define when auto-suggestion starts. Note that it's possible to specify all values except the "custom"
+        suggestion mode (which is only available for DropDownField and SuggestionField components).
+      </description>
+      <name>suggestionMode</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.input. SuggestionMode -->
+      <!-- @default "stringStart" -->
+      <!-- @value "stringStart" works on the client side. Shows suggestions that begin with the entered value -->
+      <!-- @value "substring" works on the client side. Shows suggestions that contain the entered value -->
+      <!-- @value "stringEnd" works on the client side. Shows suggestions that end with the entered value -->
+      <!-- @value "custom" works on the server side using Ajax. Sends an Ajax request when
+entering a value and returns a list of suggestions from the server -->
+      <!-- @value "all" works on the client side. Shows all drop-down items in the list of suggestions -->
+      <!-- @value "none" suggestion mode is turned off -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The minimal number of characters that should be typed for auto-completion
+        and auto-suggestion features to be activated.
+      </description>
+      <name>suggestionMinChars</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The time period in milliseconds that specifies the delay
+        after the last key press that should pass before starting auto-completion
+        or auto-suggestion. This delay can be used to avoid too much
+        Ajax requests to be sent to the server when the user is typing text,
+        and only send one request when the user has stopped typing.
+      </description>
+      <name>suggestionDelay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A flag that indicates whether it is possible to specify only a value that exists in the list of this
+        component's drop-down items ("false"), or whether it is possible to enter any value ("true").
+      </description>
+      <name>customValueAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+
+
+    <attribute>
+      <description>Defines whether the button that opens the drop-down list is positioned to the right or to
+        the left of the text field.
+      </description>
+      <name>buttonAlignment</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @default "right" -->
+      <!-- @value "left" -->
+      <!-- @value "right" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Defines how items in the drop-down list are aligned.</description>
+      <name>listAlignment</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @default "left" -->
+      <!-- @value "left" -->
+      <!-- @value "right" -->
+      <!-- @el true -->
+    </attribute>
+
+
+
+
+    <attribute>
       <description>A style for the entire filter component.</description>
       <name>style</name>
       <deferred-value>
@@ -1894,6 +2247,295 @@
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the entire DropDownField component in the rollover state.</description>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style of the DropDownField component when it is focused.</description>
+      <name>focusedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the text field.</description>
+      <name>fieldStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the text field in the rollover state.</description>
+      <name>rolloverFieldStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the drop-down button.</description>
+      <name>buttonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the drop-down button in the rollover state.</description>
+      <name>rolloverButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the drop-down button in the pressed state.</description>
+      <name>pressedButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the drop-down list.</description>
+      <name>listStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the drop-down list in the rollover state.</description>
+      <name>rolloverListStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for a list item.</description>
+      <name>listItemStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for a list item in the rollover state.</description>
+      <name>rolloverListItemStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name for the entire DropDownField component in the rollover state.</description>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name of the DropDownField component when it is focused.</description>
+      <name>focusedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the text field.</description>
+      <name>fieldClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the text field in the rollover state.</description>
+      <name>rolloverFieldClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the drop-down button.</description>
+      <name>buttonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the drop-down button in the rollover state.</description>
+      <name>rolloverButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the drop-down button in the pressed state.</description>
+      <name>pressedButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the drop-down list.</description>
+      <name>listClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the drop-down list in the rollover state.</description>
+      <name>rolloverListClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for a list item.</description>
+      <name>listItemClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for a list item in the rollover state.</description>
+      <name>rolloverListItemClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for an odd list item, if different from listItemStyle.</description>
+      <name>oddListItemStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for an odd list item, if different from listItemClass.</description>
+      <name>oddListItemClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for horizontal lines in the drop-down list.
+        Should be specified as the CSS "border" property but without the prefix "border:".
+      </description>
+      <name>horizontalGridLines</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>URL of the image file for the drop-down button.</description>
+      <name>buttonImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL of the image file for the drop-down button in the disabled state.</description>
+      <name>disabledButtonImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A time period after which the drop-down list is closed automatically.
+        The value "-1" means that the list does not close automatically.
+      </description>
+      <name>timeout</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default -1 -->
       <!-- @el true -->
     </attribute>
 
@@ -1993,6 +2635,19 @@
     </attribute>
 
     <attribute>
+      <description>ID of a filterable component that should be filtered with this component. It should be defined in
+        the same way as the "for" property of the standard HTMLOutputLabel component. If this attribute is not specified
+        then this filter component should be located inside of a filterable component (DataTable or TreeTable).
+      </description>
+      <name>for</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
       <description>Defines an expression that is used to obtain a record's value by which records are to be filtered.
       </description>
       <name>expression</name>
@@ -2005,7 +2660,7 @@
     </attribute>
     <attribute>
       <description>The current filtering criterion selected in this filter component.</description>
-      <name>criterion</name>
+      <name>value</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
@@ -2035,6 +2690,30 @@
       </deferred-value>
       <!-- @bindingType boolean-->
       <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The base direction of directionally neutral text.</description>
+      <name>dir</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "ltr" -->
+      <!-- @value "ltr" left to right -->
+      <!-- @value "rtl" right to left -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
+      <name>lang</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
@@ -5405,6 +6084,18 @@ means that only root nodes and their immediate children are preloaded -->
     </attribute>
 
     <attribute>
+      <description>Specifies the delay in milliseconds when the filtering is performed automatically after the user has
+        entered some value in an associated filter, or turns off automatic filtering in case -1 is specified as a value
+        for this attribute.</description>
+      <name>autoFilterDelay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int-->
+      <!-- @default 700 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>The text that is displayed instead of "&lt;All&gt;" in the "comboBox" or
         "dropDownField" when filtering is used.
       </description>
@@ -7585,7 +8276,7 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The muximum number of characters that can be entered in the DropDownField.
+      <description>The maximum number of characters that can be entered in the DropDownField.
         It is still possible to select any text from the drop-down list no matter how long it is
       </description>
       <name>maxlength</name>
@@ -8578,7 +9269,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The muximum number of characters that can be entered in the SuggestionField.
+      <description>The maximum number of characters that can be entered in the SuggestionField.
         It is still possible to select any text from the drop-down list no matter how long it is
       </description>
       <name>maxlength</name>
@@ -11757,7 +12448,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>An id of the scrollable component.If specified - the scroll position of the scrollable component will
+      <description>An id of the scrollable component. If specified - the scroll position of the scrollable component will
         be saved, otherwise the scroll position of the page will be saved.
       </description>
       <name>for</name>
@@ -19812,6 +20503,19 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
+      <description>Specifies whether the "autocomplete" attribute is rendered for this input element, which
+      makes a browser provide suggestions based on the previosly typed values.</description>
+      <name>autocomplete</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+
+    <attribute>
       <description>The base direction of directionally neutral text.</description>
       <name>dir</name>
       <deferred-value>
@@ -19825,7 +20529,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>The base language for the Message component. Should be specified as language code.</description>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
       <name>lang</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -20099,7 +20803,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>The muximum number of characters that can be entered in the InputText.</description>
+      <description>The maximum number of characters that can be entered in the InputText.</description>
       <name>maxlength</name>
       <deferred-value>
         <type>int</type>
@@ -20377,7 +21081,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>The base language for the Message component. Should be specified as language code.</description>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
       <name>lang</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -21681,7 +22385,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The base language for Messages. Should be specified as language code.</description>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
       <name>lang</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -26503,8 +27207,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Language code for the SelectBooleanCheckbox.
-      </description>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
       <name>lang</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -26753,4 +27456,235 @@ and it is automatically triggered on any form submission. -->
     <tag-class>org.openfaces.taglib.jsp.validation.AnnotationValidationJspTag</tag-class>
     <body-content>JSP</body-content>
   </tag>
+
+  <!-- COMPOSITE FILTER TAG DECLARATION -->
+  <tag>
+    <name>compositeFilter</name>
+    <tag-class>org.openfaces.taglib.jsp.filter.CompositeFilterJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates the CompositeFilter with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.filter.CompositeFilter</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.filter.CompositeFilter-->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Set of criteria.</description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType array -->
+      <!-- @bindingType java.util.Collection -->
+      <!-- @bindingType java.sql.ResultSet -->
+      <!-- @bindingType javax.servlet.jsp.jstl.sql.Result -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>No filter text.</description>
+      <name>noFilterMessage</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A map where custom operation name texts can be supplied, e.g. for localization purposes.</description>
+      <name>labels</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Map<String, String> -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+  </tag>
+
+  <!-- FILTER PROPERTY TAG DECLARATION -->
+  <tag>
+    <name>filterProperty</name>
+    <tag-class>org.openfaces.taglib.jsp.filter.FilterPropertyJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates the FilterProperty with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.filter.FilterProperty</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.filter.FilterProperty-->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description></description>
+      <name>name</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @required true-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Property type (tetx, number, date or select) </description>
+      <name>type</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+     <!-- @bindingType java.lang.String -->
+      <!-- @required true-->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>Display name for property.</description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @required true-->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies a data provider.</description>
+      <name>dataProvider</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType array -->
+      <!-- @bindingType java.util.Collection -->
+      <!-- @bindingType java.sql.ResultSet -->
+      <!-- @bindingType javax.servlet.jsp.jstl.sql.Result -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Converter</description>
+      <name>converter</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+      </description>
+      <name>minValue</name>
+      <deferred-value>
+        <type>java.lang.Number</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Number -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+      </description>
+      <name>maxValue</name>
+      <deferred-value>
+        <type>java.lang.Number</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Number -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>
+      </description>
+      <name>step</name>
+      <deferred-value>
+        <type>java.lang.Number</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.Number -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The date format with the pattern similar to that in the java.text.SimpleDateFormat class.
+      </description>
+      <name>pattern</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+     <attribute>
+      <description>Time zone in which to interpret any time information in the date String. Value must be either a VB
+        expression that evaluates to a java.util.TimeZone instance, or a String that is a timezone ID as described in
+        the javadocs for java.util.TimeZone.getTimeZone().
+      </description>
+      <name>timeZone</name>
+      <deferred-value>
+        <type>java.util.TimeZone</type>
+      </deferred-value>
+      <!-- @bindingType java.util.TimeZone -->
+      <!-- @default The server's default time zone -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description></description>
+      <name>caseSensitive</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el false -->
+    </attribute>
+
+  </tag>
+
 </taglib>

@@ -39,7 +39,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
 
     private String _for;
 
-    private FilterCriterion criterion;
+    private FilterCriterion value;
     private boolean criterionModelUpdateRequired;
 
     private FilterableComponent filteredComponent;
@@ -66,7 +66,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, _for, style, styleClass, predefinedCriterionStyle, predefinedCriterionClass,
-                criterion, allRecordsText, emptyRecordsText, nonEmptyRecordsText,
+                value, allRecordsText, emptyRecordsText, nonEmptyRecordsText,
                 promptText, promptTextStyle, promptTextClass, caseSensitive, accesskey, tabindex, title, autoFilterDelay
         };
     }
@@ -81,7 +81,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         styleClass = (String) state[i++];
         predefinedCriterionStyle = (String) state[i++];
         predefinedCriterionClass = (String) state[i++];
-        criterion = (FilterCriterion) state[i++];
+        value = (FilterCriterion) state[i++];
         allRecordsText = (String) state[i++];
         emptyRecordsText = (String) state[i++];
         nonEmptyRecordsText = (String) state[i++];
@@ -171,7 +171,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
 
     public boolean acceptsData(FacesContext facesContext, Object data) {
         Object filteredValue = getFilteredValueByData(facesContext, getFilteredComponent(), data);
-        return criterion == null || criterion.acceptsValue(filteredValue);
+        return value == null || value.acceptsValue(filteredValue);
     }
 
     private Object getFilteredValueByData(FacesContext facesContext, FilterableComponent filteredComponent, Object data) {
@@ -182,7 +182,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
     }
 
     public boolean isAcceptingAllRecords() {
-        return getCriterion() == null;
+        return getValue() == null;
     }
 
     public FilterableComponent getFilteredComponent() {
@@ -308,25 +308,25 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
     }
 
     public void updateCriterionFromBinding(FacesContext context) {
-        ValueExpression criterionExpression = getCriterionExpression();
+        ValueExpression criterionExpression = getValueExpression();
         if (criterionExpression != null)
-            criterion = (FilterCriterion) criterionExpression.getValue(context.getELContext());
+            value = (FilterCriterion) criterionExpression.getValue(context.getELContext());
         else {
-            if (criterion instanceof OneParameterCriterion) {
+            if (value instanceof OneParameterCriterion) {
                 boolean caseSensitive = isCaseSensitive();
-                OneParameterCriterion opc = (OneParameterCriterion) criterion;
+                OneParameterCriterion opc = (OneParameterCriterion) value;
                 if (opc.isCaseSensitive() != caseSensitive)
-                    criterion = opc.setCaseSensitive(caseSensitive);
+                    value = opc.setCaseSensitive(caseSensitive);
             }
         }
     }
 
-    public FilterCriterion getCriterion() {
-        return criterion;
+    public FilterCriterion getValue() {
+        return value;
     }
 
-    public void setCriterion(FilterCriterion criterion) {
-        this.criterion = criterion;
+    public void setValue(FilterCriterion value) {
+        this.value = value;
     }
 
     public int getAutoFilterDelay() {
@@ -343,7 +343,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
      *         criterion
      */
     public boolean changeCriterion(FilterCriterion newCriterion) {
-        FilterCriterion oldCriterion = getCriterion();
+        FilterCriterion oldCriterion = getValue();
         criterionModelUpdateRequired = true;
 
         if (isAllRecordsCriterion(newCriterion)) {
@@ -351,7 +351,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
                 return false;
         } else if (newCriterion.equals(oldCriterion))
             return false;
-        setCriterion(newCriterion);
+        setValue(newCriterion);
         return true;
     }
 
@@ -359,12 +359,12 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         return criterion == null || criterion.acceptsAll();
     }
 
-    public void setCriterionExpression(ValueExpression expression) {
-        setValueExpression("criterion", expression);
+    public void setValueExpression(ValueExpression expression) {
+        setValueExpression("value", expression);
     }
 
-    public ValueExpression getCriterionExpression() {
-        return getValueExpression("criterion");
+    public ValueExpression getValueExpression() {
+        return getValueExpression("value");
     }
 
     @Override
@@ -373,9 +373,9 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         if (!criterionModelUpdateRequired)
             return;
 
-        ValueExpression criterionExpression = getCriterionExpression();
+        ValueExpression criterionExpression = getValueExpression();
         if (criterionExpression != null) {
-            criterionExpression.setValue(context.getELContext(), criterion);
+            criterionExpression.setValue(context.getELContext(), value);
             criterionModelUpdateRequired = false;
         }
     }

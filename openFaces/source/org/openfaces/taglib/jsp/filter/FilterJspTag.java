@@ -32,8 +32,8 @@ public class FilterJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("expression", expression);
     }
 
-    public void setCriterion(ValueExpression criterion) {
-        getDelegate().setPropertyValue("criterion", criterion);
+    public void setValue(ValueExpression value) {
+        getDelegate().setPropertyValue("value", value);
     }
 
     public void setOptions(ValueExpression options) {

@@ -23,12 +23,12 @@ public abstract class FilterTag extends AbstractComponentTag {
 
         Filter filter = (Filter) component;
         setPropertyBinding(component, "expression");
-        String criterion = getPropertyValue("criterion");
-        if (!setPropertyAsBinding(component, "criterion", criterion)) {
+        String criterion = getPropertyValue("value");
+        if (!setPropertyAsBinding(component, "value", criterion)) {
             if (criterion.equals("equals"))
-                filter.setCriterion(new EqualsFilterCriterion());
+                filter.setValue(new EqualsFilterCriterion());
             else if (criterion.equals("contains"))
-                filter.setCriterion(new ContainsFilterCriterion());
+                filter.setValue(new ContainsFilterCriterion());
             else
                 throw new FacesException("Unknown filter's criterion attribute value: \"" + criterion + "\"; it should be one of: \"equals\" or \"contains\"");
 

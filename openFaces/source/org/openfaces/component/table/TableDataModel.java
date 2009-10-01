@@ -445,7 +445,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
             Filter filter = filters.get(i);
             if (filter.isAcceptingAllRecords())
                 continue;
-            FilterCriterion filterCriterion = filter.getCriterion();
+            FilterCriterion filterCriterion = filter.getValue();
             criteria.put(filter.getId(), filterCriterion);
         }
         setRequestVariable(VAR_FILTER_CRITERIA, criteria);
