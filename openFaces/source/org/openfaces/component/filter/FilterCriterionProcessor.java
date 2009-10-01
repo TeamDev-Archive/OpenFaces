@@ -11,28 +11,15 @@
  */
 package org.openfaces.component.filter;
 
+import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.criterion.AndFilterCriterion;
+import org.openfaces.component.filter.criterion.OrFilterCriterion;
+
 /**
  * @author Dmitry Pikhulya
  */
-public class NonEmptyRecordsCriterion extends FilterCriterion {
-
-    @Override
-    public boolean acceptsAll() {
-        return false;
-    }
-
-    @Override
-    public boolean acceptsValue(Object value) {
-        return value != null && !value.equals("");
-    }
-
-    @Override
-    public Object process(FilterCriterionProcessor processor) {
-        throw new UnsupportedOperationException("todo");
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof NonEmptyRecordsCriterion;
-    }
+public abstract class FilterCriterionProcessor {
+    public abstract Object process(PropertyFilterCriterion criterion);
+    public abstract Object process(AndFilterCriterion criterion);
+    public abstract Object process(OrFilterCriterion criterion);
 }

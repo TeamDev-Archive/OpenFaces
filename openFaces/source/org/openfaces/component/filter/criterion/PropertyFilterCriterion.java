@@ -2,6 +2,7 @@ package org.openfaces.component.filter.criterion;
 
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.FilterCriterionProcessor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,10 @@ public class PropertyFilterCriterion extends FilterCriterion {
     private boolean inverse;
 
     public PropertyFilterCriterion() {
+    }
+
+    public Object process(FilterCriterionProcessor processor) {
+        return processor.process(this);
     }
 
     public boolean acceptsAll() {

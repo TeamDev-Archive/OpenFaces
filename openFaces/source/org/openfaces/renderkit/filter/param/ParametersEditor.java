@@ -22,11 +22,21 @@ import org.openfaces.renderkit.filter.FilterRow;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.util.List;
+import java.util.Map;
 
 public abstract class ParametersEditor {
 
-    protected PropertyFilterCriterion criterion = new PropertyFilterCriterion();
+    protected PropertyFilterCriterion criterion = new PropertyFilterCriterion(); // todo: try to avoid data duplication with FilterRow's criterion
     protected FilterProperty filterProperty;
+
+    public ParametersEditor() {
+    }
+
+    protected ParametersEditor(FilterProperty filterProperty, OperationType operation) {
+        this.filterProperty = filterProperty;
+        criterion.setPropertyLocator(new NamedPropertyLocator(filterProperty.getName()));
+        criterion.setOperation(operation);
+    }
 
     public void prepare(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container){
         criterion.setInverse(filterRow.isInverse());
@@ -43,19 +53,9 @@ public abstract class ParametersEditor {
         return criterion;
     }
 
-    public void setParameters(PropertyFilterCriterion criterion) {
+    public void setParameters(Map<String, Object> parameters) {
         this.criterion.getParameters().clear();
-        this.criterion.getParameters().putAll(criterion.getParameters());
-    }
-
-    public ParametersEditor() {
-    }
-
-
-    protected ParametersEditor(FilterProperty filterProperty, OperationType operation) {
-        this.filterProperty = filterProperty;
-        criterion.setPropertyLocator(new NamedPropertyLocator(filterProperty.getName()));
-        criterion.setOperation(operation);
+        this.criterion.getParameters().putAll(parameters);
     }
 
     public static enum ParameterEditorType {
@@ -109,23 +109,34 @@ public abstract class ParametersEditor {
         }
     }
 
-    public static ParametersEditor getInstance(ParameterEditorType type, FilterProperty filterProperty, OperationType operation) {
+    public static ParametersEditor getInstance(ParameterEditorType type, FilterProperty filterProperty,
+                                               OperationType operation, Map<String, Object> parameters) {
+
+        ParametersEditor result;
         switch (type) {
             case DROP_DOWN_PARAMETERS_EDITOR:
-                return new DropDownParametersEditor(filterProperty, operation);
+                result = new DropDownParametersEditor(filterProperty, operation);
+                break;
             case DATE_CHOOSER_PARAMETERS_EDITOR:
-                return new DateChooserParametersEditor(filterProperty, operation);
+                result = new DateChooserParametersEditor(filterProperty, operation);
+                break;
             case TWO_DATE_CHOOSER_PARAMETERS_EDITOR:
-                return new TwoDateChooserParametersEditor(filterProperty, operation);
+                result = new TwoDateChooserParametersEditor(filterProperty, operation);
+                break;
             case SPINNER_PARAMETRS_EDITOR:
-                return new SpinnerParametersEditor(filterProperty, operation);
+                result = new SpinnerParametersEditor(filterProperty, operation);
+                break;
             case TWO_SPINNER_PARAMETRS_EDITOR:
-                return new TwoSpinnerParametersEditor(filterProperty, operation);
+                result = new TwoSpinnerParametersEditor(filterProperty, operation);
+                break;
             case INPUT_TEXT_PARAMETRS_EDITOR:
-                return new InputTextParametersEditor(filterProperty, operation);
+                result = new InputTextParametersEditor(filterProperty, operation);
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
-
+        if (parameters != null)
+            result.setParameters(parameters);
+        return result;
     }
 }

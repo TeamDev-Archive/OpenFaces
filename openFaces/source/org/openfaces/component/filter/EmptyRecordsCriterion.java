@@ -15,6 +15,9 @@ package org.openfaces.component.filter;
  * @author Dmitry Pikhulya
  */
 public class EmptyRecordsCriterion extends FilterCriterion {
+    public Object process(FilterCriterionProcessor processor) {
+        throw new UnsupportedOperationException("todo");
+    }
 
     @Override
     public boolean acceptsAll() {

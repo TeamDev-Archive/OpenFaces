@@ -20,4 +20,6 @@ public abstract class FilterCriterion implements Serializable {
     public abstract boolean acceptsAll();
 
     public abstract boolean acceptsValue(Object value);
+
+    public abstract Object process(FilterCriterionProcessor processor);
 }

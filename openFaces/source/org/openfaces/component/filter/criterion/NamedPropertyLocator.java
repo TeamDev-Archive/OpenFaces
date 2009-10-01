@@ -27,12 +27,23 @@ public class NamedPropertyLocator extends PropertyLocator {
     }
 
     public Object getPropertyValue(Object obj) {
+        return readProperty(obj, name);
+    }
+
+    private Object readProperty(Object obj, String propertyName) {
+        int propertySeparatorIndex = propertyName.indexOf(".");
+        if (propertySeparatorIndex != -1) {
+            String immediatePropertyName = propertyName.substring(0, propertySeparatorIndex);
+            Object immediatePropertyValue = readProperty(obj, immediatePropertyName);
+            String subpropertyName = propertyName.substring(propertySeparatorIndex + 1);
+            return readProperty(immediatePropertyValue, subpropertyName);
+        }
         PropertyDescriptor propertyDescriptor = null;
         try {
             PropertyDescriptor[] propertyDescriptors =
                     Introspector.getBeanInfo(obj.getClass()).getPropertyDescriptors();
             for (PropertyDescriptor pd : propertyDescriptors) {
-                if (name.equals(pd.getName())) {
+                if (propertyName.equals(pd.getName())) {
                     propertyDescriptor = pd;
                     break;
                 }
@@ -41,7 +52,7 @@ public class NamedPropertyLocator extends PropertyLocator {
             throw new RuntimeException(e);
         }
         if (propertyDescriptor == null)
-            throw new IllegalArgumentException("There's no property named '" + name + "' in class " + obj.getClass().getName());
+            throw new IllegalArgumentException("There's no property named '" + propertyName + "' in class " + obj.getClass().getName());
         try {
             return propertyDescriptor.getReadMethod().invoke(obj);
         } catch (IllegalAccessException e) {

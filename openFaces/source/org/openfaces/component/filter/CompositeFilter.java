@@ -1,9 +1,12 @@
 package org.openfaces.component.filter;
 
 import org.openfaces.component.OUIComponentBase;
+import org.openfaces.component.filter.criterion.AndFilterCriterion;
+import org.openfaces.component.filter.criterion.CompositeFilterCriterion;
+import org.openfaces.component.filter.criterion.NamedPropertyLocator;
+import org.openfaces.component.filter.criterion.OrFilterCriterion;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.component.filter.criterion.PropertyLocator;
-import org.openfaces.component.filter.criterion.NamedPropertyLocator;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
@@ -19,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +40,7 @@ public class CompositeFilter extends OUIComponentBase {
     private LinkedHashMap<Integer, FilterRow> filterRows = new LinkedHashMap<Integer, FilterRow>();
     private int lastRowIndex;
     private String noFilterMessage;
-    private Object value;
+    private CompositeFilterCriterion value;
     private Map<String, String> labels;
     private Converter operationConverter;
 
@@ -71,7 +73,7 @@ public class CompositeFilter extends OUIComponentBase {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-        value = state[i++];
+        value = (CompositeFilterCriterion) state[i++];
         filterRows = (LinkedHashMap<Integer, FilterRow>) state[i++];
         lastRowIndex = (Integer) state[i++];
         noFilterMessage = (String) state[i++];
@@ -85,13 +87,13 @@ public class CompositeFilter extends OUIComponentBase {
         super.processRestoreState(context, ajaxState != null ? ajaxState : state);
     }
 
-    public Object getValue() {
+    public CompositeFilterCriterion getValue() {
         if (value != null) return value;
         ValueExpression ve = getValueExpression("value");
-        return ve != null ? ve.getValue(getFacesContext().getELContext()) : null;
+        return ve != null ? (CompositeFilterCriterion) ve.getValue(getFacesContext().getELContext()) : null;
     }
 
-    public void setValue(Object value) {
+    public void setValue(CompositeFilterCriterion value) {
         this.value = value;
     }
 
@@ -180,7 +182,7 @@ public class CompositeFilter extends OUIComponentBase {
 
     public FilterRow addFilterRow() {
         lastRowIndex++;
-        FilterRow filterRow = new FilterRow(lastRowIndex, filterRows.size() == 0);
+        FilterRow filterRow = new FilterRow(lastRowIndex);
         filterRow.setLastRow(true);
         FilterRow previousLastRow = getLastRow();
         filterRows.put(lastRowIndex, filterRow);
@@ -210,50 +212,38 @@ public class CompositeFilter extends OUIComponentBase {
         filterRows.clear();
     }
 
+    public void processUpdates(FacesContext context) {
+        super.processUpdates(context);
+        
+        Map<PropertyLocator, List<FilterCriterion>> propertiesToCriterions =
+                new LinkedHashMap<PropertyLocator, List<FilterCriterion>>();
 
-    public void synchronizeFilterRowsWithCriteria() {
-        @SuppressWarnings("unchecked")
-        Iterable<PropertyFilterCriterion> criteria = (Iterable<PropertyFilterCriterion>) getValue();
-        Iterator<Integer> rowIterator = filterRows.keySet().iterator();
-        if (criteria != null) {
-            for (PropertyFilterCriterion criterion : criteria) {
-
-                PropertyFilterCriterion rowCriterion = null;
-                FilterRow filterRow = null;
-                if (rowIterator.hasNext()) {
-                    filterRow = getFilterRow(rowIterator.next());
-                    rowCriterion = filterRow.getCriterion();
-                }
-                if (filterRow == null) {
-                    filterRow = addFilterRow();
-                }
-                if (!criterion.equals(rowCriterion)) {
-                    filterRow.updateRowModelFromCriterion(criterion, this);
-                }
-            }
-        }
-        List<Integer> toRemove = new ArrayList<Integer>();
-        while (rowIterator.hasNext()) {
-            toRemove.add(rowIterator.next());
-        }
-        for (Integer rowIndex : toRemove) {
-            removeFilterRow(rowIndex);
-        }
-
-
-    }
-
-    public void _processUpdates(FacesContext context) {
-        List<PropertyFilterCriterion> criteria = new ArrayList<PropertyFilterCriterion>();
         for (FilterRow filterRow : filterRows.values()) {
-            filterRow.updateRowModelFromEditors(context, this);
-            PropertyFilterCriterion criterion = filterRow.getCriterion();
-            if (criterion != null) {
-                criteria.add(criterion);
+            PropertyFilterCriterion criterion = filterRow.updateRowModelFromEditors(context, this);
+            if (criterion == null)
+                continue;
+            PropertyLocator property = criterion.getPropertyLocator();
+            List<FilterCriterion> list = propertiesToCriterions.get(property);
+            if (list == null) {
+                list = new ArrayList<FilterCriterion>();
+                propertiesToCriterions.put(property, list);
             }
+            list.add(criterion);
         }
-        ValueBindings.setFromList(this, "value", criteria);
 
+        AndFilterCriterion andCriterion = new AndFilterCriterion();
+        for (List<FilterCriterion> list : propertiesToCriterions.values()) {
+            FilterCriterion filterCriterion;
+            if (list.size() == 1) {
+                filterCriterion = list.get(0);
+            } else {
+                filterCriterion = new OrFilterCriterion(list);
+            }
+            andCriterion.getCriteria().add(filterCriterion);
+        }
+
+        if (!ValueBindings.set(this, "value", andCriterion))
+            value = andCriterion;
     }
 
     public Collection<FilterRow> getFilterRows() {
@@ -294,7 +284,6 @@ public class CompositeFilter extends OUIComponentBase {
     }
 
     private static class OperationConverter implements Converter, Serializable {
-
         private Map<String, String> nameToLabelMap;
         private Map<String, OperationType> labelToOperation = new HashMap<String, OperationType>();
 

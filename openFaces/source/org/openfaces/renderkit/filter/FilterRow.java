@@ -27,7 +27,6 @@ import java.util.List;
  * @author Natalia Zolochevska
  */
 public class FilterRow implements Serializable {
-
     public static final String ROW_ID_SUFFIX = "row";
     public static final String ADD_BUTTON_CONTAINER_SUFFIX = "add";
     public static final String DELETE_BUTTON_CONTAINER_SUFFIX = "delete";
@@ -41,7 +40,6 @@ public class FilterRow implements Serializable {
     public static final String DROP_DOWN_ID_SUFFIX = "dropDown";
     public static final String DROP_DOWN_ITEMS_ID_SUFFIX = "items";
 
-
     public static final String DEFAULT_ROW_CLASS = "o_filter_row";
     public static final String DEFAULT_ROW_ITEM_CLASS = "o_filter_row_item";
     public static final String DEFAULT_ROW_ITEM_CHECKBOX_CLASS = "o_filter_row_item o_filter_row_item_checkbox";
@@ -54,9 +52,7 @@ public class FilterRow implements Serializable {
     public static final String DEFAULT_INVERSE_CHECKBOX_CLASS = "o_filter_inverse_checkbox";
     public static final String DEFAULT_INVERSE_LABEL_CLASS = "o_filter_inverse_label";
 
-
     public static final String INVERSE_LABEL = "not";
-
 
     private final String rowIdSuffix;
     private final int index;
@@ -67,21 +63,12 @@ public class FilterRow implements Serializable {
     private ParametersEditor parametersEditor;
     private ParametersEditor.ParameterEditorType parametersEditorType;
 
-    private PropertyFilterCriterion criterion;
-
     private boolean lastRow;
-    private boolean firstRow;
 
 
     public FilterRow(int index) {
-        this(index, false);
-    }
-
-    public FilterRow(int index, boolean firstRow) {
         this.index = index;
-        this.firstRow = firstRow;
         rowIdSuffix = ROW_ID_SUFFIX + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + index;
-
     }
 
     public int getIndex() {
@@ -115,7 +102,7 @@ public class FilterRow implements Serializable {
     }
 
 
-    private HtmlSelectBooleanCheckbox createInverseCheckBox(FacesContext context, HtmlPanelGroup rowContainer, final CompositeFilter compositeFilter) {
+    private HtmlSelectBooleanCheckbox createInverseCheckBox(FacesContext context, HtmlPanelGroup rowContainer) {
         HtmlPanelGroup inverseCheckBoxContainer = (HtmlPanelGroup) ComponentUtil.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, INVERSE_CHECKBOX_CONTAINER_SUFFIX, 1);
 
         inverseCheckBoxContainer.setStyleClass(DEFAULT_ROW_ITEM_CHECKBOX_CLASS);
@@ -130,15 +117,15 @@ public class FilterRow implements Serializable {
         return inverseCheckBox;
     }
 
-    private void initInverseCheckBox(FacesContext context, HtmlSelectBooleanCheckbox inverseCheckBox, CompositeFilter compositeFilter) {
+    private void initInverseCheckBox(HtmlSelectBooleanCheckbox inverseCheckBox) {
         inverseCheckBox.setValue(inverse);
     }
 
-    private HtmlSelectBooleanCheckbox getInverseCheckBox(FacesContext context, HtmlPanelGroup inverseCheckBoxContainer) {
+    private HtmlSelectBooleanCheckbox getInverseCheckBox(HtmlPanelGroup inverseCheckBoxContainer) {
         return (HtmlSelectBooleanCheckbox) ComponentUtil.getChildBySuffix(inverseCheckBoxContainer, CHECKBOX_SUFFIX);
     }
 
-    private HtmlPanelGroup getInverseCheckBoxContainer(FacesContext context, HtmlPanelGroup rowContainer) {
+    private HtmlPanelGroup getInverseCheckBoxContainer(HtmlPanelGroup rowContainer) {
         return (HtmlPanelGroup) ComponentUtil.getChildBySuffix(rowContainer, INVERSE_CHECKBOX_CONTAINER_SUFFIX);
     }
 
@@ -147,11 +134,11 @@ public class FilterRow implements Serializable {
         if (rowContainer == null) {
             return null;
         }
-        HtmlPanelGroup inverseContainer = getInverseCheckBoxContainer(context, rowContainer);
+        HtmlPanelGroup inverseContainer = getInverseCheckBoxContainer(rowContainer);
         if (inverseContainer == null) {
             return null;
         }
-        HtmlSelectBooleanCheckbox inverseCheckBox = getInverseCheckBox(context, inverseContainer);
+        HtmlSelectBooleanCheckbox inverseCheckBox = getInverseCheckBox(inverseContainer);
         return inverseCheckBox;
     }
 
@@ -174,8 +161,7 @@ public class FilterRow implements Serializable {
     private HtmlCommandButton createDeleteButton(FacesContext context, HtmlPanelGroup rowContainer, CompositeFilter compositeFilter) {
         HtmlPanelGroup deleteButtonContainer = (HtmlPanelGroup) ComponentUtil.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, DELETE_BUTTON_CONTAINER_SUFFIX);
         deleteButtonContainer.setStyleClass(DEFAULT_ROW_ITEM_CLASS);
-        HtmlCommandButton deleteButton = null;
-        deleteButton = (HtmlCommandButton) ComponentUtil.createChildComponent(context, deleteButtonContainer, HtmlCommandButton.COMPONENT_TYPE, BUTTON_SUFFIX);
+        HtmlCommandButton deleteButton = (HtmlCommandButton) ComponentUtil.createChildComponent(context, deleteButtonContainer, HtmlCommandButton.COMPONENT_TYPE, BUTTON_SUFFIX);
         deleteButton.setValue("-");
         deleteButton.setOnclick("O$.Filter._remove('" + compositeFilter.getClientId(context) + "'," + index + "); return false;");
         deleteButton.setStyleClass(DEFAULT_DELETE_BUTTON_CLASS);
@@ -190,7 +176,7 @@ public class FilterRow implements Serializable {
         return propertySelectorContainer;
     }
 
-    private HtmlPanelGroup getPropertySelectorContainer(FacesContext context, HtmlPanelGroup rowContainer) {
+    private HtmlPanelGroup getPropertySelectorContainer(HtmlPanelGroup rowContainer) {
         return (HtmlPanelGroup) ComponentUtil.getChildBySuffix(rowContainer, PROPERTY_SELECTOR_ID_SUFFIX);
     }
 
@@ -205,21 +191,21 @@ public class FilterRow implements Serializable {
         return propertySelector;
     }
 
-    private void initPropertySelector(FacesContext context, DropDownField propertySelector, CompositeFilter compositeFilter) {
+    private void initPropertySelector(DropDownField propertySelector) {
         String propertyValue = (property != null) ? property.getValue() : null;
         propertySelector.setValue(propertyValue);
     }
 
-    private DropDownField getPropertySelector(FacesContext context, HtmlPanelGroup propertySelectorContainer) {
+    private DropDownField getPropertySelector(HtmlPanelGroup propertySelectorContainer) {
         return (DropDownField) ComponentUtil.getChildBySuffix(propertySelectorContainer, DROP_DOWN_ID_SUFFIX);
     }
 
-    private DropDownField findPropertySelector(FacesContext context, CompositeFilter compositeFilter) {
+    private DropDownField findPropertySelector(CompositeFilter compositeFilter) {
         HtmlPanelGroup rowContainer = getRowContainer(compositeFilter);
         if (rowContainer == null) return null;
-        HtmlPanelGroup propertySelectorContainer = getPropertySelectorContainer(context, rowContainer);
+        HtmlPanelGroup propertySelectorContainer = getPropertySelectorContainer(rowContainer);
         if (propertySelectorContainer == null) return null;
-        DropDownField propertySelector = getPropertySelector(context, propertySelectorContainer);
+        DropDownField propertySelector = getPropertySelector(propertySelectorContainer);
         return propertySelector;
     }
 
@@ -235,7 +221,7 @@ public class FilterRow implements Serializable {
         return operationSelectorContainer;
     }
 
-    private HtmlPanelGroup getOperationSelectorContainer(FacesContext context, HtmlPanelGroup rowContainer) {
+    private HtmlPanelGroup getOperationSelectorContainer(HtmlPanelGroup rowContainer) {
         return (HtmlPanelGroup) ComponentUtil.getChildBySuffix(rowContainer, OPERATION_SELECTOR_ID_SUFFIX);
     }
 
@@ -251,29 +237,29 @@ public class FilterRow implements Serializable {
     }
 
 
-    private void initOperationSelector(FacesContext context, DropDownField operationSelector, CompositeFilter compositeFilter) {
+    private void initOperationSelector(DropDownField operationSelector, CompositeFilter compositeFilter) {
         operationSelector.setValue(operation);
-        DropDownItems dropDownItems = getOperationSelectorItems(context, operationSelector);
+        DropDownItems dropDownItems = getOperationSelectorItems(operationSelector);
         EnumSet<OperationType> operations = compositeFilter.getOperations(property);
         dropDownItems.setValue(operations);
     }
 
 
-    private DropDownField getOperationSelector(FacesContext context, HtmlPanelGroup operationSelectorContainer) {
+    private DropDownField getOperationSelector(HtmlPanelGroup operationSelectorContainer) {
         return (DropDownField) ComponentUtil.getChildBySuffix(operationSelectorContainer, DROP_DOWN_ID_SUFFIX);
     }
 
-    private DropDownField findOperationSelector(FacesContext context, CompositeFilter compositeFilter) {
+    private DropDownField findOperationSelector(CompositeFilter compositeFilter) {
         HtmlPanelGroup rowContainer = getRowContainer(compositeFilter);
         if (rowContainer == null) return null;
-        HtmlPanelGroup operationSelectorContainer = getOperationSelectorContainer(context, rowContainer);
+        HtmlPanelGroup operationSelectorContainer = getOperationSelectorContainer(rowContainer);
         if (operationSelectorContainer == null) return null;
-        DropDownField operationSelector = getOperationSelector(context, operationSelectorContainer);
+        DropDownField operationSelector = getOperationSelector(operationSelectorContainer);
         return operationSelector;
     }
 
 
-    private DropDownItems getOperationSelectorItems(FacesContext context, DropDownField operationSelector) {
+    private DropDownItems getOperationSelectorItems(DropDownField operationSelector) {
         return (DropDownItems) ComponentUtil.getChildBySuffix(operationSelector, DROP_DOWN_ITEMS_ID_SUFFIX);
     }
 
@@ -290,17 +276,17 @@ public class FilterRow implements Serializable {
     }
 
 
-    private HtmlPanelGroup getParametersEditorContainer(FacesContext context, HtmlPanelGroup rowContainer) {
+    private HtmlPanelGroup getParametersEditorContainer(HtmlPanelGroup rowContainer) {
         return (HtmlPanelGroup) ComponentUtil.getChildBySuffix(rowContainer, PARAMETERS_EDITOR_ID_SUFFIX);
     }
 
 
-    private HtmlPanelGroup findParametersEditorContainer(FacesContext context, CompositeFilter compositeFilter) {
+    private HtmlPanelGroup findParametersEditorContainer(CompositeFilter compositeFilter) {
         HtmlPanelGroup rowContainer = getRowContainer(compositeFilter);
         if (rowContainer == null) {
             return null;
         }
-        HtmlPanelGroup parametersEditorContainer = getParametersEditorContainer(context, rowContainer);
+        HtmlPanelGroup parametersEditorContainer = getParametersEditorContainer(rowContainer);
         return parametersEditorContainer;
     }
 
@@ -309,15 +295,15 @@ public class FilterRow implements Serializable {
         if (rowContainer == null) {
             rowContainer = createRowContainer(context, compositeFilter);
         }
-        HtmlPanelGroup propertySelectorContainer = getPropertySelectorContainer(context, rowContainer);
+        HtmlPanelGroup propertySelectorContainer = getPropertySelectorContainer(rowContainer);
         if (propertySelectorContainer == null) {
             propertySelectorContainer = createPropertySelectorContainer(context, rowContainer);
         }
-        DropDownField propertySelector = getPropertySelector(context, propertySelectorContainer);
+        DropDownField propertySelector = getPropertySelector(propertySelectorContainer);
         if (propertySelector == null) {
             propertySelector = createPropertySelector(context, propertySelectorContainer, compositeFilter);
         }
-        initPropertySelector(context, propertySelector, compositeFilter);
+        initPropertySelector(propertySelector);
 
         if (property != null) {
             preparateOperationComponentHierarchy(context, rowContainer, compositeFilter);
@@ -332,32 +318,29 @@ public class FilterRow implements Serializable {
     public HtmlPanelGroup preparateOperationComponentHierarchy(FacesContext context, HtmlPanelGroup rowContainer, CompositeFilter compositeFilter) throws IOException {
         HtmlSelectBooleanCheckbox inverseCheckBox = findInverseCheckBox(context, compositeFilter);
         if (inverseCheckBox == null) {
-            inverseCheckBox = createInverseCheckBox(context, rowContainer, compositeFilter);
+            inverseCheckBox = createInverseCheckBox(context, rowContainer);
         }
-        initInverseCheckBox(context, inverseCheckBox, compositeFilter);
-        HtmlPanelGroup operationSelectorContainer = getOperationSelectorContainer(context, rowContainer);
+        initInverseCheckBox(inverseCheckBox);
+        HtmlPanelGroup operationSelectorContainer = getOperationSelectorContainer(rowContainer);
         if (operationSelectorContainer == null) {
             operationSelectorContainer = createOperationSelectorContainer(context, rowContainer);
         }
-        DropDownField operationSelector = getOperationSelector(context, operationSelectorContainer);
+        DropDownField operationSelector = getOperationSelector(operationSelectorContainer);
         if (operationSelector == null) {
             operationSelector = createOperationSelector(context, operationSelectorContainer, compositeFilter);
         }
-        initOperationSelector(context, operationSelector, compositeFilter);
+        initOperationSelector(operationSelector, compositeFilter);
         return operationSelectorContainer;
     }
 
     public HtmlPanelGroup preparateParametersComponentHierarchy(FacesContext context, HtmlPanelGroup rowContainer, CompositeFilter compositeFilter) throws IOException {
-        HtmlPanelGroup parametersEditorContainer = getParametersEditorContainer(context, rowContainer);
+        HtmlPanelGroup parametersEditorContainer = getParametersEditorContainer(rowContainer);
         if (parametersEditorContainer == null) {
             parametersEditorContainer = createParametersEditorContainer(context, rowContainer);
         }
         if (parametersEditor == null) {
             ParametersEditor.ParameterEditorType type = ParametersEditor.getParameterEditorType(property, operation);
-            parametersEditor = ParametersEditor.getInstance(type, property, operation);
-            if (parametersEditorType == type && criterion != null) {
-                parametersEditor.setParameters(criterion);
-            }
+            parametersEditor = ParametersEditor.getInstance(type, property, operation, null);
             parametersEditorType = type;
         }
         parametersEditor.prepare(context, compositeFilter, this, parametersEditorContainer);
@@ -373,7 +356,7 @@ public class FilterRow implements Serializable {
     public void encodeOperationSelector(FacesContext context, CompositeFilter compositeFilter) throws IOException {
         HtmlPanelGroup rowContainer = getRowContainer(compositeFilter);
         UIComponent component = preparateOperationComponentHierarchy(context, rowContainer, compositeFilter);
-        HtmlPanelGroup inverseCheckBoxContainer = getInverseCheckBoxContainer(context, rowContainer);
+        HtmlPanelGroup inverseCheckBoxContainer = getInverseCheckBoxContainer(rowContainer);
         inverseCheckBoxContainer.encodeAll(context);
         component.encodeAll(context);
     }
@@ -388,26 +371,25 @@ public class FilterRow implements Serializable {
     }
 
 
-    public void updateRowModelFromEditors(FacesContext context, CompositeFilter compositeFilter) {
-        HtmlPanelGroup parametersEditorContainer = findParametersEditorContainer(context, compositeFilter);
-        DropDownField propertySelector = findPropertySelector(context, compositeFilter);
+    public PropertyFilterCriterion updateRowModelFromEditors(FacesContext context, CompositeFilter compositeFilter) {
+        HtmlPanelGroup parametersEditorContainer = findParametersEditorContainer(compositeFilter);
+        DropDownField propertySelector = findPropertySelector(compositeFilter);
         if (propertySelector == null) {
             property = null;
             operation = null;
-            criterion = null;
             parametersEditor = null;
-            return;
+            return null;
         }
         String propertyValue = (String) propertySelector.getValue();
         FilterProperty newProperty = compositeFilter.getFilterProperty(propertyValue);
         boolean propertyModified = property == null ? newProperty != null : newProperty != null && !newProperty.getName().equals(property.getName());
         property = newProperty;
-        DropDownField operationSelector = findOperationSelector(context, compositeFilter);
+        DropDownField operationSelector = findOperationSelector(compositeFilter);
         HtmlSelectBooleanCheckbox inverseCheckBox = findInverseCheckBox(context, compositeFilter);
         if (propertyModified || property == null || operationSelector == null || inverseCheckBox == null) {
             operation = null;
             parametersEditor = null;
-            return;
+            return null;
         }
         OperationType newOperation = (OperationType) operationSelector.getValue();
         inverse = (Boolean) inverseCheckBox.getValue();
@@ -415,15 +397,15 @@ public class FilterRow implements Serializable {
         operation = newOperation;
         if (operation == null || parametersEditor == null) {
             parametersEditor = null;
-            criterion = null;
-            return;
+            return null;
         }
         parametersEditor.update(context, compositeFilter, this, parametersEditorContainer);
-        criterion = parametersEditor.getCriterion();
+        PropertyFilterCriterion result = parametersEditor.getCriterion();
+        result.setInverse(inverse);
         if (operationModified) {
             parametersEditor = null;
         }
-
+        return result;
     }
 
     public void updateRowModelFromCriterion(PropertyFilterCriterion criterion, CompositeFilter compositeFilter) {
@@ -431,15 +413,7 @@ public class FilterRow implements Serializable {
         operation = criterion.getOperation();
         inverse = criterion.isInverse();
         parametersEditorType = ParametersEditor.getParameterEditorType(property, operation);
-        parametersEditor = ParametersEditor.getInstance(parametersEditorType, property, operation);
-
-    }
-
-    public PropertyFilterCriterion getCriterion() {
-        if (parametersEditor == null) {
-            return null;
-        }
-        return criterion;
+        parametersEditor = ParametersEditor.getInstance(parametersEditorType, property, operation, criterion.getParameters());
     }
 
     public void removeInlineComponents(CompositeFilter compositeFilter) {

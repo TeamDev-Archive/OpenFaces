@@ -18,40 +18,20 @@ import org.apache.commons.collections.functors.AllPredicate;
 import org.apache.commons.collections.functors.AnyPredicate;
 import org.apache.commons.collections.functors.EqualPredicate;
 import org.apache.commons.collections.functors.NotPredicate;
+import org.openfaces.component.filter.FilterCriterion;
+import org.openfaces.component.filter.FilterCriterionProcessor;
 import org.openfaces.component.filter.OperationType;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 
-public class PredicateAdapter {
+public class PredicateAdapter extends FilterCriterionProcessor {
 
     private static final Comparator<Number> NUMBER_COMPARATOR = new NumberComparator();
     private static final Comparator<Date> COMPARABLE_COMPARATOR = new ComparableComparator();
-
-
-    private static Map<PropertyLocator, Collection<PropertyFilterCriterion>> buildCriterionsMap(
-            Collection<PropertyFilterCriterion> criterionList) {
-        Map<PropertyLocator, Collection<PropertyFilterCriterion>> result =
-                new HashMap<PropertyLocator, Collection<PropertyFilterCriterion>>();
-        for (PropertyFilterCriterion criterion : criterionList) {
-            PropertyLocator property = criterion.getPropertyLocator();
-            Collection<PropertyFilterCriterion> list = result.get(property);
-            if (list == null) {
-                list = new ArrayList<PropertyFilterCriterion>();
-                result.put(property, list);
-            }
-            list.add(criterion);
-        }
-        return result;
-    }
-
 
     private static Comparator getComparatorForParameter(Object parameter) {
         if (parameter instanceof Number) {
@@ -63,6 +43,41 @@ public class PredicateAdapter {
         }
     }
 
+    private static PredicateAdapter instance;
+
+    public static PredicateAdapter getInstance() {
+        if (instance == null)
+            instance = new PredicateAdapter();
+        return instance;
+    }
+
+    public static Predicate convertToPredicate(FilterCriterion criterion) {
+        return (Predicate) criterion.process(getInstance());
+    }
+
+    public Object process(PropertyFilterCriterion criterion) {
+        return convertToPredicate(criterion);
+    }
+
+    public Object process(AndFilterCriterion criterion) {
+        List<FilterCriterion> criteria = criterion.getCriteria();
+        Predicate[] predicates = new Predicate[criteria.size()];
+        for (int i = 0; i < criteria.size(); i++) {
+            FilterCriterion filterCriterion = criteria.get(i);
+            predicates[i] = (Predicate) filterCriterion.process(this);
+        }
+        return new AllPredicate(predicates);
+    }
+
+    public Object process(OrFilterCriterion criterion) {
+        List<FilterCriterion> criteria = criterion.getCriteria();
+        Predicate[] predicates = new Predicate[criteria.size()];
+        for (int i = 0; i < criteria.size(); i++) {
+            FilterCriterion filterCriterion = criteria.get(i);
+            predicates[i] = (Predicate) filterCriterion.process(this);
+        }
+        return new AnyPredicate(predicates);
+    }
 
     private static Predicate convertToPredicate(PropertyFilterCriterion propertyFilterCriterion) {
         OperationType operation = propertyFilterCriterion.getOperation();
@@ -189,22 +204,6 @@ public class PredicateAdapter {
         };
 
         return (propertyFilterCriterion.isInverse()) ? new NotPredicate(predicate) : predicate;
-    }
-
-    public static Predicate convertToPredicate(Collection<PropertyFilterCriterion> criterionList) {
-        List<Predicate> conjuction = new ArrayList<Predicate>();
-        Map<PropertyLocator, Collection<PropertyFilterCriterion>> map = buildCriterionsMap(criterionList);
-        for (Collection<PropertyFilterCriterion> list : map.values()) {
-            List<Predicate> disjunction = new ArrayList<Predicate>(list.size());
-            for (PropertyFilterCriterion propertyFilterCriterion : list) {
-                Predicate predicate = convertToPredicate(propertyFilterCriterion);
-                disjunction.add(predicate);
-            }
-            AnyPredicate disjunctionPredicate = new AnyPredicate(disjunction.toArray(new Predicate[disjunction.size()]));
-            conjuction.add(disjunctionPredicate);
-        }
-        AllPredicate conjuctionPredicate = new AllPredicate(conjuction.toArray(new Predicate[conjuction.size()]));
-        return conjuctionPredicate;
     }
 
 

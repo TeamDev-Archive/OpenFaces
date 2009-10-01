@@ -14,13 +14,14 @@ package org.openfaces.testapp.filter;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.openfaces.component.filter.criterion.AndFilterCriterion;
+import org.openfaces.component.filter.criterion.CompositeFilterCriterion;
 import org.openfaces.component.filter.criterion.PredicateAdapter;
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UIComponent;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,7 +54,7 @@ public class CompositeFilterBean {
 
     private Collection<Country> countries = EnumSet.allOf(Country.class);
     private Collection<String> names = Arrays.asList("Tom", "David");
-    private Collection<PropertyFilterCriterion> criteria = new ArrayList<PropertyFilterCriterion>();
+    private CompositeFilterCriterion criteria = new AndFilterCriterion();
 
     public List<User> getUsers() {
         Predicate predicate = PredicateAdapter.convertToPredicate(criteria);
@@ -74,11 +75,11 @@ public class CompositeFilterBean {
         return names;
     }
 
-    public Collection<PropertyFilterCriterion> getCriteria() {
+    public CompositeFilterCriterion getCriteria() {
         return criteria;
     }
 
-    public void setCriteria(Collection<PropertyFilterCriterion> criteria) {
+    public void setCriteria(CompositeFilterCriterion criteria) {
         this.criteria = criteria;
     }
 
@@ -243,11 +244,11 @@ public class CompositeFilterBean {
     }
 
     public void clearFilter(){
-        criteria = new ArrayList<PropertyFilterCriterion>();
+        criteria = new AndFilterCriterion();
     }
 
     public boolean isAgeRendered(){
-        return (criteria.size() % 2 == 0);
+        return (criteria.getCriteria().size() % 2 == 0);
     }
 
 }

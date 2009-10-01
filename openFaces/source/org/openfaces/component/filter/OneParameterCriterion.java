@@ -76,4 +76,9 @@ public abstract class OneParameterCriterion extends FilterCriterion {
     public boolean acceptsAll() {
         return value == null || value.equals("");
     }
+
+    @Override
+    public Object process(FilterCriterionProcessor processor) {
+        throw new UnsupportedOperationException("todo");
+    }
 }

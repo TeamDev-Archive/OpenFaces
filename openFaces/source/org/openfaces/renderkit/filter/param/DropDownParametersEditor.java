@@ -95,9 +95,9 @@ public class DropDownParametersEditor extends ParametersEditor implements Serial
 
     @Override
     public PropertyFilterCriterion getCriterion() {
-        if (filterProperty.getType() == FilterType.SELECT && criterion.getArg1()==null) {
+        if (filterProperty.getType() == FilterType.SELECT && criterion.getArg1() == null) {
                 return null;            
         }
-        return super.getCriterion();    //To change body of overridden methods use File | Settings | File Templates.
+        return super.getCriterion();
     }
 }

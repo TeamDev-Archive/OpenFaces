@@ -16,28 +16,50 @@ import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
+import org.openfaces.component.filter.FilterCriterion;
+import org.openfaces.component.filter.FilterCriterionProcessor;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.TimeZone;
 import java.util.List;
+import java.util.TimeZone;
 
-public class HibernateCriterionAdapter {
+public class HibernateCriterionAdapter extends FilterCriterionProcessor {
 
-    private static HashMap<PropertyLocator, Collection<PropertyFilterCriterion>> buildCriterionsMap(Collection<PropertyFilterCriterion> criterionList) {
-        HashMap<PropertyLocator, Collection<PropertyFilterCriterion>> result = new HashMap<PropertyLocator, Collection<PropertyFilterCriterion>>();
-        for (PropertyFilterCriterion criterion : criterionList) {
-            PropertyLocator propertyLocator = criterion.getPropertyLocator();
-            Collection<PropertyFilterCriterion> list = result.get(propertyLocator);
-            if (list == null) {
-                list = new ArrayList<PropertyFilterCriterion>();
-                result.put(propertyLocator, list);
-            }
-            list.add(criterion);
+    private static HibernateCriterionAdapter instance;
+
+    public static HibernateCriterionAdapter getInstance() {
+        if (instance == null)
+            instance = new HibernateCriterionAdapter();
+        return instance;
+    }
+
+    public static Criterion convertToHibernateCriterion(FilterCriterion filterCriterion) {
+        return (Criterion) filterCriterion.process(getInstance());
+    }
+
+    public Object process(PropertyFilterCriterion criterion) {
+        return convertToHibernateCriteria(criterion);
+    }
+
+    public Object process(AndFilterCriterion criterion) {
+        List<FilterCriterion> criteria = criterion.getCriteria();
+        Conjunction conjunction = Restrictions.conjunction();
+        for (FilterCriterion filterCriterion : criteria) {
+            Criterion hibernateCriterion = (Criterion) filterCriterion.process(this);
+            conjunction.add(hibernateCriterion);
         }
-        return result;
+        return conjunction;
+    }
+
+    public Object process(OrFilterCriterion criterion) {
+        List<FilterCriterion> criteria = criterion.getCriteria();
+
+        Disjunction disjunction = Restrictions.disjunction();
+        for (FilterCriterion filterCriterion : criteria) {
+            Criterion hibernateCriterion = (Criterion) filterCriterion.process(this);
+            disjunction.add(hibernateCriterion);
+        }
+        return disjunction;
     }
 
 
@@ -167,17 +189,4 @@ public class HibernateCriterionAdapter {
         return (propertyFilterCriterion.isInverse()) ? Restrictions.not(result) : result;
     }
 
-    public static Criterion convertToHibernateCriterion(List<PropertyFilterCriterion> criterionList) {
-        Conjunction conjuction = Restrictions.conjunction();
-        HashMap<PropertyLocator, Collection<PropertyFilterCriterion>> map = buildCriterionsMap(criterionList);
-        for (Collection<PropertyFilterCriterion> list : map.values()) {
-            Disjunction disjunction = Restrictions.disjunction();
-            for (PropertyFilterCriterion propertyFilterCriterion : list) {
-                Criterion criterion = convertToHibernateCriteria(propertyFilterCriterion);
-                disjunction.add(criterion);
-            }
-            conjuction.add(disjunction);
-        }
-        return conjuction;
-    }
 }

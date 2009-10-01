@@ -34,7 +34,7 @@ public class SpinnerParametersEditor extends ParametersEditor implements Seriali
         super(filterProperty, operation);
     }
 
-    private Spinner getSpinner(FacesContext context, UIComponent container) {
+    private Spinner getSpinner(UIComponent container) {
         return (Spinner) ComponentUtil.getChildBySuffix(container, SPINNER_ID_SUFFIX);
     }
 
@@ -49,21 +49,21 @@ public class SpinnerParametersEditor extends ParametersEditor implements Seriali
         return spinner;
     }
 
-    private void initSpinner(FacesContext context, Spinner spinner) {
+    private void initSpinner(Spinner spinner) {
         spinner.setValue(criterion.getArg1());
     }
 
     public void prepare(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {
         super.prepare(context, compositeFilter, filterRow, container);
-        Spinner spinner = getSpinner(context, container);
+        Spinner spinner = getSpinner(container);
         if (spinner == null) {
             spinner = createSpinner(context, container);
         }
-        initSpinner(context, spinner);
+        initSpinner(spinner);
     }
 
     public void update(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {
-        Spinner spinner = getSpinner(context, container);
+        Spinner spinner = getSpinner(container);
         if (spinner == null) {
             return;
         }
