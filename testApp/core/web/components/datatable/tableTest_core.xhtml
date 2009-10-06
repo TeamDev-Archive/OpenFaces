@@ -312,7 +312,7 @@ Page size: <h:inputText value="#{TableTestBean.pageSize}"/>
           <h:outputText value="Letters"/>
         </f:facet>
         <f:facet name="subHeader">
-          <o:comboBoxFilter id="col1Filter" expression="#{row.field1}" options="#{TableTestBean.col1FilterValues}"/>
+          <o:comboBoxFilter expression="col1" options="#{TableTestBean.col1FilterValues}"/>
         </f:facet>
         <f:facet name="footer">
           <h:outputText value="Total Letters"/>
@@ -325,7 +325,7 @@ Page size: <h:inputText value="#{TableTestBean.pageSize}"/>
           <h:outputText value="Numbers"/>
         </f:facet>
         <f:facet name="subHeader">
-          <o:dropDownFieldFilter id="col2Filter" expression="#{row.field2}" options="#{TableTestBean.col2FilterValues}"/>
+          <o:dropDownFieldFilter expression="col2" options="#{TableTestBean.col2FilterValues}"/>
         </f:facet>
         <f:facet name="footer">
           <h:outputText value="Total Numbers"/>

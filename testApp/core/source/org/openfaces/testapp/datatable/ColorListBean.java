@@ -12,12 +12,11 @@
 
 package org.openfaces.testapp.datatable;
 
+import org.openfaces.component.filter.criterion.CompositeFilterCriterion;
 import org.openfaces.util.FacesUtil;
-import org.openfaces.component.filter.FilterCriterion;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ColorListBean {
 
@@ -37,12 +36,12 @@ public class ColorListBean {
     }
 
     public int getRowCount() {
-        Map<String, FilterCriterion> filterCriteria = (Map) FacesUtil.getRequestMapValue("filterCriteria");
+        CompositeFilterCriterion filterCriteria = (CompositeFilterCriterion) FacesUtil.getRequestMapValue("filterCriteria");
         return colorDB.getFilteredColorCount(filterCriteria);
     }
 
     public List getColorList() {
-        Map<String, FilterCriterion> filterCriteria = (Map) FacesUtil.getRequestMapValue("filterCriteria");
+        CompositeFilterCriterion filterCriteria = (CompositeFilterCriterion) FacesUtil.getRequestMapValue("filterCriteria");
         boolean sortAscending = (Boolean) FacesUtil.getRequestMapValue("sortAscending");
         String sortColumnId = (String) FacesUtil.getRequestMapValue("sortColumnId");
         int pageStart = (Integer) FacesUtil.getRequestMapValue("pageStart");

@@ -14,6 +14,7 @@ package org.openfaces.component.table;
 import org.apache.commons.collections.Predicate;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.component.filter.FilterCriterion;
+import org.openfaces.component.filter.criterion.AndFilterCriterion;
 import org.openfaces.component.filter.criterion.PredicateAdapter;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.util.DataUtil;
@@ -37,7 +38,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -442,16 +442,17 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     }
 
     private void setFilteringCriteriaToRequestVariable() {
-        Map<String, FilterCriterion> criteria = new HashMap<String, FilterCriterion>();
+        List<FilterCriterion> criteria = new ArrayList<FilterCriterion>();
+        AndFilterCriterion andCriterion = new AndFilterCriterion(criteria);
         int filterCount = filters != null ? filters.size() : 0;
         for (int i = 0; i < filterCount; i++) {
             Filter filter = filters.get(i);
             if (filter.isAcceptingAllRecords())
                 continue;
             FilterCriterion filterCriterion = (FilterCriterion) filter.getValue();
-            criteria.put(filter.getId(), filterCriterion);
+            criteria.add(filterCriterion);
         }
-        setRequestVariable(VAR_FILTER_CRITERIA, criteria);
+        setRequestVariable(VAR_FILTER_CRITERIA, andCriterion);
     }
 
     private boolean prepareForRetrievingPagedData(boolean paginationNeeded) {

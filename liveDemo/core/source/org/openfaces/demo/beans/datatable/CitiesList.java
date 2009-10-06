@@ -12,6 +12,7 @@
 package org.openfaces.demo.beans.datatable;
 
 import org.openfaces.component.filter.FilterCriterion;
+import org.openfaces.component.filter.criterion.CompositeFilterCriterion;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.demo.beans.util.City;
 import org.openfaces.util.FacesUtil;
@@ -53,7 +54,7 @@ public class CitiesList implements Serializable {
     }
 
     public List<City> getCitiesList() {
-        Map<String, FilterCriterion> filterCriteria = (Map) FacesUtil.getRequestMapValue("filterCriteria");
+        CompositeFilterCriterion filterCriteria = (CompositeFilterCriterion) FacesUtil.getRequestMapValue("filterCriteria");
         boolean sortAscending = (Boolean) FacesUtil.getRequestMapValue("sortAscending");
         String sortColumnId = (String) FacesUtil.getRequestMapValue("sortColumnId");
         int pageStart = (Integer) FacesUtil.getRequestMapValue("pageStart");
@@ -62,16 +63,16 @@ public class CitiesList implements Serializable {
         return citiesDB.getCitiesByParameters(filterConditions, sortColumnId, sortAscending, pageStart, pageSize);
     }
 
-    private CitiesDB.CitySelectionCriteria calculateFilterConditions(Map<String, FilterCriterion> filterCriteria) {
+    private CitiesDB.CitySelectionCriteria calculateFilterConditions(CompositeFilterCriterion filterCriteria) {
         CitiesDB.CitySelectionCriteria filterConditions = new CitiesDB.CitySelectionCriteria();
-        for (Map.Entry<String, FilterCriterion> entry : filterCriteria.entrySet()) {
-            String filterId = entry.getKey();
-            FilterCriterion criterion = entry.getValue();
-            if (filterId.equals("nameFilter")) {
-                String searchString = ((PropertyFilterCriterion) criterion).getArg1().toString();
+        for (FilterCriterion c : filterCriteria.getCriteria()) {
+            PropertyFilterCriterion criterion = (PropertyFilterCriterion) c;
+            String propertyName = criterion.getExpressionStr();
+            if (propertyName.equals("name")) {
+                String searchString = criterion.getArg1().toString();
                 filterConditions.setCityNameSearchString(searchString);
-            } else if (filterId.equals("populationFilter")) {
-                String searchString = ((PropertyFilterCriterion) criterion).getArg1().toString();
+            } else if (propertyName.equals("population")) {
+                String searchString = criterion.getArg1().toString();
                 String[] result = searchString.split(" \u2013 ");
 
                 String[] minLimit = result[0].split(",");
@@ -90,8 +91,8 @@ public class CitiesList implements Serializable {
 
                 filterConditions.setMinPopulation(min);
                 filterConditions.setMaxPopulation(max);
-            } else if (filterId.equals("countryFilter")) {
-                String searchString = ((PropertyFilterCriterion) criterion).getArg1().toString();
+            } else if (propertyName.equals("country")) {
+                String searchString = criterion.getArg1().toString();
                 filterConditions.setCountry(searchString);
             }
         }
@@ -114,7 +115,7 @@ public class CitiesList implements Serializable {
     }
 
     public int getRowCount() {
-        Map<String, FilterCriterion> filterCriteria = (Map) FacesUtil.getRequestMapValue("filterCriteria");
+        CompositeFilterCriterion filterCriteria = (CompositeFilterCriterion) FacesUtil.getRequestMapValue("filterCriteria");
         CitiesDB.CitySelectionCriteria filterConditions = calculateFilterConditions(filterCriteria);
         return citiesDB.getRecordCount(filterConditions);
     }

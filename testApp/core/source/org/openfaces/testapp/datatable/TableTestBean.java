@@ -11,7 +11,9 @@
  */
 package org.openfaces.testapp.datatable;
 
+import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.criterion.CompositeFilterCriterion;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.component.table.FilterKind;
 import org.openfaces.util.FacesUtil;
@@ -198,7 +200,7 @@ public class TableTestBean {
     }
 
     private List requestSortedAndFilteredCollection() {
-        Map<String, PropertyFilterCriterion> filterCriteria = (Map<String, PropertyFilterCriterion>) FacesUtil.getRequestMapValue("filterCriteria");
+        CompositeFilterCriterion filterCriteria = (CompositeFilterCriterion) FacesUtil.getRequestMapValue("filterCriteria");
         String sortColumnId = (String) FacesUtil.getRequestMapValue("sortColumnId");
         final boolean sortAscending = (Boolean) FacesUtil.getRequestMapValue("sortAscending");
 
@@ -238,14 +240,15 @@ public class TableTestBean {
         return (filterCriteria != null) ? filterCollection(sortedList, filterCriteria) : sortedList;
     }
 
-    private List<TestBean> filterCollection(List<TestBean> sortedList, Map<String, PropertyFilterCriterion> filterCriteria) {
+    private List<TestBean> filterCollection(List<TestBean> sortedList, CompositeFilterCriterion filterCriteria) {
         List<TestBean> result = new ArrayList<TestBean>();
         for (TestBean record : sortedList) {
             boolean recordAccepted = true;
-            for (Map.Entry<String, PropertyFilterCriterion> entry : filterCriteria.entrySet()) {
-                String filterId = entry.getKey();
-                PropertyFilterCriterion criterion = entry.getValue();
-                if (!filterAcceptsRecord(filterId, criterion, record)) {
+            for (FilterCriterion c : filterCriteria.getCriteria()) {
+                PropertyFilterCriterion criterion = (PropertyFilterCriterion) c;
+                String fieldName = criterion.getExpressionStr();
+
+                if (!filterAcceptsRecord(fieldName, criterion, record)) {
                     recordAccepted = false;
                     break;
                 }
@@ -257,8 +260,8 @@ public class TableTestBean {
         return result;
     }
 
-    private boolean filterAcceptsRecord(String filterId, PropertyFilterCriterion criterion, TestBean record) {
-        String fieldValue = filterId.equals("col1Filter") ? record.getField1() : String.valueOf(record.getField2());
+    private boolean filterAcceptsRecord(String fieldName, PropertyFilterCriterion criterion, TestBean record) {
+        String fieldValue = fieldName.equals("col1") ? record.getField1() : String.valueOf(record.getField2());
         if (criterion != null && criterion.getOperation().equals(OperationType.NON_EMPTY)) {
             return fieldValue != null && fieldValue.length() > 0;
         }
@@ -266,7 +269,7 @@ public class TableTestBean {
             return fieldValue == null || fieldValue.length() == 0;
         }
         if (criterion instanceof PropertyFilterCriterion) {
-            String filterText = ((PropertyFilterCriterion) criterion).getArg1().toString();
+            String filterText = criterion.getArg1().toString();
             if (filterText == null) {
                 return fieldValue == null;
             }

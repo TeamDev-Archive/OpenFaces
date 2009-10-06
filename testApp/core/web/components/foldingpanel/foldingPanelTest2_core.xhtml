@@ -238,7 +238,7 @@
         <h:outputText value="Color Name"/>
       </f:facet>
       <f:facet name="subHeader">
-        <o:dropDownFieldFilter id="nameFilter" expression="#{color.name}" options="#{ColorListBean.colorsNames}"/>
+        <o:dropDownFieldFilter expression="name" options="#{ColorListBean.colorsNames}"/>
       </f:facet>
       <h:outputText value="#{color.name}"/>
     </o:column>
