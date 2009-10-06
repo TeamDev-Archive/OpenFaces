@@ -13,10 +13,9 @@ package org.openfaces.component;
 
 import org.openfaces.component.filter.Filter;
 
-import javax.faces.context.FacesContext;
 import javax.el.ValueExpression;
+import javax.faces.context.FacesContext;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
@@ -61,10 +60,9 @@ public interface FilterableComponent {
 
     Object getFilteredValueByData(
             FacesContext facesContext,
-            Map<String, Object> requestMap,
-            ValueExpression criterionNameExpression,
-            String var,
-            Object data);
+            Object data,
+            Object expression
+    );
 
     void filterChanged(Filter filter);
 

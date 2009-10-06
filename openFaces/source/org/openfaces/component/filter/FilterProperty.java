@@ -4,17 +4,18 @@ import org.openfaces.component.OUIComponentBase;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
+import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import java.io.Serializable;
-import java.util.TimeZone;
-import java.text.SimpleDateFormat;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 /**
  * @author Natalia Zolochevska
  */
-public class FilterProperty extends OUIComponentBase implements Serializable {
+public class FilterProperty extends OUIComponentBase implements ValueHolder, Serializable {
 
     public static final String COMPONENT_FAMILY = "org.openfaces.FilterProperty";
     public static final String COMPONENT_TYPE = "org.openfaces.FilterProperty";
@@ -66,15 +67,19 @@ public class FilterProperty extends OUIComponentBase implements Serializable {
         caseSensitive = (Boolean) state[i++];
     }
 
-    public String getValue() {
+    public Object getValue() {
         if (value != null) return value;
         ValueExpression ve = getValueExpression("value");
         return ve != null ? String.valueOf(ve.getValue(getFacesContext().getELContext())) : null;        
     }
 
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setValue(Object value) {
+        this.value = (String) value;
+    }
+
+    public Object getLocalValue() {
+        return null;
     }
 
     public String getName() {

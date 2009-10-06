@@ -11,15 +11,16 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.TableStyles;
-import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.filter.Filter;
-import org.openfaces.util.ValueBindings;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.ReflectionUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -1344,15 +1345,23 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public Object getFilteredValueByData(
-            FacesContext facesContext,
-            Map<String, Object> requestMap,
-            ValueExpression criterionNameExpression,
-            String var,
-            Object data) {
+            FacesContext context,
+            Object data,
+            Object expression
+    ) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        String var = getVar();
+        Object rowData = setupDataRetrievalContext(data, requestMap, var);
+        Object result = expression instanceof ValueExpression
+                ? ((ValueExpression) expression).getValue(context.getELContext())
+                : ReflectionUtil.readProperty(rowData, (String) expression);
+        return result;
+    }
+
+    protected Object setupDataRetrievalContext(Object data, Map<String, Object> requestMap, String var) {
         requestMap.get(var);
         requestMap.put(var, data);
-        Object result = criterionNameExpression.getValue(facesContext.getELContext());
-        return result;
+        return data;
     }
 
     public void filterChanged(Filter filter) {

@@ -42,11 +42,11 @@ public class PropertyFilterCriterion extends FilterCriterion {
     }
 
     public boolean acceptsAll() {
-        for (Object parameter : parameters.values()) {
-            if (parameter != null && !parameter.equals(""))
-                return false;
-        }
-        return true;
+        return isParamEmpty(getArg1()) && isParamEmpty(getArg2());
+    }
+
+    private boolean isParamEmpty(Object parameter) {
+        return parameter == null || parameter.equals("");
     }
 
     public PropertyFilterCriterion(PropertyFilterCriterion criterion) {
@@ -62,6 +62,10 @@ public class PropertyFilterCriterion extends FilterCriterion {
 
     public void setPropertyLocator(PropertyLocator propertyLocator) {
         this.propertyLocator = propertyLocator;
+    }
+
+    public String getExpressionStr() {
+        return propertyLocator.getExpression().toString();
     }
 
     public OperationType getOperation() {

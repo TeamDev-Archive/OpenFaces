@@ -14,16 +14,15 @@ package org.openfaces.renderkit.filter;
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.component.filter.OperationType;
-import org.openfaces.component.filter.criterion.ExpressionPropertyLocator;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.criterion.PropertyLocator;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
 import org.openfaces.util.StringConverter;
+import org.openfaces.util.StyleUtil;
 
-import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -78,8 +77,8 @@ public abstract class FilterRenderer extends RendererBase {
     }
 
     protected PropertyFilterCriterion createDefaultCriterion(Filter filter, Object specifiedValue) {
-        ValueExpression expression = filter.getExpression();
-        ExpressionPropertyLocator propertyLocator = new ExpressionPropertyLocator(expression, filter.getFilteredComponent());
+        Object expression = filter.getExpression();
+        PropertyLocator propertyLocator = new PropertyLocator(expression, filter.getFilteredComponent());
         OperationType condition = getDefaultCondition();
 
         PropertyFilterCriterion criterion = new PropertyFilterCriterion(

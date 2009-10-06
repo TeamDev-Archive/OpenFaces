@@ -16,6 +16,9 @@ import javax.faces.context.FacesContext;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.beans.PropertyDescriptor;
+import java.beans.Introspector;
+import java.beans.IntrospectionException;
 
 /**
  * @author Eugene Goncharov
@@ -82,4 +85,37 @@ public class ReflectionUtil {
             return null;
         }
     }
+
+    public static Object readProperty(Object obj, String propertyName) {
+        int propertySeparatorIndex = propertyName.indexOf(".");
+        if (propertySeparatorIndex != -1) {
+            String immediatePropertyName = propertyName.substring(0, propertySeparatorIndex);
+            Object immediatePropertyValue = readProperty(obj, immediatePropertyName);
+            String subpropertyName = propertyName.substring(propertySeparatorIndex + 1);
+            return readProperty(immediatePropertyValue, subpropertyName);
+        }
+        PropertyDescriptor propertyDescriptor = null;
+        try {
+            PropertyDescriptor[] propertyDescriptors =
+                    Introspector.getBeanInfo(obj.getClass()).getPropertyDescriptors();
+            for (PropertyDescriptor pd : propertyDescriptors) {
+                if (propertyName.equals(pd.getName())) {
+                    propertyDescriptor = pd;
+                    break;
+                }
+            }
+        } catch (IntrospectionException e) {
+            throw new RuntimeException(e);
+        }
+        if (propertyDescriptor == null)
+            throw new IllegalArgumentException("There's no property named '" + propertyName + "' in class " + obj.getClass().getName());
+        try {
+            return propertyDescriptor.getReadMethod().invoke(obj);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

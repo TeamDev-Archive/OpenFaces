@@ -22,7 +22,11 @@ public abstract class FilterTag extends AbstractComponentTag {
         super.setComponentProperties(context, component);
 
         Filter filter = (Filter) component;
-        setPropertyBinding(component, "expression");
+        String expression = getPropertyValue("expression");
+        if (getExpressionCreator().isValueReference("expression", expression))
+            filter.setExpression(createValueExpression(context, "expression", expression));
+        else
+            filter.setExpression(expression);
         String criterion = getPropertyValue("value");
         if (!setPropertyAsBinding(component, "value", criterion)) {
             if (criterion.equals("equals"))

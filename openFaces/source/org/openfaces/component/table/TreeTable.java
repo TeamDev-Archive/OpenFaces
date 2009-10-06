@@ -821,16 +821,11 @@ public class TreeTable extends AbstractTable {
         return result;
     }
 
-    @Override
-    public Object getFilteredValueByData(
-            FacesContext facesContext,
-            Map<String, Object> requestMap,
-            ValueExpression criterionNameExpression,
-            String var,
-            Object data) {
+    protected Object setupDataRetrievalContext(Object data, Map<String, Object> requestMap, String var) {
         NodeInfoForRow nodeInfo = (data instanceof NodeInfoForRow) ? (NodeInfoForRow) data : ((TempNodeParams) data).getNodeInfoForRow();
         requestMap.get(var);
-        requestMap.put(var, nodeInfo.getNodeData());
+        Object nodeData = nodeInfo.getNodeData();
+        requestMap.put(var, nodeData);
 
         String nodeLevelVar = getNodeLevelVar();
         if (nodeLevelVar != null)
@@ -843,9 +838,7 @@ public class TreeTable extends AbstractTable {
         String nodeHasChildrenVar = getNodeHasChildrenVar();
         if (nodeHasChildrenVar != null)
             requestMap.put(nodeHasChildrenVar, nodeInfo.getNodeHasChildren());
-
-        Object result = criterionNameExpression.getValue(facesContext.getELContext());
-        return result;
+        return nodeData;
     }
 
     public boolean isDataSourceEmpty() {

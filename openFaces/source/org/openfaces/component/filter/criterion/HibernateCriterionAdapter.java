@@ -64,10 +64,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
 
 
     private static Criterion convertToHibernateCriteria(PropertyFilterCriterion propertyFilterCriterion) {
-        PropertyLocator propertyLocator = propertyFilterCriterion.getPropertyLocator();
-        if (! (propertyLocator instanceof NamedPropertyLocator))
-            throw new IllegalArgumentException("HibernateCriterionAdapter can work only with NamedPropertyLocators, but the following locator was found: " + propertyLocator.getClass().getName());
-        String property = ((NamedPropertyLocator) propertyLocator).getName();
+        String property = propertyFilterCriterion.getExpressionStr();
         Object parameter = propertyFilterCriterion.getArg1();
         Criterion result;
         switch (propertyFilterCriterion.getOperation()) {

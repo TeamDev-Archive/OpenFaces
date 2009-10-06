@@ -192,7 +192,7 @@ public class FilterRow implements Serializable {
     }
 
     private void initPropertySelector(DropDownField propertySelector) {
-        String propertyValue = (property != null) ? property.getValue() : null;
+        String propertyValue = (property != null) ? (String) property.getValue() : null;
         propertySelector.setValue(propertyValue);
     }
 
@@ -409,7 +409,7 @@ public class FilterRow implements Serializable {
     }
 
     public void updateRowModelFromCriterion(PropertyFilterCriterion criterion, CompositeFilter compositeFilter) {
-        property = compositeFilter.getFilterPropertyByName(criterion.getPropertyLocator());
+        property = compositeFilter.getFilterPropertyByName(criterion.getExpressionStr());
         operation = criterion.getOperation();
         inverse = criterion.isInverse();
         parametersEditorType = ParametersEditor.getParameterEditorType(property, operation);

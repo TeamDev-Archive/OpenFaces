@@ -15,8 +15,8 @@ package org.openfaces.renderkit.filter.param;
 import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.OperationType;
-import org.openfaces.component.filter.criterion.NamedPropertyLocator;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.criterion.PropertyLocator;
 import org.openfaces.renderkit.filter.FilterRow;
 
 import javax.faces.component.UIComponent;
@@ -26,7 +26,7 @@ import java.util.Map;
 
 public abstract class ParametersEditor {
 
-    protected PropertyFilterCriterion criterion = new PropertyFilterCriterion(); // todo: try to avoid data duplication with FilterRow's criterion
+    protected PropertyFilterCriterion criterion = new PropertyFilterCriterion();
     protected FilterProperty filterProperty;
 
     public ParametersEditor() {
@@ -34,7 +34,7 @@ public abstract class ParametersEditor {
 
     protected ParametersEditor(FilterProperty filterProperty, OperationType operation) {
         this.filterProperty = filterProperty;
-        criterion.setPropertyLocator(new NamedPropertyLocator(filterProperty.getName()));
+        criterion.setPropertyLocator(new PropertyLocator(filterProperty.getName()));
         criterion.setOperation(operation);
     }
 

@@ -3,7 +3,6 @@ package org.openfaces.component.filter;
 import org.openfaces.component.OUIComponentBase;
 import org.openfaces.component.filter.criterion.AndFilterCriterion;
 import org.openfaces.component.filter.criterion.CompositeFilterCriterion;
-import org.openfaces.component.filter.criterion.NamedPropertyLocator;
 import org.openfaces.component.filter.criterion.OrFilterCriterion;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.component.filter.criterion.PropertyLocator;
@@ -126,7 +125,7 @@ public class CompositeFilter extends OUIComponentBase {
             for (UIComponent child : children) {
                 if (child instanceof FilterProperty) {
                     FilterProperty filterProperty = (FilterProperty) child;
-                    filterPropertiesMap.put(filterProperty.getValue(), filterProperty);
+                    filterPropertiesMap.put((String) filterProperty.getValue(), filterProperty);
                 }
             }
         }
@@ -163,11 +162,8 @@ public class CompositeFilter extends OUIComponentBase {
         return result;
     }
 
-    public FilterProperty getFilterPropertyByName(PropertyLocator propertyLocator) {
+    public FilterProperty getFilterPropertyByName(String propertyName) {
         Map<String, FilterProperty> propertyNamesMap = getFilterPropertyNamesMap();
-        if (! (propertyLocator instanceof NamedPropertyLocator))
-            throw new IllegalArgumentException("CompositeFilter can work only with NamedPropertyLocators, but the following locator was found: " + propertyLocator.getClass().getName());
-        String propertyName = ((NamedPropertyLocator) propertyLocator).getName();
         FilterProperty result = propertyNamesMap.get(propertyName);
         return result;
     }

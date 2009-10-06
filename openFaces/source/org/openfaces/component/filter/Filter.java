@@ -14,9 +14,9 @@ package org.openfaces.component.filter;
 import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.filter.criterion.AndFilterCriterion;
-import org.openfaces.component.filter.criterion.ExpressionPropertyLocator;
 import org.openfaces.component.filter.criterion.OrFilterCriterion;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.criterion.PropertyLocator;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.SelfScheduledAction;
 import org.openfaces.util.ValueBindings;
@@ -31,7 +31,6 @@ import javax.faces.convert.Converter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -44,13 +43,12 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
     private static final String DEFAULT_NON_EMPTY_RECORDS_CRITERION_NAME = "<Non-empty>";
 
     private String _for;
-
+    private Object expression;
     private PropertyFilterCriterion value;
     private Converter converter;
     private boolean criterionModelUpdateRequired;
 
     private FilterableComponent filteredComponent;
-
 
     private String style;
     private String styleClass;
@@ -73,7 +71,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, _for, saveAttachedState(context, converter),
+        return new Object[]{superState, _for, saveAttachedState(context, converter), expression,
                 style, styleClass, predefinedCriterionStyle, predefinedCriterionClass,
                 value, allRecordsText, emptyRecordsText, nonEmptyRecordsText,
                 promptText, promptTextStyle, promptTextClass, caseSensitive, accesskey, tabindex, title, autoFilterDelay
@@ -87,6 +85,7 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         super.restoreState(context, state[i++]);
         _for = (String) state[i++];
         converter = (Converter) restoreAttachedState(context, state[i++]);
+        expression = state[i++];
         style = (String) state[i++];
         styleClass = (String) state[i++];
         predefinedCriterionStyle = (String) state[i++];
@@ -211,8 +210,12 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         return filteredComponent;
     }
 
-    public ValueExpression getExpression() {
-        return getValueExpression("expression");
+    public Object getExpression() {
+        return expression;
+    }
+
+    public void setExpression(Object expression) {
+        this.expression = expression;
     }
 
     public String getAllRecordsText() {
@@ -294,15 +297,14 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
             }
             return result;
         }
-        ValueExpression expression = getExpression();
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        String var = getFilteredComponent().getVar();
+        Object expression = getExpression();
+
         Set<Object> criterionNamesSet = new TreeSet<Object>();
         FilterableComponent filteredComponent = getFilteredComponent();
         List originalRowList = filteredComponent.getRowListForFiltering(this);
         boolean thereAreNullValues = false;
         for (Object data : originalRowList) {
-            Object value = filteredComponent.getFilteredValueByData(context, requestMap, expression, var, data);
+            Object value = filteredComponent.getFilteredValueByData(context, data, expression);
             if (value == null)
                 thereAreNullValues = true;
             else
@@ -355,8 +357,8 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         criterion.setCaseSensitive(caseSensitive);
     }
 
-    private ExpressionPropertyLocator getPropertyLocator() {
-        return new ExpressionPropertyLocator(
+    private PropertyLocator getPropertyLocator() {
+        return new PropertyLocator(
                 getExpression(),
                 getFilteredComponent());
     }
