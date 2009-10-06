@@ -13,8 +13,8 @@ package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.filter.Filter;
 import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.OneParameterCriterion;
 import org.openfaces.component.filter.TextSearchFilter;
+import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
@@ -47,6 +47,7 @@ public abstract class TextSearchFilterRenderer extends FilterRenderer {
         TextSearchFilter filter = (TextSearchFilter) component;
 
         UIInput inputComponent = (UIInput) filter.getSearchComponent();
+        inputComponent.setConverter(getConverter(filter));
         inputComponent.setValue(getStringValue(filter));
         configureInputComponent(context, filter, inputComponent);
         configureInputFromFilter(filter, inputComponent);
@@ -81,15 +82,16 @@ public abstract class TextSearchFilterRenderer extends FilterRenderer {
     }
 
     protected String getStringValue(Filter filter) {
-        FilterCriterion filterCriterion = filter.getValue();
+        FilterCriterion filterCriterion = (FilterCriterion) filter.getValue();
         if (filterCriterion == null) {
             return "";
         }
-        if (!(filterCriterion instanceof OneParameterCriterion)) {
+        if (!(filterCriterion instanceof PropertyFilterCriterion)) {
             throw new IllegalStateException("Illegal filter criterion: " + filterCriterion);
         }
-        OneParameterCriterion oneParameterCriterion = (OneParameterCriterion) filterCriterion;
-        return oneParameterCriterion.getValue().toString();
+        PropertyFilterCriterion criterion = (PropertyFilterCriterion) filterCriterion;
+        Object arg1 = criterion.getArg1();
+        return getConverter(filter).getAsString(FacesContext.getCurrentInstance(), filter, arg1);
     }
 
     private void configureInputFromFilter(Filter filter, UIInput input) {

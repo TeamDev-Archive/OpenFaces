@@ -12,12 +12,8 @@
 package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.filter.ComboBoxFilter;
-import org.openfaces.component.filter.EmptyRecordsCriterion;
-import org.openfaces.component.filter.EqualsFilterCriterion;
-import org.openfaces.component.filter.Filter;
-import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.NonEmptyRecordsCriterion;
-import org.openfaces.component.filter.OneParameterCriterion;
+import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.util.RenderingUtil;
@@ -28,6 +24,7 @@ import org.openfaces.util.StyleUtil;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -59,7 +56,7 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
         super.encodeBegin(context, component);
         ComboBoxFilter filter = ((ComboBoxFilter) component);
 
-        FilterCriterion currentCriterion = filter.getValue();
+        PropertyFilterCriterion currentCriterion = (PropertyFilterCriterion) filter.getValue();
 
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("select", component);
@@ -94,21 +91,24 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
         if (thereAreEmptyItems) {
             String emptyRecordsCriterionName = filter.getEmptyRecordsText();
             writeOption(writer, component, PREDEFINED_CRITERION_PREFIX + EMPTY, emptyRecordsCriterionName,
-                    currentCriterion instanceof EmptyRecordsCriterion,
+                    currentCriterion != null && currentCriterion.getOperation().equals(OperationType.EMPTY),
                     predefinedCriterionsClass);
 
             String nonEmptyRecordsCriterionName = filter.getNonEmptyRecordsText();
             writeOption(writer, component, PREDEFINED_CRITERION_PREFIX + NON_EMPTY,
                     nonEmptyRecordsCriterionName,
-                    currentCriterion instanceof NonEmptyRecordsCriterion,
+                    currentCriterion != null && currentCriterion.getOperation().equals(OperationType.NON_EMPTY),
                     predefinedCriterionsClass);
         }
 
+        Converter converter = getConverter(filter);
+        Object currentCriterionArg = currentCriterion != null ? currentCriterion.getArg1() : null;
+        String currentCriterionStr = converter.getAsString(context, filter, currentCriterionArg);
         boolean textCriterionSelected = false;
         for (Object criterionObj : criterionNames) {
-            String criterionName = criterionObj != null ? criterionObj.toString() : "";
-            boolean selected = currentCriterion instanceof OneParameterCriterion &&
-                    ((OneParameterCriterion) currentCriterion).getValue().equals(criterionName);
+            String criterionName = converter.getAsString(context, filter, criterionObj);
+            boolean selected = currentCriterion instanceof PropertyFilterCriterion &&
+                    currentCriterionStr.equals(criterionName);
             writeOption(writer, component,
                     USER_CRITERION_PREFIX + criterionName,
                     criterionName,
@@ -116,12 +116,11 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
             if (selected)
                 textCriterionSelected = true;
         }
-        boolean noRecordsWithSelectedCriterion = currentCriterion instanceof OneParameterCriterion && !textCriterionSelected;
+        boolean noRecordsWithSelectedCriterion = currentCriterion instanceof PropertyFilterCriterion && !textCriterionSelected;
         if (noRecordsWithSelectedCriterion) {
-            String criterionName = ((OneParameterCriterion) currentCriterion).getValue().toString();
             writeOption(writer, component,
-                    USER_CRITERION_PREFIX + criterionName,
-                    criterionName,
+                    USER_CRITERION_PREFIX + currentCriterionStr,
+                    currentCriterionStr,
                     true, null);
         }
 
@@ -171,13 +170,13 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
             setDecodedString(filter, searchString);
         } else if (selectedCriterion.startsWith(PREDEFINED_CRITERION_PREFIX)) {
             String criterion = selectedCriterion.substring(PREDEFINED_CRITERION_PREFIX.length());
-            FilterCriterion newCriterion;
+            PropertyFilterCriterion newCriterion;
             if (criterion.equals(ALL))
                 newCriterion = null;
             else if (criterion.equals(EMPTY))
-                newCriterion = new EmptyRecordsCriterion();
+                newCriterion = new PropertyFilterCriterion(null, OperationType.EMPTY, null);
             else if (criterion.equals(NON_EMPTY))
-                newCriterion = new NonEmptyRecordsCriterion();
+                newCriterion = new PropertyFilterCriterion(null, OperationType.NON_EMPTY, null);
             else
                 throw new IllegalStateException("Unknown predefined criterion came from client: " + criterion);
             setDecodedCriterion(filter, newCriterion);
@@ -185,8 +184,8 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
             throw new IllegalStateException("Improperly formatted criterion came from client: " + selectedCriterion);
     }
 
-    protected FilterCriterion createDefaultCriterion(Filter filter, String searchString) {
-        return new EqualsFilterCriterion(searchString, filter.isCaseSensitive());
+    @Override
+    protected OperationType getDefaultCondition() {
+        return OperationType.EQUALS;
     }
-
 }

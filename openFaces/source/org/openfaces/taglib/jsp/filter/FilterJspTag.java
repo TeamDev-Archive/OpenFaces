@@ -44,6 +44,10 @@ public class FilterJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("caseSensitive", caseSensitive);
     }
 
+    public void setConverter(ValueExpression converter) {
+        getDelegate().setPropertyValue("converter", converter);
+    }
+
     public void setAllRecordsText(ValueExpression allRecordsText) {
         getDelegate().setPropertyValue("allRecordsText", allRecordsText);
     }

@@ -453,7 +453,10 @@ public abstract class AbstractComponentTag extends AbstractTag {
         String converterValue = getPropertyValue(propertyName);
         if (!setPropertyAsBinding(component, propertyName)) {
             Converter converter = application.createConverter(converterValue);
-            ((ValueHolder) component).setConverter(converter);
+            if (component instanceof ValueHolder)
+                ((ValueHolder) component).setConverter(converter);
+            else
+                component.getAttributes().put(propertyName, converter);
         }
     }
 

@@ -11,10 +11,13 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.util.ValueBindings;
-import org.openfaces.util.DataUtil;
+import org.apache.commons.collections.Predicate;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.component.filter.FilterCriterion;
+import org.openfaces.component.filter.criterion.PredicateAdapter;
+import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.util.DataUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.context.ExternalContext;
@@ -34,12 +37,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
-import java.util.HashMap;
 
 /**
  * @author Dmitry Pikhulya
@@ -445,7 +448,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
             Filter filter = filters.get(i);
             if (filter.isAcceptingAllRecords())
                 continue;
-            FilterCriterion filterCriterion = filter.getValue();
+            FilterCriterion filterCriterion = (FilterCriterion) filter.getValue();
             criteria.put(filter.getId(), filterCriterion);
         }
         setRequestVariable(VAR_FILTER_CRITERIA, criteria);
@@ -562,14 +565,13 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     }
 
     public static List<RowInfo> filterRows(List<Filter> filters, List<RowInfo> sortedRows, List<boolean[]> filteringFlags) {
-        FacesContext context = FacesContext.getCurrentInstance();
         List<RowInfo> result = new ArrayList<RowInfo>();
         int sortedRowCount = sortedRows.size();
         for (int i = 0; i < sortedRowCount; i++) {
             RowInfo rowObj = sortedRows.get(i);
 
             boolean[] flagsArray = new boolean[filters.size()];
-            boolean rowAccepted = filterRow(context, filters, rowObj, flagsArray);
+            boolean rowAccepted = filterRow(filters, rowObj, flagsArray);
             filteringFlags.add(flagsArray);
             if (rowAccepted)
                 result.add(rowObj);
@@ -577,14 +579,17 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         return result;
     }
 
-    public static boolean filterRow(FacesContext context, List<Filter> filters, Object rowObj, boolean[] flagsArray) {
+    public static boolean filterRow(List<Filter> filters, Object rowObj, boolean[] flagsArray) {
         Object data = (rowObj instanceof RowInfo)
                 ? ((RowInfo) rowObj).getRowData() // RowInfo for DataTable (for storing original row indexes)
                 : rowObj; // row data object for TreeTable (for there's no notion of index in TreeTable)
         boolean rowAccepted = true;
         for (int filterIndex = 0, filterCount = filters.size(); filterIndex < filterCount; filterIndex++) {
             Filter filter = filters.get(filterIndex);
-            boolean filterAcceptsData = filter.acceptsData(context, data);
+            PropertyFilterCriterion filterValue = (PropertyFilterCriterion) filter.getValue();
+
+            Predicate predicate = filterValue != null ? PredicateAdapter.convertToPredicate(filterValue) : null;
+            boolean filterAcceptsData = predicate == null || predicate.evaluate(data);
             if (!filterAcceptsData)
                 rowAccepted = false;
             flagsArray[filterIndex] = filterAcceptsData;

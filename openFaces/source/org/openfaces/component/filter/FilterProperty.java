@@ -57,7 +57,7 @@ public class FilterProperty extends OUIComponentBase implements Serializable {
         value = (String) state[i++];
         name = (String) state[i++];
         type = (FilterType) state[i++];
-        dataProvider = (Object) state[i++];
+        dataProvider = state[i++];
         maxValue = (Number) state[i++];
         minValue = (Number) state[i++];
         step = (Number) state[i++];

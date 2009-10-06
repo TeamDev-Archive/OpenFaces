@@ -11,15 +11,15 @@
  */
 package org.openfaces.portlets;
 
-import org.openfaces.component.filter.ContainsFilterCriterion;
+import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PeopleList {
 
-  private List myPerson = new ArrayList();
-  private ContainsFilterCriterion myFilterValue = new ContainsFilterCriterion("a");
+  private List<Person> myPerson = new ArrayList<Person>();
+  private PropertyFilterCriterion myFilterValue = new PropertyFilterCriterion(null, null, "a");
   private Person mySelectedRow1;
   private Person mySelectedRow2;
   private List mySelectedRows = new ArrayList();
@@ -148,16 +148,16 @@ public class PeopleList {
     ));
   }
 
-  public List getPerson() {
+  public List<Person> getPerson() {
     return myPerson;
   }
 
 
-  public ContainsFilterCriterion getFilterValue() {
+  public PropertyFilterCriterion getFilterValue() {
     return myFilterValue;
   }
 
-  public void setFilterValue(ContainsFilterCriterion filterValue) {
+  public void setFilterValue(PropertyFilterCriterion filterValue) {
     myFilterValue = filterValue;
   }
 

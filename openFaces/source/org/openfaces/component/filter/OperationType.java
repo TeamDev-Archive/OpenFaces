@@ -4,6 +4,8 @@ package org.openfaces.component.filter;
  * @author Natalia Zolochevska
  */
 public enum OperationType {
+    EMPTY("org.openfaces.operation.empty", "Empty"),
+    NON_EMPTY("org.openfaces.operation.nonEmpty", "Non-empty"),
     EQUALS("org.openfaces.filter.operation.equals", "Equals"),
     CONTAINS("org.openfaces.filter.operation.contains", "Contains"),
     BEGINS("org.openfaces.filter.operation.begins", "Begins with"),

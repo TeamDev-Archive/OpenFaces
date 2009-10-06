@@ -1769,9 +1769,7 @@
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
-      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
-      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
+      <!-- @bindingType org.openfaces.component.table. PropertyFilterCriterion -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -1783,6 +1781,17 @@
       </deferred-value>
       <!-- @bindingType boolean-->
       <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A converter for the filter value. Should be specified as a value-binding expression or converter identifier.
+      </description>
+      <name>converter</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
@@ -2045,9 +2054,7 @@
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
-      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
-      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
+      <!-- @bindingType org.openfaces.component.table. PropertyFilterCriterion -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -2664,9 +2671,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. ContainsFilterCriterion -->
-      <!-- @bindingType org.openfaces.component.table. EmptyRecordsCriterion -->
-      <!-- @bindingType org.openfaces.component.table. NonEmptyRecordsCriterion -->
+      <!-- @bindingType org.openfaces.component.table. PropertyFilterCriterion -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>

@@ -12,18 +12,21 @@
 package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.FilterableComponent;
-import org.openfaces.component.filter.ContainsFilterCriterion;
 import org.openfaces.component.filter.Filter;
-import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.OneParameterCriterion;
+import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.criterion.ExpressionPropertyLocator;
+import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleUtil;
+import org.openfaces.util.StringConverter;
 
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 
 /**
  * @author Dmitry Pikhulya
@@ -43,7 +46,7 @@ public abstract class FilterRenderer extends RendererBase {
         return StyleUtil.getCSSClass(context, filter, predefinedCriterionStyle, DEFAULT_PREDEFINED_CRITERION_CLASS, filter.getPredefinedCriterionClass());
     }
 
-    protected void setDecodedCriterion(Filter filter, FilterCriterion newCriterion) {
+    protected void setDecodedCriterion(Filter filter, PropertyFilterCriterion newCriterion) {
         if (!filter.changeCriterion(newCriterion))
             return;
         FilterableComponent filteredComponent = filter.getFilteredComponent();
@@ -55,16 +58,40 @@ public abstract class FilterRenderer extends RendererBase {
     }
 
     protected void setDecodedString(Filter filter, String searchString) {
-        FilterCriterion oldCriterion = filter.getValue();
-        FilterCriterion newCriterion;
-        if (oldCriterion instanceof OneParameterCriterion)
-            newCriterion = ((OneParameterCriterion) oldCriterion).setValue(searchString);
-        else
+        Converter converter = getConverter(filter);
+        PropertyFilterCriterion oldCriterion = (PropertyFilterCriterion) filter.getValue();
+        PropertyFilterCriterion newCriterion;
+        if (oldCriterion != null &&
+                !oldCriterion.getOperation().equals(OperationType.EMPTY) &&
+                !oldCriterion.getOperation().equals(OperationType.CONTAINS) ) {
+            newCriterion = new PropertyFilterCriterion(oldCriterion);
+            Object argAsObject = converter.getAsObject(FacesContext.getCurrentInstance(), filter, searchString);
+            newCriterion.setArg1(argAsObject);
+        } else
             newCriterion = createDefaultCriterion(filter, searchString);
         setDecodedCriterion(filter, newCriterion);
     }
 
-    protected FilterCriterion createDefaultCriterion(Filter filter, String searchString) {
-        return new ContainsFilterCriterion(searchString, filter.isCaseSensitive());
+    protected Converter getConverter(Filter filter) {
+        Converter converter = filter.getConverter();
+        return converter != null ? converter : new StringConverter();
     }
+
+    protected PropertyFilterCriterion createDefaultCriterion(Filter filter, Object specifiedValue) {
+        ValueExpression expression = filter.getExpression();
+        ExpressionPropertyLocator propertyLocator = new ExpressionPropertyLocator(expression, filter.getFilteredComponent());
+        OperationType condition = getDefaultCondition();
+
+        PropertyFilterCriterion criterion = new PropertyFilterCriterion(
+                propertyLocator,
+                condition,
+                specifiedValue);
+        criterion.setCaseSensitive(filter.isCaseSensitive());
+        return criterion;
+    }
+
+    protected OperationType getDefaultCondition() {
+        return OperationType.CONTAINS;
+    }
+
 }

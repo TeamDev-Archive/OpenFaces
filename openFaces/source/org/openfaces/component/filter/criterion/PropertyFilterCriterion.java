@@ -1,8 +1,8 @@
 package org.openfaces.component.filter.criterion;
 
 import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.OperationType;
 import org.openfaces.component.filter.FilterCriterionProcessor;
+import org.openfaces.component.filter.OperationType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +23,20 @@ public class PropertyFilterCriterion extends FilterCriterion {
     public PropertyFilterCriterion() {
     }
 
+    public PropertyFilterCriterion(PropertyLocator propertyLocator, OperationType operation, Object arg1) {
+        this.propertyLocator = propertyLocator;
+        this.operation = operation;
+        setArg1(arg1);
+    }
+
+    public PropertyFilterCriterion(PropertyLocator propertyLocator, OperationType operation,
+                                   Map<String, Object> parameters, boolean inverse) {
+        this.propertyLocator = propertyLocator;
+        this.operation = operation;
+        this.parameters = parameters;
+        this.inverse = inverse;
+    }
+
     public Object process(FilterCriterionProcessor processor) {
         return processor.process(this);
     }
@@ -33,10 +47,6 @@ public class PropertyFilterCriterion extends FilterCriterion {
                 return false;
         }
         return true;
-    }
-
-    public boolean acceptsValue(Object value) {
-        return false; // todo: should this method be removed from FilterCriterion?
     }
 
     public PropertyFilterCriterion(PropertyFilterCriterion criterion) {
@@ -66,16 +76,16 @@ public class PropertyFilterCriterion extends FilterCriterion {
         return parameters;
     }
 
-    public void setArg1(Object parameter) {
-        parameters.put(PARAM_ARG1, parameter);
+    public void setArg1(Object arg1) {
+        parameters.put(PARAM_ARG1, arg1);
     }
 
     public Object getArg1() {
         return parameters.get(PARAM_ARG1);
     }
 
-    public void setArg2(Object parameter) {
-        parameters.put(PARAM_ARG2, parameter);
+    public void setArg2(Object arg2) {
+        parameters.put(PARAM_ARG2, arg2);
     }
 
     public Object getArg2() {
@@ -109,7 +119,8 @@ public class PropertyFilterCriterion extends FilterCriterion {
         if (inverse != criterion.inverse) return false;
         if (operation != criterion.operation) return false;
         if (parameters != null ? !parameters.equals(criterion.parameters) : criterion.parameters != null) return false;
-        if (propertyLocator != null ? !propertyLocator.equals(criterion.propertyLocator) : criterion.propertyLocator != null) return false;
+        if (propertyLocator != null ? !propertyLocator.equals(criterion.propertyLocator) : criterion.propertyLocator != null)
+            return false;
 
         return true;
     }

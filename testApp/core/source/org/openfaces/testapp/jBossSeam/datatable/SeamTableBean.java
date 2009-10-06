@@ -21,7 +21,7 @@ import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.datamodel.DataModelSelection;
-import org.openfaces.component.filter.ContainsFilterCriterion;
+import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
@@ -60,7 +60,7 @@ public class SeamTableBean implements Serializable, SeamTable {
     private DataTableItem singleSelectionItem;
     private List<DataTableItem> multipleSelectionItems;
 
-    private ContainsFilterCriterion filterValue = new ContainsFilterCriterion("item1");
+    private PropertyFilterCriterion filterValue = new PropertyFilterCriterion(null, null, "item1");
 
     private String col1Value;
     private String col2Value;
@@ -95,11 +95,11 @@ public class SeamTableBean implements Serializable, SeamTable {
         return values;
     }
 
-    public ContainsFilterCriterion getFilterValue() {
+    public PropertyFilterCriterion getFilterValue() {
         return filterValue;
     }
 
-    public void setFilterValue(ContainsFilterCriterion filterValue) {
+    public void setFilterValue(PropertyFilterCriterion filterValue) {
         this.filterValue = filterValue;
     }
 

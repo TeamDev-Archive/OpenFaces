@@ -24,7 +24,7 @@ public class StringConverter implements Converter {
     }
 
     public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
-        if (value == null)
+        if (value == null || value.equals(""))
             return null;
         value = value.trim();
         return value;

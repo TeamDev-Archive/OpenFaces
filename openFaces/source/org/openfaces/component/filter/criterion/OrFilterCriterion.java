@@ -34,15 +34,6 @@ public class OrFilterCriterion extends CompositeFilterCriterion {
         return true;
     }
 
-    public boolean acceptsValue(Object value) {
-        List<FilterCriterion> criteria = getCriteria();
-        for (FilterCriterion criterion : criteria) {
-            if (criterion.acceptsValue(value))
-                return true;
-        }
-        return true;
-    }
-
     public Object process(FilterCriterionProcessor processor) {
         return processor.process(this);
     }

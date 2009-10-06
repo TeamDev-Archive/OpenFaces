@@ -55,7 +55,7 @@ public class ForumMessage implements Serializable {
         return author;
     }
 
-    public List getReplies() {
+    public List<ForumMessage> getReplies() {
         return replies;
     }
 

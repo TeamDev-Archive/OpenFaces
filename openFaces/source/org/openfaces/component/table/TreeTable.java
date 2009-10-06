@@ -443,7 +443,6 @@ public class TreeTable extends AbstractTable {
                                      List<NodeInfoForRow> nodeInfos_unfiltered,
                                      int level, int sortLevel, TreePath parentNodePath,
                                      TreePath parentNodeKeyPath, boolean thisLevelInitiallyVisible) {
-        FacesContext context = FacesContext.getCurrentInstance();
         if (level > deepestLevel)
             deepestLevel = level;
 
@@ -465,7 +464,7 @@ public class TreeTable extends AbstractTable {
             );
             TempNodeParams thisNodeParams = new TempNodeParams(nodeData, nodeInfo, nodeExpanded, preloadChildren);
             boolean[] flagsArray = new boolean[activeFilters.size()];
-            boolean rowAccepted = TableDataModel.filterRow(context, activeFilters, thisNodeParams, flagsArray);
+            boolean rowAccepted = TableDataModel.filterRow(activeFilters, thisNodeParams, flagsArray);
             thisNodeParams.setRowAccepted(rowAccepted);
             thisNodeParams.setFilteringFlags(flagsArray);
 

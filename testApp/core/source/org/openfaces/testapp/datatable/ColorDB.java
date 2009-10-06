@@ -12,8 +12,8 @@
 
 package org.openfaces.testapp.datatable;
 
-import org.openfaces.component.filter.ContainsFilterCriterion;
 import org.openfaces.component.filter.FilterCriterion;
+import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -181,8 +181,8 @@ public class ColorDB {
         for (Iterator<Map.Entry<String, FilterCriterion>> it = filterCriteria.entrySet().iterator(); it.hasNext();) {
             Map.Entry<String, FilterCriterion> entry = it.next();
             String filterId = entry.getKey();
-            ContainsFilterCriterion criterion = (ContainsFilterCriterion) entry.getValue();
-            String text = criterion.getValue().toString();
+            PropertyFilterCriterion criterion = (PropertyFilterCriterion) entry.getValue();
+            String text = criterion.getArg1().toString();
             String criterionText = filterId + " CONTAINS \"" + text + "\"";
             buf.append(criterionText);
             if (it.hasNext())
@@ -251,8 +251,8 @@ public class ColorDB {
         for (Color tempColor : colorsToFilter) {
             boolean colorAccepted = true;
             for (Map.Entry<String, FilterCriterion> entry: criteria.entrySet()) {
-                ContainsFilterCriterion criterion = (ContainsFilterCriterion) entry.getValue();
-                String criterionUC = criterion.getValue().toString().toUpperCase();
+                PropertyFilterCriterion criterion = (PropertyFilterCriterion) entry.getValue();
+                String criterionUC = criterion.getArg1().toString().toUpperCase();
                 String colorNameUC = tempColor.getName().toUpperCase();
                 if (colorNameUC.indexOf(criterionUC) == -1) {
                     colorAccepted = false;

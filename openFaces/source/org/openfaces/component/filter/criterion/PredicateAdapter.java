@@ -82,6 +82,9 @@ public class PredicateAdapter extends FilterCriterionProcessor {
         OperationType operation = propertyFilterCriterion.getOperation();
         final Predicate predicateFunctor;
         Object parameter = propertyFilterCriterion.getArg1();
+        if (parameter == null)
+            return TruePredicate.getInstance();
+
         switch (operation) {
             case GE: {
                 Comparator comparator = getComparatorForParameter(parameter);
@@ -123,6 +126,8 @@ public class PredicateAdapter extends FilterCriterionProcessor {
             case BETWEEN: {
                 Comparator comparator = getComparatorForParameter(parameter);
                 Object parameter2 = propertyFilterCriterion.getArg2();
+                if (parameter2 == null)
+                    return TruePredicate.getInstance();
                 if (parameter instanceof Date && parameter2 instanceof Date) {
                     TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
                     parameter = ParametersInterpretator.dayStart((Date) parameter, timeZone);
@@ -217,7 +222,7 @@ public class PredicateAdapter extends FilterCriterionProcessor {
         }
 
         public boolean evaluate(Object o) {
-            String value = (String) o;
+            String value = o.toString();
             if (!caseSensitive) {
                 return evaluate(parameter.toUpperCase(), value.toUpperCase());
             } else {
@@ -264,5 +269,14 @@ public class PredicateAdapter extends FilterCriterionProcessor {
         }
     }
 
+    private static class TruePredicate implements Predicate {
+        private static TruePredicate instance = new TruePredicate();
+        public boolean evaluate(Object o) {
+            return true;
+        }
 
+        public static TruePredicate getInstance() {
+            return instance;
+        }
+    }
 }
