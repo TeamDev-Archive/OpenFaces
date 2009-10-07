@@ -88,9 +88,9 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
         writeOption(writer, component, PREDEFINED_CRITERION_PREFIX + ALL, allRecordsCriterionName,
                 currentCriterion == null,
                 predefinedCriterionsClass);
+        FilterCondition condition = currentCriterion != null ? currentCriterion.getCondition() : null;
         if (thereAreEmptyItems) {
             String emptyRecordsCriterionName = filter.getEmptyRecordsText();
-            FilterCondition condition = currentCriterion != null ? currentCriterion.getCondition() : null;
             writeOption(writer, component, PREDEFINED_CRITERION_PREFIX + EMPTY, emptyRecordsCriterionName,
                     condition != null && condition.equals(FilterCondition.EMPTY) && !currentCriterion.isInverse(),
                     predefinedCriterionsClass);
@@ -117,7 +117,7 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
             if (selected)
                 textCriterionSelected = true;
         }
-        boolean noRecordsWithSelectedCriterion = currentCriterion instanceof PropertyFilterCriterion && !textCriterionSelected;
+        boolean noRecordsWithSelectedCriterion = currentCriterion != null && condition != FilterCondition.EMPTY && !textCriterionSelected;
         if (noRecordsWithSelectedCriterion) {
             writeOption(writer, component,
                     USER_CRITERION_PREFIX + currentCriterionStr,

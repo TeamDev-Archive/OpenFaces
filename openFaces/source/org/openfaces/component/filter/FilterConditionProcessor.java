@@ -14,15 +14,15 @@ package org.openfaces.component.filter;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class FilterConditionProcessor {
-    public abstract Object processEmpty();
-    public abstract Object processEquals();
-    public abstract Object processContains();
-    public abstract Object processBegins();
-    public abstract Object processEnds();
-    public abstract Object processLess();
-    public abstract Object processGreater();
-    public abstract Object processLessOrEqual();
-    public abstract Object processGreaterOrEqual();
-    public abstract Object processBetween();
+public abstract class FilterConditionProcessor <T> {
+    public abstract T processEmpty();
+    public abstract T processEquals();
+    public abstract T processContains();
+    public abstract T processBegins();
+    public abstract T processEnds();
+    public abstract T processLess();
+    public abstract T processGreater();
+    public abstract T processLessOrEqual();
+    public abstract T processGreaterOrEqual();
+    public abstract T processBetween();
 }

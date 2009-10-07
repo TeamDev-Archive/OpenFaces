@@ -1,9 +1,5 @@
 package org.openfaces.component.filter;
 
-import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.FilterCriterionProcessor;
-import org.openfaces.component.filter.FilterCondition;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,11 +39,67 @@ public class PropertyFilterCriterion extends FilterCriterion {
     }
 
     public boolean acceptsAll() {
-        return isParamEmpty(getArg1()) && isParamEmpty(getArg2());
-    }
+        if (condition == null)
+            return true;
+        return condition.process(new FilterConditionProcessor<Boolean>() {
+            @Override
+            public Boolean processEmpty() {
+                return false;
+            }
 
-    private boolean isParamEmpty(Object parameter) {
-        return parameter == null || parameter.equals("");
+            private boolean isParamEmpty(Object parameter) {
+                return parameter == null || parameter.equals("");
+            }
+
+            private boolean isParam1Empty() {
+                return isParamEmpty(getArg1());
+            }
+
+            @Override
+            public Boolean processEquals() {
+                return isParam1Empty();
+            }
+
+            @Override
+            public Boolean processContains() {
+                return isParam1Empty();
+            }
+
+            @Override
+            public Boolean processBegins() {
+                return isParam1Empty();
+            }
+
+            @Override
+            public Boolean processEnds() {
+                return isParam1Empty();
+            }
+
+            @Override
+            public Boolean processLess() {
+                return isParam1Empty();
+            }
+
+            @Override
+            public Boolean processGreater() {
+                return isParam1Empty();
+            }
+
+            @Override
+            public Boolean processLessOrEqual() {
+                return isParam1Empty();
+            }
+
+            @Override
+            public Boolean processGreaterOrEqual() {
+                return isParam1Empty();
+            }
+
+            @Override
+            public Boolean processBetween() {
+                return isParamEmpty(getArg1()) && isParamEmpty(getArg2());
+            }
+        });
     }
 
     public PropertyFilterCriterion(PropertyFilterCriterion criterion) {

@@ -34,6 +34,6 @@ public class StringConverter implements Converter {
         if (value == null) {
             return "";
         }
-        return (String) value;
+        return value.toString();
     }
 }

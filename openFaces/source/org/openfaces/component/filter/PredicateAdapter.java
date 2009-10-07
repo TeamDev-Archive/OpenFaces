@@ -17,10 +17,6 @@ import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.collections.functors.AllPredicate;
 import org.apache.commons.collections.functors.AnyPredicate;
 import org.apache.commons.collections.functors.NotPredicate;
-import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.FilterCriterionProcessor;
-import org.openfaces.component.filter.FilterCondition;
-import org.openfaces.component.filter.FilterConditionProcessor;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -83,11 +79,11 @@ public class PredicateAdapter extends FilterCriterionProcessor {
         final FilterCondition condition = propertyFilterCriterion.getCondition();
 
         final Object parameter = propertyFilterCriterion.getArg1();
-        if (parameter == null)
+        if (parameter == null && condition != FilterCondition.EMPTY)
             return TruePredicate.getInstance();
 
-        final Predicate predicateFunctor = (Predicate) condition.process(new FilterConditionProcessor() {
-            public Object processEmpty() {
+        final Predicate predicateFunctor = condition.process(new FilterConditionProcessor<Predicate>() {
+            public Predicate processEmpty() {
                 return new Predicate() {
                     public boolean evaluate(Object o) {
                         return o == null || o.equals("");
@@ -95,7 +91,7 @@ public class PredicateAdapter extends FilterCriterionProcessor {
                 };
             }
 
-            public Object processEquals() {
+            public Predicate processEquals() {
                 Comparator comparator = getComparatorForParameter(parameter);
                 if (parameter instanceof Date) {
                     TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
@@ -116,7 +112,7 @@ public class PredicateAdapter extends FilterCriterionProcessor {
                 }
             }
 
-            public Object processContains() {
+            public Predicate processContains() {
                 boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
                 return new AbstractStringPredicate(parameter.toString(), caseSensitive) {
                     public boolean evaluate(String parameter, String value) {
@@ -125,7 +121,7 @@ public class PredicateAdapter extends FilterCriterionProcessor {
                 };
             }
 
-            public Object processBegins() {
+            public Predicate processBegins() {
                 boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
                 return new AbstractStringPredicate(parameter.toString(), caseSensitive) {
                     public boolean evaluate(String parameter, String value) {
@@ -134,7 +130,7 @@ public class PredicateAdapter extends FilterCriterionProcessor {
                 };
             }
 
-            public Object processEnds() {
+            public Predicate processEnds() {
                 boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
                 return new AbstractStringPredicate(parameter.toString(), caseSensitive) {
                     public boolean evaluate(String parameter, String value) {
@@ -143,7 +139,7 @@ public class PredicateAdapter extends FilterCriterionProcessor {
                 };
             }
 
-            public Object processLess() {
+            public Predicate processLess() {
                 Comparator comparator = getComparatorForParameter(parameter);
                 Object correctedParameter = parameter;
                 if (parameter instanceof Date) {
@@ -153,7 +149,7 @@ public class PredicateAdapter extends FilterCriterionProcessor {
                 return new ComparePredicate(correctedParameter, condition, comparator);
             }
 
-            public Object processGreater() {
+            public Predicate processGreater() {
                 Comparator comparator = getComparatorForParameter(parameter);
                 Object correctedParameter = parameter;
                 if (parameter instanceof Date) {
@@ -163,7 +159,7 @@ public class PredicateAdapter extends FilterCriterionProcessor {
                 return new ComparePredicate(correctedParameter, condition, comparator);
             }
 
-            public Object processLessOrEqual() {
+            public Predicate processLessOrEqual() {
                 Comparator comparator = getComparatorForParameter(parameter);
                 Object correctedParameter = parameter;
                 if (parameter instanceof Date) {
@@ -173,7 +169,7 @@ public class PredicateAdapter extends FilterCriterionProcessor {
                 return new ComparePredicate(correctedParameter, condition, comparator);
             }
 
-            public Object processGreaterOrEqual() {
+            public Predicate processGreaterOrEqual() {
                 Comparator comparator = getComparatorForParameter(parameter);
                 Object correctedParameter = parameter;
                 if (parameter instanceof Date) {
@@ -183,7 +179,7 @@ public class PredicateAdapter extends FilterCriterionProcessor {
                 return new ComparePredicate(correctedParameter, condition, comparator);
             }
 
-            public Object processBetween() {
+            public Predicate processBetween() {
                 Comparator comparator = getComparatorForParameter(parameter);
                 Object parameter1 = parameter;
                 Object parameter2 = propertyFilterCriterion.getArg2();
@@ -232,7 +228,7 @@ public class PredicateAdapter extends FilterCriterionProcessor {
         }
 
         public boolean evaluate(Object o) {
-            String value = o.toString();
+            String value = o != null ? o.toString() : "";
             if (!caseSensitive) {
                 return evaluate(parameter.toUpperCase(), value.toUpperCase());
             } else {

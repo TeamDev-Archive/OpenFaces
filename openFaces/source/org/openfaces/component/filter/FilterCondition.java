@@ -35,7 +35,7 @@ public enum FilterCondition {
         return "org.openfaces.filter.condition." + name;
     }
 
-    public Object process(FilterConditionProcessor processor) {
+    public <T> T process(FilterConditionProcessor<T> processor) {
         switch (this) {
             case EMPTY:
                 return processor.processEmpty();

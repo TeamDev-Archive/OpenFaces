@@ -16,10 +16,6 @@ import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
-import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.FilterCriterionProcessor;
-import org.openfaces.component.filter.FilterCondition;
-import org.openfaces.component.filter.FilterConditionProcessor;
 
 import java.util.Date;
 import java.util.List;
@@ -69,14 +65,14 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
         final String property = propertyFilterCriterion.getExpressionStr();
         final Object parameter = propertyFilterCriterion.getArg1();
         FilterCondition condition = propertyFilterCriterion.getCondition();
-        Criterion result = (Criterion) condition.process(new FilterConditionProcessor() {
+        Criterion result = condition.process(new FilterConditionProcessor<Criterion>() {
             @Override
-            public Object processEmpty() {
+            public Criterion processEmpty() {
                 return Restrictions.isNull(property);
             }
 
             @Override
-            public Object processEquals() {
+            public Criterion processEquals() {
                 if (parameter == null) {
                     return Restrictions.isNull(property);
                 }
@@ -99,7 +95,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
             }
 
             @Override
-            public Object processContains() {
+            public Criterion processContains() {
                 boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
                 if (!caseSensitive) {
                     return Restrictions.like(property, "%" + parameter.toString().toLowerCase() + "%").ignoreCase();
@@ -109,7 +105,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
             }
 
             @Override
-            public Object processBegins() {
+            public Criterion processBegins() {
                 boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
                 if (!caseSensitive) {
                     return Restrictions.like(property, parameter.toString().toLowerCase() + "%").ignoreCase();
@@ -119,7 +115,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
             }
 
             @Override
-            public Object processEnds() {
+            public Criterion processEnds() {
                 boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
                 if (!caseSensitive) {
                     return Restrictions.like(property, "%" + parameter.toString().toLowerCase()).ignoreCase();
@@ -129,7 +125,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
             }
 
             @Override
-            public Object processLess() {
+            public Criterion processLess() {
                 Object correctedParameter = parameter;
                 if (parameter instanceof Date) {
                     TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
@@ -139,7 +135,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
             }
 
             @Override
-            public Object processGreater() {
+            public Criterion processGreater() {
                 Object correctedParameter = parameter;
                 if (parameter instanceof Date) {
                     TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
@@ -149,7 +145,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
             }
 
             @Override
-            public Object processLessOrEqual() {
+            public Criterion processLessOrEqual() {
                 Object correctedParameter = parameter;
                 if (parameter instanceof Date) {
                     TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
@@ -159,7 +155,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
             }
 
             @Override
-            public Object processGreaterOrEqual() {
+            public Criterion processGreaterOrEqual() {
                 Object correctedParameter = parameter;
                 if (parameter instanceof Date) {
                     TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
@@ -169,7 +165,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
             }
 
             @Override
-            public Object processBetween() {
+            public Criterion processBetween() {
                 Object parameter2 = propertyFilterCriterion.getArg2();
                 if (parameter instanceof Date && parameter2 instanceof Date) {
                     TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
