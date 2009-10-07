@@ -55,7 +55,7 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
     }
 
     private void synchronizeFilterRowsWithCriteria(CompositeFilter filter) {
-        CompositeFilterCriterion criteria = filter.getValue();
+        CompositeFilterCriterion criteria = (CompositeFilterCriterion) filter.getValue();
         Iterator<FilterRow> rowIterator = filter.getFilterRows().iterator();
         if (criteria != null) {
             for (FilterCriterion criterion : criteria.getCriteria()) {

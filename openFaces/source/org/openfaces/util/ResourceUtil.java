@@ -17,7 +17,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.ajax4jsf.renderkit.RendererUtils;
-import org.openfaces.renderkit.filter.FilterRenderer;
+import org.openfaces.renderkit.filter.ExpressionFilterRenderer;
 
 import javax.faces.application.ViewHandler;
 import javax.faces.context.FacesContext;
@@ -205,7 +205,7 @@ public class ResourceUtil {
     }
 
     public static String getFiltersJsURL(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, FilterRenderer.class, "filters.js");
+        return ResourceUtil.getInternalResourceURL(context, ExpressionFilterRenderer.class, "filters.js");
     }
 
     /**

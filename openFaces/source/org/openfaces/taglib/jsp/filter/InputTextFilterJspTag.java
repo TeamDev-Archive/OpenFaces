@@ -18,7 +18,7 @@ import javax.el.ValueExpression;
 /**
  * @author Dmitry Pikhulya
  */
-public class InputTextFilterJspTag extends FilterJspTag {
+public class InputTextFilterJspTag extends ExpressionFilterJspTag {
     public InputTextFilterJspTag() {
         super(new InputTextFilterTag());
     }

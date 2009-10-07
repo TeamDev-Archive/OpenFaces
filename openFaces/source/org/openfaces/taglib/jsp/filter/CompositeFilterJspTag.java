@@ -12,14 +12,13 @@
 package org.openfaces.taglib.jsp.filter;
 
 import org.openfaces.taglib.internal.filter.CompositeFilterTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
 import javax.el.ValueExpression;
 
 /**
  * @author Natalia Zolochevska
  */
-public class CompositeFilterJspTag extends AbstractComponentJspTag {
+public class CompositeFilterJspTag extends FilterJspTag {
 
     public CompositeFilterJspTag() {
         super(new CompositeFilterTag());

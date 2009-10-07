@@ -12,9 +12,9 @@
 package org.openfaces.component.table;
 
 import org.apache.commons.collections.Predicate;
+import org.openfaces.component.filter.AndFilterCriterion;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.AndFilterCriterion;
 import org.openfaces.component.filter.PredicateAdapter;
 import org.openfaces.component.filter.PropertyFilterCriterion;
 import org.openfaces.util.DataUtil;
@@ -444,14 +444,14 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
     private void setFilteringCriteriaToRequestVariable() {
         List<FilterCriterion> criteria = new ArrayList<FilterCriterion>();
         AndFilterCriterion andCriterion = new AndFilterCriterion(criteria);
-        int filterCount = filters != null ? filters.size() : 0;
-        for (int i = 0; i < filterCount; i++) {
-            Filter filter = filters.get(i);
-            if (filter.isAcceptingAllRecords())
-                continue;
-            FilterCriterion filterCriterion = (FilterCriterion) filter.getValue();
-            criteria.add(filterCriterion);
-        }
+        if (filters != null)
+            for (Filter filter : filters) {
+                FilterCriterion filterCriterion = (FilterCriterion) filter.getValue();
+                if (filterCriterion == null || filterCriterion.acceptsAll())
+                    continue;
+
+                criteria.add(filterCriterion);
+            }
         setRequestVariable(VAR_FILTER_CRITERIA, andCriterion);
     }
 

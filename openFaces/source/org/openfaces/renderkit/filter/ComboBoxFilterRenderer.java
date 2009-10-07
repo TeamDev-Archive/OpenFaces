@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * @author Dmitry Pikhulya
  */
-public class ComboBoxFilterRenderer extends FilterRenderer {
+public class ComboBoxFilterRenderer extends ExpressionFilterRenderer {
     private static final String USER_CRITERION_PREFIX = "u-";
     private static final String PREDEFINED_CRITERION_PREFIX = "p-";
     private static final String ALL = "ALL";

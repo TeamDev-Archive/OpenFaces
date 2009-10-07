@@ -112,12 +112,12 @@ and for destroying session and application contexts.-->
   </servlet-mapping>
 
   <filter>
-    <filter-name>Seam Filter</filter-name>
+    <filter-name>Seam ExpressionFilter</filter-name>
     <filter-class>org.jboss.seam.servlet.SeamFilter</filter-class>
   </filter>
 
   <filter-mapping>
-    <filter-name>Seam Filter</filter-name>
+    <filter-name>Seam ExpressionFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
         -->

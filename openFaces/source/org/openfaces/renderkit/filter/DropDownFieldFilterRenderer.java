@@ -11,7 +11,7 @@
  */
 package org.openfaces.renderkit.filter;
 
-import org.openfaces.component.filter.Filter;
+import org.openfaces.component.filter.ExpressionFilter;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItem;
 import org.openfaces.component.input.DropDownItems;
@@ -80,7 +80,7 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
             "buttonImageUrl"
     };
 
-    protected void configureInputComponent(FacesContext context, Filter filter, UIInput inputComponent) {
+    protected void configureInputComponent(FacesContext context, ExpressionFilter filter, UIInput inputComponent) {
         DropDownField field = (DropDownField) inputComponent;
         field.setOnchange(getFilterSubmissionScript(filter));
         field.setOnkeypress(getFilterOnEnterScript(filter));

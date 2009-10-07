@@ -229,7 +229,7 @@ public class FilterRow implements Serializable {
         DropDownField operationSelector = (DropDownField) ComponentUtil.createChildComponent(context, operationSelectorContainer, DropDownField.COMPONENT_TYPE, DROP_DOWN_ID_SUFFIX);
         DropDownItems dropDownItems = (DropDownItems) ComponentUtil.createChildComponent(context, operationSelector, DropDownItems.COMPONENT_TYPE, DROP_DOWN_ITEMS_ID_SUFFIX);
         operationSelector.setOnchange("O$.Filter._operationChange('" + compositeFilter.getClientId(context) + "'," + index + ");");
-        operationSelector.setConverter(compositeFilter.getOperationConverter());
+        operationSelector.setConverter(compositeFilter.getConditionConverter());
         operationSelector.setStyleClass(DEFAULT_OPERATION_CLASS);
         operationSelector.setStyle("width: 100px;");
         operationSelector.setCustomValueAllowed(false);

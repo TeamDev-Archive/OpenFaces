@@ -13,7 +13,6 @@ package org.openfaces.component;
 
 import org.openfaces.component.filter.Filter;
 
-import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 import java.util.List;
 

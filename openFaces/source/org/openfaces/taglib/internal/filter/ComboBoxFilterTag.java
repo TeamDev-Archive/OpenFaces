@@ -12,7 +12,7 @@
 package org.openfaces.taglib.internal.filter;
 
 import org.openfaces.component.filter.ComboBoxFilter;
-import org.openfaces.taglib.internal.filter.FilterTag;
+import org.openfaces.taglib.internal.filter.ExpressionFilterTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -20,7 +20,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class ComboBoxFilterTag extends FilterTag {
+public class ComboBoxFilterTag extends ExpressionFilterTag {
     public String getComponentType() {
         return ComboBoxFilter.COMPONENT_TYPE;
     }

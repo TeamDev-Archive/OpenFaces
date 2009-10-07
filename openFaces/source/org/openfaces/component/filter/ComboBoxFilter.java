@@ -18,7 +18,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class ComboBoxFilter extends Filter {
+public class ComboBoxFilter extends ExpressionFilter {
     public static final String COMPONENT_FAMILY = "org.openfaces.ComboBoxFilter";
     public static final String COMPONENT_TYPE = "org.openfaces.ComboBoxFilter";
 

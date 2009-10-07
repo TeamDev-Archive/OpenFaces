@@ -12,7 +12,7 @@
 package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.FilterableComponent;
-import org.openfaces.component.filter.Filter;
+import org.openfaces.component.filter.ExpressionFilter;
 import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.PropertyFilterCriterion;
 import org.openfaces.component.filter.PropertyLocator;
@@ -30,22 +30,22 @@ import javax.faces.convert.Converter;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class FilterRenderer extends RendererBase {
+public abstract class ExpressionFilterRenderer extends RendererBase {
     protected static final String DEFAULT_PREDEFINED_CRITERION_CLASS = "o_table_filter_predefined_criterion";
 
-    protected String getFilterSubmissionScript(Filter filter) {
+    protected String getFilterSubmissionScript(ExpressionFilter filter) {
         UIComponent component = (UIComponent) filter.getFilteredComponent();
-        Filter submittedFilter = ComponentUtil.isChildComponent(filter, component) ? null : filter;
+        ExpressionFilter submittedFilter = ComponentUtil.isChildComponent(filter, component) ? null : filter;
         return new ScriptBuilder().functionCall("O$.Filters._filterComponent", component, submittedFilter, new RawScript("this")).
                 semicolon().toString();
     }
 
-    protected String getPredefinedCriterionClass(FacesContext context, Filter filter) {
+    protected String getPredefinedCriterionClass(FacesContext context, ExpressionFilter filter) {
         String predefinedCriterionStyle = filter.getPredefinedCriterionStyle();
         return StyleUtil.getCSSClass(context, filter, predefinedCriterionStyle, DEFAULT_PREDEFINED_CRITERION_CLASS, filter.getPredefinedCriterionClass());
     }
 
-    protected void setDecodedCriterion(Filter filter, PropertyFilterCriterion newCriterion) {
+    protected void setDecodedCriterion(ExpressionFilter filter, PropertyFilterCriterion newCriterion) {
         if (!filter.changeCriterion(newCriterion))
             return;
         FilterableComponent filteredComponent = filter.getFilteredComponent();
@@ -56,7 +56,7 @@ public abstract class FilterRenderer extends RendererBase {
         return item == null || item.equals("");
     }
 
-    protected void setDecodedString(Filter filter, String searchString) {
+    protected void setDecodedString(ExpressionFilter filter, String searchString) {
         Converter converter = getConverter(filter);
         PropertyFilterCriterion oldCriterion = (PropertyFilterCriterion) filter.getValue();
         PropertyFilterCriterion newCriterion;
@@ -71,12 +71,12 @@ public abstract class FilterRenderer extends RendererBase {
         setDecodedCriterion(filter, newCriterion);
     }
 
-    protected Converter getConverter(Filter filter) {
+    protected Converter getConverter(ExpressionFilter filter) {
         Converter converter = filter.getConverter();
         return converter != null ? converter : new StringConverter();
     }
 
-    protected PropertyFilterCriterion createDefaultCriterion(Filter filter, Object specifiedValue) {
+    protected PropertyFilterCriterion createDefaultCriterion(ExpressionFilter filter, Object specifiedValue) {
         Object expression = filter.getExpression();
         PropertyLocator propertyLocator = new PropertyLocator(expression, filter.getFilteredComponent());
         FilterCondition condition = getDefaultCondition();

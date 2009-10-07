@@ -11,11 +11,11 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.util.ValueBindings;
+import org.openfaces.component.filter.Filter;
 import org.openfaces.renderkit.table.TreeTableRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.EnvironmentUtil;
-import org.openfaces.component.filter.Filter;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;

@@ -20,7 +20,6 @@ import javax.faces.context.FacesContext;
  * @author Dmitry Pikhulya
  */
 public abstract class OUIComponentBase extends UIComponentBase implements OUIComponent {
-
     protected String style;
     protected String styleClass;
     protected String rolloverStyle;

@@ -11,7 +11,7 @@
  */
 package org.openfaces.renderkit.filter;
 
-import org.openfaces.component.filter.Filter;
+import org.openfaces.component.filter.ExpressionFilter;
 import org.openfaces.component.input.InputText;
 import org.openfaces.util.StyleUtil;
 
@@ -41,7 +41,7 @@ public class InputTextFilterRenderer extends TextSearchFilterRenderer {
             "autocomplete"
     };
 
-    protected void configureInputComponent(FacesContext context, Filter filter, UIInput inputComponent) {
+    protected void configureInputComponent(FacesContext context, ExpressionFilter filter, UIInput inputComponent) {
         InputText input = (InputText) inputComponent;
         input.setOnkeydown(getFilterOnEnterScript(filter) + "O$.cancelBubble(event);");
         input.setOnchange(getFilterSubmissionScript(filter));

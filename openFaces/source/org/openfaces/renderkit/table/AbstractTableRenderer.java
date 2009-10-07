@@ -86,7 +86,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
             AjaxUtil.prepareComponentForAjax(context, component);
 
         // this hack is needed for working around strange IE issue
-        // JSFC-2081 Filter drop-downs in TreeTable have improper style on demo (regression) - IE only
+        // JSFC-2081 ExpressionFilter drop-downs in TreeTable have improper style on demo (regression) - IE only
         encodeJsLinks(context);
 
         table.setRowIndex(-1);

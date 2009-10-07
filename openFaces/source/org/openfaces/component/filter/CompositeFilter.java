@@ -1,11 +1,5 @@
 package org.openfaces.component.filter;
 
-import org.openfaces.component.OUIComponentBase;
-import org.openfaces.component.filter.AndFilterCriterion;
-import org.openfaces.component.filter.CompositeFilterCriterion;
-import org.openfaces.component.filter.OrFilterCriterion;
-import org.openfaces.component.filter.PropertyFilterCriterion;
-import org.openfaces.component.filter.PropertyLocator;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;
@@ -29,7 +23,7 @@ import java.util.Set;
 /**
  * @author Natalia Zolochevska
  */
-public class CompositeFilter extends OUIComponentBase {
+public class CompositeFilter extends Filter {
     public static final String COMPONENT_FAMILY = "org.openfaces.CompositeFilter";
     public static final String COMPONENT_TYPE = "org.openfaces.CompositeFilter";
     public static final String RENDERER_TYPE = "org.openfaces.CompositeFilterRenderer";
@@ -41,7 +35,7 @@ public class CompositeFilter extends OUIComponentBase {
     private String noFilterMessage;
     private CompositeFilterCriterion value;
     private Map<String, String> labels;
-    private Converter operationConverter;
+    private Converter conditionConverter;
 
     /**
      * not to save in state, to be cached only for request time
@@ -62,7 +56,7 @@ public class CompositeFilter extends OUIComponentBase {
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState,
-                value, filterRows, lastRowIndex, noFilterMessage, labels, operationConverter};
+                value, filterRows, lastRowIndex, noFilterMessage, labels, conditionConverter};
     }
 
 
@@ -77,7 +71,7 @@ public class CompositeFilter extends OUIComponentBase {
         lastRowIndex = (Integer) state[i++];
         noFilterMessage = (String) state[i++];
         labels = (Map<String, String>) state[i++];
-        operationConverter = (Converter) state[i++];
+        conditionConverter = (Converter) state[i++];
     }
 
     @Override
@@ -86,10 +80,14 @@ public class CompositeFilter extends OUIComponentBase {
         super.processRestoreState(context, ajaxState != null ? ajaxState : state);
     }
 
-    public CompositeFilterCriterion getValue() {
+    public Object getValue() {
         if (value != null) return value;
         ValueExpression ve = getValueExpression("value");
         return ve != null ? (CompositeFilterCriterion) ve.getValue(getFacesContext().getELContext()) : null;
+    }
+
+    public void setValue(Object value) {
+        this.value = (CompositeFilterCriterion) value;
     }
 
     public void setValue(CompositeFilterCriterion value) {
@@ -243,6 +241,13 @@ public class CompositeFilter extends OUIComponentBase {
             value = andCriterion;
     }
 
+    public void updateValueFromBinding(FacesContext context) {
+    }
+
+    public boolean getWantsRowList() {
+        return false;
+    }
+
     public Collection<FilterRow> getFilterRows() {
         return filterRows.values();
     }
@@ -269,27 +274,28 @@ public class CompositeFilter extends OUIComponentBase {
         this.labels = labels;
     }
 
-    public Converter getOperationConverter() {
-        if (operationConverter == null) {
-            operationConverter = new OperationConverter(getLabels());
+
+    public Converter getConditionConverter() {
+        if (conditionConverter == null) {
+            conditionConverter = new ConditionConverter(getLabels());
         }
-        return operationConverter;
+        return conditionConverter;
     }
 
-    public void setOperationConverter(Converter operationConverter) {
-        this.operationConverter = operationConverter;
+    public void setConditionConverter(Converter conditionConverter) {
+        this.conditionConverter = conditionConverter;
     }
 
-    private static class OperationConverter implements Converter, Serializable {
+    private static class ConditionConverter implements Converter, Serializable {
         private Map<String, String> nameToLabelMap;
-        private Map<String, FilterCondition> labelToOperation = new HashMap<String, FilterCondition>();
+        private Map<String, FilterCondition> labelToCondition = new HashMap<String, FilterCondition>();
 
-        private OperationConverter(Map<String, String> nameToLabelMap) {
+        private ConditionConverter(Map<String, String> nameToLabelMap) {
             this.nameToLabelMap = nameToLabelMap;
         }
 
         public Object getAsObject(FacesContext context, UIComponent component, String value) {
-            return labelToOperation.get(value);
+            return labelToCondition.get(value);
         }
 
         public String getAsString(FacesContext context, UIComponent component, Object value) {
@@ -301,7 +307,7 @@ public class CompositeFilter extends OUIComponentBase {
             if (result == null) {
                 result = filterCondition.getDefaultLabel();
             }
-            labelToOperation.put(result, filterCondition);
+            labelToCondition.put(result, filterCondition);
             return result;
         }
     }

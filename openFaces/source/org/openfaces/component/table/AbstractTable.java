@@ -15,6 +15,7 @@ import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.filter.Filter;
+import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.util.AjaxUtil;
@@ -999,7 +1000,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
         List<Filter> filters = getFilters();
         for (Filter filter : filters) {
-            filter.updateCriterionFromBinding(context);
+            filter.updateValueFromBinding(context);
         }
 
         AbstractTableSelection selection = getSelection();

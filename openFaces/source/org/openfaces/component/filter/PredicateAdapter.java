@@ -25,7 +25,6 @@ import java.util.TimeZone;
 
 
 public class PredicateAdapter extends FilterCriterionProcessor {
-
     private static final Comparator<Number> NUMBER_COMPARATOR = new NumberComparator();
     private static final Comparator<Date> COMPARABLE_COMPARATOR = new ComparableComparator();
 

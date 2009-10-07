@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class TextSearchFilter extends Filter {
+public abstract class TextSearchFilter extends ExpressionFilter {
 
     public static final String SEARCH_COMPONENT_SUFFIX = "searchComponent";
 

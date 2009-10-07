@@ -11,7 +11,7 @@
  */
 package org.openfaces.renderkit.filter;
 
-import org.openfaces.component.filter.Filter;
+import org.openfaces.component.filter.ExpressionFilter;
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.TextSearchFilter;
 import org.openfaces.component.filter.PropertyFilterCriterion;
@@ -28,7 +28,7 @@ import java.io.IOException;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class TextSearchFilterRenderer extends FilterRenderer {
+public abstract class TextSearchFilterRenderer extends ExpressionFilterRenderer {
 
     @Override
     public boolean getRendersChildren() {
@@ -57,7 +57,7 @@ public abstract class TextSearchFilterRenderer extends FilterRenderer {
         StyleUtil.renderStyleClasses(context, component);
     }
 
-    protected abstract void configureInputComponent(FacesContext context, Filter filter, UIInput inputComponent);
+    protected abstract void configureInputComponent(FacesContext context, ExpressionFilter filter, UIInput inputComponent);
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -71,7 +71,7 @@ public abstract class TextSearchFilterRenderer extends FilterRenderer {
         setDecodedString(filter, newSearchString);
     }
 
-    protected String getFilterOnEnterScript(Filter filter) {
+    protected String getFilterOnEnterScript(ExpressionFilter filter) {
         UIComponent component = (UIComponent) filter.getFilteredComponent();
         return new ScriptBuilder().append("return ").functionCall("O$.Filters._filterFieldKeyPressHandler",
                 component,
@@ -81,7 +81,7 @@ public abstract class TextSearchFilterRenderer extends FilterRenderer {
                 filter.getAutoFilterDelay()).semicolon().toString();
     }
 
-    protected String getStringValue(Filter filter) {
+    protected String getStringValue(ExpressionFilter filter) {
         FilterCriterion filterCriterion = (FilterCriterion) filter.getValue();
         if (filterCriterion == null) {
             return "";
@@ -94,7 +94,7 @@ public abstract class TextSearchFilterRenderer extends FilterRenderer {
         return getConverter(filter).getAsString(FacesContext.getCurrentInstance(), filter, arg1);
     }
 
-    private void configureInputFromFilter(Filter filter, UIInput input) {
+    private void configureInputFromFilter(ExpressionFilter filter, UIInput input) {
         for (String attrName : getCopiedFilterAttributes()) {
             Object attrValue = filter.getAttributes().get(attrName);
             if (attrValue != null)

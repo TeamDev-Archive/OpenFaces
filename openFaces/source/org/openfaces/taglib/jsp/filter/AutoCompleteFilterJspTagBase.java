@@ -18,7 +18,7 @@ import javax.el.ValueExpression;
 /**
  * @author Dmitry Pikhulya
  */
-public class AutoCompleteFilterJspTagBase extends FilterJspTag {
+public class AutoCompleteFilterJspTagBase extends ExpressionFilterJspTag {
     public AutoCompleteFilterJspTagBase(AbstractComponentTag delegate) {
         super(delegate);
     }

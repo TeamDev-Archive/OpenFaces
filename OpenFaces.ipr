@@ -1294,14 +1294,6 @@
         <root url="jar://$PROJECT_DIR$/libsrc/seleniuminspector-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="commons-collections-beans">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-collections-3.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES />
-    </library>
     <library name="hibernate">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/hibernate/hibernate3.jar!/" />

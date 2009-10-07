@@ -56,7 +56,15 @@
     </orderEntry>
     <orderEntry type="library" name="RichFaces" level="project" />
     <orderEntry type="library" name="JEE" level="project" />
-    <orderEntry type="library" name="commons-collections-beans" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/apache/commons-collections-3.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

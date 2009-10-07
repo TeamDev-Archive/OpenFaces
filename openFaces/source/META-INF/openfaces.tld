@@ -27499,6 +27499,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @el only -->
     </attribute>
     <attribute>
+      <description>ID of a filterable component that should be filtered with this component. It should be defined in
+        the same way as the "for" property of the standard HTMLOutputLabel component.
+      </description>
+      <name>for</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
       <description>Set of criteria.</description>
       <name>value</name>
       <deferred-value>

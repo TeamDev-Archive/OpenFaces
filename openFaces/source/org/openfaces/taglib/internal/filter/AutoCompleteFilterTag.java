@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.internal.filter;
 
-import org.openfaces.taglib.internal.filter.FilterTag;
+import org.openfaces.taglib.internal.filter.ExpressionFilterTag;
 import org.openfaces.component.HorizontalAlignment;
 import org.openfaces.component.input.SuggestionMode;
 
@@ -21,7 +21,7 @@ import javax.faces.component.UIComponent;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class AutoCompleteFilterTag extends FilterTag {
+public abstract class AutoCompleteFilterTag extends ExpressionFilterTag {
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);

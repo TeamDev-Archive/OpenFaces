@@ -18,7 +18,7 @@ import javax.el.ValueExpression;
 /**
  * @author Dmitry Pikhulya
  */
-public class ComboBoxFilterJspTag extends FilterJspTag {
+public class ComboBoxFilterJspTag extends ExpressionFilterJspTag {
     public ComboBoxFilterJspTag() {
         super(new ComboBoxFilterTag());
     }

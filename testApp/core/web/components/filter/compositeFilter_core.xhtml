@@ -31,7 +31,7 @@
   <h:commandButton action="#{CompositeFilterBean.clearFilter}" value="Clear and Submit Filter"/>
 
 
-  <o:dataTable value="#{CompositeFilterBean.users}" var="user">
+  <o:dataTable id="table1" value="#{CompositeFilterBean.users}" var="user">
     <o:column>
       <f:facet name="header">
         <h:outputText value="Name"/>
