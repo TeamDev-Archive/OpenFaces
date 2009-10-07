@@ -321,28 +321,30 @@ public abstract class Filter extends UIComponentBase implements CompoundComponen
         ValueExpression criterionExpression = getValueExpression();
         if (criterionExpression != null) {
             value = (PropertyFilterCriterion) criterionExpression.getValue(context.getELContext());
-            value.process(new FilterCriterionProcessor() {
-                public Object process(PropertyFilterCriterion criterion) {
-                    validateCriterion(criterion);
-                    return null;
-                }
-
-                public Object process(AndFilterCriterion criterion) {
-                    List<FilterCriterion> criteria = criterion.getCriteria();
-                    for (FilterCriterion c : criteria) {
-                        c.process(this);
+            if (value != null) {
+                value.process(new FilterCriterionProcessor() {
+                    public Object process(PropertyFilterCriterion criterion) {
+                        validateCriterion(criterion);
+                        return null;
                     }
-                    return null;
-                }
 
-                public Object process(OrFilterCriterion criterion) {
-                    List<FilterCriterion> criteria = criterion.getCriteria();
-                    for (FilterCriterion c : criteria) {
-                        c.process(this);
+                    public Object process(AndFilterCriterion criterion) {
+                        List<FilterCriterion> criteria = criterion.getCriteria();
+                        for (FilterCriterion c : criteria) {
+                            c.process(this);
+                        }
+                        return null;
                     }
-                    return null;
-                }
-            });
+
+                    public Object process(OrFilterCriterion criterion) {
+                        List<FilterCriterion> criteria = criterion.getCriteria();
+                        for (FilterCriterion c : criteria) {
+                            c.process(this);
+                        }
+                        return null;
+                    }
+                });
+            }
         }
         else {
             if (value != null)
