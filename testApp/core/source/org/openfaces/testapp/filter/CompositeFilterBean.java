@@ -14,9 +14,9 @@ package org.openfaces.testapp.filter;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
-import org.openfaces.component.filter.criterion.AndFilterCriterion;
-import org.openfaces.component.filter.criterion.CompositeFilterCriterion;
-import org.openfaces.component.filter.criterion.PredicateAdapter;
+import org.openfaces.component.filter.AndFilterCriterion;
+import org.openfaces.component.filter.CompositeFilterCriterion;
+import org.openfaces.component.filter.PredicateAdapter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

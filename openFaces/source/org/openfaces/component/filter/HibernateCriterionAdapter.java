@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.component.filter.criterion;
+package org.openfaces.component.filter;
 
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;

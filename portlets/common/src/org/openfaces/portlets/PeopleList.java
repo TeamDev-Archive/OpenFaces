@@ -11,7 +11,7 @@
  */
 package org.openfaces.portlets;
 
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.PropertyFilterCriterion;
 
 import java.util.ArrayList;
 import java.util.List;

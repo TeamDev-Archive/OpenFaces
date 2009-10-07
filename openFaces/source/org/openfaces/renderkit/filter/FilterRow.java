@@ -3,7 +3,7 @@ package org.openfaces.renderkit.filter;
 import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.FilterCondition;
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.PropertyFilterCriterion;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItems;
 import org.openfaces.renderkit.filter.param.ParametersEditor;

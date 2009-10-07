@@ -14,7 +14,7 @@ package org.openfaces.renderkit.filter;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.TextSearchFilter;
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.PropertyFilterCriterion;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;

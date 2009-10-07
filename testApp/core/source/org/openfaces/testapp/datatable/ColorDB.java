@@ -13,8 +13,8 @@
 package org.openfaces.testapp.datatable;
 
 import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.criterion.CompositeFilterCriterion;
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.CompositeFilterCriterion;
+import org.openfaces.component.filter.PropertyFilterCriterion;
 
 import java.util.ArrayList;
 import java.util.Collections;

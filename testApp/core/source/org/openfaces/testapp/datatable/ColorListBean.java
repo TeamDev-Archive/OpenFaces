@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.datatable;
 
-import org.openfaces.component.filter.criterion.CompositeFilterCriterion;
+import org.openfaces.component.filter.CompositeFilterCriterion;
 import org.openfaces.util.FacesUtil;
 
 import java.util.ArrayList;

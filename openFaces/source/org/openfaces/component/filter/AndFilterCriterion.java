@@ -9,27 +9,27 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.filter.criterion;
-
-import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.FilterCriterionProcessor;
+package org.openfaces.component.filter;
 
 import java.util.List;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class OrFilterCriterion extends CompositeFilterCriterion {
+public class AndFilterCriterion extends CompositeFilterCriterion {
 
-    public OrFilterCriterion(List<FilterCriterion> criteria) {
+    public AndFilterCriterion() {
+    }
+
+    public AndFilterCriterion(List<FilterCriterion> criteria) {
         super(criteria);
     }
 
     public boolean acceptsAll() {
         List<FilterCriterion> criteria = getCriteria();
         for (FilterCriterion criterion : criteria) {
-            if (criterion.acceptsAll())
-                return true;
+            if (!criterion.acceptsAll())
+                return false;
         }
         return true;
     }
@@ -37,5 +37,4 @@ public class OrFilterCriterion extends CompositeFilterCriterion {
     public Object process(FilterCriterionProcessor processor) {
         return processor.process(this);
     }
-
 }

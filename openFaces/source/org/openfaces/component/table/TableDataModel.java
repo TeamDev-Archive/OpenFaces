@@ -14,9 +14,9 @@ package org.openfaces.component.table;
 import org.apache.commons.collections.Predicate;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.criterion.AndFilterCriterion;
-import org.openfaces.component.filter.criterion.PredicateAdapter;
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.AndFilterCriterion;
+import org.openfaces.component.filter.PredicateAdapter;
+import org.openfaces.component.filter.PropertyFilterCriterion;
 import org.openfaces.util.DataUtil;
 import org.openfaces.util.ValueBindings;
 

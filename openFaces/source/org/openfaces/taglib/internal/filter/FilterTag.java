@@ -6,7 +6,7 @@ package org.openfaces.taglib.internal.filter;
 
 import org.openfaces.component.filter.Filter;
 import org.openfaces.component.filter.FilterCondition;
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.PropertyFilterCriterion;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.FacesException;

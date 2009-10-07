@@ -11,9 +11,9 @@
  */
 package org.openfaces.component.filter;
 
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
-import org.openfaces.component.filter.criterion.AndFilterCriterion;
-import org.openfaces.component.filter.criterion.OrFilterCriterion;
+import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.AndFilterCriterion;
+import org.openfaces.component.filter.OrFilterCriterion;
 
 /**
  * @author Dmitry Pikhulya

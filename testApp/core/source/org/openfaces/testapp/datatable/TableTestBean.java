@@ -13,8 +13,8 @@ package org.openfaces.testapp.datatable;
 
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.FilterCondition;
-import org.openfaces.component.filter.criterion.CompositeFilterCriterion;
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.CompositeFilterCriterion;
+import org.openfaces.component.filter.PropertyFilterCriterion;
 import org.openfaces.component.table.FilterKind;
 import org.openfaces.util.FacesUtil;
 

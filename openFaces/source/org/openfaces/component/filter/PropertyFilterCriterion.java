@@ -1,4 +1,4 @@
-package org.openfaces.component.filter.criterion;
+package org.openfaces.component.filter;
 
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.FilterCriterionProcessor;

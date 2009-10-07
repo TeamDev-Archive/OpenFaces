@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.jBossSeam.treetable;
 
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.PropertyFilterCriterion;
 import org.openfaces.component.table.ExpansionState;
 
 import java.util.List;

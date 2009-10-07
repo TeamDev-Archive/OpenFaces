@@ -15,8 +15,8 @@ package org.openfaces.renderkit.filter.param;
 import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.FilterCondition;
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
-import org.openfaces.component.filter.criterion.PropertyLocator;
+import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.PropertyLocator;
 import org.openfaces.renderkit.filter.FilterRow;
 
 import javax.faces.component.UIComponent;

@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.component.filter.criterion;
+package org.openfaces.component.filter;
 
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.comparators.ComparableComparator;

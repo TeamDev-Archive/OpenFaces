@@ -13,10 +13,10 @@ package org.openfaces.component.filter;
 
 import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.FilterableComponent;
-import org.openfaces.component.filter.criterion.AndFilterCriterion;
-import org.openfaces.component.filter.criterion.OrFilterCriterion;
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
-import org.openfaces.component.filter.criterion.PropertyLocator;
+import org.openfaces.component.filter.AndFilterCriterion;
+import org.openfaces.component.filter.OrFilterCriterion;
+import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.PropertyLocator;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.SelfScheduledAction;
 import org.openfaces.util.ValueBindings;

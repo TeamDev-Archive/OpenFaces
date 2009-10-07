@@ -1,11 +1,11 @@
 package org.openfaces.component.filter;
 
 import org.openfaces.component.OUIComponentBase;
-import org.openfaces.component.filter.criterion.AndFilterCriterion;
-import org.openfaces.component.filter.criterion.CompositeFilterCriterion;
-import org.openfaces.component.filter.criterion.OrFilterCriterion;
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
-import org.openfaces.component.filter.criterion.PropertyLocator;
+import org.openfaces.component.filter.AndFilterCriterion;
+import org.openfaces.component.filter.CompositeFilterCriterion;
+import org.openfaces.component.filter.OrFilterCriterion;
+import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.PropertyLocator;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ValueBindings;

@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.support.QKS247;
 
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.PropertyFilterCriterion;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.testapp.screenshot.Person;
 

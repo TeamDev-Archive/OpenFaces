@@ -2,9 +2,9 @@ package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.criterion.CompositeFilterCriterion;
-import org.openfaces.component.filter.criterion.OrFilterCriterion;
-import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
+import org.openfaces.component.filter.CompositeFilterCriterion;
+import org.openfaces.component.filter.OrFilterCriterion;
+import org.openfaces.component.filter.PropertyFilterCriterion;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
