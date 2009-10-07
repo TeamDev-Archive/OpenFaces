@@ -12,7 +12,7 @@
 package org.openfaces.testapp.datatable;
 
 import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.criterion.CompositeFilterCriterion;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.component.table.FilterKind;
@@ -262,10 +262,10 @@ public class TableTestBean {
 
     private boolean filterAcceptsRecord(String fieldName, PropertyFilterCriterion criterion, TestBean record) {
         String fieldValue = fieldName.equals("col1") ? record.getField1() : String.valueOf(record.getField2());
-        if (criterion != null && criterion.getOperation().equals(OperationType.NON_EMPTY)) {
+        if (criterion != null && criterion.getCondition().equals(FilterCondition.EMPTY) && criterion.isInverse()) {
             return fieldValue != null && fieldValue.length() > 0;
         }
-        if (criterion != null && criterion.getOperation().equals(OperationType.EMPTY)) {
+        if (criterion != null && criterion.getCondition().equals(FilterCondition.EMPTY)) {
             return fieldValue == null || fieldValue.length() == 0;
         }
         if (criterion instanceof PropertyFilterCriterion) {

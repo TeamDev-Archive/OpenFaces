@@ -1,6 +1,6 @@
 package org.openfaces.component.filter;
 
-import static org.openfaces.component.filter.OperationType.*;
+import static org.openfaces.component.filter.FilterCondition.*;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -11,9 +11,9 @@ import java.util.Map;
  */
 public enum FilterType {
     TEXT("text", EnumSet.of(EQUALS, CONTAINS, BEGINS, ENDS)),
-    NUMBER("number", EnumSet.of(EQUALS, LE, GE, GT, LT, BETWEEN)),
+    NUMBER("number", EnumSet.of(EQUALS, LESS_OR_EQUAL, GREATER_OR_EQUAL, GREATER, LESS, BETWEEN)),
     SELECT("select", EnumSet.of(EQUALS)),
-    DATE("date", EnumSet.of(EQUALS, LE, GE, GT, LT, BETWEEN));
+    DATE("date", EnumSet.of(EQUALS, LESS_OR_EQUAL, GREATER_OR_EQUAL, GREATER, LESS, BETWEEN));
 
     private final static Map<String, FilterType> stringToEnum = new HashMap<String, FilterType>();
 
@@ -23,9 +23,9 @@ public enum FilterType {
     }
 
     private final String name;
-    private final EnumSet<OperationType> operations;
+    private final EnumSet<FilterCondition> operations;
 
-    private FilterType(String name, EnumSet<OperationType> operations) {
+    private FilterType(String name, EnumSet<FilterCondition> operations) {
         this.name = name;
         this.operations = operations;
     }
@@ -38,7 +38,7 @@ public enum FilterType {
         return stringToEnum.get(name);
     }
 
-    public EnumSet<OperationType> getOperations() {
+    public EnumSet<FilterCondition> getOperations() {
         return operations;
     }   
 

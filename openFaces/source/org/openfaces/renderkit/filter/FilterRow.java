@@ -2,7 +2,7 @@ package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
-import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItems;
@@ -59,7 +59,7 @@ public class FilterRow implements Serializable {
 
     private boolean inverse;
     private FilterProperty property;
-    private OperationType operation;
+    private FilterCondition operation;
     private ParametersEditor parametersEditor;
     private ParametersEditor.ParameterEditorType parametersEditorType;
 
@@ -240,7 +240,7 @@ public class FilterRow implements Serializable {
     private void initOperationSelector(DropDownField operationSelector, CompositeFilter compositeFilter) {
         operationSelector.setValue(operation);
         DropDownItems dropDownItems = getOperationSelectorItems(operationSelector);
-        EnumSet<OperationType> operations = compositeFilter.getOperations(property);
+        EnumSet<FilterCondition> operations = compositeFilter.getOperations(property);
         dropDownItems.setValue(operations);
     }
 
@@ -391,7 +391,7 @@ public class FilterRow implements Serializable {
             parametersEditor = null;
             return null;
         }
-        OperationType newOperation = (OperationType) operationSelector.getValue();
+        FilterCondition newOperation = (FilterCondition) operationSelector.getValue();
         inverse = (Boolean) inverseCheckBox.getValue();
         boolean operationModified = newOperation == null ? operation == null : !newOperation.equals(operation);
         operation = newOperation;
@@ -410,7 +410,7 @@ public class FilterRow implements Serializable {
 
     public void updateRowModelFromCriterion(PropertyFilterCriterion criterion, CompositeFilter compositeFilter) {
         property = compositeFilter.getFilterPropertyByName(criterion.getExpressionStr());
-        operation = criterion.getOperation();
+        operation = criterion.getCondition();
         inverse = criterion.isInverse();
         parametersEditorType = ParametersEditor.getParameterEditorType(property, operation);
         parametersEditor = ParametersEditor.getInstance(parametersEditorType, property, operation, criterion.getParameters());

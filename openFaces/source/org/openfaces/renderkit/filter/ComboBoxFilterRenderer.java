@@ -12,7 +12,7 @@
 package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.filter.ComboBoxFilter;
-import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
@@ -90,14 +90,15 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
                 predefinedCriterionsClass);
         if (thereAreEmptyItems) {
             String emptyRecordsCriterionName = filter.getEmptyRecordsText();
+            FilterCondition condition = currentCriterion != null ? currentCriterion.getCondition() : null;
             writeOption(writer, component, PREDEFINED_CRITERION_PREFIX + EMPTY, emptyRecordsCriterionName,
-                    currentCriterion != null && currentCriterion.getOperation().equals(OperationType.EMPTY),
+                    condition != null && condition.equals(FilterCondition.EMPTY) && !currentCriterion.isInverse(),
                     predefinedCriterionsClass);
 
             String nonEmptyRecordsCriterionName = filter.getNonEmptyRecordsText();
             writeOption(writer, component, PREDEFINED_CRITERION_PREFIX + NON_EMPTY,
                     nonEmptyRecordsCriterionName,
-                    currentCriterion != null && currentCriterion.getOperation().equals(OperationType.NON_EMPTY),
+                    condition != null && condition.equals(FilterCondition.EMPTY) && currentCriterion.isInverse(),
                     predefinedCriterionsClass);
         }
 
@@ -174,9 +175,9 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
             if (criterion.equals(ALL))
                 newCriterion = null;
             else if (criterion.equals(EMPTY))
-                newCriterion = new PropertyFilterCriterion(null, OperationType.EMPTY, null);
+                newCriterion = new PropertyFilterCriterion(null, FilterCondition.EMPTY, null);
             else if (criterion.equals(NON_EMPTY))
-                newCriterion = new PropertyFilterCriterion(null, OperationType.NON_EMPTY, null);
+                newCriterion = new PropertyFilterCriterion(null, FilterCondition.EMPTY, null, true);
             else
                 throw new IllegalStateException("Unknown predefined criterion came from client: " + criterion);
             setDecodedCriterion(filter, newCriterion);
@@ -185,7 +186,7 @@ public class ComboBoxFilterRenderer extends FilterRenderer {
     }
 
     @Override
-    protected OperationType getDefaultCondition() {
-        return OperationType.EQUALS;
+    protected FilterCondition getDefaultCondition() {
+        return FilterCondition.EQUALS;
     }
 }

@@ -14,7 +14,7 @@ package org.openfaces.renderkit.filter.param;
 
 import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
-import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.input.DateChooser;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.ComponentUtil;
@@ -30,7 +30,7 @@ public class DateChooserParametersEditor extends ParametersEditor implements Ser
     public DateChooserParametersEditor() {
     }
 
-    public DateChooserParametersEditor(FilterProperty filterProperty, OperationType operation) {
+    public DateChooserParametersEditor(FilterProperty filterProperty, FilterCondition operation) {
         super(filterProperty, operation);
     }
 

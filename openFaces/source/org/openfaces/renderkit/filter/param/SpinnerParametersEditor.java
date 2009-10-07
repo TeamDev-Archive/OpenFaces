@@ -14,7 +14,7 @@ package org.openfaces.renderkit.filter.param;
 
 import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
-import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.input.Spinner;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.ComponentUtil;
@@ -30,7 +30,7 @@ public class SpinnerParametersEditor extends ParametersEditor implements Seriali
     public SpinnerParametersEditor() {
     }
 
-    public SpinnerParametersEditor(FilterProperty filterProperty, OperationType operation) {
+    public SpinnerParametersEditor(FilterProperty filterProperty, FilterCondition operation) {
         super(filterProperty, operation);
     }
 

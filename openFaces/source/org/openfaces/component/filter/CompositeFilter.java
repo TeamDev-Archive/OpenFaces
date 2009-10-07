@@ -145,12 +145,12 @@ public class CompositeFilter extends OUIComponentBase {
         return result;
     }
 
-    public EnumSet<OperationType> getOperations(FilterProperty filterProperty) {
+    public EnumSet<FilterCondition> getOperations(FilterProperty filterProperty) {
         FilterType filterType = filterProperty.getType();
-        EnumSet<OperationType> operations = EnumSet.copyOf(filterType.getOperations());
-        if (filterType.equals(FilterType.SELECT) && operations.contains(OperationType.EQUALS)) {
+        EnumSet<FilterCondition> operations = EnumSet.copyOf(filterType.getOperations());
+        if (filterType.equals(FilterType.SELECT) && operations.contains(FilterCondition.EQUALS)) {
             if (filterProperty.getDataProvider() == null) {
-                operations.remove(OperationType.EQUALS);
+                operations.remove(FilterCondition.EQUALS);
             }
         }
         return operations;
@@ -282,7 +282,7 @@ public class CompositeFilter extends OUIComponentBase {
 
     private static class OperationConverter implements Converter, Serializable {
         private Map<String, String> nameToLabelMap;
-        private Map<String, OperationType> labelToOperation = new HashMap<String, OperationType>();
+        private Map<String, FilterCondition> labelToOperation = new HashMap<String, FilterCondition>();
 
         private OperationConverter(Map<String, String> nameToLabelMap) {
             this.nameToLabelMap = nameToLabelMap;
@@ -293,15 +293,15 @@ public class CompositeFilter extends OUIComponentBase {
         }
 
         public String getAsString(FacesContext context, UIComponent component, Object value) {
-            OperationType operationType = (OperationType) value;
+            FilterCondition filterCondition = (FilterCondition) value;
             String result = null;
             if (nameToLabelMap != null) {
-                result = nameToLabelMap.get(operationType.getName());
+                result = nameToLabelMap.get(filterCondition.getFullName());
             }
             if (result == null) {
-                result = operationType.getDefaultLabel();
+                result = filterCondition.getDefaultLabel();
             }
-            labelToOperation.put(result, operationType);
+            labelToOperation.put(result, filterCondition);
             return result;
         }
     }

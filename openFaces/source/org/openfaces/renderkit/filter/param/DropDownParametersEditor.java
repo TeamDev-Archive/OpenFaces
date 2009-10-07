@@ -15,7 +15,7 @@ package org.openfaces.renderkit.filter.param;
 import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.FilterType;
-import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItems;
@@ -34,7 +34,7 @@ public class DropDownParametersEditor extends ParametersEditor implements Serial
     public DropDownParametersEditor() {
     }
 
-    public DropDownParametersEditor(FilterProperty filterProperty, OperationType operation) {
+    public DropDownParametersEditor(FilterProperty filterProperty, FilterCondition operation) {
         super(filterProperty, operation);
     }
 

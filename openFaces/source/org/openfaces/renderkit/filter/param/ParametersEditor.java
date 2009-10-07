@@ -14,7 +14,7 @@ package org.openfaces.renderkit.filter.param;
 
 import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
-import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.component.filter.criterion.PropertyLocator;
 import org.openfaces.renderkit.filter.FilterRow;
@@ -32,10 +32,10 @@ public abstract class ParametersEditor {
     public ParametersEditor() {
     }
 
-    protected ParametersEditor(FilterProperty filterProperty, OperationType operation) {
+    protected ParametersEditor(FilterProperty filterProperty, FilterCondition operation) {
         this.filterProperty = filterProperty;
         criterion.setPropertyLocator(new PropertyLocator(filterProperty.getName()));
-        criterion.setOperation(operation);
+        criterion.setCondition(operation);
     }
 
     public void prepare(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container){
@@ -67,12 +67,12 @@ public abstract class ParametersEditor {
         INPUT_TEXT_PARAMETRS_EDITOR
     }
 
-    public static ParameterEditorType getParameterEditorType(FilterProperty filterProperty, OperationType operation) {
+    public static ParameterEditorType getParameterEditorType(FilterProperty filterProperty, FilterCondition operation) {
         switch (operation) {
-            case LE:
-            case GE:
-            case GT:
-            case LT:
+            case LESS_OR_EQUAL:
+            case GREATER_OR_EQUAL:
+            case GREATER:
+            case LESS:
                 switch (filterProperty.getType()) {
                     case DATE:
                         return ParameterEditorType.DATE_CHOOSER_PARAMETERS_EDITOR;
@@ -117,7 +117,7 @@ public abstract class ParametersEditor {
     }
 
     public static ParametersEditor getInstance(ParameterEditorType type, FilterProperty filterProperty,
-                                               OperationType operation, Map<String, Object> parameters) {
+                                               FilterCondition operation, Map<String, Object> parameters) {
 
         ParametersEditor result;
         switch (type) {

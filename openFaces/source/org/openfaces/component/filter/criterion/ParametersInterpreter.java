@@ -17,7 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class ParametersInterpretator {
+public class ParametersInterpreter {
 
     public static Date dayStart(Date date, TimeZone timeZone) {
         if (timeZone==null){

@@ -2,7 +2,7 @@ package org.openfaces.component.filter.criterion;
 
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.FilterCriterionProcessor;
-import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.FilterCondition;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,24 +16,25 @@ public class PropertyFilterCriterion extends FilterCriterion {
     private static final String PARAM_CASE_SENSITIVE = "caseSensitive";
 
     private PropertyLocator propertyLocator;
-    private OperationType operation;
+    private FilterCondition condition;
     private Map<String, Object> parameters = new HashMap<String, Object>(2);
     private boolean inverse;
 
     public PropertyFilterCriterion() {
     }
 
-    public PropertyFilterCriterion(PropertyLocator propertyLocator, OperationType operation, Object arg1) {
+    public PropertyFilterCriterion(PropertyLocator propertyLocator, FilterCondition condition, Object arg1) {
         this.propertyLocator = propertyLocator;
-        this.operation = operation;
+        this.condition = condition;
         setArg1(arg1);
     }
 
-    public PropertyFilterCriterion(PropertyLocator propertyLocator, OperationType operation,
+    public PropertyFilterCriterion(PropertyLocator propertyLocator, FilterCondition condition,
                                    Map<String, Object> parameters, boolean inverse) {
         this.propertyLocator = propertyLocator;
-        this.operation = operation;
-        this.parameters = parameters;
+        this.condition = condition;
+        if (parameters != null)
+            this.parameters = parameters;
         this.inverse = inverse;
     }
 
@@ -51,7 +52,7 @@ public class PropertyFilterCriterion extends FilterCriterion {
 
     public PropertyFilterCriterion(PropertyFilterCriterion criterion) {
         this.propertyLocator = criterion.propertyLocator;
-        this.operation = criterion.operation;
+        this.condition = criterion.condition;
         this.inverse = criterion.inverse;
         this.parameters = new HashMap<String, Object>(criterion.parameters);
     }
@@ -68,12 +69,12 @@ public class PropertyFilterCriterion extends FilterCriterion {
         return propertyLocator.getExpression().toString();
     }
 
-    public OperationType getOperation() {
-        return operation;
+    public FilterCondition getCondition() {
+        return condition;
     }
 
-    public void setOperation(OperationType operation) {
-        this.operation = operation;
+    public void setCondition(FilterCondition condition) {
+        this.condition = condition;
     }
 
     public Map<String, Object> getParameters() {
@@ -121,7 +122,7 @@ public class PropertyFilterCriterion extends FilterCriterion {
         PropertyFilterCriterion criterion = (PropertyFilterCriterion) o;
 
         if (inverse != criterion.inverse) return false;
-        if (operation != criterion.operation) return false;
+        if (condition != criterion.condition) return false;
         if (parameters != null ? !parameters.equals(criterion.parameters) : criterion.parameters != null) return false;
         if (propertyLocator != null ? !propertyLocator.equals(criterion.propertyLocator) : criterion.propertyLocator != null)
             return false;
@@ -132,7 +133,7 @@ public class PropertyFilterCriterion extends FilterCriterion {
     @Override
     public int hashCode() {
         int result = propertyLocator != null ? propertyLocator.hashCode() : 0;
-        result = 31 * result + (operation != null ? operation.hashCode() : 0);
+        result = 31 * result + (condition != null ? condition.hashCode() : 0);
         result = 31 * result + (parameters != null ? parameters.hashCode() : 0);
         result = 31 * result + (inverse ? 1 : 0);
         return result;

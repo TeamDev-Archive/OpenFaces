@@ -18,6 +18,8 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.FilterCriterionProcessor;
+import org.openfaces.component.filter.FilterCondition;
+import org.openfaces.component.filter.FilterConditionProcessor;
 
 import java.util.Date;
 import java.util.List;
@@ -63,108 +65,124 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
     }
 
 
-    private static Criterion convertToHibernateCriteria(PropertyFilterCriterion propertyFilterCriterion) {
-        String property = propertyFilterCriterion.getExpressionStr();
-        Object parameter = propertyFilterCriterion.getArg1();
-        Criterion result;
-        switch (propertyFilterCriterion.getOperation()) {
-            case GE:
-                if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
-                    parameter = ParametersInterpretator.dayStart((Date) parameter, timeZone);
-                }
-                result = Restrictions.ge(property, parameter);
-                break;
-            case GT:
-                if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
-                    parameter = ParametersInterpretator.dayEnd((Date) parameter, timeZone);
-                }
-                result = Restrictions.gt(property, parameter);
-                break;
-            case LE:
-                if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
-                    parameter = ParametersInterpretator.dayEnd((Date) parameter, timeZone);
-                }
-                result = Restrictions.le(property, parameter);
-                break;
-            case LT:
-                if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
-                    parameter = ParametersInterpretator.dayStart((Date) parameter, timeZone);
-                }
-                result = Restrictions.lt(property, parameter);
-                break;
-            case EQUALS: {
+    private static Criterion convertToHibernateCriteria(final PropertyFilterCriterion propertyFilterCriterion) {
+        final String property = propertyFilterCriterion.getExpressionStr();
+        final Object parameter = propertyFilterCriterion.getArg1();
+        FilterCondition condition = propertyFilterCriterion.getCondition();
+        Criterion result = (Criterion) condition.process(new FilterConditionProcessor() {
+            @Override
+            public Object processEmpty() {
+                return Restrictions.isNull(property);
+            }
+
+            @Override
+            public Object processEquals() {
                 if (parameter == null) {
-                    result = Restrictions.isNull(property);
-                    break;
+                    return Restrictions.isNull(property);
                 }
 
                 if (parameter instanceof Date) {
                     TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
-                    Date dayStart = ParametersInterpretator.dayStart((Date) parameter, timeZone);
-                    Date dayEnd = ParametersInterpretator.dayEnd((Date) parameter, timeZone);
-                    result = Restrictions.and(Restrictions.ge(property, dayStart), Restrictions.le(property, dayEnd));
-                    break;
+                    Date dayStart = ParametersInterpreter.dayStart((Date) parameter, timeZone);
+                    Date dayEnd = ParametersInterpreter.dayEnd((Date) parameter, timeZone);
+                    return Restrictions.and(Restrictions.ge(property, dayStart), Restrictions.le(property, dayEnd));
                 } else if (parameter instanceof String) {
                     boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
                     if (!caseSensitive) {
-                        result = Restrictions.like(property, parameter.toString().toLowerCase()).ignoreCase();
+                        return Restrictions.like(property, parameter.toString().toLowerCase()).ignoreCase();
                     } else {
-                        result = Restrictions.like(property, parameter);
+                        return Restrictions.like(property, parameter);
                     }
-                    break;
                 } else {
-                    result = Restrictions.eq(property, parameter);
-                    break;
+                    return Restrictions.eq(property, parameter);
                 }
-            }
-            case BEGINS: {
-                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
-                if (!caseSensitive) {
-                    result = Restrictions.like(property, parameter.toString().toLowerCase() + "%").ignoreCase();
-                } else {
-                    result = Restrictions.like(property, parameter + "%");
-                }
-                break;
-            }
-            case ENDS: {
-                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
-                if (!caseSensitive) {
-                    result = Restrictions.like(property, "%" + parameter.toString().toLowerCase()).ignoreCase();
-                } else {
-                    result = Restrictions.like(property, "%" + parameter);
-                }
-                break;
-            }
-            case CONTAINS: {
-                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
-                if (!caseSensitive) {
-                    result = Restrictions.like(property, "%" + parameter.toString().toLowerCase() + "%").ignoreCase();
-                } else {
-                    result = Restrictions.like(property, "%" + parameter + "%");
-                }
-                break;
             }
 
-            case BETWEEN: {
+            @Override
+            public Object processContains() {
+                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
+                if (!caseSensitive) {
+                    return Restrictions.like(property, "%" + parameter.toString().toLowerCase() + "%").ignoreCase();
+                } else {
+                    return Restrictions.like(property, "%" + parameter + "%");
+                }
+            }
+
+            @Override
+            public Object processBegins() {
+                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
+                if (!caseSensitive) {
+                    return Restrictions.like(property, parameter.toString().toLowerCase() + "%").ignoreCase();
+                } else {
+                    return Restrictions.like(property, parameter + "%");
+                }
+            }
+
+            @Override
+            public Object processEnds() {
+                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
+                if (!caseSensitive) {
+                    return Restrictions.like(property, "%" + parameter.toString().toLowerCase()).ignoreCase();
+                } else {
+                    return Restrictions.like(property, "%" + parameter);
+                }
+            }
+
+            @Override
+            public Object processLess() {
+                Object correctedParameter = parameter;
+                if (parameter instanceof Date) {
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    correctedParameter = ParametersInterpreter.dayStart((Date) parameter, timeZone);
+                }
+                return Restrictions.lt(property, correctedParameter);
+            }
+
+            @Override
+            public Object processGreater() {
+                Object correctedParameter = parameter;
+                if (parameter instanceof Date) {
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    correctedParameter = ParametersInterpreter.dayEnd((Date) parameter, timeZone);
+                }
+                return Restrictions.gt(property, correctedParameter);
+            }
+
+            @Override
+            public Object processLessOrEqual() {
+                Object correctedParameter = parameter;
+                if (parameter instanceof Date) {
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    correctedParameter = ParametersInterpreter.dayEnd((Date) parameter, timeZone);
+                }
+                return Restrictions.le(property, correctedParameter);
+            }
+
+            @Override
+            public Object processGreaterOrEqual() {
+                Object correctedParameter = parameter;
+                if (parameter instanceof Date) {
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    correctedParameter = ParametersInterpreter.dayStart((Date) parameter, timeZone);
+                }
+                return Restrictions.ge(property, correctedParameter);
+            }
+
+            @Override
+            public Object processBetween() {
                 Object parameter2 = propertyFilterCriterion.getArg2();
                 if (parameter instanceof Date && parameter2 instanceof Date) {
                     TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
-                    Date periodStart = ParametersInterpretator.dayStart((Date) parameter, timeZone);
-                    Date periodEnd = ParametersInterpretator.dayEnd((Date) parameter2, timeZone);
-                    result = Restrictions.and(Restrictions.ge(property, periodStart), Restrictions.le(property, periodEnd));
-                    break;
+                    Date periodStart = ParametersInterpreter.dayStart((Date) parameter, timeZone);
+                    Date periodEnd = ParametersInterpreter.dayEnd((Date) parameter2, timeZone);
+                    return Restrictions.and(Restrictions.ge(property, periodStart), Restrictions.le(property, periodEnd));
                 } else {
-                    result = Restrictions.between(property, parameter, parameter2);
-                    break;
+                    return Restrictions.between(property, parameter, parameter2);
                 }
             }
-            default:
-                throw new UnsupportedOperationException("Unsupported operation type: " + propertyFilterCriterion.getOperation());
-        }
+        });
+
+
         if (parameter != null) {
             result = Restrictions.and(Restrictions.isNotNull(property), result);
         }

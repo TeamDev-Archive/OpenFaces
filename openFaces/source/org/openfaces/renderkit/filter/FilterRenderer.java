@@ -13,7 +13,7 @@ package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.filter.Filter;
-import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.criterion.PropertyFilterCriterion;
 import org.openfaces.component.filter.criterion.PropertyLocator;
 import org.openfaces.renderkit.RendererBase;
@@ -61,8 +61,8 @@ public abstract class FilterRenderer extends RendererBase {
         PropertyFilterCriterion oldCriterion = (PropertyFilterCriterion) filter.getValue();
         PropertyFilterCriterion newCriterion;
         if (oldCriterion != null &&
-                !oldCriterion.getOperation().equals(OperationType.EMPTY) &&
-                !oldCriterion.getOperation().equals(OperationType.CONTAINS) ) {
+                !oldCriterion.getCondition().equals(FilterCondition.EMPTY) &&
+                !oldCriterion.getCondition().equals(FilterCondition.CONTAINS) ) {
             newCriterion = new PropertyFilterCriterion(oldCriterion);
             Object argAsObject = converter.getAsObject(FacesContext.getCurrentInstance(), filter, searchString);
             newCriterion.setArg1(argAsObject);
@@ -79,7 +79,7 @@ public abstract class FilterRenderer extends RendererBase {
     protected PropertyFilterCriterion createDefaultCriterion(Filter filter, Object specifiedValue) {
         Object expression = filter.getExpression();
         PropertyLocator propertyLocator = new PropertyLocator(expression, filter.getFilteredComponent());
-        OperationType condition = getDefaultCondition();
+        FilterCondition condition = getDefaultCondition();
 
         PropertyFilterCriterion criterion = new PropertyFilterCriterion(
                 propertyLocator,
@@ -89,8 +89,8 @@ public abstract class FilterRenderer extends RendererBase {
         return criterion;
     }
 
-    protected OperationType getDefaultCondition() {
-        return OperationType.CONTAINS;
+    protected FilterCondition getDefaultCondition() {
+        return FilterCondition.CONTAINS;
     }
 
 }

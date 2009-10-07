@@ -19,7 +19,8 @@ import org.apache.commons.collections.functors.AnyPredicate;
 import org.apache.commons.collections.functors.NotPredicate;
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.FilterCriterionProcessor;
-import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.FilterCondition;
+import org.openfaces.component.filter.FilterConditionProcessor;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -78,117 +79,126 @@ public class PredicateAdapter extends FilterCriterionProcessor {
         return new AnyPredicate(predicates);
     }
 
-    private static Predicate convertToPredicate(PropertyFilterCriterion propertyFilterCriterion) {
-        OperationType operation = propertyFilterCriterion.getOperation();
-        final Predicate predicateFunctor;
-        Object parameter = propertyFilterCriterion.getArg1();
+    private static Predicate convertToPredicate(final PropertyFilterCriterion propertyFilterCriterion) {
+        final FilterCondition condition = propertyFilterCriterion.getCondition();
+
+        final Object parameter = propertyFilterCriterion.getArg1();
         if (parameter == null)
             return TruePredicate.getInstance();
 
-        switch (operation) {
-            case GE: {
-                Comparator comparator = getComparatorForParameter(parameter);
-                if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
-                    parameter = ParametersInterpretator.dayStart((Date) parameter, timeZone);
-                }
-                predicateFunctor = new ComparePredicate(parameter, operation, comparator);
-                break;
+        final Predicate predicateFunctor = (Predicate) condition.process(new FilterConditionProcessor() {
+            public Object processEmpty() {
+                return new Predicate() {
+                    public boolean evaluate(Object o) {
+                        return o == null || o.equals("");
+                    }
+                };
             }
-            case GT: {
-                Comparator comparator = getComparatorForParameter(parameter);
-                if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
-                    parameter = ParametersInterpretator.dayEnd((Date) parameter, timeZone);
-                }
-                predicateFunctor = new ComparePredicate(parameter, operation, comparator);
-                break;
-            }
-            case LE: {
-                Comparator comparator = getComparatorForParameter(parameter);
-                if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
-                    parameter = ParametersInterpretator.dayEnd((Date) parameter, timeZone);
-                }
-                predicateFunctor = new ComparePredicate(parameter, operation, comparator);
-                break;
-            }
-            case LT: {
-                Comparator comparator = getComparatorForParameter(parameter);
-                if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
-                    parameter = ParametersInterpretator.dayStart((Date) parameter, timeZone);
-                }
-                predicateFunctor = new ComparePredicate(parameter, operation, comparator);
-                break;
 
-            }
-            case BETWEEN: {
-                Comparator comparator = getComparatorForParameter(parameter);
-                Object parameter2 = propertyFilterCriterion.getArg2();
-                if (parameter2 == null)
-                    return TruePredicate.getInstance();
-                if (parameter instanceof Date && parameter2 instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
-                    parameter = ParametersInterpretator.dayStart((Date) parameter, timeZone);
-                    parameter2 = ParametersInterpretator.dayEnd((Date) parameter, timeZone);
-                }
-                Predicate preficateForBefore = new ComparePredicate(parameter, OperationType.GE, comparator);
-                Predicate preficateForAfter = new ComparePredicate(parameter2, OperationType.LE, comparator);
-                predicateFunctor = new AllPredicate(new Predicate[]{preficateForBefore, preficateForAfter});
-                break;
-            }
-            case EQUALS: {
+            public Object processEquals() {
                 Comparator comparator = getComparatorForParameter(parameter);
                 if (parameter instanceof Date) {
                     TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
-                    Date dayStart = ParametersInterpretator.dayStart((Date) parameter, timeZone);
-                    Predicate preficateForBefore = new ComparePredicate(dayStart, OperationType.GE, comparator);
-                    Date dayEnd = ParametersInterpretator.dayEnd((Date) parameter, timeZone);
-                    Predicate preficateForAfter = new ComparePredicate(dayEnd, OperationType.LE, comparator);
-                    predicateFunctor = new AllPredicate(new Predicate[]{preficateForBefore, preficateForAfter});
+                    Date dayStart = ParametersInterpreter.dayStart((Date) parameter, timeZone);
+                    Predicate preficateForBefore = new ComparePredicate(dayStart, FilterCondition.GREATER_OR_EQUAL, comparator);
+                    Date dayEnd = ParametersInterpreter.dayEnd((Date) parameter, timeZone);
+                    Predicate preficateForAfter = new ComparePredicate(dayEnd, FilterCondition.LESS_OR_EQUAL, comparator);
+                    return new AllPredicate(new Predicate[]{preficateForBefore, preficateForAfter});
                 } else if (parameter instanceof String) {
                     boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
-                    predicateFunctor = new AbstractStringPredicate(parameter.toString(), caseSensitive) {
+                    return new AbstractStringPredicate(parameter.toString(), caseSensitive) {
                         public boolean evaluate(String parameter, String value) {
                             return value.equals(parameter);
                         }
                     };
                 } else {
-                    predicateFunctor = new ComparePredicate(parameter, operation, comparator);
+                    return new ComparePredicate(parameter, condition, comparator);
                 }
-                break;
             }
-            case BEGINS: {
+
+            public Object processContains() {
                 boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
-                predicateFunctor = new AbstractStringPredicate(parameter.toString(), caseSensitive) {
-                    public boolean evaluate(String parameter, String value) {
-                        return value.startsWith(parameter);
-                    }
-                };
-                break;
-            }
-            case ENDS: {
-                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
-                predicateFunctor = new AbstractStringPredicate(parameter.toString(), caseSensitive) {
-                    public boolean evaluate(String parameter, String value) {
-                        return value.endsWith(parameter);
-                    }
-                };
-                break;
-            }
-            case CONTAINS: {
-                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
-                predicateFunctor = new AbstractStringPredicate(parameter.toString(), caseSensitive) {
+                return new AbstractStringPredicate(parameter.toString(), caseSensitive) {
                     public boolean evaluate(String parameter, String value) {
                         return value.contains(parameter);
                     }
                 };
-                break;
             }
-            default:
-                throw new UnsupportedOperationException("Unsupported operation operation: " + propertyFilterCriterion.getOperation());
-        }
+
+            public Object processBegins() {
+                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
+                return new AbstractStringPredicate(parameter.toString(), caseSensitive) {
+                    public boolean evaluate(String parameter, String value) {
+                        return value.startsWith(parameter);
+                    }
+                };
+            }
+
+            public Object processEnds() {
+                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
+                return new AbstractStringPredicate(parameter.toString(), caseSensitive) {
+                    public boolean evaluate(String parameter, String value) {
+                        return value.endsWith(parameter);
+                    }
+                };
+            }
+
+            public Object processLess() {
+                Comparator comparator = getComparatorForParameter(parameter);
+                Object correctedParameter = parameter;
+                if (parameter instanceof Date) {
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    correctedParameter = ParametersInterpreter.dayStart((Date) parameter, timeZone);
+                }
+                return new ComparePredicate(correctedParameter, condition, comparator);
+            }
+
+            public Object processGreater() {
+                Comparator comparator = getComparatorForParameter(parameter);
+                Object correctedParameter = parameter;
+                if (parameter instanceof Date) {
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    correctedParameter = ParametersInterpreter.dayEnd((Date) parameter, timeZone);
+                }
+                return new ComparePredicate(correctedParameter, condition, comparator);
+            }
+
+            public Object processLessOrEqual() {
+                Comparator comparator = getComparatorForParameter(parameter);
+                Object correctedParameter = parameter;
+                if (parameter instanceof Date) {
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    correctedParameter = ParametersInterpreter.dayEnd((Date) parameter, timeZone);
+                }
+                return new ComparePredicate(correctedParameter, condition, comparator);
+            }
+
+            public Object processGreaterOrEqual() {
+                Comparator comparator = getComparatorForParameter(parameter);
+                Object correctedParameter = parameter;
+                if (parameter instanceof Date) {
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    correctedParameter = ParametersInterpreter.dayStart((Date) parameter, timeZone);
+                }
+                return new ComparePredicate(correctedParameter, condition, comparator);
+            }
+
+            public Object processBetween() {
+                Comparator comparator = getComparatorForParameter(parameter);
+                Object parameter1 = parameter;
+                Object parameter2 = propertyFilterCriterion.getArg2();
+                if (parameter2 == null)
+                    return TruePredicate.getInstance();
+                if (parameter1 instanceof Date && parameter2 instanceof Date) {
+                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    parameter1 = ParametersInterpreter.dayStart((Date) parameter1, timeZone);
+                    parameter2 = ParametersInterpreter.dayEnd((Date) parameter1, timeZone);
+                }
+                Predicate preficateForBefore = new ComparePredicate(parameter1, FilterCondition.GREATER_OR_EQUAL, comparator);
+                Predicate preficateForAfter = new ComparePredicate(parameter2, FilterCondition.LESS_OR_EQUAL, comparator);
+                return new AllPredicate(new Predicate[]{preficateForBefore, preficateForAfter});
+            }
+        });
 
         final PropertyLocator propertyLocator = propertyFilterCriterion.getPropertyLocator();
         Predicate predicate = new Predicate() {
@@ -235,30 +245,30 @@ public class PredicateAdapter extends FilterCriterionProcessor {
 
 
     private static class ComparePredicate implements Predicate {
-        private OperationType operationType;
+        private FilterCondition filterCondition;
         private Object parameter;
         private Comparator comparator;
 
-        private ComparePredicate(Object parameter, OperationType operationType, Comparator comparator) {
+        private ComparePredicate(Object parameter, FilterCondition filterCondition, Comparator comparator) {
             this.parameter = parameter;
             this.comparator = comparator;
-            this.operationType = operationType;
+            this.filterCondition = filterCondition;
         }
 
         protected boolean interpreteComparatorResult(int compareToResult) {
-            switch (operationType) {
+            switch (filterCondition) {
                 case EQUALS:
                     return compareToResult == 0;
-                case GE:
+                case GREATER_OR_EQUAL:
                     return compareToResult >= 0;
-                case GT:
+                case GREATER:
                     return compareToResult > 0;
-                case LE:
+                case LESS_OR_EQUAL:
                     return compareToResult <= 0;
-                case LT:
+                case LESS:
                     return compareToResult < 0;
                 default:
-                    throw new UnsupportedOperationException("Unsupported operation type: " + operationType);
+                    throw new UnsupportedOperationException("Unsupported operation type: " + filterCondition);
             }
         }
 

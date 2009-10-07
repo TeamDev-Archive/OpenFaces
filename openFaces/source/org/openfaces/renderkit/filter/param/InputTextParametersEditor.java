@@ -14,7 +14,7 @@ package org.openfaces.renderkit.filter.param;
 
 import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
-import org.openfaces.component.filter.OperationType;
+import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.ComponentUtil;
 
@@ -30,7 +30,7 @@ public class InputTextParametersEditor extends ParametersEditor implements Seria
     public InputTextParametersEditor() {
     }
 
-    public InputTextParametersEditor(FilterProperty filterProperty, OperationType operation) {
+    public InputTextParametersEditor(FilterProperty filterProperty, FilterCondition operation) {
         super(filterProperty, operation);
     }
 
