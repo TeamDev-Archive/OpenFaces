@@ -643,10 +643,16 @@ if (!window.O$) {
   O$.incDay = function(date, increment) {
     if (increment == undefined)
       increment = 1;
-    var backupdate = new Date(date.getTime());
+    var backupDate = new Date(date.getTime());
     date.setHours(12, 0, 0, 0);
     var newDate = new Date(date.getTime() + increment * 86400000);
-    newDate.setHours(backupdate.getHours(), backupdate.getMinutes(), backupdate.getSeconds(), backupdate.getMilliseconds());
+    var removedDstHours = newDate.getHours() - 12; // accounts for DST transition days, e.g. on Oct 10->11 in Chile (Santiago) UTC-4
+    if (removedDstHours < 0)
+      removedDstHours = 0;
+    newDate.setHours(backupDate.getHours() + removedDstHours,
+            backupDate.getMinutes(),
+            backupDate.getSeconds(),
+            backupDate.getMilliseconds());
     return newDate;
   };
 
