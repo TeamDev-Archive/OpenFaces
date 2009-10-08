@@ -55,12 +55,17 @@ public class CompositeFilterBean {
     private Collection<Country> countries = EnumSet.allOf(Country.class);
     private Collection<String> names = Arrays.asList("Tom", "David");
     private CompositeFilterCriterion criteria = new AndFilterCriterion();
+    private CompositeFilterCriterion criteria2 = new AndFilterCriterion();
 
-    public List<User> getUsers() {
+    public List<User> getFilteredUsers() {
         Predicate predicate = PredicateAdapter.convertToPredicate(criteria);
         ArrayList<User> result = new ArrayList<User>(users);
         CollectionUtils.filter(result, predicate);
         return result;
+    }
+
+    public List<User> getUsers() {
+        return users;
     }
 
     public Collection<Country> getCountries() {
@@ -81,6 +86,14 @@ public class CompositeFilterBean {
 
     public void setCriteria(CompositeFilterCriterion criteria) {
         this.criteria = criteria;
+    }
+
+    public CompositeFilterCriterion getCriteria2() {
+        return criteria2;
+    }
+
+    public void setCriteria2(CompositeFilterCriterion criteria2) {
+        this.criteria2 = criteria2;
     }
 
     public String getFirstNameLabel() {

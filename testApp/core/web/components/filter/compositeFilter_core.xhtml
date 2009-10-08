@@ -25,13 +25,11 @@
 
 
   <br/>
-  <br/>
   <h:commandButton action="sbmt" value="Submit"/>
   <h:commandButton onclick="O$.Filter.clear('form1:cf'); return false;" value="Clear Filter"/>
   <h:commandButton action="#{CompositeFilterBean.clearFilter}" value="Clear and Submit Filter"/>
 
-
-  <o:dataTable id="table1" value="#{CompositeFilterBean.users}" var="user">
+  <o:dataTable id="table1" value="#{CompositeFilterBean.filteredUsers}" var="user">
     <o:column>
       <f:facet name="header">
         <h:outputText value="Name"/>
@@ -66,5 +64,49 @@
   <br/>
   <br/>
 
+  <o:compositeFilter for="table2" id="cf2">
+    <o:filterProperty name="firstName" value="#{CompositeFilterBean.firstNameLabel}" type="text"
+                      dataProvider="#{CompositeFilterBean.names}" caseSensitive="false"/>
+    <o:filterProperty name="age" value="Age" type="number" rendered="#{CompositeFilterBean.ageRendered}"/>
+    <o:filterProperty name="dateOfBirth" value="Date Of Birth" type="date" pattern="dd-MM-yyyy" timeZone="GMT"/>
+    <o:filterProperty name="placeOfBirth.country" value="Country" type="select"
+                      dataProvider="#{CompositeFilterBean.countries}"
+                      converter="#{CompositeFilterBean.countryConverter}"/>
+  </o:compositeFilter>
+
+
+  <h:commandButton action="sbmt" value="Submit"/>
+
+  
+  <o:dataTable id="table2" value="#{CompositeFilterBean.users}" var="user">
+    <o:column>
+      <f:facet name="header">
+        <h:outputText value="Name"/>
+      </f:facet>
+      <h:outputText value="#{user.firstName}, #{user.lastName}"/>
+    </o:column>
+    <o:column>
+      <f:facet name="header">
+        <h:outputText value="Age"/>
+      </f:facet>
+      <h:outputText value="#{user.age}"/>
+    </o:column>
+    <o:column>
+      <f:facet name="header">
+        <h:outputText value="Date Of Birth"/>
+      </f:facet>
+      <h:outputText value="#{user.dateOfBirth}">
+        <f:convertDateTime pattern="dd-MM-yyyy z" timeZone="GMT"/>
+      </h:outputText>
+    </o:column>
+    <o:column>
+      <f:facet name="header">
+        <h:outputText value="Place Of Birth"/>
+      </f:facet>
+      <h:outputText value="#{user.placeOfBirth.country}, #{user.placeOfBirth.city}">
+      </h:outputText>
+    </o:column>
+
+  </o:dataTable>
 
 </div>

@@ -3942,8 +3942,10 @@ if (!window.O$) {
 
 // ----------------- COMPONENT UTILS -------------------------------------------
 
-  if (!O$.findCssRule(".o_default_css_marker"))
-    O$.logError("default.css file is not loaded. The usual reason is application misconfiguration. See OpenFaces Installation and Configuration guide (resource filter configuration, etc).")
+  O$.addLoadEvent(function() {
+    if (!O$.findCssRule(".o_default_css_marker"))
+      O$.logError("default.css file is not loaded. The usual reason is application misconfiguration. See OpenFaces Installation and Configuration guide (resource filter configuration, etc).")
+  });
 
   O$._submitComponentWithField = function(componentId, focusedField, additionalParams, submittedComponentIds) {
     var focusedFieldId = focusedField ? focusedField.id : null;
