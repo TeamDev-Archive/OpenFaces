@@ -8,6 +8,8 @@
   <br/>
   <br/>
 
+  <h1>Manual attachment to DataTable</h1>
+
   <h:commandButton onclick="O$.Filter.add('form1:cf'); return false;" value="Add Filter"/>
 
   <o:loadBundle basename="org.openfaces.testapp.filter.MessageResources" var="messages"/>
@@ -61,8 +63,8 @@
   </o:dataTable>
   <br/>
   <br/>
-  <br/>
-  <br/>
+
+  <h1>Automatic attachment to DataTable</h1>
 
   <o:compositeFilter for="table2" id="cf2">
     <o:filterProperty name="firstName" value="#{CompositeFilterBean.firstNameLabel}" type="text"

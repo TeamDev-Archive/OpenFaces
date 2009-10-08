@@ -1,0 +1,47 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+
+  <a href="../../main.jsf">Back to the main page</a>
+  <br/>
+  <a href="../../functional_testing.jsf">Back to the component testing page</a><br/><br/>
+  <br/>
+  <input type="submit" value="Submit"/>
+  <br/>
+
+  <o:dataTable value="#{TableTestBean.collection1}" var="row" rowKey="#{row.id}" pageSize="4"
+               columnsOrder="#{TableTestBean.columnsOrder}"
+               columnIdVar="colId"
+               columnIndexVar="colIndex">
+    <f:facet name="below">
+      <o:dataTablePaginator/>
+    </f:facet>
+
+    <o:column id="col1" sortingExpression="#{row.field1}" style="width: 150px">
+      <f:facet name="header">
+        <h:outputText value="Static Column"/>
+      </f:facet>
+      <h:outputText value="#{row.field1}"/>
+    </o:column>
+    <o:columns value="#{TableTestBean.testColumns}"
+               var="col"
+               columnId="customCol#{col}"
+               columnRendered="#{TableTestBean.columnRendered}"
+               sortingEnabled="#{TableTestBean.sortingEnabled}"
+               sortingExpression="#{row.customFields[col]}">
+      <f:facet name="header">
+        <h:outputText value="Header #{col}"/>
+      </f:facet>
+      <f:facet name="footer">
+        <h:outputText value="Footer #{col}"/>
+      </f:facet>
+      <h:outputText value="#{row.customFields[col]}"/>
+    </o:columns>
+  </o:dataTable>
+  <h:commandButton value="Change the set of columns" action="#{TableTestBean.changeColumns}"/>
+
+</div>
