@@ -14,7 +14,7 @@ package org.openfaces.testapp.datatable;
 
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.CompositeFilterCriterion;
-import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.ExpressionFilterCriterion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -180,7 +180,7 @@ public class ColorDB {
         StringBuffer buf = new StringBuffer();
         for (Iterator<FilterCriterion> it = filterCriteria.getCriteria().iterator(); it.hasNext();) {
             FilterCriterion c = it.next();
-            PropertyFilterCriterion criterion = (PropertyFilterCriterion) c;
+            ExpressionFilterCriterion criterion = (ExpressionFilterCriterion) c;
             String filterId = criterion.getExpressionStr();
 
             String text = criterion.getArg1().toString();
@@ -252,7 +252,7 @@ public class ColorDB {
         for (Color tempColor : colorsToFilter) {
             boolean colorAccepted = true;
             for (FilterCriterion c: criteria.getCriteria()) {
-                PropertyFilterCriterion criterion = (PropertyFilterCriterion) c;
+                ExpressionFilterCriterion criterion = (ExpressionFilterCriterion) c;
                 String criterionUC = criterion.getArg1().toString().toUpperCase();
                 String colorNameUC = tempColor.getName().toUpperCase();
                 if (colorNameUC.indexOf(criterionUC) == -1) {

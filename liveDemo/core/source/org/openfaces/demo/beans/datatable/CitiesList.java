@@ -13,7 +13,7 @@ package org.openfaces.demo.beans.datatable;
 
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.CompositeFilterCriterion;
-import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.demo.beans.util.City;
 import org.openfaces.util.FacesUtil;
 
@@ -66,7 +66,7 @@ public class CitiesList implements Serializable {
     private CitiesDB.CitySelectionCriteria calculateFilterConditions(CompositeFilterCriterion filterCriteria) {
         CitiesDB.CitySelectionCriteria filterConditions = new CitiesDB.CitySelectionCriteria();
         for (FilterCriterion c : filterCriteria.getCriteria()) {
-            PropertyFilterCriterion criterion = (PropertyFilterCriterion) c;
+            ExpressionFilterCriterion criterion = (ExpressionFilterCriterion) c;
             String propertyName = criterion.getExpressionStr();
             if (propertyName.equals("name")) {
                 String searchString = criterion.getArg1().toString();

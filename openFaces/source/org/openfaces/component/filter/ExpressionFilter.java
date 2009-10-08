@@ -33,7 +33,7 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
     private static final String DEFAULT_EMPTY_RECORDS_CRITERION_NAME = "<Empty>";
     private static final String DEFAULT_NON_EMPTY_RECORDS_CRITERION_NAME = "<Non-empty>";
 
-    private PropertyFilterCriterion value;
+    private ExpressionFilterCriterion value;
     private Object expression;
     private Converter converter;
     private boolean criterionModelUpdateRequired;
@@ -69,7 +69,7 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-        value = (PropertyFilterCriterion) state[i++];
+        value = (ExpressionFilterCriterion) state[i++];
         converter = (Converter) restoreAttachedState(context, state[i++]);
         expression = state[i++];
         predefinedCriterionStyle = (String) state[i++];
@@ -257,10 +257,10 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
     public void updateValueFromBinding(FacesContext context) {
         ValueExpression valueExpression = getValueExpression("value");
         if (valueExpression != null) {
-            value = (PropertyFilterCriterion) valueExpression.getValue(context.getELContext());
+            value = (ExpressionFilterCriterion) valueExpression.getValue(context.getELContext());
             if (value != null) {
                 value.process(new FilterCriterionProcessor() {
-                    public Object process(PropertyFilterCriterion criterion) {
+                    public Object process(ExpressionFilterCriterion criterion) {
                         validateCriterion(criterion);
                         return null;
                     }
@@ -288,7 +288,7 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
         }
     }
 
-    private void validateCriterion(PropertyFilterCriterion criterion) {
+    private void validateCriterion(ExpressionFilterCriterion criterion) {
         boolean caseSensitive = isCaseSensitive();
         if (criterion.getPropertyLocator() == null)
             criterion.setPropertyLocator(getPropertyLocator());
@@ -320,7 +320,7 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
     }
 
     public void setValue(Object value) {
-        this.value = (PropertyFilterCriterion) value;
+        this.value = (ExpressionFilterCriterion) value;
     }
 
 
@@ -329,7 +329,7 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
      * @return true if the new criterion results in the different filtering behavior as opposed to this filter's previous
      *         criterion
      */
-    public boolean changeCriterion(PropertyFilterCriterion newCriterion) {
+    public boolean changeCriterion(ExpressionFilterCriterion newCriterion) {
         FilterCriterion oldCriterion = (FilterCriterion) getValue();
         criterionModelUpdateRequired = true;
 

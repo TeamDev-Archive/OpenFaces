@@ -4,7 +4,7 @@ import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.CompositeFilterCriterion;
 import org.openfaces.component.filter.OrFilterCriterion;
-import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
@@ -62,9 +62,9 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
                 if (criterion instanceof OrFilterCriterion) {
                     List<FilterCriterion> subCriteria = ((OrFilterCriterion) criterion).getCriteria();
                     for (FilterCriterion subCriterion : subCriteria)
-                        synchronizeRowWithCriterion(filter, rowIterator, (PropertyFilterCriterion) subCriterion);
+                        synchronizeRowWithCriterion(filter, rowIterator, (ExpressionFilterCriterion) subCriterion);
                 } else {
-                    synchronizeRowWithCriterion(filter, rowIterator, (PropertyFilterCriterion) criterion);
+                    synchronizeRowWithCriterion(filter, rowIterator, (ExpressionFilterCriterion) criterion);
                 }
             }
         }
@@ -79,7 +79,7 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
 
     }
 
-    private void synchronizeRowWithCriterion(CompositeFilter filter, Iterator<FilterRow> rowIterator, PropertyFilterCriterion criterion) {
+    private void synchronizeRowWithCriterion(CompositeFilter filter, Iterator<FilterRow> rowIterator, ExpressionFilterCriterion criterion) {
         FilterRow filterRow = null;
         if (rowIterator.hasNext()) {
             filterRow = rowIterator.next();

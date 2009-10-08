@@ -13,7 +13,7 @@ package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.filter.ComboBoxFilter;
 import org.openfaces.component.filter.FilterCondition;
-import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.util.RenderingUtil;
@@ -56,7 +56,7 @@ public class ComboBoxFilterRenderer extends ExpressionFilterRenderer {
         super.encodeBegin(context, component);
         ComboBoxFilter filter = ((ComboBoxFilter) component);
 
-        PropertyFilterCriterion currentCriterion = (PropertyFilterCriterion) filter.getValue();
+        ExpressionFilterCriterion currentCriterion = (ExpressionFilterCriterion) filter.getValue();
 
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("select", component);
@@ -108,7 +108,7 @@ public class ComboBoxFilterRenderer extends ExpressionFilterRenderer {
         boolean textCriterionSelected = false;
         for (Object criterionObj : criterionNames) {
             String criterionName = converter.getAsString(context, filter, criterionObj);
-            boolean selected = currentCriterion instanceof PropertyFilterCriterion &&
+            boolean selected = currentCriterion instanceof ExpressionFilterCriterion &&
                     currentCriterionStr.equals(criterionName);
             writeOption(writer, component,
                     USER_CRITERION_PREFIX + criterionName,
@@ -171,13 +171,13 @@ public class ComboBoxFilterRenderer extends ExpressionFilterRenderer {
             setDecodedString(filter, searchString);
         } else if (selectedCriterion.startsWith(PREDEFINED_CRITERION_PREFIX)) {
             String criterion = selectedCriterion.substring(PREDEFINED_CRITERION_PREFIX.length());
-            PropertyFilterCriterion newCriterion;
+            ExpressionFilterCriterion newCriterion;
             if (criterion.equals(ALL))
                 newCriterion = null;
             else if (criterion.equals(EMPTY))
-                newCriterion = new PropertyFilterCriterion(null, FilterCondition.EMPTY, null);
+                newCriterion = new ExpressionFilterCriterion(FilterCondition.EMPTY, false);
             else if (criterion.equals(NON_EMPTY))
-                newCriterion = new PropertyFilterCriterion(null, FilterCondition.EMPTY, null, true);
+                newCriterion = new ExpressionFilterCriterion(FilterCondition.EMPTY, true);
             else
                 throw new IllegalStateException("Unknown predefined criterion came from client: " + criterion);
             setDecodedCriterion(filter, newCriterion);

@@ -16,7 +16,7 @@ import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.FilterType;
 import org.openfaces.component.filter.FilterCondition;
-import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItems;
 import org.openfaces.renderkit.filter.FilterRow;
@@ -94,7 +94,7 @@ public class DropDownParametersEditor extends ParametersEditor implements Serial
     }
 
     @Override
-    public PropertyFilterCriterion getCriterion() {
+    public ExpressionFilterCriterion getCriterion() {
         if (filterProperty.getType() == FilterType.SELECT && criterion.getArg1() == null) {
                 return null;            
         }

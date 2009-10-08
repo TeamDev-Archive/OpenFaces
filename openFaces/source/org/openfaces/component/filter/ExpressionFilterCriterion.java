@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author Natalia Zolochevska
  */
-public class PropertyFilterCriterion extends FilterCriterion {
+public class ExpressionFilterCriterion extends FilterCriterion {
     private static final String PARAM_ARG1 = "arg1";
     private static final String PARAM_ARG2 = "arg2";
     private static final String PARAM_CASE_SENSITIVE = "caseSensitive";
@@ -16,22 +16,29 @@ public class PropertyFilterCriterion extends FilterCriterion {
     private Map<String, Object> parameters = new HashMap<String, Object>(2);
     private boolean inverse;
 
-    public PropertyFilterCriterion() {
+    public ExpressionFilterCriterion() {
     }
 
-    public PropertyFilterCriterion(PropertyLocator propertyLocator, FilterCondition condition, Object arg1) {
+    public ExpressionFilterCriterion(Object arg1) {
+        setArg1(arg1);
+    }
+
+    public ExpressionFilterCriterion(PropertyLocator propertyLocator, FilterCondition condition, Object arg1) {
         this.propertyLocator = propertyLocator;
         this.condition = condition;
         setArg1(arg1);
     }
 
-    public PropertyFilterCriterion(PropertyLocator propertyLocator, FilterCondition condition,
-                                   Map<String, Object> parameters, boolean inverse) {
-        this.propertyLocator = propertyLocator;
+    public ExpressionFilterCriterion(FilterCondition condition, boolean inverse) {
         this.condition = condition;
-        if (parameters != null)
-            this.parameters = parameters;
         this.inverse = inverse;
+    }
+
+    public ExpressionFilterCriterion(ExpressionFilterCriterion criterion) {
+        this.propertyLocator = criterion.propertyLocator;
+        this.condition = criterion.condition;
+        this.inverse = criterion.inverse;
+        this.parameters = new HashMap<String, Object>(criterion.parameters);
     }
 
     public Object process(FilterCriterionProcessor processor) {
@@ -102,13 +109,6 @@ public class PropertyFilterCriterion extends FilterCriterion {
         });
     }
 
-    public PropertyFilterCriterion(PropertyFilterCriterion criterion) {
-        this.propertyLocator = criterion.propertyLocator;
-        this.condition = criterion.condition;
-        this.inverse = criterion.inverse;
-        this.parameters = new HashMap<String, Object>(criterion.parameters);
-    }
-
     public PropertyLocator getPropertyLocator() {
         return propertyLocator;
     }
@@ -171,7 +171,7 @@ public class PropertyFilterCriterion extends FilterCriterion {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PropertyFilterCriterion criterion = (PropertyFilterCriterion) o;
+        ExpressionFilterCriterion criterion = (ExpressionFilterCriterion) o;
 
         if (inverse != criterion.inverse) return false;
         if (condition != criterion.condition) return false;

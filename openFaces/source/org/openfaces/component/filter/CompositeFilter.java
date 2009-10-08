@@ -214,7 +214,7 @@ public class CompositeFilter extends Filter {
                 new LinkedHashMap<PropertyLocator, List<FilterCriterion>>();
 
         for (FilterRow filterRow : filterRows.values()) {
-            PropertyFilterCriterion criterion = filterRow.updateRowModelFromEditors(context, this);
+            ExpressionFilterCriterion criterion = filterRow.updateRowModelFromEditors(context, this);
             if (criterion == null)
                 continue;
             PropertyLocator property = criterion.getPropertyLocator();

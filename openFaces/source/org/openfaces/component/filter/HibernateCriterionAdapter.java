@@ -35,7 +35,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
         return (Criterion) filterCriterion.process(getInstance());
     }
 
-    public Object process(PropertyFilterCriterion criterion) {
+    public Object process(ExpressionFilterCriterion criterion) {
         return convertToHibernateCriteria(criterion);
     }
 
@@ -61,10 +61,10 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
     }
 
 
-    private static Criterion convertToHibernateCriteria(final PropertyFilterCriterion propertyFilterCriterion) {
-        final String property = propertyFilterCriterion.getExpressionStr();
-        final Object parameter = propertyFilterCriterion.getArg1();
-        FilterCondition condition = propertyFilterCriterion.getCondition();
+    private static Criterion convertToHibernateCriteria(final ExpressionFilterCriterion expressionFilterCriterion) {
+        final String property = expressionFilterCriterion.getExpressionStr();
+        final Object parameter = expressionFilterCriterion.getArg1();
+        FilterCondition condition = expressionFilterCriterion.getCondition();
         Criterion result = condition.process(new FilterConditionProcessor<Criterion>() {
             @Override
             public Criterion processEmpty() {
@@ -78,12 +78,12 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
                 }
 
                 if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    TimeZone timeZone = (TimeZone) expressionFilterCriterion.getParameters().get("timeZone");
                     Date dayStart = ParametersInterpreter.dayStart((Date) parameter, timeZone);
                     Date dayEnd = ParametersInterpreter.dayEnd((Date) parameter, timeZone);
                     return Restrictions.and(Restrictions.ge(property, dayStart), Restrictions.le(property, dayEnd));
                 } else if (parameter instanceof String) {
-                    boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
+                    boolean caseSensitive = expressionFilterCriterion.isCaseSensitive();
                     if (!caseSensitive) {
                         return Restrictions.like(property, parameter.toString().toLowerCase()).ignoreCase();
                     } else {
@@ -96,7 +96,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
 
             @Override
             public Criterion processContains() {
-                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
+                boolean caseSensitive = expressionFilterCriterion.isCaseSensitive();
                 if (!caseSensitive) {
                     return Restrictions.like(property, "%" + parameter.toString().toLowerCase() + "%").ignoreCase();
                 } else {
@@ -106,7 +106,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
 
             @Override
             public Criterion processBegins() {
-                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
+                boolean caseSensitive = expressionFilterCriterion.isCaseSensitive();
                 if (!caseSensitive) {
                     return Restrictions.like(property, parameter.toString().toLowerCase() + "%").ignoreCase();
                 } else {
@@ -116,7 +116,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
 
             @Override
             public Criterion processEnds() {
-                boolean caseSensitive = propertyFilterCriterion.isCaseSensitive();
+                boolean caseSensitive = expressionFilterCriterion.isCaseSensitive();
                 if (!caseSensitive) {
                     return Restrictions.like(property, "%" + parameter.toString().toLowerCase()).ignoreCase();
                 } else {
@@ -128,7 +128,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
             public Criterion processLess() {
                 Object correctedParameter = parameter;
                 if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    TimeZone timeZone = (TimeZone) expressionFilterCriterion.getParameters().get("timeZone");
                     correctedParameter = ParametersInterpreter.dayStart((Date) parameter, timeZone);
                 }
                 return Restrictions.lt(property, correctedParameter);
@@ -138,7 +138,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
             public Criterion processGreater() {
                 Object correctedParameter = parameter;
                 if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    TimeZone timeZone = (TimeZone) expressionFilterCriterion.getParameters().get("timeZone");
                     correctedParameter = ParametersInterpreter.dayEnd((Date) parameter, timeZone);
                 }
                 return Restrictions.gt(property, correctedParameter);
@@ -148,7 +148,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
             public Criterion processLessOrEqual() {
                 Object correctedParameter = parameter;
                 if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    TimeZone timeZone = (TimeZone) expressionFilterCriterion.getParameters().get("timeZone");
                     correctedParameter = ParametersInterpreter.dayEnd((Date) parameter, timeZone);
                 }
                 return Restrictions.le(property, correctedParameter);
@@ -158,7 +158,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
             public Criterion processGreaterOrEqual() {
                 Object correctedParameter = parameter;
                 if (parameter instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    TimeZone timeZone = (TimeZone) expressionFilterCriterion.getParameters().get("timeZone");
                     correctedParameter = ParametersInterpreter.dayStart((Date) parameter, timeZone);
                 }
                 return Restrictions.ge(property, correctedParameter);
@@ -166,9 +166,9 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
 
             @Override
             public Criterion processBetween() {
-                Object parameter2 = propertyFilterCriterion.getArg2();
+                Object parameter2 = expressionFilterCriterion.getArg2();
                 if (parameter instanceof Date && parameter2 instanceof Date) {
-                    TimeZone timeZone = (TimeZone) propertyFilterCriterion.getParameters().get("timeZone");
+                    TimeZone timeZone = (TimeZone) expressionFilterCriterion.getParameters().get("timeZone");
                     Date periodStart = ParametersInterpreter.dayStart((Date) parameter, timeZone);
                     Date periodEnd = ParametersInterpreter.dayEnd((Date) parameter2, timeZone);
                     return Restrictions.and(Restrictions.ge(property, periodStart), Restrictions.le(property, periodEnd));
@@ -182,7 +182,7 @@ public class HibernateCriterionAdapter extends FilterCriterionProcessor {
         if (parameter != null) {
             result = Restrictions.and(Restrictions.isNotNull(property), result);
         }
-        return (propertyFilterCriterion.isInverse()) ? Restrictions.not(result) : result;
+        return (expressionFilterCriterion.isInverse()) ? Restrictions.not(result) : result;
     }
 
 }

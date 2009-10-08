@@ -6,7 +6,7 @@ package org.openfaces.taglib.internal.filter;
 
 import org.openfaces.component.filter.ExpressionFilter;
 import org.openfaces.component.filter.FilterCondition;
-import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.ExpressionFilterCriterion;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -73,6 +73,6 @@ public abstract class ExpressionFilterTag extends FilterTag {
                 throw new FacesException("Improper 'criterion' attribute value: \"" + value + "\". It should be of \"<condition>\" or \"not <condition>\", where <condition> is one of: " + possibleConditionsStr +"; but it was: " + value);
             inverse = true;
         }
-        filter.setValue(new PropertyFilterCriterion(null, condition, null, inverse));
+        filter.setValue(new ExpressionFilterCriterion(condition, inverse));
     }
 }

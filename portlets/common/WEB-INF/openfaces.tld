@@ -1769,7 +1769,7 @@
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. PropertyFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. ExpressionFilterCriterion -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -2043,7 +2043,7 @@
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. PropertyFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. ExpressionFilterCriterion -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -2660,7 +2660,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. PropertyFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.table. ExpressionFilterCriterion -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>

@@ -14,7 +14,7 @@ package org.openfaces.renderkit.filter;
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.filter.ExpressionFilter;
 import org.openfaces.component.filter.FilterCondition;
-import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.filter.PropertyLocator;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.ComponentUtil;
@@ -45,7 +45,7 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
         return StyleUtil.getCSSClass(context, filter, predefinedCriterionStyle, DEFAULT_PREDEFINED_CRITERION_CLASS, filter.getPredefinedCriterionClass());
     }
 
-    protected void setDecodedCriterion(ExpressionFilter filter, PropertyFilterCriterion newCriterion) {
+    protected void setDecodedCriterion(ExpressionFilter filter, ExpressionFilterCriterion newCriterion) {
         if (!filter.changeCriterion(newCriterion))
             return;
         FilterableComponent filteredComponent = filter.getFilteredComponent();
@@ -58,12 +58,12 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
 
     protected void setDecodedString(ExpressionFilter filter, String searchString) {
         Converter converter = getConverter(filter);
-        PropertyFilterCriterion oldCriterion = (PropertyFilterCriterion) filter.getValue();
-        PropertyFilterCriterion newCriterion;
+        ExpressionFilterCriterion oldCriterion = (ExpressionFilterCriterion) filter.getValue();
+        ExpressionFilterCriterion newCriterion;
         if (oldCriterion != null &&
                 !oldCriterion.getCondition().equals(FilterCondition.EMPTY) &&
                 !oldCriterion.getCondition().equals(FilterCondition.CONTAINS) ) {
-            newCriterion = new PropertyFilterCriterion(oldCriterion);
+            newCriterion = new ExpressionFilterCriterion(oldCriterion);
             Object argAsObject = converter.getAsObject(FacesContext.getCurrentInstance(), filter, searchString);
             newCriterion.setArg1(argAsObject);
         } else
@@ -76,12 +76,12 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
         return converter != null ? converter : new StringConverter();
     }
 
-    protected PropertyFilterCriterion createDefaultCriterion(ExpressionFilter filter, Object specifiedValue) {
+    protected ExpressionFilterCriterion createDefaultCriterion(ExpressionFilter filter, Object specifiedValue) {
         Object expression = filter.getExpression();
         PropertyLocator propertyLocator = new PropertyLocator(expression, filter.getFilteredComponent());
         FilterCondition condition = getDefaultCondition();
 
-        PropertyFilterCriterion criterion = new PropertyFilterCriterion(
+        ExpressionFilterCriterion criterion = new ExpressionFilterCriterion(
                 propertyLocator,
                 condition,
                 specifiedValue);

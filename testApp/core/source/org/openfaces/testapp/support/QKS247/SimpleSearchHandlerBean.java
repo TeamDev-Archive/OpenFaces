@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.support.QKS247;
 
-import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.testapp.screenshot.Person;
 
@@ -29,14 +29,14 @@ public class SimpleSearchHandlerBean {
     private DataTable dataTable;
     private Person selectedRow;
     private int totalFilteredRecords = 0;
-    private PropertyFilterCriterion mboFilterValue = null;
-    private PropertyFilterCriterion facilityFilterValue = null;
-    private PropertyFilterCriterion vendorFilterValue = null;
-    private PropertyFilterCriterion productFamilyFilterValue = null;
-    private PropertyFilterCriterion areaFilterValue = null;
-    private PropertyFilterCriterion categoryFilterValue = null;
-    private PropertyFilterCriterion moduleFilterValue = null;
-    private PropertyFilterCriterion statusFilterValue = null;
+    private ExpressionFilterCriterion mboFilterValue = null;
+    private ExpressionFilterCriterion facilityFilterValue = null;
+    private ExpressionFilterCriterion vendorFilterValue = null;
+    private ExpressionFilterCriterion productFamilyFilterValue = null;
+    private ExpressionFilterCriterion areaFilterValue = null;
+    private ExpressionFilterCriterion categoryFilterValue = null;
+    private ExpressionFilterCriterion moduleFilterValue = null;
+    private ExpressionFilterCriterion statusFilterValue = null;
     private String simpleSearchCriteria;
 
 
@@ -49,67 +49,67 @@ public class SimpleSearchHandlerBean {
         this.simpleSearchCriteria = simpleSearchCriteria;
     }
 
-    public PropertyFilterCriterion getMboFilterValue() {
+    public ExpressionFilterCriterion getMboFilterValue() {
         return mboFilterValue;
     }
 
-    public void setMboFilterValue(PropertyFilterCriterion mboFilterValue) {
+    public void setMboFilterValue(ExpressionFilterCriterion mboFilterValue) {
         this.mboFilterValue = mboFilterValue;
     }
 
-    public PropertyFilterCriterion getFacilityFilterValue() {
+    public ExpressionFilterCriterion getFacilityFilterValue() {
         return facilityFilterValue;
     }
 
-    public void setFacilityFilterValue(PropertyFilterCriterion facilityFilterValue) {
+    public void setFacilityFilterValue(ExpressionFilterCriterion facilityFilterValue) {
         this.facilityFilterValue = facilityFilterValue;
     }
 
-    public PropertyFilterCriterion getVendorFilterValue() {
+    public ExpressionFilterCriterion getVendorFilterValue() {
         return vendorFilterValue;
     }
 
-    public void setVendorFilterValue(PropertyFilterCriterion vendorFilterValue) {
+    public void setVendorFilterValue(ExpressionFilterCriterion vendorFilterValue) {
         this.vendorFilterValue = vendorFilterValue;
     }
 
-    public PropertyFilterCriterion getProductFamilyFilterValue() {
+    public ExpressionFilterCriterion getProductFamilyFilterValue() {
         return productFamilyFilterValue;
     }
 
-    public void setProductFamilyFilterValue(PropertyFilterCriterion productFamilyFilterValue) {
+    public void setProductFamilyFilterValue(ExpressionFilterCriterion productFamilyFilterValue) {
         this.productFamilyFilterValue = productFamilyFilterValue;
     }
 
-    public PropertyFilterCriterion getAreaFilterValue() {
+    public ExpressionFilterCriterion getAreaFilterValue() {
         return areaFilterValue;
     }
 
-    public void setAreaFilterValue(PropertyFilterCriterion areaFilterValue) {
+    public void setAreaFilterValue(ExpressionFilterCriterion areaFilterValue) {
         this.areaFilterValue = areaFilterValue;
     }
 
-    public PropertyFilterCriterion getCategoryFilterValue() {
+    public ExpressionFilterCriterion getCategoryFilterValue() {
         return categoryFilterValue;
     }
 
-    public void setCategoryFilterValue(PropertyFilterCriterion categoryFilterValue) {
+    public void setCategoryFilterValue(ExpressionFilterCriterion categoryFilterValue) {
         this.categoryFilterValue = categoryFilterValue;
     }
 
-    public PropertyFilterCriterion getModuleFilterValue() {
+    public ExpressionFilterCriterion getModuleFilterValue() {
         return moduleFilterValue;
     }
 
-    public void setModuleFilterValue(PropertyFilterCriterion moduleFilterValue) {
+    public void setModuleFilterValue(ExpressionFilterCriterion moduleFilterValue) {
         this.moduleFilterValue = moduleFilterValue;
     }
 
-    public PropertyFilterCriterion getStatusFilterValue() {
+    public ExpressionFilterCriterion getStatusFilterValue() {
         return statusFilterValue;
     }
 
-    public void setStatusFilterValue(PropertyFilterCriterion statusFilterValue) {
+    public void setStatusFilterValue(ExpressionFilterCriterion statusFilterValue) {
         this.statusFilterValue = statusFilterValue;
     }
 

@@ -11,7 +11,7 @@
  */
 package org.openfaces.portlets;
 
-import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.ExpressionFilterCriterion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 public class PeopleList {
 
   private List<Person> myPerson = new ArrayList<Person>();
-  private PropertyFilterCriterion myFilterValue = new PropertyFilterCriterion(null, null, "a");
+  private ExpressionFilterCriterion myFilterValue = new ExpressionFilterCriterion("a");
   private Person mySelectedRow1;
   private Person mySelectedRow2;
   private List mySelectedRows = new ArrayList();
@@ -153,11 +153,11 @@ public class PeopleList {
   }
 
 
-  public PropertyFilterCriterion getFilterValue() {
+  public ExpressionFilterCriterion getFilterValue() {
     return myFilterValue;
   }
 
-  public void setFilterValue(PropertyFilterCriterion filterValue) {
+  public void setFilterValue(ExpressionFilterCriterion filterValue) {
     myFilterValue = filterValue;
   }
 

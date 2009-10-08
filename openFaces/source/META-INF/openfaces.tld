@@ -1769,7 +1769,7 @@
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. PropertyFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.filter. ExpressionFilterCriterion -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -2054,7 +2054,7 @@
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. PropertyFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.filter. ExpressionFilterCriterion -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -2671,7 +2671,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. PropertyFilterCriterion -->
+      <!-- @bindingType org.openfaces.component.filter. ExpressionFilterCriterion -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -27516,10 +27516,7 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType array -->
-      <!-- @bindingType java.util.Collection -->
-      <!-- @bindingType java.sql.ResultSet -->
-      <!-- @bindingType javax.servlet.jsp.jstl.sql.Result -->
+      <!-- @bindingType org.openfaces.component.filter. CompositeFilterCriterion -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>

@@ -14,7 +14,7 @@ package org.openfaces.testapp.datatable;
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.CompositeFilterCriterion;
-import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.table.FilterKind;
 import org.openfaces.util.FacesUtil;
 
@@ -245,7 +245,7 @@ public class TableTestBean {
         for (TestBean record : sortedList) {
             boolean recordAccepted = true;
             for (FilterCriterion c : filterCriteria.getCriteria()) {
-                PropertyFilterCriterion criterion = (PropertyFilterCriterion) c;
+                ExpressionFilterCriterion criterion = (ExpressionFilterCriterion) c;
                 String fieldName = criterion.getExpressionStr();
 
                 if (!filterAcceptsRecord(fieldName, criterion, record)) {
@@ -260,7 +260,7 @@ public class TableTestBean {
         return result;
     }
 
-    private boolean filterAcceptsRecord(String fieldName, PropertyFilterCriterion criterion, TestBean record) {
+    private boolean filterAcceptsRecord(String fieldName, ExpressionFilterCriterion criterion, TestBean record) {
         String fieldValue = fieldName.equals("col1") ? record.getField1() : String.valueOf(record.getField2());
         if (criterion != null && criterion.getCondition().equals(FilterCondition.EMPTY) && criterion.isInverse()) {
             return fieldValue != null && fieldValue.length() > 0;
@@ -268,7 +268,7 @@ public class TableTestBean {
         if (criterion != null && criterion.getCondition().equals(FilterCondition.EMPTY)) {
             return fieldValue == null || fieldValue.length() == 0;
         }
-        if (criterion instanceof PropertyFilterCriterion) {
+        if (criterion instanceof ExpressionFilterCriterion) {
             String filterText = criterion.getArg1().toString();
             if (filterText == null) {
                 return fieldValue == null;

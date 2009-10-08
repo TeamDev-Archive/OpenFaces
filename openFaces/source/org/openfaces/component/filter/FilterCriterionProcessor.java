@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.filter;
 
-import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.filter.AndFilterCriterion;
 import org.openfaces.component.filter.OrFilterCriterion;
 
@@ -19,7 +19,7 @@ import org.openfaces.component.filter.OrFilterCriterion;
  * @author Dmitry Pikhulya
  */
 public abstract class FilterCriterionProcessor {
-    public abstract Object process(PropertyFilterCriterion criterion);
+    public abstract Object process(ExpressionFilterCriterion criterion);
     public abstract Object process(AndFilterCriterion criterion);
     public abstract Object process(OrFilterCriterion criterion);
 }

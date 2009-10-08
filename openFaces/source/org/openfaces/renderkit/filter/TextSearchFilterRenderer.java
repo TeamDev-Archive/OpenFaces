@@ -14,7 +14,7 @@ package org.openfaces.renderkit.filter;
 import org.openfaces.component.filter.ExpressionFilter;
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.TextSearchFilter;
-import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
@@ -86,10 +86,10 @@ public abstract class TextSearchFilterRenderer extends ExpressionFilterRenderer 
         if (filterCriterion == null) {
             return "";
         }
-        if (!(filterCriterion instanceof PropertyFilterCriterion)) {
+        if (!(filterCriterion instanceof ExpressionFilterCriterion)) {
             throw new IllegalStateException("Illegal filter criterion: " + filterCriterion);
         }
-        PropertyFilterCriterion criterion = (PropertyFilterCriterion) filterCriterion;
+        ExpressionFilterCriterion criterion = (ExpressionFilterCriterion) filterCriterion;
         Object arg1 = criterion.getArg1();
         return getConverter(filter).getAsString(FacesContext.getCurrentInstance(), filter, arg1);
     }

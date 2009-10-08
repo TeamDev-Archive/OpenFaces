@@ -3,7 +3,7 @@ package org.openfaces.renderkit.filter;
 import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.FilterCondition;
-import org.openfaces.component.filter.PropertyFilterCriterion;
+import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItems;
 import org.openfaces.renderkit.filter.param.ParametersEditor;
@@ -371,7 +371,7 @@ public class FilterRow implements Serializable {
     }
 
 
-    public PropertyFilterCriterion updateRowModelFromEditors(FacesContext context, CompositeFilter compositeFilter) {
+    public ExpressionFilterCriterion updateRowModelFromEditors(FacesContext context, CompositeFilter compositeFilter) {
         HtmlPanelGroup parametersEditorContainer = findParametersEditorContainer(compositeFilter);
         DropDownField propertySelector = findPropertySelector(compositeFilter);
         if (propertySelector == null) {
@@ -400,7 +400,7 @@ public class FilterRow implements Serializable {
             return null;
         }
         parametersEditor.update(context, compositeFilter, this, parametersEditorContainer);
-        PropertyFilterCriterion result = parametersEditor.getCriterion();
+        ExpressionFilterCriterion result = parametersEditor.getCriterion();
         result.setInverse(inverse);
         if (operationModified) {
             parametersEditor = null;
@@ -408,7 +408,7 @@ public class FilterRow implements Serializable {
         return result;
     }
 
-    public void updateRowModelFromCriterion(PropertyFilterCriterion criterion, CompositeFilter compositeFilter) {
+    public void updateRowModelFromCriterion(ExpressionFilterCriterion criterion, CompositeFilter compositeFilter) {
         property = compositeFilter.getFilterPropertyByName(criterion.getExpressionStr());
         operation = criterion.getCondition();
         inverse = criterion.isInverse();
