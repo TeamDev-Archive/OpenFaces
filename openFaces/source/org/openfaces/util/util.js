@@ -551,6 +551,13 @@ if (!window.O$) {
   };
 
   O$.trim = function(value) {
+    if (value instanceof Array) {
+      var strValue = "";
+      for (var i = 0; i < value.length; i++) {
+        strValue += value[i];
+      }
+      value = strValue;
+    }
     return O$.ltrim(O$.rtrim(value));
   };
 

@@ -177,6 +177,12 @@
   </managed-bean>
 
   <managed-bean>
+    <managed-bean-name>RadioTest</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.selectoneradio.RadioTest</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
     <managed-bean-name>ColorListBean</managed-bean-name>
     <managed-bean-class>org.openfaces.testapp.datatable.ColorListBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>

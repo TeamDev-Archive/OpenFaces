@@ -1,0 +1,331 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+        >
+  <a href="../../main.jsf">Back to the main page</a>
+
+    <h:form>
+      <rich:panel>
+
+        <h:outputLabel for="selectOneRadio5" value="Submit: Native radio buttons"/>
+        <o:selectOneRadio id="selectOneRadio5" value="#{RadioTest.radioGroup5}" required="true"
+                          border="1" layout="pageDirection" valueChangeListener="#{RadioTest.valueChangeListener}">
+          <o:selectOneRadioItem value="1" itemLabel="Radio 1"/>
+          <o:selectOneRadioItem value="2" itemLabel="Radio 2"/>
+          <o:selectOneRadioItem value="3" itemLabel="Radio 3"/>
+          <o:selectOneRadioItem value="4" itemLabel="Radio 4" disabled="true"/>
+          <o:selectOneRadioItem value="5" itemLabel="Radio 5"/>
+        </o:selectOneRadio>
+        -> <h:outputText id="radioGroup5Text" value="#{RadioTest.radioGroup5}"/>
+        <br/>
+        -> <h:outputText id="radioGroupValueChangeListener5Text" value="#{RadioTest.valueChangeListener5}"/>
+
+        <br/>
+        <br/>
+
+        <h:outputLabel for="selectOneRadio6" value="Submit: Advanced radio buttons"/>
+        <o:selectOneRadio id="selectOneRadio6" value="#{RadioTest.radioGroup6}" required="true"
+                          styleClass="c" style="border: 3px dotted blue;"
+                          enabledClass="ec" enabledStyle="background-color: #B0AFFF;"
+                          disabledClass="dc" disabledStyle="background-color: #6F6F6F;"
+                          focusedClass="fc" focusedStyle="border: 1px solid #DDDF29;"
+                          rolloverClass="rc" rolloverStyle="border: 1px solid #33DF29;"
+                          selectedClass="sc" selectedStyle="border: 1px solid #7FD2FF;"
+                          unselectedClass="uc" unselectedStyle="border: 1px solid #FF4F56;"
+
+                          selectedImageUrl="/images/selectedRadioButton.png"
+                          unselectedImageUrl="/images/unselectedRadioButton.png"
+                          rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                          rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                          pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                          pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                          disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                          disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                >
+          <o:selectOneRadioItem value="1" itemLabel="Radio 1"/>
+          <o:selectOneRadioItem value="2" itemLabel="Radio 2"/>
+          <o:selectOneRadioItem value="3" itemLabel="Radio 3"/>
+          <o:selectOneRadioItem value="4" itemLabel="Radio 4" disabled="true"/>
+          <o:selectOneRadioItem value="5" itemLabel="Radio 5"/>
+        </o:selectOneRadio>
+        -> <h:outputText id="radioGroup6Text" value="#{RadioTest.radioGroup6}"/>
+
+        <br/>
+        <br/>
+
+        <o:inputText id="inputText1" required="true"/>
+
+        <br/>
+        <br/>
+
+        <o:selectBooleanCheckbox id="selectBooleanCheckbox1" triStateAllowed="true"/>
+
+        <br/>
+        <br/>
+
+        <h:commandButton value="Submit"/>
+      </rich:panel>
+    </h:form>
+
+    <h:form>
+      <rich:panel>
+        <h:outputLabel for="selectOneRadio1" value="OpenFaces Ajax: Native radio buttons"/>
+        <o:selectOneRadio id="selectOneRadio1" value="#{RadioTest.radioGroup1}"
+                           style="s" styleClass="c"
+                           enabledClass="ec" enabledStyle="background-color: #B0AFFF; padding: 2px;"
+                           disabledClass="dc" disabledStyle="background-color: #DDDDDD; padding: 2px;"
+                           focusedClass="fc" focusedStyle="border: 1px solid #DDDF29;"
+                           rolloverClass="rc" rolloverStyle="border: 1px solid #33DF29;"
+                           selectedClass="sc" selectedStyle="border: 1px solid #7FD2FF;"
+                           unselectedClass="uc" unselectedStyle="border: 1px solid #FF4F56;">
+          <o:selectOneRadioItem value="1" itemLabel="Radio 1"
+                                 focusedItemClass="fic1" focusedItemStyle="fis1"
+                                 rolloverItemClass="ric1" rolloverItemStyle="ris1"
+                                 pressedItemClass="pic1" pressedItemStyle="border: 2px solid #FF0000;"
+                                 selectedItemClass="sic1" selectedItemStyle="sis1"/>
+          <o:selectOneRadioItem value="2" itemLabel="Radio 2"
+                                 focusedItemClass="fic2" focusedItemStyle="fis2"
+                                 rolloverItemClass="ric2" rolloverItemStyle="ris2"
+                                 pressedItemClass="pic2" pressedItemStyle="border: 2px solid #00FF00;"
+                                 selectedItemClass="sic2" selectedItemStyle="sis2"/>
+          <o:selectOneRadioItem value="3" itemLabel="Radio 3"
+                                 focusedItemClass="fic3" focusedItemStyle="fis3"
+                                 rolloverItemClass="ric3" rolloverItemStyle="ris3"
+                                 pressedItemClass="pic3" pressedItemStyle="border: 2px solid #0000FF;"
+                                 selectedItemClass="sic3" selectedItemStyle="sis3"/>
+          <o:selectOneRadioItem value="4" itemLabel="Radio 4"
+                                 focusedItemClass="fic4" focusedItemStyle="fis4"
+                                 rolloverItemClass="ric4" rolloverItemStyle="ris4"
+                                 pressedItemClass="pic4" pressedItemStyle="pis4"
+                                 selectedItemClass="sic4" selectedItemStyle="sis4"
+                                 disabled="true"/>
+          <o:selectOneRadioItem value="5" itemLabel="Radio 5"
+                                 focusedItemClass="fic5" focusedItemStyle="fis5"
+                                 rolloverItemClass="ric5" rolloverItemStyle="ris5"
+                                 pressedItemClass="pic5" pressedItemStyle="border: 2px solid #FFFF00;"
+                                 selectedItemClass="sic5" selectedItemStyle="sis5"/>
+          <o:reloadComponents event="onchange" componentIds="radioGroup1Text"/>
+        </o:selectOneRadio>
+        -> <h:outputText id="radioGroup1Text" value="#{RadioTest.radioGroup1}"/>
+        <br/>
+        <br/>
+        <h:outputLabel for="selectOneRadio2" value="OpenFaces Ajax: Advanced radio buttons"/>
+        <o:selectOneRadio id="selectOneRadio2" value="#{RadioTest.radioGroup2}" required="true"
+                           style="s" styleClass="c"
+                           enabledClass="ec" enabledStyle="background-color: #B0AFFF; padding: 2px;"
+                           disabledClass="dc" disabledStyle="background-color: #DDDDDD; padding: 2px;"
+
+                           selectedImageUrl="/images/selectedRadioButton.png"
+                           unselectedImageUrl="/images/unselectedRadioButton.png"
+                           rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                           rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                           pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                           pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                           disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                           disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                >
+          <o:selectOneRadioItem value="1" itemLabel="Radio 1"
+                                 focusedItemClass="fic1" focusedItemStyle="fis1"
+                                 rolloverItemClass="ric1" rolloverItemStyle="ris1"
+                                 pressedItemClass="pic1" pressedItemStyle="border: 2px solid #FF0000;"
+                                 selectedItemClass="sic1" selectedItemStyle="sis1"/>
+          <o:selectOneRadioItem value="2" itemLabel="Radio 2"
+                                 focusedItemClass="fic2" focusedItemStyle="fis2"
+                                 rolloverItemClass="ric2" rolloverItemStyle="ris2"
+                                 pressedItemClass="pic2" pressedItemStyle="border: 2px solid #00FF00;"
+                                 selectedItemClass="sic2" selectedItemStyle="sis2"/>
+          <o:selectOneRadioItem value="3" itemLabel="Radio 3"
+                                 focusedItemClass="fic3" focusedItemStyle="fis3"
+                                 rolloverItemClass="ric3" rolloverItemStyle="ris3"
+                                 pressedItemClass="pic3" pressedItemStyle="border: 2px solid #0000FF;"
+                                 selectedItemClass="sic3" selectedItemStyle="sis3"/>
+          <o:selectOneRadioItem value="4" itemLabel="Radio 4"
+                                 focusedItemClass="fic4" focusedItemStyle="fis4"
+                                 rolloverItemClass="ric4" rolloverItemStyle="ris4"
+                                 pressedItemClass="pic4" pressedItemStyle="pis4"
+                                 selectedItemClass="sic4" selectedItemStyle="sis4"
+                                 disabled="true"/>
+          <o:selectOneRadioItem value="5" itemLabel="Radio 5"
+                                 focusedItemClass="fic5" focusedItemStyle="fis5"
+                                 rolloverItemClass="ric5" rolloverItemStyle="ris5"
+                                 pressedItemClass="pic5" pressedItemStyle="border: 2px solid #FFFF00;"
+                                 selectedItemClass="sic5" selectedItemStyle="sis5"/>
+          <o:reloadComponents event="onchange" componentIds="radioGroup2Text"/>
+        </o:selectOneRadio>
+        -> <h:outputText id="radioGroup2Text" value="#{RadioTest.radioGroup2}"/>
+      </rich:panel>
+    </h:form>
+
+    <h:form>
+      <rich:panel>
+        <h:outputLabel for="selectOneRadio3" value="RichFaces A4J: Native radio buttons"/>
+        <o:selectOneRadio id="selectOneRadio3" value="#{RadioTest.radioGroup3}"
+                          style="s" styleClass="c"
+                          enabledClass="ec" enabledStyle="background-color: #B0AFFF;"
+                          disabledClass="dc" disabledStyle="background-color: #6F6F6F;"
+                          focusedClass="fc" focusedStyle="border: 1px solid #DDDF29;"
+                          rolloverClass="rc" rolloverStyle="border: 1px solid #33DF29;"
+                          selectedClass="sc" selectedStyle="border: 1px solid #7FD2FF;"
+                          unselectedClass="uc" unselectedStyle="border: 1px solid #FF4F56;">
+          <o:selectOneRadioItem value="1" itemLabel="Radio 1"
+                                focusedItemClass="fic1" focusedItemStyle="fis1"
+                                rolloverItemClass="ric1" rolloverItemStyle="ris1"
+                                pressedItemClass="pic1" pressedItemStyle="pis1"
+                                selectedItemClass="sic1" selectedItemStyle="sis1"/>
+          <o:selectOneRadioItem value="2" itemLabel="Radio 2"
+                                focusedItemClass="fic2" focusedItemStyle="fis2"
+                                rolloverItemClass="ric2" rolloverItemStyle="ris2"
+                                pressedItemClass="pic2" pressedItemStyle="pis2"
+                                selectedItemClass="sic2" selectedItemStyle="sis2"/>
+          <o:selectOneRadioItem value="3" itemLabel="Radio 3"
+                                focusedItemClass="fic3" focusedItemStyle="fis3"
+                                rolloverItemClass="ric3" rolloverItemStyle="ris3"
+                                pressedItemClass="pic3" pressedItemStyle="pis3"
+                                selectedItemClass="sic3" selectedItemStyle="sis3"/>
+          <o:selectOneRadioItem value="4" itemLabel="Radio 4"
+                                focusedItemClass="fic4" focusedItemStyle="fis4"
+                                rolloverItemClass="ric4" rolloverItemStyle="ris4"
+                                pressedItemClass="pic4" pressedItemStyle="pis4"
+                                selectedItemClass="sic4" selectedItemStyle="sis4"
+                                disabled="true"/>
+          <o:selectOneRadioItem value="5" itemLabel="Radio 5"
+                                focusedItemClass="fic5" focusedItemStyle="fis5"
+                                rolloverItemClass="ric5" rolloverItemStyle="ris5"
+                                pressedItemClass="pic5" pressedItemStyle="pis5"
+                                selectedItemClass="sic5" selectedItemStyle="sis5"/>
+          <a4j:support event="onchange" reRender="radioGroup3Text"/>
+        </o:selectOneRadio>
+        -> <h:outputText id="radioGroup3Text" value="#{RadioTest.radioGroup3}"/>
+
+
+        <br/>
+        <br/>
+
+        <h:outputLabel for="selectOneRadio4" value="RichFaces A4J: Advanced radio buttons"/>
+        <o:selectOneRadio id="selectOneRadio4" value="#{RadioTest.radioGroup4}" required="true"
+                          style="s" styleClass="c"
+                          enabledClass="ec" enabledStyle="background-color: #B0AFFF;"
+                          disabledClass="dc" disabledStyle="background-color: #6F6F6F;"
+                          focusedClass="fc" focusedStyle="border: 1px solid #DDDF29;"
+                          rolloverClass="rc" rolloverStyle="border: 1px solid #33DF29;"
+                          selectedClass="sc" selectedStyle="border: 1px solid #7FD2FF;"
+                          unselectedClass="uc" unselectedStyle="border: 1px solid #FF4F56;"
+
+                          selectedImageUrl="/images/selectedRadioButton.png"
+                          unselectedImageUrl="/images/unselectedRadioButton.png"
+                          rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                          rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                          pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                          pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                          disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                          disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                >
+          <o:selectOneRadioItem value="1" itemLabel="Radio 1"
+                                focusedItemClass="fic1" focusedItemStyle="fis1"
+                                rolloverItemClass="ric1" rolloverItemStyle="ris1"
+                                pressedItemClass="pic1" pressedItemStyle="pis1"
+                                selectedItemClass="sic1" selectedItemStyle="sis1"/>
+          <o:selectOneRadioItem value="2" itemLabel="Radio 2"
+                                focusedItemClass="fic2" focusedItemStyle="fis2"
+                                rolloverItemClass="ric2" rolloverItemStyle="ris2"
+                                pressedItemClass="pic2" pressedItemStyle="pis2"
+                                selectedItemClass="sic2" selectedItemStyle="sis2"/>
+          <o:selectOneRadioItem value="3" itemLabel="Radio 3"
+                                focusedItemClass="fic3" focusedItemStyle="fis3"
+                                rolloverItemClass="ric3" rolloverItemStyle="ris3"
+                                pressedItemClass="pic3" pressedItemStyle="pis3"
+                                selectedItemClass="sic3" selectedItemStyle="sis3"/>
+          <o:selectOneRadioItem value="4" itemLabel="Radio 4"
+                                focusedItemClass="fic4" focusedItemStyle="fis4"
+                                rolloverItemClass="ric4" rolloverItemStyle="ris4"
+                                pressedItemClass="pic4" pressedItemStyle="pis4"
+                                selectedItemClass="sic4" selectedItemStyle="sis4"
+                                disabled="true"/>
+          <o:selectOneRadioItem value="5" itemLabel="Radio 5"
+                                focusedItemClass="fic5" focusedItemStyle="fis5"
+                                rolloverItemClass="ric5" rolloverItemStyle="ris5"
+                                pressedItemClass="pic5" pressedItemStyle="pis5"
+                                selectedItemClass="sic5" selectedItemStyle="sis5"/>
+          <a4j:support event="onchange" reRender="radioGroup4Text"/>
+        </o:selectOneRadio>
+        -> <h:outputText id="radioGroup4Text" value="#{RadioTest.radioGroup4}"/>
+      </rich:panel>
+    </h:form>
+
+    <h:form>
+      <rich:panel>
+        <h:outputLabel for="selectOneRadio7" value="OpenFaces reload component: Advanced radio buttons"/>
+        <h:selectOneMenu id="selectOneMenu7" value="#{RadioTest.selectOneMenu7}">
+          <f:selectItems value="#{RadioTest.selectItemsGroup7}"/>
+          <o:reloadComponents componentIds="selectOneRadio7" event="onchange" action="#{RadioTest.reloadSelectOneRadio7}"/>
+        </h:selectOneMenu>
+        <br/>
+        <o:selectOneRadio id="selectOneRadio7" value="#{RadioTest.radioGroup7}"
+                          style="s" styleClass="c"
+                          enabledClass="ec" enabledStyle="background-color: #B0AFFF;"
+                          disabledClass="dc" disabledStyle="background-color: #6F6F6F;"
+                          focusedClass="fc" focusedStyle="border: 1px solid #DDDF29;"
+                          rolloverClass="rc" rolloverStyle="border: 1px solid #33DF29;"
+                          selectedClass="sc" selectedStyle="border: 1px solid #7FD2FF;"
+                          unselectedClass="uc" unselectedStyle="border: 1px solid #FF4F56;"
+
+                          selectedImageUrl="/images/selectedRadioButton.png"
+                          unselectedImageUrl="/images/unselectedRadioButton.png"
+                          rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                          rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                          pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                          pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                          disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                          disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                >
+          <o:selectOneRadioItems value="#{RadioTest.selectOneRadioItemsGroup7}"/>
+          <o:reloadComponents componentIds="radioGroup7Text" event="onchange"/>
+        </o:selectOneRadio>
+        -> <h:outputText id="radioGroup7Text" value="#{RadioTest.radioGroup7}"/>
+      </rich:panel>
+    </h:form>
+
+
+    <h:form>
+      <rich:panel>
+        <h:outputLabel for="selectOneRadio8" value="RichFaces reload component: Advanced radio buttons"/>
+        <h:selectOneMenu id="selectOneMenu8" value="#{RadioTest.selectOneMenu8}">
+          <f:selectItems value="#{RadioTest.selectItemsGroup8}"/>
+          <a4j:support reRender="selectOneRadio8, spinner1"
+                       event="onchange" action="#{RadioTest.reloadSelectOneRadio8}"/>
+        </h:selectOneMenu>
+        <br/>
+        <o:spinner id="spinner1" maxValue="10" minValue="1" value="5" step="1" cycled="true"/>
+        <br/>
+        <o:selectOneRadio id="selectOneRadio8" value="#{RadioTest.radioGroup8}"
+                          style="s" styleClass="c"
+                          enabledClass="ec" enabledStyle="background-color: #B0AFFF;"
+                          disabledClass="dc" disabledStyle="background-color: #6F6F6F;"
+                          focusedClass="fc" focusedStyle="border: 1px solid #DDDF29;"
+                          rolloverClass="rc" rolloverStyle="border: 1px solid #33DF29;"
+                          selectedClass="sc" selectedStyle="border: 1px solid #7FD2FF;"
+                          unselectedClass="uc" unselectedStyle="border: 1px solid #FF4F56;"
+
+                          selectedImageUrl="/images/selectedRadioButton.png"
+                          unselectedImageUrl="/images/unselectedRadioButton.png"
+                          rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                          rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                          pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                          pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                          disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                          disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+
+                          
+                >
+          <o:selectOneRadioItems value="#{RadioTest.selectOneRadioItemsGroup8}"/>
+          <a4j:support reRender="radioGroup8Text" event="onchange"/>
+        </o:selectOneRadio>
+        -> <h:outputText id="radioGroup8Text" value="#{RadioTest.radioGroup8}"/>
+      </rich:panel>
+    </h:form>
+
+
+</div>
