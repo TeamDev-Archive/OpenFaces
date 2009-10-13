@@ -9,9 +9,7 @@
 <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 <body>
 <f:view>
-  <h:form>
-   <%@ include file="selectOneRadio_core.xhtml" %>
-  </h:form>
+  <%@ include file="selectOneRadio_core.xhtml" %>
 </f:view>
 
 </body>

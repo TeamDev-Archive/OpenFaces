@@ -35,7 +35,7 @@ O$.Radio = {
     radioTable._radioElems = new Array();
     radioTable._radioItemCount = stylesItems.length;
     for (var i = 0; i < stylesItems.length; i++) {
-      var radioItemId = radioId + ':' + i;
+      var radioItemId = radioId + ":" + i;
       radioTable._radioElems[i] = O$(radioItemId);;
 
       O$.RadioItem._init(radioTable, i, radioItemId, images, styles, stylesItems, disabled, readonly, onchange);
@@ -64,11 +64,11 @@ O$.RadioItem = {
     var radioItem;
     if (images) {
       radioItem = O$(radioItemId + "::image");
-      radioItem._state = radioTable._radioElems[index].checked ? 'on' : 'off';
+      radioItem._state = radioTable._radioElems[index].checked ? "on" : "off";
       radioItem._images = images;
     } else {
       radioItem = O$(radioItemId);
-      radioItem._state = radioItem.checked ? 'on' : 'off';
+      radioItem._state = radioItem.checked ? "on" : "off";
     }
 
     radioItem._index = index;
@@ -235,7 +235,7 @@ O$.RadioItem = {
       if (radioItem._images) {
         O$.preventDefaultEvent(e); // no form submission
       } else if (radioItem._readonly) {
-        radioItem.checked = radioItem._state == 'on' ? 'checked' : '';
+        radioItem.checked = radioItem._state == "on" ? "checked" : "";
       }
     });
 
@@ -316,12 +316,12 @@ O$.RadioItem = {
     function nextState(radioItem) {
       for (var i = 0; i < radioTable._radioItemCount; i++) {
         if (radioItem._index == i) {
-          radioItem._state = 'on';
+          radioItem._state = "on";
           radioTable._radioElems[i].checked = true;
           updateImage(radioItem);
           updateStyles(radioItem);
         } else {
-          radioTable._radioItems[i]._state = 'off';
+          radioTable._radioItems[i]._state = "off";
           radioTable._radioElems[i].checked = false;
           updateImage(radioTable._radioItems[i]);
           updateStyles(radioTable._radioItems[i]);
