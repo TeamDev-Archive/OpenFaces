@@ -29,7 +29,7 @@ import java.util.Map;
  * @author Eugene Goncharov
  */
 public class EnvironmentUtil {
-    public static final String TEAMDEV_JSF_ENVIRONMENT_TRINIDAD_SUPPORT = "org.openfaces.environment.trinidadSupport";
+    public static final String PARAM_ENVIRONMENT_TRINIDAD_SUPPORT = "org.openfaces.environment.trinidadSupport";
 
     private static final String KEY_UNDEFINED_BROWSER = "undefined_browser";
     private static final String KEY_EXPLORER_BROWSER = "explorer_browser";
@@ -39,7 +39,7 @@ public class EnvironmentUtil {
 
     private static final String XHTML_CONTENT_TYPE = "application/xhtml+xml";
 
-    private static final String TEAMDEV_JSF_FACELETS = "org.openfaces.facelets";
+    private static final String PARAM_FACELETS = "org.openfaces.facelets";
 
     private EnvironmentUtil() {
     }
@@ -92,7 +92,7 @@ public class EnvironmentUtil {
             return false;
         }
 
-        String faceletsParameter = context.getExternalContext().getInitParameter(TEAMDEV_JSF_FACELETS);
+        String faceletsParameter = context.getExternalContext().getInitParameter(PARAM_FACELETS);
         if (faceletsParameter != null && faceletsParameter.equalsIgnoreCase("true")) {
             return true;
         }
@@ -232,7 +232,7 @@ public class EnvironmentUtil {
 
     public static boolean isTrinidad() {
         Map applicationMap = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
-        Boolean trinidadSupport = (Boolean) applicationMap.get(TEAMDEV_JSF_ENVIRONMENT_TRINIDAD_SUPPORT);
+        Boolean trinidadSupport = (Boolean) applicationMap.get(PARAM_ENVIRONMENT_TRINIDAD_SUPPORT);
         return trinidadSupport != null && trinidadSupport.equals(Boolean.TRUE);
     }
 

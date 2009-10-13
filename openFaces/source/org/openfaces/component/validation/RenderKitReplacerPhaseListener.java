@@ -37,7 +37,7 @@ import java.util.Map;
  */
 public class RenderKitReplacerPhaseListener implements PhaseListener {
 
-    private static final String TEAMDEV_JSF_VALIDATION_RENDERERS_CHANGED = "org.openfaces.validation.standardMessagesRendererChanged";
+    private static final String FLAG_VALIDATION_RENDERERS_CHANGED = "org.openfaces.validation.standardMessagesRendererChanged";
     private static final String HTML_BASIC = "HTML_BASIC";
 
 
@@ -50,10 +50,10 @@ public class RenderKitReplacerPhaseListener implements PhaseListener {
         if (openFacesValidationDisabled) return;
 
         Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
-        Boolean validationRenderersChanged = (Boolean) applicationMap.get(TEAMDEV_JSF_VALIDATION_RENDERERS_CHANGED);
+        Boolean validationRenderersChanged = (Boolean) applicationMap.get(FLAG_VALIDATION_RENDERERS_CHANGED);
         if (validationRenderersChanged == null) {
             replaceRenderKit(context);
-            applicationMap.put(TEAMDEV_JSF_VALIDATION_RENDERERS_CHANGED, Boolean.TRUE);
+            applicationMap.put(FLAG_VALIDATION_RENDERERS_CHANGED, Boolean.TRUE);
         }
     }
 
@@ -166,9 +166,9 @@ public class RenderKitReplacerPhaseListener implements PhaseListener {
         if (proxy != null) {
             factory.addRenderKit(renderKitId, proxy);
             Map applicationMap = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
-            Boolean trinidadSupport = (Boolean) applicationMap.get(EnvironmentUtil.TEAMDEV_JSF_ENVIRONMENT_TRINIDAD_SUPPORT);
+            Boolean trinidadSupport = (Boolean) applicationMap.get(EnvironmentUtil.PARAM_ENVIRONMENT_TRINIDAD_SUPPORT);
             if (trinidadSupport == null) {
-                applicationMap.put(EnvironmentUtil.TEAMDEV_JSF_ENVIRONMENT_TRINIDAD_SUPPORT, Boolean.TRUE);
+                applicationMap.put(EnvironmentUtil.PARAM_ENVIRONMENT_TRINIDAD_SUPPORT, Boolean.TRUE);
             }
         } else {
             RenderingUtil.logWarning(FacesContext.getCurrentInstance(), "Trinidad support for renderkit was disabled.");
