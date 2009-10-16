@@ -14,6 +14,7 @@ package org.openfaces.util;
 import org.openfaces.ajax.AjaxViewHandler;
 import org.openfaces.renderkit.output.DynamicImageRenderer;
 
+import javax.faces.application.ViewExpiredException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -25,7 +26,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.faces.application.ViewExpiredException;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -203,6 +203,12 @@ public class ResourceFilter implements Filter {
             inputStream = getDynamicImageAsInputStream(request, servletContext);
             response.setContentType(getImageContentType(uri));
         } else {
+            if (!resourcePath.startsWith("/org/openfaces")) {
+                // SECURITY ISSUE: DO NOT LET TO ACCESS /openFacesResources/ HOME AS IT PROVIDES SERVER'S FILES
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
             URL resourceURL = RenderingUtil.class.getResource(resourcePath);
             if (resourceURL == null) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -211,16 +217,6 @@ public class ResourceFilter implements Filter {
 
             File resourceFile = getResourceFile(resourceURL);
             long lastModified = resourceFile != null ? resourceFile.lastModified() : -1;
-
-//      if (lastModified != -1) {
-//
-//        String requestModifiedSince = request.getHeader("ETag");
-//        long requestModificateDate = requestModifiedSince != null ? Long.parseLong(requestModifiedSince) : -1;
-//        if (lastModified <= requestModificateDate) {
-//          response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-//          return;
-//        }
-//      }
 
             if (request.getDateHeader("If-Modified-Since") != -1) {
                 response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
