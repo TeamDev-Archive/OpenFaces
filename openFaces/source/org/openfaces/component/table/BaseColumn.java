@@ -28,6 +28,7 @@ public class BaseColumn extends UIColumn {
 
     private Boolean resizable;
     private String minResizingWidth;
+    private Boolean fixed;
 
     private String style;
     private String styleClass;
@@ -75,7 +76,7 @@ public class BaseColumn extends UIColumn {
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, align, valign, width, resizable, minResizingWidth,
+        return new Object[]{superState, align, valign, width, resizable, minResizingWidth, fixed,
                 style, styleClass, headerStyle, headerClass,
                 subHeaderStyle, subHeaderClass, bodyStyle, bodyClass, footerStyle, footerClass,
                 onclick, ondblclick, onmousedown, onmouseover, onmousemove,
@@ -96,6 +97,7 @@ public class BaseColumn extends UIColumn {
         width = (String) state[i++];
         resizable = (Boolean) state[i++];
         minResizingWidth = (String) state[i++];
+        fixed = (Boolean) state[i++];
         style = (String) state[i++];
         styleClass = (String) state[i++];
         headerStyle = (String) state[i++];
@@ -166,6 +168,14 @@ public class BaseColumn extends UIColumn {
 
     public void setResizable(boolean resizable) {
         this.resizable = resizable;
+    }
+
+    public boolean isFixed() {
+        return ValueBindings.get(this, "fixed", fixed, true);
+    }
+
+    public void setFixed(boolean fixed) {
+        this.fixed = fixed;
     }
 
     public String getMinResizingWidth() {

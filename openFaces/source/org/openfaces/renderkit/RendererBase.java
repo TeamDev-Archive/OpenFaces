@@ -26,10 +26,6 @@ import java.io.IOException;
 
 public class RendererBase extends Renderer {
 
-    protected final void writeNewLine(ResponseWriter writer) throws IOException {
-        writer.writeText("\n", null);
-    }
-
     protected String writeIdAttribute(FacesContext facesContext, UIComponent component) throws IOException {
         String clientId = component.getClientId(facesContext);
         facesContext.getResponseWriter().writeAttribute("id", clientId, null);

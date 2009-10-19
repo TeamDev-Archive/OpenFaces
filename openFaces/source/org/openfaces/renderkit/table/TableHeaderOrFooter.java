@@ -75,7 +75,7 @@ public abstract class TableHeaderOrFooter {
         UIComponent headerOrFooter = isHeader ? table.getHeader() : table.getFooter();
         if (headerOrFooter == null)
             return null;
-        HeaderCell cell = new HeaderCell(null, headerOrFooter, cellTag);
+        HeaderCell cell = new HeaderCell(tableStructure, null, headerOrFooter, cellTag);
 
         int colCount = columns.size();
         cell.setSpans(colCount, 0, 0);
@@ -90,7 +90,7 @@ public abstract class TableHeaderOrFooter {
         for (BaseColumn column : columns) {
             UIComponent columnHeaderOrFooter =
                     (isHeader ? TableUtil.getColumnSubHeader(column) : null);
-            HeaderCell cell = new HeaderCell(column, columnHeaderOrFooter, cellTag);
+            HeaderCell cell = new HeaderCell(tableStructure, column, columnHeaderOrFooter, cellTag);
             if (columnHeaderOrFooter != null)
                 atLeastOneComponent = true;
             cell.setSpans(1, 0, 0);
@@ -156,7 +156,7 @@ public abstract class TableHeaderOrFooter {
             colSpan++;
         }
 
-        HeaderCell cell = new HeaderCell(col, isHeader ? col.getHeader() : col.getFooter(), cellTag, isHeader, isHeader);
+        HeaderCell cell = new HeaderCell(tableStructure, col, isHeader ? col.getHeader() : col.getFooter(), cellTag, isHeader, isHeader);
         if (isHeader) {
             boolean lastInThisHierarchy = thisHierarchySize - 1 == rowIndex;
             cell.setSpans(colSpan, rowIndex, lastInThisHierarchy ? columnHierarchyLevels - 1 : rowIndex);

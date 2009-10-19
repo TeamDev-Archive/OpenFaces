@@ -107,10 +107,20 @@ public class ComponentUtil {
     }
 
     public static <T extends UIComponent> T findChildWithClass(UIComponent parent, Class<T> childClass) {
-        List childrenWithClass = findChildrenWithClass(parent, childClass);
+        List<T> childrenWithClass = findChildrenWithClass(parent, childClass);
         if (childrenWithClass.size() == 0)
             return null;
-        return (T) childrenWithClass.get(0);
+        return childrenWithClass.get(0);
+    }
+    
+    public static <T extends UIComponent> T findChildWithClass(UIComponent parent, Class<T> childClass, String childTagName) {
+        List<T> childrenWithClass = findChildrenWithClass(parent, childClass);
+        int size = childrenWithClass.size();
+        if (size == 0)
+            return null;
+        if (size > 1)
+            throw new RuntimeException("There should be only one " + childTagName + " child under this component: " + parent.getId());
+        return childrenWithClass.get(0);
     }
 
     public static <T extends UIComponent> List<T> findChildrenWithClass(UIComponent parent, Class<T> childClass) {

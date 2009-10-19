@@ -17,10 +17,10 @@ import org.openfaces.component.table.DynamicColumn;
 import org.openfaces.component.table.TableCell;
 import org.openfaces.component.table.TableColumns;
 import org.openfaces.component.table.TableRow;
-import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.renderkit.table.CustomCellRenderingInfo;
 import org.openfaces.renderkit.table.CustomContentCellRenderingInfo;
 import org.openfaces.renderkit.table.CustomRowRenderingInfo;
+import org.openfaces.renderkit.table.TableStructure;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
@@ -758,7 +758,7 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
         }
         // <MOD-4>
         List customRows = getCustomRows();
-        Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos = (Map) getAttributes().get(AbstractTableRenderer.CUSTOM_ROW_RENDERING_INFOS_KEY);
+        Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos = (Map) getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
         // </MOD-4>
         for (int rowIndex = first; last == -1 || rowIndex < last; rowIndex++) {
             // <MOD-1> code added

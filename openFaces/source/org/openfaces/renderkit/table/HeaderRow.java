@@ -45,7 +45,7 @@ public class HeaderRow {
         writer.startElement("tr", table);
         for (int i = 0, count = cells.size(); i < count; i++) {
             HeaderCell cell = cells.get(i);
-            cell.render(context, table, rows, i == count - 1 ? lastCellContentAppender : null);
+            cell.render(context, rows, i == count - 1 ? lastCellContentAppender : null);
         }
         writer.endElement("tr");
         RenderingUtil.writeNewLine(context.getResponseWriter());

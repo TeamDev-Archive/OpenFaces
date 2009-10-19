@@ -37,12 +37,14 @@ class HeaderCell {
     private String cellTag;
     private boolean renderNonBreakable;
     private boolean renderSortingToggle;
+    private TableStructure tableStructure;
 
-    public HeaderCell(BaseColumn column, UIComponent component, String cellTag) {
-        this(column, component, cellTag, false, false);
+    public HeaderCell(TableStructure tableStructure, BaseColumn column, UIComponent component, String cellTag) {
+        this(tableStructure, column, component, cellTag, false, false);
     }
 
-    public HeaderCell(BaseColumn column, UIComponent component, String cellTag, boolean renderNonBreakable, boolean renderSortingToggle) {
+    public HeaderCell(TableStructure tableStructure, BaseColumn column, UIComponent component, String cellTag, boolean renderNonBreakable, boolean renderSortingToggle) {
+        this.tableStructure = tableStructure;
         this.column = column;
         this.component = component;
         this.cellTag = cellTag;
@@ -72,8 +74,9 @@ class HeaderCell {
         public void writeAdditionalContent(FacesContext context) throws IOException;
     }
 
-    public void render(FacesContext facesContext, UIComponent table, List<HeaderRow> rows,
+    public void render(FacesContext facesContext, List<HeaderRow> rows,
                        AdditionalContentWriter additionalContentWriter) throws IOException {
+        UIComponent table = tableStructure.getTable();
         if (column instanceof DynamicColumn)
             ((DynamicColumn) column).declareContextVariables();
 
@@ -101,9 +104,9 @@ class HeaderCell {
         }
         if (component != null) {
             component.encodeAll(facesContext);
-            if (AbstractTableRenderer.isComponentEmpty(component) && AbstractTableRenderer.isEmptyCellsTreatmentRequired(table))
+            if (TableStructure.isComponentEmpty(component) && tableStructure.isEmptyCellsTreatmentRequired())
                 RenderingUtil.writeNonBreakableSpace(writer);
-        } else if (AbstractTableRenderer.isEmptyCellsTreatmentRequired(table))
+        } else if (tableStructure.isEmptyCellsTreatmentRequired())
             RenderingUtil.writeNonBreakableSpace(writer);
 
         if (renderSortingToggle && column != null && table instanceof AbstractTable)

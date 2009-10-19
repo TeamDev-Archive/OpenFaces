@@ -857,16 +857,6 @@ public class RenderingUtil {
     }
 
     /**
-     * Write newline symbol to writer
-     *
-     * @param writer The character-based output
-     * @throws IOException if an input/output error occurs
-     */
-    public static void writeNewLine(ResponseWriter writer) throws IOException {
-        writer.writeText("\n", null);
-    }
-
-    /**
      *
      * Write style and class html attributes
      * 
@@ -1345,4 +1335,13 @@ public class RenderingUtil {
     }
 
 
+    /**
+     * Write newline symbol to writer
+     *
+     * @param writer The character-based output
+     * @throws java.io.IOException if an input/output error occurs
+     */
+    public static void writeNewLine(ResponseWriter writer) throws IOException {
+        writer.writeText("\n", null);
+    }
 }

@@ -11,10 +11,10 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.util.ValueBindings;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.renderkit.table.AbstractTableRenderer;
+import org.openfaces.renderkit.table.TableBody;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponentBase;
@@ -228,7 +228,7 @@ public class TableCell extends UIComponentBase {
         if (columnIdVar != null)
             prevColumnIdVarValue = requestMap.put(columnIdVar, columnId);
 
-        Integer customCellIndex = (Integer) getAttributes().get(AbstractTableRenderer.CUSTOM_CELL_INDEX_ATTRIBUTE);
+        Integer customCellIndex = (Integer) getAttributes().get(TableBody.CUSTOM_CELL_INDEX_ATTRIBUTE);
         String result = StyleUtil.getCSSClass(context, table, getStyle(), StyleGroup.regularStyleGroup(2 + customCellIndex), getStyleClass());
         if (columnIndexVar != null)
             requestMap.put(columnIndexVar, prevColumnIndexVarValue);

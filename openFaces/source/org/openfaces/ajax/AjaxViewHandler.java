@@ -205,8 +205,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
 
         try {
             root = super.createView(context, viewId);
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             if (AjaxUtil.isAjaxRequest(context)) {
                 // If exception was caught during our ajax request then we need to process it
                 // and send ajax response with details about exception.

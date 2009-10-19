@@ -45,6 +45,10 @@ public abstract class BaseColumnJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("minResizingWidth", minResizingWidth);
     }
 
+    public void setFixed(ValueExpression fixed) {
+        getDelegate().setPropertyValue("fixed", fixed);
+    }
+
     public void setHeaderStyle(ValueExpression headerStyle) {
         getDelegate().setPropertyValue("headerStyle", headerStyle);
     }

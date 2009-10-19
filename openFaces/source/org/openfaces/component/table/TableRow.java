@@ -11,10 +11,10 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.util.ValueBindings;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.renderkit.table.AbstractTableRenderer;
+import org.openfaces.renderkit.table.TableBody;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
@@ -194,7 +194,7 @@ public class TableRow extends UIComponentBase {
 
     public String getStyleClassForRow(FacesContext context, AbstractTable table) {
         boolean applicable = getCondition();
-        Integer customRowIndex = (Integer) getAttributes().get(AbstractTableRenderer.CUSTOM_ROW_INDEX_ATTRIBUTE);
+        Integer customRowIndex = (Integer) getAttributes().get(TableBody.CUSTOM_ROW_INDEX_ATTRIBUTE);
         String result = applicable
                 ? StyleUtil.getCSSClass(context, table, getStyle(), StyleGroup.regularStyleGroup(1 + customRowIndex), getStyleClass())
                 : null;

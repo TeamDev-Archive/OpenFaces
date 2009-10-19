@@ -13,14 +13,6 @@
     <application-factory>org.openfaces.application.OpenFacesApplicationFactory</application-factory>
   </factory>
 
-  <!--<component>-->
-  <!--<component-type>javax.faces.ViewRoot</component-type>-->
-  <!--<component-class>org.openfaces.ajax.AjaxViewRoot</component-class>-->
-  <!--<component-extension>-->
-  <!--<component-family>javax.faces.ViewRoot</component-family>-->
-  <!--</component-extension>-->
-  <!--</component>-->
-
   <component>
     <component-type>org.openfaces.ajax.AjaxViewRoot</component-type>
     <component-class>org.openfaces.ajax.AjaxViewRoot</component-class>

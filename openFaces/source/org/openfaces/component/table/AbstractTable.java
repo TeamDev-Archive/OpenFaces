@@ -15,9 +15,8 @@ import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.filter.Filter;
-import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.renderkit.TableUtil;
-import org.openfaces.renderkit.table.AbstractTableRenderer;
+import org.openfaces.renderkit.table.TableStructure;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.ReflectionUtil;
@@ -375,9 +374,17 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public List<BaseColumn> getColumnsForRendering() {
-        if (cachedColumnsForRendering == null)
+        if (cachedColumnsForRendering == null) {
             cachedColumnsForRendering = calculateColumnsForRendering();
+        }
         return cachedColumnsForRendering;
+    }
+
+    private boolean isFixedColumn(BaseColumn column) {
+        if (column.isFixed())
+            return true;
+        UIComponent parent = column.getParent();
+        return parent instanceof BaseColumn && isFixedColumn((BaseColumn) parent);
     }
 
     private List<BaseColumn> calculateColumnsForRendering() {
@@ -844,7 +851,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public ColumnResizing getColumnResizing() {
-        return findColumnResizingChild();
+        return ComponentUtil.findChildWithClass(this, ColumnResizing.class, "<o:columnResizing>");
+    }
+
+    public Scrolling getScrolling() {
+        return ComponentUtil.findChildWithClass(this, Scrolling.class, "<o:scrolling>");
     }
 
     public void setSelection(AbstractTableSelection newSelection) {
@@ -872,20 +883,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         }
         return selection;
     }
-
-    private ColumnResizing findColumnResizingChild() {
-        List<UIComponent> children = getChildren();
-        ColumnResizing columnResizing = null;
-        for (UIComponent child : children) {
-            if (child instanceof ColumnResizing) {
-                if (columnResizing != null)
-                    throw new RuntimeException("There should be only one <o:columnResizing> child under this component: " + getId());
-                columnResizing = (ColumnResizing) child;
-            }
-        }
-        return columnResizing;
-    }
-
 
     protected void rememberSelectionByKeys() {
         AbstractTableSelection selection = getSelection();
@@ -1047,7 +1044,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             tableColumns.resetCachedColumnList();
         }
 
-        getAttributes().put(AbstractTableRenderer.CUSTOM_ROW_RENDERING_INFOS_KEY, new HashMap());
+        getAttributes().put(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY, new HashMap());
         super.encodeBegin(context);
     }
 

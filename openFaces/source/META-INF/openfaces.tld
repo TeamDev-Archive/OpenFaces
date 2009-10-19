@@ -1268,6 +1268,19 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Applicable only when horizontal scrolling is enabled for a table. Assigning true to this attribute
+        "fixes" the column which means that it is excluded from horizontal scrolling and is always visible regardless of
+        scroll position.
+      </description>
+      <name>fixed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>A style for the entire column.</description>
       <name>style</name>
       <deferred-value>
@@ -3079,6 +3092,19 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Applicable only when horizontal scrolling is enabled for a table. Assigning true to this attribute
+        "fixes" the column which means that it is excluded from horizontal scrolling and is always visible regardless of
+        scroll position.
+      </description>
+      <name>fixed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default false -->
+      <!-- @el true -->
+    </attribute>
 
 
     <attribute>
@@ -3898,6 +3924,35 @@ entering a value and returns a list of suggestions from the server -->
 
   <tag>
     <description>
+      Adding this tag as a child tag for the {@link dataTable} or {@link treeTable} component turns on the scrolling
+      feature for the appropriate DataTable or TreeTable.
+    </description>
+    <name>scrolling</name>
+    <tag-class>org.openfaces.taglib.jsp.table.ScrollingJspTag</tag-class>
+    <body-content>empty</body-content>
+    <attribute>
+      <description>Defines whether vertical scroling should be activated (true by default).</description>
+      <name>vertical</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Defines whether horizontal scroling should be activated (false by default).</description>
+      <name>horizontal</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+  <tag>
+    <description>
       Adding this tag as a child tag for the {@link dataTable} or {@link treeTable} component turns on the column
       resizing feature for the appropriate DataTable or TreeTable.
     </description>
@@ -4613,6 +4668,20 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>Applicable only when horizontal scrolling is enabled for a table. Assigning true to this attribute
+        "fixes" the column which means that it is excluded from horizontal scrolling and is always visible regardless of
+        scroll position.
+      </description>
+      <name>fixed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
       <description>A style for the entire selection column.</description>
       <name>style</name>
       <deferred-value>
@@ -5200,6 +5269,20 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Applicable only when horizontal scrolling is enabled for a table. Assigning true to this attribute
+        "fixes" the column which means that it is excluded from horizontal scrolling and is always visible regardless of
+        scroll position.
+      </description>
+      <name>fixed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default false -->
+      <!-- @el true -->
+    </attribute>
+
     <attribute>
       <description>A style for the entire checkbox column.</description>
       <name>style</name>
@@ -7335,6 +7418,20 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Applicable only when horizontal scrolling is enabled for a table. Assigning true to this attribute
+        "fixes" the column which means that it is excluded from horizontal scrolling and is always visible regardless of
+        scroll position.
+      </description>
+      <name>fixed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default false -->
+      <!-- @el true -->
+    </attribute>
+
     <attribute>
       <description>A style for the entire tree column.</description>
       <name>style</name>

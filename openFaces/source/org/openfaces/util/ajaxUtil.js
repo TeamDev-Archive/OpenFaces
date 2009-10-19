@@ -669,7 +669,7 @@ O$.AjaxObject = function(componentIds) {
         var startIndex = responseText.indexOf(O$.TEXT_RESPONSE_PREFIX);
         if (startIndex == -1) {
           O$.requestFinished(this);
-          var errorMessage = "Error while performing Ajax request: illegal response - couldn't find data start marker. Response length: " + responseText.length;
+          var errorMessage = "Error occured on the server while processing Ajax request. Check server logs. (response length: " + responseText.length + ")";
           //          O$.log("<b>" + errorMessage + "<br/>Original parameter list: " + this._params + "<br/>Original URL: " + this._url + "<br/>Response follows:><br/></b><xmp>" + responseText + "</xmp>");
 
           alert(errorMessage);

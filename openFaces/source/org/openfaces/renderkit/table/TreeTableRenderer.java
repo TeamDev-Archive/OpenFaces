@@ -259,6 +259,7 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         }
         int addedRowCount = rowAvailableAfterRestoring ? treeTable.loadSubNodes(rowIndex) : 0;
 
+        TableStructure tableStructure = createTableStructure(treeTable);
         ResponseWriter responseWriter = context.getResponseWriter();
         Writer stringWriter = new StringWriter();
         ResponseWriter clonedResponseWriter = responseWriter.cloneWithWriter(stringWriter);
@@ -267,14 +268,14 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
             if (addedRowCount > 0) {
                 List<BaseColumn> renderedColumns = treeTable.getColumnsForRendering();
                 Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos =
-                        (Map<Integer, CustomRowRenderingInfo>) treeTable.getAttributes().get(CUSTOM_ROW_RENDERING_INFOS_KEY);
+                        (Map<Integer, CustomRowRenderingInfo>) treeTable.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
                 for (int i = treeTable.getRowCount(); i > rowIndex; i--) {
                     CustomRowRenderingInfo rowInfo = customRowRenderingInfos.remove(i);
                     if (rowInfo == null)
                         continue;
                     customRowRenderingInfos.put(i + addedRowCount, rowInfo);
                 }
-                encodeRows(context, treeTable, rowIndex + 1, addedRowCount, renderedColumns, false);
+                tableStructure.getBody().encodeRows(context, treeTable, rowIndex + 1, addedRowCount, renderedColumns, false);
                 TreeTableSelection selection = (TreeTableSelection) treeTable.getSelection();
                 if (selection != null)
                     selection.encodeOnAjaxNodeFolding(context);
@@ -290,9 +291,9 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         JSONArray newNodesInitInfo = new JSONArray();
         newNodesInitInfo.put(formatNodeParams(treeTable, context, rowIndex, addedRowCount));
         Map requestMap = context.getExternalContext().getRequestMap();
-        String rowStylesKey = getRowStylesKey(context, treeTable);
+        String rowStylesKey = TableStructure.getRowStylesKey(context, treeTable);
         Map rowStylesMap = (Map) requestMap.get(rowStylesKey);
-        String cellStylesKey = getCellStylesKey(context, treeTable);
+        String cellStylesKey = TableStructure.getCellStylesKey(context, treeTable);
         Map cellStylesMap = (Map) requestMap.get(cellStylesKey);
         newNodesInitInfo.put(TableUtil.getStylesMapAsJSONObject(rowStylesMap));
         newNodesInitInfo.put(TableUtil.getStylesMapAsJSONObject(cellStylesMap));

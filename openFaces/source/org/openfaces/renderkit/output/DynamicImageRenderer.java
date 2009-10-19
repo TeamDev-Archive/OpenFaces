@@ -71,7 +71,7 @@ public class DynamicImageRenderer extends RendererBase {
         writer.endElement("img");
 
         if (dynamicImage.getMap() != null) {
-            writeNewLine(writer);
+            RenderingUtil.writeNewLine(writer);
             writer.write(dynamicImage.getMap());
         }
     }

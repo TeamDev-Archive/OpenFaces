@@ -51,9 +51,9 @@ public class ChartRenderer extends RendererBase {
         RenderingUtil.writeComponentClassAttribute(writer, chart);
 
         String actionFiledId = chart.getClientId(facesContext) + MapRenderUtilities.ACTION_FIELD_SUFFIX;
-        writeNewLine(writer);
+        RenderingUtil.writeNewLine(writer);
         RenderingUtil.renderHiddenField(writer, actionFiledId, null);
-        writeNewLine(writer);
+        RenderingUtil.writeNewLine(writer);
 
         final byte[] imageAsByteArray = view.renderAsImageFile();
 
