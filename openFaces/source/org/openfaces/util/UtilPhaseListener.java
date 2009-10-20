@@ -12,6 +12,7 @@
 package org.openfaces.util;
 
 import org.openfaces.component.ajax.DefaultProgressMessage;
+import org.openfaces.renderkit.ajax.DefaultProgressMessageRenderer;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -58,20 +59,20 @@ public class UtilPhaseListener extends PhaseListenerBase {
     private void encodeAjaxProgressMessage(FacesContext context) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
-        if (requestMap.containsKey("_of_defaultProgressMessageInUse")
-                && requestMap.get("_of_defaultProgressMessageInUse") != null) {
-            if (requestMap.containsKey("_of_defaultProgressMessage")) {
-                requestMap.put("_of_defaultProgressMessageRendering", Boolean.TRUE);
-                DefaultProgressMessage defaultProgressMessage = (DefaultProgressMessage) requestMap.get("_of_defaultProgressMessage");
+        if (requestMap.containsKey(DefaultProgressMessageRenderer.IN_USE)
+                && requestMap.get(DefaultProgressMessageRenderer.IN_USE) != null) {
+            if (requestMap.containsKey(DefaultProgressMessageRenderer.PROGRESS_MESSAGE)) {
+                requestMap.put(DefaultProgressMessageRenderer.RENDERING, Boolean.TRUE);
+                DefaultProgressMessage defaultProgressMessage = (DefaultProgressMessage) requestMap.get(DefaultProgressMessageRenderer.PROGRESS_MESSAGE);
                 renderProgressMessage(context, defaultProgressMessage);
             } else {
                 renderNewProgressMessage(context);
             }
         }
 
-        if (requestMap.containsKey("_of_ajaxSupportOnPageRendered")
-                && requestMap.get("_of_ajaxSupportOnPageRendered") != null
-                && !requestMap.containsKey("_of_defaultProgressMessageInUse")) {
+        if (requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED)
+                && requestMap.get(AjaxUtil.AJAX_SUPPORT_RENDERED) != null
+                && !requestMap.containsKey(DefaultProgressMessageRenderer.IN_USE)) {
             renderNewProgressMessage(context);
         }
     }

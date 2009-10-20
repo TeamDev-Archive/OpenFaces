@@ -56,6 +56,8 @@ public class AjaxUtil {
 
     private static long iInitLibraryNameCounter = 0;
     private static final Random random = new Random();
+    public static final String ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME = "org.openfaces.portletUniqueRTLibraryName";
+    public static final String AJAX_SUPPORT_RENDERED = "org.openfaces.ajaxSupportOnPageRendered";
 
     /**
      * Runtime javascript library unique name generator. Runtime library is required for third-party JSF components
@@ -234,13 +236,13 @@ public class AjaxUtil {
             return false;
         ExternalContext externalContext = context.getExternalContext();
         Map<String, Object> requestMap = externalContext.getRequestMap();
-        if (requestMap.put("_of_ajaxSupportOnPageRendered", Boolean.TRUE) == null) {
+        if (requestMap.put(AJAX_SUPPORT_RENDERED, Boolean.TRUE) == null) {
             try {
                 ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getUtilJsURL(context), context);
                 ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getAjaxUtilJsURL(context), context);
                 if (isPortletRequest(context)) {
                     String uniqueRTLibraryName = ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + generateUniqueInitLibraryName();
-                    context.getExternalContext().getSessionMap().put("_of_portletUniqueRTLibraryName", uniqueRTLibraryName);
+                    context.getExternalContext().getSessionMap().put(ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME, uniqueRTLibraryName);
                     String initLibraryUrl = ResourceUtil.getApplicationResourceURL(context, uniqueRTLibraryName);
                     ResourceUtil.renderJSLinkIfNeeded(initLibraryUrl, context);
                 }

@@ -12,11 +12,11 @@
 package org.openfaces.renderkit.ajax;
 
 import org.openfaces.component.ajax.DefaultProgressMessage;
+import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ResourceFilter;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.ResourceFilter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
@@ -28,6 +28,9 @@ import java.util.Map;
  * @author Eugene Goncharov
  */
 public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
+    public static final String IN_USE = "org.openfaces.defaultProgressMessageInUse";
+    public static final String PROGRESS_MESSAGE = "org.openfaces.defaultProgressMessage";
+    public static final String RENDERING = "org.openfaces.defaultProgressMessageRendering";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -35,76 +38,49 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
 
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
-        if (!requestMap.containsKey("_of_defaultProgressMessageInUse")
-                && !requestMap.containsKey("_of_ajaxSupportOnPageRendered")) {
-            requestMap.put("_of_defaultProgressMessageInUse", Boolean.TRUE);
-            requestMap.put("_of_defaultProgressMessage", defaultProgressMessage);
+        if (!requestMap.containsKey(IN_USE) && !requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED)) {
+            requestMap.put(IN_USE, Boolean.TRUE);
+            requestMap.put(PROGRESS_MESSAGE, defaultProgressMessage);
             ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getUtilJsURL(context), context);
             ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getAjaxUtilJsURL(context), context);
-        } else {
-            boolean isAjax4jsfRequest = AjaxUtil.isAjax4jsfRequest();
-            boolean isProtletRequest = AjaxUtil.isPortletRequest(context);
+            return;
+        }
 
-            if (requestMap.containsKey("_of_ajaxSupportOnPageRendered")) {
-                String ajaxMessageHTML = defaultProgressMessage.getAjaxMessageHTML();
-                boolean ajaxCleanupRequired = isAjaxCleanupRequired();
+        boolean isAjax4jsfRequest = AjaxUtil.isAjax4jsfRequest();
+        boolean isProtletRequest = AjaxUtil.isPortletRequest(context);
 
+        if (requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED) || requestMap.containsKey(RENDERING)) {
+            String ajaxMessageHTML = defaultProgressMessage.getAjaxMessageHTML();
+
+            ScriptBuilder setMessageScript = new ScriptBuilder().functionCall("O$.setAjaxMessageHTML", ajaxMessageHTML).semicolon();
+
+            if (isAjaxCleanupRequired()) {
+                setMessageScript.functionCall("O$.setAjaxCleanupRequired", true).semicolon();
+            }
+
+            if (isAjax4jsfRequest || isProtletRequest) {
+                Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
                 String uniqueRTLibraryName = isProtletRequest
-                        ? (String) context.getExternalContext().getSessionMap().get("_of_portletUniqueRTLibraryName")
+                        ? (String) sessionMap.get(AjaxUtil.ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME)
                         : ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
 
                 String initLibraryUrl = ResourceUtil.getApplicationResourceURL(context, uniqueRTLibraryName);
-                ScriptBuilder setMessageScript = new ScriptBuilder().functionCall("O$.setAjaxMessageHTML", ajaxMessageHTML).semicolon();
 
-                if (ajaxCleanupRequired) {
-                    setMessageScript.functionCall("O$.setAjaxCleanupRequired", true).semicolon();
+                if (isAjax4jsfRequest) {
+                    ResourceUtil.renderJSLinkIfNeeded(initLibraryUrl, context);
                 }
 
-                if (isAjax4jsfRequest || isProtletRequest) {
-                    if (isAjax4jsfRequest) {
-                        ResourceUtil.renderJSLinkIfNeeded(initLibraryUrl, context);
-                    }
-
-                    context.getExternalContext().getSessionMap().put(uniqueRTLibraryName, setMessageScript.toString());
-                } else {
-                    RenderingUtil.appendOnLoadScript(context,
-                            setMessageScript.toString());
-                    if (ajaxCleanupRequired) {
-                        RenderingUtil.appendOnLoadScript(context, "O$.setAjaxCleanupRequired(true);");
-                    }
+                if (sessionMap != null && uniqueRTLibraryName != null) {
+                    sessionMap.put(uniqueRTLibraryName, setMessageScript.toString());
                 }
-            } else if (requestMap.containsKey("_of_defaultProgressMessageRendering")) {
-                String ajaxMessageHTML = defaultProgressMessage.getAjaxMessageHTML();
-                boolean ajaxCleanupRequired = isAjaxCleanupRequired();
-
-                String uniqueRTLibraryName = isProtletRequest
-                        ? (String) context.getExternalContext().getSessionMap().get("_of_portletUniqueRTLibraryName")
-                        : ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
-
-                String initLibraryUrl = ResourceUtil.getApplicationResourceURL(context, uniqueRTLibraryName);
-                String setMessageScript = new ScriptBuilder().functionCall("O$.setAjaxMessageHTML", ajaxMessageHTML).semicolon().toString();
-                String initScriptsStr = setMessageScript;
-
-                if (ajaxCleanupRequired) {
-                    initScriptsStr = initScriptsStr + " O$.setAjaxCleanupRequired(true);";
-                }
-
-                if (isAjax4jsfRequest || isProtletRequest) {
-                    if (isAjax4jsfRequest) {
-                        ResourceUtil.renderJSLinkIfNeeded(initLibraryUrl, context);
-                    }
-
-                    if (context.getExternalContext().getSessionMap() != null && uniqueRTLibraryName != null) {
-                        context.getExternalContext().getSessionMap().put(uniqueRTLibraryName, initScriptsStr);
-                    }
-                } else {
-                    RenderingUtil.appendOnLoadScript(context, setMessageScript);
-                    if (ajaxCleanupRequired) {
-                        RenderingUtil.appendOnLoadScript(context, "O$.setAjaxCleanupRequired(true);");
-                    }
+            } else {
+                RenderingUtil.appendOnLoadScript(context, setMessageScript.toString());
+                if (isAjaxCleanupRequired()) {
+                    RenderingUtil.appendOnLoadScript(context, "O$.setAjaxCleanupRequired(true);");
                 }
             }
         }
+
     }
 
     private static boolean isAjaxCleanupRequired() {
