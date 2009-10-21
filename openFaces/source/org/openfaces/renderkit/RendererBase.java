@@ -13,6 +13,7 @@ package org.openfaces.renderkit;
 
 import org.openfaces.component.OUIComponent;
 import org.openfaces.component.OUIInput;
+import org.openfaces.util.RenderingUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -25,27 +26,6 @@ import java.io.IOException;
  */
 
 public class RendererBase extends Renderer {
-
-    protected String writeIdAttribute(FacesContext facesContext, UIComponent component) throws IOException {
-        String clientId = component.getClientId(facesContext);
-        facesContext.getResponseWriter().writeAttribute("id", clientId, null);
-        return clientId;
-    }
-
-    protected void writeNameAttribute(FacesContext facesContext, UIComponent component) throws IOException {
-        String clientId = component.getClientId(facesContext);
-        facesContext.getResponseWriter().writeAttribute("name", clientId, null);
-    }
-
-    protected void writeAttribute(ResponseWriter writer, String name, String value) throws IOException {
-        if (value != null)
-            writer.writeAttribute(name, value, null);
-    }
-
-    protected void writeAttribute(ResponseWriter writer, String name, int value, int emptyValue) throws IOException {
-        if (value != emptyValue)
-            writer.writeAttribute(name, String.valueOf(value), null);
-    }
 
     protected String escapeId(String id) {
         return id.replace(':', '_').replace('-', '_');
@@ -74,4 +54,19 @@ public class RendererBase extends Renderer {
         writeAttribute(writer, "onkeyup", component.getOnkeyup());
     }
 
+    protected void writeAttribute(ResponseWriter writer, String name, String value) throws IOException {
+        RenderingUtil.writeAttribute(writer, name, value);
+    }
+
+    protected String writeIdAttribute(FacesContext facesContext, UIComponent component) throws IOException {
+        return RenderingUtil.writeIdAttribute(facesContext, component);
+    }
+
+    protected void writeNameAttribute(FacesContext facesContext, UIComponent component) throws IOException {
+        RenderingUtil.writeNameAttribute(facesContext, component);
+    }
+
+    protected void writeAttribute(ResponseWriter writer, String name, int value, int emptyValue) throws IOException {
+        RenderingUtil.writeAttribute(writer, name, value, emptyValue);
+    }
 }

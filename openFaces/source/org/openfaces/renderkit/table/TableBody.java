@@ -56,7 +56,7 @@ public class TableBody {
 
     public void render(FacesContext facesContext) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        AbstractTable table = (AbstractTable) tableStructure.getTable();
+        AbstractTable table = (AbstractTable) tableStructure.getComponent();
         List<BaseColumn> columnsForRendering = table.getColumnsForRendering();
 
         writer.startElement("tbody", table);

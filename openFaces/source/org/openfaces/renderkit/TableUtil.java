@@ -29,12 +29,12 @@ import org.openfaces.renderkit.table.TableFooter;
 import org.openfaces.renderkit.table.TableHeader;
 import org.openfaces.renderkit.table.TableHeaderOrFooter;
 import org.openfaces.renderkit.table.TableStructure;
-import org.openfaces.util.EnvironmentUtil;
-import org.openfaces.util.StyleGroup;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

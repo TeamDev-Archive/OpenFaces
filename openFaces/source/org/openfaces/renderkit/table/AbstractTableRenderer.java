@@ -17,13 +17,11 @@ import org.openfaces.component.table.AbstractTableSelection;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.CheckboxColumn;
 import org.openfaces.component.table.ColumnResizing;
-import org.openfaces.component.table.ColumnResizingState;
 import org.openfaces.component.table.TableColumn;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
@@ -44,8 +42,6 @@ import java.util.Map;
  * @author Dmitry Pikhulya
  */
 public abstract class AbstractTableRenderer extends RendererBase {
-    private static final String DEFAULT_STYLE_CLASS = "o_table";
-    private static final String DEFAULT_CELL_PADDING = "2";
 
     private static final String DEFAULT_SORTED_COLUMN_CLASS = null;//"o_table_sorted_column";
     private static final String DEFAULT_SORTED_COLUMN_HEADER_CLASS = "o_table_sorted_column_header";
@@ -56,7 +52,6 @@ public abstract class AbstractTableRenderer extends RendererBase {
     private static final String DEFAULT_FOCUSED_STYLE = "border: 1px dotted black;";
 
     private static final String TABLE_STRUCTURE_ATTR = "_of_tableStructure";
-    private static final String TABLE_LAYOUT_FIXED_STYLE_CLASS = "o_table_layout_fixed";
 
 
     public static String getTableJsURL(FacesContext facesContext) {
@@ -69,87 +64,21 @@ public abstract class AbstractTableRenderer extends RendererBase {
             return;
 
         final AbstractTable table = (AbstractTable) component;
+
         if (table.getUseAjax())
             AjaxUtil.prepareComponentForAjax(context, component);
 
-        // this hack is needed for working around strange IE issue
-        // JSFC-2081 ExpressionFilter drop-downs in TreeTable have improper style on demo (regression) - IE only
-        encodeJsLinks(context);
-
-        table.setRowIndex(-1);
-        UIComponent aboveFacet = table.getFacet("above");
-        if (aboveFacet != null)
-            aboveFacet.encodeAll(context);
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("table", table);
-        writeIdAttribute(context, table);
-
-        List<BaseColumn> columns = table.getColumnsForRendering();
-
-        String style = table.getStyle();
-        String textStyle = getTextStyle(table);
-        style = StyleUtil.mergeStyles(style, textStyle);
-        boolean applyDefaultStyle = table.getApplyDefaultStyle();
-        String styleClass = TableUtil.getClassWithDefaultStyleClass(applyDefaultStyle, DEFAULT_STYLE_CLASS, table.getStyleClass());
-        ColumnResizing columnResizing = table.getColumnResizing();
-        String tableWidth = table.getWidth();
-        if (columnResizing != null) {
-            ColumnResizingState resizingState = columnResizing.getResizingState();
-            if (resizingState != null && resizingState.getColumnCount() == columns.size())
-                tableWidth = resizingState.getTableWidth();
-            if (columnResizing.isEnabled()) {
-                if (tableWidth != null || EnvironmentUtil.isMozilla()) {
-                    // "table-layout: fixed" style can't be set on client-side and should be rendered from the server, though
-                    // it shouldn't be rendered under IE because all tables without explicit widths will occupy 100% width as a result
-                    styleClass = StyleUtil.mergeClassNames(styleClass, TABLE_LAYOUT_FIXED_STYLE_CLASS);
-                }
-            }
-        }
-        String textClass = getTextClass(table);
-        styleClass = StyleUtil.mergeClassNames(styleClass, textClass);
-        String rolloverStyle = table.getRolloverStyle();
-        if (RenderingUtil.isNullOrEmpty(rolloverStyle)) {
-            styleClass = StyleUtil.mergeClassNames(DefaultStyles.CLASS_INITIALLY_INVISIBLE, styleClass);
-            RenderingUtil.writeStyleAndClassAttributes(writer, style, styleClass);
-        } else {
-            String cls = StyleUtil.getCSSClass(context, component, style, styleClass);
-            if (!EnvironmentUtil.isOpera())
-                cls = StyleUtil.mergeClassNames(DefaultStyles.CLASS_INITIALLY_INVISIBLE, cls);
-            if (!RenderingUtil.isNullOrEmpty(cls))
-                writer.writeAttribute("class", cls, null);
-        }
-
-        writeAttribute(writer, "align", table.getAlign());
-        writeAttribute(writer, "bgcolor", table.getBgcolor());
-        writeAttribute(writer, "dir", table.getDir());
-        writeAttribute(writer, "rules", table.getRules());
-        writeAttribute(writer, "width", tableWidth);
-        writeAttribute(writer, "border", table.getBorder(), Integer.MIN_VALUE);
-        String cellspacing = table.getCellspacing();
-        if (TableUtil.areGridLinesRequested(table, TableStructure.getDefaultStyles(table)))
-            cellspacing = "0";
-        writeAttribute(writer, "cellspacing", cellspacing);
-        String cellpadding = table.getCellpadding();
-        if (cellpadding == null && applyDefaultStyle)
-            cellpadding = DEFAULT_CELL_PADDING;
-        writeAttribute(writer, "cellpadding", cellpadding);
-        writeAttribute(writer, "onclick ", table.getOnclick());
-        writeAttribute(writer, "ondblclick", table.getOndblclick());
-        writeAttribute(writer, "onmousedown", table.getOnmousedown());
-        writeAttribute(writer, "onmouseover", table.getOnmouseover());
-        writeAttribute(writer, "onmousemove", table.getOnmousemove());
-        writeAttribute(writer, "onmouseout", table.getOnmouseout());
-        writeAttribute(writer, "onmouseup", table.getOnmouseup());
-
-        writeKeyboardEvents(writer, table);
-
-        TableUtil.writeColumnTags(context, table, columns);
-
         TableStructure tableStructure = createTableStructure(table);
-        TableHeader header = tableStructure.getHeader();
-        if (!header.isEmpty())
-            header.render(context, null);
         table.getAttributes().put(TABLE_STRUCTURE_ATTR, tableStructure);
+        try {
+            // this hack is needed for working around strange IE issue
+            // JSFC-2081 ExpressionFilter drop-downs in TreeTable have improper style on demo (regression) - IE only
+            encodeJsLinks(context);
+
+            tableStructure.render(context);
+        } finally {
+            table.getAttributes().remove(TABLE_STRUCTURE_ATTR);
+        }
     }
 
     protected TableStructure createTableStructure(final AbstractTable table) {
@@ -165,6 +94,14 @@ public abstract class AbstractTableRenderer extends RendererBase {
             protected void writeBodyRowAttributes(FacesContext facesContext, AbstractTable table) throws IOException {
                 AbstractTableRenderer.this.writeBodyRowAttributes(facesContext, table);
             }
+            protected String getTextClass(AbstractTable table) {
+                return AbstractTableRenderer.this.getTextClass(table);
+            }
+
+            protected String getTextStyle(AbstractTable table) {
+                return AbstractTableRenderer.this.getTextStyle(table);
+            }
+            
 
         };
     }
@@ -184,12 +121,12 @@ public abstract class AbstractTableRenderer extends RendererBase {
         return null;
     }
 
-    protected void writeKeyboardEvents(ResponseWriter writer, AbstractTable table) throws IOException {
-        writeAttribute(writer, "onfocus", table.getOnfocus());
-        writeAttribute(writer, "onblur", table.getOnblur());
-        writeAttribute(writer, "onkeydown", table.getOnkeydown());
-        writeAttribute(writer, "onkeyup", table.getOnkeyup());
-        writeAttribute(writer, "onkeypress", table.getOnkeypress());
+    protected String getAdditionalRowClass(FacesContext facesContext, AbstractTable table, Object rowData, int rowIndex) {
+        return null;
+    }
+
+
+    protected void writeBodyRowAttributes(FacesContext facesContext, AbstractTable table) throws IOException {
     }
 
     @Override
@@ -199,50 +136,10 @@ public abstract class AbstractTableRenderer extends RendererBase {
 
     @Override
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        if (!uiComponent.isRendered())
-            return;
-
-        AbstractTable table = ((AbstractTable) uiComponent);
-
-        TableBody body = getTableStructure(table).getBody();
-        body.render(facesContext);
-    }
-
-
-    protected String getAdditionalRowClass(FacesContext facesContext, AbstractTable table, Object rowData, int rowIndex) {
-        return null;
-    }
-
-    protected void writeBodyRowAttributes(FacesContext facesContext, AbstractTable table) throws IOException {
     }
 
     private TableStructure getTableStructure(AbstractTable table) {
         return (TableStructure) table.getAttributes().get(TABLE_STRUCTURE_ATTR);
-    }
-
-    @Override
-    public void encodeEnd(final FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        if (!uiComponent.isRendered())
-            return;
-        final AbstractTable table = ((AbstractTable) uiComponent);
-        table.setRowIndex(-1);
-
-        TableFooter footer = getTableStructure(table).getFooter();
-        if (!footer.isEmpty())
-            footer.render(facesContext, new HeaderCell.AdditionalContentWriter() {
-                public void writeAdditionalContent(FacesContext context) throws IOException {
-                    encodeScriptsAndStyles(facesContext, table);
-                }
-            });
-        table.getAttributes().remove(TABLE_STRUCTURE_ATTR);
-
-
-        ResponseWriter writer = facesContext.getResponseWriter();
-        writer.endElement("table");
-        RenderingUtil.writeNewLine(writer);
-        UIComponent belowFacet = table.getFacet("below");
-        if (belowFacet != null)
-            belowFacet.encodeAll(facesContext);
     }
 
     protected void encodeScriptsAndStyles(FacesContext facesContext, AbstractTable table) throws IOException {
@@ -301,7 +198,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
         List<BaseColumn> columns = table.getColumnsForRendering();
         TableStructure tableStructure = getTableStructure(table);
         boolean noDataRows = table.getRowCount() == 0;
-        TableStyles defaultStyles = tableStructure.getDefaultStyles(table);
+        TableStyles defaultStyles = TableStructure.getDefaultStyles(table);
 
         buf.initScript(facesContext, table, "O$.Table._init",
                 TableUtil.getStructureAndStyleParams(

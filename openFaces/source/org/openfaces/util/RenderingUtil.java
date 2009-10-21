@@ -805,20 +805,6 @@ public class RenderingUtil {
 
     /**
      *
-     * Check value for nullable and write it to writer
-     *
-     * @param value The value of attribute
-     * @param name The name of attribute
-     * @param writer The character-based output
-     * @throws IOException if an input/output error occurs
-     */
-    public static void writeAttribute(ResponseWriter writer, String name, String value) throws IOException {
-        if (value != null)
-            writer.writeAttribute(name, value, null);
-    }
-
-    /**
-     *
      * Check string for nullable and empty
      *
      * @param string The string to check
@@ -1344,4 +1330,36 @@ public class RenderingUtil {
     public static void writeNewLine(ResponseWriter writer) throws IOException {
         writer.writeText("\n", null);
     }
+
+    /**
+     *
+     * Check value for nullable and write it to writer
+     *
+     * @param value The value of attribute
+     * @param name The name of attribute
+     * @param writer The character-based output
+     * @throws java.io.IOException if an input/output error occurs
+     */
+    public static void writeAttribute(ResponseWriter writer, String name, String value) throws IOException {
+        if (value != null)
+            writer.writeAttribute(name, value, null);
+    }
+
+    public static String writeIdAttribute(FacesContext facesContext, UIComponent component) throws IOException {
+        String clientId = component.getClientId(facesContext);
+        facesContext.getResponseWriter().writeAttribute("id", clientId, null);
+        return clientId;
+    }
+
+    public static void writeNameAttribute(FacesContext facesContext, UIComponent component) throws IOException {
+        String clientId = component.getClientId(facesContext);
+        facesContext.getResponseWriter().writeAttribute("name", clientId, null);
+    }
+
+    public static void writeAttribute(ResponseWriter writer, String name, int value, int emptyValue) throws IOException {
+        if (value != emptyValue)
+            writer.writeAttribute(name, String.valueOf(value), null);
+    }
+
+
 }

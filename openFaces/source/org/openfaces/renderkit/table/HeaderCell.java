@@ -76,7 +76,7 @@ class HeaderCell {
 
     public void render(FacesContext facesContext, List<HeaderRow> rows,
                        AdditionalContentWriter additionalContentWriter) throws IOException {
-        UIComponent table = tableStructure.getTable();
+        UIComponent table = tableStructure.getComponent();
         if (column instanceof DynamicColumn)
             ((DynamicColumn) column).declareContextVariables();
 

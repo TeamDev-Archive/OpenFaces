@@ -185,7 +185,7 @@ public abstract class TableHeaderOrFooter {
 
     public void render(FacesContext facesContext,
                        HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
-        UIComponent component = tableStructure.getTable();
+        UIComponent component = tableStructure.getComponent();
         TableStyles tableStyles = tableStructure.getTableStyles();
 
         ResponseWriter writer = facesContext.getResponseWriter();
@@ -208,7 +208,7 @@ public abstract class TableHeaderOrFooter {
                             HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
         int lastVisibleRowIndex = getLastVisibleColHeadersRow();
 
-        UIComponent component = tableStructure.getTable();
+        UIComponent component = tableStructure.getComponent();
 
         if (!isHeader) {
             if (subHeaderRow != null)

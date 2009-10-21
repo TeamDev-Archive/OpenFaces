@@ -12,27 +12,38 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.TableStyles;
-import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.AbstractTable;
-import org.openfaces.renderkit.TableUtil;
+import org.openfaces.component.table.BaseColumn;
+import org.openfaces.component.table.ColumnResizing;
+import org.openfaces.component.table.ColumnResizingState;
 import org.openfaces.renderkit.DefaultTableStyles;
+import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.DefaultStyles;
+import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
-import java.util.List;
+import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Dmitry Pikhulya
  */
 public class TableStructure {
+    public static final String CUSTOM_ROW_RENDERING_INFOS_KEY = "_customRowRenderingInfos";
+
+    private static final String DEFAULT_STYLE_CLASS = "o_table";
+    private static final String DEFAULT_CELL_PADDING = "2";
     private static TableStyles DEFAULT_STYLES = new DefaultTableStyles();
     private static final String DEFAULT_NO_DATA_ROW_CLASS = "o_table_no_data_row";
-    public static final String CUSTOM_ROW_RENDERING_INFOS_KEY = "_customRowRenderingInfos";
+    private static final String TABLE_LAYOUT_FIXED_STYLE_CLASS = "o_table_layout_fixed";
     
-    private final UIComponent table;
+    
+    private final UIComponent component;
     private final TableStyles tableStyles;
     private final List<BaseColumn> columns;
 
@@ -42,7 +53,7 @@ public class TableStructure {
 
 
     public TableStructure(UIComponent component, TableStyles tableStyles) {
-        table = component;
+        this.component = component;
         this.tableStyles = tableStyles;
         columns = tableStyles.getColumnsForRendering();
 
@@ -51,8 +62,8 @@ public class TableStructure {
         footer = new TableFooter(this);
     }
 
-    public UIComponent getTable() {
-        return table;
+    public UIComponent getComponent() {
+        return component;
     }
 
     public TableStyles getTableStyles() {
@@ -75,10 +86,105 @@ public class TableStructure {
         return footer;
     }
 
+    public void render(FacesContext context) throws IOException {
+        AbstractTable table = (AbstractTable) component;
+        table.setRowIndex(-1);
+        UIComponent aboveFacet = table.getFacet("above");
+        if (aboveFacet != null)
+            aboveFacet.encodeAll(context);
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("table", table);
+        RenderingUtil.writeIdAttribute(context, table);
+
+        List<BaseColumn> columns = table.getColumnsForRendering();
+
+        String style = table.getStyle();
+        String textStyle = getTextStyle(table);
+        style = StyleUtil.mergeStyles(style, textStyle);
+        boolean applyDefaultStyle = table.getApplyDefaultStyle();
+        String styleClass = TableUtil.getClassWithDefaultStyleClass(applyDefaultStyle, DEFAULT_STYLE_CLASS, table.getStyleClass());
+        ColumnResizing columnResizing = table.getColumnResizing();
+        String tableWidth = table.getWidth();
+        if (columnResizing != null) {
+            ColumnResizingState resizingState = columnResizing.getResizingState();
+            if (resizingState != null && resizingState.getColumnCount() == columns.size())
+                tableWidth = resizingState.getTableWidth();
+            if (columnResizing.isEnabled()) {
+                if (tableWidth != null || EnvironmentUtil.isMozilla()) {
+                    // "table-layout: fixed" style can't be set on client-side and should be rendered from the server, though
+                    // it shouldn't be rendered under IE because all tables without explicit widths will occupy 100% width as a result
+                    styleClass = StyleUtil.mergeClassNames(styleClass, TABLE_LAYOUT_FIXED_STYLE_CLASS);
+                }
+            }
+        }
+        String textClass = getTextClass(table);
+        styleClass = StyleUtil.mergeClassNames(styleClass, textClass);
+        String rolloverStyle = table.getRolloverStyle();
+        if (RenderingUtil.isNullOrEmpty(rolloverStyle)) {
+            styleClass = StyleUtil.mergeClassNames(DefaultStyles.CLASS_INITIALLY_INVISIBLE, styleClass);
+            RenderingUtil.writeStyleAndClassAttributes(writer, style, styleClass);
+        } else {
+            String cls = StyleUtil.getCSSClass(context, component, style, styleClass);
+            if (!EnvironmentUtil.isOpera())
+                cls = StyleUtil.mergeClassNames(DefaultStyles.CLASS_INITIALLY_INVISIBLE, cls);
+            if (!RenderingUtil.isNullOrEmpty(cls))
+                writer.writeAttribute("class", cls, null);
+        }
+
+        RenderingUtil.writeAttribute(writer, "align", table.getAlign());
+        RenderingUtil.writeAttribute(writer, "bgcolor", table.getBgcolor());
+        RenderingUtil.writeAttribute(writer, "dir", table.getDir());
+        RenderingUtil.writeAttribute(writer, "rules", table.getRules());
+        RenderingUtil.writeAttribute(writer, "width", tableWidth);
+        RenderingUtil.writeAttribute(writer, "border", table.getBorder(), Integer.MIN_VALUE);
+        String cellspacing = table.getCellspacing();
+        if (TableUtil.areGridLinesRequested(table, TableStructure.getDefaultStyles(table)))
+            cellspacing = "0";
+        RenderingUtil.writeAttribute(writer, "cellspacing", cellspacing);
+        String cellpadding = table.getCellpadding();
+        if (cellpadding == null && applyDefaultStyle)
+            cellpadding = DEFAULT_CELL_PADDING;
+        RenderingUtil.writeAttribute(writer, "cellpadding", cellpadding);
+        RenderingUtil.writeAttribute(writer, "onclick ", table.getOnclick());
+        RenderingUtil.writeAttribute(writer, "ondblclick", table.getOndblclick());
+        RenderingUtil.writeAttribute(writer, "onmousedown", table.getOnmousedown());
+        RenderingUtil.writeAttribute(writer, "onmouseover", table.getOnmouseover());
+        RenderingUtil.writeAttribute(writer, "onmousemove", table.getOnmousemove());
+        RenderingUtil.writeAttribute(writer, "onmouseout", table.getOnmouseout());
+        RenderingUtil.writeAttribute(writer, "onmouseup", table.getOnmouseup());
+
+        writeKeyboardEvents(writer, table);
+
+        TableUtil.writeColumnTags(context, table, columns);
+
+        TableHeader header = getHeader();
+        if (!header.isEmpty())
+            header.render(context, null);
+
+        TableBody body = getBody();
+        body.render(context);
+
+        table.setRowIndex(-1);
+
+        TableFooter footer = getFooter();
+        if (!footer.isEmpty())
+            footer.render(context, new HeaderCell.AdditionalContentWriter() {
+                public void writeAdditionalContent(FacesContext context) throws IOException {
+                    encodeScriptsAndStyles(context);
+                }
+            });
+
+        writer.endElement("table");
+        RenderingUtil.writeNewLine(writer);
+        UIComponent belowFacet = table.getFacet("below");
+        if (belowFacet != null)
+            belowFacet.encodeAll(context);
+    }
+
     boolean isEmptyCellsTreatmentRequired() {
-        if (!(this.table instanceof AbstractTable))
+        if (!(this.component instanceof AbstractTable))
             return true;
-        AbstractTable table = (AbstractTable) this.table;
+        AbstractTable table = (AbstractTable) this.component;
         return (TableUtil.areGridLinesRequested(table, getDefaultStyles(table)) || table.getBorder() != Integer.MIN_VALUE);
     }
 
@@ -108,6 +214,14 @@ public class TableStructure {
     protected void writeBodyRowAttributes(FacesContext facesContext, AbstractTable table) throws IOException {
     }
 
+    protected String getTextClass(AbstractTable table) {
+        return null;
+    }
+
+    protected String getTextStyle(AbstractTable table) {
+        return null;
+    }
+
     static boolean isComponentEmpty(UIComponent child) {
         if (child == null || !child.isRendered())
             return true;
@@ -126,5 +240,13 @@ public class TableStructure {
         return styleClassesStr;
     }
 
+
+    private void writeKeyboardEvents(ResponseWriter writer, AbstractTable table) throws IOException {
+        RenderingUtil.writeAttribute(writer, "onfocus", table.getOnfocus());
+        RenderingUtil.writeAttribute(writer, "onblur", table.getOnblur());
+        RenderingUtil.writeAttribute(writer, "onkeydown", table.getOnkeydown());
+        RenderingUtil.writeAttribute(writer, "onkeyup", table.getOnkeyup());
+        RenderingUtil.writeAttribute(writer, "onkeypress", table.getOnkeypress());
+    }
 
 }
