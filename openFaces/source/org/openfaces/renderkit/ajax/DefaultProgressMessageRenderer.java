@@ -28,7 +28,11 @@ import java.util.Map;
  * @author Eugene Goncharov
  */
 public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
-    public static final String IN_USE = "org.openfaces.defaultProgressMessageInUse";
+    /**
+     * This request-scope attribute specifies whether the DefaultProgressMessge component is explicitly specified on
+     * the page and if so, it is set for UtilPhaseListener to render the specified component after  the render-response
+     * phase.
+     */
     public static final String PROGRESS_MESSAGE = "org.openfaces.defaultProgressMessage";
     public static final String RENDERING = "org.openfaces.defaultProgressMessageRendering";
 
@@ -38,8 +42,7 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
 
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
-        if (!requestMap.containsKey(IN_USE) && !requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED)) {
-            requestMap.put(IN_USE, Boolean.TRUE);
+        if (!requestMap.containsKey(PROGRESS_MESSAGE) && !requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED)) {
             requestMap.put(PROGRESS_MESSAGE, defaultProgressMessage);
             ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getUtilJsURL(context), context);
             ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getAjaxUtilJsURL(context), context);

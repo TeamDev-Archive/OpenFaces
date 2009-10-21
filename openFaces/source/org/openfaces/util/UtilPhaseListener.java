@@ -14,6 +14,7 @@ package org.openfaces.util;
 import org.openfaces.component.ajax.DefaultProgressMessage;
 import org.openfaces.renderkit.ajax.DefaultProgressMessageRenderer;
 
+import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -25,7 +26,6 @@ import java.util.Map;
  * @author Dmitry Pikhulya
  */
 public class UtilPhaseListener extends PhaseListenerBase {
-
     private static final String FOCUSED_COMPONENT_ID_KEY = UtilPhaseListener.class.getName() + ".focusedComponentId";
     private static final String FOCUS_TRACKER_FIELD_ID = "o::defaultFocus";
     private static final String AUTO_FOCUS_TRACKING_CONTEXT_PARAM = "org.openfaces.autoSaveFocus";
@@ -59,21 +59,13 @@ public class UtilPhaseListener extends PhaseListenerBase {
     private void encodeAjaxProgressMessage(FacesContext context) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
-        if (requestMap.containsKey(DefaultProgressMessageRenderer.IN_USE)
-                && requestMap.get(DefaultProgressMessageRenderer.IN_USE) != null) {
-            if (requestMap.containsKey(DefaultProgressMessageRenderer.PROGRESS_MESSAGE)) {
-                requestMap.put(DefaultProgressMessageRenderer.RENDERING, Boolean.TRUE);
-                DefaultProgressMessage defaultProgressMessage = (DefaultProgressMessage) requestMap.get(DefaultProgressMessageRenderer.PROGRESS_MESSAGE);
-                renderProgressMessage(context, defaultProgressMessage);
-            } else {
-                renderNewProgressMessage(context);
-            }
-        }
-
-        if (requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED)
-                && requestMap.get(AjaxUtil.AJAX_SUPPORT_RENDERED) != null
-                && !requestMap.containsKey(DefaultProgressMessageRenderer.IN_USE)) {
-            renderNewProgressMessage(context);
+        if (requestMap.containsKey(DefaultProgressMessageRenderer.PROGRESS_MESSAGE)) {
+            requestMap.put(DefaultProgressMessageRenderer.RENDERING, Boolean.TRUE);
+            DefaultProgressMessage defaultProgressMessage = (DefaultProgressMessage) requestMap.get(DefaultProgressMessageRenderer.PROGRESS_MESSAGE);
+            renderProgressMessage(context, defaultProgressMessage);
+        } else if (requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED)) {
+            DefaultProgressMessage defaultProgressMessage = new DefaultProgressMessage();
+            renderProgressMessage(context, defaultProgressMessage);
         }
     }
 
@@ -81,15 +73,9 @@ public class UtilPhaseListener extends PhaseListenerBase {
         try {
             defaultProgressMessage.encodeAll(context);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FacesException(e);
         }
     }
-
-    private void renderNewProgressMessage(FacesContext context) {
-        DefaultProgressMessage defaultProgressMessage = new DefaultProgressMessage();
-        renderProgressMessage(context, defaultProgressMessage);
-    }
-
 
     private boolean isAutoFocusTrackingEnabled(FacesContext context) {
         return getBooleanContextParam(context, AUTO_FOCUS_TRACKING_CONTEXT_PARAM);
