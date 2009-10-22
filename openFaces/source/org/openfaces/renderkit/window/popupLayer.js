@@ -38,16 +38,6 @@ O$.PopupLayer = {
       return O$.PopupLayer.getFirstFocusableControl(popup);
     };
 
-    //  if (popup.blockingLayer) {
-    //    // This is needed for situations when blocking layer with style="filter:alpha(opacity: 50)" is positioned inside
-    //    // <td> element of <table>. Under IE quirks mode this situation will cause the filter not to be applied. So we
-    //    // need to move blocking layer outside of <table> tag.
-    //    O$.addLoadEvent(function() {
-    //      var newParent = O$.getDefaultAbsolutePositionParent();
-    //      newParent.appendChild(popup.blockingLayer);
-    //    });
-    //  }
-
 
     //  popup.anchorField = O$(popup.id + "_anchor");
 
@@ -177,15 +167,6 @@ O$.PopupLayer = {
         document._of_activeModalLayer = popup.blockingLayer;
         O$.PopupLayer._resizeModalLayer();
         if (O$._simulateFixedPosForBlockingLayer()) {
-          var prnt = popup.offsetParent;
-          if (prnt) {
-            prnt = prnt.offsetParent;
-          }
-          var prntPos = prnt != null ? O$.getElementPos(prnt) : {left: 0, top: 0};
-          var parentLeft = prntPos.left;
-          var parentTop = prntPos.top;
-          popup.blockingLayer.style.left = (document.body.scrollLeft - parentLeft) + "px";
-          popup.blockingLayer.style.top = (document.body.scrollTop - parentTop) + "px";
           O$.addEventHandler(window, "resize", O$.PopupLayer._resizeModalLayer);
           O$.addEventHandler(window, "scroll", O$.PopupLayer._alignModalLayer);
           O$.PopupLayer._alignModalLayer();
@@ -462,7 +443,6 @@ O$.PopupLayer = {
             : {left: 0, top: 0};
     var parentLeft = parentPos.left;
     var parentTop = parentPos.top;
-    // the comments below are caused by JSFC-2030
 
     modalLayer.style.left = (scrollPos.x - parentLeft) + "px";
     modalLayer.style.top = (scrollPos.y - parentTop) + "px";
