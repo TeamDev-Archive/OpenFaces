@@ -13,7 +13,6 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.util.RenderingUtil;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -22,13 +21,18 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public class HeaderRow {
+public class HeaderRow extends TableElement {
     private final boolean atLeastOneComponentInThisRow;
     private final List<HeaderCell> cells;
+    private List<HeaderRow> rowsForSpans;
 
-    public HeaderRow(boolean atLeastOneComponentInThisRow, List<HeaderCell> cells) {
+    public HeaderRow(boolean atLeastOneComponentInThisRow, List<HeaderCell> cells, TableHeaderOrFooter parent) {
+        super(parent);
         this.atLeastOneComponentInThisRow = atLeastOneComponentInThisRow;
         this.cells = cells;
+        for (HeaderCell cell : cells) {
+            cell.setParent(this);
+        }
     }
 
     public boolean isAtLeastOneComponentInThisRow() {
@@ -39,15 +43,26 @@ public class HeaderRow {
         return cells;
     }
 
-    public void render(FacesContext context, UIComponent table, List<HeaderRow> rows,
+    public void render(FacesContext context,
                        HeaderCell.AdditionalContentWriter lastCellContentAppender) throws IOException {
+        if (!isAtLeastOneComponentInThisRow())
+            return;
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("tr", table);
+        TableStructure tableStructure = getParent(TableStructure.class);
+        writer.startElement("tr", tableStructure.getComponent());
         for (int i = 0, count = cells.size(); i < count; i++) {
             HeaderCell cell = cells.get(i);
-            cell.render(context, rows, i == count - 1 ? lastCellContentAppender : null);
+            cell.render(context, i == count - 1 ? lastCellContentAppender : null);
         }
         writer.endElement("tr");
         RenderingUtil.writeNewLine(context.getResponseWriter());
+    }
+
+    public List<HeaderRow> getRowsForSpans() {
+        return rowsForSpans;
+    }
+
+    public void setRowsForSpans(List<HeaderRow> rows) {
+        this.rowsForSpans = rows;
     }
 }

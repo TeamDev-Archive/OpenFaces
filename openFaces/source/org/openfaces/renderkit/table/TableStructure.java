@@ -16,6 +16,7 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.ColumnResizingState;
+import org.openfaces.component.table.Scrolling;
 import org.openfaces.renderkit.DefaultTableStyles;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.DefaultStyles;
@@ -33,7 +34,7 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public class TableStructure {
+public class TableStructure extends TableElement {
     public static final String CUSTOM_ROW_RENDERING_INFOS_KEY = "_customRowRenderingInfos";
 
     private static final String DEFAULT_STYLE_CLASS = "o_table";
@@ -41,8 +42,8 @@ public class TableStructure {
     private static TableStyles DEFAULT_STYLES = new DefaultTableStyles();
     private static final String DEFAULT_NO_DATA_ROW_CLASS = "o_table_no_data_row";
     private static final String TABLE_LAYOUT_FIXED_STYLE_CLASS = "o_table_layout_fixed";
-    
-    
+
+
     private final UIComponent component;
     private final TableStyles tableStyles;
     private final List<BaseColumn> columns;
@@ -50,12 +51,31 @@ public class TableStructure {
     private final TableHeader header;
     private final TableBody body;
     private final TableFooter footer;
-
+    private Scrolling scrolling;
+    private int fixedLeftColumns;
+    private int fixedRightColumns;
 
     public TableStructure(UIComponent component, TableStyles tableStyles) {
+        super(null);
         this.component = component;
         this.tableStyles = tableStyles;
         columns = tableStyles.getColumnsForRendering();
+        scrolling = tableStyles.getScrolling();
+        fixedLeftColumns = 0;
+        fixedRightColumns = 0;
+        if (scrolling != null && scrolling.isHorizontal()) {
+            for (BaseColumn column : columns) {
+                if (!column.isFixed())
+                    break;
+                fixedLeftColumns++;
+            }
+            for (int i = columns.size() - 1; i > fixedLeftColumns; i--) {
+                BaseColumn column = columns.get(i);
+                if (!column.isFixed())
+                    break;
+                fixedRightColumns++;
+            }
+        }
 
         header = new TableHeader(this);
         body = new TableBody(this);
@@ -68,6 +88,26 @@ public class TableStructure {
 
     public TableStyles getTableStyles() {
         return tableStyles;
+    }
+
+    public Scrolling getScrolling() {
+        return scrolling;
+    }
+
+    public int getFixedLeftColumns() {
+        return fixedLeftColumns;
+    }
+
+    public void setFixedLeftColumns(int fixedLeftColumns) {
+        this.fixedLeftColumns = fixedLeftColumns;
+    }
+
+    public int getFixedRightColumns() {
+        return fixedRightColumns;
+    }
+
+    public void setFixedRightColumns(int fixedRightColumns) {
+        this.fixedRightColumns = fixedRightColumns;
     }
 
     public List<BaseColumn> getColumns() {
@@ -86,7 +126,7 @@ public class TableStructure {
         return footer;
     }
 
-    public void render(FacesContext context) throws IOException {
+    public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
         AbstractTable table = (AbstractTable) component;
         table.setRowIndex(-1);
         UIComponent aboveFacet = table.getFacet("above");
@@ -167,12 +207,9 @@ public class TableStructure {
         table.setRowIndex(-1);
 
         TableFooter footer = getFooter();
-        if (!footer.isEmpty())
-            footer.render(context, new HeaderCell.AdditionalContentWriter() {
-                public void writeAdditionalContent(FacesContext context) throws IOException {
-                    encodeScriptsAndStyles(context);
-                }
-            });
+        if (!footer.isEmpty()) {
+            footer.render(context, additionalContentWriter);
+        }
 
         writer.endElement("table");
         RenderingUtil.writeNewLine(writer);

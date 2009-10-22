@@ -75,7 +75,11 @@ public abstract class AbstractTableRenderer extends RendererBase {
             // JSFC-2081 ExpressionFilter drop-downs in TreeTable have improper style on demo (regression) - IE only
             encodeJsLinks(context);
 
-            tableStructure.render(context);
+            tableStructure.render(context, new HeaderCell.AdditionalContentWriter() {
+                public void writeAdditionalContent(FacesContext context) throws IOException {
+                    encodeScriptsAndStyles(context, table);
+                }
+            });
         } finally {
             table.getAttributes().remove(TABLE_STRUCTURE_ATTR);
         }

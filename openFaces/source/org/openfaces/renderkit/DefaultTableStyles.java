@@ -13,6 +13,7 @@ package org.openfaces.renderkit;
 
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.BaseColumn;
+import org.openfaces.component.table.Scrolling;
 
 import javax.faces.component.UIComponent;
 import java.util.Collections;
@@ -262,5 +263,9 @@ public class DefaultTableStyles implements TableStyles {
 
     public boolean getApplyDefaultStyle() {
         return true;
+    }
+
+    public Scrolling getScrolling() {
+        return null;
     }
 }

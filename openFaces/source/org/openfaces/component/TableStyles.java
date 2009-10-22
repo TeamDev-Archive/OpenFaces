@@ -12,6 +12,7 @@
 package org.openfaces.component;
 
 import org.openfaces.component.table.BaseColumn;
+import org.openfaces.component.table.Scrolling;
 
 import javax.faces.component.UIComponent;
 import java.util.List;
@@ -105,4 +106,6 @@ public interface TableStyles {
     String getFooterSectionClass();
 
     boolean getApplyDefaultStyle();
+
+    Scrolling getScrolling();
 }

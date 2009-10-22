@@ -14,9 +14,9 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.DynamicColumn;
+import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
-import org.openfaces.util.EnvironmentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-class HeaderCell {
+class HeaderCell extends TableElement {
     private BaseColumn column;
     private UIComponent component;
     private int colSpan;
@@ -37,14 +37,12 @@ class HeaderCell {
     private String cellTag;
     private boolean renderNonBreakable;
     private boolean renderSortingToggle;
-    private TableStructure tableStructure;
 
-    public HeaderCell(TableStructure tableStructure, BaseColumn column, UIComponent component, String cellTag) {
-        this(tableStructure, column, component, cellTag, false, false);
+    public HeaderCell(BaseColumn column, UIComponent component, String cellTag) {
+        this(column, component, cellTag, false, false);
     }
 
-    public HeaderCell(TableStructure tableStructure, BaseColumn column, UIComponent component, String cellTag, boolean renderNonBreakable, boolean renderSortingToggle) {
-        this.tableStructure = tableStructure;
+    public HeaderCell(BaseColumn column, UIComponent component, String cellTag, boolean renderNonBreakable, boolean renderSortingToggle) {
         this.column = column;
         this.component = component;
         this.cellTag = cellTag;
@@ -74,8 +72,10 @@ class HeaderCell {
         public void writeAdditionalContent(FacesContext context) throws IOException;
     }
 
-    public void render(FacesContext facesContext, List<HeaderRow> rows,
+    public void render(FacesContext facesContext,
                        AdditionalContentWriter additionalContentWriter) throws IOException {
+        List<HeaderRow> rows = getParent(HeaderRow.class).getRowsForSpans();
+        TableStructure tableStructure = getParent(TableStructure.class);
         UIComponent table = tableStructure.getComponent();
         if (column instanceof DynamicColumn)
             ((DynamicColumn) column).declareContextVariables();
