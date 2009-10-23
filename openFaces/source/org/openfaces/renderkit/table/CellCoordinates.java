@@ -34,7 +34,7 @@ public class CellCoordinates {
         return rowCellIndex;
     }
 
-    public JSONObject asJSArray() {
+    public JSONObject asJSONObject() {
         JSONObject obj = new JSONObject();
         try {
             obj.put("row", rowIndex);

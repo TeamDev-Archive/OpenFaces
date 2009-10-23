@@ -380,13 +380,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return cachedColumnsForRendering;
     }
 
-    private boolean isFixedColumn(BaseColumn column) {
-        if (column.isFixed())
-            return true;
-        UIComponent parent = column.getParent();
-        return parent instanceof BaseColumn && isFixedColumn((BaseColumn) parent);
-    }
-
     private List<BaseColumn> calculateColumnsForRendering() {
         List<String> columnsOrder = getColumnsOrder();
         if (columnsOrder == null) {

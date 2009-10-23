@@ -29,7 +29,9 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
@@ -55,6 +57,9 @@ public class TableStructure extends TableElement {
     private int fixedLeftColumns;
     private int fixedRightColumns;
 
+    private Map<Object, String> rowStylesMap = new HashMap<Object, String>();
+    private Map<Object, String> cellStylesMap = new HashMap<Object, String>();
+
     public TableStructure(UIComponent component, TableStyles tableStyles) {
         super(null);
         this.component = component;
@@ -65,13 +70,13 @@ public class TableStructure extends TableElement {
         fixedRightColumns = 0;
         if (scrolling != null && scrolling.isHorizontal()) {
             for (BaseColumn column : columns) {
-                if (!column.isFixed())
+                if (!isFixedColumn(column))
                     break;
                 fixedLeftColumns++;
             }
             for (int i = columns.size() - 1; i > fixedLeftColumns; i--) {
                 BaseColumn column = columns.get(i);
-                if (!column.isFixed())
+                if (!isFixedColumn(column))
                     break;
                 fixedRightColumns++;
             }
@@ -81,6 +86,14 @@ public class TableStructure extends TableElement {
         body = new TableBody(this);
         footer = new TableFooter(this);
     }
+
+    private boolean isFixedColumn(BaseColumn column) {
+        if (column.isFixed())
+            return true;
+        UIComponent parent = column.getParent();
+        return parent instanceof BaseColumn && isFixedColumn((BaseColumn) parent);
+    }
+
 
     public UIComponent getComponent() {
         return component;
@@ -195,14 +208,15 @@ public class TableStructure extends TableElement {
 
         writeKeyboardEvents(writer, table);
 
-        TableUtil.writeColumnTags(context, table, columns);
+        if (getScrolling() == null)
+            TableUtil.writeColumnTags(context, table, columns);
 
         TableHeader header = getHeader();
         if (!header.isEmpty())
             header.render(context, null);
 
         TableBody body = getBody();
-        body.render(context);
+        body.render(context, additionalContentWriter);
 
         table.setRowIndex(-1);
 
@@ -229,16 +243,13 @@ public class TableStructure extends TableElement {
         return table.getApplyDefaultStyle() ? DEFAULT_STYLES : null;
     }
 
-    protected static String getRowStylesKey(FacesContext context, AbstractTable table) {
-        String clientId = table.getClientId(context);
-        return "OF:row-styles-map-for::" + clientId;
+    public Map<Object, String> getRowStylesMap() {
+        return rowStylesMap;
     }
 
-    protected static String getCellStylesKey(FacesContext context, AbstractTable table) {
-        String clientId = table.getClientId(context);
-        return "OF:cell-styles-map-for::" + clientId;
+    public Map<Object, String> getCellStylesMap() {
+        return cellStylesMap;
     }
-
 
     public void encodeScriptsAndStyles(FacesContext facesContext) throws IOException {
         
@@ -248,7 +259,8 @@ public class TableStructure extends TableElement {
         return null;
     }
 
-    protected void writeBodyRowAttributes(FacesContext facesContext, AbstractTable table) throws IOException {
+    protected String[][] getBodyRowAttributes(FacesContext facesContext, AbstractTable table) throws IOException {
+        return null;
     }
 
     protected String getTextClass(AbstractTable table) {

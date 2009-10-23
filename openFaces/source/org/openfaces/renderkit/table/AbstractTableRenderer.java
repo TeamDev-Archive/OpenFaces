@@ -95,9 +95,10 @@ public abstract class AbstractTableRenderer extends RendererBase {
                 return AbstractTableRenderer.this.getAdditionalRowClass(facesContext, table, rowData, rowIndex);
             }
 
-            protected void writeBodyRowAttributes(FacesContext facesContext, AbstractTable table) throws IOException {
-                AbstractTableRenderer.this.writeBodyRowAttributes(facesContext, table);
+            protected String[][] getBodyRowAttributes(FacesContext facesContext, AbstractTable table) throws IOException {
+                return AbstractTableRenderer.this.getBodyRowAttributes(facesContext, table);
             }
+
             protected String getTextClass(AbstractTable table) {
                 return AbstractTableRenderer.this.getTextClass(table);
             }
@@ -105,7 +106,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
             protected String getTextStyle(AbstractTable table) {
                 return AbstractTableRenderer.this.getTextStyle(table);
             }
-            
+
 
         };
     }
@@ -130,7 +131,8 @@ public abstract class AbstractTableRenderer extends RendererBase {
     }
 
 
-    protected void writeBodyRowAttributes(FacesContext facesContext, AbstractTable table) throws IOException {
+    protected String[][] getBodyRowAttributes(FacesContext context, AbstractTable table) throws IOException {
+        return null;
     }
 
     @Override
@@ -193,16 +195,13 @@ public abstract class AbstractTableRenderer extends RendererBase {
             FacesContext facesContext,
             AbstractTable table,
             ScriptBuilder buf) throws IOException {
-        Map requestMap = facesContext.getExternalContext().getRequestMap();
-        String rowStylesKey = TableStructure.getRowStylesKey(facesContext, table);
-        Map rowStylesMap = (Map) requestMap.get(rowStylesKey);
-        String cellStylesKey = TableStructure.getCellStylesKey(facesContext, table);
-        Map cellStylesMap = (Map) requestMap.get(cellStylesKey);
-
         List<BaseColumn> columns = table.getColumnsForRendering();
-        TableStructure tableStructure = getTableStructure(table);
-        boolean noDataRows = table.getRowCount() == 0;
+
         TableStyles defaultStyles = TableStructure.getDefaultStyles(table);
+        TableStructure tableStructure = getTableStructure(table);
+        Map rowStylesMap = tableStructure.getRowStylesMap();
+        Map cellStylesMap = tableStructure.getCellStylesMap();
+        boolean noDataRows = table.getRowCount() == 0;
 
         buf.initScript(facesContext, table, "O$.Table._init",
                 TableUtil.getStructureAndStyleParams(

@@ -23,13 +23,13 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
+import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.renderkit.TableUtil;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -53,14 +53,16 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
     private static final String HIDDEN_ROW_CLASS = "o_hiddenRow";
 
     @Override
-    protected void writeBodyRowAttributes(FacesContext facesContext, AbstractTable table) throws IOException {
-        super.writeBodyRowAttributes(facesContext, table);
+    protected String[][] getBodyRowAttributes(FacesContext context, AbstractTable table) throws IOException {
+        super.getBodyRowAttributes(context, table);
         TreeTable treeTable = (TreeTable) table;
         boolean nodeVisible = treeTable.isNodeInitiallyVisible();
         if (!nodeVisible) {
-            ResponseWriter responseWriter = facesContext.getResponseWriter();
-            responseWriter.writeAttribute("class", HIDDEN_ROW_CLASS, null);
+            return new String[][]{
+                    new String[] {"class", HIDDEN_ROW_CLASS}
+            };
         }
+        return null;
     }
 
     @Override
@@ -245,7 +247,12 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         return ((TreeTable) table).getTextClass();
     }
 
-    public JSONObject encodeAjaxPortion(FacesContext context, UIComponent component, String portionName, JSONObject jsonParam) throws IOException {
+    public JSONObject encodeAjaxPortion(
+            FacesContext context,
+            UIComponent component,
+            String portionName,
+            JSONObject jsonParam
+    ) throws IOException {
         if (!portionName.startsWith(SUB_ROWS_PORTION))
             throw new IllegalArgumentException("Unknown portionName: " + portionName);
         String portionNameSuffix = portionName.substring(SUB_ROWS_PORTION.length());
@@ -275,7 +282,7 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
                         continue;
                     customRowRenderingInfos.put(i + addedRowCount, rowInfo);
                 }
-                tableStructure.getBody().encodeRows(context, treeTable, rowIndex + 1, addedRowCount, renderedColumns, false);
+                tableStructure.getBody().encodeRows(context, treeTable, rowIndex + 1, addedRowCount, renderedColumns, null);
                 TreeTableSelection selection = (TreeTableSelection) treeTable.getSelection();
                 if (selection != null)
                     selection.encodeOnAjaxNodeFolding(context);
@@ -290,11 +297,8 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
 
         JSONArray newNodesInitInfo = new JSONArray();
         newNodesInitInfo.put(formatNodeParams(treeTable, context, rowIndex, addedRowCount));
-        Map requestMap = context.getExternalContext().getRequestMap();
-        String rowStylesKey = TableStructure.getRowStylesKey(context, treeTable);
-        Map rowStylesMap = (Map) requestMap.get(rowStylesKey);
-        String cellStylesKey = TableStructure.getCellStylesKey(context, treeTable);
-        Map cellStylesMap = (Map) requestMap.get(cellStylesKey);
+        Map<Object, String> rowStylesMap = tableStructure.getRowStylesMap();
+        Map<Object, String> cellStylesMap = tableStructure.getCellStylesMap();
         newNodesInitInfo.put(TableUtil.getStylesMapAsJSONObject(rowStylesMap));
         newNodesInitInfo.put(TableUtil.getStylesMapAsJSONObject(cellStylesMap));
 

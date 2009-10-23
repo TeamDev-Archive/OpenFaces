@@ -26,7 +26,7 @@ public class HeaderRow extends TableElement {
     private final List<HeaderCell> cells;
     private List<HeaderRow> rowsForSpans;
 
-    public HeaderRow(boolean atLeastOneComponentInThisRow, List<HeaderCell> cells, TableHeaderOrFooter parent) {
+    public HeaderRow(TableHeaderOrFooter parent, boolean atLeastOneComponentInThisRow, List<HeaderCell> cells) {
         super(parent);
         this.atLeastOneComponentInThisRow = atLeastOneComponentInThisRow;
         this.cells = cells;

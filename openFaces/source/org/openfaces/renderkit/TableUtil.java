@@ -248,7 +248,7 @@ public class TableUtil {
         if (headerCellCoordinates != null) {
             JSONObject header = new JSONObject();
             columnObj.put("header", header);
-            header.put("pos", headerCellCoordinates.asJSArray());
+            header.put("pos", headerCellCoordinates.asJSONObject());
             header.put("className", StyleUtil.getCSSClass(context, styleOwnerComponent, columnOrGroup.getHeaderStyle(), columnOrGroup.getHeaderClass()));
             appendColumnEventsArray(header,
                     columnOrGroup.getHeaderOnclick(),
@@ -262,7 +262,7 @@ public class TableUtil {
         if (ordinaryColumn && tableHeader.hasSubHeader()) {
             JSONObject filter = new JSONObject();
             columnObj.put("filter", filter);
-            filter.put("pos", new CellCoordinates(tableHeader.getSubHeaderRowIndex(), colIndex).asJSArray());
+            filter.put("pos", new CellCoordinates(tableHeader.getSubHeaderRowIndex(), colIndex).asJSONObject());
             filter.put("className", StyleUtil.getCSSClass(context, styleOwnerComponent, columnOrGroup.getSubHeaderStyle(), columnOrGroup.getSubHeaderClass()));
         }
         if (!noDataRows) {
@@ -285,7 +285,7 @@ public class TableUtil {
         if (footerCellCoordinates != null) {
             JSONObject footer = new JSONObject();
             columnObj.put("footer", footer);
-            footer.put("pos", footerCellCoordinates.asJSArray());
+            footer.put("pos", footerCellCoordinates.asJSONObject());
             footer.put("className", StyleUtil.getCSSClass(context, styleOwnerComponent, columnOrGroup.getFooterStyle(), columnOrGroup.getFooterClass()));
             appendColumnEventsArray(footer,
                     columnOrGroup.getFooterOnclick(),
@@ -430,13 +430,13 @@ public class TableUtil {
         return result;
     }
 
-    public static JSONObject getStylesMapAsJSONObject(Map map) {
+    public static JSONObject getStylesMapAsJSONObject(Map<Object, String> map) {
         JSONObject result = new JSONObject();
         if (map == null)
             return result;
-        for (Map.Entry entry : (Iterable<Map.Entry>) map.entrySet()) {
+        for (Map.Entry<Object, String> entry : map.entrySet()) {
             Object key = entry.getKey();
-            String className = (String) entry.getValue();
+            String className = entry.getValue();
             try {
                 result.put(key.toString(), className);
             } catch (JSONException e) {

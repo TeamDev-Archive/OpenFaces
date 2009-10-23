@@ -13,6 +13,7 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.BaseColumn;
+import org.openfaces.component.table.Scrolling;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.renderkit.TableUtil;
 
@@ -31,9 +32,9 @@ public abstract class TableHeaderOrFooter extends TableElement {
     private boolean isHeader;
 
     private HeaderRow commonHeaderRow;
-    private List<HeaderRow> columnHeaderRows;
-    private HeaderRow subHeaderRow;
     private List<HeaderRow> allRows;
+    private boolean hasSubHeader;
+    private int lastVisibleColHeadersRow = -1;
 
     protected TableHeaderOrFooter(TableStructure tableStructure, boolean composeHeader) {
         super(tableStructure);
@@ -43,43 +44,89 @@ public abstract class TableHeaderOrFooter extends TableElement {
         String cellTag = isHeader
                 ? (applyDefaultStyle ? "td" : "th")
                 : "td";
-        commonHeaderRow = composeCommonHeaderRow(tableStructure, cellTag);
-        columnHeaderRows = composeColumnHeaderRows(tableStructure, cellTag);
-        subHeaderRow = composeSubHeaderRow(tableStructure, "td");
 
-        allRows = composeRowList();
+        allRows = new ArrayList<HeaderRow>();
+        List<BaseColumn> columns = tableStructure.getColumns();
+        commonHeaderRow = composeCommonHeaderRow(tableStructure, cellTag);
+        if (tableStructure.getScrolling() == null) {
+            composeNonScrollingContent(tableStructure, cellTag, columns);
+        } else {
+            composeScrollingContent(tableStructure, cellTag, columns);
+        }
     }
 
-    private List<HeaderRow> composeRowList() {
-        List<HeaderRow> rows = new ArrayList<HeaderRow>();
+    private void composeScrollingContent(TableStructure tableStructure, String cellTag, List<BaseColumn> columns) {
+        List<HeaderCell> cells = new ArrayList<HeaderCell>();
+        int fixedLeftColumns = tableStructure.getFixedLeftColumns();
+        int fixedRightColumns = tableStructure.getFixedRightColumns();
+        int totalColCount = columns.size();
+
+        if (fixedLeftColumns > 0) {
+            List<BaseColumn> leftCols = columns.subList(0, fixedLeftColumns);
+            cells.add(scrollingAreaCell(tableStructure, cellTag, leftCols));
+        }
+        List<BaseColumn> centerCols = columns.subList(fixedLeftColumns, totalColCount - fixedRightColumns);
+        cells.add(scrollingAreaCell(tableStructure, cellTag, centerCols));
+        if (fixedRightColumns > 0) {
+            List<BaseColumn> leftCols = columns.subList(totalColCount - fixedLeftColumns, totalColCount);
+            cells.add(scrollingAreaCell(tableStructure, cellTag, leftCols));
+        }
+        allRows.add(new HeaderRow(this, true, cells));
+        allRows.add(isHeader ? 0 : allRows.size(), commonHeaderRow);
+    }
+
+    private HeaderCell scrollingAreaCell(TableStructure tableStructure, String cellTag, List<BaseColumn> columns) {
+        List<HeaderRow> rows = composeColumnHeaderRows(tableStructure, columns, cellTag);
+        for (int i = 0; i < rows.size(); i++) {
+            HeaderRow row = rows.get(i);
+            if (row.isAtLeastOneComponentInThisRow())
+                lastVisibleColHeadersRow = i;
+        }
+        HeaderRow subHeaderRow = composeSubHeaderRow(tableStructure, columns, cellTag);
+        if (subHeaderRow != null) {
+            rows.add(isHeader ? rows.size() : 0, subHeaderRow);
+            hasSubHeader = true;
+        }
+        TableScrollingArea tableScrollingArea = new TableScrollingArea(this, columns, rows);
+        return new HeaderCell(null, tableScrollingArea, "td");
+    }
+
+    private void composeNonScrollingContent(TableStructure tableStructure, String cellTag, List<BaseColumn> columns) {
+        List<HeaderRow> columnHeaderRows = composeColumnHeaderRows(tableStructure, columns, cellTag);
+        for (int i = 0; i < columnHeaderRows.size(); i++) {
+            HeaderRow row = columnHeaderRows.get(i);
+            if (row.isAtLeastOneComponentInThisRow())
+                lastVisibleColHeadersRow = i;
+        }
+        HeaderRow subHeaderRow = composeSubHeaderRow(tableStructure, columns, "td");
+        hasSubHeader = subHeaderRow != null;
         if (!isHeader) {
             if (subHeaderRow != null)
-                rows.add(subHeaderRow);
+                allRows.add(subHeaderRow);
         } else {
             if (commonHeaderRow != null)
-                rows.add(commonHeaderRow);
+                allRows.add(commonHeaderRow);
         }
 
         for (int i = 0, count = columnHeaderRows.size(); i < count; i++) {
             HeaderRow row = columnHeaderRows.get(i);
-            rows.add(row);
+            allRows.add(row);
         }
 
         if (isHeader) {
             if (subHeaderRow != null)
-                rows.add(subHeaderRow);
+                allRows.add(subHeaderRow);
         } else {
             if (commonHeaderRow != null)
-                rows.add(commonHeaderRow);
+                allRows.add(commonHeaderRow);
         }
-        return rows;
     }
 
-    public static int composeColumnHierarchies(List columns, List[] columnHierarchies, boolean isHeader, boolean skipEmptyHeaders) {
+    public static int composeColumnHierarchies(List<BaseColumn> columns, List[] columnHierarchies, boolean isHeader, boolean skipEmptyHeaders) {
         int columnHierarchyLevels = 0;
         for (int colIndex = 0, colCount = columns.size(); colIndex < colCount; colIndex++) {
             List<BaseColumn> columnHierarchy = new ArrayList<BaseColumn>();
-            BaseColumn startingColumn = (BaseColumn) columns.get(colIndex);
+            BaseColumn startingColumn = columns.get(colIndex);
             for (BaseColumn column = startingColumn;
                  column != null;
                  column = column.getParent() instanceof BaseColumn ? (BaseColumn) column.getParent() : null) {
@@ -104,16 +151,25 @@ public abstract class TableHeaderOrFooter extends TableElement {
             return null;
         HeaderCell cell = new HeaderCell(null, headerOrFooter, cellTag);
 
-        int colCount = columns.size();
-        cell.setSpans(colCount, 0, 0);
-        return new HeaderRow(true, Collections.singletonList(cell), this);
+        int colSpan;
+        Scrolling scrolling = tableStructure.getScrolling();
+        if (scrolling == null)
+            colSpan = columns.size();
+        else {
+            colSpan = 1;
+            if (tableStructure.getFixedLeftColumns() > 0)
+                colSpan++;
+            if (tableStructure.getFixedRightColumns() > 0)
+                colSpan++;
+        }
+        cell.setSpans(colSpan, 0, 0);
+        return new HeaderRow(this, true, Collections.singletonList(cell));
     }
 
-    private HeaderRow composeSubHeaderRow(TableStructure tableStructure, String cellTag) {
+    private HeaderRow composeSubHeaderRow(TableStructure tableStructure, List<BaseColumn> columns, String cellTag) {
         boolean atLeastOneComponent = false;
         List<HeaderCell> cells = new ArrayList<HeaderCell>();
 
-        List<BaseColumn> columns = tableStructure.getColumns();
         for (BaseColumn column : columns) {
             UIComponent columnHeaderOrFooter =
                     (isHeader ? TableUtil.getColumnSubHeader(column) : null);
@@ -125,11 +181,12 @@ public abstract class TableHeaderOrFooter extends TableElement {
         }
         if (!atLeastOneComponent)
             return null;
-        return new HeaderRow(true, cells, this);
+        return new HeaderRow(this, true, cells);
     }
 
-    private List<HeaderRow> composeColumnHeaderRows(TableStructure tableStructure, String cellTag) {
-        List columns = tableStructure.getColumns();
+    private List<HeaderRow> composeColumnHeaderRows(
+            TableStructure tableStructure, List<BaseColumn> columns,
+            String cellTag) {
         int colCount = columns.size();
         List[] columnHierarchies = new ArrayList[colCount];
         int columnHierarchyLevels = composeColumnHierarchies(columns, columnHierarchies, isHeader, true);
@@ -147,7 +204,7 @@ public abstract class TableHeaderOrFooter extends TableElement {
                     atLeastOneComponentInThisRow = true;
                 colIndex += cell.getColSpan() - 1;
             }
-            HeaderRow row = new HeaderRow(atLeastOneComponentInThisRow, rowCells, this);
+            HeaderRow row = new HeaderRow(this, atLeastOneComponentInThisRow, rowCells);
             row.setRowsForSpans(rows);
             if (isHeader)
                 rows.add(row);
@@ -198,9 +255,8 @@ public abstract class TableHeaderOrFooter extends TableElement {
     public boolean isEmpty() {
         boolean commonHeaderSpecified = commonHeaderRow != null;
         boolean columnHeadersSpecified = getLastVisibleColHeadersRow() != -1;
-        boolean subHeaderSpecified = subHeaderRow != null;
 
-        return !commonHeaderSpecified && !columnHeadersSpecified && !subHeaderSpecified;
+        return !commonHeaderSpecified && !columnHeadersSpecified && !hasSubHeader;
     }
 
     public boolean hasCommonHeaderRow() {
@@ -208,7 +264,7 @@ public abstract class TableHeaderOrFooter extends TableElement {
     }
 
     public boolean hasSubHeader() {
-        return subHeaderRow != null;
+        return hasSubHeader;
     }
 
     public void render(FacesContext facesContext,
@@ -237,13 +293,7 @@ public abstract class TableHeaderOrFooter extends TableElement {
     }
 
     private int getLastVisibleColHeadersRow() {
-        int lastVisibleRowIndex = -1;
-        for (int i = 0, count = columnHeaderRows.size(); i < count; i++) {
-            HeaderRow row = columnHeaderRows.get(i);
-            if (row.isAtLeastOneComponentInThisRow())
-                lastVisibleRowIndex = i;
-        }
-        return lastVisibleRowIndex;
+        return lastVisibleColHeadersRow;
     }
 
     public int getSubHeaderRowIndex() {
@@ -260,6 +310,9 @@ public abstract class TableHeaderOrFooter extends TableElement {
 
     public CellCoordinates findColumnHeaderCell(BaseColumn column) {
         int rowIndex = 0;
+        boolean skipFirstRow = isHeader ? hasCommonHeaderRow() : hasSubHeader; // for non-scrollable tables only
+        boolean skipLastRow = isHeader ? hasSubHeader : hasCommonHeaderRow();
+        List<HeaderRow> columnHeaderRows = allRows.subList(skipFirstRow ? 1 : 0, allRows.size() - (skipLastRow ? 1 : 0));
         for (HeaderRow row : columnHeaderRows) {
             if (!row.isAtLeastOneComponentInThisRow())
                 continue;
@@ -270,7 +323,7 @@ public abstract class TableHeaderOrFooter extends TableElement {
                     if (isHeader)
                         rowIndex += commonHeaderRow != null ? 1 : 0;
                     else
-                        rowIndex += subHeaderRow != null ? 1 : 0;
+                        rowIndex += hasSubHeader ? 1 : 0;
                     return new CellCoordinates(rowIndex, cellIndex);
                 }
             }

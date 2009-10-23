@@ -29,7 +29,7 @@ import java.util.List;
  */
 class HeaderCell extends TableElement {
     private BaseColumn column;
-    private UIComponent component;
+    private Object component;
     private int colSpan;
     private int rowIndexMin;
     private int rowIndexMax;
@@ -38,11 +38,11 @@ class HeaderCell extends TableElement {
     private boolean renderNonBreakable;
     private boolean renderSortingToggle;
 
-    public HeaderCell(BaseColumn column, UIComponent component, String cellTag) {
+    public HeaderCell(BaseColumn column, Object component, String cellTag) {
         this(column, component, cellTag, false, false);
     }
 
-    public HeaderCell(BaseColumn column, UIComponent component, String cellTag, boolean renderNonBreakable, boolean renderSortingToggle) {
+    public HeaderCell(BaseColumn column, Object component, String cellTag, boolean renderNonBreakable, boolean renderSortingToggle) {
         this.column = column;
         this.component = component;
         this.cellTag = cellTag;
@@ -60,7 +60,7 @@ class HeaderCell extends TableElement {
         return column;
     }
 
-    public UIComponent getComponent() {
+    public Object getComponent() {
         return component;
     }
 
@@ -103,9 +103,15 @@ class HeaderCell extends TableElement {
             writer.writeAttribute("class", "o_noWrapHeaderCell", null);
         }
         if (component != null) {
-            component.encodeAll(facesContext);
-            if (TableStructure.isComponentEmpty(component) && tableStructure.isEmptyCellsTreatmentRequired())
-                RenderingUtil.writeNonBreakableSpace(writer);
+            if (component instanceof UIComponent) {
+                UIComponent uiComponent = (UIComponent) component;
+                uiComponent.encodeAll(facesContext);
+                if (TableStructure.isComponentEmpty(uiComponent) && tableStructure.isEmptyCellsTreatmentRequired())
+                    RenderingUtil.writeNonBreakableSpace(writer);
+            } else if (component instanceof TableElement)
+                ((TableElement) component).render(facesContext, additionalContentWriter);
+            else
+                writer.writeText(component.toString(), null);
         } else if (tableStructure.isEmptyCellsTreatmentRequired())
             RenderingUtil.writeNonBreakableSpace(writer);
 

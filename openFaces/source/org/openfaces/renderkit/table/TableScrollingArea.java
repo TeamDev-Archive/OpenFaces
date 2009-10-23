@@ -11,17 +11,36 @@
  */
 package org.openfaces.renderkit.table;
 
+import org.openfaces.component.table.BaseColumn;
+import org.openfaces.renderkit.TableUtil;
+
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Dmitry Pikhulya
  */
 public class TableScrollingArea extends TableElement {
-    public TableScrollingArea(TableElement parent) {
+    private List<BaseColumn> columns;
+    private List<HeaderRow> rows;
+
+    public TableScrollingArea(TableElement parent, List<BaseColumn> columns, List<HeaderRow> rows) {
         super(parent);
+        this.rows = rows;
     }
 
     public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
+        UIComponent component = getParent(TableStructure.class).getComponent();
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("table", component);
+        TableUtil.writeColumnTags(context, component, columns);
+        for (HeaderRow row : rows) {
+            row.render(context, additionalContentWriter);
+        }
+        writer.endElement("table");
+
     }
 }

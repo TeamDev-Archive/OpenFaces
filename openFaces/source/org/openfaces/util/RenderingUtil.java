@@ -1200,7 +1200,7 @@ public class RenderingUtil {
                 if (kid instanceof UIAjaxSupport)
                     return kid;
             } catch (Throwable e) {
-                return null; // the component doesn't have A4j support if HtmlAjaxSupport class can't be found
+                return null; // the component can't have A4j support if HtmlAjaxSupport class can't be found
             }
         }
         return null;
