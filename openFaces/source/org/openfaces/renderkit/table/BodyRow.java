@@ -28,6 +28,13 @@ public class BodyRow extends TableElement {
     private String[][] attributes;
     private List<BodyCell> cells;
 
+    public BodyRow() {
+    }
+
+    public BodyRow(TableElement parent) {
+        super(parent);
+    }
+
     public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("tr", null);
@@ -71,7 +78,14 @@ public class BodyRow extends TableElement {
         this.attributes = attributes;
     }
 
+    public List<BodyCell> getCells() {
+        return cells;
+    }
+
     public void setCells(List<BodyCell> cells) {
         this.cells = cells;
+        for (BodyCell cell : cells) {
+            cell.setParent(this);
+        }
     }
 }

@@ -22,13 +22,17 @@ import java.util.List;
  * @author Dmitry Pikhulya
  */
 public class BodyCell extends TableElement {
-    private String content;
+    private Object content;
     private List customCells;
     private int span;
     private String style;
     private String styleClass;
 
     public BodyCell() {
+    }
+
+    public BodyCell(TableElement parent) {
+        super(parent);
     }
 
     public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
@@ -41,8 +45,14 @@ public class BodyCell extends TableElement {
         if (customCells != null)
             BodyRow.writeCustomRowOrCellEvents(writer, customCells);
 
-        if (content != null)
-            writer.write(content);
+        if (content != null) {
+            if (content instanceof String)
+                writer.write(content.toString());
+            else if (content instanceof TableElement)
+                ((TableElement) content).render(context, null);
+            else
+                throw new IllegalStateException("Unsupported type of 'content' property: " + content.getClass().getName());
+        }
         
         if (additionalContentWriter != null)
             additionalContentWriter.writeAdditionalContent(context);
@@ -57,7 +67,7 @@ public class BodyCell extends TableElement {
         this.span = span;
     }
 
-    public void setContent(String content) {
+    public void setContent(Object content) {
         this.content = content;
     }
 

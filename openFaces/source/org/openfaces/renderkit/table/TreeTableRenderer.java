@@ -273,7 +273,7 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         context.setResponseWriter(clonedResponseWriter);
         try {
             if (addedRowCount > 0) {
-                List<BaseColumn> renderedColumns = treeTable.getColumnsForRendering();
+                List<BaseColumn> columns = treeTable.getColumnsForRendering();
                 Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos =
                         (Map<Integer, CustomRowRenderingInfo>) treeTable.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
                 for (int i = treeTable.getRowCount(); i > rowIndex; i--) {
@@ -282,11 +282,16 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
                         continue;
                     customRowRenderingInfos.put(i + addedRowCount, rowInfo);
                 }
-                tableStructure.getBody().encodeRows(context, treeTable, rowIndex + 1, addedRowCount, renderedColumns, null);
+                List<BodyRow> rows = tableStructure.getBody().createRows(context, rowIndex + 1, addedRowCount, columns);
+                for (int i = 0, count = rows.size(); i < count; i++) {
+                    BodyRow row = rows.get(i);
+                    row.render(context, null);
+                }
+
                 TreeTableSelection selection = (TreeTableSelection) treeTable.getSelection();
                 if (selection != null)
                     selection.encodeOnAjaxNodeFolding(context);
-                for (BaseColumn column : renderedColumns) {
+                for (BaseColumn column : columns) {
                     if (column instanceof CheckboxColumn)
                         ((CheckboxColumn) column).encodeOnAjaxNodeFolding(context);
                 }

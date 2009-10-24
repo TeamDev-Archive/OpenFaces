@@ -25,11 +25,12 @@ import java.util.List;
  */
 public class TableScrollingArea extends TableElement {
     private List<BaseColumn> columns;
-    private List<HeaderRow> rows;
+    private List<? extends TableElement> rows;
 
-    public TableScrollingArea(TableElement parent, List<BaseColumn> columns, List<HeaderRow> rows) {
+    public TableScrollingArea(TableElement parent, List<BaseColumn> columns, List<? extends TableElement> rows) {
         super(parent);
         this.rows = rows;
+        this.columns = columns;
     }
 
     public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
@@ -37,7 +38,7 @@ public class TableScrollingArea extends TableElement {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("table", component);
         TableUtil.writeColumnTags(context, component, columns);
-        for (HeaderRow row : rows) {
+        for (TableElement row : rows) {
             row.render(context, additionalContentWriter);
         }
         writer.endElement("table");

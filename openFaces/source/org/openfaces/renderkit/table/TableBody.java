@@ -17,6 +17,7 @@ import org.openfaces.component.table.TableCell;
 import org.openfaces.component.table.TableColumn;
 import org.openfaces.component.table.TableRow;
 import org.openfaces.component.table.TreeColumn;
+import org.openfaces.component.table.Scrolling;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.StyleUtil;
 
@@ -54,10 +55,10 @@ public class TableBody extends TableElement {
         this.tableStructure = tableStructure;
     }
 
-    public void render(FacesContext facesContext, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
-        ResponseWriter writer = facesContext.getResponseWriter();
+    public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         AbstractTable table = (AbstractTable) tableStructure.getComponent();
-        List<BaseColumn> columnsForRendering = table.getColumnsForRendering();
+        List<BaseColumn> columns = table.getColumnsForRendering();
 
         writer.startElement("tbody", table);
         RenderingUtil.writeStyleAndClassAttributes(writer, table.getBodySectionStyle(), table.getBodySectionClass());
@@ -69,72 +70,157 @@ public class TableBody extends TableElement {
             int rowCount = table.getRowCount();
             rows = (rowCount != -1) ? rowCount : Integer.MAX_VALUE;
         }
-        encodeRows(facesContext, table, first, rows, columnsForRendering, additionalContentWriter);
+        List<BodyRow> bodyRows = createRows(context, first, rows, columns);
+        TableFooter footer = tableStructure.getFooter();
+        boolean hasFooter = footer != null && !footer.isEmpty();
+        for (int i = 0, count = bodyRows.size(); i < count; i++) {
+            BodyRow row = bodyRows.get(i);
+            row.render(context, (!hasFooter && i == count - 1) ? additionalContentWriter : null);
+        }
 
         RenderingUtil.writeNewLine(writer);
         writer.endElement("tbody");
         RenderingUtil.writeNewLine(writer);
     }
 
-    protected void encodeRows(
-            FacesContext facesContext,
-            AbstractTable table,
+    protected List<BodyRow> createRows(
+            FacesContext context,
             int firstRowIndex,
             int rowCount,
-            List<BaseColumn> columnsForRendering,
-            HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
-        boolean thereAreRows = rowCount > 0;
-        ResponseWriter writer = facesContext.getResponseWriter();
+            List<BaseColumn> columns
+    ) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         StringWriter stringWriter = new StringWriter();
         List<BodyRow> rows = new ArrayList<BodyRow>();
-        facesContext.setResponseWriter(writer.cloneWithWriter(stringWriter));
+        context.setResponseWriter(writer.cloneWithWriter(stringWriter));
         try {
-            if (thereAreRows)
-                rows = encodeDataRows(facesContext, stringWriter, table, firstRowIndex, rowCount, columnsForRendering);
-            else if (table.getNoDataMessageAllowed())
-                rows = Collections.singletonList(
-                        encodeNoDataRow(facesContext, stringWriter, table, columnsForRendering));
+            if (tableStructure.getScrolling() == null)
+                rows = createNonScrollableRows(context, stringWriter, firstRowIndex, rowCount, columns);
             else
-                rows = Collections.singletonList(
-                        encodeFakeRow(columnsForRendering));
+                rows = createScrollableRows(context, stringWriter, firstRowIndex, rowCount, columns);
         } finally {
-            facesContext.setResponseWriter(writer);
+            context.setResponseWriter(writer);
         }
-        TableFooter footer = tableStructure.getFooter();
-        boolean hasFooter = footer != null && !footer.isEmpty();
-        for (int i = 0, count = rows.size(); i < count; i++) {
-            BodyRow row = rows.get(i);
-            row.render(facesContext, (!hasFooter && i == count - 1) ? additionalContentWriter : null);
-        }
-
+        return rows;
     }
 
-    private List<BodyRow> encodeDataRows(FacesContext facesContext, StringWriter stringWriter, AbstractTable table,
-                                         int firstRowIndex, int rowsToRender,
-                                         List<BaseColumn> columnsForRendering) throws IOException {
+    private List<BodyRow> createScrollableRows(
+            FacesContext context,
+            StringWriter stringWriter,
+            int firstRowIndex,
+            int rowCount,
+            List<BaseColumn> columns
+    ) throws IOException {
+        List<BodyRow> leftRows, rows, rightRows;
+        AbstractTable table = (AbstractTable) tableStructure.getComponent();
+        int fixedLeftColumns = tableStructure.getFixedLeftColumns();
+        int fixedRightColumns = tableStructure.getFixedRightColumns();
+        int allColCount = columns.size();
+        if (rowCount > 0) {
+            List<BodyRow>[] rowsForAreas = createDataRows(context, stringWriter, firstRowIndex, rowCount, columns);
+            leftRows = rowsForAreas[0];
+            rows = rowsForAreas[1];
+            rightRows = rowsForAreas[2];
+        } else if (table.getNoDataMessageAllowed()) {
+            leftRows = fixedLeftColumns > 0 ? Collections.singletonList(createEmptyNoDataRow(table, fixedLeftColumns)) : null;
+            rows = Collections.singletonList(createNoDataRow(context, stringWriter, allColCount - fixedLeftColumns - fixedRightColumns));
+            rightRows = fixedRightColumns > 0 ? Collections.singletonList(createEmptyNoDataRow(table, fixedRightColumns)) : null;
+        } else {
+            leftRows = fixedLeftColumns > 0 ? Collections.singletonList(createFakeRow(fixedLeftColumns)) : null;
+            rows = Collections.singletonList(createFakeRow(allColCount - fixedLeftColumns - fixedRightColumns));
+            rightRows = fixedRightColumns > 0 ? Collections.singletonList(createFakeRow(fixedRightColumns)) : null;
+        }
+
+        List<BodyCell> cells = new ArrayList<BodyCell>();
+        if (fixedLeftColumns > 0)
+            cells.add(scrollingAreaCell(columns, leftRows, 0, fixedLeftColumns));
+        scrollingAreaCell(columns, rows, fixedLeftColumns, allColCount - fixedRightColumns);
+        if (fixedRightColumns > 0)
+            cells.add(scrollingAreaCell(columns, rightRows, allColCount - fixedRightColumns, allColCount));
+
+        BodyRow containingRow = new BodyRow(this);
+        containingRow.setCells(cells);
+        return Collections.singletonList(containingRow);
+    }
+
+    private BodyCell scrollingAreaCell(List<BaseColumn> columns, List<BodyRow> rows, int startCol, int endCol) {
+        BodyCell cell = new BodyCell();
+        TableScrollingArea scrollingArea = new TableScrollingArea(cell, columns.subList(startCol, endCol), rows);
+        cell.setContent(scrollingArea);
+        return cell;
+    }
+
+    private List<BodyRow> createNonScrollableRows(
+            FacesContext context,
+            StringWriter stringWriter,
+            int firstRowIndex,
+            int rowCount,
+            List<BaseColumn> columns
+    ) throws IOException {
+        List<BodyRow> rows;
+        AbstractTable table = (AbstractTable) tableStructure.getComponent();
+        if (rowCount > 0)
+            rows = createDataRows(context, stringWriter, firstRowIndex, rowCount, columns)[1];
+        else if (table.getNoDataMessageAllowed())
+            rows = Collections.singletonList(
+                    createNoDataRow(context, stringWriter, columns.size()));
+        else
+            rows = Collections.singletonList(
+                    createFakeRow(columns.size()));
+        return rows;
+    }
+
+    private List<BodyRow>[] createDataRows(
+            FacesContext context,
+            StringWriter stringWriter,
+            int firstRowIndex,
+            int rowsToRender,
+            List<BaseColumn> columns
+    ) throws IOException {
+        AbstractTable table = (AbstractTable) tableStructure.getComponent();
+        Scrolling scrolling = tableStructure.getScrolling();
+        int centerAreaStart = scrolling != null ? tableStructure.getFixedLeftColumns() : 0;
+        int rightAreaStart = scrolling != null ? columns.size() - tableStructure.getFixedRightColumns() : 0;
+        List<BodyRow> leftRows = scrolling != null && tableStructure.getFixedLeftColumns() > 0 ? new ArrayList<BodyRow>() : null;
         List<BodyRow> rows = new ArrayList<BodyRow>();
-        ResponseWriter writer = facesContext.getResponseWriter();
+        List<BodyRow> rightRows = scrolling != null && tableStructure.getFixedRightColumns() > 0 ? new ArrayList<BodyRow>() : null;
+        ResponseWriter writer = context.getResponseWriter();
         List<TableRow> customRows = getCustomRows(table);
         int lastRowIndex = firstRowIndex + rowsToRender - 1;
-        Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos = (Map<Integer, CustomRowRenderingInfo>) table.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
+        Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos =
+                (Map<Integer, CustomRowRenderingInfo>) table.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
 
         for (int rowIndex = firstRowIndex; rowIndex <= lastRowIndex; rowIndex++) {
             table.setRowIndex(rowIndex);
             if (!table.isRowAvailable())
                 break;
 
+            BodyRow leftRow = leftRows != null ? new BodyRow() : null;
             BodyRow row = new BodyRow();
+            BodyRow rightRow = rightRows != null ? new BodyRow() : null;
+            if (leftRows != null)
+                leftRows.add(leftRow);
             rows.add(row);
+            if (rightRows != null)
+                rightRows.add(rightRow);
             List<TableRow> applicableCustomRows = getApplicableCustomRows(customRows);
+            if (leftRow != null)
+                leftRow.setApplicableCustomRows(applicableCustomRows);
             row.setApplicableCustomRows(applicableCustomRows);
-            String[][] attributes = tableStructure.getBodyRowAttributes(facesContext, table);
+            if (rightRow != null)
+                rightRow.setApplicableCustomRows(applicableCustomRows);
+            String[][] attributes = tableStructure.getBodyRowAttributes(context, table);
+            if (leftRow != null)
+                leftRow.setAttributes(attributes);
             row.setAttributes(attributes);
+            if (rightRow != null)
+                rightRow.setAttributes(attributes);
             Object rowData = table.getRowData();
             int bodyRowIndex = rowIndex - firstRowIndex;
 
-            List<String> rowStyles = getApplicableRowStyles(facesContext, customRows, table);
+            List<String> rowStyles = getApplicableRowStyles(context, customRows, table);
             String rowStyleClass = (rowStyles != null && rowStyles.size() > 0) ? classNamesToClass(rowStyles) : null;
-            String additionalClass = tableStructure.getAdditionalRowClass(facesContext, table, rowData, bodyRowIndex);
+            String additionalClass = tableStructure.getAdditionalRowClass(context, table, rowData, bodyRowIndex);
             if (additionalClass != null)
                 rowStyleClass = StyleUtil.mergeClassNames(rowStyleClass, additionalClass);
             if (!RenderingUtil.isNullOrEmpty(rowStyleClass)) {
@@ -142,7 +228,7 @@ public class TableBody extends TableElement {
                 rowStylesMap.put(bodyRowIndex, rowStyleClass);
             }
 
-            int columnCount = columnsForRendering.size();
+            int columnCount = columns.size();
 
             CustomRowRenderingInfo customRowRenderingInfo = null;
             List<Integer> applicableRowDeclarationIndexes = new ArrayList<Integer>();
@@ -160,10 +246,16 @@ public class TableBody extends TableElement {
             List<SpannedTableCell> alreadyProcessedSpannedCells = new ArrayList<SpannedTableCell>();
             List[] applicableCustomCells = prepareCustomCells(table, applicableCustomRows);
 
+            List<BodyCell> leftCells = leftRow != null ? new ArrayList<BodyCell>() : null;
             List<BodyCell> cells = new ArrayList<BodyCell>();
+            List<BodyCell> rightCells = rightRow != null ? new ArrayList<BodyCell>() : null;
+            if (leftRow != null)
+                leftRow.setCells(leftCells);
             row.setCells(cells);
+            if (rightRow != null)
+                rightRow.setCells(rightCells);
             for (int colIndex = 0; colIndex < columnCount;) {
-                BaseColumn column = columnsForRendering.get(colIndex);
+                BaseColumn column = columns.get(colIndex);
                 if (!column.isRendered())
                     throw new IllegalStateException("Only rendered columns are expected in columns list. column id: " + column.getId() + "; column index = " + colIndex);
 
@@ -214,7 +306,7 @@ public class TableBody extends TableElement {
                                     (CustomContentCellRenderingInfo) cell.getAttributes().get(CUSTOM_CELL_RENDERING_INFO_ATTRIBUTE);
                             customRowRenderingInfo.setCustomCellRenderingInfo(colIndex, customCellRenderingInfo);
                         }
-                        customCellStyle = StyleUtil.mergeClassNames(customCellStyle, cell.getStyleClassForCell(facesContext, table, colIndex, columnId));
+                        customCellStyle = StyleUtil.mergeClassNames(customCellStyle, cell.getStyleClassForCell(context, table, colIndex, columnId));
                     }
                     for (int i = colIndex + (remainingPortionOfBrokenSpannedCell ? 0 : 1), upperBound = colIndex + span;
                          i < upperBound; i++) {
@@ -237,7 +329,12 @@ public class TableBody extends TableElement {
                 }
 
                 BodyCell cell = new BodyCell();
-                cells.add(cell);
+                if (leftCells != null && colIndex < centerAreaStart)
+                    leftCells.add(cell);
+                else if (rightCells != null && colIndex >= rightAreaStart)
+                    rightCells.add(cell);
+                else
+                    cells.add(cell);
                 cell.setSpan(span);
                 cell.setCustomCells(customCells);
 
@@ -248,12 +345,12 @@ public class TableBody extends TableElement {
                     if (renderCustomTreeCell) {
                         column.getAttributes().put(TreeColumnRenderer.ATTR_CUSTOM_CELL, cellContentsContainer);
                         try {
-                            column.encodeAll(facesContext);
+                            column.encodeAll(context);
                         } finally {
                             column.getAttributes().remove(TreeColumnRenderer.ATTR_CUSTOM_CELL);
                         }
                     } else {
-                        cellContentsContainer.encodeAll(facesContext);
+                        cellContentsContainer.encodeAll(context);
                     }
                     writeNonBreakableSpaceForEmptyCell(writer, table, cellContentsContainer);
                 } else {
@@ -272,7 +369,7 @@ public class TableBody extends TableElement {
         }
         table.setRowIndex(-1);
 
-        return rows;
+        return new List[]{leftRows, rows, rightRows};
     }
 
     private boolean isColumnApplicable(
@@ -346,30 +443,20 @@ public class TableBody extends TableElement {
 
 
 
-    private BodyRow encodeFakeRow(List<BaseColumn> columns) throws IOException {
+    private BodyRow createFakeRow(int span) throws IOException {
         BodyRow row = new BodyRow();
         BodyCell cell = new BodyCell();
         row.setCells(Collections.singletonList(cell));
-        int allColCount = columns.size();
-        cell.setSpan(allColCount);
+        cell.setSpan(span);
         cell.setStyle("display: none;");
         return row;
     }
 
-    private BodyRow encodeNoDataRow(FacesContext context,
-                                    StringWriter stringWriter,
-                                    AbstractTable table,
-                                    List<BaseColumn> columns
-    ) throws IOException {
-        BodyRow row = new BodyRow();
-        ResponseWriter writer = context.getResponseWriter();
-        BodyCell cell = new BodyCell();
-        row.setCells(Collections.singletonList(cell));
-        int allColCount = columns.size();
-        if (allColCount != 0)
-            cell.setSpan(allColCount);
-        cell.setStyle(table.getNoDataRowStyle());
-        cell.setStyleClass(table.getNoDataRowClass());
+    private BodyRow createNoDataRow(FacesContext context, StringWriter stringWriter, int span) throws IOException {
+        AbstractTable table = (AbstractTable) tableStructure.getComponent();
+        BodyRow row = createEmptyNoDataRow(table, span);
+
+        BodyCell cell = row.getCells().get(0);
 
         StringBuffer buf = stringWriter.getBuffer();
         int startIdx = buf.length();
@@ -381,6 +468,7 @@ public class TableBody extends TableElement {
             String message = (dataSourceEmpty)
                     ? DEFAULT_NO_RECORDS_MSG
                     : DEFAULT_NO_FILTER_RECORDS_MSG;
+            ResponseWriter writer = context.getResponseWriter();
             writer.writeText(message, null);
         }
         int endIdx = buf.length();
@@ -389,6 +477,17 @@ public class TableBody extends TableElement {
 
         Map<Object, String> rowStylesMap = tableStructure.getRowStylesMap();
         rowStylesMap.put(0, TableStructure.getNoDataRowClassName(context, table));
+        return row;
+    }
+
+    private BodyRow createEmptyNoDataRow(AbstractTable table, int span) {
+        BodyRow row = new BodyRow();
+        BodyCell cell = new BodyCell();
+        row.setCells(Collections.singletonList(cell));
+        if (span > 0)
+            cell.setSpan(span);
+        cell.setStyle(table.getNoDataRowStyle());
+        cell.setStyleClass(table.getNoDataRowClass());
         return row;
     }
 
@@ -552,7 +651,6 @@ public class TableBody extends TableElement {
         }
         return combinedClassName.toString();
     }
-
 
 
 }
