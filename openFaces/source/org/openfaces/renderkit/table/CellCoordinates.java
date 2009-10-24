@@ -18,8 +18,9 @@ import org.openfaces.org.json.JSONObject;
  * @author Dmitry Pikhulya
  */
 public class CellCoordinates {
-    private final int rowIndex;
-    private final int rowCellIndex;
+    private int rowIndex;
+    private int rowCellIndex;
+    private int scrollAreaIndex = -1;
 
     public CellCoordinates(int rowIndex, int rowCellIndex) {
         this.rowIndex = rowIndex;
@@ -34,11 +35,29 @@ public class CellCoordinates {
         return rowCellIndex;
     }
 
+    public void setRowIndex(int rowIndex) {
+        this.rowIndex = rowIndex;
+    }
+
+    public void setRowCellIndex(int rowCellIndex) {
+        this.rowCellIndex = rowCellIndex;
+    }
+
+    public int getScrollAreaIndex() {
+        return scrollAreaIndex;
+    }
+
+    public void setScrollAreaIndex(int scrollAreaIndex) {
+        this.scrollAreaIndex = scrollAreaIndex;
+    }
+
     public JSONObject asJSONObject() {
         JSONObject obj = new JSONObject();
         try {
             obj.put("row", rowIndex);
             obj.put("cell", rowCellIndex);
+            if (scrollAreaIndex != -1)
+                obj.put("scrollingAreaIndex", scrollAreaIndex);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

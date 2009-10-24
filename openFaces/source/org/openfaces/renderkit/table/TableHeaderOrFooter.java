@@ -65,8 +65,10 @@ public abstract class TableHeaderOrFooter extends TableElement {
             List<BaseColumn> leftCols = columns.subList(0, fixedLeftColumns);
             cells.add(scrollingAreaCell(tableStructure, cellTag, leftCols, false));
         }
+
         List<BaseColumn> centerCols = columns.subList(fixedLeftColumns, totalColCount - fixedRightColumns);
         cells.add(scrollingAreaCell(tableStructure, cellTag, centerCols, true));
+
         if (fixedRightColumns > 0) {
             List<BaseColumn> leftCols = columns.subList(totalColCount - fixedLeftColumns, totalColCount);
             cells.add(scrollingAreaCell(tableStructure, cellTag, leftCols, false));
@@ -315,10 +317,37 @@ public abstract class TableHeaderOrFooter extends TableElement {
 
 
     public CellCoordinates findColumnHeaderCell(BaseColumn column) {
+        TableStructure tableStructure = getParent(TableStructure.class);
+        if (tableStructure.getScrolling() == null) {
+            boolean skipFirstRow = isHeader ? hasCommonHeaderRow() : hasSubHeader;
+            boolean skipLastRow = isHeader ? hasSubHeader : hasCommonHeaderRow();
+            List<HeaderRow> columnHeaderRows = allRows.subList(skipFirstRow ? 1 : 0, allRows.size() - (skipLastRow ? 1 : 0));
+            return findColumnHeaderCell(column, columnHeaderRows);
+        } else {
+            HeaderRow row = allRows.get(isHeader
+                    ? (hasCommonHeaderRow() ? 1 : 0)
+                    : 0
+            );
+            List<HeaderCell> cells = row.getCells();
+            for (int i = 0; i < cells.size(); i++) {
+                HeaderCell cell = cells.get(i);
+                TableScrollingArea scrollingArea = (TableScrollingArea) cell.getComponent();
+                List<? extends TableElement> rows = scrollingArea.getRows();
+                boolean skipFirstRow = isHeader ? false : hasSubHeader;
+                boolean skipLastRow = isHeader ? hasSubHeader : false;
+                List<HeaderRow> columnHeaderRows = (List<HeaderRow>) rows.subList(skipFirstRow ? 1 : 0, rows.size() - (skipLastRow ? 1 : 0));
+                CellCoordinates coords = findColumnHeaderCell(column, columnHeaderRows);
+                if (coords != null) {
+                    coords.setScrollAreaIndex(i);
+                    return coords;
+                }
+            }
+            return null;
+        }
+    }
+
+    private CellCoordinates findColumnHeaderCell(BaseColumn column, List<HeaderRow> columnHeaderRows) {
         int rowIndex = 0;
-        boolean skipFirstRow = isHeader ? hasCommonHeaderRow() : hasSubHeader; // for non-scrollable tables only
-        boolean skipLastRow = isHeader ? hasSubHeader : hasCommonHeaderRow();
-        List<HeaderRow> columnHeaderRows = allRows.subList(skipFirstRow ? 1 : 0, allRows.size() - (skipLastRow ? 1 : 0));
         for (HeaderRow row : columnHeaderRows) {
             if (!row.isAtLeastOneComponentInThisRow())
                 continue;

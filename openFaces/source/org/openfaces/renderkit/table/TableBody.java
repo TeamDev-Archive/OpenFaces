@@ -49,10 +49,15 @@ public class TableBody extends TableElement {
     private static final String CUSTOM_CELL_RENDERING_INFO_ATTRIBUTE = "_customCellRenderingInfo";
 
     private TableStructure tableStructure;
+    private boolean noDataRows;
 
     public TableBody(TableStructure tableStructure) {
         super(tableStructure);
         this.tableStructure = tableStructure;
+    }
+
+    public boolean isNoDataRows() {
+        return noDataRows;
     }
 
     public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
@@ -65,11 +70,14 @@ public class TableBody extends TableElement {
         RenderingUtil.writeNewLine(writer);
 
         int first = table.getFirst();
-        int rows = table.getRows();
-        if (rows == 0) {
-            int rowCount = table.getRowCount();
-            rows = (rowCount != -1) ? rowCount : Integer.MAX_VALUE;
-        }
+        if (table.getRows() != 0)
+            throw new IllegalStateException("table.getRows() should always be null in OpenFaces tables, but it is: " + table.getRows());
+
+        int rowCount = table.getRowCount();
+        int rows = (rowCount != -1) ? rowCount : Integer.MAX_VALUE;
+        if (rows == 0)
+          noDataRows = true;
+
         List<BodyRow> bodyRows = createRows(context, first, rows, columns);
         TableFooter footer = tableStructure.getFooter();
         boolean hasFooter = footer != null && !footer.isEmpty();

@@ -46,7 +46,6 @@ public class DropDownPopup extends AbstractPopup {
 
     private Collection<DropDownItem> dropDownList;
     private ChildData childData;
-    private DropDownFieldTableStyles tableStyles;
 
     public DropDownPopup() {
     }
@@ -67,22 +66,16 @@ public class DropDownPopup extends AbstractPopup {
                 childComponents.add(component);
         }
 
-        tableStyles = new DropDownFieldTableStyles(dropDownField, childComponents);
+        DropDownFieldTableStyles tableStyles = new DropDownFieldTableStyles(dropDownField, childComponents);
         TableStructure tableStructure = new TableStructure(dropDownField, tableStyles);
 
         childData = new ChildData(tableStructure, childComponents);
         return childData;
     }
 
-    public DropDownFieldTableStyles getTableStyles() {
-        if (tableStyles == null)
-            throw new IllegalStateException("getTableStyles should be called after getChildData");
-        return tableStyles;
-    }
 
     public void resetChildData() {
         childData = null;
-        tableStyles = null;
     }
 
     public static class ChildData {

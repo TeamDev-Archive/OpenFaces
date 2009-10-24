@@ -195,18 +195,13 @@ public abstract class AbstractTableRenderer extends RendererBase {
             FacesContext facesContext,
             AbstractTable table,
             ScriptBuilder buf) throws IOException {
-        List<BaseColumn> columns = table.getColumnsForRendering();
-
         TableStyles defaultStyles = TableStructure.getDefaultStyles(table);
         TableStructure tableStructure = getTableStructure(table);
-        Map rowStylesMap = tableStructure.getRowStylesMap();
-        Map cellStylesMap = tableStructure.getCellStylesMap();
-        boolean noDataRows = table.getRowCount() == 0;
 
         buf.initScript(facesContext, table, "O$.Table._init",
                 TableUtil.getStructureAndStyleParams(
-                        facesContext, table, defaultStyles, table, rowStylesMap, cellStylesMap,
-                        columns, tableStructure, noDataRows),
+                        facesContext, defaultStyles,
+                        tableStructure),
                 table.getUseAjax(),
                 StyleUtil.getCSSClass(facesContext, table, table.getRolloverStyle(),
                         StyleGroup.rolloverStyleGroup(), table.getRolloverClass()),

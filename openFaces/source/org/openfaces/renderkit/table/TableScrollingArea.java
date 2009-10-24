@@ -59,4 +59,12 @@ public class TableScrollingArea extends TableElement {
             writer.endElement("div");
         }
     }
+
+    public List<BaseColumn> getColumns() {
+        return columns;
+    }
+
+    public List<? extends TableElement> getRows() {
+        return rows;
+    }
 }

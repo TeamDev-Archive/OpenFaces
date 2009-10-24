@@ -278,9 +278,9 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 isManualListOpeningAllowed(dropDownField),
                 dropDownField.getAutoComplete(),
 
-                TableUtil.getStructureAndStyleParams(context, popup.getTableStyles(),
-                        POPUP_TABLE_DEFAULT_STYLES, dropDownField,
-                        null, null, popup.getVisibleColumns(), popup.getChildData().getTableStructure(), false)
+                TableUtil.getStructureAndStyleParams(context,
+                        POPUP_TABLE_DEFAULT_STYLES,
+                        popup.getChildData().getTableStructure())
         );
         popup.resetChildData();
         if (!dropDown.isDisabled()) {  // todo: write the event parameters more economically

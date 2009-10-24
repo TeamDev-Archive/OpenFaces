@@ -115,16 +115,19 @@ public class TableUtil {
 
     public static JSONArray getStructureAndStyleParams(
             FacesContext facesContext,
-            TableStyles tableStyles,
             TableStyles defaultStyles,
-            UIComponent styleOwnerComponent,
-            Map rowStylesMap,
-            Map cellStylesMap,
-            List columns,
-            TableStructure tableStructure,
-            boolean noDataRows) {
+            TableStructure tableStructure
+    ) {
+        UIComponent styleOwnerComponent = tableStructure.getComponent();
+        boolean noDataRows = tableStructure.getBody().isNoDataRows();
         TableParams params = new TableParams(styleOwnerComponent, tableStructure, noDataRows);
         boolean forceUsingCellStyles = params.isForceUsingCellStyles();
+
+        List columns = tableStructure.getColumns();
+        TableStyles tableStyles = tableStructure.getTableStyles();
+        Map<Object, String> rowStylesMap = tableStructure.getRowStylesMap();
+        Map<Object, String> cellStylesMap = tableStructure.getCellStylesMap();
+
         JSONArray result = new JSONArray();
         result.put(getColumnHierarchyParam(facesContext, columns, params));
         result.put(tableStructure.getHeader().hasCommonHeaderRow());
