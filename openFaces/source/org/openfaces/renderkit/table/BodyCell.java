@@ -41,7 +41,9 @@ public class BodyCell extends TableElement {
         if (customCells != null)
             BodyRow.writeCustomRowOrCellEvents(writer, customCells);
 
-        writer.write(content);
+        if (content != null)
+            writer.write(content);
+        
         if (additionalContentWriter != null)
             additionalContentWriter.writeAdditionalContent(context);
         writer.endElement("td");
