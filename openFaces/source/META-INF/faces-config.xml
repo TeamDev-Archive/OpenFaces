@@ -70,6 +70,11 @@
   </component>
 
   <component>
+    <component-type>org.openfaces.Scrolling</component-type>
+    <component-class>org.openfaces.component.table.Scrolling</component-class>
+  </component>
+
+  <component>
     <component-type>org.openfaces.CheckboxColumn</component-type>
     <component-class>org.openfaces.component.table.CheckboxColumn</component-class>
   </component>

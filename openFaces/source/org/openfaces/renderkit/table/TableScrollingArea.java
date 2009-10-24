@@ -26,22 +26,37 @@ import java.util.List;
 public class TableScrollingArea extends TableElement {
     private List<BaseColumn> columns;
     private List<? extends TableElement> rows;
+    private boolean scrollable;
 
-    public TableScrollingArea(TableElement parent, List<BaseColumn> columns, List<? extends TableElement> rows) {
+    public TableScrollingArea(
+            TableElement parent,
+            List<BaseColumn> columns,
+            List<? extends TableElement> rows,
+            boolean scrollable) {
         super(parent);
         this.rows = rows;
         this.columns = columns;
+        this.scrollable = scrollable;
     }
 
-    public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
+    public void render(
+            FacesContext context,
+            HeaderCell.AdditionalContentWriter additionalContentWriter
+    ) throws IOException {
         UIComponent component = getParent(TableStructure.class).getComponent();
         ResponseWriter writer = context.getResponseWriter();
+        if (scrollable) {
+            writer.startElement("div", component);
+            writer.writeAttribute("class", "o_table_scrolling_area", null);
+        }
         writer.startElement("table", component);
         TableUtil.writeColumnTags(context, component, columns);
         for (TableElement row : rows) {
             row.render(context, additionalContentWriter);
         }
         writer.endElement("table");
-
+        if (scrollable) {
+            writer.endElement("div");
+        }
     }
 }

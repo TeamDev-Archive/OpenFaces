@@ -139,13 +139,14 @@ public class TableBody extends TableElement {
             cells.add(scrollingAreaCell(columns, rightRows, allColCount - fixedRightColumns, allColCount));
 
         BodyRow containingRow = new BodyRow(this);
+        containingRow.setStyle("height: 100%");
         containingRow.setCells(cells);
         return Collections.singletonList(containingRow);
     }
 
     private BodyCell scrollingAreaCell(List<BaseColumn> columns, List<BodyRow> rows, int startCol, int endCol) {
         BodyCell cell = new BodyCell();
-        TableScrollingArea scrollingArea = new TableScrollingArea(cell, columns.subList(startCol, endCol), rows);
+        TableScrollingArea scrollingArea = new TableScrollingArea(cell, columns.subList(startCol, endCol), rows, true);
         cell.setContent(scrollingArea);
         return cell;
     }

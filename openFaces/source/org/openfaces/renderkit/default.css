@@ -113,6 +113,11 @@
   white-space: nowrap;
 }
 
+.o_table_scrolling_area {
+  height: 100%;
+  overflow: hidden;
+}
+
 .o_filter_row_cells {
   font-weight: normal;
 }

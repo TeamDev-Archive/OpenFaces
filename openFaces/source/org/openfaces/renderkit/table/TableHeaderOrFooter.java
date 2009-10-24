@@ -63,19 +63,25 @@ public abstract class TableHeaderOrFooter extends TableElement {
 
         if (fixedLeftColumns > 0) {
             List<BaseColumn> leftCols = columns.subList(0, fixedLeftColumns);
-            cells.add(scrollingAreaCell(tableStructure, cellTag, leftCols));
+            cells.add(scrollingAreaCell(tableStructure, cellTag, leftCols, false));
         }
         List<BaseColumn> centerCols = columns.subList(fixedLeftColumns, totalColCount - fixedRightColumns);
-        cells.add(scrollingAreaCell(tableStructure, cellTag, centerCols));
+        cells.add(scrollingAreaCell(tableStructure, cellTag, centerCols, true));
         if (fixedRightColumns > 0) {
             List<BaseColumn> leftCols = columns.subList(totalColCount - fixedLeftColumns, totalColCount);
-            cells.add(scrollingAreaCell(tableStructure, cellTag, leftCols));
+            cells.add(scrollingAreaCell(tableStructure, cellTag, leftCols, false));
         }
         allRows.add(new HeaderRow(this, true, cells));
-        allRows.add(isHeader ? 0 : allRows.size(), commonHeaderRow);
+        if (commonHeaderRow != null)
+            allRows.add(isHeader ? 0 : allRows.size(), commonHeaderRow);
     }
 
-    private HeaderCell scrollingAreaCell(TableStructure tableStructure, String cellTag, List<BaseColumn> columns) {
+    private HeaderCell scrollingAreaCell(
+            TableStructure tableStructure,
+            String cellTag,
+            List<BaseColumn> columns,
+            boolean scrollable
+    ) {
         List<HeaderRow> rows = composeColumnHeaderRows(tableStructure, columns, cellTag);
         for (int i = 0; i < rows.size(); i++) {
             HeaderRow row = rows.get(i);
@@ -87,7 +93,7 @@ public abstract class TableHeaderOrFooter extends TableElement {
             rows.add(isHeader ? rows.size() : 0, subHeaderRow);
             hasSubHeader = true;
         }
-        TableScrollingArea tableScrollingArea = new TableScrollingArea(this, columns, rows);
+        TableScrollingArea tableScrollingArea = new TableScrollingArea(this, columns, rows, scrollable);
         return new HeaderCell(null, tableScrollingArea, "td");
     }
 

@@ -27,6 +27,8 @@ public class BodyRow extends TableElement {
     private List<TableRow> applicableCustomRows;
     private String[][] attributes;
     private List<BodyCell> cells;
+    private String style;
+    private String styleClass;
 
     public BodyRow() {
     }
@@ -38,6 +40,8 @@ public class BodyRow extends TableElement {
     public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("tr", null);
+        if (style != null || styleClass != null)
+            RenderingUtil.writeStyleAndClassAttributes(writer, style, styleClass);
         writeCustomRowOrCellEvents(writer, applicableCustomRows);
         if (attributes != null)
             for (String[] attribute : attributes) {
@@ -87,5 +91,21 @@ public class BodyRow extends TableElement {
         for (BodyCell cell : cells) {
             cell.setParent(this);
         }
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String getStyleClass() {
+        return styleClass;
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
     }
 }

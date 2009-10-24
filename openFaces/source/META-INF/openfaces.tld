@@ -3500,6 +3500,19 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
+      <description>Applicable only when horizontal scrolling is enabled for a table. Assigning true to this attribute
+        "fixes" the column group which means that it is excluded from horizontal scrolling and is always visible
+        regardless of scroll position.
+      </description>
+      <name>fixed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>A style that should be applied to each column in this group.</description>
       <name>style</name>
       <deferred-value>

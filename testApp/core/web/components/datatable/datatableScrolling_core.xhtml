@@ -1,0 +1,199 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+  <a href="../../main.jsf">Main page</a><br/>
+  <a href="../../functional_testing.jsf">Component test pages</a><br/><br/>
+
+  <o:dataTable id="twoHeadersTable" value="#{TestTableDataBean.collection1}" var="row" rowKey="#{row.id}" style="width: 300px;">
+    <o:columnResizing/>
+    <o:singleRowSelection/>
+    <o:scrolling/>
+    
+    <o:selectionColumn fixed="true"/>
+
+    <o:columnGroup headerStyle="background: SteelBlue;">
+      <f:facet name="header">
+        <h:outputText value="String Fields"/>
+      </f:facet>
+
+      <o:checkboxColumn headerStyle="background: LightSteelBlue;">
+        <f:facet name="header">
+          <o:selectAllCheckbox/>
+        </f:facet>
+      </o:checkboxColumn>
+
+      <o:column headerStyle="background: LightSteelBlue;" sortingExpression="#{row.stringField1}">
+        <f:facet name="header">
+          <h:outputText value="String Field 1"/>
+        </f:facet>
+        <h:outputText value="#{row.stringField1}"/>
+      </o:column>
+      <o:column headerStyle="background: LightSteelBlue;" sortingExpression="#{row.stringField2}">
+        <f:facet name="header">
+          <h:outputText value="String Field 2"/>
+        </f:facet>
+        <h:outputText value="#{row.stringField2}"/>
+      </o:column>
+      <o:column headerStyle="background: LightSteelBlue;" sortingExpression="#{row.stringField3}">
+        <f:facet name="header">
+          <h:outputText value="String Field 3"/>
+        </f:facet>
+        <h:outputText value="#{row.stringField3}"/>
+      </o:column>
+    </o:columnGroup>
+    <o:columnGroup headerStyle="background: ForestGreen;" fixed="true">
+      <f:facet name="header">
+        <h:outputText value="Integer Fields"/>
+      </f:facet>
+
+      <o:column headerStyle="background: LawnGreen;">
+        <f:facet name="header">
+          <h:outputText value="Int Field 1"/>
+        </f:facet>
+        <h:outputText value="#{row.intField1}"/>
+      </o:column>
+      <o:column headerStyle="background: LawnGreen;" sortingExpression="#{row.intField2}">
+        <f:facet name="header">
+          <h:outputText value="Int Field 2"/>
+        </f:facet>
+        <h:outputText value="#{row.intField2}"/>
+      </o:column>
+      <o:column headerStyle="background: LawnGreen;">
+        <f:facet name="header">
+          <h:outputText value="Int Field 3"/>
+        </f:facet>
+        <h:outputText value="#{row.intField3}"/>
+      </o:column>
+    </o:columnGroup>
+
+  </o:dataTable>
+
+  <br/>
+
+  <o:dataTable id="mixedHeadersTable" value="#{TestTableDataBean.collection1}" var="row" rowKey="#{row.id}"
+          style="border: 2px solid gray; width: 100%"
+          headerRowStyle="color: OrangeRed; font-weight: bold; font-family: Tahoma, Arial; font-size: 19px;"
+          footerRowStyle="color: DarkBlue; font-weight: bold; font-family: Tahoma, Arial; font-size: 19px;"
+          bodyRowStyle="font-family: Tahoma, Arial; font-size: 12pt;"
+          verticalGridLines="none, 1px solid silver, 2px solid silver"
+          headerVertSeparator="none, 1px solid orange, 2px solid gray"
+          footerVertSeparator="none, 1px solid DarkBlue, 2px solid gray"
+          headerHorizSeparator="2px solid gray"
+          footerHorizSeparator="2px solid gray"
+          commonHeaderSeparator="2px solid gray"
+          commonFooterSeparator="2px solid gray"
+          multiFooterSeparator="none, 1px solid DarkBlue">
+    <o:columnResizing/>
+    <o:singleRowSelection/>
+
+    <f:facet name="header">
+      <h:outputText value="Common Header"/>
+    </f:facet>
+
+    <f:facet name="footer">
+      <h:outputText value="Common Footer"/>
+    </f:facet>
+
+    <o:checkboxColumn>
+      <f:facet name="header">
+        <o:selectAllCheckbox/>
+      </f:facet>
+    </o:checkboxColumn>
+
+
+    <o:column sortingExpression="#{row.stringField1}">
+      <f:facet name="header">
+        <h:outputText value="String Field 1"/>
+      </f:facet>
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{row.stringField1}"/>
+      </f:facet>
+      <f:facet name="footer">
+        <h:outputText value="String Field 1 (footer)"/>
+      </f:facet>
+      <h:outputText value="#{row.stringField1}"/>
+    </o:column>
+    <o:column sortingExpression="#{row.stringField2}">
+      <f:facet name="subHeader">
+        <o:inputTextFilter expression="#{row.stringField2}"/>
+      </f:facet>
+      <f:facet name="footer">
+        <h:outputText value="String Field 2 (footer only)"/>
+      </f:facet>
+      <h:outputText value="#{row.stringField2}"/>
+    </o:column>
+    <o:columnGroup onclick="logEvent('3-rd level column click');" headerOnclick="logEvent('3-rd level column header click')" bodyOnclick="logEvent('3-rd level column body click')" footerOnclick="logEvent('3-rd level column footer click')">
+      <f:facet name="footer">
+        <h:outputText value="3-rd level footer"/>
+      </f:facet>
+
+      <o:columnGroup footerStyle="font-size: 15px; text-align: center;" onclick="logEvent('2-nd level column click');" headerOnclick="logEvent('2-nd level column header click')" bodyOnclick="logEvent('2-nd level column body click')" footerOnclick="logEvent('2-nd level column footer click')">
+        <f:facet name="header">
+          <h:outputText value="String Fields"/>
+        </f:facet>
+        <f:facet name="footer">
+          <h:outputText value="String Fields (footer)"/>
+        </f:facet>
+
+        <o:column sortingExpression="#{row.stringField3}" headerStyle="font-size: 12px;" footerStyle="font-size: 12px;">
+          <f:facet name="header">
+            <h:outputText value="String Field 3"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{row.stringField3}"/>
+          </f:facet>
+          <f:facet name="footer">
+            <h:outputText value="String Field 3 (footer)"/>
+          </f:facet>
+          <h:outputText value="#{row.stringField3}"/>
+        </o:column>
+
+        <o:column sortingExpression="#{row.intField1}" headerStyle="font-size: 12px;" footerStyle="font-size: 12px;">
+          <f:facet name="header">
+            <h:outputText value="Int Field 1"/>
+          </f:facet>
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{row.intField1}"/>
+          </f:facet>
+          <f:facet name="footer">
+            <h:outputText value="Int Field 1 (footer)"/>
+          </f:facet>
+          <h:outputText value="#{row.intField1}"/>
+        </o:column>
+        <o:checkboxColumn>
+          <f:facet name="header">
+            <o:selectAllCheckbox/>
+          </f:facet>
+          <f:facet name="footer">
+            <o:selectAllCheckbox/>
+          </f:facet>
+        </o:checkboxColumn>
+
+        <o:column sortingExpression="#{row.intField2}" headerStyle="font-size: 12px;" footerStyle="font-size: 12px;"
+                onclick="logEvent('column click');" headerOnclick="logEvent('column header click')" bodyOnclick="logEvent('column body click')" footerOnclick="logEvent('column footer click')">
+          <f:facet name="subHeader">
+            <o:inputTextFilter expression="#{row.intField2}"/>
+          </f:facet>
+          <h:outputText value="#{row.intField2}"/>
+        </o:column>
+        <o:selectionColumn/>
+      </o:columnGroup>
+
+      <o:column sortingExpression="#{row.intField3}">
+        <f:facet name="header">
+          <h:outputText value="Int Field 3 (header only)"/>
+        </f:facet>
+        <f:facet name="subHeader">
+          <o:inputTextFilter expression="#{row.intField1}"/>
+        </f:facet>
+        <h:outputText value="#{row.intField3}"/>
+      </o:column>
+    </o:columnGroup>
+
+  </o:dataTable>
+
+</div>
