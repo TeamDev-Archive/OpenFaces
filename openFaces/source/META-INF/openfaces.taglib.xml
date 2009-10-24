@@ -89,6 +89,14 @@
   </tag>
 
   <tag>
+    <tag-name>scrolling</tag-name>
+    <component>
+      <component-type>org.openfaces.Scrolling</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.ScrollingTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
     <tag-name>row</tag-name>
     <component>
       <component-type>org.openfaces.TableRow</component-type>
