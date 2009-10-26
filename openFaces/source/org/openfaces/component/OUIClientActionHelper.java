@@ -14,6 +14,7 @@ package org.openfaces.component;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.StyleUtil;
+import org.openfaces.util.SelfScheduledAction;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlCommandButton;
@@ -64,7 +65,7 @@ public abstract class OUIClientActionHelper {
     }
 
 
-    public void onParentChange(OUIClientAction action, UIComponent parent) {
+    public void onParentChange(final OUIClientAction action, final UIComponent parent) {
         ensureComponentIdSpecified(parent);
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -77,14 +78,22 @@ public abstract class OUIClientActionHelper {
             return;
         }
 
-        String script = getClientActionScript(context, action);
-        if (context.getResponseWriter() != null) {
-            AjaxUtil.addJSLinks(context, parent);
-            StyleUtil.requestDefaultCss(context);
-        }
+        ComponentUtil.runWhenReady(new SelfScheduledAction() {
+            public boolean executeIfReady() {
+                FacesContext context = FacesContext.getCurrentInstance();
+                String script = getClientActionScript(context, action);
+                if (script == null)
+                    return false;
+                if (context.getResponseWriter() != null) {
+                    AjaxUtil.addJSLinks(context, parent);
+                    StyleUtil.requestDefaultCss(context);
+                }
 
-        String event = action.getEvent();
-        parent.getAttributes().put(event, script);
+                String event = action.getEvent();
+                parent.getAttributes().put(event, script);
+                return true;
+            }
+        });
     }
 
     protected abstract String getClientActionScript(FacesContext context, OUIClientAction action);

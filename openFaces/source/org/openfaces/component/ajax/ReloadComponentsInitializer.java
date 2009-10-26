@@ -18,7 +18,6 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.AnonymousFunction;
-import org.openfaces.util.Log;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -42,10 +41,15 @@ public class ReloadComponentsInitializer {
         JSONArray idsArray = new JSONArray();
         if (componentIds != null)
             for (String componentId : componentIds) {
+                if (componentId.startsWith(":")) {
+                    idsArray.put(componentId.substring(1));
+                    continue;
+                }
                 UIComponent component = ((UIComponent) action).findComponent(componentId);
                 if (component == null) {
-                    Log.log(context, "<o:reloadComponents> couldn't find component by id: " + componentId);
-                    continue;
+                    throw new FacesException("<o:reloadComponents> couldn't find component by relative id: \"" + componentId + "\"; consider using absolute component id, e.g. \":formId:componentId\"");
+//                    idsArray.put(componentId);
+//                    continue;
                 }
 
                 if (component instanceof UIData) {

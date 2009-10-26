@@ -11,10 +11,11 @@
  */
 package org.openfaces.ajax;
 
-import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.Log;
+import org.openfaces.util.ResourceUtil;
 
 import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
@@ -332,6 +333,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
     @Override
     public void renderView(FacesContext context, UIViewRoot root)
             throws IOException, FacesException {
+        ComponentUtil.runScheduledActions();
         if (!context.getResponseComplete()) {
 
             ExternalContext externalContext = context.getExternalContext();

@@ -40,30 +40,30 @@
 
         </h:panelGroup>
 
-        <o:sidePanel alignment="top" splitterStyle="border:none;border-top: 1px solid gray;height:1px;"
-                     resizable="false" collapsible="false" size="22px" style="text-align:center;">
+        <o:sidePanel alignment="top" splitterStyle="border: none; border-top: 1px solid gray; height: 1px;"
+                     resizable="false" collapsible="false" size="22px" style="text-align: center;">
              Developers Guide 2.x
         </o:sidePanel>
 
-        <o:sidePanel alignment="left" size="25%" style="width:100%;">
+        <o:sidePanel alignment="left" size="25%" style="width: 100%;">
           <f:facet name="caption">
-            <h:outputText style="background-color:#657386;">
+            <h:outputText style="background-color: #657386;">
               <h:outputText escape="false" value="&#160; Open Faces Components"/>
             </h:outputText>
           </f:facet>
 
             <o:treeTable id="componentsTree" var="treeNode" useAjax="true"
                     expansionState="allExpanded"
-                    style="width:100%;border:none;font-size:10pt;"
-                    rolloverStyle="cursor:pointer;">
+                    style="width: 100%; border: none; font-size: 10pt;"
+                    rolloverStyle="cursor: pointer;"
+                    focusedStyle="border: none">
               <o:dynamicTreeStructure
                 nodeChildren="#{BorderLayoutBean.nodeChildren}"
                 nodeHasChildren="#{BorderLayoutBean.nodeHasChildren}" />
 
               <o:singleNodeSelection
                         nodeData="#{BorderLayoutBean.selectedComponent}"
-                        keyboardSupport="false"
-                        style="background-color:gray;color:white;cursor:default;"
+                        style="background-color: gray; color: white; cursor: default;"
                         >
                   <o:reloadComponents event="onchange"
                                       componentIds=":form:componentName"
@@ -82,8 +82,8 @@
         </o:sidePanel>
 
         <o:sidePanel alignment="bottom"
-                     splitterStyle="border:none;border-top: 1px solid gray;height:1px;"
-                     resizable="false" collapsible="false" size="22px" style="text-align:center;">
+                     splitterStyle="border: none; border-top: 1px solid gray; height: 1px;"
+                     resizable="false" collapsible="false" size="22px" style="text-align: center;">
            <h:outputText escape="false" value="&#169; 2009 TeamDev Ltd. All rights reserved."/>
         </o:sidePanel>
 

@@ -1422,7 +1422,7 @@ if (!window.O$) {
     return O$._documentLoaded;
   };
 
-  O$.createHiddenFocusElement = function(tabindex) {
+  O$.createHiddenFocusElement = function(tabindex, componentId) {
     var createTextArea = true;
     var focusControl = document.createElement(createTextArea ? "textarea" : "input");
     if (!createTextArea)
@@ -1433,6 +1433,8 @@ if (!window.O$) {
     }
     if (tabindex)
       focusControl.tabIndex = tabindex;
+    if (componentId)
+      focusControl.id = componentId + ":::focus";
     return focusControl;
   };
 
@@ -2222,7 +2224,7 @@ if (!window.O$) {
       }
     };
 
-    var focusControl = O$.createHiddenFocusElement(tabindex);
+    var focusControl = O$.createHiddenFocusElement(tabindex, component.id);
 
     function fireEvent(object, eventName, param) {
       var handler = object[eventName];

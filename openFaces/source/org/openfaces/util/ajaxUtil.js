@@ -63,7 +63,7 @@ O$.extend(O$, {
  *    immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
  */
 O$.reloadComponents = function(componentIds, args) {
-  O$._reloadComponent(componentIds, args);
+  O$._reloadComponents(componentIds, args);
 };
 
 // ================================== IMPLEMENTATION
@@ -173,7 +173,7 @@ O$.reloadPage = function(loc) {
   window.location = loc;
 }
 
-O$._reloadComponent = function(componentIds, args) {
+O$._reloadComponents = function(componentIds, args) {
   if (!args) args = {};
   var params = args.additionalParams ? args.additionalParams : [];
   var ids = new Array();
@@ -244,7 +244,7 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
 }
 
 /**
- * componentId - component to which an ajax request is being made
+ * componentIds - components for which an ajax request is being made
  *
  * args fields:
  * portionNames - null value means that the whole component should be reloaded, otherwise it should be an array of component portion names
@@ -266,11 +266,11 @@ O$.sendAjaxRequest = function(componentIds, args) {
   if (document.__sessionHasExpired
           && document.__componentsAjaxEventHandlerInitialized
           && componentIds.every(function(element) {
-    return (document.__componentsAjaxEventHandlerInitialized[element]);
-  })
+              return (document.__componentsAjaxEventHandlerInitialized[element]);
+            })
           && componentIds.every(function(element) {
-    return (document.__componentsAjaxEventHandlerInitialized[element]["onsessionexpired"]);
-  })) {
+              return (document.__componentsAjaxEventHandlerInitialized[element]["onsessionexpired"]);
+            })) {
     if (O$.processSessionExpiration(document.__sessionReloadLocation, componentIds, null, true)) {
       if (args.onerror) {
         args.onerror();
@@ -373,7 +373,7 @@ O$.sendAjaxRequest = function(componentIds, args) {
 
   ajaxObject._request.onreadystatechange = O$.getEventHandlerFunction("_processResponse", null, ajaxObject);
   ajaxObject._completionCallback = args.onajaxend;
-  ajaxObject._requestedComponentId = componentIds;
+  ajaxObject._requestedComponentIds = componentIds;
 
   var url = form.action;
   ajaxObject._request.open("POST", url, true);
@@ -840,7 +840,7 @@ O$.AjaxObject = function(componentIds) {
     }
 
     if (this._completionCallback)
-      this._completionCallback(this._requestedComponentId);
+      this._completionCallback(this._requestedComponentIds);
     if (O$.Ajax.onajaxend)
       O$.Ajax.onajaxend();
   }
@@ -902,7 +902,7 @@ O$.AjaxObject = function(componentIds) {
         replacedElement.onComponentUnload = null;
         var this_ = this;
         var delayedCompletionCallback = this._completionCallback;
-        var delayedCompletionCallbackComponentId = this._requestedComponentId;
+        var delayedCompletionCallbackComponentId = this._requestedComponentIds;
         var delayedSimpleUpdate = this._processSimpleUpdate;
         this._delayedSimpleUpdate = true;
         setTimeout(function () {

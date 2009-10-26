@@ -272,10 +272,8 @@ public abstract class CommonAjaxViewRoot {
         ResponseFacade response = ResponseFacade.getInstance(externalContext.getResponse());
 
         String componentId = request.getParameter(AjaxUtil.PARAM_COMPONENT_IDS);
-        String[] componentIds = componentId != null ? componentId.split(";") : null;
+        String[] componentIds = extractComponentIds(request);
         String[] submittedComponentIds = extractSubmittedComponentIds(request);
-
-        assertComponentId(componentId);
 
         if (response instanceof ResponseFacade.ActionResponseFacade) {
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
@@ -312,12 +310,7 @@ public abstract class CommonAjaxViewRoot {
         assertChildren(viewRoot);
 
 
-        UIComponent[] components = new UIComponent[componentIds.length];
-        for (int i = 0; i < componentIds.length; i++) {
-            String component = componentIds[i];
-            components[i] = findComponentByPath(viewRoot, component, true, false);
-            Log.log(context, "doProcessDecodes find component by " + component + ", it is " + components[i]);
-        }
+        UIComponent[] components = locateComponents(componentIds, viewRoot, true, false);
         ajaxApplyRequestValues(context, components, viewRoot, submittedComponentIds);
         if (Boolean.valueOf(request.getParameter(PARAM_IMMEDIATE))) {
             doProcessApplication(context);
@@ -333,9 +326,7 @@ public abstract class CommonAjaxViewRoot {
             return;
         }
 
-        String componentId = request.getParameter(AjaxUtil.PARAM_COMPONENT_IDS);
-        assertComponentId(componentId);
-        String[] componentIds = componentId.split(";");
+        String[] componentIds = extractComponentIds(request);
         if (componentIds == null) {
             throw new IllegalStateException(AjaxUtil.PARAM_COMPONENT_IDS + " not found at request");
         }
@@ -345,13 +336,19 @@ public abstract class CommonAjaxViewRoot {
         UIViewRoot viewRoot = context.getViewRoot();
         assertChildren(viewRoot);
 
+        UIComponent[] components = locateComponents(componentIds, viewRoot, false, false);
+        ajaxUpdateModelValues(context, components, viewRoot, submittedComponentIds);
+    }
+
+    private UIComponent[] locateComponents(String[] componentIds, UIViewRoot viewRoot,
+                                           boolean preProcessDecodesOnTables,
+                                           boolean preRenderResponseOnTables) {
         UIComponent[] components = new UIComponent[componentIds.length];
         for (int i = 0; i < componentIds.length; i++) {
-            String component = componentIds[i];
-            components[i] = findComponentByPath(viewRoot, component, false, false);
-            Log.log(context, "doProcessUpdates find component by " + component + ", it is " + components[i]);
+            String componentId = componentIds[i];
+            components[i] = findComponentById(viewRoot, componentId, preProcessDecodesOnTables, preRenderResponseOnTables);
         }
-        ajaxUpdateModelValues(context, components, viewRoot, submittedComponentIds);
+        return components;
     }
 
     private void doProcessValidators(FacesContext context) {
@@ -365,21 +362,21 @@ public abstract class CommonAjaxViewRoot {
         }
 
 
-        String componentId = request.getParameter(AjaxUtil.PARAM_COMPONENT_IDS);
-        assertComponentId(componentId);
-        String[] componentIds = componentId.split(";");
+        String[] componentIds = extractComponentIds(request);
         String[] submittedComponentIds = extractSubmittedComponentIds(request);
 
         UIViewRoot viewRoot = context.getViewRoot();
         assertChildren(viewRoot);
 
-        UIComponent[] components = new UIComponent[componentIds.length];
-        for (int i = 0; i < componentIds.length; i++) {
-            String component = componentIds[i];
-            components[i] = findComponentByPath(viewRoot, component, false, false);
-            Log.log(context, "doProcessValidators find component by " + component + ", it is " + components[i]);
-        }
+        UIComponent[] components = locateComponents(componentIds, viewRoot, false, false);
         ajaxProcessValidations(context, components, viewRoot, submittedComponentIds);
+    }
+
+    private String[] extractComponentIds(RequestFacade request) {
+        String componentId = request.getParameter(AjaxUtil.PARAM_COMPONENT_IDS);
+        assertComponentId(componentId);
+        String[] componentIds = componentId.split(";");
+        return componentIds;
     }
 
     private String[] extractSubmittedComponentIds(RequestFacade request) {
@@ -398,9 +395,7 @@ public abstract class CommonAjaxViewRoot {
             return;
         }
 
-        String componentId = request.getParameter(AjaxUtil.PARAM_COMPONENT_IDS);
-        assertComponentId(componentId);
-        String[] componentIds = componentId.split(";");
+        String[] componentIds = extractComponentIds(request);
         String serverAction = request.getParameter(PARAM_SERVER_ACTION);
         String serverActionComponentId = request.getParameter(PARAM_SERVER_ACTION_SOURCE_COMPONENT_ID);
 
@@ -415,7 +410,7 @@ public abstract class CommonAjaxViewRoot {
             ELContext elContext = context.getELContext();
             MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
                     elContext, "#{" + listener + "}", void.class, new Class[]{ActionEvent.class});
-            ActionEvent event = new ActionEvent(findComponentByPath(viewRoot, actionComponentId));
+            ActionEvent event = new ActionEvent(findComponentById(viewRoot, actionComponentId));
             event.setPhaseId(Boolean.valueOf(request.getParameter(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
             methodExpression.invoke(elContext, new Object[]{event});
         }
@@ -423,12 +418,7 @@ public abstract class CommonAjaxViewRoot {
         Log.log(context, "invoke listener finished, invoke application");
         ajaxInvokeApplication(context, viewRoot, serverAction, serverActionComponentId);
         Log.log(context, "invoke application finished");
-        UIComponent[] components = new UIComponent[componentIds.length];
-        for (int i = 0; i < componentIds.length; i++) {
-            String component = componentIds[i];
-            components[i] = findComponentByPath(viewRoot, component, false, false);
-            Log.log(context, "doProcessApplication find component by " + component + ", it is " + components[i]);
-        }
+        UIComponent[] components = locateComponents(componentIds, viewRoot, false, false);
         if (serverActionComponentId != null) {
             // todo: if component is an iterator its rowIndex should be reset so that the following id check succeed (JSFC-1974)
             // [DPikhulya Oct-15] it's possible that after moving ajax from AjaxRequestsPhaseListener there are no additional
@@ -473,9 +463,7 @@ public abstract class CommonAjaxViewRoot {
             return;
         }
 
-        String componentId = request.getParameter(AjaxUtil.PARAM_COMPONENT_IDS);
-        assertComponentId(componentId);
-        String[] componentIds = componentId.split(";");
+        String[] componentIds = extractComponentIds(request);
 
         UIViewRoot viewRoot = context.getViewRoot();
 
@@ -483,12 +471,7 @@ public abstract class CommonAjaxViewRoot {
 
         loadBundles(context);
 
-        UIComponent[] components = new UIComponent[componentIds.length];
-        for (int i = 0; i < componentIds.length; i++) {
-            String component = componentIds[i];
-            components[i] = findComponentByPath(viewRoot, component, false, true);
-            Log.log(context, "doEncodeChildren find component by " + component + ", it is " + components[i]);
-        }
+        UIComponent[] components = locateComponents(componentIds, viewRoot, false, true);
         Object originalResponse = externalContext.getResponse();
         ResponseFacade response = ResponseFacade.getInstance(originalResponse);
         Integer sequence = getSequenceIdForMyFaces(context);
@@ -527,14 +510,14 @@ public abstract class CommonAjaxViewRoot {
 
         assertChildren(viewRoot);
 
-        UIComponent component = findComponentByPath(viewRoot, componentId, false, false);
+        UIComponent component = findComponentById(viewRoot, componentId, false, false);
         if (component != null && component.getChildCount() > 0) {
             List<UIComponent> ajaxSubmittedComponentChildren = component.getChildren();
-            ajaxSettings = iterateThroughChildrenForComponentAjaxSettings(ajaxSubmittedComponentChildren);
+            ajaxSettings = findAjaxSettings(ajaxSubmittedComponentChildren);
         }
 
         if (ajaxSettings == null) {
-            ajaxSettings = iterateThroughChildrenForPageAjaxSettings(children);
+            ajaxSettings = findPageAjaxSettings(children);
         }
 
         if (ajaxSettings == null) {
@@ -585,8 +568,7 @@ public abstract class CommonAjaxViewRoot {
         }
     }
 
-    // TODO [sanders] (Apr 1, 2009, 5:10 AM): Far too long method name
-    private AjaxSettings iterateThroughChildrenForComponentAjaxSettings(List<UIComponent> children) {
+    private AjaxSettings findAjaxSettings(List<UIComponent> children) {
         AjaxSettings result = null;
         for (Object iteratedChild : children) {
             if (iteratedChild instanceof AjaxSettings) {
@@ -595,7 +577,7 @@ public abstract class CommonAjaxViewRoot {
             }
             UIComponent uiComponent = (UIComponent) iteratedChild;
             if (uiComponent.getChildCount() > 0) {
-                result = iterateThroughChildrenForComponentAjaxSettings(uiComponent.getChildren());
+                result = findAjaxSettings(uiComponent.getChildren());
                 if (result != null) {
                     return result;
                 }
@@ -604,8 +586,7 @@ public abstract class CommonAjaxViewRoot {
         return result;
     }
 
-    // TODO [sanders] (Apr 1, 2009, 5:10 AM): Far too long method name
-    private AjaxSettings iterateThroughChildrenForPageAjaxSettings(List<UIComponent> children) {
+    private AjaxSettings findPageAjaxSettings(List<UIComponent> children) {
         AjaxSettings result = null;
         for (Object iteratedChild : children) {
             if (iteratedChild instanceof AjaxSettings && isPageSettings((AjaxSettings) iteratedChild)) {
@@ -614,7 +595,7 @@ public abstract class CommonAjaxViewRoot {
             }
             UIComponent uiComponent = (UIComponent) iteratedChild;
             if (uiComponent.getChildCount() > 0) {
-                result = iterateThroughChildrenForPageAjaxSettings(uiComponent.getChildren());
+                result = findPageAjaxSettings(uiComponent.getChildren());
                 if (result != null) {
                     return result;
                 }
@@ -758,7 +739,7 @@ public abstract class CommonAjaxViewRoot {
 
         if (submittedComponentIds != null) {
             for (String submittedComponentId : submittedComponentIds) {
-                UIComponent submittedComponent = findComponentByPath(viewRoot, submittedComponentId);
+                UIComponent submittedComponent = findComponentById(viewRoot, submittedComponentId);
                 Log.log(context, "start ajaxApplyRequestValues for " + submittedComponent);
                 submittedComponent.processDecodes(context);
                 Log.log(context, "finish ajaxApplyRequestValues for " + submittedComponent);
@@ -779,7 +760,7 @@ public abstract class CommonAjaxViewRoot {
         }
         if (submittedComponentIds != null) {
             for (String submittedComponentId : submittedComponentIds) {
-                UIComponent submittedComponent = findComponentByPath(viewRoot, submittedComponentId);
+                UIComponent submittedComponent = findComponentById(viewRoot, submittedComponentId);
                 Log.log(context, "start ajaxProcessValidations for " + submittedComponent);
                 submittedComponent.processValidators(context);
                 Log.log(context, "finish ajaxProcessValidations for " + submittedComponent);
@@ -801,7 +782,7 @@ public abstract class CommonAjaxViewRoot {
         }
         if (submittedComponentIds != null) {
             for (String submittedComponentId : submittedComponentIds) {
-                UIComponent submittedComponent = findComponentByPath(viewRoot, submittedComponentId);
+                UIComponent submittedComponent = findComponentById(viewRoot, submittedComponentId);
                 Log.log(context, "start ajaxUpdateModelValues for " + submittedComponent);
                 submittedComponent.processUpdates(context);
                 Log.log(context, "finish ajaxUpdateModelValues for " + submittedComponent);
@@ -818,7 +799,7 @@ public abstract class CommonAjaxViewRoot {
 
         if (serverActionComponentId != null) {
             // this is needed for cases when for example Button in a Table needs to know current row's data during action execution
-            UIComponent component = findComponentByPath(viewRoot, serverActionComponentId);
+            UIComponent component = findComponentById(viewRoot, serverActionComponentId);
             Log.log(context, "start ajaxInvokeApplication for " + component);
         }
 
@@ -831,14 +812,12 @@ public abstract class CommonAjaxViewRoot {
     }
 
     private void renderPortletsAjaxResponse(FacesContext context) {
-        // TODO [sanders] (Apr 1, 2009, 4:56 AM): The below texts are somewhat misleading
-        // it probably should have been "This method should be only invoked for portlet Ajax requests".
         if (!AjaxUtil.isAjaxRequest(context)) {
-            throw new IllegalStateException("This method should be only invoked for Ajax requests");
+            throw new IllegalStateException("This method should be only invoked for portlet Ajax requests");
         }
 
         if (!AjaxUtil.isPortletRequest(context)) {
-            throw new IllegalStateException("This method should only be invoked for portlet Ajax requests");
+            throw new IllegalStateException("This method should be only invoked for portlet Ajax requests");
         }
 
         Integer sequenceId = (EnvironmentUtil.isLiferay(context.getExternalContext().getRequestMap()))
@@ -868,7 +847,7 @@ public abstract class CommonAjaxViewRoot {
             UIComponent[] components = new UIComponent[componentIds.length];
             for (int i = 0; i < componentIds.length; i++) {
                 String component = componentIds[i];
-                UIComponent findComponent = findComponentByPath(viewRoot, component);
+                UIComponent findComponent = findComponentById(viewRoot, component);
                 if (findComponent == null) {
                     throw new IllegalStateException("Couldn't find component by client id: " + component);
                 }
@@ -1025,7 +1004,7 @@ public abstract class CommonAjaxViewRoot {
         Set<String> additionalComponentIds = ajaxRequest.getReloadedComponentIds();
         UIViewRoot viewRoot = context.getViewRoot();
         for (String componentId : additionalComponentIds) {
-            UIComponent component = findComponentByPath(viewRoot, componentId, false, true);
+            UIComponent component = findComponentById(viewRoot, componentId, false, true);
             renderSimpleUpdate(request, context, component, ajaxResponse, initializationScripts);
         }
 
@@ -1338,8 +1317,18 @@ public abstract class CommonAjaxViewRoot {
         return sequence;
     }
 
-    private UIComponent findComponentByPath(UIComponent parent, String path) {
-        return findComponentByPath(parent, path, false, false);
+    private UIComponent findComponentById(UIComponent parent, String id) {
+        return findComponentById(parent, id, false, false);
+    }
+
+    private UIComponent findComponentById(UIComponent parent,
+                                            String id,
+                                            boolean preProcessDecodesOnTables,
+                                            boolean preRenderResponseOnTables) {
+        UIComponent componentByPath = findComponentByPath(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables);
+        if (componentByPath == null)
+            throw new FacesException("component by id not found: " + id);
+        return componentByPath;
     }
 
     private UIComponent findComponentByPath(UIComponent parent,
