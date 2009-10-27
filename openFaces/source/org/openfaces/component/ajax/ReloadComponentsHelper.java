@@ -33,6 +33,10 @@ public class ReloadComponentsHelper extends OUIClientActionHelper {
         ReloadComponents reloadComponents = (ReloadComponents) action;
         final String id = reloadComponents.getId();
         ReloadComponentsInitializer reloadComponentsInitializer = new ReloadComponentsInitializer() {
+            protected Object getActionSourceIdParam(FacesContext context, ReloadComponents reloadComponents) {
+                return new RawScript("O$._actionSourceIds['" + id + "']");
+            }
+
             protected Object getReloadComponentsIdParam(FacesContext context, ReloadComponents reloadComponents) {
                 return new RawScript("O$._actionIds['" + id + "']");
             }

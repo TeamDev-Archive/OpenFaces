@@ -1387,7 +1387,7 @@ O$.updateViewId = function(viewId) {
 }
 
 O$.showDefaultAlertAfterException = function(errorMessage, ajaxObject) {
-  alert("An error occured on the server.\nError message:\n\"" + errorMessage + "\".\nPlease see server logs for full stacktrace.");
+  alert("An error occured on the server.\nError message:\n\"" + errorMessage + "\".\nPlease see server logs for the full stacktrace.");
   O$.requestFinished(ajaxObject);
 }
 

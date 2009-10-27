@@ -698,7 +698,6 @@ public abstract class CommonAjaxViewRoot {
 
     /**
      * Recursive helper for {@link #loadBundles(FacesContext)}
-     *
      */
     private void loadBundles(FacesContext context, UIComponent component) {
         // Iterate over cildrens
@@ -799,7 +798,8 @@ public abstract class CommonAjaxViewRoot {
 
         if (serverActionComponentId != null) {
             // this is needed for cases when for example Button in a Table needs to know current row's data during action execution
-            UIComponent component = findComponentById(viewRoot, serverActionComponentId);
+            UIComponent component = findComponentById(viewRoot, serverActionComponentId, false, false, false);
+            // component can be null in case when <o:reloadComponents> was bound to an HTML tag with the for attribute
             Log.log(context, "start ajaxInvokeApplication for " + component);
         }
 
@@ -1197,7 +1197,6 @@ public abstract class CommonAjaxViewRoot {
      *
      * @return If there is server side state saving, return serializid view state. Otherwise, return null.
      *         Serialized view state is used for adjusting "com.sun.faces.VIEW" for RI faces implementation
-     *
      */
     @SuppressWarnings({"deprecation"})
     private AjaxSavedStateIdxHolder ajaxSaveState(
@@ -1268,7 +1267,7 @@ public abstract class CommonAjaxViewRoot {
     }
 
     private void obtainViewStateSequenceForMyFaces(FacesContext context, RequestFacade request, Integer sequence,
-                                                     AjaxSavedStateIdxHolder stateIdxHolder)
+                                                   AjaxSavedStateIdxHolder stateIdxHolder)
             throws IOException {
         StringWriter stringWriter = new StringWriter();
         ResponseWriter originalWriter = substituteResponseWriter(context, request, stringWriter);
@@ -1322,12 +1321,20 @@ public abstract class CommonAjaxViewRoot {
     }
 
     private UIComponent findComponentById(UIComponent parent,
-                                            String id,
-                                            boolean preProcessDecodesOnTables,
-                                            boolean preRenderResponseOnTables) {
+                                          String id,
+                                          boolean preProcessDecodesOnTables,
+                                          boolean preRenderResponseOnTables) {
+        return findComponentById(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables, true);
+    }
+
+    private UIComponent findComponentById(UIComponent parent,
+                                          String id,
+                                          boolean preProcessDecodesOnTables,
+                                          boolean preRenderResponseOnTables,
+                                          boolean checkComponentPresence) {
         UIComponent componentByPath = findComponentByPath(parent, id, preProcessDecodesOnTables, preRenderResponseOnTables);
-        if (componentByPath == null)
-            throw new FacesException("component by id not found: " + id);
+        if (checkComponentPresence && componentByPath == null)
+            throw new FacesException("Component by id not found: " + id);
         return componentByPath;
     }
 
@@ -1342,10 +1349,10 @@ public abstract class CommonAjaxViewRoot {
 
             int separator = path.indexOf(NamingContainer.SEPARATOR_CHAR, 1);
             if (separator == -1)
-                return findComponentById(parent, path, true, preProcessDecodesOnTables, preRenderResponseOnTables);
+                return componentById(parent, path, true, preProcessDecodesOnTables, preRenderResponseOnTables);
 
             String id = path.substring(0, separator);
-            UIComponent nextParent = findComponentById(parent, id, false, preProcessDecodesOnTables, preRenderResponseOnTables);
+            UIComponent nextParent = componentById(parent, id, false, preProcessDecodesOnTables, preRenderResponseOnTables);
             if (nextParent == null) {
                 return null;
             }
@@ -1354,7 +1361,7 @@ public abstract class CommonAjaxViewRoot {
         }
     }
 
-    private UIComponent findComponentById(UIComponent parent, String id, boolean isLastComponentInPath,
+    private UIComponent componentById(UIComponent parent, String id, boolean isLastComponentInPath,
                                           boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables) {
         if (isIntegerNumber(id) && parent instanceof AbstractTable) {
             AbstractTable table = ((AbstractTable) parent);
@@ -1406,7 +1413,7 @@ public abstract class CommonAjaxViewRoot {
                 if (id.equals(child.getId()))
                     return child;
             } else {
-                UIComponent component = findComponentById(child, id,
+                UIComponent component = componentById(child, id,
                         isLastComponentInPath, preProcessDecodesOnTables, preRenderResponseOnTables);
                 if (component != null)
                     return component;

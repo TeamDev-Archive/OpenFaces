@@ -13,20 +13,19 @@ package org.openfaces.util;
 
 import org.openfaces.component.CompoundComponent;
 
-import javax.faces.component.NamingContainer;
+import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIViewRoot;
-import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlCommandButton;
+import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.application.Application;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Iterator;
 
 /**
  * @author Dmitry Pikhulya
@@ -51,16 +50,16 @@ public class ComponentUtil {
         return dstArray;
     }
 
-    public static String referenceIdToClientId(FacesContext context, UIComponent component, String refId) {
+    public static String referenceIdToClientId(FacesContext context, UIComponent base, String refId) {
         if (refId == null)
             return refId;
 
-        UIComponent focusedComponent = referenceIdToComponent(component, refId);
+        UIComponent component = referenceIdToComponent(base, refId);
 
-        if (focusedComponent != null) {
-            refId = focusedComponent.getClientId(context);
+        if (component != null) {
+            refId = component.getClientId(context);
         } else {
-            if (refId.indexOf(NamingContainer.SEPARATOR_CHAR) == 0)
+            if (refId.startsWith(":"))
                 refId = refId.substring(1);
         }
         return refId;

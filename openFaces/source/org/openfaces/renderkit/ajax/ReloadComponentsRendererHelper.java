@@ -71,6 +71,10 @@ public class ReloadComponentsRendererHelper extends OUIClientActionRendererHelpe
             script.append("if (!O$._actionIds) {O$._actionIds = []};O$._actionIds['").append(reloadComponentsId).append("'] = '");
             script.append(reloadComponents.getClientId(context));
             script.append("';");
+
+            script.append("if (!O$._actionSourceIds) {O$._actionSourceIds = []};O$._actionSourceIds['").append(reloadComponentsId).append("'] = '");
+            script.append(OUIClientActionHelper.getClientActionInvoker(context, reloadComponents));
+            script.append("';");
         }
     }
 

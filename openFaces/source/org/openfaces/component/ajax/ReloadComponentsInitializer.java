@@ -135,8 +135,7 @@ public class ReloadComponentsInitializer {
                 validateExpressionString(actionExpressionString);
                 result.put("action", actionExpressionString.substring(
                         EXPRESSION_PREFIX.length(), actionExpressionString.length() - EXPRESSION_SUFFIX.length()));
-                String invokerId = OUIClientActionHelper.getClientActionInvoker(context, reloadComponents);
-                result.put("actionSourceId", invokerId); 
+                result.put("actionSourceId", getActionSourceIdParam(context, reloadComponents));
             }
             int requestDelay = reloadComponents.getRequestDelay();
             if (requestDelay > 0) {
@@ -182,5 +181,10 @@ public class ReloadComponentsInitializer {
 
     protected Object getReloadComponentsIdParam(FacesContext context, ReloadComponents reloadComponents) {
         return reloadComponents.getClientId(context);
+    }
+
+    protected Object getActionSourceIdParam(FacesContext context, ReloadComponents reloadComponents) {
+        String invokerId = OUIClientActionHelper.getClientActionInvoker(context, reloadComponents);
+        return invokerId;
     }
 }
