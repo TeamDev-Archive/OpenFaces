@@ -21,6 +21,7 @@ import org.openfaces.renderkit.table.DataTableRenderer;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.component.ComponentConfigurator;
 
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
@@ -39,7 +40,7 @@ import java.util.Map;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class AbstractTableSelection extends UICommand {
+public abstract class AbstractTableSelection extends UICommand implements ComponentConfigurator {
     private static final String SESSION_KEY_SELECTION_EVENTS_PROCESSED = "OF:tableSelectionEventsProcessed";
 
     private TableDataModel model;
@@ -169,6 +170,10 @@ public abstract class AbstractTableSelection extends UICommand {
 
     protected void setSelectionChanged(boolean selectionChanged) {
         this.selectionChanged = selectionChanged;
+    }
+
+    public UIComponent getConfiguredComponent() {
+        return getTable();
     }
 
     private AbstractTable table;

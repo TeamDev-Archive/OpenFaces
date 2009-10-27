@@ -296,8 +296,15 @@ O$.sendAjaxRequest = function(componentIds, args) {
     O$.logError("O$.sendAjaxRequest: Array of components ids should be not empty");
   }
   var components = new Array();
+  var i;
   for (i = 0; i < componentIds.length; i++) {
-    components[components.length] = O$.byIdOrName(componentIds[i]);
+    var id = componentIds[i];
+    var c = O$.byIdOrName(id);
+    if (!c) {
+      O$.logError("O$.sendAjaxRequest: couldn't find component with the specified id: \"" + id + "\"");
+      return;
+    }
+    components.push(c);
   }
 
   //we need to fire validation for enclosing form (if there are no client validation support - just skip client validation (there will be server side validation only)
@@ -344,7 +351,7 @@ O$.sendAjaxRequest = function(componentIds, args) {
     paramsBuf.append(O$.SUBMITTED_COMPONENT_IDS).append("=").append(componentIdsParam);
   }
   if (args.additionalParams) {
-    for (var i = 0, additionalParamCount = args.additionalParams.length; i < additionalParamCount; i++) {
+    for (i = 0, additionalParamCount = args.additionalParams.length; i < additionalParamCount; i++) {
       var paramEntry = args.additionalParams[i];
       paramsBuf.append("&");
       paramsBuf.append(paramEntry[0]).append("=").append(paramEntry[1]);
@@ -432,7 +439,7 @@ O$.requestStarted = function(ajaxObject) {
   if (O$._ajaxRequestsInProgress == 1) {
     O$.showAjaxProgressMessage();
   }
-}
+};
 
 O$.requestFinished = function(ajaxObject) {
   O$._ajaxRequestsInProgress--;

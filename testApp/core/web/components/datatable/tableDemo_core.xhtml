@@ -69,7 +69,7 @@
 
       <o:singleRowSelection rowData="#{EmailTableDemoBean.selectedMessage}">
         <!--<a4j:support event="onchange" reRender="detailPanel" />-->
-        <o:reloadComponents event="onchange" componentIds=":form1:detailPanel"/>
+        <o:reloadComponents event="onchange" componentIds="detailPanel"/>
       </o:singleRowSelection>
 
       <o:column id="importance" sortingExpression="#{msg.important}" style="width: 20px; text-align: center">

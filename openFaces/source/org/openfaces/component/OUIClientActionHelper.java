@@ -51,6 +51,11 @@ public abstract class OUIClientActionHelper {
             return ComponentUtil.referenceIdToClientId(context, actionComponent, aFor);
         } else if (!clientAction.isStandalone()) {
             UIComponent associatedComponent = actionComponent.getParent();
+            if (associatedComponent instanceof ComponentConfigurator)
+                associatedComponent = ((ComponentConfigurator) associatedComponent).getConfiguredComponent();
+            if (associatedComponent == null)
+                return null;
+
             boolean allowedComponent = !considerOnlyCommandLinkAndButton ||
                     (associatedComponent instanceof HtmlCommandButton || associatedComponent instanceof HtmlCommandLink);
             String result = allowedComponent ? associatedComponent.getClientId(context) : null;

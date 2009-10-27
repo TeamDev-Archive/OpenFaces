@@ -15,9 +15,9 @@ import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.util.RawScript;
+import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.util.List;
 
@@ -34,22 +34,17 @@ public class ReloadComponentsHelper extends OUIClientActionHelper {
         final String id = reloadComponents.getId();
         ReloadComponentsInitializer reloadComponentsInitializer = new ReloadComponentsInitializer() {
             protected Object getReloadComponentsIdParam(FacesContext context, ReloadComponents reloadComponents) {
-                return new RawScript("window._of_actionComponent['" + id + "']");
+                return new RawScript("O$._actionIds['" + id + "']");
             }
 
             protected Object getSubmittedComponentIdsParam(FacesContext context, ReloadComponents reloadComponents, List<String> submittedComponentIds) {
-                return new RawScript("window._of_submitComponents['" + id + "']");
+                return new RawScript("O$._submitIds['" + id + "']");
             }
         };
 
-        Object componentIds;
         JSONArray componentIdsArray = reloadComponentsInitializer.getComponentIdsArray(context, action, reloadComponents.getComponentIds());
-        UIComponent parent = reloadComponents.getParent();
-        if (parent != null && parent.getParent() != null && componentIdsArray.length() > 0) {
-            componentIds = componentIdsArray; // JSP usually goes to this branch
-        } else {
-            componentIds = new RawScript("window._of_reloadComponents['" + id + "']"); // and this one is for Facelets to postpone id calculation and retrieving componentIds indirectly
-        }
+        String idExpression = "O$._reloadIds['" + id + "']";
+        Script componentIds = new RawScript("(" + idExpression + " ? " + idExpression + " : " + componentIdsArray.toString() + ")" );
 
         ScriptBuilder buf = new ScriptBuilder();
         buf.functionCall("O$.reloadComponents",

@@ -50,13 +50,13 @@ public class ReloadComponentsRendererHelper extends OUIClientActionRendererHelpe
         UIComponent parent = reloadComponents.getParent();
         if (!(parent instanceof HtmlCommandButton || parent instanceof HtmlCommandLink)) {
             String reloadComponentsId = reloadComponents.getId();
-            script.append("if (!window._of_reloadComponents) {window._of_reloadComponents = []};window._of_reloadComponents['").append(reloadComponentsId).append("'] = ");
+            script.append("if (!O$._reloadIds) {O$._reloadIds = []};O$._reloadIds['").append(reloadComponentsId).append("'] = ");
             ReloadComponentsInitializer initializer = new ReloadComponentsInitializer();
             JSONArray idsArray = initializer.getComponentIdsArray(context, reloadComponents, reloadComponents.getComponentIds());
             script.append(idsArray);
             script.append(";");
 
-            script.append("if (!window._of_submitComponents) {window._of_submitComponents = []};window._of_submitComponents['").append(reloadComponentsId).append("'] = ");
+            script.append("if (!O$._submitIds) {O$._submitIds = []};O$._submitIds['").append(reloadComponentsId).append("'] = ");
             JSONArray submittedIdsArray = initializer.getComponentIdsArray(context, reloadComponents, reloadComponents.getSubmittedComponentIds());
             if (!reloadComponents.isStandalone() && reloadComponents.getSubmitInvoker()) {
                 String invokerId = OUIClientActionHelper.getClientActionInvoker(context, reloadComponents);
@@ -68,7 +68,7 @@ public class ReloadComponentsRendererHelper extends OUIClientActionRendererHelpe
             script.append(submittedIdsArray);
             script.append(";");
 
-            script.append("if (!window._of_actionComponent) {window._of_actionComponent = []};window._of_actionComponent['").append(reloadComponentsId).append("'] = '");
+            script.append("if (!O$._actionIds) {O$._actionIds = []};O$._actionIds['").append(reloadComponentsId).append("'] = '");
             script.append(reloadComponents.getClientId(context));
             script.append("';");
         }

@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.ajax;
 
+import org.openfaces.component.ComponentConfigurator;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.component.OUIObjectIterator;
@@ -45,8 +46,9 @@ public class ReloadComponentsInitializer {
                     idsArray.put(componentId.substring(1));
                     continue;
                 }
-                UIComponent component = ((UIComponent) action).findComponent(componentId);
+                UIComponent component = findComponent((UIComponent) action, componentId);
                 if (component == null) {
+                    idsArray.put(componentId);
                     continue;
                 }
 
@@ -67,6 +69,41 @@ public class ReloadComponentsInitializer {
                 }
             }
         return idsArray;
+    }
+
+    private UIComponent findComponent(UIComponent base, String componentId) {
+        if (componentId == null || componentId.equals(""))
+        if (base == null)
+            base = FacesContext.getCurrentInstance().getViewRoot();
+        if (base == null)
+            return null;
+        UIComponent locationBase = base;
+        if (locationBase instanceof ComponentConfigurator)
+            locationBase = ((ComponentConfigurator) locationBase).getConfiguredComponent();
+        if (locationBase == null)
+            locationBase = base;
+        UIComponent component = locationBase.findComponent(componentId);
+        if (component == null) {
+            UIComponent root;
+            root = base;
+            while (root.getParent() != null) {
+                root = root.getParent();
+            }
+            return findComponentAnywhere(root, componentId);
+        }
+        return component;
+    }
+
+    private UIComponent findComponentAnywhere(UIComponent root, String id) {
+        if (id.equals(root.getId()))
+            return root;
+        List<UIComponent> children = root.getChildren();
+        for (UIComponent child : children) {
+            UIComponent c = findComponentAnywhere(child, id);
+            if (c != null)
+                return c;
+        }
+        return null;
     }
 
 

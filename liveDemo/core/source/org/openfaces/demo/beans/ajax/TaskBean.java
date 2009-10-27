@@ -99,11 +99,11 @@ public class TaskBean {
 
     private List<Task> filterTasks(List<Task> tasks, String filter) {
         List<Task> filteredTasks = new ArrayList<Task>(tasks.size());
-        if (filter == null || "".equals(filter)) { // TODO [Khadikov] (23.04.2009, 18:17): StringUtils.isEmtpy?
+        if (filter == null || "".equals(filter)) {
             filteredTasks.addAll(tasks);
         } else {
             for (Task task : tasks) {
-                if (task.getName().toLowerCase().startsWith(filter.toLowerCase())) {
+                if (task.getName().toLowerCase().contains(filter.toLowerCase())) {
                     filteredTasks.add(task);
                 }
             }
