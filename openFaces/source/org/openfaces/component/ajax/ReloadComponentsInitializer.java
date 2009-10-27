@@ -47,9 +47,7 @@ public class ReloadComponentsInitializer {
                 }
                 UIComponent component = ((UIComponent) action).findComponent(componentId);
                 if (component == null) {
-                    throw new FacesException("<o:reloadComponents> couldn't find component by relative id: \"" + componentId + "\"; consider using absolute component id, e.g. \":formId:componentId\"");
-//                    idsArray.put(componentId);
-//                    continue;
+                    continue;
                 }
 
                 if (component instanceof UIData) {

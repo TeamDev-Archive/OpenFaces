@@ -36,27 +36,28 @@ public class ReloadComponentsRendererHelper extends OUIClientActionRendererHelpe
 
     protected String getClientActionScript(FacesContext context, OUIClientAction clientAction) {
         ReloadComponents reloadComponents = (ReloadComponents) clientAction;
-        ReloadComponentsInitializer reloadComponentsInitializer = new ReloadComponentsInitializer();
+        ReloadComponentsInitializer initializer = new ReloadComponentsInitializer();
         ScriptBuilder script = new ScriptBuilder();
         script.functionCall("O$.reloadComponents",
-                reloadComponentsInitializer.getComponentIdsArray(context, reloadComponents, reloadComponents.getComponentIds()),
-                reloadComponentsInitializer.getReloadParams(context, reloadComponents)).semicolon();
+                initializer.getComponentIdsArray(context, reloadComponents, reloadComponents.getComponentIds()),
+                initializer.getReloadParams(context, reloadComponents)).semicolon();
         if (reloadComponents.getDisableDefault())
             script.append("return false;");
         return script.toString();
     }
 
-    protected void appendMissingParameters(FacesContext context, ReloadComponents reloadComponents, ScriptBuilder javaScript) {
+    protected void appendMissingParameters(FacesContext context, ReloadComponents reloadComponents, ScriptBuilder script) {
         UIComponent parent = reloadComponents.getParent();
         if (!(parent instanceof HtmlCommandButton || parent instanceof HtmlCommandLink)) {
-            javaScript.append("if (!window._of_reloadComponents) {window._of_reloadComponents = []};window._of_reloadComponents['").append(reloadComponents.getId()).append("'] = ");
-            ReloadComponentsInitializer reloadComponentsInitializer = new ReloadComponentsInitializer();
-            JSONArray idsArray = reloadComponentsInitializer.getComponentIdsArray(context, reloadComponents, reloadComponents.getComponentIds());
-            javaScript.append(idsArray);
-            javaScript.append(";");
+            String reloadComponentsId = reloadComponents.getId();
+            script.append("if (!window._of_reloadComponents) {window._of_reloadComponents = []};window._of_reloadComponents['").append(reloadComponentsId).append("'] = ");
+            ReloadComponentsInitializer initializer = new ReloadComponentsInitializer();
+            JSONArray idsArray = initializer.getComponentIdsArray(context, reloadComponents, reloadComponents.getComponentIds());
+            script.append(idsArray);
+            script.append(";");
 
-            javaScript.append("if (!window._of_submitComponents) {window._of_submitComponents = []};window._of_submitComponents['").append(reloadComponents.getId()).append("'] = ");
-            JSONArray submittedIdsArray = reloadComponentsInitializer.getComponentIdsArray(context, reloadComponents, reloadComponents.getSubmittedComponentIds());
+            script.append("if (!window._of_submitComponents) {window._of_submitComponents = []};window._of_submitComponents['").append(reloadComponentsId).append("'] = ");
+            JSONArray submittedIdsArray = initializer.getComponentIdsArray(context, reloadComponents, reloadComponents.getSubmittedComponentIds());
             if (!reloadComponents.isStandalone() && reloadComponents.getSubmitInvoker()) {
                 String invokerId = OUIClientActionHelper.getClientActionInvoker(context, reloadComponents);
                 if (context.getViewRoot().findComponent(":" + invokerId) != null) {
@@ -64,12 +65,12 @@ public class ReloadComponentsRendererHelper extends OUIClientActionRendererHelpe
                     submittedIdsArray.put(invokerId);
                 }
             }
-            javaScript.append(submittedIdsArray);
-            javaScript.append(";");
+            script.append(submittedIdsArray);
+            script.append(";");
 
-            javaScript.append("if (!window._of_actionComponent) {window._of_actionComponent = []};window._of_actionComponent['").append(reloadComponents.getId()).append("'] = '");
-            javaScript.append(reloadComponents.getClientId(context));
-            javaScript.append("';");
+            script.append("if (!window._of_actionComponent) {window._of_actionComponent = []};window._of_actionComponent['").append(reloadComponentsId).append("'] = '");
+            script.append(reloadComponents.getClientId(context));
+            script.append("';");
         }
     }
 

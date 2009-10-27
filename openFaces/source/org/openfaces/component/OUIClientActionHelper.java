@@ -14,7 +14,6 @@ package org.openfaces.component;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.StyleUtil;
-import org.openfaces.util.SelfScheduledAction;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlCommandButton;
@@ -78,22 +77,14 @@ public abstract class OUIClientActionHelper {
             return;
         }
 
-        ComponentUtil.runWhenReady(new SelfScheduledAction() {
-            public boolean executeIfReady() {
-                FacesContext context = FacesContext.getCurrentInstance();
-                String script = getClientActionScript(context, action);
-                if (script == null)
-                    return false;
-                if (context.getResponseWriter() != null) {
-                    AjaxUtil.addJSLinks(context, parent);
-                    StyleUtil.requestDefaultCss(context);
-                }
+        String script = getClientActionScript(context, action);
+        if (context.getResponseWriter() != null) {
+            AjaxUtil.addJSLinks(context, parent);
+            StyleUtil.requestDefaultCss(context);
+        }
 
-                String event = action.getEvent();
-                parent.getAttributes().put(event, script);
-                return true;
-            }
-        });
+        String event = action.getEvent();
+        parent.getAttributes().put(event, script);
     }
 
     protected abstract String getClientActionScript(FacesContext context, OUIClientAction action);
