@@ -28,6 +28,7 @@ import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleUtil;
 import org.openfaces.renderkit.TableUtil;
+import org.openfaces.renderkit.table.TableStructure;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
@@ -262,6 +263,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         DropDownPopup popup = dropDownField.getPopup();
 
         ScriptBuilder buf = new ScriptBuilder();
+        TableStructure tableStructure = popup.getChildData().getTableStructure();
         buf.initScript(context, dropDownField, "O$.DropDownField._init",
                 dropDownField.getTimeout(),
                 dropDownField.getListAlignment(),
@@ -278,9 +280,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 isManualListOpeningAllowed(dropDownField),
                 dropDownField.getAutoComplete(),
 
-                TableUtil.getStructureAndStyleParams(context,
-                        POPUP_TABLE_DEFAULT_STYLES,
-                        popup.getChildData().getTableStructure())
+                tableStructure.getStructureAndStyleParams(context, POPUP_TABLE_DEFAULT_STYLES)
         );
         popup.resetChildData();
         if (!dropDown.isDisabled()) {  // todo: write the event parameters more economically

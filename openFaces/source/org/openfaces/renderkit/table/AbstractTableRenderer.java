@@ -87,10 +87,6 @@ public abstract class AbstractTableRenderer extends RendererBase {
 
     protected TableStructure createTableStructure(final AbstractTable table) {
         return new TableStructure(table, table) {
-            public void encodeScriptsAndStyles(FacesContext facesContext) throws IOException {
-                AbstractTableRenderer.this.encodeScriptsAndStyles(facesContext, table);
-            }
-
             protected String getAdditionalRowClass(FacesContext facesContext, AbstractTable table, Object rowData, int rowIndex) {
                 return AbstractTableRenderer.this.getAdditionalRowClass(facesContext, table, rowData, rowIndex);
             }
@@ -199,9 +195,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
         TableStructure tableStructure = getTableStructure(table);
 
         buf.initScript(facesContext, table, "O$.Table._init",
-                TableUtil.getStructureAndStyleParams(
-                        facesContext, defaultStyles,
-                        tableStructure),
+                tableStructure.getStructureAndStyleParams(facesContext, defaultStyles),
                 table.getUseAjax(),
                 StyleUtil.getCSSClass(facesContext, table, table.getRolloverStyle(),
                         StyleGroup.rolloverStyleGroup(), table.getRolloverClass()),

@@ -14,6 +14,7 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.Scrolling;
+import org.openfaces.component.table.TableColumn;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.renderkit.TableUtil;
 
@@ -180,7 +181,7 @@ public abstract class TableHeaderOrFooter extends TableElement {
 
         for (BaseColumn column : columns) {
             UIComponent columnHeaderOrFooter =
-                    (isHeader ? TableUtil.getColumnSubHeader(column) : null);
+                    (isHeader ? getColumnSubHeader(column) : null);
             HeaderCell cell = new HeaderCell(column, columnHeaderOrFooter, cellTag);
             if (columnHeaderOrFooter != null)
                 atLeastOneComponent = true;
@@ -366,5 +367,13 @@ public abstract class TableHeaderOrFooter extends TableElement {
         }
 
         return null;
+    }
+
+    private UIComponent getColumnSubHeader(BaseColumn column) {
+        if (!(column instanceof TableColumn))
+            return null;
+        TableColumn tableColumn = ((TableColumn) column);
+
+        return tableColumn.getSubHeader();
     }
 }
