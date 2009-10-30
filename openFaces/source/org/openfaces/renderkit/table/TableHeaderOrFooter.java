@@ -58,20 +58,20 @@ public abstract class TableHeaderOrFooter extends TableElement {
 
     private void composeScrollingContent(TableStructure tableStructure, String cellTag, List<BaseColumn> columns) {
         List<HeaderCell> cells = new ArrayList<HeaderCell>();
-        int fixedLeftColumns = tableStructure.getFixedLeftColumns();
-        int fixedRightColumns = tableStructure.getFixedRightColumns();
+        int leftFixedCols = tableStructure.getLeftFixedCols();
+        int rightFixedCols = tableStructure.getRightFixedCols();
         int totalColCount = columns.size();
 
-        if (fixedLeftColumns > 0) {
-            List<BaseColumn> leftCols = columns.subList(0, fixedLeftColumns);
+        if (leftFixedCols > 0) {
+            List<BaseColumn> leftCols = columns.subList(0, leftFixedCols);
             cells.add(scrollingAreaCell(tableStructure, cellTag, leftCols, false));
         }
 
-        List<BaseColumn> centerCols = columns.subList(fixedLeftColumns, totalColCount - fixedRightColumns);
+        List<BaseColumn> centerCols = columns.subList(leftFixedCols, totalColCount - rightFixedCols);
         cells.add(scrollingAreaCell(tableStructure, cellTag, centerCols, true));
 
-        if (fixedRightColumns > 0) {
-            List<BaseColumn> leftCols = columns.subList(totalColCount - fixedLeftColumns, totalColCount);
+        if (rightFixedCols > 0) {
+            List<BaseColumn> leftCols = columns.subList(totalColCount - leftFixedCols, totalColCount);
             cells.add(scrollingAreaCell(tableStructure, cellTag, leftCols, false));
         }
         allRows.add(new HeaderRow(this, true, cells));
@@ -166,9 +166,9 @@ public abstract class TableHeaderOrFooter extends TableElement {
             colSpan = columns.size();
         else {
             colSpan = 1;
-            if (tableStructure.getFixedLeftColumns() > 0)
+            if (tableStructure.getLeftFixedCols() > 0)
                 colSpan++;
-            if (tableStructure.getFixedRightColumns() > 0)
+            if (tableStructure.getRightFixedCols() > 0)
                 colSpan++;
         }
         cell.setSpans(colSpan, 0, 0);

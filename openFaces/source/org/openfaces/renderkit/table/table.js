@@ -48,7 +48,7 @@ O$.Table = {
       return;
     table._commonTableFunctionsInitialized = true;
 
-    table._rolloverClass = rolloverClass;
+    O$.initComponent(tableId, {rollover: rolloverClass});
     table._useAjax = useAjax;
 
     try {
@@ -58,14 +58,8 @@ O$.Table = {
       // can't just exclude the "o_initially_invisible" from table.className because of IE issue (JSFC-2337)
     }
     O$.Table._initApiFunctions(table);
-    O$.Table._initMouseOvers(table);
 
     table._originalClassName = table.className;
-    table._updateStyle = function() {
-      O$.setStyleMappings(this, {
-        rollover: this._mouseIsOver ? this._rolloverClass : null
-      });
-    };
 
     table._unloadHandlers = [];
     var i, count;
@@ -94,25 +88,6 @@ O$.Table = {
       table._bodyRows = new Array();
       table._headerRows = new Array();
       table._footerRows = new Array();
-    };
-  },
-
-
-  _initMouseOvers: function(table) {
-    table._mouseIsOver = false;
-    if (table._rolloverClass) {
-      O$.addEventHandlerSimple(table, "mouseover", "_mouseOverHandler");
-      O$.addEventHandlerSimple(table, "mouseout", "_mouseOutHandler");
-    }
-
-    table._mouseOverHandler = function() {
-      this._mouseIsOver = true;
-      this._updateStyle();
-    };
-
-    table._mouseOutHandler = function() {
-      this._mouseIsOver = false;
-      this._updateStyle();
     };
   },
 

@@ -121,8 +121,8 @@ public class TableBody extends TableElement {
     ) throws IOException {
         List<BodyRow> leftRows, rows, rightRows;
         AbstractTable table = (AbstractTable) tableStructure.getComponent();
-        int fixedLeftColumns = tableStructure.getFixedLeftColumns();
-        int fixedRightColumns = tableStructure.getFixedRightColumns();
+        int fixedLeftColumns = tableStructure.getLeftFixedCols();
+        int fixedRightColumns = tableStructure.getRightFixedCols();
         int allColCount = columns.size();
         if (rowCount > 0) {
             List<BodyRow>[] rowsForAreas = createDataRows(context, stringWriter, firstRowIndex, rowCount, columns);
@@ -188,11 +188,11 @@ public class TableBody extends TableElement {
     ) throws IOException {
         AbstractTable table = (AbstractTable) tableStructure.getComponent();
         Scrolling scrolling = tableStructure.getScrolling();
-        int centerAreaStart = scrolling != null ? tableStructure.getFixedLeftColumns() : 0;
-        int rightAreaStart = scrolling != null ? columns.size() - tableStructure.getFixedRightColumns() : 0;
-        List<BodyRow> leftRows = scrolling != null && tableStructure.getFixedLeftColumns() > 0 ? new ArrayList<BodyRow>() : null;
+        int centerAreaStart = scrolling != null ? tableStructure.getLeftFixedCols() : 0;
+        int rightAreaStart = scrolling != null ? columns.size() - tableStructure.getRightFixedCols() : 0;
+        List<BodyRow> leftRows = scrolling != null && tableStructure.getLeftFixedCols() > 0 ? new ArrayList<BodyRow>() : null;
         List<BodyRow> rows = new ArrayList<BodyRow>();
-        List<BodyRow> rightRows = scrolling != null && tableStructure.getFixedRightColumns() > 0 ? new ArrayList<BodyRow>() : null;
+        List<BodyRow> rightRows = scrolling != null && tableStructure.getRightFixedCols() > 0 ? new ArrayList<BodyRow>() : null;
         ResponseWriter writer = context.getResponseWriter();
         List<TableRow> customRows = getCustomRows(table);
         int lastRowIndex = firstRowIndex + rowsToRender - 1;

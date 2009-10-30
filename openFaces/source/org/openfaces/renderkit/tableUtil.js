@@ -98,6 +98,7 @@ O$._evaluateStyleClassProperties_cached = function(className, propertyNames, cac
  *
  * @param columns defines a hierarchy of all table's columns with all their configuration settings. It is an array of
  *   column specification objects. Each column specification object contains the following properties:
+ *   - scrolling
  *   - className
  *   - hasCellWrappers
  *   - header: {
@@ -135,10 +136,11 @@ O$._evaluateStyleClassProperties_cached = function(className, propertyNames, cac
  * @param invisibleRowsAllowed
  */
 
-O$._initTableStyles = function(columns, commonHeaderExists, filterRowExists, commonFooterExists, noDataRows,
+O$._initTableStyles = function(scrolling, columns, commonHeaderExists, filterRowExists, commonFooterExists, noDataRows,
                                gridLines, rowStyles, rowStylesMap, cellStylesMap, forceUsingCellStyles,
                                additionalCellWrapperStyle, invisibleRowsAllowed) {
   var table = this;
+  table._scrolling = scrolling;
   table._commonHeaderExists = commonHeaderExists;
   table._commonFooterExists = commonFooterExists;
   table._filterRowExists = filterRowExists;

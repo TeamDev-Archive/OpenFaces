@@ -61,8 +61,8 @@ public class TableStructure extends TableElement {
     private final TableBody body;
     private final TableFooter footer;
     private Scrolling scrolling;
-    private int fixedLeftColumns;
-    private int fixedRightColumns;
+    private int leftFixedCols;
+    private int rightFixedCols;
 
     private Map<Object, String> rowStylesMap = new HashMap<Object, String>();
     private Map<Object, String> cellStylesMap = new HashMap<Object, String>();
@@ -79,19 +79,19 @@ public class TableStructure extends TableElement {
         this.tableStyles = tableStyles;
         columns = tableStyles.getColumnsForRendering();
         scrolling = tableStyles.getScrolling();
-        fixedLeftColumns = 0;
-        fixedRightColumns = 0;
+        leftFixedCols = 0;
+        rightFixedCols = 0;
         if (scrolling != null && scrolling.isHorizontal()) {
             for (BaseColumn column : columns) {
                 if (!isFixedColumn(column))
                     break;
-                fixedLeftColumns++;
+                leftFixedCols++;
             }
-            for (int i = columns.size() - 1; i > fixedLeftColumns; i--) {
+            for (int i = columns.size() - 1; i > leftFixedCols; i--) {
                 BaseColumn column = columns.get(i);
                 if (!isFixedColumn(column))
                     break;
-                fixedRightColumns++;
+                rightFixedCols++;
             }
         }
 
@@ -120,20 +120,20 @@ public class TableStructure extends TableElement {
         return scrolling;
     }
 
-    public int getFixedLeftColumns() {
-        return fixedLeftColumns;
+    public int getLeftFixedCols() {
+        return leftFixedCols;
     }
 
-    public void setFixedLeftColumns(int fixedLeftColumns) {
-        this.fixedLeftColumns = fixedLeftColumns;
+    public void setLeftFixedCols(int leftFixedCols) {
+        this.leftFixedCols = leftFixedCols;
     }
 
-    public int getFixedRightColumns() {
-        return fixedRightColumns;
+    public int getRightFixedCols() {
+        return rightFixedCols;
     }
 
-    public void setFixedRightColumns(int fixedRightColumns) {
-        this.fixedRightColumns = fixedRightColumns;
+    public void setRightFixedCols(int rightFixedCols) {
+        this.rightFixedCols = rightFixedCols;
     }
 
     public List<BaseColumn> getColumns() {
@@ -320,6 +320,7 @@ public class TableStructure extends TableElement {
         Map<Object, String> cellStylesMap = getCellStylesMap();
 
         JSONArray result = new JSONArray();
+        result.put(getScrollingParam());
         result.put(getColumnHierarchyParam(facesContext, columns, params));
         result.put(getHeader().hasCommonHeaderRow());
         result.put(getHeader().hasSubHeader());
@@ -336,6 +337,22 @@ public class TableStructure extends TableElement {
         else
             result.put(JSONObject.NULL);
         result.put(tableStyles instanceof TreeTable);
+        return result;
+    }
+
+    private Object getScrollingParam() {
+        if (getScrolling() == null)
+            return JSONObject.NULL;
+        JSONObject result = new JSONObject();
+        int leftFixedCols = getLeftFixedCols();
+        int rightFixedCols = getRightFixedCols();
+        try {
+            result.put("leftFixedCols", leftFixedCols);
+            result.put("rightFixedCols", rightFixedCols);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
         return result;
     }
 
