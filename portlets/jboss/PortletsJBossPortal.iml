@@ -101,7 +101,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="PortletsCommon" />
-    <orderEntry type="module" module-name="PortletBridge" />
     <orderEntry type="library" name="JSF Implementation - Mojarra 1.2" level="project" />
     <orderEntry type="library" name="jboss portlet brige" level="project" />
   </component>

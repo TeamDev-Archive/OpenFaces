@@ -561,10 +561,11 @@ public abstract class CommonAjaxViewRoot {
         Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
         // TODO [sanders] (Apr 1, 2009, 5:09 AM): Can't we synchronize on something shorter?.. :)
         // TODO [sanders] (Apr 1, 2009, 5:09 AM): Won't java.util.concurrent help?
-        synchronized (sessionMap.get(AjaxViewHandler.SESSION_SYNCHRONIZATION)) {
-            ((RequestsSyncObject) sessionMap.get(AjaxViewHandler.SESSION_SYNCHRONIZATION)).
-                    setAjaxRequestProcessing(false);
-            sessionMap.get(AjaxViewHandler.SESSION_SYNCHRONIZATION).notifyAll();
+        RequestsSyncObject syncObject = (RequestsSyncObject) sessionMap.get(AjaxViewHandler.SESSION_SYNCHRONIZATION);
+        //noinspection SynchronizationOnLocalVariableOrMethodParameter
+        synchronized (syncObject) {
+            syncObject.setAjaxRequestProcessing(false);
+            syncObject.notifyAll();
         }
     }
 
@@ -605,35 +606,36 @@ public abstract class CommonAjaxViewRoot {
     }
 
     public static void processExceptionDuringAjax(Throwable exception) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = context.getExternalContext();
-        Map<String, Object> requestMap = externalContext.getRequestMap();
-        Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-        if (AjaxUtil.isPortletRequest(context) && externalContext.getRequest() instanceof RenderRequest) {
-            try {
-                if (!EnvironmentUtil.isRI()) {
-                    finishProccessErrorUnderPortletsDuringAjax(context,
-                            exception);
-                } else if (sessionMap.containsKey(
-                        AjaxViewHandler.ERROR_OCCURED_UNDER_PORTLETS)) {
-                    finishProccessErrorUnderPortletsDuringAjax(context,
-                            exception);
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            Map<String, Object> requestMap = externalContext.getRequestMap();
+            Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+            if (AjaxUtil.isPortletRequest(context) && externalContext.getRequest() instanceof RenderRequest) {
+                try {
+                    if (!EnvironmentUtil.isRI()) {
+                        finishProccessErrorUnderPortletsDuringAjax(context, exception);
+                    } else if (sessionMap.containsKey(AjaxViewHandler.ERROR_OCCURED_UNDER_PORTLETS)) {
+                        finishProccessErrorUnderPortletsDuringAjax(context, exception);
+                    }
+                } catch (IOException e) {
+                    Log.log(context, "An attempt to process exception during ajax failed.IOException was thrown during processing.");
                 }
-            } catch (IOException e) {
-                Log.log(context, "An attempt to process exception during ajax failed.IOException was thrown during processing.");
+            } else if (!(sessionMap.containsKey(AjaxViewHandler.ERROR_OCCURED_UNDER_PORTLETS))
+                    && AjaxUtil.isPortletRequest(context)
+                    && externalContext.getRequest() instanceof ActionRequest) {
+                sessionMap.put(AjaxViewHandler.ERROR_OCCURED_UNDER_PORTLETS, Boolean.TRUE);
+                sessionMap.put(AjaxViewHandler.ERROR_OBJECT_UNDER_PORTLETS, exception);
             }
-        } else if (!(sessionMap.containsKey(AjaxViewHandler.ERROR_OCCURED_UNDER_PORTLETS))
-                && AjaxUtil.isPortletRequest(context)
-                && externalContext.getRequest() instanceof ActionRequest) {
-            sessionMap.put(AjaxViewHandler.ERROR_OCCURED_UNDER_PORTLETS, Boolean.TRUE);
-            sessionMap.put(AjaxViewHandler.ERROR_OBJECT_UNDER_PORTLETS, exception);
+            if (!requestMap.containsKey(AjaxViewHandler.ERROR_OCCURED)) {
+                requestMap.put(AjaxViewHandler.ERROR_OCCURED, Boolean.TRUE.toString());
+                requestMap.put(AjaxViewHandler.ERROR_MESSAGE_HEADER, exception.getMessage());
+                requestMap.put(AjaxViewHandler.ERROR_CAUSE_MESSAGE_HEADER, exception.getCause());
+            }
+        } finally {
+            releaseSyncObject();
         }
-        if (!requestMap.containsKey(AjaxViewHandler.ERROR_OCCURED)) {
-            requestMap.put(AjaxViewHandler.ERROR_OCCURED, Boolean.TRUE.toString());
-            requestMap.put(AjaxViewHandler.ERROR_MESSAGE_HEADER, exception.getMessage());
-            requestMap.put(AjaxViewHandler.ERROR_CAUSE_MESSAGE_HEADER, exception.getCause());
-        }
-        releaseSyncObject();
+
     }
 
     private boolean isPageSettings(AjaxSettings ajaxSettings) {

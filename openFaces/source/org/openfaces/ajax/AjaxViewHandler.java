@@ -79,15 +79,15 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             // RequestMap will contain SKIP_FURTHER_VIEW_HANDLERS key, only if one of our viewHandler
             // instances in "chain" already done it's processing.
+            RequestsSyncObject syncObject = (RequestsSyncObject) sessionMap.get(SESSION_SYNCHRONIZATION);
             if (requestMap == null
                     || !requestMap.containsKey(SKIP_FURTHER_VIEW_HANDLERS)) {
 
-                while (((RequestsSyncObject) sessionMap.get(SESSION_SYNCHRONIZATION)).
-                        getAjaxRequestProcessing()) {
+                while (syncObject.getAjaxRequestProcessing()) {
                     // While we have ajax request in progress,
                     // all new requests that comes from client should wait for finishing of previous one.
                     try {
-                        sessionMap.get(SESSION_SYNCHRONIZATION).wait();
+                        syncObject.wait();
                     } catch (InterruptedException e) {
                         // It's OK.
                     }
@@ -123,7 +123,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
                 if (!requestMap.containsKey(SKIP_FURTHER_VIEW_HANDLERS)) {
                     // Ajax request processing starts from here, so we need to set boolean flag
                     // on RequestSyncObject for futher synchronization of parallel ajax requests
-                    ((RequestsSyncObject) sessionMap.get(SESSION_SYNCHRONIZATION)).setAjaxRequestProcessing(true);
+                    syncObject.setAjaxRequestProcessing(true);
                     // AjaxViewHandler's logic need to be invoked only once,
                     // so we indicate it by putting SKIP_FURTHER_VIEW_HANDLERS attribute
                     requestMap.put(SKIP_FURTHER_VIEW_HANDLERS, Boolean.TRUE);

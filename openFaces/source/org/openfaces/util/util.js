@@ -49,6 +49,9 @@ if (!window.O$) {
 
   O$.initComponent = function(clientId, styles, events) {
     var component = O$(clientId);
+    if (!component)
+      throw "O$.initComponent: couldn't find component by id: " + clientId;
+
     if (styles) {
       if (styles.rollover)
         O$.setupHoverStateFunction(component, function(mouseInside) {
@@ -72,7 +75,7 @@ if (!window.O$) {
         component._events[eventName] = handlerFunction;
       }
     }
-
+    return component;
   };
 
   O$.extend(O$, { /* Rectangle class */

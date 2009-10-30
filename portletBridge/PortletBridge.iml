@@ -11,8 +11,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Jsf-portlet bridge 1.2" level="project" />
     <orderEntry type="library" name="portlet-api-lib" level="project" />
-    <orderEntry type="library" name="JSF Implementation - MyFaces 1.2" level="project" />
     <orderEntry type="module" module-name="OpenFaces" />
+    <orderEntry type="library" name="JSF Implementation - Mojarra 1.2" level="project" />
   </component>
 </module>
 
