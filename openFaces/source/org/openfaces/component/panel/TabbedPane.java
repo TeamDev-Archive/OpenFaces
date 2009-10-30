@@ -516,8 +516,9 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
 
     private boolean[] calculateRenderedItemFlags(List<TabbedPaneItem> items) {
         boolean[] flags = new boolean[items.size()];
+        boolean[] itemFlags = getRenderedItemFlags();
         for (int i = 0; i < items.size(); i++) {
-            flags[i] = (items.get(i)).isRendered() && getRenderedItemFlags()[i];
+            flags[i] = (items.get(i)).isRendered() && itemFlags != null && itemFlags[i];
         }
         return flags;
     }
