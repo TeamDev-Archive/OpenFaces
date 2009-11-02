@@ -235,8 +235,12 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
   }
   setTimeout(function() {
     O$._ajaxRequestScheduled = false;
-    if (O$._isFormSubmissionJustStated())
+    if (O$._isFormSubmissionJustStated()) {
+      alert("Couldn't start Ajax request for component(s) \"" + ajaxArgs[0].join(",") + "\" because ordinary form " +
+            "submission has also been started simultaneously. If you're using <o:reloadComponents> on a command component " +
+            "such as <h:commandButton>, be sure to disable the default component's action using the disableDefault attribute.");
       return;
+    }
 
     O$._ajax_request_processing = true;
     O$.sendAjaxRequest.apply(null, ajaxArgs);
