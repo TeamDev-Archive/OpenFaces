@@ -39,12 +39,12 @@ public class SpinnerTag extends DropDownComponentTag {
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
-        setIntProperty(component, "value");
+        setNumberProperty(component, "value");
         setBooleanProperty(component, "cycled");
         setBooleanProperty(component, "typingAllowed");
-        setIntProperty(component, "maxValue");
-        setIntProperty(component, "minValue");
-        setIntProperty(component, "step");
+        setNumberProperty(component, "maxValue");
+        setNumberProperty(component, "minValue");
+        setNumberProperty(component, "step");
         setStringProperty(component, "disabledIncreaseButtonImageUrl");
         setStringProperty(component, "disabledDecreaseButtonImageUrl");
         setStringProperty(component, "increaseButtonImageUrl");

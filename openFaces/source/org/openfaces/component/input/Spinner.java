@@ -150,13 +150,13 @@ public class Spinner extends DropDownComponent {
 
         cycled = (Boolean) values[i++];
         typingAllowed = (Boolean) values[i++];
-        maxValue = (Integer) values[i++];
-        minValue = (Integer) values[i++];
+        maxValue = (Number) values[i++];
+        minValue = (Number) values[i++];
         disabledIncreaseButtonImageUrl = (String) values[i++];
         disabledDecreaseButtonImageUrl = (String) values[i++];
         increaseButtonImageUrl = (String) values[i++];
         decreaseButtonImageUrl = (String) values[i++];
-        step = (Integer) values[i++];
+        step = (Number) values[i++];
     }
 
     @Override

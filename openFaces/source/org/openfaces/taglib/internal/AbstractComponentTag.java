@@ -202,6 +202,29 @@ public abstract class AbstractComponentTag extends AbstractTag {
         }
     }
 
+     protected void setNumberProperty(UIComponent component, String propertyName) {
+        String value = getPropertyValue(propertyName);
+        setNumberProperty(component, propertyName, value);
+    }
+
+    protected void setNumberProperty(UIComponent component, String propertyName, String value) {
+        if (value == null) {
+            return;
+        }
+        if (getExpressionCreator().isValueReference(propertyName, value)) {
+            ValueExpression ve = createValueExpression(getFacesContext(), propertyName, value, Object.class);
+            component.setValueExpression(propertyName, ve);
+        } else {
+            Number iValue;
+            try{
+                iValue = Long.parseLong(value);
+            }catch(NumberFormatException e){
+                iValue = Double.parseDouble(value);
+            }            
+            component.getAttributes().put(propertyName, iValue);
+        }
+    }
+
     protected void setFloatProperty(UIComponent component, String propertyName) {
         String value = getPropertyValue(propertyName);
         setFloatProperty(component, propertyName, value);

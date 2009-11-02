@@ -14,19 +14,22 @@ package org.openfaces.renderkit.input;
 
 import org.openfaces.component.input.DropDownComponent;
 import org.openfaces.component.input.Spinner;
+import org.openfaces.org.json.JSONException;
+import org.openfaces.org.json.JSONObject;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.InitScript;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.convert.IntegerConverter;
+import javax.faces.convert.Converter;
+import javax.faces.convert.NumberConverter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +53,10 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
     }
 
     private void setUpConverter(Spinner spinner) {
-        if (spinner.getConverter() == null) {
-            IntegerConverter converter = new IntegerConverter();
-            spinner.setConverter(converter);
+        Converter converter = spinner.getConverter();
+        if (converter == null) {
+            NumberConverter numberConverter = new NumberConverter();
+            spinner.setConverter(numberConverter);
         }
     }
 
@@ -88,6 +92,13 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
             }
         }
 
+        JSONObject options;
+        try {
+            options = createFormatOptions(context, spinner);
+        } catch (JSONException e) {
+            throw new FacesException(e);
+        }
+
         ScriptBuilder sb = new ScriptBuilder().initScript(context, spinner, "O$.Spinner._init",
                 spinner.getMinValue(),
                 spinner.getMaxValue(),
@@ -97,14 +108,40 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
                 buttonRolloverStyleClass,
                 buttonPressedStyleClass,
                 spinner.isDisabled(),
-                spinner.getOnchange());
+                spinner.getOnchange(),
+                options);
 
         return new InitScript(sb, new String[]{
                 ResourceUtil.getUtilJsURL(context),
                 getDropDownJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, SpinnerRenderer.class, "spinner.js")
+                ResourceUtil.getInternalResourceURL(context, SpinnerRenderer.class, "spinner.js"),
+                ResourceUtil.getInternalResourceURL(context, ResourceUtil.class, "dojo.js")
         });
     }
+
+    private JSONObject createFormatOptions(FacesContext context, Spinner spinner) throws JSONException, IOException {
+
+        Converter converter = spinner.getConverter();
+        if (!(converter instanceof NumberConverter)) {
+            throw new FacesException("Unsupported converter class of <o:spinner> with id " + spinner.getClientId(context) +
+                    " : " + converter.getClass().getName());
+        }
+
+        NumberConverter numberConverter = (NumberConverter) converter;
+
+        JSONObject options = new JSONObject();
+        options.put("currency", numberConverter.getCurrencyCode());
+        options.put("locale", numberConverter.getLocale().toString());
+        options.put("pattern", numberConverter.getPattern());
+        options.put("round", -1);
+        options.put("symbol", numberConverter.getCurrencySymbol());
+        options.put("type", numberConverter.getType());
+
+
+        JSONObject customs = ResourceUtil.getNumberFormatSettings(numberConverter.getLocale());
+        options.put("customs", customs);
+        return options;
+    }   
 
     @Override
     protected void writeFieldAttributes(ResponseWriter writer, DropDownComponent fieldComponent) throws IOException {

@@ -19,7 +19,8 @@ O$.Spinner = {
                   rolloverButtonClass,
                   pressedButtonClass,
                   disabled,
-                  onchange) {
+                  onchange,
+                  formatOptions) {
     var spinner = O$(spinnerId);
     spinner._increaseButton = O$(spinnerId + "::increase_button");
     spinner._decreaseButton = O$(spinnerId + "::decrease_button");
@@ -40,6 +41,12 @@ O$.Spinner = {
         eval(onchange);
       };
     }
+
+    formatOptions = formatOptions || {};
+    if (formatOptions.type && formatOptions.type == 'number') {
+      formatOptions.type = 'decimal';
+    }
+    spinner._formatOptions = formatOptions;
 
     spinner._rolloverButtonClass = rolloverButtonClass;
     spinner._pressedButtonClass = pressedButtonClass;
@@ -95,7 +102,10 @@ O$.Spinner = {
     spinner.getValue = function() {
       if (!spinner._field)
         return null;
-      var value = parseInt(spinner._field.value, 10);
+      var value = O$.Dojo.Number.parse(spinner._field.value, spinner._formatOptions);
+      if (isNaN(value)){
+        value = parseFloat(spinner._field.value);
+      }
       return !isNaN(value) ? value : null;
     };
 
@@ -103,9 +113,9 @@ O$.Spinner = {
       var newValue = value == null || isNaN(value)
               ? ""
               : value;
-      var prevValue = spinner._field.value;
-      spinner._field.value = newValue;
-      if (newValue != parseInt(prevValue, 10)) {
+      var prevValue = O$.Dojo.Number.parse(spinner._field.value, spinner._formatOptions);
+      spinner._field.value = O$.Dojo.Number.format(newValue, spinner._formatOptions);
+      if (newValue != prevValue) {
         notifyOfInputChanges(spinner);
       }
 
@@ -119,20 +129,17 @@ O$.Spinner = {
           pressed: spinner._pressedButtonClass
         });
 
-        var value = parseInt(spinner._field.value, 10);
+        var value = spinner.getValue();
         if (!value && value != 0) {
-          spinner._field.value = minValue;
+          spinner.setValue(minValue);
         } else if (value + step <= maxValue) {
-          spinner._field.value = value + step;
+          spinner.setValue(value + step);
         } else {
           if (cycled) {
-            spinner._field.value = minValue;
+            spinner.setValue(minValue);
           } else {
-            spinner._field.value = maxValue;
+            spinner.setValue(maxValue);
           }
-        }
-        if (value != parseInt(spinner._field.value, 10)) {
-          notifyOfInputChanges(spinner);
         }
         O$.breakEvent(e);
       };
@@ -144,21 +151,18 @@ O$.Spinner = {
           pressed: spinner._pressedButtonClass
         });
 
-        var value = parseInt(spinner._field.value, 10);
+        var value = spinner.getValue();
         if (!value && value != 0) {
-          spinner._field.value = minValue;
+          spinner.setValue(minValue);
         } else if (value - step >= minValue) {
-          spinner._field.value = value - step;
+          spinner.setValue(value - step);
         }
         else {
           if (cycled) {
-            spinner._field.value = maxValue;
+            spinner.setValue(maxValue);
           } else {
-            spinner._field.value = minValue;
+            spinner.setValue(minValue);
           }
-        }
-        if (value != parseInt(spinner._field.value, 10)) {
-          notifyOfInputChanges(spinner);
         }
         O$.breakEvent(e);
       };
@@ -242,14 +246,14 @@ O$.Spinner = {
     }
 
     function checkValueForBounds(spinner) {
-      var value = parseInt(spinner._field.value, 10);
+      var value = spinner.getValue();
       if (value) {
         if (value < minValue) {
-          spinner._field.value = minValue;
+          spinner.setValue(minValue);
           notifyOfInputChanges(spinner);
         }
         if (value > maxValue) {
-          spinner._field.value = maxValue;
+          spinner.setValue(maxValue);
           notifyOfInputChanges(spinner);
         }
       }

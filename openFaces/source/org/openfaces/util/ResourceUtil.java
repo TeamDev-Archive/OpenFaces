@@ -11,18 +11,21 @@
  */
 package org.openfaces.util;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.ajax4jsf.renderkit.RendererUtils;
 import org.openfaces.renderkit.filter.ExpressionFilterRenderer;
+import org.openfaces.org.json.JSONObject;
+import org.openfaces.org.json.JSONTokener;
+import org.openfaces.org.json.JSONException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.FacesException;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -32,13 +35,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashSet;
-import java.util.Locale;
 
 /**
  * @author Dmitry Pikhulya
@@ -57,6 +60,8 @@ public class ResourceUtil {
 
     private static String SRC = RendererUtils.HTML.src_ATTRIBUTE;
     private static String SRC_UC = SRC.toUpperCase(Locale.US);
+    private static final String CLDR = "cldr";
+    private static final String NUMBER_LOCALE_SETTINGS = "number.js";
 
     private ResourceUtil() {
     }
@@ -117,6 +122,14 @@ public class ResourceUtil {
         return getInternalResourceURL(context, componentClass, resourceName, true);
     }
 
+    private static String getPackagePath(Class componentClass) {
+        String packageName = componentClass == null ? "" : getPackageName(componentClass);
+        String packagePath = packageName.replace('.', '/');
+        if (packagePath.length() > 0) {
+            packagePath += "/";
+        }
+        return packagePath;
+    }
     /**
      * @param context            Current FacesContext
      * @param componentClass     Class, relative to which the resourcePath is specified
@@ -135,11 +148,7 @@ public class ResourceUtil {
         if (context == null) throw new NullPointerException("context");
         if (resourcePath == null) throw new NullPointerException("resourcePath");
 
-        String packageName = componentClass == null ? "" : getPackageName(componentClass);
-        String packagePath = packageName.replace('.', '/');
-        if (packagePath.length() > 0) {
-            packagePath += "/";
-        }
+         String packagePath = getPackagePath(componentClass);
 
         String versionString = getVersionString();
         int extensionIndex = resourcePath.lastIndexOf(".");
@@ -193,6 +202,33 @@ public class ResourceUtil {
         versionString = version;
         return version;
     }
+
+
+    public static JSONObject getNumberFormatSettings(Locale locale) throws IOException, JSONException {
+        String cldrPath = "/"+getPackagePath(ResourceUtil.class) + CLDR;
+
+        InputStream numberStream = null;
+        if (locale != null) {
+            numberStream = ResourceUtil.class.getResourceAsStream(cldrPath + "/" + locale.toString() + "/" + NUMBER_LOCALE_SETTINGS);
+        }
+        if (numberStream == null) {
+            numberStream = ResourceUtil.class.getResourceAsStream(cldrPath + "/" + NUMBER_LOCALE_SETTINGS);
+        }
+        BufferedReader bufferedReader = null;
+        try {            
+            bufferedReader = new BufferedReader(new InputStreamReader(numberStream, "UTF-8"));
+            String text = bufferedReader.readLine();
+            text = text.substring(1, text.length()-1);
+            JSONObject result = new JSONObject(new JSONTokener(text));
+            return result;
+        } finally {
+            if (bufferedReader != null) {
+                bufferedReader.close();
+            }
+        }
+
+    }
+
 
     /**
      * Return URL of util.js file
