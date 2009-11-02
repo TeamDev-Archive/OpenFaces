@@ -113,4 +113,28 @@
           minValue="0" maxValue="20">
     </o:spinner>
 
+  <br/>
+  <h1>Number converter</h1>
+  <br/>
+  Percent type, locale en, step 0.01, binded to int <br/>
+  <o:spinner value="#{SpinnerBackingBean.value1}" step="0.01" maxValue="1" minValue="0" style="width: 100px;">
+    <f:convertNumber locale="en" type="percent"/>
+  </o:spinner>
+  <br/>
+  Currency type, locale ru, step 100, binded to long with value 10000 <br/>
+  <o:spinner value="#{SpinnerBackingBean.value2}" step="100" maxValue="100000000000" minValue="0" style="width: 100px;"/>
+  <br/>
+  Number type, default locale, step 2.5, binded to BigDecimal<br/>
+  <o:spinner value="#{SpinnerBackingBean.value3}" step="2.5" maxValue="500" minValue="-500" style="width: 100px;"/>
+  <br/>
+  Pattern ¤ 00.000, locale de, step 0.5, binded to BigDecimal<br/>
+  <o:spinner value="#{SpinnerBackingBean.value4}" step="0.5" maxValue="500" minValue="0" style="width: 100px;">
+    <f:convertNumber pattern="¤ 00.000" locale="de" currencySymbol="€"/>
+  </o:spinner>
+  <br/>
+  Number type, locale ar, step 5, binded to Number = null<br/>
+  <o:spinner value="#{SpinnerBackingBean.value5}" step="5" minValue="-1000" maxValue="1000" style="width: 100px;">
+    <f:convertNumber type="number" locale="ar"/>
+  </o:spinner>
+
 </div>
