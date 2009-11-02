@@ -133,7 +133,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         options.put("currency", numberConverter.getCurrencyCode());
         options.put("locale", numberConverter.getLocale().toString());
         options.put("pattern", numberConverter.getPattern());
-        options.put("round", -1);
+        options.put("round", 10);
         options.put("symbol", numberConverter.getCurrencySymbol());
         options.put("type", numberConverter.getType());
 

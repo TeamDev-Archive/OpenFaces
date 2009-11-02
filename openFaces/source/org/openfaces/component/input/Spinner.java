@@ -44,6 +44,15 @@ public class Spinner extends DropDownComponent {
     }
 
     @Override
+    public Object getValue() {
+        Object result = super.getValue();
+        if (result != null){
+            return result;
+        }
+        return 0;
+    }
+
+    @Override
     public HorizontalAlignment getButtonAlignment() {
         return super.getButtonAlignment();
     }
