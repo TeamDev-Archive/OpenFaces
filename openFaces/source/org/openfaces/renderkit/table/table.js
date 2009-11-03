@@ -52,7 +52,7 @@ O$.Table = {
     table._useAjax = useAjax;
 
     try {
-      O$._initTableStyles.apply(table, structureAndStyleParams);
+      O$.Tables._initStyles.apply(table, structureAndStyleParams);
     } finally {
       table.style.visibility = "visible";
       // can't just exclude the "o_initially_invisible" from table.className because of IE issue (JSFC-2337)
@@ -85,9 +85,9 @@ O$.Table = {
     }
 
     table._cleanUp = function() {
-      table._bodyRows = new Array();
-      table._headerRows = new Array();
-      table._footerRows = new Array();
+      table.body._rows = [];
+      table.header._rows = [];
+      table.footer._rows = [];
     };
   },
 
@@ -457,8 +457,8 @@ O$.Table = {
     O$.assert(baseRowIndex, "O$.Table._combineSelectedRowsWithRange: baseRowIndex should be specified");
     O$.assert(rangeEndRowIndex, "O$.Table._combineSelectedRowsWithRange: rangeEndRowIndex should be specified");
 
-    var result = new Array();
-    var alreadyIncludedIndexes = new Array();
+    var result = [];
+    var alreadyIncludedIndexes = [];
     var rangeStart, rangeEnd;
     if (baseRowIndex < rangeEndRowIndex) {
       rangeStart = baseRowIndex;
@@ -586,8 +586,8 @@ O$.Table = {
       selectionField.value = value;
     };
     table._setSelectedItems = function(items, forceUpdate) {
-      var changesArray = new Array();
-      var changesArrayIndexes = new Array();
+      var changesArray = [];
+      var changesArrayIndexes = [];
       var oldSelectedItemsStr = "";
       var i;
       if (this._selectedItems)
@@ -665,7 +665,7 @@ O$.Table = {
         return;
       if (this._selectableItems == "rows") {
         var rows = this.body._getRows();
-        var allItems = new Array();
+        var allItems = [];
         for (var i = 0, count = rows.length; i < count; i++)
           allItems[i] = i;
         this._setSelectedItems(allItems);
@@ -687,7 +687,7 @@ O$.Table = {
         return;
       }
       var selectedIndexes = this._selectedItems;
-      var newArray = new Array();
+      var newArray = [];
       for (var i = 0, count = selectedIndexes.length; i < count; i++) {
         var idx = selectedIndexes[i];
         if (idx != itemIndex)
@@ -733,7 +733,7 @@ O$.Table = {
 
       var selectedItemCount = selectedItems.length;
       if (selectedItemCount > 0) {
-        var newSelectedItems = new Array();
+        var newSelectedItems = [];
         var selectionChanged = false;
         for (i = 0; i < selectedItemCount; i++) {
           var rowIndex = selectedItems[i];
@@ -776,7 +776,7 @@ O$.Table = {
     O$.assert(handler, "O$.Table._addSelectionChangeHandler: handler must be specified. table.id = " + table.id);
     var handlers = table._selectionChangeHandlers;
     if (!handlers) {
-      handlers = new Array();
+      handlers = [];
       table._selectionChangeHandlers = handlers;
     }
     handlers.push(handler);
@@ -850,7 +850,7 @@ O$.Table = {
 
     var cellRow = cell._row;
     if (!cellRow._selectionCheckBoxes)
-      cellRow._selectionCheckBoxes = new Array();
+      cellRow._selectionCheckBoxes = [];
     cellRow._selectionCheckBoxes.push(checkBox);
   },
 
@@ -946,9 +946,9 @@ O$.Table = {
     header.style.cursor = "default";
 
     if (!table._checkBoxColumnHeaders)
-      table._checkBoxColumnHeaders = new Array();
+      table._checkBoxColumnHeaders = [];
     if (!table._checkBoxColumnHeaders[colId])
-      table._checkBoxColumnHeaders[colId] = new Array();
+      table._checkBoxColumnHeaders[colId] = [];
     var colHeadersArray = table._checkBoxColumnHeaders[colId];
     colHeadersArray.push(header);
 
