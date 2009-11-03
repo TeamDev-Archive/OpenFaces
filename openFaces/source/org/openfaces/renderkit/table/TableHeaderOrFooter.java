@@ -330,7 +330,7 @@ public abstract class TableHeaderOrFooter extends TableElement {
                     : 0
             );
             List<HeaderCell> cells = row.getCells();
-            for (int i = 0; i < cells.size(); i++) {
+            for (int i = 0, count = cells.size(); i < count; i++) {
                 HeaderCell cell = cells.get(i);
                 TableScrollingArea scrollingArea = (TableScrollingArea) cell.getComponent();
                 List<? extends TableElement> rows = scrollingArea.getRows();

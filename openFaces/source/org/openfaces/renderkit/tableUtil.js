@@ -91,8 +91,8 @@ O$._evaluateStyleClassProperties_cached = function(className, propertyNames, cac
 
 /**
  *
- * @param columns defines a hierarchy of all table's columns with all their configuration settings. It is an array of
- *   column specification objects. Each column specification object contains the following properties:
+ * The columns parameter defines a hierarchy of all table's columns with all their configuration settings. It is an
+ * array of column specification objects. Each column specification object contains the following properties:
  *   - scrolling
  *   - className
  *   - hasCellWrappers
@@ -117,18 +117,6 @@ O$._evaluateStyleClassProperties_cached = function(className, propertyNames, cac
  *     - className: String
  *     - onclick, ondblclick and all other events: String
  *   - subColumns: [array of column specification objects]
- *
- * @param commonHeaderExists
- * @param filterRowExists
- * @param commonFooterExists
- * @param noDataRows
- * @param gridLines
- * @param rowStyles
- * @param rowStylesMap
- * @param cellStylesMap
- * @param forceUsingCellStyles
- * @param additionalCellWrapperStyle
- * @param invisibleRowsAllowed
  */
 O$.Tables = {
   _initStyles: function(scrolling, columns, commonHeaderExists, filterRowExists, commonFooterExists, noDataRows,
@@ -379,12 +367,19 @@ O$.Tables = {
 // -------------------------- TABLE ROWS SUPPORT
 
 O$._initTableRows = function(table) {
-  function initTableSection(table, sectionTagName) {
+  function initTableSection(table, sectionTagName, commonRowAbove) {
     var section = {
       _getRows: function() {
         if (!this._rows) {
           var section = O$.getChildNodesWithNames(table, [sectionTagName])[0];
-          this._rows = (section != null) ? O$.getChildNodesWithNames(section, ["tr"]) : [];
+          if (section) {
+            if (!table._scrolling) {
+              this._rows = O$.getChildNodesWithNames(section, ["tr"]);
+            } else {
+              
+              O$.findElementByPath(section, "tr[0]/table")
+            }
+          }
         }
         return this._rows;
       },
@@ -413,8 +408,8 @@ O$._initTableRows = function(table) {
     return section;
   };
 
-  table.header = initTableSection(table, "thead");
-  table.footer = initTableSection(table, "tfoot");
+  table.header = initTableSection(table, "thead", table._commonHeaderExists ? true : undefined);
+  table.footer = initTableSection(table, "tfoot", table._commonFooterExists ? false : undefined);
   table.body = initTableSection(table, "tbody");
 
   var headRows = table.header._getRows();
@@ -423,7 +418,7 @@ O$._initTableRows = function(table) {
     row = headRows[rowIndex];
     row._table = table;
     row._index = rowIndex;
-    O$._prepareRow(row);
+    O$.Tables._prepareRow(row);
   }
   var commonHeaderRowIndex = table._commonHeaderExists ? 0 : -1;
   var filterRowIndex = table._filterRowExists ? headRows.length - 1 : -1;
@@ -454,7 +449,7 @@ O$._initTableRows = function(table) {
     row = footRows[rowIndex];
     row._table = table;
     row._index = rowIndex;
-    O$._prepareRow(row);
+    O$.Tables._prepareRow(row);
 
     if (rowIndex <= lastNonCommonFooter)
       O$._setRowStyle(footRows[rowIndex], {_footerRowClass: table._footerRowClass});
@@ -527,7 +522,7 @@ O$._initTableRow = function(row, table, rowIndex, visibleRowsBefore) {
     return null;
   };
 
-  O$._prepareRow(row);
+  O$.Tables._prepareRow(row);
 
   function reinitializeStyle(visibleRowsBefore) {
     O$._calculateInitialRowClass(row, table, visibleRowsBefore);
@@ -624,7 +619,7 @@ O$._initTableRow = function(row, table, rowIndex, visibleRowsBefore) {
 
 };
 
-O$._prepareRow = function(row) {
+O$.Tables._prepareRow = function(row) {
   var cells = O$._getRowCells(row);
   row._cells = cells;
   row._cellsByColumns = [];
@@ -880,7 +875,7 @@ O$._initTableGridLines = function(table) {
     tableFooter._updateCommonFooterSeparator = function() {
       if (!table._commonFooterExists)
         return;
-      var footerRows = table._footerRows;
+      var footerRows = table.footer._getRows();
       var commonFooterRow = footerRows[footerRows.length - 1];
       var commonFooterCell = commonFooterRow._cells[0];
       O$._setCellStyleProperty(commonFooterCell, "borderTop", table._commonFooterSeparator);
