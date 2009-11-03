@@ -224,7 +224,6 @@ public abstract class DropDownComponentRenderer extends RendererBase {
                 DEFAULT_PROMPT_CLASS);
 
         String promptText = dropDown.getPromptText();
-        promptText = promptText == null ? null : "'" + promptText + "'";
 
         List<Object> params = new ArrayList<Object>();
         params.add(fieldText);

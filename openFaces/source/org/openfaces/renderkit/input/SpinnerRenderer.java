@@ -235,7 +235,6 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
                 DEFAULT_PROMPT_CLASS);
 
         String promptText = dropDown.getPromptText();
-        promptText = promptText == null ? null : "'" + promptText + "'";
 
         List<String> params = new ArrayList<String>();
         params.add(fieldText);

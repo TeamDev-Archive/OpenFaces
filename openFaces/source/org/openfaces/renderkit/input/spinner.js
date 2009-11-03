@@ -1,4 +1,5 @@
 /*
+/*
  * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2009, TeamDev Ltd.
  * licensing@openfaces.org
@@ -37,7 +38,7 @@ O$.Spinner = {
     }
 
     if (onchange) {
-      spinner.onchange = function() {
+      spinner._onchange = function() {
         eval(onchange);
       };
     }
@@ -55,9 +56,9 @@ O$.Spinner = {
       field.onkeypress = function(e) {
         var evt = O$.getEvent(e);
 
-        var valueBefore = field.value;
+        var valueBefore = spinner.getValue();
         setTimeout(function() {
-          var valueAfter = field.value;
+          var valueAfter = spinner.getValue();
           if (valueBefore == valueAfter)
             return;
           notifyOfInputChanges(spinner);
@@ -104,18 +105,21 @@ O$.Spinner = {
         return null;
       var value = O$.Dojo.Number.parse(spinner._field.value, spinner._formatOptions);
       if (isNaN(value)){
-        value = parseFloat(spinner._field.value);
+        value = parseFloat(spinner._field.value, 10);
       }
       return !isNaN(value) ? value : null;
     };
 
-    spinner.setValue = function(value) {
+    spinner.setValue = function(value, silent) {
       var newValue = value == null || isNaN(value)
               ? ""
               : value;
-      var prevValue = O$.Dojo.Number.parse(spinner._field.value, spinner._formatOptions);
+      var prevValue;
+      if (!silent){
+        prevValue = spinner.getValue();
+      }
       spinner._field.value = O$.Dojo.Number.format(newValue, spinner._formatOptions);
-      if (newValue != prevValue) {
+      if (!silent && newValue != prevValue) {
         notifyOfInputChanges(spinner);
       }
 
@@ -123,7 +127,6 @@ O$.Spinner = {
 
     if (!disabled) {
       spinner._increaseButton.onmousedown = function(e) {
-        checkValueForBounds(spinner);
 
         O$.setStyleMappings(increaseButton, {
           pressed: spinner._pressedButtonClass
@@ -131,38 +134,43 @@ O$.Spinner = {
 
         var value = spinner.getValue();
         if (!value && value != 0) {
-          spinner.setValue(minValue);
+          spinner.setValue(minValue, true);
         } else if (value + step <= maxValue) {
-          spinner.setValue(value + step);
+          spinner.setValue(value + step, true);
         } else {
           if (cycled) {
-            spinner.setValue(minValue);
+            spinner.setValue(minValue, true);
           } else {
-            spinner.setValue(maxValue);
+            spinner.setValue(maxValue, true);
           }
+        }
+        if (value != spinner.getValue()) {
+          notifyOfInputChanges(spinner);
         }
         O$.breakEvent(e);
       };
       spinner._decreaseButton.onmousedown = function(e) {
 
-        checkValueForBounds(spinner);
-
+        O$.addEvent(spinner._field.id, 'focus');
         O$.setStyleMappings(decreaseButton, {
           pressed: spinner._pressedButtonClass
         });
 
         var value = spinner.getValue();
         if (!value && value != 0) {
-          spinner.setValue(minValue);
+          spinner.setValue(minValue, true);
         } else if (value - step >= minValue) {
-          spinner.setValue(value - step);
+          spinner.setValue(value - step, true);
         }
         else {
           if (cycled) {
-            spinner.setValue(maxValue);
+            spinner.setValue(maxValue, true);
           } else {
-            spinner.setValue(minValue);
+            spinner.setValue(minValue, true);
           }
+        }
+        if (value != spinner.getValue()) {
+          notifyOfInputChanges(spinner);
         }
         O$.breakEvent(e);
       };
@@ -173,10 +181,8 @@ O$.Spinner = {
         if (!evt) return;
         var keyCode = evt.keyCode;
         if (keyCode == 38) { // Up key
-          checkValueForBounds(spinner);
           spinner._increaseButton.onmousedown(e);
         } else if (keyCode == 40) { // Down key
-          checkValueForBounds(spinner);
           spinner._decreaseButton.onmousedown(e);
         }
         if (field._oldInkeydown)
@@ -241,19 +247,23 @@ O$.Spinner = {
     }
 
     function notifyOfInputChanges(spinner) {
-      if (spinner.onchange)
-        spinner.onchange();
+      if (spinner._onchange)
+        spinner._onchange();
     }
 
     function checkValueForBounds(spinner) {
       var value = spinner.getValue();
-      if (value) {
+      if (value != null) {
         if (value < minValue) {
           spinner.setValue(minValue);
-          notifyOfInputChanges(spinner);
         }
         if (value > maxValue) {
           spinner.setValue(maxValue);
+        }
+        spinner.setValue(value, true);
+      }else{
+        if (spinner._field.value != ''){
+          spinner._field.value = '';
           notifyOfInputChanges(spinner);
         }
       }
