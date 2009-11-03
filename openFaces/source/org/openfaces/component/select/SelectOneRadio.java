@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.component.input;
+package org.openfaces.component.select;
 
 import org.openfaces.component.OUIInputBase;
 import org.openfaces.util.NullTypeELResolver;
@@ -19,9 +19,7 @@ import org.openfaces.util.ValueBindings;
 import javax.faces.context.FacesContext;
 
 /**
- * Author: Oleg Marshalenko
- * Date: Sep 18, 2009
- * Time: 3:38:45 PM
+ * @author Oleg Marshalenko
  */
 public class SelectOneRadio extends OUIInputBase {
 
@@ -67,10 +65,15 @@ public class SelectOneRadio extends OUIInputBase {
     private String enabledClass;
     private String disabledStyle;
     private String disabledClass;
-    private String selectedStyle;
-    private String selectedClass;
-    private String unselectedStyle;
-    private String unselectedClass;
+
+    private String focusedItemStyle;
+    private String focusedItemClass;
+    private String selectedItemStyle;
+    private String selectedItemClass;
+    private String rolloverItemStyle;
+    private String rolloverItemClass;
+    private String pressedItemStyle;
+    private String pressedItemClass;
 
     public String getAccesskey() {
         return ValueBindings.get(this, "accesskey", accesskey);
@@ -240,36 +243,68 @@ public class SelectOneRadio extends OUIInputBase {
         this.disabledClass = disabledClass;
     }
 
-    public String getSelectedStyle() {
-        return ValueBindings.get(this, "selectedStyle", selectedStyle);
+    public String getFocusedItemStyle() {
+        return ValueBindings.get(this, "focusedItemStyle", focusedItemStyle);
     }
 
-    public void setSelectedStyle(String selectedStyle) {
-        this.selectedStyle = selectedStyle;
+    public void setFocusedItemStyle(String focusedItemStyle) {
+        this.focusedItemStyle = focusedItemStyle;
     }
 
-    public String getSelectedClass() {
-        return ValueBindings.get(this, "selectedClass", selectedClass);
+    public String getFocusedItemClass() {
+        return ValueBindings.get(this, "focusedItemClass", focusedItemClass);
     }
 
-    public void setSelectedClass(String selectedClass) {
-        this.selectedClass = selectedClass;
+    public void setFocusedItemClass(String focusedItemClass) {
+        this.focusedItemClass = focusedItemClass;
     }
 
-    public String getUnselectedStyle() {
-        return ValueBindings.get(this, "unselectedStyle", unselectedStyle);
+    public String getSelectedItemStyle() {
+        return ValueBindings.get(this, "selectedItemStyle", selectedItemStyle);
     }
 
-    public void setUnselectedStyle(String unselectedStyle) {
-        this.unselectedStyle = unselectedStyle;
+    public void setSelectedItemStyle(String selectedItemStyle) {
+        this.selectedItemStyle = selectedItemStyle;
     }
 
-    public String getUnselectedClass() {
-        return ValueBindings.get(this, "unselectedClass", unselectedClass);
+    public String getSelectedItemClass() {
+        return ValueBindings.get(this, "selectedItemClass", selectedItemClass);
     }
 
-    public void setUnselectedClass(String unselectedClass) {
-        this.unselectedClass = unselectedClass;
+    public void setSelectedItemClass(String selectedItemClass) {
+        this.selectedItemClass = selectedItemClass;
+    }
+
+    public String getRolloverItemStyle() {
+        return ValueBindings.get(this, "rolloverItemStyle", rolloverItemStyle);
+    }
+
+    public void setRolloverItemStyle(String rolloverItemStyle) {
+        this.rolloverItemStyle = rolloverItemStyle;
+    }
+
+    public String getRolloverItemClass() {
+        return ValueBindings.get(this, "rolloverItemClass", rolloverItemClass);
+    }
+
+    public void setRolloverItemClass(String rolloverItemClass) {
+        this.rolloverItemClass = rolloverItemClass;
+    }
+
+    public String getPressedItemStyle() {
+        return ValueBindings.get(this, "pressedItemStyle", pressedItemStyle);
+    }
+
+    public void setPressedItemStyle(String pressedItemStyle) {
+        this.pressedItemStyle = pressedItemStyle;
+    }
+
+    public String getPressedItemClass() {
+        return ValueBindings.get(this, "pressedItemClass", pressedItemClass);
+    }
+
+    public void setPressedItemClass(String pressedItemClass) {
+        this.pressedItemClass = pressedItemClass;
     }
 
     public Object saveState(FacesContext context) {
@@ -295,10 +330,14 @@ public class SelectOneRadio extends OUIInputBase {
                 enabledClass,
                 disabledStyle,
                 disabledClass,
-                selectedStyle,
-                selectedClass,
-                unselectedStyle,
-                unselectedClass
+                focusedItemStyle,
+                focusedItemClass,
+                selectedItemStyle,
+                selectedItemClass,
+                rolloverItemStyle,
+                rolloverItemClass,
+                pressedItemStyle,
+                pressedItemClass
         };
     }
 
@@ -327,10 +366,14 @@ public class SelectOneRadio extends OUIInputBase {
         enabledClass = (String) values[i++];
         disabledStyle = (String) values[i++];
         disabledClass = (String) values[i++];
-        selectedStyle = (String) values[i++];
-        selectedClass = (String) values[i++];
-        unselectedStyle = (String) values[i++];
-        unselectedClass = (String) values[i];
+        focusedItemStyle = (String) values[i++];
+        focusedItemClass = (String) values[i++];
+        selectedItemStyle = (String) values[i++];
+        selectedItemClass = (String) values[i++];
+        rolloverItemStyle = (String) values[i++];
+        rolloverItemClass = (String) values[i++];
+        pressedItemStyle = (String) values[i++];
+        pressedItemClass = (String) values[i++];
     }
 
     @Override

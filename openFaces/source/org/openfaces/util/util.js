@@ -2589,6 +2589,12 @@ if (!window.O$) {
     return someClassesExcluded;
   };
 
+  O$.removeOfClassName = function(element, className) {
+    if (element.className.length > 0) {
+      element.className = element.className.replace(className, "");
+    }
+  };
+
   O$.getElementOwnStyle = function(element) {
     var styleMappings = element._styleMappings;
     if (!styleMappings)
@@ -3419,6 +3425,21 @@ if (!window.O$) {
     var str = O$.getElementStyleProperty(element, propertyName, enableValueCaching);
     var result = O$.calculateNumericCSSValue(str);
     return result;
+  };
+
+  O$.getIndentData = function(element, indentDelta) {
+    var indent = {};
+
+    if (indentDelta.marginLeft) {
+      indent.marginLeft = (indentDelta.marginLeft + O$.getNumericStyleProperty(element, "margin-left")) + "px";
+    }
+    if (indentDelta.marginRight) {
+      indent.marginRight = (indentDelta.marginRight + O$.getNumericStyleProperty(element, "margin-right")) + "px";
+    }
+    if (indentDelta.marginBottom) {
+      indent.marginBottom = (indentDelta.marginBottom + O$.getNumericStyleProperty(element, "margin-bottom")) + "px";
+    }
+    return indent;
   };
 
   O$.calculateNumericCSSValue = function(value) {

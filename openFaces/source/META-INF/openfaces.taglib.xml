@@ -900,21 +900,23 @@
     <component>
       <component-type>org.openfaces.SelectOneRadio</component-type>
       <renderer-type>org.openfaces.SelectOneRadioRenderer</renderer-type>
-      <handler-class>org.openfaces.taglib.facelets.input.SelectOneRadioTagHandler</handler-class>
+      <handler-class>org.openfaces.taglib.facelets.select.SelectOneRadioTagHandler</handler-class>
     </component>
   </tag>
   
   <tag>
-    <tag-name>selectOneRadioItem</tag-name>
+    <tag-name>selectItem</tag-name>
     <component>
-      <component-type>org.openfaces.SelectOneRadioItem</component-type>
+      <component-type>org.openfaces.SelectItem</component-type>
+      <handler-class>org.openfaces.taglib.facelets.select.SelectItemTagHandler</handler-class>
     </component>
   </tag>
 
   <tag>
-    <tag-name>selectOneRadioItems</tag-name>
+    <tag-name>selectItems</tag-name>
     <component>
-      <component-type>org.openfaces.SelectOneRadioItems</component-type>
+      <component-type>org.openfaces.SelectItems</component-type>
+      <handler-class>org.openfaces.taglib.facelets.select.SelectItemsTagHandler</handler-class>
     </component>
   </tag>
 

@@ -10,18 +10,16 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.taglib.internal.input;
+package org.openfaces.taglib.internal.select;
 
 import org.openfaces.taglib.internal.AbstractUIInputTag;
-import org.openfaces.component.input.SelectOneRadio;
+import org.openfaces.component.select.SelectOneRadio;
 
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
 
 /**
- * Author: Oleg Marshalenko
- * Date: Sep 18, 2009
- * Time: 3:38:05 PM
+ * @author Oleg Marshalenko
  */
 public class SelectOneRadioTag  extends AbstractUIInputTag {
     private static final String RENDERER_TYPE = "org.openfaces.SelectOneRadioRenderer";
@@ -52,10 +50,6 @@ public class SelectOneRadioTag  extends AbstractUIInputTag {
         setStringProperty(uiComponent, "enabledClass");
         setStringProperty(uiComponent, "disabledStyle");
         setStringProperty(uiComponent, "disabledClass");
-        setStringProperty(uiComponent, "selectedStyle");
-        setStringProperty(uiComponent, "selectedClass");
-        setStringProperty(uiComponent, "unselectedStyle");
-        setStringProperty(uiComponent, "unselectedClass");
         
         setStringProperty(uiComponent, "selectedImageUrl");
         setStringProperty(uiComponent, "unselectedImageUrl");
@@ -65,6 +59,15 @@ public class SelectOneRadioTag  extends AbstractUIInputTag {
         setStringProperty(uiComponent, "pressedUnselectedImageUrl");
         setStringProperty(uiComponent, "disabledSelectedImageUrl");
         setStringProperty(uiComponent, "disabledUnselectedImageUrl");
+
+        setStringProperty(uiComponent, "focusedItemStyle");
+        setStringProperty(uiComponent, "focusedItemClass");
+        setStringProperty(uiComponent, "selectedItemStyle");
+        setStringProperty(uiComponent, "selectedItemClass");
+        setStringProperty(uiComponent, "rolloverItemStyle");
+        setStringProperty(uiComponent, "rolloverItemClass");
+        setStringProperty(uiComponent, "pressedItemStyle");
+        setStringProperty(uiComponent, "pressedItemClass");
     }
 
 }

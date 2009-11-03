@@ -13,7 +13,7 @@
 <body>
 <f:view>
   <h:form id="formID">
-    <%@ include file="selectOneRadio_core.xhtml" %>
+    <%@ include file="selectOneRadio_validation_core.xhtml" %>
   </h:form>
 </f:view>
 

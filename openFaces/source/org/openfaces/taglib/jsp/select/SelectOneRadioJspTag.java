@@ -10,17 +10,15 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.taglib.jsp.input;
+package org.openfaces.taglib.jsp.select;
 
-import org.openfaces.taglib.internal.input.SelectOneRadioTag;
+import org.openfaces.taglib.internal.select.SelectOneRadioTag;
 import org.openfaces.taglib.jsp.UIInputJspTag;
 
 import javax.el.ValueExpression;
 
 /**
- * Author: Oleg Marshalenko
- * Date: Sep 18, 2009
- * Time: 3:17:58 PM
+ * @author Oleg Marshalenko
  */
 public class SelectOneRadioJspTag extends UIInputJspTag {
 
@@ -84,22 +82,6 @@ public class SelectOneRadioJspTag extends UIInputJspTag {
         getDelegate().setPropertyValue("disabledClass", disabledClass);
     }
 
-    public void setSelectedStyle(ValueExpression selectedStyle) {
-        getDelegate().setPropertyValue("selectedStyle", selectedStyle);
-    }
-
-    public void setSelectedClass(ValueExpression selectedClass) {
-        getDelegate().setPropertyValue("selectedClass", selectedClass);
-    }
-
-    public void setUnselectedStyle(ValueExpression unselectedStyle) {
-        getDelegate().setPropertyValue("unselectedStyle", unselectedStyle);
-    }
-
-    public void setUnselectedClass(ValueExpression unselectedClass) {
-        getDelegate().setPropertyValue("unselectedClass", unselectedClass);
-    }
-
     public void setSelectedImageUrl(ValueExpression selectedImageUrl) {
         getDelegate().setPropertyValue("selectedImageUrl", selectedImageUrl);
     }
@@ -130,6 +112,38 @@ public class SelectOneRadioJspTag extends UIInputJspTag {
 
     public void setDisabledUnselectedImageUrl(ValueExpression disabledUnselectedImageUrl) {
         getDelegate().setPropertyValue("disabledUnselectedImageUrl", disabledUnselectedImageUrl);
+    }
+
+    public void setFocusedItemStyle(ValueExpression focusedItemStyle) {
+        getDelegate().setPropertyValue("focusedItemStyle", focusedItemStyle);
+    }
+
+    public void setFocusedItemClass(ValueExpression focusedItemClass) {
+        getDelegate().setPropertyValue("focusedItemClass", focusedItemClass);
+    }
+
+    public void setSelectedItemStyle(ValueExpression selectedItemStyle) {
+        getDelegate().setPropertyValue("selectedItemStyle", selectedItemStyle);
+    }
+
+    public void setSelectedItemClass(ValueExpression selectedItemClass) {
+        getDelegate().setPropertyValue("selectedItemClass", selectedItemClass);
+    }
+
+    public void setRolloverItemStyle(ValueExpression rolloverItemStyle) {
+        getDelegate().setPropertyValue("rolloverItemStyle", rolloverItemStyle);
+    }
+
+    public void setRolloverItemClass(ValueExpression rolloverItemClass) {
+        getDelegate().setPropertyValue("rolloverItemClass", rolloverItemClass);
+    }
+
+    public void setPressedItemStyle(ValueExpression pressedItemStyle) {
+        getDelegate().setPropertyValue("pressedItemStyle", pressedItemStyle);
+    }
+
+    public void setPressedItemClass(ValueExpression pressedItemClass) {
+        getDelegate().setPropertyValue("pressedItemClass", pressedItemClass);
     }
 
 }

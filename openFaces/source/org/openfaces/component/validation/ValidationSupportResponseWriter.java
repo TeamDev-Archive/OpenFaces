@@ -42,7 +42,7 @@ import java.util.Set;
  */
 public class ValidationSupportResponseWriter extends ResponseWriter {
     private static final String[] ELEMENTS_ALLOWED_RENDER_AFTER_THEIR_START = new String[]{
-            "tr", "table", "colgroup", "select", "textarea", "option", "script", "optgroup", "map", "fieldset", "frameset"
+            "td", "tr", "table", "colgroup", "select", "textarea", "option", "script", "optgroup", "map", "fieldset", "frameset"
     };
     private static final String[] ELEMENTS_ALLOW_RENDERER_AFTER_THEIR_END = new String[]{
             "tr", "td", "th", "col", "colgroup", "caption", "thead", "tfoot", "tbody", "legend",

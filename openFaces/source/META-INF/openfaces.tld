@@ -8290,8 +8290,9 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A MethodBinding that should point to the method that accepts
-        a ValueChangeEvent. If the value of the DropDownField changes, this method is executed.
+      <description>MethodBinding representing a value change listener method that will be notified
+        when a new value has been set for this input component. The expression must evaluate to a public
+        method that takes a ValueChangeEvent parameter, with a return type of void.
       </description>
       <name>valueChangeListener</name>
       <deferred-method>
@@ -8302,8 +8303,10 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>A MethodBinding that should point to the method in the backing bean
-        that is called to validate the DropDownField's value.
+      <description>MethodBinding representing a validator method that will be called during
+        Process Validations to perform correctness checks on the value of this component.
+        The expression must evaluate to a public method that takes FacesContext, UIComponent,
+        and Object parameters, with a return type of void.
       </description>
       <name>validator</name>
       <deferred-method>
@@ -8316,9 +8319,7 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>A converter for the DrowDownField's value. Should be specified as
-        a value-binding expression or converter identifier.
-      </description>
+      <description>Converter instance registered with this component.</description>
       <name>converter</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -22480,7 +22481,10 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A flag that indicates whether or not the component is visible.</description>
+      <description>Flag indicating whether or not this component should be rendered
+        (during Render Response Phase), or processed on any subsequent form submit.
+        The default value for this property is true.
+      </description>
       <name>rendered</name>
       <deferred-value>
         <type>boolean</type>
@@ -27332,8 +27336,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when text within the component is selected by the user.
-      </description>
+      <description>JavaScript code executed when the SelectOneRadio component is selected by the user.</description>
       <name>onselect</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27571,10 +27574,12 @@ and it is automatically triggered on any form submission. -->
   <tag>
     <description><![CDATA[   ]]></description>
     <name>selectOneRadio</name>
-    <tag-class>org.openfaces.taglib.jsp.input.SelectOneRadioJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.select.SelectOneRadioJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
-      <description>The component identifier.</description>
+      <description>The component identifier for this component. This value must be unique within the
+        closest parent component that is a naming container.
+      </description>
       <name>id</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27584,7 +27589,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el false -->
     </attribute>
     <attribute>
-      <description>A flag that indicates whether or not valueChangeListener
+      <description>Flag that indicates whether or not valueChangeListener
         should be executed immediately (during the Apply Request Values phase of the
         request processing lifecycle instead of Process Validations phase) and the
         component's input should be converted and validated immediately (during
@@ -27638,7 +27643,11 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A flag that indicates whether or not the component is readonly.</description>
+      <description>Flag indicating that this component will prohibit changes by the user.
+        The element may receive focus unless it has also been disabled. A value of false
+        causes no attribute to be rendered, while a value of true causes the attribute to
+        be rendered as readonly="readonly".
+      </description>
       <name>readonly</name>
       <deferred-value>
         <type>boolean</type>
@@ -27681,14 +27690,14 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A value-binding expression that associates the SelectOneRadio with a backing bean
+      <description>The value-binding expression that associates the SelectOneRadio with a backing bean
         property.
       </description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.input.SelectOneRadio</type>
+        <type>org.openfaces.component.select.SelectOneRadio</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.input.SelectOneRadio-->
+      <!-- @bindingType org.openfaces.component.select.SelectOneRadio-->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -27703,7 +27712,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A flag that indicates whether or not the SelectOneRadio requires a value.</description>
+      <description>Flag indicating that the user is required to provide a submitted
+        value for this input component.
+      </description>
       <name>required</name>
       <deferred-value>
         <type>boolean</type>
@@ -27713,7 +27724,10 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A flag that enabled or disabled SelectOneRadio.</description>
+      <description>Flag indicating that this element must never receive focus or
+        be included in a subsequent submit. A value of false causes no attribute to be rendered,
+        while a value of true causes the attribute to be rendered as disabled="disabled".
+      </description>
       <name>disabled</name>
       <deferred-value>
         <type>boolean</type>
@@ -27733,7 +27747,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the SelectOneRadio component.</description>
+      <description>CSS style(s) to be applied when this component is rendered.</description>
       <name>style</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27743,7 +27757,10 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the SelectOneRadio component.</description>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when this element is rendered. This value must be passed through
+        as the "class" attribute on generated markup.
+      </description>
       <name>styleClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27753,7 +27770,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the SelectOneRadio component in the enabled state.</description>
+      <description>CSS style(s) to be applied when this component is in the enabled state.</description>
       <name>enabledStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27763,7 +27780,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the SelectOneRadio component in the enabled state.</description>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when this element is in the enabled state. This value must be passed through
+        as the "class" attribute on generated markup.</description>
       <name>enabledClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27773,7 +27792,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the SelectOneRadio component in the disabled state.</description>
+      <description>CSS style(s) to be applied when this component is in the disabled state.</description>
       <name>disabledStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27783,7 +27802,10 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the SelectOneRadio component in the disabled state.</description>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when this element is in the disabled state. This value must be passed through
+        as the "class" attribute on generated markup.
+      </description>
       <name>disabledClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27793,7 +27815,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the SelectOneRadio component in the rollover state.</description>
+      <description>CSS style(s) to be applied when this component is in the rollover state,
+        i.e. when pointer is over this component.</description>
       <name>rolloverStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27803,7 +27826,10 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the SelectOneRadio component in the rollover state.</description>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when this element is in the rollover state, i.e. when pointer is over this component.
+        This value must be passed through as the "class" attribute on generated markup.
+      </description>
       <name>rolloverClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27813,7 +27839,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style of the SelectOneRadio component when it is focused.</description>
+      <description>CSS style(s) to be applied when this component is in the focused state,
+        i.e. when focus is set to this component.
+      </description>
       <name>focusedStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27823,7 +27851,10 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name of the SelectOneRadio component when it is focused.</description>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when this element is in the focused state, i.e. focus is set to this component.
+        This value must be passed through as the "class" attribute on generated markup.
+      </description>
       <name>focusedClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27833,8 +27864,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed on the client when the value of the
-        SelectOneRadio has changed.
+      <description>Javascript code executed when this element loses focus
+        and its value has been modified since gaining focus.
       </description>
       <name>onchange</name>
       <deferred-value>
@@ -27845,9 +27876,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed on the client when the user presses and releases a key
-        over the SelectOneRadio.
-      </description>
+      <description>Javascript code executed when a key is pressed and released over this component.</description>
       <name>onkeypress</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27857,9 +27886,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed on the client when the user clicks
-        the left mouse button over the SelectOneRadio.
-      </description>
+      <description>JavaScript code executed when the user clicks the pointer button over the SelectOneRadio.</description>
       <name>onclick</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27869,8 +27896,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed on the client when the user double-clicks
-        the left mouse button over the SelectOneRadio.
+      <description>JavaScript code executed on the client when the user double-clicks
+        the pointer button over the SelectOneRadio.
       </description>
       <name>ondblclick</name>
       <deferred-value>
@@ -27881,9 +27908,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user clicks over
-        the SelectOneRadio with either mouse button.
-      </description>
+      <description>JavaScript code executed when a pointer button is pressed down over the SelectOneRadio.</description>
       <name>onmousedown</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27893,9 +27918,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the
-        SelectOneRadio.
-      </description>
+      <description>JavaScript code executed when a pointer is moved onto the SelectOneRadio.</description>
       <name>onmouseover</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27905,9 +27928,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer over the
-        SelectOneRadio.
-      </description>
+      <description>JavaScript code executed when the user moves a pointer within the SelectOneRadio.</description>
       <name>onmousemove</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27917,9 +27938,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the
-        SelectOneRadio.
-      </description>
+      <description>JavaScript code executed when the user moves a pointer away from the SelectOneRadio.</description>
       <name>onmouseout</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27929,9 +27948,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases the mouse button over the
-        SelectOneRadio.
-      </description>
+      <description>JavaScript code executed when the user releases the mouse button over the SelectOneRadio.</description>
       <name>onmouseup</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27941,8 +27958,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the SelectOneRadio receives focus.
-      </description>
+      <description>JavaScript code executed when the SelectOneRadio receives focus.</description>
       <name>onfocus</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27952,8 +27968,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the SelectOneRadio loses focus.
-      </description>
+      <description>JavaScript code executed when the SelectOneRadio loses focus.</description>
       <name>onblur</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27963,9 +27978,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user presses a key over the
-        SelectOneRadio.
-      </description>
+      <description>JavaScript code executed when a key is pressed down over the SelectOneRadio.</description>
       <name>onkeydown</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27975,9 +27988,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases a key over the
-        SelectOneRadio.
-      </description>
+      <description>JavaScript code executed when a key is released over the SelectOneRadio.</description>
       <name>onkeyup</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27988,8 +27999,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>An access key for the SelectOneRadio component.
-      </description>
+      <description>Access key that, when pressed, transfers focus to this element.</description>
       <name>accesskey</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27999,7 +28009,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Position of the SelectOneRadio component in the tabbing order for the current document.
+      <description>Position of this element in the tabbing order for the current document.
+        This value must be an integer between 0 and 32767.
       </description>
       <name>tabindex</name>
       <deferred-value>
@@ -28010,7 +28021,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>An advisory title for the SelectOneRadio component.
+      <description>Advisory title information about markup elements generated for this component.
       </description>
       <name>title</name>
       <deferred-value>
@@ -28022,7 +28033,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>Direction of the SelectOneRadio text.
+      <description>Direction indication for text that does not inherit directionality.
+        Valid values are "LTR" (left-to-right) and "RTL" (right-to-left).
       </description>
       <name>dir</name>
       <deferred-value>
@@ -28033,8 +28045,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Language code for the SelectOneRadio.
-      </description>
+      <description>Code describing the language used in the generated markup for this component.</description>
       <name>lang</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28057,9 +28068,7 @@ and it is automatically triggered on any form submission. -->
 
 
     <attribute>
-      <description>URL to the image file that is used to render the image
-        that corresponds to the selected state of the SelectOneRadio.
-      </description>
+      <description>URL to the image file, corresponding to the selected state of the SelectOneRadio.</description>
       <name>selectedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28069,9 +28078,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL to the image file that is used to render the image
-        that corresponds to the unselected state of the SelectOneRadio.
-      </description>
+      <description>URL to the image file, corresponding to the unselected state of the SelectOneRadio.</description>
       <name>unselectedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28080,11 +28087,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-
     <attribute>
-      <description>URL to the image file that is used to render the image
-        that corresponds to the selected and rolled over state of the SelectOneRadio.
-      </description>
+      <description>URL to the image file, corresponding to the rolled over state of the selected component.</description>
       <name>rolloverSelectedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28094,9 +28098,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL to the image file that is used to render the image
-        that corresponds to the unselected and rolled over state of the SelectOneRadio.
-      </description>
+      <description>URL to the image file, corresponding to the rolled over state of the unselected component.</description>
       <name>rolloverUnselectedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28105,10 +28107,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-
     <attribute>
-      <description>URL to the image file that is used to render the image
-        that corresponds to the selected and pressed state of the SelectOneRadio.
+      <description>URL to the image file, corresponding to the pressed state of the selected SelectOneRadio.
       </description>
       <name>pressedSelectedImageUrl</name>
       <deferred-value>
@@ -28119,8 +28119,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL to the image file that is used to render the image
-        that corresponds to the unselected and pressed state of the SelectOneRadio.
+      <description>URL to the image file, corresponding to the pressed state of the unselected SelectOneRadio.
       </description>
       <name>pressedUnselectedImageUrl</name>
       <deferred-value>
@@ -28130,10 +28129,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-
     <attribute>
-      <description>URL to the image file that is used to render the image
-        that corresponds to the selected and disabled state of the SelectOneRadio.
+      <description>URL to the image file, corresponding to the disabled state of the selected SelectOneRadio.
       </description>
       <name>disabledSelectedImageUrl</name>
       <deferred-value>
@@ -28144,8 +28141,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL to the image file that is used to render the image
-        that corresponds to the unselected and disabled state of the SelectOneRadio.
+      <description>URL to the image file, corresponding to the disabled state of the unselected SelectOneRadio.
       </description>
       <name>disabledUnselectedImageUrl</name>
       <deferred-value>
@@ -28157,114 +28153,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A style for the SelectOneRadio component in the selected state.</description>
-      <name>selectedStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A CSS class name for the SelectOneRadio component in the selected state.</description>
-      <name>selectedClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A style for the SelectOneRadio component in the unselected state.</description>
-      <name>unselectedStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A CSS class name for the SelectOneRadio component in the unselected state.</description>
-      <name>unselectedClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-  </tag>
-
-  <tag>
-    <description>A child tag of the {@link selectOneRadio} tags
-      that is used to specify a separate list item. It is also possible to add child
-      components to the o:selectOneRadio tag.
-    </description>
-    <name>selectOneRadioItem</name>
-    <tag-class>org.openfaces.taglib.jsp.input.SelectOneRadioItemJspTag</tag-class>
-    <body-content>JSP</body-content>
-
-    <attribute>
-      <description>A flag that indicates whether or not a list item is visible.</description>
-      <name>rendered</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default false -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A value-binding expression that associates a list item with a backing bean property.
-      </description>
-      <name>binding</name>
-      <deferred-value>
-        <type>org.openfaces.component.input.SelectOneRadioItem</type>
-      </deferred-value>
-      <!-- @bindingType org.openfaces.component.input. DropDownItem -->
-      <!-- @default null -->
-      <!-- @el only -->
-    </attribute>
-    <attribute>
-      <description>The value for a list item. This value is converted to String and
-        shown in the text field when this item is selected.
-      </description>
-      <name>value</name>
-      <deferred-value>
-        <type>java.lang.Object</type>
-      </deferred-value>
-      <!-- @bindingType Object -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>The value for a list item. This value is converted to String and
-        shown in the text field when this item is selected.
-      </description>
-      <name>itemLabel</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType Object -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A flag that enabled or disabled SelectOneRadioItem.</description>
-      <name>disabled</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default false -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>
-      </description>
+      <description>CSS style(s) to be applied when an item of this component is in the focused state.</description>
       <name>focusedItemStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28274,7 +28163,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when an item of this component is in the focused state.
+        This value must be passed through as the "class" attribute on generated markup.
       </description>
       <name>focusedItemClass</name>
       <deferred-value>
@@ -28285,8 +28176,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>
-      </description>
+      <description>CSS style(s) to be applied when an item of this component is in the selected state.</description>
       <name>selectedItemStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28296,7 +28186,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when an item of this component is in the selected state.
+        This value must be passed through as the "class" attribute on generated markup.
       </description>
       <name>selectedItemClass</name>
       <deferred-value>
@@ -28307,8 +28199,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>
-      </description>
+      <description>CSS style(s) to be applied when an item of this component is in the rollover state.</description>
       <name>rolloverItemStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28318,7 +28209,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when an item of this component is in the rollover state.
+        This value must be passed through as the "class" attribute on generated markup.
       </description>
       <name>rolloverItemClass</name>
       <deferred-value>
@@ -28329,8 +28222,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>
-      </description>
+      <description>CSS style(s) to be applied when an item of this component is in the pressed state.</description>
       <name>pressedItemStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28340,7 +28232,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when an item of this component is in the pressed state.
+        This value must be passed through as the "class" attribute on generated markup.
       </description>
       <name>pressedItemClass</name>
       <deferred-value>
@@ -28354,22 +28248,98 @@ and it is automatically triggered on any form submission. -->
 
   <tag>
     <description>A child tag of the {@link selectOneRadio} tags
+      that is used to specify a separate list item. It is also possible to add child
+      components to the o:selectOneRadio tag.
+    </description>
+    <name>selectItem</name>
+    <tag-class>org.openfaces.taglib.jsp.select.SelectItemJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>Flag indicating whether or not this component should be rendered (during Render Response Phase),
+        or processed on any subsequent form submit. The default value for this property is true.
+      </description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates a list item with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.select.SelectItem</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.input. DropDownItem -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The value for a list item. This value is converted to String and
+        shown in the text field when this item is selected.
+      </description>
+      <name>itemValue</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The label of a list item.</description>
+      <name>itemLabel</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The text description of a list item.</description>
+      <name>itemDescription</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Flag indicating whether the option created by this component is disabled.
+        Expressions must evaluate to a boolean. Default value is false.
+      </description>
+      <name>itemDisabled</name>
+      <deferred-value>
+        <type>java.lang.Boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+
+  <tag>
+    <description>A child tag of the {@link selectOneRadio} tags
       that is used to specify a list of items.
     </description>
-    <name>selectOneRadioItems</name>
-    <tag-class>org.openfaces.taglib.jsp.input.SelectOneRadioItemsJspTag</tag-class>
+    <name>selectItems</name>
+    <tag-class>org.openfaces.taglib.jsp.select.SelectItemsJspTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
       <description>Specifies a set of radio items. Can be a value-binding expression that
-        references array or collection of any objects or SelectOneRadioItem instances.
+        references array or collection of any objects or SelectItem instances.
       </description>
       <name>value</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType array of org.openfaces.component.input.SelectOneRadioItem -->
-      <!-- @bindingType java.util.Collection of org.openfaces.component.input.SelectOneRadioItem -->
-      <!-- @bindingType array of Object -->
+      <!-- @bindingType array of org.openfaces.component.select.SelectItem -->
       <!-- @bindingType java.util.Collection of Object -->
       <!-- @default null -->
       <!-- @el only -->

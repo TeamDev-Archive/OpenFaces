@@ -1,30 +1,27 @@
-package org.openfaces.renderkit.input;
+/*
+ * OpenFaces - JSF Component Library 2.0
+ * Copyright (C) 2007-2009, TeamDev Ltd.
+ * licensing@openfaces.org
+ * Unless agreed in writing the contents of this file are subject to
+ * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * Please visit http://openfaces.org/licensing/ for more details.
+ */
+
+package org.openfaces.renderkit.select;
 
 import org.openfaces.util.ResourceUtil;
-import org.openfaces.component.input.SelectOneRadio;
-import org.openfaces.component.input.SelectOneRadioItem;
+import org.openfaces.component.select.SelectOneRadio;
+import org.openfaces.component.select.SelectItem;
 
 import javax.faces.context.FacesContext;
 
 /**
- * Author: Oleg Marshalenko
- * Date: Sep 18, 2009
- * Time: 4:07:27 PM
+ * @author Oleg Marshalenko
  */
 public class SelectOneRadioImageManager {
-
-//    public static final String DEFAULT_SELECTED_IMAGE = "selectedRadioButton.png";
-//    public static final String DEFAULT_UNSELECTED_IMAGE = "unselectedRadioButton.png";
-//
-//    public static final String DEFAULT_ROLLOVER_SELECTED_IMAGE = "rolloverSelectedRadioButton.png";
-//    public static final String DEFAULT_ROLLOVER_UNSELECTED_IMAGE = "rolloverUnselectedRadioButton.png";
-//
-//    public static final String DEFAULT_PRESSED_SELECTED_IMAGE = "pressedSelectedRadioButton.png";
-//    public static final String DEFAULT_PRESSED_UNSELECTED_IMAGE = "pressedUnselectedRadioButton.png";
-//
-//    public static final String DEFAULT_DISABLED_SELECTED_IMAGE = "disabledSelectedRadioButton.png";
-//    public static final String DEFAULT_DISABLED_UNSELECTED_IMAGE = "disabledUnselectedRadioButton.png";
-
 
     public static boolean hasImages(SelectOneRadio selectOneRadio) {
         return
@@ -40,15 +37,15 @@ public class SelectOneRadioImageManager {
     }
 
     public static String getCurrentImageUrl(FacesContext context, SelectOneRadio selectOneRadio,
-                                            SelectOneRadioItem selectOneRadioItem) {
-        if (selectOneRadio.isDisabled() || selectOneRadioItem.isDisabled()) {
-            if (selectOneRadioItem.getValue().equals(selectOneRadio.getValue())) {
+                                            SelectItem selectItem) {
+        if (selectOneRadio.isDisabled() || selectItem.isItemDisabled()) {
+            if (selectItem.getItemValue().equals(selectOneRadio.getValue())) {
                 return getDisabledSelectedImageUrl(context, selectOneRadio);
             } else {
                 return getDisabledUnselectedImageUrl(context, selectOneRadio);
             }
         } else {
-            if (selectOneRadioItem.getValue().equals(selectOneRadio.getValue())) {
+            if (selectItem.getItemValue().equals(selectOneRadio.getValue())) {
                 return getSelectedImageUrl(context, selectOneRadio);
             } else {
                 return getUnselectedImageUrl(context, selectOneRadio);

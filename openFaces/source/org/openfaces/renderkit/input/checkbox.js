@@ -292,7 +292,7 @@ O$.Checkbox = {
         var indent = checkbox._indents[styleKey];
 
         if (!indent) {
-          indent = getIndentData(checkbox);
+          indent = O$.getIndentData(checkbox, O$.Checkbox.indentDelta);
           checkbox._indents[styleKey] = indent;
         }
 
@@ -300,22 +300,6 @@ O$.Checkbox = {
           checkbox.style[indentKey] = indent[indentKey];
         }
       }
-    }
-
-    function getIndentData(checkbox) {
-      var indent = {};
-      var delta = O$.Checkbox.indentDelta;
-
-      if (delta.marginLeft) {
-        indent.marginLeft = (delta.marginLeft + O$.getNumericStyleProperty(checkbox, "margin-left")) + "px";
-      }
-      if (delta.marginRight) {
-        indent.marginRight = (delta.marginRight + O$.getNumericStyleProperty(checkbox, "margin-right")) + "px";
-      }
-      if (delta.marginBottom) {
-        indent.marginBottom = (delta.marginBottom + O$.getNumericStyleProperty(checkbox, "margin-bottom")) + "px";
-      }
-      return indent;
     }
 
     function getStyleKey(checkbox) {

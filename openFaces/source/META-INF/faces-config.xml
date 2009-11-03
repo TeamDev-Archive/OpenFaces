@@ -582,16 +582,16 @@
 
   <component>
     <component-type>org.openfaces.SelectOneRadio</component-type>
-    <component-class>org.openfaces.component.input.SelectOneRadio</component-class>
+    <component-class>org.openfaces.component.select.SelectOneRadio</component-class>
   </component>
 
   <component>
-    <component-type>org.openfaces.SelectOneRadioItem</component-type>
-    <component-class>org.openfaces.component.input.SelectOneRadioItem</component-class>
+    <component-type>org.openfaces.SelectItem</component-type>
+    <component-class>org.openfaces.component.select.SelectItem</component-class>
   </component>
   <component>
-    <component-type>org.openfaces.SelectOneRadioItems</component-type>
-    <component-class>org.openfaces.component.input.SelectOneRadioItems</component-class>
+    <component-type>org.openfaces.SelectItems</component-type>
+    <component-class>org.openfaces.component.select.SelectItems</component-class>
   </component>
 
   <component>
@@ -1010,7 +1010,7 @@
     <renderer>
       <component-family>org.openfaces.SelectOneRadio</component-family>
       <renderer-type>org.openfaces.SelectOneRadioRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.input.SelectOneRadioRenderer</renderer-class>
+      <renderer-class>org.openfaces.renderkit.select.SelectOneRadioRenderer</renderer-class>
     </renderer>
 
     <renderer>

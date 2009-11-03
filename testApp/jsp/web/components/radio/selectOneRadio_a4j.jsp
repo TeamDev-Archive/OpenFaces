@@ -7,13 +7,14 @@
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 
 <html>
-<head><title>SelectOneRadio</title></head>
+<head>
+  <title>SelectOneRadio</title></head>
 <script type="text/javascript" src="../../funcTestsUtil.js"></script>
 <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 <body>
 <f:view>
   <h:form id="formID">
-    <%@ include file="selectOneRadio_core.xhtml" %>
+    <%@ include file="selectOneRadio_a4j_core.xhtml" %>
   </h:form>
 </f:view>
 

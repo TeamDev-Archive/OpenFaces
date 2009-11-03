@@ -1,0 +1,112 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+
+  <a href="../../main.jsf">Back to the main page</a>
+
+  <br/>
+  <h3>Select One Radio</h3>
+  <br/>
+  <h:commandButton id="submit" value="Submit"/>
+  <br/>
+  <br/>
+
+  <table>
+    <tr>
+      <td>
+        <h4>Check 'valueChangeListener'</h4>
+
+        <div>
+          <table>
+            <tr>
+              <td class="header" colspan="2">SelectOneRadio basic as attribute</td>
+              <td class="header" colspan="2">SelectOneRadio advanced with images as attribute</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio1" valueChangeListener="#{RadioTestRequest.valueChangedAttribute1}"
+                        style="border: 1px solid blue; color: red" rolloverStyle="border: 1px solid gray" rolloverItemStyle="color: blue">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                Value: <h:outputText id="radioGroup1Text" value="#{RadioTestRequest.valueChangeListener1Flag}"/>
+              </td>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio2" valueChangeListener="#{RadioTestRequest.valueChangedAttribute2}"
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                Value: <h:outputText id="radioGroup2Text" value="#{RadioTestRequest.valueChangeListener2Flag}"/>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="header" colspan="2">SelectOneRadio basic as tag</td>
+              <td class="header" colspan="2">SelectOneRadio advanced with images as tag</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio3" style="border: 2px solid red; background: orange;">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                  <f:valueChangeListener type="org.openfaces.testapp.selectoneradio.TestValueChangeListener1"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                Value: <h:outputText id="radioGroup3Text" value="#{RadioTestRequest.testValueChangeListener1}"/>
+              </td>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio4"
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                  <f:valueChangeListener type="org.openfaces.testapp.selectoneradio.TestValueChangeListener2"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                Value: <h:outputText id="radioGroup4Text" value="#{RadioTestRequest.testValueChangeListener2}"/>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>

@@ -12,51 +12,82 @@
 
 O$.Radio = {
 
-  _init: function(radioId, images, styles, stylesItems, disabled, readonly, onchange) {
+  _init: function(radioId, images, styles, radioItemCount, disabled, readonly, onchange) {
 
-    var radioTable = O$(radioId);
+    var radioContainer = O$(radioId);
 
     function getClassName(classKey) {
       var className = styles ? styles[classKey] : null;
       return (className == null) ? "" : className;
     }
 
-    radioTable.className = getClassName("styleClass");
+    radioContainer.className = getClassName("styleClass");
+    radioContainer._styleClass = radioContainer.className;
+    radioContainer._rolloverClass = getClassName("rolloverClass");
+    radioContainer._focusedClass = getClassName("focusedClass");
 
-    //        radioTable._enabledClass = getClassName("enabledClass");
-    //        radioTable._disabledClass = getClassName("disabledClass");
-    //        radioTable._rolloverClass = getClassName("rolloverClass");
-    //        radioTable._focusedClass = getClassName("focusedClass");
-    //        radioTable._selectedClass = getClassName("selectedClass");
-    //        radioTable._unselectedClass = getClassName("unselectedClass");
-
-
-    radioTable._radioItems = new Array();
-    radioTable._radioElems = new Array();
-    radioTable._radioItemCount = stylesItems.length;
-    for (var i = 0; i < stylesItems.length; i++) {
+    radioContainer._radioItems = new Array();
+    radioContainer._radioElems = new Array();
+    radioContainer._radioItemCount = radioItemCount;
+    for (var i = 0; i < radioItemCount; i++) {
       var radioItemId = radioId + ":" + i;
-      radioTable._radioElems[i] = O$(radioItemId);;
+      radioContainer._radioElems[i] = O$(radioItemId);
 
-      O$.RadioItem._init(radioTable, i, radioItemId, images, styles, stylesItems, disabled, readonly, onchange);
+      O$.RadioItem._init(radioContainer, i, radioItemId, images, styles, disabled, readonly, onchange);
     }
 
+    O$.addEventHandler(radioContainer, "mouseover", function(e) {
+      if (!disabled) {
+        radioContainer._rollover = true;
+        O$.Radio.updateContainerStyles(radioContainer);
+        if (images) {
+          // no form URL in status bar
+          if (e && e.preventDefault) {
+            e.preventDefault();
+          } else {
+            return true; // IE
+          }
+        }
+      }
+    });
+
+    O$.addEventHandler(radioContainer, "mouseout", function(e) {
+      if (!disabled) {
+        radioContainer._rollover = false;
+        O$.Radio.updateContainerStyles(radioContainer);
+      }
+    });
+
+  },
+
+  updateContainerStyles : function(radioContainer) {
+    var containerFocused = false;
+    var containerRollover = false;
+    for (var i = 0; i < radioContainer._radioItems.length; i++) {
+      containerFocused |= radioContainer._radioItems[i]._focused;
+      containerRollover |= radioContainer._radioItems[i]._rollover;
+    }
+    containerRollover |= radioContainer._rollover;
+
+    O$.removeOfClassName(radioContainer, radioContainer._styleClass);
+    O$.removeOfClassName(radioContainer, radioContainer._rolloverClass);
+    O$.removeOfClassName(radioContainer, radioContainer._focusedClass);
+    var externalClasses = radioContainer.className;
+    O$.setStyleMappings(radioContainer, {
+      rollover: containerRollover ? radioContainer._rolloverClass : null,
+      focused: containerFocused ? radioContainer._focusedClass : null
+    });
+    radioContainer.className += " " + externalClasses;
   }
 };
 
 O$.RadioItem = {
 
-  _init: function(radioTable, index, radioItemId, images, styles, stylesItems, disabled, readonly, onchange) {
+  _init: function(radioContainer, index, radioItemId, images, styles, disabled, readonly, onchange) {
 
     function getClassName(classKey) {
       var className = styles ? styles[classKey] : null;
       return (className == null) ? "" : className;
-    }
-
-    function getItemClassName(classKey, index) {
-      var className = stylesItems[index] ? stylesItems[index][classKey] : null;
-      var mergeClassName = (className == null) ? "" : className;
-      return getClassName(classKey).length > 0 ? getClassName(classKey) + " " + mergeClassName : mergeClassName;
     }
 
     var isOpera = O$.isOpera();
@@ -64,26 +95,29 @@ O$.RadioItem = {
     var radioItem;
     if (images) {
       radioItem = O$(radioItemId + "::image");
-      radioItem._state = radioTable._radioElems[index].checked ? "on" : "off";
+      radioItem._state = radioContainer._radioElems[index].checked ? "on" : "off";
       radioItem._images = images;
     } else {
       radioItem = O$(radioItemId);
       radioItem._state = radioItem.checked ? "on" : "off";
     }
+    radioItem._container = radioContainer;
+    radioItem._label = O$(radioItemId + "::label");
+    radioItem._firstItem = index == 0;
+    radioItem._lastItem = index == (radioContainer._radioItemCount - 1);
 
     radioItem._index = index;
 
     radioItem._enabledClass = getClassName("enabledClass");
     radioItem._disabledClass = getClassName("disabledClass");
-    radioItem._rolloverClass = getItemClassName("rolloverClass", index);
-    radioItem._focusedClass = getItemClassName("focusedClass", index);
-    radioItem._pressedClass = getItemClassName("pressedClass", index);
-    radioItem._selectedClass = getItemClassName("selectedClass", index);
-    radioItem._unselectedClass = getItemClassName("unselectedClass", index);
+    radioItem._focusedClass = getClassName("focusedItemClass");
+    radioItem._rolloverClass = getClassName("rolloverItemClass");
+    radioItem._pressedClass = getClassName("pressedItemClass");
+    radioItem._selectedClass = getClassName("selectedItemClass");
 
     radioItem._onchange = onchange;
 
-    radioItem._disabled = disabled || (images && radioTable._radioElems[index].disabled);
+    radioItem._disabled = disabled || (images && radioContainer._radioElems[index].disabled);
     radioItem._readonly = readonly;
 
     if (radioItem._disabled || radioItem._readonly) {
@@ -138,40 +172,6 @@ O$.RadioItem = {
         }
       };
 
-      O$.addEventHandler(radioItem, "mousedown", function() {
-        if (!radioItem._disabled && !radioItem._readonly) {
-          radioItem._pressed = true;
-          updateImage(radioItem);
-          updateStyles(radioItem);
-        }
-      });
-
-      O$.addEventHandler(radioItem, "keydown", function(e) {
-        if (!radioItem._disabled && !radioItem._readonly) {
-          if (isSpacebar(e)) {
-            radioItem._pressed = true;
-            updateImage(radioItem);
-            updateStyles(radioItem);
-          } else if (isPrevious(e)) {
-            radioItem._focused = false;
-            var radioItemPrevious = findPreviousItem(radioItem._index);
-            radioItemPrevious._focused = true;
-            nextState(radioItemPrevious);
-            radioItemPrevious.focus();
-            fireOnChange(radioItemPrevious);
-            O$.preventDefaultEvent(e);
-          } else if (isNext(e)) {
-            radioItem._focused = false;
-            var radioItemNext = findNextItem(radioItem._index);
-            radioItemNext._focused = true;
-            nextState(radioItemNext);
-            radioItemNext.focus();
-            fireOnChange(radioItemNext);
-            O$.preventDefaultEvent(e);
-          }
-        }
-      });
-
       if (isOpera) {
         O$.addEventHandler(radioItem, "keypress", function(e) {
           if (!radioItem._disabled && !radioItem._readonly) {
@@ -180,7 +180,7 @@ O$.RadioItem = {
               nextState(radioItem);
               fireOnChange(radioItem);
             } else if (isNext(e) || isPrevious(e)) {
-              O$.preventDefaultEvent(e); 
+              O$.preventDefaultEvent(e);
             }
           }
         });
@@ -205,7 +205,55 @@ O$.RadioItem = {
       };
     }
 
-    radioTable._radioItems[index] = radioItem;
+    O$.addEventHandler(radioItem, "keydown", function(e) {
+      if (!radioItem._disabled && !radioItem._readonly) {
+        if (isSpacebar(e)) {
+          radioItem._pressed = true;
+          if (radioItem._images) {
+            updateImage(radioItem);
+          }
+          updateStyles(radioItem);
+        } else if ((isOpera && isPrevious(e) && !radioItem._firstItem) ||
+                   (isOpera && isNext(e) && !radioItem._lastItem) ||
+                   ((!isOpera || radioItem._images) && (isPrevious(e) || isNext(e)))) {
+          radioItem._focused = false;
+          var radioItemSibling;
+          if (isPrevious(e)) {
+            radioItemSibling = findPreviousItem(radioItem._index);
+          } else if (isNext(e)) {
+            radioItemSibling = findNextItem(radioItem._index);
+          }
+          radioItemSibling._focused = true;
+          if (radioItemSibling._images) {
+            nextState(radioItemSibling);
+          } else {
+            radioItem.checked = false;
+            radioItemSibling.checked = true;
+            updateAllItemsStyles(radioItemSibling);
+          }
+          if (!(isOpera && !radioItem._images)) {
+            radioItemSibling.focus();
+            fireOnChange(radioItemSibling);
+            O$.preventDefaultEvent(e);
+          }
+        }
+      }
+    });
+
+    O$.addEventHandler(radioItem, "mousedown", function() { itemMouseDown(); });
+    O$.addEventHandler(radioItem._label, "mousedown", function() { itemMouseDown(); });
+
+    function itemMouseDown() {
+      if (!radioItem.getDisabled() && !radioItem._readonly) {
+        radioItem._pressed = true;
+        if (radioItem._images) {
+          updateImage(radioItem);
+        }
+        updateStyles(radioItem);
+      }
+    }
+
+    radioContainer._radioItems[index] = radioItem;
     updateStyles(radioItem);
 
     O$.addEventHandler(radioItem, "focus", function() {
@@ -222,13 +270,20 @@ O$.RadioItem = {
       }
     });
 
-    O$.addEventHandler(radioItem, "click", function(e) {
+    O$.addEventHandler(radioItem, "click", function(e) { itemClick(e); });
+    O$.addEventHandler(radioItem._label, "click", function(e) { itemClick(e); });
+
+    function itemClick(e) {
+      if (!radioItem.getDisabled() && !radioItem._readonly) {
+        radioItem._focused = true;
+        radioItem.focus();
+      }
       if (shouldProcessEvents(radioItem) && !radioItem._readonly) {
         radioItem._pressed = false;
         if (radioItem._images) {
           nextState(radioItem);
         } else {
-          updateStyles(radioItem);
+          updateAllItemsStyles(radioItem);
         }
         fireOnChange(radioItem);
       }
@@ -237,11 +292,15 @@ O$.RadioItem = {
       } else if (radioItem._readonly) {
         radioItem.checked = radioItem._state == "on" ? "checked" : "";
       }
-    });
+    }
 
-    O$.addEventHandler(radioItem, "mouseover", function(e) {
+    O$.addEventHandler(radioItem, "mouseover", function(e) { itemMouseOver(e); });
+    O$.addEventHandler(radioItem._label, "mouseover", function(e) { itemMouseOver(e); });
+
+    function itemMouseOver(e) {
       if (shouldProcessEvents(radioItem)) {
-        radioItem._rollover = true;
+        radioItem._rollover = !radioItem.getDisabled();
+        radioItem._container._rollover = true;
         if (radioItem._images) {
           updateImage(radioItem);
         }
@@ -255,19 +314,22 @@ O$.RadioItem = {
           return true; // IE
         }
       }
-    });
+    }
 
-    O$.addEventHandler(radioItem, "mouseout", function() {
+
+    O$.addEventHandler(radioItem, "mouseout", function() { itemMouseOut(); });
+    O$.addEventHandler(radioItem._label, "mouseout", function() { itemMouseOut(); });
+
+    function itemMouseOut() {
       if (shouldProcessEvents(radioItem)) {
         radioItem._rollover = false;
+        radioItem._pressed = false;
         if (radioItem._images) {
-          radioItem._pressed = false;
           updateImage(radioItem);
         }
         updateStyles(radioItem);
       }
-    });
-
+    }
 
     function shouldProcessEvents(radioItem) {
       return (!radioItem._images || !radioItem._disabled) && !radioItem._readonly;
@@ -276,17 +338,30 @@ O$.RadioItem = {
     function updateStyles(radioItem) {
       resetPosition(radioItem);
 
-      O$.setStyleMappings(radioItem, {
+      O$.setStyleMappings(radioItem._label, {
         enabled: !radioItem.getDisabled() ? radioItem._enabledClass : null,
         disabled: radioItem.getDisabled() ? radioItem._disabledClass : null,
         rollover: radioItem._rollover ? radioItem._rolloverClass : null,
         focused: radioItem._focused ? radioItem._focusedClass : null,
         pressed: radioItem._pressed ? radioItem._pressedClass : null,
-        selected: radioItem.isSelected() ? radioItem._selectedClass : null,
-        unselected: !radioItem.isSelected() ? radioItem._unselectedClass : null
+        selected: radioItem.isSelected() ? radioItem._selectedClass : null
       });
 
+      O$.Radio.updateContainerStyles(radioItem._container);
+
       fixPosition(radioItem);
+    }
+
+    function updateAllItemsStyles(radioItem) {
+      for (var i = 0; i < radioContainer._radioItemCount; i++) {
+        if (radioItem._index == i) {
+          radioItem._state = "on";
+          updateStyles(radioItem);
+        } else {
+          radioContainer._radioItems[i]._state = "off";
+          updateStyles(radioContainer._radioItems[i]);
+        }
+      }
     }
 
     function resetPosition(radioItem) {
@@ -303,7 +378,7 @@ O$.RadioItem = {
         var indent = radioItem._indents[styleKey];
 
         if (!indent) {
-          indent = getIndentData(radioItem);
+          indent = O$.getIndentData(radioItem, O$.RadioItem.indentDelta);
           radioItem._indents[styleKey] = indent;
         }
 
@@ -314,17 +389,17 @@ O$.RadioItem = {
     }
 
     function nextState(radioItem) {
-      for (var i = 0; i < radioTable._radioItemCount; i++) {
+      for (var i = 0; i < radioContainer._radioItemCount; i++) {
         if (radioItem._index == i) {
           radioItem._state = "on";
-          radioTable._radioElems[i].checked = true;
+          radioContainer._radioElems[i].checked = true;
           updateImage(radioItem);
           updateStyles(radioItem);
         } else {
-          radioTable._radioItems[i]._state = "off";
-          radioTable._radioElems[i].checked = false;
-          updateImage(radioTable._radioItems[i]);
-          updateStyles(radioTable._radioItems[i]);
+          radioContainer._radioItems[i]._state = "off";
+          radioContainer._radioElems[i].checked = false;
+          updateImage(radioContainer._radioItems[i]);
+          updateStyles(radioContainer._radioItems[i]);
         }
       }
     }
@@ -374,13 +449,13 @@ O$.RadioItem = {
       var i = index;
       while (true) {
         if (i > 0) {
-          if (radioTable._radioItems[i - 1]._disabled) {
+          if (radioContainer._radioItems[i - 1].getDisabled()) {
             i--;
           } else {
-            return radioTable._radioItems[i - 1];
+            return radioContainer._radioItems[i - 1];
           }
         } else if (i == 0) {
-          i = radioTable._radioItems.length;
+          i = radioContainer._radioItems.length;
         }
       }
     }
@@ -388,13 +463,13 @@ O$.RadioItem = {
     function findNextItem(index) {
       var i = index;
       while (true) {
-        if (radioTable._radioItems.length > (i + 1)) {
-          if (radioTable._radioItems[i + 1]._disabled) {
+        if (radioContainer._radioItems.length > (i + 1)) {
+          if (radioContainer._radioItems[i + 1].getDisabled()) {
             i++;
           } else {
-            return radioTable._radioItems[i + 1];
+            return radioContainer._radioItems[i + 1];
           }
-        } else if (radioTable._radioItems.length == (i + 1)) {
+        } else if (radioContainer._radioItems.length == (i + 1)) {
           i = -1;
         }
       }
@@ -410,24 +485,6 @@ O$.RadioItem = {
       }
       return result;
     }
-
-    function getIndentData(radioItem) {
-      var indent = {};
-      var delta = O$.RadioItem.indentDelta;
-
-      if (delta.marginLeft) {
-        indent.marginLeft = (delta.marginLeft + O$.getNumericStyleProperty(radioItem, "margin-left")) + "px";
-      }
-      if (delta.marginRight) {
-        indent.marginRight = (delta.marginRight + O$.getNumericStyleProperty(radioItem, "margin-right")) + "px";
-      }
-      if (delta.marginBottom) {
-        indent.marginBottom = (delta.marginBottom + O$.getNumericStyleProperty(radioItem, "margin-bottom")) + "px";
-      }
-      return indent;
-    }
-
-    return radioItem;
   },
 
   indentDelta :
@@ -444,7 +501,7 @@ O$.RadioItem = {
             if (O$.isSafari3()) {
               delta.marginRight = 1;
             } else {
-              delta.marginRight = 3;
+              delta.marginRight = 5;
             }
 
             if (O$.isExplorer7() || O$.isExplorer6() || O$.isOpera()) {

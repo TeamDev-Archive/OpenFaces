@@ -83,15 +83,15 @@
             <attribute name="URI" value="/WEB-INF/lib" />
             <url>jar://$MODULE_DIR$/../../lib/exoportal-stub.jar!/</url>
           </containerElement>
-          <containerElement type="library" name="JSF Implementation - Mojarra 1.2" level="project">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
           <containerElement type="module" name="OpenFaces">
             <attribute name="method" value="5" />
             <attribute name="URI" value="/WEB-INF/lib/openfaces.jar" />
           </containerElement>
           <containerElement type="library" name="hibernate" level="project">
+            <attribute name="method" value="1" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
+          <containerElement type="library" name="JSF Implementation - MyFaces 1.2" level="project">
             <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>

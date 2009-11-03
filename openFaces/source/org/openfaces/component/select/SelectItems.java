@@ -10,7 +10,7 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.component.input;
+package org.openfaces.component.select;
 
 import org.openfaces.util.ValueBindings;
 
@@ -19,15 +19,13 @@ import javax.faces.context.FacesContext;
 import java.io.Serializable;
 
 /**
- * Author: Oleg Marshalenko
- * Date: Sep 18, 2009
- * Time: 3:50:05 PM
+ * @author Oleg Marshalenko
  */
-public class SelectOneRadioItems extends UIComponentBase implements Serializable {
+public class SelectItems extends UIComponentBase implements Serializable {
     private static final long serialVersionUID = 335718451435237437L;
 
-    public static final String COMPONENT_TYPE = "org.openfaces.SelectOneRadioItems";
-    public static final String COMPONENT_FAMILY = "org.openfaces.SelectOneRadioItems";
+    public static final String COMPONENT_TYPE = "org.openfaces.SelectItems";
+    public static final String COMPONENT_FAMILY = "org.openfaces.SelectItems";
 
     private Object value;
 

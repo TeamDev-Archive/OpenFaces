@@ -12,18 +12,14 @@
 
 package org.openfaces.testapp.selectoneradio;
 
-import org.openfaces.component.input.SelectOneRadioItem;
+import org.openfaces.component.select.SelectItem;
 
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
- * Author: Oleg Marshalenko
- * Date: Sep 23, 2009
- * Time: 12:25:22 PM
+ * @author Oleg Marshalenko
  */
 public class RadioTest {
 
@@ -34,17 +30,20 @@ public class RadioTest {
     private String radioGroup5;
     private String radioGroup6;
     
-    private String valueChangeListener5;
+    private int valueChangeListener1Counter = 0;
+    private int valueChangeListener2Counter = 0;
+    public boolean testValueChangeListener1;
+    public boolean testValueChangeListener2;
 
     private String radioGroup7;
     private String selectOneMenu7;
-    private List<SelectOneRadioItem> selectOneRadioItemsGroup7;
-    private List<SelectItem> selectItemsGroup7;
+    private List<SelectItem> selectOneRadioItemsGroup7;
+    private List<javax.faces.model.SelectItem> selectItemsGroup7;
 
     private String radioGroup8;
     private String selectOneMenu8;
-    private List<SelectOneRadioItem> selectOneRadioItemsGroup8;
-    private List<SelectItem> selectItemsGroup8;    
+    private List<SelectItem> selectOneRadioItemsGroup8;
+    private List<javax.faces.model.SelectItem> selectItemsGroup8;
 
     public String getRadioGroup1() {
         return radioGroup1;
@@ -96,16 +95,52 @@ public class RadioTest {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public String getValueChangeListener5() {
-        return valueChangeListener5;
+    public void valueChangedAttribute1(ValueChangeEvent event) {
+        valueChangeListener1Counter++;
     }
 
-    public void setValueChangeListener5(String valueChangeListener5) {
-        this.valueChangeListener5 = valueChangeListener5;
+    public int getValueChangeListener1Counter() {
+        return valueChangeListener1Counter;
     }
 
-    public void valueChangeListener(ValueChangeEvent e) {
-        this.valueChangeListener5 = new Date().toString();
+    public void setValueChangeListener1Counter(int valueChangeListener1Counter) {
+        this.valueChangeListener1Counter = valueChangeListener1Counter;
+    }
+
+    public String getValueChangeListener1Flag() {
+        return String.valueOf(valueChangeListener1Counter);
+    }
+
+    public void valueChangedAttribute2(ValueChangeEvent event) {
+        valueChangeListener2Counter++;
+    }
+
+    public int getValueChangeListener2Counter() {
+        return valueChangeListener2Counter;
+    }
+
+    public void setValueChangeListener2Counter(int valueChangeListener2Counter) {
+        this.valueChangeListener2Counter = valueChangeListener2Counter;
+    }
+
+    public String getValueChangeListener2Flag() {
+        return String.valueOf(valueChangeListener2Counter);
+    }
+
+    public boolean isTestValueChangeListener1() {
+        return testValueChangeListener1;
+    }
+
+    public void setTestValueChangeListener1(boolean testValueChangeListener1) {
+        this.testValueChangeListener1 = testValueChangeListener1;
+    }
+
+    public boolean isTestValueChangeListener2() {
+        return testValueChangeListener2;
+    }
+
+    public void setTestValueChangeListener2(boolean testValueChangeListener2) {
+        this.testValueChangeListener2 = testValueChangeListener2;
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -129,40 +164,40 @@ public class RadioTest {
         this.selectOneMenu7 = selectOneMenu7;
     }
 
-    public List<SelectItem> getSelectItemsGroup7() {
-        selectItemsGroup7 = new ArrayList<SelectItem>();
+    public List<javax.faces.model.SelectItem> getSelectItemsGroup7() {
+        selectItemsGroup7 = new ArrayList<javax.faces.model.SelectItem>();
         for (int i = 1; i < 6; i++) {
-            selectItemsGroup7.add(new SelectItem(String.valueOf(i), "Radio " + i));
+            selectItemsGroup7.add(new javax.faces.model.SelectItem(String.valueOf(i), "Radio " + i));
         }
         return selectItemsGroup7;
     }
 
-    public void setSelectItemsGroup7(List<SelectItem> selectItemsGroup7) {
+    public void setSelectItemsGroup7(List<javax.faces.model.SelectItem> selectItemsGroup7) {
         this.selectItemsGroup7 = selectItemsGroup7;
     }
 
-    public List<SelectOneRadioItem> getSelectOneRadioItemsGroup7() {
-        if (selectOneRadioItemsGroup7 == null) {
-            selectOneRadioItemsGroup7 = new ArrayList<SelectOneRadioItem>();
+    public List<SelectItem> getSelectOneRadioItemsGroup7() {
+        if (this.selectOneRadioItemsGroup7 == null) {
+            this.selectOneRadioItemsGroup7 = new ArrayList<SelectItem>();
             for (int i = 1; i < 6; i++) {
-                SelectOneRadioItem selectOneRadioItem = new SelectOneRadioItem();
-                selectOneRadioItem.setValue(String.valueOf(i));
-                selectOneRadioItem.setItemLabel("Radio " + i);
-                selectOneRadioItemsGroup7.add(selectOneRadioItem);
+                SelectItem selectItem = new SelectItem();
+                selectItem.setItemValue(String.valueOf(i));
+                selectItem.setItemLabel("Radio " + i);
+                this.selectOneRadioItemsGroup7.add(selectItem);
             }
         }
-        return selectOneRadioItemsGroup7;
+        return this.selectOneRadioItemsGroup7;
     }
 
     public void reloadSelectOneRadio7() {
         int selectedForDisable = Integer.parseInt(selectOneMenu7);
-        selectOneRadioItemsGroup7 = new ArrayList<SelectOneRadioItem>();
+        this.selectOneRadioItemsGroup7 = new ArrayList<SelectItem>();
         for (int i = 1; i < 6; i++) {
-            SelectOneRadioItem selectOneRadioItem = new SelectOneRadioItem();
-            selectOneRadioItem.setValue(String.valueOf(i));
-            selectOneRadioItem.setItemLabel("Radio " + i);
-            if (i == selectedForDisable) selectOneRadioItem.setDisabled(true);
-            selectOneRadioItemsGroup7.add(selectOneRadioItem);
+            SelectItem selectItem = new SelectItem();
+            selectItem.setItemValue(String.valueOf(i));
+            selectItem.setItemLabel("Radio " + i);
+            if (i == selectedForDisable) selectItem.setItemDisabled(true);
+            this.selectOneRadioItemsGroup7.add(selectItem);
         }
     }
 
@@ -187,40 +222,40 @@ public class RadioTest {
         this.selectOneMenu8 = selectOneMenu8;
     }
 
-    public List<SelectItem> getSelectItemsGroup8() {
-        selectItemsGroup8 = new ArrayList<SelectItem>();
+    public List<javax.faces.model.SelectItem> getSelectItemsGroup8() {
+        selectItemsGroup8 = new ArrayList<javax.faces.model.SelectItem>();
         for (int i = 1; i < 6; i++) {
-            selectItemsGroup8.add(new SelectItem(String.valueOf(i), "Radio " + i));
+            selectItemsGroup8.add(new javax.faces.model.SelectItem(String.valueOf(i), "Radio " + i));
         }
         return selectItemsGroup8;
     }
 
-    public void setSelectItemsGroup8(List<SelectItem> selectItemsGroup8) {
+    public void setSelectItemsGroup8(List<javax.faces.model.SelectItem> selectItemsGroup8) {
         this.selectItemsGroup8 = selectItemsGroup8;
     }
 
-    public List<SelectOneRadioItem> getSelectOneRadioItemsGroup8() {
-        if (selectOneRadioItemsGroup8 == null) {
-            selectOneRadioItemsGroup8 = new ArrayList<SelectOneRadioItem>();
+    public List<SelectItem> getSelectOneRadioItemsGroup8() {
+        if (this.selectOneRadioItemsGroup8 == null) {
+            this.selectOneRadioItemsGroup8 = new ArrayList<SelectItem>();
             for (int i = 1; i < 6; i++) {
-                SelectOneRadioItem selectOneRadioItem = new SelectOneRadioItem();
-                selectOneRadioItem.setValue(String.valueOf(i));
-                selectOneRadioItem.setItemLabel("Radio " + i);
-                selectOneRadioItemsGroup8.add(selectOneRadioItem);
+                SelectItem selectItem = new SelectItem();
+                selectItem.setItemValue(String.valueOf(i));
+                selectItem.setItemLabel("Radio " + i);
+                this.selectOneRadioItemsGroup8.add(selectItem);
             }
         }
-        return selectOneRadioItemsGroup8;
+        return this.selectOneRadioItemsGroup8;
     }
 
     public void reloadSelectOneRadio8() {
         int selectedForDisable = Integer.parseInt(selectOneMenu8);
-        selectOneRadioItemsGroup8 = new ArrayList<SelectOneRadioItem>();
+        this.selectOneRadioItemsGroup8 = new ArrayList<SelectItem>();
         for (int i = 1; i < 6; i++) {
-            SelectOneRadioItem selectOneRadioItem = new SelectOneRadioItem();
-            selectOneRadioItem.setValue(String.valueOf(i));
-            selectOneRadioItem.setItemLabel("Radio " + i);
-            if (i == selectedForDisable) selectOneRadioItem.setDisabled(true);
-            selectOneRadioItemsGroup8.add(selectOneRadioItem);
+            SelectItem selectItem = new SelectItem();
+            selectItem.setItemValue(String.valueOf(i));
+            selectItem.setItemLabel("Radio " + i);
+            if (i == selectedForDisable) selectItem.setItemDisabled(true);
+            this.selectOneRadioItemsGroup8.add(selectItem);
         }
     }
 }

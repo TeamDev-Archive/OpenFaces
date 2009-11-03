@@ -50,13 +50,15 @@
         </tr>
         <tr>
           <td class="container">
-            <o:inputText id="first" value="#{InputTextBean.value}"/>
+            <o:inputText id="first" value="#{InputTextBean.value}" required="true"
+                    focusedStyle="border: 1px solid green;"
+                    rolloverStyle="border: 4px dotted darkblue; background: red;"/>
           </td>
           <td class="container">
             Value: <h:outputText id="value" value="#{InputTextBean.value}"/>
           </td>
           <td class="container">
-            <o:inputText id="second" promptText="#{InputTextBean.promptText}" value="#{InputTextBean.value2}"/>
+            <o:inputText id="second" promptText="#{InputTextBean.promptText}" value="#{InputTextBean.value2}" required="true"/>
           </td>
           <td class="container">
             Value: <h:outputText id="value2" value="#{InputTextBean.value2}"/>

@@ -4,318 +4,739 @@
      xmlns:a4j="http://richfaces.org/a4j"
      xmlns:rich="http://richfaces.org/rich"
      xmlns:t="http://myfaces.apache.org/tomahawk"
-        >
+       >
+
   <a href="../../main.jsf">Back to the main page</a>
 
-    <h:form>
-      <rich:panel>
+  <style>
+    .c { padding: 2px; background-color: #00ffff; }
+    .ec { border: 3px double green; background-color: yellowgreen;}
+    .dc { border: 3px double #444; background-color: #DDD;}
+    .fc { border: 3px double red; }
+    .rc { border: 3px dotted blue; }
+    .sc { border: 3px double yellowgreen; }
+    .uc { border: 3px double lightgreen; }
 
-        <h:outputLabel for="selectOneRadio5" value="Submit: Native radio buttons"/>
-        <o:selectOneRadio id="selectOneRadio5" value="#{RadioTest.radioGroup5}" required="true"
-                          border="1" layout="pageDirection" valueChangeListener="#{RadioTest.valueChangeListener}">
-          <o:selectOneRadioItem value="1" itemLabel="Radio 1"/>
-          <o:selectOneRadioItem value="2" itemLabel="Radio 2"/>
-          <o:selectOneRadioItem value="3" itemLabel="Radio 3"/>
-          <o:selectOneRadioItem value="4" itemLabel="Radio 4" disabled="true"/>
-          <o:selectOneRadioItem value="5" itemLabel="Radio 5"/>
-        </o:selectOneRadio>
-        -> <h:outputText id="radioGroup5Text" value="#{RadioTest.radioGroup5}"/>
-        <br/>
-        -> <h:outputText id="radioGroupValueChangeListener5Text" value="#{RadioTest.valueChangeListener5}"/>
+    .fic { border: 3px double #ff3333; }
+    .pic { border: 3px double #000099; }
+    .ric { border: 3px dotted #6666ff; }
+    .sic { border: 3px double #339900; }
 
-        <br/>
-        <br/>
+  </style>
 
-        <h:outputLabel for="selectOneRadio6" value="Submit: Advanced radio buttons"/>
-        <o:selectOneRadio id="selectOneRadio6" value="#{RadioTest.radioGroup6}" required="true"
-                          styleClass="c" style="border: 3px dotted blue;"
-                          enabledClass="ec" enabledStyle="background-color: #B0AFFF;"
-                          disabledClass="dc" disabledStyle="background-color: #6F6F6F;"
-                          focusedClass="fc" focusedStyle="border: 1px solid #DDDF29;"
-                          rolloverClass="rc" rolloverStyle="border: 1px solid #33DF29;"
-                          selectedClass="sc" selectedStyle="border: 1px solid #7FD2FF;"
-                          unselectedClass="uc" unselectedStyle="border: 1px solid #FF4F56;"
+  <br/>
+  <h3>Select One Radio</h3>
+  <br/>
+  <br/>
+  <br/>
 
-                          selectedImageUrl="/images/selectedRadioButton.png"
-                          unselectedImageUrl="/images/unselectedRadioButton.png"
-                          rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
-                          rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
-                          pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
-                          pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
-                          disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
-                          disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
-                >
-          <o:selectOneRadioItem value="1" itemLabel="Radio 1"/>
-          <o:selectOneRadioItem value="2" itemLabel="Radio 2"/>
-          <o:selectOneRadioItem value="3" itemLabel="Radio 3"/>
-          <o:selectOneRadioItem value="4" itemLabel="Radio 4" disabled="true"/>
-          <o:selectOneRadioItem value="5" itemLabel="Radio 5"/>
-        </o:selectOneRadio>
-        -> <h:outputText id="radioGroup6Text" value="#{RadioTest.radioGroup6}"/>
+  <table>
+    <tr>
+      <td>
+        <h4>Base functionality</h4>
 
-        <br/>
-        <br/>
+        <div>
+          <table>
+            <tr>
+              <td class="header" colspan="2">SelectOneRadio basic (layout: lineDirection)</td>
+              <td class="header" colspan="2">SelectOneRadio advanced with images (layout: lineDirection)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio1" value="#{RadioTest.radioGroup1}">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                Value: <h:outputText id="radioGroup1Text" value="#{RadioTest.radioGroup1}"/>
+              </td>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio2" value="#{RadioTest.radioGroup2}"
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                Value: <h:outputText id="radioGroup2Text" value="#{RadioTest.radioGroup2}"/>
+              </td>
+            </tr>
 
-        <h:commandButton value="Submit"/>
-      </rich:panel>
-    </h:form>
+            <tr>
+              <td class="header" colspan="2">SelectOneRadio basic (layout: pageDirection)</td>
+              <td class="header" colspan="2">SelectOneRadio advanced with images (layout: pageDirection)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio3" value="#{RadioTest.radioGroup3}" layout="pageDirection">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                Value: <h:outputText id="radioGroup3Text" value="#{RadioTest.radioGroup3}"/>
+              </td>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio4" value="#{RadioTest.radioGroup4}" layout="pageDirection"
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                Value: <h:outputText id="radioGroup4Text" value="#{RadioTest.radioGroup4}"/>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
 
-    <h:form>
-      <rich:panel>
-        <h:outputLabel for="selectOneRadio1" value="OpenFaces Ajax: Native radio buttons"/>
-        <o:selectOneRadio id="selectOneRadio1" value="#{RadioTest.radioGroup1}"
-                           style="s" styleClass="c"
-                           enabledClass="ec" enabledStyle="background-color: #B0AFFF; padding: 2px;"
-                           disabledClass="dc" disabledStyle="background-color: #DDDDDD; padding: 2px;"
-                           focusedClass="fc" focusedStyle="border: 1px solid #DDDF29;"
-                           rolloverClass="rc" rolloverStyle="border: 1px solid #33DF29;"
-                           selectedClass="sc" selectedStyle="border: 1px solid #7FD2FF;"
-                           unselectedClass="uc" unselectedStyle="border: 1px solid #FF4F56;">
-          <o:selectOneRadioItem value="1" itemLabel="Radio 1"
-                                 focusedItemClass="fic1" focusedItemStyle="fis1"
-                                 rolloverItemClass="ric1" rolloverItemStyle="ris1"
-                                 pressedItemClass="pic1" pressedItemStyle="border: 2px solid #FF0000;"
-                                 selectedItemClass="sic1" selectedItemStyle="sis1"/>
-          <o:selectOneRadioItem value="2" itemLabel="Radio 2"
-                                 focusedItemClass="fic2" focusedItemStyle="fis2"
-                                 rolloverItemClass="ric2" rolloverItemStyle="ris2"
-                                 pressedItemClass="pic2" pressedItemStyle="border: 2px solid #00FF00;"
-                                 selectedItemClass="sic2" selectedItemStyle="sis2"/>
-          <o:selectOneRadioItem value="3" itemLabel="Radio 3"
-                                 focusedItemClass="fic3" focusedItemStyle="fis3"
-                                 rolloverItemClass="ric3" rolloverItemStyle="ris3"
-                                 pressedItemClass="pic3" pressedItemStyle="border: 2px solid #0000FF;"
-                                 selectedItemClass="sic3" selectedItemStyle="sis3"/>
-          <o:selectOneRadioItem value="4" itemLabel="Radio 4"
-                                 focusedItemClass="fic4" focusedItemStyle="fis4"
-                                 rolloverItemClass="ric4" rolloverItemStyle="ris4"
-                                 pressedItemClass="pic4" pressedItemStyle="pis4"
-                                 selectedItemClass="sic4" selectedItemStyle="sis4"
-                                 disabled="true"/>
-          <o:selectOneRadioItem value="5" itemLabel="Radio 5"
-                                 focusedItemClass="fic5" focusedItemStyle="fis5"
-                                 rolloverItemClass="ric5" rolloverItemStyle="ris5"
-                                 pressedItemClass="pic5" pressedItemStyle="border: 2px solid #FFFF00;"
-                                 selectedItemClass="sic5" selectedItemStyle="sis5"/>
-          <o:reloadComponents event="onchange" componentIds="radioGroup1Text"/>
-        </o:selectOneRadio>
-        -> <h:outputText id="radioGroup1Text" value="#{RadioTest.radioGroup1}"/>
-        <br/>
-        <br/>
-        <h:outputLabel for="selectOneRadio2" value="OpenFaces Ajax: Advanced radio buttons"/>
-        <o:selectOneRadio id="selectOneRadio2" value="#{RadioTest.radioGroup2}" required="true"
-                           style="s" styleClass="c"
-                           enabledClass="ec" enabledStyle="background-color: #B0AFFF; padding: 2px;"
-                           disabledClass="dc" disabledStyle="background-color: #DDDDDD; padding: 2px;"
+    <tr>
+      <td>
+        <h4>Styles for SelectOneRadio</h4>
 
-                           selectedImageUrl="/images/selectedRadioButton.png"
-                           unselectedImageUrl="/images/unselectedRadioButton.png"
-                           rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
-                           rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
-                           pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
-                           pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
-                           disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
-                           disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
-                >
-          <o:selectOneRadioItem value="1" itemLabel="Radio 1"
-                                 focusedItemClass="fic1" focusedItemStyle="fis1"
-                                 rolloverItemClass="ric1" rolloverItemStyle="ris1"
-                                 pressedItemClass="pic1" pressedItemStyle="border: 2px solid #FF0000;"
-                                 selectedItemClass="sic1" selectedItemStyle="sis1"/>
-          <o:selectOneRadioItem value="2" itemLabel="Radio 2"
-                                 focusedItemClass="fic2" focusedItemStyle="fis2"
-                                 rolloverItemClass="ric2" rolloverItemStyle="ris2"
-                                 pressedItemClass="pic2" pressedItemStyle="border: 2px solid #00FF00;"
-                                 selectedItemClass="sic2" selectedItemStyle="sis2"/>
-          <o:selectOneRadioItem value="3" itemLabel="Radio 3"
-                                 focusedItemClass="fic3" focusedItemStyle="fis3"
-                                 rolloverItemClass="ric3" rolloverItemStyle="ris3"
-                                 pressedItemClass="pic3" pressedItemStyle="border: 2px solid #0000FF;"
-                                 selectedItemClass="sic3" selectedItemStyle="sis3"/>
-          <o:selectOneRadioItem value="4" itemLabel="Radio 4"
-                                 focusedItemClass="fic4" focusedItemStyle="fis4"
-                                 rolloverItemClass="ric4" rolloverItemStyle="ris4"
-                                 pressedItemClass="pic4" pressedItemStyle="pis4"
-                                 selectedItemClass="sic4" selectedItemStyle="sis4"
-                                 disabled="true"/>
-          <o:selectOneRadioItem value="5" itemLabel="Radio 5"
-                                 focusedItemClass="fic5" focusedItemStyle="fis5"
-                                 rolloverItemClass="ric5" rolloverItemStyle="ris5"
-                                 pressedItemClass="pic5" pressedItemStyle="border: 2px solid #FFFF00;"
-                                 selectedItemClass="sic5" selectedItemStyle="sis5"/>
-          <o:reloadComponents event="onchange" componentIds="radioGroup2Text"/>
-        </o:selectOneRadio>
-        -> <h:outputText id="radioGroup2Text" value="#{RadioTest.radioGroup2}"/>
-      </rich:panel>
-    </h:form>
+        <div>
+          <table>
+            <tr>
+              <td class="header">SelectOneRadio standart (enable/disable)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <h:selectOneRadio id="selectOneRadio_s1"
+                                  styleClass="c" style="border: 1px solid blue;"
+                                  enabledClass="ec"
+                                  disabledClass="dc">
+                  <f:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <f:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <f:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <f:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <f:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </h:selectOneRadio>
+              </td>
+            </tr>
+            <tr>
+              <td class="header">SelectOneRadio basic (enable/disable)</td>
+              <td class="header">SelectOneRadio advanced with images (enable/disable)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio5"
+                                  styleClass="c" style="border: 1px dotted blue;"
+                                  enabledClass="ec" enabledStyle="background-color: greenyellow;"
+                                  disabledClass="dc" disabledStyle="background-color: #888;">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio6"
+                                  styleClass="c" style="border: 1px dotted blue;"
+                                  enabledClass="ec" enabledStyle="background-color: greenyellow;"
+                                  disabledClass="dc" disabledStyle="background-color: #888;"
 
-    <h:form>
-      <rich:panel>
-        <h:outputLabel for="selectOneRadio3" value="RichFaces A4J: Native radio buttons"/>
-        <o:selectOneRadio id="selectOneRadio3" value="#{RadioTest.radioGroup3}"
-                          style="s" styleClass="c"
-                          enabledClass="ec" enabledStyle="background-color: #B0AFFF;"
-                          disabledClass="dc" disabledStyle="background-color: #6F6F6F;"
-                          focusedClass="fc" focusedStyle="border: 1px solid #DDDF29;"
-                          rolloverClass="rc" rolloverStyle="border: 1px solid #33DF29;"
-                          selectedClass="sc" selectedStyle="border: 1px solid #7FD2FF;"
-                          unselectedClass="uc" unselectedStyle="border: 1px solid #FF4F56;">
-          <o:selectOneRadioItem value="1" itemLabel="Radio 1"
-                                focusedItemClass="fic1" focusedItemStyle="fis1"
-                                rolloverItemClass="ric1" rolloverItemStyle="ris1"
-                                pressedItemClass="pic1" pressedItemStyle="pis1"
-                                selectedItemClass="sic1" selectedItemStyle="sis1"/>
-          <o:selectOneRadioItem value="2" itemLabel="Radio 2"
-                                focusedItemClass="fic2" focusedItemStyle="fis2"
-                                rolloverItemClass="ric2" rolloverItemStyle="ris2"
-                                pressedItemClass="pic2" pressedItemStyle="pis2"
-                                selectedItemClass="sic2" selectedItemStyle="sis2"/>
-          <o:selectOneRadioItem value="3" itemLabel="Radio 3"
-                                focusedItemClass="fic3" focusedItemStyle="fis3"
-                                rolloverItemClass="ric3" rolloverItemStyle="ris3"
-                                pressedItemClass="pic3" pressedItemStyle="pis3"
-                                selectedItemClass="sic3" selectedItemStyle="sis3"/>
-          <o:selectOneRadioItem value="4" itemLabel="Radio 4"
-                                focusedItemClass="fic4" focusedItemStyle="fis4"
-                                rolloverItemClass="ric4" rolloverItemStyle="ris4"
-                                pressedItemClass="pic4" pressedItemStyle="pis4"
-                                selectedItemClass="sic4" selectedItemStyle="sis4"
-                                disabled="true"/>
-          <o:selectOneRadioItem value="5" itemLabel="Radio 5"
-                                focusedItemClass="fic5" focusedItemStyle="fis5"
-                                rolloverItemClass="ric5" rolloverItemStyle="ris5"
-                                pressedItemClass="pic5" pressedItemStyle="pis5"
-                                selectedItemClass="sic5" selectedItemStyle="sis5"/>
-          <a4j:support event="onchange" reRender="radioGroup3Text"/>
-        </o:selectOneRadio>
-        -> <h:outputText id="radioGroup3Text" value="#{RadioTest.radioGroup3}"/>
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+            </tr>
 
+            <tr>
+              <td class="header">SelectOneRadio basic (focused/rollover)</td>
+              <td class="header">SelectOneRadio advanced with images (focused/rollover)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio7"
+                                  focusedClass="fc" focusedStyle="background-color: red;"
+                                  rolloverClass="rc" rolloverStyle="background-color: #33DF29;">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio8"
+                                  focusedClass="fc" focusedStyle="background-color: red;"
+                                  rolloverClass="rc" rolloverStyle="background-color: #33DF29;"
 
-        <br/>
-        <br/>
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
 
-        <h:outputLabel for="selectOneRadio4" value="RichFaces A4J: Advanced radio buttons"/>
-        <o:selectOneRadio id="selectOneRadio4" value="#{RadioTest.radioGroup4}" required="true"
-                          style="s" styleClass="c"
-                          enabledClass="ec" enabledStyle="background-color: #B0AFFF;"
-                          disabledClass="dc" disabledStyle="background-color: #6F6F6F;"
-                          focusedClass="fc" focusedStyle="border: 1px solid #DDDF29;"
-                          rolloverClass="rc" rolloverStyle="border: 1px solid #33DF29;"
-                          selectedClass="sc" selectedStyle="border: 1px solid #7FD2FF;"
-                          unselectedClass="uc" unselectedStyle="border: 1px solid #FF4F56;"
+    <tr>
+      <td>
+        <h4>Styles for selectItem</h4>
 
-                          selectedImageUrl="/images/selectedRadioButton.png"
-                          unselectedImageUrl="/images/unselectedRadioButton.png"
-                          rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
-                          rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
-                          pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
-                          pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
-                          disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
-                          disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
-                >
-          <o:selectOneRadioItem value="1" itemLabel="Radio 1"
-                                focusedItemClass="fic1" focusedItemStyle="fis1"
-                                rolloverItemClass="ric1" rolloverItemStyle="ris1"
-                                pressedItemClass="pic1" pressedItemStyle="pis1"
-                                selectedItemClass="sic1" selectedItemStyle="sis1"/>
-          <o:selectOneRadioItem value="2" itemLabel="Radio 2"
-                                focusedItemClass="fic2" focusedItemStyle="fis2"
-                                rolloverItemClass="ric2" rolloverItemStyle="ris2"
-                                pressedItemClass="pic2" pressedItemStyle="pis2"
-                                selectedItemClass="sic2" selectedItemStyle="sis2"/>
-          <o:selectOneRadioItem value="3" itemLabel="Radio 3"
-                                focusedItemClass="fic3" focusedItemStyle="fis3"
-                                rolloverItemClass="ric3" rolloverItemStyle="ris3"
-                                pressedItemClass="pic3" pressedItemStyle="pis3"
-                                selectedItemClass="sic3" selectedItemStyle="sis3"/>
-          <o:selectOneRadioItem value="4" itemLabel="Radio 4"
-                                focusedItemClass="fic4" focusedItemStyle="fis4"
-                                rolloverItemClass="ric4" rolloverItemStyle="ris4"
-                                pressedItemClass="pic4" pressedItemStyle="pis4"
-                                selectedItemClass="sic4" selectedItemStyle="sis4"
-                                disabled="true"/>
-          <o:selectOneRadioItem value="5" itemLabel="Radio 5"
-                                focusedItemClass="fic5" focusedItemStyle="fis5"
-                                rolloverItemClass="ric5" rolloverItemStyle="ris5"
-                                pressedItemClass="pic5" pressedItemStyle="pis5"
-                                selectedItemClass="sic5" selectedItemStyle="sis5"/>
-          <a4j:support event="onchange" reRender="radioGroup4Text"/>
-        </o:selectOneRadio>
-        -> <h:outputText id="radioGroup4Text" value="#{RadioTest.radioGroup4}"/>
-      </rich:panel>
-    </h:form>
+        <div>
+          <table>
+            <tr>
+              <td class="header">SelectOneRadio basic (focused/rollover)</td>
+              <td class="header">SelectOneRadio advanced with images (focused/rollover)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio_1"
+                                  focusedItemClass="fic" focusedItemStyle="background-color: #ff3333;"
+                                  rolloverItemClass="ric" rolloverItemStyle="background-color: #6666ff">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio_2"
+                                  focusedItemClass="fic" focusedItemStyle="background-color: #ff3333;"
+                                  rolloverItemClass="ric" rolloverItemStyle="background-color: #6666ff"
 
-    <h:form>
-      <rich:panel>
-        <h:outputLabel for="selectOneRadio7" value="OpenFaces reload component: Advanced radio buttons"/>
-        <h:selectOneMenu id="selectOneMenu7" value="#{RadioTest.selectOneMenu7}">
-          <f:selectItems value="#{RadioTest.selectItemsGroup7}"/>
-          <o:reloadComponents componentIds="selectOneRadio7" event="onchange" action="#{RadioTest.reloadSelectOneRadio7}"/>
-        </h:selectOneMenu>
-        <br/>
-        <o:selectOneRadio id="selectOneRadio7" value="#{RadioTest.radioGroup7}"
-                          style="s" styleClass="c"
-                          enabledClass="ec" enabledStyle="background-color: #B0AFFF;"
-                          disabledClass="dc" disabledStyle="background-color: #6F6F6F;"
-                          focusedClass="fc" focusedStyle="border: 1px solid #DDDF29;"
-                          rolloverClass="rc" rolloverStyle="border: 1px solid #33DF29;"
-                          selectedClass="sc" selectedStyle="border: 1px solid #7FD2FF;"
-                          unselectedClass="uc" unselectedStyle="border: 1px solid #FF4F56;"
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+            </tr>
 
-                          selectedImageUrl="/images/selectedRadioButton.png"
-                          unselectedImageUrl="/images/unselectedRadioButton.png"
-                          rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
-                          rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
-                          pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
-                          pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
-                          disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
-                          disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
-                >
-          <o:selectOneRadioItems value="#{RadioTest.selectOneRadioItemsGroup7}"/>
-          <o:reloadComponents componentIds="radioGroup7Text" event="onchange"/>
-        </o:selectOneRadio>
-        -> <h:outputText id="radioGroup7Text" value="#{RadioTest.radioGroup7}"/>
-      </rich:panel>
-    </h:form>
+            <tr>
+              <td class="header">SelectOneRadio basic (pressed/selected)</td>
+              <td class="header">SelectOneRadio advanced with images (pressed/selected)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio_3"
+                                  pressedItemClass="pic" pressedItemStyle="background-color: #000099"
+                                  selectedItemClass="sic" selectedItemStyle="background-color: #339900">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio_4"
+                                  pressedItemClass="pic" pressedItemStyle="background-color: #000099"
+                                  selectedItemClass="sic" selectedItemStyle="background-color: #339900"
 
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+            </tr>
 
-    <h:form>
-      <rich:panel>
-        <h:outputLabel for="selectOneRadio8" value="RichFaces reload component: Advanced radio buttons"/>
-        <h:selectOneMenu id="selectOneMenu8" value="#{RadioTest.selectOneMenu8}">
-          <f:selectItems value="#{RadioTest.selectItemsGroup8}"/>
-          <a4j:support reRender="selectOneRadio8, spinner1"
-                       event="onchange" action="#{RadioTest.reloadSelectOneRadio8}"/>
-        </h:selectOneMenu>
-        <br/>
-        <o:spinner id="spinner1" maxValue="10" minValue="1" value="5" step="1" cycled="true"/>
-        <br/>
-        <o:selectOneRadio id="selectOneRadio8" value="#{RadioTest.radioGroup8}"
-                          style="s" styleClass="c"
-                          enabledClass="ec" enabledStyle="background-color: #B0AFFF;"
-                          disabledClass="dc" disabledStyle="background-color: #6F6F6F;"
-                          focusedClass="fc" focusedStyle="border: 1px solid #DDDF29;"
-                          rolloverClass="rc" rolloverStyle="border: 1px solid #33DF29;"
-                          selectedClass="sc" selectedStyle="border: 1px solid #7FD2FF;"
-                          unselectedClass="uc" unselectedStyle="border: 1px solid #FF4F56;"
+            <tr>
+              <td class="header">SelectOneRadio and SelectItem basic (focused/rollover)</td>
+              <td class="header">SelectOneRadio and SelectItem advanced with images (focused/rollover)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio_25"
+                                  focusedClass="fc" focusedStyle="background-color: yellow;"
+                                  rolloverClass="rc" rolloverStyle="background-color: #33DF29;"
+                                  focusedItemClass="fic" focusedItemStyle="background-color: #ff3333;"
+                                  rolloverItemClass="ric" rolloverItemStyle="background-color: #6666ff">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio_26"
+                                  focusedClass="fc" focusedStyle="background-color: yellow;"
+                                  rolloverClass="rc" rolloverStyle="background-color: #33DF29;"
+                                  focusedItemClass="fic" focusedItemStyle="background-color: #ff3333;"
+                                  rolloverItemClass="ric" rolloverItemStyle="background-color: #6666ff"
 
-                          selectedImageUrl="/images/selectedRadioButton.png"
-                          unselectedImageUrl="/images/unselectedRadioButton.png"
-                          rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
-                          rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
-                          pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
-                          pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
-                          disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
-                          disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
 
-                          
-                >
-          <o:selectOneRadioItems value="#{RadioTest.selectOneRadioItemsGroup8}"/>
-          <a4j:support reRender="radioGroup8Text" event="onchange"/>
-        </o:selectOneRadio>
-        -> <h:outputText id="radioGroup8Text" value="#{RadioTest.radioGroup8}"/>
-      </rich:panel>
-    </h:form>
+    <tr>
+      <td>
+      <h4>Events</h4>
 
+        <div>
+          <table>
+            <tr>
+              <td class="header">onfocus, onblur</td>
+              <td class="header">onmouseover, onmouseout</td>
+            </tr>
 
+            <tr>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio11"
+                                  onblur="logJSEvents('onblur works for simple', 'empty');"
+                                  onfocus="logJSEvents('onfocus works for simple', 'empty');">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+
+                <br/>
+
+                <o:selectOneRadio id="selectOneRadio12"
+                                  onblur="logJSEvents('onblur works for advanced', 'empty');"
+                                  onfocus="logJSEvents('onfocus works for advanced', 'empty');"
+
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio13"
+                                  onmouseout="logJSEvents('onmouseout works for simple', 'empty');"
+                                  onmouseover="logJSEvents('onmouseover works for simple', 'empty');">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+
+                <br/>
+
+                <o:selectOneRadio id="selectOneRadio14"
+                                  onmouseout="logJSEvents('onmouseout works for advanced', 'empty');"
+                                  onmouseover="logJSEvents('onmouseover works for advanced', 'empty');"
+
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="header">onmouseup, onmousedown, onkeydown</td>
+              <td class="header">onkeypress, onkeyup, onchange</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio15"
+                                  onkeydown="logJSEvents('onkeydown works for simple', 'empty');"
+                                  onmousedown="logJSEvents('onmousedown works for simple', 'empty');"
+                                  onmouseup="logJSEvents('onmouseup works for simple', 'empty');">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+
+                <br/>
+
+                <o:selectOneRadio id="selectOneRadio16"
+                                  onkeydown="logJSEvents('onkeydown works for advanced', 'empty');"
+                                  onmousedown="logJSEvents('onmousedown works for advanced', 'empty');"
+                                  onmouseup="logJSEvents('onmouseup works for advanced', 'empty');"
+
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio17"
+                                  onchange="logJSEvents('onchange works for simple', 'empty');"
+                                  onkeypress="logJSEvents('onkeypress works for simple', 'empty');"
+                                  onkeyup="logJSEvents('onkeyup works for simple', 'empty');">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+
+                <br/>
+
+                <o:selectOneRadio id="selectOneRadio18"
+                                  onchange="logJSEvents('onchange works for advanced', 'empty');"
+                                  onkeypress="logJSEvents('onkeypress works for advanced', 'empty');"
+                                  onkeyup="logJSEvents('onkeyup works for advanced', 'empty');"
+
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+            </tr>
+            <tr>
+              <td class="header">onclick, ondblclick</td>
+              <td class="header">onmousemove</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio19"
+                                  onclick="logJSEvents('onclick works for simple', 'empty');"
+                                  ondblclick="logJSEvents('ondblclick works for simple', 'empty');">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+
+                <br/>
+
+                <o:selectOneRadio id="selectOneRadio20"
+                                  onclick="logJSEvents('onclick works for advanced', 'empty');"
+                                  ondblclick="logJSEvents('ondblclick works for advanced', 'empty');"
+
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio21"
+                                  onmousemove="logJSEvents('onmousemove works for simple', 'empty');">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+
+                <br/>
+
+                <o:selectOneRadio id="selectOneRadio22"
+                                  onmousemove="logJSEvents('onmousemove works for advanced', 'empty');"
+
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+            </tr>
+
+          </table>
+        </div>
+        <div id="empty"></div>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h4>Disable</h4>
+
+        <div>
+          <table>
+            <tr>
+              <td class="header">SelectOneRadio basic disabled</td>
+              <td class="header">SelectOneRadio advanced with images disabled</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio23" disabled="true">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio24" disabled="true"
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h4>ReadOnly</h4>
+
+        <div>
+          <table>
+            <tr>
+              <td class="header">SelectOneRadio basic readonly</td>
+              <td class="header">SelectOneRadio advanced with images readonly</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio25" readonly="true">
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                <o:selectOneRadio id="selectOneRadio26" readonly="true"
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Radio 4" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+                </o:selectOneRadio>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <br/>
+  <br/>
+
+  <span>SelectOneRadio on page...</span>
+
+  <br/>
+
+  <o:selectOneRadio id="selectOneRadioSimple1"
+                    style="border: 1px solid gray; background-color: beige;">
+    <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+    <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+    <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+    <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+    <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+  </o:selectOneRadio>
+
+  <br/>
+
+  <o:selectOneRadio id="selectOneRadioSimple2" 
+                    style="border: 1px solid gray; background-color: beige;"
+                    selectedImageUrl="/images/selectedRadioButton.png"
+                    unselectedImageUrl="/images/unselectedRadioButton.png"
+                    rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                    rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                    pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                    pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                    disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                    disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png"
+          >
+    <o:selectItem itemValue="1" itemLabel="Radio 1"/>
+    <o:selectItem itemValue="2" itemLabel="Radio 2"/>
+    <o:selectItem itemValue="3" itemLabel="Radio 3"/>
+    <o:selectItem itemValue="4" itemLabel="Radio 4 (disabled)" itemDisabled="true"/>
+    <o:selectItem itemValue="5" itemLabel="Radio 5"/>
+  </o:selectOneRadio>
+
+  <br/>
+  <br/>
+
+  <h:commandButton id="submit2" value="Submit"/>
+
+  <script type="text/javascript">
+    function getControl(id) {
+      return document.getElementById(id);
+    }
+
+    function printInfo(textToOutput, divID, add) {
+      var empty = getControl(divID);
+      empty.innerHTML = textToOutput;
+      empty.style.color = "green";
+    }
+
+    function logJSEvents(textToOutput, divID) {
+      printInfo(textToOutput, divID, true);
+    }
+
+  </script>
+  <a4j:log/>
 </div>

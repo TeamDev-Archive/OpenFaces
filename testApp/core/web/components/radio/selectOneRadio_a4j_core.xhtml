@@ -1,0 +1,73 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+
+  <a href="../../main.jsf">Back to the main page</a>
+
+  <br/>
+  <h3>Select One Radio</h3>
+  <br/>
+
+  <table>
+    <tr>
+      <td>
+        <h4>Ajax4JSF reload</h4>
+
+        <div>
+          <table>
+            <tr>
+              <td class="header" colspan="2">SelectOneRadio basic</td>
+              <td class="header" colspan="2">SelectOneRadio advanced with images</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <h:selectOneMenu id="selectOneMenu7" value="#{RadioTest.selectOneMenu7}">
+                  <f:selectItems value="#{RadioTest.selectItemsGroup7}"/>
+                  <a4j:support reRender="selectOneRadio7"
+                               event="onchange" action="#{RadioTest.reloadSelectOneRadio7}"/>
+                </h:selectOneMenu>
+                <br/>
+                <o:selectOneRadio id="selectOneRadio7" value="#{RadioTest.radioGroup7}">
+                  <o:selectItems value="#{RadioTest.selectOneRadioItemsGroup7}"/>
+                  <a4j:support reRender="radioGroup7Text" event="onchange"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                Value: <h:outputText id="radioGroup7Text" value="#{RadioTest.radioGroup7}"/>
+              </td>
+
+              <td class="container">
+                <h:selectOneMenu id="selectOneMenu8" value="#{RadioTest.selectOneMenu8}">
+                  <f:selectItems value="#{RadioTest.selectItemsGroup8}"/>
+                  <a4j:support reRender="selectOneRadio8, spinner1"
+                               event="onchange" action="#{RadioTest.reloadSelectOneRadio8}"/>
+                </h:selectOneMenu>
+                <br/>
+                <o:selectOneRadio id="selectOneRadio8" value="#{RadioTest.radioGroup8}"
+                                  selectedImageUrl="/images/selectedRadioButton.png"
+                                  unselectedImageUrl="/images/unselectedRadioButton.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedRadioButton.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedRadioButton.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedRadioButton.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png">
+                  <o:selectItems value="#{RadioTest.selectOneRadioItemsGroup8}"/>
+                  <a4j:support reRender="radioGroup8Text" event="onchange"/>
+                </o:selectOneRadio>
+              </td>
+              <td class="container">
+                Value: <h:outputText id="radioGroup8Text" value="#{RadioTest.radioGroup8}"/>
+              </td>
+            </tr>
+
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>

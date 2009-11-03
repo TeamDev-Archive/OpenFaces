@@ -10,16 +10,14 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.taglib.facelets.input;
+package org.openfaces.taglib.facelets.select;
 
 import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
-import org.openfaces.taglib.internal.input.SelectOneRadioTag;
+import org.openfaces.taglib.internal.select.SelectOneRadioTag;
 
 /**
- * Author: Oleg Marshalenko
- * Date: Sep 23, 2009
- * Time: 12:10:11 PM
+ * @author Oleg Marshalenko
  */
 public class SelectOneRadioTagHandler extends AbstractFaceletsComponentHandler {
 
