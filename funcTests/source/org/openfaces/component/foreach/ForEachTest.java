@@ -15,12 +15,11 @@ package org.openfaces.component.foreach;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.ForEachInspector;
 import org.seleniuminspector.openfaces.InputTextInspector;
-import org.seleniuminspector.openfaces.SuggestionFieldInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
-import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.LoadingMode;
+import org.seleniuminspector.openfaces.SuggestionFieldInspector;
 
 /**
  * @author Alexey Tarasyuk
@@ -348,6 +347,7 @@ public class ForEachTest extends OpenFacesTestCase {
         dropDownItem1.assertVisible(true);
         dropDownItem2.assertVisible(true);
         dropDownItem0.click();
+        sleep(200);
         selenium.submit("formID");
         waitForPageToLoad();
         dropDownItem0.assertElementExists(false);
@@ -369,6 +369,7 @@ public class ForEachTest extends OpenFacesTestCase {
         dropDownItem1.assertVisible(true);
         dropDownItem2.assertVisible(true);
         dropDownItem2.click();
+        sleep(200);
         selenium.submit("formID");
         waitForPageToLoad();
         dropDownItem0.assertElementExists(false);
@@ -389,6 +390,7 @@ public class ForEachTest extends OpenFacesTestCase {
         dropDownItem1.assertVisible(true);
         dropDownItem2.assertVisible(true);
         dropDownItem1.click();
+        sleep(200);
         selenium.submit("formID");
         waitForPageToLoad();
         dropDownItem0.assertElementExists(false);
