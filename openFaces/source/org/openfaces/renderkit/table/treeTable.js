@@ -50,20 +50,20 @@ O$.TreeTable = {
 
     table._updateRowVisibility = function() {
       var rootNodeCount = this._rowIndexToChildCount["root"];
-      var rows = table._getBodyRows();
+      var rows = table.body._getRows();
       var rowIndexToChildCount = this._rowIndexToChildCount;
       this._styleRecalculationOnNodeExpansionNeeded = !!this._bodyOddRowClass;
       var result = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, 0, rootNodeCount, true);
-      var columns = table._columns;
       if (this._styleRecalculationOnNodeExpansionNeeded) {
-        for (var rowIndex = 0, count = rows.length, visibleRows = 0; rowIndex < count; rowIndex++) {
-          var row = rows[rowIndex];
+        var rowIndex, count, visibleRows, row;
+        for (rowIndex = 0, count = rows.length, visibleRows = 0; rowIndex < count; rowIndex++) {
+          row = rows[rowIndex];
           if (!row._isVisible())
             continue;
           row._notifyRowMoved(visibleRows++);
         }
-        for (var rowIndex = 0, count = rows.length, visibleRows = 0; rowIndex < count; rowIndex++) {
-          var row = rows[rowIndex];
+        for (rowIndex = 0, count = rows.length, visibleRows = 0; rowIndex < count; rowIndex++) {
+          row = rows[rowIndex];
           if (!row._isVisible())
             continue;
           // _updateStyle is used for two reasons:
@@ -80,7 +80,7 @@ O$.TreeTable = {
       var fieldId = this.id + "::expandedNodes";
       var field = O$(fieldId);
       var expandedRowIndexes = "";
-      var rows = this._getBodyRows();
+      var rows = this.body._getRows();
       for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
         var row = rows[rowIndex];
         var expanded = row._toggled;
@@ -93,7 +93,7 @@ O$.TreeTable = {
       field.value = expandedRowIndexes;
     };
 
-    var rows = table._getBodyRows();
+    var rows = table.body._getRows();
     for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
       var row = rows[rowIndex];
       O$.TreeTable._initRow(row);
@@ -110,7 +110,7 @@ O$.TreeTable = {
       var selectedRowIndex = selectedItems[0];
       if (selectedRowIndex == -1)
         return true;
-      var bodyRows = this._getBodyRows();
+      var bodyRows = this.body._getRows();
       var row = bodyRows[selectedRowIndex];
       if (!row._hasChildren)
         return true;
@@ -281,7 +281,7 @@ O$.TreeTable = {
 
     treeTable._insertRowsAfter(parentRowIndex, newRows, newRowsToStylesMap, newRowCellsToStylesMap);
 
-    var rows = treeTable._getBodyRows();
+    var rows = treeTable.body._getRows();
     var parentRow = rows[parentRowIndex];
 
     if (newRows == null || newRows.length == 0) {
@@ -302,16 +302,17 @@ O$.TreeTable = {
     }
 
     var rowIndexToChildCount = treeTable._rowIndexToChildCount;
+    var newRowIndex;
     for (var rowIndex = rows.length - 1 - addedRowCount; rowIndex > parentRowIndex; rowIndex--) {
       if (rowIndexToChildCount[rowIndex] != undefined) {
-        var newRowIndex = rowIndex + addedRowCount;
+        newRowIndex = rowIndex + addedRowCount;
         rowIndexToChildCount[newRowIndex] = rowIndexToChildCount[rowIndex];
         rowIndexToChildCount[rowIndex] = undefined;
       }
     }
     rowIndexToChildCount[parentRowIndex] = newRowIndexToChildCount[0];
     for (i = 0; i < addedRowCount; i++) {
-      var newRowIndex = parentRowIndex + 1 + i;
+      newRowIndex = parentRowIndex + 1 + i;
       rowIndexToChildCount[newRowIndex] = newRowIndexToChildCount[i + 1];
     }
 

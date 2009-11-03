@@ -137,7 +137,7 @@ O$.Table = {
         throw "setSelectedRowIndex: The specified table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
       if (this._multipleSelectionAllowed)
         throw "setSelectedRowIndex can only used on a table with single selection mode; table's clientId is: " + this.id;
-      var bodyRows = table._getBodyRows();
+      var bodyRows = table.body._getRows();
       if ((rowIndex != -1) && (rowIndex < 0 || rowIndex >= bodyRows.length))
         throw "setSelectedRowIndex parameter is out of range (" + rowIndex + "); table's clientId is: " + this.id + "; number of rows is: " + bodyRows.length;
       this._setSelectedItems(rowIndex != -1 ? [rowIndex] : []);
@@ -172,7 +172,7 @@ O$.Table = {
     table.__getRowCount = function() {
       if (this._noDataRows)
         return 0;
-      var bodyRows = this._getBodyRows();
+      var bodyRows = this.body._getRows();
       return bodyRows.length;
     };
   },
@@ -435,7 +435,7 @@ O$.Table = {
   },
 
   _scrollToRowIndexes: function(table, rowIndexes) {
-    var bodyRows = table._getBodyRows();
+    var bodyRows = table.body._getRows();
 
     var boundingRect = null;
     for (var i = 0, count = rowIndexes.length; i < count; i++) {
@@ -479,7 +479,7 @@ O$.Table = {
       }
     }
 
-    var bodyRows = table._getBodyRows();
+    var bodyRows = table.body._getRows();
     for (i = rangeStart; i <= rangeEnd; i++) {
       if (O$.findValueInArray(i, alreadyIncludedIndexes) == -1) {
         var row = bodyRows[i];
@@ -529,7 +529,7 @@ O$.Table = {
   },
 
   _getNeighboringVisibleRowIndex: function(table, startRowIndex, stepCount) {
-    var bodyRows = table._getBodyRows();
+    var bodyRows = table.body._getRows();
     if (stepCount == 0)
       return bodyRows[startRowIndex];
     var dir = (stepCount > 0) ? +1 : -1;
@@ -664,7 +664,7 @@ O$.Table = {
       if (this._noDataRows)
         return;
       if (this._selectableItems == "rows") {
-        var rows = this._getBodyRows();
+        var rows = this.body._getRows();
         var allItems = new Array();
         for (var i = 0, count = rows.length; i < count; i++)
           allItems[i] = i;
@@ -700,7 +700,7 @@ O$.Table = {
 
     // run initialization code
     if (selectableItems == "rows") {
-      var rows = table._getBodyRows();
+      var rows = table.body._getRows();
       for (var i = 0, count = rows.length; i < count; i++) {
         var row = rows[i];
         O$.Table._initRowForSelection(row);
@@ -903,7 +903,7 @@ O$.Table = {
     if (this._selectableItems == "rows") {
       if (itemIndex == -1)
         return;
-      var rows = this._getBodyRows();
+      var rows = this.body._getRows();
       if (itemIndex < 0 || itemIndex >= rows.length)
         throw "Row index out of range: " + itemIndex;
       var row = rows[itemIndex];
@@ -918,7 +918,7 @@ O$.Table = {
     if (this._selectableItems == "rows") {
       if (itemIndex == -1)
         return;
-      var rows = this._getBodyRows();
+      var rows = this.body._getRows();
       var row = rows[itemIndex];
 
       row._selected = false;
@@ -1009,7 +1009,7 @@ O$.Table = {
     header._updateStateFromTable = function() {
       var headerTable = this._table;
       var selectedItems = headerTable._getSelectedItems();
-      var bodyRows = headerTable._getBodyRows();
+      var bodyRows = headerTable.body._getRows();
       if (selectedItems.length == 0) {
         this.checked = false;
       } else {
@@ -1161,11 +1161,12 @@ O$.Table = {
 
     O$.preloadImages(sortingImagesToPreload);
 
+    var column;
     for (var i = 0, count = table._columns.length; i < count; i++) {
       var columnSortable = columnSortableFlags[i];
       if (!columnSortable)
         continue;
-      var column = table._columns[i];
+      column = table._columns[i];
       var colHeader = column.header ? column.header._cell : null;
       if (!colHeader)
         continue;
@@ -1197,7 +1198,7 @@ O$.Table = {
     }
 
     if (sortedColIndex != -1) {
-      var column = table._columns[table._sortedColIndex];
+      column = table._columns[table._sortedColIndex];
       // Applying style to cells is needed for sorted column styles to have priority over
       // even/odd row styles - for backward compatibility with QK versions earlier than 1.2.2 (JSFC-2884)
       column._forceUsingCellStyles = true;
