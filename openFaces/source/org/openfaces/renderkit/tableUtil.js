@@ -230,7 +230,7 @@ O$.Tables = {
       var row = bodyRows[i];
       row.parentNode.removeChild(row);
     }
-    this.body._Rows = undefined;
+    this.body._rows = undefined;
 
     this._rowStylesMap = {};
     this._cellStylesMap = {};
@@ -336,7 +336,8 @@ O$.Tables = {
       newRowIndex = afterIndex + 1 + i;
       bodyRows[newRowIndex] = newRow;
       this._rowStylesMap[newRowIndex] = newRowsToStylesMap ? newRowsToStylesMap[i] : undefined;
-      O$._initTableRow(newRow, this, newRowIndex, visibleRowsUpToReferenceRow + newVisibleRowsForNow);
+      newRow._cells = O$._getRowCells(newRow); // todo: adjust for scrollable version
+      O$._initBodyRow(newRow, this, newRowIndex, visibleRowsUpToReferenceRow + newVisibleRowsForNow);
       if (newRow._isVisible())
         newVisibleRowsForNow++;
 
@@ -376,8 +377,43 @@ O$._initTableRows = function(table) {
             if (!table._scrolling) {
               this._rows = O$.getChildNodesWithNames(section, ["tr"]);
             } else {
-              
-              O$.findElementByPath(section, "tr[0]/table")
+              var immediateRows = O$.getChildNodesWithNames(section, ["tr"]);
+              var commonRow = commonRowAbove != undefined ? (
+                      commonRowAbove ? immediateRows[0] : immediateRows[immediateRows.length - 1]
+                      ) : null;
+              var containerRowIndex = commonRowAbove != undefined
+                      ? (commonRowAbove ? 1 : 0)
+                      : 0;
+              var containerRow = immediateRows[containerRowIndex];
+              var leftCellIndex = table._scrolling.leftFixedCols ? 0 : undefined;
+              var centerCellIndex = leftCellIndex != undefined ? 1 : 0;
+              var rightCellIndex = table._scrolling.rightFixedCols ? centerCellIndex + 1 : undefined;
+              function scrollingAreaRows(areaCellIndex) {
+                var td = containerRow.childNodes[areaCellIndex];
+                var div = O$.getChildNodesWithNames(td, ["div"])[0];
+                var table = div ? O$.getChildNodesWithNames(div, ["table"])[0] : O$.getChildNodesWithNames(td, ["table"])[0];
+                return  O$.getChildNodesWithNames(table, ["tr"]);
+              }
+              var leftRows = leftCellIndex != undefined ? scrollingAreaRows(leftCellIndex) : null;
+              var centerRows = scrollingAreaRows(centerCellIndex);
+              var rightRows = rightCellIndex != undefined ? scrollingAreaRows(rightCellIndex) : null;
+              var rows = [];
+              for (var i = 0, rowCount = centerRows.length; i < rowCount; i++) {
+                var row = {};
+                rows[i] = row;
+                row._leftRow = leftRows ? leftRows[i] : null;
+                row._centerRow = centerRows[i];
+                row._rightRow = rightRows ? rightRows[i] : null;
+                row._table = table;
+                row._index = i;
+                var cells = [];
+                function appendList(dest, src) {for (var i = 0, count = src.length; i < count; i++) dest.push(src[i]);}
+                if (row._leftRow) appendList(cells, O$._getRowCells(row._leftRow));
+                appendList(cells, O$._getRowCells(row._centerRow));
+                if (row._rightRow) appendList(cells, O$._getRowCells(row._rightRow));
+                row._cells = cells;
+              }
+
             }
           } else {
             this._rows = [];
@@ -412,15 +448,13 @@ O$._initTableRows = function(table) {
 
   table.header = initTableSection(table, "thead", table._commonHeaderExists ? true : undefined);
   table.footer = initTableSection(table, "tfoot", table._commonFooterExists ? false : undefined);
-  table.body = initTableSection(table, "tbody");
+  table.body = initTableSection(table, "tbody", undefined);
 
   var headRows = table.header._getRows();
   var rowIndex, rowCount, row;
   for (rowIndex = 0, rowCount = headRows.length; rowIndex < rowCount; rowIndex++) {
     row = headRows[rowIndex];
-    row._table = table;
-    row._index = rowIndex;
-    O$.Tables._prepareRow(row);
+    O$.Tables._initRow(row);
   }
   var commonHeaderRowIndex = table._commonHeaderExists ? 0 : -1;
   var filterRowIndex = table._filterRowExists ? headRows.length - 1 : -1;
@@ -439,7 +473,7 @@ O$._initTableRows = function(table) {
   var bodyRows = table.body._getRows();
   for (rowIndex = 0, rowCount = bodyRows.length; rowIndex < rowCount; rowIndex++) {
     row = bodyRows[rowIndex];
-    O$._initTableRow(row, table, rowIndex, visibleRowCount);
+    O$._initBodyRow(row, table, rowIndex, visibleRowCount);
     if (row._isVisible())
       visibleRowCount++;
   }
@@ -449,9 +483,7 @@ O$._initTableRows = function(table) {
     lastNonCommonFooter--;
   for (rowIndex = 0, rowCount = footRows.length; rowIndex < rowCount; rowIndex++) {
     row = footRows[rowIndex];
-    row._table = table;
-    row._index = rowIndex;
-    O$.Tables._prepareRow(row);
+    O$.Tables._initRow(row);
 
     if (rowIndex <= lastNonCommonFooter)
       O$._setRowStyle(footRows[rowIndex], {_footerRowClass: table._footerRowClass});
@@ -474,7 +506,7 @@ O$._setRowStyle = function(row, styleMappings) {
   }
 };
 
-O$._initTableRow = function(row, table, rowIndex, visibleRowsBefore) {
+O$._initBodyRow = function(row, table, rowIndex, visibleRowsBefore) {
   row._table = table;
   row._index = rowIndex;
   row._selected = false;
@@ -524,7 +556,7 @@ O$._initTableRow = function(row, table, rowIndex, visibleRowsBefore) {
     return null;
   };
 
-  O$.Tables._prepareRow(row);
+  O$.Tables._initRow(row);
 
   function reinitializeStyle(visibleRowsBefore) {
     O$._calculateInitialRowClass(row, table, visibleRowsBefore);
@@ -621,9 +653,10 @@ O$._initTableRow = function(row, table, rowIndex, visibleRowsBefore) {
 
 };
 
-O$.Tables._prepareRow = function(row) {
-  var cells = O$._getRowCells(row);
-  row._cells = cells;
+O$.Tables._initRow = function(row) {
+  if (!row._cells)
+    throw "O$.Tables._initRow: row._cells must alredy be initialized when this method is invoked";
+  var cells = row._cells;
   row._cellsByColumns = [];
   var colIndex = 0;
   for (var cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
