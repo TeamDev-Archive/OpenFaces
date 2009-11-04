@@ -52,7 +52,7 @@ O$.Table = {
     table._useAjax = useAjax;
 
     try {
-      O$.Tables._initStyles.apply(table, structureAndStyleParams);
+      O$.Tables._init.apply(table, structureAndStyleParams);
     } finally {
       table.style.visibility = "visible";
       // can't just exclude the "o_initially_invisible" from table.className because of IE issue (JSFC-2337)
@@ -1289,7 +1289,9 @@ O$.Table = {
         var col = table._columns[i];
         col._allCellsClassName = O$.createCssClass("overflow: hidden", true);
         col._allCellsClass = O$.findCssRule("." + col._allCellsClassName);
-        O$.setStyleMappings(col._colTag, {resizingClass: col._allCellsClassName});
+        col._colTags.forEach(function(colTag) {
+          O$.setStyleMappings(colTag, {resizingClass: col._allCellsClassName});
+        });
         if (col.header && col.header._cell)
           O$.setStyleMappings(col.header._cell, {resizingClass: col._allCellsClassName});
         if (col.filter && col.filter._cell)
@@ -1327,7 +1329,9 @@ O$.Table = {
 
         column.setWidth = function(width) {
           this._allCellsClass.style.width = width + "px";
-          this._colTag.style.width = width + "px";
+          this._colTags.forEach(function(colTag) {
+            colTag.style.width = width + "px";
+          });
         };
         column.getWidth = function() {
           if (this.header && this.header._cell)
@@ -1342,7 +1346,7 @@ O$.Table = {
           }
           if (this.footer && this.footer._cell)
             return this.footer._cell.offsetWidth;
-          return this._colTag.offsetWidth;
+          return this._colTags[0].offsetWidth;
         };
 
         if (!column.header || !column.header._cell)

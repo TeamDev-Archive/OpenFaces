@@ -634,6 +634,19 @@ if (!window.O$) {
     };
   }
 
+  if (!Array.prototype.forEach) {
+    Array.prototype.forEach = function(fun, thisp) {
+      var len = this.length >>> 0;
+      if (typeof fun != "function")
+        throw new TypeError();
+
+      for (var i = 0; i < len; i++) {
+        if (i in this)
+          fun.call(thisp, this[i], i, this);
+      }
+    };
+  }
+
   O$.dateByTimeMillis = function(time) {
     var date = new Date();
     date.setTime(time);
@@ -705,6 +718,11 @@ if (!window.O$) {
         return true;
     }
     return false;
+  };
+
+  O$.addAll = function(dest, src) {
+    for (var i = 0, count = src.length; i < count; i++)
+      dest.push(src[i]);
   };
 
 

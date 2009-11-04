@@ -52,7 +52,7 @@ O$.DropDownField = {
     dropDown._initListStyles = function() {
       var oldCursor = document.body.style.cursor;
       document.body.style.cursor = "progress";
-      O$.Tables._initStyles.apply(innerTable, popupTableStructureAndStyleParams);
+      O$.Tables._init.apply(innerTable, popupTableStructureAndStyleParams);
       document.body.style.cursor = oldCursor;
       O$.repaintWindowForSafari(true);
     };

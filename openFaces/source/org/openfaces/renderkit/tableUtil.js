@@ -76,7 +76,7 @@ O$._handleUnsupportedRowStyleProperties = function(row) {
 
 O$._evaluateStyleClassProperties_cached = function(className, propertyNames, cacheInElement) {
   if (!cacheInElement.__stylePropertyCache)
-    cacheInElement.__stylePropertyCache = new Array();
+    cacheInElement.__stylePropertyCache = [];
   var stylePropertiesKey = className + "___" + propertyNames.join("__");
   var propertyValues = cacheInElement.__stylePropertyCache[stylePropertiesKey];
   if (!propertyValues) {
@@ -119,7 +119,7 @@ O$._evaluateStyleClassProperties_cached = function(className, propertyNames, cac
  *   - subColumns: [array of column specification objects]
  */
 O$.Tables = {
-  _initStyles: function(scrolling, columns, commonHeaderExists, subHeaderRowExists, commonFooterExists, noDataRows,
+  _init: function(scrolling, columns, commonHeaderExists, subHeaderRowExists, commonFooterExists, noDataRows,
                                  gridLines, rowStyles, rowStylesMap, cellStylesMap, forceUsingCellStyles,
                                  additionalCellWrapperStyle, invisibleRowsAllowed) {
     var table = this;
@@ -175,19 +175,19 @@ O$.Tables = {
         table.style.borderCollapse = "collapse";
     }
 
-    table._rowInsertionCallbacks = new Array();
+    table._rowInsertionCallbacks = [];
     table._addRowInsertionCallback = function(callback) {
       table._rowInsertionCallbacks.push(callback);
     };
-    table._singleRowInsertionCallbacks = new Array();
+    table._singleRowInsertionCallbacks = [];
     table._addSingleRowInsertionCallback = function(callback) {
       table._singleRowInsertionCallbacks.push(callback);
     };
-    table._cellInsertionCallbacks = new Array();
+    table._cellInsertionCallbacks = [];
     table._addCellInsertionCallback = function(callback) {
       table._cellInsertionCallbacks.push(callback);
     };
-    table._cellMoveCallbacks = new Array();
+    table._cellMoveCallbacks = [];
     table._addCellMoveCallback = function(callback) {
       table._cellMoveCallbacks.push(callback);
     };
@@ -396,15 +396,19 @@ O$._initTableRows = function(table) {
               var leftCellIndex = table._scrolling.leftFixedCols ? 0 : undefined;
               var centerCellIndex = leftCellIndex != undefined ? 1 : 0;
               var rightCellIndex = table._scrolling.rightFixedCols ? centerCellIndex + 1 : undefined;
-              function scrollingAreaRows(areaCellIndex) {
+              var section = this;
+              function scrollingAreaRows(areaCellIndex, scrollAreaVar) {
                 var td = containerRow.childNodes[areaCellIndex];
                 var div = O$.getChildNodesWithNames(td, ["div"])[0];
                 var table = div ? O$.getChildNodesWithNames(div, ["table"])[0] : O$.getChildNodesWithNames(td, ["table"])[0];
+                section[scrollAreaVar] = div ? div : table;
+                section[scrollAreaVar]._div = div;
+                section[scrollAreaVar]._table = table;
                 return  O$.getChildNodesWithNames(table, ["tr"]);
               }
-              var leftRows = leftCellIndex != undefined ? scrollingAreaRows(leftCellIndex) : null;
-              var centerRows = scrollingAreaRows(centerCellIndex);
-              var rightRows = rightCellIndex != undefined ? scrollingAreaRows(rightCellIndex) : null;
+              var leftRows = leftCellIndex != undefined ? scrollingAreaRows(leftCellIndex, "_leftScrollingArea") : null;
+              var centerRows = scrollingAreaRows(centerCellIndex, "_centerScrollingArea");
+              var rightRows = rightCellIndex != undefined ? scrollingAreaRows(rightCellIndex, "_rightScrollingArea") : null;
               var rows = [];
               var rowIndex = 0, rowCount = centerRows.length;
               if (commonRowAbove === true)
@@ -418,19 +422,19 @@ O$._initTableRows = function(table) {
                 row._table = table;
                 row._index = rowIndex;
                 var cells = [];
-                function appendList(dest, src) {for (var i = 0, count = src.length; i < count; i++) dest.push(src[i]);}
+
                 if (row._leftRowNode) {
                   row._leftRowNode._cells = O$._getRowCells(row._leftRowNode);
                   row._leftRowNode._row = row;
-                  appendList(cells, row._leftRowNode._cells);
+                  O$.addAll(cells, row._leftRowNode._cells);
                 }
                 row._rowNode._getRowCells = O$._getRowCells(row._rowNode);
                 row._rowNode._row = row;
-                appendList(cells, row._rowNode._cells);
+                O$.addAll(cells, row._rowNode._cells);
                 if (row._rightRowNode) {
                   row._rightRowNode._cells = O$._getRowCells(row._rightRowNode);
                   row._rightRowNode._row = row;
-                  appendList(cells, row._rightRowNode._cells);
+                  O$.addAll(cells, row._rightRowNode._cells);
                 }
                 row._cells = cells;
               }
@@ -541,18 +545,36 @@ O$._initBodyRow = function(row, table, rowIndex, visibleRowsBefore) {
   row._table = table;
   row._index = rowIndex;
   row._selected = false;
+  if (!row._rowNode) {
+    if (!row.nodeName || row.nodeName.toLowerCase() != "tr")
+      throw "O$.Tables._initBodyRow: row._rowNode must be initialized for synthetic (scrollable-version) rows";
+    row._rowNode = row;
+  }
   if (row._visible === undefined)
-    row._visible = table._invisibleRowsAllowed ? O$.getElementStyleProperty(row, "display") != "none" : true;
+    row._visible = table._invisibleRowsAllowed ? O$.getElementStyleProperty(row._rowNode, "display") != "none" : true;
 
   row._mouseIsOver = false;
   if (!table._noDataRows && table._rolloverRowClass) {
-    O$.addEventHandlerSimple(row, "mouseover", "_mouseOverHandler");
-    O$.addEventHandlerSimple(row, "mouseout", "_mouseOutHandler");
+    function addEventHandler(row, event, handler) {
+      O$.addEventHandlerSimple(row._rowNode, event, handler);
+      if (row._leftRowNode)
+        O$.addEventHandlerSimple(row._leftRowNode, event, handler);
+      if (row._rightRowNode)
+        O$.addEventHandlerSimple(row._rightRowNode, event, handler);
+    }
+    addEventHandler(row, "mouseover", "_mouseOverHandler");
+    addEventHandler(row, "mouseout", "_mouseOutHandler");
   }
-  if (row.className == "o_hiddenRow") {
-    row.style.display = "none";
-    row.className = "";
+  function processHiddenRowClass(row) {
+    if (!row) return;
+    if (row.className == "o_hiddenRow") {
+      row.style.display = "none";
+      row.className = "";
+    }
   }
+  processHiddenRowClass(row._leftRowNode);
+  processHiddenRowClass(row._rowNode);
+  processHiddenRowClass(row._rightRowNode);
 
   row._isVisible = function () {
     return this._visible;
@@ -561,19 +583,28 @@ O$._initBodyRow = function(row, table, rowIndex, visibleRowsBefore) {
     if (this._visible == visible)
       return;
     this._visible = visible;
-    if (this.style.display)
-      this.style.display = "";
+    function procesDisplayStyle(row) {if (row && row.style.display) row.style.display = "";}
+    procesDisplayStyle(this._leftRowNode);
+    procesDisplayStyle(this._rowNode);
+    procesDisplayStyle(this._rightRowNode);
+
     O$.setStyleMappings(this, {_rowVisibilityStyle: visible ? "" : "o_hiddenRow"});
     O$._updateCellWrappersStyleForRow(this);
   };
 
   row._mouseOverHandler = function() {
-    this._mouseIsOver = true;
+    if (this._row)
+      this._row._mouseIsOver = true;
+    else
+      this._mouseIsOver = true;
     this._updateStyle();
   };
 
   row._mouseOutHandler = function() {
-    this._mouseIsOver = false;
+    if (this._row)
+      this._row._mouseIsOver = false;
+    else
+      this._mouseIsOver = false;
     this._updateStyle();
   };
 
@@ -639,13 +670,21 @@ O$._initBodyRow = function(row, table, rowIndex, visibleRowsBefore) {
     var opera = O$.isOpera();
 
     if (!rowTable._forceUsingCellStyles) {
-      O$.setStyleMappings(row, {_rolloverAndSelectionClass: addedClassName});
+      if (row._leftRowNode) O$.setStyleMappings(row._leftRowNode, {_rolloverAndSelectionClass: addedClassName});
+      O$.setStyleMappings(row._rowNode, {_rolloverAndSelectionClass: addedClassName});
+      if (row._rightRowNode) O$.setStyleMappings(row._rightRowNode, {_rolloverAndSelectionClass: addedClassName});
       O$._updateCellWrappersStyleForRow(row);
       if (opera) {
-        var oldBackground1 = row.style.background;
-        row.style.background = "white";
-        row.style.background = "#fefefe";
-        row.style.background = oldBackground1;
+        function resetOperaStyle(row) {
+          if (!row) return;
+          var oldBackground1 = row.style.background;
+          row.style.background = "white";
+          row.style.background = "#fefefe";
+          row.style.background = oldBackground1;
+        }
+        resetOperaStyle(row._leftRowNode);
+        resetOperaStyle(row._rowNode);
+        resetOperaStyle(row._rightRowNode);
       }
     }
 
@@ -737,17 +776,22 @@ O$.Tables._initRow = function(row) {
 };
 
 O$._updateCellWrappersStyleForRow = function(row) {
-  if (row._noCellWrappersFound)
-    return;
-  var atLeastOneCellWrapperFound = false;
-  var cells = row._cells;
-  for (var i = 0, count = cells.length; i < count; i++) {
-    var cell = cells[i];
-    if (O$._updateCellWrapperStyle(cell))
-      atLeastOneCellWrapperFound = true;
+  function f(row) {
+    if (!row || row._noCellWrappersFound)
+      return;
+    var atLeastOneCellWrapperFound = false;
+    var cells = row._cells;
+    for (var i = 0, count = cells.length; i < count; i++) {
+      var cell = cells[i];
+      if (O$._updateCellWrapperStyle(cell))
+        atLeastOneCellWrapperFound = true;
+    }
+    if (!atLeastOneCellWrapperFound)
+      row._noCellWrappersFound = true;
   }
-  if (!atLeastOneCellWrapperFound)
-    row._noCellWrappersFound = true;
+  f(row._rowNode);
+  f(row._leftRowNode);
+  f(row._rightRowNode);
 };
 
 O$._updateCellWrapperStyle = function(cell) {
@@ -1089,17 +1133,45 @@ O$._initTableColumns = function(table, columnHiearachy) {
   table._columns = realColumns;
   var colCount = realColumns.length;
 
-  var colTags = O$.getChildNodesWithNames(table, ["col"]);
-  if (colTags.length == 0) {
-    var colGroup = O$.getChildNodesWithNames(table, ["colgroup"])[0];
-    colTags = colGroup ? O$.getChildNodesWithNames(colGroup, ["col"]) : [];
-  }
+  var colTags = function() {
+    var result;
+    if (!table.scorlling) {
+      result = O$.getChildNodesWithNames(table, ["col"]);
+      if (result.length == 0) {
+        var colGroup = O$.getChildNodesWithNames(table, ["colgroup"])[0];
+        result = colGroup ? O$.getChildNodesWithNames(colGroup, ["col"]) : [];
+      }
+      for (var i = 0, count = result.length; i < count; i++)
+        result[i] = [result[i]];
+    } else {
+      result = [];
+      function addSectionCols(section) {
+        var colIndex = 0;
+        function saveAreaCols(area) {
+          if (!area) return;
+          var cols = O$.getChildNodesWithNames(area._table, ["col"]);
+          for (var i = 0, count = cols.length; i < count; i++) {
+            var arr = result[colIndex++];
+            if (!arr) {arr = []; result[i] = arr;}
+            arr.push(cols[i]);
+          }
+        }
+        saveAreaCols(section._leftScrollingArea);
+        saveAreaCols(section._centerScrollingArea);
+        saveAreaCols(section._rightScrollingArea);
+      }
+      addSectionCols(table.header);
+      addSectionCols(table.body);
+      addSectionCols(table.footer);
+    }
+    return result;
+  }();
   O$.assert(colTags.length == colCount, "O$._initTableColumns: colTags.length(" + colTags.length + ") != colCount(" + colCount + ")");
 
   for (var colIndex = 0; colIndex < colCount; colIndex++) {
     var column = realColumns[colIndex];
-    var colTag = colTags[colIndex];
-    O$._initTableColumn(column, colTag, colIndex);
+    var colTagArray = colTags[colIndex];
+    O$._initTableColumn(column, colTagArray, colIndex);
   }
 
   table._addCellInsertionCallback(function(cell, row, column) {
@@ -1180,8 +1252,8 @@ O$._initTableColumnOrGroup = function(column, table) {
   };
 };
 
-O$._initTableColumn = function(column, colTag, colIndex) {
-  column._colTag = colTag;
+O$._initTableColumn = function(column, colTagArray, colIndex) {
+  column._colTags = colTagArray;
   column._colIndex = colIndex;
 
   var table = column._table;
@@ -1207,7 +1279,10 @@ O$._initTableColumn = function(column, colTag, colIndex) {
 
     column._useCellStyles = O$._getUseCellStylesForColumn(column);
     var colTagClassName = !column._useCellStyles ? column._getCompoundClassName() : "";
-    column._colTag.className = colTagClassName ? colTagClassName : "";
+    column._colTags.forEach(function(colTag) {
+      colTag.className = colTagClassName ? colTagClassName : "";
+    });
+
     column._cellStyles = O$._prepareCellStylesForColStyleSimulation(column);
 
     var bodyCells = column.body ? column.body._cells : [];
@@ -1242,7 +1317,10 @@ O$._initTableSubHeaderCell = function(cell, column) {
     O$._applySimulatedColStylesToCell(cell);
 
     var column = cell._column;
-    O$._setCellStyleMappings(cell, {_compoundColumnClassName: column._getCompoundClassName(), _colFilterClass: column.filter ? column.filter.className : null});
+    O$._setCellStyleMappings(cell, {
+      _compoundColumnClassName: column._getCompoundClassName(),
+      _colFilterClass: column.filter ? column.filter.className : null
+    });
   };
 
 };
@@ -1255,7 +1333,10 @@ O$._initTableFooterCell = function(cell, column) {
     O$._applySimulatedColStylesToCell(cell);
 
     var column = cell._column;
-    O$._setCellStyleMappings(cell, {_compoundColumnClassName: column._getCompoundClassName(), _colFooterClass: column.footer ? column.footer.className : null});
+    O$._setCellStyleMappings(cell, {
+      _compoundColumnClassName: column._getCompoundClassName(),
+      _colFooterClass: column.footer ? column.footer.className : null
+    });
   };
 };
 
@@ -1417,7 +1498,7 @@ O$._prepareCellStylesForColStyleSimulation = function(column) {
   var isOpera = O$.isOpera();
 
   var table = column._table;
-  var colTag = column._colTag;
+  var colTag = column._colTags[0];
   if (isMozilla) {
     column._forceCellAlign = colTag.hasAttribute("align") ? colTag.align : null;
     column._forceCellVAlign = colTag.hasAttribute("valign") ? colTag.vAlign : null;

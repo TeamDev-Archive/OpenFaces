@@ -165,14 +165,14 @@ O$._initDayTable = function(componentId,
   }
 
   var forceUsingCellStyles = true; // allow such styles as text-align to be applied to row's cells
-  O$.Tables._initStyles.apply(table, [
+  O$.Tables._init.apply(table, [
     columns, false, false, false, false,
     [primaryRowSeparator, resourceColumnSeparator, null, null, null, null, null, null, null, null, null],
     [dayTableRowClass, null, null, null, null, null, null, null], {}, {}, forceUsingCellStyles,
     null, false]);
 
   if (useResourceSeparation) {
-    O$.Tables._initStyles.apply(resourceHeadersTable, [
+    O$.Tables._init.apply(resourceHeadersTable, [
       headerColumns, false, false, false, false,
       [primaryRowSeparator, resourceColumnSeparator, null, null, null, null, null, null, null, null, null],
       [resourceHeadersRowClass, null, null, null, null, null, null, null], {}, {}, forceUsingCellStyles,
