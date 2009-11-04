@@ -62,7 +62,7 @@ O$._handleUnsupportedRowStyleProperties = function(row) {
   var propertyValues = O$._evaluateStyleClassProperties_cached(
           row.className,
           ["borderLeft", "borderRight", "borderTop", "borderBottom"],
-          row._table);
+          row._row ? row._row._table : row._table);
   if (propertyValues.borderLeft || propertyValues.borderRight || propertyValues.borderTop || propertyValues.borderBottom) {
     for (cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
       cell = cells[cellIndex];
@@ -380,7 +380,7 @@ O$._initTableRows = function(table) {
                 var r = this._rows[i];
                 r._table = table;
                 r._index = i;
-                r._cells = O$._getRowCells(row);
+                r._cells = O$._getRowCells(r);
               }
             } else {
               var immediateRows = O$.getChildNodesWithNames(section, ["tr"]);
@@ -412,16 +412,26 @@ O$._initTableRows = function(table) {
               while (rowIndex < rowCount) {
                 var row = {};
                 rows[rowIndex++] = row;
-                row._leftRow = leftRows ? leftRows[rowIndex] : null;
-                row._centerRow = centerRows[rowIndex];
-                row._rightRow = rightRows ? rightRows[rowIndex] : null;
+                row._leftRowNode = leftRows ? leftRows[rowIndex] : null;
+                row._rowNode = centerRows[rowIndex];
+                row._rightRowNode = rightRows ? rightRows[rowIndex] : null;
                 row._table = table;
                 row._index = rowIndex;
                 var cells = [];
                 function appendList(dest, src) {for (var i = 0, count = src.length; i < count; i++) dest.push(src[i]);}
-                if (row._leftRow) appendList(cells, O$._getRowCells(row._leftRow));
-                appendList(cells, O$._getRowCells(row._centerRow));
-                if (row._rightRow) appendList(cells, O$._getRowCells(row._rightRow));
+                if (row._leftRowNode) {
+                  row._leftRowNode._cells = O$._getRowCells(row._leftRowNode);
+                  row._leftRowNode._row = row;
+                  appendList(cells, row._leftRowNode._cells);
+                }
+                row._rowNode._getRowCells = O$._getRowCells(row._rowNode);
+                row._rowNode._row = row;
+                appendList(cells, row._rowNode._cells);
+                if (row._rightRowNode) {
+                  row._rightRowNode._cells = O$._getRowCells(row._rightRowNode);
+                  row._rightRowNode._row = row;
+                  appendList(cells, row._rightRowNode._cells);
+                }
                 row._cells = cells;
               }
               if (commonRowAbove === false)
@@ -513,8 +523,17 @@ O$._setRowStyle = function(row, styleMappings) {
       O$._setCellStyleMappings(cell, styleMappings);
     }
   } else {
-    O$.setStyleMappings(row, styleMappings);
-    O$._handleUnsupportedRowStyleProperties(row);
+    if (row._leftRowNode) {
+      O$.setStyleMappings(row._leftRowNode, styleMappings);
+      O$._handleUnsupportedRowStyleProperties(row._leftRowNode);
+    }
+    O$.setStyleMappings(row._rowNode, styleMappings);
+    O$._handleUnsupportedRowStyleProperties(row._rowNode);
+    if (row._rightRowNode) {
+      O$.setStyleMappings(row._rightRowNode, styleMappings);
+      O$._handleUnsupportedRowStyleProperties(row._rightRowNode);
+    }
+
   }
 };
 
@@ -574,8 +593,7 @@ O$._initBodyRow = function(row, table, rowIndex, visibleRowsBefore) {
     O$._calculateInitialRowClass(row, table, visibleRowsBefore);
     if (!table._forceUsingCellStyles) {
       var individualRowClass = table._rowStylesMap[row._index];
-      O$.setStyleMappings(row, {_initialClass: row._initialClass, _individualRowClass: individualRowClass});
-      O$._handleUnsupportedRowStyleProperties(row);
+      O$._setRowStyle(row, {_initialClass: row._initialClass, _individualRowClass: individualRowClass});
     }
   }
 
@@ -668,6 +686,11 @@ O$._initBodyRow = function(row, table, rowIndex, visibleRowsBefore) {
 O$.Tables._initRow = function(row) {
   if (!row._cells)
     throw "O$.Tables._initRow: row._cells must alredy be initialized when this method is invoked";
+  if (!row._rowNode) {
+    if (!row.nodeName || row.nodeName.toLowerCase() != "tr")
+      throw "O$.Tables._initRow: row._rowNode must be initialized for synthetic (scrollable-version) rows";
+    row._rowNode = row;
+  }
   var cells = row._cells;
   row._cellsByColumns = [];
   var colIndex = 0;
