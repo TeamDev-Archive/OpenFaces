@@ -379,6 +379,8 @@ O$._initTableRows = function(table) {
               
               O$.findElementByPath(section, "tr[0]/table")
             }
+          } else {
+            this._rows = [];
           }
         }
         return this._rows;
