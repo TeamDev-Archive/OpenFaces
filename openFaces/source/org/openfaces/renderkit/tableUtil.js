@@ -119,14 +119,14 @@ O$._evaluateStyleClassProperties_cached = function(className, propertyNames, cac
  *   - subColumns: [array of column specification objects]
  */
 O$.Tables = {
-  _initStyles: function(scrolling, columns, commonHeaderExists, filterRowExists, commonFooterExists, noDataRows,
+  _initStyles: function(scrolling, columns, commonHeaderExists, subHeaderRowExists, commonFooterExists, noDataRows,
                                  gridLines, rowStyles, rowStylesMap, cellStylesMap, forceUsingCellStyles,
                                  additionalCellWrapperStyle, invisibleRowsAllowed) {
     var table = this;
     table._scrolling = scrolling;
     table._commonHeaderExists = commonHeaderExists;
     table._commonFooterExists = commonFooterExists;
-    table._filterRowExists = filterRowExists;
+    table._subHeaderRowExists = subHeaderRowExists;
     table._noDataRows = noDataRows;
     table._forceUsingCellStyles = forceUsingCellStyles;
     table._invisibleRowsAllowed = invisibleRowsAllowed;
@@ -197,8 +197,8 @@ O$.Tables = {
     O$._initTableColumnEvents(table);
     O$._initTableColumnStyles(table);
     O$._initTableGridLines(table);
-    if (filterRowExists)
-      O$.fixInputsWidthStrict(table.header._getRows()[table._filterRowIndex]);
+    if (subHeaderRowExists)
+      O$.fixInputsWidthStrict(table.header._getRows()[table._subHeaderRowIndex]);
 
     table._removeAllRows = O$.Tables._removeAllRows;
     table._insertRowsAfter = O$.Tables._insertRowsAfter;
@@ -376,11 +376,19 @@ O$._initTableRows = function(table) {
           if (section) {
             if (!table._scrolling) {
               this._rows = O$.getChildNodesWithNames(section, ["tr"]);
+              for (var i = 0, count = this._rows.length; i < count; i++) {
+                var r = this._rows[i];
+                r._table = table;
+                r._index = i;
+                r._cells = O$._getRowCells(row);
+              }
             } else {
               var immediateRows = O$.getChildNodesWithNames(section, ["tr"]);
               var commonRow = commonRowAbove != undefined ? (
                       commonRowAbove ? immediateRows[0] : immediateRows[immediateRows.length - 1]
                       ) : null;
+              if (commonRow)
+                commonRow._cells = O$._getRowCells(commonRow);
               var containerRowIndex = commonRowAbove != undefined
                       ? (commonRowAbove ? 1 : 0)
                       : 0;
@@ -398,14 +406,17 @@ O$._initTableRows = function(table) {
               var centerRows = scrollingAreaRows(centerCellIndex);
               var rightRows = rightCellIndex != undefined ? scrollingAreaRows(rightCellIndex) : null;
               var rows = [];
-              for (var i = 0, rowCount = centerRows.length; i < rowCount; i++) {
+              var rowIndex = 0, rowCount = centerRows.length;
+              if (commonRowAbove === true)
+                rows[rowIndex++] = commonRow;
+              while (rowIndex < rowCount) {
                 var row = {};
-                rows[i] = row;
-                row._leftRow = leftRows ? leftRows[i] : null;
-                row._centerRow = centerRows[i];
-                row._rightRow = rightRows ? rightRows[i] : null;
+                rows[rowIndex++] = row;
+                row._leftRow = leftRows ? leftRows[rowIndex] : null;
+                row._centerRow = centerRows[rowIndex];
+                row._rightRow = rightRows ? rightRows[rowIndex] : null;
                 row._table = table;
-                row._index = i;
+                row._index = rowIndex;
                 var cells = [];
                 function appendList(dest, src) {for (var i = 0, count = src.length; i < count; i++) dest.push(src[i]);}
                 if (row._leftRow) appendList(cells, O$._getRowCells(row._leftRow));
@@ -413,7 +424,8 @@ O$._initTableRows = function(table) {
                 if (row._rightRow) appendList(cells, O$._getRowCells(row._rightRow));
                 row._cells = cells;
               }
-
+              if (commonRowAbove === false)
+                rows[rowIndex] = commonRow;
             }
           } else {
             this._rows = [];
@@ -422,7 +434,7 @@ O$._initTableRows = function(table) {
         return this._rows;
       },
       _createRow: function() {
-        var newRow = document.createElement("tr");
+        var newRow = document.createElement("tr"); // todo: adjust for scrollable version
         var colCount = table._columns.length;
         for (var i = 0; i < colCount; i++) {
           var newCell = document.createElement("td");
@@ -431,7 +443,7 @@ O$._initTableRows = function(table) {
         return newRow;
       },
       _newRow: function(afterRow) {
-        var row = this._createRow();
+        var row = this._createRow(); // todo: adjust for scrollable version
         this._addRow(row, afterRow);
         return row;
       },
@@ -457,15 +469,15 @@ O$._initTableRows = function(table) {
     O$.Tables._initRow(row);
   }
   var commonHeaderRowIndex = table._commonHeaderExists ? 0 : -1;
-  var filterRowIndex = table._filterRowExists ? headRows.length - 1 : -1;
-  table._filterRowIndex = filterRowIndex;
-  table._columnHeadersRowIndexRange = [commonHeaderRowIndex + 1, table._filterRowExists ? headRows.length - 1 : headRows.length];
+  var subHeaderRowIndex = table._subHeaderRowExists ? headRows.length - 1 : -1;
+  table._subHeaderRowIndex = subHeaderRowIndex;
+  table._columnHeadersRowIndexRange = [commonHeaderRowIndex + 1, table._subHeaderRowExists ? headRows.length - 1 : headRows.length];
   table._commonHeaderRowIndex = commonHeaderRowIndex;
 
   if (commonHeaderRowIndex != -1)
     O$._setRowStyle(headRows[commonHeaderRowIndex], {_commonHeaderRowClass: table._commonHeaderRowClass});
-  if (filterRowIndex != -1)
-    O$._setRowStyle(headRows[filterRowIndex], {_filterRowClass: table._filterRowClass});
+  if (subHeaderRowIndex != -1)
+    O$._setRowStyle(headRows[subHeaderRowIndex], {_filterRowClass: table._filterRowClass});
   for (var i = table._columnHeadersRowIndexRange[0], end = table._columnHeadersRowIndexRange[1]; i < end; i++)
     O$._setRowStyle(headRows[i], {_headerRowClass: table._headerRowClass});
 
@@ -812,13 +824,13 @@ O$._initTableGridLines = function(table) {
 
     function getLastRowCells(lastBeforeFilter) {
       var lastRowCells;
-      if (table._filterRowExists && !lastBeforeFilter)
+      if (table._subHeaderRowExists && !lastBeforeFilter)
         lastRowCells = headRows[headRows.length - 1]._cells;
       else {
         lastRowCells = [];
         // This algorithm searches for the cells adjacent with the header section's bottom edge. It is simplified based
         // on the fact that all the vertically-spanned cells rendered on the server-side always extend to the bottom.
-        for (var i = 0, count = headRows.length - (table._filterRowExists ? 1 : 0); i < count; i++) {
+        for (var i = 0, count = headRows.length - (table._subHeaderRowExists ? 1 : 0); i < count; i++) {
           var row = headRows[i];
           var cells = row._cells;
           for (var j = 0, jcount = cells.length; j < jcount; j++) {
@@ -840,7 +852,7 @@ O$._initTableGridLines = function(table) {
 
     };
     tableHeader._updateFilterRowSeparatorStyle = function() {
-      if (!table._filterRowExists)
+      if (!table._subHeaderRowExists)
         return;
       // it is essential to assign bottom border of a row above the filter rather than top border of the filter row
       // itself because otherwise IE will make a one-pixel space between vertical separators and this horizontal line
@@ -852,7 +864,7 @@ O$._initTableGridLines = function(table) {
     };
 
     tableHeader._updateColumnSeparatorStyles = function() {
-      var filterRow = table._filterRowExists ? headRows[table._filterRowIndex] : null;
+      var filterRow = table._subHeaderRowExists ? headRows[table._subHeaderRowIndex] : null;
       var filterRowCells = filterRow ? filterRow._cells : null;
 
       function setHeaderVerticalGridlines(parentGroup) {
