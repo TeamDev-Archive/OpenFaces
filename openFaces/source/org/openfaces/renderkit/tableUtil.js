@@ -12,78 +12,80 @@
 
 // -------------------------- COMMON UTILITIES
 
-O$._getUserStylePropertyValue = function(element, propertyName, defaultValue1, defaultValue2) {
-  var value = O$.getElementStyleProperty(element, propertyName);
-  if (!value || value == defaultValue1 || value == defaultValue2)
-    return null;
-  return value;
-};
+O$.Tables = {
+  _getUserStylePropertyValue: function(element, propertyName, defaultValue1, defaultValue2) {
+    var value = O$.getElementStyleProperty(element, propertyName);
+    if (!value || value == defaultValue1 || value == defaultValue2)
+      return null;
+    return value;
+  },
 
-O$._getUserClassPropertyValue = function(element, propertyName, defaultValue1, defaultValue2) {
-  var value = O$.getStyleClassProperty(element.className, propertyName);
-  if (!value || value == defaultValue1 || value == defaultValue2)
-    return null;
-  return value;
-};
+  _getUserClassPropertyValue: function(element, propertyName, defaultValue1, defaultValue2) {
+    var value = O$.getStyleClassProperty(element.className, propertyName);
+    if (!value || value == defaultValue1 || value == defaultValue2)
+      return null;
+    return value;
+  },
 
-O$._getRowCells = function(row) {
-  return row.cells;
-};
+  _getRowCells: function(row) {
+    return row.cells;
+  },
 
-O$._getCellColSpan = function(cell) {
-  var colSpan = cell.colSpan;
-  if (!colSpan || colSpan == -1)
-    colSpan = 1;
-  return colSpan;
-};
+  _getCellColSpan: function(cell) {
+    var colSpan = cell.colSpan;
+    if (!colSpan || colSpan == -1)
+      colSpan = 1;
+    return colSpan;
+  },
 
-O$._handleUnsupportedRowStyleProperties = function(row) {
-  var cells = row._cells;
-  var cellIndex, cellCount, cell;
-  if (!O$.isExplorer()) {
-    var paddingLeft = O$._getUserStylePropertyValue(row, "padding-left", "0px");
-    var paddingRight = O$._getUserStylePropertyValue(row, "padding-right", "0px");
-    var paddingTop = O$._getUserStylePropertyValue(row, "padding-top", "0px");
-    var paddingBottom = O$._getUserStylePropertyValue(row, "padding-bottom", "0px");
-    var lineHeight = O$._getUserClassPropertyValue(row, "line-height", "normal");
+  _handleUnsupportedRowStyleProperties: function(row) {
+    var cells = row._cells;
+    var cellIndex, cellCount, cell;
+    if (!O$.isExplorer()) {
+      var paddingLeft = O$.Tables._getUserStylePropertyValue(row, "padding-left", "0px");
+      var paddingRight = O$.Tables._getUserStylePropertyValue(row, "padding-right", "0px");
+      var paddingTop = O$.Tables._getUserStylePropertyValue(row, "padding-top", "0px");
+      var paddingBottom = O$.Tables._getUserStylePropertyValue(row, "padding-bottom", "0px");
+      var lineHeight = O$.Tables._getUserClassPropertyValue(row, "line-height", "normal");
 
-    if (paddingLeft || paddingRight || paddingTop || paddingBottom || lineHeight) {
-      for (cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
-        cell = cells[cellIndex];
-        O$._setCellStyleProperty(cell, "paddingLeft", paddingLeft);
-        O$._setCellStyleProperty(cell, "paddingRight", paddingRight);
-        O$._setCellStyleProperty(cell, "paddingTop", paddingTop);
-        O$._setCellStyleProperty(cell, "paddingBottom", paddingBottom);
-        O$._setCellStyleProperty(cell, "lineHeight", lineHeight);
+      if (paddingLeft || paddingRight || paddingTop || paddingBottom || lineHeight) {
+        for (cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
+          cell = cells[cellIndex];
+          O$._setCellStyleProperty(cell, "paddingLeft", paddingLeft);
+          O$._setCellStyleProperty(cell, "paddingRight", paddingRight);
+          O$._setCellStyleProperty(cell, "paddingTop", paddingTop);
+          O$._setCellStyleProperty(cell, "paddingBottom", paddingBottom);
+          O$._setCellStyleProperty(cell, "lineHeight", lineHeight);
+        }
       }
     }
-  }
 
-  var propertyValues = O$._evaluateStyleClassProperties_cached(
-          row.className,
-          ["borderLeft", "borderRight", "borderTop", "borderBottom"],
-          row._row ? row._row._table : row._table);
-  if (propertyValues.borderLeft || propertyValues.borderRight || propertyValues.borderTop || propertyValues.borderBottom) {
-    for (cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
-      cell = cells[cellIndex];
-      O$._setCellStyleProperty(cell, "borderLeft", propertyValues.borderLeft);
-      O$._setCellStyleProperty(cell, "borderRight", propertyValues.borderRight);
-      O$._setCellStyleProperty(cell, "borderTop", propertyValues.borderTop);
-      O$._setCellStyleProperty(cell, "borderBottom", propertyValues.borderBottom);
+    var propertyValues = O$.Tables._evaluateStyleClassProperties_cached(
+            row.className,
+            ["borderLeft", "borderRight", "borderTop", "borderBottom"],
+            row._row ? row._row._table : row._table);
+    if (propertyValues.borderLeft || propertyValues.borderRight || propertyValues.borderTop || propertyValues.borderBottom) {
+      for (cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
+        cell = cells[cellIndex];
+        O$._setCellStyleProperty(cell, "borderLeft", propertyValues.borderLeft);
+        O$._setCellStyleProperty(cell, "borderRight", propertyValues.borderRight);
+        O$._setCellStyleProperty(cell, "borderTop", propertyValues.borderTop);
+        O$._setCellStyleProperty(cell, "borderBottom", propertyValues.borderBottom);
+      }
     }
-  }
-};
+  },
 
-O$._evaluateStyleClassProperties_cached = function(className, propertyNames, cacheInElement) {
-  if (!cacheInElement.__stylePropertyCache)
-    cacheInElement.__stylePropertyCache = [];
-  var stylePropertiesKey = className + "___" + propertyNames.join("__");
-  var propertyValues = cacheInElement.__stylePropertyCache[stylePropertiesKey];
-  if (!propertyValues) {
-    propertyValues = O$.getStyleClassProperties(className, propertyNames);
-    cacheInElement.__stylePropertyCache[stylePropertiesKey] = propertyValues;
+  _evaluateStyleClassProperties_cached: function(className, propertyNames, cacheInElement) {
+    if (!cacheInElement.__stylePropertyCache)
+      cacheInElement.__stylePropertyCache = [];
+    var stylePropertiesKey = className + "___" + propertyNames.join("__");
+    var propertyValues = cacheInElement.__stylePropertyCache[stylePropertiesKey];
+    if (!propertyValues) {
+      propertyValues = O$.getStyleClassProperties(className, propertyNames);
+      cacheInElement.__stylePropertyCache[stylePropertiesKey] = propertyValues;
+    }
+    return propertyValues;
   }
-  return propertyValues;
 };
 
 
@@ -101,7 +103,7 @@ O$._evaluateStyleClassProperties_cached = function(className, propertyNames, cac
  *     - className: String
  *     - onclick, ondblclick and all other events: String
  *   }
- *   - filter: {
+ *   - subHeader: {
  *     - pos: {row: int, cell: int}
  *     - className: String
  *     - onclick, ondblclick and all other events: String
@@ -118,7 +120,7 @@ O$._evaluateStyleClassProperties_cached = function(className, propertyNames, cac
  *     - onclick, ondblclick and all other events: String
  *   - subColumns: [array of column specification objects]
  */
-O$.Tables = {
+O$.extend(O$.Tables, {
   _init: function(scrolling, columns, commonHeaderExists, subHeaderRowExists, commonFooterExists, noDataRows,
                                  gridLines, rowStyles, rowStylesMap, cellStylesMap, forceUsingCellStyles,
                                  additionalCellWrapperStyle, invisibleRowsAllowed) {
@@ -192,11 +194,11 @@ O$.Tables = {
       table._cellMoveCallbacks.push(callback);
     };
 
-    O$._initTableRows(table);
-    O$._initTableColumns(table, columns);
-    O$._initTableColumnEvents(table);
-    O$._initTableColumnStyles(table);
-    O$._initTableGridLines(table);
+    O$.Tables._initRows(table);
+    O$.Tables._initColumns(table, columns);
+    O$.Tables._initColumnEvents(table);
+    O$.Tables._initColumnStyles(table);
+    O$.Tables._initGridLines(table);
     if (subHeaderRowExists)
       O$.fixInputsWidthStrict(table.header._getRows()[table._subHeaderRowIndex]);
 
@@ -336,8 +338,8 @@ O$.Tables = {
       newRowIndex = afterIndex + 1 + i;
       bodyRows[newRowIndex] = newRow;
       this._rowStylesMap[newRowIndex] = newRowsToStylesMap ? newRowsToStylesMap[i] : undefined;
-      newRow._cells = O$._getRowCells(newRow); // todo: adjust for scrollable version
-      O$._initBodyRow(newRow, this, newRowIndex, visibleRowsUpToReferenceRow + newVisibleRowsForNow);
+      newRow._cells = O$.Tables._getRowCells(newRow); // todo: adjust for scrollable version
+      O$.Tables._initBodyRow(newRow, this, newRowIndex, visibleRowsUpToReferenceRow + newVisibleRowsForNow);
       if (newRow._isVisible())
         newVisibleRowsForNow++;
 
@@ -363,11 +365,11 @@ O$.Tables = {
     }
 
   }
-};
+});
 
 // -------------------------- TABLE ROWS SUPPORT
 
-O$._initTableRows = function(table) {
+O$.Tables._initRows = function(table) {
   function initTableSection(table, sectionTagName, commonRowAbove) {
     var section = {
       _getRows: function() {
@@ -380,7 +382,7 @@ O$._initTableRows = function(table) {
                 var r = this._rows[i];
                 r._table = table;
                 r._index = i;
-                r._cells = O$._getRowCells(r);
+                r._cells = O$.Tables._getRowCells(r);
               }
             } else {
               var immediateRows = O$.getChildNodesWithNames(section, ["tr"]);
@@ -388,7 +390,7 @@ O$._initTableRows = function(table) {
                       commonRowAbove ? immediateRows[0] : immediateRows[immediateRows.length - 1]
                       ) : null;
               if (commonRow)
-                commonRow._cells = O$._getRowCells(commonRow);
+                commonRow._cells = O$.Tables._getRowCells(commonRow);
               var containerRowIndex = commonRowAbove != undefined
                       ? (commonRowAbove ? 1 : 0)
                       : 0;
@@ -424,15 +426,15 @@ O$._initTableRows = function(table) {
                 var cells = [];
 
                 if (row._leftRowNode) {
-                  row._leftRowNode._cells = O$._getRowCells(row._leftRowNode);
+                  row._leftRowNode._cells = O$.Tables._getRowCells(row._leftRowNode);
                   row._leftRowNode._row = row;
                   O$.addAll(cells, row._leftRowNode._cells);
                 }
-                row._rowNode._getRowCells = O$._getRowCells(row._rowNode);
+                row._rowNode._getRowCells = O$.Tables._getRowCells(row._rowNode);
                 row._rowNode._row = row;
                 O$.addAll(cells, row._rowNode._cells);
                 if (row._rightRowNode) {
-                  row._rightRowNode._cells = O$._getRowCells(row._rightRowNode);
+                  row._rightRowNode._cells = O$.Tables._getRowCells(row._rightRowNode);
                   row._rightRowNode._row = row;
                   O$.addAll(cells, row._rightRowNode._cells);
                 }
@@ -489,17 +491,17 @@ O$._initTableRows = function(table) {
   table._commonHeaderRowIndex = commonHeaderRowIndex;
 
   if (commonHeaderRowIndex != -1)
-    O$._setRowStyle(headRows[commonHeaderRowIndex], {_commonHeaderRowClass: table._commonHeaderRowClass});
+    O$.Tables._setRowStyle(headRows[commonHeaderRowIndex], {_commonHeaderRowClass: table._commonHeaderRowClass});
   if (subHeaderRowIndex != -1)
-    O$._setRowStyle(headRows[subHeaderRowIndex], {_filterRowClass: table._filterRowClass});
+    O$.Tables._setRowStyle(headRows[subHeaderRowIndex], {_filterRowClass: table._filterRowClass});
   for (var i = table._columnHeadersRowIndexRange[0], end = table._columnHeadersRowIndexRange[1]; i < end; i++)
-    O$._setRowStyle(headRows[i], {_headerRowClass: table._headerRowClass});
+    O$.Tables._setRowStyle(headRows[i], {_headerRowClass: table._headerRowClass});
 
   var visibleRowCount = 0;
   var bodyRows = table.body._getRows();
   for (rowIndex = 0, rowCount = bodyRows.length; rowIndex < rowCount; rowIndex++) {
     row = bodyRows[rowIndex];
-    O$._initBodyRow(row, table, rowIndex, visibleRowCount);
+    O$.Tables._initBodyRow(row, table, rowIndex, visibleRowCount);
     if (row._isVisible())
       visibleRowCount++;
   }
@@ -512,13 +514,13 @@ O$._initTableRows = function(table) {
     O$.Tables._initRow(row);
 
     if (rowIndex <= lastNonCommonFooter)
-      O$._setRowStyle(footRows[rowIndex], {_footerRowClass: table._footerRowClass});
+      O$.Tables._setRowStyle(footRows[rowIndex], {_footerRowClass: table._footerRowClass});
   }
   if (table._commonFooterExists)
-    O$._setRowStyle(footRows[footRows.length - 1], {_commonFooterRowClass: table._commonFooterRowClass});
+    O$.Tables._setRowStyle(footRows[footRows.length - 1], {_commonFooterRowClass: table._commonFooterRowClass});
 };
 
-O$._setRowStyle = function(row, styleMappings) {
+O$.Tables._setRowStyle = function(row, styleMappings) {
   var table = row._table;
   if (table._forceUsingCellStyles) {
     var cells = row._cells;
@@ -529,19 +531,19 @@ O$._setRowStyle = function(row, styleMappings) {
   } else {
     if (row._leftRowNode) {
       O$.setStyleMappings(row._leftRowNode, styleMappings);
-      O$._handleUnsupportedRowStyleProperties(row._leftRowNode);
+      O$.Tables._handleUnsupportedRowStyleProperties(row._leftRowNode);
     }
     O$.setStyleMappings(row._rowNode, styleMappings);
-    O$._handleUnsupportedRowStyleProperties(row._rowNode);
+    O$.Tables._handleUnsupportedRowStyleProperties(row._rowNode);
     if (row._rightRowNode) {
       O$.setStyleMappings(row._rightRowNode, styleMappings);
-      O$._handleUnsupportedRowStyleProperties(row._rightRowNode);
+      O$.Tables._handleUnsupportedRowStyleProperties(row._rightRowNode);
     }
 
   }
 };
 
-O$._initBodyRow = function(row, table, rowIndex, visibleRowsBefore) {
+O$.Tables._initBodyRow = function(row, table, rowIndex, visibleRowsBefore) {
   row._table = table;
   row._index = rowIndex;
   row._selected = false;
@@ -624,7 +626,7 @@ O$._initBodyRow = function(row, table, rowIndex, visibleRowsBefore) {
     O$._calculateInitialRowClass(row, table, visibleRowsBefore);
     if (!table._forceUsingCellStyles) {
       var individualRowClass = table._rowStylesMap[row._index];
-      O$._setRowStyle(row, {_initialClass: row._initialClass, _individualRowClass: individualRowClass});
+      O$.Tables._setRowStyle(row, {_initialClass: row._initialClass, _individualRowClass: individualRowClass});
     }
   }
 
@@ -736,7 +738,7 @@ O$.Tables._initRow = function(row) {
   for (var cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
     var cell = cells[cellIndex];
     cell._row = row;
-    var cellColSpan = O$._getCellColSpan(cell);
+    var cellColSpan = O$.Tables._getCellColSpan(cell);
     cell._colSpan = cellColSpan;
     cell._colIndex = colIndex;
     row._cellsByColumns[colIndex] = cell;
@@ -758,7 +760,7 @@ O$.Tables._initRow = function(row) {
     if (!cell)
       throw "row._removeColumn: Can't find cell to remove: column._colIndex = " + column._colIndex;
     cell.parentNode.removeChild(cell);
-    row._cells = O$._getRowCells(row);
+    row._cells = O$.Tables._getRowCells(row);
     if (cell._column != column) {
       if (!(cell._colSpan > 1))
         throw "row._removeColumn: colSpan greater than 1 expected, but was: " + cell._colSpan;
@@ -837,7 +839,7 @@ O$._calculateInitialRowClass = function(row, table, visibleRowIndex) {
 // -------------------------- TABLE GRID-LINES SUPPORT
 
 
-O$._initTableGridLines = function(table) {
+O$.Tables._initGridLines = function(table) {
 
   function getSeparatorsForGroup(parentGroup) {
     var parentLevel = (parentGroup == table) ? 0 : parentGroup._hierarchyLevel;
@@ -921,8 +923,8 @@ O$._initTableGridLines = function(table) {
     tableHeader._updateFilterRowSeparatorStyle = function() {
       if (!table._subHeaderRowExists)
         return;
-      // it is essential to assign bottom border of a row above the filter rather than top border of the filter row
-      // itself because otherwise IE will make a one-pixel space between vertical separators and this horizontal line
+      // it is essential to assign bottom border of a row above the sub-header rather than top border of the sub-header
+      // row itself because otherwise IE will make a one-pixel space between vertical separators and this horizontal line
       var lastRowCells = getLastRowCells(true);
       for (var i = 0, count = lastRowCells.length; i < count; i++) {
         var cell = lastRowCells[i];
@@ -1107,7 +1109,7 @@ O$._initTableGridLines = function(table) {
 
 // -------------------------- TABLE COLUMNS SUPPORT
 
-O$._initTableColumns = function(table, columnHiearachy) {
+O$.Tables._initColumns = function(table, columnHiearachy) {
   table._columnHierarchy = columnHiearachy;
   var deepestColumnHierarchyLevel = 0;
   var realColumns = function processColumns(parentColumn, oneLevelColumns, hierarchyLevel) {
@@ -1117,7 +1119,7 @@ O$._initTableColumns = function(table, columnHiearachy) {
     for (var i = 0, count = oneLevelColumns.length; i < count; i++) {
       var col = oneLevelColumns[i];
       col._hierarchyLevel = hierarchyLevel;
-      O$._initTableColumnOrGroup(col, table);
+      O$.Tables._initColumnOrGroup(col, table);
       col._parentColumn = parentColumn;
       if (col.subColumns) {
         var collectedSubcolumns = processColumns(col, col.subColumns, hierarchyLevel + 1);
@@ -1166,21 +1168,21 @@ O$._initTableColumns = function(table, columnHiearachy) {
     }
     return result;
   }();
-  O$.assert(colTags.length == colCount, "O$._initTableColumns: colTags.length(" + colTags.length + ") != colCount(" + colCount + ")");
+  O$.assert(colTags.length == colCount, "O$.Tables._initColumns: colTags.length(" + colTags.length + ") != colCount(" + colCount + ")");
 
   for (var colIndex = 0; colIndex < colCount; colIndex++) {
     var column = realColumns[colIndex];
     var colTagArray = colTags[colIndex];
-    O$._initTableColumn(column, colTagArray, colIndex);
+    O$.Tables._initColumn(column, colTagArray, colIndex);
   }
 
   table._addCellInsertionCallback(function(cell, row, column) {
-    O$._initTableBodyCell(cell, column);
+    O$.Tables._initBodyCell(cell, column);
     cell._updateStyle();
   });
 };
 
-O$._initTableColumnOrGroup = function(column, table) {
+O$.Tables._initColumnOrGroup = function(column, table) {
   column._table = table;
 
   var headRows = table.header ? table.header._getRows() : [];
@@ -1189,14 +1191,14 @@ O$._initTableColumnOrGroup = function(column, table) {
     var columnHeaderPos = column.header.pos;
     row = headRows[columnHeaderPos.row];
     cell = column.header._cell = row._cells[columnHeaderPos.cell];
-    O$._initTableHeaderCell(cell, column);
+    O$.Tables._initHeaderCell(cell, column);
   }
 
-  if (column.filter && column.filter.pos) {
-    var columnFilterPos = column.filter.pos;
+  if (column.subHeader && column.subHeader.pos) {
+    var columnFilterPos = column.subHeader.pos;
     row = headRows[columnFilterPos.row];
-    cell = column.filter._cell = row._cells[columnFilterPos.cell];
-    O$._initTableSubHeaderCell(cell, column);
+    cell = column.subHeader._cell = row._cells[columnFilterPos.cell];
+    O$.Tables._initSubHeaderCell(cell, column);
   }
 
   var footRows = table.footer ? table.footer._getRows() : [];
@@ -1204,7 +1206,7 @@ O$._initTableColumnOrGroup = function(column, table) {
     var columnFooterPos = column.footer.pos;
     row = footRows[columnFooterPos.row];
     cell = column.footer._cell = row._cells[columnFooterPos.cell];
-    O$._initTableFooterCell(cell, column);
+    O$.Tables._initFooterCell(cell, column);
   }
 
   column._getCompoundClassName = function() {
@@ -1242,7 +1244,7 @@ O$._initTableColumnOrGroup = function(column, table) {
     if (headerCell)
       headerCell._updateStyle();
 
-    var subHeaderCell = column.filter ? column.filter._cell : null;
+    var subHeaderCell = column.subHeader ? column.subHeader._cell : null;
     if (subHeaderCell)
       subHeaderCell._updateStyle();
 
@@ -1252,7 +1254,7 @@ O$._initTableColumnOrGroup = function(column, table) {
   };
 };
 
-O$._initTableColumn = function(column, colTagArray, colIndex) {
+O$.Tables._initColumn = function(column, colTagArray, colIndex) {
   column._colTags = colTagArray;
   column._colIndex = colIndex;
 
@@ -1266,13 +1268,13 @@ O$._initTableColumn = function(column, colTagArray, colIndex) {
     var row = bodyRows[i];
     var cell = row._getCellByColIndex(colIndex);
     if (cell) {
-      O$._initTableBodyCell(cell, column);
+      O$.Tables._initBodyCell(cell, column);
     }
     column.body._cells[i] = cell;
   }
 
   if (column._super_updateStyle)
-    throw "O$._initTableColumn can be called only once per column";
+    throw "O$.Tables._initColumn can be called only once per column";
   column._super_updateStyle = column._updateStyle;
   column._updateStyle = function() {
     column._super_updateStyle();
@@ -1296,7 +1298,7 @@ O$._initTableColumn = function(column, colTagArray, colIndex) {
 
 };
 
-O$._initTableHeaderCell = function(cell, column) {
+O$.Tables._initHeaderCell = function(cell, column) {
   cell._column = column;
   cell._colIndex = column._colIndex; // todo: review cell._colIndex usages. Remove cell._colIndex property and use appropriate column's property
 
@@ -1309,7 +1311,7 @@ O$._initTableHeaderCell = function(cell, column) {
 
 };
 
-O$._initTableSubHeaderCell = function(cell, column) {
+O$.Tables._initSubHeaderCell = function(cell, column) {
   cell._column = column;
   cell._colIndex = column._colIndex;
 
@@ -1319,13 +1321,13 @@ O$._initTableSubHeaderCell = function(cell, column) {
     var column = cell._column;
     O$._setCellStyleMappings(cell, {
       _compoundColumnClassName: column._getCompoundClassName(),
-      _colFilterClass: column.filter ? column.filter.className : null
+      _colFilterClass: column.subHeader ? column.subHeader.className : null
     });
   };
 
 };
 
-O$._initTableFooterCell = function(cell, column) {
+O$.Tables._initFooterCell = function(cell, column) {
   cell._column = column;
   cell._colIndex = column._colIndex;
 
@@ -1340,7 +1342,7 @@ O$._initTableFooterCell = function(cell, column) {
   };
 };
 
-O$._initTableBodyCell = function(cell, column) {
+O$.Tables._initBodyCell = function(cell, column) {
   cell._column = column;
 
   cell._updateStyle = function() {
@@ -1411,7 +1413,9 @@ O$._assignNoDataCellStyle = function(cell) {
     // first column style shouldn't be applied to the no-data-row
     // no-data row should derive unspecified properties from body section instead
     var noDataRowClass = table._rowStylesMap[0];
-    var noDataRowStyle = noDataRowClass ? O$._evaluateStyleClassProperties_cached(noDataRowClass, ["backgroundColor", "background"], table) : {};
+    var noDataRowStyle = noDataRowClass
+            ? O$.Tables._evaluateStyleClassProperties_cached(noDataRowClass, ["backgroundColor", "background"], table)
+            : {};
     if (!noDataRowStyle.backgroundColor && !noDataRowStyle.background) {
       var bodySection = O$.getChildNodesWithNames(table, ["tbody"])[0];
       var propertyValue = O$.getElementStyleProperty(bodySection, "background-color");
@@ -1427,7 +1431,7 @@ O$._assignNoDataCellStyle = function(cell) {
 
 };
 
-O$._initTableColumnEvents = function(table) {
+O$.Tables._initColumnEvents = function(table) {
 
   function assignBodyCellEvents(cell, compoundBodyEvents, compoundGeneralEvents) {
     O$._assignColumnCellEvents(cell, compoundBodyEvents);
@@ -1444,9 +1448,9 @@ O$._initTableColumnEvents = function(table) {
       if (headerCell)
         O$._assignColumnCellEvents(headerCell, compoundGeneralEvents, column.header);
 
-      var subHeaderCell = column.filter ? column.filter._cell : null;
+      var subHeaderCell = column.subHeader ? column.subHeader._cell : null;
       if (subHeaderCell)
-        O$._assignColumnCellEvents(subHeaderCell, compoundGeneralEvents, column.filter);
+        O$._assignColumnCellEvents(subHeaderCell, compoundGeneralEvents, column.subHeader);
 
       if (!column.subColumns && column.body && !table._noDataRows) {
         var bodyCells = column.body ? column.body._cells : [];
@@ -1475,7 +1479,7 @@ O$._initTableColumnEvents = function(table) {
 
 };
 
-O$._initTableColumnStyles = function(table) {
+O$.Tables._initColumnStyles = function(table) {
   function assignColStyles(oneLevelColumns) {
     for (var i = 0, count = oneLevelColumns.length; i < count; i++) {
       var col = oneLevelColumns[i];
@@ -1516,19 +1520,19 @@ O$._prepareCellStylesForColStyleSimulation = function(column) {
     colProperties = ["fontFamily", "fontSize", "borderLeft", "borderRight"];
   } else
     colProperties = [];
-  var colStyleProperties = O$._evaluateStyleClassProperties_cached(colTagClassName, colProperties, table);
+  var colStyleProperties = O$.Tables._evaluateStyleClassProperties_cached(colTagClassName, colProperties, table);
   if (isMozilla || isOpera) {
     if (!cellStyles)
       cellStyles = {};
     cellStyles._width = colStyleProperties.width;//O$.getStyleClassProperty(colTag.className, "width");
-    cellStyles._textAlign = colStyleProperties.textAlign;//O$._getUserStylePropertyValue(colTag, "text-align", "start", "left");
-    cellStyles._verticalAlign = O$._getUserStylePropertyValue(colTag, "vertical-align", "baseline", "auto");
-    cellStyles._lineHeight = O$._getUserClassPropertyValue(colTag, "line-height", "normal");
+    cellStyles._textAlign = colStyleProperties.textAlign;//O$.Tables._getUserStylePropertyValue(colTag, "text-align", "start", "left");
+    cellStyles._verticalAlign = O$.Tables._getUserStylePropertyValue(colTag, "vertical-align", "baseline", "auto");
+    cellStyles._lineHeight = O$.Tables._getUserClassPropertyValue(colTag, "line-height", "normal");
 
-    cellStyles._paddingLeft = O$._getUserStylePropertyValue(colTag, "padding-left", "0px");
-    cellStyles._paddingRight = O$._getUserStylePropertyValue(colTag, "padding-right", "0px");
-    cellStyles._paddingTop = O$._getUserStylePropertyValue(colTag, "padding-top", "0px");
-    cellStyles._paddingBottom = O$._getUserStylePropertyValue(colTag, "padding-bottom", "0px");
+    cellStyles._paddingLeft = O$.Tables._getUserStylePropertyValue(colTag, "padding-left", "0px");
+    cellStyles._paddingRight = O$.Tables._getUserStylePropertyValue(colTag, "padding-right", "0px");
+    cellStyles._paddingTop = O$.Tables._getUserStylePropertyValue(colTag, "padding-top", "0px");
+    cellStyles._paddingBottom = O$.Tables._getUserStylePropertyValue(colTag, "padding-bottom", "0px");
 
     cellStyles._color = colStyleProperties.color;
     cellStyles._fontWeight = colStyleProperties.fontWeight;

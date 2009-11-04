@@ -471,10 +471,10 @@ public class TableStructure extends TableElement {
                     columnOrGroup.getHeaderOnmouseup());
         }
         if (ordinaryColumn && tableHeader.hasSubHeader()) {
-            JSONObject filter = new JSONObject();
-            columnObj.put("filter", filter);
-            filter.put("pos", new CellCoordinates(tableHeader.getSubHeaderRowIndex(), colIndex).asJSONObject());
-            filter.put("className", StyleUtil.getCSSClass(context, styleOwnerComponent, columnOrGroup.getSubHeaderStyle(), columnOrGroup.getSubHeaderClass()));
+            JSONObject subHeader = new JSONObject();
+            columnObj.put("subHeader", subHeader);
+            subHeader.put("pos", new CellCoordinates(tableHeader.getSubHeaderRowIndex(), colIndex).asJSONObject());
+            subHeader.put("className", StyleUtil.getCSSClass(context, styleOwnerComponent, columnOrGroup.getSubHeaderStyle(), columnOrGroup.getSubHeaderClass()));
         }
         if (!noDataRows) {
             JSONObject body = new JSONObject();

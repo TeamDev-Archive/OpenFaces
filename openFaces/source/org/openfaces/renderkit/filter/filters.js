@@ -16,7 +16,7 @@ O$.Filters = {
     var f = O$(filterId);
 
     if (!filteredComponent._filtersToHide)
-      filteredComponent._filtersToHide = new Array();
+      filteredComponent._filtersToHide = [];
     filteredComponent._filtersToHide.push(f);
   },
 

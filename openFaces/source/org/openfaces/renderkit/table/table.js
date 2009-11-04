@@ -764,7 +764,7 @@ O$.Table = {
     var cells = row._cells;
     for (var cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
       var cell = cells[cellIndex];
-      var cellSpan = O$._getCellColSpan(cell);
+      var cellSpan = O$.Tables._getCellColSpan(cell);
       var colIndex = cell._colIndex;
       if ((colIndex != undefined) && (O$.findValueInArray(colIndex, table._selectionColumnIndexes) != -1))
         O$.Table._initSelectionCell(cell);
@@ -1294,8 +1294,8 @@ O$.Table = {
         });
         if (col.header && col.header._cell)
           O$.setStyleMappings(col.header._cell, {resizingClass: col._allCellsClassName});
-        if (col.filter && col.filter._cell)
-          O$.setStyleMappings(col.filter._cell, {resizingClass: col._allCellsClassName});
+        if (col.subHeader && col.subHeader._cell)
+          O$.setStyleMappings(col.subHeader._cell, {resizingClass: col._allCellsClassName});
         if (col.footer && col.footer._cell)
           O$.setStyleMappings(col.footer._cell, {resizingClass: col._allCellsClassName});
         var bodyCells = col.body._cells;
@@ -1336,8 +1336,8 @@ O$.Table = {
         column.getWidth = function() {
           if (this.header && this.header._cell)
             return this.header._cell.offsetWidth;
-          if (this.filter && this.filter._cell)
-            return this.filter._cell.offsetWidth;
+          if (this.subHeader && this.subHeader._cell)
+            return this.subHeader._cell.offsetWidth;
           for (var i = 0, count = this.body._cells.length; i < count; i++) {
             var cell = this.body._cells[i];
             if (!cell || cell.colSpan > 1)
@@ -1376,7 +1376,7 @@ O$.Table = {
           // IE needs an explicit background because otherwise this absolute div will "leak" some events to the underlying
           // component (when a mouse is directly over any of table's gridline)
           resizeHandle.style.background = "silver";
-          resizeHandle.style.filter = "alpha(opacity=0)";
+          resizeHandle.style.subHeader = "alpha(opacity=0)";
         }
 
         column.header._cell.appendChild(resizeHandle);
@@ -1488,7 +1488,7 @@ O$.Table = {
             if (col._parentColumn.header && col._parentColumn.header._cell)
               parentColumn = col._parentColumn;
           }
-          var bottomCell = this._column.filter ? this._column.filter._cell : this._column.header._cell;
+          var bottomCell = this._column.subHeader ? this._column.subHeader._cell : this._column.header._cell;
           var bottomCellPos = O$.getElementBorderRectangle(bottomCell, true);
           var topCellPos = parentColumn ? O$.getElementBorderRectangle(parentColumn.header._cell, true) : O$.getElementBorderRectangle(this._column.header._cell, true);
 
