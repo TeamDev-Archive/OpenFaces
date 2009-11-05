@@ -922,6 +922,25 @@ if (!window.O$) {
     return selectedChildren;
   };
 
+  O$.getElementsByTagNameRegex = function(parent, regex, optionalFilter) {
+    var elem_array = new Array();
+    if (typeof parent.firstChild != "undefined") {
+      var elem = parent.firstChild;
+      while (elem != null) {
+        if (typeof elem.firstChild != "undefined") {
+          elem_array = elem_array.concat(O$.getElementsByTagNameRegex(elem, regex, optionalFilter));
+        }
+        var reg = new RegExp(regex);
+        if (elem.nodeName.match(reg)) {
+          if (!optionalFilter || optionalFilter(elem))
+            elem_array.push(elem);
+        }
+        elem = elem.nextSibling;
+      }
+    }
+    return elem_array;
+  };
+
   O$.findElementByPath = function(node, childPath, ignoreNonExistingElements) {
     var separatorIndex = childPath.indexOf("/");
     var locator = separatorIndex == -1 ? childPath : childPath.substring(0, separatorIndex);
@@ -2163,13 +2182,15 @@ if (!window.O$) {
     if (!tagName)
       return false;
     tagName = tagName.toLowerCase();
-    return (tagName == "input" && control.type != "hidden") ||
+    var focusable =
+          (tagName == "input" && control.type != "hidden") ||
            tagName == "select" ||
            tagName == "textarea" ||
            tagName == "button" ||
            tagName == "a" ||
-           (tagName == "span" && O$.checkClassNameUsed(control, "rich-inplace-select")) ||
-           (tagName == "div" && O$.checkClassNameUsed(control, "rich-inplace"));
+          (tagName == "span" && O$.checkClassNameUsed(control, "rich-inplace-select")) ||
+          (tagName == "div" && O$.checkClassNameUsed(control, "rich-inplace"));
+    return focusable && !control.disabled;
   };
 
   O$.setupArtificialFocus = function(component, focusedClassName, tabindex) {

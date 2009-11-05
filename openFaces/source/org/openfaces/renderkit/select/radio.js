@@ -69,10 +69,10 @@ O$.Radio = {
     }
     containerRollover |= radioContainer._rollover;
 
+    var externalClasses = radioContainer._styleClass;
     O$.removeOfClassName(radioContainer, radioContainer._styleClass);
     O$.removeOfClassName(radioContainer, radioContainer._rolloverClass);
     O$.removeOfClassName(radioContainer, radioContainer._focusedClass);
-    var externalClasses = radioContainer.className;
     O$.setStyleMappings(radioContainer, {
       rollover: containerRollover ? radioContainer._rolloverClass : null,
       focused: containerFocused ? radioContainer._focusedClass : null
@@ -235,6 +235,23 @@ O$.RadioItem = {
             radioItemSibling.focus();
             fireOnChange(radioItemSibling);
             O$.preventDefaultEvent(e);
+          }
+        } else if (isTab(e) && radioItem._images) {
+          var count = radioContainer._radioItems.length;
+          var lastRadioItem = radioContainer._radioItems[count - 1];
+          var bodyElement = document.getElementsByTagName("body")[0];
+          if (bodyElement == null)
+            return;
+          var reg = /\b(input|select|textarea|button|a|div|span)\b/i;
+          var focusableElements = O$.getElementsByTagNameRegex(bodyElement, reg, O$.isControlFocusable);
+          var isFound = false;
+          for (var i = 0; i < focusableElements.length; i++) {
+            var focusableElement = focusableElements[i];
+            isFound |= focusableElement.id == lastRadioItem.id;
+            if (isFound && O$.getElementSize(focusableElement).width > 0 && O$.getElementSize(focusableElement).height > 0) {
+              focusableElement.focus();
+              return;
+            }
           }
         }
       }
@@ -433,6 +450,11 @@ O$.RadioItem = {
     function isSpacebar(e) {
       var evt = O$.getEvent(e);
       return (evt.which || evt.keyCode) === 32;
+    }
+
+    function isTab(e) {
+      var evt = O$.getEvent(e);
+      return (evt.which || evt.keyCode) === 9;
     }
 
     function isPrevious(e) {
