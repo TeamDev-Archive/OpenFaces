@@ -236,6 +236,8 @@ public class PopupLayer extends OUIPanel {
             width = null;
         if (height != null && ValueBindings.set(this, "height", height))
             height = null;
+        if (visible != null && ValueBindings.set(this, "visible", visible))
+            visible = null;
     }
 
     @Override
