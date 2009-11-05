@@ -166,6 +166,28 @@ public class DataTable extends AbstractTable {
             pageIndex = null;
     }
 
+    /**
+     * @return index of a page where a row with the specified rowKey is displayed, or -1 of no such row is being
+     * displayed.
+     */
+    public int getPageIndexForRowKey(Object rowKey) {
+        TableDataModel model = getModel();
+        int pageCount = model.getPageCount();
+        int prevPageIndex = getPageIndex();
+        try {
+            for (int pageIndex = 0; pageIndex < pageCount; pageIndex++) {
+                model.setPageIndex(pageIndex);
+                model.setRowKey(rowKey);
+                int index = model.getRowIndex();
+                if (index != -1)
+                    return pageIndex;
+            }
+        } finally {
+            model.setPageIndex(prevPageIndex);
+        }
+        return -1;
+    }
+
     private Integer getRenderedPageCount() {
         Integer renderedPageCountObj = (Integer) getAttributes().get(RENDERED_PAGE_COUNT_ATTR);
         return renderedPageCountObj;

@@ -360,7 +360,6 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         boolean sortingNeeded = isSortingNeeded();
         boolean filteringNeeded = isFilteringNeeded() && filters.size() > 0;
         boolean paginationNeeded = isPaginationNeeded();
-//    assert sortingNeeded || filteringNeeded || paginationNeeded;
 
         boolean dataAlreadySorted = prepareForRetrievingSortedData(sortingNeeded);
         boolean dataAlreadyFiltered = dataAlreadySorted && prepareForRetrievingFilteredData(filteringNeeded);
@@ -564,7 +563,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
             ((ValueExpressionDataModel) sourceDataModel).readData();
     }
 
-    public static List<RowInfo> filterRows(List<Filter> filters, List<RowInfo> sortedRows, List<boolean[]> filteringFlags) {
+    private static List<RowInfo> filterRows(List<Filter> filters, List<RowInfo> sortedRows, List<boolean[]> filteringFlags) {
         List<RowInfo> result = new ArrayList<RowInfo>();
         int sortedRowCount = sortedRows.size();
         for (int i = 0; i < sortedRowCount; i++) {

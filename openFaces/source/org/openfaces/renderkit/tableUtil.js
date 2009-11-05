@@ -199,8 +199,12 @@ O$.extend(O$.Tables, {
     O$.Tables._initColumnEvents(table);
     O$.Tables._initColumnStyles(table);
     O$.Tables._initGridLines(table);
-    if (subHeaderRowExists)
-      O$.fixInputsWidthStrict(table.header._getRows()[table._subHeaderRowIndex]);
+    if (subHeaderRowExists) {
+      var subHeaderRow = table.header._getRows()[table._subHeaderRowIndex];
+      if (subHeaderRow._leftRowNode) O$.fixInputsWidthStrict(subHeaderRow._leftRowNode);
+      O$.fixInputsWidthStrict(subHeaderRow._rowNode);
+      if (subHeaderRow._rightRowNode) O$.fixInputsWidthStrict(subHeaderRow._rightRowNode);
+    };
 
     table._removeAllRows = O$.Tables._removeAllRows;
     table._insertRowsAfter = O$.Tables._insertRowsAfter;
@@ -217,9 +221,19 @@ O$.extend(O$.Tables, {
       var rows = table.body._getRows();
       for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
         var row = rows[rowIndex];
-        var rowRect = O$.getElementBorderRectangle(row, relativeToNearestContainingBlock, cachedDataContainer);
+        var rowRect = O$.getElementBorderRectangle(row._rowNode, relativeToNearestContainingBlock, cachedDataContainer);
         if (rowRect.containsPoint(x, y))
           return row;
+        if (row._leftRowNode) {
+          rowRect = O$.getElementBorderRectangle(row._leftRowNode, relativeToNearestContainingBlock, cachedDataContainer);
+          if (rowRect.containsPoint(x, y))
+            return row;
+        }
+        if (row._rightRowNode) {
+          rowRect = O$.getElementBorderRectangle(row._rightRowNode, relativeToNearestContainingBlock, cachedDataContainer);
+          if (rowRect.containsPoint(x, y))
+            return row;
+        }
       }
       return null;
     };
@@ -230,7 +244,10 @@ O$.extend(O$.Tables, {
     var bodyRows = this.body._getRows();
     for (var i = 0, count = bodyRows.length; i < count; i++) {
       var row = bodyRows[i];
-      row.parentNode.removeChild(row);
+      function removeRow(row) {if (row) row.parentNode.removeChild(row);}
+      removeRow(row._leftRowNode);
+      removeRow(row._rowNode);
+      removeRow(row._rightRowNode);
     }
     this.body._rows = undefined;
 
@@ -245,7 +262,6 @@ O$.extend(O$.Tables, {
 
     var bodyRows = this.body._getRows();
     var columns = this._columns;
-    var afterRow = afterIndex != -1 ? bodyRows[afterIndex] : null;
 
     var i, count, row;
     for (i = 0, count = bodyRows.length, visibleRowCount = 0; i < count; i++) {
@@ -274,7 +290,12 @@ O$.extend(O$.Tables, {
       visibleInsertedRows = 0;
       for (i = 0, count = rowsToInsert.length; i < count; i++) {
         var insertedRow = rowsToInsert[i];
-        insertedRow._visible = (O$.getElementStyleProperty(row, "display") != "none");
+        if (!insertedRow._rowNode) {
+          if (!insertedRow.nodeName || insertedRow.nodeName.toLowerCase() != "tr")
+            throw "O$.Tables._insertRowsAfter: row._rowNode must be initialized for synthetic (scrollable-version) rows";
+          insertedRow._rowNode = row;
+        }
+        insertedRow._visible = (O$.getElementStyleProperty(row._rowNode, "display") != "none"); // todo: adjust this method for the scrollable version, initialize row properties properly
         if (insertedRow._visible)
           visibleInsertedRows++;
       }
@@ -315,25 +336,23 @@ O$.extend(O$.Tables, {
       movedRow._notifyRowMoved(moveRow ? movedRow._visibleRowIndex + visibleInsertedRows : movedRow._visibleRowIndex);
     }
 
-    var nextNode;
-    var rowContainer;
-    if (afterRow) {
-      nextNode = afterRow.nextSibling;
-      rowContainer = afterRow.parentNode;
-    } else {
-      var bodySection = this.body._tag;
-      nextNode = bodyRows.length > 0 ? bodyRows[0] : null;
-      rowContainer = bodySection;
-    }
-
     var newVisibleRowsForNow = 0;
     var callbackIndex, callbackCount;
     for (i = 0, count = rowsToInsert.length; i < count; i++) {
       var newRow = rowsToInsert[i];
-      if (nextNode != null)
-        rowContainer.insertBefore(newRow, nextNode);
-      else
-        rowContainer.appendChild(newRow);
+      if (!this.scrolling) {
+        if (bodyRows.length > 0) {
+          var nextRowIdx = afterIndex + 1 + addedRowCount;
+          if (nextRowIdx < bodyRows.length)
+            this.body._tag.insertBefore(newRow, bodyRows[nextRowIdx]);
+          else
+            this.body._tag.appendChild(newRow);
+        }
+        else
+          this.body._tag.appendChild(newRow);
+      } else {
+        this.header._leftScrollingArea._table
+      }
 
       newRowIndex = afterIndex + 1 + i;
       bodyRows[newRowIndex] = newRow;
@@ -450,16 +469,27 @@ O$.Tables._initRows = function(table) {
         return this._rows;
       },
       _createRow: function() {
-        var newRow = document.createElement("tr"); // todo: adjust for scrollable version
-        var colCount = table._columns.length;
-        for (var i = 0; i < colCount; i++) {
-          var newCell = document.createElement("td");
-          newRow.appendChild(newCell);
+        function createRow(colCount) {
+          if (colCount == null) return null;
+          var newRow = document.createElement("tr");
+          for (var i = 0; i < colCount; i++) {
+            var newCell = document.createElement("td");
+            newRow.appendChild(newCell);
+          }
+          return newRow;
         }
-        return newRow;
+        if (!table.scrolling)
+          return createRow(table._columns.length);
+        else {
+          return {
+            _leftRowNode: createRow(table.scrolling.leftFixedCols),
+            _rowNode: createRow(table._columns.length - table.scrolling.leftFixedCols - table.scrolling.rightFixedCols),
+            _rightRowNode: createRow(table.scrolling.rightFixedCols)
+          };
+        }
       },
       _newRow: function(afterRow) {
-        var row = this._createRow(); // todo: adjust for scrollable version
+        var row = this._createRow();
         this._addRow(row, afterRow);
         return row;
       },
@@ -933,8 +963,8 @@ O$.Tables._initGridLines = function(table) {
     };
 
     tableHeader._updateColumnSeparatorStyles = function() {
-      var filterRow = table._subHeaderRowExists ? headRows[table._subHeaderRowIndex] : null;
-      var filterRowCells = filterRow ? filterRow._cells : null;
+      var subHeaderRow = table._subHeaderRowExists ? headRows[table._subHeaderRowIndex] : null;
+      var subHeaderRowCells = subHeaderRow ? subHeaderRow._cells : null;
 
       function setHeaderVerticalGridlines(parentGroup) {
         var separators = getSeparatorsForGroup(parentGroup);
@@ -947,8 +977,8 @@ O$.Tables._initGridLines = function(table) {
               var cell = col.header ? col.header._cell : null;
               if (cell) {
                 O$._setCellRightBorder(cell, verticalSeparator);
-                if (!col.subColumns && filterRowCells)
-                  O$._setCellRightBorder(filterRowCells[col._colIndex], verticalSeparator);
+                if (!col.subColumns && subHeaderRowCells)
+                  O$._setCellRightBorder(subHeaderRowCells[col._colIndex], verticalSeparator);
               }
               if (col.subColumns)
                 setRightBorderForThisGroup(col.subColumns[col.subColumns.length - 1]);
