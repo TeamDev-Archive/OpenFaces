@@ -14,6 +14,7 @@ package org.openfaces.component.input;
 
 import org.openfaces.component.HorizontalAlignment;
 import org.openfaces.util.ValueBindings;
+import org.openfaces.util.NullTypeELResolver;
 
 import javax.faces.context.FacesContext;
 
@@ -41,15 +42,6 @@ public class Spinner extends DropDownComponent {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
-    }
-
-    @Override
-    public Object getValue() {
-        Object result = super.getValue();
-        if (result != null){
-            return result;
-        }
-        return 0;
     }
 
     @Override
@@ -297,6 +289,22 @@ public class Spinner extends DropDownComponent {
     @Override
     public String getDisabledButtonStyle() {
         return super.getDisabledButtonStyle();
+    }
+
+     @Override
+    public void updateModel(FacesContext context) {
+        boolean intercept = isLocalValueSet() && getLocalValue() == null && !NullTypeELResolver.isActive();
+
+        if (intercept) {
+            NullTypeELResolver.setActive(true);
+        }
+        try {
+            super.updateModel(context);
+        } finally {
+            if (intercept) {
+                NullTypeELResolver.setActive(false);
+            }
+        }
     }
 
 

@@ -74,7 +74,7 @@ O$.DropDown = {
     dropDown._onfocus = dropDown.onfocus;
 
     var waitingForFocusReacquiring = false;
-    O$.addEventHandler(field, "focus", function() {
+    dropDown._focusHandler = function() {
       if (waitingForFocusReacquiring) {
         waitingForFocusReacquiring = false;
         return;
@@ -94,7 +94,8 @@ O$.DropDown = {
           dropDown._statePrompt.value = false;
         }
       }
-    });
+    };
+    O$.addEventHandler(field, "focus", dropDown._focusHandler);
 
     dropDown._onblur = dropDown.onblur;
     O$.addEventHandler(field, "blur", function() {

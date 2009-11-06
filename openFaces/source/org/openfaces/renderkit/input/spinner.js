@@ -128,6 +128,8 @@ O$.Spinner = {
     if (!disabled) {
       spinner._increaseButton.onmousedown = function(e) {
 
+        spinner._focusHandler();
+        
         O$.setStyleMappings(increaseButton, {
           pressed: spinner._pressedButtonClass
         });
@@ -151,7 +153,8 @@ O$.Spinner = {
       };
       spinner._decreaseButton.onmousedown = function(e) {
 
-        O$.addEvent(spinner._field.id, 'focus');
+        spinner._focusHandler();
+
         O$.setStyleMappings(decreaseButton, {
           pressed: spinner._pressedButtonClass
         });
