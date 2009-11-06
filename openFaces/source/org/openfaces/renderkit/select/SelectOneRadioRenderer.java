@@ -319,12 +319,12 @@ public class SelectOneRadioRenderer extends RendererBase {
         String styleClass = StyleUtil.getCSSClass(facesContext, selectOneRadio, selectOneRadio.getStyle(), StyleGroup.regularStyleGroup(), selectOneRadio.getStyleClass(), null);
         String enabledStyleClass = StyleUtil.getCSSClass(facesContext, selectOneRadio, selectOneRadio.getEnabledStyle(), StyleGroup.regularStyleGroup(1), selectOneRadio.getEnabledClass(), null);
         String disabledStyleClass = StyleUtil.getCSSClass(facesContext, selectOneRadio, selectOneRadio.getDisabledStyle(), StyleGroup.regularStyleGroup(2), selectOneRadio.getDisabledClass(), null);
-        String rolloverStyleClass = StyleUtil.getCSSClass(facesContext, selectOneRadio, selectOneRadio.getRolloverStyle(), StyleGroup.regularStyleGroup(3), selectOneRadio.getRolloverClass(), null);
-        String focusedStyleClass = StyleUtil.getCSSClass(facesContext, selectOneRadio, selectOneRadio.getFocusedStyle(), StyleGroup.regularStyleGroup(4), selectOneRadio.getFocusedClass(), null);
+        String focusedStyleClass = StyleUtil.getCSSClass(facesContext, selectOneRadio, selectOneRadio.getFocusedStyle(), StyleGroup.regularStyleGroup(3), selectOneRadio.getFocusedClass(), null);
+        String rolloverStyleClass = StyleUtil.getCSSClass(facesContext, selectOneRadio, selectOneRadio.getRolloverStyle(), StyleGroup.regularStyleGroup(4), selectOneRadio.getRolloverClass(), null);
 
-        String rolloverItemStyleClass = StyleUtil.getCSSClass(facesContext, selectOneRadio, selectOneRadio.getRolloverItemStyle(), StyleGroup.regularStyleGroup(5), selectOneRadio.getRolloverItemClass(), null);
+        String selectedItemStyleClass = StyleUtil.getCSSClass(facesContext, selectOneRadio, selectOneRadio.getSelectedItemStyle(), StyleGroup.regularStyleGroup(5), selectOneRadio.getSelectedItemClass(), null);
         String focusedItemStyleClass = StyleUtil.getCSSClass(facesContext, selectOneRadio, selectOneRadio.getFocusedItemStyle(), StyleGroup.regularStyleGroup(6), selectOneRadio.getFocusedItemClass(), null);
-        String selectedItemStyleClass = StyleUtil.getCSSClass(facesContext, selectOneRadio, selectOneRadio.getSelectedItemStyle(), StyleGroup.regularStyleGroup(7), selectOneRadio.getSelectedItemClass(), null);
+        String rolloverItemStyleClass = StyleUtil.getCSSClass(facesContext, selectOneRadio, selectOneRadio.getRolloverItemStyle(), StyleGroup.regularStyleGroup(7), selectOneRadio.getRolloverItemClass(), null);
         String pressedItemStyleClass = StyleUtil.getCSSClass(facesContext, selectOneRadio, selectOneRadio.getPressedItemStyle(), StyleGroup.regularStyleGroup(8), selectOneRadio.getPressedItemClass(), null);
 
         StyleUtil.renderStyleClasses(facesContext, selectOneRadio);

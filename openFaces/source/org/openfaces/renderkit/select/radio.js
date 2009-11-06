@@ -61,13 +61,12 @@ O$.Radio = {
   },
 
   updateContainerStyles : function(radioContainer) {
-    var containerFocused = false;
-    var containerRollover = false;
+    var containerFocused = radioContainer._focused;
+    var containerRollover = radioContainer._rollover;
     for (var i = 0; i < radioContainer._radioItems.length; i++) {
-      containerFocused |= radioContainer._radioItems[i]._focused;
+      containerFocused |= radioContainer._radioItems[i]._focused || radioContainer._radioItems[i]._pressed;
       containerRollover |= radioContainer._radioItems[i]._rollover;
     }
-    containerRollover |= radioContainer._rollover;
 
     var externalClasses = radioContainer._styleClass;
     O$.removeOfClassName(radioContainer, radioContainer._styleClass);
@@ -237,17 +236,24 @@ O$.RadioItem = {
             O$.preventDefaultEvent(e);
           }
         } else if (isTab(e) && radioItem._images) {
-          var count = radioContainer._radioItems.length;
-          var lastRadioItem = radioContainer._radioItems[count - 1];
           var bodyElement = document.getElementsByTagName("body")[0];
           if (bodyElement == null)
             return;
+
           var reg = /\b(input|select|textarea|button|a|div|span)\b/i;
+          var startRadioItem;
           var focusableElements = O$.getElementsByTagNameRegex(bodyElement, reg, O$.isControlFocusable);
+          if (O$.isShiftPressed(e)) {
+            startRadioItem = radioContainer._radioItems[0];
+            focusableElements = focusableElements.reverse();
+          } else {
+            var count = radioContainer._radioItems.length;
+            startRadioItem = radioContainer._radioItems[count - 1];
+          }
           var isFound = false;
           for (var i = 0; i < focusableElements.length; i++) {
             var focusableElement = focusableElements[i];
-            isFound |= focusableElement.id == lastRadioItem.id;
+            isFound |= focusableElement.id == startRadioItem.id;
             if (isFound && O$.getElementSize(focusableElement).width > 0 && O$.getElementSize(focusableElement).height > 0) {
               focusableElement.focus();
               return;
@@ -263,6 +269,7 @@ O$.RadioItem = {
     function itemMouseDown() {
       if (!radioItem.getDisabled() && !radioItem._readonly) {
         radioItem._pressed = true;
+        radioItem._focused = true;
         if (radioItem._images) {
           updateImage(radioItem);
         }
