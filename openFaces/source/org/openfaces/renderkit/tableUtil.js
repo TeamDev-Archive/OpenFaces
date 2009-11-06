@@ -290,12 +290,7 @@ O$.extend(O$.Tables, {
       visibleInsertedRows = 0;
       for (i = 0, count = rowsToInsert.length; i < count; i++) {
         var insertedRow = rowsToInsert[i];
-        if (!insertedRow._rowNode) {
-          if (!insertedRow.nodeName || insertedRow.nodeName.toLowerCase() != "tr")
-            throw "O$.Tables._insertRowsAfter: row._rowNode must be initialized for synthetic (scrollable-version) rows";
-          insertedRow._rowNode = row;
-        }
-        insertedRow._visible = (O$.getElementStyleProperty(row._rowNode, "display") != "none"); // todo: adjust this method for the scrollable version, initialize row properties properly
+        insertedRow._visible = (O$.getElementStyleProperty(row, "display") != "none");
         if (insertedRow._visible)
           visibleInsertedRows++;
       }
