@@ -26,8 +26,8 @@ O$.Radio = {
     radioContainer._rolloverClass = getClassName("rolloverClass");
     radioContainer._focusedClass = getClassName("focusedClass");
 
-    radioContainer._radioItems = new Array();
-    radioContainer._radioElems = new Array();
+    radioContainer._radioItems = [];
+    radioContainer._radioElems = [];
     radioContainer._radioItemCount = radioItemCount;
     for (var i = 0; i < radioItemCount; i++) {
       var radioItemId = radioId + ":" + i;

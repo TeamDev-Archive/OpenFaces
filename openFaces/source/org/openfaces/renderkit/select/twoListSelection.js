@@ -601,7 +601,7 @@ O$._tls_sortSelection = function(tls) {
   tls._sortingDirection = !tls._sortingDirection;
 
   var rightList = tls._rightListBox;
-  var options = new Array();
+  var options = [];
   for (var rightIdx = 0, rightCount = rightList.options.length; rightIdx < rightCount; rightIdx++) {
     options.push(rightList.options[rightIdx]);
   }

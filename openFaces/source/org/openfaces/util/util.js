@@ -597,7 +597,7 @@ if (!window.O$) {
 
   O$.getArrayFromString = function(str, delimiter) {
     var idx = str.indexOf(delimiter);
-    var arr = new Array();
+    var arr = [];
     var arrIdx = 0;
     while (idx != -1) {
       arr[arrIdx++] = str.substring(0, idx);
@@ -886,14 +886,14 @@ if (!window.O$) {
   };
 
   O$.findChildNodesByClass = function(node, className, searchTopLevelOnly) {
-    var result = new Array();
+    var result = [];
     var children = node.childNodes;
     for (var i = 0, count = children.length; i < count; i++) {
       var child = children[i];
       if (child.className == className)
         result.push(child);
       //    var childClass = child.className;
-      //    var childClassNames = childClass ? childClass.split(" ") : new Array();
+      //    var childClassNames = childClass ? childClass.split(" ") : [];
       //    if (childClassNames.O$.indexOf(className))
       var subResult = !searchTopLevelOnly && O$.findChildNodesByClass(child, className);
       for (var childIndex = 0, subResultCount = subResult.length; childIndex < subResultCount; childIndex++) {
@@ -923,7 +923,7 @@ if (!window.O$) {
   };
 
   O$.getElementsByTagNameRegex = function(parent, regex, optionalFilter) {
-    var elem_array = new Array();
+    var elem_array = [];
     if (typeof parent.firstChild != "undefined") {
       var elem = parent.firstChild;
       while (elem != null) {
@@ -1089,7 +1089,7 @@ if (!window.O$) {
   };
 
   O$.submitByIds = function(elementIds) {
-    var elements = new Array();
+    var elements = [];
     for (var i = 0, count = elementIds.length; i < count; i++) {
       elements[elements.length] = O$(elementIds[i]);
       O$.assert(elements[elements.length - 1], "correct element id should be passed to O$.submitByIds");
@@ -1150,10 +1150,11 @@ if (!window.O$) {
       O$.addEventHandler(element, eventName, functionScript);
     }
 
-    var eventToDetach = new Object();
-    eventToDetach.componentClientId = componentClientId;
-    eventToDetach.eventName = eventName;
-    eventToDetach.functionScript = functionScript;
+    var eventToDetach = {
+      componentClientId: componentClientId,
+      eventName: eventName,
+      functionScript: functionScript
+    };
 
     if (!O$._attachedEvents[componentClientId]) {
       O$._attachedEvents[componentClientId] = [];
@@ -1744,7 +1745,7 @@ if (!window.O$) {
 
       var element;
       var evt = O$.getEvent(e);
-      var elementList = new Array();
+      var elementList = [];
       if (document._of_elementUnderMouse) {
         for (element = document._of_elementUnderMouse; element; element = element.parentNode) {
           element._of_mouseInside = false;
@@ -1908,7 +1909,7 @@ if (!window.O$) {
     }
     O$.initMouseListenerUtils();
     if (!element._of_mouseOverListeners)
-      element._of_mouseOverListeners = new Array();
+      element._of_mouseOverListeners = [];
     element._of_mouseOverListeners.push(listener);
   };
 
@@ -1919,7 +1920,7 @@ if (!window.O$) {
     }
     O$.initMouseListenerUtils();
     if (!element._of_mouseOutListeners)
-      element._of_mouseOutListeners = new Array();
+      element._of_mouseOutListeners = [];
     element._of_mouseOutListeners.push(listener);
   };
 
@@ -2488,7 +2489,7 @@ if (!window.O$) {
     for (var i = 0; i < selectorCount; i++)
       selectors[i] = selectors[i].toLowerCase();
 
-    var rulesFound = new Array();
+    var rulesFound = [];
     for (var sheetIndex = 0; sheetIndex < styleSheets.length; sheetIndex++) {
       var ss = styleSheets[sheetIndex];
       var rules;
@@ -2522,7 +2523,7 @@ if (!window.O$) {
     if (!styleClass || propertyNames.length == 0)
       return {};
     var classNames = styleClass.split(" ");
-    var classSelectors = new Array();
+    var classSelectors = [];
     var i, count;
     for (i = 0,count = classNames.length; i < count; i++) {
       var className = classNames[i];
@@ -2534,8 +2535,8 @@ if (!window.O$) {
       return {};
 
     var propertyCount = propertyNames.length;
-    var propertyValues = new Object();
-    var propertyImportantFlags = new Array();
+    var propertyValues = {};
+    var propertyImportantFlags = [];
     for (i = 0,count = cssRules.length; i < count; i++) {
       var cssRule = cssRules[i];
       var ruleStyle = cssRule.style;
@@ -2566,7 +2567,7 @@ if (!window.O$) {
   //
 
   O$.combineClassNames = function(classNames) {
-    var nonNullClassNames = new Array();
+    var nonNullClassNames = [];
     for (var i = 0, count = classNames.length; i < count; i++) {
       var className = classNames[i];
       if (className)
@@ -2597,7 +2598,7 @@ if (!window.O$) {
   };
 
   O$.excludeClassNames = function(element, classesToExclude) {
-    var newClassesToExclude = new Array();
+    var newClassesToExclude = [];
     for (var i = 0, count = classesToExclude.length; i < count; i++) {
       var clsToExclude = classesToExclude[i];
       if (!clsToExclude)
@@ -2611,8 +2612,8 @@ if (!window.O$) {
 
     var someClassesExcluded = false;
     var clsName = element.className;
-    var clsNames = clsName ? clsName.split(" ") : new Array();
-    var newNames = new Array();
+    var clsNames = clsName ? clsName.split(" ") : [];
+    var newNames = [];
     for (var nameIndex = 0, nameCount = clsNames.length; nameIndex < nameCount; nameIndex++) {
       var currName = clsNames[nameIndex];
       if (currName) {
@@ -3741,8 +3742,8 @@ if (!window.O$) {
 
   // ----------------- HIDE <SELECT> CONTROLS UNDER POPUP IN IE ---------------------------------------------------
 
-  O$._controlsToHide = O$.isExplorer() ? new Array("select-one", "select-multiple") : null;
-  O$._controlsHiddenControlsMap = new Object();
+  O$._controlsToHide = O$.isExplorer() ? ["select-one", "select-multiple"] : null;
+  O$._controlsHiddenControlsMap = {};
 
   O$.walkControlsToHide = function(popup, runFunction) {
     if (popup._coveredControls) {
@@ -3756,7 +3757,7 @@ if (!window.O$) {
   O$.hideControlsUnderPopup = function(popup) {
     if (O$.isExplorer() && O$._controlsToHide && O$._controlsToHide.length > 0) {
       var runFunction = function(control) {
-        var controlData = new Object();
+        var controlData = {};
         controlData.id = popup.id;
         controlData.visibility = control.style.visibility;
         O$._controlsHiddenControlsMap[control.id] = controlData;
@@ -3764,7 +3765,7 @@ if (!window.O$) {
       };
 
       var rectangle = new O$.Rectangle(popup.offsetLeft, popup.offsetTop, popup.offsetWidth, popup.offsetHeight);
-      popup._coveredControls = new Array();
+      popup._coveredControls = [];
       var frm = O$.findParentNode(popup, "FORM");
       var controls = frm.elements;
       var index = 0;

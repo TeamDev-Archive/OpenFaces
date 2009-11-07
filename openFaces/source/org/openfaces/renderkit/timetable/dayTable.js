@@ -1422,17 +1422,18 @@ O$._initDayTable = function(componentId,
   function updateTimetableChangesField() {
 
 	var properties = ["id", "name", "description", "resourceId", "startStr", "endStr", "color", "type"];
-    function arrayToJSON(name, source) {
-      var result = new Array(source.length);
+    function arrayToJSON(name, source, properties) {
+      var result = [];
       for (var i = 0; i < source.length; i++)
         result[i] = JSON.stringify(source[i], properties);
       return JSON.stringify(name) + ":[" + result.join(",") + "]";
     }
 
-	var events = new Array(3);
-    events[0] = arrayToJSON("addedEvents", dayTable._addedEvents, properties);
-    events[1] = arrayToJSON("editedEvents", dayTable._editedEvents, properties);
-    events[2] = arrayToJSON("removedEventIds", dayTable._removedEventIds, properties);
+	var events = [
+            arrayToJSON("addedEvents", dayTable._addedEvents, properties),
+            arrayToJSON("editedEvents", dayTable._editedEvents, properties),
+            arrayToJSON("removedEventIds", dayTable._removedEventIds, properties)
+          ];
     var changesAsString = "{" + events.join(",") + "}";
     O$.addHiddenField(dayTable, dayTable.id + "::timetableChanges", changesAsString);
   }

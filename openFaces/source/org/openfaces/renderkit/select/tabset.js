@@ -19,7 +19,7 @@ O$._initTabSet = function(tabSetId, tabIds, selectedIndex, placement,
   tabset._indexField = O$(tabSetId + "::selected");
   tabset._placement = placement;
   tabset.style.emptyCells = "show"; // needed for JSFC-2713 to show cell borders on empty cells (inter-tab spacings)
-  tabset._tabs = new Array();
+  tabset._tabs = [];
   tabset._tabCount = tabIds.length;
   tabset.onchange = onchange;
 

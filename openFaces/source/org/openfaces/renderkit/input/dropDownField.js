@@ -126,7 +126,7 @@ O$.DropDownField = {
             newRows, newRowsToStylesMap, newRowCellsToStylesMap, itemValues) {
       var cacheMapKey = filterCriterionText ? filterCriterionText.toLowerCase() : "";
       if (!dropDown._cachedSuggestionLists)
-        dropDown._cachedSuggestionLists = new Array();
+        dropDown._cachedSuggestionLists = [];
       dropDown._cachedSuggestionLists[cacheMapKey] = {
         rows: newRows,
         rowsToStylesMap: newRowsToStylesMap,
@@ -923,7 +923,7 @@ O$.DropDownField = {
   },
 
   _prepareListElements: function(dropDown) {
-    var itemList = new Array();
+    var itemList = [];
     for (var index = 0, item; item = O$(dropDown.id + "--popup::popupItem" + index); index++) {
       item._index = index;
       itemList.push(item);
@@ -973,13 +973,13 @@ O$.DropDownField = {
     try {
       var tableBody = tempDiv.getElementsByTagName("tbody")[0];
       var children = tableBody.childNodes;
-      var newNodes = new Array();
+      var newNodes = [];
       var i, count;
       for (i = 0,count = children.length; i < count; i++) {
         var child = children[i];
         newNodes.push(child);
       }
-      var newRows = new Array();
+      var newRows = [];
       for (i = 0,count = newNodes.length; i < count; i++) {
         var newNode = newNodes[i];
         if (!newNode || !newNode.tagName)

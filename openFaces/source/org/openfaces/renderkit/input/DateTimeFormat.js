@@ -46,7 +46,7 @@ O$.DateTimeFormat.prototype.parse = function(val, format, currentValue) {
   }
   //2. try to find date by pattern
 
-  var foundMatches = new Array();
+  var foundMatches = [];
   var iterator = 0;
   for (var charIndex = 0; charIndex < this.CURRENTLY_SUPPORTED_PATTERN_CHARS.length; charIndex++) {
     var letter = this.CURRENTLY_SUPPORTED_PATTERN_CHARS.charAt(charIndex);
@@ -211,7 +211,7 @@ O$.DateTimeFormat.prototype.format = function(dDate, format) {
   var seconds = dDate.getSeconds();
   var millis = dDate.getMilliseconds();
 
-  var foundMatches = new Array();
+  var foundMatches = [];
   var iterator = 0;
   for (var charIndex = 0; charIndex < this.CURRENTLY_SUPPORTED_PATTERN_CHARS_FORMAT_ONLY.length; charIndex++) {
     var letter = this.CURRENTLY_SUPPORTED_PATTERN_CHARS_FORMAT_ONLY.charAt(charIndex);

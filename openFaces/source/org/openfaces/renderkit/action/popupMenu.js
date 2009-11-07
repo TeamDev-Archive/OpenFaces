@@ -70,7 +70,7 @@ O$._initPopupMenu = function(popupMenuId,
     document._openFaces_popupsOnpage.pop(popupMenuId);
   }
 
-  popupMenu._popupMenuItems = new Array();
+  popupMenu._popupMenuItems = [];
 
   var childNodes = popupMenu.childNodes;
 

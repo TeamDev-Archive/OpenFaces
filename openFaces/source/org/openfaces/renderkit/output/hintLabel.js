@@ -19,7 +19,7 @@ O$.HintLabel = {
 
     O$.addLoadEvent(function() {
       if (label._hint) {
-        var hints = new Array(document.getElementsByName(id + "::hint").length);
+        var hints = [];
         for (var i = 0, count = hints.length; i < count; i++) {
           hints[i] = document.getElementsByName(id + "::hint")[i];
         }

@@ -101,7 +101,7 @@ O$.TEXT_RESPONSE_SUFFIX = "_openfaces_ajax_response_suffix_";
 
 window.OpenFaces.Ajax = {
   Page: {},
-  Components: new Array()
+  Components: []
 };
 
 O$.setCommonAjaxEventHandler = function(eventName, func) {
@@ -123,7 +123,7 @@ O$.setCommonAjaxEventHandler = function(eventName, func) {
   }
 
   if (!document.__commonAjaxEventHandlerInitialized) {
-    document.__commonAjaxEventHandlerInitialized = new Array();
+    document.__commonAjaxEventHandlerInitialized = [];
     document.__commonAjaxEventHandlerInitialized[eventName] = true;
   }
 
@@ -142,7 +142,7 @@ O$.setComponentAjaxEventHandler = function(eventName, func, componentId) {
 
 
   if (!OpenFaces.Ajax.Components[componentId]) {
-    OpenFaces.Ajax.Components[componentId] = new Array();
+    OpenFaces.Ajax.Components[componentId] = [];
   }
 
   if (!OpenFaces.Ajax.Components[componentId][eventName]) {
@@ -157,12 +157,12 @@ O$.setComponentAjaxEventHandler = function(eventName, func, componentId) {
   }
 
   if (!document.__componentsAjaxEventHandlerInitialized) {
-    document.__componentsAjaxEventHandlerInitialized = new Array();
-    document.__componentsAjaxEventHandlerInitialized[componentId] = new Array();
+    document.__componentsAjaxEventHandlerInitialized = [];
+    document.__componentsAjaxEventHandlerInitialized[componentId] = [];
   }
 
   if (!document.__componentsAjaxEventHandlerInitialized[componentId]) {
-    document.__componentsAjaxEventHandlerInitialized[componentId] = new Array();
+    document.__componentsAjaxEventHandlerInitialized[componentId] = [];
   }
 
   document.__componentsAjaxEventHandlerInitialized[componentId][eventName] = true;
@@ -176,7 +176,7 @@ O$.reloadPage = function(loc) {
 O$._reloadComponents = function(componentIds, args) {
   if (!args) args = {};
   var params = args.additionalParams ? args.additionalParams : [];
-  var ids = new Array();
+  var ids = [];
   if (args.action)
     params.push([O$.SERVER_ACTION, args.action]);
   if (args.actionSourceId)
@@ -212,7 +212,7 @@ O$.requestComponentPortions = function(componentId, portionNames, customJsonPara
     throw "portionNames should be specified as an array, but specified as: " + portionNames;
   if (!portionProcessor)
     throw "O$.requestComponentPortions: portionProcessor should be specified";
-  var params = new Array();
+  var params = [];
   if (action)
     params.push([O$.SERVER_ACTION, action]);
   O$.sendAjaxRequestIfNoFormSubmission([componentId], {portionNames: portionNames, portionProcessor: portionProcessor,
@@ -228,7 +228,7 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
   O$._ajaxRequestScheduled = true;
   if (O$._ajax_request_processing) {
     if (!O$._ajax_requests_queue) {
-      O$._ajax_requests_queue = new Array();
+      O$._ajax_requests_queue = [];
     }
     O$._ajax_requests_queue.push(ajaxArgs);
     return;
@@ -299,7 +299,7 @@ O$.sendAjaxRequest = function(componentIds, args) {
   if (!componentIds.length) {
     O$.logError("O$.sendAjaxRequest: Array of components ids should be not empty");
   }
-  var components = new Array();
+  var components = [];
   var i;
   for (i = 0; i < componentIds.length; i++) {
     var id = componentIds[i];
@@ -457,7 +457,7 @@ O$.requestFinished = function(ajaxObject) {
         ajaxSettingsForComponent.onajaxend(ajaxendEvent);
       } catch(ex) {
         if (!ajaxObject._clientSideException) {
-          ajaxObject._clientSideExceptions = new Array();
+          ajaxObject._clientSideExceptions = [];
         }
         ajaxObject._clientSideExceptions.push(ex);
       }
@@ -472,7 +472,7 @@ O$.requestFinished = function(ajaxObject) {
       OpenFaces.Ajax.Page.onajaxend(ajaxendEvent);
     } catch(ex) {
       if (!ajaxObject._clientSideException) {
-        ajaxObject._clientSideExceptions = new Array();
+        ajaxObject._clientSideExceptions = [];
       }
       ajaxObject._clientSideExceptions.push(ex);
     }
@@ -1026,7 +1026,7 @@ O$.processSessionExpiration = function(loc, ajaxComponentIds, ajaxObject, isHand
       } catch(ex) {
         if (!isHandlingWasDelayed) {
           if (!ajaxObject._clientSideException) {
-            ajaxObject._clientSideExceptions = new Array();
+            ajaxObject._clientSideExceptions = [];
           }
           ajaxObject._clientSideExceptions.push(ex);
           return true;
@@ -1048,7 +1048,7 @@ O$.processSessionExpiration = function(loc, ajaxComponentIds, ajaxObject, isHand
     } catch(ex) {
       if (!isHandlingWasDelayed) {
         if (!ajaxObject._clientSideException) {
-          ajaxObject._clientSideExceptions = new Array();
+          ajaxObject._clientSideExceptions = [];
         }
         ajaxObject._clientSideExceptions.push(ex);
 
@@ -1083,7 +1083,7 @@ O$.processErrorDuringAjaxRequest = function(errorMessage, ajaxComponentIds, ajax
         }
       } catch(ex) {
         if (!ajaxObject._clientSideException) {
-          ajaxObject._clientSideExceptions = new Array();
+          ajaxObject._clientSideExceptions = [];
         }
         ajaxObject._clientSideExceptions.push(ex);
         O$.requestFinished(ajaxObject);
@@ -1104,7 +1104,7 @@ O$.processErrorDuringAjaxRequest = function(errorMessage, ajaxComponentIds, ajax
       onerrorResult = OpenFaces.Ajax.Page.onerror(errorEvent);
     } catch(ex) {
       if (!ajaxObject._clientSideException) {
-        ajaxObject._clientSideExceptions = new Array();
+        ajaxObject._clientSideExceptions = [];
       }
       ajaxObject._clientSideExceptions.push(ex);
       O$.requestFinished(ajaxObject);

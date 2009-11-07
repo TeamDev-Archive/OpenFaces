@@ -15,7 +15,7 @@ O$.Calendar = {
   NON_CURRENT_MONTH: 2,
   SELECTED_DAY: 3,
 
-  DAY_COUNTS: new Array(0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334),
+  DAY_COUNTS: [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334],
 
   // ================================== INTERNAL FUNCTIONS
 
@@ -152,7 +152,7 @@ O$.Calendar = {
       cal._dateChange_listeners = null;
       cal._addDateChangeListener = function(listenerObjectFunction) {
         if (!this._dateChange_listeners) {
-          this._dateChange_listeners = new Array();
+          this._dateChange_listeners = [];
         }
         this._dateChange_listeners.push(listenerObjectFunction);
       };
@@ -420,7 +420,7 @@ O$.Calendar = {
     var rolloverInactiveMonthDayClassName = calendar._rolloverInactiveMonthDayClass;
     var weekendClassName = calendar._weekendClass;
     var rolloverWeekendClassName = calendar._rolloverWeekendClass;
-    var allCells = new Array();
+    var allCells = [];
     var body = O$(calendar.id + "::body");
     var allTdElements = body.getElementsByTagName("div");
     O$.assert(allTdElements.length == 6 * 7);
@@ -718,7 +718,7 @@ O$.Calendar = {
     else if (preDays < 0) preDays += 7;
 
     monthStartDate = O$.incDay(monthStartDate, -preDays);
-    var dates = new Array();
+    var dates = [];
 
     var storedSelectedDate = O$.Calendar._getSelectedDate(calendar.id);
     if (storedSelectedDate) {
@@ -732,7 +732,7 @@ O$.Calendar = {
       var m = currentDay.getMonth();
       var d = currentDay.getDate();
 
-      var pair = new Array();
+      var pair = [];
 
       if (y < incYear || m < incMonth) {
         pair[0] = O$.Calendar.NON_CURRENT_MONTH;
@@ -886,7 +886,7 @@ O$.Calendar = {
     dropTable.className = calendar._headerClass;
 
     var nodeChildren = dropTable.childNodes;
-    var copiedCildren = new Array();
+    var copiedCildren = [];
     var i, count;
     for (i = 0; i < nodeChildren.length; i++) {
       copiedCildren[i] = nodeChildren[i];
@@ -989,7 +989,7 @@ O$.Calendar = {
     var curYear = cal._currentYear;
     var firstYear = curYear - yearsBefore;
     var lastYear = curYear + yearsAfter;
-    var years = new Array();
+    var years = [];
 
     for (var i = firstYear; i <= lastYear; i++)
       years.push(i);

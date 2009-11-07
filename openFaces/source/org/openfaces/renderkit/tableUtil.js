@@ -345,7 +345,19 @@ O$.Tables = {
         else
           this.body._tag.appendChild(newRow);
       } else {
-        this.header._leftScrollingArea._table
+        if (newRow instanceof Array)
+          newRow = {_leftRowNode: newRow[0], _rowNode: newRow[1], _rightRowNode: newRow[2]};
+        function addRow(area, rowNode) {
+          if (!area || !rowNode) return;
+          var nextRowIdx = afterIndex + 1 + i;
+          if (nextRowIdx < area._table.childNodes.length)
+            area._table.insertBefore(rowNode, area._table.childNodes[nextRowIdx]);
+          else
+            area._table.appendChild(rowNode);
+        }
+        addRow(this.body._leftScrollingArea, newRow._leftRowNode);
+        addRow(this.body._centerScrollingArea, newRow._rowNode);
+        addRow(this.body._rightScrollingArea, newRow._rightRowNode);
       }
 
       newRowIndex = afterIndex + 1 + i;
@@ -411,15 +423,15 @@ O$.Tables = {
                 var leftCellIndex = table._scrolling.leftFixedCols ? 0 : undefined;
                 var centerCellIndex = leftCellIndex != undefined ? 1 : 0;
                 var rightCellIndex = table._scrolling.rightFixedCols ? centerCellIndex + 1 : undefined;
-                var section = this;
+                var sectionObj = this;
                 function scrollingAreaRows(areaCellIndex, scrollAreaVar) {
                   var td = containerRow.childNodes[areaCellIndex];
                   var div = O$.getChildNodesWithNames(td, ["div"])[0];
                   var table = div ? O$.getChildNodesWithNames(div, ["table"])[0] : O$.getChildNodesWithNames(td, ["table"])[0];
-                  section[scrollAreaVar] = div ? div : table;
-                  section[scrollAreaVar]._div = div;
-                  section[scrollAreaVar]._table = table;
-                  return  O$.getChildNodesWithNames(table, ["tr"]);
+                  sectionObj[scrollAreaVar] = div ? div : table;
+                  sectionObj[scrollAreaVar]._div = div;
+                  sectionObj[scrollAreaVar]._table = table;
+                  return O$.getChildNodesWithNames(table, ["tr"]);
                 }
                 var leftRows = leftCellIndex != undefined ? scrollingAreaRows(leftCellIndex, "_leftScrollingArea") : null;
                 var centerRows = scrollingAreaRows(centerCellIndex, "_centerScrollingArea");
@@ -464,7 +476,7 @@ O$.Tables = {
         },
         _createRow: function() {
           function createRow(colCount) {
-            if (colCount == null) return null;
+            if (!colCount) return null;
             var newRow = document.createElement("tr");
             for (var i = 0; i < colCount; i++) {
               var newCell = document.createElement("td");
@@ -491,7 +503,7 @@ O$.Tables = {
           this._addRows([row], afterRow);
         },
         _addRows: function(rows, afterRow) {
-          table._insertRowsAfter(afterRow != undefined ? afterRow : table.body._getRows().length - 1, rows);
+          table._insertRowsAfter(afterRow != undefined ? afterRow : this._getRows().length - 1, rows);
         }
       };
       section._tag = O$.getChildNodesWithNames(table, [sectionTagName])[0];
@@ -1058,7 +1070,7 @@ O$.Tables = {
     };
     var tableBody = table.body;
     {
-      tableBody._getBorderBottomForCell = function(rowIndex, colIndex, cell) {
+      tableBody._getBorderBottomForCell = function(/*rowIndex, colIndex, cell*/) {
         return table._horizontalGridLines;
       };
       function updateBodyCellBorders(cell, rowIndex, column, rowCount, colCount) {

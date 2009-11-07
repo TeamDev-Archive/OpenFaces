@@ -1338,8 +1338,8 @@ O$.Table = {
             return this.header._cell.offsetWidth;
           if (this.subHeader && this.subHeader._cell)
             return this.subHeader._cell.offsetWidth;
-          for (var i = 0, count = this.body._cells.length; i < count; i++) {
-            var cell = this.body._cells[i];
+          for (var idx = 0, count = this.body._cells.length; idx < count; idx++) {
+            var cell = this.body._cells[idx];
             if (!cell || cell.colSpan > 1)
               continue;
             return cell.offsetWidth;
@@ -1354,10 +1354,10 @@ O$.Table = {
 
         var widthCompensationColIndex = -1;
         if (retainTableWidth) {
-          for (var i = table._columns.length - 1; i >= 0; i--) {
-            var c = table._columns[i];
+          for (var idx = table._columns.length - 1; idx >= 0; idx--) {
+            var c = table._columns[idx];
             if (c._resizable) {
-              widthCompensationColIndex = i;
+              widthCompensationColIndex = idx;
               break;
             }
           }

@@ -20,9 +20,9 @@ O$.Message = function(summary, detail, severity) {
 
 O$.getValidators = function(input) {
   if (!input)
-    return new Array();
+    return [];
   if (!O$._validators[input.id]) {
-    O$._validators[input.id] = new Array();
+    O$._validators[input.id] = [];
   }
   return O$._validators[input.id];
 }
@@ -30,7 +30,7 @@ O$.getValidators = function(input) {
 O$.getConverters = function(input) {
   var validators = O$.getValidators(input);
   if (validators && validators.length > 0) {
-    var converters = new Array();
+    var converters = [];
     for (var i = 0; i < validators.length; i++) {
       var validator = validators[i];
       if (validator && validator.type && validator.type == "converter") {
@@ -46,7 +46,7 @@ O$.getConverters = function(input) {
 O$.getValidatorsOnly = function(input) {
   var validators = O$.getValidators(input);
   if (validators && validators.length > 0) {
-    var result = new Array();
+    var result = [];
     for (i = 0; i < validators.length; i++) {
       var validator = validators[i];
       if ((!validator.type) || (!(validator.type && validator.type == "converter"))) {
@@ -216,7 +216,7 @@ O$.getValue = function(input) {
       }
 
     } else {
-      var selected = new Array();
+      var selected = [];
       for (var i = 0; i < input.options.length; i++) {
         if (input.options[i].selected) {
           selected.push(input.options[i].value);
@@ -239,7 +239,7 @@ O$.getValue = function(input) {
     //validated component - it is a container - for example, html table with a group of inputs
     var inputs = input.getElementsByTagName("input");
     if (inputs && inputs.length > 0) {
-      var selected = new Array();
+      var selected = [];
       for (var i = 0; i < inputs.length; i++) {
         if (inputs[i].checked) {
           selected.push(inputs[i].value);
@@ -264,7 +264,7 @@ O$.notEmpty = function(value) {
 O$.getMessages = function(input) {
   if (!input._of_messages) {
     try {
-      input._of_messages = new Array();
+      input._of_messages = [];
     } catch(e) {
     }
   }
@@ -273,14 +273,14 @@ O$.getMessages = function(input) {
 
 O$.getGlobalMessages = function() {
   if (!document._of_globalMessages) {
-    document._of_globalMessages = new Array();
+    document._of_globalMessages = [];
   }
   return document._of_globalMessages;
 }
 
 O$.getAllMessages = function(globalOnly) {
   if (!globalOnly) {
-    var messages = new Array();
+    var messages = [];
     O$.getAllMessageRecursive(document, messages);
     return messages;
   } else
@@ -333,14 +333,14 @@ O$.addGlobalMessage = function(summary, detail, severity) {
 
 O$.getClientMessageRenderers = function() {
   if (!document.td_clientMessageRenderers) {
-    document.td_clientMessageRenderers = new Object();
+    document.td_clientMessageRenderers = {};
   }
   return document.td_clientMessageRenderers;
 }
 
 O$.getClientMessageRenderersWithVisibleBubble = function() {
   if (!document.clientMessageRenderersWithVisibleBubble) {
-    document.clientMessageRenderersWithVisibleBubble = new Object();
+    document.clientMessageRenderersWithVisibleBubble = {};
     ;
   }
   return document.clientMessageRenderersWithVisibleBubble;
@@ -348,7 +348,7 @@ O$.getClientMessageRenderersWithVisibleBubble = function() {
 
 O$.getMessagesRenderers = function() {
   if (!document._of_messagesRenderers) {
-    document._of_messagesRenderers = new Array();
+    document._of_messagesRenderers = [];
   }
   return document._of_messagesRenderers;
 }
@@ -579,7 +579,7 @@ O$._presentationExistsForComponent = function(componentId) {
 O$._getComponentsWithPresentation = function() {
   var componentsWithPresentation = O$._componentsWithPresentation;
   if (!componentsWithPresentation) {
-    componentsWithPresentation = new Array();
+    componentsWithPresentation = [];
     O$._componentsWithPresentation = componentsWithPresentation;
   }
   return componentsWithPresentation;

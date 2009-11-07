@@ -16,7 +16,7 @@ O$._DateTimeConverterValidator = function(summary, detail, pattern, locale) {
   this.type = "converter";
   this.locale = locale;
   this.pattern = pattern;
-}
+};
 
 O$._DateTimeConverterValidator.prototype.validate = function(input) {
   var value = O$.trim(O$.getValue(input));
@@ -30,20 +30,20 @@ O$._DateTimeConverterValidator.prototype.validate = function(input) {
     var date;
     var time = O$._getDateFromFormat(value, this.pattern, this.locale);
     if (time != 0) {
-      date = new Date(time)
+      date = new Date(time);
     }
     return date;
   }
   return true;
-}
+};
 
 O$._isCorrectDate = function(value, pattern, locale) {
   return O$._isDate(value, pattern, locale);
-}
+};
 
 
-O$.MONTH_NAMES = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
-O$.DAY_NAMES = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
+O$.MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+O$.DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 // ------------------------------------------------------------------
 // O$._isDate ( date_string, format_string )
@@ -56,7 +56,7 @@ O$._isDate = function(val, format, locale) {
   var date = O$._getDateFromFormat(val, format, locale);
   return date != 0;
 
-}
+};
 
 // ------------------------------------------------------------------
 // Utility functions for parsing in getDateFromFormat()
@@ -69,7 +69,7 @@ O$._isInteger = function(val) {
     }
   }
   return true;
-}
+};
 O$._getInt = function(str, i, minlength, maxlength) {
   for (var x = maxlength; x >= minlength; x--) {
     var token = str.substring(i, i + x);
@@ -81,7 +81,7 @@ O$._getInt = function(str, i, minlength, maxlength) {
     }
   }
   return null;
-}
+};
 
 // ------------------------------------------------------------------
 // O$._getDateFromFormat( date_string , format_string )
@@ -97,7 +97,6 @@ O$._getDateFromFormat = function(val, format, locale) {
   var i_format = 0;
   var c = "";
   var token = "";
-  var token2 = "";
   var x,y;
   var now = new Date();
   var year = now.getFullYear();
@@ -292,5 +291,5 @@ O$._getDateFromFormat = function(val, format, locale) {
   }
   var newdate = new Date(year, month - 1, date, hh, mm, ss);
   return newdate.getTime();
-}
+};
 

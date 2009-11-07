@@ -247,13 +247,13 @@ O$.TreeTable = {
     tempDiv.innerHTML = "<table><tbody>" + portionHTML + "</tbody></table>";
     var tableBody = tempDiv.getElementsByTagName("tbody")[0];
     var children = tableBody.childNodes;
-    var newNodes = new Array();
+    var newNodes = [];
     for (var childIndex = 0, childCount = children.length; childIndex < childCount; childIndex++) {
       var child = children[childIndex];
       newNodes.push(child);
     }
 
-    var newRows = new Array();
+    var newRows = [];
     for (var nodeIndex = 0, nodeCount = newNodes.length; nodeIndex < nodeCount; nodeIndex++) {
       var newNode = newNodes[nodeIndex];
       var prnt = newNode.parentNode;
@@ -332,7 +332,7 @@ O$.TreeTable = {
     if (!selectedNodeIndexes) {
       throw "O$._setSelectedNodeIndexes: Invalid selectedNodeIndexes passed : " + treeTableId;
     }
-    var selectedIndexes = new Array();
+    var selectedIndexes = [];
     for (var i = 0; i < selectedNodeIndexes.length; i++) {
       if (selectedNodeIndexes[i] > -1) {
         selectedIndexes.push(selectedNodeIndexes[i]);

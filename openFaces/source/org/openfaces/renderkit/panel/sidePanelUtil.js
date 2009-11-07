@@ -169,21 +169,22 @@ O$._storeSizeProperties = function(element) {
   var topMarginSize = parseInt(O$.getStyleClassProperty(element.className, "margin-top"));
   var bottomMarginSize = parseInt(O$.getStyleClassProperty(element.className, "margin-bottom"));
 
-  element._storedSizeProperties = new Object();
-  element._storedSizeProperties.paddingLeft = leftPaddingSize;
-  element._storedSizeProperties.paddingRight = rightPaddingSize;
-  element._storedSizeProperties.paddingTop = topPaddingSize;
-  element._storedSizeProperties.paddingBottom = bottomPaddingSize;
-  element._storedSizeProperties.borderLeft = leftBorderSize;
-  element._storedSizeProperties.borderRight = rightBorderSize;
-  element._storedSizeProperties.borderTop = topBorderSize;
-  element._storedSizeProperties.borderBottom = bottomBorderSize;
-  element._storedSizeProperties.marginsWidth = leftMarginSize + rightMarginSize;
-  element._storedSizeProperties.marginsHeight = topMarginSize + bottomMarginSize;
-  element._storedSizeProperties.paddingsAndBordersWidth = leftBorderSize + leftPaddingSize + rightBorderSize + rightPaddingSize;
-  element._storedSizeProperties.paddingsAndBordersHeight = topBorderSize + topPaddingSize + bottomBorderSize + bottomPaddingSize;
-  element._storedSizeProperties.paddingsAndBordersAndMarginsWidth = leftBorderSize + leftPaddingSize + leftMarginSize + rightBorderSize + rightPaddingSize + rightMarginSize;
-  element._storedSizeProperties.paddingsAndBordersAndMarginsHeight = topBorderSize + topPaddingSize + topMarginSize + bottomBorderSize + bottomPaddingSize + bottomMarginSize;
+  element._storedSizeProperties = {
+    paddingLeft: leftPaddingSize,
+    paddingRight: rightPaddingSize,
+    paddingTop: topPaddingSize,
+    paddingBottom: bottomPaddingSize,
+    borderLeft: leftBorderSize,
+    borderRight: rightBorderSize,
+    borderTop: topBorderSize,
+    borderBottom: bottomBorderSize,
+    marginsWidth: leftMarginSize + rightMarginSize,
+    marginsHeight: topMarginSize + bottomMarginSize,
+    paddingsAndBordersWidth: leftBorderSize + leftPaddingSize + rightBorderSize + rightPaddingSize,
+    paddingsAndBordersHeight: topBorderSize + topPaddingSize + bottomBorderSize + bottomPaddingSize,
+    paddingsAndBordersAndMarginsWidth: leftBorderSize + leftPaddingSize + leftMarginSize + rightBorderSize + rightPaddingSize + rightMarginSize,
+    paddingsAndBordersAndMarginsHeight: topBorderSize + topPaddingSize + topMarginSize + bottomBorderSize + bottomPaddingSize + bottomMarginSize
+  };
 };
 
 O$._setInnerElementOuterWidth = function(element, outerWidth, useDoubleBuffering) { //elementOuterWidth must be a number

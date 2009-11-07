@@ -69,14 +69,14 @@ O$._initBorderLayoutPanel_content = function(borderLayoutPanelId, rolloverClass,
   };
 
   // process SidePanel's
-  borderLayoutPanel.sidePanels = new Array();
+  borderLayoutPanel.sidePanels = [];
   var nodeList = borderLayoutPanel.childNodes;
   for (var index = 0; index < nodeList.length; index++) {
     var sidePanel = nodeList[index];
     if (sidePanel._alignment) {
       sidePanel._blockSelfRepaint = true;
       sidePanel._isCoupled = true;
-      sidePanel._forBorderLayoutPanel = new Object();
+      sidePanel._forBorderLayoutPanel = {};
       borderLayoutPanel.sidePanels.push(sidePanel);
 
       sidePanel._forBorderLayoutPanel.onsplitterdrag = sidePanel.onsplitterdrag;
@@ -188,7 +188,7 @@ O$._recalculateInnerSidePanels = function(borderLayoutPanel, isDecrase) {
   var leftSidePanelOffset = 0;
   var rightSidePanelOffset = 0;
   var bottomSidePanelOffset = 0;
-  var sidePanels = new Array();
+  var sidePanels = [];
   if (isDecrase) {
     for (var index = 0; index < borderLayoutPanel.sidePanels.length; index++) {
       var sidePanel = borderLayoutPanel.sidePanels[index];
@@ -398,7 +398,7 @@ O$._truncateMode_collectSidePanelsSortedList = function(borderLayoutPanel, isVer
     sidePanel._forBorderLayoutPanel._truncateModePriority = O$._truncateMode_calculateSidePanelPriority(sidePanel, isTruncateOp);
   }
 
-  var sidePanels = new Array();
+  var sidePanels = [];
   for (var priority = 1; priority < 14; priority++) {
     for (index = 0; index < borderLayoutPanel.sidePanels.length; index++) {
       sidePanel = borderLayoutPanel.sidePanels[index];

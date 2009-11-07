@@ -33,7 +33,7 @@ O$.DateRanges.prototype.getDateRanges = function() {
 
 O$.DateRanges.prototype.getSimpleDateRanges = function() {
   if (!this._dateRanges) return undefined;
-  var simpleDateRanges = new Array;
+  var simpleDateRanges = [];
   for (var i = 0, count = this._dateRanges.length; i < count; i ++) {
     var dateRange = this._dateRanges[i];
     if (dateRange instanceof O$.SimpleDateRange) {
@@ -49,7 +49,7 @@ O$.DateRanges.prototype.getSimpleDateRanges = function() {
 //O$.AbstractDateRange declaration start
 O$.AbstractDateRange = function(styleClassName, rolloverStyleClassName,
                                 selectedDayStyleClassName, rolloverSelectedDayStyleClassName) {
-  this._dates = new Array;
+  this._dates = [];
   this._styleClassName = styleClassName;
   this._rolloverStyleClassName = rolloverStyleClassName;
   this._selectedDayStyleClassName = selectedDayStyleClassName;

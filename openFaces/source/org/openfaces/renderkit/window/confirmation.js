@@ -117,7 +117,7 @@ O$.Confirmation = {
           invoker._of_confirmationIds.splice(idx - 1, 1);
         }
         if (!O$._confirmationEventHandlers)
-          O$._confirmationEventHandlers = new Array();
+          O$._confirmationEventHandlers = [];
         if (!O$._confirmationEventHandlers[confirmation.id]) {
           O$._confirmationEventHandlers[confirmation.id] = invoker[confirmation._eventHandlerName];
         }
@@ -128,7 +128,7 @@ O$.Confirmation = {
         };
 
         if (!invoker._of_confirmationIds)
-          invoker._of_confirmationIds = new Array();
+          invoker._of_confirmationIds = [];
         // we save ids of all registered confirmations to support use-case when confirmation is reloaded with a4j
         invoker._of_confirmationIds.push(confirmation.id);
       };

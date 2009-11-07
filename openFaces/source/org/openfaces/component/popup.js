@@ -53,7 +53,7 @@ O$._initPopup = function(popupId, useDisplayNoneByDefault) {
   O$.initIETransparencyWorkaround(popup);
 
   if (!document._openFaces_popupsOnpage) {
-    document._openFaces_popupsOnpage = new Array();
+    document._openFaces_popupsOnpage = [];
   }
   document._openFaces_popupsOnpage.push(popupId);
   if (useDisplayNoneByDefault) {
@@ -64,7 +64,7 @@ O$._initPopup = function(popupId, useDisplayNoneByDefault) {
   popup._visibilityChangeListeners = null;
   popup._addVisibilityChangeListener = function(listenerObjectFunction) {
     if (!this._visibilityChangeListeners) {
-      this._visibilityChangeListeners = new Array();
+      this._visibilityChangeListeners = [];
     }
     this._visibilityChangeListeners.push(listenerObjectFunction);
   }
