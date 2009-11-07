@@ -86,7 +86,6 @@ public class TableBody extends TableElement {
             row.render(context, (!hasFooter && i == count - 1) ? additionalContentWriter : null);
         }
 
-        RenderingUtil.writeNewLine(writer);
         writer.endElement("tbody");
         RenderingUtil.writeNewLine(writer);
     }
