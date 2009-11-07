@@ -1205,7 +1205,7 @@ O$.Table = {
 
       var headerCell = (column.header) ? column.header._cell : null;
       if (headerCell)
-        O$._setCellStyleMappings(headerCell, {
+        O$.Tables._setCellStyleMappings(headerCell, {
           _sortedColClass: (table._forceUsingCellStyles || column._useCellStyles) ? sortedColClass : null,
           _sortedColHeaderClass: sortedColHeaderClass});
 
@@ -1215,7 +1215,7 @@ O$.Table = {
 
       var footerCell = column.footer ? column.footer._cell : null;
       if (footerCell)
-        O$._setCellStyleMappings(footerCell, {
+        O$.Tables._setCellStyleMappings(footerCell, {
           _sortedColClass: (table._forceUsingCellStyles || column._useCellStyles) ? sortedColClass : null,
           _sortedColFooterClass: sortedColFooterClass});
     }
