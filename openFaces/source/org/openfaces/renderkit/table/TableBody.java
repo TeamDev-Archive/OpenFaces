@@ -141,7 +141,7 @@ public class TableBody extends TableElement {
         List<BodyCell> cells = new ArrayList<BodyCell>();
         if (fixedLeftColumns > 0)
             cells.add(scrollingAreaCell(columns, leftRows, 0, fixedLeftColumns));
-        scrollingAreaCell(columns, rows, fixedLeftColumns, allColCount - fixedRightColumns);
+        cells.add(scrollingAreaCell(columns, rows, fixedLeftColumns, allColCount - fixedRightColumns));
         if (fixedRightColumns > 0)
             cells.add(scrollingAreaCell(columns, rightRows, allColCount - fixedRightColumns, allColCount));
 

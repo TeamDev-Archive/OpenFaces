@@ -171,7 +171,7 @@ public class BaseColumn extends UIColumn {
     }
 
     public boolean isFixed() {
-        return ValueBindings.get(this, "fixed", fixed, true);
+        return ValueBindings.get(this, "fixed", fixed, false);
     }
 
     public void setFixed(boolean fixed) {

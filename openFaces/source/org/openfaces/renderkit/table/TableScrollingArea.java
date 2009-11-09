@@ -50,10 +50,15 @@ public class TableScrollingArea extends TableElement {
             writer.writeAttribute("class", "o_table_scrolling_area", null);
         }
         writer.startElement("table", component);
+        writer.writeAttribute("cellspacing", "0", null);
+        writer.writeAttribute("cellpadding", "0", null);
+        writer.writeAttribute("border", "0", null);
         TableUtil.writeColumnTags(context, component, columns);
+        writer.startElement("tbody", component);
         for (TableElement row : rows) {
             row.render(context, additionalContentWriter);
         }
+        writer.endElement("tbody");
         writer.endElement("table");
         if (scrollable) {
             writer.endElement("div");

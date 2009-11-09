@@ -40,7 +40,7 @@ O$.Table = {
     table._of_dataTableComponentMarker = true;
   },
 
-  _init: function(tableId, structureAndStyleParams, useAjax, rolloverClass, apiInitializationFunctionName) {
+  _init: function(tableId, initParams, useAjax, rolloverClass, apiInitializationFunctionName) {
     var table = O$(tableId);
     if (!table)
       throw "O$.Table._init: couldn't find table by id: " + tableId;
@@ -52,7 +52,7 @@ O$.Table = {
     table._useAjax = useAjax;
 
     try {
-      O$.Tables._init.apply(table, structureAndStyleParams);
+      O$.Tables._init.apply(table, initParams);
     } finally {
       table.style.visibility = "visible";
       // can't just exclude the "o_initially_invisible" from table.className because of IE issue (JSFC-2337)
@@ -85,8 +85,8 @@ O$.Table = {
     }
 
     table._cleanUp = function() {
-      table.body._rows = [];
       table.header._rows = [];
+      table.body._rows = [];
       table.footer._rows = [];
     };
   },
@@ -428,8 +428,6 @@ O$.Table = {
     table.onfocus = null;
     table.onblur = null;
     if (table._focusControl) {
-      //    if (table._focused)
-      //      table.blur();
       table._focusControl.parentNode.removeChild(table._focusControl);
     }
   },
@@ -743,12 +741,9 @@ O$.Table = {
           }
           newSelectedItems.push(rowIndex);
         }
-        /*if (selectionChanged) */
-      {
         table._blockSelectionChangeNotifications = true;
         table._setSelectedItems(newSelectedItems, true);
         table._blockSelectionChangeNotifications = false;
-      }
       }
     });
   },
@@ -858,9 +853,7 @@ O$.Table = {
     if (this._originalClickHandler)
       this._originalClickHandler(evt);
 
-    if (evt)
-      event = evt;
-
+    var e = O$.getEvent(evt);
     var table = this._table;
     if (!table._selectionMouseSupport)
       return;
@@ -871,7 +864,7 @@ O$.Table = {
       if (!table._multipleSelectionAllowed) {
         table._setSelectedItems([this._index]);
       } else {
-        if (event.ctrlKey || event.metaKey) {
+        if (e.ctrlKey || e.metaKey) {
           table._toggleItemSelected(this._index);
           var newSelectedRowIndexes = table.__getSelectedRowIndexes();
           table._baseRowIndex = (O$.findValueInArray(this._index, newSelectedRowIndexes) != -1) ? this._index : null;

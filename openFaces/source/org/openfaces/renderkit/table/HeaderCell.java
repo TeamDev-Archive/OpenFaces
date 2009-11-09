@@ -82,7 +82,7 @@ class HeaderCell extends TableElement {
 
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(cellTag, table);
-        if (colSpan != 1)
+        if (colSpan > 1)
             writer.writeAttribute("colspan", String.valueOf(colSpan), null);
         int rowSpan = 0;
         if (rowIndexMin != rowIndexMax) {

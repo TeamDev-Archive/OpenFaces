@@ -243,7 +243,7 @@ O$.TreeTable = {
     var parentRowIndex = eval(indexStr);
 
     var tempDiv = document.createElement("div");
-    tempDiv.style.display = 'none';
+    tempDiv.style.display = "none";
     tempDiv.innerHTML = "<table><tbody>" + portionHTML + "</tbody></table>";
     var tableBody = tempDiv.getElementsByTagName("tbody")[0];
     var children = tableBody.childNodes;
@@ -267,6 +267,23 @@ O$.TreeTable = {
     }
 
     treeTable.__parentRowIndex = parentRowIndex;
+    var scrolling = treeTable._scrolling;
+    if (scrolling) {
+      var compositeRows = [];
+      var i = 0, count = newRows.length;
+      while (i < count) {
+        var leftRowNode = scrolling.leftFixedCols ? newRows[i++] : null;
+        var centerRowNode = newRows[i++];
+        var rightRowNode = scrolling.rightFixedCols ? newRows[i++] : null;
+
+        compositeRows.push({
+          _leftRowNode: leftRowNode,
+          _rowNode: centerRowNode,
+          _rightRowNode: rightRowNode
+        });
+      }
+      newRows = compositeRows;
+    }
     treeTable.__newRows = newRows;
     O$.executeScripts(portionScripts);
   },

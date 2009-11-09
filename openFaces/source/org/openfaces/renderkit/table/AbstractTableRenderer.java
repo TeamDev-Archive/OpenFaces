@@ -195,7 +195,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
         TableStructure tableStructure = getTableStructure(table);
 
         buf.initScript(facesContext, table, "O$.Table._init",
-                tableStructure.getStructureAndStyleParams(facesContext, defaultStyles),
+                tableStructure.getInitParams(facesContext, defaultStyles),
                 table.getUseAjax(),
                 StyleUtil.getCSSClass(facesContext, table, table.getRolloverStyle(),
                         StyleGroup.rolloverStyleGroup(), table.getRolloverClass()),

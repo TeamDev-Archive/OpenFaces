@@ -162,7 +162,7 @@ O$.Tables = {
 
     table.style.emptyCells = "show";
     if (O$.isExplorer()) {
-      var bordersNeeded =
+      table._bordersNeeded =
               table._horizontalGridLines ||
               table._verticalGridLines ||
               table._commonHeaderSeparator ||
@@ -172,8 +172,9 @@ O$.Tables = {
               table._filterRowSeparator ||
               table._footerHorizSeparator ||
               table._footerVertSeparator;
-      if (bordersNeeded)
+      if (table._bordersNeeded) {
         table.style.borderCollapse = "collapse";
+      }
     }
 
     table._rowInsertionCallbacks = [];
@@ -427,11 +428,15 @@ O$.Tables = {
                 function scrollingAreaRows(areaCellIndex, scrollAreaVar) {
                   var td = containerRow.childNodes[areaCellIndex];
                   var div = O$.getChildNodesWithNames(td, ["div"])[0];
-                  var table = div ? O$.getChildNodesWithNames(div, ["table"])[0] : O$.getChildNodesWithNames(td, ["table"])[0];
-                  sectionObj[scrollAreaVar] = div ? div : table;
+                  var tbl = div ? O$.getChildNodesWithNames(div, ["table"])[0] : O$.getChildNodesWithNames(td, ["table"])[0];
+                  tbl.style.tableLayout = "fixed";
+                  if (table._bordersNeeded) tbl.style.borderCollapse = "collapse";
+                  var rowContainer = O$.getChildNodesWithNames(tbl, ["tbody"])[0];
+                  sectionObj[scrollAreaVar] = div ? div : tbl;
                   sectionObj[scrollAreaVar]._div = div;
-                  sectionObj[scrollAreaVar]._table = table;
-                  return O$.getChildNodesWithNames(table, ["tr"]);
+                  sectionObj[scrollAreaVar]._table = tbl;
+                  sectionObj[scrollAreaVar]._rowContainer = rowContainer;
+                  return O$.getChildNodesWithNames(rowContainer, ["tr"]);
                 }
                 var leftRows = leftCellIndex != undefined ? scrollingAreaRows(leftCellIndex, "_leftScrollingArea") : null;
                 var centerRows = scrollingAreaRows(centerCellIndex, "_centerScrollingArea");
@@ -441,13 +446,14 @@ O$.Tables = {
                 if (commonRowAbove === true)
                   rows[rowIndex++] = commonRow;
                 while (rowIndex < rowCount) {
-                  var row = {};
-                  rows[rowIndex++] = row;
-                  row._leftRowNode = leftRows ? leftRows[rowIndex] : null;
-                  row._rowNode = centerRows[rowIndex];
-                  row._rightRowNode = rightRows ? rightRows[rowIndex] : null;
-                  row._table = table;
-                  row._index = rowIndex;
+                  var row = {
+                    _leftRowNode: leftRows ? leftRows[rowIndex] : null,
+                    _rowNode: centerRows[rowIndex],
+                    _rightRowNode: rightRows ? rightRows[rowIndex] : null,
+                    _table: table,
+                    _index: rowIndex
+                  };
+                  rows[rowIndex] = row;
                   var cells = [];
 
                   if (row._leftRowNode) {
@@ -455,7 +461,7 @@ O$.Tables = {
                     row._leftRowNode._row = row;
                     O$.addAll(cells, row._leftRowNode._cells);
                   }
-                  row._rowNode._getRowCells = O$.Tables._getRowCells(row._rowNode);
+                  row._rowNode._cells = O$.Tables._getRowCells(row._rowNode);
                   row._rowNode._row = row;
                   O$.addAll(cells, row._rowNode._cells);
                   if (row._rightRowNode) {
@@ -464,9 +470,11 @@ O$.Tables = {
                     O$.addAll(cells, row._rightRowNode._cells);
                   }
                   row._cells = cells;
+                  rowIndex++;
                 }
                 if (commonRowAbove === false)
                   rows[rowIndex] = commonRow;
+                this._rows = rows;
               }
             } else {
               this._rows = [];
@@ -484,13 +492,13 @@ O$.Tables = {
             }
             return newRow;
           }
-          if (!table.scrolling)
+          if (!table._scrolling)
             return createRow(table._columns.length);
           else {
             return {
-              _leftRowNode: createRow(table.scrolling.leftFixedCols),
-              _rowNode: createRow(table._columns.length - table.scrolling.leftFixedCols - table.scrolling.rightFixedCols),
-              _rightRowNode: createRow(table.scrolling.rightFixedCols)
+              _leftRowNode: createRow(table._scrolling.leftFixedCols),
+              _rowNode: createRow(table._columns.length - table._scrolling.leftFixedCols - table._scrolling.rightFixedCols),
+              _rightRowNode: createRow(table._scrolling.rightFixedCols)
             };
           }
         },
@@ -1167,7 +1175,7 @@ O$.Tables = {
 
     var colTags = function() {
       var result;
-      if (!table.scorlling) {
+      if (!table._scrolling) {
         result = O$.getChildNodesWithNames(table, ["col"]);
         if (result.length == 0) {
           var colGroup = O$.getChildNodesWithNames(table, ["colgroup"])[0];
@@ -1182,9 +1190,9 @@ O$.Tables = {
           function saveAreaCols(area) {
             if (!area) return;
             var cols = O$.getChildNodesWithNames(area._table, ["col"]);
-            for (var i = 0, count = cols.length; i < count; i++) {
-              var arr = result[colIndex++];
-              if (!arr) {arr = []; result[i] = arr;}
+            for (var i = 0, count = cols.length; i < count; i++, colIndex++) {
+              var arr = result[colIndex];
+              if (!arr) {arr = []; result[colIndex] = arr;}
               arr.push(cols[i]);
             }
           }

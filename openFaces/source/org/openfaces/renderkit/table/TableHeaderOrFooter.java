@@ -71,8 +71,8 @@ public abstract class TableHeaderOrFooter extends TableElement {
         cells.add(scrollingAreaCell(tableStructure, cellTag, centerCols, true));
 
         if (rightFixedCols > 0) {
-            List<BaseColumn> leftCols = columns.subList(totalColCount - leftFixedCols, totalColCount);
-            cells.add(scrollingAreaCell(tableStructure, cellTag, leftCols, false));
+            List<BaseColumn> rightCols = columns.subList(totalColCount - rightFixedCols, totalColCount);
+            cells.add(scrollingAreaCell(tableStructure, cellTag, rightCols, false));
         }
         allRows.add(new HeaderRow(this, true, cells));
         if (commonHeaderRow != null)

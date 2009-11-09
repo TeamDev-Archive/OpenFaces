@@ -308,7 +308,7 @@ public class TableStructure extends TableElement {
         RenderingUtil.writeAttribute(writer, "onkeypress", table.getOnkeypress());
     }
 
-    public JSONArray getStructureAndStyleParams(FacesContext facesContext, TableStyles defaultStyles) {
+    public JSONArray getInitParams(FacesContext facesContext, TableStyles defaultStyles) {
         UIComponent styleOwnerComponent = getComponent();
         boolean noDataRows = getBody().isNoDataRows();
         TableParams params = new TableParams(styleOwnerComponent, this, noDataRows);

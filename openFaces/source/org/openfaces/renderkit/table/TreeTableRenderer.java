@@ -97,17 +97,15 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         super.encodeAdditionalFeaturesSupport_buf(facesContext, table, buf);
 
         TreeTable treeTable = (TreeTable) table;
-        encodeFoldingSupport(facesContext, treeTable, buf);
+        boolean foldingEnabled = treeTable.isFoldingEnabled();
+        if (foldingEnabled)
+            encodeFoldingSupport(facesContext, treeTable, buf);
 
         getFilterAcceptedRowClass(facesContext, treeTable);
         getFilterSubsidiaryRowClass(facesContext, treeTable);
     }
 
     private void encodeFoldingSupport(FacesContext context, TreeTable treeTable, ScriptBuilder buf) throws IOException {
-        boolean foldingEnabled = treeTable.isFoldingEnabled();
-        if (!foldingEnabled)
-            return;
-
         ResponseWriter writer = context.getResponseWriter();
         RenderingUtil.renderHiddenField(writer, getExpandedNodesFieldName(context, treeTable), null);
 
@@ -142,8 +140,7 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         return result;
     }
 
-    private JSONObject formatNodeParams(
-            TreeTable treeTable, FacesContext context, int fromRowIndex, int rowCount) {
+    private JSONObject formatNodeParams(TreeTable treeTable, FacesContext context, int fromRowIndex, int rowCount) {
         JSONObject result = new JSONObject();
         Map<Object, NodeInfoForRow> map = treeTable.getNodeExpansionDataMap(context);
         Set<Map.Entry<Object, NodeInfoForRow>> entries = map.entrySet();
@@ -247,6 +244,11 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         return ((TreeTable) table).getTextClass();
     }
 
+    private List<BodyRow> getScrollingAreaRows(BodyCell scrollingAreaCell) {
+        TableScrollingArea area = (TableScrollingArea) scrollingAreaCell.getContent();
+        return (List<BodyRow>) area.getRows();
+    }
+
     public JSONObject encodeAjaxPortion(
             FacesContext context,
             UIComponent component,
@@ -283,9 +285,27 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
                     customRowRenderingInfos.put(i + addedRowCount, rowInfo);
                 }
                 List<BodyRow> rows = tableStructure.getBody().createRows(context, rowIndex + 1, addedRowCount, columns);
-                for (int i = 0, count = rows.size(); i < count; i++) {
-                    BodyRow row = rows.get(i);
-                    row.render(context, null);
+                if (tableStructure.getScrolling() == null) {
+                    for (int i = 0, count = rows.size(); i < count; i++) {
+                        BodyRow row = rows.get(i);
+                        row.render(context, null);
+                    }
+                } else {
+                    if (rows.size() != 1)
+                        throw new IllegalStateException("There should be one pseudo-row in the scrollable version");
+                    BodyRow pseudoRow = rows.get(0);
+                    List<BodyCell> cells = pseudoRow.getCells();
+                    int ci = 0;
+                    List<BodyRow> leftRows = tableStructure.getLeftFixedCols() > 0 ? getScrollingAreaRows(cells.get(ci++)) : null;
+                    List<BodyRow> centerRows = getScrollingAreaRows(cells.get(ci++));
+                    List<BodyRow> rightRows = tableStructure.getRightFixedCols() > 0 ? getScrollingAreaRows(cells.get(ci)) : null;
+                    for (int i = 0, count = centerRows.size(); i < count; i++) {
+                        if (leftRows != null)
+                            leftRows.get(i).render(context, null);
+                        centerRows.get(i).render(context, null);
+                        if (rightRows != null)
+                            rightRows.get(i).render(context, null);
+                    }
                 }
 
                 TreeTableSelection selection = (TreeTableSelection) treeTable.getSelection();
