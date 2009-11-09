@@ -123,17 +123,20 @@ public class EnvironmentUtil {
 
     private static boolean isFaceletsViewHandlerInUse(Object handler, Class faceletsViewHandlerClass) {
         boolean faceletsViewHandler = false;
+        faceletsViewHandler = isFaceletsViewHandler(handler, faceletsViewHandlerClass);
+        // If actual handler is not a Facelets view handler than we should try to check can we access it's delegates 
+        if (!faceletsViewHandler) {
+            Object resultHandler = getWrappedHandler(handler);
 
-        Object resultHandler = getWrappedHandler(handler);
-
-        if (resultHandler != null) {
-            faceletsViewHandler = isFaceletsViewHandler(resultHandler, faceletsViewHandlerClass);
-
-            if (!faceletsViewHandler && resultHandler instanceof ViewHandlerWrapper) {
-                resultHandler = ((ViewHandlerWrapper) resultHandler).getDelegate();
+            if (resultHandler != null) {
                 faceletsViewHandler = isFaceletsViewHandler(resultHandler, faceletsViewHandlerClass);
-                if (!faceletsViewHandler) {
-                    isFaceletsViewHandlerInUse(resultHandler, faceletsViewHandlerClass);
+
+                if (!faceletsViewHandler && resultHandler instanceof ViewHandlerWrapper) {
+                    resultHandler = ((ViewHandlerWrapper) resultHandler).getDelegate();
+                    faceletsViewHandler = isFaceletsViewHandler(resultHandler, faceletsViewHandlerClass);
+                    if (!faceletsViewHandler) {
+                        isFaceletsViewHandlerInUse(resultHandler, faceletsViewHandlerClass);
+                    }
                 }
             }
         }
@@ -149,6 +152,18 @@ public class EnvironmentUtil {
             try {
                 Class portletHandlerClass = handler.getClass();
                 Field handlerField = portletHandlerClass.getDeclaredField("handler");
+                handlerField.setAccessible(true);
+                return handlerField.get(handler);
+
+            } catch (IllegalAccessException e) {
+                return null;
+            } catch (NoSuchFieldException e) {
+                return null;
+            }
+        }else if(handler.getClass().getName().equalsIgnoreCase("org.ajax4jsf.application.AjaxViewHandler")){
+              try {
+                Class handlerWrapperClass = handler.getClass().getSuperclass();
+                Field handlerField = handlerWrapperClass.getDeclaredField("_handler");
                 handlerField.setAccessible(true);
                 return handlerField.get(handler);
 
