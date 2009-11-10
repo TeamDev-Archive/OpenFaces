@@ -1369,7 +1369,7 @@ O$.Table = {
           // IE needs an explicit background because otherwise this absolute div will "leak" some events to the underlying
           // component (when a mouse is directly over any of table's gridline)
           resizeHandle.style.background = "silver";
-          resizeHandle.style.subHeader = "alpha(opacity=0)";
+          resizeHandle.style.filter = "alpha(opacity=0)";
         }
 
         column.header._cell.appendChild(resizeHandle);

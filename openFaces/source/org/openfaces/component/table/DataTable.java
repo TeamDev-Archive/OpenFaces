@@ -169,6 +169,7 @@ public class DataTable extends AbstractTable {
     /**
      * @return index of a page where a row with the specified rowKey is displayed, or -1 of no such row is being
      * displayed.
+     * @param rowKey row key object for a row whose page index should be detected.
      */
     public int getPageIndexForRowKey(Object rowKey) {
         TableDataModel model = getModel();
