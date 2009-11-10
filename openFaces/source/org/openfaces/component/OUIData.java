@@ -590,6 +590,7 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
      */
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
+        setRowIndex(-1);
         _initialDescendantComponentState = null;
         initialDynamicColumnsState = null; // <MOD-5/> (added)
         if (_isValidChilds && !hasErrorMessages(context)) {
