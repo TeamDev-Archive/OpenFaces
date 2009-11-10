@@ -30,11 +30,11 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlInputTextarea;
-import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -198,24 +198,28 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
         return nameField;
     }
 
-    private UIComponent createDateTimeFields(FacesContext context, EventEditorDialog dialog, String idPrefix) {
-        HtmlPanelGrid container = RenderingUtil.getOrCreateFacet(context, dialog,
-                HtmlPanelGrid.COMPONENT_TYPE, idPrefix + "Fields", HtmlPanelGrid.class);
-        container.setCellpadding("0");
-        container.setCellspacing("0");
-        container.setBorder(0);
-        container.setColumns(3);
-        List<UIComponent> children = container.getChildren();
-        children.clear();
+    private UIComponent createDateTimeFields(FacesContext context, final EventEditorDialog dialog, final String idPrefix) {
 
-        children.add(RenderingUtil.getOrCreateFacet(context, dialog, DateChooser.COMPONENT_TYPE, idPrefix + "DateField", DateChooser.class));
-        children.add(ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY, false));
+        DateChooser dateField = RenderingUtil.getOrCreateFacet(context, dialog, DateChooser.COMPONENT_TYPE, idPrefix + "DateField", DateChooser.class);
+        HtmlOutputText nbsp = ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY, false);
         UIInput timeField = RenderingUtil.getOrCreateFacet(context, dialog, HtmlInputText.COMPONENT_TYPE, idPrefix + "TimeField", UIInput.class);
         String timeCls = StyleUtil.mergeClassNames((String) timeField.getAttributes().get("styleClass"), "o_eventEditor_timeField");
         timeField.getAttributes().put("styleClass", timeCls);
 
-        children.add(timeField);
-        return container;
+        final UIComponent[][] components = new UIComponent[][]{{dateField, nbsp, timeField}};
+
+        return new UIComponentBase() {
+            @Override
+            public String getFamily() {
+                return null;
+            }
+
+            @Override
+            public void encodeBegin(FacesContext context) throws IOException {
+                new TableRenderer(idPrefix + "Fields", 0, 0, 0, null).render(dialog, components);
+            }
+        };
+
     }
 
     private UIComponent getResourceField(FacesContext context, EventEditorDialog dialog) {
