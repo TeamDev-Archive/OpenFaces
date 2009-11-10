@@ -133,23 +133,7 @@ and for destroying session and application contexts.-->
   <filter>
     <filter-name>ResourceFilter</filter-name>
     <filter-class>org.openfaces.util.ResourceFilter</filter-class>
-  </filter>
-
-  <!--MYFACES EXXTENSION FILTER-->
-  <filter>
-    <filter-name>ExtensionsFilter</filter-name>
-    <filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>
-    <init-param>
-      <description>Set the size limit for uploaded files.
-        Format: 10 - 10 bytes
-        10k - 10 KB
-        10m - 10 MB
-        1g - 1 GB
-      </description>
-      <param-name>maxFileSize</param-name>
-      <param-value>20m</param-value>
-    </init-param>
-  </filter>
+  </filter> 
 
   <!-- RICHFACES FILTER MAPPING-->
   <filter-mapping>
@@ -167,20 +151,7 @@ and for destroying session and application contexts.-->
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
-
-  <!--MAPPING FOR MYFACES EXTENSIONS FILTER-->
-  <filter-mapping>
-    <filter-name>ExtensionsFilter</filter-name>
-    <!-- servlet-name must match the name of your javax.faces.webapp.FacesServlet entry -->
-    <servlet-name>Faces Servlet</servlet-name>
-  </filter-mapping>
-
-  <!-- extension mapping for serving page-independent resources (javascript, stylesheets, images, etc.) -->
-  <filter-mapping>
-    <filter-name>ExtensionsFilter</filter-name>
-    <url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
-  </filter-mapping>
-
+  
   <filter-mapping>
     <filter-name>ResourceFilter</filter-name>
     <url-pattern>/openFacesResources/*</url-pattern>

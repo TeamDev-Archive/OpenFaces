@@ -30,9 +30,9 @@ public class FilterPropertyTag extends AbstractComponentTag {
 
         setPropertyBinding(component, "dataProvider");
         setConverterProperty(facesContext, component, "converter");
-        setIntProperty(component, "maxValue");
-        setIntProperty(component, "minValue");
-        setIntProperty(component, "step");
+        setNumberProperty(component, "maxValue");
+        setNumberProperty(component, "minValue");
+        setNumberProperty(component, "step");
 
         setTimeZoneProperty(component, "timeZone");
         setStringProperty(component, "pattern");

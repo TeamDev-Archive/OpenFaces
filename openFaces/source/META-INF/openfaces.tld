@@ -26202,7 +26202,7 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>minValue</name>
       <deferred-value>
-        <type>java.lang.Number</type>
+        <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType java.lang.Number -->
       <!-- @default null -->
@@ -26213,7 +26213,7 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>maxValue</name>
       <deferred-value>
-        <type>java.lang.Number</type>
+        <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType java.lang.Number -->
       <!-- @default null -->
@@ -26224,7 +26224,7 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>step</name>
       <deferred-value>
-        <type>java.lang.Number</type>
+        <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType java.lang.Number -->
       <!-- @default null -->
@@ -28527,7 +28527,7 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>minValue</name>
       <deferred-value>
-        <type>java.lang.Number</type>
+        <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType java.lang.Number -->
       <!-- @default null -->
@@ -28538,7 +28538,7 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>maxValue</name>
       <deferred-value>
-        <type>java.lang.Number</type>
+        <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType java.lang.Number -->
       <!-- @default null -->
@@ -28549,7 +28549,7 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>step</name>
       <deferred-value>
-        <type>java.lang.Number</type>
+        <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType java.lang.Number -->
       <!-- @default null -->
