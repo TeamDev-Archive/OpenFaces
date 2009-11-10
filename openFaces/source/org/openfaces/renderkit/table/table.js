@@ -439,7 +439,7 @@ O$.Table = {
     for (var i = 0, count = rowIndexes.length; i < count; i++) {
       var rowIndex = rowIndexes[i];
       var row = bodyRows[rowIndex];
-      var rect = O$.getElementBorderRectangle(row);
+      var rect = O$.getElementBorderRectangle(row._rowNode);
       if (!boundingRect)
         boundingRect = rect;
       else
@@ -751,10 +751,13 @@ O$.Table = {
   _initRowForSelection: function(row) {
     var table = row._table;
     if (table._selectionEnabled) {
-      if (row._originalClickHandler)
-        O$.logError("O$.Table._initSelection: row click handler already initialized");
-      row._originalClickHandler = row.onclick;
-      row.onclick = O$.Table._row_handleSelectionOnClick;
+      [row._leftRowNode, row._rowNode, row._rightRowNode].forEach(function(rowNode) {
+        if (!rowNode) return;
+        if (rowNode._originalClickHandler)
+          O$.logError("O$.Table._initSelection: row click handler already initialized");
+        rowNode._originalClickHandler = rowNode.onclick;
+        rowNode.onclick = O$.Table._row_handleSelectionOnClick;
+      });
     }
     var cells = row._cells;
     for (var cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
@@ -854,7 +857,8 @@ O$.Table = {
       this._originalClickHandler(evt);
 
     var e = O$.getEvent(evt);
-    var table = this._table;
+    var row = this._row ? this._row : this;
+    var table = row._table;
     if (!table._selectionMouseSupport)
       return;
     if (table._selectableItems == "rows") {
@@ -862,16 +866,16 @@ O$.Table = {
       table._baseSelectedRowIndexes = null;
       table._rangeEndRowIndex = null;
       if (!table._multipleSelectionAllowed) {
-        table._setSelectedItems([this._index]);
+        table._setSelectedItems([row._index]);
       } else {
         if (e.ctrlKey || e.metaKey) {
-          table._toggleItemSelected(this._index);
+          table._toggleItemSelected(row._index);
           var newSelectedRowIndexes = table.__getSelectedRowIndexes();
-          table._baseRowIndex = (O$.findValueInArray(this._index, newSelectedRowIndexes) != -1) ? this._index : null;
+          table._baseRowIndex = (O$.findValueInArray(row._index, newSelectedRowIndexes) != -1) ? row._index : null;
           table._baseSelectedRowIndexes = newSelectedRowIndexes;
           table._rangeEndRowIndex = null;
         } else
-          table._setSelectedItems([this._index]);
+          table._setSelectedItems([row._index]);
       }
     }
   },

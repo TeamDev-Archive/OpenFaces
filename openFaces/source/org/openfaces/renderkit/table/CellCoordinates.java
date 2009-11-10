@@ -57,7 +57,7 @@ public class CellCoordinates {
             obj.put("row", rowIndex);
             obj.put("cell", rowCellIndex);
             if (scrollAreaIndex != -1)
-                obj.put("scrollingAreaIndex", scrollAreaIndex);
+                obj.put("scrollingArea", scrollAreaIndex);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
