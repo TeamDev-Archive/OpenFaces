@@ -13,6 +13,7 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.RenderingUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -24,9 +25,11 @@ import java.util.List;
  * @author Dmitry Pikhulya
  */
 public class TableScrollingArea extends TableElement {
+    private String cellpadding;
     private List<BaseColumn> columns;
     private List<? extends TableElement> rows;
     private boolean scrollable;
+    private boolean indefiniteHight;
 
     public TableScrollingArea(
             TableElement parent,
@@ -39,30 +42,20 @@ public class TableScrollingArea extends TableElement {
         this.scrollable = scrollable;
     }
 
-    public void render(
-            FacesContext context,
-            HeaderCell.AdditionalContentWriter additionalContentWriter
-    ) throws IOException {
-        UIComponent component = getParent(TableStructure.class).getComponent();
-        ResponseWriter writer = context.getResponseWriter();
-        if (scrollable) {
-            writer.startElement("div", component);
-            writer.writeAttribute("class", "o_table_scrolling_area", null);
-        }
-        writer.startElement("table", component);
-        writer.writeAttribute("cellspacing", "0", null);
-        writer.writeAttribute("cellpadding", "0", null);
-        writer.writeAttribute("border", "0", null);
-        TableUtil.writeColumnTags(context, component, columns);
-        writer.startElement("tbody", component);
-        for (TableElement row : rows) {
-            row.render(context, additionalContentWriter);
-        }
-        writer.endElement("tbody");
-        writer.endElement("table");
-        if (scrollable) {
-            writer.endElement("div");
-        }
+    public boolean isIndefiniteHight() {
+        return indefiniteHight;
+    }
+
+    public void setIndefiniteHight(boolean indefiniteHight) {
+        this.indefiniteHight = indefiniteHight;
+    }
+
+    public String getCellpadding() {
+        return cellpadding;
+    }
+
+    public void setCellpadding(String cellpadding) {
+        this.cellpadding = cellpadding;
     }
 
     public List<BaseColumn> getColumns() {
@@ -71,5 +64,39 @@ public class TableScrollingArea extends TableElement {
 
     public List<? extends TableElement> getRows() {
         return rows;
+    }
+
+    public void render(
+            FacesContext context,
+            HeaderCell.AdditionalContentWriter additionalContentWriter
+    ) throws IOException {
+        UIComponent component = getParent(TableStructure.class).getComponent();
+        ResponseWriter writer = context.getResponseWriter();
+        if (indefiniteHight) {
+            writer.startElement("div", component);
+            writer.writeAttribute("class", "o_scrolling_area_container", null);
+        }
+        if (scrollable) {
+            writer.startElement("div", component);
+            writer.writeAttribute("class", "o_table_scrolling_area", null);
+            if (indefiniteHight)
+                writer.writeAttribute("style", "position: absolute; height: 0;", null);
+        }
+        writer.startElement("table", component);
+        writer.writeAttribute("class", "o_scrolling_area_table", null);
+        writer.writeAttribute("cellspacing", "0", null);
+        RenderingUtil.writeAttribute(writer, "cellpadding", getCellpadding());
+        writer.writeAttribute("border", "0", null);
+        TableUtil.writeColumnTags(context, component, columns);
+        writer.startElement("tbody", component);
+        for (TableElement row : rows) {
+            row.render(context, additionalContentWriter);
+        }
+        writer.endElement("tbody");
+        writer.endElement("table");
+        if (scrollable)
+            writer.endElement("div");
+        if (indefiniteHight)
+            writer.endElement("div");
     }
 }

@@ -1500,7 +1500,8 @@ O$.Table = {
       }
 
       var colWidths = getColWidths();
-      table.style.tableLayout = "fixed";
+      if (!table._scrolling)
+        table.style.tableLayout = "fixed";
 
       table.style.width = "auto";
       for (var i = 0, count = colWidths.length; i < count; i++) {

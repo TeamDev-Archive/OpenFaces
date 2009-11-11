@@ -71,7 +71,7 @@ public class PopupLayerRenderer extends RendererBase {
                 component, popup.getStyle(), defaultClass, popup.getStyleClass());
         writeAttribute(writer, "class", styleNames);
 
-        writeStandardEvents(writer, popup);
+        RenderingUtil.writeStandardEvents(writer, popup);
     }
 
     protected String getDefaultModalLayerClass() {

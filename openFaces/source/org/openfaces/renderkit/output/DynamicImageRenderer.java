@@ -60,7 +60,7 @@ public class DynamicImageRenderer extends RendererBase {
         writeAttribute(writer, "height", dynamicImage.getHeight(), -1);
         writeAttribute(writer, "alt", dynamicImage.getAlt());
 
-        writeStandardEvents(writer, dynamicImage);
+        RenderingUtil.writeStandardEvents(writer, dynamicImage);
 
         String mapId = dynamicImage.getMapId();
         if (mapId != null)

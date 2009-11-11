@@ -41,7 +41,7 @@ public class CaptionButtonRenderer extends RendererBase {
         writer.startElement("td", btn);
         RenderingUtil.writeComponentClassAttribute(writer, btn, "o_captionButton");
         writeIdAttribute(context, btn);
-        writeStandardEvents(writer, btn);
+        RenderingUtil.writeStandardEvents(writer, btn);
 
         writer.startElement("img", btn);
         String hint = btn.getHint();

@@ -99,7 +99,7 @@ public class TwoListSelectionRenderer extends RendererBase {
             }
         }
         writer.writeAttribute("class", styleClass, null);
-        writeStandardEvents(writer, tls);
+        RenderingUtil.writeStandardEvents(writer, tls);
 
         writer.startElement("col", tls);
         writer.writeAttribute("style", "width: 50%;", null);

@@ -88,7 +88,7 @@ public class TabbedPaneRenderer extends BaseTabSetRenderer implements AjaxPortio
 
         RenderingUtil.writeComponentClassAttribute(writer, tabbedPane);
 
-        writeStandardEvents(writer, tabbedPane);
+        RenderingUtil.writeStandardEvents(writer, tabbedPane);
 
         TabPlacement tabPlacement = tabbedPane.getTabPlacement();
         if (tabPlacement == null)

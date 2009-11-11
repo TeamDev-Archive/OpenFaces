@@ -42,7 +42,7 @@ public class EventActionBarRenderer extends RendererBase {
         writer.startElement("div", actionBar);
         String clientId = actionBar.getClientId(context);
         writer.writeAttribute("id", clientId, null);
-        writeStandardEvents(writer, actionBar);
+        RenderingUtil.writeStandardEvents(writer, actionBar);
 
         writer.writeText(actionBar.getNoteText(), null);
         writer.endElement("div");

@@ -69,7 +69,7 @@ public class PopupMenuRenderer extends RendererBase {
         writer.startElement("ul", popupMenu);
         writeAttribute(writer, "id", popupMenu.getClientId(context));
 
-        writeStandardEvents(writer, popupMenu);
+        RenderingUtil.writeStandardEvents(writer, popupMenu);
         writeAttribute(writer, "class", styleClass);
     }
 

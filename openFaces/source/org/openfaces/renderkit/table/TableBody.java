@@ -154,6 +154,8 @@ public class TableBody extends TableElement {
     private BodyCell scrollingAreaCell(List<BaseColumn> columns, List<BodyRow> rows, int startCol, int endCol) {
         BodyCell cell = new BodyCell();
         TableScrollingArea scrollingArea = new TableScrollingArea(cell, columns.subList(startCol, endCol), rows, true);
+        scrollingArea.setCellpadding(tableStructure.getTableCellPadding());
+        scrollingArea.setIndefiniteHight(true);
         cell.setContent(scrollingArea);
         return cell;
     }

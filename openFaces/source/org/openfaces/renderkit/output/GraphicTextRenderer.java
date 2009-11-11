@@ -103,7 +103,7 @@ public class GraphicTextRenderer extends RendererBase {
                 model, new int[]{imageWidth, imageHeight});
 
         RenderingUtil.writeComponentClassAttribute(writer, graphicText);
-        writeStandardEvents(writer, graphicText);
+        RenderingUtil.writeStandardEvents(writer, graphicText);
         writeAttribute(writer, "title ", graphicText.getTitle());
         writeAttribute(writer, "lang ", graphicText.getLang());
         writeAttribute(writer, "height", String.valueOf(imageHeight));

@@ -80,7 +80,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         //panel
         writer.startElement("div", sidePanel);
         writer.writeAttribute("id", clientId + PANEL_SUFFIX, null);
-        writeStandardEvents(writer, sidePanel);
+        RenderingUtil.writeStandardEvents(writer, sidePanel);
         String panelDefaultClass = StyleUtil.getCSSClass(context,
                 sidePanel, sidePanel.getStyle(),
                 "o_sidepanel_panel o_sidepanel_panel_" + sidePanel.getAlignment().toString(), sidePanel.getStyleClass()

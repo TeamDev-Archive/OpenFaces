@@ -24,7 +24,7 @@ public class TestTableDataBean {
     public TestTableDataBean() {
         Random random = new Random(5);
         collection1 = new ArrayList<TestBean2>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             collection1.add(new TestBean2(randomString(random), randomString(random), randomString(random),
                     random.nextInt(10), random.nextInt(100), random.nextInt(1000), random.nextBoolean()));
         }

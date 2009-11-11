@@ -110,7 +110,7 @@ public class CalendarRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("table", calendar);
         context.getResponseWriter().writeAttribute("id", clientId, null);
-        writeStandardEvents(writer, calendar);
+        RenderingUtil.writeStandardEvents(writer, calendar);
 
         writeAttribute(writer, "cellpadding", "0");
         writeAttribute(writer, "cellspacing", "0");

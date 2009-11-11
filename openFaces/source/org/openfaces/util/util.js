@@ -387,7 +387,7 @@ if (!window.O$) {
   O$.assert = function(value, message) {
     if (value !== null && value !== undefined && value !== false)
       return;
-    O$.logError(message);
+    throw message;
   };
 
   O$.assertEquals = function(expectedValue, actualValue, message) {
@@ -428,17 +428,17 @@ if (!window.O$) {
     div.id = "_o_logger_" + O$._loggersCreated;
     //  O$.initPopupLayer(div.id, 100, 100, 700, 200, null, null, true);
 
-    this._div = div;
+    this._scrollingDiv = div;
     //  this._win = window.open("about:blank", "O$.Logger");
     this.log = function (text) {
       var date = new Date();
       var br = document.createElement("br");
-      if (this._div.childNodes.length > 0)
-        this._div.insertBefore(br, this._div.childNodes[0]);
+      if (this._scrollingDiv.childNodes.length > 0)
+        this._scrollingDiv.insertBefore(br, this._scrollingDiv.childNodes[0]);
       else
-        this._div.appendChild(br);
-      this._div.insertBefore(document.createTextNode(text), this._div.childNodes[0]);
-      this._div.insertBefore(document.createTextNode(date + " : "), this._div.childNodes[0]);
+        this._scrollingDiv.appendChild(br);
+      this._scrollingDiv.insertBefore(document.createTextNode(text), this._scrollingDiv.childNodes[0]);
+      this._scrollingDiv.insertBefore(document.createTextNode(date + " : "), this._scrollingDiv.childNodes[0]);
       //    this._div.innerHTML = date + " : " + text + "<br/>" + this._div.innerHTML;
     };
   };
@@ -3289,6 +3289,36 @@ if (!window.O$) {
       element.style.height = height + "px";
   };
 
+  O$._setElementWidthOrHeight = function(element, property, edge1Property, edge2Property, value, _paddingsHaveBeenReset) {
+    if (!_paddingsHaveBeenReset)
+      O$.excludeClassNames(element, ["o_zeroPaddings"]);
+    if (!O$.isExplorer() || O$.isStrictMode()) {
+      if (value != null) {
+        value -= O$.getNumericStyleProperty(element, "padding-" + edge1Property) + O$.getNumericStyleProperty(element, "padding-" + edge2Property);
+        value -= O$.getNumericStyleProperty(element, "border-" + edge1Property + "-width") + O$.getNumericStyleProperty(element, "border-" + edge2Property + "-width");
+      }
+    }
+    if (!_paddingsHaveBeenReset && (value < 0)) {
+      // make it possible to specify element rectangle less than the size of element's paddings
+      O$.appendClassNames(element, ["o_zeroPaddings"]);
+      O$._setElementWidthOrHeight(element, property, value, true);
+      return;
+    }
+    if (value < 0)
+      value = 0;
+    if (value != null)
+      element.style[property] = value + "px";
+  };
+
+  O$.setElementWidth = function(element, value) {
+    O$._setElementWidthOrHeight(element, "width", "left", "right", value);
+  };
+
+  O$.setElementHeight = function(element, value) {
+    O$._setElementWidthOrHeight(element, "height", "top", "bottom", value);
+  };
+
+
   /*
    Changes size and position of the specified element according to the specified rectangle. The rectangle speicifies
    the element's border box.
@@ -3920,6 +3950,11 @@ if (!window.O$) {
       return O$.getElementPos(element, true);
     if (property == "rectangle")
       return O$.getElementBorderRectangle(element, true);
+    if (property == "width")
+      return O$.getElementSize(element).width;
+    if (property == "height")
+      return O$.getElementSize(element).height;
+    if (property)
 
     return O$.getElementStyleProperty(element, property);
   };
@@ -3931,8 +3966,12 @@ if (!window.O$) {
       O$.setElementPos(element);
     else if (property == "rectangle")
         O$.setElementBorderRectangle(element, value);
-      else
-        element.style[property] = value;
+    else if (property == "height")
+        O$.setElementHeight(element, value);
+    else if (property == "width")
+        O$.setElementWidth(element, value);
+    else
+      element.style[property] = value;
   };
 
   O$.runTransitionEffect = function(element, propertyNames, newValues, transitionPeriod, updateInterval, events) {
@@ -4019,6 +4058,32 @@ if (!window.O$) {
     return transition;
   };
 
+  O$.fixElement = function(element, properties, workingCondition, interval) {
+    if (!interval)
+      interval = 200;
+    var fixture = {
+      intervalId: setInterval(function() {
+        if (
+                !O$.isElementPresentInDocument(element) ||
+                (workingCondition && !workingCondition())
+        ) {
+          clearInterval(fixture.intervalId);
+          return;
+        }
+        for (var propertyName in properties) {
+          var propertyValue = properties[propertyName]();
+          O$.setElementEffectProperty(element, propertyName, propertyValue);
+        }
+      }, interval),
+
+      release: function() {
+        clearInterval(this.intervalId);
+      }
+    };
+    return fixture;
+  };
+
+
 // ----------------- COMPONENT UTILS -------------------------------------------
 
   O$.addLoadEvent(function() {
@@ -4063,7 +4128,6 @@ if (!window.O$) {
         submittedComponentIds: submittedComponentIds});
     }
   };
-
 
 }
 

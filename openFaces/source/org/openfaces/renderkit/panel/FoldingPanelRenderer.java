@@ -61,7 +61,7 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
         writer.writeAttribute("cellpadding", "0", null);
         writer.writeAttribute("border", "0", null);
         writer.writeAttribute("cellspacing", "0", null);
-        writeStandardEvents(writer, foldingPanel);
+        RenderingUtil.writeStandardEvents(writer, foldingPanel);
         writer.startElement("tr", foldingPanel);
         writer.startElement("td", foldingPanel);
         List<CaptionArea> captionAreas = getCaptionAreas(foldingPanel);

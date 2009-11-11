@@ -169,19 +169,24 @@ public class TableStructure extends TableElement {
         style = StyleUtil.mergeStyles(style, textStyle);
         boolean applyDefaultStyle = table.getApplyDefaultStyle();
         String styleClass = TableUtil.getClassWithDefaultStyleClass(applyDefaultStyle, DEFAULT_STYLE_CLASS, table.getStyleClass());
-        ColumnResizing columnResizing = table.getColumnResizing();
         String tableWidth = table.getWidth();
-        if (columnResizing != null) {
-            ColumnResizingState resizingState = columnResizing.getResizingState();
-            if (resizingState != null && resizingState.getColumnCount() == columns.size())
-                tableWidth = resizingState.getTableWidth();
-            if (columnResizing.isEnabled()) {
-                if (tableWidth != null || EnvironmentUtil.isMozilla()) {
-                    // "table-layout: fixed" style can't be set on client-side and should be rendered from the server, though
-                    // it shouldn't be rendered under IE because all tables without explicit widths will occupy 100% width as a result
-                    styleClass = StyleUtil.mergeClassNames(styleClass, TABLE_LAYOUT_FIXED_STYLE_CLASS);
+        if (scrolling == null) {
+            // scrollable tables shouldn't have "table-layout: fixed" declaration, since it's declared in sub-tables.
+            ColumnResizing columnResizing = table.getColumnResizing();
+            if (columnResizing != null) {
+                ColumnResizingState resizingState = columnResizing.getResizingState();
+                if (resizingState != null && resizingState.getColumnCount() == columns.size())
+                    tableWidth = resizingState.getTableWidth();
+                if (columnResizing.isEnabled()) {
+                    if (tableWidth != null || EnvironmentUtil.isMozilla()) {
+                        // "table-layout: fixed" style can't be set on client-side and should be rendered from the server, though
+                        // it shouldn't be rendered under IE because all tables without explicit widths will occupy 100% width as a result
+                        styleClass = StyleUtil.mergeClassNames(styleClass, TABLE_LAYOUT_FIXED_STYLE_CLASS);
+                    }
                 }
             }
+        } else {
+            styleClass = StyleUtil.mergeClassNames(styleClass, TABLE_LAYOUT_FIXED_STYLE_CLASS);
         }
         String textClass = getTextClass(table);
         styleClass = StyleUtil.mergeClassNames(styleClass, textClass);
@@ -207,17 +212,9 @@ public class TableStructure extends TableElement {
         if (areGridLinesRequested(table, TableStructure.getDefaultStyles(table)))
             cellspacing = "0";
         RenderingUtil.writeAttribute(writer, "cellspacing", cellspacing);
-        String cellpadding = table.getCellpadding();
-        if (cellpadding == null && applyDefaultStyle)
-            cellpadding = DEFAULT_CELL_PADDING;
+        String cellpadding = scrolling == null ? getTableCellPadding() : "0";
         RenderingUtil.writeAttribute(writer, "cellpadding", cellpadding);
-        RenderingUtil.writeAttribute(writer, "onclick ", table.getOnclick());
-        RenderingUtil.writeAttribute(writer, "ondblclick", table.getOndblclick());
-        RenderingUtil.writeAttribute(writer, "onmousedown", table.getOnmousedown());
-        RenderingUtil.writeAttribute(writer, "onmouseover", table.getOnmouseover());
-        RenderingUtil.writeAttribute(writer, "onmousemove", table.getOnmousemove());
-        RenderingUtil.writeAttribute(writer, "onmouseout", table.getOnmouseout());
-        RenderingUtil.writeAttribute(writer, "onmouseup", table.getOnmouseup());
+        RenderingUtil.writeStandardEvents(writer, table);
 
         writeKeyboardEvents(writer, table);
 
@@ -243,6 +240,14 @@ public class TableStructure extends TableElement {
         UIComponent belowFacet = table.getFacet("below");
         if (belowFacet != null)
             belowFacet.encodeAll(context);
+    }
+
+    String getTableCellPadding() {
+        AbstractTable table = (AbstractTable) component;
+        String cellpadding = table.getCellpadding();
+        if (cellpadding == null && table.getApplyDefaultStyle())
+            cellpadding = DEFAULT_CELL_PADDING;
+        return cellpadding;
     }
 
     boolean isEmptyCellsTreatmentRequired() {
@@ -359,7 +364,7 @@ public class TableStructure extends TableElement {
     public static boolean getForceUsingCellStyles(UIComponent styleOwnerComponent) {
         boolean requireCellStylesForCorrectColWidthBehavior =
                 EnvironmentUtil.isSafari() || /* doesn't handle column width in TreeTable if width is applied to <col> tags */
-                        EnvironmentUtil.isOpera(); /* DataTable, TreeTable are jerking when reloading them with QK Ajax if width is applied to <col> tags */
+                EnvironmentUtil.isOpera(); /* DataTable, TreeTable are jerking when reloading them with QK Ajax if width is applied to <col> tags */
         String forceUsingCellStylesAttr = (String) styleOwnerComponent.getAttributes().get("forceUsingCellStyles");
         boolean forceUsingCellStyles = requireCellStylesForCorrectColWidthBehavior ||
                 Boolean.valueOf(forceUsingCellStylesAttr);

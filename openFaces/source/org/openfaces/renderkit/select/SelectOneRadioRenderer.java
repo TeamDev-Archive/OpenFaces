@@ -311,7 +311,7 @@ public class SelectOneRadioRenderer extends RendererBase {
         writeAttribute(writer, "tabindex", selectOneRadio.getTabindex());
 
         if (!selectOneRadio.isDisabled() && !selectOneRadio.isReadonly() && !selectItem.isItemDisabled()) {
-            writeStandardEvents(writer, selectOneRadio);
+            RenderingUtil.writeStandardEvents(writer, selectOneRadio);
         }
     }
 

@@ -54,7 +54,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
         );
         writer.writeAttribute("class", classStr, null);
 
-        writeStandardEvents(writer, borderLayoutPanel);
+        RenderingUtil.writeStandardEvents(writer, borderLayoutPanel);
         encodeScriptsAndStyles(context, borderLayoutPanel);
         encodeSidePanels(context, borderLayoutPanel);
 

@@ -11,17 +11,17 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.component.ComponentConfigurator;
+import org.openfaces.renderkit.TableUtil;
+import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.ValueBindings;
+import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.renderkit.table.DataTableRenderer;
-import org.openfaces.renderkit.TableUtil;
-import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.component.ComponentConfigurator;
+import org.openfaces.util.StyleUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
@@ -230,7 +230,7 @@ public abstract class AbstractTableSelection extends UICommand implements Compon
         RenderingUtil.renderInitScript(context, buf, new String[]{
                 ResourceUtil.getUtilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, DataTableRenderer.class, "table.js")
+                AbstractTableRenderer.getTableJsURL(context)
         });
 
         if (postEvent)

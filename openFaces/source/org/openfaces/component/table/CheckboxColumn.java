@@ -11,12 +11,12 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.util.ValueBindings;
+import org.openfaces.renderkit.TableUtil;
+import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.renderkit.table.DataTableRenderer;
-import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
@@ -281,7 +281,7 @@ public class CheckboxColumn extends BaseColumn {
             RenderingUtil.renderInitScript(context, buf, new String[]{
                     ResourceUtil.getUtilJsURL(context),
                     TableUtil.getTableUtilJsURL(context),
-                    ResourceUtil.getInternalResourceURL(context, DataTableRenderer.class, "table.js")
+                    AbstractTableRenderer.getTableJsURL(context)
             });
 
         } else if (!(selectedRows instanceof MultipleRowSelection)) {

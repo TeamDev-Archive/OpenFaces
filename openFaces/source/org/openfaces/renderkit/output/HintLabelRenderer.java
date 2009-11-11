@@ -57,7 +57,7 @@ public class HintLabelRenderer extends RendererBase {
         writer.writeAttribute("class", StyleUtil.getCSSClass(context,
                 hintLabel, hintLabel.getStyle(), defaultLabelClass, hintLabel.getStyleClass()), null);
 
-        writeStandardEvents(writer, hintLabel);
+        RenderingUtil.writeStandardEvents(writer, hintLabel);
 
         encodeText(writer, hintLabel, value);
         if (hint != null && !hint.equals(value))

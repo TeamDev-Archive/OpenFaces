@@ -69,7 +69,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         encodeRootElementStart(writer, dropDownComponent);
         writer.writeAttribute("id", clientId, "id");
 
-        writeStandardEvents(writer, dropDownComponent);
+        RenderingUtil.writeStandardEvents(writer, dropDownComponent);
 
         encodeFieldContentsStart(context, dropDownComponent);
     }

@@ -89,7 +89,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
         writeAttribute(writer, "style", tabSet.getStyle());
         writeAttribute(writer, "class", tabSet.getStyleClass());
 
-        writeStandardEvents(writer, tabSet);
+        RenderingUtil.writeStandardEvents(writer, tabSet);
     }
 
     @Override

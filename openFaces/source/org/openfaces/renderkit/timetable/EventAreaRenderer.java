@@ -39,7 +39,7 @@ public class EventAreaRenderer extends RendererBase {
         writer.startElement("div", eventArea);
         String clientId = eventArea.getClientId(context);
         writer.writeAttribute("id", clientId, null);
-        writeStandardEvents(writer, eventArea);
+        RenderingUtil.writeStandardEvents(writer, eventArea);
         RenderingUtil.writeStyleAndClassAttributes(writer,
                 eventArea.getStyle(),
                 eventArea.getStyleClass(),

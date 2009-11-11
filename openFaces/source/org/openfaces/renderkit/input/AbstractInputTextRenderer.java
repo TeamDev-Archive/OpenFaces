@@ -87,7 +87,7 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
         writeAttribute(writer, "onchange", inputText.getOnchange());
         writeAttribute(writer, "accesskey", inputText.getAccesskey());
         writeAttribute(writer, "tabindex", inputText.getTabindex());
-        writeStandardEvents(writer, inputText);
+        RenderingUtil.writeStandardEvents(writer, inputText);
 
         writeCustomAttributes(facesContext, inputText);
 

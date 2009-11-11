@@ -11,33 +11,12 @@
  */
 package org.openfaces.renderkit.input;
 
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.getCurrentImageUrl;
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.getDisabledSelectedImageUrl;
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.getDisabledUndefinedImageUrl;
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.getDisabledUnselectedImageUrl;
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.getPressedSelectedImageUrl;
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.getPressedUndefinedImageUrl;
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.getPressedUnselectedImageUrl;
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.getRolloverSelectedImageUrl;
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.getRolloverUndefinedImageUrl;
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.getRolloverUnselectedImageUrl;
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.getSelectedImageUrl;
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.getUndefinedImageUrl;
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.getUnselectedImageUrl;
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.hasImages;
-
-import java.io.IOException;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.openfaces.component.input.SelectBooleanCheckbox;
 import org.openfaces.component.input.SelectBooleanCheckbox.BooleanObjectValue;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
+import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.*;
 import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.RenderingUtil;
@@ -47,32 +26,36 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.StyleUtil;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.util.Map;
+
 /**
  * @author Roman Porotnikov
  */
 public class SelectBooleanCheckboxRenderer extends RendererBase {
 
-    protected static final String TAG_NAME = "input";
+    private static final String TAG_NAME = "input";
 
-    protected static final String STATE_SUFFIX = "::state";
+    private static final String STATE_SUFFIX = "::state";
 
-    protected static final String SELECTED_STATE = "on";
-    protected static final String UNSELECTED_STATE = "off";
-    protected static final String UNDEFINED_STATE = "nil";
+    private static final String SELECTED_STATE = "on";
+    private static final String UNSELECTED_STATE = "off";
+    private static final String UNDEFINED_STATE = "nil";
 
-    protected static final String PLAIN_EFFECT = "plain";
-    protected static final String ROLLOVER_EFFECT = "rollover";
-    protected static final String PRESSED_EFFECT = "pressed";
-    protected static final String DISABLED_EFFECT = "disabled";
+    private static final String PLAIN_EFFECT = "plain";
+    private static final String ROLLOVER_EFFECT = "rollover";
+    private static final String PRESSED_EFFECT = "pressed";
+    private static final String DISABLED_EFFECT = "disabled";
 
-    protected static final String STYLE_CLASS_KEY = "styleClass";
-    protected static final String ROLLOVER_CLASS_KEY = "rolloverClass";
-    protected static final String FOCUSED_CLASS_KEY = "focusedClass";
-    protected static final String SELECTED_CLASS_KEY = "selectedClass";
-    protected static final String UNSELECTED_CLASS_KEY = "unselectedClass";
-    protected static final String UNDEFINED_CLASS_KEY = "undefinedClass";
-
-    protected static final String DEFAULT_IMAGE_CLASS = "o_checkbox_image";
+    private static final String STYLE_CLASS_KEY = "styleClass";
+    private static final String ROLLOVER_CLASS_KEY = "rolloverClass";
+    private static final String FOCUSED_CLASS_KEY = "focusedClass";
+    private static final String SELECTED_CLASS_KEY = "selectedClass";
+    private static final String UNSELECTED_CLASS_KEY = "unselectedClass";
+    private static final String UNDEFINED_CLASS_KEY = "undefinedClass";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -142,7 +125,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
     protected void renderWithImage(FacesContext facesContext, SelectBooleanCheckbox checkbox) throws IOException {
         String styleClass = StyleUtil.mergeClassNames(
                 StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getStyle(), StyleGroup.regularStyleGroup(), checkbox.getStyleClass(), null),
-                DEFAULT_IMAGE_CLASS);
+                "o_checkbox_image");
         String rolloverStyleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getRolloverStyle(), StyleGroup.regularStyleGroup(1), checkbox.getRolloverClass(), null);
         String focusedStyleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getFocusedStyle(), StyleGroup.regularStyleGroup(2), checkbox.getFocusedClass(), null);
         String selectedStyleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getSelectedStyle(), StyleGroup.regularStyleGroup(3), checkbox.getSelectedClass(), null);
@@ -286,7 +269,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         writeAttribute(writer, "lang", checkbox.getLang());
         writeAttribute(writer, "onselect", checkbox.getOnselect());
         writeAttribute(writer, "tabindex", checkbox.getTabindex());
-        writeStandardEvents(writer, checkbox);
+        RenderingUtil.writeStandardEvents(writer, checkbox);
     }
 
     protected void renderInitScript(FacesContext facesContext, SelectBooleanCheckbox checkbox,

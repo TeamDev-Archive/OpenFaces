@@ -62,7 +62,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         writer.writeAttribute("border", "0", null);
         writer.writeAttribute("class", StyleUtil.getCSSClass(context,
                 dayTable, dayTable.getStyle(), "o_dayTable", dayTable.getStyleClass()), null);
-        writeStandardEvents(writer, dayTable);
+        RenderingUtil.writeStandardEvents(writer, dayTable);
         writer.startElement("tbody", dayTable);
 
         if (dayTable.isDaySwitcherVisible())
