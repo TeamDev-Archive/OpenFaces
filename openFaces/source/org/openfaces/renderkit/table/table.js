@@ -1197,7 +1197,7 @@ O$.Table = {
     if (sortedColIndex != -1) {
       column = table._columns[table._sortedColIndex];
       // Applying style to cells is needed for sorted column styles to have priority over
-      // even/odd row styles - for backward compatibility with QK versions earlier than 1.2.2 (JSFC-2884)
+      // even/odd row styles - for backward compatibility with versions earlier than 1.2.2 (JSFC-2884)
       column._forceUsingCellStyles = true;
 
       var headerCell = (column.header) ? column.header._cell : null;

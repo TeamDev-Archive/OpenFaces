@@ -35,7 +35,7 @@ public abstract class PhaseListenerBase implements PhaseListener {
 
         Object request = facesContext.getExternalContext().getRequest();
         RequestFacade requestFacade = RequestFacade.getInstance(request);
-        String phasePassedKey = this.getClass().getName() + ".QK_PHASE_PASSED:" + phaseEvent.getPhaseId().getOrdinal() + ":" + beforePhaseNotifcation;
+        String phasePassedKey = this.getClass().getName() + ".OF_PHASE_PASSED:" + phaseEvent.getPhaseId().getOrdinal() + ":" + beforePhaseNotifcation;
         if (requestFacade.getAttribute(phasePassedKey) != null)
             return true;
         requestFacade.setAttribute(phasePassedKey, Boolean.TRUE);

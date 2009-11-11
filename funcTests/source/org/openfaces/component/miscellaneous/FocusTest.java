@@ -45,7 +45,7 @@ public class FocusTest extends OpenFacesTestCase {
     }
 
     @Test
-    public void testFocusWithQKDataTable() {
+    public void testFocusWithOFDataTable() {
         testAppFunctionalPage("/components/scrollfocus/focusWithDataTable.jsf");
 
         //check focus by page load
@@ -58,7 +58,7 @@ public class FocusTest extends OpenFacesTestCase {
     }
 
 /*
-  public void testFocusWithQKDateChooser() {
+  public void testFocusWithOFDateChooser() {
     Selenium selenium = getSelenium();
     testAppPage("/functionalTesting/scrollfocus/focusWithDateChooser.jsf");
 

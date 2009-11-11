@@ -21,7 +21,7 @@ import org.seleniuminspector.ElementInspector;
 /**
  * @author Darya Shumilina
  */
-public class AjaxTabbedPaneIncludeQKComponentsTest extends OpenFacesTestCase {
+public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
     @Test
     public void testCalendarInside() {
         testAppFunctionalPage("/components/tabbedpane/calendarIn.jsf");

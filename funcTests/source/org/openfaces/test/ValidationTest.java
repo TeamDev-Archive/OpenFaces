@@ -243,27 +243,27 @@ public class ValidationTest extends OpenFacesTestCase {
         testAppFunctionalPage("/components/validation/openFacesValidators.jsf");
         //server-side
         final String serverValidationForm = "serverValidation:";
-        isPassedQKValidators(serverValidationForm);
+        isPassedOFValidators(serverValidationForm);
         element(serverValidationForm + "fillInvalid").click();
         ElementInspector serverValidationSubmit = element(serverValidationForm + "submitBt");
         serverValidationSubmit.click();
         waitForPageToLoad();
-        isFailedQKValidators(serverValidationForm);
+        isFailedOFValidators(serverValidationForm);
         element(serverValidationForm + "fillValid").click();
         serverValidationSubmit.click();
         waitForPageToLoad();
-        isPassedQKValidators(serverValidationForm);
+        isPassedOFValidators(serverValidationForm);
         //client-side
         final String clientValidationFormName = "clientValidation:";
-        isPassedQKValidators(clientValidationFormName);
+        isPassedOFValidators(clientValidationFormName);
         element(clientValidationFormName + "fillInvalid").click();
         ElementInspector clientValidationSubmit = element(clientValidationFormName + "submitBt");
         clientValidationSubmit.click();
-        isFailedQKValidators(clientValidationFormName);
+        isFailedOFValidators(clientValidationFormName);
         element(clientValidationFormName + "fillValid").click();
         clientValidationSubmit.click();
         waitForPageToLoad();
-        isPassedQKValidators(clientValidationFormName);
+        isPassedOFValidators(clientValidationFormName);
     }
 
     @Test
@@ -415,7 +415,7 @@ public class ValidationTest extends OpenFacesTestCase {
     }
 
 
-    private void isFailedQKValidators(String formName) {
+    private void isFailedOFValidators(String formName) {
         element(formName + "equalMessage").assertText("Validation error occurs These values are not equal");
         element(formName + "urlMessage").assertText("Validation error occurs Entered value is not url");
         element(formName + "emailMessage").assertText("Validation error occurs Entered value is not e-mail");
@@ -423,7 +423,7 @@ public class ValidationTest extends OpenFacesTestCase {
         element(formName + "customMessage").assertText("Validation error occurs Number should be equal 10");
     }
 
-    private void isPassedQKValidators(String formName) {
+    private void isPassedOFValidators(String formName) {
         element(formName + "equalMessage").assertText("");
         element(formName + "urlMessage").assertText("");
         element(formName + "emailMessage").assertText("");

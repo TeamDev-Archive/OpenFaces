@@ -20,12 +20,19 @@ import java.util.Random;
  */
 public class TestTableDataBean {
     private List<TestBean2> collection1;
+    private List<TestBean2> collection2;
 
     public TestTableDataBean() {
         Random random = new Random(5);
         collection1 = new ArrayList<TestBean2>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             collection1.add(new TestBean2(randomString(random), randomString(random), randomString(random),
+                    random.nextInt(10), random.nextInt(100), random.nextInt(1000), random.nextBoolean()));
+        }
+
+        collection2 = new ArrayList<TestBean2>();
+        for (int i = 0; i < 30; i++) {
+            collection2.add(new TestBean2(randomString(random), randomString(random), randomString(random),
                     random.nextInt(10), random.nextInt(100), random.nextInt(1000), random.nextBoolean()));
         }
     }
@@ -37,4 +44,9 @@ public class TestTableDataBean {
     public List<TestBean2> getCollection1() {
         return collection1;
     }
+
+    public List<TestBean2> getCollection2() {
+        return collection2;
+    }
+
 }

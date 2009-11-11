@@ -364,7 +364,7 @@ public class TableStructure extends TableElement {
     public static boolean getForceUsingCellStyles(UIComponent styleOwnerComponent) {
         boolean requireCellStylesForCorrectColWidthBehavior =
                 EnvironmentUtil.isSafari() || /* doesn't handle column width in TreeTable if width is applied to <col> tags */
-                EnvironmentUtil.isOpera(); /* DataTable, TreeTable are jerking when reloading them with QK Ajax if width is applied to <col> tags */
+                EnvironmentUtil.isOpera(); /* DataTable, TreeTable are jerking when reloading them with OF Ajax if width is applied to <col> tags */
         String forceUsingCellStylesAttr = (String) styleOwnerComponent.getAttributes().get("forceUsingCellStyles");
         boolean forceUsingCellStyles = requireCellStylesForCorrectColWidthBehavior ||
                 Boolean.valueOf(forceUsingCellStylesAttr);
@@ -460,7 +460,7 @@ public class TableStructure extends TableElement {
 
         TableStructure tableStructure = tableParams.getTableStructure();
         TableHeader tableHeader = tableStructure.getHeader();
-        CellCoordinates headerCellCoordinates = tableHeader.findColumnHeaderCell(columnOrGroup);
+        CellCoordinates headerCellCoordinates = tableHeader.findCell(columnOrGroup, CellKind.COL_HEADER);
         if (headerCellCoordinates != null) {
             JSONObject header = new JSONObject();
             columnObj.put("header", header);
@@ -476,10 +476,13 @@ public class TableStructure extends TableElement {
                     columnOrGroup.getHeaderOnmouseup());
         }
         if (ordinaryColumn && tableHeader.hasSubHeader()) {
-            JSONObject subHeader = new JSONObject();
-            columnObj.put("subHeader", subHeader);
-            subHeader.put("pos", new CellCoordinates(tableHeader.getSubHeaderRowIndex(), colIndex).asJSONObject());
-            subHeader.put("className", StyleUtil.getCSSClass(context, styleOwnerComponent, columnOrGroup.getSubHeaderStyle(), columnOrGroup.getSubHeaderClass()));
+            CellCoordinates subHeaderCellCoordinates = tableHeader.findCell(columnOrGroup, CellKind.COL_SUBHEADER);
+            if (subHeaderCellCoordinates != null) {
+                JSONObject subHeader = new JSONObject();
+                columnObj.put("subHeader", subHeader);
+                subHeader.put("pos", subHeaderCellCoordinates.asJSONObject());
+                subHeader.put("className", StyleUtil.getCSSClass(context, styleOwnerComponent, columnOrGroup.getSubHeaderStyle(), columnOrGroup.getSubHeaderClass()));
+            }
         }
         if (!noDataRows) {
             JSONObject body = new JSONObject();
@@ -497,7 +500,7 @@ public class TableStructure extends TableElement {
                     columnOrGroup.getBodyOnmouseup());
         }
         TableFooter tableFooter = tableStructure.getFooter();
-        CellCoordinates footerCellCoordinates = tableFooter.findColumnHeaderCell(columnOrGroup);
+        CellCoordinates footerCellCoordinates = tableFooter.findCell(columnOrGroup, CellKind.COL_HEADER);
         if (footerCellCoordinates != null) {
             JSONObject footer = new JSONObject();
             columnObj.put("footer", footer);

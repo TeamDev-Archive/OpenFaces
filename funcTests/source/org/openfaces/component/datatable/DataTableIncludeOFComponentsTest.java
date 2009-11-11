@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @author Darya Shumilina
  */
-public class DataTableIncludeQKComponentsTest extends OpenFacesTestCase {
+public class DataTableIncludeOFComponentsTest extends OpenFacesTestCase {
 
     /*
       public void testCalendarInsideDataTable() {

@@ -21,7 +21,7 @@ import org.seleniuminspector.ElementInspector;
 /**
  * @author Darya Shumilina
  */
-public class ServerFoldingPanelIncludeQKComponentsTest extends OpenFacesTestCase {
+public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
     @Test
     public void testCalendarInside() {
         testAppFunctionalPage("/components/foldingpanel/calendarIn.jsf");

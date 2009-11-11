@@ -37,17 +37,23 @@ class HeaderCell extends TableElement {
     private String cellTag;
     private boolean renderNonBreakable;
     private boolean renderSortingToggle;
+    private CellKind cellKind;
 
-    public HeaderCell(BaseColumn column, Object component, String cellTag) {
-        this(column, component, cellTag, false, false);
+    public HeaderCell(BaseColumn column, Object component, String cellTag, CellKind cellKind) {
+        this(column, component, cellTag, cellKind, false, false);
     }
 
-    public HeaderCell(BaseColumn column, Object component, String cellTag, boolean renderNonBreakable, boolean renderSortingToggle) {
+    public HeaderCell(BaseColumn column, Object component, String cellTag, CellKind cellKind, boolean renderNonBreakable, boolean renderSortingToggle) {
         this.column = column;
         this.component = component;
         this.cellTag = cellTag;
+        this.cellKind = cellKind;
         this.renderNonBreakable = renderNonBreakable;
         this.renderSortingToggle = renderSortingToggle;
+    }
+
+    public CellKind getCellKind() {
+        return cellKind;
     }
 
     public void setSpans(int colSpan, int rowIndex1, int rowIndex2) {
