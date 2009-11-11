@@ -1060,9 +1060,7 @@
         <root url="jar://$PROJECT_DIR$/lib/tomahawk/tomahawk12-1.1.8.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES>
-        <root url="intellijad://intellijad" />
-      </SOURCES>
+      <SOURCES />
     </library>
     <library name="jai">
       <CLASSES>

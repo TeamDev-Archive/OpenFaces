@@ -50,6 +50,10 @@
             <attribute name="method" value="0" />
             <attribute name="URI" value="&lt;N/A&gt;" />
           </containerElement>
+          <containerElement type="library" name="tomahawk12-1.1.8" level="project">
+            <attribute name="method" value="1" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
           <containerElement type="library" name="trinidad-stub" level="project">
             <attribute name="method" value="0" />
             <attribute name="URI" value="&lt;N/A&gt;" />
@@ -84,10 +88,6 @@
             <attribute name="URI" value="/WEB-INF/lib/openfaces.jar" />
           </containerElement>
           <containerElement type="library" name="hibernate" level="project">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="tomahawk12-1.1.8" level="project">
             <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>

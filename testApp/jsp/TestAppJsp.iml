@@ -55,6 +55,10 @@
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
+          <containerElement type="library" name="jstl" level="project">
+            <attribute name="method" value="0" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
           <containerElement type="library" name="portlet-api-lib" level="project">
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
@@ -73,10 +77,6 @@
           </containerElement>
           <containerElement type="library" name="trinidad-stub" level="project">
             <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="jstl" level="project">
-            <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
         </packaging>
@@ -108,7 +108,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="el" level="project" />
   </component>
 </module>
 
