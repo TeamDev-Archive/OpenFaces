@@ -216,8 +216,6 @@ public class TableStructure extends TableElement {
         RenderingUtil.writeAttribute(writer, "cellpadding", cellpadding);
         RenderingUtil.writeStandardEvents(writer, table);
 
-        writeKeyboardEvents(writer, table);
-
         if (getScrolling() == null)
             TableUtil.writeColumnTags(context, table, columns);
 
@@ -304,14 +302,6 @@ public class TableStructure extends TableElement {
         return styleClassesStr;
     }
 
-
-    private void writeKeyboardEvents(ResponseWriter writer, AbstractTable table) throws IOException {
-        RenderingUtil.writeAttribute(writer, "onfocus", table.getOnfocus());
-        RenderingUtil.writeAttribute(writer, "onblur", table.getOnblur());
-        RenderingUtil.writeAttribute(writer, "onkeydown", table.getOnkeydown());
-        RenderingUtil.writeAttribute(writer, "onkeyup", table.getOnkeyup());
-        RenderingUtil.writeAttribute(writer, "onkeypress", table.getOnkeypress());
-    }
 
     public JSONArray getInitParams(FacesContext facesContext, TableStyles defaultStyles) {
         UIComponent styleOwnerComponent = getComponent();
