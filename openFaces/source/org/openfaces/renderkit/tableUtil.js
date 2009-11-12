@@ -84,6 +84,14 @@ O$.Tables = {
     return propertyValues;
   },
 
+  _getTableColTags: function(table) {
+    var result = O$.getChildNodesWithNames(table, ["col"]);
+    if (result.length == 0) {
+      var colGroup = O$.getChildNodesWithNames(table, ["colgroup"])[0];
+      result = colGroup ? O$.getChildNodesWithNames(colGroup, ["col"]) : [];
+    }
+    return result;
+  },
 
   // -------------------------- INITIALIZATION
 
@@ -1210,11 +1218,7 @@ O$.Tables = {
     var colTags = function() {
       var result;
       if (!table._scrolling) {
-        result = O$.getChildNodesWithNames(table, ["col"]);
-        if (result.length == 0) {
-          var colGroup = O$.getChildNodesWithNames(table, ["colgroup"])[0];
-          result = colGroup ? O$.getChildNodesWithNames(colGroup, ["col"]) : [];
-        }
+        result = O$.Tables._getTableColTags(table);
         for (var i = 0, count = result.length; i < count; i++)
           result[i] = [result[i]];
       } else {
@@ -1351,7 +1355,8 @@ O$.Tables = {
       column._super_updateStyle();
 
       column._useCellStyles = O$.Tables._getUseCellStylesForColumn(column);
-      var colTagClassName = !column._useCellStyles ? column._getCompoundClassName() : "";
+      column._className = column._getCompoundClassName();
+      var colTagClassName = !column._useCellStyles ? column._className : "";
       column._colTags.forEach(function(colTag) {
         colTag.className = colTagClassName ? colTagClassName : "";
         colTag._column = column;
@@ -1736,23 +1741,33 @@ O$.Tables = {
   // -------------------------- TABLE SCROLLING
 
   _initScrolling: function(table) {
+    if (!table._scrolling)
+      throw "O$.Tables._initScrolling can't be invoked on a non-scrollable table";
+    
     var firstSection = table.header._rows.length > 0 ? table.header : table.body;
 
-    function fixAreaWidthByColumns(area) {
-      if (!area) return;
+    var scrollingAreaColTags = O$.Tables._getTableColTags(table);
+    function fixAreaWidthByColumns(area, areaColIndex) {
       var areaWidth = 0;
       area._colTags.forEach(function(colTag) {
-        var colWidth = O$.calculateNumericCSSValue(O$.getStyleClassProperty(colTag.className, "width"));
+        var column = colTag._column;
+        var colWidth = O$.calculateNumericCSSValue(O$.getStyleClassProperty(column._className, "width"));
         if (!colWidth) {
           colWidth = 80;
-          colTag._column._colTags.forEach(function(tag) {tag.style.width = colWidth + "px";});
+          column._colTags.forEach(function(tag) {tag.style.width = colWidth + "px";});
         }
         areaWidth += colWidth;
       });
-      area._td.style.width = areaWidth + "px";
+      var areaColTag = scrollingAreaColTags[areaColIndex];
+      areaColTag.style.width = areaWidth + "px";
     }
-    fixAreaWidthByColumns(firstSection._leftScrollingArea);
-    fixAreaWidthByColumns(firstSection._rightScrollingArea);
+
+    var areaIndex = 0;
+    if (firstSection._leftScrollingArea)
+      fixAreaWidthByColumns(firstSection._leftScrollingArea, areaIndex++);
+    areaIndex++;
+    if (firstSection._rightScrollingArea)
+      fixAreaWidthByColumns(firstSection._rightScrollingArea, areaIndex);
 
     function fixScrollingContainerHeight(area) {
       if (!area)

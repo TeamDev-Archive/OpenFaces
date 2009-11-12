@@ -53,13 +53,24 @@ public class TableUtil {
         ResponseWriter writer = context.getResponseWriter();
         for (int colIndex = 0; colIndex < colCount; colIndex++) {
             BaseColumn column = (BaseColumn) columns.get(colIndex);
-            writer.startElement("col", component);
             String colWidth = columnResizingState != null ? columnResizingState.getColumnWidth(colIndex) : column.getWidth();
-            RenderingUtil.writeAttribute(writer, "width", colWidth);
-            RenderingUtil.writeAttribute(writer, "align", column.getAlign());
-            RenderingUtil.writeAttribute(writer, "valign", column.getValign());
-            writer.endElement("col");
+            String align = column.getAlign();
+            String valign = column.getValign();
+            writeColTag(component, writer, colWidth, align, valign);
         }
+    }
+
+    public static void writeColTag(
+            UIComponent component,
+            ResponseWriter writer,
+            String colWidth,
+            String align,
+            String valign) throws IOException {
+        writer.startElement("col", component);
+        RenderingUtil.writeAttribute(writer, "width", colWidth);
+        RenderingUtil.writeAttribute(writer, "align", align);
+        RenderingUtil.writeAttribute(writer, "valign", valign);
+        writer.endElement("col");
     }
 
     public static JSONObject getStylesMapAsJSONObject(Map<Object, String> map) {

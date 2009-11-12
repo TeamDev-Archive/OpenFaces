@@ -17,19 +17,19 @@ import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.ColumnResizingState;
 import org.openfaces.component.table.Scrolling;
-import org.openfaces.component.table.TreeTable;
 import org.openfaces.component.table.TableColumnGroup;
 import org.openfaces.component.table.TreeColumn;
+import org.openfaces.component.table.TreeTable;
+import org.openfaces.org.json.JSONArray;
+import org.openfaces.org.json.JSONException;
+import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.DefaultTableStyles;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.StyleUtil;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.org.json.JSONArray;
-import org.openfaces.org.json.JSONObject;
-import org.openfaces.org.json.JSONException;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlOutputText;
@@ -218,6 +218,13 @@ public class TableStructure extends TableElement {
 
         if (getScrolling() == null)
             TableUtil.writeColumnTags(context, table, columns);
+        else {
+            if (getLeftFixedCols() > 0)
+                TableUtil.writeColTag(table, writer, null, null, null);
+            TableUtil.writeColTag(table, writer, null, null, null);
+            if (getRightFixedCols() > 0)
+                TableUtil.writeColTag(table, writer, null, null, null);
+        }
 
         TableHeader header = getHeader();
         if (!header.isEmpty())
@@ -252,7 +259,7 @@ public class TableStructure extends TableElement {
         if (!(this.component instanceof AbstractTable))
             return true;
         AbstractTable table = (AbstractTable) this.component;
-        return areGridLinesRequested(table, getDefaultStyles(table)) || 
+        return areGridLinesRequested(table, getDefaultStyles(table)) ||
                 table.getBorder() != Integer.MIN_VALUE;
     }
 
@@ -354,7 +361,7 @@ public class TableStructure extends TableElement {
     public static boolean getForceUsingCellStyles(UIComponent styleOwnerComponent) {
         boolean requireCellStylesForCorrectColWidthBehavior =
                 EnvironmentUtil.isSafari() || /* doesn't handle column width in TreeTable if width is applied to <col> tags */
-                EnvironmentUtil.isOpera(); /* DataTable, TreeTable are jerking when reloading them with OF Ajax if width is applied to <col> tags */
+                        EnvironmentUtil.isOpera(); /* DataTable, TreeTable are jerking when reloading them with OF Ajax if width is applied to <col> tags */
         String forceUsingCellStylesAttr = (String) styleOwnerComponent.getAttributes().get("forceUsingCellStyles");
         boolean forceUsingCellStyles = requireCellStylesForCorrectColWidthBehavior ||
                 Boolean.valueOf(forceUsingCellStylesAttr);
@@ -409,7 +416,7 @@ public class TableStructure extends TableElement {
     }
 
     public static JSONObject getColumnParams(FacesContext context, BaseColumn columnOrGroup,
-                                              TableParams tableParams, int colIndex, int level) throws JSONException {
+                                             TableParams tableParams, int colIndex, int level) throws JSONException {
         JSONObject columnObj = new JSONObject();
 
         UIComponent styleOwnerComponent = tableParams.getStyleOwnerComponent();
@@ -599,13 +606,13 @@ public class TableStructure extends TableElement {
     }
 
     public static void appendColumnEventsArray(JSONObject columnObj,
-                                                String onclick,
-                                                String ondblclick,
-                                                String onmosedown,
-                                                String onmouseover,
-                                                String onmousemove,
-                                                String onmouseout,
-                                                String onmouseup) throws JSONException {
+                                               String onclick,
+                                               String ondblclick,
+                                               String onmosedown,
+                                               String onmouseover,
+                                               String onmousemove,
+                                               String onmouseout,
+                                               String onmouseup) throws JSONException {
         appendHandlerEntry(columnObj, "onclick", onclick);
         appendHandlerEntry(columnObj, "ondblclick", ondblclick);
         appendHandlerEntry(columnObj, "onmousedown", onmosedown);
