@@ -87,9 +87,6 @@ public class DaySwitcherRenderer extends RendererBase {
             writer.writeAttribute("class", StyleUtil.getCSSClass(context, daySwitcher,
                     daySwitcher.getPreviousButtonStyle(), "o_daySwitcher_previous_button",
                     daySwitcher.getPreviousButtonClass()), null);
-            if (renderUpperText && renderText) {
-                writer.writeAttribute("rowSpan", 2, null);
-            }
             String previousButtonImageUrl = ResourceUtil.getResourceURL(context, daySwitcher.getPreviousButtonImageUrl(),
                     DaySwitcherRenderer.class, "previousButton.gif");
             writer.startElement("img", daySwitcher);
@@ -98,27 +95,34 @@ public class DaySwitcherRenderer extends RendererBase {
             writer.endElement("td");
         }
 
+        writer.startElement("td", daySwitcher);
         if (renderUpperText){
             //upper text
-            writer.startElement("td", daySwitcher);
+            writer.startElement("big", daySwitcher);
             writer.writeAttribute("id", clientId + "::upper_text", null);
             String upperTextClass = StyleUtil.getCSSClass(context,
                     daySwitcher, daySwitcher.getUpperTextStyle(), "o_daySwitcher_upper_text", daySwitcher.getUpperTextClass());
             writer.writeAttribute("class", upperTextClass, null);
             
             writer.write(upperDateFormat.format(date));
-            writer.endElement("td");
-        }else{
+            writer.endElement("big");
+        }
+        if (renderText){
+            if (renderUpperText){
+                writer.startElement("br", daySwitcher);
+                writer.endElement("br");
+            }
             //text
-            writer.startElement("td", daySwitcher);
+            writer.startElement("span", daySwitcher);
             writer.writeAttribute("id", clientId + "::text", null);
             String textClass = StyleUtil.getCSSClass(context,
                     daySwitcher, daySwitcher.getTextStyle(), "o_daySwitcher_text", daySwitcher.getTextClass());
             writer.writeAttribute("class", textClass, null);
 
             writer.write(dateFormat.format(dayTable.getDay()));            
-            writer.endElement("td");
+            writer.endElement("span");
         }
+        writer.endElement("td");
 
         //next button
         if (enabled) {
@@ -126,9 +130,6 @@ public class DaySwitcherRenderer extends RendererBase {
             writer.writeAttribute("id", clientId + "::next_button", null);
             writer.writeAttribute("class", StyleUtil.getCSSClass(context,
                     daySwitcher, daySwitcher.getNextButtonStyle(), "o_daySwitcher_next_button", daySwitcher.getNextButtonClass()), null);
-            if (renderUpperText && renderText) {
-                writer.writeAttribute("rowSpan", 2, null);
-            }
             String nextButtonImageUrl = ResourceUtil.getResourceURL(context, daySwitcher.getNextButtonImageUrl(), DaySwitcherRenderer.class, "nextButton.gif");
             writer.startElement("img", daySwitcher);
             writer.writeAttribute("src", nextButtonImageUrl, null);
@@ -138,21 +139,6 @@ public class DaySwitcherRenderer extends RendererBase {
 
         writer.endElement("tr");
 
-        if (renderText && renderUpperText){
-            writer.startElement("tr", daySwitcher);
-
-            //text
-            writer.startElement("td", daySwitcher);
-            writer.writeAttribute("id", clientId + "::text", null);
-            String textClass = StyleUtil.getCSSClass(context,
-                    daySwitcher, daySwitcher.getTextStyle(), "o_daySwitcher_text", daySwitcher.getTextClass());
-            writer.writeAttribute("class", textClass, null);
-
-            writer.write(dateFormat.format(dayTable.getDay()));
-            writer.endElement("td");
-
-            writer.endElement("tr");
-        }
         writer.endElement("tbody");
         writer.endElement("table");
         

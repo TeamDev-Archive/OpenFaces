@@ -1383,11 +1383,11 @@
 }
 
 .o_daySwitcher_previous_button {
-  border-right: 1px solid lightgray;
+  border-right: 1px solid #939393;
 }
 
 .o_daySwitcher_next_button {
-  border-left: 1px solid lightgray;
+  border-left: 1px solid #939393;
 }
 
 .o_daySwitcher_previous_button img,
@@ -1401,6 +1401,7 @@
 }
 
 .o_daySwitcher_text {
+  font-size: 1em;
   line-height:0.8em;
   padding-bottom:0.2em;
   padding-left:5px;
