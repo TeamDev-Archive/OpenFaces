@@ -22,7 +22,6 @@ O$._initDayTable = function(componentId,
                             day, locale, dateFormat, startTimeStr, endTimeStr, scrollTimeStr,
                             preloadedEventParams, resources, eventAreaSettings,
                             editable, onchange, editingOptions,
-                            daySwitcherVisible,
                             stylingParams,
                             uiEvent,
                             timePattern,
@@ -1164,6 +1163,9 @@ O$._initDayTable = function(componentId,
   dayTable.setDay = function(day) {
     if (O$._datesEqual(dayTable._day, day))
       return;
+    if (dayTable._onDayChange){
+      dayTable._onDayChange(day);
+    }
 
     var dtf = O$.getDateTimeFormatObject(locale);
     O$.addHiddenField(dayTable, dayTable.id + "::day", dtf.format(day, "dd/MM/yyyy"));
@@ -1174,9 +1176,6 @@ O$._initDayTable = function(componentId,
     dayTable._dayEvents = eventProvider._getEventsForPeriod(dayTable._startTime, dayTable._endTime, function() {
       dayTable._updateEventElements(true, true);
     });
-
-    if (daySwitcherVisible)
-      O$.setInnerText(dayTable._dayTextElement, dateTimeFormat.format(dayTable._day, dateFormat));
 
     dayTable._updateEventElements();
 
@@ -1239,25 +1238,6 @@ O$._initDayTable = function(componentId,
     var today = new Date();
     dayTable.setDay(today);
   };
-
-  if (daySwitcherVisible) {
-    var prevButton = O$.byIdOrName(dayTable.id + ":_prev");
-
-    prevButton.onclick = function(e) {
-      O$.breakEvent(e);
-      dayTable.previousDay();
-    };
-    var nextButton = O$.byIdOrName(dayTable.id + ":_next");
-    nextButton.onclick = function(e) {
-      O$.breakEvent(e);
-      dayTable.nextDay();
-    };
-    var todayButton = O$.byIdOrName(dayTable.id + ":_today");
-    todayButton.onclick = function (e) {
-      O$.breakEvent(e);
-      dayTable.today();
-    };
-  }
 
   var dtf = O$.getDateTimeFormatObject(locale);
   dayTable.setDay(dtf.parse(day, "dd/MM/yyyy"));
@@ -1785,16 +1765,6 @@ O$._initCustomEventEditor = function(dayTableId, thisComponentId, oncreate, oned
       onedit(dayTable, event);
   };
   
-};
-
-O$._datesEqual = function(date1, date2) {
-  if (!date1)
-    return !date2;
-  if (!date2)
-    return false;
-  return date1.getDate() == date2.getDate() &&
-         date1.getMonth() == date2.getMonth() &&
-         date1.getFullYear() == date2.getFullYear();
 };
 
 O$._initEvent = function(event) {

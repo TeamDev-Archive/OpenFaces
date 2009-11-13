@@ -50,14 +50,16 @@ public class DayTableTag extends AbstractComponentTag {
                 new Class[]{TimetableChangeEvent.class}, void.class);
         setStringProperty(component, "onchange");
 
-        setBooleanProperty(component, "daySwitcherVisible");
-
         setTimePropertyAsString(component, "startTime");
         setTimePropertyAsString(component, "endTime");
         setTimePropertyAsString(component, "scrollTime");
         setEnumerationProperty(component, "timeTextPosition", TimeTextPosition.class);
         setBooleanProperty(component, "showTimeAgainstSeparator");
 
+        setStringProperty(component, "headerStyle");
+        setStringProperty(component, "headerClass");
+        setStringProperty(component, "footerStyle");
+        setStringProperty(component, "footerClass");
         setStringProperty(component, "resourceHeadersRowStyle");
         setStringProperty(component, "resourceHeadersRowClass");
         setStringProperty(component, "rowStyle");

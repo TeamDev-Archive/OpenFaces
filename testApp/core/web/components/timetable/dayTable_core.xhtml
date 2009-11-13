@@ -7,8 +7,6 @@
        >
   <a href="../../main.jsf">Back to the main page</a><br/>
   <a href="../../functional_testing.jsf">Return to main testing page</a><br/><br/>
-  <input type="submit" value="Submit"/>
-  <h:outputText value="#{TimeTableBean.scrollTime}"/>
 
   <o:hintLabel id="hl1" value="Hint label!" hint="Hint for hint label"/>
 
@@ -25,10 +23,13 @@
       <f:facet name="tab"><h:outputText value="Default view"/></f:facet>
 
       <o:dayTable id="dt1" rolloverStyle="border: 1px solid blue;" events="#{TimeTableBean.events1}"
-                  resources="#{TimeTableBean.resources}" style="height: 500px;" daySwitcherVisible="true"
+                  resources="#{TimeTableBean.resources}" style="height: 500px;"
               timetableChangeListener="#{TimeTableBean.processTimetableChanges1}"
               preloadedEvents="none"
               scrollTime="#{TimeTableBean.scrollTime}">
+        <f:facet name="header">
+          <o:daySwitcher/>
+        </f:facet>
         <f:facet name="eventEditor">
           <o:eventEditorDialog labelStyle="font: normal 10pt Tahoma, Arial; color: gray" captionStyle="font: normal 12pt Tahoma, Arial; color: gray" deleteButtonStyle="color: red;">
             <f:facet name="nameField">
@@ -91,6 +92,9 @@
           <!--<o:eventEditorPage action="#{TimeTableBean.editEvent}"/>-->
           <o:eventEditorPage url="eventEditor.jsf"/>
         </f:facet>
+        <f:facet name="footer">
+          <o:daySwitcher/>
+        </f:facet>
         <f:facet name="deleteEventConfirmation">
           <o:confirmation message="Удалить этот ивэнт?" details="Нажми 'Да' если уверен что надо удалять"
                           okButtonText="Да" cancelButtonText="Нет"
@@ -144,7 +148,7 @@
     <o:tabbedPaneItem>
       <f:facet name="tab"><h:outputText value="Without resource separation"/></f:facet>
 
-      <o:dayTable id="dt3" events="#{TimeTableBean.simpleEvents}" style="height: 500px;" daySwitcherVisible="true"
+      <o:dayTable id="dt3" events="#{TimeTableBean.simpleEvents}" style="height: 500px;" 
               timetableChangeListener="#{TimeTableBean.processSimpleTimetableChanges}"
               dragAndDropTransitionPeriod="0"
               dragAndDropCancelingPeriod="0"
@@ -282,6 +286,16 @@
     </td></tr></table>
 
     </div>
+    <o:daySwitcher for="form:dt1"
+              previousButtonRolloverStyle="background:red"
+              previousButtonPressedStyle="background:blue"
+              rolloverStyle="background:yellow"/>
 
+    <o:daySwitcher for="form:dt1"
+                  enabled="false"/>
+
+    <o:daySwitcher for="form:dt1" pattern="MMMM, dd /yy" upperPattern=""/>
+
+    <o:daySwitcher for="form:dt1" pattern="" upperPattern="MM/dd"/>
 
 </div>

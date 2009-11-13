@@ -23066,18 +23066,6 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-
-    <attribute>
-      <description>A flag that indicates whether or not the day switching controls are displayed.</description>
-      <name>daySwitcherVisible</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default false -->
-      <!-- @el true -->
-    </attribute>
-
     <attribute>
       <description>Time the marks the start of the day period that will be shown in this DayTable component.
         By default the entire day's time is shown. The time should be specified as a string in the "HH:mm" format,
@@ -23256,6 +23244,42 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
 
+    <attribute>
+      <name>headerStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>headerClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>footerStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>footerClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
     <attribute>
       <name>resourceHeadersRowStyle</name>
       <deferred-value>
@@ -23579,6 +23603,365 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
 
+
+  </tag>
+
+  <tag>
+      <description>Displays a time-table for one day. A time-table consists of a set of events with different time spans
+        arranged within a day.
+      </description>
+      <name>daySwitcher</name>
+      <tag-class>org.openfaces.taglib.jsp.timetable.DaySwitcherJspTag</tag-class>
+      <body-content>JSP</body-content>
+      <attribute>
+        <description>A value-binding expression that associates the DaySwitcher with a backing bean property.</description>
+        <name>binding</name>
+        <deferred-value>
+          <type>org.openfaces.component.timetable.DaySwitcher</type>
+        </deferred-value>
+        <!-- @bindingType org.openfaces.component.timetable.DaySwitcher -->
+        <!-- @default null -->
+        <!-- @el only -->
+      </attribute>
+      <attribute>
+        <description>The component identifier.</description>
+        <name>id</name>
+        <deferred-value>
+          <type>java.lang.String</type>
+        </deferred-value>
+        <!-- @bindingType java.lang.String -->
+        <!-- @default null -->
+        <!-- @el false -->
+      </attribute>
+      <attribute>
+        <description>A flag that indicates whether or not the component is visible.</description>
+        <name>rendered</name>
+        <deferred-value>
+          <type>boolean</type>
+        </deferred-value>
+        <!-- @bindingType boolean -->
+        <!-- @default false -->
+        <!-- @el true -->
+      </attribute>
+    <attribute>
+      <description>ID of a DayTable component that should be synchronized with this component. It should be defined in
+        the same way as the "for" property of the standard HTMLOutputLabel component. If this attribute is not specified
+        then this filter component should be located inside of a DayTable component.
+      </description>
+      <name>for</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+          <description>This attribute defines which of the predefined date formats for a given locale should be used for text.
+          </description>
+          <name>dateFormat</name>
+          <deferred-value>
+            <type>java.lang.String</type>
+          </deferred-value>
+          <!-- @bindingType java.lang.String -->
+          <!-- @default "medium" -->
+          <!-- @value "short" the same as "SHORT" format in the java.text.DateFormat -->
+          <!-- @value "medium" the same as "MEDIUM" format in the java.text.DateFormat -->
+      <!-- @value "long" the same as "LONG" format in the java.text.DateFormat -->
+      <!-- @value "full" the same as "FULL" format in the java.text.DateFormat -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The date format with the pattern similar to that in the java.text.SimpleDateFormat
+        class.
+      </description>
+      <name>pattern</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>This attribute defines which of the predefined date formats for a given locale should be used for
+        upper text.
+      </description>
+      <name>upperDateFormat</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "medium" -->
+      <!-- @value "short" the same as "SHORT" format in the java.text.DateFormat -->
+      <!-- @value "medium" the same as "MEDIUM" format in the java.text.DateFormat -->
+      <!-- @value "long" the same as "LONG" format in the java.text.DateFormat -->
+      <!-- @value "full" the same as "FULL" format in the java.text.DateFormat -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The date format with the pattern similar to that in the
+        java.text.SimpleDateFormat class.
+      </description>
+      <name>upperPattern</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+
+    <attribute>
+      <description>The locale used by DateChooser component. You can specify the "locale" attribute
+        as a value-binding expression or as a String in "ll_CC_vv" format, where:&lt;br/&gt;
+        ll stands for the language - lowercase two-letter ISO-639 code.&lt;br/&gt;
+        CC stands for the country - uppercase two-letter ISO-3166 code (optional).&lt;br/&gt;
+        vv stands for the variant - vendor and browser specific code (optional).&lt;br/&gt;
+      </description>
+      <name>locale</name>
+      <deferred-value>
+        <type>java.util.Locale</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Locale -->
+      <!-- @default client's locale -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Time zone in which to interpret any time information in the date String. Value must be either a VB
+        expression that evaluates to a java.util.TimeZone instance, or a String that is a timezone ID as described in
+        the javadocs for java.util.TimeZone.getTimeZone().
+      </description>
+      <name>timeZone</name>
+      <deferred-value>
+        <type>java.util.TimeZone</type>
+      </deferred-value>
+      <!-- @bindingType java.util.TimeZone -->
+      <!-- @default The server's default time zone -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A flag that indicates whether or not the user can change selection.</description>
+      <name>enabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonRolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonPressedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonPressedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>previousButtonImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>nextButtonStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonRolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonPressedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonPressedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>nextButtonImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>textStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>textClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>textRolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>textRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <name>upperTextStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>upperTextClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>upperTextRolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>upperTextRolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @el true -->
+    </attribute>    
 
   </tag>
 

@@ -11,7 +11,6 @@
  */
 package org.openfaces.util;
 
-import org.openfaces.util.ValueBindings;
 import org.openfaces.component.input.DateChooser;
 
 import javax.faces.component.UIComponent;
@@ -20,6 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 /**
  * @author Andrew Palval
@@ -57,6 +57,19 @@ public class CalendarUtil {
     public static String getDatePattern(UIComponent component, String dateFormat, String pattern, Locale locale) {
         SimpleDateFormat sdf = (SimpleDateFormat) DateFormat.getDateInstance(convertToDateFormatStyle(dateFormat), locale);
         return ValueBindings.get(component, "pattern", pattern, sdf.toPattern());
+    }
+
+    public static SimpleDateFormat getSimpleDateFormat(String dateFormat, String pattern, String defaultPattern, Locale locale, TimeZone timeZone){
+        SimpleDateFormat sdf;
+        if (pattern != null) {
+            sdf = new SimpleDateFormat(pattern, locale);
+        }else if(dateFormat!=null){
+            sdf = (SimpleDateFormat) DateFormat.getDateInstance(convertToDateFormatStyle(dateFormat), locale);
+        }else{
+            sdf = new SimpleDateFormat(defaultPattern, locale);
+        }
+        sdf.setTimeZone(timeZone);
+        return sdf;
     }
 
     private static int convertToDateFormatStyle(String dateFormat) {

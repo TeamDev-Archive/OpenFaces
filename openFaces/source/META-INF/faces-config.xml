@@ -116,6 +116,11 @@
   </component>
 
   <component>
+    <component-type>org.openfaces.DaySwitcher</component-type>
+    <component-class>org.openfaces.component.timetable.DaySwitcher</component-class>
+  </component>
+
+  <component>
     <component-type>org.openfaces.TimetableEvent</component-type>
     <component-class>org.openfaces.component.timetable.UITimetableEvent</component-class>
   </component>
@@ -856,6 +861,12 @@
       <component-family>org.openfaces.DayTable</component-family>
       <renderer-type>org.openfaces.DayTableRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.timetable.DayTableRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>org.openfaces.DaySwitcher</component-family>
+      <renderer-type>org.openfaces.DaySwitcherRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.timetable.DaySwitcherRenderer</renderer-class>
     </renderer>
 
     <renderer>

@@ -331,6 +331,21 @@
   cursor: default;
 }
 
+.o_dayTable_header,
+.o_dayTable_footer{
+  padding: 0 40px;
+  width: 100%;
+  height: 50px;
+}
+
+.o_dayTable_header{
+  border-bottom: 1px solid gray;
+}
+
+.o_dayTable_footer{
+  border-top: 1px solid gray;
+}
+
 .o_tinyText {
   font-size: 0 ! important;
 }
@@ -1352,4 +1367,42 @@
 .o_fullWidthAndHeight {
   width: 100%;
   height: 100%;
+}
+
+/*Day Switcher*/
+.o_daySwitcher {
+  font-size: 16pt;
+  font-family: "Calibri", "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+  /*font-size:13pt;
+  font-family:MS Shell Dlg,Arial,sans-serif;*/
+}
+
+.o_daySwitcher_previous_button,
+  .o_daySwitcher_next_button {
+  cursor: pointer;
+}
+
+.o_daySwitcher_previous_button {
+  border-right: 1px solid lightgray;
+}
+
+.o_daySwitcher_next_button {
+  border-left: 1px solid lightgray;
+}
+
+.o_daySwitcher_previous_button img,
+  .o_daySwitcher_next_button img {  
+  padding: 0 5px;
+}
+
+.o_daySwitcher_upper_text {
+  font-size: .55em;
+  padding:0 0.5em;
+}
+
+.o_daySwitcher_text {
+  line-height:0.8em;
+  padding-bottom:0.2em;
+  padding-left:5px;
+  padding-right:5px;
 }

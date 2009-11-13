@@ -59,7 +59,6 @@ public class DayTable extends OUIObjectIteratorBase {
     private Boolean editable;
     private MethodExpression timetableChangeListener;
     private String onchange;
-    private Boolean daySwitcherVisible;
     private Date day;
 
 
@@ -74,6 +73,10 @@ public class DayTable extends OUIObjectIteratorBase {
     private String scrollTime;
     private TimeTextPosition timeTextPosition;
 
+    private String headerStyle;
+    private String headerClass;
+    private String footerStyle;
+    private String footerClass;
     private String resourceHeadersRowStyle;
     private String resourceHeadersRowClass;
     private String rowStyle;
@@ -134,7 +137,6 @@ public class DayTable extends OUIObjectIteratorBase {
                 editable,
                 saveAttachedState(context, timetableChangeListener),
                 onchange,
-                daySwitcherVisible,
                 day,
                 locale,
                 timeZone,
@@ -146,6 +148,10 @@ public class DayTable extends OUIObjectIteratorBase {
                 scrollTime,
                 timeTextPosition,
 
+                headerStyle,
+                headerClass,
+                footerStyle,
+                footerClass,
                 resourceHeadersRowStyle,
                 resourceHeadersRowClass,
                 rowStyle,
@@ -195,7 +201,6 @@ public class DayTable extends OUIObjectIteratorBase {
         editable = (Boolean) state[i++];
         timetableChangeListener = (MethodExpression) restoreAttachedState(context, state[i++]);
         onchange = (String) state[i++];
-        daySwitcherVisible = (Boolean) state[i++];
         day = (Date) state[i++];
         locale = (Locale) state[i++];
         timeZone = (TimeZone) state[i++];
@@ -207,6 +212,10 @@ public class DayTable extends OUIObjectIteratorBase {
         scrollTime = (String) state[i++];
         timeTextPosition = (TimeTextPosition) state[i++];
 
+        headerStyle = (String) state[i++];
+        headerClass = (String) state[i++];
+        footerStyle = (String) state[i++];
+        footerClass = (String) state[i++];
         resourceHeadersRowStyle = (String) state[i++];
         resourceHeadersRowClass = (String) state[i++];
         rowStyle = (String) state[i++];
@@ -266,15 +275,7 @@ public class DayTable extends OUIObjectIteratorBase {
 
     public void setEditable(boolean value) {
         editable = value;
-    }
-
-    public boolean isDaySwitcherVisible() {
-        return ValueBindings.get(this, "daySwitcherVisible", daySwitcherVisible, false);
-    }
-
-    public void setDaySwitcherVisible(boolean value) {
-        daySwitcherVisible = value;
-    }
+    }   
 
     public ValueExpression getEventsValueExpression() {
         return getValueExpression("events");
@@ -401,6 +402,38 @@ public class DayTable extends OUIObjectIteratorBase {
 
     public void setTimeTextPosition(TimeTextPosition timeTextPosition) {
         this.timeTextPosition = timeTextPosition;
+    }
+
+    public String getHeaderStyle() {
+        return ValueBindings.get(this, "headerStyle", headerStyle);
+    }
+
+    public void setHeaderStyle(String headerStyle) {
+        this.headerStyle = headerStyle;
+    }
+
+    public String getHeaderClass() {
+        return ValueBindings.get(this, "headerClass", headerClass);
+    }
+
+    public void setHeaderClass(String headerClass) {
+        this.headerClass = headerClass;
+    }
+
+    public String getFooterStyle() {
+        return ValueBindings.get(this, "footerStyle", footerStyle);
+    }
+
+    public void setFooterStyle(String footerStyle) {
+        this.footerStyle = footerStyle;
+    }
+
+    public String getFooterClass() {
+        return ValueBindings.get(this, "footerClass", footerClass);
+    }
+
+    public void setFooterClass(String footerClass) {
+        this.footerClass = footerClass;
     }
 
     public String getResourceHeadersRowStyle() {

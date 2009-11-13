@@ -679,6 +679,16 @@ if (!window.O$) {
     return newDate;
   };
 
+  O$._datesEqual = function(date1, date2) {
+    if (!date1)
+      return !date2;
+    if (!date2)
+      return false;
+    return date1.getDate() == date2.getDate() &&
+           date1.getMonth() == date2.getMonth() &&
+           date1.getFullYear() == date2.getFullYear();
+  };
+
   O$.minDefined = function(value1, value2) {
     if (value1 != undefined && value2 != undefined && !isNaN(value1) && !isNaN(value2))
       return Math.min(value1, value2);

@@ -65,8 +65,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         RenderingUtil.writeStandardEvents(writer, dayTable);
         writer.startElement("tbody", dayTable);
 
-        if (dayTable.isDaySwitcherVisible())
-            renderNavigationRow(context, dayTable, clientId);
+        renderHeader(context, dayTable, clientId);
 
         List<TimetableResource> resources = renderResourceHeadersRow(context, dayTable, clientId);
 
@@ -81,8 +80,13 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
 
         writer.endElement("td");
         writer.endElement("tr");
+
+        renderFooter(context, dayTable, clientId);
+
         writer.endElement("tbody");
         writer.endElement("table");
+
+        StyleUtil.renderStyleClasses(context, dayTable);
     }
 
     private void encodeActionBar(FacesContext context, DayTable dayTable) throws IOException {
@@ -112,31 +116,50 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         eventEditor.getAttributes().remove(EVENTEDITOR_RESOURCES_ATTR);
     }
 
+     private void renderHeader(FacesContext context, DayTable dayTable, String clientId) throws IOException {
+        UIComponent header = dayTable.getFacet("header");
+        if (header != null) {
+            ResponseWriter writer = context.getResponseWriter();
+            writer.startElement("tr", header);
+            writer.startElement("td", header);
+            writer.startElement("table", header);
+            String headerClass = StyleUtil.getCSSClass(context,
+                    dayTable, dayTable.getHeaderStyle(), "o_dayTable_header", dayTable.getHeaderClass());
+            writer.writeAttribute("class", headerClass, null);
 
-    private void renderNavigationRow(FacesContext context, DayTable dayTable, String clientId) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("tr", dayTable);
-        writer.startElement("td", dayTable);
+            writer.startElement("tr", header);
+            writer.startElement("td", header);
+            header.encodeAll(context);
+            writer.endElement("td");
+            writer.endElement("tr");
 
-        HtmlCommandButton prevBtn = ComponentUtil.createButtonFacet(context, dayTable, "prev", "Previous");
-        prevBtn.setId("_prev");
-        prevBtn.encodeAll(context);
-        writer.write(HTML.NBSP_ENTITY);
-        HtmlCommandButton nextBtn = ComponentUtil.createButtonFacet(context, dayTable, "next", "Next");
-        nextBtn.setId("_next");
-        nextBtn.encodeAll(context);
-        writer.write(HTML.NBSP_ENTITY);
-        HtmlCommandButton todayBtn = ComponentUtil.createButtonFacet(context, dayTable, "today", "Today");
-        todayBtn.setId("_today");
-        todayBtn.encodeAll(context);
-        writer.write(HTML.NBSP_ENTITY);
-        writer.startElement("span", dayTable);
-        writer.writeAttribute("white-space", "nowrap", null);
-        writer.writeAttribute("id", clientId + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "dayText", null);
-        writer.endElement("span");
+            writer.endElement("table");
+            writer.endElement("td");
+            writer.endElement("tr");
+        }
+    }
 
-        writer.endElement("td");
-        writer.endElement("tr");
+    private void renderFooter(FacesContext context, DayTable dayTable, String clientId) throws IOException {
+        UIComponent footer = dayTable.getFacet("footer");
+        if (footer != null) {
+            ResponseWriter writer = context.getResponseWriter();
+            writer.startElement("tr", footer);
+            writer.startElement("td", footer);
+            writer.startElement("table", footer);
+            String footerClass = StyleUtil.getCSSClass(context,
+                    dayTable, dayTable.getFooterStyle(), "o_dayTable_footer", dayTable.getFooterClass());
+            writer.writeAttribute("class", footerClass, null);
+
+            writer.startElement("tr", footer);
+            writer.startElement("td", footer);
+            footer.encodeAll(context);
+            writer.endElement("td");
+            writer.endElement("tr");
+            
+            writer.endElement("table");
+            writer.endElement("td");
+            writer.endElement("tr");
+        }
     }
 
     private List<TimetableResource> renderResourceHeadersRow(FacesContext context, final DayTable dayTable, String clientId) throws IOException {
@@ -182,7 +205,6 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         JSONObject editingOptionsObj = getEditingOptionsObj(dayTable);
         JSONObject stylingParams = getStylingParamsObj(context, dayTable);
 
-        StyleUtil.renderStyleClasses(context, dayTable);
         TimeZone timeZone = (dayTable.getTimeZone() != null)
                 ? dayTable.getTimeZone()
                 : TimeZone.getDefault();
@@ -224,7 +246,6 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
                     editable,
                     dayTable.getOnchange(),
                     editingOptionsObj,
-                    dayTable.isDaySwitcherVisible(),
                     stylingParams,
                     uiEvent != null ? uiEvent.toJSONObject(null) : null,
                     dayTable.getTimePattern(),

@@ -233,6 +233,15 @@
   </tag>
 
   <tag>
+    <tag-name>daySwitcher</tag-name>
+    <component>
+      <component-type>org.openfaces.DaySwitcher</component-type>
+      <renderer-type>org.openfaces.DaySwitcherRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.DaySwitcherTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
     <tag-name>timetableEvent</tag-name>
     <component>
       <component-type>org.openfaces.TimetableEvent</component-type>

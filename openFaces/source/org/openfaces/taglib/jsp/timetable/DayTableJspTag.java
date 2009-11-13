@@ -57,10 +57,6 @@ public class DayTableJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("preloadedEvents", value);
     }
 
-    public void setDaySwitcherVisible(ValueExpression daySwitcherVisible) {
-        getDelegate().setPropertyValue("daySwitcherVisible", daySwitcherVisible);
-    }
-
     public void setStartTime(ValueExpression value) {
         getDelegate().setPropertyValue("startTime", value);
     }
@@ -77,6 +73,21 @@ public class DayTableJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("timeTextPosition", value);
     }
 
+    public void setHeaderStyle(ValueExpression value) {
+        getDelegate().setPropertyValue("headerStyle", value);
+    }
+
+    public void setHeaderClass(ValueExpression value) {
+        getDelegate().setPropertyValue("headerClass", value);
+    }
+
+    public void setFooterStyle(ValueExpression value) {
+        getDelegate().setPropertyValue("footerStyle", value);
+    }
+
+    public void setFooterClass(ValueExpression value) {
+        getDelegate().setPropertyValue("footerClass", value);
+    }
 
     public void setResourceHeadersRowStyle(ValueExpression value) {
         getDelegate().setPropertyValue("resourceHeadersRowStyle", value);
