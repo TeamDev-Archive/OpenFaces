@@ -178,7 +178,8 @@ O$.Tables = {
       if (!tableRect.containsPoint(x, y))
         return null;
       var rows = table.body._getRows();
-      rows.forEach(function(row) {
+      for (var i = 0, count = rows.length; i < count; i++) {
+        var row = rows[i];
         var rowRect = O$.getElementBorderRectangle(row._rowNode, relativeToNearestContainingBlock, cachedDataContainer);
         if (rowRect.containsPoint(x, y))
           return row;
@@ -192,7 +193,7 @@ O$.Tables = {
           if (rowRect.containsPoint(x, y))
             return row;
         }
-      });
+      }
       return null;
     };
 
