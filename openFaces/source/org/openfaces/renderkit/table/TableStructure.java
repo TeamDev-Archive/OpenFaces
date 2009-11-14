@@ -120,6 +120,17 @@ public class TableStructure extends TableElement {
         return scrolling;
     }
 
+    /**
+     * @return true if the table needs to avoid rendering section tags (<thead>, <tbody> and <tfoot>), but simulate
+     * these sections while rendering only one <body> section. This is needed only in scrollable tables under Mozilla
+     * to handle table height properly (the "body" row has the "height: 100%" declaration, which increases overall table
+     * height when there is more than one table section -- hence the workaround -- render only one section and simulate
+     * the proper appearance).
+     */
+    public boolean isSimulatedSectionsMode() {
+        return scrolling != null && EnvironmentUtil.isMozilla();
+    }
+
     public int getLeftFixedCols() {
         return leftFixedCols;
     }
@@ -298,8 +309,7 @@ public class TableStructure extends TableElement {
             return false;
         HtmlOutputText outputText = (HtmlOutputText) child;
         Object value = outputText.getValue();
-        boolean result = (value == null || value.toString().trim().length() == 0);
-        return result;
+        return value == null || value.toString().trim().length() == 0;
     }
 
     static String getNoDataRowClassName(FacesContext facesContext, AbstractTable table) {
@@ -313,17 +323,16 @@ public class TableStructure extends TableElement {
     public JSONArray getInitParams(FacesContext facesContext, TableStyles defaultStyles) {
         UIComponent styleOwnerComponent = getComponent();
         boolean noDataRows = getBody().isNoDataRows();
-        TableParams params = new TableParams(styleOwnerComponent, this, noDataRows);
-        boolean forceUsingCellStyles = params.isForceUsingCellStyles();
+        boolean forceUsingCellStyles = getForceUsingCellStyles(styleOwnerComponent);
 
-        List columns = getColumns();
+        List<BaseColumn> columns = getColumns();
         TableStyles tableStyles = getTableStyles();
         Map<Object, String> rowStylesMap = getRowStylesMap();
         Map<Object, String> cellStylesMap = getCellStylesMap();
 
         JSONArray result = new JSONArray();
         result.put(getScrollingParam());
-        result.put(getColumnHierarchyParam(facesContext, columns, params));
+        result.put(getColumnHierarchyParam(facesContext, columns));
         result.put(getHeader().hasCommonHeaderRow());
         result.put(getHeader().hasSubHeader());
         result.put(getFooter().hasCommonHeaderRow());
@@ -358,7 +367,7 @@ public class TableStructure extends TableElement {
         return result;
     }
 
-    public static boolean getForceUsingCellStyles(UIComponent styleOwnerComponent) {
+    private static boolean getForceUsingCellStyles(UIComponent styleOwnerComponent) {
         boolean requireCellStylesForCorrectColWidthBehavior =
                 EnvironmentUtil.isSafari() || /* doesn't handle column width in TreeTable if width is applied to <col> tags */
                         EnvironmentUtil.isOpera(); /* DataTable, TreeTable are jerking when reloading them with OF Ajax if width is applied to <col> tags */
@@ -368,26 +377,26 @@ public class TableStructure extends TableElement {
         return forceUsingCellStyles;
     }
 
-    public static JSONArray getColumnHierarchyParam(
+    private JSONArray getColumnHierarchyParam(
             FacesContext facesContext,
-            List columns,
-            TableParams tableParams) {
+            List<BaseColumn> columns
+    ) {
         int colCount = columns.size();
         List[] columnHierarchies = new List[colCount];
         TableHeaderOrFooter.composeColumnHierarchies(columns, columnHierarchies, true, false);
 
         JSONArray columnHierarchyArray;
         try {
-            columnHierarchyArray = processColumnHierarchy(facesContext, columnHierarchies, 0, 0, colCount - 1, tableParams);
+            columnHierarchyArray = processColumnHierarchy(facesContext, columnHierarchies, 0, 0, colCount - 1);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
         return columnHierarchyArray;
     }
 
-    public static JSONArray processColumnHierarchy(
-            FacesContext context, List[] columnHierarchies, int level, int startCol, int finishCol,
-            TableParams tableParams) throws JSONException {
+    private JSONArray processColumnHierarchy(
+            FacesContext context, List[] columnHierarchies, int level, int startCol, int finishCol
+    ) throws JSONException {
         JSONArray columnsArray = new JSONArray();
         int thisGroupStart = -1;
         BaseColumn thisGroup = null;
@@ -401,11 +410,11 @@ public class TableStructure extends TableElement {
                 int thisGroupEnd = colIndex - 1;
                 List lastColumnHierarchy = columnHierarchies[thisGroupEnd];
 
-                JSONObject columnObj = getColumnParams(context, thisGroup, tableParams, thisGroupEnd, level);
+                JSONObject columnObj = getColumnParams(context, thisGroup, thisGroupEnd, level);
                 columnsArray.put(columnObj);
                 boolean hasSubColumns = lastColumnHierarchy.size() - 1 > level;
                 if (hasSubColumns) {
-                    JSONArray subColumns = processColumnHierarchy(context, columnHierarchies, level + 1, thisGroupStart, thisGroupEnd, tableParams);
+                    JSONArray subColumns = processColumnHierarchy(context, columnHierarchies, level + 1, thisGroupStart, thisGroupEnd);
                     columnObj.put("subColumns", subColumns);
                 }
                 thisGroup = columnOrGroup;
@@ -415,12 +424,12 @@ public class TableStructure extends TableElement {
         return columnsArray;
     }
 
-    public static JSONObject getColumnParams(FacesContext context, BaseColumn columnOrGroup,
-                                             TableParams tableParams, int colIndex, int level) throws JSONException {
+    private JSONObject getColumnParams(FacesContext context, BaseColumn columnOrGroup,
+                                       int colIndex, int level) throws JSONException {
         JSONObject columnObj = new JSONObject();
 
-        UIComponent styleOwnerComponent = tableParams.getStyleOwnerComponent();
-        boolean noDataRows = tableParams.isNoDataRows();
+        UIComponent styleOwnerComponent = getComponent();
+        boolean noDataRows = getBody().isNoDataRows();
         boolean ordinaryColumn = !(columnOrGroup instanceof TableColumnGroup);
 
         String defaultColumnStyleClass = getColumnDefaultClass(columnOrGroup);
@@ -455,8 +464,7 @@ public class TableStructure extends TableElement {
         if (hasCellWrappers)
             columnObj.put("hasCellWrappers", hasCellWrappers);
 
-        TableStructure tableStructure = tableParams.getTableStructure();
-        TableHeader tableHeader = tableStructure.getHeader();
+        TableHeader tableHeader = getHeader();
         CellCoordinates headerCellCoordinates = tableHeader.findCell(columnOrGroup, CellKind.COL_HEADER);
         if (headerCellCoordinates != null) {
             JSONObject header = new JSONObject();
@@ -496,7 +504,7 @@ public class TableStructure extends TableElement {
                     columnOrGroup.getBodyOnmouseout(),
                     columnOrGroup.getBodyOnmouseup());
         }
-        TableFooter tableFooter = tableStructure.getFooter();
+        TableFooter tableFooter = getFooter();
         CellCoordinates footerCellCoordinates = tableFooter.findCell(columnOrGroup, CellKind.COL_HEADER);
         if (footerCellCoordinates != null) {
             JSONObject footer = new JSONObject();
@@ -515,18 +523,18 @@ public class TableStructure extends TableElement {
         return columnObj;
     }
 
-    public static String getColumnDefaultClass(BaseColumn column) {
+    private String getColumnDefaultClass(BaseColumn column) {
         return (String) column.getAttributes().get("defaultStyle");
     }
 
-    public static void addJSONEntry(JSONArray array, String entry) {
+    private void addJSONEntry(JSONArray array, String entry) {
         if (entry != null)
             array.put(entry);
         else
             array.put(JSONObject.NULL);
     }
 
-    public static JSONArray getGridLineParams(TableStyles tableStyles, TableStyles defaultStyles) {
+    private JSONArray getGridLineParams(TableStyles tableStyles, TableStyles defaultStyles) {
         JSONArray result = new JSONArray();
         addJSONEntry(result, getHorizontalGridLines(tableStyles, defaultStyles));
         addJSONEntry(result, getVerticalGridLines(tableStyles, defaultStyles));
@@ -542,7 +550,7 @@ public class TableStructure extends TableElement {
         return result;
     }
 
-    public static JSONArray getRowStyleParams(
+    private JSONArray getRowStyleParams(
             FacesContext facesContext,
             TableStyles tableStyles,
             TableStyles defaultStyles,
@@ -622,21 +630,21 @@ public class TableStructure extends TableElement {
         appendHandlerEntry(columnObj, "onmouseup", onmouseup);
     }
 
-    public static String getFilterRowClass(TableStyles tableStyles) {
+    private String getFilterRowClass(TableStyles tableStyles) {
         if (!(tableStyles instanceof AbstractTable))
             return null;
         AbstractTable table = ((AbstractTable) tableStyles);
         return table.getFilterRowClass();
     }
 
-    public static String getFilterRowStyle(TableStyles tableStyles) {
+    private String getFilterRowStyle(TableStyles tableStyles) {
         if (!(tableStyles instanceof AbstractTable))
             return null;
         AbstractTable table = ((AbstractTable) tableStyles);
         return table.getFilterRowStyle();
     }
 
-    public static String getFilterRowSeparator(TableStyles tableStyles) {
+    private String getFilterRowSeparator(TableStyles tableStyles) {
         if (!(tableStyles instanceof AbstractTable))
             return null;
         AbstractTable table = ((AbstractTable) tableStyles);
@@ -646,7 +654,7 @@ public class TableStructure extends TableElement {
         return result;
     }
 
-    public static String getBodyOddRowClass(TableStyles table, TableStyles defaultStyles) {
+    private String getBodyOddRowClass(TableStyles table, TableStyles defaultStyles) {
         String bodyOddRowClass = table.getBodyOddRowClass();
         return TableUtil.getClassWithDefaultStyleClass(
                 defaultStyles != null,
@@ -740,33 +748,4 @@ public class TableStructure extends TableElement {
                 (table != null && table.getFilterRowSeparator() != null);
     }
 
-    public static class TableParams {
-        private UIComponent styleOwnerComponent;
-        private TableStructure tableStructure;
-        private boolean forceUsingCellStyles;
-        private boolean noDataRows;
-
-        public TableParams(UIComponent styleOwnerComponent, TableStructure tableStructure, boolean noDataRows) {
-            this.styleOwnerComponent = styleOwnerComponent;
-            this.tableStructure = tableStructure;
-            this.noDataRows = noDataRows;
-            this.forceUsingCellStyles = getForceUsingCellStyles(styleOwnerComponent);
-        }
-
-        public UIComponent getStyleOwnerComponent() {
-            return styleOwnerComponent;
-        }
-
-        public TableStructure getTableStructure() {
-            return tableStructure;
-        }
-
-        public boolean isForceUsingCellStyles() {
-            return forceUsingCellStyles;
-        }
-
-        public boolean isNoDataRows() {
-            return noDataRows;
-        }
-    }
 }

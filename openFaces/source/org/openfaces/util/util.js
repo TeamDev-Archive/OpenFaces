@@ -4082,7 +4082,8 @@ if (!window.O$) {
         }
         for (var propertyName in properties) {
           var propertyValue = properties[propertyName]();
-          O$.setElementEffectProperty(element, propertyName, propertyValue);
+          if (O$.getElementEffectProperty(element, propertyName) != propertyValue)
+            O$.setElementEffectProperty(element, propertyName, propertyValue);
         }
       }, interval),
 
