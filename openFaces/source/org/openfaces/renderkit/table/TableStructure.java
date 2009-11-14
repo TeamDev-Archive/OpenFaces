@@ -327,7 +327,6 @@ public class TableStructure extends TableElement {
 
     public JSONObject getInitParam(FacesContext facesContext, TableStyles defaultStyles) {
         UIComponent styleOwnerComponent = getComponent();
-        boolean noDataRows = getBody().isNoDataRows();
         boolean forceUsingCellStyles = getForceUsingCellStyles(styleOwnerComponent);
 
         List<BaseColumn> columns = getColumns();
@@ -341,12 +340,7 @@ public class TableStructure extends TableElement {
             putParam(result, "header", getHeader().getInitParam());
             putParam(result, "body", getBody().getInitParam());
             putParam(result, "footer", getFooter().getInitParam());
-
             putParam(result, "columns", getColumnHierarchyParam(facesContext, columns));
-            putParam(result, "commonHeaderExists", getHeader().hasCommonHeaderRow());
-            putParam(result, "subHeaderRowExists", getHeader().hasSubHeader());
-            putParam(result, "commonFooterExists", getFooter().hasCommonHeaderRow());
-            putParam(result, "noDataRows", noDataRows);
             putParam(result, "gridLines", getGridLineParams(tableStyles, defaultStyles));
             putParam(result, "rowStyles", getRowStyleParams(facesContext, tableStyles, defaultStyles, styleOwnerComponent));
             putParam(result, "rowStylesMap", TableUtil.getStylesMapAsJSONObject(rowStylesMap));
@@ -561,39 +555,33 @@ public class TableStructure extends TableElement {
         return result;
     }
 
-    private JSONArray getRowStyleParams(
+    private JSONObject getRowStyleParams(
             FacesContext facesContext,
             TableStyles tableStyles,
             TableStyles defaultStyles,
-            UIComponent styleOwnerComponent) {
+            UIComponent styleOwnerComponent) throws JSONException {
         AbstractTable table = tableStyles instanceof AbstractTable ? ((AbstractTable) tableStyles) : null;
 
-        JSONArray result = new JSONArray();
-        result.put(StyleUtil.getCSSClass(facesContext, styleOwnerComponent, tableStyles.getBodyRowStyle(),
+        JSONObject result = new JSONObject();
+        putParam(result, "bodyRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, tableStyles.getBodyRowStyle(),
                 StyleGroup.regularStyleGroup(), tableStyles.getBodyRowClass(),
                 defaultStyles != null ? defaultStyles.getBodyRowClass() : null));
-        result.put(StyleUtil.getCSSClass(facesContext, styleOwnerComponent, tableStyles.getBodyOddRowStyle(),
+        putParam(result, "bodyOddRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, tableStyles.getBodyOddRowStyle(),
                 getBodyOddRowClass(tableStyles, defaultStyles)));
         if (table != null)
-            result.put(StyleUtil.getCSSClass(facesContext, styleOwnerComponent, table.getRolloverRowStyle(),
+            putParam(result, "rolloverRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, table.getRolloverRowStyle(),
                     StyleGroup.rolloverStyleGroup(), table.getRolloverRowClass()));
-        else
-            result.put(JSONObject.NULL);
         if (table != null)
-            result.put(StyleUtil.getCSSClass(facesContext, styleOwnerComponent, table.getCommonHeaderRowStyle(),
+            putParam(result, "commonHeaderRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, table.getCommonHeaderRowStyle(),
                     StyleGroup.regularStyleGroup(), table.getCommonHeaderRowClass(), DEFAULT_HEADER_CELL_CLASS));
-        else
-            result.put(JSONObject.NULL);
-        result.put(StyleUtil.getCSSClass(facesContext, styleOwnerComponent, tableStyles.getHeaderRowStyle(),
+        putParam(result, "headerRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, tableStyles.getHeaderRowStyle(),
                 StyleGroup.regularStyleGroup(), tableStyles.getHeaderRowClass(), DEFAULT_HEADER_CELL_CLASS));
-        result.put(StyleUtil.getCSSClass(facesContext, styleOwnerComponent, getFilterRowStyle(tableStyles),
+        putParam(result, "subHeaderRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, getFilterRowStyle(tableStyles),
                 StyleGroup.regularStyleGroup(), getFilterRowClass(tableStyles), DEFAULT_FILTER_ROW_CELLS_CLASS));
         if (table != null)
-            result.put(StyleUtil.getCSSClass(facesContext, styleOwnerComponent,
+            putParam(result, "commonFooterRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent,
                     table.getCommonFooterRowStyle(), table.getCommonFooterRowClass()));
-        else
-            result.put(JSONObject.NULL);
-        result.put(StyleUtil.getCSSClass(facesContext, styleOwnerComponent,
+        putParam(result, "footerRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent,
                 tableStyles.getFooterRowStyle(), tableStyles.getFooterRowClass()));
         return result;
     }

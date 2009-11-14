@@ -166,7 +166,7 @@ O$._initDayTable = function(componentId,
   O$.Tables._init(table, {
     columns: columns,
     gridLines: [primaryRowSeparator, resourceColumnSeparator, null, null, null, null, null, null, null, null, null],
-    rowStyles: [dayTableRowClass, null, null, null, null, null, null, null],
+    rowStyles: {bodyRowClass: dayTableRowClass},
     forceUsingCellStyles: forceUsingCellStyles
   });
 
@@ -174,7 +174,7 @@ O$._initDayTable = function(componentId,
     O$.Tables._init(resourceHeadersTable, {
       columns: headerColumns,
       gridLines: [primaryRowSeparator, resourceColumnSeparator, null, null, null, null, null, null, null, null, null],
-      rowStyles: [resourceHeadersRowClass, null, null, null, null, null, null, null],
+      rowStyles: {bodyRowClass: resourceHeadersRowClass},
       forceUsingCellStyles: forceUsingCellStyles
     });
     resourceHeadersTable.style.borderBottom = resourceHeadersRowSeparator;

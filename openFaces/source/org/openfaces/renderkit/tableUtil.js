@@ -98,18 +98,7 @@ O$.Tables = {
     if (!params.rowStylesMap) params.rowStylesMap = {};
     if (!params.cellStylesMap) params.cellStylesMap = {};
     table._params = params;
-
-    (function(bodyRowClass, bodyOddRowClass, rolloverRowClass, commonHeaderRowClass, headerRowClass, subHeaderRowClass, commonFooterRowClass, footerRowClass) {
-      table._bodyRowClass = bodyRowClass;
-      table._bodyOddRowClass = bodyOddRowClass;
-      table._rolloverRowClass = rolloverRowClass;
-      table._commonHeaderRowClass = commonHeaderRowClass;
-      table._headerRowClass = headerRowClass;
-      table._subHeaderRowClass = subHeaderRowClass;
-      table._commonFooterRowClass = commonFooterRowClass;
-      table._footerRowClass = footerRowClass;
-    }).apply(null, params.rowStyles);
-
+    
     // initialize grid lines
     var tempIdx = 0;
     table._horizontalGridLines = params.gridLines[tempIdx++];
@@ -133,6 +122,8 @@ O$.Tables = {
               table._commonFooterSeparator ||
               table._headerHorizSeparator ||
               table._headerVertSeparator ||
+              table._multiHeaderSeparator ||
+              table._multiFooterSeparator ||
               table._subHeaderRowSeparator ||
               table._footerHorizSeparator ||
               table._footerVertSeparator;
@@ -166,7 +157,7 @@ O$.Tables = {
     if (table._params.scrolling)
       O$.Tables._initScrolling(table);
 
-    if (params.subHeaderRowExists) {
+    if (params.header && params.header.subHeaderExists) {
       var subHeaderRow = table.header._getRows()[table._subHeaderRowIndex];
       if (subHeaderRow._leftRowNode) O$.fixInputsWidthStrict(subHeaderRow._leftRowNode);
       O$.fixInputsWidthStrict(subHeaderRow._rowNode);
@@ -532,26 +523,26 @@ O$.Tables = {
       return section;
     };
 
-    table.header = initTableSection(table, table._params.header, "thead", table._params.commonHeaderExists ? true : undefined);
-    table.footer = initTableSection(table, table._params.footer, "tfoot", table._params.commonFooterExists ? false : undefined);
+    table.header = initTableSection(table, table._params.header, "thead", table._params.header.commonHeaderExists ? true : undefined);
+    table.footer = initTableSection(table, table._params.footer, "tfoot", table._params.footer.commonHeaderExists ? false : undefined);
     table.body = initTableSection(table, table._params.body, "tbody", undefined);
 
     var headRows = table.header._getRows();
     headRows.forEach(function(row) {
       O$.Tables._initRow(row);
     });
-    var commonHeaderRowIndex = table._params.commonHeaderExists ? 0 : -1;
-    var subHeaderRowIndex = table._params.subHeaderRowExists ? headRows.length - 1 : -1;
+    var commonHeaderRowIndex = table._params.header && table._params.header.commonHeaderExists ? 0 : -1;
+    var subHeaderRowIndex = table._params.header && table._params.header.subHeaderExists ? headRows.length - 1 : -1;
     table._subHeaderRowIndex = subHeaderRowIndex;
-    table._columnHeadersRowIndexRange = [commonHeaderRowIndex + 1, table._params.subHeaderRowExists ? headRows.length - 1 : headRows.length];
+    table._columnHeadersRowIndexRange = [commonHeaderRowIndex + 1, table._params.header && table._params.header.subHeaderExists ? headRows.length - 1 : headRows.length];
     table._commonHeaderRowIndex = commonHeaderRowIndex;
 
     if (commonHeaderRowIndex != -1)
-      O$.Tables._setRowStyle(headRows[commonHeaderRowIndex], {_commonHeaderRowClass: table._commonHeaderRowClass});
+      O$.Tables._setRowStyle(headRows[commonHeaderRowIndex], {commonHeaderRow: table._params.rowStyles.commonHeaderRow});
     if (subHeaderRowIndex != -1)
-      O$.Tables._setRowStyle(headRows[subHeaderRowIndex], {_subHeaderRowClass: table._subHeaderRowClass});
+      O$.Tables._setRowStyle(headRows[subHeaderRowIndex], {subHeaderRow: table._params.rowStyles.subHeaderRow});
     for (var i = table._columnHeadersRowIndexRange[0], end = table._columnHeadersRowIndexRange[1]; i < end; i++)
-      O$.Tables._setRowStyle(headRows[i], {_headerRowClass: table._headerRowClass});
+      O$.Tables._setRowStyle(headRows[i], {headerRow: table._params.rowStyles.headerRow});
 
     var visibleRowCount = 0;
     var bodyRows = table.body._getRows();
@@ -564,17 +555,17 @@ O$.Tables = {
     }
     var footRows = table.footer._getRows();
     var lastNonCommonFooter = footRows.length - 1;
-    if (table._params.commonFooterExists)
+    if (table._params.footer && table._params.footer.commonHeaderExists)
       lastNonCommonFooter--;
     for (rowIndex = 0, rowCount = footRows.length; rowIndex < rowCount; rowIndex++) {
       row = footRows[rowIndex];
       O$.Tables._initRow(row);
 
       if (rowIndex <= lastNonCommonFooter)
-        O$.Tables._setRowStyle(footRows[rowIndex], {_footerRowClass: table._footerRowClass});
+        O$.Tables._setRowStyle(footRows[rowIndex], {footerRow: table._params.rowStyles.footerRow});
     }
-    if (table._params.commonFooterExists)
-      O$.Tables._setRowStyle(footRows[footRows.length - 1], {_commonFooterRowClass: table._commonFooterRowClass});
+    if (table._params.footer && table._params.footer.commonHeaderExists)
+      O$.Tables._setRowStyle(footRows[footRows.length - 1], {commonFooterRow: table._params.rowStyles.commonFooterRow});
   },
 
   _setRowStyle: function(row, styleMappings) {
@@ -613,7 +604,7 @@ O$.Tables = {
       row._visible = table._params.invisibleRowsAllowed ? O$.getElementStyleProperty(row._rowNode, "display") != "none" : true;
 
     row._mouseIsOver = false;
-    if (!table._params.noDataRows && table._rolloverRowClass) {
+    if (!table._params.body.noDataRows && table._params.rowStyles.rolloverRow) {
       function addEventHandler(row, event, handler) {
         O$.addEventHandlerSimple(row._rowNode, event, handler);
         if (row._leftRowNode)
@@ -681,10 +672,10 @@ O$.Tables = {
 
     function reinitializeStyle(visibleRowsBefore) {
       var rowClass;
-      if (!table._params.noDataRows)
+      if (!table._params.body.noDataRows)
         rowClass = (visibleRowsBefore % 2 == 0)
-                ? table._bodyRowClass
-                : (table._bodyOddRowClass ? table._bodyOddRowClass : table._bodyRowClass);
+                ? table._params.rowStyles.bodyRow
+                : (table._params.rowStyles.bodyOddRow ? table._params.rowStyles.bodyOddRow : table._params.rowStyles.bodyRow);
       else
         rowClass = null;
 
@@ -731,7 +722,7 @@ O$.Tables = {
       var rowTable = this._table;
       var addedClassName = O$.combineClassNames([
         this._selected ? rowTable._selectionClass : null,
-        this._mouseIsOver ? rowTable._rolloverRowClass : null]);
+        this._mouseIsOver ? rowTable._params.rowStyles.rolloverRow : null]);
       if (row._addedClassName == addedClassName)
         return;
       row._addedClassName = addedClassName;
@@ -938,7 +929,7 @@ O$.Tables = {
     var headRows = tableHeader._getRows();
     if (headRows.length > 0) {
       tableHeader._updateCommonHeaderSeparator = function() {
-        if (!table._params.commonHeaderExists)
+        if (!(table._params.header && table._params.header.commonHeaderExists))
           return;
         var commonHeaderRow = headRows[0];
         var commonHeaderCell = commonHeaderRow._cells[0];
@@ -947,13 +938,14 @@ O$.Tables = {
 
       function getLastRowCells(lastBeforeSubHeader) {
         var lastRowCells;
-        if (table._params.subHeaderRowExists && !lastBeforeSubHeader)
+        if (table._params.header && table._params.header.subHeaderExists && !lastBeforeSubHeader)
           lastRowCells = headRows[headRows.length - 1]._cells;
         else {
           lastRowCells = [];
           // This algorithm searches for the cells adjacent with the header section's bottom edge. It is simplified based
           // on the fact that all the vertically-spanned cells rendered on the server-side always extend to the bottom.
-          for (var i = 0, count = headRows.length - (table._params.subHeaderRowExists ? 1 : 0); i < count; i++) {
+          for (var i = 0, count = headRows.length - (table._params.header && table._params.header.subHeaderExists ? 1 : 0);
+               i < count; i++) {
             var row = headRows[i];
             var cells = row._cells;
             for (var j = 0, jcount = cells.length; j < jcount; j++) {
@@ -975,7 +967,7 @@ O$.Tables = {
 
       };
       tableHeader._updateSubHeaderRowSeparatorStyle = function() {
-        if (!table._params.subHeaderRowExists)
+        if (!table._params.header || !table._params.header.subHeaderExists)
           return;
         // it is essential to assign bottom border of a row above the sub-header rather than top border of the sub-header
         // row itself because otherwise IE will make a one-pixel space between vertical separators and this horizontal line
@@ -987,7 +979,7 @@ O$.Tables = {
       };
 
       tableHeader._updateColumnSeparatorStyles = function() {
-        var subHeaderRow = table._params.subHeaderRowExists ? headRows[table._subHeaderRowIndex] : null;
+        var subHeaderRow = table._params.header && table._params.header.subHeaderExists ? headRows[table._subHeaderRowIndex] : null;
         var subHeaderRowCells = subHeaderRow ? subHeaderRow._cells : null;
 
         function setHeaderVerticalGridlines(parentGroup) {
@@ -1043,7 +1035,7 @@ O$.Tables = {
       };
 
       tableFooter._updateCommonFooterSeparator = function() {
-        if (!table._params.commonFooterExists)
+        if (!(table._params.footer && table._params.footer.commonHeaderExists))
           return;
         var footerRows = table.footer._getRows();
         var commonFooterRow = footerRows[footerRows.length - 1];
@@ -1431,7 +1423,7 @@ O$.Tables = {
       var rowIndex = row._index;
       var colIndex = column._colIndex;
 
-      if (!table._params.noDataRows) {
+      if (!table._params.body.noDataRows) {
         O$.Tables._applySimulatedColStylesToCell(cell);
       }
 
@@ -1441,7 +1433,7 @@ O$.Tables = {
         cellStyleMappings._rowIndividualClass = table._params.rowStylesMap[row._index];
       }
 
-      if (table._params.noDataRows) {
+      if (table._params.body.noDataRows) {
         O$.Tables._assignNoDataCellStyle(cell);
       } else {
         var cellKey = rowIndex + "x" + colIndex;
@@ -1475,11 +1467,14 @@ O$.Tables = {
       return true;
 
     var useCellStylesToAvoidApplyingFirstColStyleToCommonHeader =
-            column._colIndex == 0 && (table._params.commonHeaderExists || table._params.commonFooterExists);
+            column._colIndex == 0 && (
+                    (table._params.header && table._params.header.commonHeaderExists) ||
+                    (table._params.footer && table._params.footer.commonHeaderExists)
+                    );
 
     // cell styles should be used instead of col tag style for first column if there is a no-data message row,
     // otherwise first col style will be applied to the no-data message row, which shouldn't be the case (JSFC-2890)
-    var useFirstColumnCellStylesWhenNoData = table._params.noDataRows && column._colIndex == 0;
+    var useFirstColumnCellStylesWhenNoData = table._params.body.noDataRows && column._colIndex == 0;
 
     return useCellStylesToAvoidApplyingFirstColStyleToCommonHeader || useFirstColumnCellStylesWhenNoData;
   },
@@ -1531,7 +1526,7 @@ O$.Tables = {
         if (subHeaderCell)
           O$.Tables._assignColumnCellEvents(subHeaderCell, compoundGeneralEvents, column.subHeader);
 
-        if (!column.subColumns && column.body && !table._params.noDataRows) {
+        if (!column.subColumns && column.body && !table._params.body.noDataRows) {
           var bodyCells = column.body ? column.body._cells : [];
           for (var bodyCellIndex = 0, cellCount = bodyCells.length; bodyCellIndex < cellCount; bodyCellIndex++) {
             var cell = bodyCells[bodyCellIndex];

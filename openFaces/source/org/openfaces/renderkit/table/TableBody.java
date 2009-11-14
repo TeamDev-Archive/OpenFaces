@@ -68,6 +68,7 @@ public class TableBody extends TableSection {
         String bodyClass = StyleUtil.getCSSClass(FacesContext.getCurrentInstance(),
                 tableStructure.getComponent(), table.getBodySectionStyle(), table.getBodySectionClass());
         result.put("className", bodyClass);
+        result.put("noDataRows", isNoDataRows());
     }
 
     public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {

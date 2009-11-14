@@ -272,10 +272,6 @@ public abstract class TableHeaderOrFooter extends TableSection {
         return !commonHeaderSpecified && !columnHeadersSpecified && !hasSubHeader;
     }
 
-    public boolean hasCommonHeaderRow() {
-        return commonHeaderRow != null;
-    }
-
     public boolean hasSubHeader() {
         return hasSubHeader;
     }
@@ -295,6 +291,8 @@ public abstract class TableHeaderOrFooter extends TableSection {
         if (!RenderingUtil.isNullOrEmpty(sectionClass))
             result.put("className", sectionClass);
         result.put("rowCount", allRows.size());
+        result.put("commonHeaderExists", commonHeaderRow != null);
+        result.put("subHeaderExists", hasSubHeader());
     }
 
     public void render(FacesContext facesContext,
@@ -334,15 +332,15 @@ public abstract class TableHeaderOrFooter extends TableSection {
     public CellCoordinates findCell(BaseColumn column, CellKind cellKind) {
         TableStructure tableStructure = getParent(TableStructure.class);
         if (tableStructure.getScrolling() == null) {
-            boolean skipFirstRow = isHeader ? hasCommonHeaderRow() : hasSubHeader;
+            boolean skipFirstRow = isHeader ? commonHeaderRow != null : hasSubHeader;
             List<HeaderRow> columnHeaderRows = allRows.subList(skipFirstRow ? 1 : 0, allRows.size());
             CellCoordinates cellCoordinates = findCell(column, columnHeaderRows, cellKind);
-            if (cellCoordinates != null && isHeader && hasCommonHeaderRow())
+            if (cellCoordinates != null && isHeader && commonHeaderRow != null)
                 cellCoordinates.setRowIndex(cellCoordinates.getRowIndex() + 1);
             return cellCoordinates;
         } else {
             HeaderRow row = allRows.get(isHeader
-                    ? (hasCommonHeaderRow() ? 1 : 0)
+                    ? (commonHeaderRow != null ? 1 : 0)
                     : 0
             );
             List<HeaderCell> cells = row.getCells();

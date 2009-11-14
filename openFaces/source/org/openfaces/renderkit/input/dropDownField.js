@@ -47,7 +47,7 @@ O$.DropDownField = {
 
     var innerTable = O$(popup.id + "::innerTable");
     innerTable._selectionClass = rolloverPopupItemClass;
-    innerTable._rolloverRowClass = null;
+    popupTableStructureAndStyleParams.rowStyles.rolloverRow = null;
     dropDown._initListStyles = function() {
       var oldCursor = document.body.style.cursor;
       document.body.style.cursor = "progress";
@@ -328,8 +328,10 @@ O$.DropDownField = {
     };
     if (itemValues) {
       dropDown._initItems(itemValues);
-      var tableParams = innerTable._params ? innerTable._params : popupTableStructureAndStyleParams;
-      dropDown._addCachedSuggestions(null, dropDown._items, tableParams.rowStylesMap, tableParams.cellStylesMap, itemValues);
+      dropDown._addCachedSuggestions(null, dropDown._items,
+              popupTableStructureAndStyleParams.rowStylesMap, 
+              popupTableStructureAndStyleParams.cellStylesMap,
+              itemValues);
     }
 
     //  O$.DropDownField._onLoadHandler(dropDown.id);
