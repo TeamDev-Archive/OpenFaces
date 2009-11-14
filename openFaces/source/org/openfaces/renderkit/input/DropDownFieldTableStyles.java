@@ -202,11 +202,19 @@ public class DropDownFieldTableStyles implements TableStyles {
         return null;
     }
 
+    public String getBodySectionStyle() {
+        return null;
+    }
+
     public String getFooterSectionStyle() {
         return null;
     }
 
     public String getHeaderSectionStyle() {
+        return null;
+    }
+
+    public String getBodySectionClass() {
         return null;
     }
 

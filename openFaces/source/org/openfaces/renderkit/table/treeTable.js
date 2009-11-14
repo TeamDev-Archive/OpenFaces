@@ -267,7 +267,7 @@ O$.TreeTable = {
     }
 
     treeTable.__parentRowIndex = parentRowIndex;
-    var scrolling = treeTable._scrolling;
+    var scrolling = treeTable._params._scrolling;
     if (scrolling) {
       var compositeRows = [];
       var i = 0, count = newRows.length;

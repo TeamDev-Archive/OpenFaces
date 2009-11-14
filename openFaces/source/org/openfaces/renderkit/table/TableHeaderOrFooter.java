@@ -15,8 +15,11 @@ import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.Scrolling;
 import org.openfaces.component.table.TableColumn;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.org.json.JSONObject;
+import org.openfaces.org.json.JSONException;
 import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -29,7 +32,7 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class TableHeaderOrFooter extends TableElement {
+public abstract class TableHeaderOrFooter extends TableSection {
     private boolean isHeader;
 
     private HeaderRow commonHeaderRow;
@@ -277,21 +280,31 @@ public abstract class TableHeaderOrFooter extends TableElement {
         return hasSubHeader;
     }
 
+    @Override
+    protected void fillInitParam(JSONObject result) throws JSONException {
+        TableStructure tableStructure = getParent(TableStructure.class);
+        TableStyles tableStyles = tableStructure.getTableStyles();
+        String sectionClass = StyleUtil.getCSSClass(FacesContext.getCurrentInstance(), tableStructure.getComponent(),
+                isHeader ? tableStyles.getHeaderSectionStyle() : tableStyles.getFooterSectionStyle(),
+                isHeader ? tableStyles.getHeaderSectionClass() : tableStyles.getFooterSectionClass());
+        sectionClass = TableUtil.getClassWithDefaultStyleClass(
+                tableStyles.getApplyDefaultStyle(),
+                isHeader ? TableUtil.DEFAULT_HEADER_SECTION_CLASS : TableUtil.DEFAULT_FOOTER_SECTION_CLASS,
+                sectionClass);
+
+        if (!RenderingUtil.isNullOrEmpty(sectionClass))
+            result.put("className", sectionClass);
+        result.put("rowCount", allRows.size());
+    }
+
     public void render(FacesContext facesContext,
                        HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
         TableStructure tableStructure = getParent(TableStructure.class);
         UIComponent component = tableStructure.getComponent();
-        TableStyles tableStyles = tableStructure.getTableStyles();
-
         ResponseWriter writer = facesContext.getResponseWriter();
+
         String sectionTag = isHeader ? "thead" : "tfoot";
         writer.startElement(sectionTag, component);
-        String sectionClass = TableUtil.getClassWithDefaultStyleClass(
-                tableStyles.getApplyDefaultStyle(),
-                isHeader ? TableUtil.DEFAULT_HEADER_SECTION_CLASS : TableUtil.DEFAULT_FOOTER_SECTION_CLASS,
-                isHeader ? tableStyles.getHeaderSectionClass() : tableStyles.getFooterSectionClass());
-        String sectionStyle = isHeader ? tableStyles.getHeaderSectionStyle() : tableStyles.getFooterSectionStyle();
-        RenderingUtil.writeStyleAndClassAttributes(writer, sectionStyle, sectionClass);
         RenderingUtil.writeNewLine(writer);
 
         for (int i = 0, count = allRows.size(); i < count; i++) {
@@ -306,6 +319,7 @@ public abstract class TableHeaderOrFooter extends TableElement {
         return lastVisibleColHeadersRow;
     }
 
+
     public int getSubHeaderRowIndex() {
         if (!hasSubHeader())
             return -1;
@@ -316,7 +330,6 @@ public abstract class TableHeaderOrFooter extends TableElement {
             subHeaderRowIndex++;
         return subHeaderRowIndex;
     }
-
 
     public CellCoordinates findCell(BaseColumn column, CellKind cellKind) {
         TableStructure tableStructure = getParent(TableStructure.class);

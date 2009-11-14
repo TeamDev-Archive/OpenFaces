@@ -63,7 +63,6 @@ O$._initDayTable = function(componentId,
   var reservedTimeEventColor = stylingParams.reservedTimeEventColor ? stylingParams.reservedTimeEventColor : "#b0b0b0";
   var reservedTimeEventClass = O$.combineClassNames(["o_reservedTimeEvent", stylingParams.reservedTimeEventClass]);
 
-  var shortestEventTime = 1000 * 60 * 5; // 5 minutes
   var shortestEventTimeWhileResizing = 1000 * 60 * minorTimeInterval;
 
   if (!uiEvent)
@@ -82,7 +81,6 @@ O$._initDayTable = function(componentId,
 
   var eventResizeHandleHeight = O$.calculateNumericCSSValue("6px");
 
-  var showFullHours = true;
   var showTimeAgainstMark = stylingParams.timeTextPosition && stylingParams.timeTextPosition == "againstMark";
 
   var resourceHeadersRowClass = O$.combineClassNames(["o_resourceHeadersRow", stylingParams.resourceHeadersRowClass]);
@@ -164,18 +162,21 @@ O$._initDayTable = function(componentId,
   }
 
   var forceUsingCellStyles = true; // allow such styles as text-align to be applied to row's cells
-  O$.Tables._init.apply(table, [
-    null, columns, false, false, false, false,
-    [primaryRowSeparator, resourceColumnSeparator, null, null, null, null, null, null, null, null, null],
-    [dayTableRowClass, null, null, null, null, null, null, null], {}, {}, forceUsingCellStyles,
-    null, false]);
+  
+  O$.Tables._init(table, {
+    columns: columns,
+    gridLines: [primaryRowSeparator, resourceColumnSeparator, null, null, null, null, null, null, null, null, null],
+    rowStyles: [dayTableRowClass, null, null, null, null, null, null, null],
+    forceUsingCellStyles: forceUsingCellStyles
+  });
 
   if (useResourceSeparation) {
-    O$.Tables._init.apply(resourceHeadersTable, [
-      null, headerColumns, false, false, false, false,
-      [primaryRowSeparator, resourceColumnSeparator, null, null, null, null, null, null, null, null, null],
-      [resourceHeadersRowClass, null, null, null, null, null, null, null], {}, {}, forceUsingCellStyles,
-      null, false]);
+    O$.Tables._init(resourceHeadersTable, {
+      columns: headerColumns,
+      gridLines: [primaryRowSeparator, resourceColumnSeparator, null, null, null, null, null, null, null, null, null],
+      rowStyles: [resourceHeadersRowClass, null, null, null, null, null, null, null],
+      forceUsingCellStyles: forceUsingCellStyles
+    });
     resourceHeadersTable.style.borderBottom = resourceHeadersRowSeparator;
   }
 
@@ -972,7 +973,7 @@ O$._initDayTable = function(componentId,
 
     if (editable) {
       eventElement.onclick = function(e) {
-        O$.breakEvent(e)
+        O$.breakEvent(e);
         if (event._draggingInProgress)
           return;
         if (event.type == "reserved")
@@ -1039,8 +1040,6 @@ O$._initDayTable = function(componentId,
     var actionsAreaHeight = actionBar._actionsArea._getHeight();
     if (barHeight < actionsAreaHeight)
       barHeight = actionsAreaHeight;
-    var borderBottomWidth = O$.getNumericStyleProperty(eventElement, "border-bottom-width");
-    var borderTopWidth = O$.getNumericStyleProperty(eventElement, "border-top-width");
     var borderLeftWidth = O$.getNumericStyleProperty(eventElement, "border-left-width");
     var borderRightWidth = O$.getNumericStyleProperty(eventElement, "border-right-width");
     O$.setElementSize(actionBar, {width: eventElement._rect.width - borderLeftWidth - borderRightWidth,

@@ -97,7 +97,11 @@ public interface TableStyles {
 
     UIComponent getFooter();
 
+    String getBodySectionStyle();
+
     String getHeaderSectionStyle();
+
+    String getBodySectionClass();
 
     String getHeaderSectionClass();
 

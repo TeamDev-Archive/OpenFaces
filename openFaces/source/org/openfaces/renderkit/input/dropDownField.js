@@ -41,7 +41,6 @@ O$.DropDownField = {
 
     dropDown.value = field.value;
 
-    // todo
     dropDown._keyNavigationStarted = false;
     dropDown._popupTimeout = popupTimeout;
     dropDown._highlightedItemIndex = -1;
@@ -52,7 +51,7 @@ O$.DropDownField = {
     dropDown._initListStyles = function() {
       var oldCursor = document.body.style.cursor;
       document.body.style.cursor = "progress";
-      O$.Tables._init.apply(innerTable, popupTableStructureAndStyleParams);
+      O$.Tables._init(innerTable, popupTableStructureAndStyleParams);
       document.body.style.cursor = oldCursor;
       O$.repaintWindowForSafari(true);
     };
@@ -286,7 +285,7 @@ O$.DropDownField = {
     };
 
     if (!O$.isSafari()) { // safari can't scroll popup with focus reacquiring functionality
-      if (O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/ || O$.isExplorer()) {
+      if (O$.isMozillaFF() || O$.isExplorer()) {
         popup.onmousedown = function() {
           dropDown._reacquireFocus = true;
         };
@@ -329,7 +328,8 @@ O$.DropDownField = {
     };
     if (itemValues) {
       dropDown._initItems(itemValues);
-      dropDown._addCachedSuggestions(null, dropDown._items, innerTable._rowStylesMap, innerTable._cellStylesMap, itemValues);
+      var tableParams = innerTable._params ? innerTable._params : popupTableStructureAndStyleParams;
+      dropDown._addCachedSuggestions(null, dropDown._items, tableParams.rowStylesMap, tableParams.cellStylesMap, itemValues);
     }
 
     //  O$.DropDownField._onLoadHandler(dropDown.id);
@@ -746,7 +746,6 @@ O$.DropDownField = {
 
   },
 
-  // todo check is it still needed
   _fixSize: function(dropDown) {
     var field = dropDown._field;
     if (field.clientWidth > 0) {

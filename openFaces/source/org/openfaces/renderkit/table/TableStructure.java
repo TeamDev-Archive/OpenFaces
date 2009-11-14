@@ -313,14 +313,19 @@ public class TableStructure extends TableElement {
     }
 
     static String getNoDataRowClassName(FacesContext facesContext, AbstractTable table) {
-        String styleClassesStr = StyleUtil.getCSSClass(
-                facesContext, table, table.getNoDataRowStyle(), table.getApplyDefaultStyle() ? DEFAULT_NO_DATA_ROW_CLASS : null, table.getNoDataRowClass()
+        return StyleUtil.getCSSClass(facesContext, table,
+                table.getNoDataRowStyle(),
+                table.getApplyDefaultStyle() ? DEFAULT_NO_DATA_ROW_CLASS : null,
+                table.getNoDataRowClass()
         );
-        return styleClassesStr;
     }
 
+    private void putParam(JSONObject obj, String paramName, Object paramValue) throws JSONException {
+        if (paramValue != null)
+            obj.put(paramName, paramValue);
+    }
 
-    public JSONArray getInitParams(FacesContext facesContext, TableStyles defaultStyles) {
+    public JSONObject getInitParam(FacesContext facesContext, TableStyles defaultStyles) {
         UIComponent styleOwnerComponent = getComponent();
         boolean noDataRows = getBody().isNoDataRows();
         boolean forceUsingCellStyles = getForceUsingCellStyles(styleOwnerComponent);
@@ -330,25 +335,31 @@ public class TableStructure extends TableElement {
         Map<Object, String> rowStylesMap = getRowStylesMap();
         Map<Object, String> cellStylesMap = getCellStylesMap();
 
-        JSONArray result = new JSONArray();
-        result.put(getScrollingParam());
-        result.put(getColumnHierarchyParam(facesContext, columns));
-        result.put(getHeader().hasCommonHeaderRow());
-        result.put(getHeader().hasSubHeader());
-        result.put(getFooter().hasCommonHeaderRow());
-        result.put(noDataRows);
-        result.put(getGridLineParams(tableStyles, defaultStyles));
-        result.put(getRowStyleParams(facesContext, tableStyles, defaultStyles, styleOwnerComponent));
-        result.put(TableUtil.getStylesMapAsJSONObject(rowStylesMap));
-        result.put(TableUtil.getStylesMapAsJSONObject(cellStylesMap));
-        result.put(forceUsingCellStyles);
-        if (tableStyles instanceof TreeTable)
-            result.put(StyleUtil.getCSSClass(facesContext, (UIComponent) tableStyles, ADDITIONAL_CELL_WRAPPER_STYLE,
-                    StyleGroup.disabledStyleGroup(10), null));
-        else
-            result.put(JSONObject.NULL);
-        result.put(tableStyles instanceof TreeTable);
-        return result;
+        try {
+            JSONObject result = new JSONObject();
+            putParam(result, "scrolling", getScrollingParam());
+            putParam(result, "header", getHeader().getInitParam());
+            putParam(result, "body", getBody().getInitParam());
+            putParam(result, "footer", getFooter().getInitParam());
+
+            putParam(result, "columns", getColumnHierarchyParam(facesContext, columns));
+            putParam(result, "commonHeaderExists", getHeader().hasCommonHeaderRow());
+            putParam(result, "subHeaderRowExists", getHeader().hasSubHeader());
+            putParam(result, "commonFooterExists", getFooter().hasCommonHeaderRow());
+            putParam(result, "noDataRows", noDataRows);
+            putParam(result, "gridLines", getGridLineParams(tableStyles, defaultStyles));
+            putParam(result, "rowStyles", getRowStyleParams(facesContext, tableStyles, defaultStyles, styleOwnerComponent));
+            putParam(result, "rowStylesMap", TableUtil.getStylesMapAsJSONObject(rowStylesMap));
+            putParam(result, "cellStylesMap", TableUtil.getStylesMapAsJSONObject(cellStylesMap));
+            putParam(result, "forceUsingCellStyles", forceUsingCellStyles);
+            if (tableStyles instanceof TreeTable)
+                putParam(result, "additionalCellWrapperStyle", StyleUtil.getCSSClass(facesContext, (UIComponent) tableStyles, ADDITIONAL_CELL_WRAPPER_STYLE,
+                        StyleGroup.disabledStyleGroup(10), null));
+            putParam(result, "invisibleRowsAllowed", tableStyles instanceof TreeTable);
+            return result;
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Object getScrollingParam() {

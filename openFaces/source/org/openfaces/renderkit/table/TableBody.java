@@ -18,8 +18,11 @@ import org.openfaces.component.table.TableColumn;
 import org.openfaces.component.table.TableRow;
 import org.openfaces.component.table.TreeColumn;
 import org.openfaces.component.table.Scrolling;
+import org.openfaces.component.TableStyles;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.StyleUtil;
+import org.openfaces.org.json.JSONObject;
+import org.openfaces.org.json.JSONException;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -38,7 +41,7 @@ import java.util.Map;
 /**
  * @author Dmitry Pikhulya
  */
-public class TableBody extends TableElement {
+public class TableBody extends TableSection {
     public static final String CUSTOM_ROW_INDEX_ATTRIBUTE = "_customRowIndex";
     public static final String CUSTOM_CELL_INDEX_ATTRIBUTE = "_customCellIndex";
     
@@ -60,13 +63,19 @@ public class TableBody extends TableElement {
         return noDataRows;
     }
 
+    protected void fillInitParam(JSONObject result) throws JSONException {
+        TableStyles table = tableStructure.getTableStyles();
+        String bodyClass = StyleUtil.getCSSClass(FacesContext.getCurrentInstance(),
+                tableStructure.getComponent(), table.getBodySectionStyle(), table.getBodySectionClass());
+        result.put("className", bodyClass);
+    }
+
     public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         AbstractTable table = (AbstractTable) tableStructure.getComponent();
         List<BaseColumn> columns = table.getColumnsForRendering();
 
         writer.startElement("tbody", table);
-        RenderingUtil.writeStyleAndClassAttributes(writer, table.getBodySectionStyle(), table.getBodySectionClass());
         RenderingUtil.writeNewLine(writer);
 
         int first = table.getFirst();

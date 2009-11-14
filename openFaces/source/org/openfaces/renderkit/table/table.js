@@ -52,7 +52,7 @@ O$.Table = {
     table._useAjax = useAjax;
 
     try {
-      O$.Tables._init.apply(table, initParams);
+      O$.Tables._init(table, initParams);
     } finally {
       table.style.visibility = "visible";
       // can't just exclude the "o_initially_invisible" from table.className because of IE issue (JSFC-2337)
@@ -170,7 +170,7 @@ O$.Table = {
       this._setSelectedItems(rowIndexes);
     };
     table.__getRowCount = function() {
-      if (this._noDataRows)
+      if (this._params.noDataRows)
         return 0;
       var bodyRows = this.body._getRows();
       return bodyRows.length;
@@ -561,7 +561,7 @@ O$.Table = {
     table._selectionInitialized = true;
 
     // initialize fields
-    table._selectionEnabled = !table._noDataRows && enabled;
+    table._selectionEnabled = !table._params.noDataRows && enabled;
     table._selectableItems = selectableItems;
     table._multipleSelectionAllowed = multipleSelectionAllowed;
     table._selectionClass = selectionClass;
@@ -659,7 +659,7 @@ O$.Table = {
     table._selectAllItems = function() {
       O$.assert(this._multipleSelectionAllowed, "table._selectAllItems: multiple selection is not allowed for table: " + this.id);
 
-      if (this._noDataRows)
+      if (this._params.noDataRows)
         return;
       if (this._selectableItems == "rows") {
         var rows = this.body._getRows();
@@ -1203,7 +1203,7 @@ O$.Table = {
       var headerCell = (column.header) ? column.header._cell : null;
       if (headerCell)
         O$.Tables._setCellStyleMappings(headerCell, {
-          _sortedColClass: (table._forceUsingCellStyles || column._useCellStyles) ? sortedColClass : null,
+          _sortedColClass: (table._params.forceUsingCellStyles || column._useCellStyles) ? sortedColClass : null,
           _sortedColHeaderClass: sortedColHeaderClass});
 
       O$.setStyleMappings(column, {_sortedColClass: table._sortedColClass});
@@ -1213,7 +1213,7 @@ O$.Table = {
       var footerCell = column.footer ? column.footer._cell : null;
       if (footerCell)
         O$.Tables._setCellStyleMappings(footerCell, {
-          _sortedColClass: (table._forceUsingCellStyles || column._useCellStyles) ? sortedColClass : null,
+          _sortedColClass: (table._params.forceUsingCellStyles || column._useCellStyles) ? sortedColClass : null,
           _sortedColFooterClass: sortedColFooterClass});
     }
 
@@ -1500,7 +1500,7 @@ O$.Table = {
       }
 
       var colWidths = getColWidths();
-      if (!table._scrolling)
+      if (!table._params._scrolling)
         table.style.tableLayout = "fixed";
 
       table.style.width = "auto";
