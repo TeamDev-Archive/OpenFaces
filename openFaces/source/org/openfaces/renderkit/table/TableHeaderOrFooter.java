@@ -12,14 +12,16 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.TableStyles;
+import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.Scrolling;
 import org.openfaces.component.table.TableColumn;
-import org.openfaces.org.json.JSONObject;
 import org.openfaces.org.json.JSONException;
+import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.StyleUtil;
+import org.openfaces.util.StyleGroup;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -33,6 +35,8 @@ import java.util.List;
  * @author Dmitry Pikhulya
  */
 public abstract class TableHeaderOrFooter extends TableSection {
+    private static final String DEFAULT_SUBHEADER_ROW_CELLS_CLASS = "o_filter_row_cells";
+
     private boolean isHeader;
 
     private HeaderRow commonHeaderRow;
@@ -280,7 +284,9 @@ public abstract class TableHeaderOrFooter extends TableSection {
     protected void fillInitParam(JSONObject result) throws JSONException {
         TableStructure tableStructure = getParent(TableStructure.class);
         TableStyles tableStyles = tableStructure.getTableStyles();
-        String sectionClass = StyleUtil.getCSSClass(FacesContext.getCurrentInstance(), tableStructure.getComponent(),
+        FacesContext context = FacesContext.getCurrentInstance();
+        UIComponent component = tableStructure.getComponent();
+        String sectionClass = StyleUtil.getCSSClass(context, component,
                 isHeader ? tableStyles.getHeaderSectionStyle() : tableStyles.getFooterSectionStyle(),
                 isHeader ? tableStyles.getHeaderSectionClass() : tableStyles.getFooterSectionClass());
         sectionClass = TableUtil.getClassWithDefaultStyleClass(
@@ -291,9 +297,56 @@ public abstract class TableHeaderOrFooter extends TableSection {
         if (!RenderingUtil.isNullOrEmpty(sectionClass))
             result.put("className", sectionClass);
         result.put("rowCount", allRows.size());
-        result.put("commonHeaderExists", commonHeaderRow != null);
-        result.put("subHeaderExists", hasSubHeader());
+        if (commonHeaderRow != null)
+            result.put("commonHeader", getCommonHeaderParam(tableStructure));
+        if (hasSubHeader)
+            result.put("subHeader", getSubHeaderParam(tableStructure));
+
+        String headerClassName = StyleUtil.getCSSClass(context, component,
+                isHeader ? tableStyles.getHeaderRowStyle() : tableStyles.getFooterRowStyle(),
+                isHeader ? tableStyles.getHeaderRowClass() : tableStyles.getFooterRowClass());
+        if (!RenderingUtil.isNullOrEmpty(headerClassName))
+        result.put("headingsClassName", headerClassName);
     }
+
+    private JSONObject getCommonHeaderParam(TableStructure tableStructure) throws JSONException {
+        JSONObject result = new JSONObject();
+        FacesContext context = FacesContext.getCurrentInstance();
+        AbstractTable table = ((AbstractTable) tableStructure.getComponent());
+        String commonHeaderClass = StyleUtil.getCSSClass(context, tableStructure.getComponent(),
+                isHeader ? table.getCommonHeaderRowStyle() : table.getCommonFooterRowStyle(),
+                isHeader ? table.getCommonHeaderRowClass() : table.getCommonFooterRowClass());
+        if (!RenderingUtil.isNullOrEmpty(commonHeaderClass))
+            result.put("className", commonHeaderClass);
+        return result;
+    }
+
+    private JSONObject getSubHeaderParam(TableStructure tableStructure) throws JSONException {
+        JSONObject result = new JSONObject();
+        FacesContext context = FacesContext.getCurrentInstance();
+        AbstractTable table = ((AbstractTable) tableStructure.getComponent());
+        String className = StyleUtil.getCSSClass(context, table, getSubHeaderRowStyle(table),
+                StyleGroup.regularStyleGroup(), getSubHeaderRowClass(table), DEFAULT_SUBHEADER_ROW_CELLS_CLASS);
+        if (!RenderingUtil.isNullOrEmpty(className))
+            result.put("className", className);
+
+        return result;
+    }
+
+    private String getSubHeaderRowClass(TableStyles tableStyles) {
+        if (!(tableStyles instanceof AbstractTable))
+            return null;
+        AbstractTable table = ((AbstractTable) tableStyles);
+        return table.getFilterRowClass();
+    }
+
+    private String getSubHeaderRowStyle(TableStyles tableStyles) {
+        if (!(tableStyles instanceof AbstractTable))
+            return null;
+        AbstractTable table = ((AbstractTable) tableStyles);
+        return table.getFilterRowStyle();
+    }
+
 
     public void render(FacesContext facesContext,
                        HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
@@ -313,10 +366,10 @@ public abstract class TableHeaderOrFooter extends TableSection {
         writer.endElement(sectionTag);
     }
 
+
     private int getLastVisibleColHeadersRow() {
         return lastVisibleColHeadersRow;
     }
-
 
     public int getSubHeaderRowIndex() {
         if (!hasSubHeader())

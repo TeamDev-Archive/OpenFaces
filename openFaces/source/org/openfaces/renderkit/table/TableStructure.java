@@ -52,6 +52,10 @@ public class TableStructure extends TableElement {
     private static final String DEFAULT_NO_DATA_ROW_CLASS = "o_table_no_data_row";
     private static final String TABLE_LAYOUT_FIXED_STYLE_CLASS = "o_table_layout_fixed";
 
+    private static final String DEFAULT_SUBHEADER_ROW_SEPARATOR = "1px solid #a0a0a0";
+    private static final String ADDITIONAL_CELL_WRAPPER_STYLE =
+            "width: 100% !important; border: none !important; padding: 0 !important; margin: 0 !important; " +
+                    "background-image: none !important; background-color: transparent !important; height: auto !important;";
 
     private final UIComponent component;
     private final TableStyles tableStyles;
@@ -66,12 +70,6 @@ public class TableStructure extends TableElement {
 
     private Map<Object, String> rowStylesMap = new HashMap<Object, String>();
     private Map<Object, String> cellStylesMap = new HashMap<Object, String>();
-    public static final String DEFAULT_HEADER_CELL_CLASS = "";
-    public static final String DEFAULT_FILTER_ROW_CELLS_CLASS = "o_filter_row_cells";
-    public static final String DEFAULT_FILTER_ROW_SEPARATOR = "1px solid #a0a0a0";
-    public static final String ADDITIONAL_CELL_WRAPPER_STYLE =
-            "width: 100% !important; border: none !important; padding: 0 !important; margin: 0 !important; " +
-                    "background-image: none !important; background-color: transparent !important; height: auto !important;";
 
     public TableStructure(UIComponent component, TableStyles tableStyles) {
         super(null);
@@ -122,10 +120,10 @@ public class TableStructure extends TableElement {
 
     /**
      * @return true if the table needs to avoid rendering section tags (<thead>, <tbody> and <tfoot>), but simulate
-     * these sections while rendering only one <body> section. This is needed only in scrollable tables under Mozilla
-     * to handle table height properly (the "body" row has the "height: 100%" declaration, which increases overall table
-     * height when there is more than one table section -- hence the workaround -- render only one section and simulate
-     * the proper appearance).
+     *         these sections while rendering only one <body> section. This is needed only in scrollable tables under Mozilla
+     *         to handle table height properly (the "body" row has the "height: 100%" declaration, which increases overall table
+     *         height when there is more than one table section -- hence the workaround -- render only one section and simulate
+     *         the proper appearance).
      */
     public boolean isSimulatedSectionsMode() {
         return scrolling != null && EnvironmentUtil.isMozilla();
@@ -342,7 +340,17 @@ public class TableStructure extends TableElement {
             putParam(result, "footer", getFooter().getInitParam());
             putParam(result, "columns", getColumnHierarchyParam(facesContext, columns));
             putParam(result, "gridLines", getGridLineParams(tableStyles, defaultStyles));
-            putParam(result, "rowStyles", getRowStyleParams(facesContext, tableStyles, defaultStyles, styleOwnerComponent));
+
+            putParam(result, "bodyRowClassName", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, tableStyles.getBodyRowStyle(),
+                    StyleGroup.regularStyleGroup(), tableStyles.getBodyRowClass(),
+                    defaultStyles != null ? defaultStyles.getBodyRowClass() : null));
+            putParam(result, "bodyOddRowClassName", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, tableStyles.getBodyOddRowStyle(),
+                    getBodyOddRowClass(tableStyles, defaultStyles)));
+            if (tableStyles instanceof AbstractTable) {
+                AbstractTable table = (AbstractTable) tableStyles;
+                putParam(result, "rolloverRowClassName", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, table.getRolloverRowStyle(),
+                        StyleGroup.rolloverStyleGroup(), table.getRolloverRowClass()));
+            }
             putParam(result, "rowStylesMap", TableUtil.getStylesMapAsJSONObject(rowStylesMap));
             putParam(result, "cellStylesMap", TableUtil.getStylesMapAsJSONObject(cellStylesMap));
             putParam(result, "forceUsingCellStyles", forceUsingCellStyles);
@@ -555,37 +563,6 @@ public class TableStructure extends TableElement {
         return result;
     }
 
-    private JSONObject getRowStyleParams(
-            FacesContext facesContext,
-            TableStyles tableStyles,
-            TableStyles defaultStyles,
-            UIComponent styleOwnerComponent) throws JSONException {
-        AbstractTable table = tableStyles instanceof AbstractTable ? ((AbstractTable) tableStyles) : null;
-
-        JSONObject result = new JSONObject();
-        putParam(result, "bodyRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, tableStyles.getBodyRowStyle(),
-                StyleGroup.regularStyleGroup(), tableStyles.getBodyRowClass(),
-                defaultStyles != null ? defaultStyles.getBodyRowClass() : null));
-        putParam(result, "bodyOddRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, tableStyles.getBodyOddRowStyle(),
-                getBodyOddRowClass(tableStyles, defaultStyles)));
-        if (table != null)
-            putParam(result, "rolloverRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, table.getRolloverRowStyle(),
-                    StyleGroup.rolloverStyleGroup(), table.getRolloverRowClass()));
-        if (table != null)
-            putParam(result, "commonHeaderRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, table.getCommonHeaderRowStyle(),
-                    StyleGroup.regularStyleGroup(), table.getCommonHeaderRowClass(), DEFAULT_HEADER_CELL_CLASS));
-        putParam(result, "headerRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, tableStyles.getHeaderRowStyle(),
-                StyleGroup.regularStyleGroup(), tableStyles.getHeaderRowClass(), DEFAULT_HEADER_CELL_CLASS));
-        putParam(result, "subHeaderRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, getFilterRowStyle(tableStyles),
-                StyleGroup.regularStyleGroup(), getFilterRowClass(tableStyles), DEFAULT_FILTER_ROW_CELLS_CLASS));
-        if (table != null)
-            putParam(result, "commonFooterRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent,
-                    table.getCommonFooterRowStyle(), table.getCommonFooterRowClass()));
-        putParam(result, "footerRow", StyleUtil.getCSSClass(facesContext, styleOwnerComponent,
-                tableStyles.getFooterRowStyle(), tableStyles.getFooterRowClass()));
-        return result;
-    }
-
     public static String getColumnBodyStyle(BaseColumn column) {
         String style = column.getBodyStyle();
         if (column instanceof TreeColumn) {
@@ -629,27 +606,13 @@ public class TableStructure extends TableElement {
         appendHandlerEntry(columnObj, "onmouseup", onmouseup);
     }
 
-    private String getFilterRowClass(TableStyles tableStyles) {
-        if (!(tableStyles instanceof AbstractTable))
-            return null;
-        AbstractTable table = ((AbstractTable) tableStyles);
-        return table.getFilterRowClass();
-    }
-
-    private String getFilterRowStyle(TableStyles tableStyles) {
-        if (!(tableStyles instanceof AbstractTable))
-            return null;
-        AbstractTable table = ((AbstractTable) tableStyles);
-        return table.getFilterRowStyle();
-    }
-
     private String getFilterRowSeparator(TableStyles tableStyles) {
         if (!(tableStyles instanceof AbstractTable))
             return null;
         AbstractTable table = ((AbstractTable) tableStyles);
         String result = table.getFilterRowSeparator();
         if (result == null && table.getApplyDefaultStyle())
-            result = DEFAULT_FILTER_ROW_SEPARATOR;
+            result = DEFAULT_SUBHEADER_ROW_SEPARATOR;
         return result;
     }
 

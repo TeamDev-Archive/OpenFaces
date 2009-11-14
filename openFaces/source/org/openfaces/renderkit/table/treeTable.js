@@ -52,7 +52,7 @@ O$.TreeTable = {
       var rootNodeCount = this._rowIndexToChildCount["root"];
       var rows = table.body._getRows();
       var rowIndexToChildCount = this._rowIndexToChildCount;
-      this._styleRecalculationOnNodeExpansionNeeded = !!this._params.rowStyles.bodyOddRow;
+      this._styleRecalculationOnNodeExpansionNeeded = !!this._params.bodyOddRowClassName;
       var result = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, 0, rootNodeCount, true);
       if (this._styleRecalculationOnNodeExpansionNeeded) {
         var rowIndex, count, visibleRows, row;
