@@ -76,8 +76,10 @@ public class TableBody extends TableSection {
         AbstractTable table = (AbstractTable) tableStructure.getComponent();
         List<BaseColumn> columns = table.getColumnsForRendering();
 
-        writer.startElement("tbody", table);
-        RenderingUtil.writeNewLine(writer);
+        if (!tableStructure.isSimulatedSectionsMode()) {
+            writer.startElement("tbody", table);
+            RenderingUtil.writeNewLine(writer);
+        }
 
         int first = table.getFirst();
         if (table.getRows() != 0)
@@ -95,9 +97,10 @@ public class TableBody extends TableSection {
             BodyRow row = bodyRows.get(i);
             row.render(context, (!hasFooter && i == count - 1) ? additionalContentWriter : null);
         }
-
-        writer.endElement("tbody");
-        RenderingUtil.writeNewLine(writer);
+        if (!tableStructure.isSimulatedSectionsMode()) {
+            writer.endElement("tbody");
+            RenderingUtil.writeNewLine(writer);
+        }
     }
 
     protected List<BodyRow> createRows(

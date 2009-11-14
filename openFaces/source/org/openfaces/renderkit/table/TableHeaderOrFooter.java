@@ -281,7 +281,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
     }
 
     @Override
-    protected void fillInitParam(JSONObject result) throws JSONException {
+    protected void fillInitParam(JSONObject initObject) throws JSONException {
         TableStructure tableStructure = getParent(TableStructure.class);
         TableStyles tableStyles = tableStructure.getTableStyles();
         FacesContext context = FacesContext.getCurrentInstance();
@@ -295,18 +295,19 @@ public abstract class TableHeaderOrFooter extends TableSection {
                 sectionClass);
 
         if (!RenderingUtil.isNullOrEmpty(sectionClass))
-            result.put("className", sectionClass);
-        result.put("rowCount", allRows.size());
+            initObject.put("className", sectionClass);
+        if (tableStructure.isSimulatedSectionsMode())
+            initObject.put("rowCount", allRows.size());
         if (commonHeaderRow != null)
-            result.put("commonHeader", getCommonHeaderParam(tableStructure));
+            initObject.put("commonHeader", getCommonHeaderParam(tableStructure));
         if (hasSubHeader)
-            result.put("subHeader", getSubHeaderParam(tableStructure));
+            initObject.put("subHeader", getSubHeaderParam(tableStructure));
 
         String headerClassName = StyleUtil.getCSSClass(context, component,
                 isHeader ? tableStyles.getHeaderRowStyle() : tableStyles.getFooterRowStyle(),
                 isHeader ? tableStyles.getHeaderRowClass() : tableStyles.getFooterRowClass());
         if (!RenderingUtil.isNullOrEmpty(headerClassName))
-        result.put("headingsClassName", headerClassName);
+        initObject.put("headingsClassName", headerClassName);
     }
 
     private JSONObject getCommonHeaderParam(TableStructure tableStructure) throws JSONException {
@@ -355,15 +356,19 @@ public abstract class TableHeaderOrFooter extends TableSection {
         ResponseWriter writer = facesContext.getResponseWriter();
 
         String sectionTag = isHeader ? "thead" : "tfoot";
-        writer.startElement(sectionTag, component);
-        RenderingUtil.writeNewLine(writer);
+        if (!tableStructure.isSimulatedSectionsMode()) {
+            writer.startElement(sectionTag, component);
+            RenderingUtil.writeNewLine(writer);
+        }
 
         for (int i = 0, count = allRows.size(); i < count; i++) {
             HeaderRow row = allRows.get(i);
             row.render(facesContext, i == count - 1 ? additionalContentWriter : null);
         }
 
-        writer.endElement(sectionTag);
+        if (!tableStructure.isSimulatedSectionsMode()) {
+            writer.endElement(sectionTag);
+        }
     }
 
 

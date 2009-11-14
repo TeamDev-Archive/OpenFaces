@@ -309,9 +309,9 @@ O$.Tables = {
           if (!area || !rowNode) return;
           var nextRowIdx = afterIndex + 1 + i;
           if (nextRowIdx < area._table.childNodes.length)
-            area._table.insertBefore(rowNode, area._table.childNodes[nextRowIdx]);
+            area._rowContainer.insertBefore(rowNode, area._table.childNodes[nextRowIdx]);
           else
-            area._table.appendChild(rowNode);
+            area._rowContainer.appendChild(rowNode);
         }
         addRow(this.body._leftScrollingArea, newRow._leftRowNode);
         addRow(this.body._centerScrollingArea, newRow._rowNode);
@@ -355,6 +355,27 @@ O$.Tables = {
   // -------------------------- TABLE ROWS SUPPORT
 
   _initRows: function(table) {
+    if (table._params.simulatedSectionsMode) {
+      var rows = O$.getChildNodesWithNames(table, ["tr"]);
+      if (!rows.length) {
+        var body = O$.getChildNodesWithNames(table, ["tbody"])[0];
+        rows = body ? O$.getChildNodesWithNames(body, ["tr"]) : [];
+      }
+      var headRowCount = table._params.header ? table._params.header.rowCount : 0;
+      var footRowCount = table._params.footer ? table._params.footer.rowCount : 0;
+      var simulatedHeadRows = rows.slice(0, headRowCount);
+      var simulatedBodyRows = rows.slice(headRowCount, rows.length - footRowCount);
+      var simulatedFootRows = rows.slice(rows.length - footRowCount);
+
+      function applyStyle(rows, style) {
+        rows.forEach(function(row) {
+          O$.setStyleMappings(row, {sectionStyle: style});
+        });
+      }
+      if (simulatedHeadRows.length) applyStyle(simulatedHeadRows, table._params.header.className);
+      if (simulatedBodyRows.length) applyStyle(simulatedBodyRows, table._params.body.className);
+      if (simulatedFootRows.length) applyStyle(simulatedFootRows, table._params.footer.className);
+    }
     function initTableSection(table, sectionParams, sectionTagName, commonRowAbove) {
       var section = {
         _tag: O$.getChildNodesWithNames(table, [sectionTagName])[0],
@@ -368,124 +389,136 @@ O$.Tables = {
         },
         _getRows: function() {
           if (!this._rows) {
-            var section = O$.getChildNodesWithNames(table, [sectionTagName])[0];
-            if (section) {
-              if (!table._params.scrolling) {
-                this._rows = O$.getChildNodesWithNames(section, ["tr"]);
-                this._rows.forEach(function(row) {
-                  row._table = table;
-                  row._index = i;
-                  row._cells = row.cells;
-                });
-                this._cellByCoords = function(coords) {
-                  var row = this._rows[coords.row];
-                  return row._cells[coords.cell];
-                };
-              } else {
-                var immediateRows = O$.getChildNodesWithNames(section, ["tr"]);
-                var commonRow = commonRowAbove != undefined ? (
-                        commonRowAbove ? immediateRows[0] : immediateRows[immediateRows.length - 1]
-                        ) : null;
-                if (commonRow) {
-                  commonRow._cells = commonRow.cells;
-                  commonRow._table = table;
-                }
-                var containerRowIndex = commonRowAbove != undefined
-                        ? (commonRowAbove ? 1 : 0)
-                        : 0;
-                var containerRow = immediateRows[containerRowIndex];
-                var leftCellIndex = table._params.scrolling.leftFixedCols ? 0 : undefined;
-                var centerCellIndex = leftCellIndex != undefined ? 1 : 0;
-                var rightCellIndex = table._params.scrolling.rightFixedCols ? centerCellIndex + 1 : undefined;
-                function scrollingArea(areaCellIndex, scrollingKind) {
-                  var td = containerRow.childNodes[areaCellIndex];
-                  td.style.verticalAlign = "top";
-                  td.style.overflow = "hidden";
-                  var div = O$.getChildNodesWithNames(td, ["div"])[0];
-                  var scrollingDivContainer = div && div.className == "o_scrolling_area_container" ? div : null;
-                  var scrollingDiv = O$.getChildNodesWithNames(scrollingDivContainer ? scrollingDivContainer : td, ["div"])[0];
-                  var tbl = O$.getChildNodesWithNames(scrollingDiv ? scrollingDiv : td, ["table"])[0];
-                  tbl.style.emptyCells = "show";
-                  if (table._bordersNeeded) tbl.style.borderCollapse = "collapse";
-                  var rowContainer = O$.getChildNodesWithNames(tbl, ["tbody"])[0];
-                  var area = {
-                    _td: td,
-                    _scrollingDivContainer: scrollingDivContainer,
-                    _scrollingDiv: scrollingDiv,
-                    _table: tbl,
-                    _rows: O$.getChildNodesWithNames(rowContainer, ["tr"])
-                  };
-                  if (area._scrollingDiv) {
-                    if (scrollingKind == "none")
-                      area._scrollingDiv.style.overflow = "hidden";
-                    else if (scrollingKind == "x")
-                      area._scrollingDiv.style.overflowX = "scroll";
-                    else if (scrollingKind == "y")
-                      area._scrollingDiv.style.overflowY = "scroll";
-                    else if (scrollingKind == "both")
-                      area._scrollingDiv.style.overflow = "scroll";
-                    else
-                      throw "initTableSection/scrollingArea: unknown scrollingKind: " + scrollingKind;
-                  }
-                  return area;
-                }
-                var scrollingKinds;
-                if (sectionTagName == "thead") scrollingKinds = {left: "none", center: "none", right: "none"};
-                else if (sectionTagName == "tbody") scrollingKinds = {left: "none", center: "both", right: "none"};
-                else if (sectionTagName == "tfoot") scrollingKinds = {left: "none", center: "none", right: "none"};
-                else throw "initTableSection: unknown sectionTagName: " + sectionTagName;
-                this._leftScrollingArea = leftCellIndex != undefined ? scrollingArea(leftCellIndex, scrollingKinds.left) : null;
-                this._centerScrollingArea = scrollingArea(centerCellIndex, scrollingKinds.center);
-                this._rightScrollingArea = rightCellIndex != undefined ? scrollingArea(rightCellIndex, scrollingKinds.right) : null;
-                var scrollingAreas = [];
-                if (this._leftScrollingArea) scrollingAreas.push(this._leftScrollingArea);
-                if (this._centerScrollingArea) scrollingAreas.push(this._centerScrollingArea);
-                if (this._rightScrollingArea) scrollingAreas.push(this._rightScrollingArea);
-                this._scrollingAreas = scrollingAreas;
-                this._cellByCoords = function(coords) {
-                  var area = this._scrollingAreas[coords.scrollingArea];
-                  var row = area._rows[coords.row];
-                  return row.cells[coords.cell];
-                };
-                var rows = [];
-                var rowIndex = 0, rowCount = this._centerScrollingArea._rows.length;
-                if (commonRowAbove === true)
-                  rows[rowIndex++] = commonRow;
-                while (rowIndex < rowCount) {
-                  var row = {
-                    _leftRowNode: this._leftScrollingArea ? this._leftScrollingArea._rows[rowIndex] : null,
-                    _rowNode: this._centerScrollingArea._rows[rowIndex],
-                    _rightRowNode: this._rightScrollingArea ? this._rightScrollingArea._rows[rowIndex] : null,
-                    _table: table,
-                    _index: rowIndex
-                  };
-                  rows[rowIndex] = row;
-                  var cells = [];
-                  if (row._leftRowNode) {
-                    row._leftRowNode._cells = row._leftRowNode.cells;
-                    row._leftRowNode._row = row;
-                    O$.addAll(cells, row._leftRowNode._cells);
-                  }
-                  row._rowNode._cells = row._rowNode.cells;
-                  row._rowNode._row = row;
-                  O$.addAll(cells, row._rowNode._cells);
-                  if (row._rightRowNode) {
-                    row._rightRowNode._cells = row._rightRowNode.cells;
-                    row._rightRowNode._row = row;
-                    O$.addAll(cells, row._rightRowNode._cells);
-                  }
-                  row._cells = cells;
-                  rowIndex++;
-                }
-                if (commonRowAbove === false)
-                  rows[rowIndex] = commonRow;
-                if (commonRow)
-                  commonRow._index = commonRowAbove ? 0 : rows.length - 1;
-                this._rows = rows;
-              }
+            if (!table._params.scrolling) {
+              this._rows = this._tag ? O$.getChildNodesWithNames(this._tag, ["tr"]) : [];
+              this._rows.forEach(function(row) {
+                row._table = table;
+                row._index = i;
+                row._cells = row.cells;
+              });
+              this._cellByCoords = function(coords) {
+                var row = this._rows[coords.row];
+                return row._cells[coords.cell];
+              };
             } else {
-              this._rows = [];
-              this._cellByCoords = function(/*coords*/) {return null;};
+              var immediateRows = function(section) {
+                if (!table._params.simulatedSectionsMode)
+                  return O$.getChildNodesWithNames(section._tag, ["tr"]);
+                else {
+                  if (sectionTagName == "thead")
+                    return simulatedHeadRows;
+                  else if (sectionTagName == "tbody")
+                    return simulatedBodyRows;
+                  else if (sectionTagName == "tfoot")
+                    return simulatedFootRows;
+                  else
+                    throw "Unknown section tag name: " + sectionTagName;
+                }
+              }(this);
+              var commonRow = commonRowAbove != undefined ? (
+                      commonRowAbove ? immediateRows[0] : immediateRows[immediateRows.length - 1]
+                      ) : null;
+              if (commonRow) {
+                commonRow._cells = commonRow.cells;
+                commonRow._table = table;
+              }
+              var containerRowIndex = commonRowAbove != undefined
+                      ? (commonRowAbove ? 1 : 0)
+                      : 0;
+              var containerRow = immediateRows[containerRowIndex];
+              var leftCellIndex = table._params.scrolling.leftFixedCols ? 0 : undefined;
+              var centerCellIndex = leftCellIndex != undefined ? 1 : 0;
+              var rightCellIndex = table._params.scrolling.rightFixedCols ? centerCellIndex + 1 : undefined;
+              function scrollingArea(areaCellIndex, scrollingKind) {
+                var td = containerRow.childNodes[areaCellIndex];
+                td.style.verticalAlign = "top";
+                td.style.textAlign = "left";
+                td.style.overflow = "hidden";
+                var div = O$.getChildNodesWithNames(td, ["div"])[0];
+                var scrollingDivContainer = div && div.className == "o_scrolling_area_container" ? div : null;
+                if (scrollingDivContainer && O$.isExplorer() && O$.isQuirksMode()) {
+                  scrollingDivContainer.style.display = "none"; // hide the container temporarily to overcome non-working "overflow: hidden" on td under IE quirks-mode
+                }
+                var scrollingDiv = O$.getChildNodesWithNames(scrollingDivContainer ? scrollingDivContainer : td, ["div"])[0];
+                var tbl = O$.getChildNodesWithNames(scrollingDiv ? scrollingDiv : td, ["table"])[0];
+                tbl.style.emptyCells = "show";
+                if (table._bordersNeeded) tbl.style.borderCollapse = "collapse";
+                var rowContainer = O$.getChildNodesWithNames(tbl, ["tbody"])[0];
+                var area = {
+                  _td: td,
+                  _scrollingDivContainer: scrollingDivContainer,
+                  _scrollingDiv: scrollingDiv,
+                  _table: tbl,
+                  _rowCountainer: rowContainer,
+                  _rows: O$.getChildNodesWithNames(rowContainer, ["tr"])
+                };
+                if (area._scrollingDiv) {
+                  if (scrollingKind == "none")
+                    area._scrollingDiv.style.overflow = "hidden";
+                  else if (scrollingKind == "x")
+                    area._scrollingDiv.style.overflowX = "scroll";
+                  else if (scrollingKind == "y")
+                    area._scrollingDiv.style.overflowY = "scroll";
+                  else if (scrollingKind == "both")
+                    area._scrollingDiv.style.overflow = "scroll";
+                  else
+                    throw "initTableSection/scrollingArea: unknown scrollingKind: " + scrollingKind;
+                }
+                return area;
+              }
+              var scrollingKinds;
+              if (sectionTagName == "thead") scrollingKinds = {left: "none", center: "none", right: "none"};
+              else if (sectionTagName == "tbody") scrollingKinds = {left: "none", center: "both", right: "none"};
+              else if (sectionTagName == "tfoot") scrollingKinds = {left: "none", center: "none", right: "none"};
+              else throw "initTableSection: unknown sectionTagName: " + sectionTagName;
+              this._leftScrollingArea = leftCellIndex != undefined ? scrollingArea(leftCellIndex, scrollingKinds.left) : null;
+              this._centerScrollingArea = scrollingArea(centerCellIndex, scrollingKinds.center);
+              this._rightScrollingArea = rightCellIndex != undefined ? scrollingArea(rightCellIndex, scrollingKinds.right) : null;
+              var scrollingAreas = [];
+              if (this._leftScrollingArea) scrollingAreas.push(this._leftScrollingArea);
+              if (this._centerScrollingArea) scrollingAreas.push(this._centerScrollingArea);
+              if (this._rightScrollingArea) scrollingAreas.push(this._rightScrollingArea);
+              this._scrollingAreas = scrollingAreas;
+              this._cellByCoords = function(coords) {
+                var area = this._scrollingAreas[coords.scrollingArea];
+                var row = area._rows[coords.row];
+                return row.cells[coords.cell];
+              };
+              var rows = [];
+              var rowIndex = 0, rowCount = this._centerScrollingArea._rows.length;
+              if (commonRowAbove === true)
+                rows[rowIndex++] = commonRow;
+              while (rowIndex < rowCount) {
+                var row = {
+                  _leftRowNode: this._leftScrollingArea ? this._leftScrollingArea._rows[rowIndex] : null,
+                  _rowNode: this._centerScrollingArea._rows[rowIndex],
+                  _rightRowNode: this._rightScrollingArea ? this._rightScrollingArea._rows[rowIndex] : null,
+                  _table: table,
+                  _index: rowIndex
+                };
+                rows[rowIndex] = row;
+                var cells = [];
+                if (row._leftRowNode) {
+                  row._leftRowNode._cells = row._leftRowNode.cells;
+                  row._leftRowNode._row = row;
+                  O$.addAll(cells, row._leftRowNode._cells);
+                }
+                row._rowNode._cells = row._rowNode.cells;
+                row._rowNode._row = row;
+                O$.addAll(cells, row._rowNode._cells);
+                if (row._rightRowNode) {
+                  row._rightRowNode._cells = row._rightRowNode.cells;
+                  row._rightRowNode._row = row;
+                  O$.addAll(cells, row._rightRowNode._cells);
+                }
+                row._cells = cells;
+                rowIndex++;
+              }
+              if (commonRowAbove === false)
+                rows[rowIndex] = commonRow;
+              if (commonRow)
+                commonRow._index = commonRowAbove ? 0 : rows.length - 1;
+              this._rows = rows;
             }
           }
           return this._rows;
@@ -1773,9 +1806,14 @@ O$.Tables = {
     function fixScrollingContainerHeight(area) {
       if (!area)
         return;
-      O$.fixElement(area._scrollingDiv, {height: function() {
+      var fixture = O$.fixElement(area._scrollingDiv, {height: function() {
         return O$.getElementPaddingRectangle(area._td).height;
       }});
+      if (area._scrollingDivContainer && area._scrollingDivContainer.style.display == "none")
+        setTimeout(function() {
+          area._scrollingDivContainer.style.display = "block";
+          fixture.update();
+        }, 10);
     }
     fixScrollingContainerHeight(table.body._leftScrollingArea);
     fixScrollingContainerHeight(table.body._centerScrollingArea);

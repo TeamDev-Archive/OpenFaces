@@ -126,7 +126,7 @@ public class TableStructure extends TableElement {
      *         the proper appearance).
      */
     public boolean isSimulatedSectionsMode() {
-        return scrolling != null && EnvironmentUtil.isMozilla();
+        return scrolling != null && (EnvironmentUtil.isMozilla() || EnvironmentUtil.isChrome() || EnvironmentUtil.isSafari());
     }
 
     public int getLeftFixedCols() {
@@ -334,6 +334,8 @@ public class TableStructure extends TableElement {
 
         try {
             JSONObject result = new JSONObject();
+            if (isSimulatedSectionsMode())
+                putParam(result, "simulatedSectionsMode", true);
             putParam(result, "scrolling", getScrollingParam());
             putParam(result, "header", getHeader().getInitParam());
             putParam(result, "body", getBody().getInitParam());

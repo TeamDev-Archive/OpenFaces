@@ -4072,7 +4072,7 @@ if (!window.O$) {
     if (!interval)
       interval = 200;
     var fixture = {
-      intervalId: setInterval(function() {
+      update: function() {
         if (
                 !O$.isElementPresentInDocument(element) ||
                 (workingCondition && !workingCondition())
@@ -4085,12 +4085,14 @@ if (!window.O$) {
           if (O$.getElementEffectProperty(element, propertyName) != propertyValue)
             O$.setElementEffectProperty(element, propertyName, propertyValue);
         }
-      }, interval),
+      },
+      intervalId: setInterval(function() {fixture.update()}, interval),
 
       release: function() {
         clearInterval(this.intervalId);
       }
     };
+    fixture.update();
     return fixture;
   };
 

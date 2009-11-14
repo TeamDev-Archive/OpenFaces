@@ -73,10 +73,10 @@ public class TableUtil {
         writer.endElement("col");
     }
 
-    public static JSONObject getStylesMapAsJSONObject(Map<Object, String> map) {
-        JSONObject result = new JSONObject();
+    public static Object getStylesMapAsJSONObject(Map<Object, String> map) {
         if (map == null)
-            return result;
+            return JSONObject.NULL;
+        JSONObject result = new JSONObject();
         for (Map.Entry<Object, String> entry : map.entrySet()) {
             Object key = entry.getKey();
             String className = entry.getValue();
