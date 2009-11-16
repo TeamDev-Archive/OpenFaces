@@ -31,6 +31,7 @@ public class ForEachRenderer extends RendererBase {
         if (!component.isRendered()) return;
         super.encodeBegin(context, component);
         ForEach forEach = (ForEach) component;
+        forEach.setObjectId(null);
         String wrapperTagName = forEach.getWrapperTagName();
         if (wrapperTagName == null || wrapperTagName.length() == 0)
             return;
