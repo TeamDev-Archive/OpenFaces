@@ -181,6 +181,12 @@ public class DataTableTest extends OpenFacesTestCase {
     }
 
     @Test
+    public void testFilteringSearchField() {
+        filteringSearchField(OpenFacesAjaxLoadingMode.getInstance());
+        filteringSearchField(ServerLoadingMode.getInstance());
+    }
+
+    @Test
     public void testPagination() {
         pagination(OpenFacesAjaxLoadingMode.getInstance());
         pagination(ServerLoadingMode.getInstance());
@@ -467,12 +473,6 @@ public class DataTableTest extends OpenFacesTestCase {
     public void testSortingFeature() {
         sorting(OpenFacesAjaxLoadingMode.getInstance());
         sorting(ServerLoadingMode.getInstance());
-    }
-
-    @Test
-    public void testFilteringSearchField() {
-        filteringSearchField(OpenFacesAjaxLoadingMode.getInstance());
-        filteringSearchField(ServerLoadingMode.getInstance());
     }
 
     @Test
