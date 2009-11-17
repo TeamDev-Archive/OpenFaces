@@ -2,62 +2,14 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/">
   <div id="Demo">
-    <script type="text/javascript">
-      function previousDay() {
-        O$.reloadComponents(['form:dayOfWeek', 'form:date', 'form:suffix', 'form:year'],
-        {action : 'DayTableBean2.previousDay'});
-        O$("form:dayTable").previousDay();
-      }
-
-      function nextDay() {
-        O$.reloadComponents(['form:dayOfWeek', 'form:date', 'form:suffix', 'form:year'],
-        {action : 'DayTableBean2.nextDay'});
-        O$("form:dayTable").nextDay();
-      }
-
-      function addBorder(element, red, green, blue) {
-        element.style.border = "1px solid #" + twoDigit(red) + twoDigit(green) + twoDigit(blue);
-        element.style.padding = "4px";
-        element.style.paddingRight = "4px";
-        element.style.paddingLeft = "4px";
-      }
-
-      function twoDigit(value) {
-        var str = value.toString(16);
-        if (str.length == 1) {
-          str = "0" + str;
-        }
-        return str;
-      }
-
-      function removeBorder(element) {
-        element.style.border = "none";
-        element.style.paddingTop = "5px";
-        element.style.paddingRight = "5px";
-        element.style.paddingLeft = "5px";
-      }
-    </script>
-    <h3 class="CalendarDate"><big><h:commandLink style="text-decoration:none; color:#808080"
-                                                 onclick="previousDay();return false;"><h:outputText value="&#8592;"
-                                                                                                     escape="false"/></h:commandLink></big><span
-            style="padding-left:10px; padding-right:10px; color:#808080"><h:outputText
-            id="dayOfWeek"
-            value="#{DayTableBean2.date}">
-      <f:convertDateTime pattern="EEEE," locale="en"/></h:outputText>&#160;<h:outputText id="date"
-                                                                                         value="#{DayTableBean2.date}"
-                                                                                         styleClass="date">
-      <f:convertDateTime pattern="dd" locale="en"/>
-    </h:outputText><h:outputText id="suffix" value="#{DayTableBean2.dateSuffixMap[DayTableBean2.date]}"
-                                 styleClass="date"/>&#160;<h:outputText id="month"
-                                                                        value="#{DayTableBean2.date}" styleClass="date">
-      <f:convertDateTime pattern="MMMM" locale="en"/>
-    </h:outputText>&#160;<h:outputText id="year" value="#{DayTableBean2.date}" styleClass="date">
-      <f:convertDateTime pattern="yyyy" locale="en"/>
-    </h:outputText></span><big><h:commandLink style="text-decoration:none; color:#808080"
-                                              onclick="nextDay(); return false;"><h:outputText escape="false"
-                                                                                               value="&#8594;"/>
-    </h:commandLink></big>
-    </h3>
+    <center>
+      <o:daySwitcher for="form:dayTable" upperPattern="" pattern="EEEE, d MMMM yyyy" locale="en"
+              styleClass="CalendarDate"
+              previousButtonImageUrl="../images/daytable/customPrevButton.gif"
+              nextButtonImageUrl="../images/daytable/customNextButton.gif"
+              previousButtonClass="CalendarButton"
+              nextButtonClass="CalendarButton"/>
+    </center>
     <o:dayTable id="dayTable"
                 day="#{DayTableBean2.date}"
 
@@ -84,6 +36,9 @@
                 resourceHeadersRowStyle="font-size:10pt; border-top: 1px solid #7f7f7f; border-bottom: 1px solid #7f7f7f;"
                 rowStyle="height: 25px;"
                 reservedTimeEventStyle="border-left: none; border-right: none; margin: 0;"
+
+                headerStyle=""
+                locale="en"
             >
 
       <o:timetableEvent styleClass="eventWithBackground" descriptionStyle="font-size:10pt" style="color:white;"

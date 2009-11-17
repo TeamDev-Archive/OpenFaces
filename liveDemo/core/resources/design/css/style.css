@@ -327,18 +327,14 @@ ul.hang li {
 }
 
 .CalendarDate {
-  text-align: center;
-  position: relative;
-  padding: 0 .5em 0 0 !important;
-  line-height: 25px;
+  color:#808080;
+  font-size:28px;
+  font-family: "Lucida Grande",Tahoma,Arial,Helvetica,sans-serif;
+  height: 40px;
+  padding-bottom: 10px;
 }
 
-.CalendarDate .dayOfWeek {
-  font-size: 10px;
-  line-height: 10px;
-  padding: 0 .25em;
-}
-
-.CalendarDate .date {
-  line-height: 1.5em;
+.CalendarButton {
+  border: none;
+  padding-bottom: 5px;
 }
