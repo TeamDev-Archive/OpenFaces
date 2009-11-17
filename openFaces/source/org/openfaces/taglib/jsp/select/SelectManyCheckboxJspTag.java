@@ -10,21 +10,17 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.taglib.internal.select;
+package org.openfaces.taglib.jsp.select;
 
-import org.openfaces.component.select.SelectOneRadio;
+import org.openfaces.taglib.internal.select.SelectManyCheckboxTag;
 
 /**
  * @author Oleg Marshalenko
  */
-public class SelectOneRadioTag extends AbstractUISelectManyInputTag {
-    private static final String RENDERER_TYPE = "org.openfaces.SelectOneRadioRenderer";
+public class SelectManyCheckboxJspTag  extends UISelectManyInputJspTag {
 
-    public String getComponentType() {
-        return SelectOneRadio.COMPONENT_TYPE;
+    public SelectManyCheckboxJspTag() {
+        super(new SelectManyCheckboxTag());
     }
 
-    public String getRendererType() {
-        return RENDERER_TYPE;
-    }
 }

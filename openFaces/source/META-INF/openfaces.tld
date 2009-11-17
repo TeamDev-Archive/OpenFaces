@@ -28629,10 +28629,688 @@ and it is automatically triggered on any form submission. -->
     </attribute>
   </tag>
 
+  <!-- SelectManyCheckbox TAG DECLARATION -->
+
   <tag>
-    <description>A child tag of the {@link selectOneRadio} tags
+    <description><![CDATA[   ]]></description>
+    <name>selectManyCheckbox</name>
+    <tag-class>org.openfaces.taglib.jsp.select.SelectManyCheckboxJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>The component identifier for this component. This value must be unique within the
+        closest parent component that is a naming container.
+      </description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>Flag that indicates whether or not valueChangeListener
+        should be executed immediately (during the Apply Request Values phase of the
+        request processing lifecycle instead of Process Validations phase) and the
+        component's input should be converted and validated immediately (during
+        the Apply Request Values phase of the request processing lifecycle
+        instead of the Process Validations phase).
+      </description>
+      <name>immediate</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A MethodBinding that should point to the method that accepts
+        a ValueChangeEvent. If the value of the SelectManyCheckbox changes, this method is executed.
+      </description>
+      <name>valueChangeListener</name>
+      <deferred-method>
+        <method-signature>void valueChange(javax.faces.event.ValueChangeEvent)</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>A MethodBinding that should point to the method in the backing bean
+        that is called to validate the SelectManyCheckbox's value.
+      </description>
+      <name>validator</name>
+      <deferred-method>
+        <method-signature>
+          void validate(javax.faces.context.FacesContext, javax.faces.component.UIComponent, java.lang.Object)
+        </method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>A converter for the SelectManyCheckbox's value. Should be specified as
+        a value-binding expression or converter identifier.
+      </description>
+      <name>converter</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Flag indicating that this component will prohibit changes by the user.
+        The element may receive focus unless it has also been disabled. A value of false
+        causes no attribute to be rendered, while a value of true causes the attribute to
+        be rendered as readonly="readonly".
+      </description>
+      <name>readonly</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Width (in pixels) of the border to be drawn around the table containing the options list.</description>
+      <name>border</name>
+      <deferred-value>
+        <type>java.lang.Integer</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Orientation of the options list to be created.
+        Valid values are "pageDirection" (list is laid out vertically),
+        or "lineDirection" (list is laid out horizontally).
+        If not specified, the default value is "lineDirection".</description>
+      <name>layout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The value-binding expression that associates the SelectManyCheckbox with a backing bean
+        property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.select.SelectManyCheckbox</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.select.SelectManyCheckbox-->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The current value of the SelectManyCheckbox component.</description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType list of Object -->
+      <!-- @bindingType array of Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>Flag indicating that the user is required to provide a submitted
+        value for this input component.
+      </description>
+      <name>required</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Flag indicating that this element must never receive focus or
+        be included in a subsequent submit. A value of false causes no attribute to be rendered,
+        while a value of true causes the attribute to be rendered as disabled="disabled".
+      </description>
+      <name>disabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A localized user presentable name for this component.</description>
+      <name>label</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS style(s) to be applied when this component is rendered.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when this element is rendered. This value must be passed through
+        as the "class" attribute on generated markup.
+      </description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS style(s) to be applied when this component is in the enabled state.</description>
+      <name>enabledStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when this element is in the enabled state. This value must be passed through
+        as the "class" attribute on generated markup.</description>
+      <name>enabledClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS style(s) to be applied when this component is in the disabled state.</description>
+      <name>disabledStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when this element is in the disabled state. This value must be passed through
+        as the "class" attribute on generated markup.
+      </description>
+      <name>disabledClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS style(s) to be applied when this component is in the rollover state,
+        i.e. when pointer is over this component.</description>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when this element is in the rollover state, i.e. when pointer is over this component.
+        This value must be passed through as the "class" attribute on generated markup.
+      </description>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS style(s) to be applied when this component is in the focused state,
+        i.e. when focus is set to this component.
+      </description>
+      <name>focusedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when this element is in the focused state, i.e. focus is set to this component.
+        This value must be passed through as the "class" attribute on generated markup.
+      </description>
+      <name>focusedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Javascript code executed when this element loses focus
+        and its value has been modified since gaining focus.
+      </description>
+      <name>onchange</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Javascript code executed when a key is pressed and released over this component.</description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code executed when the user clicks the pointer button over the SelectManyCheckbox.</description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code executed on the client when the user double-clicks
+        the pointer button over the SelectOneRadio.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code executed when a pointer button is pressed down over the SelectManyCheckbox.</description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code executed when a pointer is moved onto the SelectManyCheckbox.</description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code executed when the user moves a pointer within the SelectManyCheckbox.</description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code executed when the user moves a pointer away from the SelectManyCheckbox.</description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code executed when the user releases the mouse button over the SelectManyCheckbox.</description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code executed when the SelectManyCheckbox receives focus.</description>
+      <name>onfocus</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code executed when the SelectManyCheckbox loses focus.</description>
+      <name>onblur</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code executed when a key is pressed down over the SelectManyCheckbox.</description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code executed when a key is released over the SelectManyCheckbox.</description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Access key that, when pressed, transfers focus to this element.</description>
+      <name>accesskey</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Position of this element in the tabbing order for the current document.
+        This value must be an integer between 0 and 32767.
+      </description>
+      <name>tabindex</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Advisory title information about markup elements generated for this component.
+      </description>
+      <name>title</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Direction indication for text that does not inherit directionality.
+        Valid values are "LTR" (left-to-right) and "RTL" (right-to-left).
+      </description>
+      <name>dir</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Code describing the language used in the generated markup for this component.</description>
+      <name>lang</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when text within the component is selected by the user.
+      </description>
+      <name>onselect</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+
+    <attribute>
+      <description>URL to the image file, corresponding to the selected state of the SelectManyCheckbox.</description>
+      <name>selectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file, corresponding to the unselected state of the SelectManyCheckbox.</description>
+      <name>unselectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file, corresponding to the rolled over state of the selected component.</description>
+      <name>rolloverSelectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file, corresponding to the rolled over state of the unselected component.</description>
+      <name>rolloverUnselectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file, corresponding to the pressed state of the selected SelectManyCheckbox.
+      </description>
+      <name>pressedSelectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file, corresponding to the pressed state of the unselected SelectManyCheckbox.
+      </description>
+      <name>pressedUnselectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file, corresponding to the disabled state of the selected SelectManyCheckbox.
+      </description>
+      <name>disabledSelectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>URL to the image file, corresponding to the disabled state of the unselected SelectManyCheckbox.
+      </description>
+      <name>disabledUnselectedImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>CSS style(s) to be applied when an item of this component is in the focused state.</description>
+      <name>focusedItemStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when an item of this component is in the focused state.
+        This value must be passed through as the "class" attribute on generated markup.
+      </description>
+      <name>focusedItemClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS style(s) to be applied when an item of this component is in the selected state.</description>
+      <name>selectedItemStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when an item of this component is in the selected state.
+        This value must be passed through as the "class" attribute on generated markup.
+      </description>
+      <name>selectedItemClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS style(s) to be applied when an item of this component is in the rollover state.</description>
+      <name>rolloverItemStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when an item of this component is in the rollover state.
+        This value must be passed through as the "class" attribute on generated markup.
+      </description>
+      <name>rolloverItemClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS style(s) to be applied when an item of this component is in the pressed state.</description>
+      <name>pressedItemStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Space-separated list of CSS style class(es) to be applied
+        when an item of this component is in the pressed state.
+        This value must be passed through as the "class" attribute on generated markup.
+      </description>
+      <name>pressedItemClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+
+  <tag>
+    <description>A child tag of the {@link selectOneRadio or selectManyCheckbox} tags
       that is used to specify a separate list item. It is also possible to add child
-      components to the o:selectOneRadio tag.
+      components to the o:selectOneRadio or o:selectManyCheckbox tags.
     </description>
     <name>selectItem</name>
     <tag-class>org.openfaces.taglib.jsp.select.SelectItemJspTag</tag-class>
@@ -28708,7 +29386,7 @@ and it is automatically triggered on any form submission. -->
   </tag>
 
   <tag>
-    <description>A child tag of the {@link selectOneRadio} tags
+    <description>A child tag of the {@link selectOneRadio or selectManyCheckbox} tags
       that is used to specify a list of items.
     </description>
     <name>selectItems</name>

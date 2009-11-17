@@ -2641,7 +2641,13 @@ if (!window.O$) {
 
   O$.removeOfClassName = function(element, className) {
     if (element.className.length > 0) {
-      element.className = element.className.replace(className, "");
+      var val = element.className;
+      var main;
+      do {
+        main = val;
+        val = main.replace(className, "");
+      } while (val != main);
+      element.className = val;
     }
   };
 

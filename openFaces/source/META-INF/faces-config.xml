@@ -591,6 +591,11 @@
   </component>
 
   <component>
+    <component-type>org.openfaces.SelectManyCheckbox</component-type>
+    <component-class>org.openfaces.component.select.SelectManyCheckbox</component-class>
+  </component>
+
+  <component>
     <component-type>org.openfaces.SelectItem</component-type>
     <component-class>org.openfaces.component.select.SelectItem</component-class>
   </component>
@@ -1022,6 +1027,12 @@
       <component-family>org.openfaces.SelectOneRadio</component-family>
       <renderer-type>org.openfaces.SelectOneRadioRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.select.SelectOneRadioRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>org.openfaces.SelectManyCheckbox</component-family>
+      <renderer-type>org.openfaces.SelectManyCheckboxRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.select.SelectManyCheckboxRenderer</renderer-class>
     </renderer>
 
     <renderer>

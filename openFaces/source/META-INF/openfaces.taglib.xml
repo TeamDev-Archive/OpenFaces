@@ -912,6 +912,15 @@
       <handler-class>org.openfaces.taglib.facelets.select.SelectOneRadioTagHandler</handler-class>
     </component>
   </tag>
+
+  <tag>
+    <tag-name>selectManyCheckbox</tag-name>
+    <component>
+      <component-type>org.openfaces.SelectManyCheckbox</component-type>
+      <renderer-type>org.openfaces.SelectManyCheckboxRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.select.SelectManyCheckboxTagHandler</handler-class>
+    </component>
+  </tag>
   
   <tag>
     <tag-name>selectItem</tag-name>

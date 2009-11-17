@@ -1,0 +1,111 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+
+  <a href="../../main.jsf">Back to the main page</a>
+
+  <br/>
+  <h3>Select Many Checkbox</h3>
+  <br/>
+  <h:commandButton id="submit" value="Submit"/>
+  <br/>
+  <br/>
+
+  <table>
+    <tr>
+      <td>
+        <h4>Check 'valueChangeListener'</h4>
+
+        <div>
+          <table>
+            <tr>
+              <td class="header" colspan="2">SelectManyCheckbox basic as attribute</td>
+              <td class="header" colspan="2">SelectManyCheckbox advanced with images as attribute</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox1" valueChangeListener="#{ManyCheckboxTestRequest.valueChangedAttribute1}">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                Value: <h:outputText id="checkboxGroup1Text" value="#{ManyCheckboxTestRequest.valueChangeListener1Flag}"/>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox2" valueChangeListener="#{ManyCheckboxTestRequest.valueChangedAttribute2}"
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                Value: <h:outputText id="checkboxGroup2Text" value="#{ManyCheckboxTestRequest.valueChangeListener2Flag}"/>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="header" colspan="2">SelectManyCheckbox basic as tag</td>
+              <td class="header" colspan="2">SelectManyCheckbox advanced with images as tag</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox3">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                  <f:valueChangeListener type="org.openfaces.testapp.selectmanycheckbox.TestValueChangeListener1"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                Value: <h:outputText id="checkboxGroup3Text" value="#{ManyCheckboxTestRequest.testValueChangeListener1}"/>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox4"
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                  <f:valueChangeListener type="org.openfaces.testapp.selectmanycheckbox.TestValueChangeListener2"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                Value: <h:outputText id="checkboxGroup4Text" value="#{ManyCheckboxTestRequest.testValueChangeListener2}"/>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>

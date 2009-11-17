@@ -1,0 +1,762 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+
+  <a href="../../main.jsf">Back to the main page</a>
+
+  <style>
+    .c { padding: 2px; background-color: #00ffff; }
+    .ec { border: 3px double green; background-color: yellowgreen;}
+    .dc { border: 3px double #444; background-color: #DDD;}
+    .fc { border: 3px double red; }
+    .rc { border: 3px dotted blue; }
+    .sc { border: 3px double yellowgreen; }
+    .uc { border: 3px double lightgreen; }
+
+    .fic { border: 3px double #ff3333; }
+    .pic { border: 3px double #000099; }
+    .ric { border: 3px dotted #6666ff; }
+    .sic { border: 3px double #339900; }
+
+  </style>
+
+  <br/>
+  <h3>Select Many Checkbox</h3>
+  <br/>
+  <br/>
+  <br/>
+
+  <table>
+    <tr>
+      <td>
+        <h4>Base functionality</h4>
+
+        <div>
+          <table>
+            <tr>
+              <td class="header" colspan="2">SelectManyCheckbox basic (layout: lineDirection)</td>
+              <td class="header" colspan="2">SelectManyCheckbox advanced with images (layout: lineDirection)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox1" value="#{ManyCheckboxTest.checkboxGroup1}">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <h:outputText value="Selected Items: "/>
+                <h:dataTable value="#{ManyCheckboxTest.checkboxGroup1}" var="item">
+                  <h:column>
+                    <h:outputText value="#{item}"/>
+                  </h:column>
+                </h:dataTable>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox2" value="#{ManyCheckboxTest.checkboxGroup2}"
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <h:outputText value="Selected Items: "/>
+                <h:dataTable value="#{ManyCheckboxTest.checkboxGroup2}" var="item">
+                  <h:column>
+                    <h:outputText value="#{item}"/>
+                  </h:column>
+                </h:dataTable>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="header" colspan="2">SelectManyCheckbox basic (layout: pageDirection)</td>
+              <td class="header" colspan="2">SelectManyCheckbox advanced with images (layout: pageDirection)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox3" value="#{ManyCheckboxTest.checkboxGroup3}" layout="pageDirection">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <h:outputText value="Selected Items: "/>
+                <h:dataTable value="#{ManyCheckboxTest.checkboxGroup3}" var="item">
+                  <h:column>
+                    <h:outputText value="#{item}"/>
+                  </h:column>
+                </h:dataTable>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox4" value="#{ManyCheckboxTest.checkboxGroup4}" layout="pageDirection"
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <h:outputText value="Selected Items: "/>
+                <h:dataTable value="#{ManyCheckboxTest.checkboxGroup4}" var="item">
+                  <h:column>
+                    <h:outputText value="#{item}"/>
+                  </h:column>
+                </h:dataTable>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h4>Styles for SelectManyCheckbox</h4>
+
+        <div>
+          <table>
+            <tr>
+              <td class="header">SelectManyCheckbox standart (enable/disable)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <h:selectManyCheckbox id="selectManyCheckbox_s1"
+                                  styleClass="c" style="border: 1px solid blue;"
+                                  enabledClass="ec"
+                                  disabledClass="dc">
+                  <f:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <f:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <f:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <f:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <f:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </h:selectManyCheckbox>
+              </td>
+            </tr>
+            <tr>
+              <td class="header">SelectManyCheckbox basic (enable/disable)</td>
+              <td class="header">SelectManyCheckbox advanced with images (enable/disable)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox5"
+                                  styleClass="c" style="border: 1px solid blue;"
+                                  enabledClass="ec" enabledStyle="background-color: greenyellow;"
+                                  disabledClass="dc" disabledStyle="background-color: #888;">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox6"
+                                  styleClass="c" style="border: 1px solid blue;"
+                                  enabledClass="ec" enabledStyle="background-color: greenyellow;"
+                                  disabledClass="dc" disabledStyle="background-color: #888;"
+
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="header">SelectManyCheckbox basic (focused/rollover)</td>
+              <td class="header">SelectManyCheckbox advanced with images (focused/rollover)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox7"
+                                  focusedClass="fc" focusedStyle="background-color: red;"
+                                  rolloverClass="rc" rolloverStyle="background-color: #33DF29;">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox8"
+                                  focusedClass="fc" focusedStyle="background-color: red;"
+                                  rolloverClass="rc" rolloverStyle="background-color: #33DF29;"
+
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h4>Styles for selectItem</h4>
+
+        <div>
+          <table>
+            <tr>
+              <td class="header">SelectManyCheckbox basic (focused/rollover)</td>
+              <td class="header">SelectManyCheckbox advanced with images (focused/rollover)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox_1"
+                                  focusedItemClass="fic" focusedItemStyle="background-color: #ff3333;"
+                                  rolloverItemClass="ric" rolloverItemStyle="background-color: #6666ff">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox_2"
+                                  focusedItemClass="fic" focusedItemStyle="background-color: #ff3333;"
+                                  rolloverItemClass="ric" rolloverItemStyle="background-color: #6666ff"
+
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="header">SelectManyCheckbox basic (pressed/selected)</td>
+              <td class="header">SelectManyCheckbox advanced with images (pressed/selected)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox_3"
+                                  pressedItemClass="pic" pressedItemStyle="background-color: #000099"
+                                  selectedItemClass="sic" selectedItemStyle="background-color: #339900">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox_4"
+                                  pressedItemClass="pic" pressedItemStyle="background-color: #000099"
+                                  selectedItemClass="sic" selectedItemStyle="background-color: #339900"
+
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="header">SelectManyCheckbox and SelectItem basic (focused/rollover)</td>
+              <td class="header">SelectManyCheckbox and SelectItem advanced with images (focused/rollover)</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox_25"
+                                  focusedClass="fc" focusedStyle="background-color: yellow;"
+                                  rolloverClass="rc" rolloverStyle="background-color: #33DF29;"
+                                  focusedItemClass="fic" focusedItemStyle="background-color: #ff3333;"
+                                  rolloverItemClass="ric" rolloverItemStyle="background-color: #6666ff">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox_26"
+                                  focusedClass="fc" focusedStyle="background-color: yellow;"
+                                  rolloverClass="rc" rolloverStyle="background-color: #33DF29;"
+                                  focusedItemClass="fic" focusedItemStyle="background-color: #ff3333;"
+                                  rolloverItemClass="ric" rolloverItemStyle="background-color: #6666ff"
+
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+      <h4>Events</h4>
+
+        <div>
+          <table>
+            <tr>
+              <td class="header">onfocus, onblur</td>
+              <td class="header">onmouseover, onmouseout</td>
+            </tr>
+
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox11"
+                                  onblur="logJSEvents('onblur works for simple', 'empty');"
+                                  onfocus="logJSEvents('onfocus works for simple', 'empty');">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+
+                <br/>
+
+                <o:selectManyCheckbox id="selectManyCheckbox12"
+                                  onblur="logJSEvents('onblur works for advanced', 'empty');"
+                                  onfocus="logJSEvents('onfocus works for advanced', 'empty');"
+
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox13"
+                                  onmouseout="logJSEvents('onmouseout works for simple', 'empty');"
+                                  onmouseover="logJSEvents('onmouseover works for simple', 'empty');">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+
+                <br/>
+
+                <o:selectManyCheckbox id="selectManyCheckbox14"
+                                  onmouseout="logJSEvents('onmouseout works for advanced', 'empty');"
+                                  onmouseover="logJSEvents('onmouseover works for advanced', 'empty');"
+
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="header">onmouseup, onmousedown, onkeydown</td>
+              <td class="header">onkeypress, onkeyup, onchange</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox15"
+                                  onkeydown="logJSEvents('onkeydown works for simple', 'empty');"
+                                  onmousedown="logJSEvents('onmousedown works for simple', 'empty');"
+                                  onmouseup="logJSEvents('onmouseup works for simple', 'empty');">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+
+                <br/>
+
+                <o:selectManyCheckbox id="selectManyCheckbox16"
+                                  onkeydown="logJSEvents('onkeydown works for advanced', 'empty');"
+                                  onmousedown="logJSEvents('onmousedown works for advanced', 'empty');"
+                                  onmouseup="logJSEvents('onmouseup works for advanced', 'empty');"
+
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox17"
+                                  onchange="logJSEvents('onchange works for simple', 'empty');"
+                                  onkeypress="logJSEvents('onkeypress works for simple', 'empty');"
+                                  onkeyup="logJSEvents('onkeyup works for simple', 'empty');">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+
+                <br/>
+
+                <o:selectManyCheckbox id="selectManyCheckbox18"
+                                  onchange="logJSEvents('onchange works for advanced', 'empty');"
+                                  onkeypress="logJSEvents('onkeypress works for advanced', 'empty');"
+                                  onkeyup="logJSEvents('onkeyup works for advanced', 'empty');"
+
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+            </tr>
+            <tr>
+              <td class="header">onclick, ondblclick</td>
+              <td class="header">onmousemove</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox19"
+                                  onclick="logJSEvents('onclick works for simple', 'empty');"
+                                  ondblclick="logJSEvents('ondblclick works for simple', 'empty');">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+
+                <br/>
+
+                <o:selectManyCheckbox id="selectManyCheckbox20"
+                                  onclick="logJSEvents('onclick works for advanced', 'empty');"
+                                  ondblclick="logJSEvents('ondblclick works for advanced', 'empty');"
+
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox21"
+                                  onmousemove="logJSEvents('onmousemove works for simple', 'empty');">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+
+                <br/>
+
+                <o:selectManyCheckbox id="selectManyCheckbox22"
+                                  onmousemove="logJSEvents('onmousemove works for advanced', 'empty');"
+
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+            </tr>
+
+          </table>
+        </div>
+        <div id="empty"></div>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h4>Disable</h4>
+
+        <div>
+          <table>
+            <tr>
+              <td class="header">SelectManyCheckbox basic disabled</td>
+              <td class="header">SelectManyCheckbox advanced with images disabled</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox23" disabled="true">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox24" disabled="true"
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h4>ReadOnly</h4>
+
+        <div>
+          <table>
+            <tr>
+              <td class="header">SelectManyCheckbox basic readonly</td>
+              <td class="header">SelectManyCheckbox advanced with images readonly</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox25" readonly="true">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox26" readonly="true"
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <br/>
+  <br/>
+
+  <span>SelectManyCheckbox on page...</span>
+
+  <br/>
+
+  <o:selectManyCheckbox id="selectManyCheckboxSimple1"
+                    style="border: 1px solid gray; background-color: beige;">
+    <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+    <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+    <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+    <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+    <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+  </o:selectManyCheckbox>
+
+  <br/>
+
+  <o:selectManyCheckbox id="selectManyCheckboxSimple2"
+                    style="border: 1px solid gray; background-color: beige;"
+                    selectedImageUrl="/images/selectedCheckbox.png"
+                    unselectedImageUrl="/images/unselectedCheckbox.png"
+                    rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                    rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                    pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                    pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                    disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                    disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+          >
+    <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+    <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+    <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+    <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+    <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+  </o:selectManyCheckbox>
+
+  <br/>
+  <br/>
+
+  <h:commandButton id="submit2" value="Submit"/>
+
+  <script type="text/javascript">
+    function getControl(id) {
+      return document.getElementById(id);
+    }
+
+    function printInfo(textToOutput, divID, add) {
+      var empty = getControl(divID);
+      empty.innerHTML = textToOutput;
+      empty.style.color = "green";
+    }
+
+    function logJSEvents(textToOutput, divID) {
+      printInfo(textToOutput, divID, true);
+    }
+
+  </script>
+  <a4j:log/>
+</div>

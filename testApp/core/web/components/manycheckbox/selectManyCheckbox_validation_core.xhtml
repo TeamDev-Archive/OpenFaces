@@ -1,0 +1,106 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+     xmlns:a4j="http://richfaces.org/a4j"
+     xmlns:rich="http://richfaces.org/rich"
+     xmlns:t="http://myfaces.apache.org/tomahawk"
+       >
+
+  <a href="../../main.jsf">Back to the main page</a>
+
+  <style>
+    .c { padding: 2px; }
+    .ec { border: 3px double green; }
+    .dc { border: 3px double #444; }
+    .fc { border: 3px double red; }
+    .rc { border: 3px double blue; }
+    .sc { border: 3px double yellowgreen; }
+    .uc { border: 3px double lightgreen; }
+
+    .fic { border: 3px double #ff3333; }
+    .pic { border: 3px double #000099; }
+    .ric { border: 3px dotted #6666ff; }
+    .sic { border: 3px double #339900; }
+
+  </style>
+
+  <br/>
+  <h3>Select Many Checkbox</h3>
+  <br/>
+  <h:commandButton id="submit" value="Submit"/>
+  <br/>
+  <br/>
+
+  <table>
+    <tr>
+      <td>
+        <h4>Validation</h4>
+
+        <div>
+          <table>
+            <tr>
+              <td class="header" colspan="2">SelectManyCheckbox basic</td>
+              <td class="header" colspan="2">SelectManyCheckbox advanced with images</td>
+            </tr>
+            <tr>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox1" value="#{ManyCheckboxTest.checkboxGroup1}" required="true"
+                                  styleClass="c" style="border: 1px solid blue;"
+                                  enabledClass="ec"
+                                  disabledClass="dc"
+                                  focusedClass="fc" focusedStyle="background-color: red;"
+                                  rolloverClass="rc" rolloverStyle="background-color: #33DF29;">
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <h:outputText value="Selected Items: "/>
+                <h:dataTable value="#{ManyCheckboxTest.checkboxGroup1}" var="item">
+                  <h:column>
+                    <h:outputText value="#{item}"/>
+                  </h:column>
+                </h:dataTable>
+              </td>
+              <td class="container">
+                <o:selectManyCheckbox id="selectManyCheckbox2" value="#{ManyCheckboxTest.checkboxGroup2}" required="true"
+                                  styleClass="c" style="border: 1px solid blue;"
+                                  enabledClass="ec"
+                                  disabledClass="dc"
+                                  focusedClass="fc" focusedStyle="background-color: red;"
+                                  rolloverClass="rc" rolloverStyle="background-color: #33DF29;"
+
+                                  selectedImageUrl="/images/selectedCheckbox.png"
+                                  unselectedImageUrl="/images/unselectedCheckbox.png"
+                                  rolloverSelectedImageUrl="/images/rolloverSelectedCheckbox.png"
+                                  rolloverUnselectedImageUrl="/images/rolloverUnselectedCheckbox.png"
+                                  pressedSelectedImageUrl="/images/pressedSelectedCheckbox.png"
+                                  pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
+                                  disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
+                                  disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png"
+                        >
+                  <o:selectItem itemValue="1" itemLabel="Chk 1"/>
+                  <o:selectItem itemValue="2" itemLabel="Chk 2"/>
+                  <o:selectItem itemValue="3" itemLabel="Chk 3"/>
+                  <o:selectItem itemValue="4" itemLabel="Chk 4 (disabled)" itemDisabled="true"/>
+                  <o:selectItem itemValue="5" itemLabel="Chk 5"/>
+                </o:selectManyCheckbox>
+              </td>
+              <td class="container">
+                <h:outputText value="Selected Items: "/>
+                <h:dataTable value="#{ManyCheckboxTest.checkboxGroup2}" var="item">
+                  <h:column>
+                    <h:outputText value="#{item}"/>
+                  </h:column>
+                </h:dataTable>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>

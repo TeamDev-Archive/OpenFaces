@@ -189,6 +189,18 @@
   </managed-bean>
 
   <managed-bean>
+    <managed-bean-name>ManyCheckboxTest</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.selectmanycheckbox.ManyCheckboxTest</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ManyCheckboxTestRequest</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.selectmanycheckbox.ManyCheckboxTest</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
     <managed-bean-name>ColorListBean</managed-bean-name>
     <managed-bean-class>org.openfaces.testapp.datatable.ColorListBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>

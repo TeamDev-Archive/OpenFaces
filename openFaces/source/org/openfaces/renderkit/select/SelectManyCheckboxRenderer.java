@@ -14,7 +14,7 @@ package org.openfaces.renderkit.select;
 
 import org.openfaces.component.select.OUISelectManyInputBase;
 import org.openfaces.component.select.SelectItem;
-import org.openfaces.component.select.SelectOneRadio;
+import org.openfaces.component.select.SelectManyCheckbox;
 import org.openfaces.org.json.JSONObject;
 import static org.openfaces.renderkit.select.SelectManyInputImageManager.getCurrentImageUrl;
 import org.openfaces.util.AnonymousFunction;
@@ -27,29 +27,31 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 /**
  * @author Oleg Marshalenko
  */
-public class SelectOneRadioRenderer extends SelectManyInputRenderer {
+public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
 
     protected void renderWithImages(FacesContext facesContext, ResponseWriter writer, OUISelectManyInputBase selectManyInputBase, List<SelectItem> selectItems, boolean isLineLayout) throws IOException {
-        SelectOneRadio selectOneRadio = (SelectOneRadio) selectManyInputBase;
-        String clientId = selectOneRadio.getClientId(facesContext);
+        SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) selectManyInputBase;
+        String clientId = selectManyCheckbox.getClientId(facesContext);
 
         if (isLineLayout) {
-            writer.startElement("tr", selectOneRadio);
+            writer.startElement("tr", selectManyCheckbox);
         }
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
 
             if (!isLineLayout) {
-                writer.startElement("tr", selectOneRadio);
+                writer.startElement("tr", selectManyCheckbox);
             }
-            writer.startElement("td", selectOneRadio);
+            writer.startElement("td", selectManyCheckbox);
 
             String id = getIdIndexed(clientId, i);
 
@@ -58,21 +60,21 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
             writer.startElement(TAG_NAME, selectItem);
             writeAttribute(writer, "id", imageId);
             writeAttribute(writer, "type", "image");
-            writeAttribute(writer, "src", getCurrentImageUrl(facesContext, selectOneRadio, selectItem));
-            writeCommonAttributes(writer, selectOneRadio, selectItem);
+            writeAttribute(writer, "src", getCurrentImageUrl(facesContext, selectManyCheckbox, selectItem));
+            writeCommonAttributes(writer, selectManyCheckbox, selectItem);
             writer.endElement(TAG_NAME);
 
-            writer.startElement(TAG_NAME, selectOneRadio);
+            writer.startElement(TAG_NAME, selectManyCheckbox);
             writeAttribute(writer, "id", id);
             writeAttribute(writer, "name", clientId);
-            writeAttribute(writer, "type", "radio");
+            writeAttribute(writer, "type", "checkbox");
             writeAttribute(writer, "value", selectItem.getItemValue().toString());
             writeAttribute(writer, "style", "display: none;");
 
-            if (selectOneRadio.isDisabled() || selectItem.isItemDisabled()) {
+            if (selectManyCheckbox.isDisabled() || selectItem.isItemDisabled()) {
                 writeAttribute(writer, "disabled", "disabled");
             }
-            if (isValueEquals(selectOneRadio, selectItem)) {
+            if (isValueEquals(selectManyCheckbox, selectItem)) {
                 writeAttribute(writer, "checked", "checked");
             }
             writer.endElement(TAG_NAME);
@@ -92,35 +94,35 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
     }
 
     protected void renderWithHtmlElements(FacesContext facesContext, ResponseWriter writer, OUISelectManyInputBase selectManyInputBase, List<SelectItem> selectItems, boolean isLineLayout) throws IOException {
-        SelectOneRadio selectOneRadio = (SelectOneRadio) selectManyInputBase;
-        String clientId = selectOneRadio.getClientId(facesContext);
+        SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) selectManyInputBase;
+        String clientId = selectManyCheckbox.getClientId(facesContext);
 
         if (isLineLayout) {
-            writer.startElement("tr", selectOneRadio);
+            writer.startElement("tr", selectManyCheckbox);
         }
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
 
             if (!isLineLayout) {
-                writer.startElement("tr", selectOneRadio);
+                writer.startElement("tr", selectManyCheckbox);
             }
-            writer.startElement("td", selectOneRadio);
+            writer.startElement("td", selectManyCheckbox);
 
             String id = getIdIndexed(clientId, i);
-            writer.startElement(TAG_NAME, selectOneRadio);
+            writer.startElement(TAG_NAME, selectManyCheckbox);
             writeAttribute(writer, "id", id);
             writeAttribute(writer, "name", clientId);
-            writeAttribute(writer, "type", "radio");
+            writeAttribute(writer, "type", "checkbox");
             writeAttribute(writer, "value", selectItem.getItemValue().toString());
-            writeCommonAttributes(writer, selectOneRadio, selectItem);
-            if (selectOneRadio.isDisabled() || selectItem.isItemDisabled()) {
+            writeCommonAttributes(writer, selectManyCheckbox, selectItem);
+            if (selectManyCheckbox.isDisabled() || selectItem.isItemDisabled()) {
                 writeAttribute(writer, "disabled", "disabled");
             }
-            if (isValueEquals(selectOneRadio, selectItem)) {
+            if (isValueEquals(selectManyCheckbox, selectItem)) {
                 writeAttribute(writer, "checked", "checked");
             }
-            writeAttribute(writer, "onchange", selectOneRadio.getOnchange());
+            writeAttribute(writer, "onchange", selectManyCheckbox.getOnchange());
             writer.endElement(TAG_NAME);
 
             writer.startElement("label", selectItem);
@@ -139,44 +141,48 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        SelectOneRadio selectOneRadio = (SelectOneRadio) component;
+        SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) component;
 
-        Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
+        Map<String, String[]> requestMap = context.getExternalContext().getRequestParameterValuesMap();
 
-        String clientId = selectOneRadio.getClientId(context);
+        String clientId = selectManyCheckbox.getClientId(context);
 
         if (requestMap.containsKey(clientId)) {
-            String requestValue = requestMap.get(clientId);
-            selectOneRadio.setSubmittedValue(requestValue);
+            String[] requestValues = requestMap.get(clientId);
+            selectManyCheckbox.setSubmittedValue(Arrays.asList(requestValues));
+        } else {
+            selectManyCheckbox.setSubmittedValue(new ArrayList<String>());
         }
     }
 
     protected void renderInitScript(FacesContext facesContext, OUISelectManyInputBase selectManyInputBase,
             JSONObject imagesObj, JSONObject stylesObj, int selectItemCount, AnonymousFunction onchangeFunction)
             throws IOException {
-        SelectOneRadio selectOneRadio = (SelectOneRadio) selectManyInputBase;
-        Script initScript = new ScriptBuilder().initScript(facesContext, selectOneRadio, "O$.Radio._init",
+        SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) selectManyInputBase;
+        Script initScript = new ScriptBuilder().initScript(facesContext, selectManyCheckbox, "O$.ManyCheckbox._init",
                 imagesObj,
                 stylesObj,
                 selectItemCount,
-                selectOneRadio.isDisabled(),
-                selectOneRadio.isReadonly(),
+                selectManyCheckbox.isDisabled(),
+                selectManyCheckbox.isReadonly(),
                 onchangeFunction
         );
 
         RenderingUtil.renderInitScript(facesContext, initScript,
                 new String[] {
                 ResourceUtil.getUtilJsURL(facesContext),
-                ResourceUtil.getInternalResourceURL(facesContext, SelectOneRadioRenderer.class, "radio.js")
+                ResourceUtil.getInternalResourceURL(facesContext, SelectOneRadioRenderer.class, "manycheckbox.js")
             }
         );
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private boolean isValueEquals(SelectOneRadio selectOneRadio, SelectItem selectItem) {
-        return selectOneRadio.getValue() != null &&
-               selectOneRadio.getValue().equals(selectItem.getItemValue());
+    private boolean isValueEquals(SelectManyCheckbox selectManyCheckbox, SelectItem selectItem) {
+        List values = (List) selectManyCheckbox.getSubmittedValue();
+        if (values == null) {
+            values = (List) selectManyCheckbox.getValue(); 
+        }
+        return values != null && values.contains(selectItem.getItemValue());
     }
-
 }

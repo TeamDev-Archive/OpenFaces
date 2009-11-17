@@ -12,16 +12,16 @@
 
 package org.openfaces.taglib.internal.select;
 
-import org.openfaces.component.select.SelectOneRadio;
+import org.openfaces.component.select.SelectManyCheckbox;
 
 /**
  * @author Oleg Marshalenko
  */
-public class SelectOneRadioTag extends AbstractUISelectManyInputTag {
-    private static final String RENDERER_TYPE = "org.openfaces.SelectOneRadioRenderer";
+public class SelectManyCheckboxTag extends AbstractUISelectManyInputTag {
+    private static final String RENDERER_TYPE = "org.openfaces.SelectManyCheckboxRenderer";
 
     public String getComponentType() {
-        return SelectOneRadio.COMPONENT_TYPE;
+        return SelectManyCheckbox.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
