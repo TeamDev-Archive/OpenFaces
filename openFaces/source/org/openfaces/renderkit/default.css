@@ -1371,10 +1371,9 @@
 
 /*Day Switcher*/
 .o_daySwitcher {
-  font-size: 16pt;
-  font-family: "Calibri", "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
-  /*font-size:13pt;
-  font-family:MS Shell Dlg,Arial,sans-serif;*/
+  font-size:14pt;
+  font-family:MS Shell Dlg,Arial,sans-serif;
+  padding: 0 2px;
 }
 
 .o_daySwitcher_previous_button,
