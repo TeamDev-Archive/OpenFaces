@@ -45,8 +45,10 @@ public class DaySwitcherRenderer extends RendererBase {
 
         DaySwitcher daySwitcher = (DaySwitcher) component;
 
-        DayTable dayTable = daySwitcher.getDayTable();
         Locale locale = daySwitcher.getLocale();
+        RenderingUtil.registerDateTimeFormatObject(locale);
+
+        DayTable dayTable = daySwitcher.getDayTable();
         TimeZone timeZone = daySwitcher.getTimeZone();
         Date date = dayTable.getDay();
 
@@ -98,29 +100,29 @@ public class DaySwitcherRenderer extends RendererBase {
         writer.startElement("td", daySwitcher);
         if (renderUpperText){
             //upper text
-            writer.startElement("big", daySwitcher);
+            writer.startElement("p", daySwitcher);
             writer.writeAttribute("id", clientId + "::upper_text", null);
             String upperTextClass = StyleUtil.getCSSClass(context,
                     daySwitcher, daySwitcher.getUpperTextStyle(), "o_daySwitcher_upper_text", daySwitcher.getUpperTextClass());
             writer.writeAttribute("class", upperTextClass, null);
             
             writer.write(upperDateFormat.format(date));
-            writer.endElement("big");
+            writer.endElement("p");
         }
         if (renderText){
-            if (renderUpperText){
+            /*if (renderUpperText){
                 writer.startElement("br", daySwitcher);
                 writer.endElement("br");
-            }
+            } */
             //text
-            writer.startElement("span", daySwitcher);
+            writer.startElement("p", daySwitcher);
             writer.writeAttribute("id", clientId + "::text", null);
             String textClass = StyleUtil.getCSSClass(context,
                     daySwitcher, daySwitcher.getTextStyle(), "o_daySwitcher_text", daySwitcher.getTextClass());
             writer.writeAttribute("class", textClass, null);
 
             writer.write(dateFormat.format(dayTable.getDay()));            
-            writer.endElement("span");
+            writer.endElement("p");
         }
         writer.endElement("td");
 

@@ -1397,6 +1397,8 @@
 .o_daySwitcher_upper_text {
   font-size: .55em;
   padding:0 0.5em;
+  line-height:1.5em;
+  margin: 0;
 }
 
 .o_daySwitcher_text {
@@ -1405,4 +1407,5 @@
   padding-bottom:0.2em;
   padding-left:5px;
   padding-right:5px;
+  margin: 0;
 }

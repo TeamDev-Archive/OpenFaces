@@ -24,8 +24,7 @@ O$.DaySwitcher = {
     var dtf = O$.getDateTimeFormatObject(locale);
     daySwitcher._day = dtf.parse(day, "dd/MM/yyyy");
 
-    daySwitcher._dayTable = O$(dayTableId);
-    var dayTable = daySwitcher._dayTable;
+    daySwitcher._dayTableId = dayTableId;
     daySwitcher._pattern = pattern;
     daySwitcher._upperPattern = upperPattern;
     daySwitcher._locale = locale;
@@ -78,9 +77,18 @@ O$.DaySwitcher = {
       nextButton.ondblclick = O$.repeatClickOnDblclick;
 
     }
+
+    daySwitcher._getDayTable = function(){
+      if (!daySwitcher._dayTable) {
+        daySwitcher._dayTable = O$(daySwitcher._dayTableId);
+      }
+      return daySwitcher._dayTable;
+    };
+
     daySwitcher.getDay = function() {
       return daySwitcher._day;
     };
+
 
     daySwitcher.setDay = function(day) {
       if (O$._datesEqual(daySwitcher._day, day))
@@ -97,15 +105,12 @@ O$.DaySwitcher = {
         daySwitcher._upperText.innerHTML = dtf.format(day, daySwitcher._upperPattern);
       }
 
-      daySwitcher._dayTable.setDay(day);
-    };
-
-    var _onDayChange = dayTable._onDayChange;
-    dayTable._onDayChange = function(day){
-      if (_onDayChange){
-        _onDayChange(day);
+      var dayTable = daySwitcher._getDayTable();
+      if (!dayTable){
+         return;
       }
-      daySwitcher.setDay(day);
+
+      daySwitcher._dayTable.setDay(day);
     };
 
     daySwitcher.previousDay = function() {
@@ -137,6 +142,22 @@ O$.DaySwitcher = {
         });
         daySwitcher.nextDay();
       };
+
+       O$.addLoadEvent(function (){
+         var dayTable = daySwitcher._getDayTable();
+         if (!dayTable){
+           return;
+         }
+
+          var _onDayChange = dayTable._onDayChange;
+          dayTable._onDayChange = function(day){
+            if (_onDayChange){
+              _onDayChange(day);
+            }
+            daySwitcher.setDay(day);
+          };
+         });
+
     }
 
 
