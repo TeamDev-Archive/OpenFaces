@@ -1803,7 +1803,6 @@ O$.Tables = {
       });
       return width;
     }
-
     var areaIndex = 0;
     if (firstSection._leftScrollingArea) {
       var width = areaWidthByColumns(firstSection, "_leftScrollingArea");
@@ -1815,6 +1814,7 @@ O$.Tables = {
       width = areaWidthByColumns(firstSection, "_rightScrollingArea");
       scrollingAreaColTags[areaIndex++].style.width = width;
     }
+
 
     function fixScrollingContainerHeight(area) {
       if (!area)
@@ -1831,6 +1831,19 @@ O$.Tables = {
     fixScrollingContainerHeight(table.body._leftScrollingArea);
     fixScrollingContainerHeight(table.body._centerScrollingArea);
     fixScrollingContainerHeight(table.body._rightScrollingArea);
+
+
+    var mainScrollingArea = table.body._centerScrollingArea;
+    mainScrollingArea._scrollingDiv.onscroll = function() {
+      [table.header, table.footer].forEach(function (section) {
+        if (!section._centerScrollingArea) return;
+        section._centerScrollingArea._scrollingDiv.scrollLeft = mainScrollingArea._scrollingDiv.scrollLeft;
+      });
+      [table.body._leftScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
+        if (!area) return;
+        area._scrollingDiv.scrollTop = mainScrollingArea._scrollingDiv.scrollTop;
+      });
+    };
   }
 
 
