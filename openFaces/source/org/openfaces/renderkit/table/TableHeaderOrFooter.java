@@ -139,7 +139,11 @@ public abstract class TableHeaderOrFooter extends TableSection {
         }
     }
 
-    public static int composeColumnHierarchies(List<BaseColumn> columns, List[] columnHierarchies, boolean isHeader, boolean skipEmptyHeaders) {
+    public static int composeColumnHierarchies(
+            List<BaseColumn> columns,
+            List<BaseColumn>[] columnHierarchies,
+            boolean isHeader,
+            boolean skipEmptyHeaders) {
         int columnHierarchyLevels = 0;
         for (int colIndex = 0, colCount = columns.size(); colIndex < colCount; colIndex++) {
             List<BaseColumn> columnHierarchy = new ArrayList<BaseColumn>();
@@ -204,7 +208,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
             List<BaseColumn> columns,
             String cellTag) {
         int colCount = columns.size();
-        List[] columnHierarchies = new ArrayList[colCount];
+        List<BaseColumn>[] columnHierarchies = new ArrayList[colCount];
         int columnHierarchyLevels = composeColumnHierarchies(columns, columnHierarchies, isHeader, true);
 
         List<HeaderRow> rows = new ArrayList<HeaderRow>();

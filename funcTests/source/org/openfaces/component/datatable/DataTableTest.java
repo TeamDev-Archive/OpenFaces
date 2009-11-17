@@ -181,12 +181,6 @@ public class DataTableTest extends OpenFacesTestCase {
     }
 
     @Test
-    public void testFilteringSearchField() {
-        filteringSearchField(OpenFacesAjaxLoadingMode.getInstance());
-        filteringSearchField(ServerLoadingMode.getInstance());
-    }
-
-    @Test
     public void testPagination() {
         pagination(OpenFacesAjaxLoadingMode.getInstance());
         pagination(ServerLoadingMode.getInstance());
@@ -737,51 +731,6 @@ public class DataTableTest extends OpenFacesTestCase {
                         .assertText(currentReferenceRow.getSecondColumn());
             }
         }
-    }
-
-    private void filteringSearchField(LoadingMode loadingMode) {
-        testAppFunctionalPage("/components/datatable/datatableFilteringSearchField.jsf");
-
-        TabSetInspector loadingModes = tabSet("formID:loadingModes");
-        DataTableInspector dataTable = dataTable("formID:filterableDataTable_searchField");
-        if (loadingMode instanceof ServerLoadingMode) {
-            loadingModes.tabs().get(1).clickAndWait();
-        }
-
-        dataTable.setLoadingMode(loadingMode);
-        dataTable.column(0).filter(InputTextFilterInspector.class, "formID:filterableDataTable_searchField:filter1").makeFiltering("col3_row1");
-
-        element("formID:filterableDataTable_searchField:filterableDataTable_searchField_firstHeader")
-                .assertText("first column header");
-        element("formID:filterableDataTable_searchField:filterableDataTable_searchField_secondHeader")
-                .assertText("second column header");
-        element("formID:filterableDataTable_searchField:filterableDataTable_searchField_firstFooter")
-                .assertText("first column footer");
-        element("formID:filterableDataTable_searchField:filterableDataTable_searchField_secondFooter")
-                .assertText("second column footer");
-
-        DataTableUtils.TestDataTableItem referenceFilteredRow = DataTableUtils.TWO_STRING_COLUMN_LIST.get(0);
-
-        //check is right row appeared after filtering and other rows is non-visible
-        ElementInspector firstBody = element("formID:filterableDataTable_searchField:0:filterableDataTable_searchField_firstBody");
-        firstBody.assertVisible(true);
-        ElementInspector secondBody = element("formID:filterableDataTable_searchField:0:filterableDataTable_searchField_secondBody");
-        secondBody.assertVisible(true);
-        firstBody.assertText(referenceFilteredRow.getFirstColumn());
-        secondBody.assertText(referenceFilteredRow.getSecondColumn());
-
-        for (int i = 1; i < 9; i++) {
-            element("formID:filterableDataTable_searchField:" + i + ":filterableDataTable_searchField_firstBody")
-                    .assertElementExists(false);
-            element("formID:filterableDataTable_searchField:" + i + ":filterableDataTable_searchField_secondBody")
-                    .assertElementExists(false);
-        }
-
-        if (loadingMode instanceof ServerLoadingMode) {
-            // reset tab index for possible further tests
-            loadingModes.tabs().get(0).clickAndWait();
-        }
-
     }
 
     private void filteringComboBox(LoadingMode loadingMode) {

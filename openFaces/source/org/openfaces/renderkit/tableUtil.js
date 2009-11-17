@@ -158,12 +158,15 @@ O$.Tables = {
     if (table._params.scrolling)
       O$.Tables._initScrolling(table);
 
-    if (params.header && params.header.subHeader) {
-      var subHeaderRow = table.header._getRows()[table._subHeaderRowIndex];
-      if (subHeaderRow._leftRowNode) O$.fixInputsWidthStrict(subHeaderRow._leftRowNode);
-      O$.fixInputsWidthStrict(subHeaderRow._rowNode);
-      if (subHeaderRow._rightRowNode) O$.fixInputsWidthStrict(subHeaderRow._rightRowNode);
-    };
+    [table.header, table.footer].forEach(function (area) {
+      function fixInputWidths(element) {
+        if (element) O$.fixInputsWidthStrict(element);
+      }
+      fixInputWidths(area._tag);
+      fixInputWidths(area._leftScrollingArea && table.header._leftScrollingArea._rowContainer);
+      fixInputWidths(area._centerScrollingArea && table.header._centerScrollingArea._rowContainer);
+      fixInputWidths(area._centerScrollingArea && table.header._rightScrollingArea._rowContainer);
+    });
 
     table._removeAllRows = O$.Tables._removeAllRows;
     table._insertRowsAfter = O$.Tables._insertRowsAfter;
@@ -449,7 +452,7 @@ O$.Tables = {
                   _scrollingDivContainer: scrollingDivContainer,
                   _scrollingDiv: scrollingDiv,
                   _table: tbl,
-                  _rowCountainer: rowContainer,
+                  _rowContainer: rowContainer,
                   _rows: O$.getChildNodesWithNames(rowContainer, ["tr"])
                 };
                 if (area._scrollingDiv) {
@@ -1777,31 +1780,41 @@ O$.Tables = {
   _initScrolling: function(table) {
     if (!table._params.scrolling)
       throw "O$.Tables._initScrolling can't be invoked on a non-scrollable table";
-    
-    var firstSection = table.header._rows.length > 0 ? table.header : table.body;
 
+    var firstSection = table.header._rows.length > 0 ? table.header : table.body;
+    var defaultColWidth = 120;
     var scrollingAreaColTags = O$.Tables._getTableColTags(table);
-    function fixAreaWidthByColumns(area, areaColIndex) {
+    function areaWidthByColumns(section, areaName) {
       var areaWidth = 0;
+      var area = section[areaName];
       area._colTags.forEach(function(colTag) {
         var column = colTag._column;
         var colWidth = O$.calculateNumericCSSValue(O$.getStyleClassProperty(column._className, "width"));
         if (!colWidth) {
-          colWidth = 80;
+          colWidth = defaultColWidth;
           column._colTags.forEach(function(tag) {tag.style.width = colWidth + "px";});
         }
         areaWidth += colWidth;
       });
-      var areaColTag = scrollingAreaColTags[areaColIndex];
-      areaColTag.style.width = areaWidth + "px";
+      var width = areaWidth + "px";
+      [table.header, table.body, table.footer].forEach(function (section) {
+        if (!section) return;
+        section[areaName]._table.style.width = width;
+      });
+      return width;
     }
 
     var areaIndex = 0;
-    if (firstSection._leftScrollingArea)
-      fixAreaWidthByColumns(firstSection._leftScrollingArea, areaIndex++);
+    if (firstSection._leftScrollingArea) {
+      var width = areaWidthByColumns(firstSection, "_leftScrollingArea");
+      scrollingAreaColTags[areaIndex++].style.width = width;
+    }
+    areaWidthByColumns(firstSection, "_centerScrollingArea");
     areaIndex++;
-    if (firstSection._rightScrollingArea)
-      fixAreaWidthByColumns(firstSection._rightScrollingArea, areaIndex);
+    if (firstSection._rightScrollingArea) {
+      width = areaWidthByColumns(firstSection, "_rightScrollingArea");
+      scrollingAreaColTags[areaIndex++].style.width = width;
+    }
 
     function fixScrollingContainerHeight(area) {
       if (!area)
