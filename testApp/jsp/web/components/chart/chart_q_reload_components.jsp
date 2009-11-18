@@ -8,7 +8,7 @@
 
 <html>
 <head>
-  <title>Chart with o:reloadComponents</title>
+  <title>Chart with o:ajax</title>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 

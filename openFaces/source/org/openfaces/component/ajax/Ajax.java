@@ -25,28 +25,28 @@ import java.util.List;
 /**
  * @author Ilya Musihin
  */
-public class ReloadComponents extends UICommand implements OUIClientAction {
-    public static final String COMPONENT_TYPE = "org.openfaces.ReloadComponents";
-    public static final String COMPONENT_FAMILY = "org.openfaces.ReloadComponents";
+public class Ajax extends UICommand implements OUIClientAction {
+    public static final String COMPONENT_TYPE = "org.openfaces.Ajax";
+    public static final String COMPONENT_FAMILY = "org.openfaces.Ajax";
 
     private String event = "onclick";
     private String _for;
     private Boolean standalone;
 
-    private List<String> componentIds;
-    private List<String> submittedComponentIds;
+    private List<String> render;
+    private List<String> execute;
     private Boolean submitInvoker;
-    private Integer requestDelay;
+    private Integer delay;
     private Boolean disableDefault;
 
     private String onajaxstart;
     private String onajaxend;
     private String onerror;
 
-    private ReloadComponentsHelper helper = new ReloadComponentsHelper();
+    private AjaxHelper helper = new AjaxHelper();
 
-    public ReloadComponents() {
-        setRendererType("org.openfaces.ReloadComponentsRenderer");
+    public Ajax() {
+        setRendererType("org.openfaces.AjaxRenderer");
     }
 
     @Override
@@ -61,17 +61,18 @@ public class ReloadComponents extends UICommand implements OUIClientAction {
             helper.onParentChange(this, parent);
     }
 
-    public void setComponentIds(List<String> componentIds) {
-        String s = componentIds.get(0);
-        String[] strings = s.split(",");
-        this.componentIds = new ArrayList<String>();
+    public void setRender(List<String> render) {
+        String s = render.get(0);
+        s = s.trim();
+        String[] strings = s.split(" ");
+        this.render = new ArrayList<String>();
         for (String string : strings) {
-            this.componentIds.add(string.trim());
+            this.render.add(string);
         }
     }
 
-    public List<String> getComponentIds() {
-        return componentIds;
+    public List<String> getRender() {
+        return render;
     }
 
     public boolean getSubmitInvoker() { // todo: remove the "submitInvoker" property and hard-code the "true" behavior if no use-case where this should be customizible arises
@@ -82,16 +83,17 @@ public class ReloadComponents extends UICommand implements OUIClientAction {
         this.submitInvoker = submitInvoker;
     }
 
-    public List<String> getSubmittedComponentIds() {
-        return submittedComponentIds;
+    public List<String> getExecute() {
+        return execute;
     }
 
-    public void setSubmittedComponentIds(List<String> submittedComponentIds) {
-        String s = submittedComponentIds.get(0);
-        String[] strings = s.split(",");
-        this.submittedComponentIds = new ArrayList<String>();
+    public void setExecute(List<String> execute) {
+        String s = execute.get(0);
+        s = s.trim();
+        String[] strings = s.split(" ");
+        this.execute = new ArrayList<String>();
         for (String string : strings) {
-            this.submittedComponentIds.add(string.trim());
+            this.execute.add(string);
         }
     }
 
@@ -100,6 +102,9 @@ public class ReloadComponents extends UICommand implements OUIClientAction {
     }
 
     public void setEvent(String event) {
+        if (!event.startsWith("on")) {
+            event = "on" + event;
+        }
         this.event = event;
     }
 
@@ -120,12 +125,12 @@ public class ReloadComponents extends UICommand implements OUIClientAction {
         this.standalone = standalone;
     }
 
-    public int getRequestDelay() {
-        return ValueBindings.get(this, "requestDelay", requestDelay, 0);
+    public int getDelay() {
+        return ValueBindings.get(this, "delay", delay, 0);
     }
 
-    public void setRequestDelay(int requestDelay) {
-        this.requestDelay = requestDelay;
+    public void setDelay(int delay) {
+        this.delay = delay;
     }
 
     public boolean getDisableDefault() {
@@ -168,13 +173,13 @@ public class ReloadComponents extends UICommand implements OUIClientAction {
         StyleUtil.requestDefaultCss(FacesContext.getCurrentInstance());
         
         return new Object[]{superState,
-                saveAttachedState(context, componentIds),
-                saveAttachedState(context, submittedComponentIds),
+                saveAttachedState(context, render),
+                saveAttachedState(context, execute),
                 event,
                 _for,
                 standalone,
                 submitInvoker,
-                requestDelay,
+                delay,
                 disableDefault,
                 onerror,
                 onajaxstart,
@@ -187,13 +192,13 @@ public class ReloadComponents extends UICommand implements OUIClientAction {
         Object[] stateArray = (Object[]) state;
         int i = 0;
         super.restoreState(context, stateArray[i++]);
-        componentIds = (List<String>) restoreAttachedState(context, stateArray[i++]);
-        submittedComponentIds = (List<String>) restoreAttachedState(context, stateArray[i++]);
+        render = (List<String>) restoreAttachedState(context, stateArray[i++]);
+        execute = (List<String>) restoreAttachedState(context, stateArray[i++]);
         event = (String) stateArray[i++];
         _for = (String) stateArray[i++];
         standalone = (Boolean) stateArray[i++];
         submitInvoker = (Boolean) stateArray[i++];
-        requestDelay = (Integer) stateArray[i++];
+        delay = (Integer) stateArray[i++];
         disableDefault = (Boolean) stateArray[i++];
         onerror = (String) stateArray[i++];
         onajaxstart = (String) stateArray[i++];

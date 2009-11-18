@@ -77,11 +77,11 @@
                       <h:outputText value="#{color.name}"/>
                     </o:column>
                   </o:dropDownField>
-                  <o:reloadComponents id="updateText"
+                  <o:ajax id="updateText"
                                       standalone="true"
-                                      componentIds="graphicText"
-                                      submittedComponentIds="textField, directionField, fontSizeField, colorField"
-                                      requestDelay="500"/>
+                                      render="graphicText"
+                                      execute="textField directionField fontSizeField colorField"
+                                      delay="500"/>
 
                 </td>
               </tr>

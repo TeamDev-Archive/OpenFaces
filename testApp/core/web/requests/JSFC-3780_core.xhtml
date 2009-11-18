@@ -9,7 +9,7 @@
   <br/>
 
   <o:dateChooser id="dateChooser1">
-    <o:reloadComponents componentIds="formID:dateChooser1" event="onchange" onajaxend="O$('formID:dayTable').nextDay();"/>
+    <o:ajax render="formID:dateChooser1" event="change" onajaxend="O$('formID:dayTable').nextDay();"/>
   </o:dateChooser>
 
   <o:dayTable id="dayTable"

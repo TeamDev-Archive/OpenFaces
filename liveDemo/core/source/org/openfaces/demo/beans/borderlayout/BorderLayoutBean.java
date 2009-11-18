@@ -12,11 +12,11 @@
 
 package org.openfaces.demo.beans.borderlayout;
 
-import org.openfaces.component.table.AllNodesCollapsed;
-import org.openfaces.component.table.ExpansionState;
 import org.openfaces.component.table.AllNodesExpanded;
+import org.openfaces.component.table.ExpansionState;
 import org.openfaces.util.FacesUtil;
 
+import javax.faces.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -142,7 +142,7 @@ public class BorderLayoutBean {
 		return getTreeLevel(getTreeNode());
 	}
 
-    public String selectComponent() {
+    public String selectComponent(ActionEvent event) {
         
         if (COMPONENTS_ROOT.equals(selectedComponent)
                 || componentsByCategories.keySet().contains(selectedComponent)) {

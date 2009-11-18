@@ -12,7 +12,7 @@
 package org.openfaces.component.input;
 
 import org.openfaces.component.AbstractPopup;
-import org.openfaces.component.ajax.ReloadComponents;
+import org.openfaces.component.ajax.Ajax;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.renderkit.TableUtil;
@@ -62,7 +62,7 @@ public class DropDownPopup extends AbstractPopup {
         List<UIComponent> dropDownChildren = dropDownField.getChildren();
         List<UIComponent> childComponents = new ArrayList<UIComponent>(dropDownChildren.size());
         for (UIComponent component : dropDownChildren) {
-            if (!isDropDownAuxilaryComponent(component) && !(component instanceof BaseColumn) && !(component instanceof ReloadComponents))
+            if (!isDropDownAuxilaryComponent(component) && !(component instanceof BaseColumn) && !(component instanceof Ajax))
                 childComponents.add(component);
         }
 

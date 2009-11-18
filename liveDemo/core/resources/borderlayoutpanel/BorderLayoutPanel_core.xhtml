@@ -65,9 +65,9 @@
                         nodeData="#{BorderLayoutBean.selectedComponent}"
                         style="background-color: gray; color: white; cursor: default;"
                         >
-                  <o:reloadComponents event="onchange"
-                                      componentIds=":form:componentName"
-                                      action="#{BorderLayoutBean.selectComponent}"
+                  <o:ajax event="change"
+                                      render=":form:componentName"
+                                      listener="#{BorderLayoutBean.selectComponent}"
                                       onajaxend="setDescriptionSource();"
                                       />
               </o:singleNodeSelection>

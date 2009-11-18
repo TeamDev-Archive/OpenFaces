@@ -19,6 +19,7 @@ import org.openfaces.component.table.FilterKind;
 import org.openfaces.util.FacesUtil;
 
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.event.ActionEvent;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -478,11 +479,11 @@ public class TableTestBean {
         return "requestNo_" + _requestCounter++;
     }
 
-    public void resetCounter() {
+    public void resetCounter(ActionEvent actionEvent) {
         counter = 0;
     }
 
-    public void incrementCounter() {
+    public void incrementCounter(ActionEvent actionEvent) {
         counter++;
     }
 

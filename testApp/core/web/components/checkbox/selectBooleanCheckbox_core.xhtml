@@ -8,13 +8,13 @@
   <a href="../../main.jsf">Back to the main page</a>
   <br/>
   <o:selectBooleanCheckbox id="normalCheckbox" value="#{CheckboxTest.state1}">
-    <o:reloadComponents event="onchange" componentIds="state1Text"/>
+    <o:ajax event="change" render="state1Text"/>
   </o:selectBooleanCheckbox>
   <h:outputLabel for="normalCheckbox" value="Normal checkbox"/>
   -> <h:outputText id="state1Text" value="#{CheckboxTest.state1}"/>
   <br/>
   <o:selectBooleanCheckbox id="triStateCheckbox" triStateAllowed="true" value="#{CheckboxTest.state2}">
-    <o:reloadComponents event="onchange" componentIds="state2Text"/>
+    <o:ajax event="change" render="state2Text"/>
   </o:selectBooleanCheckbox>
   <h:outputLabel for="triStateCheckbox" value="Tri-state checkbox"/>
   -> <h:outputText id="state2Text" value="#{CheckboxTest.state2}"/>

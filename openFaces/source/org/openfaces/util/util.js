@@ -4117,7 +4117,7 @@ if (!window.O$) {
       O$.logError("default.css file is not loaded. The usual reason is application misconfiguration. See OpenFaces Installation and Configuration guide (resource filter configuration, etc).")
   });
 
-  O$._submitComponentWithField = function(componentId, focusedField, additionalParams, submittedComponentIds) {
+  O$._submitComponentWithField = function(componentId, focusedField, additionalParams, execute) {
     var focusedFieldId = focusedField ? focusedField.id : null;
     var component = O$(componentId);
     var focusFilterField = function() {
@@ -4135,10 +4135,10 @@ if (!window.O$) {
     };
     O$._submitInternal(component, function() {
       setTimeout(focusFilterField, 1);
-    }, additionalParams, submittedComponentIds);
+    }, additionalParams, execute);
   };
 
-  O$._submitInternal = function(component, completionCallback, additionalParams, submittedComponentIds) {
+  O$._submitInternal = function(component, completionCallback, additionalParams, execute) {
     var useAjax = component._useAjax;
     if (!useAjax) {
       if (additionalParams)
@@ -4148,10 +4148,10 @@ if (!window.O$) {
         }
       O$.submitEnclosingForm(component);
     } else {
-      O$.reloadComponents([component.id], {
+      O$.ajaxReload([component.id], {
         onajaxend: completionCallback,
         additionalParams: additionalParams,
-        submittedComponentIds: submittedComponentIds});
+        execute: execute});
     }
   };
 

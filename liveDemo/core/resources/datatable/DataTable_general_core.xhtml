@@ -180,8 +180,8 @@
                     selectedTabClass="tabButton_active"
                     frontBorderStyle="0px"
                     backBorderStyle="0px">
-            <o:reloadComponents event="onchange" componentIds=":form:banks"
-                                submittedComponentIds="form:paginatorStyleSelector"/>
+            <o:ajax event="change" render=":form:banks"
+                                execute="form:paginatorStyleSelector"/>
             <o:tabSetItem>
               <h:outputText value="Default Paginator"/>
             </o:tabSetItem>

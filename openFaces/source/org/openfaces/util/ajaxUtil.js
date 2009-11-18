@@ -13,19 +13,19 @@
 // ================================== PUBLIC API FUNCTIONS
 
 O$.extend(O$, {
-  ReloadComponents: O$.createClass(null, {
-    constructor: function(componentIds, params) {
-      this.componentIds = componentIds;
+  AjaxComponent: O$.createClass(null, {
+    constructor: function(render, params) {
+      this.render = render;
       if (params)
         O$.extend(this, params);
     },
 
     run: function() {
-      O$.reloadComponents(this.componentIds, this);
+      O$.ajaxReload(this.render, this);
     }
   }),
 
-  _initReloadComponents: function(id, componentIds, params) {
+  _initAjax: function(id, render, params) {
     function initComponent() {
       var component = O$(id);
       if (!component) {
@@ -34,7 +34,7 @@ O$.extend(O$, {
         }, 100);
         return;
       }
-      O$.extend(component, new O$.ReloadComponents(componentIds, params));
+      O$.extend(component, new O$.AjaxComponent(render, params));
     }
 
     if (O$(id))
@@ -54,16 +54,16 @@ O$.extend(O$, {
 
 
 /**
- * componentIds - components to which an ajax request is being made
+ * render - components to which an ajax request is being made
  * agrs - (optional) is an object, which consist of:
  *    onajaxend - (optional) the function that should be invoked when ajax request is fully processed
- *    submittedComponentIds - (optional) array of clientIds for components whose processDecodes->...->processUpdates phases should be invoked in addition to the component being reloaded
+ *    execute - (optional) array of clientIds for components whose processDecodes->...->processUpdates phases should be invoked in addition to the component being reloaded
  *    onerror - (optional) the function that should be invoked when ajax request fails to complete successfully for some reason
  *    onajaxstart - (optional) the function that should be invoked before ajax request is started
  *    immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
  */
-O$.reloadComponents = function(componentIds, args) {
-  O$._reloadComponents(componentIds, args);
+O$.ajaxReload = function(render, args) {
+  O$._ajaxReload(render, args);
 };
 
 // ================================== IMPLEMENTATION
@@ -72,11 +72,9 @@ O$.reloadComponents = function(componentIds, args) {
 O$.AJAX_REQUEST_MARKER = "_openFaces_ajax";
 O$.UPDATE_PORTIONS_SUFFIX = "_of_ajax_portions";
 O$.SUBMIT_PARAMS_SUFFIX = "_of_ajax_submit_params";
-O$.PARAM_COMPONENT_IDS = "_of_componentIds";
+O$.PARAM_RENDER = "_of_render";
 O$.CUSTOM_JSON_PARAM = "_of_customJsonParam";
-O$.SUBMITTED_COMPONENT_IDS = "_of_submittedComponentIds";
-O$.SERVER_ACTION = "_of_serverAction";
-O$.SERVER_ACTION_SOURCE_COMPONENT_ID = "_of_sourceComponentId";
+O$.SUBMITTED_COMPONENT_IDS = "_of_execute";
 O$.ACTION_LISTENER = "_of_actionListener";
 O$.ACTION_COMPONENT = "_of_actionComponent";
 O$.IMMEDIATE = "_of_immediate";
@@ -173,24 +171,20 @@ O$.reloadPage = function(loc) {
   window.location = loc;
 }
 
-O$._reloadComponents = function(componentIds, args) {
+O$._ajaxReload = function(render, args) {
   if (!args) args = {};
   var params = args.additionalParams ? args.additionalParams : [];
   var ids = [];
-  if (args.action)
-    params.push([O$.SERVER_ACTION, args.action]);
-  if (args.actionSourceId)
-    params.push([O$.SERVER_ACTION_SOURCE_COMPONENT_ID, args.actionSourceId]);
-  if (componentIds instanceof Array) {
-    ids = componentIds;
+  if (render instanceof Array) {
+    ids = render;
   } else {
-    ids[0] = componentIds;
+    ids[0] = render;
   }
   args.additionalParams = params;
-  if (!args.requestDelay)
+  if (!args.delay)
     O$.sendAjaxRequestIfNoFormSubmission(ids, args);
   else {
-    var delayId = args.requestDelayId;
+    var delayId = args.delayId;
     if (!delayId) {
       delayId = "";
       for (var i = 0, count = ids.length; i < count; i++) {
@@ -201,11 +195,11 @@ O$._reloadComponents = function(componentIds, args) {
     }
     O$.invokeFunctionAfterDelay(function() {
       O$.sendAjaxRequestIfNoFormSubmission(ids, args);
-    }, args.requestDelay, delayId);
+    }, args.delay, delayId);
   }
 }
 
-O$.requestComponentPortions = function(componentId, portionNames, customJsonParam, portionProcessor, onerror, action) {
+O$.requestComponentPortions = function(componentId, portionNames, customJsonParam, portionProcessor, onerror) {
   if (!componentId)
     throw "componentId should be specified";
   if (! (portionNames instanceof Array))
@@ -213,8 +207,6 @@ O$.requestComponentPortions = function(componentId, portionNames, customJsonPara
   if (!portionProcessor)
     throw "O$.requestComponentPortions: portionProcessor should be specified";
   var params = [];
-  if (action)
-    params.push([O$.SERVER_ACTION, action]);
   O$.sendAjaxRequestIfNoFormSubmission([componentId], {portionNames: portionNames, portionProcessor: portionProcessor,
     additionalParams: params, onerror: onerror, customJsonParam: customJsonParam});
 }
@@ -237,7 +229,7 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
     O$._ajaxRequestScheduled = false;
     if (O$._isFormSubmissionJustStated()) {
       alert("Couldn't start Ajax request for component(s) \"" + ajaxArgs[0].join(",") + "\" because ordinary form " +
-            "submission has also been started simultaneously. If you're using <o:reloadComponents> on a command component " +
+            "submission has also been started simultaneously. If you're using <o:ajax> on a command component " +
             "such as <h:commandButton>, be sure to disable the default component's action using the disableDefault attribute.");
       return;
     }
@@ -248,34 +240,32 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
 }
 
 /**
- * componentIds - components for which an ajax request is being made
+ * render - components for which an ajax request is being made
  *
  * args fields:
  * portionNames - null value means that the whole component should be reloaded, otherwise it should be an array of component portion names
  * portionProcessor - must be specified if portionNames is specified
  * onajaxend - (optional) the function that should be invoked when ajax request is fully processed
- * submittedComponentIds - (optional) array of clientIds for components whose processDecodes->...->processUpdates phases should be invoked in addition to the component being reloaded
+ * execute - (optional) array of clientIds for components whose processDecodes->...->processUpdates phases should be invoked in addition to the component being reloaded
  * additionalParams - (optional) array of parameters those should be submitted in addition to form field data parameters
  * onerror - (optional) the function that should be invoked when ajax request fails to complete successfully for some reason
- * actionListener -
  * onajaxstart -
  * immediate -
- * actionComponent -
  * customJsonParam -
+ * actionListener - (optional) server action in the form of EL, which should be executed during this ajax request
+ * actionComponent - (optional) client id of a component from which this action is initiated (e.g. actual for a button in a table which needs current row's data in the action)
  *
- * action - (optional) server action in the form of EL, which should be executed during this ajax request
- * sourceComponentId - (optional) client id of a component from which this action is initiated (e.g. actual for a button in a table which needs current row's data in the action)
  */
-O$.sendAjaxRequest = function(componentIds, args) {
+O$.sendAjaxRequest = function(render, args) {
   if (document.__sessionHasExpired
           && document.__componentsAjaxEventHandlerInitialized
-          && componentIds.every(function(element) {
+          && render.every(function(element) {
               return (document.__componentsAjaxEventHandlerInitialized[element]);
             })
-          && componentIds.every(function(element) {
+          && render.every(function(element) {
               return (document.__componentsAjaxEventHandlerInitialized[element]["onsessionexpired"]);
             })) {
-    if (O$.processSessionExpiration(document.__sessionReloadLocation, componentIds, null, true)) {
+    if (O$.processSessionExpiration(document.__sessionReloadLocation, render, null, true)) {
       if (args.onerror) {
         args.onerror();
       }
@@ -287,7 +277,7 @@ O$.sendAjaxRequest = function(componentIds, args) {
   if (document.__sessionHasExpired &&
       document.__commonAjaxEventHandlerInitialized &&
       document.__commonAjaxEventHandlerInitialized["onsessionexpired"]) {
-    if (O$.processSessionExpiration(document.__sessionReloadLocation, componentIds, null, true)) {
+    if (O$.processSessionExpiration(document.__sessionReloadLocation, render, null, true)) {
       if (args.onerror) {
         args.onerror();
       }
@@ -296,13 +286,13 @@ O$.sendAjaxRequest = function(componentIds, args) {
     }
   }
 
-  if (!componentIds.length) {
+  if (!render.length) {
     O$.logError("O$.sendAjaxRequest: Array of components ids should be not empty");
   }
   var components = [];
   var i;
-  for (i = 0; i < componentIds.length; i++) {
-    var id = componentIds[i];
+  for (i = 0; i < render.length; i++) {
+    var id = render[i];
     var c = O$.byIdOrName(id);
     if (!c) {
       O$.logError("O$.sendAjaxRequest: couldn't find component with the specified id: \"" + id + "\"");
@@ -326,33 +316,33 @@ O$.sendAjaxRequest = function(componentIds, args) {
     O$.logError("O$.sendAjaxRequest: Enclosing forms differ for components");
   }
 
-  var ajaxObject = new O$.AjaxObject(componentIds);
+  var ajaxObject = new O$.AjaxObject(render);
   ajaxObject._onajaxstart = args.onajaxstart;
   O$.requestStarted(ajaxObject);
 
   var paramsBuf = new O$.StringBuffer();
   O$.prepareFormParams(form, paramsBuf);
   paramsBuf.append("&");
-  if (O$.prepareUpdates(paramsBuf, componentIds, args.portionNames))
+  if (O$.prepareUpdates(paramsBuf, render, args.portionNames))
     paramsBuf.append("&");
-  if (componentIds != null) {
-    var componentIdsParams = "";
-    for (var index = 0, componentsCount = componentIds.length; index < componentsCount; index++) {
-      if (componentIdsParams != "")
-        componentIdsParams += ";";
-      componentIdsParams += componentIds[index];
+  if (render != null) {
+    var renderParams = "";
+    for (var index = 0, componentsCount = render.length; index < componentsCount; index++) {
+      if (renderParams != "")
+        renderParams += ";";
+      renderParams += render[index];
     }
-    paramsBuf.append(O$.PARAM_COMPONENT_IDS).append("=").append(componentIdsParams);
+    paramsBuf.append(O$.PARAM_RENDER).append("=").append(renderParams);
   }
-  if (args.submittedComponentIds != null) {
+  if (args.execute != null) {
     paramsBuf.append("&");
-    var componentIdsParam = "";
-    for (var idx = 0, submittedComponentCount = args.submittedComponentIds.length; idx < submittedComponentCount; idx++) {
-      if (componentIdsParam != "")
-        componentIdsParam += ";";
-      componentIdsParam += args.submittedComponentIds[idx];
+    var renderParam = "";
+    for (var idx = 0, submittedComponentCount = args.execute.length; idx < submittedComponentCount; idx++) {
+      if (renderParam != "")
+        renderParam += ";";
+      renderParam += args.execute[idx];
     }
-    paramsBuf.append(O$.SUBMITTED_COMPONENT_IDS).append("=").append(componentIdsParam);
+    paramsBuf.append(O$.SUBMITTED_COMPONENT_IDS).append("=").append(renderParam);
   }
   if (args.additionalParams) {
     for (i = 0, additionalParamCount = args.additionalParams.length; i < additionalParamCount; i++) {
@@ -384,7 +374,7 @@ O$.sendAjaxRequest = function(componentIds, args) {
 
   ajaxObject._request.onreadystatechange = O$.getEventHandlerFunction("_processResponse", null, ajaxObject);
   ajaxObject._completionCallback = args.onajaxend;
-  ajaxObject._requestedComponentIds = componentIds;
+  ajaxObject._requestedRender = render;
 
   var url = form.action;
   ajaxObject._request.open("POST", url, true);
@@ -588,8 +578,8 @@ O$.updateAjaxInProgressMessagePos = function() {
 }
 
 // O$.AjaxObject class
-O$.AjaxObject = function(componentIds) {
-  this._targetIds = componentIds;
+O$.AjaxObject = function(render) {
+  this._targetIds = render;
   this._mode = undefined;
   this._loc = undefined;
   if (window.XMLHttpRequest) {
@@ -851,7 +841,7 @@ O$.AjaxObject = function(componentIds) {
     }
 
     if (this._completionCallback)
-      this._completionCallback(this._requestedComponentIds);
+      this._completionCallback(this._requestedRender);
     if (O$.Ajax.onajaxend)
       O$.Ajax.onajaxend();
   }
@@ -913,7 +903,7 @@ O$.AjaxObject = function(componentIds) {
         replacedElement.onComponentUnload = null;
         var this_ = this;
         var delayedCompletionCallback = this._completionCallback;
-        var delayedCompletionCallbackComponentId = this._requestedComponentIds;
+        var delayedCompletionCallbackComponentId = this._requestedRender;
         var delayedSimpleUpdate = this._processSimpleUpdate;
         this._delayedSimpleUpdate = true;
         setTimeout(function () {
@@ -1007,20 +997,20 @@ O$.replaceDocumentElements = function(htmlPortion, allowElementsWithNewIds) {
   return tempDiv;
 }
 
-O$.processSessionExpiration = function(loc, ajaxComponentIds, ajaxObject, isHandlingWasDelayed) {
+O$.processSessionExpiration = function(loc, ajaxRender, ajaxObject, isHandlingWasDelayed) {
 
-  if (ajaxComponentIds) {
-    if (ajaxComponentIds.every(function(element) {
+  if (ajaxRender) {
+    if (ajaxRender.every(function(element) {
       return !!OpenFaces.Ajax.Components[element];
     })
-            && ajaxComponentIds.every(function(element) {
-      return !!OpenFaces.Ajax.Components[ajaxComponentIds].onsessionexpired;
+            && ajaxRender.every(function(element) {
+      return !!OpenFaces.Ajax.Components[ajaxRender].onsessionexpired;
     })) {
       var sessionexpiredEvent = O$.createEvent("sessionexpired");
 
       try {
-        for (var i = 0; i < ajaxComponentIds.length; i++) {
-          var ajaxComponentId = ajaxComponentIds[i];
+        for (var i = 0; i < ajaxRender.length; i++) {
+          var ajaxComponentId = ajaxRender[i];
           OpenFaces.Ajax.Components[ajaxComponentId].onsessionexpired(sessionexpiredEvent);
         }
       } catch(ex) {
@@ -1065,20 +1055,20 @@ O$.processSessionExpiration = function(loc, ajaxComponentIds, ajaxObject, isHand
   return false;
 }
 
-O$.processErrorDuringAjaxRequest = function(errorMessage, ajaxComponentIds, ajaxObject) {
-  if (ajaxComponentIds) {
-    if (ajaxComponentIds.every(function(element) {
+O$.processErrorDuringAjaxRequest = function(errorMessage, ajaxRender, ajaxObject) {
+  if (ajaxRender) {
+    if (ajaxRender.every(function(element) {
       return (OpenFaces.Ajax.Components[element]);
     })
-            && ajaxComponentIds.every(function(element) {
-      return (OpenFaces.Ajax.Components[ajaxComponentIds].onerror);
+            && ajaxRender.every(function(element) {
+      return (OpenFaces.Ajax.Components[ajaxRender].onerror);
     })) {
       var errorEvent = O$.createEvent("error");
       var result = false;
       try {
         result = true;
-        for (var i = 0; i < ajaxComponentIds.length; i++) {
-          var ajaxComponentId = ajaxComponentIds[i];
+        for (var i = 0; i < ajaxRender.length; i++) {
+          var ajaxComponentId = ajaxRender[i];
           result = result & OpenFaces.Ajax.Components[ajaxComponentId].onerror(errorEvent);
         }
       } catch(ex) {

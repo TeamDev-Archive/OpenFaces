@@ -32,7 +32,7 @@
                           rolloverSelectedTabClass="rollover_selected_tab">
                   <o:tabSetItems value="#{DateChooserBean.locales}"/>
 
-                  <o:reloadComponents event="onchange" componentIds="dateChoosers"/>
+                  <o:ajax event="change" render="dateChoosers"/>
                 </o:tabSet>
               </td>
             </tr>

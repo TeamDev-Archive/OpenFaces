@@ -34,14 +34,14 @@ import java.util.List;
  * 
  * @author Dmitry Pikhulya
  */
-public class ReloadComponentsInitializer {
+public class AjaxInitializer {
     private static final String EXPRESSION_PREFIX = "#{";
     private static final String EXPRESSION_SUFFIX = "}";
 
-    public JSONArray getComponentIdsArray(FacesContext context, OUIClientAction action, List<String> componentIds) {
+    public JSONArray getRenderArray(FacesContext context, OUIClientAction action, List<String> render) {
         JSONArray idsArray = new JSONArray();
-        if (componentIds != null)
-            for (String componentId : componentIds) {
+        if (render != null)
+            for (String componentId : render) {
                 if (componentId.startsWith(":")) {
                     idsArray.put(componentId.substring(1));
                     continue;
@@ -107,51 +107,51 @@ public class ReloadComponentsInitializer {
     }
 
 
-    public JSONObject getReloadParams(FacesContext context, ReloadComponents reloadComponents) {
+    public JSONObject getAjaxParams(FacesContext context, Ajax ajax) {
         try {
             JSONObject result = new JSONObject();
-            List<String> submittedComponentIds = reloadComponents.getSubmittedComponentIds();
-            if (submittedComponentIds == null)
-                submittedComponentIds = new ArrayList<String>();
-            if (submittedComponentIds.size() > 0 || (!reloadComponents.isStandalone() && reloadComponents.getSubmitInvoker())) {
-                result.put("submittedComponentIds", getSubmittedComponentIdsParam(context, reloadComponents, submittedComponentIds));
+            List<String> execute = ajax.getExecute();
+            if (execute == null)
+                execute = new ArrayList<String>();
+            if (execute.size() > 0 || (!ajax.isStandalone() && ajax.getSubmitInvoker())) {
+                result.put("execute", getExecuteParam(context, ajax, execute));
             }
-            String onajaxstart = reloadComponents.getOnajaxstart();
+            String onajaxstart = ajax.getOnajaxstart();
             if (onajaxstart != null && onajaxstart.length() != 0) {
                 result.put("onajaxstart", new AnonymousFunction(onajaxstart, "event"));
             }
-            String onajaxend = reloadComponents.getOnajaxend();
+            String onajaxend = ajax.getOnajaxend();
             if (onajaxend != null && onajaxend.length() != 0) {
                 result.put("onajaxend", new AnonymousFunction(onajaxend, "event"));
             }
-            String onerror = reloadComponents.getOnerror();
+            String onerror = ajax.getOnerror();
             if (onerror != null && onerror.length() != 0) {
                 result.put("onerror", new AnonymousFunction(onerror, "event"));
             }
 
-            ValueExpression action = reloadComponents.getValueExpression("action");
+            ValueExpression action = ajax.getValueExpression("action");
             if (action != null) {
                 String actionExpressionString = action.getExpressionString();
                 validateExpressionString(actionExpressionString);
                 result.put("action", actionExpressionString.substring(
                         EXPRESSION_PREFIX.length(), actionExpressionString.length() - EXPRESSION_SUFFIX.length()));
-                result.put("actionSourceId", getActionSourceIdParam(context, reloadComponents));
+                result.put("actionSourceId", getActionSourceIdParam(context, ajax));
             }
-            int requestDelay = reloadComponents.getRequestDelay();
-            if (requestDelay > 0) {
-                result.put("requestDelay", requestDelay);
-                result.put("requestDelayId", getReloadComponentsIdParam(context, reloadComponents));
+            int delay = ajax.getDelay();
+            if (delay > 0) {
+                result.put("delay", delay);
+                result.put("delayId", getAjaxComponentParam(context, ajax));
             }
-            ValueExpression actionListener = reloadComponents.getValueExpression("actionListener");
+            ValueExpression actionListener = ajax.getValueExpression("listener");
             if (actionListener != null) {
                 String actionListenerExpressionString = actionListener.getExpressionString();
                 validateExpressionString(actionListenerExpressionString);
                 result.put("actionListener", actionListenerExpressionString.substring(EXPRESSION_PREFIX.length(),
                         actionListenerExpressionString.length() - EXPRESSION_SUFFIX.length()));
-                result.put("actionComponent", getReloadComponentsIdParam(context, reloadComponents));
+                result.put("actionComponent", getAjaxComponentParam(context, ajax));
             }
 
-            result.put("immediate", reloadComponents.isImmediate());
+            result.put("immediate", ajax.isImmediate());
             return result;
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -165,26 +165,26 @@ public class ReloadComponentsInitializer {
                     actionExpressionString);
     }
 
-    protected Object getSubmittedComponentIdsParam(FacesContext context,
-                                                   ReloadComponents reloadComponents,
-                                                   List<String> submittedComponentIds) {
-        JSONArray componentIdsArray = getComponentIdsArray(context, reloadComponents, submittedComponentIds);
-        if (!reloadComponents.isStandalone() && reloadComponents.getSubmitInvoker()) {
-            String invokerId = OUIClientActionHelper.getClientActionInvoker(context, reloadComponents);
+    protected Object getExecuteParam(FacesContext context,
+                                                   Ajax ajax,
+                                                   List<String> execute) {
+        JSONArray renderArray = getRenderArray(context, ajax, execute);
+        if (!ajax.isStandalone() && ajax.getSubmitInvoker()) {
+            String invokerId = OUIClientActionHelper.getClientActionInvoker(context, ajax);
             if (context.getViewRoot().findComponent(":" + invokerId) != null) {
                 // if invoker is a JSF component rather than raw HTML tag
-                componentIdsArray.put(invokerId);
+                renderArray.put(invokerId);
             }
         }
-        return componentIdsArray;
+        return renderArray;
     }
 
-    protected Object getReloadComponentsIdParam(FacesContext context, ReloadComponents reloadComponents) {
-        return reloadComponents.getClientId(context);
+    protected Object getAjaxComponentParam(FacesContext context, Ajax ajax) {
+        return ajax.getClientId(context);
     }
 
-    protected Object getActionSourceIdParam(FacesContext context, ReloadComponents reloadComponents) {
-        String invokerId = OUIClientActionHelper.getClientActionInvoker(context, reloadComponents);
+    protected Object getActionSourceIdParam(FacesContext context, Ajax ajax) {
+        String invokerId = OUIClientActionHelper.getClientActionInvoker(context, ajax);
         return invokerId;
     }
 }

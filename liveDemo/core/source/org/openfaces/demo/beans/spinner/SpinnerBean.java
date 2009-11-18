@@ -12,8 +12,9 @@
 
 package org.openfaces.demo.beans.spinner;
 
-import java.util.List;
+import javax.faces.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Alexei Tymchenko
@@ -32,19 +33,18 @@ public class SpinnerBean {
         products.add(new Product("Glass Inkwell Blue", 80.00f, 0, 7));
         products.add(new Product("Marker Blue", 7.99f, 2, 10));
         products.add(new Product("Pen Set", 29.99f, 2, 27));
-        calculateTotalCost();
+        calculateTotalCost(null);
     }
 
     public List<Product> getProducts() {
         return products;
     }
 
-    public String calculateTotalCost() {
+    public void calculateTotalCost(ActionEvent actionEvent) {
         totalCost = 0;
         for (Product product : products) {
             totalCost += product.getPrice() * product.getQuantity();
         }
-        return null;
     }
 
     public float getTotalCost() {

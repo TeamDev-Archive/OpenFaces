@@ -332,18 +332,26 @@ public abstract class AbstractComponentTag extends AbstractTag {
     }
 
     protected void setActionListener(FacesContext context, ActionSource component) {
-        setActionListener(context, component, new Class[]{ActionEvent.class});
+        setActionListener(context, component, "actionListener");
+    }
+
+    protected void setActionListener(FacesContext context,  ActionSource component, String actionListenerPropertyName) {
+        setActionListener(context,  component, actionListenerPropertyName, new Class[]{ActionEvent.class});
     }
 
     protected void setActionListener(FacesContext context, ActionSource component, Class[] paramTypes) {
-        String actionPropertyName = "actionListener";
+        setActionListener(context, component, "actionListener", paramTypes);
+    }
+
+    protected void setActionListener(FacesContext context, ActionSource component, String actionPropertyName, Class[] paramTypes) {
         String actionDeclaration = getPropertyValue(actionPropertyName);
         if (actionDeclaration == null)
             return;
 
         if (!getExpressionCreator().isValueReference(actionPropertyName, actionDeclaration))
             throw new FacesException("The actionListener attribute should be declared as method expression, but it was declared as follows: " + actionDeclaration);
-        MethodExpression methodExpression = createMethodExpression(context, actionPropertyName, actionDeclaration, void.class, paramTypes);
+        String actionListenerAttributeName = "actionListener";
+        MethodExpression methodExpression = createMethodExpression(context, actionListenerAttributeName, actionDeclaration, void.class, paramTypes);
         component.addActionListener(new MethodExpressionActionListener(methodExpression));
     }
 

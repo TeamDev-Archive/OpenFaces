@@ -24,7 +24,7 @@
                     value="#{DynamicImageByteArrayBean.currentImageData}">
             <o:tabSetItems value="#{DynamicImageByteArrayBean.imageDatas}"/>
 
-            <o:reloadComponents componentIds="dynamicImage" event="onchange"/>
+            <o:ajax render="dynamicImage" event="change"/>
           </o:tabSet>
 
         </td>

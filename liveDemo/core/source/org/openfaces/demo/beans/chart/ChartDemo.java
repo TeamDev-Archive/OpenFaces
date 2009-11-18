@@ -11,6 +11,7 @@
  */
 package org.openfaces.demo.beans.chart;
 
+import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -58,12 +59,11 @@ public class ChartDemo implements Serializable {
         this.cityTemperature = cityTemperature;
     }
 
-    public Object generateNewData() {
+    public void generateNewData(ActionEvent event) {
         cityPrecipitation.makeData();
         averageTemp.makeData();
         monthPrecipitation.makeData();
-        cityTemperature.makeData();
-        return null;
+        cityTemperature.makeData();        
     }
 
 }

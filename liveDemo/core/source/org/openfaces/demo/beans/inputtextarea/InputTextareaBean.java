@@ -12,6 +12,8 @@
 
 package org.openfaces.demo.beans.inputtextarea;
 
+import javax.faces.event.ActionEvent;
+
 public class InputTextareaBean {
 
     private boolean successfullySent;
@@ -33,11 +35,9 @@ public class InputTextareaBean {
         this.feedback = feedback;
     }
 
-    public String send() {
+    public void send(ActionEvent actionEvent) {
         if (feedback != null && !"".equals(feedback)) {
             this.successfullySent = true;
         }
-
-        return "success";
     }
 }

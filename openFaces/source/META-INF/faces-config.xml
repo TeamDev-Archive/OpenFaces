@@ -174,8 +174,8 @@
 
   <!-- RELOADCOMPONENTS COMPONENT DECLARATION -->
   <component>
-    <component-type>org.openfaces.ReloadComponents</component-type>
-    <component-class>org.openfaces.component.ajax.ReloadComponents</component-class>
+    <component-type>org.openfaces.Ajax</component-type>
+    <component-class>org.openfaces.component.ajax.Ajax</component-class>
   </component>
 
   <!-- AJAXSETTINGS COMPONENT DECLARATION -->
@@ -912,9 +912,9 @@
 
     <!-- RELOADCOMPONENTS COMPONENT DECLARATION -->
     <renderer>
-      <component-family>org.openfaces.ReloadComponents</component-family>
-      <renderer-type>org.openfaces.ReloadComponentsRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.ajax.ReloadComponentsRenderer</renderer-class>
+      <component-family>org.openfaces.Ajax</component-family>
+      <renderer-type>org.openfaces.AjaxRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.ajax.AjaxRenderer</renderer-class>
     </renderer>
 
     <!-- AJAXSETTINGS COMPONENT DECLARATION -->

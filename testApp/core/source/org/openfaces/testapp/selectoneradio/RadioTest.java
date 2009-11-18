@@ -15,6 +15,7 @@ package org.openfaces.testapp.selectoneradio;
 import org.openfaces.component.select.SelectItem;
 
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -189,7 +190,7 @@ public class RadioTest {
         return this.selectOneRadioItemsGroup7;
     }
 
-    public void reloadSelectOneRadio7() {
+    public void reloadSelectOneRadio7(ActionEvent actionEvent) {
         int selectedForDisable = Integer.parseInt(selectOneMenu7);
         this.selectOneRadioItemsGroup7 = new ArrayList<SelectItem>();
         for (int i = 1; i < 6; i++) {
@@ -247,7 +248,7 @@ public class RadioTest {
         return this.selectOneRadioItemsGroup8;
     }
 
-    public void reloadSelectOneRadio8() {
+    public void reloadSelectOneRadio8(ActionEvent actionEvent) {
         int selectedForDisable = Integer.parseInt(selectOneMenu8);
         this.selectOneRadioItemsGroup8 = new ArrayList<SelectItem>();
         for (int i = 1; i < 6; i++) {

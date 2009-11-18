@@ -52,7 +52,7 @@ public class TaskBean {
         this.newTaskName = newTaskName;
     }
 
-    public void addTask() {
+    public void addTask(ActionEvent event) {
         Task newTask = Task.createUncompletedTask(newTaskName);
         tasks.add(newTask);
         newTaskName = "";

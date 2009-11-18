@@ -131,7 +131,7 @@
                 <o:eventArea id="eventArea" horizontalAlignment="rightEdge" verticalAlignment="above">
                     <h:commandLink id="postponeOneHour" title="Postpone training for 1 hour" style="margin: 10px">
                         <h:outputText value="1&#160;hour&#160;later" escape="false"/>
-                        <o:reloadComponents componentIds=":form:dayTable" action="#{DayTableBean.doLater}"
+                        <o:ajax render=":form:dayTable" listener="#{DayTableBean.doLater}"
                                             disableDefault="true"/>
                     </h:commandLink>
                 </o:eventArea>
@@ -141,7 +141,7 @@
                                    imageUrl="images/daytable/customAction1.gif"
                                    hint="Postpone for 1 day"/>
                 </o:eventActionBar>
-                <o:reloadComponents componentIds=":form:calendar" event="onchange" disableDefault="false"/>
+                <o:ajax render=":form:calendar" event="change" disableDefault="false"/>
             </o:dayTable>
         </div>
 

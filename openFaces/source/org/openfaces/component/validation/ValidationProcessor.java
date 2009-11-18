@@ -61,7 +61,7 @@ public class ValidationProcessor extends UIComponentBase {
     private Set<VerifiableComponent> verifiableComponents;
 
     private boolean globalMessagesProcessed;
-    private transient Map<String, ClientValidationSupport> componentIdsToClientValidationSupport = new HashMap<String, ClientValidationSupport>();
+    private transient Map<String, ClientValidationSupport> renderToClientValidationSupport = new HashMap<String, ClientValidationSupport>();
 
     public ValidationProcessor() {
         setRendered(false);
@@ -284,7 +284,7 @@ public class ValidationProcessor extends UIComponentBase {
         }
 
         String componentId = component.getClientId(getFacesContext());
-        ClientValidationSupport cvs = componentIdsToClientValidationSupport.get(componentId);
+        ClientValidationSupport cvs = renderToClientValidationSupport.get(componentId);
         if (cvs == null) {
             Finder finder = new Finder(component) {
                 public boolean test(UIComponent component) {
@@ -292,7 +292,7 @@ public class ValidationProcessor extends UIComponentBase {
                 }
             };
             cvs = (ClientValidationSupport) finder.getComponent();
-            componentIdsToClientValidationSupport.put(componentId, cvs);
+            renderToClientValidationSupport.put(componentId, cvs);
         }
         return cvs;
     }

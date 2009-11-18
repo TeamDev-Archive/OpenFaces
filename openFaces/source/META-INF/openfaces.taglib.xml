@@ -747,11 +747,11 @@
   </tag>
 
   <tag>
-    <tag-name>reloadComponents</tag-name>
+    <tag-name>ajax</tag-name>
     <component>
-      <component-type>org.openfaces.ReloadComponents</component-type>
-      <renderer-type>org.openfaces.ReloadComponentsRenderer</renderer-type>
-      <handler-class>org.openfaces.taglib.facelets.ajax.ReloadComponentsTagHandler</handler-class>
+      <component-type>org.openfaces.Ajax</component-type>
+      <renderer-type>org.openfaces.AjaxRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.ajax.AjaxTagHandler</handler-class>
     </component>
   </tag>
 

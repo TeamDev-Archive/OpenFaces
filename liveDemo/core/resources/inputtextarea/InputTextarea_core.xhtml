@@ -19,11 +19,11 @@
 
         <h:panelGroup style="padding-top:3px; text-align: right; display: block;">
           <h:commandButton id="tellusButton" value="Send Us Your Opinion">
-            <o:reloadComponents
-                    action="#{InputTextareaBean.send}"
-                    event="onclick"
+            <o:ajax
+                    listener="#{InputTextareaBean.send}"
+                    event="click"
                     disableDefault="true"
-                    componentIds=":form:tellusGroup"/>
+                    render=":form:tellusGroup"/>
           </h:commandButton>
         </h:panelGroup>
       </h:panelGrid>

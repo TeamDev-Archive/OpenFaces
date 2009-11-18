@@ -48,7 +48,7 @@
             </o:column>
           </o:dataTable>
           <h:commandButton id="refresher" value="Refresh DataTable"
-                           onclick="O$.reloadComponents(['formID:requestScopeDataTableID']); return false;"/>
+                           onclick="O$.ajaxReload(['formID:requestScopeDataTableID']); return false;"/>
         </td>
       </tr>
     </table>

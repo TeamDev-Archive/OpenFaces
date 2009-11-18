@@ -19,6 +19,7 @@ import org.openfaces.component.timetable.TimetableEvent;
 import org.openfaces.util.FacesUtil;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -140,7 +141,7 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
         }
     }
 
-    public void doLater() {
+    public void doLater(ActionEvent actionEvent) {
         TimetableEvent modifiedEvent = getEvent();
         if (modifiedEvent != null) {
             AbstractTimetableEvent event = eventById(events, modifiedEvent.getId());

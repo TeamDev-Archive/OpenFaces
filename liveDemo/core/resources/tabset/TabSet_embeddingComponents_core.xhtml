@@ -16,7 +16,7 @@
             tabStyle="background: url(../images/tabset/sky_back.jpg) no-repeat; font-size:11px; color: #2f3d64; height: 30px; border: none; margin-right: 15px;"
             rolloverTabStyle="background: url(../images/tabset/sky_rollover.jpg) no-repeat;"
             selectedTabStyle="background: url(../images/tabset/sky_active.jpg) no-repeat; color: #ffffff;">
-    <o:reloadComponents event="onchange" componentIds="componentDetails"/>
+    <o:ajax event="change" render="componentDetails"/>
     <o:tabSetItem itemValue="Calendar">
       <h:panelGroup>
         <h:panelGroup style="display: block; float: left; padding-top: 2px; padding-left: 2px;">

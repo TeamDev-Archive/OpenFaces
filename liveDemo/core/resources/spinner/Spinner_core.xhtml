@@ -38,9 +38,9 @@
                      maxValue="#{product.inStock}"
                      minValue="0">
             <f:validateLongRange maximum="10" minimum="0"/>
-            <o:reloadComponents requestDelay="500" componentIds=":form:productsPanel"
-                                action="#{SpinnerBean.calculateTotalCost}"
-                                event="onchange"/>
+            <o:ajax delay="500" render=":form:productsPanel"
+                                listener="#{SpinnerBean.calculateTotalCost}"
+                                event="change"/>
           </o:spinner>
         </o:column>
 

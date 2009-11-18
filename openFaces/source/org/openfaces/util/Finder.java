@@ -37,7 +37,7 @@ public abstract class Finder {
         return componentsChain.get(uiComponent);
     }
 
-    public Collection<String> getComponentIds() {
+    public Collection<String> getRender() {
         return componentsChain.values();
     }
 

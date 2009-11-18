@@ -16,11 +16,11 @@
         color: #{state.stateName eq BanksList.selectedState.stateName ? '#FF8400' : 'gray'}; margin-left: 0.5em; margin-right: 0.5em;">
                 <h:outputText value="#{state.stateName}"
                               style="font-size: #{state.quantity le 3 ? 9 : state.quantity * 3}px;"/>
-                <o:reloadComponents event="onclick"
-                                    actionListener="#{BanksList.selectState}"
-                                    componentIds=":form:banksList" requestDelay="500" disableDefault="true">
+                <o:ajax event="click"
+                                    listener="#{BanksList.selectState}"
+                                    render=":form:banksList" delay="500" disableDefault="true">
                   <f:param name="state" value="#{state.stateName}"/>
-                </o:reloadComponents>
+                </o:ajax>
               </h:commandLink>
               &#160;
             </o:forEach>

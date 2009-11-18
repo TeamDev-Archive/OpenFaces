@@ -8,7 +8,7 @@
   <a href="../../main.jsf">Back to the main page</a>
   <br/>
   
-<h:commandButton onclick="startMeasuring(); O$.reloadComponents(['frm:tbl'], {onajaxend: endMeasuring}); return false;" value="Rerender with O$.reloadComponents"/>
+<h:commandButton onclick="startMeasuring(); O$.ajaxReload(['frm:tbl'], {onajaxend: endMeasuring}); return false;" value="Rerender with O$.ajaxReload"/>
 
 <o:dataTable id="tbl" useAjax="true" var="rec" value="#{QKS1140.records}" pageSize="250" rowKey="#{rec.id}">
 <o:multipleRowSelection enabled="true"/>

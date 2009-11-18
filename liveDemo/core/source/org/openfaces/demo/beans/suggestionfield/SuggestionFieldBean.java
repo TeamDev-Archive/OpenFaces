@@ -17,6 +17,7 @@ import org.openfaces.util.FacesUtil;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -147,7 +148,7 @@ public class SuggestionFieldBean implements Serializable {
         return peopleByCriteria;
     }
 
-    public void findPeople() {
+    public void findPeople(ActionEvent actionEvent) {
         PeopleSearchCriteria criteria = new PeopleSearchCriteria(
                 selectedCountry, selectedIndustry, selectedDegree, selectedHobby);
 

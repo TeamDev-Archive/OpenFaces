@@ -41,7 +41,7 @@
 </table>
 <h:commandButton value="Update Table"
                  type="button"
-                 onclick="O$.reloadComponents(['form1:treeTable1'], {submittedComponentIds: ['form1:tlsSelected', 'form1:tlsRendered'], action: 'treeTableColumnsBean.updateColumnsList'});"/>
+                 onclick="O$.ajaxReload(['form1:treeTable1'], {execute: ['form1:tlsSelected', 'form1:tlsRendered'], action: 'treeTableColumnsBean.updateColumnsList'});"/>
 
 <br/>
 <br/>

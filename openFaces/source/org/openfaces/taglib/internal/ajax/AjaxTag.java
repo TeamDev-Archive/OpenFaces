@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.internal.ajax;
 
-import org.openfaces.component.ajax.ReloadComponents;
+import org.openfaces.component.ajax.Ajax;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
@@ -20,13 +20,13 @@ import javax.faces.context.FacesContext;
 /**
  * @author Ilya Musihin
  */
-public class ReloadComponentsTag extends AbstractComponentTag {
+public class AjaxTag extends AbstractComponentTag {
     public String getComponentType() {
-        return ReloadComponents.COMPONENT_TYPE;
+        return Ajax.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.ReloadComponentsRenderer";
+        return "org.openfaces.AjaxRenderer";
     }
 
     @Override
@@ -36,14 +36,15 @@ public class ReloadComponentsTag extends AbstractComponentTag {
         setStringProperty(component, "for");
         setBooleanProperty(component, "standalone");
 
-        setCollectionProperty(component, "componentIds");
-        setCollectionProperty(component, "submittedComponentIds");
+        setCollectionProperty(component, "render");
+        setCollectionProperty(component, "execute");
         setBooleanProperty(component, "submitInvoker");
-        setIntProperty(component, "requestDelay");
+        setIntProperty(component, "delay");
         setBooleanProperty(component, "disableDefault");
 
-        setPropertyBinding(component, "action");
-        setPropertyBinding(component, "actionListener");
+        /*Ajax ajaxComponent = (Ajax) component;
+        setActionListener(facesContext, ajaxComponent, "listener");*/
+        setPropertyBinding(component, "listener");
         setBooleanProperty(component, "immediate");
 
         setStringProperty(component, "onerror");

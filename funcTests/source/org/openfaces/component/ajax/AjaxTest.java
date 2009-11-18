@@ -13,18 +13,17 @@ package org.openfaces.component.reloadcomponents;
 
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.InputTextInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
-import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.LoadingMode;
 
 /**
  * @author Ilya Musihin
  */
-public class ReloadComponentsTest extends OpenFacesTestCase {
+public class AjaxTest extends OpenFacesTestCase {
     @Test
     public void testActionPhase() {
-        testAppFunctionalPage("/components/reloadcomponents/reloadComponents.jsf");
+        testAppFunctionalPage("/components/reloadcomponents/ajax.jsf");
         element("form1:resetBtn").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         ElementInspector counter = element("form1:counter");
         counter.assertText("0");
@@ -45,7 +44,7 @@ public class ReloadComponentsTest extends OpenFacesTestCase {
         element("form1:link3").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         counter.assertText("6"); // standalone invokation
 
-        // check operation with <h:inputText> -- a non-default event, requestDelay
+        // check operation with <h:inputText> -- a non-default event, delay
 
         InputTextInspector inputText = inputText("form1:input1");
         inputText.typeKeys("1");

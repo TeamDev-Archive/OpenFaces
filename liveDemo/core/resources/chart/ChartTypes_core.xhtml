@@ -13,9 +13,9 @@
   <div id="Demo">
     <div style="margin-bottom:10px;">
     <h:commandButton value="Generate New Data">
-      <o:reloadComponents
-              componentIds="yearPrecipitationChart, temperatureChart, monthPrecipitationChart, temperatureChart2"
-              action="#{ChartDemo.generateNewData}" disableDefault="true"/>
+      <o:ajax
+              render="yearPrecipitationChart temperatureChart monthPrecipitationChart temperatureChart2"
+              listener="#{ChartDemo.generateNewData}" disableDefault="true"/>
     </h:commandButton>
     </div>
 

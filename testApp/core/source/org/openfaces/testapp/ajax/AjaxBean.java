@@ -26,7 +26,7 @@ import java.util.Random;
 /**
  * @author Ilya Musihin
  */
-public class ReloadComponentsBean {
+public class AjaxBean {
 
     private String outputText;
 
@@ -56,7 +56,7 @@ public class ReloadComponentsBean {
         tlsItems = TLSItems;
     }
 
-    public ReloadComponentsBean() {
+    public AjaxBean() {
         outputText = "hello world!";
         outputText2 = "hello world!";
         calendar = new Date();

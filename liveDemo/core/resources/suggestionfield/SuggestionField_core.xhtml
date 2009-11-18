@@ -131,9 +131,9 @@
       <td style="width: 60px; height: 30px;"></td>
       <td style="width: 125px;">
         <h:commandButton value="Display Search Results" style="margin-top: 15px;">
-          <o:reloadComponents componentIds="mainForm:peopleByCriteria"
-                              submittedComponentIds="mainForm:country,mainForm:industry,mainForm:degree,mainForm:hobby"
-                              action="#{SuggestionFieldBean.findPeople}" disableDefault="true"/>
+          <o:ajax render="mainForm:peopleByCriteria"
+                              execute="mainForm:country mainForm:industry mainForm:degree mainForm:hobby"
+                              listener="#{SuggestionFieldBean.findPeople}" disableDefault="true"/>
         </h:commandButton>
       </td>
     </tr>

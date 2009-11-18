@@ -9,7 +9,7 @@
   <br/>
   
     <h:commandButton value="submit"/>
-    <h:commandButton value="Reload DataTable" onclick="O$.reloadComponents(['form1:diagDetailTable'], {submittedComponentIds: ['form1:diagDetailTable']});" type="button"/>
+    <h:commandButton value="Reload DataTable" onclick="O$.ajaxReload(['form1:diagDetailTable'], {execute: ['form1:diagDetailTable']});" type="button"/>
     <a4j:commandLink value="Refresh DataTable via Ajax4jsf" reRender="diagDetails"/>
     <a4j:outputPanel id="diagDetails">
       <o:dataTable id="diagDetailTable"

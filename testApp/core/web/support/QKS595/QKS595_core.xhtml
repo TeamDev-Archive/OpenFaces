@@ -109,7 +109,7 @@ onclick="O$('areasMenuForm:extendPopoutLayer').hide();"/>
                      value="#{ResizeRequest.size}">
           <a4j:support event="onkeyup" reRender="btnSubmitResize,resizeValidationError"
                        action="#{ResizeRequest.validateSize}"
-                       requestDelay="20"></a4j:support>
+                       delay="20"></a4j:support>
         </h:inputText>
         <h:selectOneMenu value="#{ResizeRequest.sizeUnits}">
           <f:selectItem itemValue="M" itemLabel="M"/>

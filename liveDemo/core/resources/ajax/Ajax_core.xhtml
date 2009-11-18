@@ -25,11 +25,11 @@
           <div>
             <o:inputText id="filter" value="#{TaskBean.filter}" promptText="Search" styleClass="taskInput"
                          style="margin: 8px 0 0 12px;">
-              <o:reloadComponents event="onkeyup"
-                                  componentIds=":form:taskList, :form:doneList, :form:doneListCaption"
-                                  requestDelay="500"
+              <o:ajax event="keyup"
+                                  render=":form:taskList :form:doneList :form:doneListCaption"
+                                  delay="500"
                                   disableDefault="true">
-              </o:reloadComponents>
+              </o:ajax>
             </o:inputText>
           </div>
         </td>
@@ -55,10 +55,10 @@
             <h:commandLink styleClass="delete" id="delete">
               <h:graphicImage value="../images/ajax/delete.png" alt="Delete Task">
               </h:graphicImage>
-              <o:reloadComponents actionListener="#{TaskBean.deleteTask}"
-                                  componentIds=":form:taskList" requestDelay="500" disableDefault="true">
+              <o:ajax listener="#{TaskBean.deleteTask}"
+                                  render=":form:taskList" delay="500" disableDefault="true">
                 <f:param name="taskId" value="#{task.id}"/>
-              </o:reloadComponents>
+              </o:ajax>
             </h:commandLink>
           </h:panelGrid>
         </o:forEach>
@@ -76,9 +76,9 @@
           <h:commandButton image="../images/ajax/plus.png" alt="Add Task" styleClass="left"
                            style="margin: 3px 0 0 6px; display: none;"
                            id="addTask">
-            <o:reloadComponents action="#{TaskBean.addTask}"
-                                submittedComponentIds=":form:newTask"
-                                componentIds=":form:taskList" disableDefault="true"/>
+            <o:ajax listener="#{TaskBean.addTask}"
+                                execute=":form:newTask"
+                                render=":form:taskList" disableDefault="true"/>
           </h:commandButton>
         </div>
       </h:panelGroup>
@@ -107,50 +107,50 @@
             <h:commandLink styleClass="delete" id="delete">
               <h:graphicImage value="../images/ajax/delete.png" alt="Delete Task">
               </h:graphicImage>
-              <o:reloadComponents actionListener="#{TaskBean.deleteTask}"
-                                  componentIds=":form:doneList,:form:doneListCaption" requestDelay="500"
+              <o:ajax listener="#{TaskBean.deleteTask}"
+                                  render=":form:doneList :form:doneListCaption" delay="500"
                                   disableDefault="true">
                 <f:param name="taskId" value="#{task.id}"/>
-              </o:reloadComponents>
+              </o:ajax>
             </h:commandLink>
           </h:panelGrid>
         </o:forEach>
       </h:panelGroup></div>
 
-    <o:reloadComponents id="updateTasks" standalone="true"
-                        componentIds="taskList, doneList, doneListCaption" immediate="true" requestDelay="500"/>
+    <o:ajax id="updateTasks" standalone="true"
+                        render="taskList doneList doneListCaption" immediate="true" delay="500"/>
 
   </div>
 
   <div id="Description">
     OpenFaces library has a range of Ajax-powered features built-in in components themselves, and facilities for
-    introducing inter-component Ajax-based interaction using the ReloadComponents component. This is a non-visual
+    introducing inter-component Ajax-based interaction using OpenFaces Ajax component. This is a non-visual
     component that can be attached to any other JSF component to reload other components when some particular event
-    occurs. Actually ReloadComponents has a wider purpose than just reloading components which makes it possible to
+    occurs. Actually Ajax component has a wider purpose than just reloading components which makes it possible to
     perform dynamic page updates to meet a wide range of scenarios that require Ajax page updates.
 
-    Here are the major features of the ReloadComponents component:
+    Here are the major features of the Ajax component:
     <ul class="hang">
       <li><strong>Reloading components</strong> - The main purpose of this component is to reload one or
         more components with Ajax without reloading the whole page. Just specify the comma-separated list of component
-        ids in the "componentIds" attribute.
+        ids in the "render" attribute.
       </li>
-      <li><strong>Two ways of attaching to components</strong> - You can either embed &lt;o:reloadComponents>
+      <li><strong>Two ways of attaching to components</strong> - You can either embed &lt;o:ajax>
         tag right into the component that initiates Ajax reload, or attach to a component using the "for" attribute.
       </li>
       <li><strong>Standalone mode for programmatic usage</strong> - Declare standalone="true" attribute,
-        and it becomes possible to run Ajax reload programmatically. This is especially useful for complex scenarios
-        with conditional reloads, or when the same ReloadComponents component should be reused in different places.
+        and it becomes possible to run Ajax component reload programmatically. This is especially useful for complex scenarios
+        with conditional reloads, or when the same Ajax component should be reused in different places.
       </li>
       <li><strong>Submitting additional components</strong> - Specifying a comma-separated component ids in
-        the "submittedComponentIds" attribute includes data from other components into the reload procedure.
+        the "execute" attribute includes data from other components into the reload procedure.
         This is useful when the reloaded data or server action depends on data in various page's components.
       </li>
       <li><strong>Executing server action</strong> - Specifying the "action" attribute allows executing
-        a server action before reloading the components.
+        a server action before reloading the components.                                      coma
       </li>
       <li><strong>Avoiding frequent requests</strong> - Sends only one request in case of several events
-        during the short period of time specified with the "requestDelay" attribute.
+        during the short period of time specified with the "delay" attribute.
       </li>
       <li><strong>Ajax request lifecycle events</strong> - Use "onajaxstart", "onajaxend", and "onerror" events
         to implement additional logic that is bound to the ajax reloading process itself.

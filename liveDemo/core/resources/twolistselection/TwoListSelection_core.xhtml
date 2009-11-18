@@ -53,7 +53,7 @@
                                     sortingAllowed="false">
                   <f:selectItems value="#{TLSStylingBean.customizations}"/>
 
-                  <o:reloadComponents event="onchange" componentIds="tasksTLS"/>
+                  <o:ajax event="change" render="tasksTLS"/>
                 </o:twoListSelection>
               </td>
             </tr>
@@ -61,7 +61,7 @@
         </td>
         <td style="vertical-align: top; width: 50%;">
           <h:commandButton value="Update"
-                           onclick="O$.reloadComponents(['tlsForm:detailTable'], {submittedComponentIds: ['tlsForm:tasksTLS']}); return false;"/>
+                           onclick="O$.ajaxReload(['tlsForm:detailTable'], {execute: ['tlsForm:tasksTLS']}); return false;"/>
           <o:dataTable id="detailTable"
                        style="width: 100%;"
                        var="task"

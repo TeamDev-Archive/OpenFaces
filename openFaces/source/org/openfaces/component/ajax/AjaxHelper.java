@@ -27,34 +27,31 @@ import java.util.List;
  * 
  * @author Dmitry Pikhulya
  */
-public class ReloadComponentsHelper extends OUIClientActionHelper {
+public class AjaxHelper extends OUIClientActionHelper {
 
     protected String getClientActionScript(FacesContext context, OUIClientAction action) {
-        ReloadComponents reloadComponents = (ReloadComponents) action;
-        final String id = reloadComponents.getId();
-        ReloadComponentsInitializer reloadComponentsInitializer = new ReloadComponentsInitializer() {
-            protected Object getActionSourceIdParam(FacesContext context, ReloadComponents reloadComponents) {
-                return new RawScript("O$._actionSourceIds['" + id + "']");
-            }
+        Ajax ajax = (Ajax) action;
+        final String id = ajax.getId();
+        AjaxInitializer ajaxInitializer = new AjaxInitializer() {
 
-            protected Object getReloadComponentsIdParam(FacesContext context, ReloadComponents reloadComponents) {
+            protected Object getAjaxComponentParam(FacesContext context, Ajax ajax) {
                 return new RawScript("O$._actionIds['" + id + "']");
             }
 
-            protected Object getSubmittedComponentIdsParam(FacesContext context, ReloadComponents reloadComponents, List<String> submittedComponentIds) {
-                return new RawScript("O$._submitIds['" + id + "']");
+            protected Object getExecuteParam(FacesContext context, Ajax ajax, List<String> execute) {
+                return new RawScript("O$._executeIds['" + id + "']");
             }
         };
 
-        JSONArray componentIdsArray = reloadComponentsInitializer.getComponentIdsArray(context, action, reloadComponents.getComponentIds());
-        String idExpression = "O$._reloadIds['" + id + "']";
-        Script componentIds = new RawScript("(" + idExpression + " ? " + idExpression + " : " + componentIdsArray.toString() + ")" );
+        JSONArray renderArray = ajaxInitializer.getRenderArray(context, action, ajax.getRender());
+        String idExpression = "O$._renderIds['" + id + "']";
+        Script render = new RawScript("(" + idExpression + " ? " + idExpression + " : " + renderArray.toString() + ")" );
 
         ScriptBuilder buf = new ScriptBuilder();
-        buf.functionCall("O$.reloadComponents",
-                componentIds,
-                reloadComponentsInitializer.getReloadParams(context, reloadComponents)).semicolon();
-        if (reloadComponents.getDisableDefault()) {
+        buf.functionCall("O$.ajaxReload",
+                render,
+                ajaxInitializer.getAjaxParams(context, ajax)).semicolon();
+        if (ajax.getDisableDefault()) {
             buf.append("return false;");
         }
         return buf.toString();

@@ -8,7 +8,7 @@
 
 <html>
 <head>
-  <title>TreeTable with o:reloadComponents</title>
+  <title>TreeTable with o:ajax</title>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 

@@ -73,11 +73,11 @@
                              onchange="O$('form:updateImage').run()">
               <f:selectItems value="#{DynamicImageBean.colorItems}"/>
             </h:selectOneMenu>
-            <o:reloadComponents id="updateImage"
+            <o:ajax id="updateImage"
                                 standalone="true"
-                                componentIds="dynamicImage"
-                                submittedComponentIds="textField, colorField, fontSizeField, glowWidthField, glowColorField"
-                                requestDelay="500"/>
+                                render="dynamicImage"
+                                execute="textField colorField fontSizeField glowWidthField glowColorField"
+                                delay="500"/>
           </td>
         </tr>
       </table>

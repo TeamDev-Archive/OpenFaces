@@ -56,7 +56,7 @@
         </h:panelGroup>
         <h:panelGroup styleClass="select_columns_button_area">
           <h:commandButton value="OK"
-                           onclick="O$('form1:requestsTreeTable:selectColumnsPopup').hide(); O$.reloadComponents(['form1:requestsTreeTable'], {submittedComponentIds: ['form1:requestsTreeTable:optionsTLS'], action: 'RequestsTreeTableBean.selectColumns'}); return false;"
+                           onclick="O$('form1:requestsTreeTable:selectColumnsPopup').hide(); O$.ajaxReload(['form1:requestsTreeTable'], {execute: ['form1:requestsTreeTable:optionsTLS'], action: 'RequestsTreeTableBean.selectColumns'}); return false;"
                            styleClass="select_columns_ok"/>
           <h:commandButton value="Cancel" onclick="optionPopupHide(); return false;"
                            styleClass="select_columns_cancel"/>
@@ -175,7 +175,7 @@
                 <h:outputLink id="addRequestBtn"
                               styleClass="HK_holder"
                               style="width: 85px;"
-                              onclick="if(this.className=='HK_holder') O$.reloadComponents(['form1:requestsTreeTable'], {action: 'RequestsTreeTableBean.addRequest'}); return false;">
+                              onclick="if(this.className=='HK_holder') O$.ajaxReload(['form1:requestsTreeTable'], {action: 'RequestsTreeTableBean.addRequest'}); return false;">
                   <h:panelGroup id="addRequestHolderLeftId" styleClass="HK_holder_left" style="display:block;">
                     <h:panelGroup id="addRequestHolderRightId" styleClass="HK_holder_right" style="display:block;">
                       <h:panelGroup id="addRequestIconId" styleClass="HK_icon_add_req"><!--Key icon--></h:panelGroup>
@@ -188,7 +188,7 @@
                 <h:outputLink id="addSubrequestBtn"
                               styleClass="HK_holder"
                               style="width: 115px;"
-                              onclick="if(this.className=='HK_holder') O$.reloadComponents(['form1:requestsTreeTable'], {action: 'RequestsTreeTableBean.addSubrequest'}); return false;">
+                              onclick="if(this.className=='HK_holder') O$.ajaxReload(['form1:requestsTreeTable'], {action: 'RequestsTreeTableBean.addSubrequest'}); return false;">
                   <h:panelGroup id="addSubRequestHolderLeftId" styleClass="HK_holder_left" style="display:block;">
                     <h:panelGroup id="addSubRequestHolderRightId" styleClass="HK_holder_right" style="display: block;">
                       <h:panelGroup id="addSubRequestIconId"
@@ -202,7 +202,7 @@
                 <h:outputLink id="editRequestBtn"
                               styleClass="HK_holder"
                               style="width: 85px;"
-                              onclick="if(this.className=='HK_holder') O$.reloadComponents(['form1:requestsTreeTable'], {action: 'RequestsTreeTableBean.editRequest'}); return false;">
+                              onclick="if(this.className=='HK_holder') O$.ajaxReload(['form1:requestsTreeTable'], {action: 'RequestsTreeTableBean.editRequest'}); return false;">
                   <h:panelGroup id="editRequestHolderLeftId" styleClass="HK_holder_left" style="display:block;">
                     <h:panelGroup id="editRequestHolderRightId" styleClass="HK_holder_right" style="display:block;">
                       <h:panelGroup id="editRequestIconId" styleClass="HK_icon_edit_req"><!--Key icon--></h:panelGroup>
@@ -215,7 +215,7 @@
                 <h:outputLink id="deleteRequestBtn"
                               styleClass="HK_holder"
                               style="width: 115px;"
-                              onclick="if(this.className=='HK_holder') O$.reloadComponents(['form1:requestsTreeTable'], {action: 'RequestsTreeTableBean.deleteRequest'}); return false;">
+                              onclick="if(this.className=='HK_holder') O$.ajaxReload(['form1:requestsTreeTable'], {action: 'RequestsTreeTableBean.deleteRequest'}); return false;">
                   <h:panelGroup id="deleteRequestHolderLeftId" styleClass="HK_holder_left" style="display:block;">
                     <h:panelGroup id="deleteRequestHolderRightId" styleClass="HK_holder_right" style="display:block;">
                       <h:panelGroup id="deleteRequestIconId" styleClass="HK_icon_del_req"><!--Key icon--></h:panelGroup>
@@ -236,7 +236,7 @@
                 <h:outputLink id="saveChangesBtn"
                               styleClass="HK_holder"
                               style="width: 140px;"
-                              onclick="if(this.className=='HK_holder') O$.reloadComponents(['form1:requestsTreeTable'], {action: 'RequestsTreeTableBean.saveChanges'}); return false;">
+                              onclick="if(this.className=='HK_holder') O$.ajaxReload(['form1:requestsTreeTable'], {action: 'RequestsTreeTableBean.saveChanges'}); return false;">
                   <h:panelGroup id="saveChangesHolderLeftId" styleClass="HK_holder_left" style="display:block;">
                     <h:panelGroup id="saveChangesHolderRightId" styleClass="HK_holder_right" style="display:block;">
                       <h:panelGroup id="saveChangesIconId"

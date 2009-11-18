@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.jsp.ajax;
 
-import org.openfaces.taglib.internal.ajax.ReloadComponentsTag;
+import org.openfaces.taglib.internal.ajax.AjaxTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
 import javax.el.MethodExpression;
@@ -20,9 +20,9 @@ import javax.el.ValueExpression;
 /**
  * @author Ilya Musihin
  */
-public class ReloadComponentsJspTag extends AbstractComponentJspTag {
-    public ReloadComponentsJspTag() {
-        super(new ReloadComponentsTag());
+public class AjaxJspTag extends AbstractComponentJspTag {
+    public AjaxJspTag() {
+        super(new AjaxTag());
     }
 
     public void setEvent(ValueExpression event) {
@@ -37,12 +37,12 @@ public class ReloadComponentsJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("standalone", standalone);
     }
 
-    public void setComponentIds(ValueExpression componentIds) {
-        getDelegate().setPropertyValue("componentIds", componentIds);
+    public void setRender(ValueExpression render) {
+        getDelegate().setPropertyValue("render", render);
     }
 
-    public void setSubmittedComponentIds(ValueExpression submittedComponentIds) {
-        getDelegate().setPropertyValue("submittedComponentIds", submittedComponentIds);
+    public void setExecute(ValueExpression execute) {
+        getDelegate().setPropertyValue("execute", execute);
     }
 
     public void setSubmitInvoker(ValueExpression submitInvoker) {
@@ -50,20 +50,16 @@ public class ReloadComponentsJspTag extends AbstractComponentJspTag {
     }
 
 
-    public void setRequestDelay(ValueExpression requestDelay) {
-        getDelegate().setPropertyValue("requestDelay", requestDelay);
+    public void setDelay(ValueExpression delay) {
+        getDelegate().setPropertyValue("delay", delay);
     }
 
     public void setDisableDefault(ValueExpression disableDefault) {
         getDelegate().setPropertyValue("disableDefault", disableDefault);
     }
 
-    public void setAction(MethodExpression action) {
-        getDelegate().setPropertyValue("action", action);
-    }
-
-    public void setActionListener(MethodExpression actionListener) {
-        getDelegate().setPropertyValue("actionListener", actionListener);
+    public void setListener(MethodExpression listener) {
+        getDelegate().setPropertyValue("listener", listener);
     }
 
     public void setImmediate(ValueExpression immediate) {

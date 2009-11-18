@@ -22,7 +22,7 @@
                               layout="pageDirection">
               <f:selectItems value="#{TabbedPaneBean.placements}"/>
 
-              <o:reloadComponents componentIds="tabbedPane, alignmentSelector"/>
+              <o:ajax render="tabbedPane alignmentSelector"/>
             </h:selectOneRadio>
           </td>
           <td width="160" valign="top">
@@ -34,7 +34,7 @@
                               layout="pageDirection">
               <f:selectItems value="#{TabbedPaneBean.currentAlignments}"/>
 
-              <o:reloadComponents componentIds="tabbedPane"/>
+              <o:ajax render="tabbedPane"/>
             </h:selectOneRadio>
           </td>
         </tr>

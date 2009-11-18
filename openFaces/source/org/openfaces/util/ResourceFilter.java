@@ -112,7 +112,7 @@ public class ResourceFilter implements Filter {
                         Enumeration parameters = servletRequest.getParameterNames();
                         while (parameters.hasMoreElements()) {
                             String parameterName = (String) parameters.nextElement();
-                            if (parameterName.equalsIgnoreCase(AjaxUtil.PARAM_COMPONENT_IDS)
+                            if (parameterName.equalsIgnoreCase(AjaxUtil.PARAM_RENDER)
                                     || parameterName.equalsIgnoreCase(AjaxUtil.AJAX_REQUEST_MARKER))
                                 stringBuffer.append(parameterName).append("=").
                                         append(servletRequest.getParameter(parameterName)).append("&");

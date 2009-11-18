@@ -13,13 +13,13 @@ package org.openfaces.taglib.facelets.ajax;
 
 import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
-import org.openfaces.taglib.internal.ajax.ReloadComponentsTag;
+import org.openfaces.taglib.internal.ajax.AjaxTag;
 
 /**
  * @author Ilya Musihin
  */
-public class ReloadComponentsTagHandler extends AbstractFaceletsComponentHandler {
-    public ReloadComponentsTagHandler(ComponentConfig componentConfig) {
-        super(componentConfig, new ReloadComponentsTag());
+public class AjaxTagHandler extends AbstractFaceletsComponentHandler {
+    public AjaxTagHandler(ComponentConfig componentConfig) {
+        super(componentConfig, new AjaxTag());
     }
 }

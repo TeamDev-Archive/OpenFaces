@@ -98,68 +98,68 @@
     <f:verbatim><br/></f:verbatim>
   </a4j:repeat>
 
-  <h5>q:forEach q:reloadComponents</h5>
+  <h5>q:forEach q:ajax</h5>
   <h:panelGroup  id="qforeachreload">
   <o:forEach items="#{ForEachBean.list}" var="item">
     <h:outputText value="#{item.key}. "/>
     <o:inputText value="#{item.value}"/>
     <h:commandLink value="remove it" actionListener="#{ForEachBean.removeTestListItem}">
-      <o:reloadComponents componentIds=":formID:qforeachreload" actionListener="#{ForEachBean.removeTestListItem}" event="onclick">
+      <o:ajax render=":formID:qforeachreload" listener="#{ForEachBean.removeTestListItem}" event="click">
         <f:param name="itemId" value="#{item}"/>
-      </o:reloadComponents>
+      </o:ajax>
     </h:commandLink>
   </o:forEach>
   </h:panelGroup>
 
-  <h5>t:dataList q:reloadComponents</h5>
+  <h5>t:dataList q:ajax</h5>
   <h:panelGroup  id="tdataListreload">
   <t:dataList value="#{ForEachBean.list}" var="item">
     <h:outputText value="#{item.key}. #{item.value}"/>
     <h:commandLink value="remove it" actionListener="#{ForEachBean.removeTestListItem}">
-      <o:reloadComponents componentIds=":formID:tdataListreload" actionListener="#{ForEachBean.removeTestListItem}" event="onclick">
+      <o:ajax render=":formID:tdataListreload" listener="#{ForEachBean.removeTestListItem}" event="click">
         <f:param name="itemId" value="#{item}"/>
-      </o:reloadComponents>
+      </o:ajax>
     </h:commandLink>
   </t:dataList>
   </h:panelGroup>
 
-  <h5>c:forEach q:reloadComponents</h5>
+  <h5>c:forEach q:ajax</h5>
   <h:panelGroup  id="cforeachreload">
   <c:forEach var="item" items="#{ForEachBean.list}">
     <h:commandLink
         id="button5_${item.key}"
         value="Remove #{item.key}"
         actionListener="#{ForEachBean.removeTestListItem}" >
-      <o:reloadComponents componentIds=":formID:cforeachreload" actionListener="#{ForEachBean.removeTestListItem}" event="onclick">
+      <o:ajax render=":formID:cforeachreload" listener="#{ForEachBean.removeTestListItem}" event="click">
         <f:param name="itemId" value="#{item}"/>
-      </o:reloadComponents>
+      </o:ajax>
     </h:commandLink>
   </c:forEach>
   </h:panelGroup>
 
-  <h5>ui:repeat q:reloadComponents</h5>
+  <h5>ui:repeat q:ajax</h5>
   <h:panelGroup  id="uirepeatreload">
   <ui:repeat value="#{ForEachBean.list}" var="item">
     <h:outputText value="#{item.key}. "/>
     <o:inputText value="#{item.value}"/>
     <h:commandLink value="remove it" actionListener="#{ForEachBean.removeTestListItem}">
-      <o:reloadComponents componentIds=":formID:uirepeatreload" actionListener="#{ForEachBean.removeTestListItem}" event="onclick">
+      <o:ajax render=":formID:uirepeatreload" listener="#{ForEachBean.removeTestListItem}" event="click">
         <f:param name="itemId" value="#{item}"/>
-      </o:reloadComponents>
+      </o:ajax>
     </h:commandLink>
     <f:verbatim><br/></f:verbatim>
   </ui:repeat>
   </h:panelGroup>
 
-  <h5>a4j:repeat q:reloadComponents</h5>
+  <h5>a4j:repeat q:ajax</h5>
   <h:panelGroup id="a4jrepeatreload">
   <a4j:repeat value="#{ForEachBean.list}" var="item">
     <h:outputText value="#{item.key}. "/>
     <o:inputText value="#{item.value}"/>
     <h:commandLink value="remove it" actionListener="#{ForEachBean.removeTestListItem}">
-      <o:reloadComponents componentIds=":formID:a4jrepeatreload" actionListener="#{ForEachBean.removeTestListItem}" event="onclick">
+      <o:ajax render=":formID:a4jrepeatreload" listener="#{ForEachBean.removeTestListItem}" event="click">
         <f:param name="itemId" value="#{item}"/>
-      </o:reloadComponents>
+      </o:ajax>
     </h:commandLink>
     <f:verbatim><br/></f:verbatim>
   </a4j:repeat>

@@ -797,8 +797,8 @@
   </managed-bean>
 
   <managed-bean>
-    <managed-bean-name>ReloadComponentsBean</managed-bean-name>
-    <managed-bean-class>org.openfaces.testapp.reloadcomponents.ReloadComponentsBean</managed-bean-class>
+    <managed-bean-name>AjaxBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.testapp.reloadcomponents.AjaxBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
 

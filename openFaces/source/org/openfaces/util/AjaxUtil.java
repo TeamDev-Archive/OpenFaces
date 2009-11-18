@@ -44,7 +44,7 @@ import java.util.zip.GZIPOutputStream;
  */
 public class AjaxUtil {
     public static final String AJAX_REQUEST_MARKER = "_openFaces_ajax";
-    public static final String PARAM_COMPONENT_IDS = "_of_componentIds";
+    public static final String PARAM_RENDER = "_of_render";
     private static final String COMPONENT_DELIMITER = ",";
     public static final String UPDATE_PORTIONS_SUFFIX = "_of_ajax_portions";
     public static final String CUSTOM_JSON_PARAM = "_of_customJsonParam";
@@ -363,9 +363,9 @@ public class AjaxUtil {
         if (portionNames == null || portionNames.size() == 0)
             return false;
         Map sessionMap = context.getExternalContext().getSessionMap();
-        String componentId = (String) sessionMap.get(PARAM_COMPONENT_IDS);
+        String componentId = (String) sessionMap.get(PARAM_RENDER);
         if (componentId == null) // not portlets
-            componentId = request.getParameter(PARAM_COMPONENT_IDS);
+            componentId = request.getParameter(PARAM_RENDER);
         boolean requestForSpecifiedComponent = component.getClientId(context).equals(componentId);
         return requestForSpecifiedComponent;
 

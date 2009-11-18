@@ -67,8 +67,8 @@
     			</tr>
     		</table>
     	</o:window>
-		<o:reloadComponents for="newMessage" actionListener="#{EMailBean.saveMailListener}" disableDefault="true" event="onsave2" componentIds="emailsTreeTable" onajaxend="O$('form:newMessage').hide();"/>
-		<o:reloadComponents for="newMessage" actionListener="#{EMailBean.sendMailListener}" disableDefault="true" event="onsend" componentIds="emailsTreeTable" onajaxend="O$('form:newMessage').hide();"/>
+		<o:ajax for="newMessage" listener="#{EMailBean.saveMailListener}" disableDefault="true" event="save2" render="emailsTreeTable" onajaxend="O$('form:newMessage').hide();"/>
+		<o:ajax for="newMessage" listener="#{EMailBean.sendMailListener}" disableDefault="true" event="send" render="emailsTreeTable" onajaxend="O$('form:newMessage').hide();"/>
 
     	<o:borderLayoutPanel>
     		<o:sidePanel alignment="top" resizable="false" collapsible="false" size="72px">

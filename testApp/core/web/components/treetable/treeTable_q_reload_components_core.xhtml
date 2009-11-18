@@ -33,7 +33,7 @@
                sortedColumnHeaderStyle="background:yellow;"
                sortedColumnStyle="background: IndianRed;">
     <o:multipleNodeSelection nodePaths="#{TreeTableA4jBean.treeDemoSelectedNodePaths}" style="color: blue;">
-      <o:reloadComponents event="onchange" componentIds="permissionsTreeTable"/>
+      <o:ajax event="change" render="permissionsTreeTable"/>
     </o:multipleNodeSelection>
     <o:selectionColumn/>
     <o:dynamicTreeStructure nodeChildren="#{TreeTableA4jBean.usersTreeChildren}"
@@ -50,17 +50,17 @@
   <br/>
   <br/>
   <h:commandButton title="REFRESH" value="REFRESH">
-    <o:reloadComponents event="onclick" componentIds="permissionsTreeTable"/>
+    <o:ajax event="click" render="permissionsTreeTable"/>
   </h:commandButton>
   <br/>
   <br/>
   <h:inputText>
-    <o:reloadComponents event="onclick" componentIds="permissionsTreeTable"/>
+    <o:ajax event="click" render="permissionsTreeTable"/>
   </h:inputText>
   <br/>
   <br/>
   <h:outputLabel value="REFRESH" id="someOutput">
-    <o:reloadComponents event="onclick" componentIds="permissionsTreeTable"/>
+    <o:ajax event="click" render="permissionsTreeTable"/>
   </h:outputLabel>
 
 </div>

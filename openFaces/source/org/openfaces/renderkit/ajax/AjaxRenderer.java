@@ -11,8 +11,8 @@
  */
 package org.openfaces.renderkit.ajax;
 
-import org.openfaces.component.ajax.ReloadComponents;
-import org.openfaces.component.ajax.ReloadComponentsInitializer;
+import org.openfaces.component.ajax.Ajax;
+import org.openfaces.component.ajax.AjaxInitializer;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
@@ -25,33 +25,33 @@ import java.io.IOException;
 /**
  * @author Ilya Musihin
  */
-public class ReloadComponentsRenderer extends AbstractSettingsRenderer {
+public class AjaxRenderer extends AbstractSettingsRenderer {
 
-    private ReloadComponentsRendererHelper helper = new ReloadComponentsRendererHelper();
+    private AjaxRendererHelper helper = new AjaxRendererHelper();
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-        ReloadComponents reloadComponents = (ReloadComponents) component;
-        if (reloadComponents.isStandalone())
-            encodeStandaloneInvocationMode(context, reloadComponents);
+        Ajax ajax = (Ajax) component;
+        if (ajax.isStandalone())
+            encodeStandaloneInvocationMode(context, ajax);
         else
-            helper.encodeAutomaticInvocationMode(context, reloadComponents);
+            helper.encodeAutomaticInvocationMode(context, ajax);
     }
 
-    private void encodeStandaloneInvocationMode(FacesContext context, ReloadComponents reloadComponents) throws IOException {
+    private void encodeStandaloneInvocationMode(FacesContext context, Ajax ajax) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        writer.startElement("span", reloadComponents);
+        writer.startElement("span", ajax);
         writer.writeAttribute("style", "display: none", null);
-        String clientId = reloadComponents.getClientId(context);
+        String clientId = ajax.getClientId(context);
         writer.writeAttribute("id", clientId, null);
 
-        ReloadComponentsInitializer reloadComponentsInitializer = new ReloadComponentsInitializer();
+        AjaxInitializer ajaxInitializer = new AjaxInitializer();
         ScriptBuilder initScript = new ScriptBuilder();
-        initScript.initScript(context, reloadComponents, "O$._initReloadComponents",
-                reloadComponentsInitializer.getComponentIdsArray(context, reloadComponents, reloadComponents.getComponentIds()),
-                reloadComponentsInitializer.getReloadParams(context, reloadComponents));
+        initScript.initScript(context, ajax, "O$._initAjax",
+                ajaxInitializer.getRenderArray(context, ajax, ajax.getRender()),
+                ajaxInitializer.getAjaxParams(context, ajax));
 
-        helper.appendMissingParameters(context, reloadComponents, initScript);
+        helper.appendMissingParameters(context, ajax, initScript);
 
         RenderingUtil.renderInitScript(context, initScript, new String[]{
                 ResourceUtil.getUtilJsURL(context),

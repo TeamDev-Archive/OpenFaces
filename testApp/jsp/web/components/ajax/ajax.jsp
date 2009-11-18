@@ -13,7 +13,7 @@
 <body>
 <f:view>
   <h:form id="form1">
-    <%@ include file="reloadComponents_core.xhtml" %>
+    <%@ include file="ajax_core.xhtml" %>
   </h:form>
 </f:view>
 

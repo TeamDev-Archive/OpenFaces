@@ -15,7 +15,7 @@
               backBorderStyle="0px">
       <o:tabSetItems value="#{ImageList.styleNames}"/>
 
-      <o:reloadComponents event="onchange" componentIds="authorSelector, imageSelector"/>
+      <o:ajax event="change" render="authorSelector imageSelector"/>
     </o:tabSet>
     <table style="margin-top: 10px;" cellpadding="0" cellspacing="0" border="0" width="95%">
       <tr>
@@ -35,7 +35,7 @@
                     backBorderStyle="#{ImageList.authorSelectorStyle.backBorderStyle}">
             <o:tabSetItems value="#{ImageList.authors}"/>
 
-            <o:reloadComponents event="onchange" componentIds="image, imageSelector"/>
+            <o:ajax event="change" render="image imageSelector"/>
           </o:tabSet>
         </td>
         <td>&#160;</td>
@@ -60,7 +60,7 @@
                     backBorderStyle="#{ImageList.imageSelectorStyle.backBorderStyle}">
             <o:tabSetItems value="#{ImageList.selectedImages}"/>
 
-            <o:reloadComponents event="onchange" componentIds="image"/>
+            <o:ajax event="change" render="image"/>
           </o:tabSet>
         </td>
       </tr>

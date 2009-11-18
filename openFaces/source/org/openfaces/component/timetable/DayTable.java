@@ -823,18 +823,18 @@ public class DayTable extends OUIObjectIteratorBase {
 
         for (int areaIndex = 0, areaCount = eventAreas.size(); areaIndex < areaCount; areaIndex++) {
             EventArea eventArea = eventAreas.get(areaIndex);
-            refreshEventSubComponentIds(eventArea);
+            refreshEventSubRender(eventArea);
         }
 
     }
 
-    private void refreshEventSubComponentIds(UIComponent component) {
+    private void refreshEventSubRender(UIComponent component) {
         // force client id recalculation
         component.setId(component.getId());
         Iterator<UIComponent> kids = component.getFacetsAndChildren();
         while (kids.hasNext()) {
             UIComponent kid = kids.next();
-            refreshEventSubComponentIds(kid);
+            refreshEventSubRender(kid);
         }
 
     }

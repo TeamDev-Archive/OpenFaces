@@ -22688,10 +22688,10 @@ and it is automatically triggered on any form submission. -->
     </attribute>
   </tag>
 
-  <!-- ReloadComponents tag declaration -->
+  <!-- Ajax tag declaration -->
   <tag>
-    <name>reloadComponents</name>
-    <tag-class>org.openfaces.taglib.jsp.ajax.ReloadComponentsJspTag</tag-class>
+    <name>ajax</name>
+    <tag-class>org.openfaces.taglib.jsp.ajax.AjaxJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
       <description>The component identifier.</description>
@@ -22704,17 +22704,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @el false -->
     </attribute>
     <attribute>
-      <description>A value-binding expression that associates the DataTable with a backing bean property.</description>
+      <description>A value-binding expression that associates the ajax with a backing bean property.
+      </description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.table.DataTable</type>
+        <type>org.openfaces.component.ajax.Ajax</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. DataTable -->
+      <!-- @bindingType org.openfaces.component.ajax.Ajax -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>Attaches the ReloadComponents component to the specified event of the parent component.</description>
+      <description>Attaches the Ajax component to the specified event of the parent component.</description>
       <name>event</name>
       <required>false</required>
       <deferred-value>
@@ -22724,7 +22725,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el false -->
     </attribute>
     <attribute>
-      <description>Allows attaching this ReloadComponents component to an arbitrary component or HTML tag instead of
+      <description>Allows attaching this Ajax component to an arbitrary component or HTML tag instead of
         attaching to the parent component. This attribute specifies ID of the JSF component or of any HTML element to
         which this component should be attached to. It should be defined in the same way as the "for" property of the
         standard HTMLOutputLabel component.
@@ -22738,7 +22739,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Turns on the "standalone" mode where the ReloadComponents is not attached to other component
+      <description>Turns on the "standalone" mode where the Ajax component is not attached to other component
         automatically,
         and can be used via the public API instead. The default value is false, which means that the component is
         attached
@@ -22753,22 +22754,10 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Similar to the "action" attribute of the HTMLCommandButton component. It can be defined as a
-        MethodBinding that should point to an action method that is called when the user fire an event.
-      </description>
-      <name>action</name>
-      <deferred-method>
-        <method-signature>java.lang.Object action()</method-signature>
-      </deferred-method>
-      <!-- @bindingType javax.el.MethodExpression -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
       <description>Similar to the "actionListener" attribute of the HTMLCommandButton component.
         A MethodBinding that should point to an action listener that is called when the user fire an event.
       </description>
-      <name>actionListener</name>
+      <name>listener</name>
       <deferred-method>
         <method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
       </deferred-method>
@@ -22780,7 +22769,7 @@ and it is automatically triggered on any form submission. -->
       <description>Id's of components, which will be rerendered after succcesfull ajax request.
         Can be a single id or a comma-separated list if id's.
       </description>
-      <name>componentIds</name>
+      <name>render</name>
       <required>true</required>
       <deferred-value>
         <type>java.util.List</type>
@@ -22790,12 +22779,12 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>Id's of components whose data should be submitted and processed on the server in addition to the
-        reloaded components. The difference with componentIds is that components listed in submittedComponentIds will
+        reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
         depends on some other component on a page. This attribute can be specified as a single id or a comma-separated
         list if id's.
       </description>
-      <name>submittedComponentIds</name>
+      <name>execute</name>
       <required>false</required>
       <deferred-value>
         <type>java.util.List</type>
@@ -22806,9 +22795,9 @@ and it is automatically triggered on any form submission. -->
 
     <!--<attribute>-->
     <!--<name>submitInvoker</name>-->
-    <!--<description>A flag that indicates whether or not the component to which this ReloadComponents component is-->
+    <!--<description>A flag that indicates whether or not the component to which this Ajax component is-->
     <!--attached should be submitted in addition to the reloaded component(s), and components specified with the-->
-    <!--submittedComponentIds attribute.-->
+    <!--execute attribute.-->
     <!--</description>-->
     <!-- @bindingType boolean -->
     <!-- @default true -->
@@ -22845,24 +22834,13 @@ and it is automatically triggered on any form submission. -->
         delay instead of performing an additional request. As a result there will be only one request for all events
         that come more frequently than specified in this attribute.
       </description>
-      <name>requestDelay</name>
+      <name>delay</name>
       <deferred-value>
         <type>int</type>
       </deferred-value>
       <!-- @bindingType int -->
       <!-- @default 0 -->
       <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A value-binding expression that associates the reloadComponents with a backing bean property.
-      </description>
-      <name>binding</name>
-      <deferred-value>
-        <type>org.openfaces.component.ajax.ReloadComponents</type>
-      </deferred-value>
-      <!-- @bindingType org.openfaces.component.reloadcomponents. ReloadComponents -->
-      <!-- @default null -->
-      <!-- @el only -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed on the client when an error occurs
