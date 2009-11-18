@@ -118,17 +118,6 @@ public class TableStructure extends TableElement {
         return scrolling;
     }
 
-    /**
-     * @return true if the table needs to avoid rendering section tags (<thead>, <tbody> and <tfoot>), but simulate
-     *         these sections while rendering only one <body> section. This is needed only in scrollable tables under Mozilla
-     *         to handle table height properly (the "body" row has the "height: 100%" declaration, which increases overall table
-     *         height when there is more than one table section -- hence the workaround -- render only one section and simulate
-     *         the proper appearance).
-     */
-    public boolean isSimulatedSectionsMode() {
-        return scrolling != null && (EnvironmentUtil.isMozilla() || EnvironmentUtil.isChrome() || EnvironmentUtil.isSafari());
-    }
-
     public int getLeftFixedCols() {
         return leftFixedCols;
     }
@@ -168,9 +157,60 @@ public class TableStructure extends TableElement {
         if (aboveFacet != null)
             aboveFacet.encodeAll(context);
         ResponseWriter writer = context.getResponseWriter();
+
         writer.startElement("table", table);
         RenderingUtil.writeIdAttribute(context, table);
+        RenderingUtil.writeStandardEvents(writer, table);
+        writeStyleAndClass(context, table, writer);
+        RenderingUtil.writeAttribute(writer, "dir", table.getDir());
+        RenderingUtil.writeAttribute(writer, "width", table.getWidth());
+        RenderingUtil.writeAttribute(writer, "align", table.getAlign());
+        RenderingUtil.writeAttribute(writer, "bgcolor", table.getBgcolor());
+        RenderingUtil.writeAttribute(writer, "rules", table.getRules());
+        RenderingUtil.writeAttribute(writer, "border", table.getBorder(), Integer.MIN_VALUE);
 
+        Scrolling scrolling = getScrolling();
+        if (scrolling == null) {
+            String cellspacing = table.getCellspacing();
+            if (areGridLinesRequested(table, TableStructure.getDefaultStyles(table)))
+                cellspacing = "0";
+            RenderingUtil.writeAttribute(writer, "cellspacing", cellspacing);
+            RenderingUtil.writeAttribute(writer, "cellpadding", getTableCellPadding());
+
+            List<BaseColumn> columns1 = table.getColumnsForRendering();
+            TableUtil.writeColumnTags(context, table, columns1);
+        } else {
+            RenderingUtil.writeAttribute(writer, "cellspacing", "0");
+            RenderingUtil.writeAttribute(writer, "cellpadding", "0");
+            writer.startElement("tr", table);
+            writer.startElement("td", table);
+        }
+
+        TableHeader header = getHeader();
+        if (!header.isEmpty())
+            header.render(context, null);
+
+        TableBody body = getBody();
+        body.render(context, additionalContentWriter);
+
+        TableFooter footer = getFooter();
+        if (!footer.isEmpty()) {
+            footer.render(context, additionalContentWriter);
+        }
+
+        if (scrolling == null) {
+            writer.endElement("td");
+            writer.endElement("tr");
+        }
+
+        writer.endElement("table");
+        RenderingUtil.writeNewLine(writer);
+        UIComponent belowFacet = table.getFacet("below");
+        if (belowFacet != null)
+            belowFacet.encodeAll(context);
+    }
+
+    private void writeStyleAndClass(FacesContext context, AbstractTable table, ResponseWriter writer) throws IOException {
         List<BaseColumn> columns = table.getColumnsForRendering();
 
         String style = table.getStyle();
@@ -210,50 +250,6 @@ public class TableStructure extends TableElement {
             if (!RenderingUtil.isNullOrEmpty(cls))
                 writer.writeAttribute("class", cls, null);
         }
-
-        RenderingUtil.writeAttribute(writer, "align", table.getAlign());
-        RenderingUtil.writeAttribute(writer, "bgcolor", table.getBgcolor());
-        RenderingUtil.writeAttribute(writer, "dir", table.getDir());
-        RenderingUtil.writeAttribute(writer, "rules", table.getRules());
-        RenderingUtil.writeAttribute(writer, "width", tableWidth);
-        RenderingUtil.writeAttribute(writer, "border", table.getBorder(), Integer.MIN_VALUE);
-        String cellspacing = table.getCellspacing();
-        if (areGridLinesRequested(table, TableStructure.getDefaultStyles(table)))
-            cellspacing = "0";
-        RenderingUtil.writeAttribute(writer, "cellspacing", cellspacing);
-        String cellpadding = scrolling == null ? getTableCellPadding() : "0";
-        RenderingUtil.writeAttribute(writer, "cellpadding", cellpadding);
-        RenderingUtil.writeStandardEvents(writer, table);
-
-        if (getScrolling() == null)
-            TableUtil.writeColumnTags(context, table, columns);
-        else {
-            if (getLeftFixedCols() > 0)
-                TableUtil.writeColTag(table, writer, null, null, null);
-            TableUtil.writeColTag(table, writer, null, null, null);
-            if (getRightFixedCols() > 0)
-                TableUtil.writeColTag(table, writer, null, null, null);
-        }
-
-        TableHeader header = getHeader();
-        if (!header.isEmpty())
-            header.render(context, null);
-
-        TableBody body = getBody();
-        body.render(context, additionalContentWriter);
-
-        table.setRowIndex(-1);
-
-        TableFooter footer = getFooter();
-        if (!footer.isEmpty()) {
-            footer.render(context, additionalContentWriter);
-        }
-
-        writer.endElement("table");
-        RenderingUtil.writeNewLine(writer);
-        UIComponent belowFacet = table.getFacet("below");
-        if (belowFacet != null)
-            belowFacet.encodeAll(context);
     }
 
     String getTableCellPadding() {
@@ -334,8 +330,6 @@ public class TableStructure extends TableElement {
 
         try {
             JSONObject result = new JSONObject();
-            if (isSimulatedSectionsMode())
-                putParam(result, "simulatedSectionsMode", true);
             putParam(result, "scrolling", getScrollingParam());
             putParam(result, "header", getHeader().getInitParam());
             putParam(result, "body", getBody().getInitParam());
@@ -565,7 +559,7 @@ public class TableStructure extends TableElement {
         return result;
     }
 
-    public static String getColumnBodyStyle(BaseColumn column) {
+    private String getColumnBodyStyle(BaseColumn column) {
         String style = column.getBodyStyle();
         if (column instanceof TreeColumn) {
             UIComponent columnParent = column.getParent();
@@ -578,7 +572,7 @@ public class TableStructure extends TableElement {
         return style;
     }
 
-    public static String getColumnBodyClass(BaseColumn column) {
+    private String getColumnBodyClass(BaseColumn column) {
         String cls = column.getBodyClass();
         if (column instanceof TreeColumn) {
             UIComponent columnParent = column.getParent();
@@ -591,7 +585,7 @@ public class TableStructure extends TableElement {
         return cls;
     }
 
-    public static void appendColumnEventsArray(JSONObject columnObj,
+    private void appendColumnEventsArray(JSONObject columnObj,
                                                String onclick,
                                                String ondblclick,
                                                String onmosedown,
@@ -626,7 +620,7 @@ public class TableStructure extends TableElement {
                 bodyOddRowClass);
     }
 
-    public static void appendHandlerEntry(JSONObject obj, String eventName, String handler) throws JSONException {
+    private void appendHandlerEntry(JSONObject obj, String eventName, String handler) throws JSONException {
         if (handler == null)
             return;
         obj.put(eventName, handler);

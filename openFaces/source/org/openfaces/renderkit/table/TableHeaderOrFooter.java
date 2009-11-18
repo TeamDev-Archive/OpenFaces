@@ -20,12 +20,11 @@ import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.StyleUtil;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -300,7 +299,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
 
         if (!RenderingUtil.isNullOrEmpty(sectionClass))
             initObject.put("className", sectionClass);
-        if (tableStructure.isSimulatedSectionsMode())
+        if (tableStructure.getScrolling() != null)
             initObject.put("rowCount", allRows.size());
         if (commonHeaderRow != null)
             initObject.put("commonHeader", getCommonHeaderParam(tableStructure));
@@ -352,26 +351,14 @@ public abstract class TableHeaderOrFooter extends TableSection {
         return table.getFilterRowStyle();
     }
 
+    protected String getSectionName() {
+        return isHeader ? "thead" : "tfoot";
+    }
 
-    public void render(FacesContext facesContext,
-                       HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
-        TableStructure tableStructure = getParent(TableStructure.class);
-        UIComponent component = tableStructure.getComponent();
-        ResponseWriter writer = facesContext.getResponseWriter();
-
-        String sectionTag = isHeader ? "thead" : "tfoot";
-        if (!tableStructure.isSimulatedSectionsMode()) {
-            writer.startElement(sectionTag, component);
-            RenderingUtil.writeNewLine(writer);
-        }
-
+    protected void renderRows(FacesContext facesContext, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
         for (int i = 0, count = allRows.size(); i < count; i++) {
             HeaderRow row = allRows.get(i);
             row.render(facesContext, i == count - 1 ? additionalContentWriter : null);
-        }
-
-        if (!tableStructure.isSimulatedSectionsMode()) {
-            writer.endElement(sectionTag);
         }
     }
 

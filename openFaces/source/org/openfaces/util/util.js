@@ -4074,10 +4074,11 @@ if (!window.O$) {
     return transition;
   };
 
-  O$.fixElement = function(element, properties, workingCondition, interval) {
+  O$.fixElement = function(element, properties, workingCondition, events, interval) {
     if (!interval)
       interval = 200;
     var fixture = {
+      values: {},
       update: function() {
         if (
                 !O$.isElementPresentInDocument(element) ||
@@ -4088,16 +4089,22 @@ if (!window.O$) {
         }
         for (var propertyName in properties) {
           var propertyValue = properties[propertyName]();
-          if (O$.getElementEffectProperty(element, propertyName) != propertyValue)
+          if (O$.getElementEffectProperty(element, propertyName) != propertyValue) {
             O$.setElementEffectProperty(element, propertyName, propertyValue);
+            this.values[propertyName] = propertyValue;
+            if (this.onchange)
+              this.onchange();
+          }
         }
       },
-      intervalId: setInterval(function() {fixture.update()}, interval),
+      intervalId: setInterval(function() {fixture.update();}, interval),
 
       release: function() {
         clearInterval(this.intervalId);
       }
     };
+    for (var event in events)
+      fixture[event] = events[event];
     fixture.update();
     return fixture;
   };

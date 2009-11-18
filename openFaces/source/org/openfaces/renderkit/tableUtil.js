@@ -99,7 +99,7 @@ O$.Tables = {
     if (!params.cellStylesMap) params.cellStylesMap = {};
     if (!params.body) params.body = {};
     table._params = params;
-    
+
     // initialize grid lines
     var tempIdx = 0;
     table._horizontalGridLines = params.gridLines[tempIdx++];
@@ -163,9 +163,9 @@ O$.Tables = {
         if (element) O$.fixInputsWidthStrict(element);
       }
       fixInputWidths(area._tag);
-      fixInputWidths(area._leftScrollingArea && table.header._leftScrollingArea._rowContainer);
-      fixInputWidths(area._centerScrollingArea && table.header._centerScrollingArea._rowContainer);
-      fixInputWidths(area._centerScrollingArea && table.header._rightScrollingArea._rowContainer);
+      fixInputWidths(area._leftScrollingArea && area._leftScrollingArea._rowContainer);
+      fixInputWidths(area._centerScrollingArea && area._centerScrollingArea._rowContainer);
+      fixInputWidths(area._centerScrollingArea && area._rightScrollingArea._rowContainer);
     });
 
     table._removeAllRows = O$.Tables._removeAllRows;
@@ -358,30 +358,38 @@ O$.Tables = {
   // -------------------------- TABLE ROWS SUPPORT
 
   _initRows: function(table) {
-    if (table._params.simulatedSectionsMode) {
-      var rows = O$.getChildNodesWithNames(table, ["tr"]);
-      if (!rows.length) {
-        var body = O$.getChildNodesWithNames(table, ["tbody"])[0];
-        rows = body ? O$.getChildNodesWithNames(body, ["tr"]) : [];
+    if (table._params.scrolling) {
+      function tableRows(table, sectionTagName) {
+        var rows = O$.getChildNodesWithNames(table, ["tr"]);
+        if (!rows.length) {
+          var body = O$.getChildNodesWithNames(table, [sectionTagName])[0];
+          rows = body ? O$.getChildNodesWithNames(body, ["tr"]) : [];
+        }
+        return rows;
       }
-      var headRowCount = table._params.header ? table._params.header.rowCount : 0;
-      var footRowCount = table._params.footer ? table._params.footer.rowCount : 0;
-      var simulatedHeadRows = rows.slice(0, headRowCount);
-      var simulatedBodyRows = rows.slice(headRowCount, rows.length - footRowCount);
-      var simulatedFootRows = rows.slice(rows.length - footRowCount);
+      var rows = tableRows(table, "tbody");
+      if (rows.length != 1)
+        throw "O$._initRows: one root row expected, but was: " + rows.length;
+      var tableContainer = O$.findElementByPath(rows[0], "td");
+      tableContainer.style.verticalAlign = "top";
+      tableContainer.style.overflow = "hidden";
+      tableContainer.style.position = "relative";
+      var tables = O$.getChildNodesWithNames(tableContainer, ["table"]);
+      var sectionIndex = 0;
+      var headTable = (table._params.header && table._params.header.rowCount) ? tables[sectionIndex++] : null;
+      var bodyTable = tables[sectionIndex++];
+      var footTable = (table._params.footer && table._params.footer.rowCount) ? tables[sectionIndex++] : null;
 
-      function applyStyle(rows, style) {
-        rows.forEach(function(row) {
-          O$.setStyleMappings(row, {sectionStyle: style});
-        });
+      function applyStyle(element, style) {
+        if (element) O$.setStyleMappings(element, {sectionStyle: style});
       }
-      if (simulatedHeadRows.length) applyStyle(simulatedHeadRows, table._params.header.className);
-      if (simulatedBodyRows.length) applyStyle(simulatedBodyRows, table._params.body.className);
-      if (simulatedFootRows.length) applyStyle(simulatedFootRows, table._params.footer.className);
+      applyStyle(headTable, table._params.header.className);
+      applyStyle(bodyTable, table._params.body.className);
+      applyStyle(footTable, table._params.footer.className);
     }
     function initTableSection(table, sectionParams, sectionTagName, commonRowAbove) {
       var section = {
-        _tag: O$.getChildNodesWithNames(table, [sectionTagName])[0],
+        _tag: !table._params.scrolling ? O$.getChildNodesWithNames(table, [sectionTagName])[0] : null,
         _updateStyle: function() {
           if (!sectionParams)
             return;
@@ -404,20 +412,18 @@ O$.Tables = {
                 return row._cells[coords.cell];
               };
             } else {
-              var immediateRows = function(section) {
-                if (!table._params.simulatedSectionsMode)
-                  return O$.getChildNodesWithNames(section._tag, ["tr"]);
-                else {
-                  if (sectionTagName == "thead")
-                    return simulatedHeadRows;
-                  else if (sectionTagName == "tbody")
-                    return simulatedBodyRows;
-                  else if (sectionTagName == "tfoot")
-                    return simulatedFootRows;
-                  else
-                    throw "Unknown section tag name: " + sectionTagName;
-                }
-              }(this);
+              this._sectionTable = function() {
+                if (sectionTagName == "thead")
+                  return headTable;
+                else if (sectionTagName == "tbody")
+                  return bodyTable;
+                else if (sectionTagName == "tfoot")
+                  return footTable;
+                else
+                  throw "Unknown section tag name: " + sectionTagName;
+              }();
+              var immediateRows = tableRows(this._sectionTable, sectionTagName);
+              this._sectionTable.style.tableLayout = "fixed";
               var commonRow = commonRowAbove != undefined ? (
                       commonRowAbove ? immediateRows[0] : immediateRows[immediateRows.length - 1]
                       ) : null;
@@ -914,7 +920,7 @@ O$.Tables = {
     }
     var newWrapperClass = O$.combineClassNames([
                               cell.className,
-                              cell._row.className, 
+                              cell._row.className,
                               cell._row._table._params.additionalCellWrapperStyle]);
     if (cellWrapper.className != newWrapperClass)
       cellWrapper.className = newWrapperClass;
@@ -1783,7 +1789,11 @@ O$.Tables = {
 
     var firstSection = table.header._rows.length > 0 ? table.header : table.body;
     var defaultColWidth = 120;
-    var scrollingAreaColTags = O$.Tables._getTableColTags(table);
+    var scrollingAreaColTags = [];
+    [table.header, table.body, table.footer].forEach(function (area) {
+      if (area && area._sectionTable)
+        scrollingAreaColTags.push(O$.Tables._getTableColTags(area._sectionTable));
+    });
     function areaWidthByColumns(section, areaName) {
       var areaWidth = 0;
       var area = section[areaName];
@@ -1806,31 +1816,48 @@ O$.Tables = {
     var areaIndex = 0;
     if (firstSection._leftScrollingArea) {
       var width = areaWidthByColumns(firstSection, "_leftScrollingArea");
-      scrollingAreaColTags[areaIndex++].style.width = width;
+      var leftAreaIndex = areaIndex++;
+      scrollingAreaColTags.forEach(function (tagsForSection) {
+        tagsForSection[leftAreaIndex].style.width = width;
+      });
     }
     areaWidthByColumns(firstSection, "_centerScrollingArea");
     areaIndex++;
     if (firstSection._rightScrollingArea) {
       width = areaWidthByColumns(firstSection, "_rightScrollingArea");
-      scrollingAreaColTags[areaIndex++].style.width = width;
+      var rightAreaIndex = areaIndex++;
+      scrollingAreaColTags.forEach(function (tagsForSection) {
+        tagsForSection[rightAreaIndex].style.width = width;
+      });
     }
 
 
-    function fixScrollingContainerHeight(area) {
-      if (!area)
-        return;
-      var fixture = O$.fixElement(area._scrollingDiv, {height: function() {
-        return O$.getElementPaddingRectangle(area._td).height;
-      }});
+    var fixture = O$.fixElement(table.body._sectionTable, {
+      height: function() {
+        var height = O$.getElementPaddingRectangle(table).height;
+        [table.header._sectionTable, table.footer._sectionTable].forEach(function (sectionTable) {
+          var sectionHeight = O$.getElementSize(sectionTable).height;
+          height -= sectionHeight;
+        });
+        return height;
+      }
+    }, null, {onchange: function() {
+      var fixture = this;
+      [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (scrollingArea) {
+        if (!scrollingArea || !scrollingArea._scrollingDiv) return;
+        var height = fixture.values.height;
+        if (height < 0) height = 0; // this is the case under IE6,7/strict during initialization
+          scrollingArea._scrollingDiv.style.height = height + "px";
+      });
+    }});
+    [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
+      if (!area) return;
       if (area._scrollingDivContainer && area._scrollingDivContainer.style.display == "none")
         setTimeout(function() {
           area._scrollingDivContainer.style.display = "block";
           fixture.update();
         }, 10);
-    }
-    fixScrollingContainerHeight(table.body._leftScrollingArea);
-    fixScrollingContainerHeight(table.body._centerScrollingArea);
-    fixScrollingContainerHeight(table.body._rightScrollingArea);
+    });
 
 
     var mainScrollingArea = table.body._centerScrollingArea;

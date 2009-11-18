@@ -71,16 +71,9 @@ public class TableBody extends TableSection {
         result.put("noDataRows", isNoDataRows());
     }
 
-    public void render(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
+    protected void renderRows(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
         AbstractTable table = (AbstractTable) tableStructure.getComponent();
         List<BaseColumn> columns = table.getColumnsForRendering();
-
-        if (!tableStructure.isSimulatedSectionsMode()) {
-            writer.startElement("tbody", table);
-            RenderingUtil.writeNewLine(writer);
-        }
-
         int first = table.getFirst();
         if (table.getRows() != 0)
             throw new IllegalStateException("table.getRows() should always be null in OpenFaces tables, but it is: " + table.getRows());
@@ -97,10 +90,11 @@ public class TableBody extends TableSection {
             BodyRow row = bodyRows.get(i);
             row.render(context, (!hasFooter && i == count - 1) ? additionalContentWriter : null);
         }
-        if (!tableStructure.isSimulatedSectionsMode()) {
-            writer.endElement("tbody");
-            RenderingUtil.writeNewLine(writer);
-        }
+        table.setRowIndex(-1);
+    }
+
+    protected String getSectionName() {
+        return "tbody";
     }
 
     protected List<BodyRow> createRows(
@@ -159,7 +153,6 @@ public class TableBody extends TableSection {
             cells.add(scrollingAreaCell(columns, rightRows, allColCount - fixedRightColumns, allColCount));
 
         BodyRow containingRow = new BodyRow(this);
-        containingRow.setStyle("height: 100%");
         containingRow.setCells(cells);
         return Collections.singletonList(containingRow);
     }

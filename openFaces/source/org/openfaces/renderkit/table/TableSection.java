@@ -13,6 +13,12 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
+import org.openfaces.renderkit.TableUtil;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
 
 /**
  * @author Dmitry Pikhulya
@@ -26,7 +32,6 @@ public abstract class TableSection extends TableElement {
         JSONObject result = new JSONObject();
 
         try {
-
             fillInitParam(result);
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -35,4 +40,45 @@ public abstract class TableSection extends TableElement {
     }
 
     protected abstract void fillInitParam(JSONObject result) throws JSONException;
+
+    public void render(FacesContext context,
+                       HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
+        TableStructure tableStructure = getParent(TableStructure.class);
+        UIComponent component = tableStructure.getComponent();
+        ResponseWriter writer = context.getResponseWriter();
+
+        boolean scrollable = tableStructure.getScrolling() != null;
+
+        if (scrollable) {
+            writer.startElement("table", component);
+            writer.writeAttribute("style", "width: 100%", null);
+            writer.writeAttribute("border", 0, null);
+            writer.writeAttribute("cellspacing", 0, null);
+            writer.writeAttribute("cellpadding", 0, null);
+
+            if (tableStructure.getLeftFixedCols() > 0)
+                TableUtil.writeColTag(component, writer, null, null, null);
+            TableUtil.writeColTag(component, writer, null, null, null);
+            if (tableStructure.getRightFixedCols() > 0)
+                TableUtil.writeColTag(component, writer, null, null, null);
+        }
+
+        String sectionTag = getSectionName();
+        writer.startElement(sectionTag, component);
+
+        renderRows(context, additionalContentWriter);
+
+        writer.endElement(sectionTag);
+
+        if (scrollable) {
+            writer.endElement("table");
+        }
+    }
+
+    protected abstract void renderRows(
+            FacesContext facesContext,
+            HeaderCell.AdditionalContentWriter additionalContentWriter
+    ) throws IOException;
+
+    protected abstract String getSectionName();
 }
