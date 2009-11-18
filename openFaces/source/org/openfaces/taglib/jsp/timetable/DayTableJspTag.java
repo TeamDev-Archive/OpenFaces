@@ -41,7 +41,7 @@ public class DayTableJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("day", day);
     }
 
-    public void setLocal(ValueExpression locale) {
+    public void setLocale(ValueExpression locale) {
         getDelegate().setPropertyValue("locale", locale);
     }
 
