@@ -9,7 +9,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.reloadcomponents;
+package org.openfaces.component.ajax;
 
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
@@ -23,7 +23,7 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 public class AjaxTest extends OpenFacesTestCase {
     @Test
     public void testActionPhase() {
-        testAppFunctionalPage("/components/reloadcomponents/ajax.jsf");
+        testAppFunctionalPage("/components/ajax/ajax.jsf");
         element("form1:resetBtn").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         ElementInspector counter = element("form1:counter");
         counter.assertText("0");

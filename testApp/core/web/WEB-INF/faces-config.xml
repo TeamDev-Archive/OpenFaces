@@ -798,7 +798,7 @@
 
   <managed-bean>
     <managed-bean-name>AjaxBean</managed-bean-name>
-    <managed-bean-class>org.openfaces.testapp.reloadcomponents.AjaxBean</managed-bean-class>
+    <managed-bean-class>org.openfaces.testapp.ajax.AjaxBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
 

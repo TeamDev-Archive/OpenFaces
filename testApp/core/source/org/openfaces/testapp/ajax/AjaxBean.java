@@ -9,7 +9,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.testapp.reloadcomponents;
+package org.openfaces.testapp.ajax;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;

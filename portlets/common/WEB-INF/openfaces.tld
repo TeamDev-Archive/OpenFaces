@@ -22735,7 +22735,7 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>org.openfaces.component.ajax.Ajax</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.reloadcomponents. Ajax -->
+      <!-- @bindingType org.openfaces.component.ajax. Ajax -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
