@@ -59,10 +59,10 @@ and for destroying session and application contexts.-->
   </context-param>
 
 
-  <!--<context-param>-->
-    <!--<param-name>org.openfaces.validation.clientValidation</param-name>-->
-    <!--<param-value>onSubmit</param-value>-->
-  <!--</context-param>-->
+  <context-param>
+    <param-name>org.openfaces.validation.clientValidation</param-name>
+    <param-value>onSubmit</param-value>
+  </context-param>
 
   <context-param>
     <param-name>org.openfaces.validation.disabled</param-name>
