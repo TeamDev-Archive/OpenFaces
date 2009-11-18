@@ -198,7 +198,7 @@ public class TableStructure extends TableElement {
             footer.render(context, additionalContentWriter);
         }
 
-        if (scrolling == null) {
+        if (scrolling != null) {
             writer.endElement("td");
             writer.endElement("tr");
         }
