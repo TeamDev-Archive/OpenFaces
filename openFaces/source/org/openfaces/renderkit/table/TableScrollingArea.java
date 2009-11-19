@@ -27,14 +27,14 @@ import java.util.List;
 public class TableScrollingArea extends TableElement {
     private String cellpadding;
     private List<BaseColumn> columns;
-    private List<? extends TableElement> rows;
+    private List<? extends AbstractRow> rows;
     private boolean scrollable;
     private boolean indefiniteHight;
 
     public TableScrollingArea(
             TableElement parent,
             List<BaseColumn> columns,
-            List<? extends TableElement> rows,
+            List<? extends AbstractRow> rows,
             boolean scrollable) {
         super(parent);
         this.rows = rows;
@@ -62,7 +62,7 @@ public class TableScrollingArea extends TableElement {
         return columns;
     }
 
-    public List<? extends TableElement> getRows() {
+    public List<? extends AbstractRow> getRows() {
         return rows;
     }
 
@@ -89,7 +89,7 @@ public class TableScrollingArea extends TableElement {
         writer.writeAttribute("border", "0", null);
         TableUtil.writeColumnTags(context, component, columns);
         writer.startElement("tbody", component);
-        for (TableElement row : rows) {
+        for (AbstractRow row : rows) {
             row.render(context, additionalContentWriter);
         }
         writer.endElement("tbody");
@@ -98,5 +98,13 @@ public class TableScrollingArea extends TableElement {
             writer.endElement("div");
         if (indefiniteHight)
             writer.endElement("div");
+    }
+
+    public boolean isContentSpecified() {
+        for (AbstractRow row : rows) {
+            if (row.isAtLeastOneComponentInThisRow())
+                return true;
+        }
+        return false;
     }
 }

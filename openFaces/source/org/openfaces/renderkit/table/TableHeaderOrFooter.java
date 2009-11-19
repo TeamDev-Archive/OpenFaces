@@ -80,7 +80,15 @@ public abstract class TableHeaderOrFooter extends TableSection {
             List<BaseColumn> rightCols = columns.subList(totalColCount - rightFixedCols, totalColCount);
             cells.add(scrollingAreaCell(tableStructure, cellTag, rightCols, false));
         }
-        allRows.add(new HeaderRow(this, true, cells));
+        boolean contentsSpecified = false;
+        for (HeaderCell cell : cells) {
+            if (((TableScrollingArea) cell.getComponent()).isContentSpecified()) {
+                contentsSpecified = true;
+                break;
+            }
+        }
+        if (contentsSpecified)
+            allRows.add(new HeaderRow(this, true, cells));
         if (commonHeaderRow != null)
             allRows.add(isHeader ? 0 : allRows.size(), commonHeaderRow);
     }
@@ -272,13 +280,6 @@ public abstract class TableHeaderOrFooter extends TableSection {
         return cell;
     }
 
-    public boolean isEmpty() {
-        boolean commonHeaderSpecified = commonHeaderRow != null;
-        boolean columnHeadersSpecified = getLastVisibleColHeadersRow() != -1;
-
-        return !commonHeaderSpecified && !columnHeadersSpecified && !hasSubHeader;
-    }
-
     public boolean hasSubHeader() {
         return hasSubHeader;
     }
@@ -362,9 +363,14 @@ public abstract class TableHeaderOrFooter extends TableSection {
         }
     }
 
-
-    private int getLastVisibleColHeadersRow() {
-        return lastVisibleColHeadersRow;
+    @Override
+    public boolean isContentSpecified() {
+        if (allRows.size() == 0)
+            return false;
+        for (AbstractRow row : allRows)
+            if (row.isAtLeastOneComponentInThisRow())
+                return true;
+        return false;
     }
 
     public int getSubHeaderRowIndex() {
@@ -372,13 +378,15 @@ public abstract class TableHeaderOrFooter extends TableSection {
             return -1;
         if (!isHeader)
             return 0;
-        int subHeaderRowIndex = getLastVisibleColHeadersRow() + 1;
+        int subHeaderRowIndex = lastVisibleColHeadersRow + 1;
         if (commonHeaderRow != null)
             subHeaderRowIndex++;
         return subHeaderRowIndex;
     }
 
     public CellCoordinates findCell(BaseColumn column, CellKind cellKind) {
+        if (allRows.size() == 0)
+            return null;
         TableStructure tableStructure = getParent(TableStructure.class);
         if (tableStructure.getScrolling() == null) {
             boolean skipFirstRow = isHeader ? commonHeaderRow != null : hasSubHeader;

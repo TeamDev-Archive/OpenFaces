@@ -100,11 +100,11 @@ public class DropDownPopup extends AbstractPopup {
         }
 
         public boolean isHeaderSpecified() {
-            return !getTableStructure().getHeader().isEmpty();
+            return getTableStructure().getHeader().isContentSpecified();
         }
 
         public boolean isFooterSpecified() {
-            return !getTableStructure().getFooter().isEmpty();
+            return getTableStructure().getFooter().isContentSpecified();
         }
     }
 
@@ -118,7 +118,7 @@ public class DropDownPopup extends AbstractPopup {
 
         TableStructure tableStructure = childData.getTableStructure();
         TableHeader tableHeader = tableStructure.getHeader();
-        if (!tableHeader.isEmpty()) {
+        if (tableHeader.isContentSpecified()) {
             tableHeader.render(context, null);
         }
 
@@ -128,7 +128,7 @@ public class DropDownPopup extends AbstractPopup {
         writer.endElement("tbody");
 
         TableFooter tableFooter = tableStructure.getFooter();
-        if (!tableFooter.isEmpty()) {
+        if (tableFooter.isContentSpecified()) {
             tableFooter.render(context, null);
         }
     }

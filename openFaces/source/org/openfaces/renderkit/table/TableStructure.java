@@ -184,21 +184,25 @@ public class TableStructure extends TableElement {
             RenderingUtil.writeAttribute(writer, "cellpadding", "0");
             writer.startElement("tr", table);
             writer.startElement("td", table);
+            writer.writeAttribute("style", "vertical-align: top;", null);
+            writer.startElement("div", table);
+            writer.writeAttribute("style", "position: relative;", null);
         }
 
         TableHeader header = getHeader();
-        if (!header.isEmpty())
+        if (header.isContentSpecified())
             header.render(context, null);
 
         TableBody body = getBody();
         body.render(context, additionalContentWriter);
 
         TableFooter footer = getFooter();
-        if (!footer.isEmpty()) {
+        if (footer.isContentSpecified()) {
             footer.render(context, additionalContentWriter);
         }
 
         if (scrolling != null) {
+            writer.endElement("div");
             writer.endElement("td");
             writer.endElement("tr");
         }

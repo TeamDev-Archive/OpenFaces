@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public class BodyRow extends TableElement {
+public class BodyRow extends AbstractRow {
     private List<TableRow> applicableCustomRows;
     private String[][] attributes;
     private List<BodyCell> cells;
@@ -107,5 +107,9 @@ public class BodyRow extends TableElement {
 
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
+    }
+
+    public boolean isAtLeastOneComponentInThisRow() {
+        return true;
     }
 }

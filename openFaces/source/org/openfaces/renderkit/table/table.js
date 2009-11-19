@@ -85,9 +85,9 @@ O$.Table = {
     }
 
     table._cleanUp = function() {
-      table.header._rows = [];
-      table.body._rows = [];
-      table.footer._rows = [];
+      [table.header, table.body, table.footer].forEach(function (section) {
+        if (section) section._rows = [];
+      });
     };
   },
 

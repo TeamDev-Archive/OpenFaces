@@ -108,7 +108,7 @@ public class TableBody extends TableSection {
 
         List<BodyRow> bodyRows = createRows(context, first, rows, columns);
         TableFooter footer = tableStructure.getFooter();
-        boolean hasFooter = footer != null && !footer.isEmpty();
+        boolean hasFooter = footer != null && footer.isContentSpecified();
         for (int i = 0, count = bodyRows.size(); i < count; i++) {
             BodyRow row = bodyRows.get(i);
             row.render(context, (!hasFooter && i == count - 1) ? additionalContentWriter : null);

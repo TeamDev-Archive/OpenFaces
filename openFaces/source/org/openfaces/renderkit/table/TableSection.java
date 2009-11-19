@@ -81,5 +81,9 @@ public abstract class TableSection extends TableElement {
             HeaderCell.AdditionalContentWriter additionalContentWriter
     ) throws IOException;
 
+    public boolean isContentSpecified() {
+        return true;
+    }
+
     protected abstract String getSectionName();
 }

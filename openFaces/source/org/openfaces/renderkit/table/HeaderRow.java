@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * @author Dmitry Pikhulya
  */
-public class HeaderRow extends TableElement {
+public class HeaderRow extends AbstractRow {
     private final boolean atLeastOneComponentInThisRow;
     private final List<HeaderCell> cells;
     private List<HeaderRow> rowsForSpans;

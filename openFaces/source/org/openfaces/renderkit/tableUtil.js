@@ -159,6 +159,7 @@ O$.Tables = {
       O$.Tables._initScrolling(table);
 
     [table.header, table.footer].forEach(function (area) {
+      if (!area) return;
       function fixInputWidths(element) {
         if (element) O$.fixInputsWidthStrict(element);
       }
@@ -370,10 +371,7 @@ O$.Tables = {
       var rows = tableRows(table, "tbody");
       if (rows.length != 1)
         throw "O$._initRows: one root row expected, but was: " + rows.length;
-      var tableContainer = O$.findElementByPath(rows[0], "td");
-      tableContainer.style.verticalAlign = "top";
-      tableContainer.style.overflow = "hidden";
-      tableContainer.style.position = "relative";
+      var tableContainer = O$.findElementByPath(rows[0], "td/div");
       var tables = O$.getChildNodesWithNames(tableContainer, ["table"]);
       var sectionIndex = 0;
       var headTable = (table._params.header && table._params.header.rowCount) ? tables[sectionIndex++] : null;
@@ -422,6 +420,8 @@ O$.Tables = {
                 else
                   throw "Unknown section tag name: " + sectionTagName;
               }();
+              if (!this._sectionTable)
+                return [];
               var immediateRows = tableRows(this._sectionTable, sectionTagName);
               this._sectionTable.style.tableLayout = "fixed";
               var commonRow = commonRowAbove != undefined ? (
@@ -566,6 +566,8 @@ O$.Tables = {
         }
 
       };
+      if (section._getRows().length == 0)
+        return null;
       section._updateStyle();
       return section;
     };
@@ -574,22 +576,24 @@ O$.Tables = {
     table.footer = initTableSection(table, table._params.footer, "tfoot", table._params.footer && table._params.footer.commonHeader ? false : undefined);
     table.body = initTableSection(table, table._params.body, "tbody", undefined);
 
-    var headRows = table.header._getRows();
-    headRows.forEach(function(row) {
-      O$.Tables._initRow(row);
-    });
-    var commonHeaderRowIndex = table._params.header && table._params.header.commonHeader ? 0 : -1;
-    var subHeaderRowIndex = table._params.header && table._params.header.subHeader ? headRows.length - 1 : -1;
-    table._subHeaderRowIndex = subHeaderRowIndex;
-    table._columnHeadersRowIndexRange = [commonHeaderRowIndex + 1, table._params.header && table._params.header.subHeader ? headRows.length - 1 : headRows.length];
-    table._commonHeaderRowIndex = commonHeaderRowIndex;
+    if (table.header) {
+      var headRows = table.header._getRows();
+      headRows.forEach(function(row) {
+        O$.Tables._initRow(row);
+      });
+      var commonHeaderRowIndex = table._params.header && table._params.header.commonHeader ? 0 : -1;
+      var subHeaderRowIndex = table._params.header && table._params.header.subHeader ? headRows.length - 1 : -1;
+      table._subHeaderRowIndex = subHeaderRowIndex;
+      table._columnHeadersRowIndexRange = [commonHeaderRowIndex + 1, table._params.header && table._params.header.subHeader ? headRows.length - 1 : headRows.length];
+      table._commonHeaderRowIndex = commonHeaderRowIndex;
 
-    if (commonHeaderRowIndex != -1)
-      O$.Tables._setRowStyle(headRows[commonHeaderRowIndex], {commonHeaderRow: table._params.header.commonHeader.className});
-    if (subHeaderRowIndex != -1)
-      O$.Tables._setRowStyle(headRows[subHeaderRowIndex], {subHeaderRow: table._params.header.subHeader.className});
-    for (var i = table._columnHeadersRowIndexRange[0], end = table._columnHeadersRowIndexRange[1]; i < end; i++)
-      O$.Tables._setRowStyle(headRows[i], {headerRow: table._params.header ? table._params.header.headingsClassName : null});
+      if (commonHeaderRowIndex != -1)
+        O$.Tables._setRowStyle(headRows[commonHeaderRowIndex], {commonHeaderRow: table._params.header.commonHeader.className});
+      if (subHeaderRowIndex != -1)
+        O$.Tables._setRowStyle(headRows[subHeaderRowIndex], {subHeaderRow: table._params.header.subHeader.className});
+      for (var i = table._columnHeadersRowIndexRange[0], end = table._columnHeadersRowIndexRange[1]; i < end; i++)
+        O$.Tables._setRowStyle(headRows[i], {headerRow: table._params.header ? table._params.header.headingsClassName : null});
+    }
 
     var visibleRowCount = 0;
     var bodyRows = table.body._getRows();
@@ -600,19 +604,22 @@ O$.Tables = {
       if (row._isVisible())
         visibleRowCount++;
     }
-    var footRows = table.footer._getRows();
-    var lastNonCommonFooter = footRows.length - 1;
-    if (table._params.footer && table._params.footer.commonHeader)
-      lastNonCommonFooter--;
-    for (rowIndex = 0, rowCount = footRows.length; rowIndex < rowCount; rowIndex++) {
-      row = footRows[rowIndex];
-      O$.Tables._initRow(row);
 
-      if (rowIndex <= lastNonCommonFooter)
-        O$.Tables._setRowStyle(footRows[rowIndex], {footerRow: table._params.footer ? table._params.footer.headingsClassName : null});
+    if (table.footer) {
+      var footRows = table.footer._getRows();
+      var lastNonCommonFooter = footRows.length - 1;
+      if (table._params.footer && table._params.footer.commonHeader)
+        lastNonCommonFooter--;
+      for (rowIndex = 0, rowCount = footRows.length; rowIndex < rowCount; rowIndex++) {
+        row = footRows[rowIndex];
+        O$.Tables._initRow(row);
+
+        if (rowIndex <= lastNonCommonFooter)
+          O$.Tables._setRowStyle(footRows[rowIndex], {footerRow: table._params.footer ? table._params.footer.headingsClassName : null});
+      }
+      if (table._params.footer && table._params.footer.commonHeader)
+        O$.Tables._setRowStyle(footRows[footRows.length - 1], {commonFooterRow: table._params.footer ? table._params.footer.commonHeader.className : null});
     }
-    if (table._params.footer && table._params.footer.commonHeader)
-      O$.Tables._setRowStyle(footRows[footRows.length - 1], {commonFooterRow: table._params.footer ? table._params.footer.commonHeader.className : null});
   },
 
   _setRowStyle: function(row, styleMappings) {
@@ -973,7 +980,7 @@ O$.Tables = {
     }
 
     var tableHeader = table.header;
-    var headRows = tableHeader._getRows();
+    var headRows = tableHeader ? tableHeader._getRows() : [];
     if (headRows.length > 0) {
       tableHeader._updateCommonHeaderSeparator = function() {
         if (!(table._params.header && table._params.header.commonHeader))
@@ -1068,7 +1075,7 @@ O$.Tables = {
     }
 
     var tableFooter = table.footer;
-    var footRows = tableFooter._getRows();
+    var footRows = tableFooter ? tableFooter._getRows() : [];
     if (footRows.length > 0) {
       tableFooter._updateSeparatorStyle = function() {
         if (footRows.length == 0)
@@ -1265,6 +1272,7 @@ O$.Tables = {
       } else {
         result = [];
         function addSectionCols(section) {
+          if (!section) return;
           var colIndex = 0;
           function saveAreaCols(area) {
             if (!area) return;
@@ -1789,7 +1797,7 @@ O$.Tables = {
       throw "O$.Tables._initScrolling can't be invoked on a non-scrollable table";
 
     function alignColumnWidths() {
-      var firstSection = table.header._rows.length > 0 ? table.header : table.body;
+      var firstSection = table.header ? table.header : table.body;
       var defaultColWidth = 120;
       var scrollingAreaColTags = [];
       [table.header, table.body, table.footer].forEach(function (area) {
@@ -1839,7 +1847,9 @@ O$.Tables = {
       var fixture = O$.fixElement(table.body._sectionTable, {
         height: function() {
           var height = O$.getElementPaddingRectangle(table).height;
-          [table.header._sectionTable, table.footer._sectionTable].forEach(function (sectionTable) {
+          [table.header, table.footer].forEach(function (section) {
+            if (!section) return;
+            var sectionTable = section._sectionTable;
             var sectionHeight = O$.getElementSize(sectionTable).height;
             height -= sectionHeight;
           });
@@ -1882,7 +1892,7 @@ O$.Tables = {
       var mainScrollingArea = table.body._centerScrollingArea;
       mainScrollingArea._scrollingDiv.onscroll = function() {
         [table.header, table.footer].forEach(function (section) {
-          if (!section._centerScrollingArea) return;
+          if (!section || !section._centerScrollingArea) return;
           section._centerScrollingArea._scrollingDiv.scrollLeft = mainScrollingArea._scrollingDiv.scrollLeft;
         });
         [table.body._leftScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
