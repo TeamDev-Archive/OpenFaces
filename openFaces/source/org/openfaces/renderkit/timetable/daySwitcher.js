@@ -29,21 +29,21 @@ O$.DaySwitcher = {
     daySwitcher._upperPattern = upperPattern;
     daySwitcher._locale = locale;
 
-    O$.initComponent(daySwitcherId, {rollover: stylingParams.rolloverClass});    
+    O$.initComponent(daySwitcherId, {rollover: stylingParams.rolloverClass});
 
     var textId = daySwitcherId + "::text";
     daySwitcher._text = O$(textId);
-    if (daySwitcher._text){
+    if (daySwitcher._text) {
       O$.initComponent(textId, {rollover: stylingParams.textRolloverClass});
     }
 
     var upperTextId = daySwitcherId + "::upper_text";
     daySwitcher._upperText = O$(upperTextId);
-    if (daySwitcher._upperText){
+    if (daySwitcher._upperText) {
       O$.initComponent(upperTextId, {rollover: stylingParams.upperTextRolloverClass});
     }
 
-    if (enabled){
+    if (enabled) {
       var previousButtonId = daySwitcherId + "::previous_button";
       O$.initComponent(previousButtonId, {rollover: stylingParams.previousButtonRolloverClass});
       daySwitcher._previousButton = O$(previousButtonId);
@@ -78,7 +78,7 @@ O$.DaySwitcher = {
 
     }
 
-    daySwitcher._getDayTable = function(){
+    daySwitcher._getDayTable = function() {
       if (!daySwitcher._dayTable) {
         daySwitcher._dayTable = O$(daySwitcher._dayTableId);
       }
@@ -95,19 +95,19 @@ O$.DaySwitcher = {
         return;
       daySwitcher._day = day;
 
-      if (daySwitcher._pattern){
+      if (daySwitcher._pattern) {
         var dtf = O$.getDateTimeFormatObject(daySwitcher._locale);
         daySwitcher._text.innerHTML = dtf.format(day, daySwitcher._pattern);
       }
 
-      if (daySwitcher._upperPattern){
+      if (daySwitcher._upperPattern) {
         dtf = O$.getDateTimeFormatObject(daySwitcher._locale);
         daySwitcher._upperText.innerHTML = dtf.format(day, daySwitcher._upperPattern);
       }
 
       var dayTable = daySwitcher._getDayTable();
-      if (!dayTable){
-         return;
+      if (!dayTable) {
+        return;
       }
 
       daySwitcher._dayTable.setDay(day);
@@ -128,7 +128,7 @@ O$.DaySwitcher = {
       daySwitcher.setDay(today);
     };
 
-    if (enabled){
+    if (enabled) {
       previousButton.onmousedown = function () {
         O$.setStyleMappings(previousButton, {
           pressed: stylingParams.previousButtonPressedClass
@@ -143,23 +143,22 @@ O$.DaySwitcher = {
         daySwitcher.nextDay();
       };
 
-       O$.addLoadEvent(function (){
-         var dayTable = daySwitcher._getDayTable();
-         if (!dayTable){
-           return;
-         }
+      O$.addLoadEvent(function () {
+        var dayTable = daySwitcher._getDayTable();
+        if (!dayTable) {
+          return;
+        }
 
-          var _onDayChange = dayTable._onDayChange;
-          dayTable._onDayChange = function(day){
-            if (_onDayChange){
-              _onDayChange(day);
-            }
-            daySwitcher.setDay(day);
-          };
-         });
+        var _onDayChange = dayTable._onDayChange;
+        dayTable._onDayChange = function(day) {
+          if (_onDayChange) {
+            _onDayChange(day);
+          }
+          daySwitcher.setDay(day);
+        };
+      });
 
     }
-
 
 
   }

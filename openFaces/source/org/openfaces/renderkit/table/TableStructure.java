@@ -314,11 +314,6 @@ public class TableStructure extends TableElement {
         );
     }
 
-    private void putParam(JSONObject obj, String paramName, Object paramValue) throws JSONException {
-        if (paramValue != null)
-            obj.put(paramName, paramValue);
-    }
-
     public JSONObject getInitParam(FacesContext facesContext, TableStyles defaultStyles) {
         UIComponent styleOwnerComponent = getComponent();
         boolean forceUsingCellStyles = getForceUsingCellStyles(styleOwnerComponent);
@@ -328,41 +323,29 @@ public class TableStructure extends TableElement {
         Map<Object, String> rowStylesMap = getRowStylesMap();
         Map<Object, String> cellStylesMap = getCellStylesMap();
 
-        try {
-            JSONObject result = new JSONObject();
-            putParam(result, "scrolling", getScrollingParam());
-            putParam(result, "header", getHeader().getInitParam());
-            putParam(result, "body", getBody().getInitParam());
-            putParam(result, "footer", getFooter().getInitParam());
-            putParam(result, "columns", getColumnHierarchyParam(facesContext, columns));
-            putParam(result, "gridLines", getGridLineParams(tableStyles, defaultStyles));
+        JSONObject result = new JSONObject();
+        RenderingUtil.addJsonParam(result, "header", getHeader().getInitParam(defaultStyles));
+        RenderingUtil.addJsonParam(result, "body", getBody().getInitParam(defaultStyles));
+        RenderingUtil.addJsonParam(result, "footer", getFooter().getInitParam(defaultStyles));
+        RenderingUtil.addJsonParam(result, "columns", getColumnHierarchyParam(facesContext, columns));
+        RenderingUtil.addJsonParam(result, "gridLines", getGridLineParams(tableStyles, defaultStyles));
 
-            putParam(result, "bodyRowClassName", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, tableStyles.getBodyRowStyle(),
-                    StyleGroup.regularStyleGroup(), tableStyles.getBodyRowClass(),
-                    defaultStyles != null ? defaultStyles.getBodyRowClass() : null));
-            putParam(result, "bodyOddRowClassName", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, tableStyles.getBodyOddRowStyle(),
-                    getBodyOddRowClass(tableStyles, defaultStyles)));
-            if (tableStyles instanceof AbstractTable) {
-                AbstractTable table = (AbstractTable) tableStyles;
-                putParam(result, "rolloverRowClassName", StyleUtil.getCSSClass(facesContext, styleOwnerComponent, table.getRolloverRowStyle(),
-                        StyleGroup.rolloverStyleGroup(), table.getRolloverRowClass()));
-            }
-            putParam(result, "rowStylesMap", TableUtil.getStylesMapAsJSONObject(rowStylesMap));
-            putParam(result, "cellStylesMap", TableUtil.getStylesMapAsJSONObject(cellStylesMap));
-            putParam(result, "forceUsingCellStyles", forceUsingCellStyles);
-            if (tableStyles instanceof TreeTable)
-                putParam(result, "additionalCellWrapperStyle", StyleUtil.getCSSClass(facesContext, (UIComponent) tableStyles, ADDITIONAL_CELL_WRAPPER_STYLE,
-                        StyleGroup.disabledStyleGroup(10), null));
-            putParam(result, "invisibleRowsAllowed", tableStyles instanceof TreeTable);
-            return result;
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+        RenderingUtil.addJsonParam(result, "scrolling", getScrollingParam());
+
+        RenderingUtil.addJsonParam(result, "rowStylesMap", TableUtil.getStylesMapAsJSONObject(rowStylesMap));
+        RenderingUtil.addJsonParam(result, "cellStylesMap", TableUtil.getStylesMapAsJSONObject(cellStylesMap));
+        RenderingUtil.addJsonParam(result, "forceUsingCellStyles", forceUsingCellStyles, false);
+        if (tableStyles instanceof TreeTable)
+            RenderingUtil.addJsonParam(result, "additionalCellWrapperStyle", StyleUtil.getCSSClass(facesContext, (UIComponent) tableStyles, ADDITIONAL_CELL_WRAPPER_STYLE,
+                    StyleGroup.disabledStyleGroup(10), null));
+        RenderingUtil.addJsonParam(result, "invisibleRowsAllowed", tableStyles instanceof TreeTable);
+
+        return result;
     }
 
     private Object getScrollingParam() {
         if (getScrolling() == null)
-            return JSONObject.NULL;
+            return null;
         JSONObject result = new JSONObject();
         int leftFixedCols = getLeftFixedCols();
         int rightFixedCols = getRightFixedCols();
@@ -391,7 +374,7 @@ public class TableStructure extends TableElement {
             List<BaseColumn> columns
     ) {
         int colCount = columns.size();
-        List[] columnHierarchies = new List[colCount];
+        List<BaseColumn>[] columnHierarchies = new List[colCount];
         TableHeaderOrFooter.composeColumnHierarchies(columns, columnHierarchies, true, false);
 
         JSONArray columnHierarchyArray;
@@ -404,20 +387,20 @@ public class TableStructure extends TableElement {
     }
 
     private JSONArray processColumnHierarchy(
-            FacesContext context, List[] columnHierarchies, int level, int startCol, int finishCol
+            FacesContext context, List<BaseColumn>[] columnHierarchies, int level, int startCol, int finishCol
     ) throws JSONException {
         JSONArray columnsArray = new JSONArray();
         int thisGroupStart = -1;
         BaseColumn thisGroup = null;
         for (int colIndex = startCol; colIndex <= finishCol + 1; colIndex++) {
-            List thisColumnHierarchy = colIndex <= finishCol ? columnHierarchies[colIndex] : null;
-            BaseColumn columnOrGroup = thisColumnHierarchy != null ? (BaseColumn) thisColumnHierarchy.get(level) : null;
+            List<BaseColumn> thisColumnHierarchy = colIndex <= finishCol ? columnHierarchies[colIndex] : null;
+            BaseColumn columnOrGroup = thisColumnHierarchy != null ? thisColumnHierarchy.get(level) : null;
             if (thisGroup == null) {
                 thisGroup = columnOrGroup;
                 thisGroupStart = startCol;
             } else if (columnOrGroup != thisGroup) {
                 int thisGroupEnd = colIndex - 1;
-                List lastColumnHierarchy = columnHierarchies[thisGroupEnd];
+                List<BaseColumn> lastColumnHierarchy = columnHierarchies[thisGroupEnd];
 
                 JSONObject columnObj = getColumnParams(context, thisGroup, thisGroupEnd, level);
                 columnsArray.put(columnObj);
@@ -586,13 +569,13 @@ public class TableStructure extends TableElement {
     }
 
     private void appendColumnEventsArray(JSONObject columnObj,
-                                               String onclick,
-                                               String ondblclick,
-                                               String onmosedown,
-                                               String onmouseover,
-                                               String onmousemove,
-                                               String onmouseout,
-                                               String onmouseup) throws JSONException {
+                                         String onclick,
+                                         String ondblclick,
+                                         String onmosedown,
+                                         String onmouseover,
+                                         String onmousemove,
+                                         String onmouseout,
+                                         String onmouseup) throws JSONException {
         appendHandlerEntry(columnObj, "onclick", onclick);
         appendHandlerEntry(columnObj, "ondblclick", ondblclick);
         appendHandlerEntry(columnObj, "onmousedown", onmosedown);
@@ -610,14 +593,6 @@ public class TableStructure extends TableElement {
         if (result == null && table.getApplyDefaultStyle())
             result = DEFAULT_SUBHEADER_ROW_SEPARATOR;
         return result;
-    }
-
-    private String getBodyOddRowClass(TableStyles table, TableStyles defaultStyles) {
-        String bodyOddRowClass = table.getBodyOddRowClass();
-        return TableUtil.getClassWithDefaultStyleClass(
-                defaultStyles != null,
-                defaultStyles != null ? defaultStyles.getBodyOddRowStyle() : null,
-                bodyOddRowClass);
     }
 
     private void appendHandlerEntry(JSONObject obj, String eventName, String handler) throws JSONException {

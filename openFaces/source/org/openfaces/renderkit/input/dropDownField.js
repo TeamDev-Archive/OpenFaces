@@ -47,7 +47,7 @@ O$.DropDownField = {
 
     var innerTable = O$(popup.id + "::innerTable");
     innerTable._selectionClass = rolloverPopupItemClass;
-    popupTableStructureAndStyleParams.rolloverRowClassName = null;
+    popupTableStructureAndStyleParams.body.rolloverRowClassName = null;
     dropDown._initListStyles = function() {
       var oldCursor = document.body.style.cursor;
       document.body.style.cursor = "progress";

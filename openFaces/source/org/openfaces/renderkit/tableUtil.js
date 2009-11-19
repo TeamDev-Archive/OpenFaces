@@ -494,14 +494,14 @@ O$.Tables = {
                 return row.cells[coords.cell];
               };
               var rows = [];
-              var rowIndex = 0, rowCount = this._centerScrollingArea._rows.length;
+              var rowIndex = 0, rowCount = this._centerScrollingArea._rows.length, areaRowIndex = 0;
               if (commonRowAbove === true)
                 rows[rowIndex++] = commonRow;
-              while (rowIndex < rowCount) {
+              while (areaRowIndex < rowCount) {
                 var row = {
-                  _leftRowNode: this._leftScrollingArea ? this._leftScrollingArea._rows[rowIndex] : null,
-                  _rowNode: this._centerScrollingArea._rows[rowIndex],
-                  _rightRowNode: this._rightScrollingArea ? this._rightScrollingArea._rows[rowIndex] : null,
+                  _leftRowNode: this._leftScrollingArea ? this._leftScrollingArea._rows[areaRowIndex] : null,
+                  _rowNode: this._centerScrollingArea._rows[areaRowIndex],
+                  _rightRowNode: this._rightScrollingArea ? this._rightScrollingArea._rows[areaRowIndex] : null,
                   _table: table,
                   _index: rowIndex
                 };
@@ -522,6 +522,7 @@ O$.Tables = {
                 }
                 row._cells = cells;
                 rowIndex++;
+                areaRowIndex++;
               }
               if (commonRowAbove === false)
                 rows[rowIndex] = commonRow;
@@ -650,7 +651,7 @@ O$.Tables = {
       row._visible = table._params.invisibleRowsAllowed ? O$.getElementStyleProperty(row._rowNode, "display") != "none" : true;
 
     row._mouseIsOver = false;
-    if (!table._params.body.noDataRows && table._params.rolloverRowClassName) {
+    if (!table._params.body.noDataRows && table._params.body.rolloverRowClassName) {
       function addEventHandler(row, event, handler) {
         O$.addEventHandlerSimple(row._rowNode, event, handler);
         if (row._leftRowNode)
@@ -720,8 +721,8 @@ O$.Tables = {
       var rowClass;
       if (!table._params.body.noDataRows)
         rowClass = (visibleRowsBefore % 2 == 0)
-                ? table._params.bodyRowClassName
-                : (table._params.bodyOddRowClassName ? table._params.bodyOddRowClassName : table._params.bodyRowClassName);
+                ? table._params.body.rowClassName
+                : (table._params.body.oddRowClassName ? table._params.body.oddRowClassName : table._params.body.rowClassName);
       else
         rowClass = null;
 
@@ -768,7 +769,7 @@ O$.Tables = {
       var rowTable = this._table;
       var addedClassName = O$.combineClassNames([
         this._selected ? rowTable._selectionClass : null,
-        this._mouseIsOver ? rowTable._params.rolloverRowClassName : null]);
+        this._mouseIsOver ? rowTable._params.body.rolloverRowClassName : null]);
       if (row._addedClassName == addedClassName)
         return;
       row._addedClassName = addedClassName;
@@ -1787,90 +1788,132 @@ O$.Tables = {
     if (!table._params.scrolling)
       throw "O$.Tables._initScrolling can't be invoked on a non-scrollable table";
 
-    var firstSection = table.header._rows.length > 0 ? table.header : table.body;
-    var defaultColWidth = 120;
-    var scrollingAreaColTags = [];
-    [table.header, table.body, table.footer].forEach(function (area) {
-      if (area && area._sectionTable)
-        scrollingAreaColTags.push(O$.Tables._getTableColTags(area._sectionTable));
-    });
-    function areaWidthByColumns(section, areaName) {
-      var areaWidth = 0;
-      var area = section[areaName];
-      area._colTags.forEach(function(colTag) {
-        var column = colTag._column;
-        var colWidth = O$.calculateNumericCSSValue(O$.getStyleClassProperty(column._className, "width"));
-        if (!colWidth) {
-          colWidth = defaultColWidth;
-          column._colTags.forEach(function(tag) {tag.style.width = colWidth + "px";});
-        }
-        areaWidth += colWidth;
+    function alignColumnWidths() {
+      var firstSection = table.header._rows.length > 0 ? table.header : table.body;
+      var defaultColWidth = 120;
+      var scrollingAreaColTags = [];
+      [table.header, table.body, table.footer].forEach(function (area) {
+        if (area && area._sectionTable)
+          scrollingAreaColTags.push(O$.Tables._getTableColTags(area._sectionTable));
       });
-      var width = areaWidth + "px";
-      [table.header, table.body, table.footer].forEach(function (section) {
-        if (!section) return;
-        section[areaName]._table.style.width = width;
-      });
-      return width;
-    }
-    var areaIndex = 0;
-    if (firstSection._leftScrollingArea) {
-      var width = areaWidthByColumns(firstSection, "_leftScrollingArea");
-      var leftAreaIndex = areaIndex++;
-      scrollingAreaColTags.forEach(function (tagsForSection) {
-        tagsForSection[leftAreaIndex].style.width = width;
-      });
-    }
-    areaWidthByColumns(firstSection, "_centerScrollingArea");
-    areaIndex++;
-    if (firstSection._rightScrollingArea) {
-      width = areaWidthByColumns(firstSection, "_rightScrollingArea");
-      var rightAreaIndex = areaIndex++;
-      scrollingAreaColTags.forEach(function (tagsForSection) {
-        tagsForSection[rightAreaIndex].style.width = width;
-      });
-    }
-
-
-    var fixture = O$.fixElement(table.body._sectionTable, {
-      height: function() {
-        var height = O$.getElementPaddingRectangle(table).height;
-        [table.header._sectionTable, table.footer._sectionTable].forEach(function (sectionTable) {
-          var sectionHeight = O$.getElementSize(sectionTable).height;
-          height -= sectionHeight;
+      function areaWidthByColumns(section, areaName) {
+        var areaWidth = 0;
+        var area = section[areaName];
+        area._colTags.forEach(function(colTag) {
+          var column = colTag._column;
+          var colWidth = O$.calculateNumericCSSValue(O$.getStyleClassProperty(column._className, "width"));
+          if (!colWidth) {
+            colWidth = defaultColWidth;
+            column._colTags.forEach(function(tag) {tag.style.width = colWidth + "px";});
+          }
+          areaWidth += colWidth;
         });
-        return height;
+        var width = areaWidth + "px";
+        [table.header, table.body, table.footer].forEach(function (section) {
+          if (!section) return;
+          section[areaName]._table.style.width = width;
+        });
+        return width;
       }
-    }, null, {onchange: function() {
-      var fixture = this;
-      [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (scrollingArea) {
-        if (!scrollingArea || !scrollingArea._scrollingDiv) return;
-        var height = fixture.values.height;
-        if (height < 0) height = 0; // this is the case under IE6,7/strict during initialization
-          scrollingArea._scrollingDiv.style.height = height + "px";
-      });
-    }});
-    [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
-      if (!area) return;
-      if (area._scrollingDivContainer && area._scrollingDivContainer.style.display == "none")
-        setTimeout(function() {
-          area._scrollingDivContainer.style.display = "block";
-          fixture.update();
-        }, 10);
-    });
+      var areaIndex = 0;
+      if (firstSection._leftScrollingArea) {
+        var width = areaWidthByColumns(firstSection, "_leftScrollingArea");
+        var leftAreaIndex = areaIndex++;
+        scrollingAreaColTags.forEach(function (tagsForSection) {
+          tagsForSection[leftAreaIndex].style.width = width;
+        });
+      }
+      areaWidthByColumns(firstSection, "_centerScrollingArea");
+      areaIndex++;
+      if (firstSection._rightScrollingArea) {
+        width = areaWidthByColumns(firstSection, "_rightScrollingArea");
+        var rightAreaIndex = areaIndex++;
+        scrollingAreaColTags.forEach(function (tagsForSection) {
+          tagsForSection[rightAreaIndex].style.width = width;
+        });
+      }
+    }
+    alignColumnWidths();
 
-
-    var mainScrollingArea = table.body._centerScrollingArea;
-    mainScrollingArea._scrollingDiv.onscroll = function() {
-      [table.header, table.footer].forEach(function (section) {
-        if (!section._centerScrollingArea) return;
-        section._centerScrollingArea._scrollingDiv.scrollLeft = mainScrollingArea._scrollingDiv.scrollLeft;
-      });
-      [table.body._leftScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
+    function fixBodyHeight() {
+      var fixture = O$.fixElement(table.body._sectionTable, {
+        height: function() {
+          var height = O$.getElementPaddingRectangle(table).height;
+          [table.header._sectionTable, table.footer._sectionTable].forEach(function (sectionTable) {
+            var sectionHeight = O$.getElementSize(sectionTable).height;
+            height -= sectionHeight;
+          });
+          return height;
+        }
+      }, null, {onchange: function() {
+        var fixture = this;
+        [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (scrollingArea) {
+          if (!scrollingArea || !scrollingArea._scrollingDiv) return;
+          var height = fixture.values.height;
+          if (height < 0) height = 0; // this is the case under IE6,7/strict during initialization
+            scrollingArea._scrollingDiv.style.height = height + "px";
+        });
+      }});
+      [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
         if (!area) return;
-        area._scrollingDiv.scrollTop = mainScrollingArea._scrollingDiv.scrollTop;
+        if (area._scrollingDivContainer && area._scrollingDivContainer.style.display == "none")
+          setTimeout(function() {
+            area._scrollingDivContainer.style.display = "block";
+            fixture.update();
+          }, 10);
       });
-    };
+
+//      setInterval(function() {
+//        [table.header, table.footer].forEach(function (section) {
+//          if (!section || !section._sectionTable) return;
+//          var sectionHeight = O$.getElementSize(section._sectionTable).height;
+//          [section._leftScrollingArea, section._centerScrollingArea, section._rightScrollingArea].forEach(function (area) {
+//            if (!area) return;
+//            if (!area._scrollingDiv) return;
+//            area._scrollingDiv.style.height = sectionHeight + "px";
+//
+//          });
+//        });
+//      }, 100);
+    }
+    fixBodyHeight();
+
+    function synchronizeAreaScrolling() {
+      var mainScrollingArea = table.body._centerScrollingArea;
+      mainScrollingArea._scrollingDiv.onscroll = function() {
+        [table.header, table.footer].forEach(function (section) {
+          if (!section._centerScrollingArea) return;
+          section._centerScrollingArea._scrollingDiv.scrollLeft = mainScrollingArea._scrollingDiv.scrollLeft;
+        });
+        [table.body._leftScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
+          if (!area) return;
+          area._scrollingDiv.scrollTop = mainScrollingArea._scrollingDiv.scrollTop;
+        });
+      };
+    }
+    synchronizeAreaScrolling();
+
+    function alignRowHeights() {
+      [table.header, table.body, table.footer].forEach(function(section) {
+        if (!section) return;
+        section._getRows().forEach(function (row) {
+          var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
+          var height = 0;
+          rowNodes.forEach(function(rowNode) {
+            if (!rowNode) return;
+            rowNode.style.height = "0";
+            var rowHeight = O$.getElementSize(rowNode).height;
+            if (rowHeight > height)
+              height = rowHeight;
+          });
+          rowNodes.forEach(function(rowNode) {
+            if (!rowNode) return;
+            rowNode.style.height = height + "px";
+          });
+        });
+      });
+    }
+    alignRowHeights();
   }
 
 

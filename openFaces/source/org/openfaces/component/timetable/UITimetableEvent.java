@@ -12,12 +12,12 @@
 package org.openfaces.component.timetable;
 
 import org.openfaces.component.OUIPanel;
-import org.openfaces.util.ValueBindings;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.ConvertibleToJSON;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.StyleUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;

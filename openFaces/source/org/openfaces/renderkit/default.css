@@ -125,6 +125,7 @@
 }
 
 .o_scrolling_area_table {
+  table-layout: fixed;
 }
 
 .o_filter_row_cells {

@@ -53,7 +53,7 @@ public class BodyCell extends TableElement {
             else
                 throw new IllegalStateException("Unsupported type of 'content' property: " + content.getClass().getName());
         }
-        
+
         if (additionalContentWriter != null)
             additionalContentWriter.writeAdditionalContent(context);
         writer.endElement("td");

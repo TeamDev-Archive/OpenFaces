@@ -11,8 +11,8 @@
  */
 package org.openfaces.component.timetable;
 
-import org.openfaces.util.ValueBindings;
 import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;

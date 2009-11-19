@@ -129,8 +129,16 @@ O$._initDayTable = function(componentId,
   var hiddenArea = O$(componentId + "::hiddenArea");
   dayTable._hiddenArea = hiddenArea;
   var useResourceSeparation = resources.length > 0;
-  var columns = [{className: timeColumnClass}];
-  var headerColumns = [{className: timeColumnClass}];
+  var columns = [
+    {
+      className: timeColumnClass
+    }
+  ];
+  var headerColumns = [
+    {
+      className: timeColumnClass
+    }
+  ];
   if (useResourceSeparation) {
     dayTable._resourcesByIds = {};
     dayTable._idsByResourceNames = {};
@@ -162,7 +170,7 @@ O$._initDayTable = function(componentId,
   }
 
   var forceUsingCellStyles = true; // allow such styles as text-align to be applied to row's cells
-  
+
   O$.Tables._init(table, {
     columns: columns,
     gridLines: [primaryRowSeparator, resourceColumnSeparator, null, null, null, null, null, null, null, null, null],
@@ -1162,7 +1170,7 @@ O$._initDayTable = function(componentId,
   dayTable.setDay = function(day) {
     if (O$._datesEqual(dayTable._day, day))
       return;
-    if (dayTable._onDayChange){
+    if (dayTable._onDayChange) {
       dayTable._onDayChange(day);
     }
 
@@ -1400,7 +1408,8 @@ O$._initDayTable = function(componentId,
   // Therefore perform manual array conversion here.
   function updateTimetableChangesField() {
 
-	var properties = ["id", "name", "description", "resourceId", "startStr", "endStr", "color", "type"];
+    var properties = ["id", "name", "description", "resourceId", "startStr", "endStr", "color", "type"];
+
     function arrayToJSON(name, source, properties) {
       var result = [];
       for (var i = 0; i < source.length; i++)
@@ -1408,11 +1417,11 @@ O$._initDayTable = function(componentId,
       return JSON.stringify(name) + ":[" + result.join(",") + "]";
     }
 
-	var events = [
-            arrayToJSON("addedEvents", dayTable._addedEvents, properties),
-            arrayToJSON("editedEvents", dayTable._editedEvents, properties),
-            arrayToJSON("removedEventIds", dayTable._removedEventIds, properties)
-          ];
+    var events = [
+      arrayToJSON("addedEvents", dayTable._addedEvents, properties),
+      arrayToJSON("editedEvents", dayTable._editedEvents, properties),
+      arrayToJSON("removedEventIds", dayTable._removedEventIds, properties)
+    ];
     var changesAsString = "{" + events.join(",") + "}";
     O$.addHiddenField(dayTable, dayTable.id + "::timetableChanges", changesAsString);
   }
@@ -1588,6 +1597,7 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, createEventCaption, e
       dialog._okButton.onclick(e);
     };
   }
+
   okByEnter([dialog._nameField, dialog._resourceField, dialog._startDateField, dialog._endDateField,
     dialog._startTimeField, dialog._endTimeField, dialog._colorField, dialog._descriptionArea]);
 
@@ -1698,10 +1708,11 @@ O$._initEventEditorDialog = function(dayTableId, dialogId, createEventCaption, e
     else
       this.show();
 
-    function adjustTextareaHeight(){
+    function adjustTextareaHeight() {
       var size = O$.getElementSize(dialog._descriptionArea.parentNode);
       O$.setElementSize(dialog._descriptionArea, size);
     }
+
     if (O$.isExplorer() || O$.isOpera()) {
       if (dialog._descriptionArea.style.position != "absolute") {
         dialog._descriptionArea.style.position = "absolute";
@@ -1763,7 +1774,7 @@ O$._initCustomEventEditor = function(dayTableId, thisComponentId, oncreate, oned
     else
       onedit(dayTable, event);
   };
-  
+
 };
 
 O$._initEvent = function(event) {
@@ -1805,11 +1816,11 @@ O$._initEvent = function(event) {
     }
   };
   event._scrollIntoView = function() {
-/*    return; //todo: finish auto-scrolling functionality
-    var dayTable = event.mainElement._dayTable;
-    var scrollingOccured = O$.scrollElementIntoView(event.mainElement, dayTable._getScrollingCache());
-    if (scrollingOccured)
-      dayTable._resetScrollingCache();*/
+    /*    return; //todo: finish auto-scrolling functionality
+     var dayTable = event.mainElement._dayTable;
+     var scrollingOccured = O$.scrollElementIntoView(event.mainElement, dayTable._getScrollingCache());
+     if (scrollingOccured)
+     dayTable._resetScrollingCache();*/
   };
   if (event.start || event.startStr)
     event.setStart(event.start, event.startStr);

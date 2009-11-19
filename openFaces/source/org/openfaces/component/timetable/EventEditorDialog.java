@@ -11,15 +11,15 @@
  */
 package org.openfaces.component.timetable;
 
-import org.openfaces.component.window.Window;
 import org.openfaces.component.CompoundComponent;
-import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DateChooser;
-import org.openfaces.util.ValueBindings;
+import org.openfaces.component.input.DropDownField;
+import org.openfaces.component.window.Window;
 import org.openfaces.renderkit.CompoundComponentRenderer;
+import org.openfaces.util.ValueBindings;
 
-import javax.faces.context.FacesContext;
 import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
@@ -324,7 +324,7 @@ public class EventEditorDialog extends Window implements CompoundComponent {
         return (DropDownField) getFacet(FACET_RESOURCE_FIELD);
     }
 
-    public void setResourceField(DropDownField resourceField){
+    public void setResourceField(DropDownField resourceField) {
         getFacets().put(FACET_RESOURCE_FIELD, resourceField);
     }
 

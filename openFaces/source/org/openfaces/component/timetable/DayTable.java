@@ -11,14 +11,14 @@
  */
 package org.openfaces.component.timetable;
 
-import org.openfaces.util.ComponentUtil;
 import org.openfaces.component.OUIData;
 import org.openfaces.component.OUIObjectIteratorBase;
-import org.openfaces.util.ValueBindings;
 import org.openfaces.component.window.Confirmation;
-import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.CalendarUtil;
+import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -275,7 +275,7 @@ public class DayTable extends OUIObjectIteratorBase {
 
     public void setEditable(boolean value) {
         editable = value;
-    }   
+    }
 
     public ValueExpression getEventsValueExpression() {
         return getValueExpression("events");

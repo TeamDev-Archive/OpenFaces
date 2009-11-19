@@ -16,17 +16,23 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
-import org.openfaces.util.HTML;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableRenderer;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.cssparser.CSSUtil;
-import org.openfaces.util.*;
+import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.DataUtil;
+import org.openfaces.util.Log;
+import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
@@ -91,14 +97,14 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
 
     private void encodeActionBar(FacesContext context, DayTable dayTable) throws IOException {
         EventActionBar bar = dayTable.getEventActionBar();
-        if(bar != null) {
+        if (bar != null) {
             bar.encodeAll(context);
         }
     }
 
     private void encodeEventPreview(FacesContext context, DayTable dayTable) throws IOException {
         EventPreview preview = dayTable.getEventPreview();
-        if(preview != null) {
+        if (preview != null) {
             preview.encodeAll(context);
         }
     }
@@ -116,7 +122,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         eventEditor.getAttributes().remove(EVENTEDITOR_RESOURCES_ATTR);
     }
 
-     private void renderHeader(FacesContext context, DayTable dayTable, String clientId) throws IOException {
+    private void renderHeader(FacesContext context, DayTable dayTable, String clientId) throws IOException {
         UIComponent header = dayTable.getFacet("header");
         if (header != null) {
             ResponseWriter writer = context.getResponseWriter();
@@ -155,7 +161,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
             footer.encodeAll(context);
             writer.endElement("td");
             writer.endElement("tr");
-            
+
             writer.endElement("table");
             writer.endElement("td");
             writer.endElement("tr");

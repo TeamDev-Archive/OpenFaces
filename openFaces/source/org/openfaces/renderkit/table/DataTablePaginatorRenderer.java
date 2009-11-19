@@ -14,13 +14,13 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.DataTablePaginator;
 import org.openfaces.component.table.DataTablePaginatorAction;
-import org.openfaces.util.HTML;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.HTML;
+import org.openfaces.util.Log;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.StyleUtil;
-import org.openfaces.util.Log;
-import org.openfaces.util.ComponentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlGraphicImage;

@@ -17,10 +17,10 @@ import org.openfaces.component.table.TableColumnGroup;
 import org.openfaces.component.table.TreeColumn;
 import org.openfaces.component.table.TreeTable;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.StyleUtil;
-import org.openfaces.util.EnvironmentUtil;
-import org.openfaces.util.ComponentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

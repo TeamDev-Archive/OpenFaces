@@ -23,10 +23,10 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.StyleUtil;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.FacesException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -63,7 +63,7 @@ public class DaySwitcherRenderer extends RendererBase {
         String pattern = dateFormat.toPattern();
         boolean renderText = pattern.length() != 0;
 
-        if (!renderText && !renderUpperText){
+        if (!renderText && !renderUpperText) {
             throw new FacesException("DaySwitcher's pattern and upperPattern are both empty.");
         }
 
@@ -98,18 +98,18 @@ public class DaySwitcherRenderer extends RendererBase {
         }
 
         writer.startElement("td", daySwitcher);
-        if (renderUpperText){
+        if (renderUpperText) {
             //upper text
             writer.startElement("p", daySwitcher);
             writer.writeAttribute("id", clientId + "::upper_text", null);
             String upperTextClass = StyleUtil.getCSSClass(context,
                     daySwitcher, daySwitcher.getUpperTextStyle(), "o_daySwitcher_upper_text", daySwitcher.getUpperTextClass());
             writer.writeAttribute("class", upperTextClass, null);
-            
+
             writer.write(upperDateFormat.format(date));
             writer.endElement("p");
         }
-        if (renderText){
+        if (renderText) {
             /*if (renderUpperText){
                 writer.startElement("br", daySwitcher);
                 writer.endElement("br");
@@ -121,7 +121,7 @@ public class DaySwitcherRenderer extends RendererBase {
                     daySwitcher, daySwitcher.getTextStyle(), "o_daySwitcher_text", daySwitcher.getTextClass());
             writer.writeAttribute("class", textClass, null);
 
-            writer.write(dateFormat.format(dayTable.getDay()));            
+            writer.write(dateFormat.format(dayTable.getDay()));
             writer.endElement("p");
         }
         writer.endElement("td");
@@ -143,7 +143,7 @@ public class DaySwitcherRenderer extends RendererBase {
 
         writer.endElement("tbody");
         writer.endElement("table");
-        
+
         JSONObject stylingParams = getStylingParamsObj(context, daySwitcher);
         StyleUtil.renderStyleClasses(context, daySwitcher);
 

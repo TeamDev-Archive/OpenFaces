@@ -72,7 +72,7 @@ O$.Table = {
       if (!O$.isExplorer6() || !filtersToHide)
         return false;
 
-      for (i = 0, count = filtersToHide.length; i < count; i++) {
+      for (i = 0,count = filtersToHide.length; i < count; i++) {
         var filter = filtersToHide[i];
         filter.style.visibility = "hidden";
       }
@@ -180,7 +180,7 @@ O$.Table = {
   // -------------------------- KEYBOARD NAVIGATION SUPPORT
 
   _initKeyboardNavigation: function(tableId, controlPaging, focusedClassName, canPageBack, canPageForth,
-                                             canSelectLastPage, tabindex) {
+                                    canSelectLastPage, tabindex) {
     var table = O$(tableId);
     table._controlPagingWithKeyboard = controlPaging;
     table._canPageBack = canPageBack;
@@ -551,9 +551,9 @@ O$.Table = {
   // -------------------------- TABLE SELECTION SUPPORT
 
   _initSelection: function(tableId, enabled, selectableItems,
-                                    multipleSelectionAllowed, selectedItems, selectionClass,
-                                    selectionChangeHandler, postEventOnSelectionChange, selectionColumnIndexes,
-                                    mouseSupport, keyboardSupport) {
+                           multipleSelectionAllowed, selectedItems, selectionClass,
+                           selectionChangeHandler, postEventOnSelectionChange, selectionColumnIndexes,
+                           mouseSupport, keyboardSupport) {
     var table = O$(tableId);
     O$.assert(table, "Couldn't find table by id: " + tableId);
 
@@ -1228,7 +1228,9 @@ O$.Table = {
   },
 
   _performPaginatorAction: function(tableId, field, paramName, paramValue) {
-    O$._submitComponentWithField(tableId, field, [[paramName, paramValue]]);
+    O$._submitComponentWithField(tableId, field, [
+      [paramName, paramValue]
+    ]);
   },
 
   // -------------------------- COLUMN RESIZING SUPPORT

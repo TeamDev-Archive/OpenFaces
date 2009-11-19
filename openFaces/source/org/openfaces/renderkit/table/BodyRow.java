@@ -14,9 +14,9 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.table.TableRow;
 import org.openfaces.util.RenderingUtil;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.component.UIComponent;
 import java.io.IOException;
 import java.util.List;
 

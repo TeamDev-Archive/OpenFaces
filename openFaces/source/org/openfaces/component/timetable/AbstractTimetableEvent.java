@@ -13,9 +13,9 @@ package org.openfaces.component.timetable;
 
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
+import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.util.ConvertibleToJSON;
 import org.openfaces.util.DataUtil;
-import org.openfaces.renderkit.cssparser.CSSUtil;
 
 import javax.faces.FacesException;
 import java.awt.*;

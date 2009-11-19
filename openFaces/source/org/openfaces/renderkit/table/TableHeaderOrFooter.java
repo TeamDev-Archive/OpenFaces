@@ -284,7 +284,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
     }
 
     @Override
-    protected void fillInitParam(JSONObject initObject) throws JSONException {
+    protected void fillInitParam(JSONObject initObject, TableStyles defaultStyles) throws JSONException {
         TableStructure tableStructure = getParent(TableStructure.class);
         TableStyles tableStyles = tableStructure.getTableStyles();
         FacesContext context = FacesContext.getCurrentInstance();
@@ -310,7 +310,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
                 isHeader ? tableStyles.getHeaderRowStyle() : tableStyles.getFooterRowStyle(),
                 isHeader ? tableStyles.getHeaderRowClass() : tableStyles.getFooterRowClass());
         if (!RenderingUtil.isNullOrEmpty(headerClassName))
-        initObject.put("headingsClassName", headerClassName);
+            initObject.put("headingsClassName", headerClassName);
     }
 
     private JSONObject getCommonHeaderParam(TableStructure tableStructure) throws JSONException {

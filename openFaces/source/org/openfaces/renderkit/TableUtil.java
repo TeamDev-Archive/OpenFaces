@@ -74,8 +74,8 @@ public class TableUtil {
     }
 
     public static Object getStylesMapAsJSONObject(Map<Object, String> map) {
-        if (map == null)
-            return JSONObject.NULL;
+        if (map == null || map.size() == 0)
+            return null;
         JSONObject result = new JSONObject();
         for (Map.Entry<Object, String> entry : map.entrySet()) {
             Object key = entry.getKey();

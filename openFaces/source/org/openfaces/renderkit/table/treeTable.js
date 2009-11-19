@@ -52,17 +52,17 @@ O$.TreeTable = {
       var rootNodeCount = this._rowIndexToChildCount["root"];
       var rows = table.body._getRows();
       var rowIndexToChildCount = this._rowIndexToChildCount;
-      this._styleRecalculationOnNodeExpansionNeeded = !!this._params.bodyOddRowClassName;
+      this._styleRecalculationOnNodeExpansionNeeded = !!this._params.body.oddRowClassName;
       var result = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, 0, rootNodeCount, true);
       if (this._styleRecalculationOnNodeExpansionNeeded) {
         var rowIndex, count, visibleRows, row;
-        for (rowIndex = 0, count = rows.length, visibleRows = 0; rowIndex < count; rowIndex++) {
+        for (rowIndex = 0,count = rows.length,visibleRows = 0; rowIndex < count; rowIndex++) {
           row = rows[rowIndex];
           if (!row._isVisible())
             continue;
           row._notifyRowMoved(visibleRows++);
         }
-        for (rowIndex = 0, count = rows.length, visibleRows = 0; rowIndex < count; rowIndex++) {
+        for (rowIndex = 0,count = rows.length,visibleRows = 0; rowIndex < count; rowIndex++) {
           row = rows[rowIndex];
           if (!row._isVisible())
             continue;
@@ -207,9 +207,9 @@ O$.TreeTable = {
     row._toggles = toggles;
     row._hasChildren = toggles && toggles.length > 0;
 
-      if (row._hasChildren) {
-        row._toggled = expanded;
-      }
+    if (row._hasChildren) {
+      row._toggled = expanded;
+    }
 
     for (var toggleIndex = 0, toggleCount = toggles.length; toggleIndex < toggleCount; toggleIndex++) {
       var toggle = toggles[toggleIndex];
@@ -292,9 +292,9 @@ O$.TreeTable = {
     var treeTable = O$(treeTableId);
     var newRows = treeTable.__newRows;
     var parentRowIndex = treeTable.__parentRowIndex;
-    var newRowIndexToChildCount = subRowsData[0];
-    var newRowsToStylesMap = subRowsData[1];
-    var newRowCellsToStylesMap = subRowsData[2];
+    var newRowIndexToChildCount = subRowsData["structureMap"];
+    var newRowsToStylesMap = subRowsData["rowStylesMap"];
+    var newRowCellsToStylesMap = subRowsData["cellStylesMap"];
 
     treeTable._insertRowsAfter(parentRowIndex, newRows, newRowsToStylesMap, newRowCellsToStylesMap);
 

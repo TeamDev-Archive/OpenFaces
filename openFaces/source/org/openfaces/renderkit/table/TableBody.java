@@ -11,18 +11,20 @@
  */
 package org.openfaces.renderkit.table;
 
+import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
+import org.openfaces.component.table.Scrolling;
 import org.openfaces.component.table.TableCell;
 import org.openfaces.component.table.TableColumn;
 import org.openfaces.component.table.TableRow;
 import org.openfaces.component.table.TreeColumn;
-import org.openfaces.component.table.Scrolling;
-import org.openfaces.component.TableStyles;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.org.json.JSONObject;
 import org.openfaces.org.json.JSONException;
+import org.openfaces.org.json.JSONObject;
+import org.openfaces.renderkit.TableUtil;
+import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -44,7 +46,7 @@ import java.util.Map;
 public class TableBody extends TableSection {
     public static final String CUSTOM_ROW_INDEX_ATTRIBUTE = "_customRowIndex";
     public static final String CUSTOM_CELL_INDEX_ATTRIBUTE = "_customCellIndex";
-    
+
     private static final String COLUMN_ATTR_ORIGINAL_INDEX = "_originalIndex";
 
     private static final String DEFAULT_NO_RECORDS_MSG = "No records";
@@ -63,12 +65,33 @@ public class TableBody extends TableSection {
         return noDataRows;
     }
 
-    protected void fillInitParam(JSONObject result) throws JSONException {
+    protected void fillInitParam(JSONObject result, TableStyles defaultStyles) throws JSONException {
         TableStyles table = tableStructure.getTableStyles();
-        String bodyClass = StyleUtil.getCSSClass(FacesContext.getCurrentInstance(),
-                tableStructure.getComponent(), table.getBodySectionStyle(), table.getBodySectionClass());
+        FacesContext context = FacesContext.getCurrentInstance();
+        UIComponent component = tableStructure.getComponent();
+        String bodyClass = StyleUtil.getCSSClass(context,
+                component, table.getBodySectionStyle(), table.getBodySectionClass());
         result.put("className", bodyClass);
+        RenderingUtil.addJsonParam(result, "rowClassName", StyleUtil.getCSSClass(context, component, table.getBodyRowStyle(),
+                StyleGroup.regularStyleGroup(), table.getBodyRowClass(),
+                defaultStyles != null ? defaultStyles.getBodyRowClass() : null));
+        RenderingUtil.addJsonParam(result, "oddRowClassName", StyleUtil.getCSSClass(context, component, table.getBodyOddRowStyle(),
+                getBodyOddRowClass(table, defaultStyles)));
+        if (table instanceof AbstractTable) {
+            AbstractTable at = (AbstractTable) table;
+            RenderingUtil.addJsonParam(result, "rolloverRowClassName", StyleUtil.getCSSClass(context, component, at.getRolloverRowStyle(),
+                    StyleGroup.rolloverStyleGroup(), at.getRolloverRowClass()));
+        }
+
         result.put("noDataRows", isNoDataRows());
+    }
+
+    private String getBodyOddRowClass(TableStyles table, TableStyles defaultStyles) {
+        String bodyOddRowClass = table.getBodyOddRowClass();
+        return TableUtil.getClassWithDefaultStyleClass(
+                defaultStyles != null,
+                defaultStyles != null ? defaultStyles.getBodyOddRowStyle() : null,
+                bodyOddRowClass);
     }
 
     protected void renderRows(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
@@ -81,7 +104,7 @@ public class TableBody extends TableSection {
         int rowCount = table.getRowCount();
         int rows = (rowCount != -1) ? rowCount : Integer.MAX_VALUE;
         if (rows == 0)
-          noDataRows = true;
+            noDataRows = true;
 
         List<BodyRow> bodyRows = createRows(context, first, rows, columns);
         TableFooter footer = tableStructure.getFooter();
@@ -458,7 +481,6 @@ public class TableBody extends TableSection {
     }
 
 
-
     private BodyRow createFakeRow(int span) throws IOException {
         BodyRow row = new BodyRow();
         BodyCell cell = new BodyCell();
@@ -600,7 +622,7 @@ public class TableBody extends TableSection {
                 for (int j = 0, jcount = customCellList.size(); j < jcount; j++) {
                     TableCell cell = (TableCell) customCellList.get(j);
 
-                    int currentCellSpan =  cell.getSpan();
+                    int currentCellSpan = cell.getSpan();
                     if (currentCellSpan != 1)
                         cellSpan = currentCellSpan;
                 }

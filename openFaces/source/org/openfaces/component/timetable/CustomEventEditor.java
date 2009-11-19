@@ -52,7 +52,7 @@ public class CustomEventEditor extends UIComponentBase {
 
     @Override
     public Object saveState(FacesContext context) {
-        return new Object[] {
+        return new Object[]{
                 super.saveState(context),
                 oncreate,
                 onedit

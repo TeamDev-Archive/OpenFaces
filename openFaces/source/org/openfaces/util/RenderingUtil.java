@@ -16,8 +16,10 @@ import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIComponent;
 import org.openfaces.component.OUIInput;
 import org.openfaces.component.output.GraphicText;
+import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
+import org.openfaces.org.json.JSONString;
 import org.openfaces.renderkit.DefaultImageDataModel;
 import org.openfaces.renderkit.ImageDataModel;
 import org.openfaces.renderkit.cssparser.CSSUtil;
@@ -1112,7 +1114,10 @@ public class RenderingUtil {
     public static void addJsonParam(JSONObject paramsObject, String paramName, Object paramValue, Object defaultValue) {
         if (paramValue != null && !paramValue.equals(defaultValue))
             try {
-                paramsObject.put(paramName, paramValue.toString());
+                if (paramValue instanceof JSONObject || paramValue instanceof JSONArray || paramValue instanceof JSONString)
+                    paramsObject.put(paramName, paramValue);
+                else
+                    paramsObject.put(paramName, paramValue.toString());
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }

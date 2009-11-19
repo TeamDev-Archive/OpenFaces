@@ -145,7 +145,7 @@ public class DaySwitcher extends OUIComponentBase {
         this.timeZone = timeZone;
     }
 
-     public boolean isEnabled() {
+    public boolean isEnabled() {
         return ValueBindings.get(this, "enabled", enabled, true);
     }
 

@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.table;
 
+import org.openfaces.component.TableStyles;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableUtil;
@@ -28,18 +29,18 @@ public abstract class TableSection extends TableElement {
         super(parent);
     }
 
-    public JSONObject getInitParam() {
+    public JSONObject getInitParam(TableStyles defaultStyles) {
         JSONObject result = new JSONObject();
 
         try {
-            fillInitParam(result);
+            fillInitParam(result, defaultStyles);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
         return result;
     }
 
-    protected abstract void fillInitParam(JSONObject result) throws JSONException;
+    protected abstract void fillInitParam(JSONObject result, TableStyles defaultStyles) throws JSONException;
 
     public void render(FacesContext context,
                        HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {

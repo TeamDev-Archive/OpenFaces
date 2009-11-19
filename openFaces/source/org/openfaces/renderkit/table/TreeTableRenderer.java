@@ -59,7 +59,7 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         boolean nodeVisible = treeTable.isNodeInitiallyVisible();
         if (!nodeVisible) {
             return new String[][]{
-                    new String[] {"class", HIDDEN_ROW_CLASS}
+                    new String[]{"class", HIDDEN_ROW_CLASS}
             };
         }
         return null;
@@ -320,19 +320,17 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
             context.setResponseWriter(responseWriter);
         }
 
-        JSONArray newNodesInitInfo = new JSONArray();
-        newNodesInitInfo.put(formatNodeParams(treeTable, context, rowIndex, addedRowCount));
+        JSONObject newNodesInitInfo = new JSONObject();
+        RenderingUtil.addJsonParam(newNodesInitInfo, "structureMap", formatNodeParams(treeTable, context, rowIndex, addedRowCount));
         Map<Object, String> rowStylesMap = tableStructure.getRowStylesMap();
         Map<Object, String> cellStylesMap = tableStructure.getCellStylesMap();
-        newNodesInitInfo.put(TableUtil.getStylesMapAsJSONObject(rowStylesMap));
-        newNodesInitInfo.put(TableUtil.getStylesMapAsJSONObject(cellStylesMap));
+        RenderingUtil.addJsonParam(newNodesInitInfo, "rowStylesMap", TableUtil.getStylesMapAsJSONObject(rowStylesMap));
+        RenderingUtil.addJsonParam(newNodesInitInfo, "cellStylesMap", TableUtil.getStylesMapAsJSONObject(cellStylesMap));
 
         treeTable.setRowIndex(-1);
 
-        ScriptBuilder sb = new ScriptBuilder();
-        sb.initScript(context, treeTable, "O$.TreeTable._insertSubrows", newNodesInitInfo);
-
-        RenderingUtil.renderInitScript(context, sb, null);
+        RenderingUtil.renderInitScript(context, new ScriptBuilder().initScript(context, treeTable,
+                "O$.TreeTable._insertSubrows", newNodesInitInfo));
         responseWriter.write(stringWriter.toString());
         return null;
     }

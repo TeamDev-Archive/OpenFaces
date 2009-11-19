@@ -11,16 +11,16 @@
  */
 package org.openfaces.renderkit.timetable;
 
-import org.openfaces.renderkit.RendererBase;
-import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.CustomEventEditor;
+import org.openfaces.component.timetable.DayTable;
+import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.AnonymousFunction;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.component.UIComponent;
 import java.io.IOException;
 
 /**
