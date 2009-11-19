@@ -8,7 +8,7 @@
 
 <html>
 <head>
-  <title>Validators in one form (standart)</title>
+  <title>Validators in one form (standard)</title>
   <script type="text/javascript">
     var formName = "validationForm:";
     function fillInvalidData() {

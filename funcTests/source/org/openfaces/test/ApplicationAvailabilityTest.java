@@ -108,8 +108,8 @@ public class ApplicationAvailabilityTest extends OpenFacesTestCase {
         assertTestPageAvailable("/support/QKS30/QKS30.jsf", "getTotalRowCount() of the DataTable component (QKS30)");
         assertTestPageAvailable("/requests/JSFC_2110.jsf", "Convertion error in Calendar");
         assertTestPageAvailable("/compatibility/richfaces/QKValidation/Validators_custom.jsf", "Custom Validators");
-        assertTestPageAvailable("/compatibility/richfaces/QKValidation/Validators_standard.jsf", "Standart Validators");
-        assertTestPageAvailable("/compatibility/richfaces/QKValidation/ValidatorsInOneFormStandart.jsf", "Validators in one form (standart)");
+        assertTestPageAvailable("/compatibility/richfaces/QKValidation/Validators_standard.jsf", "Standard Validators");
+        assertTestPageAvailable("/compatibility/richfaces/QKValidation/ValidatorsInOneFormStandart.jsf", "Validators in one form (standard)");
         assertTestPageAvailable("/compatibility/richfaces/QKValidation/ValidatorsInOneFormCustom.jsf", "Validators in one form (custom)");
         assertTestPageAvailable("/components/validation/validationMessages.jsf", "Validation messages");
         assertTestPageAvailable("/components/treetable/calendarIn.jsf", "Calendar Inside TreeTable");

@@ -37,7 +37,12 @@ import java.util.Map;
  */
 public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
 
-    protected void renderWithImages(FacesContext facesContext, ResponseWriter writer, OUISelectManyInputBase selectManyInputBase, List<SelectItem> selectItems, boolean isLineLayout) throws IOException {
+    protected void renderWithImages(FacesContext facesContext,
+                                    ResponseWriter writer,
+                                    OUISelectManyInputBase selectManyInputBase,
+                                    List<SelectItem> selectItems,
+                                    boolean isLineLayout
+    ) throws IOException {
         SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) selectManyInputBase;
         String clientId = selectManyCheckbox.getClientId(facesContext);
 
@@ -83,7 +88,7 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
             String labelId = id + LABEL_SUFFIX;
             writeAttribute(writer, "id", labelId);
             writeAttribute(writer, "for", imageId);
-            writer.writeText(selectItem.getItemLabel(), selectItem.getItemLabel());
+            writer.writeText(selectItem.getItemLabel(), null);
             writer.endElement("label");
             writer.endElement("td");
 
@@ -93,7 +98,12 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
         }
     }
 
-    protected void renderWithHtmlElements(FacesContext facesContext, ResponseWriter writer, OUISelectManyInputBase selectManyInputBase, List<SelectItem> selectItems, boolean isLineLayout) throws IOException {
+    protected void renderWithHtmlElements(FacesContext facesContext,
+                                          ResponseWriter writer,
+                                          OUISelectManyInputBase selectManyInputBase,
+                                          List<SelectItem> selectItems,
+                                          boolean isLineLayout
+    ) throws IOException {
         SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) selectManyInputBase;
         String clientId = selectManyCheckbox.getClientId(facesContext);
 
@@ -129,7 +139,7 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
             String labelId = id + LABEL_SUFFIX;
             writeAttribute(writer, "id", labelId);
             writeAttribute(writer, "for", id);
-            writer.writeText(selectItem.getItemLabel(), selectItem.getItemLabel());
+            writer.writeText(selectItem.getItemLabel(), null);
             writer.endElement("label");
             writer.endElement("td");
 
@@ -156,7 +166,8 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
     }
 
     protected void renderInitScript(FacesContext facesContext, OUISelectManyInputBase selectManyInputBase,
-            JSONObject imagesObj, JSONObject stylesObj, int selectItemCount, AnonymousFunction onchangeFunction)
+                                    JSONObject imagesObj, JSONObject stylesObj,
+                                    int selectItemCount, AnonymousFunction onchangeFunction)
             throws IOException {
         SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) selectManyInputBase;
         Script initScript = new ScriptBuilder().initScript(facesContext, selectManyCheckbox, "O$.ManyCheckbox._init",
@@ -168,12 +179,10 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
                 onchangeFunction
         );
 
-        RenderingUtil.renderInitScript(facesContext, initScript,
-                new String[] {
+        RenderingUtil.renderInitScript(facesContext, initScript, new String[]{
                 ResourceUtil.getUtilJsURL(facesContext),
                 ResourceUtil.getInternalResourceURL(facesContext, SelectOneRadioRenderer.class, "manycheckbox.js")
-            }
-        );
+        });
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,7 +190,7 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
     private boolean isValueEquals(SelectManyCheckbox selectManyCheckbox, SelectItem selectItem) {
         List values = (List) selectManyCheckbox.getSubmittedValue();
         if (values == null) {
-            values = (List) selectManyCheckbox.getValue(); 
+            values = (List) selectManyCheckbox.getValue();
         }
         return values != null && values.contains(selectItem.getItemValue());
     }

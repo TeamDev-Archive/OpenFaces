@@ -8,7 +8,7 @@
 
 <html>
 <head>
-  <title>Standart Validators</title>
+  <title>Standard Validators</title>
   <style type="text/css">
     .demo_table td {
       border-bottom: 1px solid #E0E0E0;
