@@ -250,7 +250,7 @@ O$.Tables = {
     else {
       visibleInsertedRows = 0;
       rowsToInsert.forEach(function(insertedRow) {
-        insertedRow._visible = (O$.getElementStyleProperty(row, "display") != "none");
+        insertedRow._visible = (O$.getElementStyleProperty(insertedRow, "display") != "none");
         if (insertedRow._visible)
           visibleInsertedRows++;
       });

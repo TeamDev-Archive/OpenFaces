@@ -16,8 +16,6 @@ import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
 
-import java.awt.event.KeyEvent;
-
 /**
  * @author Darya Shumilina
  */
@@ -38,7 +36,7 @@ public class ScrollPositionTest extends OpenFacesTestCase {
         sleep(500);
         int ordinate = window().evalIntExpression("pageYOffset");
         int abscissa = window().evalIntExpression("pageXOffset");
-        button.keyPress(KeyEvent.VK_ENTER);
+        button.keyPress(13);
         waitForPageToLoad();
         window().assertExpressionEquals("pageYOffset", ordinate, 22);
         window().assertExpressionEquals("pageXOffset", abscissa);

@@ -79,7 +79,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         first.field().keyDown(KeyEvent.VK_DOWN);
         first.popup().assertVisible(true);
         first.field().keyDown(KeyEvent.VK_DOWN);
-        first.field().keyPress(KeyEvent.VK_ENTER);
+        first.field().keyPress(13);
         first.popup().assertVisible(false);
     }
 
@@ -112,7 +112,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         first.field().keyDown(KeyEvent.VK_DOWN);
         first.popup().assertVisible(true);
         first.field().keyDown(KeyEvent.VK_DOWN);
-        first.field().keyPress(KeyEvent.VK_ENTER);
+        first.field().keyPress(13);
         first.field().assertValue("Red");
 
         DropDownFieldInspector second = dropDownField("formID:second");
@@ -125,7 +125,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
             second.popup().assertVisible(true);
             second.field().keyDown(KeyEvent.VK_DOWN);
         }
-        second.field().keyPress(KeyEvent.VK_ENTER);
+        second.field().keyPress(13);
         sleep(1000);
         second.field().assertValue("Red");
 

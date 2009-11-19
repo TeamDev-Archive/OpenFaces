@@ -15,10 +15,8 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.seleniuminspector.openfaces.*;
 import org.seleniuminspector.ElementInspector;
-
-import java.awt.event.KeyEvent;
+import org.seleniuminspector.openfaces.*;
 
 /**
  * @author Darya Shumilina
@@ -310,14 +308,14 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         assertFalse(firstMessage.elementExists() && firstMessage.isVisible());
 
         requiredInput.setCursorPosition(0);
-        requiredInput.keyPress(KeyEvent.VK_ENTER);
+        requiredInput.keyPress(13);
         firstMessage.assertVisible(true);
 
         element("fn:secondHeader").click();
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         ElementInspector requiredInput1 = element("fn:required_input1");
         requiredInput1.setCursorPosition(0);
-        requiredInput1.keyPress(KeyEvent.VK_ENTER);
+        requiredInput1.keyPress(13);
         element("fn:second_messageID").assertVisible(true);
     }
 

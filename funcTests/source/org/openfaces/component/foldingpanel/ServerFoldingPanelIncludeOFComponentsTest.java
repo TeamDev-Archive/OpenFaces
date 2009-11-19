@@ -14,11 +14,9 @@ package org.openfaces.component.foldingpanel;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.seleniuminspector.openfaces.*;
-import org.seleniuminspector.ServerLoadingMode;
 import org.seleniuminspector.ElementInspector;
-
-import java.awt.event.KeyEvent;
+import org.seleniuminspector.ServerLoadingMode;
+import org.seleniuminspector.openfaces.*;
 
 /**
  * @author Darya Shumilina
@@ -255,7 +253,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         message.assertVisible(false);
 
         requiredInput.setCursorPosition(0);
-        requiredInput.keyPress(KeyEvent.VK_ENTER);
+        requiredInput.keyPress(13);
         message.assertVisible(true);
         assertTrue(message.text().contains("Validation Error: Value is required.") ||
                 message.text().contains("required_input: Value is required."));

@@ -14,16 +14,14 @@ package org.openfaces.component.foldingpanel;
 import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.openfaces.DataTableInspector;
 import org.seleniuminspector.openfaces.DateChooserInspector;
 import org.seleniuminspector.openfaces.FoldingPanelInspector;
 import org.seleniuminspector.openfaces.InputTextFilterInspector;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 import org.seleniuminspector.openfaces.TreeTableInspector;
 import org.seleniuminspector.openfaces.TwoListSelectionInspector;
-import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
-import org.seleniuminspector.ElementInspector;
-
-import java.awt.event.KeyEvent;
 
 /**
  * @author Darya Shumilina
@@ -228,7 +226,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         message.assertVisible(false);
 
         requiredInput.setCursorPosition(0);
-        requiredInput.keyPress(KeyEvent.VK_ENTER);
+        requiredInput.keyPress(13);
 
         message.assertVisible(true);
         message.assertContainsText("Value is required.");

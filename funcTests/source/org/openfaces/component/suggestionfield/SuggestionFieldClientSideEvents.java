@@ -89,7 +89,7 @@ public class SuggestionFieldClientSideEvents extends OpenFacesTestCase {
         assertTrue(selenium.isTextPresent("keyup"));
 
         //onchange
-        keyChangeField.keyPress(KeyEvent.VK_ENTER);
+        keyChangeField.keyPress(13);
         assertTrue(selenium.isTextPresent("onchange works"));
         //todo: uncomment if JSFC-2724 fixed
         /*assertTrue(selenium.isTextPresent("change"));*/

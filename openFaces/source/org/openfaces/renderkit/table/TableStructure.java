@@ -338,7 +338,7 @@ public class TableStructure extends TableElement {
         if (tableStyles instanceof TreeTable)
             RenderingUtil.addJsonParam(result, "additionalCellWrapperStyle", StyleUtil.getCSSClass(facesContext, (UIComponent) tableStyles, ADDITIONAL_CELL_WRAPPER_STYLE,
                     StyleGroup.disabledStyleGroup(10), null));
-        RenderingUtil.addJsonParam(result, "invisibleRowsAllowed", tableStyles instanceof TreeTable);
+        RenderingUtil.addJsonParam(result, "invisibleRowsAllowed", tableStyles instanceof TreeTable, false);
 
         return result;
     }

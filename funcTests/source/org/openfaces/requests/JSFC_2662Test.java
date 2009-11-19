@@ -35,7 +35,7 @@ public class JSFC_2662Test extends OpenFacesTestCase {
         suggestionField.keyDown(KeyEvent.VK_DOWN);
 
         //press 'enter'
-        suggestionField.keyPress(KeyEvent.VK_ENTER);
+        suggestionField.keyPress(13);
         suggestionField.setCursorPosition(5);
         //press 'delete' button
         suggestionField.keyPress(KeyEvent.VK_DELETE);
