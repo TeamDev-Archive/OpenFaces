@@ -15,6 +15,8 @@ import org.openfaces.component.filter.TextSearchFilter;
 import org.openfaces.util.RenderingUtil;
 import org.seleniuminspector.LoadingMode;
 
+import java.awt.event.KeyEvent;
+
 /**
  * @author Andrii Gorbatov
  */
@@ -39,7 +41,7 @@ public class DropDownFieldFilterInspector extends AbstractFilterInspector {
     public void makeFiltering(String filterValue) {
         searchComponent().field().type(filterValue);
         searchComponent().field().setCursorPosition(0);
-        searchComponent().field().keyPress(13);
+        searchComponent().field().keyPress(KeyEvent.VK_ENTER);
 
         getLoadingMode().waitForLoad();
     }

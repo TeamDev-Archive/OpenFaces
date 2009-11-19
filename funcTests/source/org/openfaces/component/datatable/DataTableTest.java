@@ -16,21 +16,22 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
-import org.seleniuminspector.openfaces.TabSetInspector;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.LoadingMode;
+import org.seleniuminspector.ServerLoadingMode;
+import org.seleniuminspector.html.TableCellParams;
+import org.seleniuminspector.html.TableInspector;
+import org.seleniuminspector.html.TableRowInspector;
+import org.seleniuminspector.html.TableSectionInspector;
 import org.seleniuminspector.openfaces.ComboBoxFilterInspector;
 import org.seleniuminspector.openfaces.DataTableInspector;
 import org.seleniuminspector.openfaces.DataTablePaginatorInspector;
 import org.seleniuminspector.openfaces.DropDownFieldFilterInspector;
 import org.seleniuminspector.openfaces.InputTextFilterInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
-import org.seleniuminspector.html.TableCellParams;
-import org.seleniuminspector.html.TableInspector;
-import org.seleniuminspector.html.TableSectionInspector;
-import org.seleniuminspector.html.TableRowInspector;
-import org.seleniuminspector.LoadingMode;
-import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.ServerLoadingMode;
+import org.seleniuminspector.openfaces.TabSetInspector;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -392,7 +393,7 @@ public class DataTableTest extends OpenFacesTestCase {
         DataTableInspector singleSelectionDataTable = dataTable("formID:singleSelectionDataTable");
         singleSelectionDataTable.click();
         for (int i = 0; i < 9; i++) {
-            singleSelectionDataTable.keyPress(40);
+            singleSelectionDataTable.keyPress(KeyEvent.VK_DOWN);
             singleSelectionDataTable.checkSelectedIndex(i);
         }
 
@@ -614,8 +615,7 @@ public class DataTableTest extends OpenFacesTestCase {
         element("formID:customNoDataMessageID:noFilteredDataCustomMessageID").assertText("Test no filtered data");
 
         //check default string for the no data corresponding to filter criterion
-        String noDataDefaultMessage = getSelenium().getEval("this.page().findElement('formID:emptyDataID').childNodes[3].childNodes[1].childNodes[0].textContent");
-        assertEquals("No records", noDataDefaultMessage);
+        dataTable("formID:emptyDataID").bodyRow(0).cell(0).assertText("No records");
 
         //check is message string for the no data visible
         assertEquals("There should be one invisible fake row", 1, new TableInspector("formID:emptyDataMessageForbiddenID").body().rowCount());

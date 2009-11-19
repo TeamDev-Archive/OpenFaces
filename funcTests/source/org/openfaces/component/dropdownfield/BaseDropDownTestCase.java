@@ -13,15 +13,15 @@ package org.openfaces.component.dropdownfield;
 
 import com.thoughtworks.selenium.Selenium;
 import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.LoadingMode;
 import org.seleniuminspector.html.InputInspector;
 import org.seleniuminspector.html.TableInspector;
 import org.seleniuminspector.openfaces.DropDownFieldInspector;
 import org.seleniuminspector.openfaces.DropDownPopupInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
-import org.openfaces.test.RichFacesAjaxLoadingMode;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,19 +67,19 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         // with keyboard help
         first.popup().assertVisible(false);
         first.field().setCursorPosition(0);
-        first.field().keyDown(40); // down key
+        first.field().keyDown(KeyEvent.VK_DOWN); // down key
         first.popup().assertVisible(true);
         first.popup().assertItemTexts(new String[]{"Red", "Yellow", "Blue"});
 
         // check with 'Esc' key
-        first.field().keyPress(27);
+        first.field().keyPress(KeyEvent.VK_ESCAPE);
         first.popup().assertVisible(false);
 
         // check with 'Enter' key
-        first.field().keyDown(40);
+        first.field().keyDown(KeyEvent.VK_DOWN);
         first.popup().assertVisible(true);
-        first.field().keyDown(40);
-        first.field().keyPress(13);
+        first.field().keyDown(KeyEvent.VK_DOWN);
+        first.field().keyPress(KeyEvent.VK_ENTER);
         first.popup().assertVisible(false);
     }
 
@@ -91,7 +91,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         if (isDropDown)
             first.button().mouseDown();
         else
-            first.field().keyDown(40); // down key
+            first.field().keyDown(KeyEvent.VK_DOWN); // down key
 
         first.popup().assertItemTexts(referenceCollection);
 
@@ -100,7 +100,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
         if (isDropDown)
             second.button().mouseDown();
         else
-            second.field().keyDown(40);
+            second.field().keyDown(KeyEvent.VK_DOWN);
         second.popup().assertItemTexts(referenceCollection);
     }
 
@@ -109,10 +109,10 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
 
         DropDownFieldInspector first = dropDownField("formID:first");
         first.field().setCursorPosition(0);
-        first.field().keyDown(40);
+        first.field().keyDown(KeyEvent.VK_DOWN);
         first.popup().assertVisible(true);
-        first.field().keyDown(40);
-        first.field().keyPress(13);
+        first.field().keyDown(KeyEvent.VK_DOWN);
+        first.field().keyPress(KeyEvent.VK_ENTER);
         first.field().assertValue("Red");
 
         DropDownFieldInspector second = dropDownField("formID:second");
@@ -121,11 +121,11 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
             second.popup().assertVisible(true);
             second.popup().items().get(0).click();
         } else {
-            second.field().keyDown(40);
+            second.field().keyDown(KeyEvent.VK_DOWN);
             second.popup().assertVisible(true);
-            second.field().keyDown(40);
+            second.field().keyDown(KeyEvent.VK_DOWN);
         }
-        second.field().keyPress(13);
+        second.field().keyPress(KeyEvent.VK_ENTER);
         sleep(1000);
         second.field().assertValue("Red");
 
@@ -283,7 +283,7 @@ public abstract class BaseDropDownTestCase extends OpenFacesTestCase {
 
             if (!isDropDown) {
                 dropDown.setCursorPosition(0);
-                dropDown.keyDown(40);
+                dropDown.keyDown(KeyEvent.VK_DOWN);
                 if (!isFocused) {
                     dropDown.fireEvent("onblur");
                 }

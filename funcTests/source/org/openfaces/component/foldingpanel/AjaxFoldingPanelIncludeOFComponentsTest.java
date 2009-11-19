@@ -23,6 +23,8 @@ import org.seleniuminspector.openfaces.TwoListSelectionInspector;
 import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 import org.seleniuminspector.ElementInspector;
 
+import java.awt.event.KeyEvent;
+
 /**
  * @author Darya Shumilina
  */
@@ -226,7 +228,7 @@ public class AjaxFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase {
         message.assertVisible(false);
 
         requiredInput.setCursorPosition(0);
-        requiredInput.keyPress(13);
+        requiredInput.keyPress(KeyEvent.VK_ENTER);
 
         message.assertVisible(true);
         message.assertContainsText("Value is required.");

@@ -18,6 +18,8 @@ import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.TableCellInspector;
 import org.seleniuminspector.html.TableInspector;
 
+import java.awt.event.KeyEvent;
+
 /**
  * @author Darya Shumilina
  */
@@ -47,17 +49,17 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
 
         ElementInspector secondSecondColumn = element("fn:second:1:secondColumn_body");
         //onkeydown
-        secondSecondColumn.keyDown(39);
+        secondSecondColumn.keyDown(KeyEvent.VK_RIGHT);
         assertTrue(selenium.isTextPresent("onkeydown works"));
         assertTrue(selenium.isTextPresent("keydown"));
 
         //onkeyup
-        secondSecondColumn.keyUp(39);
+        secondSecondColumn.keyUp(KeyEvent.VK_RIGHT);
         assertTrue(selenium.isTextPresent("onkeyup works"));
         assertTrue(selenium.isTextPresent("keyup"));
 
         //onkeypress
-        secondSecondColumn.keyPress(39);
+        secondSecondColumn.keyPress(KeyEvent.VK_RIGHT);
         assertTrue(selenium.isTextPresent("onkeypress works"));
         assertTrue(selenium.isTextPresent("keypress"));
 
@@ -627,13 +629,13 @@ public class DataTableClientSideEvents extends OpenFacesTestCase {
 
         ElementInspector multiple = dataTable("fn:multiple").column(0).bodyCell(0);
         multiple.click();
-        multiple.keyDown(40);
+        multiple.keyDown(KeyEvent.VK_DOWN);
         assertTrue(selenium.isTextPresent("multiple selection onchange works"));
         assertTrue(selenium.isTextPresent("multiple change"));
 
         ElementInspector single = dataTable("fn:single").column(0).bodyCell(0);
         single.click();
-        single.keyDown(40);
+        single.keyDown(KeyEvent.VK_DOWN);
         assertTrue(selenium.isTextPresent("single selection onchange works"));
 
         assertTrue(selenium.isTextPresent("single change"));

@@ -16,6 +16,8 @@ import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.openfaces.InputTextInspector;
 
+import java.awt.event.KeyEvent;
+
 /**
  * @author Darya Shumilina
  */
@@ -35,7 +37,7 @@ public class PopupLayerClientSideEvents extends OpenFacesTestCase {
         element("formID:onkeydownShowID").click();
         InputTextInspector keyDownInput = inputText("formID:keydown_input");
         keyDownInput.setCursorPosition(2);
-        keyDownInput.keyDown(77);
+        keyDownInput.keyDown(KeyEvent.VK_M);
         assertTrue(selenium.isTextPresent("onkeydown works"));
         assertTrue(selenium.isTextPresent("keydown"));
 
@@ -79,7 +81,7 @@ public class PopupLayerClientSideEvents extends OpenFacesTestCase {
         selenium.click("formID:onkeyupShowID");
         InputTextInspector keyUpInput = inputText("formID:keyup_input");
         keyUpInput.setCursorPosition(2);
-        keyUpInput.keyUp(77);
+        keyUpInput.keyUp(KeyEvent.VK_M);
         assertTrue(selenium.isTextPresent("onkeyup works"));
         assertTrue(selenium.isTextPresent("keyup"));
 
@@ -87,7 +89,7 @@ public class PopupLayerClientSideEvents extends OpenFacesTestCase {
         element("formID:onkeypressShowID").click();
         InputTextInspector keyPressInput = inputText("formID:keypress_input");
         keyPressInput.setCursorPosition(2);
-        keyPressInput.keyPress(77);
+        keyPressInput.keyPress(KeyEvent.VK_M);
         assertTrue(selenium.isTextPresent("onkeypress works"));
         assertTrue(selenium.isTextPresent("keypress"));
 

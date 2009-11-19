@@ -16,6 +16,8 @@ import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
 
+import java.awt.event.KeyEvent;
+
 /**
  * @author Darya Shumilina
  */
@@ -69,7 +71,7 @@ public class SuggestionFieldClientSideEvents extends OpenFacesTestCase {
 
         //onkeypress
         ElementInspector keyChangeField = element("formID:keyChange");
-        keyChangeField.keyPress(81);
+        keyChangeField.keyPress(KeyEvent.VK_Q);
         assertTrue(selenium.isTextPresent("onkeypress works"));
         assertTrue(selenium.isTextPresent("keypress"));
 
@@ -82,12 +84,12 @@ public class SuggestionFieldClientSideEvents extends OpenFacesTestCase {
 */
 
         //onkeyup
-        keyChangeField.keyUp(73);
+        keyChangeField.keyUp(KeyEvent.VK_I);
         assertTrue(selenium.isTextPresent("onkeyup works"));
         assertTrue(selenium.isTextPresent("keyup"));
 
         //onchange
-        keyChangeField.keyPress(13);
+        keyChangeField.keyPress(KeyEvent.VK_ENTER);
         assertTrue(selenium.isTextPresent("onchange works"));
         //todo: uncomment if JSFC-2724 fixed
         /*assertTrue(selenium.isTextPresent("change"));*/

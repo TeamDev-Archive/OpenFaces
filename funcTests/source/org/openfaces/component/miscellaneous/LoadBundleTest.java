@@ -23,6 +23,8 @@ import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 import org.seleniuminspector.ServerLoadingMode;
 import org.seleniuminspector.ElementInspector;
 
+import java.awt.event.KeyEvent;
+
 /**
  * @author Darya Shumilina
  */
@@ -203,7 +205,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         ElementInspector secondSuggestion = suggestionField.popup().items().get(2);
 
         // check 'ar' locale
-        suggestionField.keyDown(40);
+        suggestionField.keyDown(KeyEvent.VK_DOWN);
         secondSuggestion.assertText(WEEK_AR);
 
         TabSetInspector localeChanger = tabSet("formID:localeChanger");
@@ -211,19 +213,19 @@ public class LoadBundleTest extends OpenFacesTestCase {
         // check 'es' locale
         localeChanger.tabs().get(1).clickAndWait();
         testAppFunctionalPage("/components/loadbundle/withSuggestionField.jsf"); // issue a GET request for view to update locale in JSP
-        suggestionField.keyDown(40);
+        suggestionField.keyDown(KeyEvent.VK_DOWN);
         secondSuggestion.assertText(WEEK_ES);
 
         // check 'ja' locale
         localeChanger.tabs().get(2).clickAndWait();
         testAppFunctionalPage("/components/loadbundle/withSuggestionField.jsf"); // issue a GET request for view to update locale in JSP
-        suggestionField.keyDown(40);
+        suggestionField.keyDown(KeyEvent.VK_DOWN);
         secondSuggestion.assertText(WEEK_JA);
 
         // check 'ru' locale
         localeChanger.tabs().get(3).clickAndWait();
         testAppFunctionalPage("/components/loadbundle/withSuggestionField.jsf"); // issue a GET request for view to update locale in JSP
-        suggestionField.keyDown(40);
+        suggestionField.keyDown(KeyEvent.VK_DOWN);
         secondSuggestion.assertText(WEEK_RU);
 
         // reset tab index for further running tests

@@ -15,7 +15,8 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.openfaces.DropDownFieldInspector;
-import org.seleniuminspector.LoadingMode;
+
+import java.awt.event.KeyEvent;
 
 /**
  * @author Darya Shumilina
@@ -29,7 +30,8 @@ public class DropDownClientSideEvents extends OpenFacesTestCase {
         DropDownFieldInspector keypressField = dropDownField("formID:keypressID");
         // onkeypress
         keypressField.field().setCursorPosition(0);
-        keypressField.field().keyPress(90);
+        keypressField.field().keyPress(KeyEvent.VK_Z);
+
         assertTrue(selenium.isTextPresent("onkeypress works"));
         assertTrue(selenium.isTextPresent("keypress"));
 
@@ -95,14 +97,14 @@ public class DropDownClientSideEvents extends OpenFacesTestCase {
 
         // onkeydown
         keyDownField.field().setCursorPosition(0);
-        keyDownField.field().keyDown(90);
+        keyDownField.field().keyDown(KeyEvent.VK_Z);
         assertTrue(selenium.isTextPresent("onkeydown works"));
         assertTrue(selenium.isTextPresent("keydown"));
 
         // onkeyup
         DropDownFieldInspector keyupField = dropDownField("formID:keyupID");
         keyupField.field().setCursorPosition(0);
-        keyupField.field().keyUp(90);
+        keyupField.field().keyUp(KeyEvent.VK_Z);
         assertTrue(selenium.isTextPresent("onkeyup works"));
         assertTrue(selenium.isTextPresent("keyup"));
 

@@ -18,6 +18,8 @@ import org.seleniuminspector.openfaces.*;
 import org.seleniuminspector.ServerLoadingMode;
 import org.seleniuminspector.ElementInspector;
 
+import java.awt.event.KeyEvent;
+
 /**
  * @author Darya Shumilina
  */
@@ -253,7 +255,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         message.assertVisible(false);
 
         requiredInput.setCursorPosition(0);
-        requiredInput.keyPress(13);
+        requiredInput.keyPress(KeyEvent.VK_ENTER);
         message.assertVisible(true);
         assertTrue(message.text().contains("Validation Error: Value is required.") ||
                 message.text().contains("required_input: Value is required."));

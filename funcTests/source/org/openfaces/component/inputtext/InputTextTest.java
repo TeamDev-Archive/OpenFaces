@@ -16,8 +16,10 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
-import org.seleniuminspector.openfaces.InputTextInspector;
 import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.openfaces.InputTextInspector;
+
+import java.awt.event.KeyEvent;
 
 /**
  * @author Vladimir Kurganov
@@ -205,17 +207,17 @@ public class InputTextTest extends OpenFacesTestCase {
         InputTextInspector keyChangeInput = inputText("formID:keyChange");
 
         // onkeypress
-        keyChangeInput.keyPress(81);
+        keyChangeInput.keyPress(KeyEvent.VK_O);
         assertTrue(selenium.isTextPresent("onkeypress works"));
         assertTrue(selenium.isTextPresent("keypress"));
 
         // onkeydown
-        keyChangeInput.keyDown(85);
+        keyChangeInput.keyDown(KeyEvent.VK_P);
         assertTrue(selenium.isTextPresent("onkeydown works"));
         assertTrue(selenium.isTextPresent("keydown"));
 
         // onkeyup
-        keyChangeInput.keyUp(73);
+        keyChangeInput.keyUp(KeyEvent.VK_E);
         assertTrue(selenium.isTextPresent("onkeyup works"));
         assertTrue(selenium.isTextPresent("keyup"));
 

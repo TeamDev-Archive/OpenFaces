@@ -19,6 +19,8 @@ import org.seleniuminspector.openfaces.CalendarInspector;
 import org.seleniuminspector.openfaces.DropDownFieldInspector;
 import org.seleniuminspector.openfaces.InputTextInspector;
 
+import java.awt.event.KeyEvent;
+
 /**
  * @author Tatyana Matveyeva
  */
@@ -438,7 +440,7 @@ public class ValidationTest extends OpenFacesTestCase {
         twoListSelection(formName + ":tls").addAllButton().click();
         DropDownFieldInspector dropDownField = dropDownField(formName + ":ddf");
         dropDownField.field().type("test");
-        dropDownField.field().keyPress(100);
+        dropDownField.field().keyPress(KeyEvent.VK_4);
     }
 
 //  private void clearData(String formName) {
@@ -506,7 +508,7 @@ public class ValidationTest extends OpenFacesTestCase {
 
         DropDownFieldInspector dropDownField = dropDownField("testForm:ddf");
         dropDownField.field().type("t");
-        dropDownField.field().keyPress(8);
+        dropDownField.field().keyPress(KeyEvent.VK_BACK_SPACE);
         element("testForm:fillInvalidData").click();
     }
 
@@ -518,7 +520,7 @@ public class ValidationTest extends OpenFacesTestCase {
         element("testForm:fillValidData").click();
         DropDownFieldInspector dropDownField = dropDownField("testForm:ddf");
         dropDownField.field().type("Value");
-        dropDownField.field().keyPress(100);
+        dropDownField.field().keyPress(KeyEvent.VK_4);
     }
 
     private void isDefaultPresentation() {

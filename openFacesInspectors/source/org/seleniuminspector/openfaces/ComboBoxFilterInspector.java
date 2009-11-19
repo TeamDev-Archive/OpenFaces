@@ -13,6 +13,8 @@ package org.seleniuminspector.openfaces;
 
 import org.seleniuminspector.LoadingMode;
 
+import java.awt.event.KeyEvent;
+
 /**
  * @author Andrii Gorbatov
  */
@@ -24,7 +26,7 @@ public class ComboBoxFilterInspector extends AbstractFilterInspector {
 
     public void makeFiltering(String filterValue) {
         selectByLabel(filterValue);
-        keyPress(13);
+        keyPress(KeyEvent.VK_ENTER);
 
         getLoadingMode().waitForLoad();
     }

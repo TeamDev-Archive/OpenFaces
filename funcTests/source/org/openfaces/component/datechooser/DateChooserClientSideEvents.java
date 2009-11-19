@@ -16,6 +16,8 @@ import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.openfaces.DateChooserInspector;
 
+import java.awt.event.KeyEvent;
+
 /**
  * @author Darya Shumilina
  */
@@ -28,7 +30,7 @@ public class DateChooserClientSideEvents extends OpenFacesTestCase {
         //onkeypress
         DateChooserInspector keyPressDateChooser = dateChooser("formID:keypressID");
         keyPressDateChooser.field().setCursorPosition(0);
-        keyPressDateChooser.field().keyPress(90);
+        keyPressDateChooser.field().keyPress(KeyEvent.VK_Z);
         assertTrue(selenium.isTextPresent("onkeypress works"));
         assertTrue(selenium.isTextPresent("keypress"));
 
@@ -77,14 +79,14 @@ public class DateChooserClientSideEvents extends OpenFacesTestCase {
         //onkeydown
         DateChooserInspector keyDownDateChooser = dateChooser("formID:keydownID");
         keyDownDateChooser.field().setCursorPosition(0);
-        keyDownDateChooser.field().keyDown(90);
+        keyDownDateChooser.field().keyDown(KeyEvent.VK_Z);
         assertTrue(selenium.isTextPresent("onkeydown works"));
         assertTrue(selenium.isTextPresent("keydown"));
 
         //onkeyup
         DateChooserInspector keyUpDateChooser = dateChooser("formID:keyupID");
         keyUpDateChooser.field().setCursorPosition(0);
-        keyUpDateChooser.field().keyUp(90);
+        keyUpDateChooser.field().keyUp(KeyEvent.VK_Z);
         assertTrue(selenium.isTextPresent("onkeyup works"));
         assertTrue(selenium.isTextPresent("keyup"));
 

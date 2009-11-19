@@ -13,14 +13,15 @@ package org.openfaces.component.treetable;
 
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
+import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.LoadingMode;
+import org.seleniuminspector.ServerLoadingMode;
+import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
 import org.seleniuminspector.openfaces.TabSetInspector;
 import org.seleniuminspector.openfaces.TreeTableInspector;
-import org.openfaces.test.RichFacesAjaxLoadingMode;
-import org.seleniuminspector.openfaces.OpenFacesAjaxLoadingMode;
-import org.seleniuminspector.ElementInspector;
-import org.seleniuminspector.ServerLoadingMode;
-import org.seleniuminspector.LoadingMode;
 
+import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
 
@@ -95,28 +96,28 @@ public class TreeTableTest extends OpenFacesTestCase {
         for (int i = 1; i < 26; i++) {
             if (i == 1 || i == 4 || i == 16 || i == 19 || i == 21 || i == 24) {
                 //click right arrow to expand first TreeTable node
-                treeTable.keyPress(39);
+                treeTable.keyPress(KeyEvent.VK_RIGHT);
                 OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
             }
             //get selected index value
-            emptyElement.assertText(String.valueOf(i));
+            emptyElement.assertText(String.valueOf(i - 1));
             //click down arrow
-            treeTable.keyPress(40);
+            treeTable.keyPress(KeyEvent.VK_DOWN);
         }
         //check mouse selection for the same TreeTable
         element("formID:singleSelectionTreeTableID:1:categoryID").click();
-        emptyElement.assertText("4");
+        emptyElement.assertText("3");
         element("formID:singleSelectionTreeTableID:22:nameID").click();
-        emptyElement.assertText("23");
+        emptyElement.assertText("22");
 
         /*Check TreeTable wit defined 'nodePath' and 'nodeData' attributes*/
         element("formID:singleNodePathSelectionTreeTableID:3:categoryID").click();
         ElementInspector selectionNodePath = element("selectionNodePathID");
-        String indexBeforeSubmitNodePathTreeTable = selectionNodePath.text();
+        String indexBeforeSubmitNodePathTreeTable = selectionNodePath.text();                                               
 
-        element("formID:singleNodeDataSelectionTreeTableID:1:categoryID").keyPress(39);
+        element("formID:singleNodeDataSelectionTreeTableID:1:categoryID").keyPress(KeyEvent.VK_RIGHT);
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
-        treeTable.keyPress(40);
+        treeTable.keyPress(KeyEvent.VK_DOWN);
         ElementInspector selectionNodeData = element("selectionNodeDataID");
         String indexBeforeSubmitNodeDataTreeTable = selectionNodeData.text();
         element("formID:submitID").clickAndWait();
@@ -139,10 +140,10 @@ public class TreeTableTest extends OpenFacesTestCase {
         /*check keyboard navigation and selection*/
         //select root nodes
         for (int i = 0; i < 5; i++) {
-            createEvent(multipleSelectionTreeTable, null, EventType.KEY, "keypress", 40, true);
+            createEvent(multipleSelectionTreeTable, null, EventType.KEY, "keypress", KeyEvent.VK_DOWN, true);
         }
         ElementInspector emptyElement = element("empty");
-        emptyElement.assertText("  1 2 3 4 5 6");
+        emptyElement.assertText("  0 1 2 3 4 5");
 
         for (int i = 0; i < 6; i++) {
             multipleSelectionTreeTable.getElementsByTagName("img").get(i).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
@@ -150,20 +151,20 @@ public class TreeTableTest extends OpenFacesTestCase {
 
         categoryOutput.click();
         for (int i = 0; i < 25; i++) {
-            createEvent(multipleSelectionTreeTable, null, EventType.KEY, "keypress", 40, true);
+            createEvent(multipleSelectionTreeTable, null, EventType.KEY, "keypress", KeyEvent.VK_DOWN, true);
         }
 
 
-        emptyElement.assertText("  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25");
+        emptyElement.assertText("  0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24");
         for (int i = 0; i < 6; i++) {
             multipleSelectionTreeTable.getElementsByTagName("img").get(i).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         }
 
         categoryOutput.click();
         for (int i = 0; i < 5; i++) {
-            createEvent(element("formID:multipleSelectionTreeTableID"), null, EventType.KEY, "keypress", 40, true);
+            createEvent(element("formID:multipleSelectionTreeTableID"), null, EventType.KEY, "keypress", KeyEvent.VK_DOWN, true);
         }
-        emptyElement.assertText("  1 4 16 19 21 24");
+        emptyElement.assertText("  0 3 15 18 20 23");
 
         /*check 'nodePaths' and 'nodeDatas' attributes*/
         //verify is attributes took right initial values
@@ -172,39 +173,39 @@ public class TreeTableTest extends OpenFacesTestCase {
         ElementInspector nodeDataOutput = element("formID:nodeDatasID");
         nodeDataOutput.assertText("Document BrowsingDocument Deletion");
         ElementInspector selectionNodePathsDiv = element("selectionNodePathsID");
-        selectionNodePathsDiv.assertText("  2 6");
+        selectionNodePathsDiv.assertText("  1 5");
         ElementInspector selectionNodeDataDiv = element("selectionNodeDatasID");
-        selectionNodeDataDiv.assertText("  2 5");
+        selectionNodeDataDiv.assertText("  1 4");
 
         //check root nodes
         element("formID:multipleNodePathsSelectionTreeTableID:0:categoryID").click();
         TreeTableInspector multipleNodePathsTreeTable = treeTable("formID:multipleNodePathsSelectionTreeTableID");
-        multipleNodePathsTreeTable.keyPress(40);
+        multipleNodePathsTreeTable.keyPress(KeyEvent.VK_DOWN);
         element("formID:multipleNodeDatasSelectionTreeTableID:0:categoryID").click();
         TreeTableInspector multipleNodeDataTreeTable = treeTable("formID:multipleNodeDatasSelectionTreeTableID");
-        multipleNodeDataTreeTable.keyPress(40);
+        multipleNodeDataTreeTable.keyPress(KeyEvent.VK_DOWN);
 
         //check root + expanded child nodes
         element("formID:multipleNodePathsSelectionTreeTableID:4:categoryID").click();
 
         //click right arrow
-        multipleNodePathsTreeTable.keyPress(39);
+        multipleNodePathsTreeTable.keyPress(KeyEvent.VK_RIGHT);
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         for (int i = 0; i < 3; i++) {
-            createEvent(multipleNodePathsTreeTable, null, EventType.KEY, "keypress", 40, true);
+            createEvent(multipleNodePathsTreeTable, null, EventType.KEY, "keypress", KeyEvent.VK_DOWN, true);
         }
 
         element("formID:multipleNodeDatasSelectionTreeTableID:2:categoryID").click();
-        multipleNodeDataTreeTable.keyPress(39);
+        multipleNodeDataTreeTable.keyPress(KeyEvent.VK_RIGHT);
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         for (int i = 0; i < 3; i++) {
-            createEvent(multipleNodeDataTreeTable, null, EventType.KEY, "keypress", 40, true);
+            createEvent(multipleNodeDataTreeTable, null, EventType.KEY, "keypress", KeyEvent.VK_DOWN, true);
         }
         element("formID:submitID").clickAndWait();
         nodePathsOutput.assertText("Document DeletionSemen SemenychIvan IvanychNetwork Access");
         nodeDataOutput.assertText("Document CreationAdministratorIvan IvanychDocument Modification");
-        selectionNodePathsDiv.assertText("  5 6 7 8");
-        selectionNodeDataDiv.assertText("  3 4 5 6");
+        selectionNodePathsDiv.assertText("  4 5 6 7");
+        selectionNodeDataDiv.assertText("  2 3 4 5");
         //todo: checking with collapsed child node should be added after fix of 'JSFC-2603'
     }
 
@@ -229,51 +230,51 @@ public class TreeTableTest extends OpenFacesTestCase {
 
         ElementInspector emptyElement = element("empty");
         //down arrow
-        treeTable.keyPress(40);
-        emptyElement.assertText("  1");
+        treeTable.keyPress(KeyEvent.VK_DOWN);
+        emptyElement.assertText("  0");
 
         //'End' button
-        treeTable.keyPress(35);
-        emptyElement.assertText("  7");
-
-        //up arrow
-        treeTable.keyPress(38);
+        treeTable.keyPress(KeyEvent.VK_END);
         emptyElement.assertText("  6");
 
+        //up arrow
+        treeTable.keyPress(KeyEvent.VK_UP);
+        emptyElement.assertText("  5");
+
         //'Home' button
-        treeTable.keyPress(36);
-        emptyElement.assertText("  1");
+        treeTable.keyPress(KeyEvent.VK_HOME);
+        emptyElement.assertText("  0");
 
         //left arrow
-        treeTable.keyPress(37);
+        treeTable.keyPress(KeyEvent.VK_LEFT);
 
         //right arrow
-        treeTable.keyPress(39);
+        treeTable.keyPress(KeyEvent.VK_RIGHT);
 
         //'minus' sign
-        treeTable.keyPress(109);
+        treeTable.keyPress(KeyEvent.VK_SUBTRACT);
 
         //'plus' sign
-        treeTable.keyPress(107);
+        treeTable.keyPress(KeyEvent.VK_ADD);
 
         //'Shift' + down arrow
         for (int i = 0; i < 6; i++) {
-            createEvent(treeTable, null, EventType.KEY, "keypress", 40, true);
+            createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_DOWN, true);
         }
-        emptyElement.assertText("  1 2 3 4 5 6 7");
+        emptyElement.assertText("  0 1 2 3 4 5 6");
         //'Shift' + up arrow
         for (int i = 0; i < 6; i++) {
-            createEvent(treeTable, null, EventType.KEY, "keypress", 38, true);
+            createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_UP, true);
         }
-        emptyElement.assertText("  1");
+        emptyElement.assertText("  0");
 
         //'Shift' + 'End'
-        createEvent(treeTable, null, EventType.KEY, "keypress", 35, true);
-        emptyElement.assertText("  1 2 3 4 5 6 7");
+        createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_END, true);
+        emptyElement.assertText("  0 1 2 3 4 5 6");
 
         //'Shift' + 'Home'
-        createEvent(treeTable, null, EventType.KEY, "keypress", 36, true);
-        emptyElement.assertText("  1");
+        createEvent(treeTable, null, EventType.KEY, "keypress", KeyEvent.VK_HOME, true);
+        emptyElement.assertText("  0");
     }
 
     /**

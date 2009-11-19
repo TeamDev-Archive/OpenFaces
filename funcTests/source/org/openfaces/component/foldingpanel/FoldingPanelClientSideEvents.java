@@ -16,6 +16,8 @@ import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
 
+import java.awt.event.KeyEvent;
+
 /**
  * @author Darya Shumilina
  */
@@ -71,21 +73,21 @@ public class FoldingPanelClientSideEvents extends OpenFacesTestCase {
         // onkeydown
         ElementInspector contentKeyDown = element("formID:content_keydownID");
         contentKeyDown.setCursorPosition(2);
-        contentKeyDown.keyDown(77);
+        contentKeyDown.keyDown(KeyEvent.VK_M);
         assertTrue(selenium.isTextPresent("onkeydown works"));
         assertTrue(selenium.isTextPresent("keydown"));
 
         // onkeyup
         ElementInspector contentKeyUp = element("formID:content_keyupID");
         contentKeyUp.setCursorPosition(2);
-        contentKeyUp.keyUp(77);
+        contentKeyUp.keyUp(KeyEvent.VK_M);
         assertTrue(selenium.isTextPresent("onkeyup works"));
         assertTrue(selenium.isTextPresent("keyup"));
 
         // onkeypress
         ElementInspector contentKeyPress = element("formID:content_keypressID");
         contentKeyPress.setCursorPosition(2);
-        contentKeyPress.keyPress(77);
+        contentKeyPress.keyPress(KeyEvent.VK_M);
         assertTrue(selenium.isTextPresent("onkeypress works"));
         assertTrue(selenium.isTextPresent("keypress"));
 

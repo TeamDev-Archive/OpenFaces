@@ -16,6 +16,8 @@ import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
 
+import java.awt.event.KeyEvent;
+
 /**
  * @author Darya Shumilina
  */
@@ -29,17 +31,16 @@ public class JSFC_2662Test extends OpenFacesTestCase {
 
         ElementInspector suggestionField = element("formID:degree");
         suggestionField.setCursorPosition(0);
-        suggestionField.keyDown(40);
-        suggestionField.keyDown(40);
+        suggestionField.keyDown(KeyEvent.VK_DOWN);
+        suggestionField.keyDown(KeyEvent.VK_DOWN);
 
         //press 'enter'
-        suggestionField.keyPress(13);
+        suggestionField.keyPress(KeyEvent.VK_ENTER);
         suggestionField.setCursorPosition(5);
         //press 'delete' button
-
-        suggestionField.keyPress(46);
+        suggestionField.keyPress(KeyEvent.VK_DELETE);
         //press 'end' button
-        suggestionField.keyPress(35);
+        suggestionField.keyPress(KeyEvent.VK_END);
         assertFalse(selenium.isAlertPresent());
     }
 

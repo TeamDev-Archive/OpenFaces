@@ -17,6 +17,8 @@ import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.openfaces.TreeTableInspector;
 import org.seleniuminspector.ElementInspector;
 
+import java.awt.event.KeyEvent;
+
 /**
  * @author Darya Shumilina
  */
@@ -51,17 +53,17 @@ public class TreeTableClientSideEvents extends OpenFacesTestCase {
         assertTrue(selenium.isTextPresent("dblclick"));
 
         //onkeydown
-        treeTable.keyDown(40);
+        treeTable.keyDown(KeyEvent.VK_DOWN);
         assertTrue(selenium.isTextPresent("onkeydown works"));
         assertTrue(selenium.isTextPresent("keydown"));
 
         //onkeypress
-        treeTable.keyPress(40);
+        treeTable.keyPress(KeyEvent.VK_DOWN);
         assertTrue(selenium.isTextPresent("onkeypress works"));
         assertTrue(selenium.isTextPresent("keypress"));
 
         //onkeyup
-        treeTable.keyUp(40);
+        treeTable.keyUp(KeyEvent.VK_DOWN);
         assertTrue(selenium.isTextPresent("onkeyup works"));
         assertTrue(selenium.isTextPresent("keyup"));
 
