@@ -30,7 +30,7 @@ public class DaySwitcher extends OUIComponentBase {
     public static final String COMPONENT_TYPE = "org.openfaces.DaySwitcher";
     public static final String COMPONENT_FAMILY = "org.openfaces.DaySwitcher";
 
-    public static final String DEFAULT_PATTERN = "dd MMMM yyyy";
+    public static final String DEFAULT_DATE_FORMAT = "long";
     public static final String DEFAULT_SUP_PATTERN = "EEEE";
 
     private String _for;
@@ -130,7 +130,8 @@ public class DaySwitcher extends OUIComponentBase {
     }
 
     public Locale getLocale() {
-        return CalendarUtil.getBoundPropertyValueAsLocale(this, "locale", locale);
+        Locale defaultLocale = getDayTable().getLocale();
+        return CalendarUtil.getBoundPropertyValueAsLocale(this, "locale", defaultLocale, locale);
     }
 
     public void setLocale(Locale locale) {
@@ -138,7 +139,8 @@ public class DaySwitcher extends OUIComponentBase {
     }
 
     public TimeZone getTimeZone() {
-        return ValueBindings.get(this, "timeZone", timeZone, TimeZone.getDefault(), TimeZone.class);
+        TimeZone timeZone = getDayTable().getTimeZone();
+        return ValueBindings.get(this, "timeZone", this.timeZone, timeZone, TimeZone.class);
     }
 
     public void setTimeZone(TimeZone timeZone) {

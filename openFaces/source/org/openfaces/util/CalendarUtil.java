@@ -45,8 +45,11 @@ public class CalendarUtil {
 
     public static Locale getBoundPropertyValueAsLocale(UIComponent component, String property, Locale fieldValue) {
         Locale defaultLocale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-        Object propertyValue = ValueBindings.get(component, property, fieldValue, defaultLocale, Object.class);
+        return getBoundPropertyValueAsLocale(component, property, defaultLocale, fieldValue);
+    }
 
+    public static Locale getBoundPropertyValueAsLocale(UIComponent component, String property, Locale defaultLocale, Locale fieldValue) {
+        Object propertyValue = ValueBindings.get(component, property, fieldValue, defaultLocale, Object.class);
         if (propertyValue instanceof Locale) {
             return (Locale) propertyValue;
         } else {
@@ -59,14 +62,16 @@ public class CalendarUtil {
         return ValueBindings.get(component, "pattern", pattern, sdf.toPattern());
     }
 
-    public static SimpleDateFormat getSimpleDateFormat(String dateFormat, String pattern, String defaultPattern, Locale locale, TimeZone timeZone){
+    public static SimpleDateFormat getSimpleDateFormat(String dateFormat, String defaultDateFormat, String pattern, String defaultPattern, Locale locale, TimeZone timeZone){
         SimpleDateFormat sdf;
         if (pattern != null) {
             sdf = new SimpleDateFormat(pattern, locale);
-        }else if(dateFormat!=null){
+        } else if (dateFormat != null) {
             sdf = (SimpleDateFormat) DateFormat.getDateInstance(convertToDateFormatStyle(dateFormat), locale);
-        }else{
+        } else if (defaultPattern != null){
             sdf = new SimpleDateFormat(defaultPattern, locale);
+        }else{
+            sdf = (SimpleDateFormat) DateFormat.getDateInstance(convertToDateFormatStyle(defaultDateFormat), locale);
         }
         sdf.setTimeZone(timeZone);
         return sdf;

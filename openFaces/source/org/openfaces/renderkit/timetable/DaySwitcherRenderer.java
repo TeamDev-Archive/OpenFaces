@@ -53,13 +53,13 @@ public class DaySwitcherRenderer extends RendererBase {
         Date date = dayTable.getDay();
 
         Boolean enabled = daySwitcher.isEnabled();
-        SimpleDateFormat upperDateFormat = CalendarUtil.getSimpleDateFormat(daySwitcher.getUpperDateFormat(),
+        SimpleDateFormat upperDateFormat = CalendarUtil.getSimpleDateFormat(daySwitcher.getUpperDateFormat(), null,
                 daySwitcher.getUpperPattern(), DaySwitcher.DEFAULT_SUP_PATTERN, locale, timeZone);
         String upperPattern = upperDateFormat.toPattern();
         boolean renderUpperText = upperPattern.length() != 0;
 
         SimpleDateFormat dateFormat = CalendarUtil.getSimpleDateFormat(daySwitcher.getDateFormat(),
-                daySwitcher.getPattern(), DaySwitcher.DEFAULT_PATTERN, locale, timeZone);
+                DaySwitcher.DEFAULT_DATE_FORMAT, daySwitcher.getPattern(), null, locale, timeZone);
         String pattern = dateFormat.toPattern();
         boolean renderText = pattern.length() != 0;
 
