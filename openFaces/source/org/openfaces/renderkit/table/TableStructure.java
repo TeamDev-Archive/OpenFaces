@@ -184,9 +184,9 @@ public class TableStructure extends TableElement {
             RenderingUtil.writeAttribute(writer, "cellpadding", "0");
             writer.startElement("tr", table);
             writer.startElement("td", table);
-            writer.writeAttribute("style", "vertical-align: top;", null);
+            writer.writeAttribute("style", "vertical-align: top", null);
             writer.startElement("div", table);
-            writer.writeAttribute("style", "position: relative;", null);
+            writer.writeAttribute("style", "position: relative", null);
         }
 
         TableHeader header = getHeader();

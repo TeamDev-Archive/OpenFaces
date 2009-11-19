@@ -566,7 +566,7 @@ O$.Tables = {
         }
 
       };
-      if (section._getRows().length == 0)
+      if (sectionTagName != "tbody" && section._getRows().length == 0)
         return null;
       section._updateStyle();
       return section;
@@ -1796,6 +1796,8 @@ O$.Tables = {
     if (!table._params.scrolling)
       throw "O$.Tables._initScrolling can't be invoked on a non-scrollable table";
 
+    var delayedInitFunctions = [];
+
     function alignColumnWidths() {
       var firstSection = table.header ? table.header : table.body;
       var defaultColWidth = 120;
@@ -1867,10 +1869,10 @@ O$.Tables = {
       [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
         if (!area) return;
         if (area._scrollingDivContainer && area._scrollingDivContainer.style.display == "none")
-          setTimeout(function() {
+          delayedInitFunctions.push(function() {
             area._scrollingDivContainer.style.display = "block";
             fixture.update();
-          }, 10);
+          });
       });
 
 //      setInterval(function() {
@@ -1906,24 +1908,57 @@ O$.Tables = {
     function alignRowHeights() {
       [table.header, table.body, table.footer].forEach(function(section) {
         if (!section) return;
+//        if (O$.isExplorer() && O$.isQuirksMode()) {
+//          function setTablesLayout(layout) {
+//            [section._leftScrollingArea, section._centerScrollingArea, section._rightScrollingArea].forEach(function (area) {
+//              if (!area) return;
+//              area._table.style.tableLayout = layout;
+//            });
+//          }
+//          setTablesLayout("auto");
+//        }
         section._getRows().forEach(function (row) {
+          var artificialRow = row.nodeName != "TR";
+          if (!artificialRow) return;
           var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
+          function setRowHeight(rowNode, height) {
+            rowNode.style.height = height + "px";
+            if (!(O$.isChrome() || O$.isSafari())) return;
+            // setting row height is not enough for Chrome and Safari, setting cell heights solves this issue
+            for (var i = 0, count = rowNode._cells.length; i < count; i++) {
+              var cell = rowNode._cells[i];
+              cell.style.height = height + "px";
+            }
+          }
           var height = 0;
           rowNodes.forEach(function(rowNode) {
             if (!rowNode) return;
-            rowNode.style.height = "0";
+            if (!(O$.isExplorer() && O$.isQuirksMode()))
+                setRowHeight(rowNode, 0);
             var rowHeight = O$.getElementSize(rowNode).height;
             if (rowHeight > height)
               height = rowHeight;
           });
           rowNodes.forEach(function(rowNode) {
             if (!rowNode) return;
-            rowNode.style.height = height + "px";
+            setRowHeight(rowNode, height);
           });
         });
+//        if (O$.isExplorer() && O$.isQuirksMode())
+//          setTablesLayout("fixed");
+
       });
     }
-    alignRowHeights();
+    if (!(O$.isExplorer() && O$.isQuirksMode()))
+      alignRowHeights();
+    else
+      delayedInitFunctions.push(alignRowHeights);
+
+    if (delayedInitFunctions.length)
+      O$.addLoadEvent(function() {
+        delayedInitFunctions.forEach(function (func) {func();});
+      });
+
   }
 
 
