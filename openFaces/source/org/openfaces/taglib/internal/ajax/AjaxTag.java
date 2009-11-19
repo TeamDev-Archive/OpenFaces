@@ -36,17 +36,15 @@ public class AjaxTag extends AbstractComponentTag {
         setStringProperty(component, "for");
         setBooleanProperty(component, "standalone");
 
-        setCollectionProperty(component, "render");
-        setCollectionProperty(component, "execute");
+        setIdCollectionProperty(component, "render");
+        setIdCollectionProperty(component, "execute");
         setBooleanProperty(component, "submitInvoker");
         setIntProperty(component, "delay");
-        setBooleanProperty(component, "disableDefault");
-
-        /*Ajax ajaxComponent = (Ajax) component;
-        setActionListener(facesContext, ajaxComponent, "listener");*/
+        
         setPropertyBinding(component, "listener");
         setBooleanProperty(component, "immediate");
 
+        setStringProperty(component, "onevent");
         setStringProperty(component, "onerror");
         setStringProperty(component, "onajaxstart");
         setStringProperty(component, "onajaxend");

@@ -22722,7 +22722,7 @@ and it is automatically triggered on any form submission. -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @el false -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Allows attaching this Ajax component to an arbitrary component or HTML tag instead of
@@ -22767,21 +22767,23 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>Id's of components, which will be rerendered after succcesfull ajax request.
-        Can be a single id or a comma-separated list if id's.
+        Evaluates to Iterable. If a literal is specified
+        can be a single id or a comma-separated list if id's.
       </description>
       <name>render</name>
       <required>true</required>
       <deferred-value>
         <type>java.util.List</type>
       </deferred-value>
-      <!-- @bindingType java.util.List -->
-      <!-- @el false -->
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Id's of components whose data should be submitted and processed on the server in addition to the
         reloaded components. The difference with render is that components listed in execute will
         just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
-        depends on some other component on a page. This attribute can be specified as a single id or a comma-separated
+        depends on some other component on a page.
+        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated
         list if id's.
       </description>
       <name>execute</name>
@@ -22789,8 +22791,8 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>java.util.List</type>
       </deferred-value>
-      <!-- @bindingType java.util.List -->
-      <!-- @el false -->
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
     </attribute>
 
     <!--<attribute>-->
@@ -22803,17 +22805,6 @@ and it is automatically triggered on any form submission. -->
     <!-- @default true -->
     <!-- @el true -->
     <!--</attribute>-->
-    <attribute>
-      <description>Disable default action for component. (Append "return false;" to javascript)
-      </description>
-      <name>disableDefault</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default false -->
-      <!-- @el true -->
-    </attribute>
     <attribute>
       <description>A flag that indicates whether or not actionListener should be executed immediately (during the Apply
         Request Values phase of the request processing lifecycle instead of Process Validations phase).
@@ -22847,6 +22838,17 @@ and it is automatically triggered on any form submission. -->
         while performing an Ajax request.
       </description>
       <name>onerror</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when an event occured.
+      </description>
+      <name>onevent</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

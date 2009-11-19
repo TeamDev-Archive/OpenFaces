@@ -133,7 +133,7 @@
         <h:commandButton value="Display Search Results" style="margin-top: 15px;">
           <o:ajax render="mainForm:peopleByCriteria"
                               execute="mainForm:country mainForm:industry mainForm:degree mainForm:hobby"
-                              listener="#{SuggestionFieldBean.findPeople}" disableDefault="true"/>
+                              listener="#{SuggestionFieldBean.findPeople}"/>
         </h:commandButton>
       </td>
     </tr>

@@ -18,7 +18,7 @@
                               style="font-size: #{state.quantity le 3 ? 9 : state.quantity * 3}px;"/>
                 <o:ajax event="click"
                                     listener="#{BanksList.selectState}"
-                                    render=":form:banksList" delay="500" disableDefault="true">
+                                    render=":form:banksList" delay="500">
                   <f:param name="state" value="#{state.stateName}"/>
                 </o:ajax>
               </h:commandLink>

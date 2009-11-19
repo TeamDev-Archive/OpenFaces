@@ -35,6 +35,8 @@ import javax.faces.validator.MethodExpressionValidator;
 import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.TimeZone;
@@ -275,6 +277,25 @@ public abstract class AbstractComponentTag extends AbstractTag {
 
         if (!setPropertyAsBinding(component, propertyName, value))
             component.getAttributes().put(propertyName, Collections.singletonList(value));
+    }
+
+    protected void setIdCollectionProperty(UIComponent component, String propertyName) {
+        String value = getPropertyValue(propertyName);
+        setCollectionProperty(component, propertyName, value);
+    }
+
+    protected void setIdCollectionProperty(UIComponent component, String propertyName, String value) {
+        if (value == null) {
+            return;
+        }
+        if (getExpressionCreator().isValueReference(propertyName, value)) {
+            ValueExpression ve = createValueExpression(getFacesContext(), propertyName, value, Object.class);
+            component.setValueExpression(propertyName, ve);
+        } else {
+            Collection<String> collection = Arrays.asList(value.trim().split(" "));
+            component.getAttributes().put(propertyName, collection);
+
+        }
     }
 
     /**

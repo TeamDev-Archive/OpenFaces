@@ -9,7 +9,7 @@
   <br/>
 
   <h:commandButton id="resetBtn" value="Reset Counter">
-    <o:ajax render="counter" listener="#{TableTestBean.resetCounter}" disableDefault="true"/>
+    <o:ajax render="counter" listener="#{TableTestBean.resetCounter}"/>
   </h:commandButton>
 
   <h:outputText id="counter" value="#{TableTestBean.counter}"/>
@@ -18,25 +18,24 @@
 
   <h:panelGrid columns="3">
     <h:commandButton id="btn1" value="btn1">
-      <o:ajax render="counter" listener="#{TableTestBean.incrementCounter}" disableDefault="true"/>
+      <o:ajax render="counter" listener="#{TableTestBean.incrementCounter}"/>
     </h:commandButton>
     <h:panelGroup>
       <h:commandButton id="btn2" value="btn2"/>
-      <o:ajax for="btn2" render="counter" listener="#{TableTestBean.incrementCounter}"
-                          disableDefault="true"/>
+      <o:ajax for="btn2" render="counter" listener="#{TableTestBean.incrementCounter}"/>
     </h:panelGroup>
     <h:panelGroup>
       <h:commandButton id="btn3" value="btn3" onclick="O$('form1:reload1').run(); return false;"/>
       <o:ajax id="reload1" standalone="true" render="counter" listener="#{TableTestBean.incrementCounter}"/>
     </h:panelGroup>
 
+
     <h:commandLink id="link1" value="link1">
-      <o:ajax render="counter" listener="#{TableTestBean.incrementCounter}" disableDefault="true"/>
+      <o:ajax render="counter" listener="#{TableTestBean.incrementCounter}"/>
     </h:commandLink>
     <h:panelGroup>
       <h:commandLink id="link2" value="link2"/>
-      <o:ajax for="link2" render="counter" listener="#{TableTestBean.incrementCounter}"
-                          disableDefault="true"/>
+      <o:ajax for="link2" render="counter" listener="#{TableTestBean.incrementCounter}"/>
     </h:panelGroup>
     <h:panelGroup>
       <h:commandLink id="link3" value="link3" onclick="O$('form1:reload2').run(); return false;"/>
@@ -57,6 +56,7 @@
       <o:ajax id="reload3" standalone="true" render="counter" listener="#{TableTestBean.incrementCounter}"
                           delay="500"/>
     </h:panelGroup>
+
 
 
     <h:graphicImage id="image1" url="../datatable/arrowBullet.gif">

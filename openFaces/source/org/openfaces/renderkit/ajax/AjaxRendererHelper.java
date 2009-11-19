@@ -11,17 +11,18 @@
  */
 package org.openfaces.renderkit.ajax;
 
+import org.openfaces.component.ComponentConfigurator;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.component.ajax.Ajax;
 import org.openfaces.component.ajax.AjaxInitializer;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.renderkit.OUIClientActionRendererHelper;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.ScriptBuilder;
 
+import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlCommandButton;
-import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.context.FacesContext;
 
 /**
@@ -41,14 +42,35 @@ public class AjaxRendererHelper extends OUIClientActionRendererHelper {
         script.functionCall("O$.ajaxReload",
                 initializer.getRenderArray(context, ajax, ajax.getRender()),
                 initializer.getAjaxParams(context, ajax)).semicolon();
-        if (ajax.getDisableDefault())
+        if (isDisableDefaultRequired(ajax))
             script.append("return false;");
         return script.toString();
     }
 
+    private static boolean isDisableDefaultRequired(Ajax ajax) {
+        String _for = ajax.getFor();
+        if (_for != null) {
+            UIComponent referredComponent = ComponentUtil.referenceIdToComponent(ajax, _for);
+            return isCommandComponent(referredComponent);
+        }
+        if (!ajax.isStandalone()) {
+            UIComponent parent = ajax.getParent();
+            if (parent instanceof ComponentConfigurator){
+                return isCommandComponent(((ComponentConfigurator) parent).getConfiguredComponent());
+            }
+            return isCommandComponent(parent);
+        }
+        return false;
+    }
+
+    private static boolean isCommandComponent(UIComponent component){
+        //return (component instanceof HtmlCommandButton || component instanceof HtmlCommandLink);
+        return component instanceof UICommand;
+    }
+
     protected void appendMissingParameters(FacesContext context, Ajax ajax, ScriptBuilder script) {
         UIComponent parent = ajax.getParent();
-        if (!(parent instanceof HtmlCommandButton || parent instanceof HtmlCommandLink)) {
+        if (!isCommandComponent(parent)) {
             String ajaxComponentId = ajax.getId();
             script.append("if (!O$._renderIds) {O$._renderIds = []};O$._renderIds['").append(ajaxComponentId).append("'] = ");
             AjaxInitializer initializer = new AjaxInitializer();

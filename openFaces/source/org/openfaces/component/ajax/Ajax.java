@@ -19,7 +19,6 @@ import org.openfaces.util.ValueBindings;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,16 +28,16 @@ public class Ajax extends UICommand implements OUIClientAction {
     public static final String COMPONENT_TYPE = "org.openfaces.Ajax";
     public static final String COMPONENT_FAMILY = "org.openfaces.Ajax";
 
-    private String event = "onclick";
+    private String event;
     private String _for;
     private Boolean standalone;
 
-    private List<String> render;
-    private List<String> execute;
+    private Iterable<String> render;
+    private Iterable<String> execute;
     private Boolean submitInvoker;
     private Integer delay;
-    private Boolean disableDefault;
 
+    private String onevent;
     private String onajaxstart;
     private String onajaxend;
     private String onerror;
@@ -61,17 +60,11 @@ public class Ajax extends UICommand implements OUIClientAction {
             helper.onParentChange(this, parent);
     }
 
-    public void setRender(List<String> render) {
-        String s = render.get(0);
-        s = s.trim();
-        String[] strings = s.split(" ");
-        this.render = new ArrayList<String>();
-        for (String string : strings) {
-            this.render.add(string);
-        }
+    public void setRender(Iterable<String> render) {
+        this.render = render;
     }
 
-    public List<String> getRender() {
+    public Iterable<String> getRender() {
         return render;
     }
 
@@ -83,28 +76,24 @@ public class Ajax extends UICommand implements OUIClientAction {
         this.submitInvoker = submitInvoker;
     }
 
-    public List<String> getExecute() {
+    public Iterable<String> getExecute() {
         return execute;
     }
 
-    public void setExecute(List<String> execute) {
-        String s = execute.get(0);
-        s = s.trim();
-        String[] strings = s.split(" ");
-        this.execute = new ArrayList<String>();
-        for (String string : strings) {
-            this.execute.add(string);
-        }
+    public void setExecute(Iterable<String> execute) {
+        this.execute = execute;
     }
 
     public String getEvent() {
+        String event = ValueBindings.get(this, "event", this.event, "click");
+        if (!event.startsWith("on")) {
+            event = "on" + event;
+        }
         return event;
     }
 
     public void setEvent(String event) {
-        if (!event.startsWith("on")) {
-            event = "on" + event;
-        }
+
         this.event = event;
     }
 
@@ -133,12 +122,12 @@ public class Ajax extends UICommand implements OUIClientAction {
         this.delay = delay;
     }
 
-    public boolean getDisableDefault() {
-        return ValueBindings.get(this, "disableDefault", disableDefault, false);
+    public String getOnevent() {
+        return ValueBindings.get(this, "onevent", onevent);
     }
 
-    public void setDisableDefault(boolean disableDefault) {
-        this.disableDefault = disableDefault;
+    public void setOnevent(String onevent) {
+        this.onevent = onevent;
     }
 
     public String getOnajaxstart() {
@@ -180,7 +169,7 @@ public class Ajax extends UICommand implements OUIClientAction {
                 standalone,
                 submitInvoker,
                 delay,
-                disableDefault,
+                onevent,
                 onerror,
                 onajaxstart,
                 onajaxend,
@@ -199,7 +188,7 @@ public class Ajax extends UICommand implements OUIClientAction {
         standalone = (Boolean) stateArray[i++];
         submitInvoker = (Boolean) stateArray[i++];
         delay = (Integer) stateArray[i++];
-        disableDefault = (Boolean) stateArray[i++];
+        onevent= (String) stateArray[i++];
         onerror = (String) stateArray[i++];
         onajaxstart = (String) stateArray[i++];
         onajaxend = (String) stateArray[i++];

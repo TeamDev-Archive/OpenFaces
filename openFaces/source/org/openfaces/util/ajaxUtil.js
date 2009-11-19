@@ -229,8 +229,7 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
     O$._ajaxRequestScheduled = false;
     if (O$._isFormSubmissionJustStated()) {
       alert("Couldn't start Ajax request for component(s) \"" + ajaxArgs[0].join(",") + "\" because ordinary form " +
-            "submission has also been started simultaneously. If you're using <o:ajax> on a command component " +
-            "such as <h:commandButton>, be sure to disable the default component's action using the disableDefault attribute.");
+            "submission has also been started simultaneously.");
       return;
     }
 

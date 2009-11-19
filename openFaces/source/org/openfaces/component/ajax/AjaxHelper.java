@@ -31,6 +31,14 @@ public class AjaxHelper extends OUIClientActionHelper {
 
     protected String getClientActionScript(FacesContext context, OUIClientAction action) {
         Ajax ajax = (Ajax) action;
+
+        ScriptBuilder buf = new ScriptBuilder();
+        String onevent = ajax.getOnevent();
+        if (onevent != null){
+            buf.append(onevent);
+            buf.semicolon();
+        }
+        
         final String id = ajax.getId();
         AjaxInitializer ajaxInitializer = new AjaxInitializer() {
 
@@ -47,13 +55,9 @@ public class AjaxHelper extends OUIClientActionHelper {
         String idExpression = "O$._renderIds['" + id + "']";
         Script render = new RawScript("(" + idExpression + " ? " + idExpression + " : " + renderArray.toString() + ")" );
 
-        ScriptBuilder buf = new ScriptBuilder();
         buf.functionCall("O$.ajaxReload",
                 render,
                 ajaxInitializer.getAjaxParams(context, ajax)).semicolon();
-        if (ajax.getDisableDefault()) {
-            buf.append("return false;");
-        }
         return buf.toString();
     }
 

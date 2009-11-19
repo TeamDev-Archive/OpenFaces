@@ -54,10 +54,6 @@ public class AjaxJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("delay", delay);
     }
 
-    public void setDisableDefault(ValueExpression disableDefault) {
-        getDelegate().setPropertyValue("disableDefault", disableDefault);
-    }
-
     public void setListener(MethodExpression listener) {
         getDelegate().setPropertyValue("listener", listener);
     }
@@ -66,6 +62,9 @@ public class AjaxJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("immediate", immediate);
     }
 
+    public void setOnevent(ValueExpression onevent) {
+        getDelegate().setPropertyValue("onevent", onevent);
+    }
 
     public void setOnerror(ValueExpression onError) {
         getDelegate().setPropertyValue("onerror", onError);

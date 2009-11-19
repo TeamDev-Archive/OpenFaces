@@ -25,7 +25,6 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +37,7 @@ public class AjaxInitializer {
     private static final String EXPRESSION_PREFIX = "#{";
     private static final String EXPRESSION_SUFFIX = "}";
 
-    public JSONArray getRenderArray(FacesContext context, OUIClientAction action, List<String> render) {
+    public JSONArray getRenderArray(FacesContext context, OUIClientAction action, Iterable<String> render) {
         JSONArray idsArray = new JSONArray();
         if (render != null)
             for (String componentId : render) {
@@ -110,10 +109,8 @@ public class AjaxInitializer {
     public JSONObject getAjaxParams(FacesContext context, Ajax ajax) {
         try {
             JSONObject result = new JSONObject();
-            List<String> execute = ajax.getExecute();
-            if (execute == null)
-                execute = new ArrayList<String>();
-            if (execute.size() > 0 || (!ajax.isStandalone() && ajax.getSubmitInvoker())) {
+            Iterable<String> execute = ajax.getExecute();
+            if (execute!=null && execute.iterator().hasNext() && (!ajax.isStandalone() && ajax.getSubmitInvoker())) {
                 result.put("execute", getExecuteParam(context, ajax, execute));
             }
             String onajaxstart = ajax.getOnajaxstart();
@@ -167,7 +164,7 @@ public class AjaxInitializer {
 
     protected Object getExecuteParam(FacesContext context,
                                                    Ajax ajax,
-                                                   List<String> execute) {
+                                                   Iterable<String> execute) {
         JSONArray renderArray = getRenderArray(context, ajax, execute);
         if (!ajax.isStandalone() && ajax.getSubmitInvoker()) {
             String invokerId = OUIClientActionHelper.getClientActionInvoker(context, ajax);
