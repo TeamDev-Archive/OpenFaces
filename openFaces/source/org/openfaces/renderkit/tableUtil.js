@@ -1521,6 +1521,7 @@ O$.Tables = {
       return true;
 
     var useCellStylesToAvoidApplyingFirstColStyleToCommonHeader =
+            !table._params.scrolling && // this issue is not a[[;ocab;e to scrollable tables
             column._colIndex == 0 && (
                     (table._params.header && table._params.header.commonHeader) ||
                     (table._params.footer && table._params.footer.commonHeader)
@@ -1652,40 +1653,40 @@ O$.Tables = {
     if (isMozilla || isOpera) {
       if (!cellStyles)
         cellStyles = {};
-      cellStyles._width = colStyleProperties.width;//O$.getStyleClassProperty(colTag.className, "width");
-      cellStyles._textAlign = colStyleProperties.textAlign;//O$.Tables._getUserStylePropertyValue(colTag, "text-align", "start", "left");
-      cellStyles._verticalAlign = O$.Tables._getUserStylePropertyValue(colTag, "vertical-align", "baseline", "auto");
-      cellStyles._lineHeight = O$.Tables._getUserClassPropertyValue(colTag, "line-height", "normal");
+      cellStyles.width = colStyleProperties.width;//O$.getStyleClassProperty(colTag.className, "width");
+      cellStyles.textAlign = colStyleProperties.textAlign;//O$.Tables._getUserStylePropertyValue(colTag, "text-align", "start", "left");
+      cellStyles.verticalAlign = O$.Tables._getUserStylePropertyValue(colTag, "vertical-align", "baseline", "auto");
+      cellStyles.lineHeight = O$.Tables._getUserClassPropertyValue(colTag, "line-height", "normal");
 
-      cellStyles._paddingLeft = O$.Tables._getUserStylePropertyValue(colTag, "padding-left", "0px");
-      cellStyles._paddingRight = O$.Tables._getUserStylePropertyValue(colTag, "padding-right", "0px");
-      cellStyles._paddingTop = O$.Tables._getUserStylePropertyValue(colTag, "padding-top", "0px");
-      cellStyles._paddingBottom = O$.Tables._getUserStylePropertyValue(colTag, "padding-bottom", "0px");
+      cellStyles.paddingLeft = O$.Tables._getUserStylePropertyValue(colTag, "padding-left", "0px");
+      cellStyles.paddingRight = O$.Tables._getUserStylePropertyValue(colTag, "padding-right", "0px");
+      cellStyles.paddingTop = O$.Tables._getUserStylePropertyValue(colTag, "padding-top", "0px");
+      cellStyles.paddingBottom = O$.Tables._getUserStylePropertyValue(colTag, "padding-bottom", "0px");
 
-      cellStyles._color = colStyleProperties.color;
-      cellStyles._fontWeight = colStyleProperties.fontWeight;
-      cellStyles._fontStyle = colStyleProperties.fontStyle;
+      cellStyles.color = colStyleProperties.color;
+      cellStyles.fontWeight = colStyleProperties.fontWeight;
+      cellStyles.fontStyle = colStyleProperties.fontStyle;
     }
     if (isMozilla || isExplorer) {
       if (!cellStyles)
         cellStyles = {};
-      cellStyles._fontFamily = colStyleProperties.fontFamily;
-      cellStyles._fontSize = colStyleProperties.fontSize;
-      cellStyles._borderLeft = colStyleProperties.borderLeft;
-      cellStyles._borderRight = colStyleProperties.borderRight;
+      cellStyles.fontFamily = colStyleProperties.fontFamily;
+      cellStyles.fontSize = colStyleProperties.fontSize;
+      cellStyles.borderLeft = colStyleProperties.borderLeft;
+      cellStyles.borderRight = colStyleProperties.borderRight;
     }
-    if (cellStyles && cellStyles._color) {
+    if (cellStyles && cellStyles.color) {
       // use cell styles for this column to solve color CSS attribute precedence issue in Mozilla (JSFC-2823)
       column._useCellStyles = true;
       if (column.body)
         O$.setStyleMappings(column.body, {_colTagClassName: colTagClassName});
       cellStyles = null;
     } else {
-      if (!(cellStyles._textAlign || cellStyles._verticalAlign ||
-            cellStyles._paddingLeft || cellStyles._paddingRight || cellStyles._paddingTop ||
-            cellStyles._paddingBottom || cellStyles._width || cellStyles._height || cellStyles._color ||
-            cellStyles._fontFamily || cellStyles._fontSize || cellStyles._fontWeight || cellStyles._fontStyle ||
-            cellStyles._borderLeft || cellStyles._borderRight))
+      if (!(cellStyles.textAlign || cellStyles.verticalAlign ||
+            cellStyles.paddingLeft || cellStyles.paddingRight || cellStyles.paddingTop ||
+            cellStyles.paddingBottom || cellStyles.width || cellStyles.height || cellStyles.color ||
+            cellStyles.fontFamily || cellStyles.fontSize || cellStyles.fontWeight || cellStyles.fontStyle ||
+            cellStyles.borderLeft || cellStyles.borderRight))
         cellStyles = null;
     }
 
@@ -1749,31 +1750,21 @@ O$.Tables = {
     if (column._forceCellVAlign)
       cell.vAlign = column._forceCellVAlign;
 
+    var simulatedProperties = ["textAlign", "verticalAlign", "lineHeight", "color", "fontFamily", "fontSize", "fontWeight", "fontStyle",
+      "paddingLeft", "paddingRight", "paddingTop", "paddingBottom", "borderLeft", "borderRight", "width"];
+
     var cellStyles = column._cellStyles;
     if (cellStyles) {
-      O$.Tables._setCellStyleProperty(cell, "textAlign", cellStyles._textAlign);
-      O$.Tables._setCellStyleProperty(cell, "verticalAlign", cellStyles._verticalAlign);
-      O$.Tables._setCellStyleProperty(cell, "width", cellStyles._width);
-      O$.Tables._setCellStyleProperty(cell, "lineHeight", cellStyles._lineHeight);
+      simulatedProperties.forEach(function (property) {
+        O$.Tables._setCellStyleProperty(cell, property, cellStyles[property]);
+      });
 
-      O$.Tables._setCellStyleProperty(cell, "color", cellStyles._color);
-      O$.Tables._setCellStyleProperty(cell, "fontFamily", cellStyles._fontFamily);
-      O$.Tables._setCellStyleProperty(cell, "fontSize", cellStyles._fontSize);
-      O$.Tables._setCellStyleProperty(cell, "fontWeight", cellStyles._fontWeight);
-      O$.Tables._setCellStyleProperty(cell, "fontStyle", cellStyles._fontStyle);
-
-      O$.Tables._setCellStyleProperty(cell, "paddingLeft", cellStyles._paddingLeft);
-      O$.Tables._setCellStyleProperty(cell, "paddingRight", cellStyles._paddingRight);
-      O$.Tables._setCellStyleProperty(cell, "paddingTop", cellStyles._paddingTop);
-      O$.Tables._setCellStyleProperty(cell, "paddingBottom", cellStyles._paddingBottom);
-      O$.Tables._setCellStyleProperty(cell, "borderLeft", cellStyles._borderLeft);
-      O$.Tables._setCellStyleProperty(cell, "borderRight", cellStyles._borderRight);
+//      O$.setElementWidth(cell, cellStyles.width);
       cell._simulatedColStylesApplied = true;
     } else {
       if (cell._simulatedColStylesApplied) {
-        O$.Tables._clearCellStyleProperties(cell,
-                ["textAlign", "verticalAlign", "width", "lineHeight", "color", "fontFamily", "fontSize", "fontWeight",
-                  "fontStyle", "paddingLeft", "paddingRight", "paddingTop", "paddingBottom", "borderLeft", "borderRight"]);
+        O$.Tables._clearCellStyleProperties(cell, simulatedProperties);
+//        O$.Tables._clearCellStyleProperties(cell, ["width"]);
         cell._simulatedColStylesApplied = false;
       }
     }

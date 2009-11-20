@@ -3758,14 +3758,14 @@ if (!window.O$) {
     }
 
     function processInput(input) {
-      if (input._strictWidthFixed)
+      if (input._strictWidthFixed || input.type == "hidden")
         return;
       input._strictWidthFixed = true;
+      var parent = input.parentNode;
       var widthCorrection;
       if (O$.getStyleClassProperty(input.className, "width") == "100%") {
         var bordersX = O$.getNumericStyleProperty(input, "border-left-width") + O$.getNumericStyleProperty(input, "border-right-width");
         var paddingsX = O$.getNumericStyleProperty(input, "padding-left") + O$.getNumericStyleProperty(input, "padding-right");
-        var parent = input.parentNode;
         widthCorrection = bordersX + paddingsX;
       }
       var heightCorrection;
@@ -3775,7 +3775,6 @@ if (!window.O$) {
         heightCorrection = bordersY + paddingsY;
       }
 
-      //    if (!O$.isExplorer()) {
       if (widthCorrection) {
         var parentPaddingRight = O$.getNumericStyleProperty(parent, "padding-right");
         parent.style.paddingRight = parentPaddingRight + widthCorrection + "px";
@@ -3784,10 +3783,6 @@ if (!window.O$) {
         var parentPaddingBottom = O$.getNumericStyleProperty(parent, "padding-bottom");
         parent.style.paddingBottom = parentPaddingBottom + heightCorrection + "px";
       }
-      //    } else {
-      //      if (widthCorrection || heightCorrection)
-      //        addFieldForAutocorrection(input, widthCorrection, heightCorrection);
-      //    }
 
     }
 
