@@ -50,7 +50,9 @@ public class CalendarUtil {
 
     public static Locale getBoundPropertyValueAsLocale(UIComponent component, String property, Locale defaultLocale, Locale fieldValue) {
         Object propertyValue = ValueBindings.get(component, property, fieldValue, defaultLocale, Object.class);
-        if (propertyValue instanceof Locale) {
+        if (propertyValue == null) {
+            return FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        } else if (propertyValue instanceof Locale) {
             return (Locale) propertyValue;
         } else {
             return CalendarUtil.getLocaleFromString(propertyValue.toString());
