@@ -1521,7 +1521,7 @@ O$.Tables = {
       return true;
 
     var useCellStylesToAvoidApplyingFirstColStyleToCommonHeader =
-            !table._params.scrolling && // this issue is not a[[;ocab;e to scrollable tables
+            !table._params.scrolling && // this issue is not applicable to scrollable tables
             column._colIndex == 0 && (
                     (table._params.header && table._params.header.commonHeader) ||
                     (table._params.footer && table._params.footer.commonHeader)
@@ -1864,19 +1864,6 @@ O$.Tables = {
             fixture.update();
           });
       });
-
-//      setInterval(function() {
-//        [table.header, table.footer].forEach(function (section) {
-//          if (!section || !section._sectionTable) return;
-//          var sectionHeight = O$.getElementSize(section._sectionTable).height;
-//          [section._leftScrollingArea, section._centerScrollingArea, section._rightScrollingArea].forEach(function (area) {
-//            if (!area) return;
-//            if (!area._scrollingDiv) return;
-//            area._scrollingDiv.style.height = sectionHeight + "px";
-//
-//          });
-//        });
-//      }, 100);
     }
     fixBodyHeight();
 
@@ -1898,27 +1885,14 @@ O$.Tables = {
     function alignRowHeights() {
       [table.header, table.body, table.footer].forEach(function(section) {
         if (!section) return;
-//        if (O$.isExplorer() && O$.isQuirksMode()) {
-//          function setTablesLayout(layout) {
-//            [section._leftScrollingArea, section._centerScrollingArea, section._rightScrollingArea].forEach(function (area) {
-//              if (!area) return;
-//              area._table.style.tableLayout = layout;
-//            });
-//          }
-//          setTablesLayout("auto");
-//        }
-        section._getRows().forEach(function (row) {
+        var rows = section._getRows();
+        rows.forEach(function (row) {
           var artificialRow = row.nodeName != "TR";
           if (!artificialRow) return;
           var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
           function setRowHeight(rowNode, height) {
+            row.__height = height;
             rowNode.style.height = height + "px";
-            if (!(O$.isChrome() || O$.isSafari())) return;
-            // setting row height is not enough for Chrome and Safari, setting cell heights solves this issue
-            for (var i = 0, count = rowNode._cells.length; i < count; i++) {
-              var cell = rowNode._cells[i];
-              cell.style.height = height + "px";
-            }
           }
           var height = 0;
           rowNodes.forEach(function(rowNode) {
@@ -1934,8 +1908,26 @@ O$.Tables = {
             setRowHeight(rowNode, height);
           });
         });
-//        if (O$.isExplorer() && O$.isQuirksMode())
-//          setTablesLayout("fixed");
+        if (O$.isChrome() || O$.isSafari()) {
+          // setting row height is not enough for Chrome and Safari, setting cell heights solves this issue
+          for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
+            var row = rows[rowIndex];
+            var artificialRow = row.nodeName != "TR";
+            if (!artificialRow) continue;
+            row._cells.forEach(function (cell) {
+              var rowSpan = cell.rowSpan ? cell.rowSpan : 1;
+              var cellHeight = 0;
+              for (var i = rowIndex; i < rowIndex + rowSpan; i++) {
+                cellHeight += rows[i].__height;
+              }
+              O$.setElementHeight(cell, cellHeight);
+              cell.__height = cellHeight;
+            });
+
+          }
+        }
+
+
 
       });
     }
