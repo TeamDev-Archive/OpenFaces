@@ -3519,8 +3519,8 @@ if (!window.O$) {
       // skip calculating "medium" width and just return 0 in such cases.
       var capitalizedPropertyName = O$.capitalizeCssPropertyName(propertyName);
       if (O$.stringStartsWith(capitalizedPropertyName, "border") && O$.stringEndsWith(capitalizedPropertyName, "Width")) {
-        var borderStylePropertyName = capitalizedPropertyName.substring(0, capitalizedPropertyName.length - "Width".length) + "Style";
-        if (O$.getElementStyleProperty(element, borderStylePropertyName) == "none")
+        var borderPropertyName = capitalizedPropertyName.substring(0, capitalizedPropertyName.length - "Width".length);
+        if (O$.getElementStyleProperty(element, borderPropertyName).indexOf("none") != -1)
           return 0;
       }
     }

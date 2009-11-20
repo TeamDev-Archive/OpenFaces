@@ -57,17 +57,16 @@ O$.Tables = {
       }
     }
 
+    var borderProperties = ["borderLeft", "borderRight", "borderTop", "borderBottom"];
     var propertyValues = O$.Tables._evaluateStyleClassProperties_cached(
-            row.className,
-            ["borderLeft", "borderRight", "borderTop", "borderBottom"],
+            row.className, borderProperties,
             row._row ? row._row._table : row._table);
     if (propertyValues.borderLeft || propertyValues.borderRight || propertyValues.borderTop || propertyValues.borderBottom) {
       for (cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
         cell = cells[cellIndex];
-        O$.Tables._setCellStyleProperty(cell, "borderLeft", propertyValues.borderLeft);
-        O$.Tables._setCellStyleProperty(cell, "borderRight", propertyValues.borderRight);
-        O$.Tables._setCellStyleProperty(cell, "borderTop", propertyValues.borderTop);
-        O$.Tables._setCellStyleProperty(cell, "borderBottom", propertyValues.borderBottom);
+        borderProperties.forEach(function(property) {
+          O$.Tables._setCellStyleProperty(cell, property, propertyValues[property]);
+        });
       }
     }
   },

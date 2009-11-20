@@ -1282,10 +1282,7 @@ O$.Table = {
         return colWidths;
       }
 
-      var colCount = table._columns.length;
-
-      for (var i = 0; i < colCount; i++) {
-        var col = table._columns[i];
+      table._columns.forEach(function (col) {
         col._allCellsClassName = O$.createCssClass("overflow: hidden", true);
         col._allCellsClass = O$.findCssRule("." + col._allCellsClassName);
         col._colTags.forEach(function(colTag) {
@@ -1317,12 +1314,13 @@ O$.Table = {
         col._minResizingWidth = O$.calculateNumericCSSValue(col._minResizingWidth);
         if (col._minResizingWidth < 0)
           col._minResizingWidth = 0;
-      }
+      });
 
       table._addCellInsertionCallback(function(cell, row, column) {
         cell.style.overflow = "hidden";
       });
 
+      var colCount = table._columns.length;
       for (var colIndex = 0; colIndex < colCount; colIndex++) {
         var column = table._columns[colIndex];
 
@@ -1489,7 +1487,9 @@ O$.Table = {
           }
           var bottomCell = this._column.subHeader ? this._column.subHeader._cell : this._column.header._cell;
           var bottomCellPos = O$.getElementBorderRectangle(bottomCell, true);
-          var topCellPos = parentColumn ? O$.getElementBorderRectangle(parentColumn.header._cell, true) : O$.getElementBorderRectangle(this._column.header._cell, true);
+          var topCellPos = parentColumn
+                  ? O$.getElementBorderRectangle(parentColumn.header._cell, true)
+                  : O$.getElementBorderRectangle(this._column.header._cell, true);
 
           var minY = topCellPos.getMinY();
           this.style.top = minY + "px";

@@ -68,23 +68,29 @@ public abstract class TableHeaderOrFooter extends TableSection {
         int rightFixedCols = tableStructure.getRightFixedCols();
         int totalColCount = columns.size();
 
-        if (leftFixedCols > 0) {
-            List<BaseColumn> leftCols = columns.subList(0, leftFixedCols);
-            cells.add(scrollingAreaCell(tableStructure, cellTag, leftCols, false));
-        }
+        if (leftFixedCols > 0)
+            cells.add(scrollingAreaCell(tableStructure, cellTag, columns, 0, leftFixedCols, false));
 
-        List<BaseColumn> centerCols = columns.subList(leftFixedCols, totalColCount - rightFixedCols);
-        cells.add(scrollingAreaCell(tableStructure, cellTag, centerCols, true));
+        cells.add(scrollingAreaCell(tableStructure, cellTag, columns, leftFixedCols, totalColCount - rightFixedCols, true));
 
-        if (rightFixedCols > 0) {
-            List<BaseColumn> rightCols = columns.subList(totalColCount - rightFixedCols, totalColCount);
-            cells.add(scrollingAreaCell(tableStructure, cellTag, rightCols, false));
-        }
+        if (rightFixedCols > 0)
+            cells.add(scrollingAreaCell(tableStructure, cellTag, columns, totalColCount - rightFixedCols, totalColCount, false));
+
         boolean contentsSpecified = false;
-        for (HeaderCell cell : cells) {
-            if (((TableScrollingArea) cell.getComponent()).isContentSpecified()) {
-                contentsSpecified = true;
-                break;
+        TableScrollingArea firstArea = (TableScrollingArea) cells.get(0).getComponent();
+        for (int rowIndex = 0, rowCount = firstArea.getRows().size(); rowIndex < rowCount; rowIndex++) {
+            boolean rowContentSpecified = false;
+            for (HeaderCell areaCell : cells) {
+                TableScrollingArea area = (TableScrollingArea) areaCell.getComponent();
+                if (area.getRows().get(rowIndex).isAtLeastOneComponentInThisRow()) {
+                    rowContentSpecified = true;
+                    contentsSpecified = true;
+                    break;
+                }
+            }
+            for (HeaderCell areaCell : cells) {
+                TableScrollingArea area = (TableScrollingArea) areaCell.getComponent();
+                ((HeaderRow) area.getRows().get(rowIndex)).setAtLeastOneComponentInThisRow(rowContentSpecified);
             }
         }
         if (contentsSpecified)
@@ -97,26 +103,28 @@ public abstract class TableHeaderOrFooter extends TableSection {
             TableStructure tableStructure,
             String cellTag,
             List<BaseColumn> columns,
+            int startColIndex, int endColIndex,
             boolean scrollable
     ) {
-        List<HeaderRow> rows = composeColumnHeaderRows(columns, cellTag);
+        List<HeaderRow> rows = composeColumnHeaderRows(columns, startColIndex, endColIndex, cellTag);
         for (int i = 0; i < rows.size(); i++) {
             HeaderRow row = rows.get(i);
             if (row.isAtLeastOneComponentInThisRow())
                 lastVisibleColHeadersRow = i;
         }
-        HeaderRow subHeaderRow = composeSubHeaderRow(columns, cellTag);
+        HeaderRow subHeaderRow = composeSubHeaderRow(columns.subList(startColIndex, endColIndex), cellTag);
         if (subHeaderRow != null) {
             rows.add(isHeader ? rows.size() : 0, subHeaderRow);
             hasSubHeader = true;
         }
-        TableScrollingArea tableScrollingArea = new TableScrollingArea(this, columns, rows, scrollable);
+        TableScrollingArea tableScrollingArea = new TableScrollingArea(
+                this, columns.subList(startColIndex, endColIndex), rows, scrollable);
         tableScrollingArea.setCellpadding(tableStructure.getTableCellPadding());
         return new HeaderCell(null, tableScrollingArea, "td", null);
     }
 
     private void composeNonScrollingContent(String cellTag, List<BaseColumn> columns) {
-        List<HeaderRow> columnHeaderRows = composeColumnHeaderRows(columns, cellTag);
+        List<HeaderRow> columnHeaderRows = composeColumnHeaderRows(columns, 0, columns.size(), cellTag);
         for (int i = 0; i < columnHeaderRows.size(); i++) {
             HeaderRow row = columnHeaderRows.get(i);
             if (row.isAtLeastOneComponentInThisRow())
@@ -213,6 +221,8 @@ public abstract class TableHeaderOrFooter extends TableSection {
 
     private List<HeaderRow> composeColumnHeaderRows(
             List<BaseColumn> columns,
+            int startColIndex,
+            int endColIndex,
             String cellTag) {
         int colCount = columns.size();
         List<BaseColumn>[] columnHierarchies = new ArrayList[colCount];
@@ -222,7 +232,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
         for (int rowIndex = 0; rowIndex < columnHierarchyLevels; rowIndex++) {
             List<HeaderCell> rowCells = new ArrayList<HeaderCell>();
             boolean atLeastOneComponentInThisRow = false;
-            for (int colIndex = 0; colIndex < colCount; colIndex++) {
+            for (int colIndex = startColIndex; colIndex < endColIndex; colIndex++) {
                 HeaderCell cell = createCell(cellTag, columnHierarchies, columnHierarchyLevels, rowIndex, colIndex);
                 if (cell == null)
                     continue;

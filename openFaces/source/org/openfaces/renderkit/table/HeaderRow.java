@@ -22,8 +22,8 @@ import java.util.List;
  * @author Dmitry Pikhulya
  */
 public class HeaderRow extends AbstractRow {
-    private final boolean atLeastOneComponentInThisRow;
     private final List<HeaderCell> cells;
+    private boolean atLeastOneComponentInThisRow;
     private List<HeaderRow> rowsForSpans;
 
     public HeaderRow(TableHeaderOrFooter parent, boolean atLeastOneComponentInThisRow, List<HeaderCell> cells) {
@@ -37,6 +37,10 @@ public class HeaderRow extends AbstractRow {
 
     public boolean isAtLeastOneComponentInThisRow() {
         return atLeastOneComponentInThisRow;
+    }
+
+    public void setAtLeastOneComponentInThisRow(boolean rowContentSpecified) {
+        atLeastOneComponentInThisRow = rowContentSpecified;
     }
 
     public List<HeaderCell> getCells() {
