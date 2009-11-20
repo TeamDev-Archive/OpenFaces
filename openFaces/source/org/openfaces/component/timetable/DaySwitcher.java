@@ -130,7 +130,8 @@ public class DaySwitcher extends OUIComponentBase {
     }
 
     public Locale getLocale() {
-        Locale defaultLocale = getDayTable().getLocale();
+        DayTable dayTable = getDayTable();
+        Locale defaultLocale = dayTable != null ? dayTable.getLocale() : null;
         return CalendarUtil.getBoundPropertyValueAsLocale(this, "locale", defaultLocale, locale);
     }
 
