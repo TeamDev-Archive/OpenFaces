@@ -1656,7 +1656,7 @@ O$.Tables = {
     if (isMozilla || isOpera) {
       colProperties = ["width", "textAlign", "color", "fontFamily", "fontSize", "fontWeight", "fontStyle", "borderLeft", "borderRight"];
     } else if (isExplorer) {
-      colProperties = ["fontFamily", "fontSize", "borderLeft", "borderRight"];
+      colProperties = ["width", "textAlign", "fontFamily", "fontSize", "borderLeft", "borderRight"];
     } else
       colProperties = [];
     var colStyleProperties = O$.Tables._evaluateStyleClassProperties_cached(colTagClassName, colProperties, table);
@@ -1682,6 +1682,17 @@ O$.Tables = {
       cellStyles.fontSize = colStyleProperties.fontSize;
       cellStyles.borderLeft = colStyleProperties.borderLeft;
       cellStyles.borderRight = colStyleProperties.borderRight;
+    }
+    if (isExplorer) {
+      if (!O$.isExplorer8() && O$.isStrictMode() &&
+          colStyleProperties.width && colStyleProperties.width.indexOf("%") == -1) {
+        column._colTags.forEach(function(colTag) {
+          O$.setElementWidth(colTag, O$.calculateNumericCSSValue(colStyleProperties.width));
+        });
+        cellStyles.width = column._colTags[0].width;
+      }
+      if (O$.isExplorer8() && O$.isStrictMode())
+        cellStyles.textAlign = colStyleProperties.textAlign;
     }
     if (cellStyles) {
       cellStyles._names = [];
@@ -1766,15 +1777,13 @@ O$.Tables = {
     if (cellStyles) {
       var simulatedProperties = cellStyles._names;
       simulatedProperties.forEach(function (property) {
+        if (property == "_names") return;
         O$.Tables._setCellStyleProperty(cell, property, cellStyles[property]);
       });
-
-//      O$.setElementWidth(cell, cellStyles.width);
       cell._simulatedColStylesApplied = true;
     } else {
       if (cell._simulatedColStylesApplied) {
         O$.Tables._clearCellStyleProperties(cell, simulatedProperties);
-//        O$.Tables._clearCellStyleProperties(cell, ["width"]);
         cell._simulatedColStylesApplied = false;
       }
     }
@@ -1919,7 +1928,7 @@ O$.Tables = {
             setRowHeight(rowNode, height);
           });
         });
-        if (O$.isChrome() || O$.isSafari()) {
+        if (O$.isChrome() || O$.isSafari() || (O$.isExplorer() && O$.isStrictMode() &&!O$.isExplorer8())) {
           // setting row height is not enough for Chrome and Safari, setting cell heights solves this issue
           for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
             var row = rows[rowIndex];
@@ -1939,10 +1948,10 @@ O$.Tables = {
         }
 
 
-
       });
     }
-    if (!(O$.isExplorer() && O$.isQuirksMode()))
+    var delayUnderIE = O$.isExplorer() && !(O$.isExplorer8() && O$.isStrictMode());
+    if (!delayUnderIE)
       alignRowHeights();
     else
       delayedInitFunctions.push(alignRowHeights);
