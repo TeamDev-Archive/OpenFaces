@@ -622,15 +622,38 @@ if (!window.O$) {
   };
 
   if (!Array.prototype.every) {
-    Array.prototype.every = function(fun, thisp) {
-      var len = this.length;
+    Array.prototype.every = function(fun /*, thisp*/) {
+      var len = this.length >>> 0;
       if (typeof fun != "function")
         throw new TypeError();
+
+      var thisp = arguments[1];
       for (var i = 0; i < len; i++) {
-        if (i in this && !fun.call(thisp, this[i], i, this))
+        if (i in this &&
+            !fun.call(thisp, this[i], i, this))
           return false;
       }
+
       return true;
+    };
+  }
+
+  if (!Array.prototype.some) {
+    Array.prototype.some = function(fun /*, thisp*/) {
+      var i = 0,
+          len = this.length >>> 0;
+
+      if (typeof fun != "function")
+        throw new TypeError();
+
+      var thisp = arguments[1];
+      for (; i < len; i++) {
+        if (i in this &&
+            fun.call(thisp, this[i], i, this))
+          return true;
+      }
+
+      return false;
     };
   }
 
@@ -749,6 +772,14 @@ if (!window.O$) {
   O$.addAll = function(dest, src) {
     for (var i = 0, count = src.length; i < count; i++)
       dest.push(src[i]);
+  };
+
+  O$.isUpperCase = function(str) {
+    return str.toUpperCase() == str;
+  };
+
+  O$.isLowerCase = function(str) {
+    return str.toLowerCase() == str;
   };
 
 
@@ -2569,18 +2600,19 @@ if (!window.O$) {
       for (var propertyIndex = 0; propertyIndex < propertyCount; propertyIndex++) {
         var propertyName = propertyNames[propertyIndex];
         var capitalizedPropertyName = O$.capitalizeCssPropertyName(propertyName);
+        var dashizedPropertyName = O$.dashizeCssPropertyName(capitalizedPropertyName);
         var thisPropertyValue = ruleStyle[capitalizedPropertyName];
         if (!thisPropertyValue)
           continue;
         var thisPropertyImportant = ruleStyle.getPropertyPriority && (ruleStyle.getPropertyPriority(capitalizedPropertyName) == "important");
         if (!propertyImportantFlags[propertyIndex]) {
-          propertyValues[propertyName] = thisPropertyValue;
+          propertyValues[dashizedPropertyName] = thisPropertyValue;
           propertyValues[capitalizedPropertyName] = thisPropertyValue;
           if (thisPropertyImportant)
             propertyImportantFlags[propertyIndex] = true;
         } else {
           if (thisPropertyImportant) {
-            propertyValues[propertyName] = thisPropertyValue;
+            propertyValues[dashizedPropertyName] = thisPropertyValue;
             propertyValues[capitalizedPropertyName] = thisPropertyValue;
           }
         }
@@ -2732,12 +2764,13 @@ if (!window.O$) {
     for (var i = 0, count = propertyNames.length; i < count; i++) {
       var propertyName = propertyNames[i];
       var capitalizedPropertyName = O$.capitalizeCssPropertyName(propertyName);
+      var dashizedPropertyName = O$.dashizeCssPropertyName(capitalizedPropertyName);
 
       var propertyValue = undefined;
       if (enableValueCaching)
-        propertyValue = element._cachedStyleValues[propertyName];
+        propertyValue = element._cachedStyleValues[dashizedPropertyName];
       if (propertyValue != undefined) {
-        propertyValues[propertyName] = propertyValue;
+        propertyValues[dashizedPropertyName] = propertyValue;
         propertyValues[capitalizedPropertyName] = propertyValue;
         continue;
       }
@@ -2745,14 +2778,14 @@ if (!window.O$) {
       if (currentStyle) {
         propertyValue = currentStyle[capitalizedPropertyName];
       } else if (computedStyle) {
-        propertyValue = computedStyle.getPropertyValue(propertyName);
+        propertyValue = computedStyle.getPropertyValue(dashizedPropertyName);
       }
       if (!propertyValue)
         propertyValue = "";
       if (enableValueCaching) {
-        element._cachedStyleValues[propertyName] = propertyValue;
+        element._cachedStyleValues[dashizedPropertyName] = propertyValue;
       }
-      propertyValues[propertyName] = propertyValue;
+      propertyValues[dashizedPropertyName] = propertyValue;
       propertyValues[capitalizedPropertyName] = propertyValue;
     }
 
@@ -2776,6 +2809,19 @@ if (!window.O$) {
       propertyName = firstPart + secondPart;
     }
   };
+
+  O$.dashizeCssPropertyName = function(propertyName) {
+    var result = "";
+    for (var i = 0, count = propertyName.length; i < count; i++) {
+      var ch = propertyName.substring(i, i + 1);
+      if (O$.isUpperCase(ch))
+        result += "-" + ch.toLowerCase();
+      else
+        result += ch;
+    }
+    return result;
+  };
+
 
   O$.repaintAreaForOpera = function(element, deferredRepainting) {
     if (!O$.isOpera())

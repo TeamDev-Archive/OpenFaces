@@ -1152,8 +1152,8 @@ O$.Table = {
                          sortingImagesToPreload) {
     var table = O$(tableId);
     table._sortedColIndex = sortedColIndex;
-    table._sortedColClass = sortedColClass;
-    table._sortedColBodyClass = sortedColBodyClass;
+    table.sortedColClass = sortedColClass;
+    table.sortedColBodyClass = sortedColBodyClass;
     O$.assert(table, "Couldn't find table by id: " + tableId);
 
     O$.preloadImages(sortingImagesToPreload);
@@ -1168,7 +1168,7 @@ O$.Table = {
       if (!colHeader)
         continue;
 
-      O$.setStyleMappings(colHeader, {_sortableHeaderClass: sortableHeaderClass});
+      O$.setStyleMappings(colHeader, {sortableHeaderClass: sortableHeaderClass});
       O$.Table._setCellProperty(colHeader, "_table", table);
       O$.Table._setCellProperty(colHeader, "_index", i);
       var clickHandler = function() {
@@ -1185,10 +1185,10 @@ O$.Table = {
 
       table._sortableHeaderRolloverClass = sortableHeaderRolloverClass;
       colHeader._headerMouseOver = function() {
-        O$.setStyleMappings(this, {_sortedHeaderRolloverClass: table._sortableHeaderRolloverClass});
+        O$.setStyleMappings(this, {sortedHeaderRolloverClass: table._sortableHeaderRolloverClass});
       };
       colHeader._headerMouseOut = function() {
-        O$.setStyleMappings(this, {_sortedHeaderRolloverClass: null});
+        O$.setStyleMappings(this, {sortedHeaderRolloverClass: null});
       };
       O$.addEventHandlerSimple(colHeader, "mouseover", "_headerMouseOver", colHeader);
       O$.addEventHandlerSimple(colHeader, "mouseout", "_headerMouseOut", colHeader);
@@ -1203,18 +1203,18 @@ O$.Table = {
       var headerCell = (column.header) ? column.header._cell : null;
       if (headerCell)
         O$.Tables._setCellStyleMappings(headerCell, {
-          _sortedColClass: (table._params.forceUsingCellStyles || column._useCellStyles) ? sortedColClass : null,
-          _sortedColHeaderClass: sortedColHeaderClass});
+          sortedColClass: (table._params.forceUsingCellStyles || column._useCellStyles) ? sortedColClass : null,
+          sortedColHeaderClass: sortedColHeaderClass});
 
-      O$.setStyleMappings(column, {_sortedColClass: table._sortedColClass});
-      O$.setStyleMappings(column.body, {_sortedColBodyClass: table._sortedColBodyClass});
+      O$.setStyleMappings(column, {sortedColClass: table.sortedColClass});
+      O$.setStyleMappings(column.body, {sortedColBodyClass: table.sortedColBodyClass});
       column._updateStyle();
 
       var footerCell = column.footer ? column.footer._cell : null;
       if (footerCell)
         O$.Tables._setCellStyleMappings(footerCell, {
-          _sortedColClass: (table._params.forceUsingCellStyles || column._useCellStyles) ? sortedColClass : null,
-          _sortedColFooterClass: sortedColFooterClass});
+          sortedColClass: (table._params.forceUsingCellStyles || column._useCellStyles) ? sortedColClass : null,
+          sortedColFooterClass: sortedColFooterClass});
     }
 
     table._sortingEnabled = true;
@@ -1327,7 +1327,7 @@ O$.Table = {
         column.setWidth = function(width) {
           this._allCellsClass.style.width = width + "px";
           this._colTags.forEach(function(colTag) {
-            colTag.style.width = width + "px";
+            O$.setElementWidth(colTag, width);
           });
         };
         column.getWidth = function() {

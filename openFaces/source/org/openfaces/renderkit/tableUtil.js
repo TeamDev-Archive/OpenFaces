@@ -39,33 +39,34 @@ O$.Tables = {
     var cells = row._cells;
     var cellIndex, cellCount, cell;
     if (!O$.isExplorer()) {
-      var paddingLeft = O$.Tables._getUserStylePropertyValue(row, "padding-left", "0px");
-      var paddingRight = O$.Tables._getUserStylePropertyValue(row, "padding-right", "0px");
-      var paddingTop = O$.Tables._getUserStylePropertyValue(row, "padding-top", "0px");
-      var paddingBottom = O$.Tables._getUserStylePropertyValue(row, "padding-bottom", "0px");
+      var paddingNames = ["padding-left", "padding-right", "padding-top", "padding-bottom"];
+      var paddings = {};
+      paddingNames.forEach(function(n) {
+        paddings[n] = O$.Tables._getUserStylePropertyValue(row, n, "0px");
+      });
       var lineHeight = O$.Tables._getUserClassPropertyValue(row, "line-height", "normal");
 
-      if (paddingLeft || paddingRight || paddingTop || paddingBottom || lineHeight) {
+      if (paddingNames.some(function (n) {return paddings[n];}) || lineHeight) {
         for (cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
           cell = cells[cellIndex];
-          O$.Tables._setCellStyleProperty(cell, "paddingLeft", paddingLeft);
-          O$.Tables._setCellStyleProperty(cell, "paddingRight", paddingRight);
-          O$.Tables._setCellStyleProperty(cell, "paddingTop", paddingTop);
-          O$.Tables._setCellStyleProperty(cell, "paddingBottom", paddingBottom);
-          O$.Tables._setCellStyleProperty(cell, "lineHeight", lineHeight);
+
+          paddingNames.forEach(function (n) {
+            O$.Tables._setCellStyleProperty(cell, n, paddings[n]);
+          });
         }
+        O$.Tables._setCellStyleProperty(cell, "line-height", lineHeight);
       }
     }
 
-    var borderProperties = ["borderLeft", "borderRight", "borderTop", "borderBottom"];
-    var propertyValues = O$.Tables._evaluateStyleClassProperties_cached(
-            row.className, borderProperties,
+    var borderNames = ["border-left", "border-right", "border-top", "border-bottom"];
+    var borders = O$.Tables._evaluateStyleClassProperties_cached(
+            row.className, borderNames,
             row._row ? row._row._table : row._table);
-    if (propertyValues.borderLeft || propertyValues.borderRight || propertyValues.borderTop || propertyValues.borderBottom) {
+    if (borderNames.some(function (n) {return borders[n];})) {
       for (cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
         cell = cells[cellIndex];
-        borderProperties.forEach(function(property) {
-          O$.Tables._setCellStyleProperty(cell, property, propertyValues[property]);
+        borderNames.forEach(function(n) {
+          O$.Tables._setCellStyleProperty(cell, n, borders[n]);
         });
       }
     }
@@ -101,32 +102,29 @@ O$.Tables = {
 
     // initialize grid lines
     var tempIdx = 0;
-    table._horizontalGridLines = params.gridLines[tempIdx++];
-    table._verticalGridLines = params.gridLines[tempIdx++];
-    table._commonHeaderSeparator = params.gridLines[tempIdx++];
-    table._commonFooterSeparator = params.gridLines[tempIdx++];
-    table._headerHorizSeparator = params.gridLines[tempIdx++];
-    table._headerVertSeparator = params.gridLines[tempIdx++];
-    table._subHeaderRowSeparator = params.gridLines[tempIdx++];
-    table._multiHeaderSeparator = params.gridLines[tempIdx++];
-    table._multiFooterSeparator = params.gridLines[tempIdx++];
-    table._footerHorizSeparator = params.gridLines[tempIdx++];
-    table._footerVertSeparator = params.gridLines[tempIdx++];
+    table._gridLines = {
+        horizontal: params.gridLines[tempIdx++],
+        vertical: params.gridLines[tempIdx++],
+        commonHeader: params.gridLines[tempIdx++],
+        commonFooter: params.gridLines[tempIdx++],
+        headerHoriz: params.gridLines[tempIdx++],
+        headerVert: params.gridLines[tempIdx++],
+        subHeaderRow: params.gridLines[tempIdx++],
+        multiHeader: params.gridLines[tempIdx++],
+        multiFooter: params.gridLines[tempIdx++],
+        footerHoriz: params.gridLines[tempIdx++],
+        footerVert: params.gridLines[tempIdx++]
+    };
 
     table.style.emptyCells = "show";
     if (O$.isExplorer()) {
-      table._bordersNeeded =
-              table._horizontalGridLines ||
-              table._verticalGridLines ||
-              table._commonHeaderSeparator ||
-              table._commonFooterSeparator ||
-              table._headerHorizSeparator ||
-              table._headerVertSeparator ||
-              table._multiHeaderSeparator ||
-              table._multiFooterSeparator ||
-              table._subHeaderRowSeparator ||
-              table._footerHorizSeparator ||
-              table._footerVertSeparator;
+      table._bordersNeeded = false;
+      for (var name in table._gridLines) {
+        if (table._gridLines[name]) {
+          table._bordersNeeded = true;
+          break;
+        }
+      }
       if (table._bordersNeeded) {
         table.style.borderCollapse = "collapse";
       }
@@ -392,7 +390,7 @@ O$.Tables = {
             return;
           var elements = this._tag ? [this._tag] : this._getRows();
           elements.forEach(function(element) {
-            O$.setStyleMappings(element, ["sectionStyle", sectionParams.className]);
+            O$.setStyleMappings(element, {sectionStyle: sectionParams.className});
           });
         },
         _getRows: function() {
@@ -691,7 +689,7 @@ O$.Tables = {
       procesDisplayStyle(this._rowNode);
       procesDisplayStyle(this._rightRowNode);
 
-      O$.setStyleMappings(this, {_rowVisibilityStyle: visible ? "" : "o_hiddenRow"});
+      O$.setStyleMappings(this, {rowVisibilityStyle: visible ? "" : "o_hiddenRow"});
       O$.Tables._updateCellWrappersStyleForRow(this);
     };
 
@@ -732,11 +730,11 @@ O$.Tables = {
       else
         rowClass = null;
 
-      row._initialClass = rowClass;
+      row.initialClass = rowClass;
       row._addedClassName = undefined;
       if (!table._params.forceUsingCellStyles) {
         var individualRowClass = table._params.rowStylesMap[row._index];
-        O$.Tables._setRowStyle(row, {_initialClass: row._initialClass, _individualRowClass: individualRowClass});
+        O$.Tables._setRowStyle(row, {initialClass: row.initialClass, individualRowClass: individualRowClass});
       }
     }
 
@@ -782,9 +780,9 @@ O$.Tables = {
       var opera = O$.isOpera();
 
       if (!rowTable._params.forceUsingCellStyles) {
-        if (row._leftRowNode) O$.setStyleMappings(row._leftRowNode, {_rolloverAndSelectionClass: addedClassName});
-        O$.setStyleMappings(row._rowNode, {_rolloverAndSelectionClass: addedClassName});
-        if (row._rightRowNode) O$.setStyleMappings(row._rightRowNode, {_rolloverAndSelectionClass: addedClassName});
+        if (row._leftRowNode) O$.setStyleMappings(row._leftRowNode, {rolloverAndSelectionStyle: addedClassName});
+        O$.setStyleMappings(row._rowNode, {rolloverAndSelectionStyle: addedClassName});
+        if (row._rightRowNode) O$.setStyleMappings(row._rightRowNode, {rolloverAndSelectionStyle: addedClassName});
         O$.Tables._updateCellWrappersStyleForRow(row);
         if (opera) {
           function resetOperaStyle(row) {
@@ -820,7 +818,7 @@ O$.Tables = {
           col = cell._column;
           if (!rowTable._params.forceUsingCellStyles && !(col.body && col.body._getCompoundClassName()) && !col._useCellStyles)
             continue;
-          O$.setStyleMappings(cell, {_rolloverAndSelectionClass: addedClassName});
+          O$.setStyleMappings(cell, {rolloverAndSelectionStyle: addedClassName});
           O$.Tables._updateCellWrapperStyle(cell);
           if (opera) {
             var oldBackground2 = cell.style.background;
@@ -947,25 +945,31 @@ O$.Tables = {
       var horizSeparationIndex = table._deepestColumnHierarchyLevel - horizSeparationLevel;
       var result = {};
 
-      var verticalGridLines = table._verticalGridLines ? table._verticalGridLines.split(",") : [];
+      var verticalGridLines = table._gridLines.vertical ? table._gridLines.vertical.split(",") : [];
       var verticalGridLines_length = verticalGridLines.length;
-      result.body = verticalGridLines_length ? verticalGridLines[index >= verticalGridLines_length ? verticalGridLines_length - 1 : index] : null;
+      result.body = verticalGridLines_length
+              ? verticalGridLines[index >= verticalGridLines_length ? verticalGridLines_length - 1 : index]
+              : null;
 
-      var headerVerticalGridLines = table._headerVertSeparator ? table._headerVertSeparator.split(",") : [];
+      var headerVerticalGridLines = table._gridLines.headerVert ? table._gridLines.headerVert.split(",") : [];
       var headerVerticalGridLines_length = headerVerticalGridLines.length;
-      result.header = headerVerticalGridLines_length ? headerVerticalGridLines[index >= headerVerticalGridLines_length ? headerVerticalGridLines_length - 1 : index] : null;
+      result.header = headerVerticalGridLines_length
+              ? headerVerticalGridLines[index >= headerVerticalGridLines_length ? headerVerticalGridLines_length - 1 : index]
+              : null;
 
-      var footerVerticalGridLines = table._footerVertSeparator ? table._footerVertSeparator.split(",") : [];
+      var footerVerticalGridLines = table._gridLines.footerVert ? table._gridLines.footerVert.split(",") : [];
       var footerVerticalGridLines_length = footerVerticalGridLines.length;
-      result.footer = footerVerticalGridLines_length ? footerVerticalGridLines[index >= footerVerticalGridLines_length ? footerVerticalGridLines_length - 1 : index] : null;
+      result.footer = footerVerticalGridLines_length
+              ? footerVerticalGridLines[index >= footerVerticalGridLines_length ? footerVerticalGridLines_length - 1 : index]
+              : null;
 
-      var multiHeaderSeparators = table._multiHeaderSeparator ? table._multiHeaderSeparator.split(",") : [];
+      var multiHeaderSeparators = table._gridLines.multiHeader ? table._gridLines.multiHeader.split(",") : [];
       var multiHeaderSeparators_length = multiHeaderSeparators.length;
       result.multiHeaderSeparator = multiHeaderSeparators_length
               ? multiHeaderSeparators[horizSeparationIndex >= multiHeaderSeparators_length ? multiHeaderSeparators_length - 1 : horizSeparationIndex]
               : null;
 
-      var multiFooterSeparators = table._multiFooterSeparator ? table._multiFooterSeparator.split(",") : [];
+      var multiFooterSeparators = table._gridLines.multiFooter ? table._gridLines.multiFooter.split(",") : [];
       var multiFooterSeparators_length = multiFooterSeparators.length;
       result.multiFooterSeparator = multiFooterSeparators_length
               ? multiFooterSeparators[horizSeparationIndex >= multiFooterSeparators_length ? multiFooterSeparators_length - 1 : horizSeparationIndex]
@@ -986,7 +990,7 @@ O$.Tables = {
           return;
         var commonHeaderRow = headRows[0];
         var commonHeaderCell = commonHeaderRow._cells[0];
-        O$.Tables._setCellStyleProperty(commonHeaderCell, "borderBottom", table._commonHeaderSeparator);
+        O$.Tables._setCellStyleProperty(commonHeaderCell, "borderBottom", table._gridLines.commonHeader);
       };
 
       function getLastRowCells(lastBeforeSubHeader) {
@@ -1015,7 +1019,9 @@ O$.Tables = {
         var lastRowCells = getLastRowCells(false);
         for (var i = 0, count = lastRowCells.length; i < count; i++) {
           var cell = lastRowCells[i];
-          O$.Tables._setCellStyleProperty(cell, "borderBottom", table._headerHorizSeparator != null ? table._headerHorizSeparator : table._horizontalGridLines);
+          O$.Tables._setCellStyleProperty(cell, "borderBottom", table._gridLines.headerHoriz != null
+                  ? table._gridLines.headerHoriz
+                  : table._gridLines.horizontal);
         }
 
       };
@@ -1027,7 +1033,7 @@ O$.Tables = {
         var lastRowCells = getLastRowCells(true);
         for (var i = 0, count = lastRowCells.length; i < count; i++) {
           var cell = lastRowCells[i];
-          O$.Tables._setCellStyleProperty(cell, "borderBottom", table._subHeaderRowSeparator);
+          O$.Tables._setCellStyleProperty(cell, "borderBottom", table._gridLines.subHeaderRow);
         }
       };
 
@@ -1083,7 +1089,9 @@ O$.Tables = {
         var rowCells = row._cells;
         for (var i = 0, count = rowCells.length; i < count; i++) {
           var cell = rowCells[i];
-          O$.Tables._setCellStyleProperty(cell, "borderTop", table._footerHorizSeparator != null ? table._footerHorizSeparator : table._horizontalGridLines);
+          O$.Tables._setCellStyleProperty(cell, "borderTop", table._gridLines.footerHoriz != null
+                  ? table._gridLines.footerHoriz
+                  : table._gridLines.horizontal);
         }
       };
 
@@ -1093,7 +1101,7 @@ O$.Tables = {
         var footerRows = table.footer._getRows();
         var commonFooterRow = footerRows[footerRows.length - 1];
         var commonFooterCell = commonFooterRow._cells[0];
-        O$.Tables._setCellStyleProperty(commonFooterCell, "borderTop", table._commonFooterSeparator);
+        O$.Tables._setCellStyleProperty(commonFooterCell, "borderTop", table._gridLines.commonFooter);
       };
 
       tableFooter._updateColumnSeparatorStyles = function() {
@@ -1140,7 +1148,7 @@ O$.Tables = {
     var tableBody = table.body;
     {
       tableBody._getBorderBottomForCell = function(/*rowIndex, colIndex, cell*/) {
-        return table._horizontalGridLines;
+        return table._gridLines.horizontal;
       };
       function updateBodyCellBorders(cell, rowIndex, column, rowCount, colCount) {
         var correctedRowIndex = rowIndex + cell.rowSpan - 1;
@@ -1431,7 +1439,9 @@ O$.Tables = {
       O$.Tables._applySimulatedColStylesToCell(cell);
 
       var column = cell._column;
-      O$.Tables._setCellStyleMappings(cell, {_compoundColumnClassName: column._getCompoundClassName(), _colHeaderClass: column.header ? column.header.className : null});
+      O$.Tables._setCellStyleMappings(cell, {
+        compoundColumnStyle: column._getCompoundClassName(),
+        colHeaderStyle: column.header ? column.header.className : null});
     };
 
   },
@@ -1445,8 +1455,8 @@ O$.Tables = {
 
       var column = cell._column;
       O$.Tables._setCellStyleMappings(cell, {
-        _compoundColumnClassName: column._getCompoundClassName(),
-        _colSubHeaderClass: column.subHeader ? column.subHeader.className : null
+        compoundColumnStyle: column._getCompoundClassName(),
+        colSubHeaderStyle: column.subHeader ? column.subHeader.className : null
       });
     };
 
@@ -1461,8 +1471,8 @@ O$.Tables = {
 
       var column = cell._column;
       O$.Tables._setCellStyleMappings(cell, {
-        _compoundColumnClassName: column._getCompoundClassName(),
-        _colFooterClass: column.footer ? column.footer.className : null
+        compoundColumnStyle: column._getCompoundClassName(),
+        colFooterStyle: column.footer ? column.footer.className : null
       });
     };
   },
@@ -1483,23 +1493,23 @@ O$.Tables = {
 
       var cellStyleMappings = {};
       if (table._params.forceUsingCellStyles || column._useCellStyles) {
-        cellStyleMappings._rowInitialClass = row._initialClass;
-        cellStyleMappings._rowIndividualClass = table._params.rowStylesMap[row._index];
+        cellStyleMappings.rowInitialClass = row.initialClass;
+        cellStyleMappings.rowIndividualClass = table._params.rowStylesMap[row._index];
       }
 
       if (table._params.body.noDataRows) {
         O$.Tables._assignNoDataCellStyle(cell);
       } else {
         var cellKey = rowIndex + "x" + colIndex;
-        cellStyleMappings._individualCellStyle = table._params.cellStylesMap[cellKey];
+        cellStyleMappings.individualCellStyle = table._params.cellStylesMap[cellKey];
 
         var columnClassName = column._useCellStyles ? column._getCompoundClassName() : null;
         if (columnClassName)
-          cellStyleMappings._columnClass = columnClassName;
+          cellStyleMappings.columnClass = columnClassName;
         var compoundBodyClassName = column.body._getCompoundClassName();
         if (compoundBodyClassName) {
-          cellStyleMappings._rowInitialClass = row._initialClass;
-          cellStyleMappings._columnBodyClass = compoundBodyClassName;
+          cellStyleMappings.rowInitialClass = row.initialClass;
+          cellStyleMappings.columnBodyClass = compoundBodyClassName;
         }
       }
       O$.setStyleMappings(cell, cellStyleMappings);
@@ -1651,10 +1661,9 @@ O$.Tables = {
       colProperties = [];
     var colStyleProperties = O$.Tables._evaluateStyleClassProperties_cached(colTagClassName, colProperties, table);
     if (isMozilla || isOpera) {
-      if (!cellStyles)
-        cellStyles = {};
-      cellStyles.width = colStyleProperties.width;//O$.getStyleClassProperty(colTag.className, "width");
-      cellStyles.textAlign = colStyleProperties.textAlign;//O$.Tables._getUserStylePropertyValue(colTag, "text-align", "start", "left");
+      if (!cellStyles) cellStyles = {};
+      cellStyles.width = colStyleProperties.width;
+      cellStyles.textAlign = colStyleProperties.textAlign;
       cellStyles.verticalAlign = O$.Tables._getUserStylePropertyValue(colTag, "vertical-align", "baseline", "auto");
       cellStyles.lineHeight = O$.Tables._getUserClassPropertyValue(colTag, "line-height", "normal");
 
@@ -1668,25 +1677,27 @@ O$.Tables = {
       cellStyles.fontStyle = colStyleProperties.fontStyle;
     }
     if (isMozilla || isExplorer) {
-      if (!cellStyles)
-        cellStyles = {};
+      if (!cellStyles) cellStyles = {};
       cellStyles.fontFamily = colStyleProperties.fontFamily;
       cellStyles.fontSize = colStyleProperties.fontSize;
       cellStyles.borderLeft = colStyleProperties.borderLeft;
       cellStyles.borderRight = colStyleProperties.borderRight;
     }
+    if (cellStyles) {
+      cellStyles._names = [];
+      for (var pn in cellStyles) {
+        if (cellStyles[pn])
+          cellStyles._names.push(pn);
+      }
+    }
     if (cellStyles && cellStyles.color) {
       // use cell styles for this column to solve color CSS attribute precedence issue in Mozilla (JSFC-2823)
       column._useCellStyles = true;
       if (column.body)
-        O$.setStyleMappings(column.body, {_colTagClassName: colTagClassName});
+        O$.setStyleMappings(column.body, {colTagClassName: colTagClassName});
       cellStyles = null;
     } else {
-      if (!(cellStyles.textAlign || cellStyles.verticalAlign ||
-            cellStyles.paddingLeft || cellStyles.paddingRight || cellStyles.paddingTop ||
-            cellStyles.paddingBottom || cellStyles.width || cellStyles.height || cellStyles.color ||
-            cellStyles.fontFamily || cellStyles.fontSize || cellStyles.fontWeight || cellStyles.fontStyle ||
-            cellStyles.borderLeft || cellStyles.borderRight))
+      if (cellStyles._names.length == 0)
         cellStyles = null;
     }
 
@@ -1709,6 +1720,7 @@ O$.Tables = {
       return;
 
     try {
+      propertyName = O$.capitalizeCssPropertyName(propertyName);
       cell.style[propertyName] = propertyValue;
     } catch (e) {
       O$.logError("O$.Tables._setCellStyleProperty: couldn't set style property \"" + propertyName + "\" to \"" + propertyValue + "\" ; original error: " + e.message);
@@ -1750,11 +1762,9 @@ O$.Tables = {
     if (column._forceCellVAlign)
       cell.vAlign = column._forceCellVAlign;
 
-    var simulatedProperties = ["textAlign", "verticalAlign", "lineHeight", "color", "fontFamily", "fontSize", "fontWeight", "fontStyle",
-      "paddingLeft", "paddingRight", "paddingTop", "paddingBottom", "borderLeft", "borderRight", "width"];
-
     var cellStyles = column._cellStyles;
     if (cellStyles) {
+      var simulatedProperties = cellStyles._names;
       simulatedProperties.forEach(function (property) {
         O$.Tables._setCellStyleProperty(cell, property, cellStyles[property]);
       });
@@ -1804,7 +1814,9 @@ O$.Tables = {
           var colWidth = O$.calculateNumericCSSValue(O$.getStyleClassProperty(column._className, "width"));
           if (!colWidth) {
             colWidth = defaultColWidth;
-            column._colTags.forEach(function(tag) {tag.style.width = colWidth + "px";});
+            column._colTags.forEach(function(tag) {
+              O$.setElementWidth(tag, colWidth);
+            });
           }
           areaWidth += colWidth;
         });
@@ -1852,8 +1864,7 @@ O$.Tables = {
         [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (scrollingArea) {
           if (!scrollingArea || !scrollingArea._scrollingDiv) return;
           var height = fixture.values.height;
-          if (height < 0) height = 0; // this is the case under IE6,7/strict during initialization
-            scrollingArea._scrollingDiv.style.height = height + "px";
+          O$.setElementHeight(scrollingArea._scrollingDiv, height);
         });
       }});
       [table.body._leftScrollingArea, table.body._centerScrollingArea, table.body._rightScrollingArea].forEach(function (area) {
