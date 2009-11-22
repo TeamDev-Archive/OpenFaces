@@ -388,7 +388,12 @@ O$.Tables = {
         _updateStyle: function() {
           if (!sectionParams)
             return;
-          var elements = this._tag ? [this._tag] : this._getRows();
+          var elements = [].concat(this._tag ? [this._tag] : this._getRows());
+          if (table._params.scrolling && O$.isQuirksMode()) {
+            // allow header sections font-weight and other attributes to be passed onto actual header cells under
+            // quirks mode
+            this._scrollingAreas.forEach(function(area) {elements.push(area._table);});
+          }
           elements.forEach(function(element) {
             O$.setStyleMappings(element, {sectionStyle: sectionParams.className});
           });
@@ -1941,7 +1946,6 @@ O$.Tables = {
                 cellHeight += rows[i].__height;
               }
               O$.setElementHeight(cell, cellHeight);
-              cell.__height = cellHeight;
             });
 
           }
@@ -1955,6 +1959,17 @@ O$.Tables = {
       alignRowHeights();
     else
       delayedInitFunctions.push(alignRowHeights);
+
+
+    function fixIE6AreaDisappearing() {
+      if (!O$.isExplorer6()) return;
+      
+      var mainScrollingArea = table.body._centerScrollingArea;
+      mainScrollingArea._scrollingDiv.onresize = function() {
+      };
+    }
+    fixIE6AreaDisappearing();
+
 
     if (delayedInitFunctions.length)
       O$.addLoadEvent(function() {
