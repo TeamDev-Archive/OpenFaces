@@ -32,12 +32,5 @@ public class JSFC_2294Test extends OpenFacesTestCase {
         treeTable.bodyRow(1).doubleClick();
         OpenFacesAjaxLoadingMode.getInstance().waitForLoad();
         treeTable.bodyRow(2).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
-
-
-
-        //TODO: do we really need to check correct navigation?
-//        selenium.click("form1:demoItems::2");
-//        waitForPageToLoad();
-//        assertTrue(selenium.getLocation().endsWith("/treetable/TreeTable_RowsAndCellsCustomization.jsf"));
     }
 }

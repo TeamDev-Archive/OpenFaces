@@ -1785,11 +1785,11 @@ O$.Tables = {
         if (property == "_names") return;
         O$.Tables._setCellStyleProperty(cell, property, cellStyles[property]);
       });
-      cell._simulatedColStylesApplied = true;
+      cell._simulatedColStylesApplied = simulatedProperties;
     } else {
       if (cell._simulatedColStylesApplied) {
-        O$.Tables._clearCellStyleProperties(cell, simulatedProperties);
-        cell._simulatedColStylesApplied = false;
+        O$.Tables._clearCellStyleProperties(cell, cell._simulatedColStylesApplied);
+        cell._simulatedColStylesApplied = null;
       }
     }
 
