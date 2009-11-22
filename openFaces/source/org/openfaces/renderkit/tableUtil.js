@@ -1910,6 +1910,7 @@ O$.Tables = {
     function alignRowHeights() {
       [table.header, table.body, table.footer].forEach(function(section) {
         if (!section) return;
+        var areaHeight = 0;
         var rows = section._getRows();
         rows.forEach(function (row) {
           var artificialRow = row.nodeName != "TR";
@@ -1932,7 +1933,11 @@ O$.Tables = {
             if (!rowNode) return;
             setRowHeight(rowNode, height);
           });
+          areaHeight += height;
         });
+        if ((O$.isChrome() || O$.isSafari()) && O$.isQuirksMode())
+          section._scrollingAreas.forEach(function(area){O$.setElementHeight(area._table, areaHeight);});
+
         if (O$.isChrome() || O$.isSafari() || (O$.isExplorer() && O$.isStrictMode() &&!O$.isExplorer8())) {
           // setting row height is not enough for Chrome and Safari, setting cell heights solves this issue
           for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
