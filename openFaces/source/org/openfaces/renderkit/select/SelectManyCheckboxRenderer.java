@@ -88,7 +88,7 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
             String labelId = id + LABEL_SUFFIX;
             writeAttribute(writer, "id", labelId);
             writeAttribute(writer, "for", imageId);
-            writer.writeText(selectItem.getItemLabel(), null);
+            writeLabelText(writer, selectItem);
             writer.endElement("label");
             writer.endElement("td");
 
@@ -139,7 +139,7 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
             String labelId = id + LABEL_SUFFIX;
             writeAttribute(writer, "id", labelId);
             writeAttribute(writer, "for", id);
-            writer.writeText(selectItem.getItemLabel(), null);
+            writeLabelText(writer, selectItem);
             writer.endElement("label");
             writer.endElement("td");
 
@@ -162,6 +162,9 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
             selectManyCheckbox.setSubmittedValue(Arrays.asList(requestValues));
         } else {
             selectManyCheckbox.setSubmittedValue(new ArrayList<String>());
+        }
+        if (selectManyCheckbox.getValue() == null) {
+            selectManyCheckbox.setValue(new ArrayList<String>());
         }
     }
 

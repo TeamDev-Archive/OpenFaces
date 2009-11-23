@@ -31,14 +31,4 @@ public class SelectOneRadio extends OUISelectManyInputBase {
         return COMPONENT_FAMILY;
     }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    public Object getSubmittedValue() {
-        if (super.getSubmittedValue() == null) {
-            super.setSubmittedValue("");
-        }
-        return super.getSubmittedValue();
-    }
-
 }

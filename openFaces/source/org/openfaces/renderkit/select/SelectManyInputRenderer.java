@@ -64,6 +64,8 @@ public abstract class SelectManyInputRenderer extends RendererBase {
     protected static final String FOCUSED_ITEM_CLASS_KEY = "focusedItemClass";
     protected static final String SELECTED_ITEM_CLASS_KEY = "selectedItemClass";
 
+    protected static final String SPACE = " ";
+
     
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -193,6 +195,10 @@ public abstract class SelectManyInputRenderer extends RendererBase {
         if (!selectManyInputBase.isDisabled() && !selectManyInputBase.isReadonly() && !selectItem.isItemDisabled()) {
             RenderingUtil.writeStandardEvents(writer, selectManyInputBase);
         }
+    }
+
+    protected void writeLabelText(ResponseWriter writer, SelectItem selectItem) throws IOException {
+        writer.writeText(SPACE + selectItem.getItemLabel(), null);    
     }
 
     private void addStyleClassesAndJS(FacesContext facesContext, OUISelectManyInputBase selectManyInputBase, List<SelectItem> selectItems, JSONObject imagesObj) throws IOException {

@@ -81,7 +81,7 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
             String labelId = id + LABEL_SUFFIX;
             writeAttribute(writer, "id", labelId);
             writeAttribute(writer, "for", imageId);
-            writer.writeText(selectItem.getItemLabel(), selectItem.getItemLabel());
+            writeLabelText(writer, selectItem);
             writer.endElement("label");
             writer.endElement("td");
 
@@ -127,7 +127,7 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
             String labelId = id + LABEL_SUFFIX;
             writeAttribute(writer, "id", labelId);
             writeAttribute(writer, "for", id);
-            writer.writeText(selectItem.getItemLabel(), selectItem.getItemLabel());
+            writeLabelText(writer, selectItem);
             writer.endElement("label");
             writer.endElement("td");
 
