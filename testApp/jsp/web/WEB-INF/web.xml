@@ -82,7 +82,7 @@
   </context-param>
   <context-param>
     <param-name>javax.faces.CONFIG_FILES</param-name>
-    <param-value>/WEB-INF/navigation-rules.xml, /WEB-INF/faces-config.xml</param-value>
+    <param-value>/WEB-INF/navigation-rules.xml</param-value>
   </context-param>
 
   <!--JBOSS SEAM 2.0 RESOURCE SERVLET AND RESOURCE FILTER-->
