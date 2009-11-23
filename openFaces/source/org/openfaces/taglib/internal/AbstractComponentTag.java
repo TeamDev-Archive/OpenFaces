@@ -281,7 +281,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
 
     protected void setIdCollectionProperty(UIComponent component, String propertyName) {
         String value = getPropertyValue(propertyName);
-        setCollectionProperty(component, propertyName, value);
+        setIdCollectionProperty(component, propertyName, value);
     }
 
     protected void setIdCollectionProperty(UIComponent component, String propertyName, String value) {
