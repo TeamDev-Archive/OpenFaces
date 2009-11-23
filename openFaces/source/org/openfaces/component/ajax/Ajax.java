@@ -19,6 +19,7 @@ import org.openfaces.util.ValueBindings;
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -65,7 +66,7 @@ public class Ajax extends UICommand implements OUIClientAction {
     }
 
     public Iterable<String> getRender() {
-        return render;
+        return ValueBindings.get(this, "render", render, Iterable.class);
     }
 
     public boolean getSubmitInvoker() { // todo: remove the "submitInvoker" property and hard-code the "true" behavior if no use-case where this should be customizible arises
@@ -77,7 +78,7 @@ public class Ajax extends UICommand implements OUIClientAction {
     }
 
     public Iterable<String> getExecute() {
-        return execute;
+        return ValueBindings.get(this, "execute", execute, Collections.<String>emptySet(), Iterable.class);
     }
 
     public void setExecute(Iterable<String> execute) {

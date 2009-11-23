@@ -110,7 +110,7 @@ public class AjaxInitializer {
         try {
             JSONObject result = new JSONObject();
             Iterable<String> execute = ajax.getExecute();
-            if (execute!=null && execute.iterator().hasNext() && (!ajax.isStandalone() && ajax.getSubmitInvoker())) {
+            if (execute.iterator().hasNext() || (!ajax.isStandalone() && ajax.getSubmitInvoker())) {
                 result.put("execute", getExecuteParam(context, ajax, execute));
             }
             String onajaxstart = ajax.getOnajaxstart();
