@@ -19,7 +19,6 @@ import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.context.FacesContext;
-import java.util.List;
 
 /**
  * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
@@ -42,11 +41,13 @@ public class AjaxHelper extends OUIClientActionHelper {
         final String id = ajax.getId();
         AjaxInitializer ajaxInitializer = new AjaxInitializer() {
 
+            @Override
             protected Object getAjaxComponentParam(FacesContext context, Ajax ajax) {
                 return new RawScript("O$._actionIds['" + id + "']");
             }
 
-            protected Object getExecuteParam(FacesContext context, Ajax ajax, List<String> execute) {
+            @Override
+            protected Object getExecuteParam(FacesContext context, Ajax ajax, Iterable<String> execute) {
                 return new RawScript("O$._executeIds['" + id + "']");
             }
         };
