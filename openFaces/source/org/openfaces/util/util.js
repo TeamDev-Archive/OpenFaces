@@ -2622,7 +2622,6 @@ if (!window.O$) {
     return propertyValues;
   };
 
-  //
 
   O$.combineClassNames = function(classNames) {
     var nonNullClassNames = [];
@@ -2632,16 +2631,6 @@ if (!window.O$) {
         nonNullClassNames.push(className);
     }
     return nonNullClassNames.join(" ");
-  };
-
-  O$.appendClassNames = function(element, classesToAppend) {
-    var oldClassName = element.className;
-    var newClassName = O$.combineClassNames(classesToAppend);
-    if (oldClassName)
-      newClassName = newClassName ? oldClassName + " " + newClassName : oldClassName;
-    if (newClassName != oldClassName)
-      element.className = newClassName;
-    return oldClassName;
   };
 
   O$.checkClassNameUsed = function(element, className) {
@@ -2655,6 +2644,22 @@ if (!window.O$) {
     return false;
   };
 
+  /*
+   * @deprecated use O$.setStyleMappings instead
+   */
+  O$.appendClassNames = function(element, classesToAppend) {
+    var oldClassName = element.className;
+    var newClassName = O$.combineClassNames(classesToAppend);
+    if (oldClassName)
+      newClassName = newClassName ? oldClassName + " " + newClassName : oldClassName;
+    if (newClassName != oldClassName)
+      element.className = newClassName;
+    return oldClassName;
+  };
+
+  /*
+   * @deprecated use O$.setStyleMappings instead
+   */
   O$.excludeClassNames = function(element, classesToExclude) {
     var newClassesToExclude = [];
     for (var i = 0, count = classesToExclude.length; i < count; i++) {
@@ -2685,18 +2690,6 @@ if (!window.O$) {
     if (element.className != newClsName)
       element.className = newClsName;
     return someClassesExcluded;
-  };
-
-  O$.removeOfClassName = function(element, className) {
-    if (element.className.length > 0) {
-      var val = element.className;
-      var main;
-      do {
-        main = val;
-        val = main.replace(className, "");
-      } while (val != main);
-      element.className = val;
-    }
   };
 
   O$.getElementOwnStyle = function(element) {

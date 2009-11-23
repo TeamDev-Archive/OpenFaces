@@ -68,14 +68,10 @@ O$.Radio = {
       containerRollover |= radioContainer._radioItems[i]._rollover;
     }
 
-    O$.removeOfClassName(radioContainer, radioContainer._rolloverClass);
-    O$.removeOfClassName(radioContainer, radioContainer._focusedClass);
-    var externalClasses = radioContainer.className.replace(radioContainer._styleClass, "");
     O$.setStyleMappings(radioContainer, {
       rollover: containerRollover ? radioContainer._rolloverClass : null,
       focused: containerFocused ? radioContainer._focusedClass : null
     });
-    radioContainer.className += " " + externalClasses;
   }
 };
 

@@ -18,13 +18,12 @@ O$._MessagesRenderer = function(clientId, title, tooltip, showSummary, showDetai
   this.showDetail = showDetail;
   this.layout = layout;
   this.globalOnly = globalOnly;
-  this.style = '';
+  this.style = "";
   this.css = css;
   this.params = params;
   this.styles = styles;
 
   this.renderAllMessages = function() {
-    var innerHTML = "";
     var spanElement = O$.byIdOrName(this.clientId);
     if (!spanElement)
       return;
@@ -41,11 +40,10 @@ O$._MessagesRenderer = function(clientId, title, tooltip, showSummary, showDetai
       }
 
     }
-  }
+  };
 
   this.addInnerElement = function(outerElemet) {
-    if (this.needTable())
-    {
+    if (this.needTable()) {
       var tr = document.createElement("tr");
       var td = document.createElement("td");
       var tbody = document.createElement("tbody");
@@ -57,33 +55,30 @@ O$._MessagesRenderer = function(clientId, title, tooltip, showSummary, showDetai
 
       return span;
     }
-    else
-    {
+    else {
       var li = document.createElement("li");
       var span = document.createElement("span");
       li.appendChild(span);
       outerElemet.appendChild(li);
       return span;
     }
-  }
+  };
   this.addOuterElement = function(spanElement) {
-    if (this.needTable())
-    {
+    if (this.needTable()) {
       var table = document.createElement("table");
       spanElement.appendChild(table);
       return table;
     }
-    else
-    {
+    else {
       var list = document.createElement("ul");
       spanElement.appendChild(list);
       return list;
     }
-  }
+  };
 
   this.needTable = function() {
-    return this.layout && this.layout == 'table';
-  }
+    return this.layout && this.layout == "table";
+  };
   this.updateMessageSpan = function(message, css, spanElement) {
 
     if (message && spanElement) {
@@ -120,58 +115,54 @@ O$._MessagesRenderer = function(clientId, title, tooltip, showSummary, showDetai
       var severetyClass = this.getSeverityClass(message.severity);
 
       spanElement.innerHTML += text;
-      if (severetyStyle && severetyStyle.length > 0)
-      {
-        spanElement.setAttribute('style', severetyStyle);
+      if (severetyStyle && severetyStyle.length > 0) {
+        spanElement.setAttribute("style", severetyStyle);
       }
       if (severetyClass && severetyClass.length > 0) {
         spanElement.className = severetyClass;
       }
-      if (this.params)
-      {
-        for (var attr in this.params)
-        {
+      if (this.params) {
+        for (var attr in this.params) {
           spanElement.setAttribute(attr, this.params[attr]);
         }
       }
     }
 
-  }
-}
-O$._MessagesRenderer.prototype.update = function() {
-  this.renderAllMessages();
-}
-O$._MessagesRenderer.prototype.getSeverityStyle = function(severity) {
+  };
+};
 
-  if (!severity)
+O$.extend(O$._MessagesRenderer.prototype, {
+  update: function() {
+    this.renderAllMessages();
+  },
+
+  getSeverityStyle: function(severity) {
+    if (!severity)
+      return this.style;
+    if (!this.styles)
+      return this.style;
+
+    var s = severity + "Style";
+
+    for (var attr in this.styles) {
+      if (attr.toLowerCase() == s.toLowerCase())
+        return this.styles[attr];
+    }
     return this.style;
-  if (!this.styles)
-    return this.style;
+  },
 
-  var s = severity + 'Style';
+  getSeverityClass: function(severity) {
+    if (!severity)
+      return this.css;
+    if (!this.styles)
+      return this.css;
 
-  for (var attr in this.styles)
-  {
-    if (attr.toLowerCase() == s.toLowerCase())
-      return this.styles[attr];
-  }
-  return this.style;
+    var s = severity + "Class";
 
-}
-O$._MessagesRenderer.prototype.getSeverityClass = function(severity) {
-
-  if (!severity)
+    for (var attr in this.styles) {
+      if (attr.toLowerCase() == s.toLowerCase())
+        return this.styles[attr];
+    }
     return this.css;
-  if (!this.styles)
-    return this.css;
-
-  var s = severity + 'Class';
-
-  for (var attr in this.styles)
-  {
-    if (attr.toLowerCase() == s.toLowerCase())
-      return this.styles[attr];
   }
-  return this.css;
-
-}
+});

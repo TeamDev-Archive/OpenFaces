@@ -315,6 +315,9 @@ O$.DropDown = {
 
   },
 
+  /*
+   @deprecated: don't use or copy -- use O$.setStyleMappings instead
+   */
   _addInClassName: function(classDest, className) { // todo: remove this method and replace usages with O$.appendClassNames or O$.setStyleMappings
     if (classDest.length > 0) {
       classDest = classDest + " " + className;
@@ -324,6 +327,9 @@ O$.DropDown = {
     return classDest;
   },
 
+  /*
+   @deprecated: don't use or copy -- use O$.setStyleMappings instead
+   */
   _removeOfClassName: function(classDest, className) { // todo: remove this method and replace usages with O$.excludeClassNames or O$.setStyleMappings
     if (classDest.length > 0) {
       classDest = classDest.replace(className, "");

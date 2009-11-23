@@ -68,14 +68,10 @@ O$.ManyCheckbox = {
       containerRollover |= checkboxContainer._checkboxItems[i]._rollover;
     }
 
-    O$.removeOfClassName(checkboxContainer, checkboxContainer._rolloverClass);
-    O$.removeOfClassName(checkboxContainer, checkboxContainer._focusedClass);
-    var externalClasses = checkboxContainer.className.replace(checkboxContainer._styleClass, "");
     O$.setStyleMappings(checkboxContainer, {
       rollover: containerRollover ? checkboxContainer._rolloverClass : null,
       focused: containerFocused ? checkboxContainer._focusedClass : null
     });
-    checkboxContainer.className += " " + externalClasses;
   }
 };
 

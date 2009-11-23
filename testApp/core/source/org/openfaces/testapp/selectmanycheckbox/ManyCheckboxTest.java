@@ -172,6 +172,10 @@ public class ManyCheckboxTest {
         return this.selectManyCheckboxItemsGroup7;
     }
 
+    public void reloadSelectManyCheckbox7() {
+        reloadSelectManyCheckbox7(null);
+    }
+
     public void reloadSelectManyCheckbox7(ActionEvent event) {
         int selectedForDisable = Integer.parseInt(selectOneMenu7);
         this.selectManyCheckboxItemsGroup7 = new ArrayList<SelectItem>();
@@ -228,6 +232,10 @@ public class ManyCheckboxTest {
             }
         }
         return this.selectManyCheckboxItemsGroup8;
+    }
+
+    public void reloadSelectManyCheckbox8() {
+        reloadSelectManyCheckbox8(null);
     }
 
     public void reloadSelectManyCheckbox8(ActionEvent event) {
