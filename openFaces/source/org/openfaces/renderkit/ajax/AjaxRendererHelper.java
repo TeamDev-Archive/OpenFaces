@@ -55,8 +55,8 @@ public class AjaxRendererHelper extends OUIClientActionRendererHelper {
         }
         if (!ajax.isStandalone()) {
             UIComponent parent = ajax.getParent();
-            if (parent instanceof ComponentConfigurator){
-                return isCommandComponent(((ComponentConfigurator) parent).getConfiguredComponent());
+            if (parent instanceof ComponentConfigurator) {
+                parent = ((ComponentConfigurator) parent).getConfiguredComponent();
             }
             return isCommandComponent(parent);
         }
@@ -70,6 +70,9 @@ public class AjaxRendererHelper extends OUIClientActionRendererHelper {
 
     protected void appendMissingParameters(FacesContext context, Ajax ajax, ScriptBuilder script) {
         UIComponent parent = ajax.getParent();
+        if (parent instanceof ComponentConfigurator) {
+            parent = ((ComponentConfigurator) parent).getConfiguredComponent();
+        }
         if (!isCommandComponent(parent)) {
             String ajaxComponentId = ajax.getId();
             script.append("if (!O$._renderIds) {O$._renderIds = []};O$._renderIds['").append(ajaxComponentId).append("'] = ");
