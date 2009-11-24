@@ -128,6 +128,11 @@
   table-layout: fixed;
 }
 
+.o_scrolling_area_spacer {
+  width: 1px;
+  height: 1px;
+}
+
 .o_filter_row_cells {
   font-weight: normal;
 }

@@ -1228,6 +1228,11 @@ O$.Table = {
   },
 
   _performPaginatorAction: function(tableId, field, paramName, paramValue) {
+    if (!field) {
+      // focus the table after pagination
+      var focusedFld = O$(tableId + "::focused");
+      if (focusedFld) focusedFld.value = "true";
+    }
     O$._submitComponentWithField(tableId, field, [
       [paramName, paramValue]
     ]);

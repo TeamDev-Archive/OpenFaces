@@ -170,19 +170,19 @@ public class TableBody extends TableSection {
 
         List<BodyCell> cells = new ArrayList<BodyCell>();
         if (fixedLeftColumns > 0)
-            cells.add(scrollingAreaCell(columns, leftRows, 0, fixedLeftColumns));
-        cells.add(scrollingAreaCell(columns, rows, fixedLeftColumns, allColCount - fixedRightColumns));
+            cells.add(scrollingAreaCell(columns, leftRows, 0, fixedLeftColumns, TableScrollingArea.ScrollingType.VERTICAL));
+        cells.add(scrollingAreaCell(columns, rows, fixedLeftColumns, allColCount - fixedRightColumns, TableScrollingArea.ScrollingType.BOTH));
         if (fixedRightColumns > 0)
-            cells.add(scrollingAreaCell(columns, rightRows, allColCount - fixedRightColumns, allColCount));
+            cells.add(scrollingAreaCell(columns, rightRows, allColCount - fixedRightColumns, allColCount, TableScrollingArea.ScrollingType.VERTICAL));
 
         BodyRow containingRow = new BodyRow(this);
         containingRow.setCells(cells);
         return Collections.singletonList(containingRow);
     }
 
-    private BodyCell scrollingAreaCell(List<BaseColumn> columns, List<BodyRow> rows, int startCol, int endCol) {
+    private BodyCell scrollingAreaCell(List<BaseColumn> columns, List<BodyRow> rows, int startCol, int endCol, TableScrollingArea.ScrollingType scrolling) {
         BodyCell cell = new BodyCell();
-        TableScrollingArea scrollingArea = new TableScrollingArea(cell, columns.subList(startCol, endCol), rows, true);
+        TableScrollingArea scrollingArea = new TableScrollingArea(cell, columns.subList(startCol, endCol), rows, scrolling);
         scrollingArea.setCellpadding(tableStructure.getTableCellPadding());
         scrollingArea.setIndefiniteHight(true);
         cell.setContent(scrollingArea);

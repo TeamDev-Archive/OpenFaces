@@ -118,7 +118,8 @@ public abstract class TableHeaderOrFooter extends TableSection {
             hasSubHeader = true;
         }
         TableScrollingArea tableScrollingArea = new TableScrollingArea(
-                this, columns.subList(startColIndex, endColIndex), rows, scrollable);
+                this, columns.subList(startColIndex, endColIndex), rows, 
+                scrollable ? TableScrollingArea.ScrollingType.HORIZONTAL : TableScrollingArea.ScrollingType.NONE);
         tableScrollingArea.setCellpadding(tableStructure.getTableCellPadding());
         return new HeaderCell(null, tableScrollingArea, "td", null);
     }

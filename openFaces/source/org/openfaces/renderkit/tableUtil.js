@@ -368,7 +368,7 @@ O$.Tables = {
       var rows = tableRows(table, "tbody");
       if (rows.length != 1)
         throw "O$._initRows: one root row expected, but was: " + rows.length;
-      var tableContainer = O$.findElementByPath(rows[0], "td/div");
+      var tableContainer = O$.getElementByPath(rows[0], "td/div");
       var tables = O$.getChildNodesWithNames(tableContainer, ["table"]);
       var sectionIndex = 0;
       var headTable = (table._params.header && table._params.header.rowCount) ? tables[sectionIndex++] : null;
@@ -451,7 +451,9 @@ O$.Tables = {
                   scrollingDivContainer.style.display = "none"; // hide the container temporarily to overcome non-working "overflow: hidden" on td under IE quirks-mode
                 }
                 var scrollingDiv = O$.getChildNodesWithNames(scrollingDivContainer ? scrollingDivContainer : td, ["div"])[0];
-                var tbl = O$.getChildNodesWithNames(scrollingDiv ? scrollingDiv : td, ["table"])[0];
+                var tbl = O$.getChildNodesByClass(scrollingDiv ? scrollingDiv : td, ["o_scrolling_area_table"])[0];
+                var spacer = O$.getChildNodesByClass(scrollingDiv ? scrollingDiv : td, ["o_scrolling_area_spacer"], false, tbl)[0];
+
                 tbl.style.emptyCells = "show";
                 if (table._bordersNeeded) tbl.style.borderCollapse = "collapse";
                 var rowContainer = O$.getChildNodesWithNames(tbl, ["tbody"])[0];
@@ -461,7 +463,8 @@ O$.Tables = {
                   _scrollingDiv: scrollingDiv,
                   _table: tbl,
                   _rowContainer: rowContainer,
-                  _rows: O$.getChildNodesWithNames(rowContainer, ["tr"])
+                  _rows: O$.getChildNodesWithNames(rowContainer, ["tr"]),
+                  _spacer: spacer
                 };
                 if (area._scrollingDiv) {
                   if (scrollingKind == "none")
@@ -918,7 +921,7 @@ O$.Tables = {
       return false;
     var cellWrapper = cell._cellWrapper;
     if (!cellWrapper) {
-      var nodes = O$.findChildNodesByClass(cell, "o_cellWrapper", true);
+      var nodes = O$.getChildNodesByClass(cell, "o_cellWrapper", true);
       if (nodes.length == 0) {
         cell._noCellWrapperFound = true;
         return false;
@@ -1157,7 +1160,8 @@ O$.Tables = {
       };
       function updateBodyCellBorders(cell, rowIndex, column, rowCount, colCount) {
         var correctedRowIndex = rowIndex + cell.rowSpan - 1;
-        var borderBottom = (correctedRowIndex < rowCount - 1)
+        var displayGridLineUnderBottomRow = !!table._params.scrolling;
+        var borderBottom = (correctedRowIndex < displayGridLineUnderBottomRow ? rowCount : rowCount - 1)
                 ? tableBody._getBorderBottomForCell(rowIndex, column._colIndex, cell)
                 : "0px none white";
         O$.Tables._setCellStyleProperty(cell, "borderBottom", borderBottom);
@@ -1811,6 +1815,7 @@ O$.Tables = {
       throw "O$.Tables._initScrolling can't be invoked on a non-scrollable table";
 
     var delayedInitFunctions = [];
+    var mainScrollingArea = table.body._centerScrollingArea;
 
     function alignColumnWidths() {
       var firstSection = table.header ? table.header : table.body;
@@ -1892,8 +1897,8 @@ O$.Tables = {
     }
     fixBodyHeight();
 
+
     function synchronizeAreaScrolling() {
-      var mainScrollingArea = table.body._centerScrollingArea;
       mainScrollingArea._scrollingDiv.onscroll = function() {
         [table.header, table.footer].forEach(function (section) {
           if (!section || !section._centerScrollingArea) return;
@@ -1969,12 +1974,24 @@ O$.Tables = {
     function fixIE6AreaDisappearing() {
       if (!O$.isExplorer6()) return;
       
-      var mainScrollingArea = table.body._centerScrollingArea;
       mainScrollingArea._scrollingDiv.onresize = function() {
       };
     }
     fixIE6AreaDisappearing();
 
+
+    function accountForScrollersWidth() {
+      var scrollerWidth = mainScrollingArea._scrollingDiv.offsetWidth - mainScrollingArea._scrollingDiv.clientWidth;
+      var scrollerHeight = mainScrollingArea._scrollingDiv.offsetHeight - mainScrollingArea._scrollingDiv.clientHeight;
+
+      var spacerAreas = [table.header, table.footer].map(function(s) {return s && s._centerScrollingArea;});
+      spacerAreas = spacerAreas.concat([table.body._leftScrollingArea, table.body._rightScrollingArea]);
+      spacerAreas.forEach(function(area) {
+        if (!area) return;
+        O$.setElementSize(area._spacer, {width: scrollerWidth, height: scrollerHeight});
+      });
+    }
+    accountForScrollersWidth();
 
     if (delayedInitFunctions.length)
       O$.addLoadEvent(function() {

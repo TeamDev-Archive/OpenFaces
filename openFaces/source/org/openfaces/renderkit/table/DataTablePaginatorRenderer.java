@@ -18,8 +18,11 @@ import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.HTML;
 import org.openfaces.util.Log;
+import org.openfaces.util.RawScript;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Script;
+import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
@@ -118,7 +121,8 @@ public class DataTablePaginatorRenderer extends RendererBase {
             return;
         int pageSize = table.getPageSize();
         if (pageSize == 0)
-            throw new IllegalStateException("DataTablePaginator can't be placed into a non-pageable dataTable. Set dataTable's pageSize to a non-zero value. dataTable's clientId is: " + table.getClientId(context));
+            throw new IllegalStateException("DataTablePaginator can't be placed into a non-pageable dataTable. Set " +
+                    "dataTable's pageSize to a non-zero value. dataTable's clientId is: " + table.getClientId(context));
 
         boolean firstLinkActive = canSelectFirstPage(table);
         boolean lastLinkActive = canSelectLastPage(table);
@@ -130,12 +134,16 @@ public class DataTablePaginatorRenderer extends RendererBase {
         boolean useAjax = table.getUseAjax();
         String actionFieldName = getActionFieldName(context, pager);
         List<String> preloadImages = new ArrayList<String>();
-        createAndAddActionLink(context, children, pager, actionFieldName, "selectFirstPage", getFirstImageUrl(context, pager, firstLinkActive), getFirstText(pager), FIRST_PAGE_COMPONENT, useAjax, table, firstLinkActive);
+        createAndAddActionLink(context, children, pager, actionFieldName, "selectFirstPage",
+                getFirstImageUrl(context, pager, firstLinkActive), getFirstText(pager),
+                FIRST_PAGE_COMPONENT, useAjax, table, firstLinkActive);
         preloadImages.add(getFirstImageUrl(context, pager, !firstLinkActive));
         boolean showDisabledImages = pager.getShowDisabledImages();
         if ((firstLinkActive && previousLinkActive) || showDisabledImages)
             children.add(ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY, false));
-        createAndAddActionLink(context, children, pager, actionFieldName, "selectPrevPage", getPreviousImageUrl(context, pager, previousLinkActive), getPreviousText(pager), PREV_PAGE_COMPONENT, useAjax, table, previousLinkActive);
+        createAndAddActionLink(context, children, pager, actionFieldName, "selectPrevPage",
+                getPreviousImageUrl(context, pager, previousLinkActive), getPreviousText(pager),
+                PREV_PAGE_COMPONENT, useAjax, table, previousLinkActive);
         preloadImages.add(getPreviousImageUrl(context, pager, !previousLinkActive));
 
         if (firstLinkActive || previousLinkActive || showDisabledImages)
@@ -156,8 +164,9 @@ public class DataTablePaginatorRenderer extends RendererBase {
                 context, component, null, DEFAULT_FIELD_CLASS, pager.getPageNumberFieldClass());
         inputText.setStyleClass(fieldClass);
         inputText.setOnkeypress("if (event.keyCode == 13) {this.onchange(); event.cancelBubble = true; return false;}");
-        String selectPageNoScript = getSubmitComponentWithParamScript(context, useAjax, table, actionFieldName, "'selectPageNo:' + this.value");
-        inputText.setOnchange(selectPageNoScript);
+        Script selectPageNoScript = getSubmitComponentWithParamScript(
+                useAjax, table, actionFieldName, new RawScript("'selectPageNo:' + this.value"), false);
+        inputText.setOnchange(selectPageNoScript.toString());
         children.add(inputText);
         if (pager.getShowPageCount()) {
             String pageCountPreposition = pager.getPageCountPreposition();
@@ -170,11 +179,15 @@ public class DataTablePaginatorRenderer extends RendererBase {
         if (lastLinkActive || nextLinkActive || showDisabledImages)
             children.add(ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY + HTML.NBSP_ENTITY, false));
 
-        createAndAddActionLink(context, children, pager, actionFieldName, "selectNextPage", getNextImageUrl(context, pager, nextLinkActive), getNextText(pager), NEXT_PAGE_COMPONENT, useAjax, table, nextLinkActive);
+        createAndAddActionLink(context, children, pager, actionFieldName, "selectNextPage",
+                getNextImageUrl(context, pager, nextLinkActive), getNextText(pager),
+                NEXT_PAGE_COMPONENT, useAjax, table, nextLinkActive);
         preloadImages.add(getNextImageUrl(context, pager, !nextLinkActive));
         if (lastLinkActive && nextLinkActive || showDisabledImages)
             children.add(ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY, false));
-        createAndAddActionLink(context, children, pager, actionFieldName, "selectLastPage", getLastImageUrl(context, pager, lastLinkActive), getLastText(pager), LAST_PAGE_COMPONENT, useAjax, table, lastLinkActive);
+        createAndAddActionLink(context, children, pager, actionFieldName, "selectLastPage",
+                getLastImageUrl(context, pager, lastLinkActive), getLastText(pager),
+                LAST_PAGE_COMPONENT, useAjax, table, lastLinkActive);
         preloadImages.add(getLastImageUrl(context, pager, !lastLinkActive));
         RenderingUtil.renderPreloadImagesScript(context, preloadImages, true);
 
@@ -240,7 +253,7 @@ public class DataTablePaginatorRenderer extends RendererBase {
         if (!linkActive)
             return image;
 
-        String submitScript = getSubmitComponentWithParamScript(context, useAjax, componentToReload, fieldName, "'" + fieldValue + "'");
+        Script submitScript = getSubmitComponentWithParamScript(useAjax, componentToReload, fieldName, fieldValue, true);
         image.setOnclick(submitScript + "event.cancelBubble = true; return false;");
         image.setId(ComponentUtil.generateIdWithSuffix(eventReceiver, idSuffix));
         image.setStyleClass(DEFAULT_IMAGE_CLASS);
@@ -256,11 +269,14 @@ public class DataTablePaginatorRenderer extends RendererBase {
     }
 
 
-    private static String getSubmitComponentWithParamScript(
-            FacesContext context, boolean useAjax, UIComponent table, String paramName, String paramValue) {
-        String submitScript = useAjax
-                ? "O$.Table._performPaginatorAction('" + table.getClientId(context) + "', this, '" + paramName + "', " + paramValue + "); "
-                : "O$.submitFormWithAdditionalParam(this, '" + paramName + "', " + paramValue + "); ";
+    private static Script getSubmitComponentWithParamScript(
+            boolean useAjax, UIComponent table, String paramName, Object paramValue,
+            boolean focusTable) {
+        Script submitScript = useAjax
+                ? new ScriptBuilder().functionCall("O$.Table._performPaginatorAction",
+                                        table, new RawScript(focusTable ? "null" : "this"), paramName, paramValue).semicolon()
+                : new ScriptBuilder().functionCall("O$.submitFormWithAdditionalParam",
+                                        new RawScript("this"), paramName, paramValue).semicolon();
         return submitScript;
     }
 

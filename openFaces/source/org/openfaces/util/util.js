@@ -36,14 +36,8 @@ if (!window.O$) {
   };
 
   O$.extend(O$, {
-    DEBUG: true,
+    DEBUG: true
 
-    byIdOrName: function(idOrName) {
-      var el = O$(idOrName);
-      if (!el)
-        el = document.getElementsByName(idOrName)[0];
-      return el;
-    }
   });
 
 
@@ -907,6 +901,14 @@ if (!window.O$) {
 
   // ----------------- DOM FUNCTIONS ---------------------------------------------------
 
+  O$.byIdOrName = function(idOrName) {
+    var el = O$(idOrName);
+    if (!el)
+      el = document.getElementsByName(idOrName)[0];
+    return el;
+  };
+
+
   O$.findParentNode = function(element, tagName) {
     tagName = tagName.toUpperCase();
     while (element) {
@@ -942,7 +944,7 @@ if (!window.O$) {
     return false;
   };
 
-  O$.findChildNodesByClass = function(node, className, searchTopLevelOnly) {
+  O$.getChildNodesByClass = function(node, className, searchTopLevelOnly, excludeElementFromSearch) {
     var result = [];
     var children = node.childNodes;
     for (var i = 0, count = children.length; i < count; i++) {
@@ -952,7 +954,9 @@ if (!window.O$) {
       //    var childClass = child.className;
       //    var childClassNames = childClass ? childClass.split(" ") : [];
       //    if (childClassNames.O$.indexOf(className))
-      var subResult = !searchTopLevelOnly && O$.findChildNodesByClass(child, className);
+      if (child == excludeElementFromSearch)
+        continue;
+      var subResult = !searchTopLevelOnly && O$.getChildNodesByClass(child, className, false, excludeElementFromSearch);
       for (var childIndex = 0, subResultCount = subResult.length; childIndex < subResultCount; childIndex++) {
         var innerResult = subResult[childIndex];
         result.push(innerResult);
@@ -998,7 +1002,7 @@ if (!window.O$) {
     return elem_array;
   };
 
-  O$.findElementByPath = function(node, childPath, ignoreNonExistingElements) {
+  O$.getElementByPath = function(node, childPath, ignoreNonExistingElements) {
     var separatorIndex = childPath.indexOf("/");
     var locator = separatorIndex == -1 ? childPath : childPath.substring(0, separatorIndex);
     var remainingPath = separatorIndex != -1 ? childPath.substring(separatorIndex + 1) : null;
@@ -1009,32 +1013,32 @@ if (!window.O$) {
     if (bracketIndex == -1) {
       childElementIndex = 0;
     } else {
-      O$.assert(O$.stringEndsWith(locator, "]"), "O$.findElementByPath: unparsable element locator - non-matching brackets: " + childPath);
+      O$.assert(O$.stringEndsWith(locator, "]"), "O$.getElementByPath: unparsable element locator - non-matching brackets: " + childPath);
       var indexStr = locator.substring(bracketIndex + 1, locator.length - 1);
       try {
         childElementIndex = parseInt(indexStr);
       } catch (e) {
         if (ignoreNonExistingElements)
           return null;
-        throw "O$.findElementByPath: Couldn't parse child index (" + indexStr + "); childPath = " + childPath;
+        throw "O$.getElementByPath: Couldn't parse child index (" + indexStr + "); childPath = " + childPath;
       }
     }
     var childrenByName = O$.getChildNodesWithNames(node, [childElementName]);
     if (childrenByName.length == 0) {
       if (ignoreNonExistingElements)
         return null;
-      throw "O$.findElementByPath: Couldn't find child nodes by element name: " + childElementName + " ; childPath = " + childPath;
+      throw "O$.getElementByPath: Couldn't find child nodes by element name: " + childElementName + " ; childPath = " + childPath;
     }
     var child = childrenByName[childElementIndex];
     if (!child) {
       if (ignoreNonExistingElements)
         return null;
-      throw "O$.findElementByPath: Child not found by index: " + childElementIndex + " ; childPath = " + childPath;
+      throw "O$.getElementByPath: Child not found by index: " + childElementIndex + " ; childPath = " + childPath;
     }
     if (remainingPath == null)
       return child;
     else
-      return O$.findElementByPath(child, remainingPath);
+      return O$.getElementByPath(child, remainingPath);
   };
 
   O$.isElementPresentInDocument = function(element) {
@@ -4130,8 +4134,9 @@ if (!window.O$) {
     var fixture = {
       values: {},
       update: function() {
+        var elements = element instanceof Array ? element : [element];
         if (
-                !O$.isElementPresentInDocument(element) ||
+                !elements.every(function(el){return O$.isElementPresentInDocument(el);}) ||
                 (workingCondition && !workingCondition())
         ) {
           clearInterval(fixture.intervalId);
@@ -4139,9 +4144,14 @@ if (!window.O$) {
         }
         for (var propertyName in properties) {
           var propertyValue = properties[propertyName]();
-          if (O$.getElementEffectProperty(element, propertyName) != propertyValue) {
-            O$.setElementEffectProperty(element, propertyName, propertyValue);
+
+          if (this.values[propertyName] != propertyValue) {
             this.values[propertyName] = propertyValue;
+            if (element instanceof Array)
+              element.forEach(function(el){O$.setElementEffectProperty(el, propertyName, propertyValue);});
+            else
+              O$.setElementEffectProperty(element, propertyName, propertyValue);
+
             if (this.onchange)
               this.onchange();
           }

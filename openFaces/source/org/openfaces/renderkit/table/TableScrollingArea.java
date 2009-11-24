@@ -28,18 +28,18 @@ public class TableScrollingArea extends TableElement {
     private String cellpadding;
     private List<BaseColumn> columns;
     private List<? extends AbstractRow> rows;
-    private boolean scrollable;
+    private ScrollingType scrollingType;
     private boolean indefiniteHight;
 
     public TableScrollingArea(
             TableElement parent,
             List<BaseColumn> columns,
             List<? extends AbstractRow> rows,
-            boolean scrollable) {
+            ScrollingType scrollingType) {
         super(parent);
         this.rows = rows;
         this.columns = columns;
-        this.scrollable = scrollable;
+        this.scrollingType = scrollingType;
     }
 
     public boolean isIndefiniteHight() {
@@ -76,12 +76,63 @@ public class TableScrollingArea extends TableElement {
             writer.startElement("div", component);
             writer.writeAttribute("class", "o_scrolling_area_container", null);
         }
-        if (scrollable) {
+        if (scrollingType != ScrollingType.NONE) {
             writer.startElement("div", component);
             writer.writeAttribute("class", "o_table_scrolling_area", null);
             if (indefiniteHight)
                 writer.writeAttribute("style", "position: absolute; height: 0;", null);
+            // horizontal and vertical scrolling areas require a spacer at the end of the area to accomodate for scroller width
+            if (scrollingType == ScrollingType.HORIZONTAL) {
+                writer.startElement("table", component);
+                writer.writeAttribute("cellspacing", "0", null);
+                writer.writeAttribute("cellpadding", "0", null);
+                writer.writeAttribute("border", "0", null);
+                writer.startElement("tr", component);
+                writer.startElement("td", component);
+            } else if (scrollingType == ScrollingType.VERTICAL) {
+                writer.startElement("table", component);
+                writer.writeAttribute("cellspacing", "0", null);
+                writer.writeAttribute("cellpadding", "0", null);
+                writer.writeAttribute("border", "0", null);
+                writer.startElement("tr", component);
+                writer.startElement("td", component);
+            }
         }
+
+        writeTable(context, writer, component, additionalContentWriter);
+
+        if (scrollingType != ScrollingType.NONE) {
+            if (scrollingType == ScrollingType.HORIZONTAL) {
+                writer.endElement("td");
+                writer.startElement("td", component);
+                writeSpacer(context, writer, component);
+                writer.endElement("td");
+                writer.endElement("tr");
+                writer.endElement("table");
+            } else if (scrollingType == ScrollingType.VERTICAL) {
+                writer.endElement("td");
+                writer.endElement("tr");
+                writer.startElement("tr", component);
+                writer.startElement("td", component);
+                writeSpacer(context, writer, component);
+                writer.endElement("td");
+                writer.endElement("tr");
+                writer.endElement("table");
+            }
+
+            writer.endElement("div");
+        }
+        if (indefiniteHight)
+            writer.endElement("div");
+    }
+
+    private void writeSpacer(FacesContext context, ResponseWriter writer, UIComponent component) throws IOException {
+        writer.startElement("div", component);
+        writer.writeAttribute("class", "o_scrolling_area_spacer", null);
+        writer.endElement("div");
+    }
+
+    private void writeTable(FacesContext context, ResponseWriter writer, UIComponent component, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
         writer.startElement("table", component);
         writer.writeAttribute("class", "o_scrolling_area_table", null);
         writer.writeAttribute("cellspacing", "0", null);
@@ -94,10 +145,6 @@ public class TableScrollingArea extends TableElement {
         }
         writer.endElement("tbody");
         writer.endElement("table");
-        if (scrollable)
-            writer.endElement("div");
-        if (indefiniteHight)
-            writer.endElement("div");
     }
 
     public boolean isContentSpecified() {
@@ -106,5 +153,9 @@ public class TableScrollingArea extends TableElement {
                 return true;
         }
         return false;
+    }
+
+    public enum ScrollingType {
+        NONE, HORIZONTAL, VERTICAL, BOTH
     }
 }
