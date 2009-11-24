@@ -131,6 +131,8 @@
 .o_scrolling_area_spacer {
   width: 1px;
   height: 1px;
+  padding: 0;
+  border-width: 0;
 }
 
 .o_filter_row_cells {

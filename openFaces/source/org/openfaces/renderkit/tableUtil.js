@@ -1981,14 +1981,13 @@ O$.Tables = {
 
 
     function accountForScrollersWidth() {
-      var scrollerWidth = mainScrollingArea._scrollingDiv.offsetWidth - mainScrollingArea._scrollingDiv.clientWidth;
-      var scrollerHeight = mainScrollingArea._scrollingDiv.offsetHeight - mainScrollingArea._scrollingDiv.clientHeight;
-
-      var spacerAreas = [table.header, table.footer].map(function(s) {return s && s._centerScrollingArea;});
-      spacerAreas = spacerAreas.concat([table.body._leftScrollingArea, table.body._rightScrollingArea]);
-      spacerAreas.forEach(function(area) {
+      [table.header, table.footer].map(function(s) {return s && s._centerScrollingArea;}).forEach(function(area) {
         if (!area) return;
-        O$.setElementSize(area._spacer, {width: scrollerWidth, height: scrollerHeight});
+        O$.setElementSize(area._spacer, {width: 50, height: 1});
+      });
+      [table.body._leftScrollingArea, table.body._rightScrollingArea].forEach(function(area) {
+        if (!area) return;
+        O$.setElementSize(area._spacer, {width: 1, height: 50});
       });
     }
     accountForScrollersWidth();
