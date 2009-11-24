@@ -3587,7 +3587,7 @@ if (!window.O$) {
     return indent;
   };
 
-  O$.calculateNumericCSSValue = function(value) {
+  O$.calculateNumericCSSValue = function(value, hundredPercentValue) {
     if (!value)
       return 0;
     if (!isNaN(1 * value))
@@ -3596,6 +3596,10 @@ if (!window.O$) {
       return 1 * value.substring(0, value.length - 2);
     if (value == "auto")
       return 0; // todo: can't calculate "auto" (e.g. from margin property) on a simulated border -- consider simulating such "non-border" values on other properties
+    if (value.indexOf("%") == value.length - 1) {
+      var val = value.substring(0, value.length - 1);
+      return val / 100.0 * hundredPercentValue;
+    }
 
     if (!O$._nonPixelValueMeasurements)
       O$._nonPixelValueMeasurements = [];

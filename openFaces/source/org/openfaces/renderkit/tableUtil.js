@@ -1827,12 +1827,16 @@ O$.Tables = {
       });
       function areaWidthByColumns(section, areaName) {
         var areaWidth = 0;
+        var tableWidth = O$.getElementSize(table).width;
         var area = section[areaName];
         area._colTags.forEach(function(colTag) {
           var column = colTag._column;
-          var colWidth = O$.calculateNumericCSSValue(O$.getStyleClassProperty(column._className, "width"));
-          if (!colWidth) {
+          var colWidth = O$.calculateNumericCSSValue(O$.getStyleClassProperty(column._className, "width"), tableWidth);
+          if (!colWidth)
+            colWidth = O$.calculateNumericCSSValue(column._colTags[0].width);
+          if (!colWidth)
             colWidth = defaultColWidth;
+          if (!colWidth || O$.calculateNumericCSSValue(O$.getStyleClassProperty(column._className, "width"), 0) != colWidth) {
             column._colTags.forEach(function(tag) {
               O$.setElementWidth(tag, colWidth);
             });

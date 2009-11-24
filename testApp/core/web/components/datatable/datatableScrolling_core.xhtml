@@ -22,7 +22,7 @@
     </f:facet>
 
     <o:selectionColumn fixed="true"/>
-    <o:column headerStyle="background: LightSteelBlue;" sortingExpression="#{row.stringField1}" fixed="true">
+    <o:column headerStyle="background: LightSteelBlue;" sortingExpression="#{row.stringField1}" fixed="true" width="200px">
       <f:facet name="header">
         <h:outputText value="String Field 1"/>
       </f:facet>
@@ -47,7 +47,7 @@
         </f:facet>
       </o:checkboxColumn>
 
-      <o:column headerStyle="background: LightSteelBlue;" sortingExpression="#{row.stringField2}">
+      <o:column headerStyle="background: LightSteelBlue;" sortingExpression="#{row.stringField2}" style="width: 30%">
         <f:facet name="header">
           <h:outputText value="String Field 2"/>
         </f:facet>
@@ -59,7 +59,7 @@
         </f:facet>
         <h:outputText value="#{row.stringField2}"/>
       </o:column>
-      <o:column headerStyle="background: LightSteelBlue;" sortingExpression="#{row.stringField3}">
+      <o:column headerStyle="background: LightSteelBlue;" sortingExpression="#{row.stringField3}" style="width: 30%">
         <f:facet name="header">
           <h:outputText value="String Field 3"/>
         </f:facet>
@@ -71,13 +71,13 @@
         <h:outputText value="Integer Fields"/>
       </f:facet>
 
-      <o:column headerStyle="background: LawnGreen;">
+      <o:column headerStyle="background: LawnGreen;" style="width: 50px;">
         <f:facet name="header">
           <h:outputText value="Int Field 1"/>
         </f:facet>
         <h:outputText value="#{row.intField1}"/>
       </o:column>
-      <o:column headerStyle="background: LawnGreen;" sortingExpression="#{row.intField2}">
+      <o:column headerStyle="background: LawnGreen;" sortingExpression="#{row.intField2}" width="50px">
         <f:facet name="header">
           <h:outputText value="Int Field 2"/>
         </f:facet>
@@ -91,7 +91,7 @@
         </f:facet>
         <h:outputText value="#{row.intField2}"/>
       </o:column>
-      <o:column headerStyle="background: LawnGreen;">
+      <o:column headerStyle="background: LawnGreen;" style="width: 50px;">
         <f:facet name="header">
           <h:outputText value="Int Field 3"/>
         </f:facet>
