@@ -73,7 +73,7 @@ O$.addValidatorsById = function(inputId, validators, clientValueFunction) {
   }
   if (clientValueFunction) {
     input._clientValueFunction = clientValueFunction;
-    input._clientValueFunctionExist = true;
+    input._clientValueFunctionExists = true;
   }
 
 }
@@ -153,7 +153,7 @@ O$._validateRecursive = function(element, fullValidation) {
 }
 
 O$.validateForm = function(form) {
-  if (form._of_skipValidation && form._of_skipValidation == true) {
+  if (form._of_skipValidation) {
     return true;
   }
   if (O$.isLoadedFullPage()) {
@@ -165,7 +165,7 @@ O$.validateForm = function(form) {
 }
 
 O$._autoValidateForm = function(form) {
-  if (form._of_skipValidation && form._of_skipValidation == true) {
+  if (form._of_skipValidation) {
     return true;
   }
   if (O$.isLoadedFullPage()) {
@@ -184,7 +184,7 @@ O$.validateFormById = function(formId) {
 }
 
 O$.validateEnclosingForm = function(element) {
-  var form = O$.findParentNode(element, "FORM");
+  var form = O$.getParentNode(element, "FORM");
   if (form) {
     var r = O$.validateForm(form);
     return r;
@@ -193,7 +193,7 @@ O$.validateEnclosingForm = function(element) {
 }
 
 O$.getValue = function(input) {
-  if (input._clientValueFunctionExist == true) {
+  if (input._clientValueFunctionExists) {
     return "" + input._clientValueFunction.call();
   }
 
@@ -384,7 +384,7 @@ O$.updateClientMessagesPosition = function() {
 O$.addOnSubmitEvent = function(func, frmId) {
   // var element = O$(elementId);
   // O$.assert(element, "O$.addOnSubmitEvent: Element with id: " + elementId + " not found.");
-  //var frm = O$.findParentNode(element, "FORM");
+  //var frm = O$.getParentNode(element, "FORM");
   //O$.assert(frm, "O$.addOnSubmitEvent: Enclosing form not found for element with id: " + elementId);
   var frm = O$(frmId);
   O$.assert(frm, "O$.addOnSubmitEvent: Form not found. id: " + frmId);
@@ -393,12 +393,12 @@ O$.addOnSubmitEvent = function(func, frmId) {
   if (typeof frm.onsubmit != "function") {
     frm.onsubmit = function() {
       return func(frm);
-    }
+    };
   } else {
     frm.onsubmit = function() {
       oldonsubmit();
       return func(frm);
-    }
+    };
   }
 
 }
@@ -408,7 +408,7 @@ O$.isLong = function(value) {
   if (!/^[+-]?\d+$/.test(value)) {
     return false;
   }
-  ivalue = parseInt(value);
+  var ivalue = parseInt(value);
   if (ivalue > 0x7fffffffffffffff) {
     return false;
   }
@@ -426,7 +426,7 @@ O$.isInt = function(value) {
   if (!/^[+-]?\d+$/.test(value)) {
     return false;
   }
-  ivalue = parseInt(value);
+  var ivalue = parseInt(value);
   if (ivalue > 0x7fffffff) {
     return false;
   }
@@ -453,7 +453,7 @@ O$.isShort = function(value) {
   if (!/^[+-]?\d+$/.test(value)) {
     return false;
   }
-  ivalue = parseInt(value);
+  var ivalue = parseInt(value);
   if (ivalue > 32767) {
     return false;
   }
@@ -465,7 +465,7 @@ O$.isByte = function(value) {
   if (!/^[+-]?\d+$/.test(value)) {
     return false;
   }
-  ivalue = parseInt(value);
+  var ivalue = parseInt(value);
   if (ivalue > 127) {
     return false;
   }
@@ -477,7 +477,7 @@ O$.isFloat = function(value) {
   if (isNaN(value)) {
     return false;
   }
-  fvalue = parseFloat(value);
+  var fvalue = parseFloat(value);
   if (fvalue > 3.4028235e+38) {
     return false;
   }
@@ -489,7 +489,7 @@ O$.isDouble = function(value) {
   if (isNaN(value)) {
     return false;
   }
-  fvalue = parseFloat(value);
+  var fvalue = parseFloat(value);
   if (fvalue > 1.7976931348623157e+308) {
     return false;
   }
@@ -524,7 +524,7 @@ O$.addNotValidatedInput = function(id) {
 }
 
 O$.submitWithoutValidation = function(element) {
-  var form = O$.findParentNode(element, "FORM");
+  var form = O$.getParentNode(element, "FORM");
   O$.assert(form, "O$.submitWithoutValidation: Enclosing form not found.");
   if (form) {
     form._of_skipValidation = true;
@@ -538,7 +538,7 @@ O$.submitWithoutValidation = function(element) {
 }
 
 O$.switchOnValidation = function(element) {
-  var form = O$.findParentNode(element, "FORM");
+  var form = O$.getParentNode(element, "FORM");
   O$.assert(form, "O$.switchOnValidation: Enclosing form not found.");
   if (form) {
     form._of_skipValidation = false;
@@ -546,7 +546,7 @@ O$.switchOnValidation = function(element) {
 }
 
 O$.switchOffValidation = function(element) {
-  var form = O$.findParentNode(element, "FORM");
+  var form = O$.getParentNode(element, "FORM");
   O$.assert(form, "O$.switchOffValidation: Enclosing form not found.");
   if (form) {
     form._of_skipValidation = true;
@@ -586,7 +586,7 @@ O$._getComponentsWithPresentation = function() {
 }
 
 O$.resetFormValidation = function(form) {
-  if (!(form._of_skipValidation && form._of_skipValidation == true)) {
+  if (!form._of_skipValidation) {
     O$._resetValidationRecursive(form);
     O$.updateClientMessages();
   }
@@ -597,7 +597,7 @@ O$.resetFormValidationById = function(formId) {
 };
 
 O$.resetEnclosingFormValidation = function(element) {
-  var form = O$.findParentNode(element, "FORM");
+  var form = O$.getParentNode(element, "FORM");
   if (form) {
     O$.resetFormValidation(form);
   }

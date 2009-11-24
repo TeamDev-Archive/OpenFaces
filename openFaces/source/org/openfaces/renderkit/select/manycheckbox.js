@@ -51,7 +51,7 @@ O$.ManyCheckbox = {
       }
     });
 
-    O$.addEventHandler(checkboxContainer, "mouseout", function(e) {
+    O$.addEventHandler(checkboxContainer, "mouseout", function() {
       if (!disabled) {
         checkboxContainer._rollover = false;
         O$.ManyCheckbox.updateContainerStyles(checkboxContainer);

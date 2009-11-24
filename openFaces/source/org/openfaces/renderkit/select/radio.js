@@ -51,7 +51,7 @@ O$.Radio = {
       }
     });
 
-    O$.addEventHandler(radioContainer, "mouseout", function(e) {
+    O$.addEventHandler(radioContainer, "mouseout", function() {
       if (!disabled) {
         radioContainer._rollover = false;
         O$.Radio.updateContainerStyles(radioContainer);

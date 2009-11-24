@@ -22,7 +22,7 @@ O$._RegexValidator = function(summary, detail, regexPattern, trimNeeded, type) {
     alert("Error in O$._RegexValidator. Currently defined pattern '" + this.regexPattern + "' is invalid.");
   }
 
-}
+};
 
 O$._RegexValidator.prototype.validate = function(input) {
   var value = O$.getValue(input);

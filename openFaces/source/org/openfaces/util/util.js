@@ -909,7 +909,7 @@ if (!window.O$) {
   };
 
 
-  O$.findParentNode = function(element, tagName) {
+  O$.getParentNode = function(element, tagName) {
     tagName = tagName.toUpperCase();
     while (element) {
       var elementNodeName = element.nodeName;
@@ -925,7 +925,7 @@ if (!window.O$) {
       return null;
   };
 
-  O$.findAnyParentNode = function(element, tagNames) {
+  O$.getAnyParentNode = function(element, tagNames) {
     for (var i = 0, count = tagNames.length; i < count; i++)
       tagNames[i] = tagNames[i].toUpperCase();
     while (element && O$.findValueInArray(element.nodeName.toUpperCase(), tagNames) == -1)
@@ -1077,7 +1077,7 @@ if (!window.O$) {
 
   O$.submitEnclosingForm = function(element) {
     O$.assert(element, "element should be passed to O$.submitEnclosingForm");
-    var frm = O$.findParentNode(element, "FORM");
+    var frm = O$.getParentNode(element, "FORM");
     O$.assert(frm, "O$.submitEnclosingForm: Enclosing form not found for element with id: " + element.id + "; element tag name: " + element.tagName);
     if (frm.onsubmit)
       if (!frm.onsubmit())
@@ -1088,9 +1088,9 @@ if (!window.O$) {
 
   O$.submitEnclosingElementsForm = function(elements) {
     O$.assert(elements[0], "elements should be passed to O$.submitEnclosingElementsForm");
-    var frm = O$.findParentNode(elements[0], "FORM");
+    var frm = O$.getParentNode(elements[0], "FORM");
     if (!elements.every(function(element) {
-      return (frm == O$.findParentNode(element, "FORM"));
+      return (frm == O$.getParentNode(element, "FORM"));
     })) {
       O$.logError("O$.submitEnclosingElementsForm: Enclosing forms differ for components");
     }
@@ -1110,7 +1110,7 @@ if (!window.O$) {
       O$.addHiddenField(element, param[0], param[1]);
     }
 
-    var frm = O$.findParentNode(element, "FORM");
+    var frm = O$.getParentNode(element, "FORM");
     frm.submit();
   };
 
@@ -1126,7 +1126,7 @@ if (!window.O$) {
       frm = document.forms[0];
       O$.assert(frm, "O$.addHiddenField: There must be a form in the document");
     } else {
-      frm = element._form ? element._form : O$.findParentNode(element, "FORM");
+      frm = element._form ? element._form : O$.getParentNode(element, "FORM");
       O$.assert(frm, "O$.addHiddenField: Enclosing form not found for element with id: " + element.id + "; element tag name: " + element.tagName);
     }
     var existingField = O$(fieldName);
@@ -3866,7 +3866,7 @@ if (!window.O$) {
 
       var rectangle = new O$.Rectangle(popup.offsetLeft, popup.offsetTop, popup.offsetWidth, popup.offsetHeight);
       popup._coveredControls = [];
-      var frm = O$.findParentNode(popup, "FORM");
+      var frm = O$.getParentNode(popup, "FORM");
       var controls = frm.elements;
       var index = 0;
       for (var i = 0; i < controls.length; i++) {

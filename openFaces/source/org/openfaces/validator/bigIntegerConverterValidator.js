@@ -14,7 +14,7 @@ O$._BigIntegerConverterValidator = function(summary, detail) {
   this.conversionSummary = summary;
   this.conversionDetail = detail;
   this.type = "converter";
-}
+};
 
 O$._BigIntegerConverterValidator.prototype.validate = function(input) {
   var value = O$.trim(O$.getValue(input));
@@ -25,4 +25,4 @@ O$._BigIntegerConverterValidator.prototype.validate = function(input) {
     }
   }
   return true;
-}
+};

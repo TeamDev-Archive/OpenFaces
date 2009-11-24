@@ -14,7 +14,7 @@ O$._EqualValidator = function(summary, detail, equalToElementId) {
   this.summary = summary;
   this.detail = detail;
   this.equalToElementId = equalToElementId;
-}
+};
 
 O$._EqualValidator.prototype.validate = function(input) {
   var value = O$.getValue(input);
@@ -32,4 +32,4 @@ O$._EqualValidator.prototype.validate = function(input) {
   }
   return true;
 
-}
+};

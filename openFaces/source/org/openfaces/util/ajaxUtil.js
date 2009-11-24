@@ -307,10 +307,10 @@ O$.sendAjaxRequest = function(render, args) {
   //        return;
   //      }
   //    }
-  var form = O$.findParentNode(components[0], "FORM");
+  var form = O$.getParentNode(components[0], "FORM");
   O$.assert(form, "O$.sendAjaxRequest: Enclosing form not found for element with id: " + components[0].id);
   if (!components.every(function(element) {
-    return (form == O$.findParentNode(element, "FORM"));
+    return (form == O$.getParentNode(element, "FORM"));
   })) {
     O$.logError("O$.sendAjaxRequest: Enclosing forms differ for components");
   }

@@ -14,7 +14,7 @@ O$._LongConverterValidator = function(summary, detail) {
   this.conversionSummary = summary;
   this.conversionDetail = detail;
   this.type = "converter";
-}
+};
 
 O$._LongConverterValidator.prototype.validate = function(input) {
   var value = O$.trim(O$.getValue(input));
@@ -25,4 +25,4 @@ O$._LongConverterValidator.prototype.validate = function(input) {
     }
   }
   return true;
-}
+};

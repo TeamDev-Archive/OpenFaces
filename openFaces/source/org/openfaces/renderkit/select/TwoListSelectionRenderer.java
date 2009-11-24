@@ -468,7 +468,7 @@ public class TwoListSelectionRenderer extends RendererBase {
         TwoListSelection tls = (TwoListSelection) component;
 
         ScriptBuilder sb = new ScriptBuilder();
-        sb.initScript(context, tls, "O$._initTwoListSelection",
+        sb.initScript(context, tls, "O$.TwoListSelection._init",
                 RenderingUtil.getEventsParam(tls, "onadd", "onremove", "onchange"),
                 tls.isAllowAddRemoveAll(),
                 tls.getReorderingAllowed(),

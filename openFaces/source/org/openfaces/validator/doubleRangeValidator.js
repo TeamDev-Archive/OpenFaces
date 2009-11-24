@@ -17,7 +17,7 @@ O$._DoubleRangeValidator = function(minimum, maximum, rangeSummary, rangeDetail,
   this.rangeDetail = rangeDetail;
   this.typeSummary = typeSummary;
   this.typeDetail = typeDetail;
-}
+};
 
 O$._DoubleRangeValidator.prototype.validate = function(input) {
   var value = O$.trim(O$.getValue(input));
@@ -40,4 +40,4 @@ O$._DoubleRangeValidator.prototype.validate = function(input) {
     }
   }
   return true;
-}
+};

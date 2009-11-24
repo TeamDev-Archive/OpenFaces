@@ -17,7 +17,7 @@ O$.Window = {
 
   _init: function(windowId, resizable, draggableByContent, minWidth, minHeight, desktopElementId) {
     var win = O$(windowId);
-    win._form = O$.findParentNode(win, "form");
+    win._form = O$.getParentNode(win, "form");
     win._draggableByContent = draggableByContent;
     if (!draggableByContent)
       win._draggable = false;

@@ -13,7 +13,7 @@ O$._BigDecimalConverterValidator = function(summary, detail) {
   this.conversionSummary = summary;
   this.conversionDetail = detail;
   this.type = "converter";
-}
+};
 
 O$._BigDecimalConverterValidator.prototype.validate = function(input) {
   var value = O$.trim(O$.getValue(input));
@@ -24,4 +24,4 @@ O$._BigDecimalConverterValidator.prototype.validate = function(input) {
     }
   }
   return true;
-}
+};

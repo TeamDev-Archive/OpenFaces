@@ -12,15 +12,15 @@
 
 O$.FoldingPanel = {
   _init: function(controlId,
-                                  expanded,
-                                  direction,
-                                  rolloverClass,
-                                  contentPreloaded,
-                                  useAjax,
-                                  focusable,
-                                  focusedClass,
-                                  focusedContentClass,
-                                  focusedCaptionClass) {
+                  expanded,
+                  direction,
+                  rolloverClass,
+                  contentPreloaded,
+                  useAjax,
+                  focusable,
+                  focusedClass,
+                  focusedContentClass,
+                  focusedCaptionClass) {
     var fp = O$(controlId);
 
     fp._stateHolderId = controlId + "::state";
@@ -39,7 +39,7 @@ O$.FoldingPanel = {
 
     fp.isExpanded = function() {
       return fp._expanded;
-    }
+    };
 
     if (focusable) {
       O$.setupArtificialFocus(fp, focusedClass);
@@ -73,7 +73,7 @@ O$.FoldingPanel = {
               return false;
             break;
         }
-      }
+      };
 
       fp.onfocus = function(e) {
         if (this._prevOnfocus)
@@ -85,7 +85,7 @@ O$.FoldingPanel = {
         if (focusedCaptionClass) {
           O$.setStyleMappings(captionContent, {focused: focusedCaptionClass});
         }
-      }
+      };
       fp.onblur = function(e) {
         if (this._prevOnBlur)
           this._prevOnBlur(e);
@@ -95,7 +95,7 @@ O$.FoldingPanel = {
         if (focusedCaptionClass) {
           O$.setStyleMappings(captionContent, {focused: null});
         }
-      }
+      };
     }
 
     fp.setExpanded = function(expanded) {
@@ -133,15 +133,15 @@ O$.FoldingPanel = {
         body.style.visibility = "hidden";
         body.style.visibility = "visible";
       }
-    }
+    };
 
     fp.expand = function() {
       this.setExpanded(true);
-    }
+    };
 
     fp.collapse = function() {
       this.setExpanded(false);
-    }
+    };
 
   },
 
@@ -172,5 +172,5 @@ O$.FoldingPanel = {
     fp._caption.style.paddingLeft = fp._caption.style.paddingRight =
                                      fp._caption.style.paddingTop = fp._caption.style.paddingBottom = "0";
   }
-}
+};
 

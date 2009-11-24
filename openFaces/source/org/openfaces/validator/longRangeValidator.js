@@ -11,7 +11,6 @@
  */
 
 O$._LongRangeValidator = function(minimum, maximum, rangeSummary, rangeDetail, typeSummary, typeDetail) {
-
   var min = O$.getLong(minimum);
 
   if (min != null) {
@@ -34,7 +33,7 @@ O$._LongRangeValidator = function(minimum, maximum, rangeSummary, rangeDetail, t
   this.rangeDetail = rangeDetail;
   this.typeSummary = typeSummary;
   this.typeDetail = typeDetail;
-}
+};
 
 O$._LongRangeValidator.prototype.validate = function(input) {
   var value = O$.trim(O$.getValue(input));
@@ -60,4 +59,4 @@ O$._LongRangeValidator.prototype.validate = function(input) {
     }
   }
   return true;
-}
+};

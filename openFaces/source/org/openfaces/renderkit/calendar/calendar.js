@@ -210,7 +210,7 @@ O$.Calendar = {
       }
     }
 
-    cal._clientValueFunctionExist = true;
+    cal._clientValueFunctionExists = true;
     cal._clientValueFunction = function () {
       var valueHolder = cal._valueHolder;
       return valueHolder.value;

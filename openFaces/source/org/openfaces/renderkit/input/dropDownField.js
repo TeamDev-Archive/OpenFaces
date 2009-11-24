@@ -698,7 +698,7 @@ O$.DropDownField = {
       }
     };
     popup._addVisibilityChangeListener(dropDown._visibilityChangeListener);
-    dropDown._clientValueFunctionExist = true;
+    dropDown._clientValueFunctionExists = true;
     dropDown._clientValueFunction = function() {
       if (dropDown._skipValidation) {
         return dropDown._initialText;

@@ -395,7 +395,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
         String onchange = tabSet.getOnchange();
 
         ScriptBuilder sb = new ScriptBuilder();
-        sb.initScript(context, tabSet, "O$._initTabSet",
+        sb.initScript(context, tabSet, "O$.TabSet._init",
                 getTabIds(context, tabSet, tabs),
                 selectedIndex,
                 placement,

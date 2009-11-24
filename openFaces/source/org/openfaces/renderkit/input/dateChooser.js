@@ -190,7 +190,7 @@ O$.DateChooser = {
     var popup = dc._popup;
     popup.style.borderWidth = "0px";
 
-    dc._clientValueFunctionExist = true;
+    dc._clientValueFunctionExists = true;
     dc._clientValueFunction = function () {
       return dc._field.value;
       /*

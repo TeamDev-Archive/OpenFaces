@@ -935,7 +935,7 @@ O$.Table = {
 
   _initCheckboxColHeader: function(headerId, colId) {
     var header = O$(headerId);
-    var table = O$.findParentNode(header, "TABLE");
+    var table = O$.getParentNode(header, "TABLE");
     if (!table)
       throw "SelectAllCheckbox must be placed in a header of <o:dataTable> component. clientId = " + headerId;
     header._table = table;
@@ -970,7 +970,7 @@ O$.Table = {
     };
 
     header.onclick = function(e) {
-      var cell = O$.findAnyParentNode(this, ["td", "th"]);
+      var cell = O$.getAnyParentNode(this, ["td", "th"]);
       var col = cell._column;
       O$.Table._setAllCheckboxes(col, this.checked);
       var columnObj = O$(this._columnObjectId);
@@ -998,7 +998,7 @@ O$.Table = {
 
   _initSelectionHeader: function(headerId) {
     var header = O$(headerId);
-    var table = O$.findParentNode(header, "TABLE");
+    var table = O$.getParentNode(header, "TABLE");
     if (!table)
       throw "SelectAllCheckbox must be placed in a header of <o:dataTable> component. clientId = " + headerId;
     header._table = table;

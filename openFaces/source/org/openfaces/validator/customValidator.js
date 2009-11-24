@@ -14,7 +14,7 @@ O$._CustomValidator = function(summary, detail, validateFunction) {
   this.summary = summary;
   this.detail = detail;
   this.validateFunction = validateFunction;
-}
+};
 
 O$._CustomValidator.prototype.validate = function(input) {
   var value = O$.getValue(input);
@@ -32,4 +32,4 @@ O$._CustomValidator.prototype.validate = function(input) {
       }
     }
   return true;
-}
+};

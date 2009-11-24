@@ -25,28 +25,28 @@ O$.DateRanges = function(dateRangesArray,
   this._disableIncluded = disableIncluded;
   this._selectedDayClass = selectedDayClassName;
   this._rolloverSelectedDayClass = rolloverSelectedDayClassName;
-}
+};
 
-O$.DateRanges.prototype.getDateRanges = function() {
-  return this._dateRanges;
-}
+O$.extend(O$.DateRanges.prototype, {
+  getDateRanges: function() {
+    return this._dateRanges;
+  },
 
-O$.DateRanges.prototype.getSimpleDateRanges = function() {
-  if (!this._dateRanges) return undefined;
-  var simpleDateRanges = [];
-  for (var i = 0, count = this._dateRanges.length; i < count; i ++) {
-    var dateRange = this._dateRanges[i];
-    if (dateRange instanceof O$.SimpleDateRange) {
-      simpleDateRanges.push(dateRange);
+  getSimpleDateRanges: function() {
+    if (!this._dateRanges) return undefined;
+    var simpleDateRanges = [];
+    for (var i = 0, count = this._dateRanges.length; i < count; i ++) {
+      var dateRange = this._dateRanges[i];
+      if (dateRange instanceof O$.SimpleDateRange) {
+        simpleDateRanges.push(dateRange);
+      }
     }
+    return simpleDateRanges;
   }
-  return simpleDateRanges;
-}
-//O$.DateRanges declaration end
+});
 
 //---------------------------------------------------------------
 
-//O$.AbstractDateRange declaration start
 O$.AbstractDateRange = function(styleClassName, rolloverStyleClassName,
                                 selectedDayStyleClassName, rolloverSelectedDayStyleClassName) {
   this._dates = [];
@@ -54,16 +54,16 @@ O$.AbstractDateRange = function(styleClassName, rolloverStyleClassName,
   this._rolloverStyleClassName = rolloverStyleClassName;
   this._selectedDayStyleClassName = selectedDayStyleClassName;
   this._rolloverSelectedDayStyleClassName = rolloverSelectedDayStyleClassName;
-}
+};
 
-O$.AbstractDateRange.prototype.getDates = function() {
-  return this._dates;
-}
-//O$.AbstractDateRange declaration end
+O$.extend(O$.DateRanges.prototype, {
+  getDates: function() {
+    return this._dates;
+  }
+});
 
 //---------------------------------------------------------------
 
-//O$.SimpleDateRange object declaration start
 O$.SimpleDateRange = function(fromDate, toDate, styleClassName, rolloverStyleClassName,
                               selectedDayStyleClassName, rolloverSelectedDayStyleClassName) {
   this._fromDate = fromDate;
@@ -73,9 +73,10 @@ O$.SimpleDateRange = function(fromDate, toDate, styleClassName, rolloverStyleCla
 };
 O$.SimpleDateRange.prototype = new O$.AbstractDateRange;
 
-O$.SimpleDateRange.prototype.isDateInRange = function(date) {
-  if (!date) return false;
-  if (O$.Calendar._compareDates(date, this._fromDate) >= 0 && O$.Calendar._compareDates(date, this._toDate) <= 0) return true;
-  return false;
-};
-//O$.SimpleDateRange object declaration end
+O$.extend(O$.SimpleDateRange.prototype, {
+  isDateInRange: function(date) {
+    if (!date) return false;
+    if (O$.Calendar._compareDates(date, this._fromDate) >= 0 && O$.Calendar._compareDates(date, this._toDate) <= 0) return true;
+    return false;
+  }
+});

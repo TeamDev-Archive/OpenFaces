@@ -14,7 +14,7 @@ O$._DoubleConverterValidator = function(summary, detail) {
   this.conversionSummary = summary;
   this.conversionDetail = detail;
   this.type = "converter";
-}
+};
 
 O$._DoubleConverterValidator.prototype.validate = function(input) {
   var value = O$.trim(O$.getValue(input));
@@ -25,4 +25,4 @@ O$._DoubleConverterValidator.prototype.validate = function(input) {
     }
   }
   return true;
-}
+};

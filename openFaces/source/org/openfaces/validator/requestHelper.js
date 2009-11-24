@@ -14,33 +14,24 @@ O$.RequestHelper = function() {
 
   /* Formats placeholders in a format specification with supplied replacements. This method demonstrates fixed and variable arguments. */
 
-  /*
-   this["format"] = function(format, args, callback)
-   {
-   return call('format', [ format, args ], callback);
-   }*/
-
-
-  var self = this;
   var nextId = 0;
   //headers = [{name:teamdev_ajax_VALIDATOR, value:validator}]
   this["call"] = function (url, params, headers, callback) //, params, callback)
   {
+    var request = {id : nextId++, params : params };
     if (!callback) {
-      var request = { id : nextId++, params : params };
       //params };
       return callSync(url, request, headers);
       //return callback == null ?
       //    callSync(request) : callAsync(request, callback);
     } else {
-      var request = {id : nextId++, params : params };
       return callAsync(url, request, headers, callback);
     }
   }
 
   function callSync(url, request, headers) {
     var http = newHTTP();
-    http.open('POST', url + "?" + Math.random(), false);
+    http.open("POST", url + "?" + Math.random(), false);
     if (headers && headers.length > 0) {
       for (var i = 0; i < headers.length; i++) {
         setupHeaders(http, headers[i].name, headers[i].value);
@@ -51,14 +42,14 @@ O$.RequestHelper = function() {
 
     if (http.status != 200)
       throw { message : http.status + ' ' + http.statusText, toString : function() {
-        return message;
+        return this.message;
       } };
     return http.responseText;
   }
 
   function callAsync(url, request, headers, callback) {
     var http = newHTTP();
-    http.open('POST', url, true);
+    http.open("POST", url, true);
     if (headers && headers.length > 0) {
       for (var i = 0; i < headers.length; i++) {
         setupHeaders(http, headers[i].name, headers[i].value);
@@ -67,7 +58,7 @@ O$.RequestHelper = function() {
 
     http.onreadystatechange = function() {
       http_onreadystatechange(http, callback);
-    }
+    };
     http.send(JSON.stringify(request));
     return request.id;
   }
@@ -88,10 +79,10 @@ O$.RequestHelper = function() {
   }
 
   function newHTTP() {
-    return typeof(ActiveXObject) === 'function' ?
-           new ActiveXObject('Microsoft.XMLHTTP') : /* IE 5 */
+    return typeof(ActiveXObject) === "function" ?
+           new ActiveXObject("Microsoft.XMLHTTP") : /* IE 5 */
            new XMLHttpRequest();
     /* Safari 1.2, Mozilla 1.0/Firefox, and Netscape 7 */
   }
 
-}
+};

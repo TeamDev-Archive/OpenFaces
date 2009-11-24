@@ -17,7 +17,7 @@ O$._LengthValidator = function(minimum, maximum, minimumSummary, minimumDetail, 
   this.minimumDetail = minimumDetail;
   this.maximumSummary = maximumSummary;
   this.maximumDetail = maximumDetail;
-}
+};
 
 O$._LengthValidator.prototype.validate = function(input) {
   var value = O$.getValue(input);
@@ -37,4 +37,4 @@ O$._LengthValidator.prototype.validate = function(input) {
     }
   }
   return true;
-}
+};

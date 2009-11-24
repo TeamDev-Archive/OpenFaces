@@ -10,7 +10,7 @@
 <head><title>Date Validator</title>
   <script type="text/javascript">
   function q_directSubmit(element) {
-    var form = O$.findParentNode(element, "FORM");
+    var form = O$.getParentNode(element, "FORM");
     alert(form);
     if (form) {
       form.onsubmit = function() {

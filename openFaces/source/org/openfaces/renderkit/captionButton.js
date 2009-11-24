@@ -62,7 +62,7 @@ O$._initCaptionButton = function(componentId,
     O$.addEventHandler(btn, "click", function() {
       O$.submitFormWithAdditionalParam(btn, componentId + "::clicked", "true");
     });
-}
+};
 
 O$._initToggleCaptionButton = function(controlId,
                                        toggled,
@@ -131,7 +131,7 @@ O$._initToggleCaptionButton = function(controlId,
     if (!skipListenerNotifications)
       O$._notifyToggleStateChange(this);
   };
-}
+};
 
 O$._initExpansionToggleButton = function(clientId) {
   O$._initToggleCaptionButton.apply(null, arguments);
@@ -142,12 +142,12 @@ O$._initExpansionToggleButton = function(clientId) {
   btn._addToggleStateChangeListener(function(expanded) {
     btn._container.setExpanded(expanded);
   });
-}
+};
 
 
 O$._notifyToggleStateChange = function(toggleBtn) {
   var listeners = toggleBtn._stateChangeListeners;
   for (var i = 0, count = listeners ? listeners.length : 0; i < count; i++)
     listeners[i](toggleBtn._toggled);
-}
+};
 
