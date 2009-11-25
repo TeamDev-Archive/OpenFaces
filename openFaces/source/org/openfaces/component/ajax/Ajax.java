@@ -43,6 +43,8 @@ public class Ajax extends UICommand implements OUIClientAction {
     private String onajaxend;
     private String onerror;
 
+    private Boolean disabled;
+
     private AjaxHelper helper = new AjaxHelper();
 
     public Ajax() {
@@ -155,19 +157,27 @@ public class Ajax extends UICommand implements OUIClientAction {
         this.onerror = onerror;
     }
 
+    public boolean isDisabled() {
+        return ValueBindings.get(this, "disabled", disabled, false);
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
 
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         AjaxUtil.addJSLinks(context, getParent());
         StyleUtil.requestDefaultCss(FacesContext.getCurrentInstance());
-        
+
         return new Object[]{superState,
                 saveAttachedState(context, render),
                 saveAttachedState(context, execute),
                 event,
                 _for,
                 standalone,
+                disabled,
                 submitInvoker,
                 delay,
                 onevent,
@@ -187,9 +197,10 @@ public class Ajax extends UICommand implements OUIClientAction {
         event = (String) stateArray[i++];
         _for = (String) stateArray[i++];
         standalone = (Boolean) stateArray[i++];
+        disabled = (Boolean) stateArray[i++];
         submitInvoker = (Boolean) stateArray[i++];
         delay = (Integer) stateArray[i++];
-        onevent= (String) stateArray[i++];
+        onevent = (String) stateArray[i++];
         onerror = (String) stateArray[i++];
         onajaxstart = (String) stateArray[i++];
         onajaxend = (String) stateArray[i++];

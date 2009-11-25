@@ -22754,6 +22754,17 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>A value of "true" indicates the Ajax component should not be rendered.
+      </description>
+      <name>disabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Similar to the "actionListener" attribute of the HTMLCommandButton component.
         A MethodBinding that should point to an action listener that is called when the user fire an event.
       </description>
@@ -22846,7 +22857,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed on the client when an event occured.
+      <description>JavaScript code that should be executed on the client when an event occurred.
       </description>
       <name>onevent</name>
       <deferred-value>

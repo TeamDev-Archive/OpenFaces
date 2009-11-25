@@ -35,6 +35,7 @@ public class AjaxTag extends AbstractComponentTag {
         setStringProperty(component, "event");
         setStringProperty(component, "for");
         setBooleanProperty(component, "standalone");
+        setBooleanProperty(component, "disabled");        
 
         setIdCollectionProperty(component, "render");
         setIdCollectionProperty(component, "execute");

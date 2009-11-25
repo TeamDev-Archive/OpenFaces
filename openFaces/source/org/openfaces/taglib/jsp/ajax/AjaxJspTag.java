@@ -37,6 +37,10 @@ public class AjaxJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("standalone", standalone);
     }
 
+    public void setDisabled(ValueExpression disabled) {
+        getDelegate().setPropertyValue("disabled", disabled);
+    }
+
     public void setRender(ValueExpression render) {
         getDelegate().setPropertyValue("render", render);
     }

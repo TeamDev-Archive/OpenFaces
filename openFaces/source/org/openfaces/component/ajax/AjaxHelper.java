@@ -31,6 +31,9 @@ public class AjaxHelper extends OUIClientActionHelper {
     protected String getClientActionScript(FacesContext context, OUIClientAction action) {
         Ajax ajax = (Ajax) action;
 
+         if (ajax.isDisabled()){
+            return null;
+        }
         ScriptBuilder buf = new ScriptBuilder();
         String onevent = ajax.getOnevent();
         if (onevent != null){
