@@ -385,7 +385,7 @@ O$.TwoListSelection = {
     selectionField.value = result;
   },
 
-  _moveRigh: function(tls) {
+  _moveRight: function(tls) {
     var leftList = tls._leftListBox;
     var rightList = tls._rightListBox;
     var fireOnAdd = false;
