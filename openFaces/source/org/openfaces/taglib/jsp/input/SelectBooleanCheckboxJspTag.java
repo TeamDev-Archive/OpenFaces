@@ -11,10 +11,10 @@
  */
 package org.openfaces.taglib.jsp.input;
 
-import javax.el.ValueExpression;
-
 import org.openfaces.taglib.internal.input.SelectBooleanCheckboxTag;
 import org.openfaces.taglib.jsp.UIInputJspTag;
+
+import javax.el.ValueExpression;
 
 /**
  * @author Roman Porotnikov
@@ -59,6 +59,10 @@ public class SelectBooleanCheckboxJspTag extends UIInputJspTag {
 
     public void setTriStateAllowed(ValueExpression triStateAllowed) {
         getDelegate().setPropertyValue("triStateAllowed", triStateAllowed);
+    }
+
+     public void setStateList(ValueExpression stateList) {
+        getDelegate().setPropertyValue("stateList", stateList);
     }
 
     public void setSelectedImageUrl(ValueExpression selectedImageUrl) {

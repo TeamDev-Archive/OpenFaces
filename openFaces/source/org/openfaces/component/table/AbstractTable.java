@@ -126,7 +126,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private Boolean noDataMessageAllowed;
     private String columnIdVar;
     private String columnIndexVar;
-    private List<String> columnsOrder;
+    private Iterable<String> columnsOrder;
 
     private String sortedAscendingImageUrl;
     private String sortedDescendingImageUrl;
@@ -256,7 +256,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         noDataMessageAllowed = (Boolean) state[i++];
         columnIndexVar = (String) state[i++];
         columnIdVar = (String) state[i++];
-        columnsOrder = (List) restoreAttachedState(context, state[i++]);
+        columnsOrder = (Iterable<String>) restoreAttachedState(context, state[i++]);
         sortedAscendingImageUrl = (String) state[i++];
         sortedDescendingImageUrl = (String) state[i++];
         cachedClientId = (String) state[i++];
@@ -381,7 +381,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     private List<BaseColumn> calculateColumnsForRendering() {
-        List<String> columnsOrder = getColumnsOrder();
+        Iterable<String> columnsOrder = getColumnsOrder();
         if (columnsOrder == null) {
             List<BaseColumn> allColumns = getAllColumns();
             List<BaseColumn> renderedColumns = new ArrayList<BaseColumn>(allColumns.size());
@@ -464,11 +464,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         this.border = border;
     }
 
-    public List<String> getColumnsOrder() {
-        return ValueBindings.get(this, "columnsOrder", columnsOrder, List.class);
+    public Iterable<String> getColumnsOrder() {
+        return ValueBindings.get(this, "columnsOrder", columnsOrder, Iterable.class);
     }
 
-    public void setColumnsOrder(List<String> columnsOrder) {
+    public void setColumnsOrder(Iterable<String> columnsOrder) {
         this.columnsOrder = columnsOrder;
     }
 

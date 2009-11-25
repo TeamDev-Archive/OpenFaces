@@ -29,8 +29,10 @@ import org.openfaces.util.StyleUtil;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.FacesException;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Arrays;
 
 /**
  * @author Roman Porotnikov
@@ -41,9 +43,11 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
 
     private static final String STATE_SUFFIX = "::state";
 
-    private static final String SELECTED_STATE = "on";
-    private static final String UNSELECTED_STATE = "off";
-    private static final String UNDEFINED_STATE = "nil";
+    private static final String SELECTED_STATE = "selected";
+    private static final String UNSELECTED_STATE = "unselected";
+    private static final String UNDEFINED_STATE = "undefined";
+
+    private  static final Iterable<String> DAFAULT_STATE_LIST = Arrays.asList(SELECTED_STATE, UNSELECTED_STATE);
 
     private static final String PLAIN_EFFECT = "plain";
     private static final String ROLLOVER_EFFECT = "rollover";
@@ -68,14 +72,15 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
     }
 
     protected void renderInputComponent(FacesContext facesContext, SelectBooleanCheckbox checkbox) throws IOException {
-        if (isRenderedWithImage(checkbox)) {
-            renderWithImage(facesContext, checkbox);
+        boolean triStateAllowed = checkbox.isTriStateAllowed();
+        if (isRenderedWithImage(checkbox, triStateAllowed)) {
+            renderWithImage(facesContext, checkbox, triStateAllowed);
         } else {
-            renderWithHtmlCheckbox(facesContext, checkbox);
+            renderWithHtmlCheckbox(facesContext, checkbox, triStateAllowed);
         }
     }
 
-    protected void renderWithHtmlCheckbox(FacesContext facesContext, SelectBooleanCheckbox checkbox) throws IOException {
+    protected void renderWithHtmlCheckbox(FacesContext facesContext, SelectBooleanCheckbox checkbox, boolean triStateAllowed) throws IOException {
         String styleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getStyle(), StyleGroup.regularStyleGroup(), checkbox.getStyleClass(), null);
         String rolloverStyleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getRolloverStyle(), StyleGroup.regularStyleGroup(1), checkbox.getRolloverClass(), null);
         String focusedStyleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getFocusedStyle(), StyleGroup.regularStyleGroup(2), checkbox.getFocusedClass(), null);
@@ -118,11 +123,11 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
             throw new RuntimeException(e);
         }
 
-        renderInitScript(facesContext, checkbox, null, stylesObj, null);
+        renderInitScript(facesContext, checkbox, null, stylesObj, null, triStateAllowed);
     }
 
 
-    protected void renderWithImage(FacesContext facesContext, SelectBooleanCheckbox checkbox) throws IOException {
+    protected void renderWithImage(FacesContext facesContext, SelectBooleanCheckbox checkbox, boolean triStateAllowed) throws IOException {
         String styleClass = StyleUtil.mergeClassNames(
                 StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getStyle(), StyleGroup.regularStyleGroup(), checkbox.getStyleClass(), null),
                 "o_checkbox_image");
@@ -157,7 +162,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         String stateClientId = clientId + STATE_SUFFIX;
         writeAttribute(writer, "name", stateClientId);
         writeAttribute(writer, "id", stateClientId);
-        writeAttribute(writer, "value", getStateFieldValue(checkbox));
+        writeAttribute(writer, "value", getStateFieldValue(checkbox, triStateAllowed));
 
         writer.endElement(TAG_NAME);
 
@@ -213,7 +218,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
             onchangeFunction = new AnonymousFunction(onchange, "event");
         }
 
-        renderInitScript(facesContext, checkbox, imagesObj, stylesObj, onchangeFunction);
+        renderInitScript(facesContext, checkbox, imagesObj, stylesObj, onchangeFunction, triStateAllowed);
     }
 
     @Override
@@ -223,8 +228,8 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
 
         String clientId = checkbox.getClientId(context);
-
-        if (isRenderedWithImage(checkbox)) {
+        boolean triStateAllowed = checkbox.isTriStateAllowed();
+        if (isRenderedWithImage(checkbox, triStateAllowed)) {
             clientId += STATE_SUFFIX;
         }
 
@@ -234,20 +239,44 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
             String requestValue = requestMap.get(clientId);
             if (requestValue.equalsIgnoreCase(SELECTED_STATE) || requestValue.equalsIgnoreCase("yes") || requestValue.equalsIgnoreCase("true")) {
                 submittedValue = BooleanObjectValue.TRUE;
-            } else if (checkbox.isTriStateAllowed() && (requestValue.equalsIgnoreCase(UNDEFINED_STATE) || requestValue.equalsIgnoreCase("null"))) {
+            } else if (triStateAllowed && (requestValue.equalsIgnoreCase(UNDEFINED_STATE) || requestValue.equalsIgnoreCase("null"))) {
                 submittedValue = BooleanObjectValue.NULL; // normal null means no value submitted
             } else {
                 submittedValue = BooleanObjectValue.FALSE;
             }
         } else {
-            submittedValue = (checkbox.isTriStateAllowed() ? BooleanObjectValue.NULL : BooleanObjectValue.FALSE);
+            submittedValue = (triStateAllowed ? BooleanObjectValue.NULL : BooleanObjectValue.FALSE);
         }
 
         checkbox.setSubmittedValue(submittedValue);
     }
 
-    protected String getStateFieldValue(SelectBooleanCheckbox checkbox) {
-        if (checkbox.isDefined()) {
+    private void validateStateList(Iterable<String> stateList) {
+        for (String state : stateList) {
+            if (!state.equals(SELECTED_STATE) &&
+                    !state.equals(UNSELECTED_STATE) &&
+                    !state.equals(UNDEFINED_STATE)) {
+                throw new FacesException("The stateList attribute of <o:selectBooleanCheckbox> tag can contain only one of the following string contants: \"" +
+                        SELECTED_CLASS_KEY + "\", \"" + UNSELECTED_STATE + "\", \"" + UNDEFINED_STATE + "\".");
+            }
+        }
+    }
+
+    private Iterable<String> getStateList(SelectBooleanCheckbox checkbox, boolean triStateAllowed){
+        if (triStateAllowed){
+            Iterable<String> stateList = checkbox.getStateList();
+            if (stateList == null) {
+                return DAFAULT_STATE_LIST;
+            }else{
+                validateStateList(stateList);
+                return stateList;
+            }
+        }
+        return DAFAULT_STATE_LIST;
+    }
+
+    protected String getStateFieldValue(SelectBooleanCheckbox checkbox, boolean triStateAllowed) {
+        if (checkbox.isDefined() || triStateAllowed) {
             if (checkbox.isSelected()) {
                 return SELECTED_STATE;
             } else {
@@ -258,8 +287,8 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         }
     }
 
-    protected boolean isRenderedWithImage(SelectBooleanCheckbox checkbox) {
-        return checkbox.isTriStateAllowed() || hasImages(checkbox);
+    protected boolean isRenderedWithImage(SelectBooleanCheckbox checkbox, boolean triStateAllowed) {
+        return triStateAllowed || hasImages(checkbox);
     }
 
     protected void writeCommonAttributes(ResponseWriter writer, SelectBooleanCheckbox checkbox) throws IOException {
@@ -273,23 +302,26 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
     }
 
     protected void renderInitScript(FacesContext facesContext, SelectBooleanCheckbox checkbox,
-            JSONObject imagesObj, JSONObject stylesObj, AnonymousFunction onchangeFunction)
+                                    JSONObject imagesObj, JSONObject stylesObj, AnonymousFunction onchangeFunction, boolean triStateAllowed)
             throws IOException {
 
+
+        Iterable<String> stateList = getStateList(checkbox, triStateAllowed);
         Script initScript = new ScriptBuilder().initScript(facesContext, checkbox, "O$.Checkbox._init",
                 imagesObj,
                 stylesObj,
-                checkbox.isTriStateAllowed(),
+                stateList,
+
                 checkbox.isDisabled(),
                 onchangeFunction
         );
 
         RenderingUtil.renderInitScript(facesContext, initScript,
-                new String[] {
-                ResourceUtil.getUtilJsURL(facesContext),
-                ResourceUtil.getInternalResourceURL(facesContext, SelectBooleanCheckboxRenderer.class, "checkbox.js")
-            }
+                new String[]{
+                        ResourceUtil.getUtilJsURL(facesContext),
+                        ResourceUtil.getInternalResourceURL(facesContext, SelectBooleanCheckboxRenderer.class, "checkbox.js")
+                }
         );
     }
 
- }
+}

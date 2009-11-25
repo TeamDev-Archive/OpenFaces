@@ -51,6 +51,7 @@ public class SelectBooleanCheckbox extends OUIInputBase {
     private String onselect;
 
     private Boolean triStateAllowed;
+    private Iterable<String> stateList;
 
     private String selectedImageUrl;
     private String unselectedImageUrl;
@@ -127,6 +128,14 @@ public class SelectBooleanCheckbox extends OUIInputBase {
 
     public void setTriStateAllowed(boolean triStateAllowed) {
         this.triStateAllowed = triStateAllowed;
+    }
+
+     public void setStateList(Iterable<String> stateList) {
+        this.stateList = stateList;
+    }
+
+    public Iterable<String> getStateList() {
+        return ValueBindings.get(this, "stateList", stateList, Iterable.class);
     }
 
     public String getDir() {
@@ -304,6 +313,7 @@ public class SelectBooleanCheckbox extends OUIInputBase {
                 tabindex,
                 title,
                 triStateAllowed,
+                saveAttachedState(context, stateList),
                 dir,
                 lang,
                 onselect,
@@ -337,6 +347,7 @@ public class SelectBooleanCheckbox extends OUIInputBase {
         tabindex = (String) values[i++];
         title = (String) values[i++];
         triStateAllowed = (Boolean) values[i++];
+        stateList = (Iterable<String>) restoreAttachedState(context, values[i++]);
         dir = (String) values[i++];
         lang = (String) values[i++];
         onselect = (String) values[i++];

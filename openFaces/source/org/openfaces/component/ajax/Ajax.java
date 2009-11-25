@@ -20,7 +20,6 @@ import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * @author Ilya Musihin
@@ -192,8 +191,8 @@ public class Ajax extends UICommand implements OUIClientAction {
         Object[] stateArray = (Object[]) state;
         int i = 0;
         super.restoreState(context, stateArray[i++]);
-        render = (List<String>) restoreAttachedState(context, stateArray[i++]);
-        execute = (List<String>) restoreAttachedState(context, stateArray[i++]);
+        render = (Iterable<String>) restoreAttachedState(context, stateArray[i++]);
+        execute = (Iterable<String>) restoreAttachedState(context, stateArray[i++]);
         event = (String) stateArray[i++];
         _for = (String) stateArray[i++];
         standalone = (Boolean) stateArray[i++];

@@ -11,7 +11,7 @@
  */
 O$.Checkbox = {
 
-  _init: function(checkboxId, images, styles, tristate, disabled, onchange) {
+  _init: function(checkboxId, images, styles, stateList, disabled, onchange) {
 
     var checkbox = O$(checkboxId);
 
@@ -38,7 +38,7 @@ O$.Checkbox = {
 
       checkbox._state = O$(checkboxId + "::state");
       checkbox._images = images;
-      checkbox._tristate = tristate;
+      checkbox._stateList = stateList;
       checkbox._disabled = disabled;
 
       if (disabled) {
@@ -83,29 +83,29 @@ O$.Checkbox = {
       };
 
       checkbox.isSelected = function() {
-        return this._state.value === "on";
+        return this._state.value === "selected";
       };
 
       checkbox.setSelected = function(flag) {
         if (this.isSelected() !== flag) {
-          this._state.value = flag ? "on" : "off";
+          this._state.value = flag ? "selected" : "unselected";
           updateImage(this);
           updateStyles(this);
         }
       };
 
       checkbox.isDefined = function() {
-        return this._state.value !== "nil";
+        return this._state.value !== "undefined";
       };
 
       checkbox.setDefined = function(flag) {
         if (this.isDefined() !== flag) {
           if (flag) {
-            if (this._state.value === "nil") {
-              this._state.value = "off";
+            if (this._state.value === "undefined") {
+              this._state.value = "unselected";
             }
           } else {
-            this._state.value = "nil";
+            this._state.value = "undefined";
           }
           updateImage(this);
           updateStyles(this);
@@ -214,20 +214,12 @@ O$.Checkbox = {
       }
     });
 
-    var stateTable = {
-      bistate: {
-        "off": "on",
-        "on": "off"
-      },
-      tristate: {
-        "off": "nil",
-        "nil": "on",
-        "on": "off"
-      }
-    };
-
     function nextState(checkbox) {
-      checkbox._state.value = stateTable[checkbox._tristate ? "tristate" : "bistate"][checkbox._state.value];
+      var nextStateIndex = checkbox._stateList.indexOf(checkbox._state.value) + 1;
+      if (nextStateIndex >= checkbox._stateList.length) {
+        nextStateIndex = 0;
+      }
+      checkbox._state.value = checkbox._stateList[nextStateIndex];
       updateImage(checkbox);
       updateStyles(checkbox);
     }

@@ -27721,10 +27721,25 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A flag that indicates whether or not the user is allowed
-      	to cycle through the undefined state of the SelectBooleanCheckbox.
+      <description>A flag that indicates whether or not the third undefined state 
+        is available.
       </description>
       <name>triStateAllowed</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+     <attribute>
+      <description>
+        A sequence of states the user is allowed to cycle through ().
+        Can contain state constants : 'selected', 'unselected' and 'undefined'.
+        Evaluates to Iterable of String. If a literal is specified the states must be space delimited.
+      </description>
+      <name>stateList</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>

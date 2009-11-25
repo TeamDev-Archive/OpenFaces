@@ -279,22 +279,18 @@ public abstract class AbstractComponentTag extends AbstractTag {
             component.getAttributes().put(propertyName, Collections.singletonList(value));
     }
 
-    protected void setIdCollectionProperty(UIComponent component, String propertyName) {
+    protected void setLiteralCollectionProperty(UIComponent component, String propertyName) {
         String value = getPropertyValue(propertyName);
-        setIdCollectionProperty(component, propertyName, value);
+        setLiteralCollectionProperty(component, propertyName, value);
     }
 
-    protected void setIdCollectionProperty(UIComponent component, String propertyName, String value) {
+    protected void setLiteralCollectionProperty(UIComponent component, String propertyName, String value) {
         if (value == null) {
             return;
         }
-        if (getExpressionCreator().isValueReference(propertyName, value)) {
-            ValueExpression ve = createValueExpression(getFacesContext(), propertyName, value, Object.class);
-            component.setValueExpression(propertyName, ve);
-        } else {
+        if (!setPropertyAsBinding(component, propertyName, value)) {
             Collection<String> collection = Arrays.asList(value.trim().split(" "));
             component.getAttributes().put(propertyName, collection);
-
         }
     }
 

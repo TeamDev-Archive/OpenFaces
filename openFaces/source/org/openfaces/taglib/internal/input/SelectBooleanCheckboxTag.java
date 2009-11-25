@@ -11,12 +11,12 @@
  */
 package org.openfaces.taglib.internal.input;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.FacesException;
-
 import org.openfaces.component.input.SelectBooleanCheckbox;
 import org.openfaces.taglib.internal.AbstractUIInputTag;
+
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 /**
  * @author Roman Porotnikov
@@ -58,6 +58,7 @@ public class SelectBooleanCheckboxTag extends AbstractUIInputTag {
         setStringProperty(component, "disabledStyle");
         setStringProperty(component, "disabledClass");
         setBooleanProperty(component, "triStateAllowed");
+        setLiteralCollectionProperty(component, "stateList");
         setStringProperty(component, "selectedImageUrl");
         setStringProperty(component, "unselectedImageUrl");
         setStringProperty(component, "undefinedImageUrl");

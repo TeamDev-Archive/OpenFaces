@@ -19,5 +19,8 @@
   <h:outputLabel for="triStateCheckbox" value="Tri-state checkbox"/>
   -> <h:outputText id="state2Text" value="#{CheckboxTest.state2}"/>
   <br/>
-  <o:selectBooleanCheckbox/>
+  <o:selectBooleanCheckbox/><br/>
+  stateList="undefined selected"  <o:selectBooleanCheckbox id="id1" triStateAllowed="true" stateList="undefined selected" value="#{CheckboxTest.state2}"/><br/>
+  triStateAllowed="false"<o:selectBooleanCheckbox id="id2" triStateAllowed="false" stateList="undefined selected" value="#{CheckboxTest.state2}"/><br/>
+  stateList array binded<o:selectBooleanCheckbox id="id3" triStateAllowed="true" stateList="#{CheckboxTest.states}"  value="#{CheckboxTest.state2}"/><br/>
 </div>
