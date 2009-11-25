@@ -1288,25 +1288,6 @@ O$.Table = {
       }
 
       table._columns.forEach(function (col) {
-        col._allCellsClassName = O$.createCssClass("overflow: hidden", true);
-        col._allCellsClass = O$.findCssRule("." + col._allCellsClassName);
-        col._colTags.forEach(function(colTag) {
-          O$.setStyleMappings(colTag, {resizingClass: col._allCellsClassName});
-        });
-        if (col.header && col.header._cell)
-          O$.setStyleMappings(col.header._cell, {resizingClass: col._allCellsClassName});
-        if (col.subHeader && col.subHeader._cell)
-          O$.setStyleMappings(col.subHeader._cell, {resizingClass: col._allCellsClassName});
-        if (col.footer && col.footer._cell)
-          O$.setStyleMappings(col.footer._cell, {resizingClass: col._allCellsClassName});
-        var bodyCells = col.body._cells;
-        for (var j = 0, jCount = bodyCells.length; j < jCount; j++) {
-          var cell = bodyCells[j];
-          if (!cell || cell.colSpan > 1)
-            continue;
-          O$.setStyleMappings(cell, {resizingClass: col._allCellsClassName});
-        }
-
         var thisColumnParams = columnParams[colIndex];
         if (thisColumnParams) {
           col._resizable = thisColumnParams.resizable;
@@ -1321,35 +1302,13 @@ O$.Table = {
           col._minResizingWidth = 0;
       });
 
-      table._addCellInsertionCallback(function(cell, row, column) {
+      table._addCellInsertionCallback(function(cell/*, row, column*/) {
         cell.style.overflow = "hidden";
       });
 
       var colCount = table._columns.length;
       for (var colIndex = 0; colIndex < colCount; colIndex++) {
         var column = table._columns[colIndex];
-
-        column.setWidth = function(width) {
-          this._allCellsClass.style.width = width + "px";
-          this._colTags.forEach(function(colTag) {
-            O$.setElementWidth(colTag, width);
-          });
-        };
-        column.getWidth = function() {
-          if (this.header && this.header._cell)
-            return this.header._cell.offsetWidth;
-          if (this.subHeader && this.subHeader._cell)
-            return this.subHeader._cell.offsetWidth;
-          for (var idx = 0, count = this.body._cells.length; idx < count; idx++) {
-            var cell = this.body._cells[idx];
-            if (!cell || cell.colSpan > 1)
-              continue;
-            return cell.offsetWidth;
-          }
-          if (this.footer && this.footer._cell)
-            return this.footer._cell.offsetWidth;
-          return this._colTags[0].offsetWidth;
-        };
 
         if (!column.header || !column.header._cell)
           continue;
@@ -1506,16 +1465,19 @@ O$.Table = {
         column._resizeHandle._updatePos();
       }
 
-      var colWidths = getColWidths();
-      if (!table._params._scrolling)
-        table.style.tableLayout = "fixed";
+      function fixWidths() {
+        var colWidths = getColWidths();
+        if (!table._params._scrolling)
+          table.style.tableLayout = "fixed";
 
-      table.style.width = "auto";
-      for (var i = 0, count = colWidths.length; i < count; i++) {
-        var column = table._columns[i];
-        column.setWidth(colWidths[i]);
+        table.style.width = "auto";
+        for (var i = 0, count = colWidths.length; i < count; i++) {
+          var column = table._columns[i];
+          column.setWidth(colWidths[i]);
+        }
+        table._originalWidth = recalculateTableWidth(colWidths);
       }
-      table._originalWidth = recalculateTableWidth(colWidths);
+      fixWidths();
 
       table._updateResizeHandlePositions = function() {
         for (var i = 0, count = table._columns.length; i < count; i++) {

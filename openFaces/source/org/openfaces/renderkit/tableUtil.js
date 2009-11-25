@@ -126,7 +126,7 @@ O$.Tables = {
         }
       }
       if (table._bordersNeeded) {
-        table.style.borderCollapse = "collapse";
+//        table.style.borderCollapse = "collapse";
       }
     }
 
@@ -455,7 +455,7 @@ O$.Tables = {
                 var spacer = O$.getChildNodesByClass(scrollingDiv ? scrollingDiv : td, ["o_scrolling_area_spacer"], false, tbl)[0];
 
                 tbl.style.emptyCells = "show";
-                if (table._bordersNeeded) tbl.style.borderCollapse = "collapse";
+//                if (table._bordersNeeded) tbl.style.borderCollapse = "collapse";
                 var rowContainer = O$.getChildNodesWithNames(tbl, ["tbody"])[0];
                 var area = {
                   _td: td,
@@ -1161,7 +1161,7 @@ O$.Tables = {
       function updateBodyCellBorders(cell, rowIndex, column, rowCount, colCount) {
         var correctedRowIndex = rowIndex + cell.rowSpan - 1;
         var displayGridLineUnderBottomRow = !!table._params.scrolling;
-        var borderBottom = (correctedRowIndex < displayGridLineUnderBottomRow ? rowCount : rowCount - 1)
+        var borderBottom = (correctedRowIndex < (displayGridLineUnderBottomRow ? rowCount : rowCount - 1))
                 ? tableBody._getBorderBottomForCell(rowIndex, column._colIndex, cell)
                 : "0px none white";
         O$.Tables._setCellStyleProperty(cell, "borderBottom", borderBottom);
@@ -1329,6 +1329,9 @@ O$.Tables = {
   },
 
   _initColumnOrGroup: function(column, table) {
+    column._allCellsClassName = O$.createCssClass("overflow: hidden", true);
+    column._allCellsClass = O$.findCssRule("." + column._allCellsClassName);
+
     column._table = table;
 
     if (column.header && column.header.pos) {
@@ -1381,16 +1384,22 @@ O$.Tables = {
 
     column._updateStyle = function() {
       var headerCell = column.header ? column.header._cell : null;
-      if (headerCell)
+      if (headerCell) {
+        O$.setStyleMappings(headerCell, {cellWidthClass: column._allCellsClassName});
         headerCell._updateStyle();
+      }
 
       var subHeaderCell = column.subHeader ? column.subHeader._cell : null;
-      if (subHeaderCell)
+      if (subHeaderCell) {
+        O$.setStyleMappings(subHeaderCell, {cellWidthClass: column._allCellsClassName});
         subHeaderCell._updateStyle();
+      }
 
       var footerCell = column.footer ? column.footer._cell : null;
-      if (footerCell)
+      if (footerCell) {
         footerCell._updateStyle();
+        O$.setStyleMappings(footerCell, {cellWidthClass: column._allCellsClassName});
+      }
     };
   },
 
@@ -1413,6 +1422,10 @@ O$.Tables = {
       column.body._cells[i] = cell;
     }
 
+    column._colTags.forEach(function(colTag) {
+      O$.setStyleMappings(colTag, {cellWidthClass: column._allCellsClassName});
+    });
+
     if (column._super_updateStyle)
       throw "O$.Tables._initColumn can be called only once per column";
     column._super_updateStyle = column._updateStyle;
@@ -1432,10 +1445,33 @@ O$.Tables = {
       var bodyCells = column.body ? column.body._cells : [];
       for (var bodyCellIndex = 0, cellCount = bodyCells.length; bodyCellIndex < cellCount; bodyCellIndex++) {
         var cell = bodyCells[bodyCellIndex];
-        if (cell)
-          cell._updateStyle();
+        if (!cell) continue;
+        cell._updateStyle();
+        if (!cell.colSpan || cell.colSpan == 1)
+          O$.setStyleMappings(cell, {cellWidthClass: column._allCellsClassName});
       }
 
+    };
+    column.setWidth = function(width) {
+      this._allCellsClass.style.width = width + "px";
+      this._colTags.forEach(function(colTag) {
+        O$.setElementWidth(colTag, width);
+      });
+    };
+    column.getWidth = function() {
+      if (this.header && this.header._cell)
+        return this.header._cell.offsetWidth;
+      if (this.subHeader && this.subHeader._cell)
+        return this.subHeader._cell.offsetWidth;
+      for (var idx = 0, count = this.body._cells.length; idx < count; idx++) {
+        var cell = this.body._cells[idx];
+        if (!cell || cell.colSpan > 1)
+          continue;
+        return cell.offsetWidth;
+      }
+      if (this.footer && this.footer._cell)
+        return this.footer._cell.offsetWidth;
+      return this._colTags[0].offsetWidth;
     };
 
   },
