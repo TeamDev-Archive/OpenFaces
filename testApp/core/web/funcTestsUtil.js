@@ -24,13 +24,13 @@ function singleSelectionChanged(dataTableID, divID) { // todo: reimplement this 
   var childerNumber = tbody.childNodes.length;
   for (var i = 0; i < childerNumber; i++) {
     var currentRow = tbody.childNodes[i];
-    if (currentRow.tagName && currentRow.tagName && currentRow.tagName.toLowerCase() == 'tr') {
+    if (currentRow.tagName && currentRow.tagName && currentRow.tagName.toLowerCase() == "tr") {
       if (currentRow.className && currentRow.className != "o_hiddenRow") // selection style is applied to <tr> or embedded <td> tags depending on browser and other conditions
         showSelectedIndex(i, divID);
       else {
         var firstRowChild = currentRow.childNodes[0];
         if (firstRowChild) {
-          if (firstRowChild.className) {
+          if (firstRowChild.className && firstRowChild.className.indexOf("o_class") != -1) {
             showSelectedIndex(i, divID);
             break;
           }
@@ -45,7 +45,7 @@ function showSelectedIndex(index, divID) {
   listItemInnerHTML(empty, index);
   var children = empty.childNodes;
   for (var i = 0; i < children.length; i++) {
-    children[i].className = 'programmed';
+    children[i].className = "programmed";
   }
   empty.style.color = "green";
 }
@@ -58,17 +58,17 @@ function multipleSelectionChanged(dataTableID, divID) {// todo: reimplement this
   var elDataTable = getControl(dataTableID);
   var tbody = elDataTable.childNodes[1];
   var childerNumber = tbody.childNodes.length;
-  var result = ' ';
+  var result = " ";
   for (var i = 0; i < childerNumber; i++) {
     var currentRow = tbody.childNodes[i];
-    if (currentRow.tagName && currentRow.tagName.toLowerCase() == 'tr') {
+    if (currentRow.tagName && currentRow.tagName.toLowerCase() == "tr") {
       if (currentRow.className && currentRow.className != "o_hiddenRow") // selection style is applied to <tr> or embedded <td> tags depending on browser and other conditions
-        result += ' ' + i;
+        result += " " + i;
       else {
         var firstRowChild = currentRow.childNodes[0];
         if (firstRowChild) {
           if (firstRowChild.className) {
-            result += ' ' + i;
+            result += " " + i;
           }
         }
       }
@@ -82,7 +82,7 @@ function printInfo(textToOutput, divID, add) {
   addListItemInnerHTML(empty, textToOutput, add);
   var children = empty.childNodes;
   for (var i = 0; i < children.length; i++) {
-    children[i].className = 'programmed';
+    children[i].className = "programmed";
   }
   empty.style.color = "green";
 }
