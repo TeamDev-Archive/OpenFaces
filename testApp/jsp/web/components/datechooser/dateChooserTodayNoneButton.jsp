@@ -14,8 +14,8 @@
     function printTodayStyle(dateChooserID, outputDiv) {
       var mousedownEvt = O$.createEvent('mousedown');
       getControl(dateChooserID + buttonSuffix).onmousedown(mousedownEvt);
-      printInfo('color: ' + O$.getElementStyleProperty(getControl(dateChooserID + todaySuffix), 'color') + '; ' +
-                'cursor: ' + O$.getElementStyleProperty(getControl(dateChooserID + todaySuffix), 'cursor'), outputDiv, false);
+      printInfo('color: ' + O$.getElementStyle(getControl(dateChooserID + todaySuffix), 'color') + '; ' +
+                'cursor: ' + O$.getElementStyle(getControl(dateChooserID + todaySuffix), 'cursor'), outputDiv, false);
       getControl(dateChooserID + buttonSuffix).onmousedown(mousedownEvt);
       return false;
     }
@@ -23,8 +23,8 @@
     function printNoneStyle(dateChooserID, outputDiv) {
       var mousedownEvt = O$.createEvent('mousedown');
       getControl(dateChooserID + buttonSuffix).onmousedown(mousedownEvt);
-      printInfo('color: ' + O$.getElementStyleProperty(getControl(dateChooserID + noneSuffix), 'color') + '; ' +
-                'cursor: ' + O$.getElementStyleProperty(getControl(dateChooserID + noneSuffix), 'cursor'), outputDiv, false);
+      printInfo('color: ' + O$.getElementStyle(getControl(dateChooserID + noneSuffix), 'color') + '; ' +
+                'cursor: ' + O$.getElementStyle(getControl(dateChooserID + noneSuffix), 'cursor'), outputDiv, false);
       getControl(dateChooserID + buttonSuffix).onmousedown(mousedownEvt);
       return false;
     }

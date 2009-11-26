@@ -111,15 +111,15 @@ O$.HintLabel = {
   _getElementWidth: function(elt, extractScriptsFromInnerHtml) {
     var stubElt = document.createElement(elt.tagName);
     stubElt.innerHTML = (extractScriptsFromInnerHtml) ? O$.HintLabel._getInnerHtml(elt) : elt.innerHTML;
-    stubElt.style.marginLeft = O$.getElementStyleProperty(elt, "margin-left");
-    stubElt.style.marginRight = O$.getElementStyleProperty(elt, "margin-right");
-    stubElt.style.paddingLeft = O$.getElementStyleProperty(elt, "padding-left");
-    stubElt.style.paddingRight = O$.getElementStyleProperty(elt, "padding-right");
-    stubElt.style.borderLeftWidth = O$.getElementStyleProperty(elt, "border-left-width");
-    stubElt.style.borderRightWidth = O$.getElementStyleProperty(elt, "border-right-width");
-    stubElt.style.fontFamily = O$.getElementStyleProperty(elt, "font-family");
-    stubElt.style.fontSize = O$.getElementStyleProperty(elt, "font-size");
-    stubElt.style.fontWeight = O$.getElementStyleProperty(elt, "font-weight");
+    stubElt.style.marginLeft = O$.getElementStyle(elt, "margin-left");
+    stubElt.style.marginRight = O$.getElementStyle(elt, "margin-right");
+    stubElt.style.paddingLeft = O$.getElementStyle(elt, "padding-left");
+    stubElt.style.paddingRight = O$.getElementStyle(elt, "padding-right");
+    stubElt.style.borderLeftWidth = O$.getElementStyle(elt, "border-left-width");
+    stubElt.style.borderRightWidth = O$.getElementStyle(elt, "border-right-width");
+    stubElt.style.fontFamily = O$.getElementStyle(elt, "font-family");
+    stubElt.style.fontSize = O$.getElementStyle(elt, "font-size");
+    stubElt.style.fontWeight = O$.getElementStyle(elt, "font-weight");
 
     stubElt.style.position = "absolute";
     stubElt.style.visibility = "hidden";
@@ -159,11 +159,11 @@ O$.HintLabel = {
 
   _prepareHint: function(label) {
     var pos = O$.getElementPos(label, true);
-    pos.left += O$.getNumericStyleProperty(label, "border-left-width") + O$.getNumericStyleProperty(label, "padding-left");
-    pos.top += O$.getNumericStyleProperty(label, "border-top-width") + O$.getNumericStyleProperty(label, "padding-top");
+    pos.left += O$.getNumericElementStyle(label, "border-left-width") + O$.getNumericElementStyle(label, "padding-left");
+    pos.top += O$.getNumericElementStyle(label, "border-top-width") + O$.getNumericElementStyle(label, "padding-top");
     var hint = label._hint;
-    pos.left -= O$.getNumericStyleProperty(hint, "border-left-width") + O$.getNumericStyleProperty(hint, "padding-left") + O$.getNumericStyleProperty(hint, "margin-left");
-    pos.top -= O$.getNumericStyleProperty(hint, "border-top-width") + O$.getNumericStyleProperty(hint, "padding-top") + O$.getNumericStyleProperty(hint, "margin-top");
+    pos.left -= O$.getNumericElementStyle(hint, "border-left-width") + O$.getNumericElementStyle(hint, "padding-left") + O$.getNumericElementStyle(hint, "margin-left");
+    pos.top -= O$.getNumericElementStyle(hint, "border-top-width") + O$.getNumericElementStyle(hint, "padding-top") + O$.getNumericElementStyle(hint, "margin-top");
 
     hint.style.left = pos.left + "px";
     hint.style.top = pos.top + "px";

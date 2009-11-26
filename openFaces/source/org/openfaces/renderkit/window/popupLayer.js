@@ -24,7 +24,7 @@ O$.PopupLayer = {
     popup._leftField = O$(popup.id + "::left");
     popup._topField = O$(popup.id + "::top");
     popup._hideOnEsc = hideOnEsc;
-    popup.style.display = O$.getElementStyleProperty(popup, "display");
+    popup.style.display = O$.getElementStyle(popup, "display");
 
     popup.blockingLayer = O$(popup.id + "::blockingLayer");
     if (popup.blockingLayer)

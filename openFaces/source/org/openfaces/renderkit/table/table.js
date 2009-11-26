@@ -1253,7 +1253,7 @@ O$.Table = {
         resizeHandleWidth = 1;
 
       var table = O$(tableId);
-      var tableBordersCollapsed = O$.getElementStyleProperty(table, "border-collapse") == "collapse";
+      var tableBordersCollapsed = O$.getElementStyle(table, "border-collapse") == "collapse";
       var colWidthsFieldId = table.id + "::colWidths";
       var colWidthsField = O$.addHiddenField(table, colWidthsFieldId);
 
@@ -1265,8 +1265,8 @@ O$.Table = {
           totalWidth += thisColumnWidth;
         }
 
-        var borderLeft = O$.getNumericStyleProperty(table, "border-left-width", true);
-        var borderRight = O$.getNumericStyleProperty(table, "border-right-width", true);
+        var borderLeft = O$.getNumericElementStyle(table, "border-left-width", true);
+        var borderRight = O$.getNumericElementStyle(table, "border-right-width", true);
         if (tableBordersCollapsed) {
           if (O$.isOpera() || O$.isSafari()) {
             borderLeft = Math.floor(borderLeft / 2);

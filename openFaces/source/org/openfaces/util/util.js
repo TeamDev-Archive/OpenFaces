@@ -226,11 +226,11 @@ if (!window.O$) {
       if (horizontal) {
         this._element.style.borderTop = this.lineStyle;
         this._element.style.borderLeft = "none";
-        width = O$.getNumericStyleProperty(this._element, "border-top-width");
+        width = O$.getNumericElementStyle(this._element, "border-top-width");
       } else {
         this._element.style.borderLeft = this.lineStyle;
         this._element.style.borderTop = "none";
-        width = O$.getNumericStyleProperty(this._element, "border-left-width");
+        width = O$.getNumericElementStyle(this._element, "border-left-width");
       }
       var alignment = this.alignment;
       var alignmentCorrection =
@@ -826,7 +826,7 @@ if (!window.O$) {
     if (O$._explorer8 == undefined)
       O$._explorer8 = O$.isExplorer() && O$.userAgentContains("MSIE 8");
     return O$._explorer8;
-  }
+  };
 
   O$.isOpera9AndLate = function() {
     if (O$._opera9 == undefined) {
@@ -2603,8 +2603,8 @@ if (!window.O$) {
       var ruleStyle = cssRule.style;
       for (var propertyIndex = 0; propertyIndex < propertyCount; propertyIndex++) {
         var propertyName = propertyNames[propertyIndex];
-        var capitalizedPropertyName = O$.capitalizeCssPropertyName(propertyName);
-        var dashizedPropertyName = O$.dashizeCssPropertyName(capitalizedPropertyName);
+        var capitalizedPropertyName = O$._capitalizeCssPropertyName(propertyName);
+        var dashizedPropertyName = O$._dashizeCssPropertyName(capitalizedPropertyName);
         var thisPropertyValue = ruleStyle[capitalizedPropertyName];
         if (!thisPropertyValue)
           continue;
@@ -2745,12 +2745,10 @@ if (!window.O$) {
     }
   };
 
-  O$.getElementStyleProperty = function(element, propertyName, enableValueCaching) {
-    var propertyValues = O$.getElementStyleProperties(element, [propertyName], enableValueCaching);
-    return propertyValues[propertyName];
-  };
-
-  O$.getElementStyleProperties = function(element, propertyNames, enableValueCaching) {
+  O$.getElementStyle = function(element, propertyNames, enableValueCaching) {
+    if (!(propertyNames instanceof Array)) {
+      return O$.getElementStyle(element, [propertyNames], enableValueCaching)[propertyNames];
+    }
     if (enableValueCaching) {
       if (!element._cachedStyleValues)
         element._cachedStyleValues = {};
@@ -2760,8 +2758,8 @@ if (!window.O$) {
     var computedStyle = !currentStyle && document.defaultView ? document.defaultView.getComputedStyle(element, "") : null;
     for (var i = 0, count = propertyNames.length; i < count; i++) {
       var propertyName = propertyNames[i];
-      var capitalizedPropertyName = O$.capitalizeCssPropertyName(propertyName);
-      var dashizedPropertyName = O$.dashizeCssPropertyName(capitalizedPropertyName);
+      var capitalizedPropertyName = O$._capitalizeCssPropertyName(propertyName);
+      var dashizedPropertyName = O$._dashizeCssPropertyName(capitalizedPropertyName);
 
       var propertyValue = undefined;
       if (enableValueCaching)
@@ -2789,8 +2787,7 @@ if (!window.O$) {
     return propertyValues;
   };
 
-
-  O$.capitalizeCssPropertyName = function(propertyName) {
+  O$._capitalizeCssPropertyName = function(propertyName) {
     while (true) {
       var idx = propertyName.indexOf("-");
       if (idx == -1)
@@ -2807,7 +2804,7 @@ if (!window.O$) {
     }
   };
 
-  O$.dashizeCssPropertyName = function(propertyName) {
+  O$._dashizeCssPropertyName = function(propertyName) {
     var result = "";
     for (var i = 0, count = propertyName.length; i < count; i++) {
       var ch = propertyName.substring(i, i + 1);
@@ -2838,7 +2835,7 @@ if (!window.O$) {
     // makes the background white disregarding the appropriate stylesheets (JSFC-2346, JSFC-2275)
     var oldBackgroundColor = element != document.body
             ? element.style.backgroundColor
-            : O$.getElementStyleProperty(element, "background-color");
+            : O$.getElementStyle(element, "background-color");
     element.style.backgroundColor = "white";
     element.style.backgroundColor = "#fefefe";
     element.style.backgroundColor = oldBackgroundColor;
@@ -2957,7 +2954,7 @@ if (!window.O$) {
     var container = O$.getContainingBlock(element);
     if (!container)
       return 0;
-    var zIndex = O$.getNumericStyleProperty(container, "z-index");
+    var zIndex = O$.getNumericElementStyle(container, "z-index");
     return zIndex;
   };
 
@@ -3140,17 +3137,17 @@ if (!window.O$) {
       if (!offsetParent)
         break;
 
-      if (O$.isMozillaFF2() && O$.getElementStyleProperty(offsetParent, "overflow") != "visible") {
-        left += O$.getNumericStyleProperty(offsetParent, "border-left-width");
-        top += O$.getNumericStyleProperty(offsetParent, "border-top-width");
+      if (O$.isMozillaFF2() && O$.getElementStyle(offsetParent, "overflow") != "visible") {
+        left += O$.getNumericElementStyle(offsetParent, "border-left-width");
+        top += O$.getNumericElementStyle(offsetParent, "border-top-width");
       }
 
       var parentIsContainingBlock = O$.isContainingBlock(offsetParent);
       if (relativeToNearestContainingBlock && parentIsContainingBlock) {
         if (offsetParent.tagName.toLowerCase() == "div" && (O$.isOpera9AndLate() || O$.isSafari2())) {
-          if (O$.getElementStyleProperty(offsetParent, "border-style") != "none") {
-            var borderLeftWidth = O$.getNumericStyleProperty(offsetParent, "border-left-width");
-            var borderTopWidth = O$.getNumericStyleProperty(offsetParent, "border-top-width");
+          if (O$.getElementStyle(offsetParent, "border-style") != "none") {
+            var borderLeftWidth = O$.getNumericElementStyle(offsetParent, "border-left-width");
+            var borderTopWidth = O$.getNumericElementStyle(offsetParent, "border-top-width");
             left -= borderLeftWidth;
             top -= borderTopWidth;
           }
@@ -3174,8 +3171,8 @@ if (!window.O$) {
           // containing blocks already have the following corrections as part of offsetLeft/offsetTop
           if (O$.isMozillaFF2()) {
             if (parentNodeName == "td") {
-              left -= O$.getNumericStyleProperty(parent, "border-left-width");
-              top -= O$.getNumericStyleProperty(parent, "border-top-width");
+              left -= O$.getNumericElementStyle(parent, "border-left-width");
+              top -= O$.getNumericElementStyle(parent, "border-top-width");
             }
             if (parentNodeName == "table" && O$.isStrictMode()) {
               var parentMargins = O$.calculateMozillaMargins(parent);
@@ -3185,8 +3182,8 @@ if (!window.O$) {
           }
           if (O$.isSafari()) {
             if (parentNodeName == "table") {
-              left += O$.getNumericStyleProperty(parent, "border-left-width");
-              top += O$.getNumericStyleProperty(parent, "border-top-width");
+              left += O$.getNumericElementStyle(parent, "border-left-width");
+              top += O$.getNumericElementStyle(parent, "border-top-width");
             }
           }
         }
@@ -3207,8 +3204,8 @@ if (!window.O$) {
         } else {
           if (lowerCaseTagName == "div" || lowerCaseTagName == "td") {
             if (!O$.isOpera9AndLate()) { // border in Opera 9 included in offsetLeft and offsetTop
-              left += (offsetParent.clientLeft == undefined ? O$.getNumericStyleProperty(offsetParent, "border-left-width") : offsetParent.clientLeft);
-              top += (offsetParent.clientTop == undefined ? O$.getNumericStyleProperty(offsetParent, "border-top-width") : offsetParent.clientTop);
+              left += (offsetParent.clientLeft == undefined ? O$.getNumericElementStyle(offsetParent, "border-left-width") : offsetParent.clientLeft);
+              top += (offsetParent.clientTop == undefined ? O$.getNumericElementStyle(offsetParent, "border-top-width") : offsetParent.clientTop);
             }
           }
         }
@@ -3226,8 +3223,8 @@ if (!window.O$) {
       var container = O$.getContainingBlock(element, true);
       if (!container)
         break;
-      var overflowX = O$.getElementStyleProperty(container, "overflow-x");
-      var overflowY = O$.getElementStyleProperty(container, "overflow-y");
+      var overflowX = O$.getElementStyle(container, "overflow-x");
+      var overflowY = O$.getElementStyle(container, "overflow-y");
       var containerRect = (overflowX != "visible" || overflowY != "visible") ?
                           O$.getElementPaddingRectangle(container, false, cachedDataContainer) : null;
       if (overflowX != "visible") {
@@ -3282,7 +3279,7 @@ if (!window.O$) {
   O$.getElementBorderRectangle = function(element, relativeToNearestContainingBlock, cachedDataContainer) {
     if (cachedDataContainer) {
       if (!element._of_getElementRectangle)
-        element._of_getElementRectangle = {}
+        element._of_getElementRectangle = {};
       if (element._of_getElementRectangle._currentCache == cachedDataContainer)
         return element._of_getElementRectangle._cachedValue;
     }
@@ -3310,10 +3307,10 @@ if (!window.O$) {
 
   O$.getElementPaddingRectangle = function(element, relativeToNearestContainngBlock, cachedDataContainer) {
     var rect = O$.getElementBorderRectangle(element, relativeToNearestContainngBlock, cachedDataContainer);
-    var borderLeftWidth = O$.getNumericStyleProperty(element, "border-left-width");
-    var borderRightWidth = O$.getNumericStyleProperty(element, "border-right-width");
-    var borderTopWidth = O$.getNumericStyleProperty(element, "border-top-width");
-    var borderBottomWidth = O$.getNumericStyleProperty(element, "border-bottom-width");
+    var borderLeftWidth = O$.getNumericElementStyle(element, "border-left-width");
+    var borderRightWidth = O$.getNumericElementStyle(element, "border-right-width");
+    var borderTopWidth = O$.getNumericElementStyle(element, "border-top-width");
+    var borderBottomWidth = O$.getNumericElementStyle(element, "border-bottom-width");
     rect.x += borderLeftWidth;
     rect.y += borderTopWidth;
     rect.width -= borderLeftWidth + borderRightWidth;
@@ -3340,12 +3337,12 @@ if (!window.O$) {
       O$.excludeClassNames(element, ["o_zeroPaddings"]);
     if (!O$.isExplorer() || O$.isStrictMode()) {
       if (width != null) {
-        width -= O$.getNumericStyleProperty(element, "padding-left") + O$.getNumericStyleProperty(element, "padding-right");
-        width -= O$.getNumericStyleProperty(element, "border-left-width") + O$.getNumericStyleProperty(element, "border-right-width");
+        width -= O$.getNumericElementStyle(element, "padding-left") + O$.getNumericElementStyle(element, "padding-right");
+        width -= O$.getNumericElementStyle(element, "border-left-width") + O$.getNumericElementStyle(element, "border-right-width");
       }
       if (height != null) {
-        height -= O$.getNumericStyleProperty(element, "padding-top") + O$.getNumericStyleProperty(element, "padding-bottom");
-        height -= O$.getNumericStyleProperty(element, "border-top-width") + O$.getNumericStyleProperty(element, "border-bottom-width");
+        height -= O$.getNumericElementStyle(element, "padding-top") + O$.getNumericElementStyle(element, "padding-bottom");
+        height -= O$.getNumericElementStyle(element, "border-top-width") + O$.getNumericElementStyle(element, "border-bottom-width");
       }
     }
     if (!_paddingsHaveBeenReset && (width < 0 || height < 0)) {
@@ -3369,8 +3366,8 @@ if (!window.O$) {
       O$.excludeClassNames(element, ["o_zeroPaddings"]);
     if (!O$.isExplorer() || O$.isStrictMode()) {
       if (value != null) {
-        value -= O$.getNumericStyleProperty(element, "padding-" + edge1Property) + O$.getNumericStyleProperty(element, "padding-" + edge2Property);
-        value -= O$.getNumericStyleProperty(element, "border-" + edge1Property + "-width") + O$.getNumericStyleProperty(element, "border-" + edge2Property + "-width");
+        value -= O$.getNumericElementStyle(element, "padding-" + edge1Property) + O$.getNumericElementStyle(element, "padding-" + edge2Property);
+        value -= O$.getNumericElementStyle(element, "border-" + edge1Property + "-width") + O$.getNumericElementStyle(element, "border-" + edge2Property + "-width");
       }
     }
     if (!_paddingsHaveBeenReset && (value < 0)) {
@@ -3416,7 +3413,7 @@ if (!window.O$) {
       // document element can't have a non-static position
       return false;
     }
-    var position = O$.getElementStyleProperty(elt, "position");
+    var position = O$.getElementStyle(elt, "position");
     if (!position) return false;
     return position != "static";
   };
@@ -3464,7 +3461,7 @@ if (!window.O$) {
     for (var parent = element.parentNode; parent; parent = parent.parentNode) {
       var parentScrollable;
       if (parent != document) {
-        var overflowY = O$.getElementStyleProperty(parent, "overflow-y");
+        var overflowY = O$.getElementStyle(parent, "overflow-y");
         parentScrollable = overflowY != "visible";
       } else {
         parentScrollable = true;
@@ -3556,18 +3553,24 @@ if (!window.O$) {
     window.scrollTo(scrollPos.x, scrollPos.y);
   };
 
-  O$.getNumericStyleProperty = function(element, propertyName, enableValueCaching) {
-    if (O$.isExplorer() || O$.isOpera()) {
-      // border "medium none black" under IE is actually displayed with zero width because of "none" style, so we should
-      // skip calculating "medium" width and just return 0 in such cases.
-      var capitalizedPropertyName = O$.capitalizeCssPropertyName(propertyName);
-      if (O$.stringStartsWith(capitalizedPropertyName, "border") && O$.stringEndsWith(capitalizedPropertyName, "Width")) {
-        var borderPropertyName = capitalizedPropertyName.substring(0, capitalizedPropertyName.length - "Width".length);
-        if (O$.getElementStyleProperty(element, borderPropertyName).indexOf("none") != -1)
+  O$.getNumericElementStyle = function(element, propertyName, enableValueCaching) {
+    var capitalizedPropertyName = O$._capitalizeCssPropertyName(propertyName);
+    if (O$.stringStartsWith(capitalizedPropertyName, "border") && O$.stringEndsWith(capitalizedPropertyName, "Width")) {
+      var borderName = capitalizedPropertyName.substring(0, capitalizedPropertyName.length - "Width".length);
+      var borderStyleName = borderName + "Style";
+      if (O$.isOpera()) {
+        if (O$.getElementStyle(element, borderStyleName) == "none") {
+//          if (O$.debug)O$.debug.log(element.nodeName + "; id=" + element.id + "; className=" + element.className +"; border: " + O$.getElementStyle(element, borderName));
+          return 0;
+        }
+      } else if (O$.isExplorer()) {
+        var borderWidthName = borderName + "Width";
+        if (O$.getElementStyle(element, borderStyleName) == "none" &&
+            O$.getElementStyle(element, borderWidthName) == "medium")
           return 0;
       }
     }
-    var str = O$.getElementStyleProperty(element, propertyName, enableValueCaching);
+    var str = O$.getElementStyle(element, propertyName, enableValueCaching);
     var result = O$.calculateNumericCSSValue(str);
     return result;
   };
@@ -3576,13 +3579,13 @@ if (!window.O$) {
     var indent = {};
 
     if (indentDelta.marginLeft) {
-      indent.marginLeft = (indentDelta.marginLeft + O$.getNumericStyleProperty(element, "margin-left")) + "px";
+      indent.marginLeft = (indentDelta.marginLeft + O$.getNumericElementStyle(element, "margin-left")) + "px";
     }
     if (indentDelta.marginRight) {
-      indent.marginRight = (indentDelta.marginRight + O$.getNumericStyleProperty(element, "margin-right")) + "px";
+      indent.marginRight = (indentDelta.marginRight + O$.getNumericElementStyle(element, "margin-right")) + "px";
     }
     if (indentDelta.marginBottom) {
-      indent.marginBottom = (indentDelta.marginBottom + O$.getNumericStyleProperty(element, "margin-bottom")) + "px";
+      indent.marginBottom = (indentDelta.marginBottom + O$.getNumericElementStyle(element, "margin-bottom")) + "px";
     }
     return indent;
   };
@@ -3773,37 +3776,6 @@ if (!window.O$) {
     if (!O$.isStrictMode())
       return;
 
-    function addFieldForAutocorrection(field, widthCorrection, heightCorrection) {
-      if (!O$._fieldsForAutocorrection)
-        O$._fieldsForAutocorrection = [];
-      O$._fieldsForAutocorrection.push(field);
-      field._autocorrectSize = function() {
-        var container = field.parentNode;
-        var containerSize = O$.getElementSize(container);
-        var fieldSize = O$.getElementSize(field);
-        if (widthCorrection) {
-          fieldSize.width = containerSize.width - widthCorrection;
-          fieldSize.width -= O$.getNumericStyleProperty(container, "padding-left") + O$.getNumericStyleProperty(container, "padding-right");
-        } else
-          fieldSize.width = null;
-        if (heightCorrection) {
-          fieldSize.height = containerSize.height - heightCorrection;
-          fieldSize.height -= O$.getNumericStyleProperty(container, "padding-top") + O$.getNumericStyleProperty(container, "padding-bottom");
-        } else
-          fieldSize.height = null;
-        O$.setElementSize(field, fieldSize);
-      };
-      if (!O$._fieldSizeAutocorrectionInterval)
-        O$._fieldSizeAutocorrectionInterval = setInterval(function() {
-          for (var i in O$._fieldsForAutocorrection) {
-            var f = O$._fieldsForAutocorrection[i];
-            if (typeof f != "function")
-              f._autocorrectSize();
-          }
-        }, 100);
-      field._autocorrectSize();
-    }
-
     function processInput(input) {
       if (input._strictWidthFixed || input.type == "hidden")
         return;
@@ -3811,23 +3783,23 @@ if (!window.O$) {
       var parent = input.parentNode;
       var widthCorrection;
       if (O$.getStyleClassProperty(input.className, "width") == "100%") {
-        var bordersX = O$.getNumericStyleProperty(input, "border-left-width") + O$.getNumericStyleProperty(input, "border-right-width");
-        var paddingsX = O$.getNumericStyleProperty(input, "padding-left") + O$.getNumericStyleProperty(input, "padding-right");
+        var bordersX = O$.getNumericElementStyle(input, "border-left-width") + O$.getNumericElementStyle(input, "border-right-width");
+        var paddingsX = O$.getNumericElementStyle(input, "padding-left") + O$.getNumericElementStyle(input, "padding-right");
         widthCorrection = bordersX + paddingsX;
       }
       var heightCorrection;
       if (O$.getStyleClassProperty(input.className, "height") == "100%") {
-        var bordersY = O$.getNumericStyleProperty(input, "border-top-width") + O$.getNumericStyleProperty(input, "border-bottom-width");
-        var paddingsY = O$.getNumericStyleProperty(input, "padding-top") + O$.getNumericStyleProperty(input, "padding-bottom");
+        var bordersY = O$.getNumericElementStyle(input, "border-top-width") + O$.getNumericElementStyle(input, "border-bottom-width");
+        var paddingsY = O$.getNumericElementStyle(input, "padding-top") + O$.getNumericElementStyle(input, "padding-bottom");
         heightCorrection = bordersY + paddingsY;
       }
 
       if (widthCorrection) {
-        var parentPaddingRight = O$.getNumericStyleProperty(parent, "padding-right");
+        var parentPaddingRight = O$.getNumericElementStyle(parent, "padding-right");
         parent.style.paddingRight = parentPaddingRight + widthCorrection + "px";
       }
       if (heightCorrection) {
-        var parentPaddingBottom = O$.getNumericStyleProperty(parent, "padding-bottom");
+        var parentPaddingBottom = O$.getNumericElementStyle(parent, "padding-bottom");
         parent.style.paddingBottom = parentPaddingBottom + heightCorrection + "px";
       }
 
@@ -3927,7 +3899,7 @@ if (!window.O$) {
       iframe.style.top = popup.offsetTop + "px";
     };
 
-    var popupZIndex = O$.getElementStyleProperty(popup, "z-index");
+    var popupZIndex = O$.getElementStyle(popup, "z-index");
     if (!popupZIndex) {
       popupZIndex = 10;
       popup.style.zIndex = popupZIndex;
@@ -4030,7 +4002,7 @@ if (!window.O$) {
       return O$.getElementSize(element).height;
     if (property)
 
-    return O$.getElementStyleProperty(element, property);
+    return O$.getElementStyle(element, property);
   };
 
   O$.setElementEffectProperty = function(element, property, value) {
@@ -4178,7 +4150,7 @@ if (!window.O$) {
 
   O$.addLoadEvent(function() {
     if (!O$.findCssRule(".o_default_css_marker"))
-      O$.logError("default.css file is not loaded. The usual reason is application misconfiguration. See OpenFaces Installation and Configuration guide (resource filter configuration, etc).")
+      O$.logError("default.css file is not loaded. The usual reason is application misconfiguration. See OpenFaces Installation and Configuration guide (resource filter configuration, etc).");
   });
 
   O$._submitComponentWithField = function(componentId, focusedField, additionalParams, execute) {

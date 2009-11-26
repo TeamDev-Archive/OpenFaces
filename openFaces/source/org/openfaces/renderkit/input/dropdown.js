@@ -379,8 +379,8 @@ O$.DropDown = {
             repaintDropDown = true;
           }
         }
-        if (popup.offsetWidth > O$.getNumericStyleProperty(popup, "width", true) && !popup._widthCorrection) {
-          popup._widthCorrection = popup.offsetWidth - O$.getNumericStyleProperty(popup, "width", true);
+        if (popup.offsetWidth > O$.getNumericElementStyle(popup, "width", true) && !popup._widthCorrection) {
+          popup._widthCorrection = popup.offsetWidth - O$.getNumericElementStyle(popup, "width", true);
         }
 
         if (popup.offsetWidth < minWidth) {

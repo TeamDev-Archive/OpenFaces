@@ -57,9 +57,9 @@ O$.Checkbox = {
 
       checkbox._indents = {};
       checkbox._defaultIndents = {
-        marginLeft: O$.getNumericStyleProperty(checkbox, "margin-left") + "px",
-        marginRight: O$.getNumericStyleProperty(checkbox, "margin-right") + "px",
-        marginBottom: O$.getNumericStyleProperty(checkbox, "margin-bottom") + "px"
+        marginLeft: O$.getNumericElementStyle(checkbox, "margin-left") + "px",
+        marginRight: O$.getNumericElementStyle(checkbox, "margin-right") + "px",
+        marginBottom: O$.getNumericElementStyle(checkbox, "margin-bottom") + "px"
       };
 
       // using "getDisabled" instead of "isDisabled "

@@ -164,7 +164,7 @@ O$.FoldingPanel = {
   _processCaptionStyle: function(fp) {
     if (!fp._caption)
       return;
-    var paddings = O$.getElementStyleProperties(fp._caption, ["padding-left", "padding-right", "padding-top", "padding-bottom"]);
+    var paddings = O$.getElementStyle(fp._caption, ["padding-left", "padding-right", "padding-top", "padding-bottom"]);
     fp._captionContent.style.paddingLeft = paddings.paddingLeft;
     fp._captionContent.style.paddingRight = paddings.paddingRight;
     fp._captionContent.style.paddingTop = paddings.paddingTop;

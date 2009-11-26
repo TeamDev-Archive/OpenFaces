@@ -118,15 +118,15 @@ O$.Window = {
     };
 
     win._updateContentPos = function() {
-      if (O$.getElementStyleProperty(this._content, "position", true) != "absolute")
+      if (O$.getElementStyle(this._content, "position", true) != "absolute")
         return; // todo: the case for Confirmation -- unify implementation if possible
       var captionHeight = O$.getElementSize(this._caption).height;
       if (!this._rect)
         this._rect = O$.getElementBorderRectangle(this, true);
-      var borderLeft = O$.getNumericStyleProperty(this, "border-left-width", true);
-      var borderRight = O$.getNumericStyleProperty(this, "border-right-width", true);
-      var borderTop = O$.getNumericStyleProperty(this, "border-top-width", true);
-      var borderBottom = O$.getNumericStyleProperty(this, "border-bottom-width", true);
+      var borderLeft = O$.getNumericElementStyle(this, "border-left-width", true);
+      var borderRight = O$.getNumericElementStyle(this, "border-right-width", true);
+      var borderTop = O$.getNumericElementStyle(this, "border-top-width", true);
+      var borderBottom = O$.getNumericElementStyle(this, "border-bottom-width", true);
       O$.setElementBorderRectangle(this._content, new O$.Rectangle(
               0,
               captionHeight,
@@ -433,7 +433,7 @@ O$.Window = {
   _processCaptionStyle: function(win) {
     if (!win._caption)
       return;
-    var paddings = O$.getElementStyleProperties(win._caption, ["padding-left", "padding-right", "padding-top", "padding-bottom"]);
+    var paddings = O$.getElementStyle(win._caption, ["padding-left", "padding-right", "padding-top", "padding-bottom"]);
     win._captionContent.style.paddingLeft = paddings.paddingLeft;
     win._captionContent.style.paddingRight = paddings.paddingRight;
     win._captionContent.style.paddingTop = paddings.paddingTop;

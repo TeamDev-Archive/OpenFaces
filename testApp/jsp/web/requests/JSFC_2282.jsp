@@ -11,7 +11,7 @@
   <title>JSFC-2282 Confirmation is non-modal if "modalLayerStyle" attribute not specified (IE)</title>
   <script type="text/javascript">
     function test() {
-      if (O$.getElementStyleProperty(document.getElementById('fm:cn::blockingLayer'), 'background-image').indexOf('clear.gif') >= 0) {
+      if (O$.getElementStyle(document.getElementById('fm:cn::blockingLayer'), 'background-image').indexOf('clear.gif') >= 0) {
         alert('OK');
       }
     }

@@ -25,15 +25,15 @@
                                                                                                  value="#{CalendarBean.todayDateString}"/>
           <br/><br/>
           <input id="todayStyleButton" value="print Today style" type="button"
-                 onclick="printInfo('color: ' + O$.getElementStyleProperty(getControl('formID:today::today'), 'color') + '; ' +
-                                    'cursor: ' + O$.getElementStyleProperty(getControl('formID:today::today'), 'cursor'), 'todayInfo', false);
+                 onclick="printInfo('color: ' + O$.getElementStyle(getControl('formID:today::today'), 'color') + '; ' +
+                                    'cursor: ' + O$.getElementStyle(getControl('formID:today::today'), 'cursor'), 'todayInfo', false);
                           return false;"/>
 
           <div id="todayInfo">&#160;</div>
           <br/>
           <input id="noneStyleButton" value="print None style" type="button"
-                 onclick="printInfo('color: ' + O$.getElementStyleProperty(getControl('formID:today::none'), 'color') + '; ' +
-                                    'cursor: ' + O$.getElementStyleProperty(getControl('formID:today::none'), 'cursor'), 'noneInfo', false);
+                 onclick="printInfo('color: ' + O$.getElementStyle(getControl('formID:today::none'), 'color') + '; ' +
+                                    'cursor: ' + O$.getElementStyle(getControl('formID:today::none'), 'cursor'), 'noneInfo', false);
                           return false;"/>
 
           <div id="noneInfo">&#160;</div>
@@ -54,15 +54,15 @@
                 value="#{CalendarBean.noneDateString}"/>
           <br/><br/>
           <input id="todayStyleButton1" value="print Today style" type="button"
-                 onclick="printInfo('color: ' + O$.getElementStyleProperty(getControl('formID:none::today'), 'color') + '; ' +
-                                    'cursor: ' + O$.getElementStyleProperty(getControl('formID:none::today'), 'cursor'), 'todayInfo1', false);
+                 onclick="printInfo('color: ' + O$.getElementStyle(getControl('formID:none::today'), 'color') + '; ' +
+                                    'cursor: ' + O$.getElementStyle(getControl('formID:none::today'), 'cursor'), 'todayInfo1', false);
                           return false;"/>
 
           <div id="todayInfo1">&#160;</div>
           <br/>
           <input id="noneStyleButton1" value="print None style" type="button"
-                 onclick="printInfo('color: ' + O$.getElementStyleProperty(getControl('formID:none::none'), 'color') + '; ' +
-                                    'cursor: ' + O$.getElementStyleProperty(getControl('formID:none::none'), 'cursor'), 'noneInfo1', false);
+                 onclick="printInfo('color: ' + O$.getElementStyle(getControl('formID:none::none'), 'color') + '; ' +
+                                    'cursor: ' + O$.getElementStyle(getControl('formID:none::none'), 'cursor'), 'noneInfo1', false);
                           return false;"/>
 
           <div id="noneInfo1">&#160;</div>

@@ -136,8 +136,8 @@ function printDateChooserSelectedDate(dateChooserID, outputDiv) {
     var days = weeks[i].childNodes;
     for (var j = 0; j < days.length; j++) {
       var day = days[j].childNodes[0];
-      var color = O$.getElementStyleProperty(day, 'color');
-      var bgColor = O$.getElementStyleProperty(day, 'background-color');
+      var color = O$.getElementStyle(day, 'color');
+      var bgColor = O$.getElementStyle(day, 'background-color');
       if ((color == '"red"' && bgColor == '"yellow"') || (color == 'rgb(255, 0, 0)' && bgColor == 'rgb(255, 255, 0)')) {
         var dayText;
         if (day.textContent.length == 1)

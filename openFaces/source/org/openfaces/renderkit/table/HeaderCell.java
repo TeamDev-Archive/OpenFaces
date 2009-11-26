@@ -115,7 +115,7 @@ class HeaderCell extends TableElement {
                 if (TableStructure.isComponentEmpty(uiComponent) && tableStructure.isEmptyCellsTreatmentRequired())
                     RenderingUtil.writeNonBreakableSpace(writer);
             } else if (component instanceof TableElement)
-                ((TableElement) component).render(facesContext, additionalContentWriter);
+                ((TableElement) component).render(facesContext, null);
             else
                 writer.writeText(component.toString(), null);
         } else if (tableStructure.isEmptyCellsTreatmentRequired())

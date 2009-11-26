@@ -341,10 +341,10 @@ O$._initDayTable = function(componentId,
 
     setTimeout(function() {
       tempDiv.className = eventStyleClass;
-      var eventStyleProperties = O$.getElementStyleProperties(tempDiv, ["padding-left", "padding-right", "padding-top", "padding-bottom",
+      var eventStyleProperties = O$.getElementStyle(tempDiv, ["padding-left", "padding-right", "padding-top", "padding-bottom",
         "border-left-width", "border-top-width", "border-right-width", "border-bottom-width"]);
       tempDiv.className = rolloverEventClass;
-      var rolloverEventStyleProperties = O$.getElementStyleProperties(tempDiv, ["padding-left", "padding-right", "padding-top", "padding-bottom",
+      var rolloverEventStyleProperties = O$.getElementStyle(tempDiv, ["padding-left", "padding-right", "padding-top", "padding-bottom",
         "border-left-width", "border-top-width", "border-right-width", "border-bottom-width"]);
       document.body.removeChild(tempDiv);
 
@@ -552,7 +552,7 @@ O$._initDayTable = function(componentId,
     };
     eventElement._updateAreaZIndexes = function(eventZIndex) {
       if (eventZIndex === undefined)
-        eventZIndex = O$.getNumericStyleProperty(event.mainElement, "z-index");
+        eventZIndex = O$.getNumericElementStyle(event.mainElement, "z-index");
 
       for (var areaIndex = 0, areaCount = this._areas.length; areaIndex < areaCount; areaIndex++) {
         var area = this._areas[areaIndex];
@@ -629,7 +629,7 @@ O$._initDayTable = function(componentId,
         eventElement._initialStart = eventElement._lastValidStart = event.start;
         eventElement._initialEnd = eventElement._lastValidEnd = event.end;
         eventElement._initialResourceId = eventElement._lastValidResourceId = event.resourceId;
-        eventElement._originalCursor = O$.getElementStyleProperty(eventElement, "cursor");
+        eventElement._originalCursor = O$.getElementStyle(eventElement, "cursor");
         eventElement._dropAllowed = true;
       };
 
@@ -733,7 +733,7 @@ O$._initDayTable = function(componentId,
       };
       eventElement._updateZIndex = function(eventZIndex) {
         if (eventZIndex === undefined)
-          eventZIndex = O$.getNumericStyleProperty(event.mainElement, "z-index");
+          eventZIndex = O$.getNumericElementStyle(event.mainElement, "z-index");
         if (topResizeHandle)
           topResizeHandle.style.zIndex = eventZIndex + 2;
         if (bottomResizeHandle)
@@ -846,7 +846,7 @@ O$._initDayTable = function(componentId,
               ["color", "background-color", "border-color"]);
       eventElement._backgroundElement.style.backgroundColor = userSpecifiedStyles.backgroundColor
               ? userSpecifiedStyles.backgroundColor : eventElement._backgroundColor;
-      var elementStyles = O$.getElementStyleProperties(eventElement, ["border-radius", "-moz-border-radius-topleft", "-webkit-border-top-left-radius"]);
+      var elementStyles = O$.getElementStyle(eventElement, ["border-radius", "-moz-border-radius-topleft", "-webkit-border-top-left-radius"]);
       eventElement._backgroundElement.style.borderRadius = elementStyles.borderRadius;
       eventElement._backgroundElement.style.MozBorderRadius = elementStyles.MozBorderRadiusTopleft;
       eventElement._backgroundElement.style.WebkitBorderRadius = elementStyles.WebkitBorderTopLeftRadius;
@@ -903,7 +903,7 @@ O$._initDayTable = function(componentId,
 
       if (eventElement._updateResizersPos)
         eventElement._updateResizersPos(draggingInProgress);
-      var eventZIndex = O$.getNumericStyleProperty(this, "z-index");
+      var eventZIndex = O$.getNumericElementStyle(this, "z-index");
       this._backgroundElement.style.zIndex = eventZIndex - 1;
       if (bottom.bottomTruncated)
         O$.appendClassNames(this, ["o_truncatedTimetableEvent"]);
@@ -1048,8 +1048,8 @@ O$._initDayTable = function(componentId,
     var actionsAreaHeight = actionBar._actionsArea._getHeight();
     if (barHeight < actionsAreaHeight)
       barHeight = actionsAreaHeight;
-    var borderLeftWidth = O$.getNumericStyleProperty(eventElement, "border-left-width");
-    var borderRightWidth = O$.getNumericStyleProperty(eventElement, "border-right-width");
+    var borderLeftWidth = O$.getNumericElementStyle(eventElement, "border-left-width");
+    var borderRightWidth = O$.getNumericElementStyle(eventElement, "border-right-width");
     O$.setElementSize(actionBar, {width: eventElement._rect.width - borderLeftWidth - borderRightWidth,
       height: barHeight});
     actionBar.style.left = "0px";

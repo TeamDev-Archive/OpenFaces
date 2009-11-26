@@ -21,8 +21,8 @@ O$._initBorderLayoutPanel = function(borderLayoutPanelId) {
   borderLayoutPanel._isCoupled = couplingEnabled && borderLayoutPanel.parentNode._isCouplingElement;
   borderLayoutPanel._newStyle = new O$._createPseudoCSSStyle();
   /*
-   borderLayoutPanel._newStyle.width = O$.getElementStyleProperty(borderLayoutPanel, "width");
-   borderLayoutPanel._newStyle.height = O$.getElementStyleProperty(borderLayoutPanel, "height");
+   borderLayoutPanel._newStyle.width = O$.getElementStyle(borderLayoutPanel, "width");
+   borderLayoutPanel._newStyle.height = O$.getElementStyle(borderLayoutPanel, "height");
    */
   borderLayoutPanel._newStyle.width = borderLayoutPanel.style.width;
   borderLayoutPanel._newStyle.height = borderLayoutPanel.style.height;
@@ -37,11 +37,11 @@ O$._initBorderLayoutPanel = function(borderLayoutPanelId) {
   borderLayoutPanel.style.height = O$._calculateNumericHeight(borderLayoutPanel, true) + "px";
 
   if (borderLayoutPanel._isCoupled) {
-    var borderLayoutPanelLeft = O$.getElementStyleProperty(borderLayoutPanel, "left");
+    var borderLayoutPanelLeft = O$.getElementStyle(borderLayoutPanel, "left");
     if (!borderLayoutPanelLeft) {
       borderLayoutPanelLeft = "0";
     }
-    var borderLayoutPanelTop = O$.getElementStyleProperty(borderLayoutPanel, "top");
+    var borderLayoutPanelTop = O$.getElementStyle(borderLayoutPanel, "top");
     if (!borderLayoutPanelTop) {
       borderLayoutPanelTop = "0";
     }

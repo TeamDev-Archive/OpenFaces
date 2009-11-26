@@ -116,7 +116,7 @@ O$._initPopup = function(popupId, useDisplayNoneByDefault) {
     if (this._originalStyleDisplay == undefined)
       this._originalStyleDisplay = this.style.display;
     if (O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/) {
-      var oldOverflow = O$.getElementStyleProperty(this, "overflow");
+      var oldOverflow = O$.getElementStyle(this, "overflow");
       this.style.overflow = "hide"; // to avoid regaining focus when tabbing out from an opened DropDownField under Mozilla
       setTimeout(function() { // time-out is needed for Mozilla when selecting an item in DropDownField (JSFC-2620)
         popup.style.display = "none";

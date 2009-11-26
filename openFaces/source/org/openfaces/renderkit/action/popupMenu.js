@@ -321,7 +321,7 @@ O$._popupMenuEvaluateStyleClassProperty = function(styleClass, propertyName) {
 }
 
 O$._popupMenuCalculateStyleProperty = function(element, propertyName) {
-  var value = O$.getElementStyleProperty(element, propertyName);
+  var value = O$.getElementStyle(element, propertyName);
   if (value == "auto") return "0px";
   return value;
 }
@@ -467,9 +467,9 @@ O$._showSubmenu = function(popupMenu, this_, submenuHorisontalOffset) {
         var popupMenuRect = O$.getElementBorderRectangle(popupMenu, true);
         popupMenu._OpenedChildMenu = childPopupMenu;
 
-        var popup_menu_border_top = O$.getNumericStyleProperty(popupMenu, "border-top-width");
-        var childPopupMenu_border_left = (!O$.isOpera()) ? O$.getNumericStyleProperty(popupMenu, "border-left-width") : 0;
-        var item_border_left = O$.getNumericStyleProperty(this_, "border-left-width");
+        var popup_menu_border_top = O$.getNumericElementStyle(popupMenu, "border-top-width");
+        var childPopupMenu_border_left = (!O$.isOpera()) ? O$.getNumericElementStyle(popupMenu, "border-left-width") : 0;
+        var item_border_left = O$.getNumericElementStyle(this_, "border-left-width");
         childPopupMenu.showAtXY(popupMenuRect.width - this_.offsetLeft - childPopupMenu_border_left - item_border_left + submenuHorisontalOffset, -popup_menu_border_top);
 
         O$._clearSelection(childPopupMenu);
@@ -519,22 +519,22 @@ O$._popupMenuInitIEWidthWorkaround = function(popupMenu) {
       var menuItem = popupMenu._popupMenuItems[i];
       if (menuItem._isSeparator()) {
         var separator = menuItem._separator;
-        var paddingLeft = O$.getNumericStyleProperty(separator, "padding-left");
-        var paddingRight = O$.getNumericStyleProperty(separator, "padding-right");
+        var paddingLeft = O$.getNumericElementStyle(separator, "padding-left");
+        var paddingRight = O$.getNumericElementStyle(separator, "padding-right");
         if (O$.isQuirksMode()) {
           paddingLeft = paddingRight = 0;
         }
-        var width = maxWidthItem - O$.getNumericStyleProperty(menuItem._separator, "margin-right") -
-                    (O$.getNumericStyleProperty(menuItem, "margin-left") +
-                     O$.getNumericStyleProperty(menuItem._separator, "margin-left")) - paddingLeft - paddingRight;
+        var width = maxWidthItem - O$.getNumericElementStyle(menuItem._separator, "margin-right") -
+                    (O$.getNumericElementStyle(menuItem, "margin-left") +
+                     O$.getNumericElementStyle(menuItem._separator, "margin-left")) - paddingLeft - paddingRight;
 
         separator.style.width = width + " px";
       } else {
         var anchor = menuItem._anchor;
-        var borderLeftWidth = O$.getNumericStyleProperty(anchor, "border-left-width");
-        var borderRightWidth = O$.getNumericStyleProperty(anchor, "border-right-width");
-        var paddingLeft = O$.getNumericStyleProperty(anchor, "padding-left");
-        var paddingRight = O$.getNumericStyleProperty(anchor, "padding-right");
+        var borderLeftWidth = O$.getNumericElementStyle(anchor, "border-left-width");
+        var borderRightWidth = O$.getNumericElementStyle(anchor, "border-right-width");
+        var paddingLeft = O$.getNumericElementStyle(anchor, "padding-left");
+        var paddingRight = O$.getNumericElementStyle(anchor, "padding-right");
         if (O$.isQuirksMode()) {
           borderLeftWidth = borderRightWidth = paddingLeft = paddingRight = 0;
         }
@@ -547,68 +547,68 @@ O$._popupMenuInitIEWidthWorkaround = function(popupMenu) {
 
 O$._substractPaddingFromMenuItem = function(menuItem) {
   var anchorStyle = menuItem._anchor.style;
-  anchorStyle.paddingTop = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._anchor, "padding-top") - menuItem._diffTop) + "px";
-  anchorStyle.paddingBottom = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._anchor, "padding-bottom") - menuItem._diffBottom) + "px";
-  anchorStyle.paddingRight = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._anchor, "padding-right") - menuItem._diffRight) + "px";
-  anchorStyle.paddingLeft = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._anchor, "padding-left") - menuItem._diffLeft) + "px";
+  anchorStyle.paddingTop = O$._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-top") - menuItem._diffTop) + "px";
+  anchorStyle.paddingBottom = O$._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-bottom") - menuItem._diffBottom) + "px";
+  anchorStyle.paddingRight = O$._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-right") - menuItem._diffRight) + "px";
+  anchorStyle.paddingLeft = O$._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-left") - menuItem._diffLeft) + "px";
 
   if (menuItem._iconspan != null) {
     var iconSpanStyle = menuItem._iconspan.style;
-    iconSpanStyle.paddingTop = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._iconspan, "padding-top") - menuItem._diffTop) + "px";
-    iconSpanStyle.paddingLeft = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._iconspan, "padding-left") - menuItem._diffLeft) + "px";
-    iconSpanStyle.paddingBottom = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._iconspan, "padding-bottom") - menuItem._diffBottom) + "px";
+    iconSpanStyle.paddingTop = O$._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-top") - menuItem._diffTop) + "px";
+    iconSpanStyle.paddingLeft = O$._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-left") - menuItem._diffLeft) + "px";
+    iconSpanStyle.paddingBottom = O$._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-bottom") - menuItem._diffBottom) + "px";
     if (O$.isExplorer())
-      iconSpanStyle.width = O$.calculateNumericCSSValue(O$.getElementStyleProperty(menuItem._iconspan, "width")) - menuItem._diffLeft + "px";
+      iconSpanStyle.width = O$.calculateNumericCSSValue(O$.getElementStyle(menuItem._iconspan, "width")) - menuItem._diffLeft + "px";
   }
 
   if (menuItem._arrowspan != null) {
     var arrowSpanStyle = menuItem._arrowspan.style;
-    arrowSpanStyle.paddingTop = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._arrowspan, "padding-top") - menuItem._diffTop) + "px";
-    arrowSpanStyle.paddingRight = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._arrowspan, "padding-right") - menuItem._diffRight) + "px";
-    arrowSpanStyle.paddingBottom = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._arrowspan, "padding-bottom") - menuItem._diffBottom) + "px";
+    arrowSpanStyle.paddingTop = O$._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-top") - menuItem._diffTop) + "px";
+    arrowSpanStyle.paddingRight = O$._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-right") - menuItem._diffRight) + "px";
+    arrowSpanStyle.paddingBottom = O$._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-bottom") - menuItem._diffBottom) + "px";
     if (O$.isExplorer())
-      arrowSpanStyle.width = O$.calculateNumericCSSValue(O$.getElementStyleProperty(menuItem._arrowspan, "width")) - menuItem._diffRight + "px";
+      arrowSpanStyle.width = O$.calculateNumericCSSValue(O$.getElementStyle(menuItem._arrowspan, "width")) - menuItem._diffRight + "px";
 
   }
 }
 
 O$._addPaddingToMenuItem = function(menuItem) {
   var anchorStyle = menuItem._anchor.style;
-  anchorStyle.paddingTop = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._anchor, "padding-top") + menuItem._diffTop) + "px";
-  anchorStyle.paddingBottom = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._anchor, "padding-bottom") + menuItem._diffBottom) + "px";
-  anchorStyle.paddingRight = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._anchor, "padding-right") + menuItem._diffRight) + "px";
-  anchorStyle.paddingLeft = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._anchor, "padding-left") + menuItem._diffLeft) + "px";
+  anchorStyle.paddingTop = O$._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-top") + menuItem._diffTop) + "px";
+  anchorStyle.paddingBottom = O$._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-bottom") + menuItem._diffBottom) + "px";
+  anchorStyle.paddingRight = O$._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-right") + menuItem._diffRight) + "px";
+  anchorStyle.paddingLeft = O$._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-left") + menuItem._diffLeft) + "px";
 
   if (menuItem._iconspan != null) {
     var iconSpanStyle = menuItem._iconspan.style;
-    iconSpanStyle.paddingTop = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._iconspan, "padding-top") + menuItem._diffTop) + "px";
+    iconSpanStyle.paddingTop = O$._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-top") + menuItem._diffTop) + "px";
     if (O$.isExplorer() && O$.isStrictMode()) {
-      iconSpanStyle.paddingLeft = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._iconspan, "padding-left") + menuItem._diffLeft -
-                                                     O$.getNumericStyleProperty(menuItem._anchor, "border-left-width") -
-                                                     O$.getNumericStyleProperty(menuItem._anchor, "border-right-width")) + "px";
+      iconSpanStyle.paddingLeft = O$._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-left") + menuItem._diffLeft -
+                                                     O$.getNumericElementStyle(menuItem._anchor, "border-left-width") -
+                                                     O$.getNumericElementStyle(menuItem._anchor, "border-right-width")) + "px";
     }
     else {
-      iconSpanStyle.paddingLeft = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._iconspan, "padding-left") + menuItem._diffLeft) + "px";
+      iconSpanStyle.paddingLeft = O$._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-left") + menuItem._diffLeft) + "px";
     }
-    iconSpanStyle.paddingBottom = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._iconspan, "padding-bottom") + menuItem._diffBottom) + "px";
+    iconSpanStyle.paddingBottom = O$._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-bottom") + menuItem._diffBottom) + "px";
     if (O$.isExplorer())
-      iconSpanStyle.width = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._iconspan, "width") + menuItem._diffLeft) + "px";
+      iconSpanStyle.width = O$._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "width") + menuItem._diffLeft) + "px";
   }
 
   if (menuItem._arrowspan != null) {
     var arrowSpanStyle = menuItem._arrowspan.style;
-    arrowSpanStyle.paddingTop = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._arrowspan, "padding-top") + menuItem._diffTop) + "px";
+    arrowSpanStyle.paddingTop = O$._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-top") + menuItem._diffTop) + "px";
     if (O$.isExplorer() && O$.isStrictMode()) {
-      arrowSpanStyle.paddingRight = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._arrowspan, "padding-right") + menuItem._diffRight -
-                                                       O$.getNumericStyleProperty(menuItem._anchor, "border-left-width") -
-                                                       O$.getNumericStyleProperty(menuItem._anchor, "border-right-width")) + "px";
+      arrowSpanStyle.paddingRight = O$._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-right") + menuItem._diffRight -
+                                                       O$.getNumericElementStyle(menuItem._anchor, "border-left-width") -
+                                                       O$.getNumericElementStyle(menuItem._anchor, "border-right-width")) + "px";
     }
     else {
-      arrowSpanStyle.paddingRight = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._arrowspan, "padding-right") + menuItem._diffRight) + "px";
+      arrowSpanStyle.paddingRight = O$._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-right") + menuItem._diffRight) + "px";
     }
-    arrowSpanStyle.paddingBottom = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._arrowspan, "padding-bottom") + menuItem._diffBottom) + "px";
+    arrowSpanStyle.paddingBottom = O$._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-bottom") + menuItem._diffBottom) + "px";
     if (O$.isExplorer())
-      arrowSpanStyle.width = O$._getNonNegative(O$.getNumericStyleProperty(menuItem._arrowspan, "width") + menuItem._diffRight) + "px";
+      arrowSpanStyle.width = O$._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "width") + menuItem._diffRight) + "px";
   }
 }
 
@@ -631,9 +631,9 @@ O$._setAdditionalIEStylesForMenuItem = function(menuItem) {
     }
   }
   if (O$.isExplorer() && O$.isStrictMode()) {
-    var height = O$.getNumericStyleProperty(menuItem._anchor, "height") ;
-    height += O$.getNumericStyleProperty(menuItem._anchor, "border-top-width") +
-              O$.getNumericStyleProperty(menuItem._anchor, "border-bottom-width");
+    var height = O$.getNumericElementStyle(menuItem._anchor, "height") ;
+    height += O$.getNumericElementStyle(menuItem._anchor, "border-top-width") +
+              O$.getNumericElementStyle(menuItem._anchor, "border-bottom-width");
     if (menuItem._iconspan != null)
       menuItem._iconspan.style.height = height + "px";
     if (menuItem._arrowspan != null)
@@ -668,12 +668,12 @@ O$._handlePopupMenuPaddings = function(popupMenu) {
 O$._updateMenuItemBackground = function(menuItem) {
   var listItemStyle = menuItem.style;
   var popupMenu = menuItem._popupMenu;
-  listItemStyle.backgroundColor = O$.getElementStyleProperty(popupMenu, "background-color");
-  listItemStyle.backgroundAttachment = O$.getElementStyleProperty(popupMenu, "background-attachment");
-  listItemStyle.backgroundImage = O$.getElementStyleProperty(popupMenu, "background-image");
-  listItemStyle.backgroundPositionX = O$.getElementStyleProperty(popupMenu, "background-position-x");
-  listItemStyle.backgroundPositionY = O$.getElementStyleProperty(popupMenu, "background-position-y");
-  listItemStyle.backgroundRepeat = O$.getElementStyleProperty(popupMenu, "background-repeat");
+  listItemStyle.backgroundColor = O$.getElementStyle(popupMenu, "background-color");
+  listItemStyle.backgroundAttachment = O$.getElementStyle(popupMenu, "background-attachment");
+  listItemStyle.backgroundImage = O$.getElementStyle(popupMenu, "background-image");
+  listItemStyle.backgroundPositionX = O$.getElementStyle(popupMenu, "background-position-x");
+  listItemStyle.backgroundPositionY = O$.getElementStyle(popupMenu, "background-position-y");
+  listItemStyle.backgroundRepeat = O$.getElementStyle(popupMenu, "background-repeat");
 }
 
 O$._updatePopupMenuBackground = function(popupMenu, indentClass) {
@@ -728,7 +728,7 @@ O$._setStylesForIndentArea = function(
         }
       }
       var icon_width = O$._getWidth(menuItem._iconspan);
-      var paddingLeft = O$.getNumericStyleProperty(menuItem._caption, "padding-left");
+      var paddingLeft = O$.getNumericElementStyle(menuItem._caption, "padding-left");
       menuItem._caption.style.paddingLeft = (paddingLeft + icon_width + borderRightWidth) + "px";
     } else {
       var margin = O$.calculateNumericCSSValue(O$._popupMenuCalculateStyleProperty(menuItem._separator, "margin-left"));

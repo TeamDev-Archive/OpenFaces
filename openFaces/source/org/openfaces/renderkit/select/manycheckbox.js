@@ -131,9 +131,9 @@ O$.CheckboxItem = {
 
       checkboxItem._indents = {};
       checkboxItem._defaultIndents = {
-        marginLeft: O$.getNumericStyleProperty(checkboxItem, "margin-left") + "px",
-        marginRight: O$.getNumericStyleProperty(checkboxItem, "margin-right") + "px",
-        marginBottom: O$.getNumericStyleProperty(checkboxItem, "margin-bottom") + "px"
+        marginLeft: O$.getNumericElementStyle(checkboxItem, "margin-left") + "px",
+        marginRight: O$.getNumericElementStyle(checkboxItem, "margin-right") + "px",
+        marginBottom: O$.getNumericElementStyle(checkboxItem, "margin-bottom") + "px"
       };
 
       checkboxItem.getDisabled = function() {

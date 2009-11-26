@@ -82,6 +82,16 @@
 
 }
 
+.o_debugRow1 {
+  vertical-align: top;
+  height: 20px;
+}
+
+.o_debugRow2 {
+  vertical-align: top;
+}
+
+
 .o_captionButton {
   width: 16px;
   text-align: center;
@@ -109,6 +119,11 @@
 /* == End of Shared among components styles == */
 
 /* Table styles */
+.o_scrollable_table {
+  width: 100%;
+  height: 300px;
+}
+
 .o_noWrapHeaderCell {
   white-space: nowrap;
 }

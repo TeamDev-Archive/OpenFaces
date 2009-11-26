@@ -15,7 +15,7 @@ O$.Tables = {
   // -------------------------- COMMON UTILITIES
 
   _getUserStylePropertyValue: function(element, propertyName, defaultValue1, defaultValue2) {
-    var value = O$.getElementStyleProperty(element, propertyName);
+    var value = O$.getElementStyle(element, propertyName);
     if (!value || value == defaultValue1 || value == defaultValue2)
       return null;
     return value;
@@ -115,20 +115,7 @@ O$.Tables = {
         footerHoriz: params.gridLines[tempIdx++],
         footerVert: params.gridLines[tempIdx++]
     };
-
     table.style.emptyCells = "show";
-    if (O$.isExplorer()) {
-      table._bordersNeeded = false;
-      for (var name in table._gridLines) {
-        if (table._gridLines[name]) {
-          table._bordersNeeded = true;
-          break;
-        }
-      }
-      if (table._bordersNeeded) {
-//        table.style.borderCollapse = "collapse";
-      }
-    }
 
     table._rowInsertionCallbacks = [];
     table._addRowInsertionCallback = function(callback) {
@@ -163,7 +150,7 @@ O$.Tables = {
       fixInputWidths(area._tag);
       fixInputWidths(area._leftScrollingArea && area._leftScrollingArea._rowContainer);
       fixInputWidths(area._centerScrollingArea && area._centerScrollingArea._rowContainer);
-      fixInputWidths(area._centerScrollingArea && area._rightScrollingArea._rowContainer);
+      fixInputWidths(area._rightScrollingArea && area._rightScrollingArea._rowContainer);
     });
 
     table._removeAllRows = O$.Tables._removeAllRows;
@@ -219,6 +206,11 @@ O$.Tables = {
       return;
     }
 
+    if (this._params.body.noDataRows && this.body._getRows().length) {
+      this._params.body.noDataRows = false;
+      this._removeAllRows();
+    }
+
     var bodyRows = this.body._getRows();
     var columns = this._columns;
 
@@ -248,7 +240,7 @@ O$.Tables = {
     else {
       visibleInsertedRows = 0;
       rowsToInsert.forEach(function(insertedRow) {
-        insertedRow._visible = (O$.getElementStyleProperty(insertedRow, "display") != "none");
+        insertedRow._visible = (O$.getElementStyle(insertedRow, "display") != "none");
         if (insertedRow._visible)
           visibleInsertedRows++;
       });
@@ -293,7 +285,7 @@ O$.Tables = {
     var callbackIndex, callbackCount;
     for (i = 0, count = rowsToInsert.length; i < count; i++) {
       var newRow = rowsToInsert[i];
-      if (!this.scrolling) {
+      if (!this._params.scrolling) {
         if (bodyRows.length > 0) {
           var nextRowIdx = afterIndex + 1 + addedRowCount;
           if (nextRowIdx < bodyRows.length)
@@ -309,8 +301,8 @@ O$.Tables = {
         function addRow(area, rowNode) {
           if (!area || !rowNode) return;
           var nextRowIdx = afterIndex + 1 + i;
-          if (nextRowIdx < area._table.childNodes.length)
-            area._rowContainer.insertBefore(rowNode, area._table.childNodes[nextRowIdx]);
+          if (nextRowIdx < area._rowContainer.childNodes.length)
+            area._rowContainer.insertBefore(rowNode, area._rowContainer.childNodes[nextRowIdx]);
           else
             area._rowContainer.appendChild(rowNode);
         }
@@ -322,7 +314,19 @@ O$.Tables = {
       newRowIndex = afterIndex + 1 + i;
       bodyRows[newRowIndex] = newRow;
       this._params.rowStylesMap[newRowIndex] = newRowsToStylesMap ? newRowsToStylesMap[i] : undefined;
-      newRow._cells = newRow.cells; // todo: adjust for scrollable version
+      if (!this._params.scrolling)
+        newRow._cells = newRow.cells;
+      else {
+        var cells = [];
+        [newRow._leftRowNode, newRow._rowNode,  newRow._rightRowNode].forEach(function(rowNode) {
+          if (!rowNode) return;
+          rowNode._row = newRow;
+          for (var i = 0, count = rowNode.cells.length; i < count; i++)
+            cells.push(rowNode.cells[i]);
+        });
+        newRow._cells = cells;
+      }
+
       O$.Tables._initBodyRow(newRow, this, newRowIndex, visibleRowsUpToReferenceRow + newVisibleRowsForNow);
       if (newRow._isVisible())
         newVisibleRowsForNow++;
@@ -455,7 +459,6 @@ O$.Tables = {
                 var spacer = O$.getChildNodesByClass(scrollingDiv ? scrollingDiv : td, ["o_scrolling_area_spacer"], false, tbl)[0];
 
                 tbl.style.emptyCells = "show";
-//                if (table._bordersNeeded) tbl.style.borderCollapse = "collapse";
                 var rowContainer = O$.getChildNodesWithNames(tbl, ["tbody"])[0];
                 var area = {
                   _td: td,
@@ -660,7 +663,7 @@ O$.Tables = {
       row._rowNode = row;
     }
     if (row._visible === undefined)
-      row._visible = table._params.invisibleRowsAllowed ? O$.getElementStyleProperty(row._rowNode, "display") != "none" : true;
+      row._visible = table._params.invisibleRowsAllowed ? O$.getElementStyle(row._rowNode, "display") != "none" : true;
 
     row._mouseIsOver = false;
     if (!table._params.body.noDataRows && table._params.body.rolloverRowClassName) {
@@ -1602,9 +1605,9 @@ O$.Tables = {
               : {};
       if (!noDataRowStyle.backgroundColor && !noDataRowStyle.background) {
         var bodySection = O$.getChildNodesWithNames(table, ["tbody"])[0];
-        var propertyValue = O$.getElementStyleProperty(bodySection, "background-color");
+        var propertyValue = O$.getElementStyle(bodySection, "background-color");
         if (!propertyValue || propertyValue == "transparent") {
-          propertyValue = O$.getElementStyleProperty(table, "background-color");
+          propertyValue = O$.getElementStyle(table, "background-color");
         }
         if (!propertyValue || propertyValue == "transparent")
           propertyValue = !O$.isSafari() ? "Window" : "white";
@@ -1776,7 +1779,7 @@ O$.Tables = {
       return;
 
     try {
-      propertyName = O$.capitalizeCssPropertyName(propertyName);
+      propertyName = O$._capitalizeCssPropertyName(propertyName);
       cell.style[propertyName] = propertyValue;
     } catch (e) {
       O$.logError("O$.Tables._setCellStyleProperty: couldn't set style property \"" + propertyName + "\" to \"" + propertyValue + "\" ; original error: " + e.message);

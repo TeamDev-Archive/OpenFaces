@@ -332,8 +332,8 @@ O$._subscribeToOnresizeEvent = function(element, func) {
         O$._subscribeToTargetOnresizeEvent(element, window, func);
         return;
       } else {
-        var width = O$.getElementStyleProperty(targetElement, "width", false);
-        var height = O$.getElementStyleProperty(targetElement, "height", false);
+        var width = O$.getElementStyle(targetElement, "width", false);
+        var height = O$.getElementStyle(targetElement, "height", false);
         if (O$._isPixelValue(width)) {
           widthIsNotFixed = false;
         }

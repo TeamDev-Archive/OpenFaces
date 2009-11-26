@@ -899,10 +899,10 @@ O$.Calendar = {
     var tbody = document.createElement("tbody");
     dropTable.appendChild(tbody);
 
-    var parentFontFamily = O$.getElementStyleProperty(dropTable, "font-family");
-    var parentFontSize = O$.getElementStyleProperty(dropTable, "font-size");
-    var parentFontWeight = O$.getElementStyleProperty(dropTable, "font-weight");
-    var parentFontStyle = O$.getElementStyleProperty(dropTable, "font-style");
+    var parentFontFamily = O$.getElementStyle(dropTable, "font-family");
+    var parentFontSize = O$.getElementStyle(dropTable, "font-size");
+    var parentFontWeight = O$.getElementStyle(dropTable, "font-weight");
+    var parentFontStyle = O$.getElementStyle(dropTable, "font-style");
 
     for (i = 0, count = items.length; i < count; i ++) {
       var tr = document.createElement("tr");

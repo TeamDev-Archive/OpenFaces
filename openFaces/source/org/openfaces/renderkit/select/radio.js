@@ -131,9 +131,9 @@ O$.RadioItem = {
 
       radioItem._indents = {};
       radioItem._defaultIndents = {
-        marginLeft: O$.getNumericStyleProperty(radioItem, "margin-left") + "px",
-        marginRight: O$.getNumericStyleProperty(radioItem, "margin-right") + "px",
-        marginBottom: O$.getNumericStyleProperty(radioItem, "margin-bottom") + "px"
+        marginLeft: O$.getNumericElementStyle(radioItem, "margin-left") + "px",
+        marginRight: O$.getNumericElementStyle(radioItem, "margin-right") + "px",
+        marginBottom: O$.getNumericElementStyle(radioItem, "margin-bottom") + "px"
       };
 
       radioItem.getDisabled = function() {

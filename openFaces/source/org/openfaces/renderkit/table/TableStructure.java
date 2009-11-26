@@ -47,6 +47,7 @@ public class TableStructure extends TableElement {
     public static final String CUSTOM_ROW_RENDERING_INFOS_KEY = "_customRowRenderingInfos";
 
     private static final String DEFAULT_STYLE_CLASS = "o_table";
+    private static final String DEFAULT_SCROLLABLE_STYLE_CLASS = "o_scrollable_table";
     private static final String DEFAULT_CELL_PADDING = "2";
     private static TableStyles DEFAULT_STYLES = new DefaultTableStyles();
     private static final String DEFAULT_NO_DATA_ROW_CLASS = "o_table_no_data_row";
@@ -222,6 +223,8 @@ public class TableStructure extends TableElement {
         style = StyleUtil.mergeStyles(style, textStyle);
         boolean applyDefaultStyle = table.getApplyDefaultStyle();
         String styleClass = TableUtil.getClassWithDefaultStyleClass(applyDefaultStyle, DEFAULT_STYLE_CLASS, table.getStyleClass());
+        if (scrolling != null)
+            styleClass = StyleUtil.mergeClassNames(styleClass, DEFAULT_SCROLLABLE_STYLE_CLASS);
         String tableWidth = table.getWidth();
         if (scrolling == null) {
             // scrollable tables shouldn't have "table-layout: fixed" declaration, since it's declared in sub-tables.
