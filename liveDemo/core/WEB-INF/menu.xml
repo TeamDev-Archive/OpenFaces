@@ -143,6 +143,22 @@
     </demos>
   </menuItem>
   <menuItem>
+    <name>Composite Filter</name>
+    <componentName>Composite Filter</componentName>
+    <url>/compositefilter/CompositeFilter.jsf</url>
+    <shortPath>/compositefilter/</shortPath>
+    <image>CompositeFilter</image>
+    <selectedImage>/images/components/titles/CompositeFilter.png</selectedImage>
+    <keyFeatures>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/compositefilter/CompositeFilter.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
     <name>Data Table</name>
     <componentName>Data Table</componentName>
     <url>/datatable/DataTable_general.jsf</url>
@@ -468,6 +484,44 @@
       <demoItem>
         <demoName>General</demoName>
         <demoUrl>/selectbooleancheckbox/SelectBooleanCheckbox.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Select Many Checkbox</name>
+    <componentName>Select Many Checkbox</componentName>
+    <url>/selectmanycheckbox/SelectManyCheckbox.jsf</url>
+    <shortPath>/selectmanycheckbox/</shortPath>
+    <image>SelectManyCheckbox</image>
+    <selectedImage>/images/components/titles/SelectManyCheckbox.png</selectedImage>
+    <keyFeatures>
+      <feature>All features of the standard &lt;h:selectManyCheckbox&gt; component</feature>
+      <feature>Customizing appearance of checkboxes with images</feature>
+      <feature>Extended styling</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/selectmanycheckbox/SelectManyCheckbox.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
+    <name>Select One Radio</name>
+    <componentName>Select One Radio</componentName>
+    <url>/selectoneradio/SelectOneRadio.jsf</url>
+    <shortPath>/selectoneradio/</shortPath>
+    <image>SelectOneRadio</image>
+    <selectedImage>/images/components/titles/SelectOneRadio.png</selectedImage>
+    <keyFeatures>
+      <feature>All features of the standard &lt;h:selectOneRadio&gt; component</feature>
+      <feature>Customizing appearance of radio buttons with images</feature>
+      <feature>Extended styling</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/selectoneradio/SelectOneRadio.jsf</demoUrl>
       </demoItem>
     </demos>
   </menuItem>
