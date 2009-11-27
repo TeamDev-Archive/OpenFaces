@@ -1456,10 +1456,24 @@ O$.Tables = {
 
     };
     column.setWidth = function(width) {
-      this._allCellsClass.style.width = width + "px";
+      var widthPx = width + "px";
+      if (this._allCellsClass.style.setProperty) {
+        this._allCellsClass.style.setProperty("width", widthPx, "important");
+      } else {
+        this._allCellsClass.style.width = widthPx;
+      }
+
       this._colTags.forEach(function(colTag) {
         O$.setElementWidth(colTag, width);
       });
+    };
+    column.getDeclaredWidth = function(tableWidth) {
+      if (tableWidth == undefined)
+        tableWidth = O$.getElementSize(table).width;
+      var colWidth = O$.calculateNumericCSSValue(O$.getStyleClassProperty(column._className, "width"), tableWidth);
+      if (!colWidth)
+        colWidth = O$.calculateNumericCSSValue(column._colTags[0].width);
+      return colWidth;
     };
     column.getWidth = function() {
       if (this.header && this.header._cell)
@@ -1870,22 +1884,27 @@ O$.Tables = {
         var area = section[areaName];
         area._colTags.forEach(function(colTag) {
           var column = colTag._column;
-          var colWidth = O$.calculateNumericCSSValue(O$.getStyleClassProperty(column._className, "width"), tableWidth);
-          if (!colWidth)
-            colWidth = O$.calculateNumericCSSValue(column._colTags[0].width);
+          var colWidth = column.getDeclaredWidth(tableWidth);
           if (!colWidth)
             colWidth = defaultColWidth;
-          if (!colWidth || O$.calculateNumericCSSValue(O$.getStyleClassProperty(column._className, "width"), 0) != colWidth) {
-            column._colTags.forEach(function(tag) {
-              O$.setElementWidth(tag, colWidth);
-            });
-          }
+          column.setWidth(colWidth);
+//          column._colTags.forEach(function(tag) {
+//            O$.setElementWidth(tag, colWidth);
+//          });
           areaWidth += colWidth;
         });
         var width = areaWidth + "px";
         [table.header, table.body, table.footer].forEach(function (section) {
           if (!section) return;
-          section[areaName]._table.style.width = width;
+          var areaTable = section[areaName]._table;
+          areaTable.style.width = width;
+          if (O$.isChrome() || O$.isSafari()) {
+            // ths is _sometimes_ required in Chrome and Safari to make "fixed" functionality really work
+            areaTable.style.tableLayout = "auto";
+            setTimeout(function() {
+              areaTable.style.tableLayout = "fixed";
+            }, 10);
+          }
         });
         return width;
       }

@@ -395,6 +395,10 @@ if (!window.O$) {
     O$._logEnabled = true;
   }, 0);
   O$.log = function(text) {
+    if (O$.debug) {
+      O$.debug.log(text);
+      return;
+    }
     if (!O$._logEnabled)
       return;
     if (!O$._logger)
@@ -2447,18 +2451,6 @@ if (!window.O$) {
       document._of_localStyleSheet = null;
     }
 
-    function locateLocalStyleSheet() {
-      var documentLocation = document.location;
-      for (var i = styleSheets.length - 1; i >= 0; i--) {
-        var styleSheet = styleSheets[i];
-        if (styleSheet.href == documentLocation || /* Mozilla Firefox */
-            !styleSheet.href /* other browsers */) {
-          document._of_localStyleSheet = styleSheet;
-          break;
-        }
-      }
-    }
-
     if (document.createStyleSheet) {
       document._of_localStyleSheet = document.createStyleSheet();
       if (document._of_localStyleSheet)
@@ -2468,6 +2460,19 @@ if (!window.O$) {
       var headTags = document.getElementsByTagName("head");
       var styleParent = headTags.length > 0 ? headTags[0] : document.getElementsByTagName("body")[0];
       styleParent.appendChild(styleElement);
+      function locateLocalStyleSheet() {
+        var documentLocation = document.location;
+        for (var i = styleSheets.length - 1; i >= 0; i--) {
+          var styleSheet = styleSheets[i];
+          if (styleSheet.cssRules.length > 0) continue; // we're looking for a just-created empty style sheet
+          if (styleSheet.href == documentLocation || /* Mozilla Firefox */
+              !styleSheet.href /* other browsers */) {
+            document._of_localStyleSheet = styleSheet;
+            break;
+          }
+        }
+      }
+      locateLocalStyleSheet();
     }
     locateLocalStyleSheet();
     if (!document._of_localStyleSheet) {

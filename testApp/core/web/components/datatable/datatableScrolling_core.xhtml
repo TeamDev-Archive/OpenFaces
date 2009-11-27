@@ -9,6 +9,60 @@
   <a href="../../functional_testing.jsf">Component test pages</a><br/><br/>
 
   <o:debug id="debug"/>
+  
+  <o:dataTable id="simpleTable" value="#{TestTableDataBean.collection2}" var="row" rowKey="#{row.id}" verticalGridLines="1px solid silver">
+      <o:scrolling/>
+
+      <o:checkboxColumn fixed="false"/>
+      <o:column sortingExpression="#{row.stringField1}" fixed="false" width="200px">
+        <f:facet name="header">
+          <h:outputText value="String Field 1"/>
+        </f:facet>
+        <h:outputText value="#{row.stringField1}"/>
+      </o:column>
+
+      <o:checkboxColumn>
+        <f:facet name="header">
+          <o:selectAllCheckbox/>
+        </f:facet>
+      </o:checkboxColumn>
+
+      <o:column sortingExpression="#{row.stringField2}" style="width: 30%">
+        <f:facet name="header">
+          <h:outputText value="String Field 2"/>
+        </f:facet>
+        <h:outputText value="#{row.stringField2}"/>
+      </o:column>
+
+      <o:column sortingExpression="#{row.stringField3}" style="width: 30%">
+        <f:facet name="header">
+          <h:outputText value="String Field 3"/>
+        </f:facet>
+        <h:outputText value="#{row.stringField3}"/>
+      </o:column>
+
+      <o:column style="width: 50px;">
+        <f:facet name="header">
+          <h:outputText value="Int Field 1"/>
+        </f:facet>
+        <h:outputText value="#{row.intField1}"/>
+      </o:column>
+      <o:column sortingExpression="#{row.intField2}" width="50px">
+        <f:facet name="header">
+          <h:outputText value="Int Field 2"/>
+        </f:facet>
+        <h:outputText value="#{row.intField2}"/>
+      </o:column>
+      <o:column style="width: 50px;">
+        <f:facet name="header">
+          <h:outputText value="Int Field 3"/>
+        </f:facet>
+        <h:outputText value="#{row.intField3}"/>
+      </o:column>
+
+    </o:dataTable>
+
+    <br/>
 
   <o:dataTable id="twoHeadersTable" value="#{TestTableDataBean.collection2}" var="row" rowKey="#{row.id}" style="height: 400px;">
     <!--<o:columnResizing/>-->
@@ -68,7 +122,7 @@
         <h:outputText value="#{row.stringField3}"/>
       </o:column>
     </o:columnGroup>
-    <o:columnGroup headerStyle="background: ForestGreen;" fixed="false">
+    <o:columnGroup headerStyle="background: ForestGreen;" fixed="true">
       <f:facet name="header">
         <h:outputText value="Integer Fields"/>
       </f:facet>
@@ -109,7 +163,6 @@
   </o:dataTable>
 
   <br/>
-
 
 
   <o:dataTable id="mixedHeadersTable" value="#{TestTableDataBean.collection1}" var="row" rowKey="#{row.id}"

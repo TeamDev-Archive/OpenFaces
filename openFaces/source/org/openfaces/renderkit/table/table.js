@@ -1476,6 +1476,14 @@ O$.Table = {
           column.setWidth(colWidths[i]);
         }
         table._originalWidth = recalculateTableWidth(colWidths);
+
+        if (O$.isChrome() || O$.isSafari()) {
+          table.style.tableLayout = "auto";
+          setTimeout(function() {
+            table.style.tableLayout = "fixed";
+          }, 10);
+        }
+
       }
       fixWidths();
 
