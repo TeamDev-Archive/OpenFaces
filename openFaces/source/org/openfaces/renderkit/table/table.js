@@ -434,22 +434,11 @@ O$.Table = {
 
   _scrollToRowIndexes: function(table, rowIndexes) {
     var bodyRows = table.body._getRows();
-
-    var boundingRect = null;
-    for (var i = 0, count = rowIndexes.length; i < count; i++) {
-      var rowIndex = rowIndexes[i];
-      var row = bodyRows[rowIndex];
-      var rect = O$.getElementBorderRectangle(row._rowNode);
-      if (!boundingRect)
-        boundingRect = rect;
-      else
-        boundingRect.addRectangle(rect);
-    }
-
-    if (boundingRect)
-      O$.scrollRectIntoView(boundingRect);
+    var elements = rowIndexes.map(function(i){
+      return bodyRows[i]._rowNode;
+    });
+    O$.scrollElementIntoView(elements);
   },
-
 
   _combineSelectedRowsWithRange: function(table, baseSelectedRowIndexes, baseRowIndex, rangeEndRowIndex) {
     O$.assert(baseRowIndex, "O$.Table._combineSelectedRowsWithRange: baseRowIndex should be specified");

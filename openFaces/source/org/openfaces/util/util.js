@@ -3462,8 +3462,18 @@ if (!window.O$) {
 
   O$.scrollElementIntoView = function(element, cachedDataContainer) {
     var scrollingOccured = false;
-    var rect = O$.getElementBorderRectangle(element);
-    for (var parent = element.parentNode; parent; parent = parent.parentNode) {
+    var elements = element instanceof Array ? element : [element];
+    var rect;
+    elements.forEach(function(el) {
+      if (!rect)
+        rect = O$.getElementBorderRectangle(el);
+      else
+        rect.addRectangle(O$.getElementBorderRectangle(el));
+    });
+
+    for (var parent = element instanceof Array ? element[0].parentNode : element.parentNode;
+         parent; 
+         parent = parent.parentNode) {
       var parentScrollable;
       if (parent != document) {
         var overflowY = O$.getElementStyle(parent, "overflow-y");
@@ -3476,6 +3486,10 @@ if (!window.O$) {
       var parentRect = parent != document
               ? O$.getElementPaddingRectangle(parent, false, cachedDataContainer)
               : O$.getVisibleAreaRectangle();
+      if (parent != document) {
+        parentRect.width = parent.clientWidth;
+        parentRect.height = parent.clientHeight;
+      }
 
       var scrollTopAdjustment = 0;
       if (parentRect.getMinY() > rect.getMinY())
