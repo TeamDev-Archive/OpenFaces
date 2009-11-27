@@ -3963,6 +3963,16 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Defines the current scrolling position</description>
+      <name>position</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType java.awt.Point -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <description>

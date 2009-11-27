@@ -7,9 +7,11 @@
        >
   <a href="../../main.jsf">Main page</a><br/>
   <a href="../../functional_testing.jsf">Component test pages</a><br/><br/>
+  <br/>
+  <input type="submit" value="Submit"/>
+  <br/>
 
-  <o:debug id="debug"/>
-  
+ 
   <o:dataTable id="simpleTable" value="#{TestTableDataBean.collection2}" var="row" rowKey="#{row.id}" verticalGridLines="1px solid silver">
       <o:scrolling/>
 

@@ -1112,6 +1112,14 @@ public class RenderingUtil {
      * @param defaultValue The default value to compare
      */
     public static void addJsonParam(JSONObject paramsObject, String paramName, Object paramValue, Object defaultValue) {
+        if (paramValue instanceof Object[]) {
+            Object[] params = ((Object[]) paramValue);
+            JSONArray array = new JSONArray();
+            for (Object param : params) {
+                array.put(param);
+            }
+            paramValue = array;
+        }
         if (paramValue != null && !paramValue.equals(defaultValue))
             try {
                 if (paramValue instanceof JSONObject || paramValue instanceof JSONArray || paramValue instanceof JSONString)

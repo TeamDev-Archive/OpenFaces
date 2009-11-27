@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.awt.*;
 
 /**
  * @author Dmitry Pikhulya
@@ -351,7 +352,7 @@ public class TableStructure extends TableElement {
     }
 
     private Object getScrollingParam() {
-        if (getScrolling() == null)
+        if (scrolling == null)
             return null;
         JSONObject result = new JSONObject();
         int leftFixedCols = getLeftFixedCols();
@@ -362,6 +363,10 @@ public class TableStructure extends TableElement {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+        RenderingUtil.addJsonParam(result, "horizontal", scrolling.isHorizontal(), false);
+        RenderingUtil.addJsonParam(result, "vertical", scrolling.isVertical(), false);
+        Point pos = scrolling.getPosition();
+        RenderingUtil.addJsonParam(result, "position", new Object[]{pos.x, pos.y});
 
         return result;
     }

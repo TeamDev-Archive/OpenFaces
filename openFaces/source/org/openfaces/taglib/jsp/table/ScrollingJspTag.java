@@ -31,4 +31,10 @@ public class ScrollingJspTag extends AbstractComponentJspTag {
     public void setHorizontal(ValueExpression horizontal) {
         getDelegate().setPropertyValue("horizontal", horizontal);
     }
+
+    public void setPosition(ValueExpression position) {
+        getDelegate().setPropertyValue("position", position);
+    }
+
+
 }

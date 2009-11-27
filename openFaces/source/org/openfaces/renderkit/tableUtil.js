@@ -1888,9 +1888,6 @@ O$.Tables = {
           if (!colWidth)
             colWidth = defaultColWidth;
           column.setWidth(colWidth);
-//          column._colTags.forEach(function(tag) {
-//            O$.setElementWidth(tag, colWidth);
-//          });
           areaWidth += colWidth;
         });
         var width = areaWidth + "px";
@@ -1962,6 +1959,8 @@ O$.Tables = {
 
     function synchronizeAreaScrolling() {
       mainScrollingArea._scrollingDiv.onscroll = function() {
+        O$.addHiddenField(table, table.id + "::scrollPos",
+                "[" + mainScrollingArea._scrollingDiv.scrollLeft + "," + mainScrollingArea._scrollingDiv.scrollTop + "]");
         [table.header, table.footer].forEach(function (section) {
           if (!section || !section._centerScrollingArea) return;
           section._centerScrollingArea._scrollingDiv.scrollLeft = mainScrollingArea._scrollingDiv.scrollLeft;
@@ -2053,6 +2052,13 @@ O$.Tables = {
       });
     }
     accountForScrollersWidth();
+
+    function scrollToPosition() {
+      var scrollPos = table._params.scrolling.position;
+      mainScrollingArea._scrollingDiv.scrollLeft = scrollPos[0];
+      mainScrollingArea._scrollingDiv.scrollTop = scrollPos[1];
+    }
+    scrollToPosition();
 
     if (delayedInitFunctions.length)
       O$.addLoadEvent(function() {

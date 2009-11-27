@@ -18,6 +18,7 @@ import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.CheckboxColumn;
 import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.TableColumn;
+import org.openfaces.component.table.Scrolling;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
@@ -379,6 +380,10 @@ public abstract class AbstractTableRenderer extends RendererBase {
         decodeSorting(facesContext, table);
 
         decodeCheckboxColumns(facesContext, table);
+
+        Scrolling scrolling = table.getScrolling();
+        if (scrolling != null)
+            scrolling.processDecodes(facesContext);
     }
 
 
