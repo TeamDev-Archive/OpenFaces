@@ -12539,27 +12539,15 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>The x position of the scroll when the page is loaded. In this attribute, you should
-        specify the x coordinate of the left bottom corner of a currently visible page.
+      <description>The position of the scroll when the page is loaded. In this attribute, you should
+        specify the coordinates of the top left corner of a page's visible area.
       </description>
-      <name>scrollX</name>
+      <name>value</name>
       <deferred-value>
-        <type>int</type>
+        <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType int -->
-      <!-- @default 0 -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>The y position of the scroll when the page is loaded. In this attribute, you should
-        specify the y coordinate of the left bottom corner of a currently visible page.
-      </description>
-      <name>scrollY</name>
-      <deferred-value>
-        <type>int</type>
-      </deferred-value>
-      <!-- @bindingType int -->
-      <!-- @default 0 -->
+      <!-- @bindingType java.awt.Point -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>

@@ -29,12 +29,8 @@ public class ScrollPositionJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("autoSaveScrollPos", autoSaveScrollPos);
     }
 
-    public void setScrollX(ValueExpression scrollX) {
-        getDelegate().setPropertyValue("scrollX", scrollX);
-    }
-
-    public void setScrollY(ValueExpression scrollY) {
-        getDelegate().setPropertyValue("scrollY", scrollY);
+    public void setValue(ValueExpression valueExpression) {
+        getDelegate().setPropertyValue("value", valueExpression);
     }
 
     public void setFor(ValueExpression forId) {

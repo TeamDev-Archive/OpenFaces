@@ -38,8 +38,7 @@ public class ScrollPosition extends UIComponentBase {
     public static final String COMPONENT_TYPE = "org.openfaces.ScrollPosition";
     public static final String COMPONENT_FAMILY = "org.openfaces.ScrollPosition";
 
-    private Integer scrollX;
-    private Integer scrollY;
+    private Point value;
     private Boolean autoSaveScrollPos;
     private String _for;
 
@@ -50,20 +49,12 @@ public class ScrollPosition extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public int getScrollX() {
-        return ValueBindings.get(this, "scrollX", scrollX, 0);
+    public Point getValue() {
+        return ValueBindings.get(this, "value", value, new Point(), Point.class);
     }
 
-    public void setScrollX(int scrollX) {
-        this.scrollX = scrollX;
-    }
-
-    public int getScrollY() {
-        return ValueBindings.get(this, "scrollY", scrollY, 0);
-    }
-
-    public void setScrollY(int scrollY) {
-        this.scrollY = scrollY;
+    public void setValue(Point value) {
+        this.value = value;
     }
 
     public boolean getAutoSaveScrollPos() {
@@ -84,8 +75,9 @@ public class ScrollPosition extends UIComponentBase {
 
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
-        int scrollX = getScrollX();
-        int scrollY = getScrollY();
+        Point pos = getValue();
+        int scrollX = pos.x;
+        int scrollY = pos.y;
         String scrollPosStr = formatPoint(scrollX, scrollY);
 
         ResponseWriter writer = context.getResponseWriter();
@@ -140,23 +132,20 @@ public class ScrollPosition extends UIComponentBase {
             return;
         Map requestMap = context.getExternalContext().getRequestParameterMap();
         String scrollPosStr = (String) requestMap.get(getClientId(context));
-        Point point = parsePoint(scrollPosStr);
-        scrollX = point.x;
-        scrollY = point.y;
+        value = parsePoint(scrollPosStr);
     }
 
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, scrollX, scrollY, autoSaveScrollPos, _for};
+        return new Object[]{superState, value, autoSaveScrollPos, _for};
     }
 
     @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
         super.restoreState(context, stateArray[0]);
-        scrollX = (Integer) stateArray[1];
-        scrollY = (Integer) stateArray[2];
+        value = (Point) stateArray[1];
         autoSaveScrollPos = (Boolean) stateArray[3];
         _for = (String) stateArray[4];
     }
@@ -164,10 +153,8 @@ public class ScrollPosition extends UIComponentBase {
     @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
-        if (scrollX != null && ValueBindings.set(this, "scrollX", scrollX))
-            scrollX = null;
-        if (scrollY != null && ValueBindings.set(this, "scrollY", scrollY))
-            scrollY = null;
+        if (value != null && ValueBindings.set(this, "value", value))
+            value = null;
     }
 
 }

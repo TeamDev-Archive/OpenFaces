@@ -16,6 +16,8 @@ import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
 
+import java.awt.*;
+
 /**
  * @author Darya Shumilina
  */
@@ -40,5 +42,24 @@ public class ScrollPositionTest extends OpenFacesTestCase {
         waitForPageToLoad();
         window().assertExpressionEquals("pageYOffset", ordinate, 22);
         window().assertExpressionEquals("pageXOffset", abscissa);
+    }
+
+    private Point testPos1 = new Point(0, 350);
+    private Point testPos2 = new Point(700, 600);
+
+    public Point getTestPos1() {
+        return testPos1;
+    }
+
+    public void setTestPos1(Point testPos1) {
+        this.testPos1 = testPos1;
+    }
+
+    public Point getTestPos2() {
+        return testPos2;
+    }
+
+    public void setTestPos2(Point testPos2) {
+        this.testPos2 = testPos2;
     }
 }
