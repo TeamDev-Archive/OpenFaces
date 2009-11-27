@@ -64,9 +64,9 @@ public class SelectAllCheckboxRenderer extends RendererBase {
 
         ScriptBuilder buf = new ScriptBuilder();
         if (checkBoxColHeader) {
-            buf.initScript(context, component, "O$.Table._initCheckboxColHeader", col).semicolon();
+            buf.initScript(context, component, "O$.Table._initCheckboxColHeader", table, col).semicolon();
         } else {
-            buf.initScript(context, component, "O$.Table._initSelectionHeader").semicolon();
+            buf.initScript(context, component, "O$.Table._initSelectionHeader", table).semicolon();
         }
 
         RenderingUtil.renderInitScript(context, buf, new String[]{

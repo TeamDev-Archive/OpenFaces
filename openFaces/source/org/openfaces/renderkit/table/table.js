@@ -922,12 +922,12 @@ O$.Table = {
     }
   },
 
-  _initCheckboxColHeader: function(headerId, colId) {
+  _initCheckboxColHeader: function(headerId, tableId, colId) {
     var header = O$(headerId);
-    var table = O$.getParentNode(header, "TABLE");
+    var cell = header.parentNode;
+    var table = O$(tableId);
     if (!table)
       throw "SelectAllCheckbox must be placed in a header of <o:dataTable> component. clientId = " + headerId;
-    header._table = table;
     header._columnObjectId = colId;
     header.style.cursor = "default";
 
@@ -959,7 +959,6 @@ O$.Table = {
     };
 
     header.onclick = function(e) {
-      var cell = O$.getAnyParentNode(this, ["td", "th"]);
       var col = cell._column;
       O$.Table._setAllCheckboxes(col, this.checked);
       var columnObj = O$(this._columnObjectId);
@@ -985,17 +984,16 @@ O$.Table = {
     }
   },
 
-  _initSelectionHeader: function(headerId) {
+  _initSelectionHeader: function(headerId, tableId) {
     var header = O$(headerId);
-    var table = O$.getParentNode(header, "TABLE");
+    var cell = header.parentNode;
+    var table = O$(tableId);
     if (!table)
       throw "SelectAllCheckbox must be placed in a header of <o:dataTable> component. clientId = " + headerId;
-    header._table = table;
     header.style.cursor = "default";
     header._updateStateFromTable = function() {
-      var headerTable = this._table;
-      var selectedItems = headerTable._getSelectedItems();
-      var bodyRows = headerTable.body._getRows();
+      var selectedItems = table._getSelectedItems();
+      var bodyRows = table.body._getRows();
       if (selectedItems.length == 0) {
         this.checked = false;
       } else {
@@ -1007,12 +1005,12 @@ O$.Table = {
       if (this.disabled) {
         this.disabled = false;
         this.checked = true;
-        this._table._selectAllItems();
+        table._selectAllItems();
       } else {
         if (this.checked)
-          this._table._selectAllItems();
+          table._selectAllItems();
         else
-          this._table._unselectAllItems();
+          table._unselectAllItems();
       }
       var evt = O$.getEvent(e);
       evt.cancelBubble = true;
