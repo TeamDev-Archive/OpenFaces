@@ -67,7 +67,7 @@ function multipleSelectionChanged(dataTableID, divID) {// todo: reimplement this
       else {
         var firstRowChild = currentRow.childNodes[0];
         if (firstRowChild) {
-          if (firstRowChild.className) {
+          if (firstRowChild.className && currentRow.className.indexOf("o_class") != -1) {
             result += " " + i;
           }
         }

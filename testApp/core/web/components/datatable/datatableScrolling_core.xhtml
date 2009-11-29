@@ -14,9 +14,10 @@
 <o:dataTable id="simpleTable" value="#{TestTableDataBean.collection2}" var="row" rowKey="#{row.id}"
              verticalGridLines="1px solid silver">
   <o:scrolling/>
+  <o:columnResizing/>
   <o:multipleRowSelection/>
 
-  <o:selectionColumn>
+  <o:selectionColumn sortable="true">
     <f:facet name="header">
       <o:selectAllCheckbox/>
     </f:facet>
@@ -29,7 +30,7 @@
     <h:outputText value="#{row.stringField1}"/>
   </o:column>
 
-  <o:checkboxColumn>
+  <o:checkboxColumn sortable="true">
     <f:facet name="header">
       <o:selectAllCheckbox/>
     </f:facet>
