@@ -199,8 +199,11 @@ O$.TreeTable = {
     row._isExpanded = function() {
       return this._toggled;
     };
-    var expandedToggles = O$.getChildNodesByClass(row, "o_toggle_e");
-    var collapsedToggles = O$.getChildNodesByClass(row, "o_toggle_c");
+    var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
+    var expandedToggles = [];
+    var collapsedToggles = [];
+    rowNodes.forEach(function(n){if (n) expandedToggles = expandedToggles.concat(O$.getChildNodesByClass(n, "o_toggle_e"));});
+    rowNodes.forEach(function(n){if (n) collapsedToggles = collapsedToggles.concat(O$.getChildNodesByClass(n, "o_toggle_c"));});
     var expanded = expandedToggles && expandedToggles.length > 0;
     O$.assert(expandedToggles.length == 0 || collapsedToggles.length == 0, "A row can't contain both expanded and collapsed nodes. rowIndex = " + rowIndex + "; table id = " + table.id);
     var toggles = expanded ? expandedToggles : collapsedToggles;
@@ -267,7 +270,7 @@ O$.TreeTable = {
     }
 
     treeTable.__parentRowIndex = parentRowIndex;
-    var scrolling = treeTable._params._scrolling;
+    var scrolling = treeTable._params.scrolling;
     if (scrolling) {
       var compositeRows = [];
       var i = 0, count = newRows.length;

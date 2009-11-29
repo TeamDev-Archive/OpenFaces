@@ -7,7 +7,7 @@
 
     <o:treeTable id="emailsTreeTable"
                  var="email"
-                 style="width: 100%; border: 1px solid white; table-layout: fixed;"
+                 style="width: 100%; height: 500px; table-layout: fixed;"
                  expansionState="allExpanded"
                  sortAscending="#{EMailsTreeTableBean.sortAscending}"
                  sortColumnId="#{EMailsTreeTableBean.sortedColumnId}"
@@ -20,15 +20,18 @@
                  sortedColumnStyle="background: #f2f5f6;"
                  focusedStyle="border: 1px dotted black !important;"
                  columnIdVar="columnId" nodeLevelVar="level">
+      <o:singleNodeSelection
+              style="background:url('../images/treetable/selection.gif') repeat-x #168aff !important; color: white !important;"
+              nodeData="#{EMailsTreeTableBean.selectedEMail}"/>
+      <o:dynamicTreeStructure nodeChildren="#{EMailsTreeTableBean.EMailsTreeChildren}"/>
+      <o:scrolling/>
+
       <o:row condition="#{level == 0}" style="background: white !important;">
         <o:cell span="6" styleClass="category_name">
           <h:outputText value="#{email}" style="padding-left: 5px;"/>
         </o:cell>
       </o:row>
-      <o:singleNodeSelection
-              style="background:url('../images/treetable/selection.gif') repeat-x #168aff !important; color: white !important;"
-              nodeData="#{EMailsTreeTableBean.selectedEMail}"/>
-      <o:dynamicTreeStructure nodeChildren="#{EMailsTreeTableBean.EMailsTreeChildren}"/>
+
       <o:treeColumn id="importance"
                     expandedToggleImageUrl="../images/treetable/expanded.gif"
                     collapsedToggleImageUrl="../images/treetable/collapsed.gif"

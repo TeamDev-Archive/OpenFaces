@@ -240,7 +240,7 @@ O$.Tables = {
     else {
       visibleInsertedRows = 0;
       rowsToInsert.forEach(function(insertedRow) {
-        insertedRow._visible = (O$.getElementStyle(insertedRow, "display") != "none");
+        insertedRow._visible = (O$.getElementStyle(insertedRow._rowNode, "display") != "none");
         if (insertedRow._visible)
           visibleInsertedRows++;
       });
@@ -696,12 +696,11 @@ O$.Tables = {
       if (this._visible == visible)
         return;
       this._visible = visible;
-      function procesDisplayStyle(row) {if (row && row.style.display) row.style.display = "";}
-      procesDisplayStyle(this._leftRowNode);
-      procesDisplayStyle(this._rowNode);
-      procesDisplayStyle(this._rightRowNode);
-
-      O$.setStyleMappings(this, {rowVisibilityStyle: visible ? "" : "o_hiddenRow"});
+      [this._leftRowNode, this._rowNode, this._rightRowNode].forEach(function(n) {
+        if (!n) return;
+        if (n.style.display) n.style.display = "";
+        O$.setStyleMappings(n, {rowVisibilityStyle: visible ? "" : "o_hiddenRow"});
+      });
       O$.Tables._updateCellWrappersStyleForRow(this);
     };
 
@@ -1474,7 +1473,7 @@ O$.Tables = {
         tableWidth = O$.getElementSize(table).width;
       var colWidth = O$.calculateNumericCSSValue(O$.getStyleClassProperty(column._className, "width"), tableWidth);
       if (!colWidth)
-        colWidth = O$.calculateNumericCSSValue(column._colTags[0].width);
+        colWidth = O$.calculateNumericCSSValue(column._colTags[0].width, tableWidth);
       return colWidth;
     };
     column.getWidth = function() {
