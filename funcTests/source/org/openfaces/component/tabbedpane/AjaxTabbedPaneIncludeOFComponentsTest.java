@@ -115,7 +115,6 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
 
     @Test
     public void testDropDownInside() {
-        Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/dropDownIn.jsf");
 
         DropDownFieldInspector firstDropDown = dropDownField("fn:firstDropDown");
@@ -125,7 +124,7 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         DropDownFieldInspector secondDropDown = dropDownField("fn:secondDropDown");
         secondDropDown.assertElementExists(false);
         firstDropDown.popup().items().get(1).click();
-        assertTrue(selenium.isTextPresent("Yellow"));
+        firstDropDown.field().assertText("Yellow");
 
         element("fn:secondTabID").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         secondDropDown.assertElementExists();

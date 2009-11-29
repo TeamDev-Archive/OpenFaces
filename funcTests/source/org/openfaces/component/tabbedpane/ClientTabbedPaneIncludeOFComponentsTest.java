@@ -15,9 +15,9 @@ import com.thoughtworks.selenium.Selenium;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
-import org.seleniuminspector.openfaces.*;
-import org.seleniuminspector.ServerLoadingMode;
 import org.seleniuminspector.ElementInspector;
+import org.seleniuminspector.ServerLoadingMode;
+import org.seleniuminspector.openfaces.*;
 
 /**
  * @author Darya Shumilina
@@ -118,7 +118,6 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
 
     @Test
     public void testDropDownInside() {
-        Selenium selenium = getSelenium();
         testAppFunctionalPage("/components/tabbedpane/dropDownIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(1, ServerLoadingMode.getInstance());
 
@@ -131,7 +130,7 @@ public class ClientTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         secondDropDown.assertVisible(false);
 
         firstDropDown.popup().items().get(1).click();
-        assertTrue(selenium.isTextPresent("Yellow"));
+        firstDropDown.field().assertValue("Yellow");
 
         element("fn:secondTabID").click();
         secondDropDown.assertElementExists();
