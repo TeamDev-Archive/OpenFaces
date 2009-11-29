@@ -117,6 +117,7 @@
     <component>
       <component-type>org.openfaces.SelectionColumn</component-type>
       <renderer-type>org.openfaces.SelectionColumnRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.SelectionColumnTagHandler</handler-class>
     </component>
   </tag>
 
@@ -126,14 +127,6 @@
       <component-type>org.openfaces.CheckboxColumn</component-type>
       <renderer-type>org.openfaces.CheckboxColumnRenderer</renderer-type>
       <handler-class>org.openfaces.taglib.facelets.table.CheckBoxColumnTagHandler</handler-class>
-    </component>
-  </tag>
-
-  <tag>
-    <tag-name>selectionColumn</tag-name>
-    <component>
-      <component-type>org.openfaces.SelectionColumn</component-type>
-      <renderer-type>org.openfaces.SelectionColumnRenderer</renderer-type>
     </component>
   </tag>
 

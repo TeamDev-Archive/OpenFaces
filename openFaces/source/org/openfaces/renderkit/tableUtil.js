@@ -471,9 +471,9 @@ O$.Tables = {
                   _spacer: spacer
                 };
                 if (area._scrollingDiv) {
-                  if (scrollingKind == "none")
-                    area._scrollingDiv.style.overflow = "hidden";
-                  else if (scrollingKind == "x")
+                  if (scrollingKind == "none") {
+                    // leave overflow as specified during rendering
+                  }else if (scrollingKind == "x")
                     area._scrollingDiv.style.overflowX = "scroll";
                   else if (scrollingKind == "y")
                     area._scrollingDiv.style.overflowY = "scroll";
@@ -1890,10 +1890,11 @@ O$.Tables = {
           verticalAreaForInitialization._columns.push(column);
           column._verticalArea = verticalAreaForInitialization;
           var colWidth = firstInitialization ? column.getDeclaredWidth(tableWidth) : column._explicitWidth;
-          if (firstInitialization && !colWidth)
-            colWidth = defaultColWidth;
-          if (firstInitialization)
+          if (firstInitialization) {
+            if (!colWidth)
+              colWidth = defaultColWidth;
             column.setWidth(colWidth);
+          }
           areaWidth += colWidth;
         });
         var width = areaWidth + "px";
@@ -1999,9 +2000,11 @@ O$.Tables = {
     }
     synchronizeAreaScrolling();
 
-    function alignRowHeights() {
+    table._alignRowHeights = function() {
       [table.header, table.body, table.footer].forEach(function(section) {
         if (!section) return;
+        var assignCellHeights = O$.isChrome() || O$.isSafari() || (O$.isExplorer() && O$.isStrictMode() &&!O$.isExplorer8());
+
         var areaHeight = 0;
         var rows = section._getRows();
         rows.forEach(function (row) {
@@ -2011,6 +2014,11 @@ O$.Tables = {
           function setRowHeight(rowNode, height) {
             row.__height = height;
             rowNode.style.height = height + "px";
+            if (assignCellHeights && !height) {
+              for (var i = 0, count = rowNode.cells.length; i < count; i++) {
+                rowNode.cells[i].style.height = "0";
+              }
+            }
           }
           var height = 0;
           rowNodes.forEach(function(rowNode) {
@@ -2030,7 +2038,8 @@ O$.Tables = {
         if ((O$.isChrome() || O$.isSafari()) && O$.isQuirksMode())
           section._scrollingAreas.forEach(function(area){O$.setElementHeight(area._table, areaHeight);});
 
-        if (O$.isChrome() || O$.isSafari() || (O$.isExplorer() && O$.isStrictMode() &&!O$.isExplorer8())) {
+
+        if (assignCellHeights) {
           // setting row height is not enough for Chrome and Safari, setting cell heights solves this issue
           for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
             var row = rows[rowIndex];
@@ -2050,12 +2059,12 @@ O$.Tables = {
 
 
       });
-    }
+    };
     var delayUnderIE = O$.isExplorer() && !(O$.isExplorer8() && O$.isStrictMode());
     if (!delayUnderIE)
-      alignRowHeights();
+      table._alignRowHeights();
     else
-      delayedInitFunctions.push(alignRowHeights);
+      delayedInitFunctions.push(table._alignRowHeights);
 
 
     function fixIE6AreaDisappearing() {

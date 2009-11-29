@@ -14,23 +14,23 @@
 <o:dataTable id="simpleTable" value="#{TestTableDataBean.collection2}" var="row" rowKey="#{row.id}"
              verticalGridLines="1px solid silver">
   <o:scrolling/>
-  <o:columnResizing/>
+  <!--<o:columnResizing/>-->
   <o:multipleRowSelection/>
 
-  <o:selectionColumn sortable="true">
+  <o:selectionColumn sortable="true" fixed="false">
     <f:facet name="header">
       <o:selectAllCheckbox/>
     </f:facet>
   </o:selectionColumn>
 
-  <o:column sortingExpression="#{row.stringField1}" fixed="false" width="200px">
+  <o:column sortingExpression="#{row.stringField1}" fixed="true" width="200px">
     <f:facet name="header">
       <h:outputText value="String Field 1"/>
     </f:facet>
     <h:outputText value="#{row.stringField1}"/>
   </o:column>
 
-  <o:checkboxColumn sortable="true">
+  <o:checkboxColumn fixed="true" sortable="true">
     <f:facet name="header">
       <o:selectAllCheckbox/>
     </f:facet>
@@ -50,19 +50,19 @@
     <h:outputText value="#{row.stringField3}"/>
   </o:column>
 
-  <o:column style="width: 50px;">
+  <o:column style="width: 50px;" fixed="true">
     <f:facet name="header">
       <h:outputText value="Int Field 1"/>
     </f:facet>
     <h:outputText value="#{row.intField1}"/>
   </o:column>
-  <o:column sortingExpression="#{row.intField2}" width="50px">
+  <o:column sortingExpression="#{row.intField2}" width="50px" fixed="true">
     <f:facet name="header">
       <h:outputText value="Int Field 2"/>
     </f:facet>
     <h:outputText value="#{row.intField2}"/>
   </o:column>
-  <o:column style="width: 50px;">
+  <o:column style="width: 50px;" fixed="false">
     <f:facet name="header">
       <h:outputText value="Int Field 3"/>
     </f:facet>
@@ -75,7 +75,7 @@
 
 <o:dataTable id="twoHeadersTable" value="#{TestTableDataBean.collection2}" var="row" rowKey="#{row.id}"
              style="height: 400px;">
-  <!--<o:columnResizing/>-->
+  <o:columnResizing/>
   <o:singleRowSelection/>
   <o:scrolling/>
 
@@ -189,7 +189,7 @@
              commonHeaderSeparator="2px solid gray"
              commonFooterSeparator="2px solid gray"
              multiFooterSeparator="none, 1px solid DarkBlue">
-  <!--<o:columnResizing/>-->
+  <o:columnResizing/>
   <o:singleRowSelection/>
   <o:scrolling/>
 

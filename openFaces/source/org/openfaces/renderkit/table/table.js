@@ -1297,11 +1297,22 @@ O$.Table = {
           continue;
 
         var widthCompensationColIndex = -1;
-        if (retainTableWidth && !table._params.scrolling/*.horizontal todo: support horizontal/veritcal params*/) {
-          for (var idx = table._columns.length - 1; idx >= 0; idx--) {
-            var c = table._columns[idx];
+        if (retainTableWidth) {
+          var cols = !table._params.scrolling/*.horizontal todo: support horizontal/veritcal params*/
+                  ? table._columns
+                  : function(){
+            var verticalArea = column._verticalArea;
+            if (verticalArea == table._centerArea) return [];
+            if (verticalArea == table._leftArea)
+              return column != verticalArea._columns[verticalArea._columns.length - 1]
+                    ? verticalArea._columns
+                    : [];
+            return verticalArea._columns; 
+          }();
+          for (var idx = cols.length - 1; idx >= 0; idx--) {
+            var c = cols[idx];
             if (c._resizable) {
-              widthCompensationColIndex = idx;
+              widthCompensationColIndex = c._colIndex;
               break;
             }
           }
@@ -1309,12 +1320,14 @@ O$.Table = {
         if (widthCompensationColIndex != -1 && colIndex >= widthCompensationColIndex)
           continue;
 
+        column._widthCompensationColIndex = widthCompensationColIndex;
         if (!column._resizable)
           continue;
         var resizeHandle = document.createElement("div");
         resizeHandle.style.cursor = "e-resize";
         resizeHandle.style.position = "absolute";
         resizeHandle.style.border = "0px none transparent";//"1px solid black";
+//        resizeHandle.style.background = "silver";
 
         if (O$.isExplorer()) {
           // IE needs an explicit background because otherwise this absolute div will "leak" some events to the underlying
@@ -1381,17 +1394,17 @@ O$.Table = {
           }
           var thisAndNextColWidth;
           var nextCol;
-          if (widthCompensationColIndex != -1) {
-            var nextColWidth = colWidths[widthCompensationColIndex];
+          if (this._column._widthCompensationColIndex != -1) {
+            var nextColWidth = colWidths[this._column._widthCompensationColIndex];
             var thisColWidth = colWidths[this._column._colIndex];
             thisAndNextColWidth = thisColWidth + nextColWidth;
-            nextCol = table._columns[widthCompensationColIndex];
+            nextCol = table._columns[this._column._widthCompensationColIndex];
             var maxWidthForThisCol = thisAndNextColWidth - nextCol._minResizingWidth;
             if (newColWidth > maxWidthForThisCol)
               newColWidth = maxWidthForThisCol;
             var newNextColWidth = thisAndNextColWidth - newColWidth;
             nextCol.setWidth(newNextColWidth);
-            colWidths[widthCompensationColIndex] = newNextColWidth;
+            colWidths[this._column._widthCompensationColIndex] = newNextColWidth;
           }
 
           this._column.setWidth(newColWidth);
@@ -1410,6 +1423,8 @@ O$.Table = {
           this._column._resizeDecorator._updatePos();
           O$.repaintAreaForOpera(table);
           table._fixFF3ColResizingIssue();
+          if (table._params.scrolling)
+            O$.invokeFunctionAfterDelay(table._alignRowHeights, 500);
         };
         resizeHandle.setTop = function(top) {
           this.style.top = top + "px";
@@ -1417,7 +1432,7 @@ O$.Table = {
         resizeHandle.ondragend = function() {
           table._columnResizingInProgress = false;
           this._column._resizeDecorator.parentNode.removeChild(this._column._resizeDecorator);
-          table._updateResizeHandlePositions();
+          updateResizeHandlePositions();
 
           var totalWidth = 0;
           var colWidths = [];
@@ -1485,7 +1500,7 @@ O$.Table = {
       }
       fixWidths();
 
-      table._updateResizeHandlePositions = function() {
+      function updateResizeHandlePositions() {
         for (var i = 0, count = table._columns.length; i < count; i++) {
           var column = table._columns[i];
           if (column._resizeHandle)
@@ -1493,14 +1508,21 @@ O$.Table = {
         }
       };
 
-      O$.addEventHandler(window, "resize", table._updateResizeHandlePositions);
+      O$.addEventHandler(window, "resize", updateResizeHandlePositions);
       O$.addEventHandler(table, "mouseover", function() {
         if (!table._columnResizingInProgress)
-          table._updateResizeHandlePositions();
+          updateResizeHandlePositions();
       });
+      if (table._params.scrolling && (O$.isExplorer6() || O$.isExplorer7())) {
+        // mouseover can't be handled in these circumstances for some reason
+        setInterval(function() {
+          if (!table._columnResizingInProgress)
+            updateResizeHandlePositions();
+        }, 1000);
+      }
 
       table._unloadHandlers.push(function() {
-        O$.removeEventHandler(window, "resize", table._updateResizeHandlePositions);
+        O$.removeEventHandler(window, "resize", updateResizeHandlePositions);
       });
 
       table._fixFF3ColResizingIssue = function() { // See JSFC-3720

@@ -78,7 +78,8 @@ public class TableScrollingArea extends TableElement {
         }
         if (scrollingType != ScrollingType.NONE) {
             writer.startElement("div", component);
-            writer.writeAttribute("class", "o_table_scrolling_area", null);
+            writer.writeAttribute("class", scrollingType == ScrollingType.HORIZONTAL
+                    ? "o_horizontal_scrolling_area" : "o_table_scrolling_area", null);
             if (indefiniteHight)
                 writer.writeAttribute("style", "position: absolute; height: 0;", null);
             // horizontal and vertical scrolling areas require a spacer at the end of the area to accomodate for scroller width
