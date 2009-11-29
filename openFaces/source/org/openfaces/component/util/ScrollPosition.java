@@ -144,10 +144,11 @@ public class ScrollPosition extends UIComponentBase {
     @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
-        super.restoreState(context, stateArray[0]);
-        value = (Point) stateArray[1];
-        autoSaveScrollPos = (Boolean) stateArray[3];
-        _for = (String) stateArray[4];
+        int i = 0;
+        super.restoreState(context, stateArray[i++]);
+        value = (Point) stateArray[i++];
+        autoSaveScrollPos = (Boolean) stateArray[i++];
+        _for = (String) stateArray[i++];
     }
 
     @Override
