@@ -124,7 +124,7 @@ public class AjaxTabbedPaneIncludeOFComponentsTest extends OpenFacesTestCase {
         DropDownFieldInspector secondDropDown = dropDownField("fn:secondDropDown");
         secondDropDown.assertElementExists(false);
         firstDropDown.popup().items().get(1).click();
-        firstDropDown.field().assertText("Yellow");
+        firstDropDown.field().assertValue("Yellow");
 
         element("fn:secondTabID").clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
         secondDropDown.assertElementExists();
