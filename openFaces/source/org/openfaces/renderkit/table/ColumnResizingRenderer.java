@@ -89,6 +89,8 @@ public class ColumnResizingRenderer extends RendererBase {
         String[] splitParameters = params.split(":");
         String tableWidth = splitParameters[0];
         String colWidthsArray = splitParameters[1];
+        if (tableWidth.length() == 0)
+            tableWidth = null;
         JSONArray widthsArray;
         try {
             widthsArray = new JSONArray(colWidthsArray);

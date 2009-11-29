@@ -986,7 +986,6 @@ O$.Table = {
 
   _initSelectionHeader: function(headerId, tableId) {
     var header = O$(headerId);
-    var cell = header.parentNode;
     var table = O$(tableId);
     if (!table)
       throw "SelectAllCheckbox must be placed in a header of <o:dataTable> component. clientId = " + headerId;
@@ -1245,6 +1244,8 @@ O$.Table = {
       var colWidthsField = O$.addHiddenField(table, colWidthsFieldId);
 
       function recalculateTableWidth(colWidths) {
+        if (table._params.scrolling)
+          return;
         var totalWidth = 0;
         for (var i = 0, count = table._columns.length; i < count; i++) {
           var column = table._columns[i];
@@ -1266,12 +1267,7 @@ O$.Table = {
       }
 
       function getColWidths() {
-        var colWidths = [];
-        for (var i = 0, count = table._columns.length; i < count; i++) {
-          var column = table._columns[i];
-          colWidths[i] = column.getWidth();
-        }
-        return colWidths;
+        return table._columns.map(function(col) {return col.getWidth();});
       }
 
       table._columns.forEach(function (col) {
@@ -1301,7 +1297,7 @@ O$.Table = {
           continue;
 
         var widthCompensationColIndex = -1;
-        if (retainTableWidth) {
+        if (retainTableWidth && !table._params.scrolling/*.horizontal todo: support horizontal/veritcal params*/) {
           for (var idx = table._columns.length - 1; idx >= 0; idx--) {
             var c = table._columns[idx];
             if (c._resizable) {
@@ -1375,7 +1371,14 @@ O$.Table = {
             newColWidth = this._column._minResizingWidth;
 
           var colWidths = getColWidths();
-          table.style.width = "auto";
+          if (!table._params.scrolling) {
+            table.style.width = "auto";
+          } else {
+            var scrollingDiv = table.body._centerScrollingArea._scrollingDiv;
+            var scrollLeft = scrollingDiv.scrollLeft;
+            var scrollTop = scrollingDiv.scrollTop;
+            this._column._verticalArea._areas.forEach(function(a){a._table.style.width = "auto";});
+          }
           var thisAndNextColWidth;
           var nextCol;
           if (widthCompensationColIndex != -1) {
@@ -1394,10 +1397,16 @@ O$.Table = {
           this._column.setWidth(newColWidth);
           colWidths[this._column._colIndex] = newColWidth;
 
-          if (!retainTableWidth)
-            recalculateTableWidth(colWidths);
-          else
-            table.style.width = table._originalWidth + "px";
+          if (!table._params.scrolling) {
+            if (!retainTableWidth)
+              recalculateTableWidth(colWidths);
+            else
+                table.style.width = table._originalWidth + "px";
+          } else {
+            this._column._verticalArea.updateWidth();
+            scrollingDiv.scrollLeft = scrollLeft;
+            scrollingDiv.scrollTop = scrollTop;
+          }
           this._column._resizeDecorator._updatePos();
           O$.repaintAreaForOpera(table);
           table._fixFF3ColResizingIssue();
@@ -1454,10 +1463,11 @@ O$.Table = {
 
       function fixWidths() {
         var colWidths = getColWidths();
-        if (!table._params._scrolling)
+//        if (!table._params.scrolling)
           table.style.tableLayout = "fixed";
 
-        table.style.width = "auto";
+        if (!table._params.scrolling)
+          table.style.width = "auto";
         for (var i = 0, count = colWidths.length; i < count; i++) {
           var column = table._columns[i];
           column.setWidth(colWidths[i]);
@@ -1465,6 +1475,7 @@ O$.Table = {
         table._originalWidth = recalculateTableWidth(colWidths);
 
         if (O$.isChrome() || O$.isSafari()) {
+          // fix Chrome/Safari not respecting table-layout="fixed" in _some_ cases
           table.style.tableLayout = "auto";
           setTimeout(function() {
             table.style.tableLayout = "fixed";
@@ -1495,7 +1506,7 @@ O$.Table = {
       table._fixFF3ColResizingIssue = function() { // See JSFC-3720
         if (! (O$.isMozillaFF3() && O$.isQuirksMode()))
           return;
-        if (table._deepestColumnHierarchyLevel > 1) {
+        if (!table._params.scrolling && table._deepestColumnHierarchyLevel > 1) {
           var prevWidth = table.style.width;
           table.style.width = "0";
           table.styleWidth = prevWidth;

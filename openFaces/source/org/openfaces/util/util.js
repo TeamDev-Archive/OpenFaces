@@ -4164,6 +4164,41 @@ if (!window.O$) {
     return fixture;
   };
 
+  O$.listenProperty = function(element, propertyNames, listenerFunction, interval) {
+    if (!(propertyNames instanceof Array))
+      propertyNames = [propertyNames];
+    if (!interval)
+      interval = 200;
+    var listener = {
+      values: {},
+      update: function() {
+        if (!O$.isElementPresentInDocument(element)) {
+          this.release();
+          return;
+        }
+        var changed = false;
+        var currentValues = [];
+        propertyNames.forEach(function(propertyName) {
+          var propertyValue = O$.getElementEffectProperty(element, propertyNames[propertyName]);
+          currentValues.push(propertyValue);
+          if (this.values[propertyName] != propertyValue) {
+            this.values[propertyName] = propertyValue;
+            changed = true;
+          }
+        });
+        if (changed)
+          listenerFunction.apply(null, currentValues);
+      },
+      intervalId: setInterval(function() {listener.update();}, interval),
+
+      release: function() {
+        clearInterval(this.intervalId);
+      }
+    };
+
+    return listener;
+
+  };
 
 // ----------------- COMPONENT UTILS -------------------------------------------
 

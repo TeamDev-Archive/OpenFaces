@@ -461,6 +461,7 @@ O$.Tables = {
                 tbl.style.emptyCells = "show";
                 var rowContainer = O$.getChildNodesWithNames(tbl, ["tbody"])[0];
                 var area = {
+                  _horizontalIndex: areaCellIndex,
                   _td: td,
                   _scrollingDivContainer: scrollingDivContainer,
                   _scrollingDiv: scrollingDiv,
@@ -1456,6 +1457,7 @@ O$.Tables = {
 
     };
     column.setWidth = function(width) {
+      column._explicitWidth = width;
       var widthPx = width + "px";
       if (this._allCellsClass.style.setProperty) {
         this._allCellsClass.style.setProperty("width", widthPx, "important");
@@ -1878,25 +1880,32 @@ O$.Tables = {
         if (area && area._sectionTable)
           scrollingAreaColTags.push(O$.Tables._getTableColTags(area._sectionTable));
       });
-      function areaWidthByColumns(section, areaName) {
+      function areaWidthByColumns(section, areaName, verticalAreaForInitialization) {
         var areaWidth = 0;
         var tableWidth = O$.getElementSize(table).width;
         var area = section[areaName];
+        verticalAreaForInitialization._columns = [];
         area._colTags.forEach(function(colTag) {
           var column = colTag._column;
-          var colWidth = column.getDeclaredWidth(tableWidth);
-          if (!colWidth)
+          verticalAreaForInitialization._columns.push(column);
+          column._verticalArea = verticalAreaForInitialization;
+          var colWidth = firstInitialization ? column.getDeclaredWidth(tableWidth) : column._explicitWidth;
+          if (firstInitialization && !colWidth)
             colWidth = defaultColWidth;
-          column.setWidth(colWidth);
+          if (firstInitialization)
+            column.setWidth(colWidth);
           areaWidth += colWidth;
         });
         var width = areaWidth + "px";
+        verticalAreaForInitialization._areas = [];
         [table.header, table.body, table.footer].forEach(function (section) {
           if (!section) return;
-          var areaTable = section[areaName]._table;
+          var a = section[areaName];
+          verticalAreaForInitialization._areas.push(a);
+          var areaTable = a._table;
           areaTable.style.width = width;
           if (O$.isChrome() || O$.isSafari()) {
-            // ths is _sometimes_ required in Chrome and Safari to make "fixed" functionality really work
+            // fix Chrome/Safari not respecting table-layout="fixed" in _some_ cases
             areaTable.style.tableLayout = "auto";
             setTimeout(function() {
               areaTable.style.tableLayout = "fixed";
@@ -1905,23 +1914,40 @@ O$.Tables = {
         });
         return width;
       }
-      var areaIndex = 0;
       if (firstSection._leftScrollingArea) {
-        var width = areaWidthByColumns(firstSection, "_leftScrollingArea");
-        var leftAreaIndex = areaIndex++;
-        scrollingAreaColTags.forEach(function (tagsForSection) {
-          tagsForSection[leftAreaIndex].style.width = width;
-        });
+        table._leftArea = {
+          updateWidth: function() {
+            var width = areaWidthByColumns(firstSection, "_leftScrollingArea", table._leftArea);
+            var leftAreaIndex = firstSection._leftScrollingArea._horizontalIndex;
+            scrollingAreaColTags.forEach(function (tagsForSection) {
+              tagsForSection[leftAreaIndex].style.width = width;
+            });
+          }
+        };
       }
-      areaWidthByColumns(firstSection, "_centerScrollingArea");
-      areaIndex++;
+      table._centerArea = {
+        updateWidth: function() {
+          areaWidthByColumns(firstSection, "_centerScrollingArea", table._centerArea);
+        }
+      };
       if (firstSection._rightScrollingArea) {
-        width = areaWidthByColumns(firstSection, "_rightScrollingArea");
-        var rightAreaIndex = areaIndex++;
-        scrollingAreaColTags.forEach(function (tagsForSection) {
-          tagsForSection[rightAreaIndex].style.width = width;
-        });
+        table._rightArea = {
+          updateWidth: function() {
+            var width = areaWidthByColumns(firstSection, "_rightScrollingArea", table._rightArea);
+            var rightAreaIndex = firstSection._rightScrollingArea._horizontalIndex;
+            scrollingAreaColTags.forEach(function (tagsForSection) {
+              tagsForSection[rightAreaIndex].style.width = width;
+            });
+          }
+        };
       }
+      var firstInitialization = true;
+      if (table._leftArea)
+        table._leftArea.updateWidth();
+      table._centerArea.updateWidth();
+      if (table._rightArea)
+        table._rightArea.updateWidth();
+      firstInitialization = false;
     }
     alignColumnWidths();
 
