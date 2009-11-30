@@ -36,7 +36,7 @@ O$.Debug = {
         var date = new Date();
 
         if (this._logTable.body._getRows().length == this._maxLogEntries) {
-          this._logTable._removeAllRows(); // todo: remove the last row only
+          this._logTable.body._removeAllRows(); // todo: remove the last row only
         }
         var row = this._logTable.body._createRow();
         this._logTable._insertRowsAfter(-1, [row]);
@@ -46,7 +46,7 @@ O$.Debug = {
       },
 
       clearLog: function() {
-        this._logTable._removeAllRows();
+        this._logTable.body._removeAllRows();
         this._delayedMessages = [];
       },
 
@@ -65,7 +65,7 @@ O$.Debug = {
         debug.log(txt);
       },
       inspectElement: function(element) {
-        this._elementProperties._removeAllRows();
+        this._elementProperties.body._removeAllRows();
         if (!element)
           return;
         for (var fld in element) {

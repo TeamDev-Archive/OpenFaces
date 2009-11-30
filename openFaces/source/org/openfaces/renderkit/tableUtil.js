@@ -100,7 +100,6 @@ O$.Tables = {
     if (!params.body) params.body = {};
     table._params = params;
 
-    // initialize grid lines
     var tempIdx = 0;
     table._gridLines = {
         horizontal: params.gridLines[tempIdx++],
@@ -153,52 +152,13 @@ O$.Tables = {
       fixInputWidths(area._rightScrollingArea && area._rightScrollingArea._rowContainer);
     });
 
-    table._removeAllRows = O$.Tables._removeAllRows;
     table._insertRowsAfter = O$.Tables._insertRowsAfter;
     table._cellFromPoint = function(x, y, relativeToNearestContainingBlock, cachedDataContainer) {
-      var row = table._rowFromPoint(x, y, relativeToNearestContainingBlock, cachedDataContainer);
+      var row = table.body._rowFromPoint(x, y, relativeToNearestContainingBlock, cachedDataContainer);
       if (!row)
         return null;
       return row._cellFromPoint(x, y, relativeToNearestContainingBlock, cachedDataContainer);
     };
-    table._rowFromPoint = function(x, y, relativeToNearestContainingBlock, cachedDataContainer) {
-      var tableRect = O$.getElementBorderRectangle(table, relativeToNearestContainingBlock, cachedDataContainer);
-      if (!tableRect.containsPoint(x, y))
-        return null;
-      var rows = table.body._getRows();
-      for (var i = 0, count = rows.length; i < count; i++) {
-        var row = rows[i];
-        var rowRect = O$.getElementBorderRectangle(row._rowNode, relativeToNearestContainingBlock, cachedDataContainer);
-        if (rowRect.containsPoint(x, y))
-          return row;
-        if (row._leftRowNode) {
-          rowRect = O$.getElementBorderRectangle(row._leftRowNode, relativeToNearestContainingBlock, cachedDataContainer);
-          if (rowRect.containsPoint(x, y))
-            return row;
-        }
-        if (row._rightRowNode) {
-          rowRect = O$.getElementBorderRectangle(row._rightRowNode, relativeToNearestContainingBlock, cachedDataContainer);
-          if (rowRect.containsPoint(x, y))
-            return row;
-        }
-      }
-      return null;
-    };
-
-  },
-
-  _removeAllRows: function() {
-    var bodyRows = this.body._getRows();
-    bodyRows.forEach(function(row) {
-      function removeRow(row) {if (row) row.parentNode.removeChild(row);}
-      removeRow(row._leftRowNode);
-      removeRow(row._rowNode);
-      removeRow(row._rightRowNode);
-    });
-    this.body._rows = undefined;
-
-    this._params.rowStylesMap = {};
-    this._params.cellStylesMap = {};
   },
 
   _insertRowsAfter: function(afterIndex, rowsToInsert, newRowsToStylesMap, newRowCellsToStylesMap) {
@@ -208,7 +168,7 @@ O$.Tables = {
 
     if (this._params.body.noDataRows && this.body._getRows().length) {
       this._params.body.noDataRows = false;
-      this._removeAllRows();
+      this.body._removeAllRows();
     }
 
     var bodyRows = this.body._getRows();
@@ -576,7 +536,49 @@ O$.Tables = {
         },
         _addRows: function(rows, afterRow) {
           table._insertRowsAfter(afterRow != undefined ? afterRow : this._getRows().length - 1, rows);
+        },
+
+        _rowFromPoint: function(x, y, relativeToNearestContainingBlock, cachedDataContainer) {
+          var tableRect = O$.getElementBorderRectangle(table, relativeToNearestContainingBlock, cachedDataContainer);
+          if (!tableRect.containsPoint(x, y))
+            return null;
+          var rows = this._getRows();
+          for (var i = 0, count = rows.length; i < count; i++) {
+            var row = rows[i];
+            var rowRect = O$.getElementBorderRectangle(row._rowNode, relativeToNearestContainingBlock, cachedDataContainer);
+            if (rowRect.containsPoint(x, y))
+              return row;
+            if (row._leftRowNode) {
+              rowRect = O$.getElementBorderRectangle(row._leftRowNode, relativeToNearestContainingBlock, cachedDataContainer);
+              if (rowRect.containsPoint(x, y))
+                return row;
+            }
+            if (row._rightRowNode) {
+              rowRect = O$.getElementBorderRectangle(row._rightRowNode, relativeToNearestContainingBlock, cachedDataContainer);
+              if (rowRect.containsPoint(x, y))
+                return row;
+            }
+          }
+          return null;
+        },
+
+        _removeAllRows: function() {
+          var rows = this._getRows();
+          rows.forEach(function(row) {
+            function removeRow(row) {if (row) row.parentNode.removeChild(row);}
+            removeRow(row._leftRowNode);
+            removeRow(row._rowNode);
+            removeRow(row._rightRowNode);
+          });
+          this._rows = undefined;
+
+          if (sectionTagName == "tbody") {
+            table._params.rowStylesMap = {};
+            table._params.cellStylesMap = {};
+          }
         }
+
+
 
       };
       if (sectionTagName != "tbody" && section._getRows().length == 0)

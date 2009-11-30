@@ -1244,7 +1244,7 @@ O$.executeScripts = function(source) { // should not be invoked because all init
     try {
       window.eval(script);
     } catch (e) {
-      alert("Couldn't execute script on Ajax request: \n" + script);
+      alert("Exception '" + e.message + "' while executing script on Ajax request: \n" + script);
       throw e;
     }
     idx2 += "</script>".length;

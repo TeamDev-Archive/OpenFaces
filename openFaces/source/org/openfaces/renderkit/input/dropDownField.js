@@ -214,7 +214,7 @@ O$.DropDownField = {
 
       var innerTable = O$(dropDown._popup.id + "::innerTable");
       dropDown._setHighlightedItemIndex(-1);
-      innerTable._removeAllRows();
+      innerTable.body._removeAllRows();
       innerTable._insertRowsAfter(-1, cachedSuggestions.rows, cachedSuggestions.rowsToStylesMap, cachedSuggestions.cellsToStylesMap);
 
       // Safari 3 painting fix (JSFC-3270)

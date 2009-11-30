@@ -410,7 +410,7 @@ O$._initDayTable = function(componentId,
 
 
   function getNearestTimeslotForPosition(x, y) {
-    var row = table._rowFromPoint(10, y, true, dayTable._getLayoutCache());
+    var row = table.body._rowFromPoint(10, y, true, dayTable._getLayoutCache());
     if (!row)
       return {
         resource: undefined,

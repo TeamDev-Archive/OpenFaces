@@ -22,126 +22,128 @@ O$.FoldingPanel = {
                   focusedContentClass,
                   focusedCaptionClass) {
     var fp = O$(controlId);
+    O$.extend(fp, {
+      _stateHolderId: controlId + "::state",
+      _contentHolderId: controlId + "::content",
+      _captionContentId: controlId + "::caption_content",
+      _captionId: controlId + "::caption",
+      _useAjax: useAjax,
 
-    fp._stateHolderId = controlId + "::state";
-    fp._contentHolderId = controlId + "::content";
-    fp._captionContentId = controlId + "::caption_content";
-    fp._captionId = controlId + "::caption";
-    fp._useAjax = useAjax;
+      _contentLoaded: contentPreloaded || expanded,
+      _expanded: expanded,
+      _direction: direction,
 
-    fp._contentLoaded = contentPreloaded || expanded;
+      isExpanded: function() {
+        return fp._expanded;
+      },
+
+      setExpanded: function(expanded) {
+        if (this._expanded == expanded)
+          return;
+        this._expanded = expanded;
+        var stateHolder = O$(this._stateHolderId);
+        stateHolder.value = expanded;
+        var switchers = fp._expansionToggleButtons;
+        for (var i = 0, count = switchers ? switchers.length : 0; i < count; i++) {
+          var switcher = switchers[i];
+          if (switcher._toggled != expanded) {
+            switcher._toggled = expanded;
+            switcher._updateImage();
+            O$._notifyToggleStateChange(switcher);
+          }
+        }
+
+        var contentHolder = O$(this._contentHolderId);
+        contentHolder.style.display = this._expanded ? "block" : "none";
+        if (this._expanded && !this._contentLoaded) {
+          if (this._useAjax) {
+            O$.requestComponentPortions(this.id, ["content"], null, O$.FoldingPanel._ajaxResponseProcessor);
+          } else {
+            O$.submitEnclosingForm(this);
+          }
+          return;
+        }
+        if (this._direction == "left" || this._direction == "right") {
+          var captionContent = O$(this._captionContentId);
+          captionContent.style.display = this._expanded ? "block" : "none";
+        }
+        if (O$.isOpera()) {
+          var body = document.getElementsByTagName("body")[0];
+          body.style.visibility = "hidden";
+          body.style.visibility = "visible";
+        }
+      },
+
+      expand: function() {
+        this.setExpanded(true);
+      },
+
+      collapse: function() {
+        this.setExpanded(false);
+      }
+    });
 
     O$.initComponent(controlId, {rollover: rolloverClass});
     O$.FoldingPanel._processCaptionStyle(fp);
-
-    fp._expanded = expanded;
-    fp._direction = direction;
-
-    fp.isExpanded = function() {
-      return fp._expanded;
-    };
 
     if (focusable) {
       O$.setupArtificialFocus(fp, focusedClass);
       var contentHolder = O$(fp._contentHolderId);
       var captionContent = O$(fp._captionId);
 
-      fp._prevOnfocus = fp.onfocus;
-      fp._prevOnBlur = fp.onblur;
+      O$.extend(fp, {
+        _prevOnfocus: fp.onfocus,
+        _prevOnBlur: fp.onblur,
 
-      fp._prevOnKeyDown = fp.onkeypress;
-      fp.onkeypress = function (evt) {
-        var e = evt ? evt : window.event;
-        if (fp._prevOnKeyDown)
-          fp._prevOnKeyDown(e);
-        var code = O$.isExplorer() || O$.isOpera() ? e.keyCode : e.charCode;
-        switch (code) {
-          case 32: // white space
-            if (fp._expanded)
-              fp.collapse();
-            else
+        _prevOnKeyDown: fp.onkeypress,
+        onkeypress: function (evt) {
+          var e = evt ? evt : window.event;
+          if (fp._prevOnKeyDown)
+            fp._prevOnKeyDown(e);
+          var code = O$.isExplorer() || O$.isOpera() ? e.keyCode : e.charCode;
+          switch (code) {
+            case 32: // white space
+              if (fp._expanded)
+                fp.collapse();
+              else
+                fp.expand();
+              break;
+            case 43:  // +
               fp.expand();
-            break;
-          case 43:  // +
-            fp.expand();
-            if (O$.isOpera())
-              return false;
-            break;
-          case 45: // -
-            fp.collapse();
-            if (O$.isOpera())
-              return false;
-            break;
-        }
-      };
+              if (O$.isOpera())
+                return false;
+              break;
+            case 45: // -
+              fp.collapse();
+              if (O$.isOpera())
+                return false;
+              break;
+          }
+        },
 
-      fp.onfocus = function(e) {
-        if (this._prevOnfocus)
-          this._prevOnfocus(e);
+        onfocus: function(e) {
+          if (this._prevOnfocus)
+            this._prevOnfocus(e);
 
-        if (focusedContentClass) {
-          O$.setStyleMappings(contentHolder, {focused: focusedContentClass});
+          if (focusedContentClass) {
+            O$.setStyleMappings(contentHolder, {focused: focusedContentClass});
+          }
+          if (focusedCaptionClass) {
+            O$.setStyleMappings(captionContent, {focused: focusedCaptionClass});
+          }
+        },
+        onblur: function(e) {
+          if (this._prevOnBlur)
+            this._prevOnBlur(e);
+          if (focusedContentClass) {
+            O$.setStyleMappings(contentHolder, {focused: null});
+          }
+          if (focusedCaptionClass) {
+            O$.setStyleMappings(captionContent, {focused: null});
+          }
         }
-        if (focusedCaptionClass) {
-          O$.setStyleMappings(captionContent, {focused: focusedCaptionClass});
-        }
-      };
-      fp.onblur = function(e) {
-        if (this._prevOnBlur)
-          this._prevOnBlur(e);
-        if (focusedContentClass) {
-          O$.setStyleMappings(contentHolder, {focused: null});
-        }
-        if (focusedCaptionClass) {
-          O$.setStyleMappings(captionContent, {focused: null});
-        }
-      };
+      });
     }
-
-    fp.setExpanded = function(expanded) {
-      if (this._expanded == expanded)
-        return;
-      this._expanded = expanded;
-      var stateHolder = O$(this._stateHolderId);
-      stateHolder.value = expanded;
-      var switchers = fp._expansionToggleButtons;
-      for (var i = 0, count = switchers ? switchers.length : 0; i < count; i++) {
-        var switcher = switchers[i];
-        if (switcher._toggled != expanded) {
-          switcher._toggled = expanded;
-          switcher._updateImage();
-          O$._notifyToggleStateChange(switcher);
-        }
-      }
-
-      var contentHolder = O$(this._contentHolderId);
-      contentHolder.style.display = this._expanded ? "block" : "none";
-      if (this._expanded && !this._contentLoaded) {
-        if (this._useAjax) {
-          O$.requestComponentPortions(this.id, ["content"], null, O$.FoldingPanel._ajaxResponseProcessor);
-        } else {
-          O$.submitEnclosingForm(this);
-        }
-        return;
-      }
-      if (this._direction == "left" || this._direction == "right") {
-        var captionContent = O$(this._captionContentId);
-        captionContent.style.display = this._expanded ? "block" : "none";
-      }
-      if (O$.isOpera()) {
-        var body = document.getElementsByTagName("body")[0];
-        body.style.visibility = "hidden";
-        body.style.visibility = "visible";
-      }
-    };
-
-    fp.expand = function() {
-      this.setExpanded(true);
-    };
-
-    fp.collapse = function() {
-      this.setExpanded(false);
-    };
 
   },
 
