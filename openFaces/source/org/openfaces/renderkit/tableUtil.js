@@ -368,7 +368,8 @@ O$.Tables = {
         },
         _getRows: function() {
           if (!this._rows) {
-            if (!table._params.scrolling) {
+            var scrolling = table._params.scrolling;
+            if (!scrolling) {
               this._rows = this._tag ? O$.getChildNodesWithNames(this._tag, ["tr"]) : [];
               this._rows.forEach(function(row) {
                 row._table = table;
@@ -405,9 +406,9 @@ O$.Tables = {
                       ? (commonRowAbove ? 1 : 0)
                       : 0;
               var containerRow = immediateRows[containerRowIndex];
-              var leftCellIndex = table._params.scrolling.leftFixedCols ? 0 : undefined;
+              var leftCellIndex = scrolling.leftFixedCols ? 0 : undefined;
               var centerCellIndex = leftCellIndex != undefined ? 1 : 0;
-              var rightCellIndex = table._params.scrolling.rightFixedCols ? centerCellIndex + 1 : undefined;
+              var rightCellIndex = scrolling.rightFixedCols ? centerCellIndex + 1 : undefined;
               function scrollingArea(areaCellIndex, scrollingKind) {
                 var td = containerRow.childNodes[areaCellIndex];
                 td.style.verticalAlign = "top";
@@ -437,7 +438,7 @@ O$.Tables = {
                 if (area._scrollingDiv) {
                   if (scrollingKind == "none") {
                     // leave overflow as specified during rendering
-                  }else if (scrollingKind == "x")
+                  } else if (scrollingKind == "x")
                     area._scrollingDiv.style.overflowX = "scroll";
                   else if (scrollingKind == "y")
                     area._scrollingDiv.style.overflowY = "scroll";
@@ -450,7 +451,7 @@ O$.Tables = {
               }
               var scrollingKinds;
               if (sectionTagName == "thead") scrollingKinds = {left: "none", center: "none", right: "none"};
-              else if (sectionTagName == "tbody") scrollingKinds = {left: "none", center: "both", right: "none"};
+              else if (sectionTagName == "tbody") scrollingKinds = {left: "none", center: scrolling.horizontal ? "both" : "y", right: "none"};
               else if (sectionTagName == "tfoot") scrollingKinds = {left: "none", center: "none", right: "none"};
               else throw "initTableSection: unknown sectionTagName: " + sectionTagName;
               this._leftScrollingArea = leftCellIndex != undefined ? scrollingArea(leftCellIndex, scrollingKinds.left) : null;
@@ -1479,9 +1480,17 @@ O$.Tables = {
     column.getDeclaredWidth = function(tableWidth) {
       if (tableWidth == undefined)
         tableWidth = O$.getElementSize(table).width;
-      var colWidth = O$.calculateNumericCSSValue(O$.getStyleClassProperty(column._className, "width"), tableWidth);
-      if (!colWidth)
-        colWidth = O$.calculateNumericCSSValue(column._colTags[0].width, tableWidth);
+      var widthStyleStr = O$.getStyleClassProperty(this._className, "width");
+      var colWidth = O$.calculateNumericCSSValue(widthStyleStr, tableWidth);
+      if (widthStyleStr && widthStyleStr.indexOf("%") != -1)
+        this._relativeWidth = true;
+      if (!colWidth) {
+        var widthStr = this._colTags[0].width;
+        if (widthStr && widthStr.indexOf("%") != -1)
+          this._relativeWidth = true;
+
+        colWidth = O$.calculateNumericCSSValue(widthStr, tableWidth);
+      }
       return colWidth;
     };
     column.getWidth = function() {
@@ -1873,7 +1882,8 @@ O$.Tables = {
   // -------------------------- TABLE SCROLLING
 
   _initScrolling: function(table) {
-    if (!table._params.scrolling)
+    var scrolling = table._params.scrolling;
+    if (!scrolling)
       throw "O$.Tables._initScrolling can't be invoked on a non-scrollable table";
 
     var delayedInitFunctions = [];
@@ -1889,21 +1899,48 @@ O$.Tables = {
       });
       function areaWidthByColumns(section, areaName, verticalAreaForInitialization) {
         var areaWidth = 0;
-        var tableWidth = O$.getElementSize(table).width;
+        var scrollerWidth = mainScrollingArea._scrollingDiv.offsetWidth - mainScrollingArea._scrollingDiv.clientWidth;
+        var tableWidth = O$.getElementSize(table).width - scrollerWidth;
         var area = section[areaName];
         verticalAreaForInitialization._columns = [];
+        var relativeWidthColumns = [];
+        var nonRelativeWidth = 0;
         area._colTags.forEach(function(colTag) {
           var column = colTag._column;
           verticalAreaForInitialization._columns.push(column);
           column._verticalArea = verticalAreaForInitialization;
           var colWidth = firstInitialization ? column.getDeclaredWidth(tableWidth) : column._explicitWidth;
           if (firstInitialization) {
-            if (!colWidth)
+            if (!colWidth) {
+              column._widthNotSpecified = true;
               colWidth = defaultColWidth;
+            }
+            column._tempWidth = colWidth;
             column.setWidth(colWidth);
           }
+          if (!scrolling.horizontal) {
+            if (column._relativeWidth || column._widthNotSpecified)
+              relativeWidthColumns.push(column);
+            else
+              nonRelativeWidth += colWidth;
+          }
+
           areaWidth += colWidth;
         });
+        if (!scrolling.horizontal) {
+          var remainingWidth = tableWidth - nonRelativeWidth;
+          if (remainingWidth > 0 && relativeWidthColumns.length > 0) {
+            var pixelsPerCol = Math.floor(remainingWidth / relativeWidthColumns.length);
+            relativeWidthColumns.forEach(function(c) {
+              c.setWidth(pixelsPerCol);// todo: respect individual relative column widths
+            });
+          } else {
+            verticalAreaForInitialization._columns.forEach(function(c) {
+              c.setWidth(Math.floor((c._tempWidth / areaWidth) * tableWidth)); 
+            });
+          }
+          areaWidth = tableWidth;
+        }
         var width = areaWidth + "px";
         verticalAreaForInitialization._areas = [];
         [table.header, table.body, table.footer].forEach(function (section) {
@@ -1926,25 +1963,32 @@ O$.Tables = {
         table._leftArea = {
           updateWidth: function() {
             var width = areaWidthByColumns(firstSection, "_leftScrollingArea", table._leftArea);
-            var leftAreaIndex = firstSection._leftScrollingArea._horizontalIndex;
+            var areaIndex = firstSection._leftScrollingArea._horizontalIndex;
             scrollingAreaColTags.forEach(function (tagsForSection) {
-              tagsForSection[leftAreaIndex].style.width = width;
+              tagsForSection[areaIndex].style.width = width;
             });
           }
         };
       }
       table._centerArea = {
         updateWidth: function() {
-          areaWidthByColumns(firstSection, "_centerScrollingArea", table._centerArea);
+          var width = areaWidthByColumns(firstSection, "_centerScrollingArea", table._centerArea);
+          if (!scrolling.horizontal) {
+            var areaIndex = firstSection._centerScrollingArea._horizontalIndex;
+            scrollingAreaColTags.forEach(function (tagsForSection) {
+              tagsForSection[areaIndex].style.width = width;
+            });
+
+          }
         }
       };
       if (firstSection._rightScrollingArea) {
         table._rightArea = {
           updateWidth: function() {
             var width = areaWidthByColumns(firstSection, "_rightScrollingArea", table._rightArea);
-            var rightAreaIndex = firstSection._rightScrollingArea._horizontalIndex;
+            var areaIndex = firstSection._rightScrollingArea._horizontalIndex;
             scrollingAreaColTags.forEach(function (tagsForSection) {
-              tagsForSection[rightAreaIndex].style.width = width;
+              tagsForSection[areaIndex].style.width = width;
             });
           }
         };
@@ -1956,6 +2000,11 @@ O$.Tables = {
       if (table._rightArea)
         table._rightArea.updateWidth();
       firstInitialization = false;
+
+      if (!scrolling.horizontal)
+        O$.listenProperty(table, "width", function(/*width*/) {
+          table._centerArea.updateWidth();
+        });
     }
     alignColumnWidths();
 
@@ -2096,7 +2145,7 @@ O$.Tables = {
     accountForScrollersWidth();
 
     function scrollToPosition() {
-      var scrollPos = table._params.scrolling.position;
+      var scrollPos = scrolling.position;
       mainScrollingArea._scrollingDiv.scrollLeft = scrollPos[0];
       mainScrollingArea._scrollingDiv.scrollTop = scrollPos[1];
     }

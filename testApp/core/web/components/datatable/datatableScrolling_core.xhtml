@@ -14,7 +14,7 @@
 <o:dataTable id="simpleTable" value="#{TestTableDataBean.collection2}" var="row" rowKey="#{row.id}"
              verticalGridLines="1px solid silver">
   <o:scrolling/>
-  <!--<o:columnResizing/>-->
+  <o:columnResizing/>
   <o:multipleRowSelection/>
 
   <o:selectionColumn sortable="true" fixed="false">
@@ -77,7 +77,7 @@
              style="height: 400px;">
   <o:columnResizing/>
   <o:singleRowSelection/>
-  <o:scrolling/>
+  <o:scrolling horizontal="true"/>
 
   <!--<f:facet name="header">-->
   <!--<h:outputText value="Common Header"/>-->
@@ -191,7 +191,7 @@
              multiFooterSeparator="none, 1px solid DarkBlue">
   <o:columnResizing/>
   <o:singleRowSelection/>
-  <o:scrolling/>
+  <o:scrolling horizontal="true"/>
 
   <f:facet name="header">
     <h:outputText value="Common Header"/>

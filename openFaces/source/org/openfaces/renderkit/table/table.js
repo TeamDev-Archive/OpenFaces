@@ -1290,7 +1290,7 @@ O$.Table = {
 
         var widthCompensationColIndex = -1;
         if (retainTableWidth) {
-          var cols = !table._params.scrolling/*.horizontal todo: support horizontal/veritcal params*/
+          var cols = !table._params.scrolling || !table._params.scrolling.horizontal
                   ? table._columns
                   : function(){
             var verticalArea = column._verticalArea;

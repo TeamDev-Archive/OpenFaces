@@ -4163,10 +4163,10 @@ if (!window.O$) {
         var changed = false;
         var currentValues = [];
         propertyNames.forEach(function(propertyName) {
-          var propertyValue = O$.getElementEffectProperty(element, propertyNames[propertyName]);
+          var propertyValue = O$.getElementEffectProperty(element, propertyName);
           currentValues.push(propertyValue);
-          if (this.values[propertyName] != propertyValue) {
-            this.values[propertyName] = propertyValue;
+          if (listener.values[propertyName] != propertyValue) {
+            listener.values[propertyName] = propertyValue;
             changed = true;
           }
         });
