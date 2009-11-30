@@ -14,6 +14,8 @@ import org.openfaces.renderkit.input.DropDownComponentRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.RenderingUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlCommandButton;
@@ -43,8 +45,6 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
         CompositeFilter compositeFilter = (CompositeFilter) component;
 
         AjaxUtil.prepareComponentForAjax(context, component);
-
-        encodeJsLinks(context);
 
         synchronizeFilterRowsWithCriteria(compositeFilter);
         ResponseWriter writer = context.getResponseWriter();
@@ -106,18 +106,19 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
             HtmlPanelGroup addButtonContainer = (HtmlPanelGroup) ComponentUtil.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, FilterRow.ADD_BUTTON_CONTAINER_SUFFIX);
             addButtonContainer.setStyleClass(FilterRow.DEFAULT_ROW_ITEM_CLASS);
             HtmlCommandButton addButton = (HtmlCommandButton) ComponentUtil.createChildComponent(context, addButtonContainer, HtmlCommandButton.COMPONENT_TYPE, FilterRow.BUTTON_SUFFIX);
-            addButton.setValue("+");
-            addButton.setOnclick("O$.Filter.add('" + compositeFilter.getClientId(context) + "'); return false;");
+            addButton.setValue("+");            
+            addButton.setOnclick("O$('"+compositeFilter.getClientId(context)+"').add(); return false;");
             addButton.setStyleClass(FilterRow.DEFAULT_ADD_BUTTON_CLASS);
         }
         rowContainer.encodeAll(context);
     }
 
-    private void encodeJsLinks(FacesContext context) throws IOException {
+    private void renderInitScript( FacesContext context, CompositeFilter compositeFilter) throws IOException {
+
+        ScriptBuilder sb = new ScriptBuilder().initScript(context, compositeFilter, "O$.Filter._init");
+
         String[] libs = getNecessaryJsLibs(context);
-        for (String lib : libs) {
-            ResourceUtil.renderJSLinkIfNeeded(lib, context);
-        }
+        RenderingUtil.renderInitScript(context, sb, libs);
     }
 
     public static String getFilterJsURL(FacesContext facesContext) {
@@ -138,9 +139,16 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
         super.encodeEnd(context, component);
-
+        CompositeFilter compositeFilter = (CompositeFilter) component;
         ResponseWriter writer = context.getResponseWriter();
+        
+      /*  writer.startElement("div", component);
+        writer.writeAttribute("style", "clear:both;", null);
+        writer.endElement("div");*/
+        
         writer.endElement("div");
+        renderInitScript(context, compositeFilter);
+
         writer.flush();
     }
 

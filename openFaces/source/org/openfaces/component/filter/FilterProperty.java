@@ -83,6 +83,9 @@ public class FilterProperty extends OUIComponentBase implements ValueHolder, Ser
     }
 
     public String getName() {
+        if (name == null){
+            return (String) getValue();
+        }
         return name;
     }
 

@@ -27733,7 +27733,7 @@ and it is automatically triggered on any form submission. -->
 
      <attribute>
       <description>
-        A sequence of states the user is allowed to cycle through ().
+        A sequence of states the user is allowed to cycle through.
         Can contain state constants : 'selected', 'unselected' and 'undefined'.
         Evaluates to Iterable of String. If a literal is specified the states must be space delimited.
       </description>

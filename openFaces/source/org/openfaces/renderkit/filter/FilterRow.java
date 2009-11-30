@@ -148,7 +148,7 @@ public class FilterRow implements Serializable {
         addButtonContainer.setStyleClass(DEFAULT_ROW_ITEM_CLASS);
         HtmlCommandButton addButton = (HtmlCommandButton) ComponentUtil.createChildComponent(context, addButtonContainer, HtmlCommandButton.COMPONENT_TYPE, BUTTON_SUFFIX);
         addButton.setValue("+");
-        addButton.setOnclick("O$.Filter.add('" + compositeFilter.getClientId(context) + "'); return false;");
+        addButton.setOnclick("O$('" + compositeFilter.getClientId(context) + "').add(); return false;");
         addButtonContainer.setValueExpression("rendered", new ValueExpressionImpl() {
             public Object getValue(ELContext elContext) {
                 return lastRow;
@@ -163,7 +163,7 @@ public class FilterRow implements Serializable {
         deleteButtonContainer.setStyleClass(DEFAULT_ROW_ITEM_CLASS);
         HtmlCommandButton deleteButton = (HtmlCommandButton) ComponentUtil.createChildComponent(context, deleteButtonContainer, HtmlCommandButton.COMPONENT_TYPE, BUTTON_SUFFIX);
         deleteButton.setValue("-");
-        deleteButton.setOnclick("O$.Filter._remove('" + compositeFilter.getClientId(context) + "'," + index + "); return false;");
+        deleteButton.setOnclick("O$('" + compositeFilter.getClientId(context) + "').remove(" + index + "); return false;");
         deleteButton.setStyleClass(DEFAULT_DELETE_BUTTON_CLASS);
 
         return deleteButton;
@@ -185,7 +185,7 @@ public class FilterRow implements Serializable {
         DropDownItems dropDownItems = (DropDownItems) ComponentUtil.createChildComponent(context, propertySelector, DropDownItems.COMPONENT_TYPE, DROP_DOWN_ITEMS_ID_SUFFIX);
         List<String> properties = compositeFilter.getProperties();
         dropDownItems.setValue(properties);
-        propertySelector.setOnchange("O$.Filter._propertyChange('" + compositeFilter.getClientId(context) + "'," + index + ");");
+        propertySelector.setOnchange("O$('" + compositeFilter.getClientId(context) + "')._propertyChange(" + index + ");");
         propertySelector.setStyleClass(DEFAULT_PROPERTY_CLASS);
         propertySelector.setCustomValueAllowed(false);
         return propertySelector;
@@ -228,7 +228,7 @@ public class FilterRow implements Serializable {
     private DropDownField createOperationSelector(FacesContext context, HtmlPanelGroup operationSelectorContainer, CompositeFilter compositeFilter) {
         DropDownField operationSelector = (DropDownField) ComponentUtil.createChildComponent(context, operationSelectorContainer, DropDownField.COMPONENT_TYPE, DROP_DOWN_ID_SUFFIX);
         DropDownItems dropDownItems = (DropDownItems) ComponentUtil.createChildComponent(context, operationSelector, DropDownItems.COMPONENT_TYPE, DROP_DOWN_ITEMS_ID_SUFFIX);
-        operationSelector.setOnchange("O$.Filter._operationChange('" + compositeFilter.getClientId(context) + "'," + index + ");");
+        operationSelector.setOnchange("O$('" + compositeFilter.getClientId(context) + "')._operationChange(" + index + ");");
         operationSelector.setConverter(compositeFilter.getConditionConverter());
         operationSelector.setStyleClass(DEFAULT_OPERATION_CLASS);
         operationSelector.setStyle("width: 100px;");

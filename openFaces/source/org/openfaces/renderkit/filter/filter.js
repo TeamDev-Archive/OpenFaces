@@ -12,175 +12,179 @@
 
 O$.Filter = {
 
+  _init: function(filterComponentId){
+    
+    var filter = O$(filterComponentId);
+    
+    filter.add = function() {
+      O$.requestComponentPortions(filterComponentId, ["newRow"], JSON.stringify({operation: 'add'}),
+              this._ajaxResponseProcessor);
+    },
+  
+    filter.clear = function() {
+      O$.requestComponentPortions(filterComponentId, ["removedFilter"], JSON.stringify({operation: 'clear'}),
+              this._ajaxResponseProcessor);
+    };
 
-  add: function(filterComponentId) {
-    O$.requestComponentPortions(filterComponentId, ["newRow"], JSON.stringify({operation: 'add'}),
-            O$.Filter._ajaxResponseProcessor);
-  },
+    filter.remove = function(index) {
+      O$.requestComponentPortions(filterComponentId, ["removedRow:" + index], JSON.stringify({operation: 'remove', index: index}),
+              this._ajaxResponseProcessor);
+    };
+  
+    filter._propertyChange = function(index) {
+      O$.requestComponentPortions(filterComponentId, ["operation:" + index], JSON.stringify({operation: 'propertyChange', index: index}),
+              this._ajaxResponseProcessor);
+    };
+  
+    filter._operationChange = function(index) {
+      O$.requestComponentPortions(filterComponentId, ["parameters:" + index], JSON.stringify({operation: 'operationChange', index: index}),
+              this._ajaxResponseProcessor);
+    };
+  
+    filter._rowContainer = function(index) {
+      return O$.byIdOrName(filterComponentId + "--row--" + index);
+    };
+  
+    filter._noFilterRowContainer = function() {
+      return O$.byIdOrName(filterComponentId + "--no_filter");
+    };
+  
+    filter._operationSelectorContainer = function(rowContainer) {
+      return O$.byIdOrName(rowContainer.id + "--operationSelector");
+    };
 
-  clear: function(filterComponentId, index) {
-    O$.requestComponentPortions(filterComponentId, ["removedFilter"], JSON.stringify({operation: 'clear'}),
-            O$.Filter._ajaxResponseProcessor);
-  },
+    filter._inverseContainer = function(rowContainer) {
+      return O$.byIdOrName(rowContainer.id + "--inverse");
+    };
 
-  _remove: function(filterComponentId, index) {
-    O$.requestComponentPortions(filterComponentId, ["removedRow:" + index], JSON.stringify({operation: 'remove', index: index}),
-            O$.Filter._ajaxResponseProcessor);
-  },
+    filter._parametersEditorContainer = function(rowContainer) {
+      return O$.byIdOrName(rowContainer.id + "--parametersEditor");
+    };
 
-  _propertyChange: function(filterComponentId, index) {
-    O$.requestComponentPortions(filterComponentId, ["operation:" + index], JSON.stringify({operation: 'propertyChange', index: index}),
-            O$.Filter._ajaxResponseProcessor);
-  },
+    filter._addButton = function(rowContainer) {
+      return O$.byIdOrName(rowContainer.id + "--add");
+    };
 
-  _operationChange: function(filterComponentId, index) {
-    O$.requestComponentPortions(filterComponentId, ["parameters:" + index], JSON.stringify({operation: 'operationChange', index: index}),
-            O$.Filter._ajaxResponseProcessor);
-  },
-
-
-  _rowContainer: function(component, index) {
-    return O$.byIdOrName(component.id + "--row--" + index);
-  },
-
-  _noFilterRowContainer: function(component) {
-    return O$.byIdOrName(component.id + "--no_filter");
-  },
-
-  _operationSelectorContainer: function(rowContainer) {
-    return O$.byIdOrName(rowContainer.id + "--operationSelector");
-  },
-
-  _inverseContainer: function(rowContainer) {
-    return O$.byIdOrName(rowContainer.id + "--inverse");
-  },
-
-  _parametersEditorContainer: function(rowContainer) {
-    return O$.byIdOrName(rowContainer.id + "--parametersEditor");
-  },
-
-  _addButton: function(rowContainer) {
-    return O$.byIdOrName(rowContainer.id + "--add");
-  },
-
-  _deleteButton: function(rowContainer) {
-    return O$.byIdOrName(rowContainer.id + "--delete");
-  },
-
-  _removeAddButton: function(component) {
-    var rowContainerSrc = component.lastChild;
-    if (!rowContainerSrc) {
-      return;
-    }
-    var addButton = O$.Filter._addButton(rowContainerSrc);
-    rowContainerSrc.removeChild(addButton);
-  },
-  _moveAddButton: function(component) {
-    var lastIndex = component.childNodes.length - 1, preLastIndex = lastIndex - 1;
-    if (lastIndex < 1) {
-      return;
-    }
-    var rowContainerSrc = component.childNodes[lastIndex];
-    var rowContainerDest = component.childNodes[preLastIndex];
-    var addButton = O$.Filter._addButton(rowContainerSrc);
-    rowContainerSrc.removeChild(addButton);
-    addButton.id = rowContainerDest.id + "--add";
-    rowContainerDest.appendChild(addButton);
-  },
-
-  _htmlToNode: function(html) {
-    if (html == "") {
-      return null;
-    }
-    var tempDiv = document.createElement("div");
-    tempDiv.innerHTML = html;
-    var result = tempDiv.childNodes[0];
-    return result;
-  },
-
-  _htmlToNodes: function(html) {
-    if (html == "") {
-      return null;
-    }
-    var tempDiv = document.createElement("div");
-    tempDiv.innerHTML = html;
-    var result = tempDiv.childNodes;
-    return result;
-  },
-
-  _ajaxResponseProcessor: function(component, portionName, portionHTML, portionScripts) {
-
-    var newNode = O$.Filter._htmlToNode(portionHTML);
-    if (portionName.match("newRow")) {
-
-      O$.Filter._removeAddButton(component);
-      component.appendChild(newNode);
-      var noFilterRowContainer = O$.Filter._noFilterRowContainer(component);
-      if (noFilterRowContainer) {
-        component.removeChild(noFilterRowContainer);
+    filter._deleteButton = function(rowContainer) {
+      return O$.byIdOrName(rowContainer.id + "--delete");
+    };
+  
+    filter._removeAddButton = function() {
+      var rowContainerSrc = filter.lastChild;
+      if (!rowContainerSrc) {
+        return;
       }
-    } else if (portionName.match("removedRow")) {
-      if (!newNode) {
-        var index = portionName.split(":")[1];
-        var rowContainer = O$.Filter._rowContainer(component, index);
-        if (component.lastChild && rowContainer.id == component.lastChild.id) {
-          O$.Filter._moveAddButton(component);
+      var addButton = filter._addButton(rowContainerSrc);
+      rowContainerSrc.removeChild(addButton);
+    };
+
+    filter._moveAddButton = function() {
+      var lastIndex = filter.childNodes.length - 1, preLastIndex = lastIndex - 1;
+      if (lastIndex < 1) {
+        return;
+      }
+      var rowContainerSrc = filter.childNodes[lastIndex];
+      var rowContainerDest = filter.childNodes[preLastIndex];
+      var addButton = filter._addButton(rowContainerSrc);
+      rowContainerSrc.removeChild(addButton);
+      addButton.id = rowContainerDest.id + "--add";
+      rowContainerDest.appendChild(addButton);
+    };
+
+    filter._ajaxResponseProcessor = function(filter, portionName, portionHTML, portionScripts) {
+  
+      var newNode = O$.Filter._htmlToNode(portionHTML);
+      if (portionName.match("newRow")) {
+  
+        filter._removeAddButton();
+        filter.appendChild(newNode);
+        var noFilterRowContainer = filter._noFilterRowContainer();
+        if (noFilterRowContainer) {
+          filter.removeChild(noFilterRowContainer);
         }
-        component.removeChild(rowContainer);
-      } else {
-        O$.removeAllChildNodes(component);
-        component.appendChild(newNode);
+      } else if (portionName.match("removedRow")) {
+        if (!newNode) {
+          var index = portionName.split(":")[1];
+          var rowContainer = filter._rowContainer(index);
+          if (filter.lastChild && rowContainer.id == filter.lastChild.id) {
+            filter._moveAddButton();
+          }
+          filter.removeChild(rowContainer);
+        } else {
+          O$.removeAllChildNodes(filter);
+          filter.appendChild(newNode);
+        }
+  
+      } else if (portionName.match("removedFilter")) {
+        O$.removeAllChildNodes(filter);
+        filter.appendChild(newNode);
+
+      } else if (portionName.match("operation")) {
+        var newNodes = O$.Filter._htmlToNodes(portionHTML);
+        var newNode2 = newNodes[1];
+        var index = portionName.split(":")[1];
+        var rowContainer = filter._rowContainer(index);
+        var oldNode1 =
+                filter._inverseContainer(rowContainer);
+        var deleteButton = filter._deleteButton(rowContainer);
+  
+        if (oldNode1 != null) {
+          rowContainer.replaceChild(newNode, oldNode1);
+        } else {
+          rowContainer.insertBefore(newNode, deleteButton);
+        }
+  
+        var oldNode2 =
+               filter._operationSelectorContainer(rowContainer);
+        if (oldNode2 != null) {
+          rowContainer.replaceChild(newNode2, oldNode2);
+        } else {
+          rowContainer.insertBefore(newNode2, deleteButton);
+        }
+        
+        var parametersEditorContainer =
+                filter._parametersEditorContainer(rowContainer);
+        if (parametersEditorContainer) {
+          rowContainer.removeChild(parametersEditorContainer);
+        }
+  
+      } else if (portionName.match("parameters")) {
+  
+        var index = portionName.split(":")[1];
+        var rowContainer = filter._rowContainer(index);
+        var oldNode =
+                filter._parametersEditorContainer(rowContainer);
+        if (oldNode != null) {
+          rowContainer.replaceChild(newNode, oldNode);
+        } else {
+          var deleteButton = filter._deleteButton(rowContainer);
+          rowContainer.insertBefore(newNode, deleteButton);
+        }
+  
       }
+      O$.executeScripts(portionScripts);
+    };
+  },
 
-    } else if (portionName.match("removedFilter")) {
-      O$.removeAllChildNodes(component);
-      component.appendChild(newNode);
-    } else if (portionName.match("operation")) {
-      var newNodes = O$.Filter._htmlToNodes(portionHTML);
-      var newNode2 = newNodes[1];
-      var index = portionName.split(":")[1];
-      var rowContainer = O$.Filter._rowContainer(component, index);
-      var oldNode1 =
-              O$.Filter._inverseContainer(rowContainer);
-      var deleteButton = O$.Filter._deleteButton(rowContainer);
-
-      if (oldNode1 != null) {
-        rowContainer.replaceChild(newNode, oldNode1);
-      } else {
-        rowContainer.insertBefore(newNode, deleteButton);
+  _htmlToNode : function(html) {
+      if (html == "") {
+        return null;
       }
+      var tempDiv = document.createElement("div");
+      tempDiv.innerHTML = html;
+      var result = tempDiv.childNodes[0];
+      return result;
+    },
 
-      var oldNode2 =
-              O$.Filter._operationSelectorContainer(rowContainer);
-      if (oldNode2 != null) {
-        rowContainer.replaceChild(newNode2, oldNode2);
-      } else {
-        rowContainer.insertBefore(newNode2, deleteButton);
+    _htmlToNodes : function(html) {
+      if (html == "") {
+        return null;
       }
-      
-      var parametersEditorContainer =
-              O$.Filter._parametersEditorContainer(rowContainer);
-      if (parametersEditorContainer) {
-        rowContainer.removeChild(parametersEditorContainer);
-      }
-
-    } else if (portionName.match("parameters")) {
-
-      var index = portionName.split(":")[1];
-      var rowContainer = O$.Filter._rowContainer(component, index);
-      var oldNode =
-              O$.Filter._parametersEditorContainer(rowContainer);
-      if (oldNode != null) {
-        rowContainer.replaceChild(newNode, oldNode);
-      } else {
-        var deleteButton = O$.Filter._deleteButton(rowContainer);
-        rowContainer.insertBefore(newNode, deleteButton);
-      }
-
+      var tempDiv = document.createElement("div");
+      tempDiv.innerHTML = html;
+      var result = tempDiv.childNodes;
+      return result;
     }
-    O$.executeScripts(portionScripts);
-  }
-
 
 }
 

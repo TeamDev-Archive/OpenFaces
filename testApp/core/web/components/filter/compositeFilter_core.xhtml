@@ -10,7 +10,7 @@
 
   <h1>Manual attachment to DataTable</h1>
 
-  <h:commandButton onclick="O$.Filter.add('form1:cf'); return false;" value="Add Filter"/>
+  <h:commandButton onclick="O$('form1:cf').add(); return false;" value="Add Filter"/>
 
   <o:loadBundle basename="org.openfaces.testapp.filter.MessageResources" var="messages"/>
 
@@ -18,7 +18,7 @@
   <o:compositeFilter id="cf" value="#{CompositeFilterBean.criteria}" labels="#{messages}">
     <o:filterProperty name="firstName" value="#{CompositeFilterBean.firstNameLabel}" type="text"
                       dataProvider="#{CompositeFilterBean.names}" caseSensitive="false"/>
-    <o:filterProperty name="age" value="Age" type="number" rendered="#{CompositeFilterBean.ageRendered}"/>
+    <o:filterProperty value="age" type="number" rendered="#{CompositeFilterBean.ageRendered}"/>
     <o:filterProperty name="dateOfBirth" value="Date Of Birth" type="date" pattern="dd-MM-yyyy" timeZone="GMT"/>
     <o:filterProperty name="placeOfBirth.country" value="Country" type="select"
                       dataProvider="#{CompositeFilterBean.countries}"
@@ -28,7 +28,7 @@
 
   <br/>
   <h:commandButton action="sbmt" value="Submit"/>
-  <h:commandButton onclick="O$.Filter.clear('form1:cf'); return false;" value="Clear Filter"/>
+  <h:commandButton onclick="O$.('form1:cf').clear(); return false;" value="Clear Filter"/>
   <h:commandButton action="#{CompositeFilterBean.clearFilter}" value="Clear and Submit Filter"/>
 
   <o:dataTable id="table1" value="#{CompositeFilterBean.filteredUsers}" var="user">
