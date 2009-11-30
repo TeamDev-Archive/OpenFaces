@@ -646,6 +646,7 @@
   background: white;
   width: 140px;
   height: 20px;
+  table-layout: fixed;
 }
 
 .o_spinner {
