@@ -752,7 +752,7 @@ O$.Table = {
     for (var cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
       var cell = cells[cellIndex];
       var cellSpan = O$.Tables._getCellColSpan(cell);
-      var colIndex = cell._colIndex;
+      var colIndex = cell._column._index;
       if ((colIndex != undefined) && (O$.findValueInArray(colIndex, table._selectionColumnIndexes) != -1))
         O$.Table._initSelectionCell(cell);
       colIndex += cellSpan;
@@ -1137,69 +1137,61 @@ O$.Table = {
                          sortedColClass, sortedColHeaderClass, sortedColBodyClass, sortedColFooterClass,
                          sortingImagesToPreload) {
     var table = O$(tableId);
+    O$.assert(table, "Couldn't find table by id: " + tableId);
+
     table._sortedColIndex = sortedColIndex;
     table.sortedColClass = sortedColClass;
     table.sortedColBodyClass = sortedColBodyClass;
-    O$.assert(table, "Couldn't find table by id: " + tableId);
+    table._sortableHeaderRolloverClass = sortableHeaderRolloverClass;
 
     O$.preloadImages(sortingImagesToPreload);
 
-    var column;
-    for (var i = 0, count = table._columns.length; i < count; i++) {
-      var columnSortable = columnSortableFlags[i];
+    table._columns.forEach(function(column) {
+      var columnSortable = columnSortableFlags[column._index];
       if (!columnSortable)
-        continue;
-      column = table._columns[i];
+        return;
+
       var colHeader = column.header ? column.header._cell : null;
       if (!colHeader)
-        continue;
+        return;
 
       O$.setStyleMappings(colHeader, {sortableHeaderClass: sortableHeaderClass});
-      O$.Table._setCellProperty(colHeader, "_table", table);
-      O$.Table._setCellProperty(colHeader, "_index", i);
-      var clickHandler = function() {
-        if (this._prevOnclick)
-          this._prevOnclick();
+
+      O$.addEventHandler(colHeader, "click", function() {
         var focusField = O$(table.id + "::focused");
         if (focusField)
           focusField.value = true; // set true explicitly before it gets auto-set when the click bubbles up (JSFC-801)
-        O$.Table._toggleColumnSorting(this._table, this._index);
-      };
+        O$.Table._toggleColumnSorting(table, column._index);
+      });
 
-      colHeader._prevOnclick = colHeader.onclick;
-      colHeader.onclick = clickHandler;
-
-      table._sortableHeaderRolloverClass = sortableHeaderRolloverClass;
-      colHeader._headerMouseOver = function() {
-        O$.setStyleMappings(this, {sortedHeaderRolloverClass: table._sortableHeaderRolloverClass});
-      };
-      colHeader._headerMouseOut = function() {
-        O$.setStyleMappings(this, {sortedHeaderRolloverClass: null});
-      };
-      O$.addEventHandlerSimple(colHeader, "mouseover", "_headerMouseOver", colHeader);
-      O$.addEventHandlerSimple(colHeader, "mouseout", "_headerMouseOut", colHeader);
-    }
+      O$.addEventHandler(colHeader, "mouseover", function() {
+        O$.setStyleMappings(colHeader, {sortedHeaderRolloverClass: table._sortableHeaderRolloverClass});
+      });
+      O$.addEventHandler(colHeader, "mouseout", function() {
+        O$.setStyleMappings(colHeader, {sortedHeaderRolloverClass: null});
+      });
+    });
 
     if (sortedColIndex != -1) {
-      column = table._columns[table._sortedColIndex];
+      var sortedColumn = table._columns[table._sortedColIndex];
       // Applying style to cells is needed for sorted column styles to have priority over
       // even/odd row styles - for backward compatibility with versions earlier than 1.2.2 (JSFC-2884)
-      column._forceUsingCellStyles = true;
+      sortedColumn._forceUsingCellStyles = true;
 
-      var headerCell = (column.header) ? column.header._cell : null;
+      var headerCell = (sortedColumn.header) ? sortedColumn.header._cell : null;
       if (headerCell)
         O$.Tables._setCellStyleMappings(headerCell, {
-          sortedColClass: (table._params.forceUsingCellStyles || column._useCellStyles) ? sortedColClass : null,
+          sortedColClass: (table._params.forceUsingCellStyles || sortedColumn._useCellStyles) ? sortedColClass : null,
           sortedColHeaderClass: sortedColHeaderClass});
 
-      O$.setStyleMappings(column, {sortedColClass: table.sortedColClass});
-      O$.setStyleMappings(column.body, {sortedColBodyClass: table.sortedColBodyClass});
-      column._updateStyle();
+      O$.setStyleMappings(sortedColumn, {sortedColClass: table.sortedColClass});
+      O$.setStyleMappings(sortedColumn.body, {sortedColBodyClass: table.sortedColBodyClass});
+      sortedColumn._updateStyle();
 
-      var footerCell = column.footer ? column.footer._cell : null;
+      var footerCell = sortedColumn.footer ? sortedColumn.footer._cell : null;
       if (footerCell)
         O$.Tables._setCellStyleMappings(footerCell, {
-          sortedColClass: (table._params.forceUsingCellStyles || column._useCellStyles) ? sortedColClass : null,
+          sortedColClass: (table._params.forceUsingCellStyles || sortedColumn._useCellStyles) ? sortedColClass : null,
           sortedColFooterClass: sortedColFooterClass});
     }
 
@@ -1312,7 +1304,7 @@ O$.Table = {
           for (var idx = cols.length - 1; idx >= 0; idx--) {
             var c = cols[idx];
             if (c._resizable) {
-              widthCompensationColIndex = c._colIndex;
+              widthCompensationColIndex = c._index;
               break;
             }
           }
@@ -1396,7 +1388,7 @@ O$.Table = {
           var nextCol;
           if (this._column._widthCompensationColIndex != -1) {
             var nextColWidth = colWidths[this._column._widthCompensationColIndex];
-            var thisColWidth = colWidths[this._column._colIndex];
+            var thisColWidth = colWidths[this._column._index];
             thisAndNextColWidth = thisColWidth + nextColWidth;
             nextCol = table._columns[this._column._widthCompensationColIndex];
             var maxWidthForThisCol = thisAndNextColWidth - nextCol._minResizingWidth;
@@ -1408,7 +1400,7 @@ O$.Table = {
           }
 
           this._column.setWidth(newColWidth);
-          colWidths[this._column._colIndex] = newColWidth;
+          colWidths[this._column._index] = newColWidth;
 
           if (!table._params.scrolling) {
             if (!retainTableWidth)

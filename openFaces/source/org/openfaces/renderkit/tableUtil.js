@@ -235,7 +235,7 @@ O$.Tables = {
     }
 
    rowsToInsert.forEach(function(f){
-     if (!f._rowNode && f.nodeName == "TR") f._rowNode = f;
+     if (!f._rowNode && f.nodeName && f.nodeName.toUpperCase() == "TR") f._rowNode = f;
    });
 
     var visibleInsertedRows;
@@ -659,9 +659,52 @@ O$.Tables = {
   },
 
   _initBodyRow: function(row, table, rowIndex, visibleRowsBefore) {
-    row._table = table;
-    row._index = rowIndex;
-    row._selected = false;
+    O$.extend(row, {
+      _table: table,
+      _index: rowIndex,
+      _selected: false,
+
+      _isVisible: function () {
+        return this._visible;
+      },
+      _setVisible: function (visible) {
+        if (this._visible == visible)
+          return;
+        this._visible = visible;
+        [this._leftRowNode, this._rowNode, this._rightRowNode].forEach(function(n) {
+          if (!n) return;
+          if (n.style.display) n.style.display = "";
+          O$.setStyleMappings(n, {rowVisibilityStyle: visible ? "" : "o_hiddenRow"});
+        });
+        O$.Tables._updateCellWrappersStyleForRow(this);
+      },
+
+      _mouseOverHandler: function() {
+        if (this._row)
+          this._row._mouseIsOver = true;
+        else
+          this._mouseIsOver = true;
+        this._updateStyle();
+      },
+
+      _mouseOutHandler: function() {
+        if (this._row)
+          this._row._mouseIsOver = false;
+        else
+          this._mouseIsOver = false;
+        this._updateStyle();
+      },
+
+      _cellFromPoint: function(x, y, relativeToNearestContainingBlock, cachedDataContainer) {
+        for (var cellIndex = 0, cellCount = row._cells.length; cellIndex < cellCount; cellIndex++) {
+          var cell = row._cells[cellIndex];
+          var cellRect = O$.getElementBorderRectangle(cell, relativeToNearestContainingBlock, cachedDataContainer);
+          if (cellRect.containsPoint(x, y))
+            return cell;
+        }
+        return null;
+      }
+    });
     if (!row._rowNode) {
       if (!row.nodeName || row.nodeName.toLowerCase() != "tr")
         throw "O$.Tables._initBodyRow: row._rowNode must be initialized for synthetic (scrollable-version) rows";
@@ -673,14 +716,14 @@ O$.Tables = {
     row._mouseIsOver = false;
     if (!table._params.body.noDataRows && table._params.body.rolloverRowClassName) {
       function addEventHandler(row, event, handler) {
-        O$.addEventHandlerSimple(row._rowNode, event, handler);
+        O$.addEventHandler(row._rowNode, event, handler);
         if (row._leftRowNode)
-          O$.addEventHandlerSimple(row._leftRowNode, event, handler);
+          O$.addEventHandler(row._leftRowNode, event, handler);
         if (row._rightRowNode)
-          O$.addEventHandlerSimple(row._rightRowNode, event, handler);
+          O$.addEventHandler(row._rightRowNode, event, handler);
       }
-      addEventHandler(row, "mouseover", "_mouseOverHandler");
-      addEventHandler(row, "mouseout", "_mouseOutHandler");
+      addEventHandler(row, "mouseover", function(){row._mouseOverHandler();});
+      addEventHandler(row, "mouseout", function(){row._mouseOutHandler();});
     }
     function processHiddenRowClass(row) {
       if (!row) return;
@@ -692,47 +735,6 @@ O$.Tables = {
     processHiddenRowClass(row._leftRowNode);
     processHiddenRowClass(row._rowNode);
     processHiddenRowClass(row._rightRowNode);
-
-    row._isVisible = function () {
-      return this._visible;
-    };
-    row._setVisible = function (visible) {
-      if (this._visible == visible)
-        return;
-      this._visible = visible;
-      [this._leftRowNode, this._rowNode, this._rightRowNode].forEach(function(n) {
-        if (!n) return;
-        if (n.style.display) n.style.display = "";
-        O$.setStyleMappings(n, {rowVisibilityStyle: visible ? "" : "o_hiddenRow"});
-      });
-      O$.Tables._updateCellWrappersStyleForRow(this);
-    };
-
-    row._mouseOverHandler = function() {
-      if (this._row)
-        this._row._mouseIsOver = true;
-      else
-        this._mouseIsOver = true;
-      this._updateStyle();
-    };
-
-    row._mouseOutHandler = function() {
-      if (this._row)
-        this._row._mouseIsOver = false;
-      else
-        this._mouseIsOver = false;
-      this._updateStyle();
-    };
-
-    row._cellFromPoint = function(x, y, relativeToNearestContainingBlock, cachedDataContainer) {
-      for (var cellIndex = 0, cellCount = row._cells.length; cellIndex < cellCount; cellIndex++) {
-        var cell = row._cells[cellIndex];
-        var cellRect = O$.getElementBorderRectangle(cell, relativeToNearestContainingBlock, cachedDataContainer);
-        if (cellRect.containsPoint(x, y))
-          return cell;
-      }
-      return null;
-    };
 
     O$.Tables._initRow(row);
 
@@ -874,14 +876,14 @@ O$.Tables = {
       return cell ? cell : null;
     };
     row._removeColumn = function(column) {
-      var colIndex = column._colIndex;
+      var colIndex = column._index;
       var cellsByColumns = row._cellsByColumns;
       var cell = cellsByColumns[colIndex];
       while (!cell && colIndex >= 0) {
         cell = cellsByColumns[--colIndex];
       }
       if (!cell)
-        throw "row._removeColumn: Can't find cell to remove: column._colIndex = " + column._colIndex;
+        throw "row._removeColumn: Can't find cell to remove: column._index = " + column._index;
       cell.parentNode.removeChild(cell);
       row._cells = row.cells;
       if (cell._column != column) {
@@ -1068,7 +1070,7 @@ O$.Tables = {
                 if (cell) {
                   O$.Tables._setCellRightBorder(cell, verticalSeparator);
                   if (!col.subColumns && subHeaderRowCells)
-                    O$.Tables._setCellRightBorder(subHeaderRowCells[col._colIndex], verticalSeparator);
+                    O$.Tables._setCellRightBorder(subHeaderRowCells[col._index], verticalSeparator);
                 }
                 if (col.subColumns)
                   setRightBorderForThisGroup(col.subColumns[col.subColumns.length - 1]);
@@ -1169,13 +1171,13 @@ O$.Tables = {
         var correctedRowIndex = rowIndex + cell.rowSpan - 1;
         var displayGridLineUnderBottomRow = !!table._params.scrolling;
         var borderBottom = (correctedRowIndex < (displayGridLineUnderBottomRow ? rowCount : rowCount - 1))
-                ? tableBody._getBorderBottomForCell(rowIndex, column._colIndex, cell)
+                ? tableBody._getBorderBottomForCell(rowIndex, column._index, cell)
                 : "0px none white";
         O$.Tables._setCellStyleProperty(cell, "borderBottom", borderBottom);
-        if (column._colIndex != colCount - 1) {
+        if (column._index != colCount - 1) {
           var rightBorder = column.body._rightBorder;
           if (table.body._overriddenVerticalGridlines) {
-            var overriddenGridlineStyle = table.body._overriddenVerticalGridlines[column._colIndex];
+            var overriddenGridlineStyle = table.body._overriddenVerticalGridlines[column._index];
             if (overriddenGridlineStyle)
               rightBorder = overriddenGridlineStyle;
           }
@@ -1412,7 +1414,7 @@ O$.Tables = {
 
   _initColumn: function(column, colTagArray, colIndex) {
     column._colTags = colTagArray;
-    column._colIndex = colIndex;
+    column._index = colIndex;
 
     var table = column._table;
 
@@ -1500,7 +1502,7 @@ O$.Tables = {
 
   _initHeaderCell: function(cell, column) {
     cell._column = column;
-    cell._colIndex = column._colIndex; // todo: review cell._colIndex usages. Remove cell._colIndex property and use appropriate column's property
+    cell._colIndex = column._index; // todo: review cell._colIndex usages. Remove cell._colIndex property and use appropriate column's property
 
     cell._updateStyle = function() {
       O$.Tables._applySimulatedColStylesToCell(cell);
@@ -1515,7 +1517,7 @@ O$.Tables = {
 
   _initSubHeaderCell: function(cell, column) {
     cell._column = column;
-    cell._colIndex = column._colIndex;
+    cell._colIndex = column._index;
 
     cell._updateStyle = function() {
       O$.Tables._applySimulatedColStylesToCell(cell);
@@ -1531,7 +1533,7 @@ O$.Tables = {
 
   _initFooterCell: function(cell, column) {
     cell._column = column;
-    cell._colIndex = column._colIndex;
+    cell._colIndex = column._index;
 
     cell._updateStyle = function() {
       O$.Tables._applySimulatedColStylesToCell(cell);
@@ -1552,7 +1554,7 @@ O$.Tables = {
       var row = cell._row;
       var table = row._table;
       var rowIndex = row._index;
-      var colIndex = column._colIndex;
+      var colIndex = column._index;
 
       if (!table._params.body.noDataRows) {
         O$.Tables._applySimulatedColStylesToCell(cell);
@@ -1599,14 +1601,14 @@ O$.Tables = {
 
     var useCellStylesToAvoidApplyingFirstColStyleToCommonHeader =
             !table._params.scrolling && // this issue is not applicable to scrollable tables
-            column._colIndex == 0 && (
+            column._index == 0 && (
                     (table._params.header && table._params.header.commonHeader) ||
                     (table._params.footer && table._params.footer.commonHeader)
                     );
 
     // cell styles should be used instead of col tag style for first column if there is a no-data message row,
     // otherwise first col style will be applied to the no-data message row, which shouldn't be the case (JSFC-2890)
-    var useFirstColumnCellStylesWhenNoData = table._params.body.noDataRows && column._colIndex == 0;
+    var useFirstColumnCellStylesWhenNoData = table._params.body.noDataRows && column._index == 0;
 
     return useCellStylesToAvoidApplyingFirstColStyleToCommonHeader || useFirstColumnCellStylesWhenNoData;
   },
@@ -2011,7 +2013,7 @@ O$.Tables = {
         var areaHeight = 0;
         var rows = section._getRows();
         rows.forEach(function (row) {
-          var artificialRow = row.nodeName != "TR";
+          var artificialRow = !row.nodeName || row.nodeName.toUpperCase() != "TR";
           if (!artificialRow) return;
           var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
           function setRowHeight(rowNode, height) {
@@ -2046,7 +2048,7 @@ O$.Tables = {
           // setting row height is not enough for Chrome and Safari, setting cell heights solves this issue
           for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
             var row = rows[rowIndex];
-            var artificialRow = row.nodeName != "TR";
+            var artificialRow = !row.nodeName || row.nodeName.toUpperCase() != "TR";
             if (!artificialRow) continue;
             row._cells.forEach(function (cell) {
               var rowSpan = cell.rowSpan ? cell.rowSpan : 1;

@@ -1192,15 +1192,10 @@ if (!window.O$) {
 
   // ----------------- EVENT UTILITIES ---------------------------------------------------
 
-  O$.getEventHandlerFunction = function(handlerName, handlerArgs, mainObj) {
+  O$.getEventHandlerFunction = function(handlerName, handlerArgs, mainObj) { // todo: rework usages of this function with explicit closure creation
+    var argString = handlerArgs ? ("[" + handlerArgs + "]") : "arguments";
     var handlerFunction;
-
-    if (!O$.getEventHandlerFunction.apply) {
-      eval("handlerFunction = function() { return arguments.callee.prototype._ownObj." + handlerName + "(" + (handlerArgs ? handlerArgs : "") + "); }");
-    } else {
-      var argString = handlerArgs ? ("[" + handlerArgs + "]") : "arguments";
-      eval("handlerFunction = function() { return arguments.callee.prototype._ownObj." + handlerName + ".apply(arguments.callee.prototype._ownObj," + argString + "); }");
-    }
+    eval("handlerFunction = function() { return arguments.callee.prototype._ownObj." + handlerName + ".apply(arguments.callee.prototype._ownObj," + argString + "); }");
     handlerFunction.prototype._ownObj = mainObj;
     return handlerFunction;
   };
@@ -1325,15 +1320,6 @@ if (!window.O$) {
   };
 
   O$.invokeOnce(O$.initDocumentMouseClickListeners, "O$.initDocumentMouseClickListeners");
-
-  /*
-   * The last "receiverThisRef" parameter can be omitted if it's acceptable that "this" variable in the
-   * event handler refer to eventSource.
-   */
-  O$.addEventHandlerSimple = function(eventSource, eventName, handlerFunctionName, receiverThisRef) {
-    var handler = O$.getEventHandlerFunction(handlerFunctionName, null, receiverThisRef ? receiverThisRef : eventSource);
-    O$.addEventHandler(eventSource, eventName, handler);
-  };
 
   /*
    * eventName should be without the "on" prefix, for example: "change", "click", etc.
@@ -2274,12 +2260,12 @@ if (!window.O$) {
         O$.hideFocusOutline(this);
     };
 
-    component._blockOutlineUpdate = function() {
-      this._outlineUpdateBlocked = true;
-      this._focusedBeforeBlocking = this._focused;
+    function blockOutlineUpdate() {
+      component._outlineUpdateBlocked = true;
+      component._focusedBeforeBlocking = this._focused;
     };
 
-    component._unblockOutlineUpdate = function () {
+    function unblockOutlineUpdate() {
       if (!O$._tableBlurCounter)
         O$._tableBlurCounter = 0;
       if (!O$.isMozillaFF()) {
@@ -2367,27 +2353,6 @@ if (!window.O$) {
 
     component._focusControl = focusControl;
 
-    component._focusOnClick = function(evt) {
-      if (window.getSelection) {
-        if (window.getSelection() != "")
-          return; // don't switch focus to make text selection possible under FF (JSFC-1134)
-      }
-      var e = evt ? evt : event;
-      if (this._focused)
-        return;
-
-      var target = (e != null)
-              ? (e.target ? e.target : e.srcElement)
-              : null;
-      if (target.id && target.id == this.id)
-        return;
-      if (O$.isControlFocusable(target))
-        return;
-      this._preventPageScrolling = true;
-      this.focus();
-      this._preventPageScrolling = false;
-    };
-
     component._focusable = true;
     component.focus = function() {
       if (this._preventPageScrolling) {
@@ -2409,10 +2374,29 @@ if (!window.O$) {
       this._focusControl.blur();
     };
 
-    O$.addEventHandlerSimple(component, "click", "_focusOnClick");
-    O$.addEventHandlerSimple(component, "mousedown", "_blockOutlineUpdate");
-    O$.addEventHandlerSimple(component, "mouseup", "_unblockOutlineUpdate");
-    O$.addEventHandlerSimple(component, "mouseout", "_unblockOutlineUpdate");
+    O$.addEventHandler(component, "click", function(evt) {
+      if (window.getSelection) {
+        if (window.getSelection() != "")
+          return; // don't switch focus to make text selection possible under FF (JSFC-1134)
+      }
+      var e = evt ? evt : event;
+      if (component._focused)
+        return;
+
+      var target = (e != null)
+              ? (e.target ? e.target : e.srcElement)
+              : null;
+      if (target.id && target.id == component.id)
+        return;
+      if (O$.isControlFocusable(target))
+        return;
+      component._preventPageScrolling = true;
+      component.focus();
+      component._preventPageScrolling = false;
+    });
+    O$.addEventHandler(component, "mousedown", blockOutlineUpdate);
+    O$.addEventHandler(component, "mouseup", unblockOutlineUpdate);
+    O$.addEventHandler(component, "mouseout", unblockOutlineUpdate);
 
     component.parentNode.insertBefore(focusControl, component);
 
