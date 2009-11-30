@@ -234,6 +234,10 @@ O$.Tables = {
       }
     }
 
+   rowsToInsert.forEach(function(f){
+     if (!f._rowNode && f.nodeName == "TR") f._rowNode = f;
+   });
+
     var visibleInsertedRows;
     if (!this._params.invisibleRowsAllowed)
       visibleInsertedRows = rowsToInsert.length;

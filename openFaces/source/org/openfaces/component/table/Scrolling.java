@@ -68,7 +68,7 @@ public class Scrolling extends UIComponentBase implements ComponentConfigurator 
     }
 
     public boolean isHorizontal() {
-        return ValueBindings.get(this, "horizontal", horizontal, true);
+        return ValueBindings.get(this, "horizontal", horizontal, false);
     }
 
     public void setHorizontal(boolean horizontal) {
