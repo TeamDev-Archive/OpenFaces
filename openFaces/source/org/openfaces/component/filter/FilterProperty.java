@@ -44,6 +44,11 @@ public class FilterProperty extends OUIComponentBase implements ValueHolder, Ser
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
+    
+    @Override
+    public String getRendererType() {
+        return null;
+    }
 
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);

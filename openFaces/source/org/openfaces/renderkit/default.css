@@ -4,6 +4,16 @@
 
 .o_default_css_marker {}
 
+.clearfix {zoom:1;}
+.clearfix:after {
+	content: ' ';
+	clear: both;
+	display: block;
+	width: 0; height: 0;
+	overflow: hidden;
+	font-size: 0;
+}
+
 .o_ajax_message {
   width: 1px;
   border: 1px solid #939393;
