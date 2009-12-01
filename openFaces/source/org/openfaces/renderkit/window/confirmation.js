@@ -219,7 +219,7 @@ O$.Confirmation = {
     this._okButton.className = okButtonStyle;
     this._cancelButton.className = cancelButtonStyle;
 
-    O$.setupHoverStateFunction(this._okButton, function(mouseInside) {
+    O$.setupHoverStateFunction(this, function(mouseInside) {
       if (mouseInside) {
         if (this._icon) this._icon.className = rolloverIconAreaStyle;
         this._content.className = rolloverContentStyle;

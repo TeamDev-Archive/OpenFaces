@@ -135,12 +135,14 @@ public class InputTextTest extends OpenFacesTestCase {
         // rollover elements
         // first input
         firstInput.mouseOver();
+        firstInput.mouseMove();
         firstInput.assertStyle("background: red; border: 4px dotted darkblue; color: brown; font-weight: lighter");
         firstInput.assertWidth(160, 8);
         firstInput.mouseOut();
 
         // second input
         secondInput.mouseOver();
+        secondInput.mouseMove();
         secondInput.assertStyle("background: red; border: 4px dotted darkblue; color: brown; font-weight: bold");
         secondInput.assertWidth(160, 8);
         secondInput.mouseOut();
@@ -252,6 +254,7 @@ public class InputTextTest extends OpenFacesTestCase {
 
         // check rollover style
         inputText.mouseOver();
+        inputText.mouseMove();
         inputText.assertStyle("border: 2px dotted darkblue");
         inputText.assertWidth(230, 4);
         inputText.mouseOut();

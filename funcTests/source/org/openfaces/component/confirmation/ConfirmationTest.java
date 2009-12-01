@@ -323,6 +323,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
 
         confirmation.okButton().mouseOut();
         confirmation.cancelButton().mouseOver();
+        confirmation.cancelButton().mouseMove();
 
         confirmation.cancelButton().assertStyle("border: 3px dashed black");
         confirmation.details().assertStyle("font-weight: bold");
