@@ -16,111 +16,75 @@ O$.InputText = {
                   promptTextClass,
                   rolloverClass,
                   focusedClass,
-                  isDisable) {
-    var inputText = O$(componentId);
-    inputText._statePrompt = O$(componentId + "::statePrompt");
-    inputText._promptText = promptText;
-    
-    function getClassName(param) {
-      return (param == null) ? "" : param;
-    }
+                  disabled) {
+    var inputText = O$.initComponent(componentId, {
+      rollover: !disabled ? rolloverClass : null,
+      focused: focusedClass
+    }, {
+      getValue: function() {
+        if (inputText._focused)
+          return inputText.value;
 
-    inputText._focusedClass = getClassName(focusedClass);
-    inputText._rolloverClass = getClassName(rolloverClass);
-    inputText._promptTextClass = getClassName(promptTextClass);
+        if (statePrompt.value == "true")
+          return "";
+        return inputText.value;
+      },
 
-    inputText._addInClassName = function (className) {
-      if (inputText.className.length > 0) {
-        inputText.className = inputText.className + " " + className;
-      } else {
-        inputText.className = className;
+      setValue: function(value) {
+        if (!value)
+          value = "";
+        inputText.value = value;
+        if (inputText._focused)
+          return;
+        statePrompt.value = !value;
+        O$.setStyleMappings(inputText, {prompt: (value ? null : promptTextClass)});
+        if (!value && promptText)
+            inputText.value = promptText;
       }
-    }; // todo: replace usages of these methods with O$.setStyleMappings
-    inputText._removeOfClassName = function (className) {
-      if (inputText.className.length > 0) {
-        inputText.className = inputText.className.replace(className, "");
-      }
-    };
 
-    if (inputText._promptText) {
+    });
+    var statePrompt = O$(componentId + "::statePrompt");
+
+    if (promptText) {
       if (inputText.value.length == 0 ||
-          ((inputText.value == inputText._promptText) && inputText._statePrompt.value == "true")) {   // needed for FireFox, when press F5 key
-        inputText.value = inputText._promptText;
-        inputText._addInClassName(inputText._promptTextClass);
-        inputText._statePrompt.value = true;
+          ((inputText.value == promptText) && statePrompt.value == "true")) {   // needed for FireFox, when press F5 key
+        inputText.value = promptText;
+        O$.setStyleMappings(inputText, {prompt: promptTextClass});
+        statePrompt.value = true;
       }
     } else
-      inputText._statePrompt.value = false;
+      statePrompt.value = false;
 
-    inputText.getValue = function() {
-      if (inputText._focused)
-        return inputText.value;
-
-      if (inputText._statePrompt.value == "true")
-        return "";
-      return inputText.value;
-    };
-
-    inputText.setValue = function(value) {
-      if (!value)
-        value = "";
-      inputText.value = value;
-      if (inputText._focused)
-        return;
-      inputText._statePrompt.value = !value;
-      if (value)
-        inputText._removeOfClassName(inputText._promptTextClass);
-      else {
-        inputText._addInClassName(inputText._promptTextClass);
-        if (inputText._promptText)
-          inputText.value = inputText._promptText;
-      }
-    };
 
     O$.addEventHandler(inputText, "focus", function() {
       inputText._focused = true;
-      if (focusedClass)
-        inputText._addInClassName(inputText._focusedClass);
 
-      if (inputText._promptText) {
-        if ((inputText.value == inputText._promptText) && (inputText._statePrompt.value == "true")) {
+      if (promptText) {
+        if ((inputText.value == promptText) && (statePrompt.value == "true")) {
           inputText.value = "";
-          if (promptTextClass)
-            inputText._removeOfClassName(inputText._promptTextClass);
-          inputText._statePrompt.value = false;
+          O$.setStyleMappings(inputText, {prompt: null});
+          statePrompt.value = false;
         }
       }
     });
 
     O$.addEventHandler(inputText, "blur", function() {
       inputText._focused = false;
-      if (focusedClass)
-        inputText._removeOfClassName(inputText._focusedClass);
 
-      if (inputText._promptText) {
+      if (promptText) {
         if ((inputText.value.length == 0)) {
-          inputText.value = inputText._promptText;
-          if (promptTextClass)
-            inputText._addInClassName(inputText._promptTextClass);
-          inputText._statePrompt.value = true;
+          inputText.value = promptText;
+          O$.setStyleMappings(inputText, {prompt: promptTextClass});
+          statePrompt.value = true;
         } else
-          inputText._statePrompt.value = false;
+          statePrompt.value = false;
       }
     });
-
-    if (rolloverClass && (!isDisable)) {
-      O$.addEventHandler(inputText, "mouseover", function() {
-        inputText._addInClassName(inputText._rolloverClass);
-      });
-      O$.addEventHandler(inputText, "mouseout", function() {
-        inputText._removeOfClassName(inputText._rolloverClass);
-      });
-    }
 
     if (O$.isMozillaFF())
       O$.addEventHandler(inputText, "keyup", function(evt) {
         if (evt.keyCode == 27) { // ESC key
-          if (inputText.value == inputText._promptText) {
+          if (inputText.value == promptText) {
             inputText.value = "";
           }
         }

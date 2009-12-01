@@ -51,6 +51,10 @@ if (!window.O$) {
         O$.setupHoverStateFunction(component, function(mouseInside) {
           O$.setStyleMappings(component, {_rolloverStyle: mouseInside ? styles.rollover : null});
         });
+      if (styles.focused)
+        O$.setupFocusedStateFunction(component, function(focused) {
+          O$.setStyleMappings(component, {_focusedStyle: focused? styles.focused : null});
+        });
     }
     if (properties) {
       O$.extend(component, properties);
@@ -1946,6 +1950,16 @@ if (!window.O$) {
       fn(false, element);
     });
   };
+
+  O$.setupFocusedStateFunction = function(element, fn) {
+    O$.addEventHandler(element, "focus", function() {
+      fn(true, element);
+    });
+    O$.addEventHandler(element, "blur", function() {
+      fn(false, element);
+    });
+  };
+
 
   O$.setupMousePressedStateFunction = function(element, fn) {
     O$.addEventHandler(element, "mousedown", function() {
