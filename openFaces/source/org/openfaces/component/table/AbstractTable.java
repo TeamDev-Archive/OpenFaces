@@ -1496,7 +1496,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 return true;
             List<UIComponent> columnChildren = column.getChildren();
             for (UIComponent columnChild : columnChildren) {
-                if (isComponentRequiresDecoding(columnChild))
+                if (decodingRequiringComponent(columnChild) != null)
                     return true;
             }
         }
@@ -1509,7 +1509,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                     continue;
                 List<UIComponent> cellChildren = rowChild.getChildren();
                 for (UIComponent cellChild : cellChildren) {
-                    if (isComponentRequiresDecoding(cellChild))
+                    if (decodingRequiringComponent(cellChild) != null)
                         return true;
                 }
             }
@@ -1518,16 +1518,17 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return false;
     }
 
-    private boolean isComponentRequiresDecoding(UIComponent component) {
+    protected UIComponent decodingRequiringComponent(UIComponent component) {
         boolean thisComponentRequiresDecoding = component instanceof EditableValueHolder || component instanceof ActionSource;
         if (thisComponentRequiresDecoding)
-            return true;
+            return component;
         List<UIComponent> children = component.getChildren();
         for (UIComponent subComponent : children) {
-            if (isComponentRequiresDecoding(subComponent))
-                return true;
+            UIComponent decodable = decodingRequiringComponent(subComponent);
+            if (decodable != null)
+                return decodable;
         }
-        return false;
+        return null;
     }
 
     protected class RowComparator implements Comparator<Object> {

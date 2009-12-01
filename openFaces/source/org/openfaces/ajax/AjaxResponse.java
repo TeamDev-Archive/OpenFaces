@@ -65,8 +65,7 @@ class AjaxResponse {
     private List<AjaxPortionData> componentStates;
     private String sessionExpired;
     private String sessionExpiredLocation;
-    private String exception;
-    private String exceptionMessage;
+    private Throwable exception;
 
     private AjaxSavedStateIdxHolder stateIdxHolder;
 
@@ -296,17 +295,15 @@ class AjaxResponse {
             addStringsToBuf(buf, TAG_AJAX_SESSION_EXPIRED_LOCATION, sessionExpiredParams);
         }
 
-        if (exception.length() > 0) {
+        if (exception != null) {
             appendCommaIfNeeded(buf, buf.length() > 1);
             List<String> exception = new ArrayList<String>();
-            exception.add(this.exception);
+            exception.add(this.exception.getClass().getName());
             addStringsToBuf(buf, TAG_AJAX_EXCEPTION, exception);
-        }
 
-        if (exceptionMessage.length() > 0) {
             appendCommaIfNeeded(buf, buf.length() > 1);
             List<String> exceptionMessage = new ArrayList<String>();
-            exceptionMessage.add(this.exceptionMessage);
+            exceptionMessage.add(this.exception.getMessage());
             addStringsToBuf(buf, TAG_AJAX_EXCEPTION_MESSAGE, exceptionMessage);
         }
 
@@ -375,12 +372,8 @@ class AjaxResponse {
         this.sessionExpiredLocation = sessionExpiredLocation == null ? "" : sessionExpiredLocation;
     }
 
-    public void setException(String exception) {
-        this.exception = exception == null ? "" : exception;
-    }
-
-    public void setExceptionMessage(String exceptionMessage) {
-        this.exceptionMessage = exceptionMessage == null ? "" : exceptionMessage;
+    public void setException(Throwable exception) {
+        this.exception = exception;
     }
 
     private static class Elements {

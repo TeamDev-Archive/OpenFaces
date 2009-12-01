@@ -683,7 +683,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         Class rowKeyClass = rowKey.getClass();
         if (approvedRowKeyClasses.contains(rowKeyClass))
             return true;
-        boolean result = rowKey instanceof Serializable && checkEqualsAndHashcode(rowKey);
+        boolean result = rowKey instanceof Serializable && checkSerializableEqualsAndHashcode(rowKey);
         if (result)
             approvedRowKeyClasses.add(rowKeyClass);
         return result;
@@ -978,7 +978,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         return unavailableRowIndexes;
     }
 
-    private static boolean checkEqualsAndHashcode(Object rowKey) {
+    private static boolean checkSerializableEqualsAndHashcode(Object rowKey) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Object deserializedRowKey;
         try {
@@ -994,7 +994,6 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
             throw new RuntimeException("The rowData or rowKey object is marked as Serializable but can't be serialized: " +
                     rowKey.getClass().getName() + " ; check that all object's fields are also Serializable", e);
         } catch (ClassNotFoundException e) {
-//      EnvironmentUtil.log("Couldn't check equals/hashCode validity for class " + rowKey.getClass().getName(), e);
             throw new RuntimeException(e);
         }
         boolean equalsValid = deserializedRowKey.equals(rowKey);

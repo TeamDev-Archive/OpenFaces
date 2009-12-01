@@ -1,7 +1,7 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-     >
+        >
 
 <div id="Demo">
 
@@ -18,8 +18,14 @@
   <input type="submit" onclick="return false;" value="consume default button action in Mozilla"> </input>
 </div>
 
-<o:treeTable id="requestsTreeTable" var="rq"
+<o:treeTable id="requestsTreeTable" var="rq" columnIdVar="columnId" nodeHasChildrenVar="thereAreSubRequests"
+             sortColumnId="id"
+             columnsOrder="#{RequestsTreeTableBean.requestsColumnsOrder}"
+             onkeydown="checkRequestKeys(event)"
+             ondblclick="editRequest()"
              expansionState="#{RequestsTreeTableBean.requestsTreeTableExpansionState}"
+             preloadedNodes="all"
+
              style="width: 100%;  border: 1px solid white;"
              horizontalGridLines="0px"
              bodyRowStyle="height: 21px;"
@@ -29,14 +35,8 @@
              sortedDescendingImageUrl="../images/treetable/sort_d.gif"
              sortedColumnHeaderStyle="background: url('../images/treetable/tableHeader_sorted.gif') repeat-x;"
              sortedColumnBodyStyle="background: none;"
-             columnIdVar="columnId"
              textStyle="font-family: verdana,Helvetica,sans-serif; font-size: 10pt;"
-             sortColumnId="id"
-             focusedStyle="border: 1px dotted black !important;"
-             columnsOrder="#{RequestsTreeTableBean.requestsColumnsOrder}"
-             onkeydown="checkRequestKeys(event)"
-             ondblclick="editRequest()"
-             nodeHasChildrenVar="thereAreSubRequests">
+             focusedStyle="border: 1px dotted black !important;">
 <f:facet name="above">
   <h:panelGroup style="white-space: nowrap; display: block; width: 100%; margin-top: -15px; margin-bottom: 15px;">
     <o:popupLayer id="selectColumnsPopup"
@@ -72,7 +72,9 @@
 <o:row condition="#{thereAreSubRequests}" style="font-weight: bold"/>
 <o:row condition="#{RequestsTreeTableBean.editingThisRow}">
   <o:cell/>
-  <o:cell><h:inputText value="#{rq.description}" style="width: 100%" autocomplete="off"/></o:cell>
+  <o:cell>
+    <h:inputText value="#{rq.description}" style="width: 100%" autocomplete="off"/>
+  </o:cell>
 </o:row>
 <o:row condition="#{RequestsTreeTableBean.editingLeafRequest}">
   <o:cell/>

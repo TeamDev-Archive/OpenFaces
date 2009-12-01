@@ -20,6 +20,7 @@ import org.openfaces.util.ValueBindings;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.FacesException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -113,8 +114,8 @@ public class TreeTable extends AbstractTable {
         super.beforeProcessDecodes(context);
         TableDataModel model = getModel();
         model.prepareForRestoringRowIndexes();
-        boolean rowsDecodingRequired = TreeTableRenderer.isAjaxFoldingInProgress(context) || isRowsDecodingRequired();
-        prepareModelFromTreeStructure(rowsDecodingRequired);
+        boolean readFreshData = TreeTableRenderer.isAjaxFoldingInProgress(context) || isRowsDecodingRequired();
+        prepareModelFromTreeStructure(readFreshData);
 
         TableDataModel.RestoredRowIndexes rri = model.restoreRowIndexes();
         Set<Integer> unavailableRowIndexes = rri.getUnavailableRowIndexes();
@@ -127,6 +128,35 @@ public class TreeTable extends AbstractTable {
             newNodeInfoForRows.add(nodeInfo);
         }
         nodeInfoForRows = newNodeInfoForRows;
+    }
+
+    private UIComponent findAnyDecodableComponent() {
+        List<BaseColumn> columns = getColumnsForProcessing();
+        for (BaseColumn column : columns) {
+            List<UIComponent> columnChildren = column.getChildren();
+            for (UIComponent columnChild : columnChildren) {
+                UIComponent decodable = decodingRequiringComponent(columnChild);
+                if (decodable != null)
+                    return decodable;
+            }
+        }
+
+        List<TableRow> customRows = getCustomRows();
+        for (TableRow customRow : customRows) {
+            List<UIComponent> rowChildren = customRow.getChildren();
+            for (UIComponent rowChild : rowChildren) {
+                if (!(rowChild instanceof TableCell))
+                    continue;
+                List<UIComponent> cellChildren = rowChild.getChildren();
+                for (UIComponent cellChild : cellChildren) {
+                    UIComponent decodable = decodingRequiringComponent(cellChild);
+                    if (decodable != null)
+                        return decodable;
+                }
+            }
+        }
+
+        return null;
     }
 
     public ExpansionState getExpansionState() {
@@ -263,6 +293,8 @@ public class TreeTable extends AbstractTable {
     public void encodeBegin(FacesContext context) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
+        checkConfiguration();
+
         beforeRenderResponse(context);
 
         ValueExpression expansionStateExpression = getValueExpression("expansionState");
@@ -275,6 +307,27 @@ public class TreeTable extends AbstractTable {
         prepareModelFromTreeStructure(true);
 
         super.encodeBegin(context);
+    }
+
+    private void checkConfiguration() {
+        String configurationCheckedAttr = "_configurationCheckPerformed";
+        if (getAttributes().get(configurationCheckedAttr) == null) {
+            getAttributes().put(configurationCheckedAttr, Boolean.TRUE);
+            UIComponent decodable = findAnyDecodableComponent();
+            if (decodable != null) {
+                PreloadedNodes preloadedNodes = getPreloadedNodes();
+                if (isFoldingEnabled() && getUseAjax() && (preloadedNodes == null || !(preloadedNodes instanceof AllNodesPreloaded))) {
+                    String noDecodableCheckStr = (String) getAttributes().get("_noDecodableCheck");
+                    boolean skipException = noDecodableCheckStr != null && Boolean.valueOf(noDecodableCheckStr);
+                    if (!skipException)
+                        throw new FacesException("<o:treeTable id=\"" + getId() + "\"> configuration error: there's currently a " +
+                                "limitation that TreeTable with editable or command components within its cells cannot be used " +
+                                "if it is configured to expand its nodes with Ajax. The workaround is either to set " +
+                                "preloadedNodes=\"all\" or useAjax=\"false\" for your <o:treeTable>. Component: " +
+                                decodable.getClass().getName() + ", id=\"" + decodable.getId() + "\"");
+                }
+            }
+        }
     }
 
 
@@ -594,7 +647,7 @@ public class TreeTable extends AbstractTable {
                 continue;
             if (!shouldBeExpanded && dontCollapseNodes)
                 continue;
-            if(!getNodeHasChildren()) { // rows without children should have expanded state by default
+            if (!getNodeHasChildren()) { // rows without children should have expanded state by default
                 setNodeExpanded(keyPath, true);
             } else {
                 setNodeExpanded(keyPath, shouldBeExpanded);

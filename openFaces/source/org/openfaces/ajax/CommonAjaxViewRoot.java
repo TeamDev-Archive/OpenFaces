@@ -622,7 +622,7 @@ public abstract class CommonAjaxViewRoot {
             }
             if (!requestMap.containsKey(AjaxViewHandler.ERROR_OCCURED)) {
                 requestMap.put(AjaxViewHandler.ERROR_OCCURED, Boolean.TRUE.toString());
-                requestMap.put(AjaxViewHandler.ERROR_MESSAGE_HEADER, exception.getMessage());
+                requestMap.put(AjaxViewHandler.ERROR_MESSAGE_HEADER, exception.getClass().getName() + ": " + exception.getMessage());
                 requestMap.put(AjaxViewHandler.ERROR_CAUSE_MESSAGE_HEADER, exception.getCause());
             }
         } finally {
@@ -929,8 +929,7 @@ public abstract class CommonAjaxViewRoot {
         requestMap.put(AjaxUtil.KEY_RENDERING_PORTLETS_AJAX_RESPONSE, Boolean.TRUE);
         ajaxResponse.setStateIdxHolder(new AjaxSavedStateIdxHolder());
         try {
-            ajaxResponse.setException(Boolean.TRUE.toString());
-            ajaxResponse.setExceptionMessage(e.getMessage());
+            ajaxResponse.setException(e);
             ajaxResponse.write(ResponseFacade.getInstance(context.getExternalContext().getResponse()));
         } finally {
             clearPortletSessionParams(context);

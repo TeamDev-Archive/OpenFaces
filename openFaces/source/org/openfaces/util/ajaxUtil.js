@@ -695,9 +695,9 @@ O$.AjaxObject = function(render) {
         this._exceptionMessage = responseObj[O$.TAG_AJAX_EXCEPTION_MESSAGE];
       }
 
-      var isExceptionWasThrown = this._exception ? this._exception[0].value : undefined;
-      if (isExceptionWasThrown) {
-        var exceptionMessage = this._exceptionMessage ? this._exceptionMessage[0].value : "Exception";
+      var serverException = this._exception ? this._exception[0].value : undefined;
+      if (serverException) {
+        var exceptionMessage = serverException + ": " + this._exceptionMessage[0].value;
         O$.processErrorDuringAjaxRequest(exceptionMessage, this._targetIds, this);
       }
 
