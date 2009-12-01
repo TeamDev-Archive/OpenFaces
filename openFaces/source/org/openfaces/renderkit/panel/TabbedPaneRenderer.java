@@ -45,7 +45,7 @@ import java.util.List;
 public class TabbedPaneRenderer extends BaseTabSetRenderer implements AjaxPortionRenderer {
     // todo: TabbedPaneRenderer shouldn't extend BaseTabSetRenderer. It can only aggregate TabSet and it shouldn't know of any of TabSet's innards.
 
-    private static final String JS_SCRIPT_URL = "tabbedpane.js";
+    private static final String JS_SCRIPT_URL = "tabbedPane.js";
     private static final String TAB_SET_SUFFIX = "tabSet";
     public static final String PANE_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "pane";
     private static final String PAGE_PORTION_NAME_PREFIX = "page:";
