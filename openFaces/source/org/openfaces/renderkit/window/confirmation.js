@@ -151,13 +151,6 @@ O$.Confirmation = {
       // if not left-top set, move it to the center
       O$.Confirmation._layoutConfirmation(confirmation, oldScrollPos);
 
-      // IE fixes for modality
-      /*
-          if(document.body.leftMargin) {
-            confirmation.blockingLayer.style.left = (confirmation.blockingLayer.offsetLeft*1 + document.body.leftMargin*1) + "px";
-          }
-      */
-
       confirmation._okButton.onfocus = function () {
         confirmation._currentFocus = 0;
       };
@@ -213,74 +206,42 @@ O$.Confirmation = {
   },
 
   _initInnerStyles: function(iconAreaStyle, rolloverIconAreaStyle,
-                                             contentStyle, rolloverContentStyle, messageTextStyle, rolloverMessageTextStyle,
-                                             detailsTextStyle, rolloverDetailsTextStyle, buttonAreaStyle,
-                                             rolloverButtonAreaStyle, okButtonStyle, rolloverOkButtonStyle,
-                                             cancelButtonStyle, rolloverCancelButtonStyle) {
-    O$.extend(this, {
-      iconAreaStyle: iconAreaStyle,
-      rolloverIconAreaStyle: rolloverIconAreaStyle,
-      contentStyle: contentStyle,
-      rolloverContentStyle: rolloverContentStyle,
-      messageTextStyle: messageTextStyle,
-      rolloverMessageTextStyle: rolloverMessageTextStyle,
-      detailsTextStyle: detailsTextStyle,
-      rolloverDetailsTextStyle: rolloverDetailsTextStyle,
-      okButtonStyle: okButtonStyle,
-      rolloverOkButtonStyle: rolloverOkButtonStyle,
-      buttonAreaStyle: buttonAreaStyle,
-      rolloverButtonAreaStyle: rolloverButtonAreaStyle,
-      cancelButtonStyle: cancelButtonStyle,
-      rolloverCancelButtonStyle: rolloverCancelButtonStyle
+                             contentStyle, rolloverContentStyle, messageTextStyle, rolloverMessageTextStyle,
+                             detailsTextStyle, rolloverDetailsTextStyle, buttonAreaStyle,
+                             rolloverButtonAreaStyle, okButtonStyle, rolloverOkButtonStyle,
+                             cancelButtonStyle, rolloverCancelButtonStyle) {
+    if (this._icon) this._icon.className = iconAreaStyle;
+
+    this._content.className = contentStyle;
+    this._buttonArea.className = buttonAreaStyle;
+    if (this._messageText) this._messageText.className = messageTextStyle;
+    if (this._detailsText) this._detailsText.className = detailsTextStyle;
+    this._okButton.className = okButtonStyle;
+    this._cancelButton.className = cancelButtonStyle;
+
+    O$.setupHoverStateFunction(this._okButton, function(mouseInside) {
+      if (mouseInside) {
+        if (this._icon) this._icon.className = rolloverIconAreaStyle;
+        this._content.className = rolloverContentStyle;
+        this._buttonArea.className = rolloverButtonAreaStyle;
+        if (this._messageText) this._messageText.className = rolloverMessageTextStyle;
+        if (this._detailsText) this._detailsText.className = rolloverDetailsTextStyle;
+      } else {
+        if (this._icon) this._icon.className = iconAreaStyle;
+        this._content.className = contentStyle;
+        this._buttonArea.className = buttonAreaStyle;
+        if (this._messageText) this._messageText.className = messageTextStyle;
+        if (this._detailsText) this._detailsText.className = detailsTextStyle;
+      }
     });
 
-    if (this._icon) this._icon.className = this.iconAreaStyle;
+    O$.setupHoverStateFunction(this._okButton, function(mouseInside) {
+      O$.setStyleMappings(this, {_rolloverStyle: mouseInside ? rolloverOkButtonStyle : null});
+    });
 
-    this._content.className = this.contentStyle;
-    this._buttonArea.className = this.buttonAreaStyle;
-    if (this._messageText) this._messageText.className = this.messageTextStyle;
-    if (this._detailsText) this._detailsText.className = this.detailsTextStyle;
-    this._okButton.className = this.okButtonStyle;
-    this._cancelButton.className = this.cancelButtonStyle;
-
-    this.oldOnMouseOver = this.onmouseover;
-    this.onmouseover = function (e) {
-      if (this.oldOnMouseOver) this.oldOnMouseOver(e);
-      if (this._onmouseover) this._onmouseover(e);
-      if (this._icon) this._icon.className = this.rolloverIconAreaStyle;
-      this._content.className = this.rolloverContentStyle;
-      this._buttonArea.className = this.rolloverButtonAreaStyle;
-      if (this._messageText) this._messageText.className = this.rolloverMessageTextStyle;
-      if (this._detailsText) this._detailsText.className = this.rolloverDetailsTextStyle;
-    };
-
-    this.oldOnMouseOut = this.onmouseout;
-    this.onmouseout = function (e) {
-      if (this.oldOnMouseOut) this.oldOnMouseOut(e);
-      if (this._onmouseout) this._onmouseout(e);
-      if (this._icon) this._icon.className = this.iconAreaStyle;
-      this._content.className = this.contentStyle;
-      this._buttonArea.className = this.buttonAreaStyle;
-      if (this._messageText) this._messageText.className = this.messageTextStyle;
-      if (this._detailsText) this._detailsText.className = this.detailsTextStyle;
-    };
-
-    var confirmation = this;
-    this._okButton.onmouseover = function () {
-      this.className = confirmation.rolloverOkButtonStyle;
-    };
-
-    this._okButton.onmouseout = function () {
-      this.className = confirmation.okButtonStyle;
-    };
-
-    this._cancelButton.onmouseover = function () {
-      this.className = confirmation.rolloverCancelButtonStyle;
-    };
-
-    this._cancelButton.onmouseout = function () {
-      this.className = confirmation.cancelButtonStyle;
-    };
+    O$.setupHoverStateFunction(this._cancelButton, function(mouseInside) {
+      O$.setStyleMappings(this, {_rolloverStyle: mouseInside ? rolloverCancelButtonStyle : null});
+    });
   },
 
   _layoutConfirmation: function(confirmation, oldScrollPos) {

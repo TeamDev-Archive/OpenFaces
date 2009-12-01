@@ -18,7 +18,6 @@ import org.openfaces.test.OpenFacesTestCase;
 import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.seleniuminspector.openfaces.ConfirmationInspector;
 import org.seleniuminspector.openfaces.PopupLayerInspector;
-import org.seleniuminspector.LoadingMode;
 
 /**
  * @author Darya Shumilina
@@ -316,6 +315,7 @@ public class ConfirmationTest extends OpenFacesTestCase {
         confirmation.okButton().assertStyle("border: 1px dashed pink");
 
         confirmation.okButton().mouseOver();
+        confirmation.okButton().mouseMove();
 
         confirmation.okButton().assertStyle("border: 3px dashed pink");
         confirmation.buttonArea().assertStyle("background: azure");

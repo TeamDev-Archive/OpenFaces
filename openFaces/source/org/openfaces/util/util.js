@@ -1944,29 +1944,29 @@ if (!window.O$) {
 
   O$.setupHoverStateFunction = function(element, fn) {
     O$.addMouseOverListener(element, function() {
-      fn(true, element);
+      fn.call(element, true, element);
     });
     O$.addMouseOutListener(element, function() {
-      fn(false, element);
+      fn.call(element, false, element);
     });
   };
 
   O$.setupFocusedStateFunction = function(element, fn) {
     O$.addEventHandler(element, "focus", function() {
-      fn(true, element);
+      fn.call(element, true, element);
     });
     O$.addEventHandler(element, "blur", function() {
-      fn(false, element);
+      fn.call(element, false, element);
     });
   };
 
 
   O$.setupMousePressedStateFunction = function(element, fn) {
     O$.addEventHandler(element, "mousedown", function() {
-      fn(true, element);
+      fn.call(element, true, element);
     });
     O$.addEventHandler(element, "mouseup", function() {
-      fn(false, element);
+      fn.call(element, false, element);
     });
   };
 
