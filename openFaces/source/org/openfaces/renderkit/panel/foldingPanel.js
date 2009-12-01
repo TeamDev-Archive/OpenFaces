@@ -21,8 +21,7 @@ O$.FoldingPanel = {
                   focusedClass,
                   focusedContentClass,
                   focusedCaptionClass) {
-    var fp = O$(controlId);
-    O$.extend(fp, {
+    var fp = O$.initComponent(controlId, {rollover: rolloverClass}, {
       _stateHolderId: controlId + "::state",
       _contentHolderId: controlId + "::content",
       _captionContentId: controlId + "::caption_content",
@@ -83,7 +82,6 @@ O$.FoldingPanel = {
       }
     });
 
-    O$.initComponent(controlId, {rollover: rolloverClass});
     O$.FoldingPanel._processCaptionStyle(fp);
 
     if (focusable) {

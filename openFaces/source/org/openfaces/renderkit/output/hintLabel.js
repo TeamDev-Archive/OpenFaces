@@ -12,12 +12,11 @@
 
 O$.HintLabel = {
   _init: function(id, hintTimeout, hintClass, rolloverClass) {
-    var label = O$(id);
-    label._hint = O$(id + "::hint");
-    label._hintTimeout = hintTimeout;
-    label._hintClass = hintClass;
-
-    O$.initComponent(id, {rollover: rolloverClass});
+    var label = O$.initComponent(id, {rollover: rolloverClass}, {
+      _hint: O$(id + "::hint"),
+      _hintTimeout: hintTimeout,
+      _hintClass: hintClass
+    });
 
     O$.addLoadEvent(function() {
       if (label._hint) {

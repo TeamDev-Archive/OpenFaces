@@ -65,7 +65,7 @@ O$._initPopupMenu = function(popupMenuId,
 
   popupMenu._isRoot = function() {
     return !!isRootMenu;
-  }
+  };
   if (!isRootMenu) {
     document._openFaces_popupsOnpage.pop(popupMenuId);
   }
@@ -80,7 +80,7 @@ O$._initPopupMenu = function(popupMenuId,
 
     menuItem._isSeparator = function() {
       return !!this._separator;
-    }
+    };
 
     menuItem._popupMenu = popupMenu;
 
@@ -184,7 +184,7 @@ O$._initPopupMenu = function(popupMenuId,
         break;
     }
     O$.cancelBubble(e);
-  }
+  };
 
   for (i = 0; i < popupMenu._popupMenuItems.length; i++) {
     menuItem = popupMenu._popupMenuItems[i];

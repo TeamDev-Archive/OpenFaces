@@ -116,22 +116,27 @@ O$.Tables = {
     };
     table.style.emptyCells = "show";
 
-    table._rowInsertionCallbacks = [];
-    table._addRowInsertionCallback = function(callback) {
-      table._rowInsertionCallbacks.push(callback);
-    };
-    table._singleRowInsertionCallbacks = [];
-    table._addSingleRowInsertionCallback = function(callback) {
-      table._singleRowInsertionCallbacks.push(callback);
-    };
-    table._cellInsertionCallbacks = [];
-    table._addCellInsertionCallback = function(callback) {
-      table._cellInsertionCallbacks.push(callback);
-    };
-    table._cellMoveCallbacks = [];
-    table._addCellMoveCallback = function(callback) {
-      table._cellMoveCallbacks.push(callback);
-    };
+    O$.extend(table, {
+      _rowInsertionCallbacks: [],
+      _addRowInsertionCallback: function(callback) {
+        table._rowInsertionCallbacks.push(callback);
+      },
+
+      _singleRowInsertionCallbacks: [],
+      _addSingleRowInsertionCallback: function(callback) {
+        table._singleRowInsertionCallbacks.push(callback);
+      },
+
+      _cellInsertionCallbacks: [],
+      _addCellInsertionCallback: function(callback) {
+        table._cellInsertionCallbacks.push(callback);
+      },
+
+      _cellMoveCallbacks: [],
+      _addCellMoveCallback: function(callback) {
+        table._cellMoveCallbacks.push(callback);
+      }
+    });
 
     O$.Tables._initRows(table);
     O$.Tables._initColumns(table);

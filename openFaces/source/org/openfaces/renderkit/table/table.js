@@ -41,15 +41,12 @@ O$.Table = {
   },
 
   _init: function(tableId, initParams, useAjax, rolloverClass, apiInitializationFunctionName) {
-    var table = O$(tableId);
-    if (!table)
-      throw "O$.Table._init: couldn't find table by id: " + tableId;
+    var table = O$.initComponent(tableId, {rollover: rolloverClass}, {
+      _useAjax: useAjax
+    });
     if (table._commonTableFunctionsInitialized)
       return;
     table._commonTableFunctionsInitialized = true;
-
-    O$.initComponent(tableId, {rollover: rolloverClass});
-    table._useAjax = useAjax;
 
     try {
       O$.Tables._init(table, initParams);

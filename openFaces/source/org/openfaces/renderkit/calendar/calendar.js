@@ -38,8 +38,7 @@ O$.Calendar = {
                   localeStr,
                   required,
                   disabled) {
-    var cal = O$(calendarId);
-    O$.extend(cal, {
+    var cal = O$.initComponent(calendarId, {rollover: rolloverClass}, {
       _dayClass: dayClass,
       _rolloverDayClass: rolloverDayClass,
       _inactiveMonthDayClass: inactiveMonthDayClass,
@@ -79,8 +78,6 @@ O$.Calendar = {
       ondragstart: O$.breakEvent,
       onselectstart: O$.breakEvent
     });
-
-    O$.initComponent(calendarId, {rollover: rolloverClass});
 
     if (focusable) {
       O$.setupArtificialFocus(cal, focusedClass);

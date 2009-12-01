@@ -41,7 +41,7 @@ if (!window.O$) {
   });
 
 
-  O$.initComponent = function(clientId, styles, events) {
+  O$.initComponent = function(clientId, styles, properties, events) {
     var component = O$(clientId);
     if (!component)
       throw "O$.initComponent: couldn't find component by id: " + clientId;
@@ -51,6 +51,9 @@ if (!window.O$) {
         O$.setupHoverStateFunction(component, function(mouseInside) {
           O$.setStyleMappings(component, {_rolloverStyle: mouseInside ? styles.rollover : null});
         });
+    }
+    if (properties) {
+      O$.extend(component, properties);
     }
     if (events) {
       component._events = {};

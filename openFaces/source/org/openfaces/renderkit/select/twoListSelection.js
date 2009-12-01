@@ -16,8 +16,7 @@ O$.TwoListSelection = {
                   allowItemsOrdering,
                   disabled,
                   rolloverClass) {
-    var tls = O$(controlId);
-    O$.extend(tls, {
+    var tls = O$.initComponent(controlId, {rollover: rolloverClass}, {
       _allowAddRemoveAll: allowAddRemoveAll,
       _disabled: disabled,
       _allowItemsOrdering: allowItemsOrdering,
@@ -61,9 +60,7 @@ O$.TwoListSelection = {
       _clientValueFunction: function () {
         return tls.getValue();
       }
-    });
-
-    O$.initComponent(controlId, {rollover: rolloverClass}, events);
+    }, events);
 
     if (!disabled) {
       tls._leftListBox.onchange = function() {

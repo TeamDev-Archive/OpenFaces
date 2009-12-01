@@ -19,17 +19,14 @@ O$.DaySwitcher = {
                   locale,
                   stylingParams,
                   enabled) {
-    var daySwitcher = O$(daySwitcherId);
-
     var dtf = O$.getDateTimeFormatObject(locale);
-    daySwitcher._day = dtf.parse(day, "dd/MM/yyyy");
-
-    daySwitcher._dayTableId = dayTableId;
-    daySwitcher._pattern = pattern;
-    daySwitcher._upperPattern = upperPattern;
-    daySwitcher._locale = locale;
-
-    O$.initComponent(daySwitcherId, {rollover: stylingParams.rolloverClass});
+    var daySwitcher = O$.initComponent(daySwitcherId, {rollover: stylingParams.rolloverClass}, {
+      _day: dtf.parse(day, "dd/MM/yyyy"),
+      _dayTableId: dayTableId,
+      _pattern: pattern,
+      _upperPattern: upperPattern,
+      _locale: locale
+    });
 
     var textId = daySwitcherId + "::text";
     daySwitcher._text = O$(textId);
