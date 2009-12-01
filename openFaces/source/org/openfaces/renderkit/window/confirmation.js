@@ -18,24 +18,24 @@ O$.Confirmation = {
           invokerId,
           eventHandlerName,
           defaultButton,
-          bindToInvoker) {
+          bindToInvoker, styleParams) {
     var confirmation = O$(confirmationId);
-    confirmation._invokerId = invokerId;
-    if (!eventHandlerName)
-      eventHandlerName = "onclick";
-    confirmation._eventHandlerName = eventHandlerName;
-    confirmation._defaultButton = defaultButton;
-    confirmation._bindToInvoker = bindToInvoker;
+    O$.extend(confirmation, {
+      _invokerId: invokerId,
+      _eventHandlerName: eventHandlerName ? eventHandlerName : "onclick",
+      _defaultButton: defaultButton,
+      _bindToInvoker: bindToInvoker,
 
-    confirmation._buttonArea = O$(confirmationId + "::buttonArea");
+      _buttonArea: O$(confirmationId + "::buttonArea"),
 
-    confirmation._listenerMode = 0;
+      _listenerMode: 0,
 
-    confirmation._icon = O$(confirmationId + "::icon");
-    confirmation._messageText = O$(confirmationId + "::headerText");
-    confirmation._detailsText = O$(confirmationId + "::detailsText");
-    confirmation._okButton = O$(confirmationId + "::yes_button");
-    confirmation._cancelButton = O$(confirmationId + "::no_button");
+      _icon: O$(confirmationId + "::icon"),
+      _messageText: O$(confirmationId + "::headerText"),
+      _detailsText: O$(confirmationId + "::detailsText"),
+      _okButton: O$(confirmationId + "::yes_button"),
+      _cancelButton: O$(confirmationId + "::no_button")
+    });
 
     confirmation._okButton.onclick = function (event) {
       confirmation.hide();
@@ -61,29 +61,13 @@ O$.Confirmation = {
         return;
       }
 
-      if (confirmation._listenerMode == 1) { // runConfirmedFunction
-        confirmation._listenerMode = 0;
-        if (confirmation._evaluatedFunction) {
-          confirmation._evaluatedFunction();
-        }
-        return;
-      }
-
-      // runConfirmedFunctionByName
+      if (confirmation._listenerMode != 1)
+        throw "confirmation._okButton.onclick: unknown confirmation._listenerMode" + confirmation._listenerMode;
+      // runConfirmedFunction
       confirmation._listenerMode = 0;
-      var evalString = confirmation._evaluatedFunctionName + "(";
-
-      if (confirmation._evaluatedFunctionParameters) {
-        for (var i = 0; i < confirmation._evaluatedFunctionParameters.length; i++) {
-          if (i > 0) {
-            evalString += ", ";
-          }
-          evalString += "confirmation._evaluatedFunctionParameters[" + i + "]";
-        }
+      if (confirmation._evaluatedFunction) {
+        confirmation._evaluatedFunction();
       }
-      evalString += ");";
-
-      eval(evalString);
     };
 
     confirmation._cancelButton.onclick = function () {
@@ -210,14 +194,6 @@ O$.Confirmation = {
       }
     };
 
-    confirmation.runConfirmedFunctionByName = function (funcName, parameters) { // todo: not needed anymore -- remove this function and the related code
-      confirmation._listenerMode = 2;
-      confirmation._evaluatedFunctionName = funcName;
-      confirmation._evaluatedFunctionParameters = parameters;
-      confirmation._confirmationShow();
-      return false;
-    };
-
     confirmation.runConfirmedFunction = function (func) {
       confirmation._listenerMode = 1;
       confirmation._evaluatedFunction = func;
@@ -233,100 +209,77 @@ O$.Confirmation = {
       newParent.appendChild(confirmation);
     });
 
+    O$.Confirmation._initInnerStyles.apply(confirmation, styleParams);
   },
 
-  _initInnerStyles: function(confirmationId, iconAreaStyle, rolloverIconAreaStyle,
+  _initInnerStyles: function(iconAreaStyle, rolloverIconAreaStyle,
                                              contentStyle, rolloverContentStyle, messageTextStyle, rolloverMessageTextStyle,
                                              detailsTextStyle, rolloverDetailsTextStyle, buttonAreaStyle,
                                              rolloverButtonAreaStyle, okButtonStyle, rolloverOkButtonStyle,
                                              cancelButtonStyle, rolloverCancelButtonStyle) {
-    var confirmation = O$(confirmationId);
+    O$.extend(this, {
+      iconAreaStyle: iconAreaStyle,
+      rolloverIconAreaStyle: rolloverIconAreaStyle,
+      contentStyle: contentStyle,
+      rolloverContentStyle: rolloverContentStyle,
+      messageTextStyle: messageTextStyle,
+      rolloverMessageTextStyle: rolloverMessageTextStyle,
+      detailsTextStyle: detailsTextStyle,
+      rolloverDetailsTextStyle: rolloverDetailsTextStyle,
+      okButtonStyle: okButtonStyle,
+      rolloverOkButtonStyle: rolloverOkButtonStyle,
+      buttonAreaStyle: buttonAreaStyle,
+      rolloverButtonAreaStyle: rolloverButtonAreaStyle,
+      cancelButtonStyle: cancelButtonStyle,
+      rolloverCancelButtonStyle: rolloverCancelButtonStyle
+    });
 
-    confirmation.iconAreaStyle = iconAreaStyle;
-    confirmation.rolloverIconAreaStyle = rolloverIconAreaStyle;
-    confirmation.contentStyle = contentStyle;
-    confirmation.rolloverContentStyle = rolloverContentStyle;
-    confirmation.messageTextStyle = messageTextStyle;
-    confirmation.rolloverMessageTextStyle = rolloverMessageTextStyle;
-    confirmation.detailsTextStyle = detailsTextStyle;
-    confirmation.rolloverDetailsTextStyle = rolloverDetailsTextStyle;
-    confirmation.okButtonStyle = okButtonStyle;
-    confirmation.rolloverOkButtonStyle = rolloverOkButtonStyle;
-    confirmation.buttonAreaStyle = buttonAreaStyle;
-    confirmation.rolloverButtonAreaStyle = rolloverButtonAreaStyle;
-    confirmation.cancelButtonStyle = cancelButtonStyle;
-    confirmation.rolloverCancelButtonStyle = rolloverCancelButtonStyle;
+    if (this._icon) this._icon.className = this.iconAreaStyle;
 
-    if (confirmation._icon) {
-      confirmation._icon.className = confirmation.iconAreaStyle;
-    }
-    confirmation._content.className = confirmation.contentStyle;
-    confirmation._buttonArea.className = confirmation.buttonAreaStyle;
-    if (confirmation._messageText) {
-      confirmation._messageText.className = confirmation.messageTextStyle;
-    }
-    if (confirmation._detailsText) {
-      confirmation._detailsText.className = confirmation.detailsTextStyle;
-    }
-    confirmation._okButton.className = confirmation.okButtonStyle;
-    confirmation._cancelButton.className = confirmation.cancelButtonStyle;
+    this._content.className = this.contentStyle;
+    this._buttonArea.className = this.buttonAreaStyle;
+    if (this._messageText) this._messageText.className = this.messageTextStyle;
+    if (this._detailsText) this._detailsText.className = this.detailsTextStyle;
+    this._okButton.className = this.okButtonStyle;
+    this._cancelButton.className = this.cancelButtonStyle;
 
-    confirmation.oldOnMouseOver = confirmation.onmouseover;
-    confirmation.onmouseover = function (e) {
-      if (confirmation.oldOnMouseOver) {
-        confirmation.oldOnMouseOver(e);
-      }
-      if (confirmation._onmouseover) {
-        confirmation._onmouseover(e);
-      }
-      if (confirmation._icon) {
-        confirmation._icon.className = confirmation.rolloverIconAreaStyle;
-      }
-      confirmation._content.className = confirmation.rolloverContentStyle;
-      confirmation._buttonArea.className = confirmation.rolloverButtonAreaStyle;
-      if (confirmation._messageText) {
-        confirmation._messageText.className = confirmation.rolloverMessageTextStyle;
-      }
-      if (confirmation._detailsText) {
-        confirmation._detailsText.className = confirmation.rolloverDetailsTextStyle;
-      }
+    this.oldOnMouseOver = this.onmouseover;
+    this.onmouseover = function (e) {
+      if (this.oldOnMouseOver) this.oldOnMouseOver(e);
+      if (this._onmouseover) this._onmouseover(e);
+      if (this._icon) this._icon.className = this.rolloverIconAreaStyle;
+      this._content.className = this.rolloverContentStyle;
+      this._buttonArea.className = this.rolloverButtonAreaStyle;
+      if (this._messageText) this._messageText.className = this.rolloverMessageTextStyle;
+      if (this._detailsText) this._detailsText.className = this.rolloverDetailsTextStyle;
     };
 
-    confirmation.oldOnMouseOut = confirmation.onmouseout;
-    confirmation.onmouseout = function (e) {
-      if (confirmation.oldOnMouseOut) {
-        confirmation.oldOnMouseOut(e);
-      }
-      if (confirmation._onmouseout) {
-        confirmation._onmouseout(e);
-      }
-      if (confirmation._icon) {
-        confirmation._icon.className = confirmation.iconAreaStyle;
-      }
-      confirmation._content.className = confirmation.contentStyle;
-      confirmation._buttonArea.className = confirmation.buttonAreaStyle;
-      if (confirmation._messageText) {
-        confirmation._messageText.className = confirmation.messageTextStyle;
-      }
-      if (confirmation._detailsText) {
-        confirmation._detailsText.className = confirmation.detailsTextStyle;
-      }
+    this.oldOnMouseOut = this.onmouseout;
+    this.onmouseout = function (e) {
+      if (this.oldOnMouseOut) this.oldOnMouseOut(e);
+      if (this._onmouseout) this._onmouseout(e);
+      if (this._icon) this._icon.className = this.iconAreaStyle;
+      this._content.className = this.contentStyle;
+      this._buttonArea.className = this.buttonAreaStyle;
+      if (this._messageText) this._messageText.className = this.messageTextStyle;
+      if (this._detailsText) this._detailsText.className = this.detailsTextStyle;
     };
 
-    confirmation._okButton.onmouseover = function () {
-      confirmation._okButton.className = confirmation.rolloverOkButtonStyle;
+    var confirmation = this;
+    this._okButton.onmouseover = function () {
+      this.className = confirmation.rolloverOkButtonStyle;
     };
 
-    confirmation._okButton.onmouseout = function () {
-      confirmation._okButton.className = confirmation.okButtonStyle;
+    this._okButton.onmouseout = function () {
+      this.className = confirmation.okButtonStyle;
     };
 
-    confirmation._cancelButton.onmouseover = function () {
-      confirmation._cancelButton.className = confirmation.rolloverCancelButtonStyle;
+    this._cancelButton.onmouseover = function () {
+      this.className = confirmation.rolloverCancelButtonStyle;
     };
 
-    confirmation._cancelButton.onmouseout = function () {
-      confirmation._cancelButton.className = confirmation.cancelButtonStyle;
+    this._cancelButton.onmouseout = function () {
+      this.className = confirmation.cancelButtonStyle;
     };
   },
 

@@ -11,16 +11,16 @@
  */
 package org.openfaces.renderkit.window;
 
-import org.openfaces.util.ComponentUtil;
 import org.openfaces.component.window.AbstractWindow;
 import org.openfaces.component.window.Confirmation;
 import org.openfaces.component.window.PopupLayer;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.HTML;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -233,14 +233,6 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
         else
             invokerId = null;
 
-        ScriptBuilder sb = new ScriptBuilder();
-        sb.initScript(context, confirmation, "O$.Confirmation._init",
-                invokerId,
-                confirmation.getEvent(),
-                confirmation.getDefaultButton(),
-                confirmation.getAlignToInvoker()
-        );
-
         String iconAreaStyle = StyleUtil.getCSSClass(context, component, confirmation.getIconAreaStyle(),
                 DEFAULT_ICON_BACKPLANE_CLASS, confirmation.getIconAreaClass());
         String rolloverIconAreaStyle = StyleUtil.getCSSClass(context, component, confirmation.getRolloverIconAreaStyle(),
@@ -274,21 +266,28 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
         String rolloverCancelButtonStyle = StyleUtil.getCSSClass(context, component, confirmation.getRolloverCancelButtonStyle(), StyleGroup.rolloverStyleGroup(), confirmation.getRolloverCancelButtonClass(), DEFAULT_ROLLOVER_BUTTON_CLASS);
         rolloverCancelButtonStyle = StyleUtil.mergeClassNames(cancelButtonStyle, rolloverCancelButtonStyle);
 
-        sb.initScript(context, confirmation, "O$.Confirmation._initInnerStyles",// todo: remove separate style initialization function
-                iconAreaStyle,
-                rolloverIconAreaStyle,
-                textAreaStyle,
-                rolloverTextAreaStyle,
-                headerTextStyle,
-                rolloverHeaderTextStyle,
-                detailsTextStyle,
-                rolloverDetailsTextStyle,
-                buttonAreaStyle,
-                rolloverButtonAreaStyle,
-                okButtonStyle,
-                rolloverOkButtonStyle,
-                cancelButtonStyle,
-                rolloverCancelButtonStyle);
+        ScriptBuilder sb = new ScriptBuilder();
+        sb.initScript(context, confirmation, "O$.Confirmation._init",
+                invokerId,
+                confirmation.getEvent(),
+                confirmation.getDefaultButton(),
+                confirmation.getAlignToInvoker(),
+                new Object[]{
+                        iconAreaStyle,
+                        rolloverIconAreaStyle,
+                        textAreaStyle,
+                        rolloverTextAreaStyle,
+                        headerTextStyle,
+                        rolloverHeaderTextStyle,
+                        detailsTextStyle,
+                        rolloverDetailsTextStyle,
+                        buttonAreaStyle,
+                        rolloverButtonAreaStyle,
+                        okButtonStyle,
+                        rolloverOkButtonStyle,
+                        cancelButtonStyle,
+                        rolloverCancelButtonStyle}
+        );
 
         RenderingUtil.renderInitScript(context, sb, new String[]{
                 ResourceUtil.getInternalResourceURL(context, ConfirmationRenderer.class, ConfirmationRenderer.JS_SCRIPT_URL)
