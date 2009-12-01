@@ -16,28 +16,23 @@ O$.DateChooser = {
                   localeStr,
                   valueChangeHandler) {
     var dc = O$(dateChooserId);
-    dc._isDateChooser = true;
-    dc._calendar = O$(dateChooserId + "--popup--calendar");
-    //  dc._valueHolderId = dateChooserId + "_valueHolder";
+    O$.extend(dc, {
+      _isDateChooser: true,
+      _calendar: O$(dateChooserId + "--popup--calendar"),
 
-    dc._dateFormat = dateFormat;
-    dc._localeStr = localeStr;
+      _dateFormat: dateFormat,
+      _localeStr: localeStr,
 
-    dc._valueChangeHandler = valueChangeHandler;
+      _valueChangeHandler: valueChangeHandler
+    });
 
-    var cal = dc._calendar;
-    //  var valueHolder = O$(dc._valueHolderId);
-
-    var field = dc._field;
-
-    field._oldValueHolder = dc._initialText;
-
-    field.onchange = function(e) {
+    dc._field._oldValueHolder = dc._initialText;
+    dc._field.onchange = function(e) {
       if (!e)
         e = event;
       e.cancelBubble = true;
       // works in IE only
-      field._oldValueHolder = null;
+      this._oldValueHolder = null;
       dc.validateInputAndUpdateCalendar();
     };
 
@@ -45,7 +40,7 @@ O$.DateChooser = {
       dc._prevOnchange = dc.onchange;
       eval("dc._invokeChangeHandler = function(event) {" + valueChangeHandler + "}");
       dc.onchange = function(e) {
-        if (e && e.target && e.target == field) // works everywhere except IE
+        if (e && e.target && e.target == dc._field) // works everywhere except IE
           return;
         if (this._prevOnchange)
           this._prevOnchange();
@@ -77,8 +72,7 @@ O$.DateChooser = {
           O$.updateClientMessagesPosition();
         }
       }
-      if (dc._keyDownEvent)
-      {
+      if (dc._keyDownEvent) {
         var e = dc._keyDownEvent;
         if (e.keyCode == 33 || e.keyCode == 34 || e.keyCode == 38 || e.keyCode == 40 || e.keyCode == 37
                 || e.keyCode == 39) {
@@ -112,6 +106,7 @@ O$.DateChooser = {
         dc._prevKeyHandler_DC(evt);
     };
 
+    var cal = dc._calendar;
     cal._prevKeyHandler_DC = cal[eventName];
     cal[eventName] = function(evt) {
       var e = evt ? evt : window.event;
@@ -132,12 +127,6 @@ O$.DateChooser = {
     cal._addDateChangeListener(dc._dateChangeListener);
 
     dc.validateInputAndUpdateCalendar = function() {
-      //  var field = dc._field;
-      //    var valueHolder = O$(dc._valueHolderId);
-      /*
-       var formatter = new DateChooserAjaxDateFormatter();
-       formatter.validateAndParse(field.value);
-       */
       var date;
       if (self.O$.validateById != undefined) {
         var converters = O$.getValidators(dc);
@@ -155,13 +144,8 @@ O$.DateChooser = {
               date = result;
             }
             dc.valid = result;
-            //            }
-            //            O$.updateClientMessages();
-            //            O$.updateClientMessagesPosition();
-            //          } else {
             O$.updateClientMessages();
             O$.updateClientMessagesPosition();
-            //          }
             break;
           }
         }
@@ -193,10 +177,6 @@ O$.DateChooser = {
     dc._clientValueFunctionExists = true;
     dc._clientValueFunction = function () {
       return dc._field.value;
-      /*
-       var valueHolder = O$(dc._valueHolderId);
-       return valueHolder.value;
-       */
     };
 
     popup._addVisibilityChangeListener(function () {
@@ -246,9 +226,7 @@ O$.DateChooser = {
   },
 
   _updateDCField: function(dc, date) {
-    //  var valueHolder = O$(dc._valueHolderId);
     var field = dc._field;
-    //  var oldValue = valueHolder.value;
     if (date) {
       var dtf = O$.getDateTimeFormatObject(dc._localeStr);
       if (!dtf) return;
@@ -264,7 +242,6 @@ O$.DateChooser = {
         if (dc.onchange)
           O$.sendEvent(dc, "change");
       }
-      //    valueHolder.value = date.getTime();
     } else {
       if (field.value != "") {
         dc._updatingField = true;
@@ -279,9 +256,6 @@ O$.DateChooser = {
       }
 
     }
-    //  if (valueHolder.value != oldValue && dc._onValueChange) {
-    //    dc._onValueChange();
-    //  }
     if (O$.isOpera()) {
       var body = document.getElementsByTagName("body")[0];
       body.style.visibility = "hidden";

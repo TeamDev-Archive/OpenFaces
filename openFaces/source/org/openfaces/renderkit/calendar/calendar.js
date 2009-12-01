@@ -39,45 +39,46 @@ O$.Calendar = {
                   required,
                   disabled) {
     var cal = O$(calendarId);
+    O$.extend(cal, {
+      _dayClass: dayClass,
+      _rolloverDayClass: rolloverDayClass,
+      _inactiveMonthDayClass: inactiveMonthDayClass,
+      _rolloverInactiveMonthDayClass: rolloverInactiveMonthDayClass,
+      _selectedDayClass: selectedDayClass,
+      _rolloverSelectedDayClass: rolloverSelectedDayClass,
+      _todayClass: todayClass,
+      _rolloverTodayClass: rolloverTodayClass,
+      _weekendClass: weekendClass,
+      _rolloverWeekendClass: rolloverWeekendClass,
+      _disabledDayClass: disabledDayClass,
+      _rolloverDisabledDayClass: rolloverDisabledDayClass,
+      _headerClass: headerClassName,
 
-    cal._dayClass = dayClass;
-    cal._rolloverDayClass = rolloverDayClass;
-    cal._inactiveMonthDayClass = inactiveMonthDayClass;
-    cal._rolloverInactiveMonthDayClass = rolloverInactiveMonthDayClass;
-    cal._selectedDayClass = selectedDayClass;
-    cal._rolloverSelectedDayClass = rolloverSelectedDayClass;
-    cal._todayClass = todayClass;
-    cal._rolloverTodayClass = rolloverTodayClass;
-    cal._weekendClass = weekendClass;
-    cal._rolloverWeekendClass = rolloverWeekendClass;
-    cal._disabledDayClass = disabledDayClass;
-    cal._rolloverDisabledDayClass = rolloverDisabledDayClass;
-    cal._headerClass = headerClassName;
+      _firstDayOfWeek: firstDayOfWeek,
+      _dateRanges: dateRanges,
 
-    cal._firstDayOfWeek = firstDayOfWeek;
-    cal._dateRanges = dateRanges;
+      _showFooter: showFooter,
 
-    cal._showFooter = showFooter;
+      _localeStr: localeStr,
+      _required: required,
+      _disabled: disabled,
 
-    cal._localeStr = localeStr;
-    cal._required = required;
-    cal._disabled = disabled;
+      _weekNumber: O$(calendarId + "::week_num"),
+      _monthSelector: O$(calendarId + "--month"),
+      _decMonthSelector: O$(calendarId + "::month_decrease"),
+      _incMonthSelector: O$(calendarId + "::month_increase"),
+      _yearSelector: O$(calendarId + "--year"),
+      _decYearSelector: O$(calendarId + "::year_decrease"),
+      _incYearSelector: O$(calendarId + "::year_increase"),
+      _todaySelector: O$(calendarId + "::today"),
+      _noneSelector: O$(calendarId + "::none"),
+      _valueHolder: O$(calendarId + "::long_date_holder"),
+      _valueDateHolder: O$(calendarId + "::date_holder"),
+      _hasOwnItsOwnMouseBehavior: true,
 
-    cal._weekNumber = O$(calendarId + "::week_num");
-    cal._monthSelector = O$(calendarId + "--month");
-    cal._decMonthSelector = O$(calendarId + "::month_decrease");
-    cal._incMonthSelector = O$(calendarId + "::month_increase");
-    cal._yearSelector = O$(calendarId + "--year");
-    cal._decYearSelector = O$(calendarId + "::year_decrease");
-    cal._incYearSelector = O$(calendarId + "::year_increase");
-    cal._todaySelector = O$(calendarId + "::today");
-    cal._noneSelector = O$(calendarId + "::none");
-    cal._valueHolder = O$(calendarId + "::long_date_holder");
-    cal._valueDateHolder = O$(calendarId + "::date_holder");
-    cal._hasOwnItsOwnMouseBehavior = true;
-
-    cal.ondragstart = O$.breakEvent;
-    cal.onselectstart = O$.breakEvent;
+      ondragstart: O$.breakEvent,
+      onselectstart: O$.breakEvent
+    });
 
     O$.initComponent(calendarId, {rollover: rolloverClass});
 
@@ -498,11 +499,6 @@ O$.Calendar = {
           }
         }
 
-        /*
-         if ((dateRanges && ((foundInRange && !disableIncluded) || (!foundInRange && !disableExcluded)))
-         || !dateRanges) {
-         */
-
         // set TODAY style
         if (thisIsToday) {
           calendar._todayInBound = true;
@@ -515,9 +511,7 @@ O$.Calendar = {
         } else {
           cell._isToday = false;
         }
-        /*
-         }
-         */
+
         if (thisIsToday && dateRanges && ((foundInRange && disableIncluded) || (!foundInRange && disableExcluded))) {
           calendar._applyOnclick4today = false;
         }
@@ -722,9 +716,9 @@ O$.Calendar = {
 
     var storedSelectedDate = O$.Calendar._getSelectedDate(calendar.id);
     if (storedSelectedDate) {
-      storedSelectedDate_date = storedSelectedDate.getDate();
-      storedSelectedDate_month = storedSelectedDate.getMonth();
-      storedSelectedDate_fullYear = storedSelectedDate.getFullYear();
+      var storedSelectedDate_date = storedSelectedDate.getDate();
+      var storedSelectedDate_month = storedSelectedDate.getMonth();
+      var storedSelectedDate_fullYear = storedSelectedDate.getFullYear();
     }
     var currentDay = monthStartDate;
     for (var i = 0; i < 42; i ++) {
@@ -1026,7 +1020,6 @@ O$.Calendar = {
   },
 
   _dropItemMouseOver: function(dropItem) {
-    //  dropItem.className = dropItem._rolloverClass;
     dropItem.style.background = !O$.isSafari() ? "Highlight" : "blue";
     dropItem.style.color = !O$.isSafari() ? "HighlightText" : "white";
     dropItem.style.cursor = "pointer";
@@ -1036,7 +1029,6 @@ O$.Calendar = {
   },
 
   _dropItemMouseOut: function(dropItem) {
-    //  dropItem.style.cssText = "";
     dropItem.style.background = O$.isSafari() ? "none" : "";
     dropItem.style.color = "";
     dropItem.style.cursor = "pointer";
