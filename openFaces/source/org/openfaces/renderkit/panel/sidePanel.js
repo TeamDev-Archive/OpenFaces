@@ -78,25 +78,25 @@ O$._initSidePanel = function(sidePanelId,
                              rolloverClass,
                              splitterRolloverClass,
                              events) {
-  var sidePanel = O$(sidePanelId);
-  sidePanel._splitter = O$(sidePanelId + "::splitter");
-  sidePanel._panel = O$(sidePanelId + "::panel");
-  sidePanel._caption = O$(sidePanelId + "::caption");
-  sidePanel._content = O$(sidePanelId + "::content");
+  var sidePanel = O$.initComponent(sidePanelId, null, {
+    _splitter: O$(sidePanelId + "::splitter"),
+    _panel: O$(sidePanelId + "::panel"),
+    _caption: O$(sidePanelId + "::caption"),
+    _content: O$(sidePanelId + "::content"),
 
-  sidePanel._isClicking = false;
-  sidePanel._alignment = alignment;
-  sidePanel._collapsed = false;
-  sidePanel._collapsible = collapsible;
-  sidePanel._resizable = resizable;
-  sidePanel._iframeBugCorrection = true;
-  sidePanel._selectBugCorrection = true;
-  sidePanel._blockSelfRepaint = false;
-  sidePanel._size = size;
-  sidePanel._minSize = minSize;
-  sidePanel._maxSize = maxSize;
+    _isClicking: false,
+    _alignment: alignment,
+    _collapsed: false,
+    _collapsible: collapsible,
+    _resizable: resizable,
+    _iframeBugCorrection: true,
+    _selectBugCorrection: true,
+    _blockSelfRepaint: false,
+    _size: size,
+    _minSize: minSize,
+    _maxSize: maxSize
+  });
   sidePanel._panel._isCoupled = true;
-
 
   O$._initSidePanel_style(sidePanel, rolloverClass, splitterRolloverClass);
   O$._initSidePanel_events(sidePanel, events);

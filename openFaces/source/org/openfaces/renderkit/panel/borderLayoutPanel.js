@@ -13,17 +13,13 @@
 //--------------------------------------  BorderLayoutPanel init method
 
 O$._initBorderLayoutPanel = function(borderLayoutPanelId) {
-  var couplingEnabled = true; //todo remove this stub
-  var borderLayoutPanel = O$(borderLayoutPanelId);
-  borderLayoutPanel._isBorderLayoutPanel = true;
-  borderLayoutPanel._truncateMode = false;
-  borderLayoutPanel._isNotResizableComponent = true;
-  borderLayoutPanel._isCoupled = couplingEnabled && borderLayoutPanel.parentNode._isCouplingElement;
-  borderLayoutPanel._newStyle = new O$._createPseudoCSSStyle();
-  /*
-   borderLayoutPanel._newStyle.width = O$.getElementStyle(borderLayoutPanel, "width");
-   borderLayoutPanel._newStyle.height = O$.getElementStyle(borderLayoutPanel, "height");
-   */
+  var borderLayoutPanel = O$.initComponent(borderLayoutPanelId, null, {
+    _isBorderLayoutPanel: true,
+    _truncateMode: false,
+    _isNotResizableComponent: true,
+    _newStyle: new O$._createPseudoCSSStyle()
+  });
+  borderLayoutPanel._isCoupled = borderLayoutPanel.parentNode._isCouplingElement;
   borderLayoutPanel._newStyle.width = borderLayoutPanel.style.width;
   borderLayoutPanel._newStyle.height = borderLayoutPanel.style.height;
 
@@ -141,7 +137,8 @@ O$._recalculateBorderLayoutPanel = function(borderLayoutPanel) {
 };
 
 O$._repaintBorderLayoutPanel = function(borderLayoutPanel) {
-  if ((parseInt(borderLayoutPanel._content._newStyle.height) < parseInt(borderLayoutPanel._content.style.height)) || (parseInt(borderLayoutPanel._content._newStyle.width) < parseInt(borderLayoutPanel._content.style.width))) {
+  if ((parseInt(borderLayoutPanel._content._newStyle.height) < parseInt(borderLayoutPanel._content.style.height)) ||
+      (parseInt(borderLayoutPanel._content._newStyle.width) < parseInt(borderLayoutPanel._content.style.width))) {
     var isDecrase = true;
   }
   if (isDecrase) {
