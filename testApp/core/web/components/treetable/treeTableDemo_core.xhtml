@@ -67,6 +67,7 @@
 <h:commandButton value="expansionState=levelsExpanded:" action="#{TreeTableTestBean.forumExpandUpToLevel}"/>
 <h:inputText value="#{TreeTableTestBean.forumExpansionLevel}"/>
 <o:treeTable id="forumTree" var="message"
+             preloadedNodes="all"
              expansionState="#{TreeTableTestBean.forumTreeTableExpansionState}" style="width: 100%;"
              columnIdVar="columnId" nodeLevelVar="level"
              bodyOddRowStyle="background: #e4e4e4;"
