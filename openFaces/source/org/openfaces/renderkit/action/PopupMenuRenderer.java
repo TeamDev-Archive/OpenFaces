@@ -137,7 +137,7 @@ public class PopupMenuRenderer extends RendererBase {
             throw new FacesException("o:popupMenu's event attribute value should start with \"on\", e.g. \"onclick\", " +
                     "but was: \"" + event + "\"; PopupMenu's client-id: " + popupMenu.getClientId(facesContext));
         ScriptBuilder initScript = new ScriptBuilder();
-        initScript.initScript(facesContext, popupMenu, "O$._initPopupMenu",
+        initScript.initScript(facesContext, popupMenu, "O$.PopupMenu._init",
                 RenderingUtil.getRolloverClass(facesContext, popupMenu),
                 forId,
                 event,
