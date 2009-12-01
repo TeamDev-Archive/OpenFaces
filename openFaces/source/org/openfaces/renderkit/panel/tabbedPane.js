@@ -12,8 +12,8 @@
 
 O$.TabbedPane = {
   _init: function(clientId, rolloverClass,
-                              containerClass, rolloverContainerClass, borderClass, loadingMode, focusable, focusedClass,
-                              onselectionchange) {
+                  containerClass, rolloverContainerClass, borderClass, loadingMode, focusable, focusedClass,
+                  onselectionchange) {
     var tabbedPane = O$(clientId);
     O$.extend(tabbedPane, {
       _loadingMode: loadingMode,
