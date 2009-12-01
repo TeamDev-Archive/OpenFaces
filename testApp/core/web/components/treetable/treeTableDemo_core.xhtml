@@ -153,7 +153,7 @@ Click this button to remove appropriate permission from the selected user<br/>
 <h:commandButton value="Switch toggle alignment to 'middle'" action="#{TreeTableTestBean.alignMiddle}"/>
 <h:commandButton value="Switch toggle alignment to 'bottom'" action="#{TreeTableTestBean.alignBottom}"/>
 
-<o:treeTable id="bigNodesTreeTable" var="node" style="width: 200px; ">
+<o:treeTable id="bigNodesTreeTable" var="node" style="width: 200px;" preloadedNodes="all">
   <o:staticTreeStructure>
     <o:treeNode value="Node 1 (and some long text paragraph here)">
       <o:treeNode value="Node 1-1 (and some long text paragraph here)"/>
