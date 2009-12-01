@@ -17,29 +17,55 @@ O$.TwoListSelection = {
                   disabled,
                   rolloverClass) {
     var tls = O$(controlId);
-    tls._leftSelectionField = O$(controlId + "::left_listBox_selection");
-    tls._rightSelectionField = O$(controlId + "::right_listBox_selection");
-    tls._leftListBox = O$(controlId + "::left");
-    tls._rightListBox = O$(controlId + "::right");
+    O$.extend(tls, {
+      _allowAddRemoveAll: allowAddRemoveAll,
+      _disabled: disabled,
+      _allowItemsOrdering: allowItemsOrdering,
 
-    tls._leftCaption = O$(controlId + "::left_caption");
-    tls._rightCaption = O$(controlId + "::right_caption");
-    tls._ascImage = O$(controlId + "::sort_asc");
-    tls._desImage = O$(controlId + "::sort_desc");
+      _leftSelectionField: O$(controlId + "::left_listBox_selection"),
+      _rightSelectionField: O$(controlId + "::right_listBox_selection"),
+      _leftListBox: O$(controlId + "::left"),
+      _rightListBox: O$(controlId + "::right"),
 
-    tls._selectBtn = O$(controlId + "::select");
-    tls._removeBtn = O$(controlId + "::remove");
-    tls._disabled = disabled;
+      _leftCaption: O$(controlId + "::left_caption"),
+      _rightCaption: O$(controlId + "::right_caption"),
+      _ascImage: O$(controlId + "::sort_asc"),
+      _desImage: O$(controlId + "::sort_desc"),
+
+      _selectBtn: O$(controlId + "::select"),
+      _removeBtn: O$(controlId + "::remove"),
+      _selectedItemsField: O$(controlId + "::selected_items"),
+      _selectAllBtn: O$(controlId + "::select_all"),
+      _removeAllBtn: O$(controlId + "::remove_all"),
+      _moveUpBtn: O$(controlId + "::up"),
+      _moveDownBtn: O$(controlId + "::down"),
+
+      selectAll: function() {
+        O$.TwoListSelection._moveAllRight(tls);
+      },
+
+      unselectAll: function() {
+        O$.TwoListSelection._moveAllLeft(tls);
+      },
+
+      getValue: function () {
+        return O$.TwoListSelection._getValue(tls.id);
+      },
+
+      setValue: function(value) {
+        O$.TwoListSelection._setValue(tls.id, value);
+      },
+
+      // client validation support
+      _clientValueFunctionExists: true,
+      _clientValueFunction: function () {
+        return tls.getValue();
+      }
+    });
 
     O$.initComponent(controlId, {rollover: rolloverClass}, events);
 
-    if (disabled) {
-      tls._selectAllBtn = O$(controlId + "::select_all");
-      tls._removeAllBtn = O$(controlId + "::remove_all");
-      tls._moveUpBtn = O$(controlId + "::up");
-      tls._moveDownBtn = O$(controlId + "::down");
-    } else {
-
+    if (!disabled) {
       tls._leftListBox.onchange = function() {
         O$.TwoListSelection._updateSelectionField(tls, "left");
         O$.TwoListSelection._updateButtons(tls);
@@ -73,8 +99,6 @@ O$.TwoListSelection = {
       }
 
       if (allowAddRemoveAll) {
-        tls._selectAllBtn = O$(controlId + "::select_all");
-        tls._removeAllBtn = O$(controlId + "::remove_all");
         tls._selectAllBtn.onclick = function() {
           O$.TwoListSelection._moveAllRight(tls);
         };
@@ -82,10 +106,8 @@ O$.TwoListSelection = {
           O$.TwoListSelection._moveAllLeft(tls);
         };
       }
-      tls._allowItemsOrdering = allowItemsOrdering;
+
       if (allowItemsOrdering) {
-        tls._moveUpBtn = O$(controlId + "::up");
-        tls._moveDownBtn = O$(controlId + "::down");
         tls._moveUpBtn.onclick = function() {
           O$.TwoListSelection._moveUp(tls);
         };
@@ -101,18 +123,7 @@ O$.TwoListSelection = {
           };
         }
       }
-    }
 
-    if (O$.isExplorer() || O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/) {
-      setTimeout(function() {
-        O$.TwoListSelection._updateButtonsWidth(tls);
-      }, 100);
-    } else {
-      O$.TwoListSelection._updateButtonsWidth(tls);
-    }
-    if (!disabled) {
-      tls._selectedItemsField = O$(controlId + "::selected_items");
-      tls._allowAddRemoveAll = allowAddRemoveAll;
       O$.TwoListSelection._updateButtons(tls, true);
 
       var lb = tls._leftListBox;
@@ -139,30 +150,16 @@ O$.TwoListSelection = {
         };
       }
 
-      tls.selectAll = function() {
-        O$.TwoListSelection._moveAllRight(tls);
-      };
-
-      tls.unselectAll = function() {
-        O$.TwoListSelection._moveAllLeft(tls);
-      };
-
-      // value getter
-      tls.getValue = function () {
-        return O$.TwoListSelection._getValue(tls.id);
-      };
-
-      // value setter
-      tls.setValue = function(value) {
-        O$.TwoListSelection._setValue(tls.id, value);
-      };
-
-      // client validation support
-      tls._clientValueFunctionExists = true;
-      tls._clientValueFunction = function () {
-        return tls.getValue();
-      };
     }
+
+    if (O$.isExplorer() || O$.isMozillaFF()) {
+      setTimeout(function() {
+        O$.TwoListSelection._updateButtonsWidth(tls);
+      }, 100);
+    } else {
+      O$.TwoListSelection._updateButtonsWidth(tls);
+    }
+
   },
 
   _getValue: function(controlId) {
@@ -247,13 +244,11 @@ O$.TwoListSelection = {
   },
 
   _updateButtons: function(tls, isSubmit) {
-    var leftListBox = tls._leftListBox;
-    var rightListBox = tls._rightListBox;
     var leftSelectionField = tls._leftSelectionField;
     var rightSelectionField = tls._rightSelectionField;
 
-    var leftListOptions = leftListBox.options;
-    var rightListOptions = rightListBox.options;
+    var leftListOptions = tls._leftListBox.options;
+    var rightListOptions = tls._rightListBox.options;
     var leftListSize = leftListOptions.length;
     var rightListSize = rightListOptions.length;
     tls._selectBtn.disabled = !leftSelectionField.value;
