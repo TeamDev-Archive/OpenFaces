@@ -179,6 +179,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
                 "text-decoration: underline; font-weight: bold; text-align:center; left: 200px; top: 200px;");
 
         popupLayer.mouseOver();
+        popupLayer.mouseMove();
 
         popupLayer.assertStyle("width: 450px; height: 250px; border: 3px dashed springgreen; background: azure; " +
                 "text-decoration: overline; font-weight: lighter;");
