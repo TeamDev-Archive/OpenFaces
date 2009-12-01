@@ -180,7 +180,7 @@ public class TabbedPaneRenderer extends BaseTabSetRenderer implements AjaxPortio
 
         ScriptBuilder sb = new ScriptBuilder();
         String onselectionchange = tabbedPane.getOnselectionchange();
-        sb.initScript(context, tabbedPane, "O$._initTabbedPane",
+        sb.initScript(context, tabbedPane, "O$.TabbedPane._init",
                 RenderingUtil.getRolloverClass(context, tabbedPane),
                 containerClass,
                 rolloverContainerClass,

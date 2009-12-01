@@ -17,6 +17,8 @@ O$.HintLabel = {
     label._hintTimeout = hintTimeout;
     label._hintClass = hintClass;
 
+    O$.initComponent(id, {rollover: rolloverClass});
+
     O$.addLoadEvent(function() {
       if (label._hint) {
         var hints = [];
@@ -32,69 +34,61 @@ O$.HintLabel = {
       }
     });
 
-    O$.initComponent(id, {rollover: rolloverClass});
-
     var labelInnerHtml = O$.HintLabel._getInnerHtml(label);
-    label._mouseOverHandler = function (e) {
-      if (!label._hint) {
-        var hintDiv = document.createElement("div");
-        hintDiv.id = label.id + "::hint"; // required for tests
-        hintDiv.innerHTML = labelInnerHtml;
-        label.parentNode.appendChild(hintDiv);
-        label._hint = hintDiv;
-      }
-      O$.HintLabel._initHint(label);
-
-      if (label._oldMouseOver) {
-        label._oldMouseOver(e);
-      }
-      if (labelInnerHtml == label._hint.innerHTML) { // idea is: do not show hint if hint text is the same as label text and label is not cutted
-        if (!label._fullWidth) {
-          label._fullWidth = O$.HintLabel._getElementWidth(label, true) * 1;
-        }
-        if (label._fullWidth <= label.offsetWidth && label._fullWidth <= label.parentNode.offsetWidth) return;
-      }
-      if (!label._hintFullWidth) {
-        label._hintFullWidth = O$.HintLabel._getElementWidth(label._hint, false) * 1;
-      }
-      O$.HintLabel._prepareHint(label);
-      label._hintTimer = setTimeout(function() {
-        if (document._of_visible_hint) {
-          document._of_visible_hint.style.visibility = "hidden";
-        }
-        document._of_visible_hint = label._hint;
-        label._hint.style.visibility = "visible";
-        label._hint.style.display = "block";
-        O$.repaintAreaForOpera(label._hint, true);
-        label._parentVisibilityChecker = setInterval(function() {
-          var parent = label._hint.parentNode;
-          while (parent) {
-            if (parent.style && parent.style.visibility && (parent.style.visibility == "hidden" || parent.style.display == "none")) {
-              label._hint._hide();
-              return;
-            }
-            parent = parent.parentNode;
-          }
-        }, 200);
-      }, label._hintTimeout);
-    };
 
     O$.addLoadEvent(function() {
       label._oldMouseOver = label.onmouseover;
-      O$.assignEventHandlerField(label, "onmouseover", label._mouseOverHandler);
-    });
+      O$.assignEventHandlerField(label, "onmouseover", function (e) {
+        if (!label._hint) {
+          var hintDiv = document.createElement("div");
+          hintDiv.id = label.id + "::hint"; // required for tests
+          hintDiv.innerHTML = labelInnerHtml;
+          label.parentNode.appendChild(hintDiv);
+          label._hint = hintDiv;
+        }
+        O$.HintLabel._initHint(label);
 
+        if (label._oldMouseOver) {
+          label._oldMouseOver(e);
+        }
+        if (labelInnerHtml == label._hint.innerHTML) { // idea is: do not show hint if hint text is the same as label text and label is not cutted
+          if (!label._fullWidth) {
+            label._fullWidth = O$.HintLabel._getElementWidth(label, true) * 1;
+          }
+          if (label._fullWidth <= label.offsetWidth && label._fullWidth <= label.parentNode.offsetWidth) return;
+        }
+        if (!label._hintFullWidth) {
+          label._hintFullWidth = O$.HintLabel._getElementWidth(label._hint, false) * 1;
+        }
+        O$.HintLabel._prepareHint(label);
+        label._hintTimer = setTimeout(function() {
+          if (document._of_visible_hint) {
+            document._of_visible_hint.style.visibility = "hidden";
+          }
+          document._of_visible_hint = label._hint;
+          label._hint.style.visibility = "visible";
+          label._hint.style.display = "block";
+          O$.repaintAreaForOpera(label._hint, true);
+          label._parentVisibilityChecker = setInterval(function() {
+            var parent = label._hint.parentNode;
+            while (parent) {
+              if (parent.style && parent.style.visibility && (parent.style.visibility == "hidden" || parent.style.display == "none")) {
+                label._hint._hide();
+                return;
+              }
+              parent = parent.parentNode;
+            }
+          }, 200);
+        }, label._hintTimeout);
+      });
 
-    label._mouseOutHandler = function (e) {
-      if (label._oldMouseOut)
-        label._oldMouseOut(e);
-      if (label._hintTimer)
-        clearTimeout(label._hintTimer);
-    };
-
-    O$.addLoadEvent(function() {
       label._oldMouseOut = label.onmouseout;
-      O$.assignEventHandlerField(label, "onmouseout", label._mouseOutHandler);
+      O$.assignEventHandlerField(label, "onmouseout", function (e) {
+        if (label._oldMouseOut)
+          label._oldMouseOut(e);
+        if (label._hintTimer)
+          clearTimeout(label._hintTimer);
+      });
     });
   },
 
@@ -111,15 +105,11 @@ O$.HintLabel = {
   _getElementWidth: function(elt, extractScriptsFromInnerHtml) {
     var stubElt = document.createElement(elt.tagName);
     stubElt.innerHTML = (extractScriptsFromInnerHtml) ? O$.HintLabel._getInnerHtml(elt) : elt.innerHTML;
-    stubElt.style.marginLeft = O$.getElementStyle(elt, "margin-left");
-    stubElt.style.marginRight = O$.getElementStyle(elt, "margin-right");
-    stubElt.style.paddingLeft = O$.getElementStyle(elt, "padding-left");
-    stubElt.style.paddingRight = O$.getElementStyle(elt, "padding-right");
-    stubElt.style.borderLeftWidth = O$.getElementStyle(elt, "border-left-width");
-    stubElt.style.borderRightWidth = O$.getElementStyle(elt, "border-right-width");
-    stubElt.style.fontFamily = O$.getElementStyle(elt, "font-family");
-    stubElt.style.fontSize = O$.getElementStyle(elt, "font-size");
-    stubElt.style.fontWeight = O$.getElementStyle(elt, "font-weight");
+
+    ["marginLeft", "marginRight", "paddingLeft", "paddingRight", "borderLeftWidth", "borderRightWidth", "fontFamily",
+      "fontSize", "fontWeight"].forEach(function(property) {
+      stubElt.style[property] = O$.getElementStyle(elt, property);
+    });
 
     stubElt.style.position = "absolute";
     stubElt.style.visibility = "hidden";
@@ -156,7 +146,6 @@ O$.HintLabel = {
     };
   },
 
-
   _prepareHint: function(label) {
     var pos = O$.getElementPos(label, true);
     pos.left += O$.getNumericElementStyle(label, "border-left-width") + O$.getNumericElementStyle(label, "padding-left");
@@ -184,9 +173,6 @@ O$.HintLabel = {
       hint.style.width = (document.body.offsetWidth - label._realPos.x - margins + scrollX) + "px";
     } else {
       hint.style.whiteSpace = "nowrap";
-      //      if (hint.offsetHeight < label.offsetHeight) {
-      //        hint.style.height = label.offsetHeight + "px";
-      //      }
       hint.style.width = label._hintFullWidth + "px";
     }
   }
