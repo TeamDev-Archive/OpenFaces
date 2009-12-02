@@ -1939,13 +1939,30 @@ O$.Tables = {
         if (!scrolling.horizontal) {
           var remainingWidth = tableWidth - nonRelativeWidth;
           if (remainingWidth > 0 && relativeWidthColumns.length > 0) {
-            var pixelsPerCol = Math.floor(remainingWidth / relativeWidthColumns.length);
+            var unspecifiedWidthColCount = 0;
+            var totalSpecifiedWidth = 0;
             relativeWidthColumns.forEach(function(c) {
-              c.setWidth(pixelsPerCol);// todo: respect individual relative column widths
+              if (!c._widthNotSpecified) {
+                var relativeWidth = c.getDeclaredWidth(10000) / 100;
+                c._tempWidth = relativeWidth;
+                totalSpecifiedWidth += relativeWidth;
+              } else
+                unspecifiedWidthColCount++;
+            });
+            var unspecifiedWidth = 100 - totalSpecifiedWidth;
+            var widthPerUnspecifiedWidthCol = unspecifiedWidth > 0
+                    ? unspecifiedWidth / unspecifiedWidthColCount
+                    : 20 / unspecifiedWidthColCount;
+            var relativeTotal = totalSpecifiedWidth + widthPerUnspecifiedWidthCol * unspecifiedWidthColCount;
+            relativeWidthColumns.forEach(function(c) {
+              c.setWidth(Math.floor(
+                      (c._widthNotSpecified ? widthPerUnspecifiedWidthCol : c._tempWidth)
+                              / relativeTotal * remainingWidth
+                      ));
             });
           } else {
             verticalAreaForInitialization._columns.forEach(function(c) {
-              c.setWidth(Math.floor((c._tempWidth / areaWidth) * tableWidth)); 
+              c.setWidth(Math.floor((c._tempWidth / areaWidth) * tableWidth));
             });
           }
           areaWidth = tableWidth;
@@ -1958,13 +1975,6 @@ O$.Tables = {
           verticalAreaForInitialization._areas.push(a);
           var areaTable = a._table;
           areaTable.style.width = width;
-          if (O$.isChrome() || O$.isSafari()) {
-            // fix Chrome/Safari not respecting table-layout="fixed" in _some_ cases
-            areaTable.style.tableLayout = "auto";
-            setTimeout(function() {
-              areaTable.style.tableLayout = "fixed";
-            }, 10);
-          }
         });
         return width;
       }
@@ -2014,6 +2024,20 @@ O$.Tables = {
         O$.listenProperty(table, "width", function(/*width*/) {
           table._centerArea.updateWidth();
         });
+      if (O$.isChrome() || O$.isSafari()) {
+        // fix Chrome/Safari not respecting table-layout="fixed" in _some_ cases
+        [table.header, table.body, table.footer].forEach(function (section) {
+          if (!section) return;
+          section._scrollingAreas.forEach(function(a) {
+            if (!a) return;
+            var areaTable = a._table;
+            areaTable.style.tableLayout = "auto";
+            setTimeout(function() {
+              areaTable.style.tableLayout = "fixed";
+            }, 10);
+          });
+        });
+      }
     }
     alignColumnWidths();
 
@@ -2134,7 +2158,7 @@ O$.Tables = {
 
     function fixIE6AreaDisappearing() {
       if (!O$.isExplorer6()) return;
-      
+
       mainScrollingArea._scrollingDiv.onresize = function() {
       };
     }
