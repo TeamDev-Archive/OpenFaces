@@ -31,7 +31,7 @@
                 </h:selectOneMenu>
                 <br/>
                 <o:selectOneRadio id="selectOneRadio7" value="#{RadioTest.radioGroup7}">
-                  <o:selectItems value="#{RadioTest.selectOneRadioItemsGroup7}"/>
+                  <f:selectItems value="#{RadioTest.selectOneRadioItemsGroup7}"/>
                   <o:ajax render="radioGroup7Text" event="change"/>
                 </o:selectOneRadio>
               </td>
@@ -54,7 +54,7 @@
                                   pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
                                   disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
                                   disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png">
-                  <o:selectItems value="#{RadioTest.selectOneRadioItemsGroup8}"/>
+                  <f:selectItems value="#{RadioTest.selectOneRadioItemsGroup8}"/>
                   <o:ajax render="radioGroup8Text" event="change"/>
                 </o:selectOneRadio>
               </td>

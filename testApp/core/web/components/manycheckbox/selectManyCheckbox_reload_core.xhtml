@@ -31,7 +31,7 @@
                 </h:selectOneMenu>
                 <br/>
                 <o:selectManyCheckbox id="selectManyCheckbox7" value="#{ManyCheckboxTest.checkboxGroup7}">
-                  <o:selectItems value="#{ManyCheckboxTest.selectManyCheckboxItemsGroup7}"/>
+                  <f:selectItems value="#{ManyCheckboxTest.selectManyCheckboxItemsGroup7}"/>
                   <o:ajax render="checkboxGroup7Value" event="change"/>
                 </o:selectManyCheckbox>
               </td>
@@ -59,7 +59,7 @@
                                   pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
                                   disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
                                   disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png">
-                  <o:selectItems value="#{ManyCheckboxTest.selectManyCheckboxItemsGroup8}"/>
+                  <f:selectItems value="#{ManyCheckboxTest.selectManyCheckboxItemsGroup8}"/>
                   <o:ajax render="checkboxGroup8Value" event="change"/>
                 </o:selectManyCheckbox>
               </td>

@@ -13,8 +13,8 @@
 package org.openfaces.component.select;
 
 import org.openfaces.component.OUIInputBase;
-import org.openfaces.util.ValueBindings;
 import org.openfaces.util.NullTypeELResolver;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 

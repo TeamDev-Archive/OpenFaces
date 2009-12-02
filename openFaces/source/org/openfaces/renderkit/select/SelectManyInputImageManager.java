@@ -13,10 +13,10 @@
 package org.openfaces.renderkit.select;
 
 import org.openfaces.component.select.OUISelectManyInputBase;
-import org.openfaces.component.select.SelectItem;
 import org.openfaces.util.ResourceUtil;
 
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 /**
  * @author Oleg Marshalenko
@@ -38,14 +38,14 @@ public class SelectManyInputImageManager {
 
     public static String getCurrentImageUrl(FacesContext context, OUISelectManyInputBase selectManyInputBase,
                                             SelectItem selectItem) {
-        if (selectManyInputBase.isDisabled() || selectItem.isItemDisabled()) {
-            if (selectItem.getItemValue().equals(selectManyInputBase.getValue())) {
+        if (selectManyInputBase.isDisabled() || selectItem.isDisabled()) {
+            if (selectItem.getValue().equals(selectManyInputBase.getValue())) {
                 return getDisabledSelectedImageUrl(context, selectManyInputBase);
             } else {
                 return getDisabledUnselectedImageUrl(context, selectManyInputBase);
             }
         } else {
-            if (selectItem.getItemValue().equals(selectManyInputBase.getValue())) {
+            if (selectItem.getValue().equals(selectManyInputBase.getValue())) {
                 return getSelectedImageUrl(context, selectManyInputBase);
             } else {
                 return getUnselectedImageUrl(context, selectManyInputBase);

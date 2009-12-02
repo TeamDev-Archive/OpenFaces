@@ -13,7 +13,6 @@
 package org.openfaces.renderkit.select;
 
 import org.openfaces.component.select.OUISelectManyInputBase;
-import org.openfaces.component.select.SelectItem;
 import org.openfaces.component.select.SelectManyCheckbox;
 import org.openfaces.org.json.JSONObject;
 import static org.openfaces.renderkit.select.SelectManyInputImageManager.getCurrentImageUrl;
@@ -26,6 +25,7 @@ import org.openfaces.util.ScriptBuilder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.model.SelectItem;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,7 +62,7 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
 
             String imageId = id + IMAGE_SUFFIX;
 
-            writer.startElement(TAG_NAME, selectItem);
+            writer.startElement(TAG_NAME, selectManyCheckbox);
             writeAttribute(writer, "id", imageId);
             writeAttribute(writer, "type", "image");
             writeAttribute(writer, "src", getCurrentImageUrl(facesContext, selectManyCheckbox, selectItem));
@@ -73,10 +73,10 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
             writeAttribute(writer, "id", id);
             writeAttribute(writer, "name", clientId);
             writeAttribute(writer, "type", "checkbox");
-            writeAttribute(writer, "value", selectItem.getItemValue().toString());
+            writeAttribute(writer, "value", getFormattedValue(selectManyCheckbox, selectItem.getValue()));
             writeAttribute(writer, "style", "display: none;");
 
-            if (selectManyCheckbox.isDisabled() || selectItem.isItemDisabled()) {
+            if (selectManyCheckbox.isDisabled() || selectItem.isDisabled()) {
                 writeAttribute(writer, "disabled", "disabled");
             }
             if (isValueEquals(selectManyCheckbox, selectItem)) {
@@ -84,7 +84,7 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
             }
             writer.endElement(TAG_NAME);
 
-            writer.startElement("label", selectItem);
+            writer.startElement("label", selectManyCheckbox);
             String labelId = id + LABEL_SUFFIX;
             writeAttribute(writer, "id", labelId);
             writeAttribute(writer, "for", imageId);
@@ -124,9 +124,9 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
             writeAttribute(writer, "id", id);
             writeAttribute(writer, "name", clientId);
             writeAttribute(writer, "type", "checkbox");
-            writeAttribute(writer, "value", selectItem.getItemValue().toString());
+            writeAttribute(writer, "value", getFormattedValue(selectManyCheckbox, selectItem.getValue()));
             writeCommonAttributes(writer, selectManyCheckbox, selectItem);
-            if (selectManyCheckbox.isDisabled() || selectItem.isItemDisabled()) {
+            if (selectManyCheckbox.isDisabled() || selectItem.isDisabled()) {
                 writeAttribute(writer, "disabled", "disabled");
             }
             if (isValueEquals(selectManyCheckbox, selectItem)) {
@@ -135,7 +135,7 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
             writeAttribute(writer, "onchange", selectManyCheckbox.getOnchange());
             writer.endElement(TAG_NAME);
 
-            writer.startElement("label", selectItem);
+            writer.startElement("label", selectManyCheckbox);
             String labelId = id + LABEL_SUFFIX;
             writeAttribute(writer, "id", labelId);
             writeAttribute(writer, "for", id);
@@ -195,6 +195,6 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
         if (values == null) {
             values = (List) selectManyCheckbox.getValue();
         }
-        return values != null && values.contains(selectItem.getItemValue());
+        return values != null && values.contains(selectItem.getValue());
     }
 }

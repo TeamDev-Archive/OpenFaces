@@ -31,10 +31,10 @@
                                event="onchange" action="#{RadioTest.reloadSelectOneRadio7}"/>
                 </h:selectOneMenu>
                 <br/>
-                <o:selectOneRadio id="selectOneRadio7" value="#{RadioTest.radioGroup7}">
-                  <o:selectItems value="#{RadioTest.selectOneRadioItemsGroup7}"/>
+                <h:selectOneRadio id="selectOneRadio7" value="#{RadioTest.radioGroup7}">
+                  <f:selectItems value="#{RadioTest.selectItemsGroup7}"/>
                   <a4j:support reRender="radioGroup7Text" event="onchange"/>
-                </o:selectOneRadio>
+                </h:selectOneRadio>
               </td>
               <td class="container">
                 Value: <h:outputText id="radioGroup7Text" value="#{RadioTest.radioGroup7}"/>
@@ -56,7 +56,7 @@
                                   pressedUnselectedImageUrl="/images/pressedUnselectedRadioButton.png"
                                   disabledSelectedImageUrl="/images/disabledSelectedRadioButton.png"
                                   disabledUnselectedImageUrl="/images/disabledUnselectedRadioButton.png">
-                  <o:selectItems value="#{RadioTest.selectOneRadioItemsGroup8}"/>
+                  <f:selectItems value="#{RadioTest.selectOneRadioItemsGroup8}"/>
                   <a4j:support reRender="radioGroup8Text" event="onchange"/>
                 </o:selectOneRadio>
               </td>

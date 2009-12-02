@@ -596,15 +596,6 @@
   </component>
 
   <component>
-    <component-type>org.openfaces.SelectItem</component-type>
-    <component-class>org.openfaces.component.select.SelectItem</component-class>
-  </component>
-  <component>
-    <component-type>org.openfaces.SelectItems</component-type>
-    <component-class>org.openfaces.component.select.SelectItems</component-class>
-  </component>
-
-  <component>
     <component-type>org.openfaces.CompositeFilter</component-type>
     <component-class>org.openfaces.component.filter.CompositeFilter</component-class>
   </component>

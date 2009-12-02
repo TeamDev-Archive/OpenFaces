@@ -12,10 +12,9 @@
 
 package org.openfaces.testapp.selectmanycheckbox;
 
-import org.openfaces.component.select.SelectItem;
-
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -164,8 +163,8 @@ public class ManyCheckboxTest {
             this.selectManyCheckboxItemsGroup7 = new ArrayList<SelectItem>();
             for (int i = 1; i < 6; i++) {
                 SelectItem selectItem = new SelectItem();
-                selectItem.setItemValue(String.valueOf(i));
-                selectItem.setItemLabel("Chk " + i);
+                selectItem.setValue(String.valueOf(i));
+                selectItem.setLabel("Chk " + i);
                 this.selectManyCheckboxItemsGroup7.add(selectItem);
             }
         }
@@ -181,9 +180,9 @@ public class ManyCheckboxTest {
         this.selectManyCheckboxItemsGroup7 = new ArrayList<SelectItem>();
         for (int i = 1; i < 6; i++) {
             SelectItem selectItem = new SelectItem();
-            selectItem.setItemValue(String.valueOf(i));
-            selectItem.setItemLabel("Chk " + i);
-            if (i == selectedForDisable) selectItem.setItemDisabled(true);
+            selectItem.setValue(String.valueOf(i));
+            selectItem.setLabel("Chk " + i);
+            if (i == selectedForDisable) selectItem.setDisabled(true);
             this.selectManyCheckboxItemsGroup7.add(selectItem);
         }
     }
@@ -226,8 +225,8 @@ public class ManyCheckboxTest {
             this.selectManyCheckboxItemsGroup8 = new ArrayList<SelectItem>();
             for (int i = 1; i < 6; i++) {
                 SelectItem selectItem = new SelectItem();
-                selectItem.setItemValue(String.valueOf(i));
-                selectItem.setItemLabel("Chk " + i);
+                selectItem.setValue(String.valueOf(i));
+                selectItem.setLabel("Chk " + i);
                 this.selectManyCheckboxItemsGroup8.add(selectItem);
             }
         }
@@ -243,9 +242,9 @@ public class ManyCheckboxTest {
         this.selectManyCheckboxItemsGroup8 = new ArrayList<SelectItem>();
         for (int i = 1; i < 6; i++) {
             SelectItem selectItem = new SelectItem();
-            selectItem.setItemValue(String.valueOf(i));
-            selectItem.setItemLabel("Chk " + i);
-            if (i == selectedForDisable) selectItem.setItemDisabled(true);
+            selectItem.setValue(String.valueOf(i));
+            selectItem.setLabel("Chk " + i);
+            if (i == selectedForDisable) selectItem.setDisabled(true);
             this.selectManyCheckboxItemsGroup8.add(selectItem);
         }
     }

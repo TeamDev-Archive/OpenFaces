@@ -13,8 +13,6 @@
 package org.openfaces.renderkit.select;
 
 import org.openfaces.component.select.OUISelectManyInputBase;
-import org.openfaces.component.select.SelectItem;
-import org.openfaces.component.select.SelectItems;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
@@ -26,14 +24,22 @@ import org.openfaces.util.StyleGroup;
 import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UISelectItem;
+import javax.faces.component.UISelectItems;
+import javax.faces.component.ValueHolder;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.model.SelectItem;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+import javax.faces.application.Application;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Oleg Marshalenko
@@ -139,45 +145,130 @@ public abstract class SelectManyInputRenderer extends RendererBase {
         return clientId + ":" + index;
     }
 
-    private List<SelectItem> collectSelectItems(OUISelectManyInputBase selectManyInputBase) {
-        Collection<UIComponent> children = selectManyInputBase.getChildren();
-        List<SelectItem> items = new ArrayList<SelectItem>();
-        for (UIComponent child : children) {
-            Collection<SelectItem> tmpCollection = getItemsFromComponent(child);
-            if (tmpCollection != null) {
-                items.addAll(tmpCollection);
+    protected String getFormattedValue(UIComponent component, Object value) {
+            String result;
+            Converter converter = null;
+            FacesContext context = FacesContext.getCurrentInstance();
+            // If there is a converter attribute, use it to to ask application
+            // instance for a converter with this identifer.
+
+            if (component instanceof ValueHolder) {
+                converter = ((ValueHolder) component).getConverter();
+            }
+
+            // if value is null and no converter attribute is specified, then
+            // return a zero length String.
+            if (converter == null && value == null) {
+                return "";
+            }
+
+            if (converter == null) {
+                // Do not look for "by-type" converters for Strings
+                if (value instanceof String) {
+                    return (String) value;
+                }
+
+                // if converter attribute set, try to acquire a converter
+                // using its class type.
+
+                Class converterType = value.getClass();
+                converter = getConverterForClass(converterType, context);
+
+                // if there is no default converter available for this identifier,
+                // assume the model type to be String.
+                if (converter == null) {
+                    result = value.toString();
+                    return result;
+                }
+            }
+
+            result = converter.getAsString(context, component, value);
+            return result;
+        }
+
+        private Converter getConverterForClass(Class converterClass,
+                                               FacesContext facesContext) {
+            if (converterClass == null) {
+                return null;
+            }
+            try {
+                Application application = facesContext.getApplication();
+                return application.createConverter(converterClass);
+            } catch (RuntimeException e) {
+                return null;
             }
         }
-        return items;
-    }
 
-    private Collection<SelectItem> getItemsFromComponent(UIComponent component) {
-        if (component instanceof SelectItem) {
-            return Collections.singletonList((SelectItem) component);
+    private List<SelectItem> collectSelectItems(OUISelectManyInputBase selectManyInputBase) {
+        List<javax.faces.model.SelectItem> result = new ArrayList<javax.faces.model.SelectItem>();
+        List<UIComponent> children = selectManyInputBase.getChildren();
+        if (children != null) {
+            for (UIComponent uiComponent : children) {
+                if (uiComponent instanceof UISelectItem) {
+                    UISelectItem item = (UISelectItem) uiComponent;
+                    Object itemValue = item.getValue();
+                    javax.faces.model.SelectItem si;
+                    if (itemValue != null) {
+                        if (!(itemValue instanceof javax.faces.model.SelectItem)) {
+                            String clientId = selectManyInputBase.getClientId(FacesContext.getCurrentInstance());
+                            throw new IllegalArgumentException(
+                                    "The 'value' attribute <f:selectItem> tag should be null or an instance of SelectItem, " +
+                                            "but the following type was encountered: " + itemValue.getClass().getName() +
+                                            "; Select component client id: " + clientId);
+                        }
+                        si = (javax.faces.model.SelectItem) itemValue;
+                    } else {
+                        si = new javax.faces.model.SelectItem(item.getItemValue(), item.getItemLabel(), item.getItemDescription(),
+                                item.isItemDisabled());
+                    }
+                    result.add(si);
+                } else if (uiComponent instanceof UISelectItems) {
+                    UISelectItems items = (UISelectItems) uiComponent;
+                    Object value = items.getValue();
+                    if (value != null) {
+                        if (value instanceof Collection) {
+                            Collection col = (Collection) value;
+                            for (Object item : col) {
+                                if (item instanceof javax.faces.model.SelectItem) {
+                                    result.add((javax.faces.model.SelectItem) item);
+                                } else {
+                                    String clientId = selectManyInputBase.getClientId(FacesContext.getCurrentInstance());
+                                    throw new IllegalArgumentException(
+                                            "The items specified inside the <f:selectItems> collection should be of type javax.faces.model.SelectItem, but the following type was encountered: " +
+                                                    item.getClass().getName() + "; Select component client id: " + clientId);
+                                }
+                            }
+                        } else if (value instanceof Object[]) {
+                            Object[] arrayValue = (Object[]) value;
+                            for (Object item : arrayValue) {
+                                if (item instanceof javax.faces.model.SelectItem) {
+                                    result.add((javax.faces.model.SelectItem) item);
+                                } else {
+                                    String clientId = selectManyInputBase.getClientId(FacesContext.getCurrentInstance());
+                                    throw new IllegalArgumentException(
+                                            "The items specified inside the <f:selectItems> array should be of type javax.faces.model.SelectItem, but the following type was encountered: " +
+                                                    item.getClass().getName() + "; Select component client id: " + clientId);
+                                }
+                            }
+                        } else if (value instanceof Map) {
+                            Map mapValue = (Map) value;
+                            Set set = mapValue.entrySet();
+                            for (Object aSet : set) {
+                                Map.Entry entry = (Map.Entry) aSet;
+                                result.add(new javax.faces.model.SelectItem(entry.getValue(), (String) entry.getKey()));
+                            }
+                        } else {
+                            String clientId = selectManyInputBase.getClientId(FacesContext.getCurrentInstance());
+                            throw new IllegalArgumentException(
+                                    "The 'value' attribute <f:selectItems> tag should be specified as a collection or an array " +
+                                            "of SelectItem instances, or as a Map, but the following type was encountered: " +
+                                            value.getClass().getName() + "; Select component client id: " + clientId);
+                        }
+                    }
+                }
+            }
         }
-
-        if (!(component instanceof SelectItems))
-            return null;
-
-        Object itemsValue = ((SelectItems) component).getValue();
-        if (itemsValue == null)
-            return null;
-
-        if (itemsValue.getClass().isArray())
-            itemsValue = Arrays.asList((Object[]) itemsValue);
-        if (!(itemsValue instanceof Collection))
-            throw new IllegalArgumentException("The 'value' attribute of <o:selectItems> tag should contain either " +
-                    "an array or a Collection, but the following type was encountered: " + itemsValue.getClass().getName());
-
-        Collection itemCollection = (Collection) itemsValue;
-        Collection<SelectItem> items = new ArrayList<SelectItem>(itemCollection.size());
-        for (Object collectionItem : itemCollection) {
-            if (collectionItem instanceof SelectItem)
-                items.add((SelectItem) collectionItem);
-            else
-                items.add(new SelectItem(collectionItem));
-        }
-        return items;
+        return result.size() > 0 ? result : null;
     }
 
     protected boolean isRenderedWithImage(OUISelectManyInputBase selectManyInputBase) {
@@ -192,13 +283,13 @@ public abstract class SelectManyInputRenderer extends RendererBase {
         writeAttribute(writer, "onselect", selectManyInputBase.getOnselect());
         writeAttribute(writer, "tabindex", selectManyInputBase.getTabindex());
 
-        if (!selectManyInputBase.isDisabled() && !selectManyInputBase.isReadonly() && !selectItem.isItemDisabled()) {
+        if (!selectManyInputBase.isDisabled() && !selectManyInputBase.isReadonly() && !selectItem.isDisabled()) {
             RenderingUtil.writeStandardEvents(writer, selectManyInputBase);
         }
     }
 
     protected void writeLabelText(ResponseWriter writer, SelectItem selectItem) throws IOException {
-        writer.writeText(SPACE + selectItem.getItemLabel(), null);    
+        writer.writeText(SPACE + selectItem.getLabel(), null);    
     }
 
     private void addStyleClassesAndJS(FacesContext facesContext, OUISelectManyInputBase selectManyInputBase, List<SelectItem> selectItems, JSONObject imagesObj) throws IOException {
@@ -244,4 +335,14 @@ public abstract class SelectManyInputRenderer extends RendererBase {
     protected abstract void renderInitScript(FacesContext facesContext, OUISelectManyInputBase selectManyInputBase,
             JSONObject imagesObj, JSONObject stylesObj, int selectItemCount, AnonymousFunction onchangeFunction)
             throws IOException;
+
+    @Override
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+        return RenderingUtil.convertFromString(context, component, (String) submittedValue);
+    }
+
+    protected String getConvertedValue(FacesContext context, UIInput inputText) {
+        return RenderingUtil.convertToString(context, inputText, inputText.getValue());
+    }
+    
 }

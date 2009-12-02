@@ -32,7 +32,7 @@
                 </h:selectOneMenu>
                 <br/>
                 <o:selectManyCheckbox id="selectManyCheckbox7" value="#{ManyCheckboxTest.checkboxGroup7}">
-                  <o:selectItems value="#{ManyCheckboxTest.selectManyCheckboxItemsGroup7}"/>
+                  <f:selectItems value="#{ManyCheckboxTest.selectManyCheckboxItemsGroup7}"/>
                   <a4j:support reRender="checkboxGroup7Value" event="onchange"/>
                 </o:selectManyCheckbox>
               </td>
@@ -61,7 +61,7 @@
                                   pressedUnselectedImageUrl="/images/pressedUnselectedCheckbox.png"
                                   disabledSelectedImageUrl="/images/disabledSelectedCheckbox.png"
                                   disabledUnselectedImageUrl="/images/disabledUnselectedCheckbox.png">
-                  <o:selectItems value="#{ManyCheckboxTest.selectManyCheckboxItemsGroup8}"/>
+                  <f:selectItems value="#{ManyCheckboxTest.selectManyCheckboxItemsGroup8}"/>
                   <a4j:support reRender="checkboxGroup8Text" event="onchange"/>
                 </o:selectManyCheckbox>
               </td>
