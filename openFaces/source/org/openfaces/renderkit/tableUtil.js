@@ -1936,7 +1936,7 @@ O$.Tables = {
 
           areaWidth += colWidth;
         });
-        if (!scrolling.horizontal) {
+        if (!scrolling.horizontal && !scrolling._widthAlignmentDisabled) {
           var remainingWidth = tableWidth - nonRelativeWidth;
           if (remainingWidth > 0 && relativeWidthColumns.length > 0) {
             var unspecifiedWidthColCount = 0;
@@ -1950,9 +1950,10 @@ O$.Tables = {
                 unspecifiedWidthColCount++;
             });
             var unspecifiedWidth = 100 - totalSpecifiedWidth;
-            var widthPerUnspecifiedWidthCol = unspecifiedWidth > 0
-                    ? unspecifiedWidth / unspecifiedWidthColCount
-                    : 20 / unspecifiedWidthColCount;
+            var widthPerUnspecifiedWidthCol = unspecifiedWidthColCount ? (
+                    unspecifiedWidth > 0
+                      ? unspecifiedWidth / unspecifiedWidthColCount
+                      : 20 / unspecifiedWidthColCount ) : 0;
             var relativeTotal = totalSpecifiedWidth + widthPerUnspecifiedWidthCol * unspecifiedWidthColCount;
             relativeWidthColumns.forEach(function(c) {
               c.setWidth(Math.floor(

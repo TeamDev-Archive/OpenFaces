@@ -1426,7 +1426,12 @@ O$.Table = {
             else
                 table.style.width = table._originalWidth + "px";
           } else {
-            this._column._verticalArea.updateWidth();
+            table._params.scrolling._widthAlignmentDisabled = true;
+            try {
+              this._column._verticalArea.updateWidth();
+            } finally {
+              table._params.scrolling._widthAlignmentDisabled = false;
+            }
             scrollingDiv.scrollLeft = scrollLeft;
             scrollingDiv.scrollTop = scrollTop;
           }
