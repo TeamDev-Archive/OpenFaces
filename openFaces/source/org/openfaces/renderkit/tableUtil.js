@@ -545,8 +545,12 @@ O$.Tables = {
         },
 
         _rowFromPoint: function(x, y, relativeToNearestContainingBlock, cachedDataContainer) {
-          var tableRect = O$.getElementBorderRectangle(table, relativeToNearestContainingBlock, cachedDataContainer);
-          if (!tableRect.containsPoint(x, y))
+          var tableRect = function(){
+            if (!table._params.scrolling)
+              return O$.getElementBorderRectangle(table, relativeToNearestContainingBlock, cachedDataContainer);
+            return null;
+          }();
+          if (tableRect && !tableRect.containsPoint(x, y))
             return null;
           var rows = this._getRows();
           for (var i = 0, count = rows.length; i < count; i++) {

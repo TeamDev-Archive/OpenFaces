@@ -281,11 +281,13 @@ O$.Table = {
       if (this._controlPagingWithKeyboard && !altPressed && !shiftPressed) {
         if (e.pageUpPressed) {
           passEvent = false;
-          this._previousPage();
+          if (!(this._params.scrolling && this._selectionKeyboardSupport && this._selectionEnabled))
+            this._previousPage();
         }
         if (e.pageDownPressed) {
           passEvent = false;
-          this._nextPage();
+          if (!(this._params.scrolling && this._selectionKeyboardSupport && this._selectionEnabled))
+            this._nextPage();
         }
         if (ctrlPressed && e.homePressed) {
           passEvent = false;
@@ -494,20 +496,31 @@ O$.Table = {
     if (e.endPressed) {
       newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, rowCount);
     }
-    /*
-     if (e.pageUpPressed) {
-     if (idx == -1)
-     newIndex = O$.Table._getNeighboringVisibleRowIndex(table, -1, +1);
-     else
-     newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, -5);
-     }
-     if (e.pageDownPressed) {
-     if (idx == -1)
-     newIndex = O$.Table._getNeighboringVisibleRowIndex(table, -1, +1);
-     else
-     newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, +5);
-     }
-     */
+    if (e.pageUpPressed || e.pageDownPressed) {
+      var scrollingAreaRect = O$.getElementBorderRectangle(table.body._centerScrollingArea._scrollingDiv);
+      var row = table.body._rowFromPoint(scrollingAreaRect.x + 10, e.pageUpPressed ? scrollingAreaRect.getMinY() + 1 : scrollingAreaRect.getMaxY() - 1);
+      var selectedRowY = null;
+      if (e.pageUpPressed) {
+        if (idx > row._index)
+          newIndex = row._index;
+        else
+          selectedRowY = scrollingAreaRect.getMinY() - scrollingAreaRect.height;
+      } else {
+        if (idx < row._index)
+          newIndex = row._index;
+        else
+          selectedRowY = scrollingAreaRect.getMaxY() + scrollingAreaRect.height;
+      }
+      if (selectedRowY != null) {
+        row = table.body._rowFromPoint(scrollingAreaRect.x + 10, selectedRowY);
+        if (row == null) {
+          var rows = table.body._getRows();
+          row = e.pageUpPressed ? rows[0] : rows[rows.length - 1];
+        }
+        newIndex = row._index;
+      }
+
+    }
 
     return newIndex;
   },
