@@ -7,10 +7,14 @@
     <div style="text-align: center; font-weight: bold; font-size: 20px;">Construction in progress...</div>
     <h:outputText id="playing" value="Now playing: #{TrackList.playing}"/>
     <o:selectOneRadio id="radio" value="#{TrackList.playing}" converter="#{TrackList.trackConverter}" layout="pageDirection">
-      <f:selectItems value="#{TrackList.selectItems}"/>
+      <f:selectItems value="#{TrackList.trackListItems}"/>
       <o:ajax render="playing" event="change"/>
     </o:selectOneRadio>
   </div>
+  Audio Effects:
+  <o:selectOneRadio layout="pageDirection">
+    <f:selectItems value="#{TrackList.effectItems}"/>
+  </o:selectOneRadio>
 
   <div id="Description">
     <h4>Demonstrated Features</h4>

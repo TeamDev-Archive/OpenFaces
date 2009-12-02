@@ -22,9 +22,11 @@ import java.util.List;
 
 public class TrackList {
     private List<Track> trackList;
-    private List<SelectItem> selectItems;
+    private List<SelectItem> trackListItems;
     private Track playing;
     private TrackConverter trackConverter;
+
+    private List<SelectItem> effectItems;
 
     private List<Track> getTrackList() {
         if (trackList == null){
@@ -76,19 +78,19 @@ public class TrackList {
         this.trackList = trackList;
     }
 
-    public List<SelectItem> getSelectItems() {
-        if (selectItems == null){
+    public List<SelectItem> getTrackListItems() {
+        if (trackListItems == null){
             List<Track> trackList = getTrackList();
-            selectItems = new ArrayList<SelectItem>(trackList.size());
+            trackListItems = new ArrayList<SelectItem>(trackList.size());
             for (Track track : trackList){
-                selectItems.add(new SelectItem(track, track.toString()));
+                trackListItems.add(new SelectItem(track, track.toString()));
             }
         }
-        return selectItems;
+        return trackListItems;
     }
 
-    public void setSelectItems(List<SelectItem> selectItems) {
-        this.selectItems = selectItems;
+    public void setTrackListItems(List<SelectItem> trackListItems) {
+        this.trackListItems = trackListItems;
     }
 
     public Track getPlaying() {
@@ -127,6 +129,28 @@ public class TrackList {
             return null;
         }
 
+    }
 
+    public List<SelectItem> getEffectItems() {
+        if (effectItems == null) {
+            effectItems = Arrays.asList(
+                    new SelectItem("Compressor"), //Динамическое сжатие
+                    new SelectItem("Crystality"),
+                    new SelectItem("True Bass"), //Усиление низких частот
+                    new SelectItem("Band Pass"), //Частотный фильтр
+                    new SelectItem("Voice Removal"),
+                    new SelectItem("Normalizer"), //Автоподбор громкости
+                    new SelectItem("Freeverb"), //Объемность
+                    new SelectItem("Treble Enhancer"), //Усиление высоких частот
+                    new SelectItem("Downmix to mono"), //Преобразование в моно
+                    new SelectItem("Voice Emphasis"), //Усиление голоса
+                    new SelectItem("Noise Reduction"),
+                    new SelectItem("3D Effect"));
+        }
+        return effectItems;
+    }
+
+    public void setEffectItems(List<SelectItem> effectItems) {
+        this.effectItems = effectItems;
     }
 }
