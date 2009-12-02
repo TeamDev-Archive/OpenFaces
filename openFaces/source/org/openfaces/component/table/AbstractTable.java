@@ -1518,7 +1518,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return false;
     }
 
-    protected UIComponent decodingRequiringComponent(UIComponent component) {
+    private UIComponent decodingRequiringComponent(UIComponent component) {
         boolean thisComponentRequiresDecoding = component instanceof EditableValueHolder || component instanceof ActionSource;
         if (thisComponentRequiresDecoding)
             return component;

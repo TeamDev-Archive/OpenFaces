@@ -18,9 +18,10 @@ import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.FacesException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -130,12 +131,26 @@ public class TreeTable extends AbstractTable {
         nodeInfoForRows = newNodeInfoForRows;
     }
 
+    private UIComponent editableValueHolder(UIComponent component) {
+        boolean thisComponentRequiresDecoding = component instanceof EditableValueHolder;
+        if (thisComponentRequiresDecoding)
+            return component;
+        List<UIComponent> children = component.getChildren();
+        for (UIComponent subComponent : children) {
+            UIComponent decodable = editableValueHolder(subComponent);
+            if (decodable != null)
+                return decodable;
+        }
+        return null;
+    }
+
+
     private UIComponent findAnyDecodableComponent() {
         List<BaseColumn> columns = getColumnsForProcessing();
         for (BaseColumn column : columns) {
             List<UIComponent> columnChildren = column.getChildren();
             for (UIComponent columnChild : columnChildren) {
-                UIComponent decodable = decodingRequiringComponent(columnChild);
+                UIComponent decodable = editableValueHolder(columnChild);
                 if (decodable != null)
                     return decodable;
             }
@@ -149,7 +164,7 @@ public class TreeTable extends AbstractTable {
                     continue;
                 List<UIComponent> cellChildren = rowChild.getChildren();
                 for (UIComponent cellChild : cellChildren) {
-                    UIComponent decodable = decodingRequiringComponent(cellChild);
+                    UIComponent decodable = editableValueHolder(cellChild);
                     if (decodable != null)
                         return decodable;
                 }
@@ -321,7 +336,7 @@ public class TreeTable extends AbstractTable {
                     boolean skipException = noDecodableCheckStr != null && Boolean.valueOf(noDecodableCheckStr);
                     if (!skipException)
                         throw new FacesException("<o:treeTable id=\"" + getId() + "\"> configuration error: there's currently a " +
-                                "limitation that TreeTable with editable or command components within its cells cannot be used " +
+                                "limitation that TreeTable with editable components within its cells cannot be used " +
                                 "if it is configured to expand its nodes with Ajax. The workaround is either to set " +
                                 "preloadedNodes=\"all\" or useAjax=\"false\" for your <o:treeTable>. Component: " +
                                 decodable.getClass().getName() + ", id=\"" + decodable.getId() + "\"");
