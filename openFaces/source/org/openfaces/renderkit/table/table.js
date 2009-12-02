@@ -496,30 +496,38 @@ O$.Table = {
     if (e.endPressed) {
       newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, rowCount);
     }
-    if (e.pageUpPressed || e.pageDownPressed) {
-      var scrollingAreaRect = O$.getElementBorderRectangle(table.body._centerScrollingArea._scrollingDiv);
-      var row = table.body._rowFromPoint(scrollingAreaRect.x + 10, e.pageUpPressed ? scrollingAreaRect.getMinY() + 1 : scrollingAreaRect.getMaxY() - 1);
-      var selectedRowY = null;
-      if (e.pageUpPressed) {
-        if (idx > row._index)
-          newIndex = row._index;
-        else
-          selectedRowY = scrollingAreaRect.getMinY() - scrollingAreaRect.height;
-      } else {
-        if (idx < row._index)
-          newIndex = row._index;
-        else
-          selectedRowY = scrollingAreaRect.getMaxY() + scrollingAreaRect.height;
-      }
-      if (selectedRowY != null) {
-        row = table.body._rowFromPoint(scrollingAreaRect.x + 10, selectedRowY);
-        if (row == null) {
-          var rows = table.body._getRows();
-          row = e.pageUpPressed ? rows[0] : rows[rows.length - 1];
+    if (table._params.scrolling) {
+      if (e.pageUpPressed || e.pageDownPressed) {
+        var scrollingAreaRect = O$.getElementBorderRectangle(table.body._centerScrollingArea._scrollingDiv);
+        var row = table.body._rowFromPoint(scrollingAreaRect.x + 10, e.pageUpPressed ? scrollingAreaRect.getMinY() + 1 : scrollingAreaRect.getMaxY() - 1);
+        var selectedRowY = null;
+        if (e.pageUpPressed) {
+          if (idx > row._index)
+            newIndex = row._index;
+          else
+            selectedRowY = scrollingAreaRect.getMinY() - scrollingAreaRect.height;
+        } else {
+          if (idx < row._index)
+            newIndex = row._index;
+          else
+            selectedRowY = scrollingAreaRect.getMaxY() + scrollingAreaRect.height;
         }
-        newIndex = row._index;
-      }
+        if (selectedRowY != null) {
+          row = table.body._rowFromPoint(scrollingAreaRect.x + 10, selectedRowY);
+          if (row == null) {
+            var rows = table.body._getRows();
+            row = e.pageUpPressed
+                    ? rows[O$.Table._getNeighboringVisibleRowIndex(table, idx, -rowCount)]
+                    : rows[O$.Table._getNeighboringVisibleRowIndex(table, idx, rowCount)];
+          }
+          newIndex = row._index;
+        }
 
+      }
+    } else if (e.pageUpPressed) {
+      newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, -rowCount);
+    } else if (e.pageDownPressed) {
+      newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, rowCount);
     }
 
     return newIndex;
