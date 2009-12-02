@@ -8,7 +8,7 @@
       <a href="../../main.jsf">Return to main page</a><br/><br/>
     <o:treeTable id="treeTable1" var="message" rolloverRowStyle="background:#F0F0F0;"
                  expansionState="#{TreeTableBean.forumTreeTableExpansionState}"
-                 nodeLevelVar="level">
+                 nodeLevelVar="level" preloadedNodes="all">
       <o:dynamicTreeStructure nodeChildren="#{TreeTableBean.nodeChildren}"/>
       <o:treeColumn showAsTree="true" sortingExpression="#{message.subject}">
         <f:facet name="header">
