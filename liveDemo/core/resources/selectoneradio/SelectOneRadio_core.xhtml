@@ -4,7 +4,12 @@
      >
 
   <div id="Demo">
-    <div style="text-align: center; font-weight: bold; font-size: 20px;">Construction in progress...</div>    
+    <div style="text-align: center; font-weight: bold; font-size: 20px;">Construction in progress...</div>
+    <h:outputText id="playing" value="Now playing: #{TrackList.playing}"/>
+    <o:selectOneRadio id="radio" value="#{TrackList.playing}" converter="#{TrackList.trackConverter}" layout="pageDirection">
+      <f:selectItems value="#{TrackList.selectItems}"/>
+      <o:ajax render="playing" event="change"/>
+    </o:selectOneRadio>
   </div>
 
   <div id="Description">
