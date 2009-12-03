@@ -244,10 +244,10 @@ public class TableBody extends TableSection {
                 rightRows.add(rightRow);
             List<TableRow> applicableCustomRows = getApplicableCustomRows(customRows);
             if (leftRow != null)
-                leftRow.setApplicableCustomRows(applicableCustomRows);
-            row.setApplicableCustomRows(applicableCustomRows);
+                leftRow.extractCustomEvents(applicableCustomRows);
+            row.extractCustomEvents(applicableCustomRows);
             if (rightRow != null)
-                rightRow.setApplicableCustomRows(applicableCustomRows);
+                rightRow.extractCustomEvents(applicableCustomRows);
             String[][] attributes = tableStructure.getBodyRowAttributes(context, table);
             if (leftRow != null)
                 leftRow.setAttributes(attributes);
@@ -375,7 +375,7 @@ public class TableBody extends TableSection {
                 else
                     cells.add(cell);
                 cell.setSpan(span);
-                cell.setCustomCells(customCells);
+                cell.extractCustomEvents(customCells);
 
                 StringBuffer buf = stringWriter.getBuffer();
                 int startIdx = buf.length();

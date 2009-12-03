@@ -13,17 +13,19 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.util.RenderingUtil;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
  */
 public class BodyCell extends TableElement {
     private Object content;
-    private List customCells;
+    private Map<String, String> events;
     private int span;
     private String style;
     private String styleClass;
@@ -42,8 +44,7 @@ public class BodyCell extends TableElement {
             writer.writeAttribute("colspan", String.valueOf(span), null);
         if (style != null || styleClass != null)
             RenderingUtil.writeStyleAndClassAttributes(writer, style, styleClass);
-        if (customCells != null)
-            BodyRow.writeCustomRowOrCellEvents(writer, customCells);
+        BodyRow.writeCustomRowOrCellEvents(writer, events);
 
         if (content != null) {
             if (content instanceof String)
@@ -59,8 +60,8 @@ public class BodyCell extends TableElement {
         writer.endElement("td");
     }
 
-    public void setCustomCells(List customCells) {
-        this.customCells = customCells;
+    public void extractCustomEvents(List<? extends UIComponent> customCells) throws IOException {
+        this.events = BodyRow.prepareCustomRowOrCellEvents(customCells);
     }
 
     public void setSpan(int span) {

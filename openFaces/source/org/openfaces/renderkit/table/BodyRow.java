@@ -18,17 +18,20 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Dmitry Pikhulya
  */
 public class BodyRow extends AbstractRow {
-    private List<TableRow> applicableCustomRows;
     private String[][] attributes;
     private List<BodyCell> cells;
     private String style;
     private String styleClass;
+    private Map<String, String> events;
 
     public BodyRow() {
     }
@@ -42,7 +45,7 @@ public class BodyRow extends AbstractRow {
         writer.startElement("tr", null);
         if (style != null || styleClass != null)
             RenderingUtil.writeStyleAndClassAttributes(writer, style, styleClass);
-        writeCustomRowOrCellEvents(writer, applicableCustomRows);
+        writeCustomRowOrCellEvents(writer, events);
         if (attributes != null)
             for (String[] attribute : attributes) {
                 writer.writeAttribute(attribute[0], attribute[1], null);
@@ -56,13 +59,14 @@ public class BodyRow extends AbstractRow {
         writer.endElement("tr");
     }
 
-    public void setApplicableCustomRows(List<TableRow> applicableCustomRows) {
-        this.applicableCustomRows = applicableCustomRows;
+    public void extractCustomEvents(List<TableRow> applicableCustomRows) throws IOException {
+        this.events = prepareCustomRowOrCellEvents(applicableCustomRows);
     }
 
-    public static void writeCustomRowOrCellEvents(ResponseWriter writer, List<? extends UIComponent> customRowsOrCells) throws IOException {
+    public static Map<String, String> prepareCustomRowOrCellEvents(List<? extends UIComponent> customRowsOrCells) throws IOException {
+        Map<String, String> events = null;
         if (customRowsOrCells == null || customRowsOrCells.size() == 0)
-            return;
+            return events;
         String[] eventNames = new String[]{
                 "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove",
                 "onmouseout", "onmouseup", "onkeydown", "onkeyup", "onkeypress"};
@@ -73,8 +77,20 @@ public class BodyRow extends AbstractRow {
                 String eventHandler = (String) customRowOrCell.getAttributes().get(eventName);
                 compoundEventHandler = RenderingUtil.joinScripts(compoundEventHandler, eventHandler);
             }
-            if (compoundEventHandler != null && compoundEventHandler.length() > 0)
-                writer.writeAttribute(eventName, compoundEventHandler, null);
+            if (compoundEventHandler != null && compoundEventHandler.length() > 0) {
+                if (events == null) events = new HashMap<String, String>();
+                events.put(eventName, compoundEventHandler);
+            }
+        }
+        return events;
+    }
+
+    public static void writeCustomRowOrCellEvents(ResponseWriter writer, Map<String, String> events) throws IOException {
+        if (events == null)
+            return;
+        Set<Map.Entry<String,String>> entries = events.entrySet();
+        for (Map.Entry<String, String> entry : entries) {
+            writer.writeAttribute(entry.getKey(), entry.getValue(), null);
         }
     }
 
