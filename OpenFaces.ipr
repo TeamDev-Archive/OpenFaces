@@ -752,7 +752,6 @@
       <module fileurl="file://$PROJECT_DIR$/liveDemo/jsp/LiveDemoJsp.iml" filepath="$PROJECT_DIR$/liveDemo/jsp/LiveDemoJsp.iml" group="LiveDemo" />
       <module fileurl="file://$PROJECT_DIR$/openFaces/OpenFaces.iml" filepath="$PROJECT_DIR$/openFaces/OpenFaces.iml" />
       <module fileurl="file://$PROJECT_DIR$/openFacesInspectors/OpenFacesInspectors.iml" filepath="$PROJECT_DIR$/openFacesInspectors/OpenFacesInspectors.iml" />
-      <module fileurl="file://$PROJECT_DIR$/portletBridge/PortletBridge.iml" filepath="$PROJECT_DIR$/portletBridge/PortletBridge.iml" group="Portlets" />
       <module fileurl="file://$PROJECT_DIR$/portlets/common/PortletsCommon.iml" filepath="$PROJECT_DIR$/portlets/common/PortletsCommon.iml" group="Portlets" />
       <module fileurl="file://$PROJECT_DIR$/portlets/jboss/PortletsJBossPortal.iml" filepath="$PROJECT_DIR$/portlets/jboss/PortletsJBossPortal.iml" group="Portlets" />
       <module fileurl="file://$PROJECT_DIR$/portlets/jetspeed/MyFacesGenericPortlet/PortletsJetspeedMyFacesGenericPortlet.iml" filepath="$PROJECT_DIR$/portlets/jetspeed/MyFacesGenericPortlet/PortletsJetspeedMyFacesGenericPortlet.iml" group="Portlets/PortletsJetspeed" />
