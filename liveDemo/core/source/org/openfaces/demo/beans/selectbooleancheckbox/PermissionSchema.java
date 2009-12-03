@@ -12,10 +12,6 @@
 
 package org.openfaces.demo.beans.selectbooleancheckbox;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
-
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -131,7 +127,8 @@ public class PermissionSchema {
 
     }
 
-    @Test
+/* // todo: commented out to fix compilation
+@Test
     public void test(){
         PermissionSchema schema = new PermissionSchema();
         schema.setAssigned(Permission.EDIT_ANY_POST, PermissionGroup.USER, true);
@@ -159,4 +156,5 @@ public class PermissionSchema {
         assertFalse(schema.isAssigned(Permission.DELETE_ANY_POST, PermissionGroup.USER));
 
     }
+    */
 }
