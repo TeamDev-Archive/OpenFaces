@@ -1288,15 +1288,19 @@ public abstract class CommonAjaxViewRoot {
             return;
         }
 
-        int indexOfValue = stateString.indexOf(VALUE_ATTR_STRING);
-        int indexOfViewState = stateString.indexOf("javax.faces.ViewState");
-        if (indexOfValue != -1 && indexOfViewState != -1) {
-            int firstIndex = indexOfValue + VALUE_ATTR_STRING.length();
-            String viewStateString = stateString.substring(firstIndex, stateString.lastIndexOf("\""));
+        Pattern valuePattern = Pattern.compile("value=(\"([^\"]*\")|'[^']*')");
+        final Matcher matcher = valuePattern.matcher(stateString);
+        final boolean isValuePatternFound = matcher.find();
 
+        if (isValuePatternFound) {
+            int startIndex = matcher.start();
+            int endIndex = matcher.end();
+            String valueString = stateString.substring(startIndex,endIndex);
+            int firstIndex = VALUE_ATTR_STRING.length();
+
+            String viewStateString = valueString.substring(firstIndex, valueString.lastIndexOf("\""));
             stateIdxHolder.setViewStateIdentifier(viewStateString);
         }
-
     }
 
     private Integer getSequenceIdForMyFaces(FacesContext context) { // see JSFC-1516
@@ -1356,7 +1360,7 @@ public abstract class CommonAjaxViewRoot {
     }
 
     private UIComponent componentById(UIComponent parent, String id, boolean isLastComponentInPath,
-                                          boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables) {
+                                      boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables) {
         if (isIntegerNumber(id) && parent instanceof AbstractTable) {
             AbstractTable table = ((AbstractTable) parent);
             if (!isLastComponentInPath) {
