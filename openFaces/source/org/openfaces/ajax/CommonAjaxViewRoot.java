@@ -1300,6 +1300,8 @@ public abstract class CommonAjaxViewRoot {
 
             String viewStateString = valueString.substring(firstIndex, valueString.lastIndexOf("\""));
             stateIdxHolder.setViewStateIdentifier(viewStateString);
+        } else {
+            throw new FacesException("Could not obtain view state identifier by state description string - : " + stateString);
         }
     }
 
