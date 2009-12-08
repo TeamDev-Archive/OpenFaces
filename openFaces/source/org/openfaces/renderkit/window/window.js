@@ -76,7 +76,7 @@ O$.Window = {
 
     win._setSize = function(width, height) {
       O$.setElementSize(win, {width: width, height: height});
-      O$.addHiddenField(win, windowId + "::size", width + "," + height);
+      O$.setHiddenField(win, windowId + "::size", width + "," + height);
       if (!win._table._widthInitialized) {
         win._table.style.width = "100%";
         win._table._widthInitialized = true;

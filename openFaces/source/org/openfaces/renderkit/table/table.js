@@ -190,7 +190,7 @@ O$.Table = {
     if (pagingFld)
       pagingFld.value = "";
     table._performPagingAction = function(actionStr) {
-      O$.addHiddenField(this, this.id + "::paging", actionStr);
+      O$.setHiddenField(this, this.id + "::paging", actionStr);
       O$._submitInternal(this);
     };
 
@@ -1251,7 +1251,7 @@ O$.Table = {
       var table = O$(tableId);
       var tableBordersCollapsed = O$.getElementStyle(table, "border-collapse") == "collapse";
       var colWidthsFieldId = table.id + "::colWidths";
-      var colWidthsField = O$.addHiddenField(table, colWidthsFieldId);
+      var colWidthsField = O$.setHiddenField(table, colWidthsFieldId);
 
       function recalculateTableWidth(colWidths) {
         if (table._params.scrolling)
@@ -1618,20 +1618,13 @@ O$.Table = {
                 }
               },
               acceptDraggable: function(cellHeader) {
-                var targetColIndex;
-                if (col == table._columns[table._columns.length - 1])
-                  targetColIndex = col._index;
-                else
-                  targetColIndex = !rightEdge ? col._index: col._index + 1;
-                alert('dragging finished for column: ' + cellHeader._column._index + "; target col is " + targetColIndex);
+                var targetColIndex = !rightEdge ? col._index: col._index + 1;
+                sendColumnMoveRequest(cellHeader._column._index, targetColIndex);
               }
             };
           }
-          var colData = {
-            column: col
-          };
           var cell = col.header._cell;
-          if (!cell) return colData;
+          if (!cell) return;
           var cellRect = O$.getElementBorderRectangle(cell, true);
           var min = cellRect.getMinX();
           var max = cellRect.getMaxX();
@@ -1651,6 +1644,13 @@ O$.Table = {
         return null;
       });
     });
+
+    function sendColumnMoveRequest(srcColIndex, dstColIndex) {
+      if (dstColIndex == srcColIndex || dstColIndex == srcColIndex + 1)
+        return;
+      O$.setHiddenField(table, table.id + "::reorderColumns", srcColIndex + "->" + dstColIndex);
+      O$._submitInternal(table);
+    }
   }
 
 };

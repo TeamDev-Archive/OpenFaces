@@ -1175,7 +1175,7 @@ O$._initDayTable = function(componentId,
     }
 
     var dtf = O$.getDateTimeFormatObject(locale);
-    O$.addHiddenField(dayTable, dayTable.id + "::day", dtf.format(day, "dd/MM/yyyy"));
+    O$.setHiddenField(dayTable, dayTable.id + "::day", dtf.format(day, "dd/MM/yyyy"));
 
     dayTable._day = day;
     dayTable._startTime = O$.parseTime(startTimeStr, O$.cloneDate(day));
@@ -1305,7 +1305,7 @@ O$._initDayTable = function(componentId,
     dayTable._scroller.scrollTop = scrollOffset;
     O$.addEventHandler(dayTable._scroller, "scroll", function() {
       var timeslot = getNearestTimeslotForPosition(10, dayTable._scroller.scrollTop);
-      O$.addHiddenField(dayTable, dayTable.id + "::scrollPos", O$.formatTime(timeslot.timeAtPosition));
+      O$.setHiddenField(dayTable, dayTable.id + "::scrollPos", O$.formatTime(timeslot.timeAtPosition));
     });
   });
 
@@ -1423,7 +1423,7 @@ O$._initDayTable = function(componentId,
       arrayToJSON("removedEventIds", dayTable._removedEventIds, properties)
     ];
     var changesAsString = "{" + events.join(",") + "}";
-    O$.addHiddenField(dayTable, dayTable.id + "::timetableChanges", changesAsString);
+    O$.setHiddenField(dayTable, dayTable.id + "::timetableChanges", changesAsString);
   }
 
   putTimetableChanges(null, null, null, true);
@@ -1941,7 +1941,7 @@ O$._initEventActionBar = function(actionBarId, dayTableId, backgroundIntensityLe
       }
 
       var eventId = this._timetableEvent.id;
-      O$.addHiddenField(this._dayTable, actionBarId + "::" + this._index, eventId);
+      O$.setHiddenField(this._dayTable, actionBarId + "::" + this._index, eventId);
       O$.submitEnclosingForm(this._dayTable);
     };
     function setupStateHighlighting(cell) {

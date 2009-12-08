@@ -503,10 +503,10 @@ O$._sidePanelSaveState = function(sidePanel, stateStr) {
   } else {
     if (O$.isExplorer()) {
       O$.addLoadEvent(function() {
-        sidePanel._stateHolder = O$.addHiddenField(sidePanel, stateHolderId, stateStr);
+        sidePanel._stateHolder = O$.setHiddenField(sidePanel, stateHolderId, stateStr);
       });
     } else {
-      sidePanel._stateHolder = O$.addHiddenField(sidePanel, stateHolderId, stateStr);
+      sidePanel._stateHolder = O$.setHiddenField(sidePanel, stateHolderId, stateStr);
     }
   }
 };

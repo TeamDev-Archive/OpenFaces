@@ -1118,7 +1118,7 @@ if (!window.O$) {
     O$.assert(params, "params should be passed to O$.submitFormWithAdditionalParams");
     for (var i = 0, count = params.length; i < count; i++) {
       var param = params[i];
-      O$.addHiddenField(element, param[0], param[1]);
+      O$.setHiddenField(element, param[0], param[1]);
     }
 
     var frm = O$.getParentNode(element, "FORM");
@@ -1131,14 +1131,14 @@ if (!window.O$) {
     ]);
   };
 
-  O$.addHiddenField = function(element, fieldName, fieldValue) {
+  O$.setHiddenField = function(element, fieldName, fieldValue) {
     var frm;
     if (!element) {
       frm = document.forms[0];
-      O$.assert(frm, "O$.addHiddenField: There must be a form in the document");
+      O$.assert(frm, "O$.setHiddenField: There must be a form in the document");
     } else {
       frm = element._form ? element._form : O$.getParentNode(element, "FORM");
-      O$.assert(frm, "O$.addHiddenField: Enclosing form not found for element with id: " + element.id + "; element tag name: " + element.tagName);
+      O$.assert(frm, "O$.setHiddenField: Enclosing form not found for element with id: " + element.id + "; element tag name: " + element.tagName);
     }
     var existingField = O$(fieldName);
     var newParamField = existingField ? existingField : document.createElement("input");
@@ -1538,7 +1538,7 @@ if (!window.O$) {
   };
 
   O$.initDefaultScrollPosition = function(trackerFieldId, scrollPos) {
-    O$.addHiddenField(null, trackerFieldId, scrollPos);
+    O$.setHiddenField(null, trackerFieldId, scrollPos);
     O$.initScrollPosition_(trackerFieldId, true, 1, null);
   };
 
@@ -1663,7 +1663,7 @@ if (!window.O$) {
   };
 
   O$.initDefaultFocus = function(trackerFieldId, focusedComponentId) {
-    O$.addHiddenField(null, trackerFieldId, focusedComponentId);
+    O$.setHiddenField(null, trackerFieldId, focusedComponentId);
     O$.initFocus_(trackerFieldId, true, 1);
   };
 
@@ -4299,7 +4299,7 @@ if (!window.O$) {
       if (additionalParams)
         for (var i = 0, count = additionalParams.length; i < count; i++) {
           var paramEntry = additionalParams[i];
-          O$.addHiddenField(component, paramEntry[0], paramEntry[1]);
+          O$.setHiddenField(component, paramEntry[0], paramEntry[1]);
         }
       O$.submitEnclosingForm(component);
     } else {

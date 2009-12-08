@@ -958,6 +958,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         ColumnResizing columnResizing = getColumnResizing();
         if (columnResizing != null)
             columnResizing.processUpdates(context);
+
+        Iterable<String> submittedColumnsOrder = (Iterable<String>) getAttributes().get("submittedColumnsOrder");
+        if (submittedColumnsOrder != null) {
+            setColumnsOrder(submittedColumnsOrder);
+            if (columnsOrder != null && ValueBindings.set(this, "columnsOrder", columnsOrder)) {
+                columnsOrder = null;
+            }
+        }
     }
 
     protected void processModelUpdates(FacesContext context) {

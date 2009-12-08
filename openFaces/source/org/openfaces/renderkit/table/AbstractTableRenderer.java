@@ -387,6 +387,10 @@ public abstract class AbstractTableRenderer extends RendererBase {
         Scrolling scrolling = table.getScrolling();
         if (scrolling != null)
             scrolling.processDecodes(context);
+
+        ColumnReordering columnReordering = table.getColumnReordering();
+        if (columnReordering != null)
+            columnReordering.processDecodes(context);
     }
 
 
