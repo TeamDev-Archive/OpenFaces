@@ -1574,8 +1574,10 @@ O$.Table = {
       if (!headerCell) return;
       headerCell._clone = function() {
         var tbl = document.createElement("table");
+        var tbody = document.createElement("tbody");
+        tbl.appendChild(tbody);
         var tr = document.createElement("tr");
-        tbl.appendChild(tr);
+        tbody.appendChild(tr);
         var td = headerCell.cloneNode(true);
         tr.appendChild(td);
         tbl.cellSpacing = "0";
