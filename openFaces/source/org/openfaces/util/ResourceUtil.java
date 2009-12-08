@@ -296,11 +296,11 @@ public class ResourceUtil {
     /**
      * Register javascript library to future adding to response
      *
-     * @param facesContext {@link FacesContext} for the current request
+     * @param context {@link FacesContext} for the current request
      * @param jsFileUrl    Url for the javascript file
      */
-    public static void registerJavascriptLibrary(FacesContext facesContext, String jsFileUrl) {
-        Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
+    public static void registerJavascriptLibrary(FacesContext context, String jsFileUrl) {
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         List<String> libraries = (List<String>) requestMap.get(HEADER_JS_LIBRARIES);
         if (libraries == null) {
             libraries = new ArrayList<String>();
@@ -447,10 +447,10 @@ public class ResourceUtil {
     /**
      * Register OpenFaces javascript library util.js to future adding to response
      *
-     * @param facesContext {@link FacesContext} for the current request
+     * @param context {@link FacesContext} for the current request
      */
-    public static void registerUtilJs(FacesContext facesContext) {
-        registerJavascriptLibrary(facesContext, RenderingUtil.class, "util.js");
+    public static void registerUtilJs(FacesContext context) {
+        registerJavascriptLibrary(context, RenderingUtil.class, "util.js");
     }
 
     public static boolean isHeaderIncludesRegistered(ServletRequest servletRequest) {

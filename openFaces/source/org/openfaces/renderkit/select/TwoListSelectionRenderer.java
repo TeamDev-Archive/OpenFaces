@@ -282,13 +282,12 @@ public class TwoListSelectionRenderer extends RendererBase {
         return result;
     }
 
-    private Converter getConverterForClass(Class converterClass,
-                                           FacesContext facesContext) {
+    private Converter getConverterForClass(Class converterClass, FacesContext context) {
         if (converterClass == null) {
             return null;
         }
         try {
-            Application application = facesContext.getApplication();
+            Application application = context.getApplication();
             return application.createConverter(converterClass);
         } catch (RuntimeException e) {
             return null;

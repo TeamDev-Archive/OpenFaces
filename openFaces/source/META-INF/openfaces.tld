@@ -4008,6 +4008,14 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>Turns on drag&amp;drop column reordering feature for a DataTable or TreeTable where this tag is
+      inserted.</description>
+    <name>columnReordering</name>
+    <tag-class>org.openfaces.taglib.jsp.table.ColumnReorderingJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+
+  <tag>
     <description>The Row component is used to specify content, style or client-side events for specific rows
       selectively. The attributes and contents specified in this tag are applied to all rows that meet
       the criterion specified in the "condition" attribute. This tag can be specified only as a child tag of

@@ -16,9 +16,10 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.AbstractTableSelection;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.CheckboxColumn;
+import org.openfaces.component.table.ColumnReordering;
 import org.openfaces.component.table.ColumnResizing;
-import org.openfaces.component.table.TableColumn;
 import org.openfaces.component.table.Scrolling;
+import org.openfaces.component.table.TableColumn;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
@@ -55,8 +56,8 @@ public abstract class AbstractTableRenderer extends RendererBase {
     private static final String TABLE_STRUCTURE_ATTR = "_of_tableStructure";
 
 
-    public static String getTableJsURL(FacesContext facesContext) {
-        return ResourceUtil.getInternalResourceURL(facesContext, AbstractTableRenderer.class, "table.js");
+    public static String getTableJsURL(FacesContext context) {
+        return ResourceUtil.getInternalResourceURL(context, AbstractTableRenderer.class, "table.js");
     }
 
     @Override
@@ -88,12 +89,12 @@ public abstract class AbstractTableRenderer extends RendererBase {
 
     protected TableStructure createTableStructure(final AbstractTable table) {
         return new TableStructure(table, table) {
-            protected String getAdditionalRowClass(FacesContext facesContext, AbstractTable table, Object rowData, int rowIndex) {
-                return AbstractTableRenderer.this.getAdditionalRowClass(facesContext, table, rowData, rowIndex);
+            protected String getAdditionalRowClass(FacesContext context, AbstractTable table, Object rowData, int rowIndex) {
+                return AbstractTableRenderer.this.getAdditionalRowClass(context, table, rowData, rowIndex);
             }
 
-            protected String[][] getBodyRowAttributes(FacesContext facesContext, AbstractTable table) throws IOException {
-                return AbstractTableRenderer.this.getBodyRowAttributes(facesContext, table);
+            protected String[][] getBodyRowAttributes(FacesContext context, AbstractTable table) throws IOException {
+                return AbstractTableRenderer.this.getBodyRowAttributes(context, table);
             }
 
             protected String getTextClass(AbstractTable table) {
@@ -103,8 +104,6 @@ public abstract class AbstractTableRenderer extends RendererBase {
             protected String getTextStyle(AbstractTable table) {
                 return AbstractTableRenderer.this.getTextStyle(table);
             }
-
-
         };
     }
 
@@ -123,7 +122,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
         return null;
     }
 
-    protected String getAdditionalRowClass(FacesContext facesContext, AbstractTable table, Object rowData, int rowIndex) {
+    protected String getAdditionalRowClass(FacesContext context, AbstractTable table, Object rowData, int rowIndex) {
         return null;
     }
 
@@ -138,67 +137,71 @@ public abstract class AbstractTableRenderer extends RendererBase {
     }
 
     @Override
-    public void encodeChildren(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+    public void encodeChildren(FacesContext context, UIComponent uiComponent) throws IOException {
     }
 
     private TableStructure getTableStructure(AbstractTable table) {
         return (TableStructure) table.getAttributes().get(TABLE_STRUCTURE_ATTR);
     }
 
-    protected void encodeScriptsAndStyles(FacesContext facesContext, AbstractTable table) throws IOException {
-        encodeAdditionalFeatureSupport(facesContext, table);
-        StyleUtil.renderStyleClasses(facesContext, table);
+    protected void encodeScriptsAndStyles(FacesContext context, AbstractTable table) throws IOException {
+        encodeAdditionalFeatureSupport(context, table);
+        StyleUtil.renderStyleClasses(context, table);
     }
 
-    protected void encodeAdditionalFeatureSupport(FacesContext facesContext, AbstractTable table) throws IOException {
+    protected void encodeAdditionalFeatureSupport(FacesContext context, AbstractTable table) throws IOException {
         ScriptBuilder buf = new ScriptBuilder();
 
-        encodeAdditionalFeaturesSupport_buf(facesContext, table, buf);
+        encodeAdditionalFeaturesSupport_buf(context, table, buf);
 
         AbstractTableSelection selection = table.getSelection();
         if (selection != null)
-            selection.registerSelectionStyle(facesContext);
+            selection.registerSelectionStyle(context);
 
-        StyleUtil.renderStyleClasses(facesContext, table); // encoding styles before scripts is important for tableUtil.js to be able to compute row and column styles correctly
+        StyleUtil.renderStyleClasses(context, table); // encoding styles before scripts is important for tableUtil.js to be able to compute row and column styles correctly
 
-        String[] libs = getNecessaryJsLibs(facesContext);
-        RenderingUtil.renderInitScript(facesContext, buf, libs);
+        String[] libs = getNecessaryJsLibs(context);
+        RenderingUtil.renderInitScript(context, buf, libs);
 
         if (selection != null)
-            selection.encodeAll(facesContext);
+            selection.encodeAll(context);
 
         ColumnResizing columnResizing = table.getColumnResizing();
         if (columnResizing != null)
-            columnResizing.encodeAll(facesContext);
+            columnResizing.encodeAll(context);
+
+        ColumnReordering columnReordering = table.getColumnReordering();
+        if (columnReordering != null)
+            columnReordering.encodeAll(context);
     }
 
-    protected void encodeAdditionalFeaturesSupport_buf(FacesContext facesContext, AbstractTable table, ScriptBuilder buf) throws IOException {
-        encodeInitialization(facesContext, table, buf);
-        encodeKeyboardSupport(facesContext, table, buf);
-        encodeSortingSupport(facesContext, table, buf);
+    protected void encodeAdditionalFeaturesSupport_buf(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
+        encodeInitialization(context, table, buf);
+        encodeKeyboardSupport(context, table, buf);
+        encodeSortingSupport(context, table, buf);
 
         if (!table.isDataSourceEmpty())
-            preregisterNoFilterDataRowStyleForOpera(facesContext, table);
+            preregisterNoFilterDataRowStyleForOpera(context, table);
 
-        encodeCheckboxColumnSupport(facesContext, table, buf);
+        encodeCheckboxColumnSupport(context, table, buf);
     }
 
-    private void preregisterNoFilterDataRowStyleForOpera(FacesContext facesContext, AbstractTable table) {
+    private void preregisterNoFilterDataRowStyleForOpera(FacesContext context, AbstractTable table) {
         if (EnvironmentUtil.isOpera() || EnvironmentUtil.isUndefinedBrowser())
-            TableStructure.getNoDataRowClassName(facesContext, table);
+            TableStructure.getNoDataRowClassName(context, table);
     }
 
     private void encodeInitialization(
-            FacesContext facesContext,
+            FacesContext context,
             AbstractTable table,
             ScriptBuilder buf) throws IOException {
         TableStyles defaultStyles = TableStructure.getDefaultStyles(table);
         TableStructure tableStructure = getTableStructure(table);
 
-        buf.initScript(facesContext, table, "O$.Table._init",
-                tableStructure.getInitParam(facesContext, defaultStyles),
+        buf.initScript(context, table, "O$.Table._init",
+                tableStructure.getInitParam(context, defaultStyles),
                 table.getUseAjax(),
-                StyleUtil.getCSSClass(facesContext, table, table.getRolloverStyle(),
+                StyleUtil.getCSSClass(context, table, table.getRolloverStyle(),
                         StyleGroup.rolloverStyleGroup(), table.getRolloverClass()),
                 getInitJsAPIFunctionName());
     }
@@ -214,26 +217,26 @@ public abstract class AbstractTableRenderer extends RendererBase {
                 getTableJsURL(context)};
     }
 
-    private void encodeKeyboardSupport(FacesContext facesContext, AbstractTable table, ScriptBuilder buf) throws IOException {
+    private void encodeKeyboardSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
         boolean focusable = isKeyboardNavigationApplicable(table);
         if (!focusable)
             return;
 
         Boolean focusedAttr = (Boolean) table.getAttributes().get("focused");
-        ResponseWriter writer = facesContext.getResponseWriter();
-        String focusFieldName = getFocusFieldName(facesContext, table);
+        ResponseWriter writer = context.getResponseWriter();
+        String focusFieldName = getFocusFieldName(context, table);
         String focused = String.valueOf(focusedAttr != null && focusedAttr);
         RenderingUtil.renderHiddenField(writer, focusFieldName, focused);
         boolean tableIsPaginated = getUseKeyboardForPagination(table);
         boolean applyDefaultStyle = table.getApplyDefaultStyle();
         String focusedClass = StyleUtil.getCSSClass_dontCascade(
-                facesContext, table, table.getFocusedStyle(), StyleGroup.selectedStyleGroup(), table.getFocusedClass(),
+                context, table, table.getFocusedStyle(), StyleGroup.selectedStyleGroup(), table.getFocusedClass(),
                 applyDefaultStyle ? DEFAULT_FOCUSED_STYLE : null);
 
         boolean canPageBack = tableIsPaginated && canPageBack(table);
         boolean canPageForth = tableIsPaginated && canPageForth(table);
         boolean canSelectLastPage = tableIsPaginated && canSelectLastPage(table);
-        buf.initScript(facesContext, table, "O$.Table._initKeyboardNavigation",
+        buf.initScript(context, table, "O$.Table._initKeyboardNavigation",
                 tableIsPaginated,
                 focusedClass,
                 canPageBack,
@@ -315,8 +318,8 @@ public abstract class AbstractTableRenderer extends RendererBase {
                 preloadedImageUrls);
     }
 
-    private String getSortingFieldName(FacesContext facesContext, UIComponent table) {
-        return table.getClientId(facesContext) + "::sorting";
+    private String getSortingFieldName(FacesContext context, UIComponent table) {
+        return table.getClientId(context) + "::sorting";
     }
 
     private String getSortedColumnClass(AbstractTable table) {
@@ -362,41 +365,41 @@ public abstract class AbstractTableRenderer extends RendererBase {
     }
 
     @Override
-    public void decode(FacesContext facesContext, UIComponent uiComponent) {
-        super.decode(facesContext, uiComponent);
+    public void decode(FacesContext context, UIComponent uiComponent) {
+        super.decode(context, uiComponent);
         if (!uiComponent.isRendered())
             return;
         AbstractTable table = (AbstractTable) uiComponent;
 
-        decodeKeyboardSupport(facesContext, table);
+        decodeKeyboardSupport(context, table);
         AbstractTableSelection selection = table.getSelection();
         if (selection != null)
-            selection.processDecodes(facesContext);
+            selection.processDecodes(context);
 
         ColumnResizing columnResizing = table.getColumnResizing();
         if (columnResizing != null)
-            columnResizing.processDecodes(facesContext);
+            columnResizing.processDecodes(context);
 
-        decodeSorting(facesContext, table);
+        decodeSorting(context, table);
 
-        decodeCheckboxColumns(facesContext, table);
+        decodeCheckboxColumns(context, table);
 
         Scrolling scrolling = table.getScrolling();
         if (scrolling != null)
-            scrolling.processDecodes(facesContext);
+            scrolling.processDecodes(context);
     }
 
 
-    private void decodeKeyboardSupport(FacesContext facesContext, AbstractTable table) {
-        Map<String, String> requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
-        String focusedStr = requestParameterMap.get(getFocusFieldName(facesContext, table));
+    private void decodeKeyboardSupport(FacesContext context, AbstractTable table) {
+        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String focusedStr = requestParameterMap.get(getFocusFieldName(context, table));
         boolean focused = focusedStr != null && focusedStr.equals("true");
         table.getAttributes().put("focused", focused);
     }
 
-    private void decodeSorting(FacesContext facesContext, AbstractTable table) {
-        Map<String, String> requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
-        String sortingFieldName = getSortingFieldName(facesContext, table);
+    private void decodeSorting(FacesContext context, AbstractTable table) {
+        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String sortingFieldName = getSortingFieldName(context, table);
         String sortingFieldValue = requestParameterMap.get(sortingFieldName);
         if (sortingFieldValue != null && sortingFieldValue.length() > 0) {
             int columnToToggle = Integer.parseInt(sortingFieldValue);
@@ -412,7 +415,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
         return result;
     }
 
-    private void encodeCheckboxColumnSupport(FacesContext facesContext, AbstractTable table, ScriptBuilder buf) throws IOException {
+    private void encodeCheckboxColumnSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
         List<CheckboxColumn> checkboxColumns = new ArrayList<CheckboxColumn>(1);
         List<Integer> checkBoxColIndexes = new ArrayList<Integer>(1);
         List<BaseColumn> columns = table.getColumnsForRendering();
@@ -428,10 +431,10 @@ public abstract class AbstractTableRenderer extends RendererBase {
         if (checkBoxColCount == 0)
             return;
 
-        ResponseWriter writer = facesContext.getResponseWriter();
+        ResponseWriter writer = context.getResponseWriter();
         for (int i = 0; i < checkBoxColCount; i++) {
             CheckboxColumn col = checkboxColumns.get(i);
-            RenderingUtil.renderHiddenField(writer, col.getClientId(facesContext), "");
+            RenderingUtil.renderHiddenField(writer, col.getClientId(context), "");
         }
 
         for (int checkBoxColIndex = 0; checkBoxColIndex < checkBoxColCount; checkBoxColIndex++) {
@@ -444,21 +447,21 @@ public abstract class AbstractTableRenderer extends RendererBase {
                 checkedRowIndexes.put(checkedRowIdx);
             }
 
-            buf.initScript(facesContext, table, "O$.Table._initCheckboxCol",
+            buf.initScript(context, table, "O$.Table._initCheckboxCol",
                     colIndex,
-                    col.getClientId(facesContext),
+                    col.getClientId(context),
                     checkedRowIndexes);
         }
     }
 
-    protected void decodeCheckboxColumns(FacesContext facesContext, AbstractTable table) {
-        Map<String, String> requestMap = facesContext.getExternalContext().getRequestParameterMap();
+    protected void decodeCheckboxColumns(FacesContext context, AbstractTable table) {
+        Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
         List<BaseColumn> columns = table.getColumnsForRendering();
         for (BaseColumn column : columns) {
             if (!(column instanceof CheckboxColumn))
                 continue;
 
-            String colId = column.getClientId(facesContext);
+            String colId = column.getClientId(context);
             String checkedRowIndexesStr = requestMap.get(colId);
             String[] indexes;
             if (checkedRowIndexesStr == null || checkedRowIndexesStr.length() == 0) {

@@ -289,7 +289,7 @@ O$.PopupLayer = {
           var pos = O$.getEventPoint(evt, popup);
           if (pos.x < popup.offsetLeft + popup.clientWidth
                   && pos.y < popup.offsetTop + popup.clientHeight) {
-            O$.startDragAndDrop(e, popup);
+            O$.startDragging(e, popup);
           }
         }
       },

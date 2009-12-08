@@ -25,7 +25,7 @@ import javax.faces.validator.Validator;
  * @author Vladimir Korenev
  */
 public class ConverterUtil {
-    public static Converter getConverter(UIComponent component, FacesContext facesContext) {
+    public static Converter getConverter(UIComponent component, FacesContext context) {
         try {
             if (component instanceof EditableValueHolder) {
                 Converter converter = ((EditableValueHolder) component).getConverter();
@@ -48,13 +48,13 @@ public class ConverterUtil {
             ValueExpression ve = component.getValueExpression("value");
             if (ve == null) return null;
 
-            Class valueType = ve.getType(facesContext.getELContext());
+            Class valueType = ve.getType(context.getELContext());
             if (valueType == null) return null;
 
             if (String.class.equals(valueType)) return null;
             if (Object.class.equals(valueType)) return null;
 
-            return facesContext.getApplication().createConverter(valueType);
+            return context.getApplication().createConverter(valueType);
         } catch (RuntimeException e) {
             Log.log("error in getConverter. component:" + component, e);
         }

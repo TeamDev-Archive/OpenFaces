@@ -52,30 +52,30 @@ public class MessageUtil {
         return new FacesMessage(severity, summary, detail);
     }
 
-    public static FacesMessage getMessage(FacesContext facesContext,
+    public static FacesMessage getMessage(FacesContext context,
                                           FacesMessage.Severity severity,
                                           String messageId,
                                           Object args[]) {
-        return getMessage(facesContext, severity, new String[]{messageId}, args);
+        return getMessage(context, severity, new String[]{messageId}, args);
     }
 
-    private static String getFirstString(FacesContext facesContext, Locale locale, String[] keys, boolean detail) {
+    private static String getFirstString(FacesContext context, Locale locale, String[] keys, boolean detail) {
         for (String key : keys) {
             if (detail) {
                 key += DETAIL_SUFFIX;
             }
-            ResourceBundle appBundle = getApplicationBundle(facesContext, locale);
+            ResourceBundle appBundle = getApplicationBundle(context, locale);
             String appString = getBundleString(appBundle, key);
             if (appString != null) {
                 return appString;
             } else {
 
-                ResourceBundle additionalBundle = getAdditionalBundle(facesContext, locale);
+                ResourceBundle additionalBundle = getAdditionalBundle(context, locale);
                 String additionalBundleString = getBundleString(additionalBundle, key);
                 if (additionalBundleString != null) {
                     return additionalBundleString;
                 } else {
-                    ResourceBundle defBundle = getDefaultBundle(facesContext, locale);
+                    ResourceBundle defBundle = getDefaultBundle(context, locale);
                     String defString = getBundleString(defBundle, key);
                     if (defString != null) {
                         return defString;
@@ -96,21 +96,21 @@ public class MessageUtil {
     }
 
 
-    private static ResourceBundle getApplicationBundle(FacesContext facesContext, Locale locale) {
-        String bundleName = facesContext.getApplication().getMessageBundle();
+    private static ResourceBundle getApplicationBundle(FacesContext context, Locale locale) {
+        String bundleName = context.getApplication().getMessageBundle();
         if (bundleName != null) {
-            return getBundle(facesContext, locale, bundleName);
+            return getBundle(context, locale, bundleName);
         } else {
             return null;
         }
     }
 
-    private static ResourceBundle getDefaultBundle(FacesContext facesContext, Locale locale) {
-        return getBundle(facesContext, locale, FacesMessage.FACES_MESSAGES);
+    private static ResourceBundle getDefaultBundle(FacesContext context, Locale locale) {
+        return getBundle(context, locale, FacesMessage.FACES_MESSAGES);
     }
 
-    private static ResourceBundle getAdditionalBundle(FacesContext facesContext, Locale locale) {
-        return getBundle(facesContext, locale, ADDITIONAL_BUNDLE);
+    private static ResourceBundle getAdditionalBundle(FacesContext context, Locale locale) {
+        return getBundle(context, locale, ADDITIONAL_BUNDLE);
     }
 
     private static ResourceBundle getBundle(FacesContext context,

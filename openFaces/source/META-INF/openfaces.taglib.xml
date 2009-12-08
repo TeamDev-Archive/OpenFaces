@@ -89,6 +89,14 @@
   </tag>
 
   <tag>
+    <tag-name>columnReordering</tag-name>
+    <component>
+      <component-type>org.openfaces.ColumnReordering</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.ColumnReorderingTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
     <tag-name>scrolling</tag-name>
     <component>
       <component-type>org.openfaces.Scrolling</component-type>

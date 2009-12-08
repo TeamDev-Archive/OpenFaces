@@ -44,7 +44,7 @@ O$.Window = {
           return;
         O$._enableIFrameFix();
         O$.addEventHandler(document, "mouseup", O$._disableIframeFix, true);
-        O$.startDragAndDrop(e, win, win._caption);
+        O$.startDragging(e, win, win._caption);
       };
 
     O$.Window._processCaptionStyle(win);
@@ -315,7 +315,7 @@ O$.Window = {
       resizer.onmousedown = function (e) {
         O$._enableIFrameFix();
         O$.addEventHandler(document, "mouseup", O$._disableIframeFix, true);
-        O$.startDragAndDrop(e, this);
+        O$.startDragging(e, this);
       };
 
       resizer.setPosition = function(x, y, dx, dy) {

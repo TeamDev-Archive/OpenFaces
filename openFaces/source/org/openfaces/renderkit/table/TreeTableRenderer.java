@@ -66,43 +66,43 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
     }
 
     @Override
-    protected String getAdditionalRowClass(FacesContext facesContext, AbstractTable table, Object rowData, int rowIndex) {
+    protected String getAdditionalRowClass(FacesContext context, AbstractTable table, Object rowData, int rowIndex) {
         TreeTable treeTable = (TreeTable) table;
         if (!treeTable.isFilteringPerformed())
             return null;
         boolean nodeAcceptedByFilters = treeTable.isNodeAcceptedByFilters();
         String result = nodeAcceptedByFilters
-                ? getFilterAcceptedRowClass(facesContext, treeTable)
-                : getFilterSubsidiaryRowClass(facesContext, treeTable);
+                ? getFilterAcceptedRowClass(context, treeTable)
+                : getFilterSubsidiaryRowClass(context, treeTable);
         return result;
     }
 
-    private String getFilterSubsidiaryRowClass(FacesContext facesContext, TreeTable treeTable) {
-        return StyleUtil.getCSSClass(facesContext,
+    private String getFilterSubsidiaryRowClass(FacesContext context, TreeTable treeTable) {
+        return StyleUtil.getCSSClass(context,
                 treeTable, treeTable.getFilterSubsidiaryRowStyle(),
                 StyleGroup.rolloverStyleGroup(), treeTable.getFilterSubsidiaryRowClass(),
                 DEFAULT_AUXILARY_NODE_CLASS
         );
     }
 
-    private String getFilterAcceptedRowClass(FacesContext facesContext, TreeTable treeTable) {
-        return StyleUtil.getCSSClass(facesContext,
+    private String getFilterAcceptedRowClass(FacesContext context, TreeTable treeTable) {
+        return StyleUtil.getCSSClass(context,
                 treeTable, treeTable.getFilterAcceptedRowStyle(),
                 StyleGroup.rolloverStyleGroup(), treeTable.getFilterAcceptedRowClass()
         );
     }
 
     @Override
-    protected void encodeAdditionalFeaturesSupport_buf(FacesContext facesContext, AbstractTable table, ScriptBuilder buf) throws IOException {
-        super.encodeAdditionalFeaturesSupport_buf(facesContext, table, buf);
+    protected void encodeAdditionalFeaturesSupport_buf(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
+        super.encodeAdditionalFeaturesSupport_buf(context, table, buf);
 
         TreeTable treeTable = (TreeTable) table;
         boolean foldingEnabled = treeTable.isFoldingEnabled();
         if (foldingEnabled)
-            encodeFoldingSupport(facesContext, treeTable, buf);
+            encodeFoldingSupport(context, treeTable, buf);
 
-        getFilterAcceptedRowClass(facesContext, treeTable);
-        getFilterSubsidiaryRowClass(facesContext, treeTable);
+        getFilterAcceptedRowClass(context, treeTable);
+        getFilterSubsidiaryRowClass(context, treeTable);
     }
 
     private void encodeFoldingSupport(FacesContext context, TreeTable treeTable, ScriptBuilder buf) throws IOException {

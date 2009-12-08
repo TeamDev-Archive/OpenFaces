@@ -48,12 +48,12 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
     public static final String CALENDAR_SUFFIX = RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "calendar";
 
     @Override
-    protected void registerJS(FacesContext facesContext, UIComponent component) throws IOException {
-        super.registerJS(facesContext, component);
+    protected void registerJS(FacesContext context, UIComponent component) throws IOException {
+        super.registerJS(context, component);
         DateChooser dateChooser = (DateChooser) component;
         Locale locale = dateChooser.getLocale();
         if (locale == null) {
-            locale = RequestFacade.getInstance(facesContext.getExternalContext().getRequest()).getLocale();
+            locale = RequestFacade.getInstance(context.getExternalContext().getRequest()).getLocale();
         }
         RenderingUtil.registerDateTimeFormatObject(locale);
     }

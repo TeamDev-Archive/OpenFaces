@@ -1255,7 +1255,7 @@ O$.Table = {
 
       function recalculateTableWidth(colWidths) {
         if (table._params.scrolling)
-          return;
+          return undefined;
         var totalWidth = 0;
         for (var i = 0, count = table._columns.length; i < count; i++) {
           var column = table._columns[i];
@@ -1358,7 +1358,7 @@ O$.Table = {
             this._updatePos();
         };
         resizeHandle.onmousedown = function (e) {
-          O$.startDragAndDrop(e, this);
+          O$.startDragging(e, this);
         };
         resizeHandle.onclick = function(e) {
           O$.breakEvent(e);
@@ -1553,5 +1553,104 @@ O$.Table = {
 
     });
 
+  },
+
+  // -------------------------- COLUMN REORDERING
+
+  _initColumnReordering: function(tableId) {
+    var table = O$(tableId);
+
+    var dropTargetMark = function() {
+      var div = document.createElement("div");
+      div.className = "o_table_columnDropTarget";
+      div.setPosition = function(x, y1, y2) {
+        O$.setElementBorderRectangle(div, new O$.Rectangle(x - 1, y1, 3, y2 - y1));
+      };
+      return div;
+    }();
+    O$.correctElementZIndex(dropTargetMark, table, 1);
+    table._columns.forEach(function(column) {
+      var headerCell = column.header._cell;
+      if (!headerCell) return;
+      headerCell._clone = function() {
+        var tbl = document.createElement("table");
+        var tr = document.createElement("tr");
+        tbl.appendChild(tr);
+        var td = headerCell.cloneNode(true);
+        tr.appendChild(td);
+        tbl.cellSpacing = "0";
+        tbl.cellPadding = "0";
+        tbl.border = "0";
+        tbl.className = O$.combineClassNames(["o_table_draggedColumn", table._params.header.className, this._row.className, this._column.className]);
+        tbl.style.border.borderWidth = O$.getElementStyle(tbl, "border-width");
+        tbl.style.border.borderStyle = O$.getElementStyle(tbl, "border-style");
+        tbl.style.border.borderColor = O$.getElementStyle(tbl, "border-color");
+        O$.setOpacityLevel(tbl, 0.5);
+        O$.correctElementZIndex(tbl, table, 2);
+        return tbl;
+      };
+
+      O$.makeDraggable(headerCell, function(evt) {
+        var dropTargets = [];
+        table._columns.forEach(function(col) {
+          function dropTarget(minX, maxX, minY, maxY, column, rightEdge) {
+            var container = O$.getContainingBlock(headerCell, true);
+            if (!container)
+              container = O$.getDefaultAbsolutePositionParent();
+
+            return {
+              minX: minX,
+              maxX: maxX,
+              minY: minY,
+              maxY: maxY,
+              eventInside: function(evt) {
+                var cursorPos = O$.getEventPoint(evt, headerCell);
+                return (this.minX == null || cursorPos.x >= this.minX) &&
+                       (this.maxX == null || cursorPos.x < this.maxX);
+              },
+              setActive: function(active) {
+                if (active) {
+                  container.appendChild(dropTargetMark);
+                  dropTargetMark.setPosition(rightEdge ? maxX : minX, minY, maxY);
+                } else {
+                  if (dropTargetMark.parentNode)
+                    dropTargetMark.parentNode.removeChild(dropTargetMark);
+                }
+              },
+              acceptDraggable: function(cellHeader) {
+                var targetColIndex;
+                if (col == table._columns[table._columns.length - 1])
+                  targetColIndex = col._index;
+                else
+                  targetColIndex = !rightEdge ? col._index: col._index + 1;
+                alert('dragging finished for column: ' + cellHeader._column._index + "; target col is " + targetColIndex);
+              }
+            };
+          }
+          var colData = {
+            column: col
+          };
+          var cell = col.header._cell;
+          if (!cell) return colData;
+          var cellRect = O$.getElementBorderRectangle(cell, true);
+          var min = cellRect.getMinX();
+          var max = cellRect.getMaxX();
+          var mid = (min + max) / 2;
+          var minY = cellRect.getMinY();
+          var maxY = cellRect.getMaxY();
+          dropTargets.push(dropTarget(min, mid, minY, maxY, col, false));
+          dropTargets.push(dropTarget(mid, max, minY, maxY, col, true));
+        });
+        dropTargets[0].minX = null;
+        dropTargets[dropTargets.length - 1].maxX = null;
+        for (var i = 0, count = dropTargets.length; i < count; i++) {
+          var dropTarget = dropTargets[i];
+          if (dropTarget.eventInside(evt))
+            return dropTarget;
+        }
+        return null;
+      });
+    });
   }
+
 };

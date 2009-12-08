@@ -23,7 +23,7 @@
 <body>
 <f:view>
   <h:form>
-   <%@ include file="functional_testing_core.xhtml" %>
+   <%@ include file="testPageIndex_core.xhtml" %>
   </h:form>
 </f:view>
 

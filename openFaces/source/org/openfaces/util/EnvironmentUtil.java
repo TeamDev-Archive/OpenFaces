@@ -335,8 +335,8 @@ public class EnvironmentUtil {
 
     // TODO [sanders] (Apr 1, 2009, 8:48 AM): consider renaming to isBrowser
     public static boolean checkBrowser(String browserName) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        String userAgent = getUserAgent(facesContext);
+        FacesContext context = FacesContext.getCurrentInstance();
+        String userAgent = getUserAgent(context);
         if (userAgent == null)
             userAgent = KEY_UNDEFINED_BROWSER;
 

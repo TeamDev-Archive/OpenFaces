@@ -625,7 +625,7 @@ O$._initDayTable = function(componentId,
       eventElement.onmousedown = function (e) {
         dayTable._resetScrollingCache();
         eventElement._bringToFront();
-        O$.startDragAndDrop(e, this);
+        O$.startDragging(e, this);
         eventElement._initialStart = eventElement._lastValidStart = event.start;
         eventElement._initialEnd = eventElement._lastValidEnd = event.end;
         eventElement._initialResourceId = eventElement._lastValidResourceId = event.resourceId;

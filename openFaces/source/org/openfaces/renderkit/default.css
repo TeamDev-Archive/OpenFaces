@@ -129,43 +129,6 @@
 /* == End of Shared among components styles == */
 
 /* Table styles */
-.o_scrollable_table {
-  width: 100%;
-  height: 300px;
-}
-
-.o_noWrapHeaderCell {
-  white-space: nowrap;
-}
-
-.o_scrolling_area_container {
-  width: 100%;
-  position: relative;
-}
-
-.o_horizontal_scrolling_area {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.o_table_scrolling_area {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.o_scrolling_area_table {
-  table-layout: fixed;
-}
-
-.o_scrolling_area_spacer {
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  border-width: 0;
-}
-
 .o_filter_row_cells {
   font-weight: normal;
 }
@@ -207,6 +170,52 @@
 
 .o_table_layout_fixed {
   table-layout: fixed;
+}
+
+.o_table_columnDropTarget {
+  position: absolute;
+  background: gray;
+}
+
+.o_table_draggedColumn {
+  border: 1px solid gray;
+}
+
+.o_scrollable_table {
+  width: 100%;
+  height: 300px;
+}
+
+.o_noWrapHeaderCell {
+  white-space: nowrap;
+}
+
+.o_scrolling_area_container {
+  width: 100%;
+  position: relative;
+}
+
+.o_horizontal_scrolling_area {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.o_table_scrolling_area {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.o_scrolling_area_table {
+  table-layout: fixed;
+}
+
+.o_scrolling_area_spacer {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border-width: 0;
 }
 
 /* Checkbox column */

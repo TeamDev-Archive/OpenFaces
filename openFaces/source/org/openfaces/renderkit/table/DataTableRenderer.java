@@ -24,19 +24,19 @@ import java.util.Map;
 public class DataTableRenderer extends AbstractTableRenderer {
 
     @Override
-    public void decode(FacesContext facesContext, UIComponent uiComponent) {
-        super.decode(facesContext, uiComponent);
+    public void decode(FacesContext context, UIComponent uiComponent) {
+        super.decode(context, uiComponent);
         if (!uiComponent.isRendered())
             return;
         DataTable table = (DataTable) uiComponent;
-        decodePagination(facesContext, table);
+        decodePagination(context, table);
     }
 
-    private void decodePagination(FacesContext facesContext, DataTable table) {
-        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
-        String pagingAction = (String) requestParameterMap.get(table.getClientId(facesContext) + "::paging");
+    private void decodePagination(FacesContext context, DataTable table) {
+        Map requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String pagingAction = (String) requestParameterMap.get(table.getClientId(context) + "::paging");
         if (pagingAction != null && pagingAction.length() > 0)
-            DataTablePaginatorRenderer.executePaginationAction(facesContext, table, pagingAction);
+            DataTablePaginatorRenderer.executePaginationAction(context, table, pagingAction);
     }
 
     @Override

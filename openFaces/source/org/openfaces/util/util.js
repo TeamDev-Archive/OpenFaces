@@ -53,7 +53,7 @@ if (!window.O$) {
         });
       if (styles.focused)
         O$.setupFocusedStateFunction(component, function(focused) {
-          O$.setStyleMappings(component, {_focusedStyle: focused? styles.focused : null});
+          O$.setStyleMappings(component, {_focusedStyle: focused ? styles.focused : null});
         });
     }
     if (properties) {
@@ -646,7 +646,7 @@ if (!window.O$) {
   if (!Array.prototype.some) {
     Array.prototype.some = function(fun /*, thisp*/) {
       var i = 0,
-          len = this.length >>> 0;
+              len = this.length >>> 0;
 
       if (typeof fun != "function")
         throw new TypeError();
@@ -2051,7 +2051,53 @@ if (!window.O$) {
     return elementHasItsOwnMouseBehavior;
   };
 
-  O$.startDragAndDrop = function(e, draggable, simulateDblClickForElement) {
+  O$.makeDraggable = function(element, dropTargetLocator) {
+    O$.addEventHandler(element, "mousedown", function(evt) {
+      var elementCopy = O$.cloneElement(element);
+      elementCopy.style.position = "absolute";
+      var container = O$.getContainingBlock(element, true);
+      if (!container)
+        container = O$.getDefaultAbsolutePositionParent();
+      var rect = O$.getElementBorderRectangle(element);
+      var containerPos = O$.getElementPos(container);
+      rect.x -= containerPos.left;
+      rect.y -= containerPos.top;
+      O$.setElementBorderRectangle(elementCopy, rect);
+
+      container.appendChild(elementCopy);
+      elementCopy.setPosition = function(x, y) {
+        this.style.left = x + "px";
+        this.style.top = y + "px";
+      };
+      var currentDropTarget = null;
+      O$.startDragging(evt, elementCopy);
+      elementCopy.ondragmove = function(evt) {
+        var dropTarget = dropTargetLocator(evt);
+        if (dropTarget != currentDropTarget) {
+          if (currentDropTarget) currentDropTarget.setActive(false);
+          currentDropTarget = dropTarget;
+          if (currentDropTarget) currentDropTarget.setActive(true);
+        }
+      };
+      elementCopy.ondragend = function() {
+        this.parentNode.removeChild(this);
+        if (currentDropTarget) {
+          currentDropTarget.setActive(false);
+          currentDropTarget.acceptDraggable(element);
+        }
+      };
+
+    });
+  };
+
+  O$.cloneElement = function(element) {
+    if (element._clone)
+      return element._clone();
+    else
+      return element.cloneNode(true);
+  };
+
+  O$.startDragging = function(e, draggable, simulateDblClickForElement) {
     var evt = O$.getEvent(e);
     if (simulateDblClickForElement && evt.type == "mousedown") {
       var thisTime = new Date().getTime();
@@ -2066,8 +2112,6 @@ if (!window.O$) {
     if (O$.getTargetComponentHasOwnMouseBehavior(evt))
       return; // don't drag native components to avoid unwanted effects (see JSFC-2347 and all related requests)
 
-    O$.addEventHandler(document, "mousemove", O$.handleDragMove, true);
-    O$.addEventHandler(document, "mouseup", O$.handleDragEnd, true);
     draggable._draggingInProgress = true;
     draggable._draggingWasStarted = false;
 
@@ -2089,67 +2133,74 @@ if (!window.O$) {
     O$.breakEvent(evt);
     if (document._fireDocumentClicked)
       document._fireDocumentClicked(evt);
-  };
 
+    function handleDragMove(e) {
+      var evt = O$.getEvent(e);
+      var draggable = O$._draggedElement;
 
-  O$.handleDragMove = function(e) {
-    var evt = O$.getEvent(e);
-    var draggable = O$._draggedElement;
+      draggable._draggingInProgress = true;
+      if (!draggable._draggingWasStarted) {
+        draggable._draggingWasStarted = true;
+        if (draggable.ondragstart)
+          draggable.ondragstart(evt);
+      }
 
-    draggable._draggingInProgress = true;
-    if (!draggable._draggingWasStarted) {
-      draggable._draggingWasStarted = true;
-      if (draggable.ondragstart)
-        draggable.ondragstart(evt);
-    }
+      var pos = O$.getEventPoint(evt, draggable);
+      var dragX = pos.x;
+      var dragY = pos.y;
+      var left = draggable._getPositionLeft();
+      var top = draggable._getPositionTop();
+      var xChangeSinceLastDrag = left - draggable._lastDragOffsetLeft;
+      var yChangeSinceLastDrag = top - draggable._lastDragOffsetTop;
+      var dx = dragX - draggable._lastDragX - xChangeSinceLastDrag;
+      var dy = dragY - draggable._lastDragY - yChangeSinceLastDrag;
+      var newLeft = left + dx;
+      var newTop = top + dy;
+      if (draggable.setPosition) {
+        draggable.setPosition(newLeft, newTop, dx, dy);
+      } else {
+        draggable.setLeft(newLeft, dx);
+        draggable.setTop(newTop, dy);
+      }
+      if (draggable.ondragmove)
+        draggable.ondragmove(evt, newLeft, newTop, dx, dy);
+      var offsetLeftAfterDragging = draggable._getPositionLeft();
+      var offsetTopAfterDragging = draggable._getPositionTop();
+      dragX -= newLeft - offsetLeftAfterDragging;
+      dragY -= newTop - offsetTopAfterDragging;
 
-    var pos = O$.getEventPoint(evt, draggable);
-    var dragX = pos.x;
-    var dragY = pos.y;
-    var left = draggable._getPositionLeft();
-    var top = draggable._getPositionTop();
-    var xChangeSinceLastDrag = left - draggable._lastDragOffsetLeft;
-    var yChangeSinceLastDrag = top - draggable._lastDragOffsetTop;
-    var dx = dragX - draggable._lastDragX - xChangeSinceLastDrag;
-    var dy = dragY - draggable._lastDragY - yChangeSinceLastDrag;
-    var newLeft = left + dx;
-    var newTop = top + dy;
-    if (draggable.setPosition) {
-      draggable.setPosition(newLeft, newTop, dx, dy);
-    } else {
-      draggable.setLeft(newLeft, dx);
-      draggable.setTop(newTop, dy);
-    }
-    var offsetLeftAfterDragging = draggable._getPositionLeft();
-    var offsetTopAfterDragging = draggable._getPositionTop();
-    dragX -= newLeft - offsetLeftAfterDragging;
-    dragY -= newTop - offsetTopAfterDragging;
+      draggable._lastDragX = dragX;
+      draggable._lastDragY = dragY;
+      draggable._lastDragOffsetLeft = offsetLeftAfterDragging;
+      draggable._lastDragOffsetTop = offsetTopAfterDragging;
 
-    draggable._lastDragX = dragX;
-    draggable._lastDragY = dragY;
-    draggable._lastDragOffsetLeft = offsetLeftAfterDragging;
-    draggable._lastDragOffsetTop = offsetTopAfterDragging;
-
-    O$.breakEvent(evt);
-  };
-
-  O$.handleDragEnd = function(e) {
-    var evt = O$.getEvent(e);
-
-    var draggable = O$._draggedElement;
-    if (draggable._draggingWasStarted) {
-      draggable._draggingWasStarted = undefined;
-      if (draggable.ondragend)
-        draggable.ondragend(evt);
-    }
-
-    O$.removeEventHandler(document, "mousemove", O$.handleDragMove, true);
-    O$.removeEventHandler(document, "mouseup", O$.handleDragEnd, true);
-    if (!draggable._onmouseup) {
       O$.breakEvent(evt);
     }
-    draggable._draggingInProgress = false;
+
+    function handleDragEnd(e) {
+      var evt = O$.getEvent(e);
+
+      var draggable = O$._draggedElement;
+      if (draggable._draggingWasStarted) {
+        draggable._draggingWasStarted = undefined;
+        if (draggable.ondragend)
+          draggable.ondragend(evt);
+      }
+
+      O$.removeEventHandler(document, "mousemove", handleDragMove, true);
+      O$.removeEventHandler(document, "mouseup", handleDragEnd, true);
+      if (!draggable._onmouseup) {
+        O$.breakEvent(evt);
+      }
+      draggable._draggingInProgress = false;
+    }
+
+    ;
+
+    O$.addEventHandler(document, "mousemove", handleDragMove, true);
+    O$.addEventHandler(document, "mouseup", handleDragEnd, true);
   };
+
 
   /**
    * Avoids IE issue where mouse events on an absolute element without backgroud and content "leak" to the underlying layer
@@ -2252,13 +2303,13 @@ if (!window.O$) {
       return false;
     tagName = tagName.toLowerCase();
     var focusable =
-          (tagName == "input" && control.type != "hidden") ||
-           tagName == "select" ||
-           tagName == "textarea" ||
-           tagName == "button" ||
-           tagName == "a" ||
-          (tagName == "span" && O$.checkClassNameUsed(control, "rich-inplace-select")) ||
-          (tagName == "div" && O$.checkClassNameUsed(control, "rich-inplace"));
+            (tagName == "input" && control.type != "hidden") ||
+            tagName == "select" ||
+            tagName == "textarea" ||
+            tagName == "button" ||
+            tagName == "a" ||
+            (tagName == "span" && O$.checkClassNameUsed(control, "rich-inplace-select")) ||
+            (tagName == "div" && O$.checkClassNameUsed(control, "rich-inplace"));
     return focusable && !control.disabled;
   };
 
@@ -2280,7 +2331,9 @@ if (!window.O$) {
     function blockOutlineUpdate() {
       component._outlineUpdateBlocked = true;
       component._focusedBeforeBlocking = this._focused;
-    };
+    }
+
+    ;
 
     function unblockOutlineUpdate() {
       if (!O$._tableBlurCounter)
@@ -2292,7 +2345,9 @@ if (!window.O$) {
       } else {
         component._doUnblockOutlineUpdate();
       }
-    };
+    }
+
+    ;
     component._doUnblockOutlineUpdate = function() {
       this._outlineUpdateBlocked = false;
       if (this._focusedBeforeBlocking != null && this._focusedBeforeBlocking != this._focused) {
@@ -2473,6 +2528,7 @@ if (!window.O$) {
           }
         }
       }
+
       locateLocalStyleSheet();
     }
     locateLocalStyleSheet();
@@ -3473,7 +3529,7 @@ if (!window.O$) {
     });
 
     for (var parent = element instanceof Array ? element[0].parentNode : element.parentNode;
-         parent; 
+         parent;
          parent = parent.parentNode) {
       var parentScrollable;
       if (parent != document) {
@@ -3580,7 +3636,7 @@ if (!window.O$) {
       var borderStyleName = borderName + "Style";
       if (O$.isOpera()) {
         if (O$.getElementStyle(element, borderStyleName) == "none") {
-//          if (O$.debug)O$.debug.log(element.nodeName + "; id=" + element.id + "; className=" + element.className +"; border: " + O$.getElementStyle(element, borderName));
+          //          if (O$.debug)O$.debug.log(element.nodeName + "; id=" + element.id + "; className=" + element.className +"; border: " + O$.getElementStyle(element, borderName));
           return 0;
         }
       } else if (O$.isExplorer()) {
@@ -4022,7 +4078,7 @@ if (!window.O$) {
       return O$.getElementSize(element).height;
     if (property)
 
-    return O$.getElementStyle(element, property);
+      return O$.getElementStyle(element, property);
   };
 
   O$.setElementEffectProperty = function(element, property, value) {
@@ -4032,12 +4088,12 @@ if (!window.O$) {
       O$.setElementPos(element);
     else if (property == "rectangle")
         O$.setElementBorderRectangle(element, value);
-    else if (property == "height")
-        O$.setElementHeight(element, value);
-    else if (property == "width")
-        O$.setElementWidth(element, value);
-    else
-      element.style[property] = value;
+      else if (property == "height")
+          O$.setElementHeight(element, value);
+        else if (property == "width")
+            O$.setElementWidth(element, value);
+          else
+            element.style[property] = value;
   };
 
   O$.runTransitionEffect = function(element, propertyNames, newValues, transitionPeriod, updateInterval, events) {
@@ -4132,9 +4188,11 @@ if (!window.O$) {
       update: function() {
         var elements = element instanceof Array ? element : [element];
         if (
-                !elements.every(function(el){return O$.isElementPresentInDocument(el);}) ||
+                !elements.every(function(el) {
+                  return O$.isElementPresentInDocument(el);
+                }) ||
                 (workingCondition && !workingCondition())
-        ) {
+                ) {
           clearInterval(fixture.intervalId);
           return;
         }
@@ -4144,7 +4202,9 @@ if (!window.O$) {
           if (this.values[propertyName] != propertyValue) {
             this.values[propertyName] = propertyValue;
             if (element instanceof Array)
-              element.forEach(function(el){O$.setElementEffectProperty(el, propertyName, propertyValue);});
+              element.forEach(function(el) {
+                O$.setElementEffectProperty(el, propertyName, propertyValue);
+              });
             else
               O$.setElementEffectProperty(element, propertyName, propertyValue);
 
@@ -4153,7 +4213,9 @@ if (!window.O$) {
           }
         }
       },
-      intervalId: setInterval(function() {fixture.update();}, interval),
+      intervalId: setInterval(function() {
+        fixture.update();
+      }, interval),
 
       release: function() {
         clearInterval(this.intervalId);
@@ -4190,7 +4252,9 @@ if (!window.O$) {
         if (changed)
           listenerFunction.apply(null, currentValues);
       },
-      intervalId: setInterval(function() {listener.update();}, interval),
+      intervalId: setInterval(function() {
+        listener.update();
+      }, interval),
 
       release: function() {
         clearInterval(this.intervalId);
@@ -4201,7 +4265,7 @@ if (!window.O$) {
 
   };
 
-// ----------------- COMPONENT UTILS -------------------------------------------
+  // ----------------- COMPONENT UTILS -------------------------------------------
 
   O$.addLoadEvent(function() {
     if (!O$.findCssRule(".o_default_css_marker"))

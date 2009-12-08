@@ -674,6 +674,11 @@ public class RenderingUtil {
         renderInitScript(context, initScript, jsFilesArray);
     }
 
+    public static void renderInitScript(FacesContext context, String initScript, String[] jsFiles) throws IOException {
+        // todo: review usages and remove/inline this method
+        renderInitScript(context, new RawScript(initScript), jsFiles);
+    }
+
     /**
      *
      * Render javascript to current response
@@ -689,19 +694,6 @@ public class RenderingUtil {
 
     /**
      *
-     * Render javascript to current response
-     *
-     * @see #renderInitScript(FacesContext, String, String[])
-     * @param context {@link FacesContext} for the current request
-     * @param initScript The javascript to render
-     * @throws IOException if an input/output error occurs
-     */
-    public static void renderInitScript(FacesContext context, String initScript) throws IOException {
-        renderInitScript(context, initScript, (String[]) null);
-    }
-
-    /**
-     *
      * Render javascript and javascript files inclusion to current response.
      *
      * @see #renderInitScript(FacesContext, String, String[])
@@ -711,20 +703,8 @@ public class RenderingUtil {
      * @throws IOException if an input/output error occurs
      */
     public static void renderInitScript(FacesContext context, Script initScript, String[] jsFiles) throws IOException {
-        renderInitScript(context, initScript.toString(), jsFiles);
-    }
-
-    /**
-     *
-     * Render javascript and javascript files inclusion to current response.
-     *
-     * @param context {@link FacesContext} for the current request
-     * @param initScript The javascript to be rendered
-     * @param jsFiles The collection of javascript files to be added
-     * @throws IOException if an input/output error occurs
-     */
-    public static void renderInitScript(FacesContext context, String initScript, String[] jsFiles) throws IOException {
-        if (initScript == null || initScript.trim().length() == 0) {
+        String initScript1 = initScript.toString();
+        if (initScript1 == null || initScript1.trim().length() == 0) {
             return;
         }
         if (jsFiles != null)
@@ -735,7 +715,7 @@ public class RenderingUtil {
 
         ResponseWriter writer = context.getResponseWriter();
         renderJavascriptStart(writer, null);
-        writer.writeText(initScript, null);
+        writer.writeText(initScript1, null);
         renderJavascriptEnd(writer);
     }
 
@@ -1358,15 +1338,15 @@ public class RenderingUtil {
             writer.writeAttribute(name, value, null);
     }
 
-    public static String writeIdAttribute(FacesContext facesContext, UIComponent component) throws IOException {
-        String clientId = component.getClientId(facesContext);
-        facesContext.getResponseWriter().writeAttribute("id", clientId, null);
+    public static String writeIdAttribute(FacesContext context, UIComponent component) throws IOException {
+        String clientId = component.getClientId(context);
+        context.getResponseWriter().writeAttribute("id", clientId, null);
         return clientId;
     }
 
-    public static void writeNameAttribute(FacesContext facesContext, UIComponent component) throws IOException {
-        String clientId = component.getClientId(facesContext);
-        facesContext.getResponseWriter().writeAttribute("name", clientId, null);
+    public static void writeNameAttribute(FacesContext context, UIComponent component) throws IOException {
+        String clientId = component.getClientId(context);
+        context.getResponseWriter().writeAttribute("name", clientId, null);
     }
 
     public static void writeAttribute(ResponseWriter writer, String name, int value, int emptyValue) throws IOException {

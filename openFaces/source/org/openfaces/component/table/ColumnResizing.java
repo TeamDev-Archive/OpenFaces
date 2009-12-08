@@ -12,16 +12,18 @@
 package org.openfaces.component.table;
 
 import org.openfaces.util.ValueBindings;
+import org.openfaces.component.ComponentConfigurator;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class ColumnResizing extends UIComponentBase {
+public class ColumnResizing extends UIComponentBase implements ComponentConfigurator {
     public static final String COMPONENT_TYPE = "org.openfaces.ColumnResizing";
     public static final String COMPONENT_FAMILY = "org.openfaces.ColumnResizing";
 
@@ -88,6 +90,15 @@ public class ColumnResizing extends UIComponentBase {
         draggedSeparatorHeaderStyle = (String) state[i++];
         draggedSeparatorHeaderClass = (String) state[i++];
     }
+
+    public UIComponent getConfiguredComponent() {
+        return getTable();
+    }
+
+    private AbstractTable getTable() {
+        return (AbstractTable) getParent();
+    }
+
 
     public ColumnResizingState getResizingState() {
         return ValueBindings.get(
@@ -160,67 +171,69 @@ public class ColumnResizing extends UIComponentBase {
         }
     }
 
-    //  public String getRolloverSeparatorStyle() {
-//    return ComponentUtil.getBoundPropertyValueAsString(this, "rolloverSeparatorStyle", rolloverSeparatorStyle);
-//  }
-//
-//  public void setRolloverSeparatorStyle(String rolloverSeparatorStyle) {
-//    rolloverSeparatorStyle = rolloverSeparatorStyle;
-//  }
-//
-//  public String getRolloverSeparatorClass() {
-//    return ComponentUtil.getBoundPropertyValueAsString(this, "rolloverSeparatorClass", rolloverSeparatorClass);
-//  }
-//
-//  public void setRolloverSeparatorClass(String rolloverSeparatorClass) {
-//    rolloverSeparatorClass = rolloverSeparatorClass;
-//  }
-//
-//  public String getRolloverSeparatorHeaderStyle() {
-//    return ComponentUtil.getBoundPropertyValueAsString(this, "rolloverSeparatorHeaderStyle", rolloverSeparatorHeaderStyle);
-//  }
-//
-//  public void setRolloverSeparatorHeaderStyle(String rolloverSeparatorHeaderStyle) {
-//    rolloverSeparatorHeaderStyle = rolloverSeparatorHeaderStyle;
-//  }
-//
-//  public String getRolloverSeparatorHeaderClass() {
-//    return ComponentUtil.getBoundPropertyValueAsString(this, "rolloverSeparatorHeaderClass", rolloverSeparatorHeaderClass);
-//  }
-//
-//  public void setRolloverSeparatorHeaderClass(String rolloverSeparatorHeaderClass) {
-//    rolloverSeparatorHeaderClass = rolloverSeparatorHeaderClass;
-//  }
-//
-//  public String getDraggedSeparatorStyle() {
-//    return ComponentUtil.getBoundPropertyValueAsString(this, "draggedSeparatorStyle", draggedSeparatorStyle);
-//  }
-//
-//  public void setDraggedSeparatorStyle(String draggedSeparatorStyle) {
-//    draggedSeparatorStyle = draggedSeparatorStyle;
-//  }
-//
-//  public String getDraggedSeparatorClass() {
-//    return ComponentUtil.getBoundPropertyValueAsString(this, "draggedSeparatorClass", draggedSeparatorClass);
-//  }
-//
-//  public void setDraggedSeparatorClass(String draggedSeparatorClass) {
-//    draggedSeparatorClass = draggedSeparatorClass;
-//  }
-//
-//  public String getDraggedSeparatorHeaderStyle() {
-//    return ComponentUtil.getBoundPropertyValueAsString(this, "draggedSeparatorHeaderStyle", draggedSeparatorHeaderStyle);
-//  }
-//
-//  public void setDraggedSeparatorHeaderStyle(String draggedSeparatorHeaderStyle) {
-//    draggedSeparatorHeaderStyle = draggedSeparatorHeaderStyle;
-//  }
-//
-//  public String getDraggedSeparatorHeaderClass() {
-//    return ComponentUtil.getBoundPropertyValueAsString(this, "draggedSeparatorHeaderClass", draggedSeparatorHeaderClass);
-//  }
-//
-//  public void setDraggedSeparatorHeaderClass(String draggedSeparatorHeaderClass) {
-//    draggedSeparatorHeaderClass = draggedSeparatorHeaderClass;
-//  }
+/*
+  public String getRolloverSeparatorStyle() {
+    return ComponentUtil.getBoundPropertyValueAsString(this, "rolloverSeparatorStyle", rolloverSeparatorStyle);
+  }
+
+  public void setRolloverSeparatorStyle(String rolloverSeparatorStyle) {
+    rolloverSeparatorStyle = rolloverSeparatorStyle;
+  }
+
+  public String getRolloverSeparatorClass() {
+    return ComponentUtil.getBoundPropertyValueAsString(this, "rolloverSeparatorClass", rolloverSeparatorClass);
+  }
+
+  public void setRolloverSeparatorClass(String rolloverSeparatorClass) {
+    rolloverSeparatorClass = rolloverSeparatorClass;
+  }
+
+  public String getRolloverSeparatorHeaderStyle() {
+    return ComponentUtil.getBoundPropertyValueAsString(this, "rolloverSeparatorHeaderStyle", rolloverSeparatorHeaderStyle);
+  }
+
+  public void setRolloverSeparatorHeaderStyle(String rolloverSeparatorHeaderStyle) {
+    rolloverSeparatorHeaderStyle = rolloverSeparatorHeaderStyle;
+  }
+
+  public String getRolloverSeparatorHeaderClass() {
+    return ComponentUtil.getBoundPropertyValueAsString(this, "rolloverSeparatorHeaderClass", rolloverSeparatorHeaderClass);
+  }
+
+  public void setRolloverSeparatorHeaderClass(String rolloverSeparatorHeaderClass) {
+    rolloverSeparatorHeaderClass = rolloverSeparatorHeaderClass;
+  }
+
+  public String getDraggedSeparatorStyle() {
+    return ComponentUtil.getBoundPropertyValueAsString(this, "draggedSeparatorStyle", draggedSeparatorStyle);
+  }
+
+  public void setDraggedSeparatorStyle(String draggedSeparatorStyle) {
+    draggedSeparatorStyle = draggedSeparatorStyle;
+  }
+
+  public String getDraggedSeparatorClass() {
+    return ComponentUtil.getBoundPropertyValueAsString(this, "draggedSeparatorClass", draggedSeparatorClass);
+  }
+
+  public void setDraggedSeparatorClass(String draggedSeparatorClass) {
+    draggedSeparatorClass = draggedSeparatorClass;
+  }
+
+  public String getDraggedSeparatorHeaderStyle() {
+    return ComponentUtil.getBoundPropertyValueAsString(this, "draggedSeparatorHeaderStyle", draggedSeparatorHeaderStyle);
+  }
+
+  public void setDraggedSeparatorHeaderStyle(String draggedSeparatorHeaderStyle) {
+    draggedSeparatorHeaderStyle = draggedSeparatorHeaderStyle;
+  }
+
+  public String getDraggedSeparatorHeaderClass() {
+    return ComponentUtil.getBoundPropertyValueAsString(this, "draggedSeparatorHeaderClass", draggedSeparatorHeaderClass);
+  }
+
+  public void setDraggedSeparatorHeaderClass(String draggedSeparatorHeaderClass) {
+    draggedSeparatorHeaderClass = draggedSeparatorHeaderClass;
+  }
+*/
 }

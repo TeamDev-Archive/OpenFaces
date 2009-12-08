@@ -847,6 +847,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return ComponentUtil.findChildWithClass(this, ColumnResizing.class, "<o:columnResizing>");
     }
 
+    public ColumnReordering getColumnReordering() {
+        return ComponentUtil.findChildWithClass(this, ColumnReordering.class, "<o:columnReordering>");
+    }
+
     public Scrolling getScrolling() {
         return ComponentUtil.findChildWithClass(this, Scrolling.class, "<o:scrolling>");
     }

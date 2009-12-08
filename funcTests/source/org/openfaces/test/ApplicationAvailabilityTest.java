@@ -77,7 +77,7 @@ public class ApplicationAvailabilityTest extends OpenFacesTestCase {
         assertTestPageAvailable("/components/validator/tableValidatorTest.jsf", "Table Validator Test");
         assertTestPageAvailable("/components/validator/validatorTest.jsf", "Validator Test");
         assertTestPageAvailable("/error.jsf", "Error page");
-        assertTestPageAvailable("/functional_testing.jsf", "Components Test");
+        assertTestPageAvailable("/testPageIndex.jsf", "Components Test");
         //todo: uncomment it if JSFC-2084 fixed
 //    testAppPage("/support/QKS110/QKS110.jsf");
 //    assertEquals("QKS110", selenium.getTitle());

@@ -196,7 +196,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
     }
 
     @Override
-    protected String getFieldText(FacesContext facesContext, DropDownComponent dropDown) {
+    protected String getFieldText(FacesContext context, DropDownComponent dropDown) {
         String result = (String) dropDown.getAttributes().get(CURRENT_FIELD_VALUE_ATTR);
         return result;
     }

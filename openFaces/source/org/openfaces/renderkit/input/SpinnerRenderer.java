@@ -221,16 +221,16 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
     }
 
     @Override
-    public void encodeScriptsAndStyles(FacesContext facesContext, UIComponent component) throws IOException {
+    public void encodeScriptsAndStyles(FacesContext context, UIComponent component) throws IOException {
         DropDownComponent dropDown = (DropDownComponent) component;
         // Set field text by script to prevent field expanding after summit in IE 6.0 (if field text is long)
         //    another way - use "table-layout: fixed", but it causes strange behavior in IE,
         //    if dropdown width is set to 100% and component is placed into table without concrete width.
-        String fieldText = getFieldText(facesContext, dropDown);
+        String fieldText = getFieldText(context, dropDown);
 
-        renderEndTags(facesContext, dropDown);
+        renderEndTags(context, dropDown);
 
-        String promptTextStyleClass = StyleUtil.getCSSClass(facesContext,
+        String promptTextStyleClass = StyleUtil.getCSSClass(context,
                 dropDown, dropDown.getPromptTextStyle(), StyleGroup.regularStyleGroup(1), dropDown.getPromptTextClass(),
                 DEFAULT_PROMPT_CLASS);
 
@@ -238,21 +238,21 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
 
         List<String> params = new ArrayList<String>();
         params.add(fieldText);
-        params.addAll(rendererInputStyles(facesContext, dropDown));
+        params.addAll(rendererInputStyles(context, dropDown));
         params.add(promptText);
         params.add(promptTextStyleClass);
-        ScriptBuilder buf = new ScriptBuilder().initScript(facesContext, dropDown, "O$.DropDown._initInput", params.toArray());
+        ScriptBuilder buf = new ScriptBuilder().initScript(context, dropDown, "O$.DropDown._initInput", params.toArray());
 
         InitScript commonInitScript = new InitScript(buf, new String[]{
-                ResourceUtil.getUtilJsURL(facesContext),
-                getDropDownJsURL(facesContext)
+                ResourceUtil.getUtilJsURL(context),
+                getDropDownJsURL(context)
         });
 
-        InitScript componentSpecificInitScript = renderInitScript(facesContext, dropDown);
-        RenderingUtil.renderInitScripts(facesContext, new InitScript[]{commonInitScript, componentSpecificInitScript});
+        InitScript componentSpecificInitScript = renderInitScript(context, dropDown);
+        RenderingUtil.renderInitScripts(context, new InitScript[]{commonInitScript, componentSpecificInitScript});
 
         if (isAutomaticStyleRenderingNeeded())
-            StyleUtil.renderStyleClasses(facesContext, dropDown);
+            StyleUtil.renderStyleClasses(context, dropDown);
     }
 
     @Override
