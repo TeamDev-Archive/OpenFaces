@@ -961,6 +961,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
         Iterable<String> submittedColumnsOrder = (Iterable<String>) getAttributes().get("submittedColumnsOrder");
         if (submittedColumnsOrder != null) {
+            getAttributes().remove("submittedColumnsOrder");
             setColumnsOrder(submittedColumnsOrder);
             if (columnsOrder != null && ValueBindings.set(this, "columnsOrder", columnsOrder)) {
                 columnsOrder = null;

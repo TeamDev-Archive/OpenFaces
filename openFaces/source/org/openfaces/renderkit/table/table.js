@@ -1650,8 +1650,7 @@ O$.Table = {
     function sendColumnMoveRequest(srcColIndex, dstColIndex) {
       if (dstColIndex == srcColIndex || dstColIndex == srcColIndex + 1)
         return;
-      O$.setHiddenField(table, table.id + "::reorderColumns", srcColIndex + "->" + dstColIndex);
-      O$._submitInternal(table);
+      O$._submitInternal(table, null, [[table.id + "::reorderColumns", srcColIndex + "->" + dstColIndex]]);
     }
   }
 
