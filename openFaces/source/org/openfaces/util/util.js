@@ -2052,7 +2052,30 @@ if (!window.O$) {
   };
 
   O$.makeDraggable = function(element, dropTargetLocator) {
+    var startPos = null;
     O$.addEventHandler(element, "mousedown", function(evt) {
+      startPos = O$.getEventPoint(evt);
+      O$.breakEvent(evt);
+      function mouseMove(e) {
+        if (!startPos) return;
+        var pt = O$.getEventPoint(e);
+        O$.breakEvent(evt);
+        var dist = Math.sqrt(Math.pow(startPos.x - pt.x, 2) + Math.pow(startPos.y - pt.y, 2));
+        if (dist > 7) {
+          startPos = null;
+          startDragging(evt);
+        }
+      }
+      function mouseUp() {
+        O$.removeEventHandler(document, "mousemove", mouseMove, true);
+        O$.removeEventHandler(document, "mouseup", mouseUp, true);
+      }
+      O$.addEventHandler(document, "mousemove", mouseMove, true);
+      O$.addEventHandler(document, "mouseup", mouseUp, true);
+
+    });
+
+    function startDragging(evt) {
       var elementCopy = O$.cloneElement(element);
       elementCopy.style.position = "absolute";
       var container = O$.getContainingBlock(element, true);
@@ -2086,8 +2109,7 @@ if (!window.O$) {
           currentDropTarget.acceptDraggable(element);
         }
       };
-
-    });
+    }
   };
 
   O$.cloneElement = function(element) {
@@ -2194,8 +2216,6 @@ if (!window.O$) {
       }
       draggable._draggingInProgress = false;
     }
-
-    ;
 
     O$.addEventHandler(document, "mousemove", handleDragMove, true);
     O$.addEventHandler(document, "mouseup", handleDragEnd, true);
