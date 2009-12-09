@@ -18989,7 +18989,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description></description>
+      <description>Allows disabling typing in the date with keyboard when this attribute is set to false.</description>
       <name>typingAllowed</name>
       <deferred-value>
         <type>boolean</type>
@@ -26578,8 +26578,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>
-      </description>
+      <description>Allows disabling typing in the the value with keyboard so the user will only be able to use the
+        up/down butttons to select the value if this attribute is set to false.</description>
       <name>typingAllowed</name>
       <deferred-value>
         <type>boolean</type>
@@ -27109,6 +27109,8 @@ and it is automatically triggered on any form submission. -->
 
   <!-- FOREACH TAG DECLARATION -->
   <tag>
+    <description>An iterator component that renders the specified set of components multiple times based on its
+      parameters</description>
     <name>forEach</name>
     <tag-class>org.openfaces.taglib.jsp.util.ForEachJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -27222,7 +27224,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A style of the entire SidePanel component except the splitter area</description>
+      <description>A style of the entire ForEach component.</description>
       <name>style</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27232,7 +27234,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name of the entire SidePanel component except the splitter area</description>
+      <description>A CSS class name of the entire ForEach component.</description>
       <name>styleClass</name>
       <deferred-value>
         <type>java.lang.String</type>
