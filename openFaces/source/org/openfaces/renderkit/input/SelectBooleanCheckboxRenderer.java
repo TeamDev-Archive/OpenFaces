@@ -26,13 +26,13 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.StyleUtil;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.FacesException;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * @author Roman Porotnikov
@@ -47,7 +47,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
     private static final String UNSELECTED_STATE = "unselected";
     private static final String UNDEFINED_STATE = "undefined";
 
-    private  static final Iterable<String> DAFAULT_STATE_LIST = Arrays.asList(SELECTED_STATE, UNSELECTED_STATE);
+    private static final Iterable<String> DAFAULT_STATE_LIST = Arrays.asList(SELECTED_STATE, UNSELECTED_STATE);
 
     private static final String PLAIN_EFFECT = "plain";
     private static final String ROLLOVER_EFFECT = "rollover";
@@ -262,12 +262,12 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         }
     }
 
-    private Iterable<String> getStateList(SelectBooleanCheckbox checkbox, boolean triStateAllowed){
-        if (triStateAllowed){
+    private Iterable<String> getStateList(SelectBooleanCheckbox checkbox, boolean triStateAllowed) {
+        if (triStateAllowed) {
             Iterable<String> stateList = checkbox.getStateList();
             if (stateList == null) {
                 return DAFAULT_STATE_LIST;
-            }else{
+            } else {
                 validateStateList(stateList);
                 return stateList;
             }
@@ -317,11 +317,8 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         );
 
         RenderingUtil.renderInitScript(facesContext, initScript,
-                new String[]{
-                        ResourceUtil.getUtilJsURL(facesContext),
-                        ResourceUtil.getInternalResourceURL(facesContext, SelectBooleanCheckboxRenderer.class, "checkbox.js")
-                }
-        );
+                ResourceUtil.getUtilJsURL(facesContext),
+                ResourceUtil.getInternalResourceURL(facesContext, SelectBooleanCheckboxRenderer.class, "checkbox.js"));
     }
 
 }

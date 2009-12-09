@@ -33,10 +33,11 @@ public abstract class OUIClientActionRendererHelper {
             javaScript.anonymousFunction(getClientActionScript(context, clientAction), "event").semicolon();
         }
         encodeAdditionalScript(context, javaScript, clientAction);
-        RenderingUtil.renderInitScript(context, new ScriptBuilder().onLoadScript(javaScript).semicolon(), new String[]{
+        RenderingUtil.renderInitScript(context,
+                new ScriptBuilder().onLoadScript(javaScript).semicolon(),
                 ResourceUtil.getUtilJsURL(context),
                 ResourceUtil.getAjaxUtilJsURL(context)
-        });
+        );
     }
 
     protected void encodeAdditionalScript(FacesContext context, ScriptBuilder javaScript, OUIClientAction clientAction) {

@@ -18,9 +18,6 @@ import org.openfaces.component.calendar.CalendarYearPopup;
 import org.openfaces.component.calendar.DateRanges;
 import org.openfaces.component.calendar.SimpleDateRange;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.Script;
-import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.NewInstanceScript;
 import org.openfaces.util.*;
 
 import javax.el.ValueExpression;
@@ -261,11 +258,11 @@ public class CalendarRenderer extends RendererBase {
                 calendar.isDisabled());
 
         StyleUtil.renderStyleClasses(context, calendar);
-        RenderingUtil.renderInitScript(context, sb, new String[]{
+        RenderingUtil.renderInitScript(context, sb,
                 ResourceUtil.getUtilJsURL(context),
                 ResourceUtil.getInternalResourceURL(context, CalendarRenderer.class, "calendar.js"),
                 ResourceUtil.getInternalResourceURL(context, CalendarRenderer.class, "dateRange.js")
-        });
+        );
     }
 
     private String getDefaultClass() {

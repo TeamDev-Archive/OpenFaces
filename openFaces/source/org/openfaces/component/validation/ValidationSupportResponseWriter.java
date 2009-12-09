@@ -18,6 +18,7 @@ import org.openfaces.renderkit.validation.ValidatorUtil;
 import org.openfaces.util.ConverterUtil;
 import org.openfaces.util.Log;
 import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.RawScript;
 import org.openfaces.validator.ClientValidatorUtil;
 
 import javax.faces.application.FacesMessage;
@@ -273,7 +274,7 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
             ResourceUtil.renderJSLinkIfNeeded(ValidatorUtil.getValidatorUtilJsUrl(context), context);
             while (globalMessages.hasNext()) {
                 FacesMessage message = globalMessages.next();
-                RenderingUtil.renderInitScript(context, ClientValidatorUtil.getScriptAddGlobalMessage(message), null);
+                RenderingUtil.renderInitScript(context, ClientValidatorUtil.getScriptAddGlobalMessage(message));
             }
         }
         processor.confirmGlobalMessagesProcessing();
@@ -295,21 +296,21 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
         if (!vp.getClientValidationRuleForComponent(vc).equals(ClientValidationMode.OFF)) {
             List<String> javascriptLibraries = vc.getJavascriptLibrariesUrls();
             String[] javascriptLibrariesArray = javascriptLibraries.toArray(new String[javascriptLibraries.size()]);
-            RenderingUtil.renderInitScript(context, commonScript.toString(), javascriptLibrariesArray);
+            RenderingUtil.renderInitScript(context, new RawScript(commonScript.toString()), javascriptLibrariesArray);
         }
 
         if (clientValidationRuleForComponent.equals(ClientValidationMode.ON_SUBMIT)) {
             String formClientId = parentForm.getClientId(context);
             if (!formsHaveOnSubmitRendered.contains(formClientId)) {
-                RenderingUtil.renderInitScript(context, "O$.addOnSubmitEvent(O$._autoValidateForm,'" + formClientId + "');\n", new String[] {
-                        ValidatorUtil.getValidatorUtilJsUrl(context)
-                });
+                RenderingUtil.renderInitScript(context,
+                        new RawScript("O$.addOnSubmitEvent(O$._autoValidateForm,'" + formClientId + "');\n"),
+                        ValidatorUtil.getValidatorUtilJsUrl(context));
                 formsHaveOnSubmitRendered.add(formClientId);
             }
         } else if (clientValidationRuleForComponent.equals(ClientValidationMode.ON_DEMAND)) {
-            RenderingUtil.renderInitScript(context, "O$.addNotValidatedInput('" + vc.getClientId() + "');", new String[] {
-                        ValidatorUtil.getValidatorUtilJsUrl(context)
-                });
+            RenderingUtil.renderInitScript(context, 
+                    new RawScript("O$.addNotValidatedInput('" + vc.getClientId() + "');"),
+                    ValidatorUtil.getValidatorUtilJsUrl(context));
         }
     }
 

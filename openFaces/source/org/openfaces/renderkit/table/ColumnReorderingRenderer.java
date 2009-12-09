@@ -13,9 +13,11 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
+import org.openfaces.component.table.ColumnReordering;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.StyleParam;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -30,11 +32,16 @@ import java.util.Map;
 public class ColumnReorderingRenderer extends RendererBase {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        ColumnReordering cr = (ColumnReordering) component;
         AbstractTable table = (AbstractTable) component.getParent();
-        RenderingUtil.renderInitScript(context, new ScriptBuilder().initScript(context, table,
-                "O$.Table._initColumnReordering"), new String[]{
+        RenderingUtil.renderInitScript(context,
+                new ScriptBuilder().initScript(context, table,
+                        "O$.Table._initColumnReordering",
+                        new StyleParam(cr, cr.getDraggedCellStyle(), "o_table_draggedColumn", cr.getDraggedCellClass()),
+                        cr.getDraggedCellTransparency()
+                ),
                 AbstractTableRenderer.getTableJsURL(context)
-        });
+        );
     }
 
     @Override

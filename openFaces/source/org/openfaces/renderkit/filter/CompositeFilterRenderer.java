@@ -114,7 +114,6 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
     }
 
     private void renderInitScript( FacesContext context, CompositeFilter compositeFilter) throws IOException {
-
         ScriptBuilder sb = new ScriptBuilder().initScript(context, compositeFilter, "O$.Filter._init");
 
         String[] libs = getNecessaryJsLibs(context);

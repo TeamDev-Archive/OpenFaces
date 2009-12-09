@@ -239,32 +239,32 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         UITimetableEvent uiEvent = uiEvents.size() > 0 ? uiEvents.get(0) : null;
 
         try {
-            RenderingUtil.renderInitScript(context, new ScriptBuilder().initScript(context, dayTable, "O$._initDayTable",
-                    DataUtil.formatDateTimeForJs(dayTable.getDay(), timeZone),
-                    dayTable.getLocale(),
-                    "MMMM, dd yyyy",
-                    dayTable.getStartTime(),
-                    dayTable.getEndTime(),
-                    dayTable.getScrollTime(),
-                    eventParams,
-                    resourcesJsArray,
-                    areaSettings,
-                    editable,
-                    dayTable.getOnchange(),
-                    editingOptionsObj,
-                    stylingParams,
-                    uiEvent != null ? uiEvent.toJSONObject(null) : null,
-                    dayTable.getTimePattern(),
-                    dayTable.getTimeSuffixPattern(),
-                    dayTable.getMajorTimeInterval(),
-                    dayTable.getMinorTimeInterval(),
-                    dayTable.getShowTimeForMinorIntervals()).semicolon()
-                    , new String[]{
-                            ResourceUtil.getUtilJsURL(context),
-                            ResourceUtil.getJsonJsURL(context),
-                            TableUtil.getTableUtilJsURL(context),
-                            ResourceUtil.getInternalResourceURL(context, DayTableRenderer.class, "dayTable.js")
-                    });
+            RenderingUtil.renderInitScript(context,
+                    new ScriptBuilder().initScript(context, dayTable, "O$._initDayTable",
+                            DataUtil.formatDateTimeForJs(dayTable.getDay(), timeZone),
+                            dayTable.getLocale(),
+                            "MMMM, dd yyyy",
+                            dayTable.getStartTime(),
+                            dayTable.getEndTime(),
+                            dayTable.getScrollTime(),
+                            eventParams,
+                            resourcesJsArray,
+                            areaSettings,
+                            editable,
+                            dayTable.getOnchange(),
+                            editingOptionsObj,
+                            stylingParams,
+                            uiEvent != null ? uiEvent.toJSONObject(null) : null,
+                            dayTable.getTimePattern(),
+                            dayTable.getTimeSuffixPattern(),
+                            dayTable.getMajorTimeInterval(),
+                            dayTable.getMinorTimeInterval(),
+                            dayTable.getShowTimeForMinorIntervals()).semicolon(),
+                    ResourceUtil.getUtilJsURL(context),
+                    ResourceUtil.getJsonJsURL(context),
+                    TableUtil.getTableUtilJsURL(context),
+                    ResourceUtil.getInternalResourceURL(context, DayTableRenderer.class, "dayTable.js")
+            );
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

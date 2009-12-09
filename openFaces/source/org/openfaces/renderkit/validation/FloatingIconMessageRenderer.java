@@ -21,6 +21,7 @@ import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleUtil;
+import org.openfaces.util.RawScript;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -63,7 +64,7 @@ public class FloatingIconMessageRenderer extends BaseMessageRenderer {
             }
             String clientScript = getClientScript(context, flMessage.getClientId(context), forComponentClientId, component,
                     styleClassName, clientValidation, pageDefinedMessage, useDCVP, useDSVP);
-            RenderingUtil.renderInitScript(context, clientScript, getJavascriptLibraryUrls(context));
+            RenderingUtil.renderInitScript(context, new RawScript(clientScript), getJavascriptLibraryUrls(context));
             if (!isDefaultPresentation(component) && clientScript.length() > 0) {
                 ValidatorUtil.renderPresentationExistsForComponent(forComponentClientId, context);
             }

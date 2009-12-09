@@ -11,11 +11,11 @@
  */
 package org.openfaces.component.util;
 
-import org.openfaces.util.ValueBindings;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
@@ -24,11 +24,10 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- *
  * The Focus component is a non-visual component that controls the focus on the page.
  * With Focus, you can specify the component that is focused when the page is loaded.
  * You can also set that the focus is saved between page submissions.
- * 
+ *
  * @author Dmitry Pikhulya
  */
 public class Focus extends UIComponentBase {
@@ -72,8 +71,7 @@ public class Focus extends UIComponentBase {
 
         RenderingUtil.renderInitScript(context,
                 new ScriptBuilder().initScript(context, this, "O$.initFocus", getAutoSaveFocus()).semicolon(),
-                new String[]{ResourceUtil.getUtilJsURL(context)}
-        );
+                ResourceUtil.getUtilJsURL(context));
     }
 
     @Override

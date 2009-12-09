@@ -11,9 +11,11 @@
  */
 package org.openfaces.renderkit.validation;
 
-import org.openfaces.validator.AbstractClientValidator;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.RawScript;
+import org.openfaces.validator.AbstractClientValidator;
 
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -23,15 +25,16 @@ public class ValidatorUtil {
     }
 
     public static void renderPresentationExistsForAllInputComponents(FacesContext context) throws IOException {
-        RenderingUtil.renderInitScript(context, "O$._presentationExistsForAllComponents();", new String[]{
+        RenderingUtil.renderInitScript(context, new RawScript("O$._presentationExistsForAllComponents();"), 
                 ResourceUtil.getUtilJsURL(context),
-                getValidatorUtilJsUrl(context)});
+                getValidatorUtilJsUrl(context));
     }
 
     public static void renderPresentationExistsForComponent(String componentClientId, FacesContext context) throws IOException {
-        RenderingUtil.renderInitScript(context, "O$._presentationExistsForComponent('" + componentClientId + "');", new String[]{
+        RenderingUtil.renderInitScript(context,
+                new ScriptBuilder().functionCall("O$._presentationExistsForComponent", componentClientId).semicolon(),
                 ResourceUtil.getUtilJsURL(context),
-                getValidatorUtilJsUrl(context)});
+                getValidatorUtilJsUrl(context));
     }
 
     public static String getValidatorUtilJsUrl(FacesContext context) {

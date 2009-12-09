@@ -11,8 +11,10 @@
  */
 package org.openfaces.component.table;
 
-import javax.faces.component.UIComponentBase;
+import org.openfaces.util.ValueBindings;
+
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
 /**
@@ -21,6 +23,10 @@ import javax.faces.context.FacesContext;
 public class ColumnReordering extends UIComponentBase {
     public static final String COMPONENT_TYPE = "org.openfaces.ColumnReordering";
     public static final String COMPONENT_FAMILY = "org.openfaces.ColumnReordering";
+
+    private String draggedCellStyle;
+    private String draggedCellClass;
+    private Double draggedCellTransparency;
 
     public ColumnReordering() {
         setRendererType("org.openfaces.ColumnReorderingRenderer");
@@ -35,7 +41,9 @@ public class ColumnReordering extends UIComponentBase {
     public Object saveState(FacesContext context) {
         return new Object[]{
             super.saveState(context),
-
+            draggedCellStyle,
+            draggedCellClass,
+            draggedCellTransparency
         };
     }
 
@@ -44,7 +52,9 @@ public class ColumnReordering extends UIComponentBase {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
-        
+        draggedCellStyle = (String) state[i++];
+        draggedCellClass = (String) state[i++];
+        draggedCellTransparency = (Double) state[i++];
     }
 
     public UIComponent getConfiguredComponent() {
@@ -55,4 +65,27 @@ public class ColumnReordering extends UIComponentBase {
         return (AbstractTable) getParent();
     }
 
+    public String getDraggedCellStyle() {
+        return ValueBindings.get(this, "draggedCellStyle", draggedCellStyle);
+    }
+
+    public void setDraggedCellStyle(String draggedCellStyle) {
+        this.draggedCellStyle = draggedCellStyle;
+    }
+
+    public String getDraggedCellClass() {
+        return ValueBindings.get(this, "draggedCellClass", draggedCellClass);
+    }
+
+    public void setDraggedCellClass(String draggedCellClass) {
+        this.draggedCellClass = draggedCellClass;
+    }
+
+    public double getDraggedCellTransparency() {
+        return ValueBindings.get(this, "draggedCellTransparency", draggedCellTransparency, 0.5);
+    }
+
+    public void setDraggedCellTransparency(double draggedCellTransparency) {
+        this.draggedCellTransparency = draggedCellTransparency;
+    }
 }

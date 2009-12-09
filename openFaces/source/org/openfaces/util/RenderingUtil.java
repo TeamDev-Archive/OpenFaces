@@ -51,7 +51,6 @@ import java.lang.reflect.Array;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -60,8 +59,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *
- * This class contain methods for working with components tree and client-side javascript  
+ * This class contain methods for working with components tree and client-side javascript
  *
  * @author Dmitry Pikhulya
  */
@@ -76,10 +74,9 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * This method render all children of given component
      *
-     * @param context {@link FacesContext} for the current request
+     * @param context   {@link FacesContext} for the current request
      * @param component The component, which children will be rendered
      * @throws IOException if an input/output error occurs while rendering
      */
@@ -95,9 +92,9 @@ public class RenderingUtil {
      * This method calls {@link javax.faces.component.UIComponent#encodeAll encodeAll} with given context for all
      * passed components
      *
-     * @param context {@link FacesContext} for the current request
+     * @param context    {@link FacesContext} for the current request
      * @param components The list of components to be rendered
-     * @throws IOException if an input/output error occurs while rendering 
+     * @throws IOException if an input/output error occurs while rendering
      */
     public static void renderComponents(FacesContext context, List<UIComponent> components) throws IOException {
         for (UIComponent child : components) {
@@ -106,15 +103,14 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * This method checks and create, if needed new facet of parent component.
      *
-     * @param context {@link FacesContext} for the current request
-     * @param parent Method will search fo facet in this component or create it, if needed
-     * @param componentType The component type for which to create and return a new {@link UIComponent} instance
-     * @param identifier The id identifying the {@link UIComponent} to be returned
+     * @param context               {@link FacesContext} for the current request
+     * @param parent                Method will search fo facet in this component or create it, if needed
+     * @param componentType         The component type for which to create and return a new {@link UIComponent} instance
+     * @param identifier            The id identifying the {@link UIComponent} to be returned
      * @param enforceComponentClass If facet with given identifier exist, but it's class doesn't
-     * seem to be equal to enforceComponentClass, facet will be recreated
+     *                              seem to be equal to enforceComponentClass, facet will be recreated
      * @return facet of parent component
      */
     public static <E extends UIComponent> E getOrCreateFacet(
@@ -141,12 +137,12 @@ public class RenderingUtil {
     }
 
     /**
-     * This method searches in parent component for facet with given name and throw exception, if not found. 
-     * 
-     * @param parent The component, in which facet will be searched
-     * @param identifier The id identifying the {@link UIComponent} to be returned
+     * This method searches in parent component for facet with given name and throw exception, if not found.
+     *
+     * @param parent                The component, in which facet will be searched
+     * @param identifier            The id identifying the {@link UIComponent} to be returned
      * @param enforceComponentClass If facet with given identifier exist, but it's class doesn't
-     * seem to be equal to enforceComponentClass, exception will be thrown
+     *                              seem to be equal to enforceComponentClass, exception will be thrown
      * @return facet with given name
      */
     public static UIComponent getFacet(UIComponent parent, String identifier, Class enforceComponentClass) {
@@ -163,7 +159,8 @@ public class RenderingUtil {
 
     /**
      * Log OpenFaces warning to external context
-     * @param context {@link FacesContext} for the current request 
+     *
+     * @param context {@link FacesContext} for the current request
      * @param message The message to log
      */
     public static void logWarning(FacesContext context, String message) {
@@ -171,15 +168,14 @@ public class RenderingUtil {
     }
 
     /**
+     * Write attibute and replace <code>styleClass</code> attribute with <code>style</code>
      *
-     * Write attibute and replace <code>styleClass</code> attribute with <code>style</code> 
-     *
-     * @param writer The character-based output
-     * @param attrName Attribute name to be added
-     * @param value Attribute value to be added
+     * @param writer            The character-based output
+     * @param attrName          Attribute name to be added
+     * @param value             Attribute value to be added
      * @param componentProperty Name of the property or attribute (if any) of the
-     *  {@link UIComponent} associated with the containing element,
-     *  to which this generated attribute corresponds
+     *                          {@link UIComponent} associated with the containing element,
+     *                          to which this generated attribute corresponds
      * @throws IOException if an input/output error occurs
      */
     public static void renderHTMLAttribute(ResponseWriter writer, String componentProperty, String attrName,
@@ -192,12 +188,11 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Write javascript start html tag
      *
-     * @param writer The character-based output 
+     * @param writer    The character-based output
      * @param component The {@link UIComponent} (if any) to which
-     *  this element corresponds
+     *                  this element corresponds
      * @throws IOException if an input/output error occurs
      */
     public static void renderJavascriptStart(ResponseWriter writer, UIComponent component) throws IOException {
@@ -207,7 +202,6 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Write javascript start html tag
      *
      * @param writer The character-based output
@@ -219,11 +213,10 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Write javascript function start with name and opening bracket
      *
      * @param writer The character-based output
-     * @param name The name of javascript function
+     * @param name   The name of javascript function
      * @throws IOException if an input/output error occurs
      */
     public static void renderJavascriptFunctionStart(Writer writer, String name) throws IOException {
@@ -236,7 +229,6 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Write javascript function end with closing bracket
      *
      * @param writer The character-based output
@@ -256,10 +248,9 @@ public class RenderingUtil {
     }
 
     /**
+     * Render javascript initiation of DateTimeFormatObject
      *
-     * Render javascript initiation of DateTimeFormatObject 
-     *
-     * @param locale The locale for DateTimeFormat  
+     * @param locale The locale for DateTimeFormat
      * @throws IOException if an input/output error occurs
      */
     public static void registerDateTimeFormatObject(Locale locale) throws IOException {
@@ -274,19 +265,17 @@ public class RenderingUtil {
                 locale);
 
         FacesContext context = FacesContext.getCurrentInstance();
-        renderInitScript(context, sb, new String[]{
+        renderInitScript(context, sb,
                 ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, DateChooserRenderer.class, "DateTimeFormat.js")
-        });
+                ResourceUtil.getInternalResourceURL(context, DateChooserRenderer.class, "DateTimeFormat.js"));
     }
 
     /**
+     * Render the hidden field
      *
-     * Render the hidden field 
-     *
-     * @param writer The character-based output
+     * @param writer    The character-based output
      * @param idAndName The id and name of hidden field
-     * @param value The value of hidden field
+     * @param value     The value of hidden field
      * @throws IOException if an input/output error occurs
      */
     public static void renderHiddenField(ResponseWriter writer, String idAndName, String value) throws IOException {
@@ -300,11 +289,10 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Retrieve boolean value of the component attribute or default
      *
-     * @param component The component
-     * @param attrName The attribute name
+     * @param component    The component
+     * @param attrName     The attribute name
      * @param defaultValue The default value to return if such attribute doesn't exist
      * @return boolean value of given attribute or default value if not found
      */
@@ -411,12 +399,11 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Render component id attribute if it is not null and not starts with {@link UIViewRoot#UNIQUE_ID_PREFIX}
      *
-     * @param writer The character-based output
+     * @param writer    The character-based output
      * @param component The component, which id will be written
-     * @param context {@link FacesContext} for the current request
+     * @param context   {@link FacesContext} for the current request
      * @throws IOException if an input/output error occurs
      */
     public static void writeIdIfNecessary(ResponseWriter writer, UIComponent component,
@@ -427,14 +414,13 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Retrive array of converted submitted values from {@link javax.faces.component.UISelectMany} component
      *
-     * @param context {@link FacesContext} for the current request
-     * @param selectMany The submitted component
+     * @param context        {@link FacesContext} for the current request
+     * @param selectMany     The submitted component
      * @param submittedValue The submitted value
      * @return converted value
-     * @throws ConverterException if submittedValue is not a String array 
+     * @throws ConverterException if submittedValue is not a String array
      */
     public static Object getConvertedUISelectManyValue(FacesContext context,
                                                        UISelectMany selectMany,
@@ -582,12 +568,11 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Converts string to object with assosiated converter
      *
-     * @param context {@link FacesContext} for the current request 
+     * @param context   {@link FacesContext} for the current request
      * @param component The component, which converter will be used
-     * @param str The string to convert
+     * @param str       The string to convert
      * @return converted object or string if converter was not found
      */
     public static Object convertFromString(FacesContext context, UIComponent component, String str) {
@@ -599,10 +584,9 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Return converted to string value of component
      *
-     * @param context {@link FacesContext} for the current request 
+     * @param context   {@link FacesContext} for the current request
      * @param component The component, which value will be converted
      * @return converted value on this component
      */
@@ -616,12 +600,11 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Converts object to string with assosiated converter
      *
-     * @param context {@link FacesContext} for the current request
+     * @param context   {@link FacesContext} for the current request
      * @param component The component, which converter will be used
-     * @param value The object to convert
+     * @param value     The object to convert
      * @return converted string
      */
     public static String convertToString(FacesContext context, UIComponent component, Object value) {
@@ -637,11 +620,10 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Appends javascript to be executed on onLoad phase on client browser
      *
      * @param context {@link FacesContext} for the current request
-     * @param script The script to append
+     * @param script  The script to append
      */
     public static void appendOnLoadScript(FacesContext context, String script) {
         if (script == null || script.length() == 0)
@@ -656,53 +638,15 @@ public class RenderingUtil {
     }
 
     /**
+     * Renders the specified JavaScript code into the response and ensures including the specified JavaScript files to
+     * the rendered page prior to the rendered script.
      *
-     * Convert collection of javascript files to array of files and render their inclusion to current response.
-     * 
-     * @see #renderInitScript(FacesContext, String, String[])
-     * @param context {@link FacesContext} for the current request
+     * @param context    {@link FacesContext} for the current request
      * @param initScript The javascript to be rendered
-     * @param jsFiles The collection of javascript files to be added
-     * @throws IOException if an input/output error occurs 
-     */
-    private static void renderInitScript(FacesContext context, String initScript, Collection<String> jsFiles) throws IOException {
-        String[] jsFilesArray = new String[jsFiles.size()];
-        int i = 0;
-        for (String jsFile : jsFiles) {
-            jsFilesArray[i++] = jsFile;
-        }
-        renderInitScript(context, initScript, jsFilesArray);
-    }
-
-    public static void renderInitScript(FacesContext context, String initScript, String[] jsFiles) throws IOException {
-        // todo: review usages and remove/inline this method
-        renderInitScript(context, new RawScript(initScript), jsFiles);
-    }
-
-    /**
-     *
-     * Render javascript to current response
-     *
-     * @see #renderInitScript(FacesContext, String, String[])
-     * @param context {@link FacesContext} for the current request
-     * @param initScript The javascript to render
+     * @param jsFiles    The collection of javascript files to be added
      * @throws IOException if an input/output error occurs
      */
-    public static void renderInitScript(FacesContext context, Script initScript) throws IOException {
-        renderInitScript(context, initScript, null);
-    }
-
-    /**
-     *
-     * Render javascript and javascript files inclusion to current response.
-     *
-     * @see #renderInitScript(FacesContext, String, String[])
-     * @param context {@link FacesContext} for the current request
-     * @param initScript The javascript to be rendered
-     * @param jsFiles The collection of javascript files to be added
-     * @throws IOException if an input/output error occurs
-     */
-    public static void renderInitScript(FacesContext context, Script initScript, String[] jsFiles) throws IOException {
+    public static void renderInitScript(FacesContext context, Script initScript, String... jsFiles) throws IOException {
         String initScript1 = initScript.toString();
         if (initScript1 == null || initScript1.trim().length() == 0) {
             return;
@@ -720,14 +664,13 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Combine javascript scripts into one script and links to javascript files and render them
      *
-     * @param context {@link FacesContext} for the current request
+     * @param context     {@link FacesContext} for the current request
      * @param initScripts The javascripts and javascript files to combine and render
      * @throws IOException if an input/output error occurs
      */
-    public static void renderInitScripts(FacesContext context, InitScript[] initScripts) throws IOException {
+    public static void renderInitScripts(FacesContext context, InitScript... initScripts) throws IOException {
         String combinedInitScript = null;
         Set<String> combinedJsFiles = new LinkedHashSet<String>();
         for (InitScript initScript : initScripts) {
@@ -737,15 +680,16 @@ public class RenderingUtil {
             combinedJsFiles.addAll(Arrays.asList(jsFiles));
         }
 
-        renderInitScript(context, combinedInitScript, combinedJsFiles);
+        renderInitScript(context, 
+                new RawScript(combinedInitScript),
+                combinedJsFiles.toArray(new String[combinedJsFiles.size()]));
     }
 
     /**
-     *
      * Render javascript for preloading images
      *
-     * @param context {@link FacesContext} for the current request
-     * @param imageUrls The list of images to preload
+     * @param context            {@link FacesContext} for the current request
+     * @param imageUrls          The list of images to preload
      * @param prependContextPath true means that the resulting url should be prefixed with context root. This is the case
      *                           when the returned URL is rendered without any modifications. Passing false to this
      *                           parameter is required in cases when the returned URL is passed to some component which
@@ -765,12 +709,12 @@ public class RenderingUtil {
             preparedImageUrls.add(preparedUrl);
         }
 
-        ScriptBuilder buf = new ScriptBuilder().functionCall("O$.preloadImages", preparedImageUrls).semicolon();
-        RenderingUtil.renderInitScript(context, buf, new String[]{ResourceUtil.getUtilJsURL(context)});
+        RenderingUtil.renderInitScript(context,
+                new ScriptBuilder().functionCall("O$.preloadImages", preparedImageUrls).semicolon(),
+                ResourceUtil.getUtilJsURL(context));
     }
 
     /**
-     *
      * Return true if component is inside form component, throw exception otherwise
      *
      * @param component The component to check
@@ -786,7 +730,6 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Check string for nullable and empty
      *
      * @param string The string to check
@@ -797,7 +740,6 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Join two javascripts into one
      *
      * @param script1 The first script to join
@@ -825,11 +767,10 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Write style and class html attributes
-     * 
-     * @param writer The character-based output                            
-     * @param style The value of css style attribute to render
+     *
+     * @param writer     The character-based output
+     * @param style      The value of css style attribute to render
      * @param styleClass The value of css style class attribute to render
      * @throws IOException if an input/output error occurs
      */
@@ -841,15 +782,14 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Write style and class html attributes
      *
-     * @see #writeStyleAndClassAttributes(javax.faces.context.ResponseWriter, String, String)
-     * @param writer The character-based output
-     * @param style The value of css style attribute to render
-     * @param styleClass The value of css style class attribute to render
+     * @param writer            The character-based output
+     * @param style             The value of css style attribute to render
+     * @param styleClass        The value of css style class attribute to render
      * @param defaultStyleClass The default css style class to merge with given css style
      * @throws IOException if an input/output error occurs
+     * @see #writeStyleAndClassAttributes(javax.faces.context.ResponseWriter, String, String)
      */
     public static void writeStyleAndClassAttributes(ResponseWriter writer, String style, String styleClass, String defaultStyleClass) throws IOException {
         String resultStyleClass = StyleUtil.mergeClassNames(styleClass, defaultStyleClass);
@@ -857,11 +797,10 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Render component css style class attribute
      *
-     * @param writer The character-based output
-     * @param component The component, which attribute renders 
+     * @param writer    The character-based output
+     * @param component The component, which attribute renders
      * @throws IOException if an input/output error occurs
      */
     public static void writeComponentClassAttribute(ResponseWriter writer, OUIComponent component) throws IOException {
@@ -869,12 +808,11 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Render component css style class attribute
      *
-     * @param writer The character-based output
-     * @param component The component, which attribute renders
-     * @param defaultClass The default style class to merge with 
+     * @param writer       The character-based output
+     * @param component    The component, which attribute renders
+     * @param defaultClass The default style class to merge with
      * @throws IOException if an input/output error occurs
      */
     public static void writeComponentClassAttribute(ResponseWriter writer, OUIComponent component, String defaultClass) throws IOException {
@@ -885,7 +823,6 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Check resource uri if it is dymamic resource or not
      *
      * @param uri The uri to check
@@ -897,15 +834,14 @@ public class RenderingUtil {
     }
 
     /**
+     * Render image html tag with hack for ie transparency
      *
-     * Render image html tag with hack for ie transparency  
-     *
-     * @param writer The character-based output
-     * @param context {@link FacesContext} for the current request
+     * @param writer    The character-based output
+     * @param context   {@link FacesContext} for the current request
      * @param component The {@link UIComponent} (if any) to which this element corresponds
      * @param extension The image extension
-     * @param model The data model of image - array of byte 
-     * @param size The array of integers, where first element is width of image and second is a heigth
+     * @param model     The data model of image - array of byte
+     * @param size      The array of integers, where first element is width of image and second is a heigth
      * @throws IOException if an input/output error occurs
      */
     public static void startWriteIMG(ResponseWriter writer, FacesContext context,
@@ -941,6 +877,7 @@ public class RenderingUtil {
 
     /**
      * Return URL to clear.gif image
+     *
      * @param context {@link FacesContext} for the current request
      * @return URL to clear.gif image
      */
@@ -949,7 +886,6 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Return the current session's in-memory image pool
      *
      * @param context {@link FacesContext} for the current request
@@ -982,7 +918,6 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Create image data model from array of bytes or {@link java.awt.image.RenderedImage}
      *
      * @param data The data to create model
@@ -1037,7 +972,6 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Encode png image as array of bytes
      *
      * @param data The png image
@@ -1056,13 +990,12 @@ public class RenderingUtil {
     }
 
     /**
+     * Format color string and add it to json parameters
      *
-     * Format color string and add it to json parameters 
-     *
-     * @see #addJsonParam(org.openfaces.org.json.JSONObject, String, Object, Object) 
      * @param paramsObject The json parameters
-     * @param paramName The name of parameter
-     * @param paramValue The value of parameter
+     * @param paramName    The name of parameter
+     * @param paramValue   The value of parameter
+     * @see #addJsonParam(org.openfaces.org.json.JSONObject, String, Object, Object)
      */
     public static void addJsonParam(JSONObject paramsObject, String paramName, Color paramValue) {
         String colorStr = CSSUtil.formatColor(paramValue);
@@ -1070,25 +1003,23 @@ public class RenderingUtil {
     }
 
     /**
+     * Add object to json parameters
      *
-     * Add object to json parameters 
-     *
-     * @see #addJsonParam(org.openfaces.org.json.JSONObject, String, Object, Object)
      * @param paramsObject The json parameters
-     * @param paramName The name of parameter
-     * @param paramValue The value of parameter
+     * @param paramName    The name of parameter
+     * @param paramValue   The value of parameter
+     * @see #addJsonParam(org.openfaces.org.json.JSONObject, String, Object, Object)
      */
     public static void addJsonParam(JSONObject paramsObject, String paramName, Object paramValue) {
         addJsonParam(paramsObject, paramName, paramValue, null);
     }
 
     /**
-     *
-     * Add object to json parameters 
+     * Add object to json parameters
      *
      * @param paramsObject The json parameters
-     * @param paramName The name of parameter
-     * @param paramValue The value of parameter
+     * @param paramName    The name of parameter
+     * @param paramValue   The value of parameter
      * @param defaultValue The default value to compare
      */
     public static void addJsonParam(JSONObject paramsObject, String paramName, Object paramValue, Object defaultValue) {
@@ -1112,12 +1043,11 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Add double parameter to json parameters
      *
      * @param paramsObject The json parameters
-     * @param paramName The name of parameter
-     * @param paramValue The value of parameter
+     * @param paramName    The name of parameter
+     * @param paramValue   The value of parameter
      * @param defaultValue The default value to compare
      */
     public static void addJsonParam(JSONObject paramsObject, String paramName, double paramValue, double defaultValue) {
@@ -1130,12 +1060,11 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Add boolean parameter to json parameters
      *
      * @param paramsObject The json parameters
-     * @param paramName The name of parameter
-     * @param paramValue The value of parameter
+     * @param paramName    The name of parameter
+     * @param paramValue   The value of parameter
      * @param defaultValue The default value to compare
      */
     public static void addJsonParam(JSONObject paramsObject, String paramName, boolean paramValue, boolean defaultValue) {
@@ -1148,12 +1077,11 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Add integer parameter to json parameters
      *
      * @param paramsObject The json parameters
-     * @param paramName The name of parameter
-     * @param paramValue The value of parameter
+     * @param paramName    The name of parameter
+     * @param paramValue   The value of parameter
      * @param defaultValue The default value to compare
      */
     public static void addJsonParam(JSONObject paramsObject, String paramName, int paramValue, int defaultValue) {
@@ -1166,22 +1094,20 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Check if the component has ajax4jsf support
      *
      * @param component The component to check
-     * @return true, if component has ajax4jsf support  
+     * @return true, if component has ajax4jsf support
      */
     public static boolean isComponentWithA4jSupport(UIComponent component) {
         return getA4jSupportForComponent(component) != null;
     }
 
     /**
-     *
      * Find ajax support component in children and facets of component
      *
      * @param component The component to check
-     * @return {@link UIComponent} of ajax support, if component has support, null, otherwise   
+     * @return {@link UIComponent} of ajax support, if component has support, null, otherwise
      */
     public static UIComponent getA4jSupportForComponent(UIComponent component) {
         Iterator<UIComponent> kids = component.getFacetsAndChildren();
@@ -1200,25 +1126,23 @@ public class RenderingUtil {
     }
 
     /**
+     * Render javascript initialization of component and css style and styleclasses
      *
-     * Render javascript initialization of component and css style and styleclasses 
-     *
-     * @see #encodeInitComponentCall(javax.faces.context.FacesContext, org.openfaces.component.OUIComponent, boolean) 
-     * @param context {@link FacesContext} for the current request
+     * @param context   {@link FacesContext} for the current request
      * @param component The component, which init script is rendered
      * @throws IOException if an input/output error occurs
+     * @see #encodeInitComponentCall(javax.faces.context.FacesContext, org.openfaces.component.OUIComponent, boolean)
      */
     public static void encodeInitComponentCall(FacesContext context, OUIComponent component) throws IOException {
         encodeInitComponentCall(context, component, false);
     }
 
     /**
+     * Render javascript initialization of component and css style and styleclasses
      *
-     * Render javascript initialization of component and css style and styleclasses 
-     *
-     * @param context {@link FacesContext} for the current request
-     * @param component The component, which init script is rendered
-     * @param skipIfNotNeeded 
+     * @param context         {@link FacesContext} for the current request
+     * @param component       The component, which init script is rendered
+     * @param skipIfNotNeeded
      * @throws IOException if an input/output error occurs
      */
     public static void encodeInitComponentCall(
@@ -1238,17 +1162,18 @@ public class RenderingUtil {
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-        ScriptBuilder buf = new ScriptBuilder().initScript(context, uiComponent, "O$.initComponent", styleParams).semicolon();
-        renderInitScript(context, buf, new String[]{ResourceUtil.getUtilJsURL(context)});
+        ScriptBuilder buf = new ScriptBuilder().initScript(context, uiComponent,
+                "O$.initComponent", styleParams).semicolon();
+        renderInitScript(context, buf, ResourceUtil.getUtilJsURL(context));
         StyleUtil.renderStyleClasses(context, uiComponent);
     }
 
     /**
      * Return rollover css class for component
      *
-     * @param context {@link FacesContext} for the current request
+     * @param context   {@link FacesContext} for the current request
      * @param component The component
-     * @return rollover css class for component 
+     * @return rollover css class for component
      */
     public static String getRolloverClass(FacesContext context, OUIComponent component) {
         return StyleUtil.getCSSClass(context, (UIComponent) component,
@@ -1259,7 +1184,7 @@ public class RenderingUtil {
     /**
      * Return focused css class for component
      *
-     * @param context {@link FacesContext} for the current request
+     * @param context   {@link FacesContext} for the current request
      * @param component The component
      * @return focused css class for component
      */
@@ -1274,10 +1199,9 @@ public class RenderingUtil {
     }
 
     /**
+     * Render all children of the component, which are instances of {@link OUIClientAction}
      *
-     * Render all children of the component, which are instances of {@link OUIClientAction}  
-     *
-     * @param context {@link FacesContext} for the current request
+     * @param context   {@link FacesContext} for the current request
      * @param component The component
      * @throws IOException if an input/output error occurs
      */
@@ -1291,12 +1215,11 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Return event handlers for given events
      *
-     * @param component The component, which event handlers retrieve
+     * @param component  The component, which event handlers retrieve
      * @param eventNames The event names
-     * @return {@link org.openfaces.org.json.JSONObject JSONObject} with events and their handlers 
+     * @return {@link org.openfaces.org.json.JSONObject JSONObject} with events and their handlers
      */
     public static JSONObject getEventsParam(UIComponent component, String... eventNames) {
         JSONObject events = new JSONObject();
@@ -1325,11 +1248,10 @@ public class RenderingUtil {
     }
 
     /**
-     *
      * Check value for nullable and write it to writer
      *
-     * @param value The value of attribute
-     * @param name The name of attribute
+     * @param value  The value of attribute
+     * @param name   The name of attribute
      * @param writer The character-based output
      * @throws java.io.IOException if an input/output error occurs
      */

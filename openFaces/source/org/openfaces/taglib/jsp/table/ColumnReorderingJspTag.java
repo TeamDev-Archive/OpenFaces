@@ -14,10 +14,24 @@ package org.openfaces.taglib.jsp.table;
 import org.openfaces.taglib.internal.table.ColumnReorderingTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
+import javax.el.ValueExpression;
+
 public class ColumnReorderingJspTag extends AbstractComponentJspTag {
 
     public ColumnReorderingJspTag() {
         super(new ColumnReorderingTag());
+    }
+
+    public void setDraggedCellStyle(ValueExpression draggedCellStyle) {
+        getDelegate().setPropertyValue("draggedCellStyle", draggedCellStyle);
+    }
+
+    public void setDraggedCellClass(ValueExpression draggedCellClass) {
+        getDelegate().setPropertyValue("draggedCellClass", draggedCellClass);
+    }
+
+    public void setDraggedCellTransparency(ValueExpression draggedCellTransparency) {
+        getDelegate().setPropertyValue("draggedCellTransparency", draggedCellTransparency);
     }
 
 

@@ -249,7 +249,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         });
 
         InitScript componentSpecificInitScript = renderInitScript(context, dropDown);
-        RenderingUtil.renderInitScripts(context, new InitScript[]{commonInitScript, componentSpecificInitScript});
+        RenderingUtil.renderInitScripts(context, commonInitScript, componentSpecificInitScript);
 
         if (isAutomaticStyleRenderingNeeded())
             StyleUtil.renderStyleClasses(context, dropDown);

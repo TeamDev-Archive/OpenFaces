@@ -232,7 +232,8 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         params.add(dropDown.isDisabled());
         params.add(promptText);
         params.add(promptTextStyleClass);
-        ScriptBuilder buf = new ScriptBuilder().initScript(facesContext, dropDown, "O$.DropDown._init", params.toArray());
+        ScriptBuilder buf = new ScriptBuilder().initScript(facesContext, dropDown, "O$.DropDown._init",
+                params.toArray());
 
         InitScript commonInitScript = new InitScript(buf, new String[]{
                 ResourceUtil.getUtilJsURL(facesContext),
@@ -240,7 +241,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         });
 
         InitScript componentSpecificInitScript = renderInitScript(facesContext, dropDown);
-        RenderingUtil.renderInitScripts(facesContext, new InitScript[]{commonInitScript, componentSpecificInitScript});
+        RenderingUtil.renderInitScripts(facesContext, commonInitScript, componentSpecificInitScript);
 
         if (isAutomaticStyleRenderingNeeded())
             StyleUtil.renderStyleClasses(facesContext, dropDown);

@@ -69,7 +69,7 @@ public class FunctionCallScript extends Script {
         }
     }
 
-    private static String escapeStringForJSAndQuote(String str) {
+    public static String escapeStringForJSAndQuote(String str) {
         if (str == null)
             return "null";
         else

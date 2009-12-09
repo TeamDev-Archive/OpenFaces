@@ -1557,7 +1557,7 @@ O$.Table = {
 
   // -------------------------- COLUMN REORDERING
 
-  _initColumnReordering: function(tableId) {
+  _initColumnReordering: function(tableId, draggedCellClass, draggedCellTransparency) {
     var table = O$(tableId);
 
     var dropTargetMark = function() {
@@ -1583,11 +1583,12 @@ O$.Table = {
         tbl.cellSpacing = "0";
         tbl.cellPadding = "0";
         tbl.border = "0";
-        tbl.className = O$.combineClassNames(["o_table_draggedColumn", table._params.header.className, this._row.className, this._column.className]);
+        tbl.className = O$.combineClassNames(
+                [draggedCellClass, table._params.header.className, this._row.className, this._column.className]);
         tbl.style.border.borderWidth = O$.getElementStyle(tbl, "border-width");
         tbl.style.border.borderStyle = O$.getElementStyle(tbl, "border-style");
         tbl.style.border.borderColor = O$.getElementStyle(tbl, "border-color");
-        O$.setOpacityLevel(tbl, 0.5);
+        O$.setOpacityLevel(tbl, 1 - draggedCellTransparency);
         O$.correctElementZIndex(tbl, table, 2);
         return tbl;
       };

@@ -153,7 +153,7 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
     }
 
     protected void renderInitScript(FacesContext facesContext, OUISelectManyInputBase selectManyInputBase,
-            JSONObject imagesObj, JSONObject stylesObj, int selectItemCount, AnonymousFunction onchangeFunction)
+                                    JSONObject imagesObj, JSONObject stylesObj, int selectItemCount, AnonymousFunction onchangeFunction)
             throws IOException {
         SelectOneRadio selectOneRadio = (SelectOneRadio) selectManyInputBase;
         Script initScript = new ScriptBuilder().initScript(facesContext, selectOneRadio, "O$.Radio._init",
@@ -166,18 +166,15 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
         );
 
         RenderingUtil.renderInitScript(facesContext, initScript,
-                new String[] {
                 ResourceUtil.getUtilJsURL(facesContext),
-                ResourceUtil.getInternalResourceURL(facesContext, SelectOneRadioRenderer.class, "radio.js")
-            }
-        );
+                ResourceUtil.getInternalResourceURL(facesContext, SelectOneRadioRenderer.class, "radio.js"));
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private boolean isValueEquals(SelectOneRadio selectOneRadio, SelectItem selectItem) {
         return selectOneRadio.getValue() != null &&
-               selectOneRadio.getValue().equals(selectItem.getValue());
+                selectOneRadio.getValue().equals(selectItem.getValue());
     }
 
 }

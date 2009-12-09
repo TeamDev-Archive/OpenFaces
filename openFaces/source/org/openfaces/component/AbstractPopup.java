@@ -91,10 +91,9 @@ public abstract class AbstractPopup extends UIPanel {
         boolean useDisplayNoneByDefault = getUseDisplayNoneByDefault();
         Script initScript = new ScriptBuilder().initScript(context, this, "O$._initPopup",
                 useDisplayNoneByDefault).semicolon();
-        RenderingUtil.renderInitScript(context, initScript, new String[]{
+        RenderingUtil.renderInitScript(context, initScript,
                 ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, AbstractPopup.class, "popup.js")}
-        );
+                ResourceUtil.getInternalResourceURL(context, AbstractPopup.class, "popup.js"));
     }
 
     protected boolean getUseDisplayNoneByDefault() {

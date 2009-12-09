@@ -12,7 +12,6 @@
 package org.openfaces.renderkit.panel;
 
 import org.openfaces.component.CaptionArea;
-import org.openfaces.util.ComponentUtil;
 import org.openfaces.component.ComponentWithCaption;
 import org.openfaces.component.ExpansionToggleButton;
 import org.openfaces.component.HorizontalAlignment;
@@ -24,12 +23,13 @@ import org.openfaces.event.StateChangeEvent;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.ComponentWithCaptionRenderer;
+import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -198,9 +198,8 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
                 focusedContentClass,
                 focusedCaptionClass);
 
-        RenderingUtil.renderInitScript(context, sb, new String[]{
-                ResourceUtil.getInternalResourceURL(context, FoldingPanelRenderer.class, "foldingPanel.js")
-        });
+        RenderingUtil.renderInitScript(context, sb,
+                ResourceUtil.getInternalResourceURL(context, FoldingPanelRenderer.class, "foldingPanel.js"));
     }
 
     @Override

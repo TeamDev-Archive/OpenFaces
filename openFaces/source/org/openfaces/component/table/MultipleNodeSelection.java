@@ -255,20 +255,20 @@ public class MultipleNodeSelection extends TreeTableSelection {
 //        if (selectedNodeKeyPaths != null) {
 //            setNodeKeyPaths((List<TreePath>) selectedNodeKeyPaths.getValue(elContext));
 //        } else {
-            ValueExpression selectedNodePaths = getValueExpression(NODE_PATHS_PROPERTY);
-            if (selectedNodePaths != null) {
-                setNodePaths(objectToList(selectedNodePaths.getValue(elContext), NODE_PATHS_PROPERTY));
-            } else {
+        ValueExpression selectedNodePaths = getValueExpression(NODE_PATHS_PROPERTY);
+        if (selectedNodePaths != null) {
+            setNodePaths(objectToList(selectedNodePaths.getValue(elContext), NODE_PATHS_PROPERTY));
+        } else {
 //                ValueExpression selectedNodeKeys = null;//getValueExpression(NODE_KEYS_PROPERTY);
 //                if (selectedNodeKeys != null) {
 //                    setNodeKeys((List<Object>) selectedNodeKeys.getValue(elContext));
 //                } else {
-                    ValueExpression selectedNodeDatas = getValueExpression(NODE_DATAS_PROPERTY);
-                    if (selectedNodeDatas != null) {
-                        setNodeDatas(objectToList(selectedNodeDatas.getValue(elContext), NODE_DATAS_PROPERTY));
-                    }
-//                }
+            ValueExpression selectedNodeDatas = getValueExpression(NODE_DATAS_PROPERTY);
+            if (selectedNodeDatas != null) {
+                setNodeDatas(objectToList(selectedNodeDatas.getValue(elContext), NODE_DATAS_PROPERTY));
             }
+//                }
+        }
 //        }
     }
 
@@ -291,11 +291,10 @@ public class MultipleNodeSelection extends TreeTableSelection {
                 table,
                 selectedRowIndexes).semicolon();
 
-        RenderingUtil.renderInitScript(context, buf, new String[]{
+        RenderingUtil.renderInitScript(context, buf,
                 ResourceUtil.getUtilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
-                AbstractTableRenderer.getTableJsURL(context)
-        });
+                AbstractTableRenderer.getTableJsURL(context));
     }
 
     public List<TreePath> getSelectedNodeKeyPaths() {

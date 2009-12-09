@@ -48,7 +48,6 @@ public class StyleUtil {
     }
 
     /**
-     *
      * This method check and merges two ccs classes into one
      *
      * @param class1 - first css class to merge
@@ -78,90 +77,84 @@ public class StyleUtil {
     }
 
     /**
-     *
      * Return component css class, merged with default for regular {@link StyleGroup}
      *
-     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)  
-     * @param context {@link FacesContext} for the current request
-     * @param component The component
+     * @param context      {@link FacesContext} for the current request
+     * @param component    The component
      * @param defaultClass The default css class for merge
      * @return component css class
+     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)
      */
     public static String getComponentCSSClass(FacesContext context, OUIComponent component, String defaultClass) {
         return getCSSClass(context, (UIComponent) component, component.getStyle(), StyleGroup.regularStyleGroup(), component.getStyleClass(), defaultClass);
     }
 
     /**
-     *
      * Return component css class for regular {@link StyleGroup}
      *
-     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)
-     * @param context {@link FacesContext} for the current request
+     * @param context   {@link FacesContext} for the current request
      * @param component The component
-     * @param style The style to merge with
+     * @param style     The style to merge with
      * @return component css class
+     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)
      */
     public static String getCSSClass(FacesContext context, UIComponent component, String style) {
         return getCSSClass(context, component, style, (String) null);
     }
 
     /**
-     *
      * Return component css class for given {@link StyleGroup}
      *
-     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)
-     * @param context {@link FacesContext} for the current request
-     * @param component The component
-     * @param style The style to merge with
+     * @param context    {@link FacesContext} for the current request
+     * @param component  The component
+     * @param style      The style to merge with
      * @param styleGroup The {@link StyleGroup} for which retrieve css class
      * @return component css class
+     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)
      */
     public static String getCSSClass(FacesContext context, UIComponent component, String style, StyleGroup styleGroup) {
         return getCSSClass(context, component, style, styleGroup, null);
     }
 
     /**
-     *
      * Return component css class for given {@link StyleGroup} merged with given css style and css style class
      *
-     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)
-     * @param context {@link FacesContext} for the current request
-     * @param component The component
-     * @param style The style to merge with
+     * @param context    {@link FacesContext} for the current request
+     * @param component  The component
+     * @param style      The style to merge with
      * @param styleGroup The {@link StyleGroup} for which retrieve css class
      * @param styleClass The style class to merge with
      * @return component css class
+     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)
      */
     public static String getCSSClass(FacesContext context, UIComponent component, String style, StyleGroup styleGroup, String styleClass) {
         return getCSSClass(context, component, style, styleGroup, styleClass, null);
     }
 
     /**
-     *
      * Return component css class for given component merged with given default css class and css style
      *
-     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)
-     * @param context {@link FacesContext} for the current request
-     * @param component The component
-     * @param style The style to merge with
+     * @param context       {@link FacesContext} for the current request
+     * @param component     The component
+     * @param style         The style to merge with
      * @param defStyleClass The default style class to merge with
      * @return component css class
+     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)
      */
     public static String getCSSClass(FacesContext context, UIComponent component, String style, String defStyleClass) {
         return getCSSClass(context, component, style, StyleGroup.regularStyleGroup(), null, defStyleClass);
     }
 
     /**
-     *
      * Return component css class for given component merged with given css style and css style class
      *
-     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)
-     * @param context {@link FacesContext} for the current request
-     * @param component The component
-     * @param style The style to merge with
-     * @param defStyleClass The default style class to merge with 
-     * @param styleClass The style class to merge with
+     * @param context       {@link FacesContext} for the current request
+     * @param component     The component
+     * @param style         The style to merge with
+     * @param defStyleClass The default style class to merge with
+     * @param styleClass    The style class to merge with
      * @return component css class
+     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)
      */
     public static String getCSSClass(FacesContext context, UIComponent component, String style, String defStyleClass, String styleClass) {
         return getCSSClass(context, component, style, StyleGroup.regularStyleGroup(), styleClass, defStyleClass);
@@ -169,17 +162,16 @@ public class StyleUtil {
 
     // todo: having so much getCSSClass method overrides can be confusing, minimize to a convenient common set
     /**
-     *
      * Return component css class for given component and given {@link StyleGroup} merged with given css style and css style class
      *
-     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)
-     * @param context {@link FacesContext} for the current request
-     * @param component The component
-     * @param style The style to merge with
+     * @param context       {@link FacesContext} for the current request
+     * @param component     The component
+     * @param style         The style to merge with
      * @param defStyleClass The default style class to merge with
-     * @param styleGroup The {@link StyleGroup} for which retrieve css class
-     * @param styleClass The style class to merge with
+     * @param styleGroup    The {@link StyleGroup} for which retrieve css class
+     * @param styleClass    The style class to merge with
      * @return component css class
+     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)
      */
     public static String getCSSClass(
             FacesContext context,
@@ -222,7 +214,6 @@ public class StyleUtil {
     }
 
     /**
-     *
      * Return registered css style classes
      *
      * @param context {@link FacesContext} for the current request
@@ -241,10 +232,9 @@ public class StyleUtil {
 
 
     /**
-     *
      * Return registered css style classes for given component
      *
-     * @param context {@link FacesContext} for the current request
+     * @param context   {@link FacesContext} for the current request
      * @param component The component for retrieve css style classes
      * @return registered css style classes
      */
@@ -259,13 +249,12 @@ public class StyleUtil {
     }
 
     /**
-     *
      * Transform css style to css class and register css class for given component for given {@link StyleGroup}
      *
-     * @param context {@link FacesContext} for the current request
-     * @param style The style to be registered
-     * @param styleGroup The {@link StyleGroup} for which style is registered 
-     * @param component The component for register css style classes
+     * @param context    {@link FacesContext} for the current request
+     * @param style      The style to be registered
+     * @param styleGroup The {@link StyleGroup} for which style is registered
+     * @param component  The component for register css style classes
      * @return generated css style class name
      */
     public static String registerCssClass(FacesContext context,
@@ -307,10 +296,10 @@ public class StyleUtil {
     /**
      * Render style classes for given component
      *
-     * @see #renderStyleClasses(javax.faces.context.FacesContext, javax.faces.component.UIComponent, boolean) 
-     * @param context {@link FacesContext} for the current request
+     * @param context   {@link FacesContext} for the current request
      * @param component The component, which styles are rendered
      * @throws IOException if an input/output error occurs while rendering
+     * @see #renderStyleClasses(javax.faces.context.FacesContext, javax.faces.component.UIComponent, boolean)
      */
     public static void renderStyleClasses(FacesContext context, UIComponent component) throws IOException {
         renderStyleClasses(context, component, false);
@@ -319,9 +308,9 @@ public class StyleUtil {
     /**
      * Render style classes for given component
      *
-     * @param context {@link FacesContext} for the current request
-     * @param component The component, which styles are rendered
-     * @param forcedStyleAsScript The parameter, indicating way of rendering styles 
+     * @param context             {@link FacesContext} for the current request
+     * @param component           The component, which styles are rendered
+     * @param forcedStyleAsScript The parameter, indicating way of rendering styles
      * @throws IOException if an input/output error occurs while rendering
      */
     public static void renderStyleClasses(FacesContext context, UIComponent component,
@@ -358,19 +347,19 @@ public class StyleUtil {
     /**
      * Render javascript, which add css rules
      *
-     * @param context {@link FacesContext} for the current request
+     * @param context  {@link FacesContext} for the current request
      * @param cssRules The list of css rules for rendering
      * @throws IOException if an input/output error occurs while rendering
      */
     public static void writeCssClassesAsScriptElement(FacesContext context, List<String> cssRules) throws IOException {
         ScriptBuilder styleRegistrationScript = new ScriptBuilder().functionCall("O$.addCssRules", cssRules).semicolon();
-        RenderingUtil.renderInitScript(context, styleRegistrationScript, new String[]{ResourceUtil.getUtilJsURL(context)});
+        RenderingUtil.renderInitScript(context, styleRegistrationScript, ResourceUtil.getUtilJsURL(context));
     }
 
     /**
      * Render inline styles
      *
-     * @param context {@link FacesContext} for the current request
+     * @param context    {@link FacesContext} for the current request
      * @param cssClasses The list of css rules for rendering
      * @throws IOException if an input/output error occurs while rendering
      */
@@ -392,10 +381,9 @@ public class StyleUtil {
     }
 
     /**
-     *
      * Remove all component registered styles
      *
-     * @param context {@link FacesContext} for the current request
+     * @param context   {@link FacesContext} for the current request
      * @param component The component, which styles are removed
      */
     public static void markStylesRenderedForComponent(FacesContext context, UIComponent component) {
@@ -403,7 +391,6 @@ public class StyleUtil {
     }
 
     /**
-     *
      * Return ids of elements with rendered style
      *
      * @param context {@link FacesContext} for the current request
@@ -420,9 +407,9 @@ public class StyleUtil {
     }
 
     /**
-     * Return list of all components css style classes 
+     * Return list of all components css style classes
      *
-     * @param context {@link FacesContext} for the current request
+     * @param context   {@link FacesContext} for the current request
      * @param component The component to analyse
      * @return list of all components css style classes
      */
@@ -455,7 +442,6 @@ public class StyleUtil {
     }
 
     /**
-     *
      * Add default css to request
      *
      * @param context {@link FacesContext} for the current request
@@ -465,7 +451,6 @@ public class StyleUtil {
     }
 
     /**
-     *
      * Check css style declaration for semicolumn ending and add it, if nessesary
      *
      * @param style The css style declaration to check
@@ -485,7 +470,7 @@ public class StyleUtil {
 
     /**
      * Merge css styles
-     * 
+     *
      * @param style1 The first css style for merge
      * @param style2 The second css style for merge
      * @return merged css style declaration
@@ -503,16 +488,15 @@ public class StyleUtil {
     }
 
     /**
-     *
      * Add style parameter to JSON object for regular {@link StyleGroup}
      *
-     * @see #addStyleJsonParam(javax.faces.context.FacesContext, javax.faces.component.UIComponent, org.openfaces.org.json.JSONObject, String, String, String, StyleGroup) 
-     * @param context {@link FacesContext} for the current request
-     * @param component The component, which style will be added 
-     * @param paramsObject The JSON object, to which style parameter will be added
+     * @param context       {@link FacesContext} for the current request
+     * @param component     The component, which style will be added
+     * @param paramsObject  The JSON object, to which style parameter will be added
      * @param jsonFieldName The key
-     * @param style The style to merge with component style
-     * @param styleClass The style class to merge with component style class
+     * @param style         The style to merge with component style
+     * @param styleClass    The style class to merge with component style class
+     * @see #addStyleJsonParam(javax.faces.context.FacesContext, javax.faces.component.UIComponent, org.openfaces.org.json.JSONObject, String, String, String, StyleGroup)
      */
     public static void addStyleJsonParam(FacesContext context, UIComponent component, JSONObject paramsObject,
                                          String jsonFieldName, String style, String styleClass) {
@@ -520,17 +504,16 @@ public class StyleUtil {
     }
 
     /**
-     *
      * Add style parameter to JSON object
      *
-     * @see #addStyleJsonParam(javax.faces.context.FacesContext, javax.faces.component.UIComponent, org.openfaces.org.json.JSONObject, String, String, String, StyleGroup)
-     * @param context {@link FacesContext} for the current request
-     * @param component The component, which style will be added
-     * @param paramsObject The JSON object, to which style parameter will be added
+     * @param context       {@link FacesContext} for the current request
+     * @param component     The component, which style will be added
+     * @param paramsObject  The JSON object, to which style parameter will be added
      * @param jsonFieldName The key
-     * @param style The style to merge with component style
-     * @param styleClass The style class to merge with component style class
-     * @param styleGroup The {@link StyleGroup} for which retrieve css class
+     * @param style         The style to merge with component style
+     * @param styleClass    The style class to merge with component style class
+     * @param styleGroup    The {@link StyleGroup} for which retrieve css class
+     * @see #addStyleJsonParam(javax.faces.context.FacesContext, javax.faces.component.UIComponent, org.openfaces.org.json.JSONObject, String, String, String, StyleGroup)
      */
     public static void addStyleJsonParam(FacesContext context, UIComponent component, JSONObject paramsObject,
                                          String jsonFieldName, String style, String styleClass, StyleGroup styleGroup) {

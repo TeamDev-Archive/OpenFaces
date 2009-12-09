@@ -106,10 +106,9 @@ public class DebugRenderer extends WindowRenderer implements CompoundComponentRe
     @Override
     protected void encodeScriptsAndStyles(FacesContext context, PopupLayer component) throws IOException {
         super.encodeScriptsAndStyles(context, component);
-        RenderingUtil.renderInitScript(context, new ScriptBuilder().initScript(context, component, "O$.Debug._init"),
-                new String[]{
-                        ResourceUtil.getInternalResourceURL(context, DebugRenderer.class, "debug.js")
-                });
+        RenderingUtil.renderInitScript(context,
+                new ScriptBuilder().initScript(context, component, "O$.Debug._init"),
+                ResourceUtil.getInternalResourceURL(context, DebugRenderer.class, "debug.js"));
 
     }
 }

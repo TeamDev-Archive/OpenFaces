@@ -48,18 +48,19 @@ public class EventPreviewRenderer extends RendererBase {
         popupLayer.encodeAll(context);
 
         DayTable dayTable = (DayTable) eventPreview.getParent();
-        RenderingUtil.renderInitScript(context, new ScriptBuilder().initScript(context, eventPreview, "O$._initEventPreview",
-                dayTable,
-                eventPreview.getShowingDelay(),
-                StyleUtil.getCSSClass(context, eventPreview, eventPreview.getStyle(), StyleGroup.regularStyleGroup(), eventPreview.getStyleClass(), "o_eventPreview"),
-                StyleUtil.getCSSClass(context, eventPreview, eventPreview.getEventNameStyle(), StyleGroup.regularStyleGroup(), eventPreview.getEventNameClass()),
-                StyleUtil.getCSSClass(context, eventPreview, eventPreview.getEventDescriptionStyle(), eventPreview.getEventDescriptionClass()),
-                eventPreview.getHorizontalAlignment(),
-                eventPreview.getVerticalAlignment(),
-                eventPreview.getHorizontalDistance(),
-                eventPreview.getVerticalDistance()), new String[]{
+        RenderingUtil.renderInitScript(context,
+                new ScriptBuilder().initScript(context, eventPreview, "O$._initEventPreview",
+                        dayTable,
+                        eventPreview.getShowingDelay(),
+                        StyleUtil.getCSSClass(context, eventPreview, eventPreview.getStyle(), StyleGroup.regularStyleGroup(), eventPreview.getStyleClass(), "o_eventPreview"),
+                        StyleUtil.getCSSClass(context, eventPreview, eventPreview.getEventNameStyle(), StyleGroup.regularStyleGroup(), eventPreview.getEventNameClass()),
+                        StyleUtil.getCSSClass(context, eventPreview, eventPreview.getEventDescriptionStyle(), eventPreview.getEventDescriptionClass()),
+                        eventPreview.getHorizontalAlignment(),
+                        eventPreview.getVerticalAlignment(),
+                        eventPreview.getHorizontalDistance(),
+                        eventPreview.getVerticalDistance()),
                 ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, DayTableRenderer.class, "dayTable.js")});
+                ResourceUtil.getInternalResourceURL(context, DayTableRenderer.class, "dayTable.js"));
 
         writer.endElement("div");
 

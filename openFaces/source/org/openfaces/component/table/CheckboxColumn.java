@@ -278,11 +278,11 @@ public class CheckboxColumn extends BaseColumn {
             List<Integer> selectedRowIndexes = selectedRows.encodeSelectionIntoIndexes();
             ScriptBuilder buf = new ScriptBuilder().functionCall("O$.Table._setCheckboxColIndexes",
                     this, selectedRowIndexes).semicolon();
-            RenderingUtil.renderInitScript(context, buf, new String[]{
+            RenderingUtil.renderInitScript(context, buf,
                     ResourceUtil.getUtilJsURL(context),
                     TableUtil.getTableUtilJsURL(context),
                     AbstractTableRenderer.getTableJsURL(context)
-            });
+            );
 
         } else if (!(selectedRows instanceof MultipleRowSelection)) {
             throw new IllegalStateException("mySelectedRows is " + (selectedRows != null ? selectedRows.getClass().getName() : "null"));

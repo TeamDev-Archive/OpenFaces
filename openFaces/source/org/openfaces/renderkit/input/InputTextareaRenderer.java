@@ -13,9 +13,9 @@ package org.openfaces.renderkit.input;
 
 import org.openfaces.component.OUIInputText;
 import org.openfaces.component.input.InputTextarea;
-import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -50,10 +50,9 @@ public class InputTextareaRenderer extends AbstractInputTextRenderer {
             ScriptBuilder scriptBuilder = new ScriptBuilder();
             scriptBuilder.initScript(context, inputTextarea, "O$.InputTextarea._init", inputTextarea.getId());
             RenderingUtil.renderInitScript(context, scriptBuilder,
-                    new String[]{
-                            ResourceUtil.getUtilJsURL(context),
-                            ResourceUtil.getInternalResourceURL(context, InputTextareaRenderer.class, JS_SCRIPT_URL)
-                    });
+                    ResourceUtil.getUtilJsURL(context),
+                    ResourceUtil.getInternalResourceURL(context, InputTextareaRenderer.class, JS_SCRIPT_URL)
+            );
         }
     }
 

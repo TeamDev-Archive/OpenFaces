@@ -20,12 +20,12 @@ import org.openfaces.component.action.PopupMenu;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -171,11 +171,9 @@ public class PopupMenuRenderer extends RendererBase {
         StyleUtil.renderStyleClasses(facesContext, popupMenu);
 
         RenderingUtil.renderInitScript(facesContext, initScript,
-                new String[]{
-                        ResourceUtil.getUtilJsURL(facesContext),
-                        ResourceUtil.getInternalResourceURL(facesContext, PopupMenuRenderer.class, JS_SCRIPT_URL),
-                        ResourceUtil.getInternalResourceURL(facesContext, AbstractPopup.class, "popup.js")
-                });
+                ResourceUtil.getUtilJsURL(facesContext),
+                ResourceUtil.getInternalResourceURL(facesContext, PopupMenuRenderer.class, JS_SCRIPT_URL),
+                ResourceUtil.getInternalResourceURL(facesContext, AbstractPopup.class, "popup.js"));
     }
 
     private PopupMenu getRootPopupMenu(PopupMenu popupMenu) {

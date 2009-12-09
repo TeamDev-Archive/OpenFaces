@@ -227,11 +227,10 @@ public abstract class AbstractTableSelection extends UICommand implements Compon
                 isMouseSupport(),
                 isKeyboardSupport());
 
-        RenderingUtil.renderInitScript(context, buf, new String[]{
+        RenderingUtil.renderInitScript(context, buf,
                 ResourceUtil.getUtilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
-                AbstractTableRenderer.getTableJsURL(context)
-        });
+                AbstractTableRenderer.getTableJsURL(context));
 
         if (postEvent)
             RenderingUtil.renderHiddenField(writer, getSelectionEventFieldName(context, table), null);

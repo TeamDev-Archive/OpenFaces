@@ -19,6 +19,7 @@ import org.openfaces.component.validation.ValidationProcessor;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.RawScript;
 import org.openfaces.validation.CoreValidator;
 import org.openfaces.validation.core.CoreValidatorImpl;
 import org.openfaces.validation.validators.AnnotationValidator;
@@ -206,18 +207,18 @@ public class AnnotationValidationRenderer extends RendererBase {
                         }
                     }
                     String[] javascriptLibrariesArray = javascriptLibraries.toArray(new String[javascriptLibraries.size()]);
-                    RenderingUtil.renderInitScript(context, commonScript.toString(), javascriptLibrariesArray);
+                    RenderingUtil.renderInitScript(context, new RawScript(commonScript.toString()), javascriptLibrariesArray);
 
                     if (validationMode.equals(ClientValidationMode.ON_SUBMIT)) {
                         String formClientId = parentForm.getClientId(context);
-                        RenderingUtil.renderInitScript(context, "O$.addOnSubmitEvent(O$._autoValidateForm,'" + formClientId + "');\n", new String[]{
-                                ValidatorUtil.getValidatorUtilJsUrl(context)
-                        });
+                        RenderingUtil.renderInitScript(context,
+                                new RawScript("O$.addOnSubmitEvent(O$._autoValidateForm,'" + formClientId + "');\n"),
+                                ValidatorUtil.getValidatorUtilJsUrl(context));
 
                     } else if (validationMode.equals(ClientValidationMode.ON_DEMAND)) {
-                        RenderingUtil.renderInitScript(context, "O$.addNotValidatedInput('" + child.getClientId(context) + "');", new String[]{
-                                ValidatorUtil.getValidatorUtilJsUrl(context)
-                        });
+                        RenderingUtil.renderInitScript(context,
+                                new RawScript("O$.addNotValidatedInput('" + child.getClientId(context) + "');"),
+                                ValidatorUtil.getValidatorUtilJsUrl(context));
                     }
 
 

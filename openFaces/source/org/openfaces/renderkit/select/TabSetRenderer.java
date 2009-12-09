@@ -416,10 +416,9 @@ public class TabSetRenderer extends BaseTabSetRenderer {
                 focusedClass,
                 onchange != null ? new AnonymousFunction(onchange, "event") : null);
 
-        RenderingUtil.renderInitScript(context, sb, new String[]{
+        RenderingUtil.renderInitScript(context, sb,
                 ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, TabSetRenderer.class, JS_SCRIPT_URL)
-        });
+                ResourceUtil.getInternalResourceURL(context, TabSetRenderer.class, JS_SCRIPT_URL));
 
         RenderingUtil.encodeClientActions(context, component);
 

@@ -69,11 +69,11 @@ public class SelectAllCheckboxRenderer extends RendererBase {
             buf.initScript(context, component, "O$.Table._initSelectionHeader", table).semicolon();
         }
 
-        RenderingUtil.renderInitScript(context, buf, new String[]{
+        RenderingUtil.renderInitScript(context, buf,
                 ResourceUtil.getUtilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
                 AbstractTableRenderer.getTableJsURL(context)
-        });
+        );
 
         StyleUtil.renderStyleClasses(context, component);
         writer.endElement("input");

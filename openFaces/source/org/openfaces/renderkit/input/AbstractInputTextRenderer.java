@@ -18,8 +18,8 @@ import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -114,10 +114,9 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
 
         StyleUtil.renderStyleClasses(facesContext, inputText);
         RenderingUtil.renderInitScript(facesContext, initScript,
-                new String[]{
-                        ResourceUtil.getUtilJsURL(facesContext),
-                        ResourceUtil.getInternalResourceURL(facesContext, InputTextRenderer.class, "inputText.js")
-                });
+                ResourceUtil.getUtilJsURL(facesContext),
+                ResourceUtil.getInternalResourceURL(facesContext, InputTextRenderer.class, "inputText.js")
+        );
     }
 
     protected abstract String getTagName();

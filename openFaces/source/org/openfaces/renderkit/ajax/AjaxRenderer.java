@@ -53,10 +53,9 @@ public class AjaxRenderer extends AbstractSettingsRenderer {
 
         helper.appendMissingParameters(context, ajax, initScript);
 
-        RenderingUtil.renderInitScript(context, initScript, new String[]{
+        RenderingUtil.renderInitScript(context, initScript,
                 ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getAjaxUtilJsURL(context)
-        });
+                ResourceUtil.getAjaxUtilJsURL(context));
 
         writer.endElement("span");
     }

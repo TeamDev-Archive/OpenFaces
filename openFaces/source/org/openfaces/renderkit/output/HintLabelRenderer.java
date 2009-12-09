@@ -13,13 +13,13 @@ package org.openfaces.renderkit.output;
 
 import org.openfaces.component.output.HintLabel;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.DefaultStyles;
+import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.util.DefaultStyles;
-import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -72,10 +72,9 @@ public class HintLabelRenderer extends RendererBase {
                 hintClass,
                 RenderingUtil.getRolloverClass(context, hintLabel));
 
-        RenderingUtil.renderInitScript(context, sb, new String[]{
+        RenderingUtil.renderInitScript(context, sb,
                 ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, HintLabelRenderer.class, "hintLabel.js")
-        });
+                ResourceUtil.getInternalResourceURL(context, HintLabelRenderer.class, "hintLabel.js"));
         StyleUtil.renderStyleClasses(context, hintLabel);
         writer.endElement("div");
         writer.endElement("div");

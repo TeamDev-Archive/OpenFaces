@@ -12,15 +12,15 @@
 package org.openfaces.renderkit.select;
 
 import org.openfaces.component.select.TwoListSelection;
-import org.openfaces.util.HTML;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.HTML;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
@@ -474,10 +474,9 @@ public class TwoListSelectionRenderer extends RendererBase {
                 tls.isDisabled(),
                 RenderingUtil.getRolloverClass(context, tls));
 
-        RenderingUtil.renderInitScript(context, sb, new String[]{
+        RenderingUtil.renderInitScript(context, sb,
                 ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, TwoListSelectionRenderer.class, "twoListSelection.js")
-        });
+                ResourceUtil.getInternalResourceURL(context, TwoListSelectionRenderer.class, "twoListSelection.js"));
         RenderingUtil.encodeClientActions(context, component);
     }
 

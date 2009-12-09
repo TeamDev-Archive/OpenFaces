@@ -14,13 +14,13 @@ package org.openfaces.renderkit.window;
 import org.openfaces.component.AbstractPopup;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.DefaultStyles;
+import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleUtil;
-import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.DefaultStyles;
-import org.openfaces.util.EnvironmentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -131,10 +131,9 @@ public class PopupLayerRenderer extends RendererBase {
         if (popup.getHideOnOuterClick()) {
             ScriptBuilder buf = new ScriptBuilder();
             buf.functionCall("O$._initPopup", clientId).semicolon();
-            RenderingUtil.renderInitScript(context, buf, new String[]{
+            RenderingUtil.renderInitScript(context, buf,
                     ResourceUtil.getUtilJsURL(context),
-                    ResourceUtil.getInternalResourceURL(context, AbstractPopup.class, "popup.js"),
-            });
+                    ResourceUtil.getInternalResourceURL(context, AbstractPopup.class, "popup.js"));
         }
 
         ScriptBuilder sb = new ScriptBuilder();

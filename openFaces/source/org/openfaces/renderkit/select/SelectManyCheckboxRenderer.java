@@ -182,10 +182,9 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
                 onchangeFunction
         );
 
-        RenderingUtil.renderInitScript(facesContext, initScript, new String[]{
+        RenderingUtil.renderInitScript(facesContext, initScript,
                 ResourceUtil.getUtilJsURL(facesContext),
-                ResourceUtil.getInternalResourceURL(facesContext, SelectOneRadioRenderer.class, "manycheckbox.js")
-        });
+                ResourceUtil.getInternalResourceURL(facesContext, SelectOneRadioRenderer.class, "manycheckbox.js"));
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

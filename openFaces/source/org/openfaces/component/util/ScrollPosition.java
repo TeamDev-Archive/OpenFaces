@@ -11,11 +11,11 @@
  */
 package org.openfaces.component.util;
 
-import org.openfaces.util.ValueBindings;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
@@ -26,12 +26,11 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
- *
  * The ScrollPosition component is a non-visual component that controls the scroll
  * position of the page or an associated component. By using it, you can specify the
  * position of the scroll when the page is loaded and save the scroll position between
  * page submissions.
- * 
+ *
  * @author Dmitry Pikhulya
  */
 public class ScrollPosition extends UIComponentBase {
@@ -92,9 +91,7 @@ public class ScrollPosition extends UIComponentBase {
                 getAutoSaveScrollPos(),
                 scrollableComponentId);
 
-        RenderingUtil.renderInitScript(context, buf,
-                new String[]{ResourceUtil.getUtilJsURL(context)}
-        );
+        RenderingUtil.renderInitScript(context, buf, ResourceUtil.getUtilJsURL(context));
     }
 
     private String formatPoint(int scrollX, int scrollY) {

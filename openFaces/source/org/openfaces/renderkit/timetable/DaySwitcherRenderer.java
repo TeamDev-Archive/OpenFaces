@@ -147,7 +147,7 @@ public class DaySwitcherRenderer extends RendererBase {
         JSONObject stylingParams = getStylingParamsObj(context, daySwitcher);
         StyleUtil.renderStyleClasses(context, daySwitcher);
 
-        ScriptBuilder sb = new ScriptBuilder().initScript(context, daySwitcher, "O$.DaySwitcher._init",
+        ScriptBuilder script = new ScriptBuilder().initScript(context, daySwitcher, "O$.DaySwitcher._init",
                 dayTable.getClientId(context),
                 DataUtil.formatDateTimeForJs(dayTable.getDay(), timeZone),
                 pattern,
@@ -156,12 +156,10 @@ public class DaySwitcherRenderer extends RendererBase {
                 stylingParams,
                 enabled);
 
-        RenderingUtil.renderInitScript(context, sb.toString(), new String[]{
+        RenderingUtil.renderInitScript(context, script,
                 ResourceUtil.getUtilJsURL(context),
                 ResourceUtil.getJsonJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, DaySwitcherRenderer.class, "daySwitcher.js")
-        });
-
+                ResourceUtil.getInternalResourceURL(context, DaySwitcherRenderer.class, "daySwitcher.js"));
 
     }
 

@@ -20,11 +20,11 @@ import org.openfaces.component.window.MaximizeWindowButton;
 import org.openfaces.component.window.MinimizeWindowButton;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.ComponentWithCaptionRenderer;
+import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleUtil;
-import org.openfaces.util.AjaxUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -174,9 +174,8 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
                 win.isDraggableByContent(),
                 win.getMinWidth(),
                 win.getMinHeight());
-        RenderingUtil.renderInitScript(context, sb, new String[]{
-                ResourceUtil.getInternalResourceURL(context, WindowRenderer.class, "window.js")
-        });
+        RenderingUtil.renderInitScript(context, sb,
+                ResourceUtil.getInternalResourceURL(context, WindowRenderer.class, "window.js"));
 
     }
 

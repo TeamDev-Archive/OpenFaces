@@ -190,10 +190,9 @@ public class TabbedPaneRenderer extends BaseTabSetRenderer implements AjaxPortio
                 focusedClass,
                 onselectionchange != null ? new AnonymousFunction(onselectionchange, "event") : null);
 
-        RenderingUtil.renderInitScript(context, sb, new String[]{
+        RenderingUtil.renderInitScript(context, sb,
                 ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, TabbedPaneRenderer.class, JS_SCRIPT_URL)
-        });
+                ResourceUtil.getInternalResourceURL(context, TabbedPaneRenderer.class, JS_SCRIPT_URL));
 
         StyleUtil.renderStyleClasses(context, tabbedPane);
     }

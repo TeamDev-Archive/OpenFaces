@@ -31,5 +31,8 @@ public class ColumnReorderingTag extends AbstractComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        setStringProperty(component, "draggedCellStyle");
+        setStringProperty(component, "draggedCellClass");
+        setDoubleProperty(component, "draggedCellTransparency");
     }
 }

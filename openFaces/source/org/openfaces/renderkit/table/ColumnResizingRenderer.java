@@ -70,7 +70,7 @@ public class ColumnResizingRenderer extends RendererBase {
                 columnResizing.getResizeHandleWidth(),
                 columnParams);
 
-        RenderingUtil.renderInitScript(context, buf, null);
+        RenderingUtil.renderInitScript(context, buf);
     }
 
     private String getColumnWidthsFieldName(FacesContext context, AbstractTable table) {

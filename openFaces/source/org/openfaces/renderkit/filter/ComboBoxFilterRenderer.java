@@ -12,8 +12,8 @@
 package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.filter.ComboBoxFilter;
-import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
+import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.util.RenderingUtil;
@@ -127,14 +127,13 @@ public class ComboBoxFilterRenderer extends ExpressionFilterRenderer {
 
         UIComponent filteredComponent = (UIComponent) filter.getFilteredComponent();
 
-        RenderingUtil.renderInitScript(context, new ScriptBuilder().functionCall("O$.Filters._showFilter",
-                filteredComponent, clientId).semicolon(),
-                new String[]{
-                        ResourceUtil.getUtilJsURL(context),
-                        ResourceUtil.getFiltersJsURL(context),
-                        TableUtil.getTableUtilJsURL(context),
-                        AbstractTableRenderer.getTableJsURL(context)}
-        );
+        RenderingUtil.renderInitScript(context,
+                new ScriptBuilder().functionCall("O$.Filters._showFilter",
+                        filteredComponent, clientId).semicolon(),
+                ResourceUtil.getUtilJsURL(context),
+                ResourceUtil.getFiltersJsURL(context),
+                TableUtil.getTableUtilJsURL(context),
+                AbstractTableRenderer.getTableJsURL(context));
 
         StyleUtil.renderStyleClasses(context, component);
         writer.endElement("select");

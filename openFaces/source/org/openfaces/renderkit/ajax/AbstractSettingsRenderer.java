@@ -13,9 +13,11 @@ package org.openfaces.renderkit.ajax;
 
 import org.openfaces.ajax.AjaxViewHandler;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.RawScript;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
-import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -37,12 +39,10 @@ public abstract class AbstractSettingsRenderer extends RendererBase {
     }
 
     protected void renderInitScript(FacesContext context, String javaScript) throws IOException {
-        String initScript = "O$.addLoadEvent(function(){" + javaScript + "});";
-
-        RenderingUtil.renderInitScript(context, initScript, new String[]{
+        RenderingUtil.renderInitScript(context,
+                new ScriptBuilder().onLoadScript(new RawScript(javaScript)),
                 ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getAjaxUtilJsURL(context)
-        });
+                ResourceUtil.getAjaxUtilJsURL(context));
     }
 
     protected String getEventScript(String eventName, String eventFunction, UIComponent component) {

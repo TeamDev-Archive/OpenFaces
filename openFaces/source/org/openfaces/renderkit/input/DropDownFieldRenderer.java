@@ -67,7 +67,6 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
     private static final String CURRENT_FIELD_VALUE_ATTR = "_of_currentFieldValue";
 
     private static final String LOAD_FILTERED_ROWS_PORTION = "filterCriterion:";
-    private static final String[] EMPTY_ARRAY = new String[]{};
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
@@ -416,7 +415,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 new NewInstanceScript("Array", null, null, getItemValuesArray(itemValues))
         );
 
-        RenderingUtil.renderInitScript(context, sb, EMPTY_ARRAY);
+        RenderingUtil.renderInitScript(context, sb);
         responseWriter.write(stringWriter.toString());
         return null;
     }

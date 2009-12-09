@@ -289,9 +289,8 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
                         rolloverCancelButtonStyle}
         );
 
-        RenderingUtil.renderInitScript(context, sb, new String[]{
-                ResourceUtil.getInternalResourceURL(context, ConfirmationRenderer.class, ConfirmationRenderer.JS_SCRIPT_URL)
-        });
+        RenderingUtil.renderInitScript(context, sb,
+                ResourceUtil.getInternalResourceURL(context, ConfirmationRenderer.class, ConfirmationRenderer.JS_SCRIPT_URL));
     }
 
     @Override
