@@ -38,8 +38,8 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
     private String descriptionStyle;
     private String descriptionClass;
 
-    private Double backgroundTransparencyLevel;
-    private Double backgroundIntensityLevel;
+    private Double backgroundTransparency;
+    private Double backgroundIntensity;
 
     private String oncreate;
 
@@ -108,20 +108,20 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
         this.oncreate = oncreate;
     }
 
-    public double getBackgroundTransparencyLevel() {
-        return ValueBindings.get(this, "backgroundTransparencyLevel", backgroundTransparencyLevel, 0.2);
+    public double getBackgroundTransparency() {
+        return ValueBindings.get(this, "backgroundTransparency", backgroundTransparency, 0.2);
     }
 
-    public void setBackgroundTransparencyLevel(double backgroundTransparencyLevel) {
-        this.backgroundTransparencyLevel = backgroundTransparencyLevel;
+    public void setBackgroundTransparency(double backgroundTransparency) {
+        this.backgroundTransparency = backgroundTransparency;
     }
 
-    public double getBackgroundIntensityLevel() {
-        return ValueBindings.get(this, "backgroundIntensityLevel", backgroundIntensityLevel, 0.25);
+    public double getBackgroundIntensity() {
+        return ValueBindings.get(this, "backgroundIntensity", backgroundIntensity, 0.25);
     }
 
-    public void setBackgroundIntensityLevel(double backgroundIntensityLevel) {
-        this.backgroundIntensityLevel = backgroundIntensityLevel;
+    public void setBackgroundIntensity(double backgroundIntensity) {
+        this.backgroundIntensity = backgroundIntensity;
     }
 
     @Override
@@ -134,8 +134,8 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
                 nameClass,
                 descriptionStyle,
                 descriptionClass,
-                backgroundTransparencyLevel,
-                backgroundIntensityLevel,
+                backgroundTransparency,
+                backgroundIntensity,
                 oncreate};
     }
 
@@ -150,8 +150,8 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
         nameClass = (String) state[i++];
         descriptionStyle = (String) state[i++];
         descriptionClass = (String) state[i++];
-        backgroundTransparencyLevel = (Double) state[i++];
-        backgroundIntensityLevel = (Double) state[i++];
+        backgroundTransparency = (Double) state[i++];
+        backgroundIntensity = (Double) state[i++];
         oncreate = (String) state[i++];
     }
 
@@ -166,8 +166,8 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
         RenderingUtil.addJsonParam(obj, "escapeName", getEscapeName(), true);
         RenderingUtil.addJsonParam(obj, "escapeDescription", getEscapeDescription(), true);
 
-        RenderingUtil.addJsonParam(obj, "backgroundTransparencyLevel", getBackgroundTransparencyLevel(), 0.2);
-        RenderingUtil.addJsonParam(obj, "backgroundIntensityLevel", getBackgroundIntensityLevel(), 0.25);
+        RenderingUtil.addJsonParam(obj, "backgroundTransparency", getBackgroundTransparency(), 0.2);
+        RenderingUtil.addJsonParam(obj, "backgroundIntensity", getBackgroundIntensity(), 0.25);
 
         RenderingUtil.addJsonParam(obj, "onclick", getOnclick());
         RenderingUtil.addJsonParam(obj, "ondblclick", getOndblclick());

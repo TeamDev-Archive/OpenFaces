@@ -41,8 +41,8 @@ public class TimetableEventTag extends AbstractComponentTag {
         setBooleanProperty(component, "escapeName");
         setBooleanProperty(component, "escapeDescription");
 
-        setDoubleProperty(component, "backgroundTransparencyLevel");
-        setDoubleProperty(component, "backgroundIntensityLevel");
+        setDoubleProperty(component, "backgroundTransparency");
+        setDoubleProperty(component, "backgroundIntensity");
 
         setStringProperty(component, "oncreate");
     }

@@ -21,7 +21,7 @@ public class EventActionBar extends OUIPanel {
     public static final String COMPONENT_FAMILY = "org.openfaces.EventActionBar";
 
     private String noteText;
-    private Double backgroundIntensityLevel;
+    private Double backgroundIntensity;
     private Double actionRolloverBackgroundIntensity;
     private Double actionPressedBackgroundIntensity;
 
@@ -39,7 +39,7 @@ public class EventActionBar extends OUIPanel {
         return new Object[]{
                 super.saveState(context),
                 noteText,
-                backgroundIntensityLevel, actionRolloverBackgroundIntensity, actionPressedBackgroundIntensity
+                backgroundIntensity, actionRolloverBackgroundIntensity, actionPressedBackgroundIntensity
         };
     }
 
@@ -49,7 +49,7 @@ public class EventActionBar extends OUIPanel {
         int i = 0;
         super.restoreState(context, state[i++]);
         noteText = (String) state[i++];
-        backgroundIntensityLevel = (Double) state[i++];
+        backgroundIntensity = (Double) state[i++];
         actionRolloverBackgroundIntensity = (Double) state[i++];
         actionPressedBackgroundIntensity = (Double) state[i++];
     }
@@ -62,12 +62,12 @@ public class EventActionBar extends OUIPanel {
         this.noteText = noteText;
     }
 
-    public double getBackgroundIntensityLevel() {
-        return ValueBindings.get(this, "backgroundIntensityLevel", backgroundIntensityLevel, 0.5);
+    public double getBackgroundIntensity() {
+        return ValueBindings.get(this, "backgroundIntensity", backgroundIntensity, 0.5);
     }
 
-    public void setBackgroundIntensityLevel(double backgroundIntensityLevel) {
-        this.backgroundIntensityLevel = backgroundIntensityLevel;
+    public void setBackgroundIntensity(double backgroundIntensity) {
+        this.backgroundIntensity = backgroundIntensity;
     }
 
     public double getActionRolloverBackgroundIntensity() {

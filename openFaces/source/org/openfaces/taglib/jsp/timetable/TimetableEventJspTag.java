@@ -53,12 +53,12 @@ public class TimetableEventJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("descriptionClass", value);
     }
 
-    public void setBackgroundTransparencyLevel(ValueExpression value) {
-        getDelegate().setPropertyValue("backgroundTransparencyLevel", value);
+    public void setBackgroundTransparency(ValueExpression value) {
+        getDelegate().setPropertyValue("backgroundTransparency", value);
     }
 
-    public void setBackgroundIntensityLevel(ValueExpression value) {
-        getDelegate().setPropertyValue("backgroundIntensityLevel", value);
+    public void setBackgroundIntensity(ValueExpression value) {
+        getDelegate().setPropertyValue("backgroundIntensity", value);
     }
 
 

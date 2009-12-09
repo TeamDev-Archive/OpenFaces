@@ -26,8 +26,8 @@ public class EventActionBarJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("noteText", noteText);
     }
 
-    public void setBackgroudnIntensityLevel(ValueExpression backgroudnIntensityLevel) {
-        getDelegate().setPropertyValue("backgroundIntensityLevel", backgroudnIntensityLevel);
+    public void setBackgroudnIntensity(ValueExpression backgroudnIntensity) {
+        getDelegate().setPropertyValue("backgroundIntensity", backgroudnIntensity);
     }
 
     public void setActionRolloverBackgroundIntensity(ValueExpression value) {

@@ -103,8 +103,8 @@ O$._initDayTable = function(componentId,
   var escapeEventDescriptions = uiEvent.escapeDescription !== undefined ? uiEvent.escapeDescription : true;
   dayTable._escapeEventDescriptions = escapeEventDescriptions;
 
-  var eventBackgroundIntensityLevel = uiEvent.backgroundIntensityLevel !== undefined ? uiEvent.backgroundIntensityLevel : 0.25;
-  var eventBackgroundTransparencyLevel = uiEvent.backgroundTransparencyLevel !== undefined ? uiEvent.backgroundTransparencyLevel : 0.2;
+  var eventBackgroundIntensity = uiEvent.backgroundIntensity !== undefined ? uiEvent.backgroundIntensity : 0.25;
+  var eventBackgroundTransparency = uiEvent.backgroundTransparency !== undefined ? uiEvent.backgroundTransparency : 0.2;
   var dragAndDropTransitionPeriod = stylingParams.dragAndDropTransitionPeriod !== undefined ? stylingParams.dragAndDropTransitionPeriod : 70;
   var dragAndDropCancelingPeriod = stylingParams.dragAndDropCancelingPeriod !== undefined ? stylingParams.dragAndDropCancelingPeriod : 200;
   var undroppableStateTransitionPeriod = stylingParams.undroppableStateTransitionPeriod !== undefined ? stylingParams.undroppableStateTransitionPeriod : 250;
@@ -618,7 +618,7 @@ O$._initDayTable = function(componentId,
         O$.runTransitionEffect(eventElement, ["opacity"], [value ? 1.0 : 1.0 - undroppableEventTransparency], undroppableStateTransitionPeriod, undefined, {
           onupdate: function() {
             if (this.propertyValues.opacity !== undefined)
-              O$.setOpacityLevel(eventElement._backgroundElement, this.propertyValues.opacity * (1 - eventBackgroundTransparencyLevel));
+              O$.setOpacityLevel(eventElement._backgroundElement, this.propertyValues.opacity * (1 - eventBackgroundTransparency));
           }
         });
       };
@@ -837,7 +837,7 @@ O$._initDayTable = function(componentId,
         calculatedEventColor = reservedTimeEventColor;
       }
       eventElement._color = calculatedEventColor;
-      eventElement._backgroundColor = O$.blendColors(eventElement._color, "#ffffff", 1 - eventBackgroundIntensityLevel);
+      eventElement._backgroundColor = O$.blendColors(eventElement._color, "#ffffff", 1 - eventBackgroundIntensity);
 
       var userSpecifiedStyles = O$.getStyleClassProperties(
               event.type != "reserved"
@@ -851,7 +851,7 @@ O$._initDayTable = function(componentId,
       eventElement._backgroundElement.style.MozBorderRadius = elementStyles.MozBorderRadiusTopleft;
       eventElement._backgroundElement.style.WebkitBorderRadius = elementStyles.WebkitBorderTopLeftRadius;
 
-      O$.setOpacityLevel(eventElement._backgroundElement, 1 - eventBackgroundTransparencyLevel);
+      O$.setOpacityLevel(eventElement._backgroundElement, 1 - eventBackgroundTransparency);
       eventElement.style.color = userSpecifiedStyles.color ? userSpecifiedStyles.color : eventElement._color;
       eventElement.style.borderColor = userSpecifiedStyles.borderColor ? userSpecifiedStyles.borderColor : eventElement._color;
     };
@@ -1040,7 +1040,7 @@ O$._initDayTable = function(componentId,
     var userSpecifiedStyles = O$.getStyleClassProperties(actionBar._userSpecifiedClass, ["color", "background-color"]);
     actionBar.style.backgroundColor = userSpecifiedStyles.backgroundColor
             ? userSpecifiedStyles.backgroundColor
-            : O$.blendColors(eventElement._color, "#ffffff", 1 - actionBar._backgroundIntensityLevel);
+            : O$.blendColors(eventElement._color, "#ffffff", 1 - actionBar._backgroundIntensity);
     eventElement.appendChild(actionBar);
     actionBar.style.height = "";
     actionBar.style.width = "";
@@ -1878,7 +1878,7 @@ O$._initEventPreview = function(eventPreviewId, dayTableId, showingDelay, popupC
 };
 
 
-O$._initEventActionBar = function(actionBarId, dayTableId, backgroundIntensityLevel, userSpecifiedClass, actions,
+O$._initEventActionBar = function(actionBarId, dayTableId, backgroundIntensity, userSpecifiedClass, actions,
                                   actionRolloverIntensity, actionPressedIntensity) {
   var actionBar = O$(actionBarId);
   if (!actionBar) {
@@ -1890,7 +1890,7 @@ O$._initEventActionBar = function(actionBarId, dayTableId, backgroundIntensityLe
     return;
   }
 
-  actionBar._backgroundIntensityLevel = backgroundIntensityLevel;
+  actionBar._backgroundIntensity = backgroundIntensity;
   actionBar._userSpecifiedClass = userSpecifiedClass;
   actionBar.className = O$.combineClassNames(["o_eventActionBar", userSpecifiedClass]);
 
@@ -1962,7 +1962,7 @@ O$._initEventActionBar = function(actionBarId, dayTableId, backgroundIntensityLe
       var userSpecifiedBackground = O$.getStyleClassProperty(this.className, "background-color");
       if (!userSpecifiedBackground) {
         var event = actionBar._event ? actionBar._event : actionBar._lastEditedEvent;
-        var intensity = pressed ? actionPressedIntensity : mouseInside ? actionRolloverIntensity : backgroundIntensityLevel;
+        var intensity = pressed ? actionPressedIntensity : mouseInside ? actionRolloverIntensity : backgroundIntensity;
         this.style.backgroundColor = O$.blendColors(event.mainElement._color, "#ffffff", 1 - intensity);
       } else
         this.style.backgroundColor = "";

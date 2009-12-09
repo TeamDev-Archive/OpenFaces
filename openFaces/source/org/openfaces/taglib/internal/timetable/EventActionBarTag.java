@@ -31,7 +31,7 @@ public class EventActionBarTag extends AbstractComponentTag {
         super.setComponentProperties(facesContext, component);
 
         setStringProperty(component, "noteText");
-        setDoubleProperty(component, "backgroundIntensityLevel");
+        setDoubleProperty(component, "backgroundIntensity");
         setDoubleProperty(component, "actionRolloverBackgroundIntensity");
         setDoubleProperty(component, "actionPressedBackgroundIntensity");
     }

@@ -4013,6 +4013,38 @@ entering a value and returns a list of suggestions from the server -->
     <name>columnReordering</name>
     <tag-class>org.openfaces.taglib.jsp.table.ColumnReorderingJspTag</tag-class>
     <body-content>JSP</body-content>
+    <attribute>
+      <description>A style for the dragged header cell.</description>
+      <name>draggedCellStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the dragged header cell.</description>
+      <name>draggedCellClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Allows customizing transparency effect for the dragged header cell. This should be a floating-point
+        number in range 0..1. 0 corresponds to fully opaque display, and 1 corresponds to fully transparent display.
+      </description>
+      <name>draggedCellTransparency</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.5 -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>
@@ -24064,7 +24096,7 @@ and it is automatically triggered on any form submission. -->
       <description>Allows customizing transparency effect for events' background. This should be a floating-point number
         in range 0..1. 0 corresponds to fully opaque background, and 1 corresponds to fully transparent background.
       </description>
-      <name>backgroundTransparencyLevel</name>
+      <name>backgroundTransparency</name>
       <deferred-value>
         <type>java.lang.Double</type>
       </deferred-value>
@@ -24079,7 +24111,7 @@ and it is automatically triggered on any form submission. -->
         for this event. The functionality of automatic calculation of background color can be overridden by
         explicitly specifying background using eventStyle and eventClass attributes.
       </description>
-      <name>backgroundIntensityLevel</name>
+      <name>backgroundIntensity</name>
       <deferred-value>
         <type>java.lang.Double</type>
       </deferred-value>
@@ -24850,7 +24882,7 @@ and it is automatically triggered on any form submission. -->
         intense color, white. The functionality of automatic calculation of background color can be overridden by
         explicitly specifying background using style and styleClass attributes.
       </description>
-      <name>backgroundIntensityLevel</name>
+      <name>backgroundIntensity</name>
       <deferred-value>
         <type>java.lang.Double</type>
       </deferred-value>
@@ -27125,7 +27157,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description></description>
+      <description>Iteration start index. Defaults to 0 if not specified.</description>
       <name>begin</name>
       <deferred-value>
         <type>int</type>
@@ -27135,7 +27167,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description></description>
+      <description>Iteration end index. Defaults to Integer.MAX_VALUE (2147483647) if not specified.</description>
       <name>end</name>
       <deferred-value>
         <type>int</type>
@@ -27145,7 +27177,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description></description>
+      <description>Iteration step index. Defaults to 1 if not specified.</description>
       <name>step</name>
       <deferred-value>
         <type>int</type>
@@ -27155,7 +27187,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description></description>
+      <description>Name of the request-scope variable under which the current iteration step object is available.
+      </description>
       <name>var</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27165,7 +27198,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description></description>
+      <description>Name of the request-scope variable under which the current iteration status object (of type
+        org.openfaces.component.util.IterationStatus) is available.</description>
       <name>statusVar</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27175,7 +27209,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description></description>
+      <description>Allows specifying the name of the tag that the iterated content should be wrapped into. By default
+      no outer tag is rendered unless outer-tag-specific attributes are specified (id, style or styleClass), in which
+        case the default &lt;span&gt; outer tag is rendered even if no wrapperTagName is specified.</description>
       <name>wrapperTagName</name>
       <deferred-value>
         <type>java.lang.String</type>
