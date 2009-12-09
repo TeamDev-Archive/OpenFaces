@@ -80,7 +80,7 @@ O$.DropDownField = {
       if (!item && firstItem) {
         item = firstItem;
       }
-      var itemTop = O$.getElementPos(item).top - O$.getElementPos(innerTable).top;
+      var itemTop = O$.getElementPos(item).y - O$.getElementPos(innerTable).y;
       var itemBottom = itemTop + item.offsetHeight;
       return {top : itemTop, bottom : itemBottom};
     };

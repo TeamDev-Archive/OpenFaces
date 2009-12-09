@@ -60,9 +60,9 @@
     }
 
     function checkAndInplaceDiv(parentDiv, popup, evtX, evtY) {
-      var x1 = O$.getElementPos(parentDiv).left;
+      var x1 = O$.getElementPos(parentDiv).x;
       var x2 = x1 + parentDiv.offsetWidth;
-      var y1 = O$.getElementPos(parentDiv).top;
+      var y1 = O$.getElementPos(parentDiv).y;
       var y2 = y1 + parentDiv.offsetHeight;
 
       if (evtX > x1 && evtX < x2 && evtY > y1 && evtY < y2) {

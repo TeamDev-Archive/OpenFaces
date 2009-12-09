@@ -1380,7 +1380,7 @@ O$.Table = {
             this.style.top = cellPos.getMinY() + "px";
             this.style.left = cellPos.getMaxX() + "px";
             this.style.width = "0px";//"1px";
-            this.style.height = tablePos.top + table.offsetHeight - cellPos.getMinY() + "px";
+            this.style.height = tablePos.y + table.offsetHeight - cellPos.getMinY() + "px";
           };
           resizeDecorator._updatePos();
           var headerCell = this._column.header._cell;

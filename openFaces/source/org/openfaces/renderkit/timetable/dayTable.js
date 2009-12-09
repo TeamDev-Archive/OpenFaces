@@ -431,8 +431,8 @@ O$._initDayTable = function(componentId,
         if (!cell._resource && nextCell._resource)
           resource = nextCell._resource;
         else {
-          var x1 = O$.getElementPos(cell, true, dayTable._getLayoutCache()).left;
-          var x2 = O$.getElementPos(nextCell, true, dayTable._getLayoutCache()).left;
+          var x1 = O$.getElementPos(cell, true, dayTable._getLayoutCache()).x;
+          var x2 = O$.getElementPos(nextCell, true, dayTable._getLayoutCache()).x;
           var nearestCell = Math.abs(x - x1) < Math.abs(x - x2) ? cell : nextCell;
           resource = nearestCell._resource;
         }
@@ -451,8 +451,8 @@ O$._initDayTable = function(componentId,
       var rowRect = O$.getElementBorderRectangle(row, true, dayTable._getLayoutCache());
       timeAtPosition.setTime(row._time.getTime() + minutesPerRow * 60000 * (y - rowRect.y) / rowRect.height);
     } else {
-      var y1 = O$.getElementPos(row, true, dayTable._getLayoutCache()).top;
-      var y2 = O$.getElementPos(nextRow, true, dayTable._getLayoutCache()).top;
+      var y1 = O$.getElementPos(row, true, dayTable._getLayoutCache()).y;
+      var y2 = O$.getElementPos(nextRow, true, dayTable._getLayoutCache()).y;
       var nearestRow = Math.abs(y - y1) < Math.abs(y - y2) ? row : nextRow;
       time = nearestRow._time;
       timeAtPosition.setTime(row._time.getTime() + minutesPerRow * 60000 * (y - y1) / (y2 - y1));
@@ -1321,7 +1321,7 @@ O$._initDayTable = function(componentId,
     if (!O$.stringEndsWith(dayTable._declaredDayTableHeight, "%")) {
       var height = O$.calculateNumericCSSValue(dayTable._declaredDayTableHeight);
       if (height) {
-        var offset = O$.getElementPos(dayTable._scroller).top - O$.getElementPos(dayTable).top;
+        var offset = O$.getElementPos(dayTable._scroller).y - O$.getElementPos(dayTable).y;
         height -= offset;
         scrollerHeight = height + "px";
       }
@@ -1334,8 +1334,8 @@ O$._initDayTable = function(componentId,
       return;
     var firstHeaderRow = resourceHeadersTable.body._getRows()[0];
     var firstDataRow = table.body._getRows()[0];
-    var visibleDataWidth = O$.getElementBorderRectangle(firstDataRow._cells[firstDataRow._cells.length - 1]).getMaxX() - O$.getElementPos(firstDataRow._cells[0]).left;
-    var totalHeaderWidth = O$.getElementBorderRectangle(firstHeaderRow._cells[firstHeaderRow._cells.length - 1]).getMaxX() - O$.getElementPos(firstHeaderRow._cells[0]).left;
+    var visibleDataWidth = O$.getElementBorderRectangle(firstDataRow._cells[firstDataRow._cells.length - 1]).getMaxX() - O$.getElementPos(firstDataRow._cells[0]).x;
+    var totalHeaderWidth = O$.getElementBorderRectangle(firstHeaderRow._cells[firstHeaderRow._cells.length - 1]).getMaxX() - O$.getElementPos(firstHeaderRow._cells[0]).x;
     var lastColWidth = totalHeaderWidth - visibleDataWidth;
     if (lastColWidth < 0) // can be the case under Mozilla3 because O$.getElementBorderRectangle returns non-rounded coordinates, which may result in values like -0.2499...
       lastColWidth = 0;

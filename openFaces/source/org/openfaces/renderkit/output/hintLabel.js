@@ -147,14 +147,14 @@ O$.HintLabel = {
 
   _prepareHint: function(label) {
     var pos = O$.getElementPos(label, true);
-    pos.left += O$.getNumericElementStyle(label, "border-left-width") + O$.getNumericElementStyle(label, "padding-left");
-    pos.top += O$.getNumericElementStyle(label, "border-top-width") + O$.getNumericElementStyle(label, "padding-top");
+    pos.x += O$.getNumericElementStyle(label, "border-left-width") + O$.getNumericElementStyle(label, "padding-left");
+    pos.y += O$.getNumericElementStyle(label, "border-top-width") + O$.getNumericElementStyle(label, "padding-top");
     var hint = label._hint;
-    pos.left -= O$.getNumericElementStyle(hint, "border-left-width") + O$.getNumericElementStyle(hint, "padding-left") + O$.getNumericElementStyle(hint, "margin-left");
-    pos.top -= O$.getNumericElementStyle(hint, "border-top-width") + O$.getNumericElementStyle(hint, "padding-top") + O$.getNumericElementStyle(hint, "margin-top");
+    pos.x -= O$.getNumericElementStyle(hint, "border-left-width") + O$.getNumericElementStyle(hint, "padding-left") + O$.getNumericElementStyle(hint, "margin-left");
+    pos.y -= O$.getNumericElementStyle(hint, "border-top-width") + O$.getNumericElementStyle(hint, "padding-top") + O$.getNumericElementStyle(hint, "margin-top");
 
-    hint.style.left = pos.left + "px";
-    hint.style.top = pos.top + "px";
+    hint.style.left = pos.x + "px";
+    hint.style.top = pos.y + "px";
     hint.style.width = null;
 
     var baseZIndex = O$.getElementZIndex(label);

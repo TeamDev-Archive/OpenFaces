@@ -414,11 +414,6 @@ O$._documentMouseMoveForSidePanel = function(event) {
     if (O$.isExplorer()) {
       var mouseX = event.clientX + document.body.scrollLeft;
       var mouseY = event.clientY + document.body.scrollTop;
-      //      if (sidePanel._iframeBugCorrection) {
-      //        var position = O$._IE_getIFramePos(event.srcElement.ownerDocument.parentWindow);
-      //        mouseX = mouseX + position.left;
-      //        mouseY = mouseY + position.top;
-      //      }
     } else {
       mouseX = event.pageX;
       mouseY = event.pageY;

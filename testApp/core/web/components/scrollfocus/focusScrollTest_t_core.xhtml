@@ -26,11 +26,11 @@
   <tr>
     <td style="padding:15px 15px 15px 15px; border: 1px solid darkgray; background: gold;">
       <h:inputText onblur="O$('fn:blurPopup').showAtXY(
-                O$.getElementPos(O$('fn:reflector').left) + O$('fn:reflector').offsetWidth + 15,
-                O$.getElementPos(O$('fn:reflector').top)); return false;"
+                O$.getElementPos(O$('fn:reflector').x) + O$('fn:reflector').offsetWidth + 15,
+                O$.getElementPos(O$('fn:reflector').y)); return false;"
                    onfocus="O$('fn:focusPopup').showAtXY(
-                O$.getElementPos(O$('fn:reflector').left) + O$('fn:reflector').offsetWidth + 15,
-                O$.getElementPos(O$('fn:reflector').top)); return false;"
+                O$.getElementPos(O$('fn:reflector').x) + O$('fn:reflector').offsetWidth + 15,
+                O$.getElementPos(O$('fn:reflector').y)); return false;"
                    value="focused input field"
                    id="tree2" />
       <o:popupLayer id='blurPopup'

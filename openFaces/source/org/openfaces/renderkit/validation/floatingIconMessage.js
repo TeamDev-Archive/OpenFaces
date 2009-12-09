@@ -105,8 +105,8 @@ O$.extend(O$._FloatingIconMessageRenderer.prototype, {
       messageElement.style.display = "";
 
       var elementPos = O$.getElementPos(forElement);
-      var left = elementPos.left + this.leftOffset;
-      var top = elementPos.top + this.topOffset;
+      var left = elementPos.x + this.leftOffset;
+      var top = elementPos.y + this.topOffset;
 
       messageElement.style.left = left + "px";
       messageElement.style.top = top + "px";

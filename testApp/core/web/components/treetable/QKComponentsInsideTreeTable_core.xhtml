@@ -238,8 +238,8 @@
         <h:panelGroup>
           <h:commandButton id="header_invoker" value="Show Popup"
                            onclick="O$('fn:dataTableId8:header_popup').showAtXY(
-  O$.getElementPos(O$('fn:dataTableId8:header_invoker')).left + O$('fn:dataTableId8:header_invoker').offsetWidth,
-  O$.getElementPos(O$('fn:dataTableId8:header_invoker')).top + O$('fn:dataTableId8:header_invoker').offsetHeight); return false;"/>
+  O$.getElementPos(O$('fn:dataTableId8:header_invoker')).x + O$('fn:dataTableId8:header_invoker').offsetWidth,
+  O$.getElementPos(O$('fn:dataTableId8:header_invoker')).y + O$('fn:dataTableId8:header_invoker').offsetHeight); return false;"/>
           <o:popupLayer id="header_popup"
                         hideOnOuterClick="true"
                         style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">
@@ -250,8 +250,8 @@
       <h:panelGroup rendered="#{level == 0}">
         <h:commandButton id="body_invoker" value="Show Popup"
                          onclick="O$('fn:body_popup').showAtXY(
-  O$.getElementPos(O$('fn:body_invoker')).left + O$('fn:body_invoker').offsetWidth,
-  O$.getElementPos(O$('fn:body_invoker')).top + O$('fn:body_invoker').offsetHeight); return false;"/>
+  O$.getElementPos(O$('fn:body_invoker')).x + O$('fn:body_invoker').offsetWidth,
+  O$.getElementPos(O$('fn:body_invoker')).y + O$('fn:body_invoker').offsetHeight); return false;"/>
         <o:popupLayer id="body_popup"
                       hideOnOuterClick="true"
                       style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">
@@ -261,8 +261,8 @@
       <h:panelGroup rendered="#{level == 1}">
         <h:commandButton id="body_invoker1" value="Show Popup"
                          onclick="O$('fn:body_popup1').showAtXY(
-  O$.getElementPos(O$('fn:body_invoker1')).left + O$('fn:body_invoker1').offsetWidth,
-  O$.getElementPos(O$('fn:body_invoker1')).top + O$('fn:body_invoker1').offsetHeight); return false;"/>
+  O$.getElementPos(O$('fn:body_invoker1')).x + O$('fn:body_invoker1').offsetWidth,
+  O$.getElementPos(O$('fn:body_invoker1')).y + O$('fn:body_invoker1').offsetHeight); return false;"/>
         <o:popupLayer id="body_popup1"
                       hideOnOuterClick="true"
                       style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">
@@ -273,8 +273,8 @@
         <h:panelGroup>
           <h:commandButton id="footer_invoker" value="Show Popup"
                            onclick="O$('fn:dataTableId8:footer_popup').showAtXY(
-  O$.getElementPos(O$('fn:dataTableId8:footer_invoker')).left + O$('fn:dataTableId8:footer_invoker').offsetWidth,
-  O$.getElementPos(O$('fn:dataTableId8:footer_invoker')).top + O$('fn:dataTableId8:footer_invoker').offsetHeight); return false;"/>
+  O$.getElementPos(O$('fn:dataTableId8:footer_invoker')).x + O$('fn:dataTableId8:footer_invoker').offsetWidth,
+  O$.getElementPos(O$('fn:dataTableId8:footer_invoker')).y + O$('fn:dataTableId8:footer_invoker').offsetHeight); return false;"/>
           <o:popupLayer id="footer_popup"
                         hideOnOuterClick="true"
                         style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">

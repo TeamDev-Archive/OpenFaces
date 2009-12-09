@@ -12,8 +12,8 @@
         <td class="cells">
           <h:commandButton id="buttonID"
                            value="Show Popup" onclick="O$('formID:popupLayerID').showAtXY(
-                                                      O$.getElementPos(document.getElementById('formID:buttonID')).left + document.getElementById('formID:buttonID').offsetWidth,
-                                                      O$.getElementPos(document.getElementById('formID:buttonID')).top + document.getElementById('formID:buttonID').offsetHeight);
+                                                      O$.getElementPos(O$('formID:buttonID')).x + O$('formID:buttonID').offsetWidth,
+                                                      O$.getElementPos(O$('formID:buttonID')).y + O$('formID:buttonID').offsetHeight);
                                  return false;"/>
           <o:popupLayer id="popupLayerID"
                         modal="true"
@@ -60,8 +60,8 @@
         <td class="cells">
           <a4j:commandButton id="button_a4j_ID"
                              value="Show Popup" onclick="O$('formID:popupLayer_a4j_ID').showAtXY(
-                                                       O$.getElementPos(document.getElementById('formID:button_a4j_ID')).left + document.getElementById('formID:button_a4j_ID').offsetWidth,
-                                                       O$.getElementPos(document.getElementById('formID:button_a4j_ID')).top + document.getElementById('formID:button_a4j_ID').offsetHeight);
+                                                       O$.getElementPos(O$('formID:button_a4j_ID')).x + O$('formID:button_a4j_ID').offsetWidth,
+                                                       O$.getElementPos(O$('formID:button_a4j_ID')).y + O$('formID:button_a4j_ID').offsetHeight);
                                   return false;"/>
           <o:popupLayer id="popupLayer_a4j_ID"
                         modal="true"

@@ -2083,8 +2083,8 @@ if (!window.O$) {
         container = O$.getDefaultAbsolutePositionParent();
       var rect = O$.getElementBorderRectangle(element);
       var containerPos = O$.getElementPos(container);
-      rect.x -= containerPos.left;
-      rect.y -= containerPos.top;
+      rect.x -= containerPos.x;
+      rect.y -= containerPos.y;
       O$.setElementBorderRectangle(elementCopy, rect);
 
       container.appendChild(elementCopy);
@@ -3152,7 +3152,7 @@ if (!window.O$) {
   };
 
   /*
-   Returns an object {left, top} that points to the top-left corner of the specified element. This method takes into account
+   Returns an object {x, y} that points to the top-left corner of the specified element. This method takes into account
    element's border if it exists, that is it determines the position of the element's border box.
 
    If relativeToNearestContainingBlock parameter is not specified or specified as false, this method
@@ -3199,7 +3199,7 @@ if (!window.O$) {
           }
         }
       }
-      return {left: left, top: top};
+      return {x: left, y: top};
     }
 
     left = top = 0;
@@ -3295,7 +3295,7 @@ if (!window.O$) {
 
       element = offsetParent;
     }
-    return {left: left, top: top};
+    return {x: left, y: top};
   };
 
   O$.getCuttingContainingRectangle = function(element, cachedDataContainer) {
@@ -3332,9 +3332,9 @@ if (!window.O$) {
       var elementContainer = O$.getContainingBlock(element, true);
       var containerPos = elementContainer ? O$.getElementPos(elementContainer) : null;
       if (cuttingRect.left && containerPos)
-        cuttingRect.left -= containerPos.left;
+        cuttingRect.left -= containerPos.x;
       if (cuttingRect.top && containerPos)
-        cuttingRect.top -= containerPos.top;
+        cuttingRect.top -= containerPos.y;
     }
     rect.intersectWith(cuttingRect);
     return rect;
@@ -3367,7 +3367,7 @@ if (!window.O$) {
     }
     var pos = O$.getElementPos(element, relativeToNearestContainingBlock);
     var size = O$.getElementSize(element);
-    var rect = new O$.Rectangle(pos.left, pos.top, size.width, size.height);
+    var rect = new O$.Rectangle(pos.x, pos.y, size.width, size.height);
     if (cachedDataContainer) {
       element._of_getElementRectangle._currentCache = cachedDataContainer;
       element._of_getElementRectangle._cachedValue = rect;
@@ -3401,14 +3401,14 @@ if (!window.O$) {
   };
 
   /*
-   Moves the specified element to the specified position (specified as {left, top} object). More exactly the top-left
+   Moves the specified element to the specified position (specified as {x, y} object). More exactly the top-left
    corner of element's border box will be at the specified position after this method is invoked.
 
    See also: O$.getElementPos, O$.getElementBorderRectangle, O$.setElementBorderRectangle.
    */
   O$.setElementPos = function(element, pos) {
-    element.style.left = pos.left + "px";
-    element.style.top = pos.top + "px";
+    element.style.left = pos.x + "px";
+    element.style.top = pos.y + "px";
   };
 
   O$.setElementSize = function(element, size, _paddingsHaveBeenReset) {
@@ -3481,7 +3481,7 @@ if (!window.O$) {
    */
   O$.setElementBorderRectangle = function(element, rect) {
     O$.setElementSize(element, {width: rect.width, height: rect.height});
-    O$.setElementPos(element, {left: rect.x, top: rect.y});
+    O$.setElementPos(element, {x: rect.x, y: rect.y});
   };
 
   /**
@@ -3856,7 +3856,7 @@ if (!window.O$) {
       popup.setLeft(x);
       popup.setTop(y);
     } else {
-      O$.setElementPos(popup, {left: x, top: y});
+      O$.setElementPos(popup, {x: x, y: y});
     }
     if (repositioningAttempt)
       return true;
@@ -4062,9 +4062,10 @@ if (!window.O$) {
       return O$.blendColors(value1, value2, value2Proportion);
 
     // handle points
-    if (typeof value1 === "object" && value1 != null && value1.left !== undefined)
-      return {left: O$.getInterpolatedValue(value1.left, value2.left, value2Proportion),
-        top: O$.getInterpolatedValue(value1.top, value2.top, value2Proportion)};
+    if (typeof value1 === "object" && value1 != null && value1.x !== undefined && value1.width === undefined)
+      return {
+        x: O$.getInterpolatedValue(value1.x, value2.x, value2Proportion),
+        y: O$.getInterpolatedValue(value1.y, value2.y, value2Proportion)};
 
     // handle rectangles
     if (typeof value1 === "object" && value1 != null && value1.width !== undefined)
@@ -4105,7 +4106,7 @@ if (!window.O$) {
     if (property == "opacity")
       O$.setOpacityLevel(element, value);
     else if (property == "position")
-      O$.setElementPos(element);
+      O$.setElementPos(element, value);
     else if (property == "rectangle")
         O$.setElementBorderRectangle(element, value);
       else if (property == "height")
@@ -4208,11 +4209,9 @@ if (!window.O$) {
       update: function() {
         var elements = element instanceof Array ? element : [element];
         if (
-                !elements.every(function(el) {
-                  return O$.isElementPresentInDocument(el);
-                }) ||
+                !elements.every(function(el) {return O$.isElementPresentInDocument(el);}) ||
                 (workingCondition && !workingCondition())
-                ) {
+           ) {
           clearInterval(fixture.intervalId);
           return;
         }

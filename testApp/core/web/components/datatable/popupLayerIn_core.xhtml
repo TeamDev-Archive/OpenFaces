@@ -29,8 +29,8 @@
           <h:commandButton id="header_invoker"
                            value="Header Popup"
                            onclick="O$('fn:popupDataTable:header_popup').showAtXY(
-            O$.getElementPos(O$('fn:popupDataTable:header_invoker')).left + O$('fn:popupDataTable:header_invoker').offsetWidth,
-            O$.getElementPos(O$('fn:popupDataTable:header_invoker')).top + O$('fn:popupDataTable:header_invoker').offsetHeight); return false;"/>
+            O$.getElementPos(O$('fn:popupDataTable:header_invoker')).x + O$('fn:popupDataTable:header_invoker').offsetWidth,
+            O$.getElementPos(O$('fn:popupDataTable:header_invoker')).y + O$('fn:popupDataTable:header_invoker').offsetHeight); return false;"/>
           <o:popupLayer id="header_popup"
                         hidingTimeout="4000"
                         style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">
@@ -42,8 +42,8 @@
         <h:commandButton id="body_invoker"
                          value="Body Popup"
                          onclick="O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_popup').showAtXY(
-            O$.getElementPos(O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker')).left + O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker').offsetWidth,
-            O$.getElementPos(O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker')).top + O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker').offsetHeight); return false;"/>
+            O$.getElementPos(O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker')).x + O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker').offsetWidth,
+            O$.getElementPos(O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker')).y + O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker').offsetHeight); return false;"/>
         <o:popupLayer id="body_popup"
                       hidingTimeout="4000"
                       style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">
@@ -55,8 +55,8 @@
           <h:commandButton id="footer_invoker"
                            value="Footer Popup"
                            onclick="O$('fn:popupDataTable:footer_popup').showAtXY(
-            O$.getElementPos(O$('fn:popupDataTable:footer_invoker')).left + O$('fn:popupDataTable:footer_invoker').offsetWidth,
-            O$.getElementPos(O$('fn:popupDataTable:footer_invoker')).top + O$('fn:popupDataTable:footer_invoker').offsetHeight); return false;"/>
+            O$.getElementPos(O$('fn:popupDataTable:footer_invoker')).x + O$('fn:popupDataTable:footer_invoker').offsetWidth,
+            O$.getElementPos(O$('fn:popupDataTable:footer_invoker')).y + O$('fn:popupDataTable:footer_invoker').offsetHeight); return false;"/>
           <o:popupLayer id="footer_popup"
                         hidingTimeout="4000"
                         style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">
@@ -70,8 +70,8 @@
         <h:panelGroup>
           <h:commandButton id="header_invoker1" value="Header Popup"
                            onclick="O$('fn:popupDataTable:header_popup1').showAtXY(
-            O$.getElementPos(O$('fn:popupDataTable:header_invoker1')).left + O$('fn:popupDataTable:header_invoker1').offsetWidth,
-            O$.getElementPos(O$('fn:popupDataTable:header_invoker1')).top + O$('fn:popupDataTable:header_invoker1').offsetHeight); return false;"/>
+            O$.getElementPos(O$('fn:popupDataTable:header_invoker1')).x + O$('fn:popupDataTable:header_invoker1').offsetWidth,
+            O$.getElementPos(O$('fn:popupDataTable:header_invoker1')).y + O$('fn:popupDataTable:header_invoker1').offsetHeight); return false;"/>
           <o:popupLayer id="header_popup1"
                         hidingTimeout="4000"
                         style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">
@@ -86,8 +86,8 @@
         <h:commandButton id="body_invoker1"
                          value="Body Popup"
                          onclick="O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_popup1').showAtXY(
-            O$.getElementPos(O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker1')).left + O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker1').offsetWidth,
-            O$.getElementPos(O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker1')).top + O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker1').offsetHeight); return false;"/>
+            O$.getElementPos(O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker1')).x + O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker1').offsetWidth,
+            O$.getElementPos(O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker1')).y + O$('fn:popupDataTable:#{TestEventsBean.currentRowIndex}:body_invoker1').offsetHeight); return false;"/>
         <o:popupLayer id="body_popup1"
                       hidingTimeout="4000"
                       style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">
@@ -99,8 +99,8 @@
           <h:commandButton id="footer_invoker1"
                            value="Footer Popup"
                            onclick="O$('fn:popupDataTable:footer_popup1').showAtXY(
-            O$.getElementPos(O$('fn:popupDataTable:footer_invoker1')).left + O$('fn:popupDataTable:footer_invoker1').offsetWidth,
-            O$.getElementPos(O$('fn:popupDataTable:footer_invoker1')).top + O$('fn:popupDataTable:footer_invoker1').offsetHeight); return false;"/>
+            O$.getElementPos(O$('fn:popupDataTable:footer_invoker1')).x + O$('fn:popupDataTable:footer_invoker1').offsetWidth,
+            O$.getElementPos(O$('fn:popupDataTable:footer_invoker1')).y + O$('fn:popupDataTable:footer_invoker1').offsetHeight); return false;"/>
           <o:popupLayer id="footer_popup1"
                         hidingTimeout="4000"
                         style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">

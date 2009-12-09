@@ -31,8 +31,8 @@
             <h:panelGroup>
               <h:commandButton value="Popup on tab 1" id="header_invoker"
                                onclick="O$('fn:header_popup').showAtXY(
-  O$.getElementPos(O$('fn:header_invoker')).left + O$('fn:header_invoker').offsetWidth,
-  O$.getElementPos(O$('fn:header_invoker')).top + O$('fn:header_invoker').offsetHeight); return false;"/>
+  O$.getElementPos(O$('fn:header_invoker')).x + O$('fn:header_invoker').offsetWidth,
+  O$.getElementPos(O$('fn:header_invoker')).y + O$('fn:header_invoker').offsetHeight); return false;"/>
               <o:popupLayer id="header_popup"
                             hideOnOuterClick="true"
                             style="padding: 15px 15px 15px 15px; color: darkred; background: beige; font-weight: bold;">

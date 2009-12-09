@@ -189,8 +189,8 @@
     <td>
 <span id="textInvoker" style="color: #005CA3; font-weight: bold; margin-top:15px;"
       onclick="O$('form1:textConfirmation').runConfirmedFunction(function(){O$('form1:textPopup').showAtXY(
-              O$('form1:textPopup').setLeft(O$.getElementPos(O$('textInvoker')).left + O$('textInvoker').offsetWidth + 50),
-              O$('form1:textPopup').setTop(O$.getElementPos(O$('textInvoker')).top));});
+              O$('form1:textPopup').setLeft(O$.getElementPos(O$('textInvoker')).x + O$('textInvoker').offsetWidth + 50),
+              O$('form1:textPopup').setTop(O$.getElementPos(O$('textInvoker')).y));});
       return false;">Action with confirmation</span>
       <o:popupLayer id="textPopup"
                     style="border: none; background: #f9f9f9; text-align:center; white-space:nowrap;"
@@ -224,8 +224,8 @@
   <tr>
     <td>
       <h:outputLink id="linkInvoker" value="" onclick="O$('form1:linkConfirmation').runConfirmedFunction(function(){O$('form1:linkPopup').showAtXY(
-                                                          O$('form1:linkPopup').setLeft(O$.getElementPos(O$('form1:linkInvoker')).left + O$('form1:linkInvoker').offsetWidth + 50),
-                                                          O$('form1:linkPopup').setTop(O$.getElementPos(O$('form1:linkInvoker')).top));});
+                                                          O$('form1:linkPopup').setLeft(O$.getElementPos(O$('form1:linkInvoker')).x + O$('form1:linkInvoker').offsetWidth + 50),
+                                                          O$('form1:linkPopup').setTop(O$.getElementPos(O$('form1:linkInvoker')).y));});
                                                       return false;">
         <h:outputText value="Action with confirmation"/>
       </h:outputLink>
@@ -264,8 +264,8 @@
                        value="Action with confirmation" id="buttonInvoker"
                        type="button"
                        onclick="O$('form1:buttonConfirmation').runConfirmedFunction(function(){O$('form1:buttonPopup').showAtXY(
-                                  O$.getElementPos(O$('form1:buttonInvoker')).left + O$('form1:buttonInvoker').offsetWidth + 55,
-                                  O$.getElementPos(O$('form1:buttonInvoker')).top);});"/>
+                                  O$.getElementPos(O$('form1:buttonInvoker')).x + O$('form1:buttonInvoker').offsetWidth + 55,
+                                  O$.getElementPos(O$('form1:buttonInvoker')).y);});"/>
       <o:popupLayer id="buttonPopup"
                     style="border: none; background: #f9f9f9; text-align:center; white-space:nowrap;"
                     hideOnOuterClick="true"

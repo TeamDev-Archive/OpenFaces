@@ -392,9 +392,9 @@ O$.PopupLayer = {
     var prnt = modalLayer.offsetParent;
     var parentPos = prnt != null && prnt.nodeName != "HTML" && prnt.nodeName != "BODY"
             ? O$.getElementPos(prnt)
-            : {left: 0, top: 0};
-    var parentLeft = parentPos.left;
-    var parentTop = parentPos.top;
+            : {x: 0, y: 0};
+    var parentLeft = parentPos.x;
+    var parentTop = parentPos.y;
 
     modalLayer.style.left = (scrollPos.x - parentLeft) + "px";
     modalLayer.style.top = (scrollPos.y - parentTop) + "px";
@@ -417,8 +417,8 @@ O$.PopupLayer = {
       parentToCalculateScrollOffset = document.body;
     }
     var prntPos = O$.getElementPos(parentToCalculateScrollOffset);
-    var x = visibleAreaSize.width / 2 - popup.offsetWidth / 2 - prntPos.left + oldScrollPos.x;
-    var y = visibleAreaSize.height / 2 - popup.offsetHeight / 2 - prntPos.top + oldScrollPos.y;
+    var x = visibleAreaSize.width / 2 - popup.offsetWidth / 2 - prntPos.x + oldScrollPos.x;
+    var y = visibleAreaSize.height / 2 - popup.offsetHeight / 2 - prntPos.y + oldScrollPos.y;
     popup.setLeft(x);
     popup.setTop(y);
   },

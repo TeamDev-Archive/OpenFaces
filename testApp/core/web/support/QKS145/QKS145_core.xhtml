@@ -25,8 +25,8 @@
                            onclick="O$('fn:popupDataTable:#{QKS145.currentRowIndex1}:body_popup1').show(); return false;"/>
           <h:commandButton id="body_invoker2" value="Body Popup"
                            onclick="O$('fn:popupDataTable:#{QKS145.currentRowIndex1}:body_popup1').showAtXY(
-  O$.getElementPos(O$('fn:popupDataTable:#{QKS145.currentRowIndex1}:body_invoker2')).left + O$('fn:popupDataTable:#{QKS145.currentRowIndex1}:body_invoker2').offsetWidth,
-  O$.getElementPos(O$('fn:popupDataTable:#{QKS145.currentRowIndex1}:body_invoker2')).top); return false;"/>
+  O$.getElementPos(O$('fn:popupDataTable:#{QKS145.currentRowIndex1}:body_invoker2')).x + O$('fn:popupDataTable:#{QKS145.currentRowIndex1}:body_invoker2').offsetWidth,
+  O$.getElementPos(O$('fn:popupDataTable:#{QKS145.currentRowIndex1}:body_invoker2')).y); return false;"/>
           <o:popupLayer id="body_popup1"
                         hideOnOuterClick="true"
                         style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">
@@ -54,8 +54,8 @@
                            onclick="O$('fn:stDataTable:#{QKS145.currentRowIndex}:body_popup2').show(); return false;"/>
           <h:commandButton id="body_invoker4" value="Body Popup"
                            onclick="O$('fn:stDataTable:#{QKS145.currentRowIndex}:body_popup2').showAtXY(
-  O$.getElementPos(O$('fn:stDataTable:#{QKS145.currentRowIndex}:body_invoker4')).left + O$('fn:stDataTable:#{QKS145.currentRowIndex}:body_invoker4').offsetWidth,
-  O$.getElementPos(O$('fn:stDataTable:#{QKS145.currentRowIndex}:body_invoker4')).top); return false;"/>
+  O$.getElementPos(O$('fn:stDataTable:#{QKS145.currentRowIndex}:body_invoker4')).x + O$('fn:stDataTable:#{QKS145.currentRowIndex}:body_invoker4').offsetWidth,
+  O$.getElementPos(O$('fn:stDataTable:#{QKS145.currentRowIndex}:body_invoker4')).y); return false;"/>
           <o:popupLayer id="body_popup2"
                         hideOnOuterClick="true"
                         style="background: beige; color: darkred; padding: 10px 10px 10px 10px; white-space: nowrap;">

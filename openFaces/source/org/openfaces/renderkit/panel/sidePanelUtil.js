@@ -302,18 +302,6 @@ O$._bugFix_divNegativeSizeBug = function(element, useDoubleBuffering) {
   }
 };
 
-O$._IE_getIFramePos = function(iframeWindow) {
-  var iframe = iframeWindow.frameElement;
-  var position = {left: 0, top: 0};
-  if (iframe) {
-    var iframeWindowPos = iframe.getBoundingClientRect();
-    var parentWindowPos = O$._IE_getIFramePos(iframeWindow.parent);
-    position.left = parentWindowPos.left + iframeWindowPos.left;
-    position.top = parentWindowPos.top + iframeWindowPos.top;
-  }
-  return position;
-};
-
 //------------------  resizableElement methods  -------------------
 
 O$._subscribeToOnresizeEvent = function(element, func) {

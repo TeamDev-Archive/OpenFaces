@@ -173,15 +173,15 @@
     <td class="cells">
       <h:commandButton id="styleButton"
                        value="*Style attributes used" onclick="O$('form1:stylePopup').showAtXY(
-                                                O$.getElementPos(document.getElementById('form1:styleButton')).left + document.getElementById('form1:styleButton').offsetWidth + 25,
-                                                O$.getElementPos(document.getElementById('form1:styleButton')).top - 28);
+                                                O$.getElementPos(O$('form1:styleButton')).x + O$('form1:styleButton').offsetWidth + 25,
+                                                O$.getElementPos(O$('form1:styleButton')).y - 28);
                            return false;" />
     </td>
     <td class="cells">
       <h:commandButton id="classButton"
                        value="*Class attributes used" onclick="O$('form1:classPopup').showAtXY(
-                                                O$.getElementPos(document.getElementById('form1:classButton')).left + document.getElementById('form1:classButton').offsetWidth + 25,
-                                                O$.getElementPos(document.getElementById('form1:classButton')).top - 28);
+                                                O$.getElementPos(O$('form1:classButton')).x + document.getElementById('form1:classButton').offsetWidth + 25,
+                                                O$.getElementPos(O$('form1:classButton')).y - 28);
                            return false;" />
     </td>
   </tr>

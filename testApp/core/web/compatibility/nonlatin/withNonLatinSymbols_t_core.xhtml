@@ -68,8 +68,8 @@
   <td class="date_chooser">
     <h:commandButton id="header_invoker" value="Header Popup"
                      onclick="O$('fn:header_popup').showAtXY(
-      O$.getElementPos(O$('fn:header_invoker').left) + O$('fn:header_invoker').offsetWidth,
-      O$.getElementPos(O$('fn:header_invoker').top) + O$('fn:header_invoker').offsetHeight); return false;"/>
+      O$.getElementPos(O$('fn:header_invoker').x) + O$('fn:header_invoker').offsetWidth,
+      O$.getElementPos(O$('fn:header_invoker').y) + O$('fn:header_invoker').offsetHeight); return false;"/>
     <o:popupLayer id="header_popup"
                   hideOnOuterClick="true"
                   style="background: black; color: white; padding: 10px 10px 10px 10px; white-space: nowrap; font-weight: bold;">
@@ -226,8 +226,8 @@
   <td class="date_chooser">
     <h:commandButton id="header_invoker1" value="Popup"
                      onclick="O$('fn:header_popup1').showAtXY(
-        O$.getElementPos(O$('fn:header_invoker1').left) + O$('fn:header_invoker1').offsetWidth,
-        O$.getElementPos(O$('fn:header_invoker1').top) + O$('fn:header_invoker1').offsetHeight); return false;"/>
+        O$.getElementPos(O$('fn:header_invoker1').x) + O$('fn:header_invoker1').offsetWidth,
+        O$.getElementPos(O$('fn:header_invoker1').y) + O$('fn:header_invoker1').offsetHeight); return false;"/>
     <o:popupLayer id="header_popup1"
                   hideOnOuterClick="true"
                   style="background: black; color: white; padding: 10px 10px 10px 10px; white-space: nowrap; font-weight: bold;">
