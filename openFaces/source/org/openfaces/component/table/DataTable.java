@@ -135,8 +135,8 @@ public class DataTable extends AbstractTable {
     }
 
     /**
-     * @return the number of pages if paging is currently enabled. If paging is disabled (by setting pageSize to 0) or
-     *         if the total number of rows is unknown then -1 is returned. Note the that if paging is enabled then there will
+     * @return the number of pages if pagination is currently enabled. If pagination is disabled (by setting pageSize to 0) or
+     *         if the total number of rows is unknown then -1 is returned. Note the that if pagination is enabled then there will
      *         always be at least one page even if there are no rows to show.
      */
     public int getPageCount() {

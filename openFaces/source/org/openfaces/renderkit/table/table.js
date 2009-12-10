@@ -88,19 +88,6 @@ O$.Table = {
     };
   },
 
-  _setCellProperty: function(cell, propertyName, propertyValue) {
-    if (!cell)
-      return;
-
-    try {
-      cell[propertyName] = propertyValue;
-    } catch (e) {
-      O$.logError("O$.Table._setCellProperty: couldn't set cell property \"" + propertyName + "\" to \"" + propertyValue + "\" ; original error: " + e.message);
-      throw e;
-    }
-  },
-
-
   _initApiFunctions: function(table) {
     table.__selectAllRows = function() {
       if (this._selectableItems != "rows")
@@ -176,35 +163,31 @@ O$.Table = {
 
   // -------------------------- KEYBOARD NAVIGATION SUPPORT
 
-  _initKeyboardNavigation: function(tableId, controlPaging, focusedClassName, canPageBack, canPageForth,
+  _initKeyboardNavigation: function(tableId, controlPaginationWithKeyboard, focusedClassName, canPageBack, canPageForth,
                                     canSelectLastPage, tabindex) {
     var table = O$(tableId);
-    table._controlPagingWithKeyboard = controlPaging;
-    table._canPageBack = canPageBack;
-    table._canPageForth = canPageForth;
-    table._canSelectLastPage = canSelectLastPage;
 
     O$.setupArtificialFocus(table, focusedClassName, tabindex);
 
-    var pagingFld = O$(table.id + "::paging");
+    var pagingFld = O$(table.id + "::pagination");
     if (pagingFld)
       pagingFld.value = "";
     table._performPagingAction = function(actionStr) {
-      O$.setHiddenField(this, this.id + "::paging", actionStr);
+      O$.setHiddenField(this, this.id + "::pagination", actionStr);
       O$._submitInternal(this);
     };
 
     table._nextPage = function() {
-      if (this._canPageForth) this._performPagingAction("selectNextPage");
+      if (canPageForth) this._performPagingAction("selectNextPage");
     };
     table._previousPage = function() {
-      if (this._canPageBack) this._performPagingAction("selectPrevPage");
+      if (canPageBack) this._performPagingAction("selectPrevPage");
     };
     table._firstPage = function() {
-      if (this._canPageBack) this._performPagingAction("selectFirstPage");
+      if (canPageBack) this._performPagingAction("selectFirstPage");
     };
     table._lastPage = function() {
-      if (this._canSelectLastPage) this._performPagingAction("selectLastPage");
+      if (canSelectLastPage) this._performPagingAction("selectLastPage");
     };
     table._selectPageNo = function(pageNo) {
       this._performPagingAction("selectPageNo:" + pageNo);
@@ -278,7 +261,7 @@ O$.Table = {
 
       var passEvent = true;
 
-      if (this._controlPagingWithKeyboard && !altPressed && !shiftPressed) {
+      if (controlPaginationWithKeyboard && !altPressed && !shiftPressed) {
         if (e.pageUpPressed) {
           passEvent = false;
           if (!(this._params.scrolling && this._selectionKeyboardSupport && this._selectionEnabled))
@@ -1559,6 +1542,32 @@ O$.Table = {
 
   _initColumnReordering: function(tableId, draggedCellClass, draggedCellTransparency) {
     var table = O$(tableId);
+    var autoscrollingSpeed = 100;
+
+    if (table._params.scrolling) {
+      function div(text) {
+        var d1 = document.createElement("div");
+        d1.innerHTML = text;
+        d1.style.border = "1px solid black";
+        d1.style.position = "absolute";
+        return d1;
+      }
+
+      var headerScroller = table.header._centerScrollingArea._scrollingDiv;
+      var additionalAreaContainer = O$.getContainingBlock(headerScroller);
+      if (!additionalAreaContainer) additionalAreaContainer = O$.getDefaultAbsolutePositionParent();
+      var mainScroller = table.body._centerScrollingArea._scrollingDiv;
+
+      var d1 = div("&lt;");
+      d1._update = function() {
+        this.style.visibility = mainScroller.scrollLeft > 0 ? "visible" : "hidden";
+      };
+      var d2 = div("&gt;");
+      d2._update = function() {
+        this.style.visibility = mainScroller.scrollLeft < mainScroller.scrollWidth - mainScroller.clientWidth ? "visible" : "hidden";
+      };
+
+    }
 
     var dropTargetMark = function() {
       var div = document.createElement("div");
@@ -1646,7 +1655,78 @@ O$.Table = {
         }
         return null;
       });
+      headerCell.ondragstart = draggingStarted;
+      headerCell.ondragmove = draggingMoved;
+      headerCell.ondragend = draggingFinished;
     });
+
+    var additionalAreaListener;
+    function draggingStarted() {
+      if (!table._params.scrolling) return;
+      additionalAreaContainer.appendChild(d1);
+      additionalAreaContainer.appendChild(d2);
+      d1._update();
+      d2._update();
+
+      additionalAreaListener = O$.listenProperty(headerScroller, "rectangle", function(/*rect*/) {
+        var subHeaderIndex = table._subHeaderRowIndex;
+        var subHeaderHeight = subHeaderIndex != -1
+                ? O$.getElementSize(table.header._getRows()[subHeaderIndex]._rowNode).height : 0;
+        O$.alignPopupByElement(d1, headerScroller, O$.LEFT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2);
+        O$.alignPopupByElement(d2, headerScroller, O$.RIGHT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2);
+      }, 50);
+    }
+
+    var activeHelperArea = null;
+    var activeScrollingInterval;
+    function draggingMoved(e) {
+      e = {clientX: e.clientX, clientY: e.clientY};
+      if (!table._params.scrolling) return;
+
+      function setActiveHelperArea(area) {
+        if (activeHelperArea == area) return;
+        if (activeScrollingInterval)
+          clearInterval(activeScrollingInterval);
+        activeHelperArea = area;
+        var lastTimestamp = new Date().getTime();
+        function scrollingStep() {
+          var thisTimestamp = new Date().getTime();
+          var scrollingStep = autoscrollingSpeed * (thisTimestamp - lastTimestamp) / 1000;
+          lastTimestamp = thisTimestamp;
+          return scrollingStep;
+        }
+        if (area == d1)
+          activeScrollingInterval = setInterval(function(){
+            var scrollLeft = mainScroller.scrollLeft - scrollingStep();
+            if (scrollLeft < 0) scrollLeft = 0;
+            mainScroller.scrollLeft = scrollLeft;
+            O$._draggedElement.updateCurrentDropTarget(e);
+            d1._update();
+            d2._update();
+          }, 30);
+        if (area == d2)
+          activeScrollingInterval = setInterval(function(){
+            mainScroller.scrollLeft = mainScroller.scrollLeft + scrollingStep();
+            O$._draggedElement.updateCurrentDropTarget(e);
+            d1._update();
+            d2._update();
+          }, 30);
+      }
+
+      if (O$.isCursorOverElement(e, d1))
+        setActiveHelperArea(d1);
+      else if (O$.isCursorOverElement(e, d2))
+        setActiveHelperArea(d2);
+      else
+        setActiveHelperArea(null);
+    }
+
+    function draggingFinished() {
+      if (activeScrollingInterval) clearInterval(activeScrollingInterval);
+      additionalAreaContainer.removeChild(d1);
+      additionalAreaContainer.removeChild(d2);
+      additionalAreaListener.release();
+    }
 
     function sendColumnMoveRequest(srcColIndex, dstColIndex) {
       if (dstColIndex == srcColIndex || dstColIndex == srcColIndex + 1)

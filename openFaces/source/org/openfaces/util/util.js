@@ -2093,8 +2093,11 @@ if (!window.O$) {
         this.style.top = y + "px";
       };
       var currentDropTarget = null;
+      if (element.ondragstart)
+        element.ondragstart(evt);
       O$.startDragging(evt, elementCopy);
-      elementCopy.ondragmove = function(evt) {
+      elementCopy._originalElement = element;
+      elementCopy.updateCurrentDropTarget = function(evt) {
         var dropTarget = dropTargetLocator(evt);
         if (dropTarget != currentDropTarget) {
           if (currentDropTarget) currentDropTarget.setActive(false);
@@ -2102,7 +2105,14 @@ if (!window.O$) {
           if (currentDropTarget) currentDropTarget.setActive(true);
         }
       };
-      elementCopy.ondragend = function() {
+      elementCopy.ondragmove = function(evt) {
+        if (element.ondragmove)
+          element.ondragmove(evt);
+        this.updateCurrentDropTarget(evt);
+      };
+      elementCopy.ondragend = function(evt) {
+        if (element.ondragend)
+          element.ondragend(evt);
         this.parentNode.removeChild(this);
         if (currentDropTarget) {
           currentDropTarget.setActive(false);
@@ -2203,6 +2213,7 @@ if (!window.O$) {
       var evt = O$.getEvent(e);
 
       var draggable = O$._draggedElement;
+      O$._draggedElement = null;
       if (draggable._draggingWasStarted) {
         draggable._draggingWasStarted = undefined;
         if (draggable.ondragend)
@@ -3649,6 +3660,17 @@ if (!window.O$) {
     window.scrollTo(scrollPos.x, scrollPos.y);
   };
 
+  O$.isCursorOverElement = function(event, element) {
+    var evt = O$.getEvent(event);
+    if (!element ||
+        !O$.isElementPresentInDocument(element) ||
+        !O$.isVisibleRecursive(element))
+      return false;
+    var rect = O$.getElementBorderRectangle(element);
+    var cursorPos = O$.getEventPoint(evt);
+    return rect.containsPoint(cursorPos.x, cursorPos.y);
+  };
+
   O$.getNumericElementStyle = function(element, propertyName, enableValueCaching) {
     var capitalizedPropertyName = O$._capitalizeCssPropertyName(propertyName);
     if (O$.stringStartsWith(capitalizedPropertyName, "border") && O$.stringEndsWith(capitalizedPropertyName, "Width")) {
@@ -3776,7 +3798,7 @@ if (!window.O$) {
         x = elementRect.getMinX() + horizDistance;
         break;
       case O$.CENTER:
-        x = elementRect.getMinX() + (elementRect.width - popupWidth) / 2;
+        x = elementRect.getMinX() + (elementRect.width - popupWidth) / 2 + horizDistance;
         break;
       case O$.RIGHT_EDGE:
         x = elementRect.getMaxX() - popupWidth - horizDistance;
@@ -3796,7 +3818,7 @@ if (!window.O$) {
         y = elementRect.getMinY() + vertDistance;
         break;
       case O$.CENTER:
-        y = elementRect.getMinY() + (elementRect.height - popupHeight) / 2;
+        y = elementRect.getMinY() + (elementRect.height - popupHeight) / 2 + vertDistance;
         break;
       case O$.BOTTOM_EDGE:
         y = elementRect.getMaxY() - popupHeight - vertDistance;

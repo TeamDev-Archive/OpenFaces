@@ -317,7 +317,7 @@
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>The number of rows to be displayed on each table page. If it is set to "0", no paging is
+      <description>The number of rows to be displayed on each table page. If it is set to "0", no pagination is
         available.
       </description>
       <name>pageSize</name>
@@ -402,7 +402,7 @@
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>A flag that indicates whether or not to enable the keyboard support for paging.</description>
+      <description>A flag that indicates whether or not to enable the keyboard support for pagination.</description>
       <name>paginationKeyboardSupport</name>
       <deferred-value>
         <type>boolean</type>

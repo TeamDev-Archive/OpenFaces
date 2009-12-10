@@ -34,7 +34,7 @@ public class DataTableRenderer extends AbstractTableRenderer {
 
     private void decodePagination(FacesContext context, DataTable table) {
         Map requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String pagingAction = (String) requestParameterMap.get(table.getClientId(context) + "::paging");
+        String pagingAction = (String) requestParameterMap.get(table.getClientId(context) + "::pagination");
         if (pagingAction != null && pagingAction.length() > 0)
             DataTablePaginatorRenderer.executePaginationAction(context, table, pagingAction);
     }
