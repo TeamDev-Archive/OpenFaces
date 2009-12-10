@@ -23,17 +23,15 @@ import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.StyleUtil;
 
+import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItem;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.ValueHolder;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.faces.model.SelectItem;
 import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-import javax.faces.application.Application;
+import javax.faces.model.SelectItem;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -336,13 +334,6 @@ public abstract class SelectManyInputRenderer extends RendererBase {
             JSONObject imagesObj, JSONObject stylesObj, int selectItemCount, AnonymousFunction onchangeFunction)
             throws IOException;
 
-    @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        return RenderingUtil.convertFromString(context, component, (String) submittedValue);
-    }
 
-    protected String getConvertedValue(FacesContext context, UIInput inputText) {
-        return RenderingUtil.convertToString(context, inputText, inputText.getValue());
-    }
     
 }

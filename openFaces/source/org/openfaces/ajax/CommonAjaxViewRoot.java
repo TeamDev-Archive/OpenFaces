@@ -405,7 +405,13 @@ public abstract class CommonAjaxViewRoot {
             ELContext elContext = context.getELContext();
             MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
                     elContext, "#{" + listener + "}", void.class, new Class[]{ActionEvent.class});
-            ActionEvent event = new ActionEvent(findComponentById(viewRoot, actionComponentId));
+            UIComponent component = null;
+            if (actionComponentId != null){
+                component = findComponentById(viewRoot, actionComponentId);
+            }else{
+                component = viewRoot; 
+            }
+            ActionEvent event = new ActionEvent(component);
             event.setPhaseId(Boolean.valueOf(request.getParameter(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
             methodExpression.invoke(elContext, new Object[]{event});
         }
@@ -782,28 +788,6 @@ public abstract class CommonAjaxViewRoot {
                 Log.log(context, "finish ajaxUpdateModelValues for " + submittedComponent);
             }
         }
-    }
-
-    private void ajaxInvokeApplication(FacesContext context,
-                                       UIViewRoot viewRoot,
-                                       String serverAction,
-                                       String serverActionComponentId) {
-        if (serverAction == null)
-            return;
-
-        if (serverActionComponentId != null) {
-            // this is needed for cases when for example Button in a Table needs to know current row's data during action execution
-            UIComponent component = findComponentById(viewRoot, serverActionComponentId, false, false, false);
-            // component can be null in case when <o:ajax> was bound to an HTML tag with the for attribute
-            Log.log(context, "start ajaxInvokeApplication for " + component);
-        }
-
-        ELContext elContext = context.getELContext();
-        MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
-                elContext, "#{" + serverAction + "}", String.class, new Class[]{});
-        Log.log(context, "start ajaxInvokeApplication for " + methodBinding);
-        methodBinding.invoke(elContext, null);
-        Log.log(context, "finish ajaxInvokeApplication for " + methodBinding);
     }
 
     private void renderPortletsAjaxResponse(FacesContext context) {

@@ -21,13 +21,15 @@ public class FacesUtils {
     private FacesUtils() {
         
     }
-    public static Object getEventParameter(ActionEvent event, String paramName) {
+
+    @SuppressWarnings("unchecked")
+    public static <E> E getEventParameter(ActionEvent event, String paramName) {
         List<UIComponent> children = event.getComponent().getChildren();
         for (UIComponent component : children) {
             if (component instanceof UIParameter) {
                 UIParameter uiParameter = (UIParameter) component;
-                if (paramName.equals(uiParameter.getName())) {
-                    return uiParameter.getValue();
+                if (paramName.equals(uiParameter.getName())) {                    
+                    return (E) uiParameter.getValue();                    
                 }
             }
         }

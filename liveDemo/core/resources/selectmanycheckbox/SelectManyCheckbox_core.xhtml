@@ -1,12 +1,48 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-     >
+        >
 
   <div id="Demo">
-    <div style="text-align: center; font-weight: bold; font-size: 20px;">Construction in progress...</div>    
+    <div style="text-align: center; font-weight: bold; font-size: 20px;">Construction in progress...</div>
   </div>
 
+  <h:panelGroup id="bookList" style="width:350px; float:left;">
+    <o:forEach items="#{BookCatalog.books}" var="book">
+      <h:graphicImage url="../images/selectmanycheckbox/covers/#{book.isbn}.jpg" style="float:left; height:50px"/>
+      <h:outputText value="#{book.title}" style="float:left; width:300px"/>
+      <o:forEach items="#{book.authors}" var="author" style="float:left">
+        <h:outputText value="#{author}; "/>
+      </o:forEach>
+      <h:outputText value="#{book.publisher}, #{book.year}, #{book.pages} pages" style="float:left;  width:300px"/>
+      <o:forEach items="#{book.labels}" var="label" style="float:left" >
+        <h:outputText value="#{label}" style="background-color:orange; margin: 0 5px"/>
+      </o:forEach>
+      <h:commandLink value="..." style="float:left;">
+        <o:ajax render="selectedBookLabelsPanel" listener="#{BookCatalog.selectBook}">
+          <f:param name="isbn" value="#{book.isbn}"/>
+        </o:ajax>
+      </h:commandLink>
+
+      <!--o:selectManyCheckbox value="#{book.labels}" style="float:left;" layout="lineDirection">
+        <f:selectItems value="#{BookCatalog.labelItems}"/>
+      </o:selectManyCheckbox-->
+      <div style="clear:both"></div>
+      <hr/>
+    </o:forEach>
+  </h:panelGroup>
+
+  <h:panelGroup id="selectedBookLabelsPanel" style="float:left;">
+    <o:selectManyCheckbox value="#{BookCatalog.selectedBookLabels}" style="float:left;" layout="pageDirection"
+            rendered="#{BookCatalog.bookSelected}">
+    <f:selectItems id="selectedBookLabels" value="#{BookCatalog.labelItems}"/>
+    </o:selectManyCheckbox>
+    <h:commandButton value="Save" rendered="#{BookCatalog.bookSelected}">
+      <o:ajax render="bookList selectedBookLabelsPanel" execute="selectedBookLabels" listener="#{BookCatalog.saveBookLabels}"/>
+    </h:commandButton>
+  </h:panelGroup>
+
+  <div style="clear:both"></div>
   <div id="Description">
     <h4>Demonstrated Features</h4>
     <ul class="hang">

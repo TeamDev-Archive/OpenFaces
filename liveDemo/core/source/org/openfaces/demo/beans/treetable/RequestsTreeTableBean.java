@@ -11,14 +11,15 @@
  */
 package org.openfaces.demo.beans.treetable;
 
-import org.openfaces.util.FacesUtil;
 import org.openfaces.component.table.AllNodesExpanded;
 import org.openfaces.component.table.ExpansionState;
+import org.openfaces.util.FacesUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class RequestsTreeTableBean implements Serializable {
         columnItems.add(new SelectItem("assignee", "Assignee", null));
 
         selectedColumns = new String[]{"id", "description", "work", "priority", "status", "assignee"};
-        selectColumns();
+        selectColumns(null);
 
         rootRequests.add(createRequest(null, "Some task 1", RequestPriority.NORMAL, 2, RequestStatus.COMPLETED, "User 1", "Worker 1", RequestType.TASK));
         rootRequests.add(createRequest(null, "Some task 2", RequestPriority.NORMAL, 3, RequestStatus.COMPLETED, "User 2", "Worker 1", RequestType.TASK));
@@ -150,7 +151,7 @@ public class RequestsTreeTableBean implements Serializable {
         this.selectedColumns = selectedColumns;
     }
 
-    public void selectColumns() {
+    public void selectColumns(ActionEvent event) {
         requestsColumnsOrder = Arrays.asList(selectedColumns);
     }
 
@@ -172,11 +173,11 @@ public class RequestsTreeTableBean implements Serializable {
         return !thereAreSubrequests;
     }
 
-    public void editRequest() {
+    public void editRequest(ActionEvent event) {
         currentlyEditedRequest = selectedRequests.get(0);
     }
 
-    public void addSubrequest() {
+    public void addSubrequest(ActionEvent event) {
         List<Request> requestList = getFirstSelectedRequest().getSubrequests();
         if (requestList == null) {
             requestList = new ArrayList<Request>();
@@ -185,7 +186,7 @@ public class RequestsTreeTableBean implements Serializable {
         addNewRequest(requestList);
     }
 
-    public void addRequest() {
+    public void addRequest(ActionEvent event) {
         List<Request> requestList = selectedRequests != null && selectedRequests.size() > 0 && getFirstSelectedRequest().getParentRequest() != null
                 ? getFirstSelectedRequest().getParentRequest().getSubrequests()
                 : rootRequests;
@@ -205,7 +206,7 @@ public class RequestsTreeTableBean implements Serializable {
         currentlyEditedRequest = newRequest;
     }
 
-    public void deleteRequest() {
+    public void deleteRequest(ActionEvent event) {
         Request siblingRequest = null;
         for (int i = 0, count = selectedRequests.size(); i < count; i++) {
             Request selectedRequest = selectedRequests.get(i);
@@ -288,7 +289,7 @@ public class RequestsTreeTableBean implements Serializable {
         return currentlyEditedRequest != null;
     }
 
-    public void saveChanges() {
+    public void saveChanges(ActionEvent event) {
         currentlyEditedRequest = null;
     }
 

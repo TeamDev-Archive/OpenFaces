@@ -18,8 +18,8 @@ import org.openfaces.component.timetable.TimetableChangeEvent;
 import org.openfaces.component.timetable.TimetableEvent;
 import org.openfaces.util.FacesUtil;
 
+import javax.faces.event.ActionEvent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;

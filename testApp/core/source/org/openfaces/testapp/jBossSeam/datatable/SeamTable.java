@@ -15,6 +15,7 @@ package org.openfaces.testapp.jBossSeam.datatable;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
 
 import javax.ejb.Local;
+import javax.faces.event.ActionEvent;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public interface SeamTable {
 
     public void destroy();
 
-    public String sortByForthColumn();
+    public String sortByForthColumn(ActionEvent event);
 
     public List<String> getFilterValues();
 

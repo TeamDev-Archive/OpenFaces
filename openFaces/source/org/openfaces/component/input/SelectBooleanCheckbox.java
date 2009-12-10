@@ -17,11 +17,17 @@ import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
+import java.util.Arrays;
 
 /**
  * @author Roman Porotnikov
  */
 public class SelectBooleanCheckbox extends OUIInputBase {
+
+    public static final String SELECTED_STATE = "selected";
+    public static final String UNSELECTED_STATE = "unselected";
+    public static final String UNDEFINED_STATE = "undefined";
+    public static final Iterable<String> DAFAULT_STATE_LIST = Arrays.asList(SELECTED_STATE, UNSELECTED_STATE);
 
     /**
      * This enumeration is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
@@ -36,6 +42,11 @@ public class SelectBooleanCheckbox extends OUIInputBase {
 
     public SelectBooleanCheckbox() {
         setRendererType("org.openfaces.SelectBooleanCheckboxRenderer");
+    }
+
+    @Override
+    public void setSubmittedValue(Object submittedValue) {
+        super.setSubmittedValue(submittedValue);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     public String getFamily() {
@@ -130,7 +141,7 @@ public class SelectBooleanCheckbox extends OUIInputBase {
         this.triStateAllowed = triStateAllowed;
     }
 
-     public void setStateList(Iterable<String> stateList) {
+    public void setStateList(Iterable<String> stateList) {
         this.stateList = stateList;
     }
 
@@ -373,6 +384,7 @@ public class SelectBooleanCheckbox extends OUIInputBase {
 
     @Override
     protected Object getConvertedValue(FacesContext context, Object newSubmittedValue) throws ConverterException {
+        System.out.println("SelectBooleanCheckbox.getConvertedValue");
         BooleanObjectValue booleanObjectValue = (BooleanObjectValue) newSubmittedValue;
 
         switch (booleanObjectValue) {

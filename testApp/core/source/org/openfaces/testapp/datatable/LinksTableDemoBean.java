@@ -13,6 +13,7 @@ package org.openfaces.testapp.datatable;
 
 import org.openfaces.component.table.DataTable;
 
+import javax.faces.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -63,7 +64,7 @@ public class LinksTableDemoBean {
         return editedLinks != null;
     }
 
-    public String editLinks() {
+    public String editLinks(ActionEvent event) {
         editedLinks = new ArrayList(links.size());
         for (Object myLink : links) {
             LinkData linkData = (LinkData) myLink;
@@ -72,7 +73,7 @@ public class LinksTableDemoBean {
         return "";
     }
 
-    public String saveEditedLinks() {
+    public String saveEditedLinks(ActionEvent event) {
         saveAllLinks();
         links = editedLinks;
         editedLinks = null;
@@ -100,14 +101,14 @@ public class LinksTableDemoBean {
     }
 
 
-    public String cancelEditedLinks() {
+    public String cancelEditedLinks(ActionEvent event) {
         cancelAllLinks();
 
         editedLinks = null;
         return "";
     }
 
-    public String removeLink() {
+    public String removeLink(ActionEvent event) {
         int rowIndex = linksDataTable.getRowIndex();
         editedLinks.remove(rowIndex);
         return "";
@@ -148,7 +149,7 @@ public class LinksTableDemoBean {
         return linkData;
     }
 
-    public String addLink() {
+    public String addLink(ActionEvent event) {
         if (editedLinks == null)
             throw new IllegalStateException();
         LinkData linkData = new LinkData();
@@ -157,7 +158,7 @@ public class LinksTableDemoBean {
         return "";
     }
 
-    public String editLink() {
+    public String editLink(ActionEvent event) {
         if (editedLinks == null)
             throw new IllegalStateException("Not in editing state");
         LinkData currentLink = getCurrentLink();
@@ -166,7 +167,7 @@ public class LinksTableDemoBean {
         return "";
     }
 
-    public String saveLink() {
+    public String saveLink(ActionEvent event) {
         if (editedLinks == null)
             throw new IllegalStateException("Not in editing state");
         LinkData currentLink = getCurrentLink();
@@ -186,7 +187,7 @@ public class LinksTableDemoBean {
         }
     }
 
-    public String cancelLink() {
+    public String cancelLink(ActionEvent event) {
         if (editedLinks == null)
             throw new IllegalStateException("Not in editing state");
         LinkData currentLink = getCurrentLink();

@@ -1,14 +1,32 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
+     xmlns:c="http://java.sun.com/jsp/jstl/core"
      >
 
   <div id="Demo">
     <div style="text-align: center; font-weight: bold; font-size: 20px;">Construction in progress...</div>
-    <h:outputText id="playing" value="Now playing: #{TrackList.playing}"/>
-    <o:selectOneRadio id="radio" value="#{TrackList.playing}" converter="#{TrackList.trackConverter}" layout="pageDirection">
+
+    <h:panelGroup id="header">      
+      <h:graphicImage url="../images/selectoneradio/#{TrackList.playing != null?'soundwawe-live.gif':'soundwawe-still.gif'}"/>
+      <h:panelGroup rendered="#{TrackList.playing != null}">
+        <h:graphicImage url="../images/selectoneradio/covers/#{TrackList.playing.coverImageFileName}"/>
+        <h:outputText id="playingAlbumName" value="#{TrackList.playing.albumName}"/>
+        <h:outputText id="playingTrack" value="#{TrackList.playing.artist} — #{TrackList.playing.title}"/>
+      </h:panelGroup>
+    </h:panelGroup>
+    <o:selectOneRadio id="radio" value="#{TrackList.playing}" converter="#{TrackList.trackConverter}"
+                      layout="pageDirection"
+                      unselectedImageUrl="../images/selectoneradio/regular.png"
+                      rolloverUnselectedImageUrl="../images/selectoneradio/rollover.png"
+                      selectedItemStyle="font-weigth: bold;"
+                      selectedImageUrl="../images/selectoneradio/playing.png"
+                      disabledSelectedImageUrl="../images/selectoneradio/playing.png"
+                      disabledUnselectedImageUrl="../images/selectoneradio/regular.png"
+                      pressedUnselectedImageUrl="../images/selectoneradio/pressed.png"
+            >
       <f:selectItems value="#{TrackList.trackListItems}"/>
-      <o:ajax render="playing" event="change"/>
+      <o:ajax render="header" event="change"/>
     </o:selectOneRadio>
   </div>
   Audio Effects:

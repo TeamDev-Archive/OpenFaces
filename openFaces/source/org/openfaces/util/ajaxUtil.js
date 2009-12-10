@@ -251,7 +251,7 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
  * onajaxstart -
  * immediate -
  * customJsonParam -
- * actionListener - (optional) server action in the form of EL, which should be executed during this ajax request
+ * listener - (optional) server action in the form of EL, which should be executed during this ajax request
  * actionComponent - (optional) client id of a component from which this action is initiated (e.g. actual for a button in a table which needs current row's data in the action)
  *
  */
@@ -350,8 +350,10 @@ O$.sendAjaxRequest = function(render, args) {
       paramsBuf.append(paramEntry[0]).append("=").append(paramEntry[1]);
     }
   }
-  if (args.actionListener && args.actionComponent) {
-    paramsBuf.append("&").append(O$.ACTION_LISTENER).append("=").append(args.actionListener);
+  if (args.listener) {
+    paramsBuf.append("&").append(O$.ACTION_LISTENER).append("=").append(args.listener);
+  }
+  if (args.actionComponent) {
     paramsBuf.append("&").append(O$.ACTION_COMPONENT).append("=").append(args.actionComponent);
   }
   if (args.immediate) {

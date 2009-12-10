@@ -13,6 +13,10 @@ package org.openfaces.renderkit.input;
 
 import org.openfaces.component.input.SelectBooleanCheckbox;
 import org.openfaces.component.input.SelectBooleanCheckbox.BooleanObjectValue;
+import static org.openfaces.component.input.SelectBooleanCheckbox.DAFAULT_STATE_LIST;
+import static org.openfaces.component.input.SelectBooleanCheckbox.SELECTED_STATE;
+import static org.openfaces.component.input.SelectBooleanCheckbox.UNDEFINED_STATE;
+import static org.openfaces.component.input.SelectBooleanCheckbox.UNSELECTED_STATE;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
@@ -31,7 +35,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -42,12 +45,6 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
     private static final String TAG_NAME = "input";
 
     private static final String STATE_SUFFIX = "::state";
-
-    private static final String SELECTED_STATE = "selected";
-    private static final String UNSELECTED_STATE = "unselected";
-    private static final String UNDEFINED_STATE = "undefined";
-
-    private static final Iterable<String> DAFAULT_STATE_LIST = Arrays.asList(SELECTED_STATE, UNSELECTED_STATE);
 
     private static final String PLAIN_EFFECT = "plain";
     private static final String ROLLOVER_EFFECT = "rollover";
@@ -317,8 +314,11 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         );
 
         RenderingUtil.renderInitScript(facesContext, initScript,
-                ResourceUtil.getUtilJsURL(facesContext),
-                ResourceUtil.getInternalResourceURL(facesContext, SelectBooleanCheckboxRenderer.class, "checkbox.js"));
+                new String[]{
+                        ResourceUtil.getUtilJsURL(facesContext),
+                        ResourceUtil.getInternalResourceURL(facesContext, SelectBooleanCheckboxRenderer.class, "checkbox.js")
+                }
+        );
     }
 
 }

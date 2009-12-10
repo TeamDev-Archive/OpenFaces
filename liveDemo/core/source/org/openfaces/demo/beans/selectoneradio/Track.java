@@ -18,16 +18,28 @@ package org.openfaces.demo.beans.selectoneradio;
 public class Track {
 
     private int number;
-    private String writer;
+    //private String writer;
+    private String artist;
     private String title;
-    private String length;
+    //private String length;
+    private String albumName;
+    private String coverImageFileName;
 
-    public Track(int number, String writer, String title, String length) {
+
+    public Track(int number, String artist, String title, String albumName, String coverImageFileName) {
+        this.number = number;
+        this.artist = artist;
+        this.title = title;
+        this.albumName = albumName;
+        this.coverImageFileName = coverImageFileName;
+    }
+
+    /*public Track(int number, String writer, String title, String length) {
         this.number = number;
         this.writer = writer;
         this.title = title;
         this.length = length;
-    }
+    }*/
 
     public int getNumber() {
         return number;
@@ -37,12 +49,20 @@ public class Track {
         this.number = number;
     }
 
-    public String getWriter() {
+    /*public String getWriter() {
         return writer;
     }
 
     public void setWriter(String writer) {
         this.writer = writer;
+    }*/
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
     public String getTitle() {
@@ -53,17 +73,31 @@ public class Track {
         this.title = title;
     }
 
-    public String getLength() {
+    /*public String getLength() {
         return length;
     }
 
     public void setLength(String length) {
         this.length = length;
+    }*/
+
+    public String getAlbumName() {
+        return albumName;
     }
 
+    public String getCoverImageFileName() {
+        return coverImageFileName;
+    }
+
+    public void setCoverImageFileName(String coverImageFileName) {
+        this.coverImageFileName = coverImageFileName;
+    }    
 
     @Override
     public String toString() {
-        return new StringBuilder().append(getWriter()).append(" - ").append(getTitle()).append(" (").append(getLength()).append(")").toString();
+        /*return new StringBuilder().append(getWriter()).append(" — ")
+                .append(getTitle()).append(" (").append(getLength()).append(")").toString();*/
+        return new StringBuilder().append(getTitle()).append(" — ")
+                .append(getArtist()).append(" (").append(getAlbumName()).append(")").toString();
     }
 }

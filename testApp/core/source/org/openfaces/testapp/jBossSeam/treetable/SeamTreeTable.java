@@ -15,6 +15,7 @@ package org.openfaces.testapp.jBossSeam.treetable;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.table.ExpansionState;
 
+import javax.faces.event.ActionEvent;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public interface SeamTreeTable {
 
     public void setFilterValue(ExpressionFilterCriterion filterValue);
 
-    public String sortByFirstColumn();
+    public String sortByFirstColumn(ActionEvent event);
 
     public TreeTableItem getSingleSelectionItem();
 

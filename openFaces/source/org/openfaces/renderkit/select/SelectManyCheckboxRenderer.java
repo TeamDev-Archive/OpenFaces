@@ -25,10 +25,9 @@ import org.openfaces.util.ScriptBuilder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -159,14 +158,18 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
 
         if (requestMap.containsKey(clientId)) {
             String[] requestValues = requestMap.get(clientId);
-            selectManyCheckbox.setSubmittedValue(Arrays.asList(requestValues));
+            selectManyCheckbox.setSubmittedValue(requestValues);
         } else {
-            selectManyCheckbox.setSubmittedValue(new ArrayList<String>());
-        }
-        if (selectManyCheckbox.getValue() == null) {
-            selectManyCheckbox.setValue(new ArrayList<String>());
+            selectManyCheckbox.setSubmittedValue(new String[0]);
         }
     }
+
+    @Override
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+        SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) component;
+        return RenderingUtil.getConvertedUISelectManyValue(context, selectManyCheckbox, submittedValue);
+    }
+
 
     protected void renderInitScript(FacesContext facesContext, OUISelectManyInputBase selectManyInputBase,
                                     JSONObject imagesObj, JSONObject stylesObj,

@@ -34,6 +34,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.faces.event.ActionEvent;
 
 /**
  * @author Tatyana Matveyeva
@@ -127,7 +128,7 @@ public class SeamTreeTableBean implements Serializable, SeamTreeTable {
         this.multipleSelectionItems = multipleSelectionItems;
     }
 
-    public String sortByFirstColumn() {
+    public String sortByFirstColumn(ActionEvent event) {
         seamtesttree.getTreeTable().setSortColumnId("subject");
         seamtesttree.getTreeTable().setSortAscending(false);
         return null;

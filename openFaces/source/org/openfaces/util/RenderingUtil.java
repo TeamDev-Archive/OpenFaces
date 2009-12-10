@@ -33,7 +33,7 @@ import javax.faces.application.Application;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
-import javax.faces.component.UISelectMany;
+import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
@@ -423,7 +423,7 @@ public class RenderingUtil {
      * @throws ConverterException if submittedValue is not a String array
      */
     public static Object getConvertedUISelectManyValue(FacesContext context,
-                                                       UISelectMany selectMany,
+                                                       UIInput selectMany,
                                                        Object submittedValue)
             throws ConverterException {
         if (submittedValue == null) {
@@ -438,7 +438,7 @@ public class RenderingUtil {
     }
 
     private static Object getConvertedUISelectManyValue(FacesContext context,
-                                                        UISelectMany component,
+                                                        UIInput component,
                                                         String[] submittedValue) {
         // Attention!
         // This code is duplicated in jsfapi component package.

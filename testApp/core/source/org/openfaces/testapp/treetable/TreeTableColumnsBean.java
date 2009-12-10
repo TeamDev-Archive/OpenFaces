@@ -12,10 +12,11 @@
 
 package org.openfaces.testapp.treetable;
 
-import org.openfaces.util.FacesUtil;
 import org.openfaces.component.table.FilterKind;
 import org.openfaces.component.table.TreePath;
+import org.openfaces.util.FacesUtil;
 
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -116,7 +117,7 @@ public class TreeTableColumnsBean {
         return usedColumns;
     }
 
-    public void updateColumnsList() {
+    public void updateColumnsList(ActionEvent event) {
         dynamicColumns = new ArrayList<String>();
         for (String mySelectedColumn : selectedColumns) {
             dynamicColumns.add(mySelectedColumn);

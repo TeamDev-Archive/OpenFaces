@@ -31,7 +31,13 @@ public class TrackList {
     private List<Track> getTrackList() {
         if (trackList == null){
              trackList = Arrays.asList(
-                new Track(1, "Vivaldi", "Four seasons - Summer", "3:14"),
+                 new Track(1, "Lady Gaga", "Alejandro", "The Frame Monster", "gaga.png"),
+                 new Track(2, "NOHA", "Bas From Above", "Dive In Your Life", "noha.png"),
+                 new Track(3, "Madonna", "Celebration", "Celebration", "madonna.png"),
+                 new Track(4, "Katy Perry", "Hot n Cold", "One of the Boys", "perry.png"),
+                 new Track(5, "Elbow", "The Bones Of You", "The Seldom Seen Kid", "elbow.png"),
+                 new Track(6, "AC/DC", "War Machine", "Black Ice", "acdc.png")
+               /* new Track(1, "Vivaldi", "Four seasons - Summer", "3:14"),
                 new Track(2, "Grieg", "The morning", "4:02"),
                 new Track(3, "Bach", "Air", "4:18"),
                 new Track(4, "Tchaikovsky", "Andante", "4:22"),
@@ -68,7 +74,7 @@ public class TrackList {
                 new Track(35, "Goya", "Fantasie", "4:19"),
                 new Track(36, "Steiner", "Solle", "3:32"),
                 new Track(37, "Bach", "Presto", "3:25"),
-                new Track(38, "Strauss", "Valse", "3:32")
+                new Track(38, "Strauss", "Valse", "3:32") */
         );
         }
         return trackList;
@@ -97,7 +103,7 @@ public class TrackList {
         return playing;
     }
 
-    public void setPlaying(Track playing) {
+    public void setPlaying(Track playing) {       
         this.playing = playing;
     }
 

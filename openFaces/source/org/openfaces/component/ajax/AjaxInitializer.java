@@ -125,15 +125,6 @@ public class AjaxInitializer {
             if (onerror != null && onerror.length() != 0) {
                 result.put("onerror", new AnonymousFunction(onerror, "event"));
             }
-
-            ValueExpression action = ajax.getValueExpression("action");
-            if (action != null) {
-                String actionExpressionString = action.getExpressionString();
-                validateExpressionString(actionExpressionString);
-                result.put("action", actionExpressionString.substring(
-                        EXPRESSION_PREFIX.length(), actionExpressionString.length() - EXPRESSION_SUFFIX.length()));
-                result.put("actionSourceId", getActionSourceIdParam(context, ajax));
-            }
             int delay = ajax.getDelay();
             if (delay > 0) {
                 result.put("delay", delay);
@@ -143,7 +134,7 @@ public class AjaxInitializer {
             if (actionListener != null) {
                 String actionListenerExpressionString = actionListener.getExpressionString();
                 validateExpressionString(actionListenerExpressionString);
-                result.put("actionListener", actionListenerExpressionString.substring(EXPRESSION_PREFIX.length(),
+                result.put("listener", actionListenerExpressionString.substring(EXPRESSION_PREFIX.length(),
                         actionListenerExpressionString.length() - EXPRESSION_SUFFIX.length()));
                 result.put("actionComponent", getAjaxComponentParam(context, ajax));
             }

@@ -12,9 +12,33 @@
     <h:outputLabel for="triStateCheckbox" value="Tri-state checkbox"/>
     <br/>
     <br/>
-    <c:set var="state1" value="selected, unselected"/>
-    <c:set var="state2" value="selected, undefined"/>
+    <c:set var="defaultStateList" value="selected, unselected"/>
+    <c:set var="dependentStateList" value="selected, undefined"/>
+
     <h:panelGroup id="permissionsTable">
+      <o:forEach items="#{PermissionSchema.permissions}" var="permission">
+        <o:selectBooleanCheckbox triStateAllowed="true"
+                                 value="#{PermissionSchema.permissionsAssignment['USER'][permission].state}"
+                                 stateList="#{PermissionSchema.permissionsAssignment['USER'][permission].dependent ? defaultStateList : dependentStateList}">
+          <o:ajax event="change" render="permissionsTable"/>
+        </o:selectBooleanCheckbox>
+        <h:outputText value="!" rendered="#{PermissionSchema.permissionsAssignment['USER'][permission].dependent}"/>
+        <o:selectBooleanCheckbox triStateAllowed="true"
+                                 value="#{PermissionSchema.permissionsAssignment['ANONYMOUS'][permission].state}"
+                                 stateList="#{PermissionSchema.permissionsAssignment['USER'][permission].dependent ? defaultStateList : dependentStateList}">
+          <o:ajax event="change" render="permissionsTable"/>
+        </o:selectBooleanCheckbox>
+        <o:selectBooleanCheckbox triStateAllowed="true"
+                                 value="#{PermissionSchema.permissionsAssignment['ADMINISTRATOR'][permission].state}"
+                                 stateList="#{PermissionSchema.permissionsAssignment['USER'][permission].dependent ? defaultStateList : dependentStateList}">
+          <o:ajax event="change" render="permissionsTable"/>
+        </o:selectBooleanCheckbox>
+        <br/>
+      </o:forEach>
+    </h:panelGroup>
+
+
+    <!--h:panelGroup id="permissionsTable">
     <o:dataTable value="#{PermissionSchema.permissions}" var="permission">
       <o:column>
         <h:outputText value="#{permission.label}"/>
@@ -30,9 +54,9 @@
         </o:selectBooleanCheckbox>
       </o:columns>
     </o:dataTable>
-    </h:panelGroup>
+    </h:panelGroup->
 
-    <!--o:forEach id="permissionsTable" items="#{PermissionSchema.permissions}" var="permission"
+    <!-o:forEach id="permissionsTable" items="#{PermissionSchema.permissions}" var="permission"
                statusVar="permissionStatus">
       <o:forEach items="#{PermissionSchema.permissionGroups}" var="group" rendered="#{permissionStatus.first}">
         <h:outputText value="#{group}"/>

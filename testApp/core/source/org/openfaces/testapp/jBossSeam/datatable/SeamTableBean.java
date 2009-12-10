@@ -32,6 +32,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.faces.event.ActionEvent;
 
 /**
  * @author Tatyana Matveyeva
@@ -72,7 +73,7 @@ public class SeamTableBean implements Serializable, SeamTable {
         itemsList = em.createQuery("select row from DataTableItem row").getResultList();
     }
 
-    public String sortByForthColumn() {
+    public String sortByForthColumn(ActionEvent event) {
         seamtesttable.getDataTable().setSortColumnId("col4");
         seamtesttable.getDataTable().setSortAscending(false);
         return null;

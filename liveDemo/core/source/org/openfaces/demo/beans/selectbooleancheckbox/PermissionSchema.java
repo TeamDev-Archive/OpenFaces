@@ -12,6 +12,9 @@
 
 package org.openfaces.demo.beans.selectbooleancheckbox;
 
+import org.openfaces.component.input.SelectBooleanCheckbox;
+
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -31,14 +34,30 @@ public class PermissionSchema {
             permissionsAssignment = new HashMap<PermissionGroup, Map<Permission, State>>() {
                 @Override
                 public Map<Permission, State> get(final Object key) {
-                    PermissionGroup permissionGroup = (PermissionGroup) key;
+                    if (key == null) {
+                        return null;
+                    }
+                    final PermissionGroup permissionGroup;
+                    if (key instanceof PermissionGroup) {
+                        permissionGroup = (PermissionGroup) key;
+                    } else {
+                        permissionGroup = PermissionGroup.valueOf(key.toString());
+                    }
                     Map<Permission, State> value = super.get(permissionGroup);
                     if (value == null) {
                         value = new HashMap<Permission, State>() {
 
                             @Override
                             public State get(Object key) {
-                                final Permission permission = (Permission) key;
+                                if (key == null){
+                                    return null;
+                                }
+                                final Permission permission;
+                                if (key instanceof Permission){
+                                    permission = (Permission) key;
+                                }else{
+                                    permission = Permission.valueOf(key.toString());
+                                }
                                 State result = super.get(permission);
                                 if (result == null) {
                                     result = new State() {
@@ -48,7 +67,7 @@ public class PermissionSchema {
                                             System.out.println("PermissionSchema.setState");
                                             if (state != null) {
                                                 Collection<Permission> dependendPermissions = permission.getDependend();
-                                                for (Permission dependendPermission : dependendPermissions) {
+                                                for (Permission dependendPermission : dependendPermissions) {                                                    
                                                     get(dependendPermission).setDependent(state);
                                                 }
                                             }
@@ -157,4 +176,12 @@ public class PermissionSchema {
 
     }
     */
+
+    public Iterable<String> getDefaultStateList(){
+        return SelectBooleanCheckbox.DAFAULT_STATE_LIST;
+    }
+
+    public Iterable<String> getDependentStateList(){
+        return Arrays.asList(SelectBooleanCheckbox.SELECTED_STATE, SelectBooleanCheckbox.UNDEFINED_STATE);
+    }
 }

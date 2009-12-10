@@ -25,6 +25,7 @@ import org.openfaces.util.ScriptBuilder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import java.io.IOException;
 import java.util.List;
@@ -175,6 +176,11 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
     private boolean isValueEquals(SelectOneRadio selectOneRadio, SelectItem selectItem) {
         return selectOneRadio.getValue() != null &&
                 selectOneRadio.getValue().equals(selectItem.getValue());
+    }
+
+    @Override
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+        return RenderingUtil.convertFromString(context, component, (String) submittedValue);
     }
 
 }

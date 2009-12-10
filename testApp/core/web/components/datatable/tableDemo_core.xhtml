@@ -27,21 +27,21 @@
     </h:panelGrid>
   </o:column>
   <o:column rendered="#{LinksTableDemoBean.editingLinks}">
-    <h:commandButton id="editRowBtn" value="Edit" onclick="O$.ajaxReload(['form1:linkTable'], {action: 'LinksTableDemo.editLink'}); return false;"
+    <h:commandButton id="editRowBtn" value="Edit" onclick="O$.ajaxReload(['form1:linkTable'], {listener: 'LinksTableDemo.editLink'}); return false;"
                      rendered="#{!LinksTableDemoBean.addingOrEditingLink}"/>
-    <h:commandButton id="removeRowBtn" value="Remove" onclick="O$.ajaxReload(['form1:linkTable'], {action: 'LinksTableDemo.removeLink'}); return false;"
+    <h:commandButton id="removeRowBtn" value="Remove" onclick="O$.ajaxReload(['form1:linkTable'], {listener: 'LinksTableDemo.removeLink'}); return false;"
                      rendered="#{!LinksTableDemoBean.addingOrEditingLink}"/>
-    <h:commandButton id="saveRowBtn" value="Save" onclick="O$.ajaxReload(['form1:linkTable'], {action: 'LinksTableDemo.saveLink'}); return false;"
+    <h:commandButton id="saveRowBtn" value="Save" onclick="O$.ajaxReload(['form1:linkTable'], {listener: 'LinksTableDemo.saveLink'}); return false;"
                      rendered="#{LinksTableDemoBean.addingOrEditingLink}"/>
-    <h:commandButton id="cancelRowBtn" value="Cancel" onclick="O$.ajaxReload(['form1:linkTable'], {action: 'LinksTableDemo.cancelLink'}); return false;"
+    <h:commandButton id="cancelRowBtn" value="Cancel" onclick="O$.ajaxReload(['form1:linkTable'], {listener: 'LinksTableDemo.cancelLink'}); return false;"
                      rendered="#{LinksTableDemoBean.addingOrEditingLink}"/>
   </o:column>
   <f:facet name="below">
     <h:panelGroup id="linkTableButtons">
-      <h:commandButton value="Edit" onclick="O$.ajaxReload(['form1:linkTable'], {action: 'LinksTableDemo.editLinks'}); return false;" rendered="#{!LinksTableDemoBean.editingLinks}"/>
-      <h:commandButton value="Add" onclick="O$.ajaxReload(['form1:linkTable'], {action: 'LinksTableDemo.addLink'}); return false;" rendered="#{LinksTableDemoBean.editingLinks}"/>
-      <h:commandButton value="Save" onclick="O$.ajaxReload(['form1:linkTable'], {action: 'LinksTableDemo.saveEditedLinks'}); return false;" rendered="#{LinksTableDemoBean.editingLinks}"/>
-      <h:commandButton value="Cancel" onclick="O$.ajaxReload(['form1:linkTable'], {action: 'LinksTableDemo.cancelEditedLinks'}); return false;" rendered="#{LinksTableDemoBean.editingLinks}"/>
+      <h:commandButton value="Edit" onclick="O$.ajaxReload(['form1:linkTable'], {listener: 'LinksTableDemo.editLinks'}); return false;" rendered="#{!LinksTableDemoBean.editingLinks}"/>
+      <h:commandButton value="Add" onclick="O$.ajaxReload(['form1:linkTable'], {listener: 'LinksTableDemo.addLink'}); return false;" rendered="#{LinksTableDemoBean.editingLinks}"/>
+      <h:commandButton value="Save" onclick="O$.ajaxReload(['form1:linkTable'], {listener: 'LinksTableDemo.saveEditedLinks'}); return false;" rendered="#{LinksTableDemoBean.editingLinks}"/>
+      <h:commandButton value="Cancel" onclick="O$.ajaxReload(['form1:linkTable'], {listener: 'LinksTableDemo.cancelEditedLinks'}); return false;" rendered="#{LinksTableDemoBean.editingLinks}"/>
     </h:panelGroup>
   </f:facet>
 </o:dataTable>

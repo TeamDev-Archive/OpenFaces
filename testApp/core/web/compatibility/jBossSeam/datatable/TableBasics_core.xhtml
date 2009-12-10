@@ -67,7 +67,7 @@
                  onclick="O$.ajaxReload(['form1:table'], {execute: ['form1:table']});return false;"/>
 <br/>
 <h:commandButton value="Sort by forth column Ajax"
-                 onclick="O$.ajaxReload(['form1:table'], {execute: ['form1:table'], action: 'seamTable.sortByForthColumn'});return false;"/>
+                 onclick="O$.ajaxReload(['form1:table'], {execute: ['form1:table'], listener: 'seamTable.sortByForthColumn'});return false;"/>
 <br/>
 <h:commandButton value="Sort by forth column server" action="#{seamTable.sortByForthColumn}"/>
 <hr/>
