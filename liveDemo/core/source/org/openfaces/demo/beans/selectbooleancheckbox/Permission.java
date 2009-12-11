@@ -34,11 +34,11 @@ public enum Permission {
     REMOVE_COMMENTS("Remove Comments", ADD_COMMENTS);
 
     private String label;
-    private Collection<Permission> dependend;
+    private Collection<Permission> dependent;
 
-    Permission(String label, Permission... dependend) {
+    Permission(String label, Permission... dependent) {
         this.label = label;
-        this.dependend = Arrays.asList(dependend);
+        this.dependent = Arrays.asList(dependent);
     }
 
     public String getLabel() {
@@ -49,12 +49,12 @@ public enum Permission {
         this.label = label;
     }
 
-    public Collection<Permission> getDependend() {
-        return dependend;
+    public Collection<Permission> getDependent() {
+        return dependent;
     }
 
-    public void setDependend(Collection<Permission> dependend) {
-        this.dependend = dependend;
+    public void setDependent(Collection<Permission> dependent) {
+        this.dependent = dependent;
     }
 
 

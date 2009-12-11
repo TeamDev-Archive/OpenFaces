@@ -273,7 +273,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
     }
 
     protected String getStateFieldValue(SelectBooleanCheckbox checkbox, boolean triStateAllowed) {
-        if (checkbox.isDefined() || triStateAllowed) {
+        if (checkbox.isDefined() || !triStateAllowed) {
             if (checkbox.isSelected()) {
                 return SELECTED_STATE;
             } else {

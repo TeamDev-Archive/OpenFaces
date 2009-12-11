@@ -44,11 +44,6 @@ public class SelectBooleanCheckbox extends OUIInputBase {
         setRendererType("org.openfaces.SelectBooleanCheckboxRenderer");
     }
 
-    @Override
-    public void setSubmittedValue(Object submittedValue) {
-        super.setSubmittedValue(submittedValue);    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -384,7 +379,6 @@ public class SelectBooleanCheckbox extends OUIInputBase {
 
     @Override
     protected Object getConvertedValue(FacesContext context, Object newSubmittedValue) throws ConverterException {
-        System.out.println("SelectBooleanCheckbox.getConvertedValue");
         BooleanObjectValue booleanObjectValue = (BooleanObjectValue) newSubmittedValue;
 
         switch (booleanObjectValue) {

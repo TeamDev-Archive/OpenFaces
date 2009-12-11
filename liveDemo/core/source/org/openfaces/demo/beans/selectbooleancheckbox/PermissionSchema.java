@@ -13,7 +13,9 @@
 package org.openfaces.demo.beans.selectbooleancheckbox;
 
 import org.openfaces.component.input.SelectBooleanCheckbox;
+import org.openfaces.demo.beans.util.FacesUtils;
 
+import javax.faces.event.ActionEvent;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -23,7 +25,7 @@ import java.util.Map;
 public class PermissionSchema {
 
     public PermissionSchema() {
-        setAssigned(Permission.EDIT_ANY_POST, PermissionGroup.USER, true);        
+        setAssigned(Permission.EDIT_ANY_POST, PermissionGroup.USER, true);
     }
 
     private Map<PermissionGroup, Map<Permission, State>> permissionsAssignment;
@@ -31,67 +33,7 @@ public class PermissionSchema {
 
     public Map<PermissionGroup, Map<Permission, State>> getPermissionsAssignment() {
         if (permissionsAssignment == null) {
-            permissionsAssignment = new HashMap<PermissionGroup, Map<Permission, State>>() {
-                @Override
-                public Map<Permission, State> get(final Object key) {
-                    if (key == null) {
-                        return null;
-                    }
-                    final PermissionGroup permissionGroup;
-                    if (key instanceof PermissionGroup) {
-                        permissionGroup = (PermissionGroup) key;
-                    } else {
-                        permissionGroup = PermissionGroup.valueOf(key.toString());
-                    }
-                    Map<Permission, State> value = super.get(permissionGroup);
-                    if (value == null) {
-                        value = new HashMap<Permission, State>() {
-
-                            @Override
-                            public State get(Object key) {
-                                if (key == null){
-                                    return null;
-                                }
-                                final Permission permission;
-                                if (key instanceof Permission){
-                                    permission = (Permission) key;
-                                }else{
-                                    permission = Permission.valueOf(key.toString());
-                                }
-                                State result = super.get(permission);
-                                if (result == null) {
-                                    result = new State() {
-                                        @Override
-                                        public void setState(Boolean state) {
-                                            super.setState(state);
-                                            System.out.println("PermissionSchema.setState");
-                                            if (state != null) {
-                                                Collection<Permission> dependendPermissions = permission.getDependend();
-                                                for (Permission dependendPermission : dependendPermissions) {                                                    
-                                                    get(dependendPermission).setDependent(state);
-                                                }
-                                            }
-                                        }
-
-                                        @Override
-                                        public void setDependent(boolean dependent) {
-                                            super.setDependent(dependent);
-                                                Collection<Permission> dependendPermissions = permission.getDependend();
-                                                for (Permission dependendPermission : dependendPermissions) {
-                                                    get(dependendPermission).setDependent(dependent);
-                                                }
-                                        }
-                                    };
-                                    super.put(permission, result);
-                                }
-                                return result;
-                            }
-                        };
-                        super.put(permissionGroup, value);
-                    }
-                    return value;
-                }
-            };
+            permissionsAssignment = new PermissionAssigmnent();
         }
         return permissionsAssignment;
     }
@@ -109,13 +51,87 @@ public class PermissionSchema {
         return state == null || state;
     }
 
-    public void setAssigned(Permission permission, PermissionGroup permissionGroup, Boolean state){
+    public void setAssigned(Permission permission, PermissionGroup permissionGroup, Boolean state) {
         getPermissionsAssignment().get(permissionGroup).get(permission).setState(state);
     }
 
+
+    private class PermissionAssigmnent extends HashMap<PermissionGroup, Map<Permission, State>> {
+        @Override
+        public Map<Permission, State> get(final Object key) {
+            if (key == null) {
+                return null;
+            }
+            final PermissionGroup permissionGroup;
+            if (key instanceof PermissionGroup) {
+                permissionGroup = (PermissionGroup) key;
+            } else {
+                permissionGroup = PermissionGroup.valueOf(key.toString());
+            }
+            Map<Permission, State> value = super.get(permissionGroup);
+            if (value == null) {
+                value = new HashMap<Permission, State>() {
+
+                    @Override
+                    public State get(Object key) {
+                        if (key == null) {
+                            return null;
+                        }
+                        final Permission permission;
+                        if (key instanceof Permission) {
+                            permission = (Permission) key;
+                        } else {
+                            permission = Permission.valueOf(key.toString());
+                        }
+                        State result = super.get(permission);
+                        if (result == null) {
+                            result = new State() {
+                                @Override
+                                public void setState(Boolean state) {
+                                    super.setState(state);
+                                    if (state != null) {
+                                        Collection<Permission> dependendPermissions = permission.getDependent();
+                                        for (Permission dependendPermission : dependendPermissions) {
+                                            get(dependendPermission).setDependent(state);
+                                        }
+                                        Collection<PermissionGroup> dependentPermissionGroups = permissionGroup.getDependent();
+                                        for (PermissionGroup dependendPermissionGroup : dependentPermissionGroups) {
+                                            PermissionAssigmnent.this.get(dependendPermissionGroup).get(permission).setDependent(state);
+                                        }
+
+                                    }
+                                }
+
+                                @Override
+                                public void setDependent(boolean dependent) {
+
+                                    super.setDependent(dependent);
+                                    Collection<Permission> dependendPermissions = permission.getDependent();
+                                    for (Permission dependendPermission : dependendPermissions) {
+                                        get(dependendPermission).setDependent(dependent);
+                                    }
+                                    Collection<PermissionGroup> dependentPermissionGroups = permissionGroup.getDependent();
+                                    for (PermissionGroup dependendPermissionGroup : dependentPermissionGroups) {
+                                        PermissionAssigmnent.this.get(dependendPermissionGroup).get(permission).setDependent(dependent);
+                                    }
+                                }
+                            };
+                            super.put(permission, result);
+                        }
+                        return result;
+                    }
+                };
+                super.put(permissionGroup, value);
+            }
+            return value;
+        }
+    }
+
     public class State {
+
         private Boolean state = false;
-        private boolean dependent = false;
+        private Boolean outputState = false;
+        private int dependent = 0;
 
         public Boolean getState() {
             return state;
@@ -125,63 +141,60 @@ public class PermissionSchema {
             this.state = state;
         }
 
+        public Boolean getOutputState() {
+            return state;
+        }
+
+        public void setOutputState(Boolean outputState) {
+            this.outputState = outputState;
+        }
+
+        private void submitState() {
+            setState(outputState);
+        }
+
         public boolean isDependent() {
-            return dependent;
+            return dependent != 0;
         }
 
         public void setDependent(boolean dependent) {
-            if (this.dependent != dependent) {
-                this.dependent = dependent;
-                if (!dependent) {
-                    if (state == null) {
-                        state = false;
-                    }
-                } else {
-                    if (state != null && !state) {
-                        state = null;
-                    }
+
+            if (dependent) {
+                this.dependent++;
+            } else {
+                this.dependent--;
+            }
+            if (!isDependent()) {
+                if (state == null) {
+                    state = false;
+                }
+            } else {
+                if (state != null && !state) {
+                    state = null;
                 }
             }
+
         }
 
     }
 
-/* // todo: commented out to fix compilation
-@Test
-    public void test(){
-        PermissionSchema schema = new PermissionSchema();
-        schema.setAssigned(Permission.EDIT_ANY_POST, PermissionGroup.USER, true);
-        assertTrue(schema.isAssigned(Permission.VIEW_POSTS, PermissionGroup.USER));
-        assertTrue(schema.isAssigned(Permission.CREATE_POSTS, PermissionGroup.USER));
-        assertTrue(schema.isAssigned(Permission.EDIT_ANY_POST, PermissionGroup.USER));
-        assertFalse(schema.isAssigned(Permission.DELETE_ANY_POST, PermissionGroup.USER));
+    public void updateAssignment(ActionEvent event) {
 
-        schema.setAssigned(Permission.EDIT_ANY_POST, PermissionGroup.USER, null);
-        assertTrue(schema.isAssigned(Permission.VIEW_POSTS, PermissionGroup.USER));
-        assertTrue(schema.isAssigned(Permission.CREATE_POSTS, PermissionGroup.USER));
-        assertTrue(schema.isAssigned(Permission.EDIT_ANY_POST, PermissionGroup.USER));
-        assertFalse(schema.isAssigned(Permission.DELETE_ANY_POST, PermissionGroup.USER));
+        String groupString = String.valueOf(FacesUtils.getEventParameter(event, "group"));
+        PermissionGroup permissionGroup = PermissionGroup.valueOf(groupString);
+        String permissionString = String.valueOf(FacesUtils.getEventParameter(event, "permission"));
+        Permission permission = Permission.valueOf(permissionString);
 
-        schema.setAssigned(Permission.CREATE_POSTS, PermissionGroup.USER, null);
-        assertTrue(schema.isAssigned(Permission.VIEW_POSTS, PermissionGroup.USER));
-        assertTrue(schema.isAssigned(Permission.CREATE_POSTS, PermissionGroup.USER));
-        assertTrue(schema.isAssigned(Permission.EDIT_ANY_POST, PermissionGroup.USER));
-        assertFalse(schema.isAssigned(Permission.DELETE_ANY_POST, PermissionGroup.USER));
-
-        schema.setAssigned(Permission.EDIT_ANY_POST, PermissionGroup.USER, false);
-        assertFalse(schema.isAssigned(Permission.VIEW_POSTS, PermissionGroup.USER));
-        assertFalse(schema.isAssigned(Permission.CREATE_POSTS, PermissionGroup.USER));
-        assertFalse(schema.isAssigned(Permission.EDIT_ANY_POST, PermissionGroup.USER));
-        assertFalse(schema.isAssigned(Permission.DELETE_ANY_POST, PermissionGroup.USER));
-
+        getPermissionsAssignment().get(permissionGroup).get(permission).submitState();
     }
-    */
 
-    public Iterable<String> getDefaultStateList(){
+
+    public Iterable<String> getDefaultStateList() {
         return SelectBooleanCheckbox.DAFAULT_STATE_LIST;
     }
 
-    public Iterable<String> getDependentStateList(){
+    public Iterable<String> getDependentStateList() {
         return Arrays.asList(SelectBooleanCheckbox.SELECTED_STATE, SelectBooleanCheckbox.UNDEFINED_STATE);
     }
+
 }

@@ -12,10 +12,37 @@
 
 package org.openfaces.demo.beans.selectbooleancheckbox;
 
+import java.util.Collection;
+import java.util.Arrays;
+
 public enum PermissionGroup {
-    
-    ANONYMOUS,
-    USER,
-    ADMINISTRATOR
+
+    ANONYMOUS("Anonymous"),
+    USER("User", ANONYMOUS),
+    ADMINISTRATOR("Administrator", ANONYMOUS, USER);
+
+    private String label;
+    private Collection<PermissionGroup> dependent;
+
+    PermissionGroup(String label, PermissionGroup... dependent) {
+        this.label = label;
+        this.dependent = Arrays.asList(dependent);
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public Collection<PermissionGroup> getDependent() {
+        return dependent;
+    }
+
+    public void setDependent(Collection<PermissionGroup> dependent) {
+        this.dependent = dependent;
+    }
 
 }
