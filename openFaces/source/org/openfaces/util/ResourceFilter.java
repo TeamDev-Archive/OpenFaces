@@ -105,7 +105,7 @@ public class ResourceFilter implements Filter {
                         exception = (Exception) ((ServletException) exception).getRootCause();
                     }
 
-                    if (exception instanceof ViewExpiredException) {
+                    if (exception instanceof ViewExpiredException && AjaxUtil.isAjaxRequest(RequestFacade.getInstance(servletRequest))) {
                         String requestURI = getDecodedResourcePath((HttpServletRequest) servletRequest);
                         String ajaxParameters;
                         StringBuilder stringBuffer = new StringBuilder();
