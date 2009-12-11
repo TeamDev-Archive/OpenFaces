@@ -20,7 +20,7 @@
 
   <%@ include file="../template/keywords.xhtml" %>
 
-  <title>Select Boolean Checkbox &#8212; OpenFaces Demo</title>
+  <title>Select One Radio &#8212; OpenFaces Demo</title>
   <link rel="stylesheet" href="../design/css/style.css" type="text/css" media="screen,projection"/>
   <link rel="stylesheet" href="../design/css/menu.css" type="text/css" media="screen,projection"/>
   <link rel="stylesheet" href="../design/css/print.css" type="text/css" media="print"/>
