@@ -2,32 +2,41 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
      xmlns:c="http://java.sun.com/jsp/jstl/core"
-     >
+        >
 
   <div id="Demo">
     <div style="text-align: center; font-weight: bold; font-size: 20px;">Construction in progress...</div>
 
-    <h:panelGroup id="header">      
-      <h:graphicImage url="../images/selectoneradio/#{TrackList.playing != null?'soundwawe-live.gif':'soundwawe-still.gif'}"/>
-      <h:panelGroup rendered="#{TrackList.playing != null}">
-        <h:graphicImage url="../images/selectoneradio/covers/#{TrackList.playing.coverImageFileName}"/>
-        <h:outputText id="playingAlbumName" value="#{TrackList.playing.albumName}"/>
-        <h:outputText id="playingTrack" value="#{TrackList.playing.artist} — #{TrackList.playing.title}"/>
+    <h:panelGroup id="header">
+      <h:panelGroup styleClass="demoPlayerBox" layout="block">
+        <h:graphicImage url="../images/selectoneradio/#{TrackList.playing != null?'soundwawe-live.gif':'soundwawe-still.gif'}"/>
+        <h:panelGroup rendered="#{TrackList.playing != null}">
+          <dl>
+            <dt><h:outputText id="playingAlbumName" value="#{TrackList.playing.albumName}"/></dt>
+            <dd><h:outputText id="playingTrack" value="#{TrackList.playing.artist} — #{TrackList.playing.title}"/></dd>
+            <dd class="artwork">
+              <h:graphicImage url="../images/selectoneradio/covers/#{TrackList.playing.coverImageFileName}"/>
+            </dd>
+          </dl>
+        </h:panelGroup>
       </h:panelGroup>
     </h:panelGroup>
-    <o:selectOneRadio id="radio" value="#{TrackList.playing}" converter="#{TrackList.trackConverter}"
-                      layout="pageDirection"
-                      unselectedImageUrl="../images/selectoneradio/regular.png"
-                      rolloverUnselectedImageUrl="../images/selectoneradio/rollover.png"
-                      selectedItemStyle="font-weigth: bold;"
-                      selectedImageUrl="../images/selectoneradio/playing.png"
-                      disabledSelectedImageUrl="../images/selectoneradio/playing.png"
-                      disabledUnselectedImageUrl="../images/selectoneradio/regular.png"
-                      pressedUnselectedImageUrl="../images/selectoneradio/pressed.png"
-            >
-      <f:selectItems value="#{TrackList.trackListItems}"/>
-      <o:ajax render="header" event="change"/>
-    </o:selectOneRadio>
+
+    <div class="demoPlayerControls">
+      <o:selectOneRadio id="radio" value="#{TrackList.playing}" converter="#{TrackList.trackConverter}"
+                        layout="pageDirection"
+                        unselectedImageUrl="../images/selectoneradio/regular.png"
+                        rolloverUnselectedImageUrl="../images/selectoneradio/rollover.png"
+                        selectedItemStyle="font-weigth: bold;"
+                        selectedImageUrl="../images/selectoneradio/playing.png"
+                        disabledSelectedImageUrl="../images/selectoneradio/playing.png"
+                        disabledUnselectedImageUrl="../images/selectoneradio/regular.png"
+                        pressedUnselectedImageUrl="../images/selectoneradio/pressed.png"
+              >
+        <f:selectItems value="#{TrackList.trackListItems}"/>
+        <o:ajax render="header" event="change"/>
+      </o:selectOneRadio>
+    </div>
   </div>
   Audio Effects:
   <o:selectOneRadio layout="pageDirection">

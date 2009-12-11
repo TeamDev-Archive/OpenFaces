@@ -338,3 +338,38 @@ ul.hang li {
   border: none;
   padding-bottom: 5px;
 }
+#Content hr{
+	display:block;
+	border:none;
+	background-color:#ddd;
+	height:1px;
+}
+
+.demoPlayerBox{
+	margin:0 -21px;
+	position:relative;
+}
+
+.demoPlayerBox dl{
+	position:absolute;
+	margin:0;
+	top:37px;
+	left:180px;
+	background:url(../../images/selectoneradio/player-title.png) no-repeat right top;
+	height:37px;
+	padding:10px 15px;
+	line-height:180%;
+}
+.demoPlayerBox dl dt{margin:0; padding:0; font-size:20pt; color:#000; font-weight:bold; text-shadow:#fff 0 1px 0;}
+.demoPlayerBox dl dd{margin:0; padding:0; text-indent:0; font-size:10pt; font-weight:bold; color:#333; text-shadow:#fff 0 1px 0;}
+.demoPlayerBox dl dd.artwork{
+	position:absolute;
+	right:100%;
+	top:0;
+	margin:-3px -5px;
+}
+
+.demoPlayerControls{
+	padding-left:40px;
+}
+.demoPlayerControls input[type=image]{outline:none;}
