@@ -4045,6 +4045,110 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default 0.5 -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>CSS style for the header's area that allows scrolling the area for dragging to make all columns
+        available for reordering even in scrollable tables.
+      </description>
+      <name>autoScrollAreaStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS class name for the header's area that allows scrolling the area for dragging to make all columns
+        available for reordering even in scrollable tables.
+      </description>
+      <name>autoScrollAreaClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies the transparency level for the area that allows horizontal scrolling during column
+        reordering.
+      </description>
+      <name>autoScrollAreaTransparency</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.5 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS style for for the area that highlights the possible drop target when the user drags a column.
+      </description>
+      <name>dropTargetStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS class name for for the area that highlights the possible drop target when the user drags a
+        column.
+      </description>
+      <name>dropTargetClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Image that is displayed above the drop target when column dragging is in progress.</description>
+      <name>dropTargetTopImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Image that is displayed below the drop target when column dragging is in progress.</description>
+      <name>dropTargetBottomImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Image that will be displayed in the right auto-scrolling area that appears when reordering columns in
+        a scrollable table.
+      </description>
+      <name>autoScrollRightImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Image that will be displayed in the left auto-scrolling area that appears when reordering columns in
+        a scrollable table.
+      </description>
+      <name>autoScrollLeftImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
   </tag>
 
   <tag>

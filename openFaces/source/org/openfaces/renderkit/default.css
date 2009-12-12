@@ -129,10 +129,6 @@
 /* == End of Shared among components styles == */
 
 /* Table styles */
-.o_filter_row_cells {
-  font-weight: normal;
-}
-
 .o_table_header_section {
   font-weight: bold;
   text-align: center;
@@ -158,6 +154,10 @@
   background: #f4f4f4;
 }
 
+.o_filter_row_cells {
+  font-weight: normal;
+}
+
 .o_table_no_data_row {
   padding: 5px;
   text-align: center;
@@ -174,7 +174,8 @@
 
 .o_table_columnDropTarget {
   position: absolute;
-  background: gray;
+  background: #585858;
+  width: 3px;
 }
 
 .o_table_draggedColumn {
@@ -216,6 +217,13 @@
   height: 1px;
   padding: 0;
   border-width: 0;
+}
+
+.o_headerAutoScrollArea {
+  position: absolute;
+  background: gray;
+  vertical-align: middle;
+  width: 20px;
 }
 
 /* Checkbox column */

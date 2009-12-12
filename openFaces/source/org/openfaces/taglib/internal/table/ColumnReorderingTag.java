@@ -34,5 +34,16 @@ public class ColumnReorderingTag extends AbstractComponentTag {
         setStringProperty(component, "draggedCellStyle");
         setStringProperty(component, "draggedCellClass");
         setDoubleProperty(component, "draggedCellTransparency");
+
+        setStringProperty(component, "autoScrollAreaStyle");
+        setStringProperty(component, "autoScrollAreaClass");
+        setDoubleProperty(component, "autoScrollAreaTransparency");
+        setStringProperty(component, "autoScrollLeftImageUrl");
+        setStringProperty(component, "autoScrollRightImageUrl");
+
+        setStringProperty(component, "dropTargetStyle");
+        setStringProperty(component, "dropTargetClass");
+        setStringProperty(component, "dropTargetTopImageUrl");
+        setStringProperty(component, "dropTargetBottomImageUrl");
     }
 }

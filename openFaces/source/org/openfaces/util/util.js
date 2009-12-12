@@ -2212,6 +2212,9 @@ if (!window.O$) {
     function handleDragEnd(e) {
       var evt = O$.getEvent(e);
 
+      O$.removeEventHandler(document, "mousemove", handleDragMove, true);
+      O$.removeEventHandler(document, "mouseup", handleDragEnd, true);
+
       var draggable = O$._draggedElement;
       O$._draggedElement = null;
       if (draggable._draggingWasStarted) {
@@ -2220,8 +2223,6 @@ if (!window.O$) {
           draggable.ondragend(evt);
       }
 
-      O$.removeEventHandler(document, "mousemove", handleDragMove, true);
-      O$.removeEventHandler(document, "mouseup", handleDragEnd, true);
       if (!draggable._onmouseup) {
         O$.breakEvent(evt);
       }

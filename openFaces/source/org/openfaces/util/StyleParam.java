@@ -18,11 +18,18 @@ import javax.faces.context.FacesContext;
  * @author Dmitry Pikhulya
  */
 public class StyleParam extends RawScript {
+    public StyleParam(UIComponent component, String styleName, String defaultStyleClass) {
+        this(component,
+                (String) component.getAttributes().get(styleName + "Style"),
+                defaultStyleClass,
+                (String) component.getAttributes().get(styleName + "Class"));
+    }
+
     public StyleParam(UIComponent component, String style, String defaultStyleClass, String styleClass) {
         super(FunctionCallScript.escapeStringForJSAndQuote(
                 StyleUtil.getCSSClass(
-                    FacesContext.getCurrentInstance(), component,
-                    style, defaultStyleClass, styleClass)
+                        FacesContext.getCurrentInstance(), component,
+                        style, defaultStyleClass, styleClass)
         ));
     }
 }

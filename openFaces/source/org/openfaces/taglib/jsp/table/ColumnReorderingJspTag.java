@@ -34,5 +34,39 @@ public class ColumnReorderingJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("draggedCellTransparency", draggedCellTransparency);
     }
 
+    public void setAutoScrollAreaStyle(ValueExpression autoScrollAreaStyle) {
+        getDelegate().setPropertyValue("autoScrollAreaStyle", autoScrollAreaStyle);
+    }
 
+    public void setAutoScrollAreaClass(ValueExpression autoScrollAreaClass) {
+        getDelegate().setPropertyValue("autoScrollAreaClass", autoScrollAreaClass);
+    }
+
+    public void setAutoScrollAreaTransparency(ValueExpression autoScrollAreaTransparency) {
+        getDelegate().setPropertyValue("autoScrollAreaTransparency", autoScrollAreaTransparency);
+    }
+
+    public void setAutoScrollLeftImageUrl(ValueExpression autoScrollLeftImageUrl) {
+        getDelegate().setPropertyValue("autoScrollLeftImageUrl", autoScrollLeftImageUrl);
+    }
+
+    public void setAutoScrollRightImageUrl(ValueExpression autoScrollRightImageUrl) {
+        getDelegate().setPropertyValue("autoScrollRightImageUrl", autoScrollRightImageUrl);
+    }
+
+    public void setDropTargetStyle(ValueExpression dropTargetStyle) {
+        getDelegate().setPropertyValue("dropTargetStyle", dropTargetStyle);
+    }
+
+    public void setDropTargetClass(ValueExpression dropTargetClass) {
+        getDelegate().setPropertyValue("dropTargetClass", dropTargetClass);
+    }
+
+    public void setDropTargetTopImageUrl(ValueExpression dropTargetTopImageUrl) {
+        getDelegate().setPropertyValue("dropTargetTopImageUrl", dropTargetTopImageUrl);
+    }
+
+    public void setDropTargetBottomImageUrl(ValueExpression dropTargetBottomImageUrl) {
+        getDelegate().setPropertyValue("dropTargetBottomImageUrl", dropTargetBottomImageUrl);
+    }
 }
