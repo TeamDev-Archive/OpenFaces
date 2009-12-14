@@ -11,13 +11,11 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.util.ValueBindings;
 import org.openfaces.component.ComponentConfigurator;
+import org.openfaces.util.ValueBindings;
 
-import javax.el.ELContext;
-import javax.el.ValueExpression;
-import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 
 /**
@@ -161,14 +159,8 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
 
-        ValueExpression resizingStateExpression = getValueExpression("resizingState");
-        ELContext elContext = context.getELContext();
-        if (resizingStateExpression != null && !resizingStateExpression.isReadOnly(elContext)) {
-            if (resizingState != null) {
-                resizingStateExpression.setValue(elContext, resizingState);
-                resizingState = null;
-            }
-        }
+        if (resizingState != null && ValueBindings.set(this, "resizingState", resizingState))
+            resizingState = null;
     }
 
 /*
