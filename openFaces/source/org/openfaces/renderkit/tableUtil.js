@@ -2185,6 +2185,19 @@ O$.Tables = {
     }
     scrollToPosition();
 
+    function markColumns() {
+      [table._leftArea, table._centerArea, table._rightArea].forEach(function(area) {
+        if (!area) return;
+        area._columns.forEach(function(c){
+          do {
+            c._scrollingArea = area;
+            c = c.parentColumn;
+          } while (c);
+        });
+      });
+    }
+    markColumns();
+
     if (delayedInitFunctions.length)
       O$.addLoadEvent(function() {
         delayedInitFunctions.forEach(function (func) {func();});

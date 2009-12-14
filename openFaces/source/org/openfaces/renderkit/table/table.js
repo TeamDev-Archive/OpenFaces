@@ -416,7 +416,7 @@ O$.Table = {
 
   _scrollToRowIndexes: function(table, rowIndexes) {
     var bodyRows = table.body._getRows();
-    var elements = rowIndexes.map(function(i){
+    var elements = rowIndexes.map(function(i) {
       return bodyRows[i]._rowNode;
     });
     O$.scrollElementIntoView(elements);
@@ -1260,7 +1260,9 @@ O$.Table = {
       }
 
       function getColWidths() {
-        return table._columns.map(function(col) {return col.getWidth();});
+        return table._columns.map(function(col) {
+          return col.getWidth();
+        });
       }
 
       table._columns.forEach(function (col) {
@@ -1293,14 +1295,14 @@ O$.Table = {
         if (retainTableWidth) {
           var cols = !table._params.scrolling || !table._params.scrolling.horizontal
                   ? table._columns
-                  : function(){
+                  : function() {
             var verticalArea = column._verticalArea;
             if (verticalArea == table._centerArea) return [];
             if (verticalArea == table._leftArea)
               return column != verticalArea._columns[verticalArea._columns.length - 1]
-                    ? verticalArea._columns
-                    : [];
-            return verticalArea._columns; 
+                      ? verticalArea._columns
+                      : [];
+            return verticalArea._columns;
           }();
           for (var idx = cols.length - 1; idx >= 0; idx--) {
             var c = cols[idx];
@@ -1319,8 +1321,7 @@ O$.Table = {
         var resizeHandle = document.createElement("div");
         resizeHandle.style.cursor = "e-resize";
         resizeHandle.style.position = "absolute";
-        resizeHandle.style.border = "0px none transparent";//"1px solid black";
-//        resizeHandle.style.background = "silver";
+        resizeHandle.style.border = "0px none transparent";
 
         if (O$.isExplorer()) {
           // IE needs an explicit background because otherwise this absolute div will "leak" some events to the underlying
@@ -1383,7 +1384,9 @@ O$.Table = {
             var scrollingDiv = table.body._centerScrollingArea._scrollingDiv;
             var scrollLeft = scrollingDiv.scrollLeft;
             var scrollTop = scrollingDiv.scrollTop;
-            this._column._verticalArea._areas.forEach(function(a){a._table.style.width = "auto";});
+            this._column._verticalArea._areas.forEach(function(a) {
+              a._table.style.width = "auto";
+            });
           }
           var thisAndNextColWidth;
           var nextCol;
@@ -1407,7 +1410,7 @@ O$.Table = {
             if (!retainTableWidth)
               recalculateTableWidth(colWidths);
             else
-                table.style.width = table._originalWidth + "px";
+              table.style.width = table._originalWidth + "px";
           } else {
             table._params.scrolling._widthAlignmentDisabled = true;
             try {
@@ -1476,8 +1479,7 @@ O$.Table = {
 
       function fixWidths() {
         var colWidths = getColWidths();
-//        if (!table._params.scrolling)
-          table.style.tableLayout = "fixed";
+        table.style.tableLayout = "fixed";
 
         if (!table._params.scrolling)
           table.style.width = "auto";
@@ -1546,6 +1548,8 @@ O$.Table = {
                                   dropTargetClass, dropTargetTopImage, dropTargetBottomImage) {
     var table = O$(tableId);
     var autoscrollingSpeed = 100;
+    var interGroupDraggingAllowed = false;
+    var columnFixingAllowed = false;
 
     O$.preloadImages([autoScrollLeftImage, autoScrollRightImage, dropTargetTopImage, dropTargetBottomImage]);
 
@@ -1602,7 +1606,7 @@ O$.Table = {
       dropTarget.className = dropTargetClass;
       var width = O$.calculateNumericCSSValue(O$.getStyleClassProperty(dropTargetClass, "width"));
       dropTarget.setPosition = function(x, y1, y2) {
-        O$.setElementBorderRectangle(dropTarget, new O$.Rectangle(x - Math.floor(width / 2), y1, width, y2 - y1));
+        O$.setElementBorderRectangle(dropTarget, new O$.Rectangle(x - width / 2, y1, width, y2 - y1));
         var topImageSize = O$.getElementSize(topImage);
         O$.setElementPos(topImage, {x: x - topImageSize.width / 2, y: y1 - topImageSize.height});
         var bottomImageSize = O$.getElementSize(bottomImage);
@@ -1622,12 +1626,20 @@ O$.Table = {
         if (topImage.parentNode) topImage.parentNode.removeChild(topImage);
         if (bottomImage.parentNode) bottomImage.parentNode.removeChild(bottomImage);
       };
+      O$.correctElementZIndex(dropTarget, table, 1);
       return dropTarget;
     }();
 
-    O$.correctElementZIndex(dropTargetMark, table, 1);
-    table._columns.forEach(function(column) {
-      var headerCell = column.header._cell;
+    table._columns.forEach(function(sourceColumn) {
+      if (!interGroupDraggingAllowed && sourceColumn.parentColumn) {
+        if (sourceColumn.parentColumn._columns.length == 1)
+          return; // there are no other columns in this group for possible reordering
+      }
+      if (!columnFixingAllowed && sourceColumn._scrollingArea && sourceColumn._scrollingArea._columns.length == 1) {
+        return; // there are no other columns in this scrolling area for possible reordering
+      }
+
+      var headerCell = sourceColumn.header ? sourceColumn.header._cell : null;
       if (!headerCell) return;
       headerCell._clone = function() {
         var tbl = createTableWithoutTd();
@@ -1645,8 +1657,8 @@ O$.Table = {
 
       O$.makeDraggable(headerCell, function(evt) {
         var dropTargets = [];
-        table._columns.forEach(function(col) {
-          function dropTarget(minX, maxX, minY, maxY, column, rightEdge) {
+        table._columns.forEach(function(targetColumn) {
+          function dropTarget(minX, maxX, minY, maxY, columnOrGroup, rightEdge) {
             var container = O$.getContainingBlock(headerCell, true);
             if (!container)
               container = O$.getDefaultAbsolutePositionParent();
@@ -1664,27 +1676,67 @@ O$.Table = {
               setActive: function(active) {
                 if (active) {
                   dropTargetMark.show(container);
-                  dropTargetMark.setPosition(rightEdge ? maxX : minX, minY, maxY);
+                  var gridLineWidthCorrection = function() {
+                    var parentColumnList = columnOrGroup._parentColumn ? columnOrGroup._parentColumn.subColumns : table._columns;
+                    var thisIdx = O$.findValueInArray(columnOrGroup, parentColumnList);
+                    var col = rightEdge
+                            ? thisIdx < parentColumnList.length - 1 ? columnOrGroup : null
+                            : parentColumnList[thisIdx - 1];
+                    if (col) {
+                      var cell = col.header ? col.header._cell : null;
+                      return cell ? O$.getNumericElementStyle(cell, "border-right-width") : 0;
+                    } else {
+                      return O$.getNumericElementStyle(table, rightEdge ? "border-right-width" : "border-left-width");
+                    }
+                  }();
+                  dropTargetMark.setPosition((rightEdge ? maxX : minX) - gridLineWidthCorrection / 2, minY, maxY);
                 } else {
                   dropTargetMark.hide();
                 }
               },
               acceptDraggable: function(cellHeader) {
-                var targetColIndex = !rightEdge ? col._index: col._index + 1;
+                var col = columnOrGroup;
+                while (col.subColumns)
+                  col = !rightEdge ? col.subColumns[0] : col.subColumns[col.subColumns.length - 1];
+                var targetColIndex = !rightEdge ? col._index : col._index + 1;
                 sendColumnMoveRequest(cellHeader._column._index, targetColIndex);
               }
             };
           }
-          var cell = col.header._cell;
-          if (!cell) return;
-          var cellRect = O$.getElementBorderRectangle(cell, true);
-          var min = cellRect.getMinX();
-          var max = cellRect.getMaxX();
+
+          if (!interGroupDraggingAllowed && targetColumn._parentColumn != sourceColumn._parentColumn) {
+            while (targetColumn._parentColumn) {
+              targetColumn = targetColumn._parentColumn;
+              if (targetColumn._parentColumn == sourceColumn._parentColumn)
+                break;
+            }
+            if (targetColumn._parentColumn != sourceColumn._parentColumn)
+              return;
+          }
+          if (!columnFixingAllowed) {
+            if (targetColumn._scrollingArea != sourceColumn._scrollingArea)
+              return;
+          }
+          var targetCell = targetColumn.header ? targetColumn.header._cell : null;
+          if (!targetCell) return;
+          var targetCellRect = O$.getElementBorderRectangle(targetCell, true);
+          var targetCellRect2 = function() {
+            var bottomCell = targetCell;
+            var col = targetColumn;
+            while (col.subColumns) {
+              col = col.subColumns[0];
+              if (col.header && col.header._cell)
+                bottomCell = col.header._cell;
+            }
+            return O$.getElementBorderRectangle(bottomCell, true);
+          }();
+          var min = targetCellRect.getMinX();
+          var max = targetCellRect.getMaxX();
           var mid = (min + max) / 2;
-          var minY = cellRect.getMinY();
-          var maxY = cellRect.getMaxY();
-          dropTargets.push(dropTarget(min, mid, minY, maxY, col, false));
-          dropTargets.push(dropTarget(mid, max, minY, maxY, col, true));
+          var minY = targetCellRect.getMinY();
+          var maxY = targetCellRect2.getMaxY();
+          dropTargets.push(dropTarget(min, mid, minY, maxY, targetColumn, false));
+          dropTargets.push(dropTarget(mid, max, minY, maxY, targetColumn, true));
         });
         dropTargets[0].minX = null;
         dropTargets[dropTargets.length - 1].maxX = null;
@@ -1698,85 +1750,92 @@ O$.Table = {
       headerCell.ondragstart = draggingStarted;
       headerCell.ondragmove = draggingMoved;
       headerCell.ondragend = draggingFinished;
+
+      var additionalAreaListener;
+
+      function draggingStarted() {
+        if (!table._params.scrolling) return;
+        additionalAreaContainer.appendChild(leftAutoScrollArea);
+        additionalAreaContainer.appendChild(rightAutoScrollArea);
+        leftAutoScrollArea._update();
+        rightAutoScrollArea._update();
+
+        additionalAreaListener = O$.listenProperty(headerScroller, "rectangle", function(rect) {
+          var subHeaderIndex = table._subHeaderRowIndex;
+          var subHeaderHeight = subHeaderIndex != -1
+                  ? O$.getElementSize(table.header._getRows()[subHeaderIndex]._rowNode).height : 0;
+          O$.setElementHeight(leftAutoScrollArea, rect.height - subHeaderHeight);
+          O$.setElementHeight(rightAutoScrollArea, rect.height - subHeaderHeight);
+          O$.alignPopupByElement(leftAutoScrollArea, headerScroller, O$.LEFT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2);
+          O$.alignPopupByElement(rightAutoScrollArea, headerScroller, O$.RIGHT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2);
+        }, 50);
+      }
+
+      var activeHelperArea = null;
+      var activeScrollingInterval;
+
+      function draggingMoved(e) {
+        e = {clientX: e.clientX, clientY: e.clientY};
+        if (!table._params.scrolling) return;
+
+        function setActiveHelperArea(area) {
+          if (activeHelperArea == area) return;
+          if (activeScrollingInterval)
+            clearInterval(activeScrollingInterval);
+          activeHelperArea = area;
+          var lastTimestamp = new Date().getTime();
+
+          function scrollingStep() {
+            var thisTimestamp = new Date().getTime();
+            var scrollingStep = autoscrollingSpeed * (thisTimestamp - lastTimestamp) / 1000;
+            lastTimestamp = thisTimestamp;
+            return scrollingStep;
+          }
+
+          if (area == leftAutoScrollArea)
+            activeScrollingInterval = setInterval(function() {
+              var scrollLeft = mainScroller.scrollLeft - scrollingStep();
+              if (scrollLeft < 0) scrollLeft = 0;
+              mainScroller.scrollLeft = scrollLeft;
+              O$._draggedElement.updateCurrentDropTarget(e);
+              leftAutoScrollArea._update();
+              rightAutoScrollArea._update();
+            }, 30);
+          if (area == rightAutoScrollArea)
+            activeScrollingInterval = setInterval(function() {
+              mainScroller.scrollLeft = mainScroller.scrollLeft + scrollingStep();
+              O$._draggedElement.updateCurrentDropTarget(e);
+              leftAutoScrollArea._update();
+              rightAutoScrollArea._update();
+            }, 30);
+        }
+
+        if (O$.isCursorOverElement(e, leftAutoScrollArea))
+          setActiveHelperArea(leftAutoScrollArea);
+        else if (O$.isCursorOverElement(e, rightAutoScrollArea))
+          setActiveHelperArea(rightAutoScrollArea);
+        else
+          setActiveHelperArea(null);
+      }
+
+      function draggingFinished() {
+        if (activeScrollingInterval) clearInterval(activeScrollingInterval);
+        if (additionalAreaContainer) {
+          additionalAreaContainer.removeChild(leftAutoScrollArea);
+          additionalAreaContainer.removeChild(rightAutoScrollArea);
+          additionalAreaListener.release();
+        }
+        dropTargetMark.hide();
+      }
     });
 
-    var additionalAreaListener;
-    function draggingStarted() {
-      if (!table._params.scrolling) return;
-      additionalAreaContainer.appendChild(leftAutoScrollArea);
-      additionalAreaContainer.appendChild(rightAutoScrollArea);
-      leftAutoScrollArea._update();
-      rightAutoScrollArea._update();
-
-      additionalAreaListener = O$.listenProperty(headerScroller, "rectangle", function(rect) {
-        var subHeaderIndex = table._subHeaderRowIndex;
-        var subHeaderHeight = subHeaderIndex != -1
-                ? O$.getElementSize(table.header._getRows()[subHeaderIndex]._rowNode).height : 0;
-        O$.setElementHeight(leftAutoScrollArea, rect.height - subHeaderHeight);
-        O$.setElementHeight(rightAutoScrollArea, rect.height - subHeaderHeight);
-        O$.alignPopupByElement(leftAutoScrollArea, headerScroller, O$.LEFT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2);
-        O$.alignPopupByElement(rightAutoScrollArea, headerScroller, O$.RIGHT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2);
-      }, 50);
-    }
-
-    var activeHelperArea = null;
-    var activeScrollingInterval;
-    function draggingMoved(e) {
-      e = {clientX: e.clientX, clientY: e.clientY};
-      if (!table._params.scrolling) return;
-
-      function setActiveHelperArea(area) {
-        if (activeHelperArea == area) return;
-        if (activeScrollingInterval)
-          clearInterval(activeScrollingInterval);
-        activeHelperArea = area;
-        var lastTimestamp = new Date().getTime();
-        function scrollingStep() {
-          var thisTimestamp = new Date().getTime();
-          var scrollingStep = autoscrollingSpeed * (thisTimestamp - lastTimestamp) / 1000;
-          lastTimestamp = thisTimestamp;
-          return scrollingStep;
-        }
-        if (area == leftAutoScrollArea)
-          activeScrollingInterval = setInterval(function(){
-            var scrollLeft = mainScroller.scrollLeft - scrollingStep();
-            if (scrollLeft < 0) scrollLeft = 0;
-            mainScroller.scrollLeft = scrollLeft;
-            O$._draggedElement.updateCurrentDropTarget(e);
-            leftAutoScrollArea._update();
-            rightAutoScrollArea._update();
-          }, 30);
-        if (area == rightAutoScrollArea)
-          activeScrollingInterval = setInterval(function(){
-            mainScroller.scrollLeft = mainScroller.scrollLeft + scrollingStep();
-            O$._draggedElement.updateCurrentDropTarget(e);
-            leftAutoScrollArea._update();
-            rightAutoScrollArea._update();
-          }, 30);
-      }
-
-      if (O$.isCursorOverElement(e, leftAutoScrollArea))
-        setActiveHelperArea(leftAutoScrollArea);
-      else if (O$.isCursorOverElement(e, rightAutoScrollArea))
-        setActiveHelperArea(rightAutoScrollArea);
-      else
-        setActiveHelperArea(null);
-    }
-
-    function draggingFinished() {
-      if (activeScrollingInterval) clearInterval(activeScrollingInterval);
-      if (additionalAreaContainer) {
-        additionalAreaContainer.removeChild(leftAutoScrollArea);
-        additionalAreaContainer.removeChild(rightAutoScrollArea);
-        additionalAreaListener.release();
-      }
-      dropTargetMark.hide();
-    }
 
     function sendColumnMoveRequest(srcColIndex, dstColIndex) {
       if (dstColIndex == srcColIndex || dstColIndex == srcColIndex + 1)
         return;
-      O$._submitInternal(table, null, [[table.id + "::reorderColumns", srcColIndex + "->" + dstColIndex]]);
+      O$._submitInternal(table, null, [
+        [table.id + "::reorderColumns", srcColIndex + "->" + dstColIndex]
+      ]);
     }
   }
 
