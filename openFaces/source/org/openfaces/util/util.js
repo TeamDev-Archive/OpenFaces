@@ -2066,10 +2066,12 @@ if (!window.O$) {
           startDragging(evt);
         }
       }
+
       function mouseUp() {
         O$.removeEventHandler(document, "mousemove", mouseMove, true);
         O$.removeEventHandler(document, "mouseup", mouseUp, true);
       }
+
       O$.addEventHandler(document, "mousemove", mouseMove, true);
       O$.addEventHandler(document, "mouseup", mouseUp, true);
 
@@ -4232,9 +4234,11 @@ if (!window.O$) {
       update: function() {
         var elements = element instanceof Array ? element : [element];
         if (
-                !elements.every(function(el) {return O$.isElementPresentInDocument(el);}) ||
+                !elements.every(function(el) {
+                  return O$.isElementPresentInDocument(el);
+                }) ||
                 (workingCondition && !workingCondition())
-           ) {
+                ) {
           clearInterval(fixture.intervalId);
           return;
         }
@@ -4269,11 +4273,13 @@ if (!window.O$) {
     return fixture;
   };
 
-  O$.listenProperty = function(element, propertyNames, listenerFunction, interval) {
+  O$.listenProperty = function(element, propertyNames, listenerFunction, notifiers) {
     if (!(propertyNames instanceof Array))
       propertyNames = [propertyNames];
-    if (!interval)
-      interval = 200;
+    if (!notifiers)
+      notifiers = [new O$.Timer(200)];
+    if (!(notifiers instanceof Array))
+      notifiers = [notifiers];
     var listener = {
       values: {},
       update: function() {
@@ -4294,18 +4300,104 @@ if (!window.O$) {
         if (changed)
           listenerFunction.apply(null, currentValues);
       },
-      intervalId: setInterval(function() {
-        listener.update();
-      }, interval),
 
       release: function() {
-        clearInterval(this.intervalId);
+        notifiers.forEach(function(n) {
+          n.release();
+        });
       }
     };
+    notifiers.forEach(function(n){
+      n.addListener(function() {
+        listener.update();
+      });
+      if (n.setActive) n.setActive(true);
+    });
+    listener.update();
 
     return listener;
 
   };
+
+  O$.EventListener = O$.createClass(null, {
+    constructor: function(element, eventName, listener) {
+      this._element = element;
+      this._eventName = eventName;
+      this._listeners = [];
+      if (listener) this.addListener(listener);
+
+      var eventListener = this;
+      O$.addEventHandler(this._element, eventName, function(evt) {
+        eventListener._dispatchNotifications(evt);
+      });
+    },
+    _dispatchNotifications: function(evt) {
+      var eventListener = this;
+      this._listeners.forEach(function(listener) {
+        listener(evt, eventListener);
+      });
+    },
+    addListener: function(listener) {
+      this.removeListener(listener);
+      this._listeners.push(listener);
+    },
+    removeListener: function(listener) {
+      var idx = O$.findValueInArray(listener, this._listeners);
+      if (idx == -1) return;
+      this._listeners = this._listeners.slice(idx, 1);
+    },
+    release: function() {
+      O$.removeEventHandler(this._element, this._event, this._dispatchNotifications);
+    }
+
+  });
+
+  O$.Timer = O$.createClass(null, {
+    constructor: function(period, listener) {
+      if (!period || period < 0)
+        throw "O$.Timer constructor: period parameter must be specified with a positive value: " + period;
+      this._period = period;
+      this._intervalId = null;
+      this._listeners = [];
+      if (listener) addListener(listener);
+    },
+    addListener: function(listener) {
+      this.removeListener(listener);
+      this._listeners.push(listener);
+    },
+    removeListener: function(listener) {
+      var idx = O$.findValueInArray(listener, this._listeners);
+      if (idx == -1) return;
+      this._listeners = this._listeners.slice(idx, 1);
+    },
+    start: function() {
+      if (this._intervalId) return;
+      var timer = this;
+      this._intervalId = setInterval(function() {
+        timer._listeners.forEach(function(listener) {
+          listener(timer);
+        });
+      }, timer._period);
+    },
+    stop: function() {
+      if (!this._intervalId) return;
+      clearInterval(this._intervalId);
+      this._intervalId = null;
+    },
+    isActive: function() {
+      return !!this._intervalId;
+    },
+    setActive: function(active) {
+      if (active == this.isActive()) return;
+      if (active)
+        this.start();
+      else
+        this.stop();
+    },
+    release: function() {
+      this.stop();
+    }
+  });
 
   // ----------------- COMPONENT UTILS -------------------------------------------
 

@@ -1768,7 +1768,7 @@ O$.Table = {
           O$.setElementHeight(rightAutoScrollArea, rect.height - subHeaderHeight);
           O$.alignPopupByElement(leftAutoScrollArea, headerScroller, O$.LEFT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2);
           O$.alignPopupByElement(rightAutoScrollArea, headerScroller, O$.RIGHT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2);
-        }, 50);
+        }, new O$.Timer(50));
       }
 
       var activeHelperArea = null;

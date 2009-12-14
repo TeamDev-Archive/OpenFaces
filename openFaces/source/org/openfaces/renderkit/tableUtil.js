@@ -342,6 +342,8 @@ O$.Tables = {
       if (rows.length != 1)
         throw "O$._initRows: one root row expected, but was: " + rows.length;
       var tableContainer = O$.getElementByPath(rows[0], "td/div");
+      table._topLevelScrollingDiv = tableContainer;
+      tableContainer.style.visibility = "hidden"; // hide the container temporarily until its width is corrected to avoid flickering
       var tables = O$.getChildNodesWithNames(tableContainer, ["table"]);
       var sectionIndex = 0;
       var headTable = (table._params.header && table._params.header.rowCount) ? tables[sectionIndex++] : null;
@@ -1910,6 +1912,8 @@ O$.Tables = {
         var areaWidth = 0;
         var scrollerWidth = mainScrollingArea._scrollingDiv.offsetWidth - mainScrollingArea._scrollingDiv.clientWidth;
         var tableWidth = O$.getElementSize(table).width - scrollerWidth;
+        if (tableWidth < 0)
+          tableWidth = 0;
         var area = section[areaName];
         verticalAreaForInitialization._columns = [];
         var relativeWidthColumns = [];
@@ -2197,6 +2201,19 @@ O$.Tables = {
       });
     }
     markColumns();
+
+    function fixTopLevelScrollingDivWidth() {
+      O$.listenProperty(table, "width", function(width) {
+        width -= O$.getNumericElementStyle(table, "border-left-width", true);
+        width -= O$.getNumericElementStyle(table, "border-right-width", true);
+        table._topLevelScrollingDiv.style.width = width + "px";
+      }, [
+              new O$.Timer("200"),
+              new O$.EventListener(window, "resize")
+      ]);
+      table._topLevelScrollingDiv.style.visibility = "visible";
+    }
+    fixTopLevelScrollingDivWidth();
 
     if (delayedInitFunctions.length)
       O$.addLoadEvent(function() {
