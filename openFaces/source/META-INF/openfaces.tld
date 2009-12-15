@@ -10678,6 +10678,9 @@ entering a value and returns a list of suggestions from the server -->
 
   <!-- WINDOW TAG DECLARATOIN -->
   <tag>
+    <description>The Window component is a window-styled container for other JSF components that is displayed over the
+      page content. The Window component has a caption and a content area, it can be dragged around on the page, and
+      resized. Besides, it has the usual maximize/restore, minimize and close buttons in the caption.</description>
     <name>window</name>
     <tag-class>org.openfaces.taglib.jsp.window.WindowJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -11114,6 +11117,8 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>This component can be placed inside of components with caption such as Window, Confirmation and
+      FoldingPanel to customize the default set and appearance of component's caption buttons.</description>
     <name>captionArea</name>
     <tag-class>org.openfaces.taglib.jsp.CaptionAreaJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -11275,6 +11280,8 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>This component can be placed inside of the CaptionArea component to add a custom caption button.
+    </description>
     <name>captionButton</name>
     <tag-class>org.openfaces.taglib.jsp.CaptionButtonJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -11514,6 +11521,9 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>This component can be placed inside of the CaptionArea component (which is in turn located in
+      FoldingPanel component) to customize the appearance of FoldingPanel's expansion toggle caption button.
+    </description>
     <name>expansionToggleButton</name>
     <tag-class>org.openfaces.taglib.jsp.ExpansionToggleButtonJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -11763,6 +11773,8 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>This component can be placed inside of the CaptionArea component to specify the caption button that
+      allows closing the window.</description>
     <name>closeWindowButton</name>
     <tag-class>org.openfaces.taglib.jsp.window.CloseWindowButtonJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -11977,6 +11989,8 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>This component can be placed inside of the CaptionArea component to specify the caption button that
+      allows maximizing the window.</description>
     <name>maximizeWindowButton</name>
     <tag-class>org.openfaces.taglib.jsp.window.MaximizeWindowButtonJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -12229,6 +12243,8 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>This component can be placed inside of the CaptionArea component to specify the caption button that
+      allows minimizing the window.</description>
     <name>minimizeWindowButton</name>
     <tag-class>org.openfaces.taglib.jsp.window.MinimizeWindowButtonJspTag</tag-class>
     <body-content>JSP</body-content>
