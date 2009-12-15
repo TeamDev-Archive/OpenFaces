@@ -83,7 +83,9 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     @Test
     public void testDateChooserInside() {
         testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
-
+        tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
+        // trying to avoid strange intermittent build failures
+        testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
         tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
 
         DateChooserInspector dateChooser = dateChooser("fn:dateChooserID");
