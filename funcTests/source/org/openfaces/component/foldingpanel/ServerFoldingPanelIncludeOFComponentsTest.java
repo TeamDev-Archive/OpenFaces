@@ -12,6 +12,7 @@
 package org.openfaces.component.foldingpanel;
 
 import com.thoughtworks.selenium.Selenium;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -81,6 +82,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     }
 
     @Test
+    @Ignore
     public void testDateChooserInside() {
         testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
         try {
