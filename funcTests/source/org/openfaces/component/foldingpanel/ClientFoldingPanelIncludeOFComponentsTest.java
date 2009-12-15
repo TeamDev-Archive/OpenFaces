@@ -96,10 +96,13 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
     @Test
     public void testDateChooserInside() {
         testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
-//        tabSet("fn:loadingModes").tabs().get(1).clickAndWait();
-        // trying to avoid strange intermittent build failures
-        testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
-        tabSet("fn:loadingModes").tabs().get(1).clickAndWait();
+        try {
+            tabSet("fn:loadingModes").tabs().get(1).clickAndWait();
+        } catch (Exception e) {
+            // trying to avoid strange intermittent build failures
+            testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
+            tabSet("fn:loadingModes").tabs().get(1).clickAndWait();
+        }
         DateChooserInspector dateChooser = dateChooser("fn:dateChooserID");
         dateChooser.assertElementExists();
         dateChooser.assertVisible(false);
