@@ -21,12 +21,12 @@
                  focusedStyle="border: 1px dotted black !important;"
                  columnIdVar="columnId" nodeLevelVar="level">
       <o:singleNodeSelection
-              style="background:url('../images/treetable/selection.gif') repeat-x #168aff !important; color: white !important;"
+              style="background: url('../images/treetable/selection.gif') repeat-x #168aff !important; color: #f6f7f8 !important;"
               nodeData="#{EMailsTreeTableBean.selectedEMail}"/>
       <o:dynamicTreeStructure nodeChildren="#{EMailsTreeTableBean.EMailsTreeChildren}"/>
       <o:scrolling/>
 
-      <o:row condition="#{level == 0}" style="background: white !important;">
+      <o:row condition="#{level == 0}" style="background: #e6e7e8 !important;">
         <o:cell span="6" styleClass="category_name">
           <h:outputText value="#{email}" style="padding-left: 5px;"/>
         </o:cell>

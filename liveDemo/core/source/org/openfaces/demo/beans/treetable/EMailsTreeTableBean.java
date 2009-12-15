@@ -51,7 +51,7 @@ public class EMailsTreeTableBean {
     private static final String[] SUBJECTS = new String[]{
             "Proper Java XML parser",
             "In-place rows editing implementation",
-            "'unexpected Syntax error'",
+            "unexpected Syntax error",
             "Problem in IE for div tag",
             "Hide menu by double-clicking",
             "Is it necessarily to implement DOCTYPE?",
