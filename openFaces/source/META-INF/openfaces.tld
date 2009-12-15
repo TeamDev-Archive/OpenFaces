@@ -10712,7 +10712,6 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el only -->
     </attribute>
 
-
     <attribute>
       <description>A flag that indicates whether or not the user can move the window by dragging its title.
       </description>
@@ -10849,7 +10848,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
+      <!-- @default "300px" -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -10859,7 +10858,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
+      <!-- @default "200px" -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -10872,7 +10871,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
+      <!-- @default "150px" -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -10885,7 +10884,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
+      <!-- @default "80px" -->
       <!-- @el true -->
     </attribute>
 

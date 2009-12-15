@@ -172,6 +172,7 @@
       <feature>Handling large data sets</feature>
       <feature>Single and multiple row selection</feature>
       <feature>Column resizing</feature>
+      <feature>Column reordering</feature>
       <feature>Dynamic columns</feature>
       <feature>Multiple headers and footers</feature>
       <feature>Merging row cells</feature>
@@ -635,6 +636,7 @@
       <feature>Configurable preloaded nodes</feature>
       <feature>Single and multiple selection</feature>
       <feature>Column resizing</feature>
+      <feature>Column reordering</feature>
       <feature>Dynamic columns</feature>
       <feature>Multiple headers and footers</feature>
       <feature>Merging row cells</feature>

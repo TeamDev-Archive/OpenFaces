@@ -198,12 +198,11 @@ a.HK_holder:hover .HK_holder_right {
   font-family: Verdana, Arial, sans-serif;
   font-size: 9px;
   color: #9b9b9b;
-  margin: 5px;
+  margin: 5px 5px 5px -250px;
   display: block;
   position: absolute;
   top: 95px;
   left: 50%;
-  margin-left: -250px;
   white-space: nowrap;
 }
 
@@ -214,9 +213,7 @@ a.HK_holder:hover .HK_holder_right {
   vertical-align: middle;
 }
 
-.select_columns_popup {
-  background: transparent;
-  z-index: 200;
+.select_columns_dialog {
   border: 3px solid #a8c9e0;
 }
 
@@ -251,11 +248,10 @@ a.HK_holder:hover .HK_holder_right {
 
 .select_columns_header {
   background: url(../images/treetable/header_tls.gif) repeat-x;
-  height: 20px;
+  height: 23px;
   font-weight: bold;
   padding-left: 15px;
   padding-top: 4px;
-  display: block;
 }
 
 .category_name {
@@ -264,7 +260,7 @@ a.HK_holder:hover .HK_holder_right {
   color: #758795;
   font-weight: bold;
   font-size: 14px;
-  font-family: Tahoma;
+  font-family: Tahoma,serif;
 }
 
 .filterInput input {width: 98% !important;}

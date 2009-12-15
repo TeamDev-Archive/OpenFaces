@@ -14,6 +14,7 @@
       <o:dynamicTreeStructure nodeChildren="#{ForumTreeTableBean.nodeChildren}"
                               nodeHasChildren="#{ForumTreeTableBean.nodeHasChildren}" nodeKey="#{message.id}"/>
       <o:columnResizing/>
+      <o:columnReordering/>
       <o:treeColumn id="subject" sortingExpression="#{message.subject}" bodyStyle="text-align: left;">
         <f:facet name="header">
           <h:outputText value="Subject"/>
@@ -49,23 +50,17 @@
   <div id="Description">
     <h4>Demonstrated Features</h4>
     <ul class="hang">
-      <li><strong>Sorting</strong> - Click on the header of any column to sort data by that column.
-      </li>
+      <li><strong>Sorting</strong> - Click on the header of any column to sort data by that column.</li>
       <li><strong>Filtering</strong> - Specify the filtering criteria in the appropriate fields under
         the header and press Enter to filter the displayed data.
-        The rows that don't meet the filtering criteria but are required to show the tree structure are grayed.
-      </li>
+        The rows that don't meet the filtering criteria but are required to show the tree structure are grayed.</li>
       <li><strong>Dynamic loading for node expansion, sorting, and filtering</strong> - Only the
-        modified or revealed data is loaded using Ajax technology instead of reloading the whole page.
-      </li>
-      <li><strong>Column resizing</strong> - Drag column header separators to resize columns.
-      </li>
-      <li><strong>Dynamic tree structure</strong> - The data is retrieved dynamically from the
-        backing bean.
-      </li>
+        modified or revealed data is loaded using Ajax technology instead of reloading the whole page.</li>
+      <li><strong>Column resizing</strong> - Drag column header separators to resize columns.</li>
+      <li><strong>Column reordering</strong>&#8212;Drag a column header to move the appropriate column.</li>
+      <li><strong>Dynamic tree structure</strong> - The data is retrieved dynamically from the backing bean.</li>
       <li><strong>Customizing default node expansion state</strong> - All top-level nodes are
-        expanded by default when the TreeTable component is loaded.
-      </li>
+        expanded by default when the TreeTable component is loaded.</li>
     </ul>
   </div>
 

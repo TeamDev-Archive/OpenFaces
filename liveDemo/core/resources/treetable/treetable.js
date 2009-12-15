@@ -100,12 +100,12 @@ function initFields() {
   }, 100);
 }
 
-var optionsArray = new Array();
-function optionPopupShow() {
+var optionsArray = [];
+function columnsDialogShow() {
   optionsArray = O$('form1:requestsTreeTable:optionsTLS').getValue();
 }
 
-function optionPopupHide() {
+function cancelColumnsDialog() {
   O$('form1:requestsTreeTable:optionsTLS').setValue(optionsArray);
   O$('form1:requestsTreeTable:selectColumnsPopup').hide();
 }

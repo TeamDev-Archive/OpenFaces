@@ -11,7 +11,7 @@
   <input type="button"
          value="Customize Columns"
          style="padding: 3px;"
-         onclick="O$('form1:requestsTreeTable:selectColumnsPopup').showCentered(); "/>
+         onclick="O$('form1:requestsTreeTable:selectColumnsDialog').showCentered(); "/>
 </div>
 
 <div style="display: none">
@@ -21,12 +21,12 @@
 <o:treeTable id="requestsTreeTable" var="rq" columnIdVar="columnId" nodeHasChildrenVar="thereAreSubRequests"
              sortColumnId="id"
              columnsOrder="#{RequestsTreeTableBean.requestsColumnsOrder}"
-             onkeydown="checkRequestKeys(event)"
-             ondblclick="editRequest()"
+             onkeydown="checkRequestKeys(event);"
+             ondblclick="editRequest();"
              expansionState="#{RequestsTreeTableBean.requestsTreeTableExpansionState}"
              preloadedNodes="all"
 
-             style="width: 100%;  border: 1px solid white;"
+             style="width: 100%;  border: 1px solid #f6f7f8;"
              horizontalGridLines="0px"
              bodyRowStyle="height: 21px;"
              bodyOddRowStyle="background: #f5f5f5 ! important; height: 21px;"
@@ -37,38 +37,14 @@
              sortedColumnBodyStyle="background: none;"
              textStyle="font-family: verdana,Helvetica,sans-serif; font-size: 10pt;"
              focusedStyle="border: 1px dotted black !important;">
-<f:facet name="above">
-  <h:panelGroup style="white-space: nowrap; display: block; width: 100%; margin-top: -15px; margin-bottom: 15px;">
-    <o:popupLayer id="selectColumnsPopup"
-                  onshow="optionPopupShow()"
-                  styleClass="select_columns_popup">
-      <h:panelGrid cellpadding="0" cellspacing="0">
-        <h:panelGroup styleClass="select_columns_header">
-          <h:outputText value="Customize Columns"/>
-        </h:panelGroup>
-        <h:panelGroup styleClass="select_columns_middle_area">
-          <o:twoListSelection value="#{RequestsTreeTableBean.selectedColumns}" id="optionsTLS"
-                              buttonStyle="width: 35px !important; height: 25px !important;"
-                              listStyle="width: 178px; margin-right: 0px !important;"
-                              style="width: 440px;">
-            <f:selectItems value="#{RequestsTreeTableBean.columnItems}"/>
-          </o:twoListSelection>
-        </h:panelGroup>
-        <h:panelGroup styleClass="select_columns_button_area">
-          <h:commandButton value="OK"
-                           onclick="O$('form1:requestsTreeTable:selectColumnsPopup').hide(); O$.ajaxReload(['form1:requestsTreeTable'], {execute: ['form1:requestsTreeTable:optionsTLS'], listener: 'RequestsTreeTableBean.selectColumns'}); return false;"
-                           styleClass="select_columns_ok"/>
-          <h:commandButton value="Cancel" onclick="optionPopupHide(); return false;"
-                           styleClass="select_columns_cancel"/>
-        </h:panelGroup>
-      </h:panelGrid>
-    </o:popupLayer>
-  </h:panelGroup>
-</f:facet>
+<o:dynamicTreeStructure nodeChildren="#{RequestsTreeTableBean.requestsNodeChildren}"/>
+
 <o:multipleNodeSelection nodeDatas="#{RequestsTreeTableBean.selectedRequests}"
                          style="background: url('../images/treetable/selected.gif') repeat-x #5D8BBA !important; color: white !important;"
-                         onchange="requestsSelectionChanged()"/>
-<o:dynamicTreeStructure nodeChildren="#{RequestsTreeTableBean.requestsNodeChildren}"/>
+                         onchange="requestsSelectionChanged();"/>
+<o:columnReordering/>
+
+
 <o:row condition="#{thereAreSubRequests}" style="font-weight: bold"/>
 <o:row condition="#{RequestsTreeTableBean.editingThisRow}">
   <o:cell/>
@@ -106,6 +82,7 @@
     <h:inputText value="#{rq.reporter}" style="width: 100%" autocomplete="off"/>
   </o:cell>
 </o:row>
+
 <o:column id="id" sortingExpression="#{rq.requestId}"
           style="text-align: left; width: 40px; padding-left: 4px; padding-right: 4px;"
           sortingComparator="#{RequestsTreeTableBean.idComparator}">
@@ -164,6 +141,46 @@
   </f:facet>
   <h:outputText value="#{rq.reporter}"/>
 </o:column>
+
+<f:facet name="above">
+  <h:panelGroup id="columnSelector" 
+                style="white-space: nowrap; display: block; width: 100%; margin-top: -15px; margin-bottom: 15px;">
+    <o:window id="selectColumnsDialog"
+              modal="true"
+              width="490px" height="280px" resizable="false"
+              onshow="columnsDialogShow();"
+              styleClass="select_columns_dialog"
+              captionClass="select_columns_header"
+              contentStyle="padding: 0px; overflow: hidden;">
+      <f:facet name="caption">
+        <h:outputText value="Customize Columns"/>
+      </f:facet>
+      <o:captionArea>
+        <o:closeWindowButton/>
+      </o:captionArea>
+      <h:panelGrid cellpadding="0" cellspacing="0" style="width: 100%">
+        <h:panelGroup styleClass="select_columns_middle_area">
+          <o:twoListSelection value="#{RequestsTreeTableBean.requestsColumnsOrder}" id="optionsTLS"
+                              buttonStyle="width: 50px !important; height: 25px !important;"
+                              listStyle="width: 178px; margin-right: 0px !important;"
+                              style="width: 440px;">
+            <f:selectItems value="#{RequestsTreeTableBean.columnItems}"/>
+          </o:twoListSelection>
+        </h:panelGroup>
+        <h:panelGroup styleClass="select_columns_button_area">
+          <h:commandButton value="OK"
+                           onclick="O$('form1:requestsTreeTable:selectColumnsDialog').hide();
+                             O$.ajaxReload(['form1:requestsTreeTable'], {
+                                execute: ['form1:requestsTreeTable:optionsTLS']});
+                             return false;"
+                           styleClass="select_columns_ok"/>
+          <h:commandButton value="Cancel" onclick="cancelColumnsDialog(); return false;"
+                           styleClass="select_columns_cancel"/>
+        </h:panelGroup>
+      </h:panelGrid>
+    </o:window>
+  </h:panelGroup>
+</f:facet>
 
 <f:facet name="below">
   <h:panelGroup id="treeOperationsToolbar"
@@ -280,7 +297,7 @@
     </li>
     <li><strong>Conditional styling</strong> - The rows displaying compound requests are bold.</li>
     <li><strong>Reordering columns</strong> - Click the <b>Customize Columns</b> button to add/remove
-      columns or change their order.
+      columns or change their order, or drag a column header to move the appropriate column directly.
     </li>
     <li><strong>Refreshing a TreeTable with Ajax</strong> - All of the request manipulation actions below
       are performed with Ajax.

@@ -37,7 +37,6 @@ public class RequestsTreeTableBean implements Serializable {
     private List<Request> selectedRequests = new ArrayList<Request>();
     private List<String> requestsColumnsOrder = new ArrayList<String>();
     private List<SelectItem> columnItems = new ArrayList<SelectItem>();
-    private String[] selectedColumns;
 
     private List<SelectItem> requestTypeItems = new ArrayList<SelectItem>();
     private List<SelectItem> requestPriorityItems = new ArrayList<SelectItem>();
@@ -65,17 +64,16 @@ public class RequestsTreeTableBean implements Serializable {
         requestStatusItems.add(new SelectItem(RequestStatus.IN_PROGRESS, RequestStatus.IN_PROGRESS.toString(), null));
         requestStatusItems.add(new SelectItem(RequestStatus.COMPLETED, RequestStatus.COMPLETED.toString(), null));
 
-        columnItems.add(new SelectItem("id", "Request ID", null));
+        columnItems.add(new SelectItem("id", "ID", null));
         columnItems.add(new SelectItem("description", "Description", null, true));
-        columnItems.add(new SelectItem("type", "Request Type", null));
-        columnItems.add(new SelectItem("work", "Estimated Work (days)", null));
+        columnItems.add(new SelectItem("type", "Type", null));
+        columnItems.add(new SelectItem("work", "Work (days)", null));
         columnItems.add(new SelectItem("priority", "Priority", null));
         columnItems.add(new SelectItem("status", "Status", null));
         columnItems.add(new SelectItem("reporter", "Reporter", null));
         columnItems.add(new SelectItem("assignee", "Assignee", null));
 
-        selectedColumns = new String[]{"id", "description", "work", "priority", "status", "assignee"};
-        selectColumns(null);
+        requestsColumnsOrder = Arrays.asList("id", "description", "work", "priority", "status", "assignee");
 
         rootRequests.add(createRequest(null, "Some task 1", RequestPriority.NORMAL, 2, RequestStatus.COMPLETED, "User 1", "Worker 1", RequestType.TASK));
         rootRequests.add(createRequest(null, "Some task 2", RequestPriority.NORMAL, 3, RequestStatus.COMPLETED, "User 2", "Worker 1", RequestType.TASK));
@@ -143,16 +141,8 @@ public class RequestsTreeTableBean implements Serializable {
         return requestsColumnsOrder;
     }
 
-    public String[] getSelectedColumns() {
-        return selectedColumns;
-    }
-
-    public void setSelectedColumns(String[] selectedColumns) {
-        this.selectedColumns = selectedColumns;
-    }
-
-    public void selectColumns(ActionEvent event) {
-        requestsColumnsOrder = Arrays.asList(selectedColumns);
+    public void setRequestsColumnsOrder(List<String> requestsColumnsOrder) {
+        this.requestsColumnsOrder = requestsColumnsOrder;
     }
 
     public List<SelectItem> getColumnItems() {

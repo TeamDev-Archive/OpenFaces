@@ -16,27 +16,203 @@ O$.Window = {
   STATE_MINIMIZED: "minimized",
 
   _init: function(windowId, resizable, draggableByContent, minWidth, minHeight, desktopElementId) {
-    var win = O$(windowId);
-    win._form = O$.getParentNode(win, "form");
-    win._draggableByContent = draggableByContent;
+    var win = O$.initComponent(windowId, null, {
+      _form: O$.getParentNode(win, "form"),
+      _draggableByContent: draggableByContent,
+      _minWidth: O$.calculateNumericCSSValue(minWidth),
+      _minHeight: O$.calculateNumericCSSValue(minHeight),
+      _table: O$(windowId + "::table"),
+      _content: O$(windowId + "::content"),
+      _caption: O$(windowId + "::caption"),
+      _captionContent: O$(windowId + "::caption_content"),
+      _contentRow: O$(windowId + "::contentRow"),
+      _footerRow: O$(windowId + "::footerRow"),
+      _desktopElement: desktopElementId ? O$(desktopElementId) : null,
+
+      _state: O$.Window.STATE_NORMAL,
+      _declaredResizable: resizable,
+
+      _resizable: false,
+      _setResizable: function(resizable) {
+        if (win._resizable == resizable)
+          return;
+        win._resizable = resizable;
+        if (resizable)
+          O$.Window._createResizers(win);
+        else
+          O$.Window._removeResizers(win);
+      },
+
+      _setPos: function(left, top) {
+        win.setLeft(left);
+        win.setTop(top);
+      },
+
+      _setSize: function(width, height) {
+        O$.setElementSize(win, {width: width, height: height});
+        O$.setHiddenField(win, windowId + "::size", width + "," + height);
+        if (!win._table._widthInitialized) {
+          win._table.style.width = "100%";
+          win._table._widthInitialized = true;
+        }
+        if (this._sizeChanged)
+          this._sizeChanged();
+      },
+
+      _setRect: function(rect) {
+        this._rect = rect;
+        O$.setElementBorderRectangle(win, rect);
+        this._setPos(rect.x, rect.y);
+        this._setSize(rect.width, rect.height);
+        if (resizable)
+          this._updateResizersPos();
+      },
+
+      _afterShow: function() {
+        if (win._postponedInitialization) {
+          O$.waitForCondition(function() {
+            return !win._postponedInitialization;
+          }, win._afterShow);
+          return;
+        }
+
+        if (resizable)
+          win._updateResizersPos();
+        win._updateContentPos();
+      },
+
+      _afterHide: function() {
+        if (resizable)
+          this._updateResizersPos();
+      },
+
+      _positionChanged: function() {
+        if (resizable)
+          this._updateResizersPos();
+      },
+
+      _updateContentPos: function() {
+        if (O$.getElementStyle(this._content, "position", true) != "absolute")
+          return; // todo: the case for Confirmation -- unify implementation if possible
+        var captionHeight = O$.getElementSize(this._caption).height;
+        if (!this._rect)
+          this._rect = O$.getElementBorderRectangle(this, true);
+        var borderLeft = O$.getNumericElementStyle(this, "border-left-width", true);
+        var borderRight = O$.getNumericElementStyle(this, "border-right-width", true);
+        var borderTop = O$.getNumericElementStyle(this, "border-top-width", true);
+        var borderBottom = O$.getNumericElementStyle(this, "border-bottom-width", true);
+        O$.setElementBorderRectangle(this._content, new O$.Rectangle(
+                0,
+                captionHeight,
+                this._rect.width - borderLeft - borderRight,
+                this._rect.height - borderTop - borderBottom - captionHeight
+                ));
+        this._content.style.visibility = "visible";
+      },
+
+      _sizeChanged: function() {
+        this._updateContentPos();
+      },
+
+      isMinimized: function() {
+        return this._state == O$.Window.STATE_MINIMIZED;
+      },
+
+      isNormal: function() {
+        return this._state == O$.Window.STATE_NORMAL;
+      },
+
+      isMaximized: function() {
+        return this._state == O$.Window.STATE_MAXIMIZED;
+      },
+
+      minimize: function() {
+        if (this._state == O$.Window.STATE_MINIMIZED)
+          return;
+        this.restore();
+        this._setResizable(false);
+        this._setState(O$.Window.STATE_MINIMIZED);
+        this._normalSize = O$.getElementSize(this);
+        var contentSize = O$.getElementSize(this._content);
+        var footerSize = this._footerRow ? O$.getElementSize(this._footerRow) : null;
+        this._contentRow._originalDisplay = this._contentRow.style.display;
+        this._contentRow.style.display = "none";
+        if (this._footerRow) {
+          this._footerRow._originalDisplay = this._footerRow.style.display;
+          this._footerRow.style.display = "none";
+        }
+        var rect = O$.getElementBorderRectangle(this, true);
+        var newHeight = rect.height - contentSize.height - (this._footerRow ? footerSize.height : 0);
+        this._setRect(new O$.Rectangle(rect.x, rect.y, rect.width, newHeight));
+      },
+
+      maximize: function() {
+        if (this._state == O$.Window.STATE_MAXIMIZED)
+          return;
+        this.restore();
+        this._setResizable(false);
+        this._draggingDisabled = true;
+        this._setState(O$.Window.STATE_MAXIMIZED);
+
+        this._normalRectangle = O$.getElementBorderRectangle(this, true);
+        var rect = this._desktopElement ? O$.getElementPaddingRectangle(this._desktopElement) : O$.getVisibleAreaRectangle();
+        if (this._desktopElement || O$.isExplorer6() || O$.isExplorer7()) {
+          var container = O$.getContainingBlock(this, true);
+          if (container) {
+            var containerPos = O$.getElementBorderRectangle(container, false);
+            rect.x -= containerPos.x;
+            rect.y -= containerPos.y;
+          }
+        } else {
+          var scrollPos = O$.getPageScrollPos();
+          rect.x -= scrollPos.x;
+          rect.y -= scrollPos.y;
+          this.style.position = "fixed";
+        }
+        this._setRect(rect);
+      },
+
+      restore: function() {
+        if (this._state == O$.Window.STATE_NORMAL)
+          return;
+        if (this._state == O$.Window.STATE_MINIMIZED) {
+          this._contentRow.style.display = this._contentRow._originalDisplay;
+          if (this._footerRow)
+            this._footerRow.style.display = this._footerRow._originalDisplay;
+          var rect = O$.getElementBorderRectangle(this, true);
+          this._setRect(new O$.Rectangle(rect.x, rect.y, this._normalSize.width, this._normalSize.height));
+          this._normalSize = null;
+        }
+        if (this._state == O$.Window.STATE_MAXIMIZED) {
+          if (!this._desktopElement)
+            this.style.position = "absolute";
+          this._setRect(this._normalRectangle);
+          this._normalRectangle = null;
+        }
+        this._setState(O$.Window.STATE_NORMAL);
+        win._setResizable(win._declaredResizable);
+        this._draggingDisabled = false;
+      },
+
+      _setState: function(state) {
+        this._state = state;
+        if (!this._stateChangeListeners)
+          return;
+        for (var i = 0, count = this._stateChangeListeners.length; i < count; i++) {
+          var listener = this._stateChangeListeners[i];
+          listener(this);
+        }
+      }
+    });
+
+    win._setResizable(win._declaredResizable);
+
     if (!draggableByContent)
       win._draggable = false;
-    win._minWidth = O$.calculateNumericCSSValue(minWidth);
-    win._minHeight = O$.calculateNumericCSSValue(minHeight);
     if (win._minWidth < 5)
       win._minWidth = 5;
     if (win._minHeight < 5)
       win._minHeight = 5;
-    win._table = O$(windowId + "::table");
-    win._content = O$(windowId + "::content");
-    win._caption = O$(windowId + "::caption");
-    win._captionContent = O$(windowId + "::caption_content");
-    win._contentRow = O$(windowId + "::contentRow");
-    win._footerRow = O$(windowId + "::footerRow");
-    win._desktopElement = desktopElementId ? O$(desktopElementId) : null;
-
-    win._state = O$.Window.STATE_NORMAL;
-    win._declaredResizable = resizable;
 
     if (win._caption && !draggableByContent)
       win._caption.onmousedown = function(e) {
@@ -57,176 +233,6 @@ O$.Window = {
           win.maximize();
       };
 
-    win._resizable = false;
-    win._setResizable = function(resizable) {
-      if (win._resizable == resizable)
-        return;
-      win._resizable = resizable;
-      if (resizable)
-        O$.Window._createResizers(win);
-      else
-        O$.Window._removeResizers(win);
-    };
-    win._setResizable(win._declaredResizable);
-
-    win._setPos = function(left, top) {
-      win.setLeft(left);
-      win.setTop(top);
-    };
-
-    win._setSize = function(width, height) {
-      O$.setElementSize(win, {width: width, height: height});
-      O$.setHiddenField(win, windowId + "::size", width + "," + height);
-      if (!win._table._widthInitialized) {
-        win._table.style.width = "100%";
-        win._table._widthInitialized = true;
-      }
-      if (this._sizeChanged)
-        this._sizeChanged();
-    };
-
-    win._setRect = function(rect) {
-      this._rect = rect;
-      O$.setElementBorderRectangle(win, rect);
-      this._setPos(rect.x, rect.y);
-      this._setSize(rect.width, rect.height);
-      if (resizable)
-        this._updateResizersPos();
-    };
-
-    win._afterShow = function() {
-      if (win._postponedInitialization) {
-        O$.waitForCondition(function() {
-          return !win._postponedInitialization;
-        }, win._afterShow);
-        return;
-      }
-
-      if (resizable)
-        win._updateResizersPos();
-      win._updateContentPos();
-    };
-
-    win._afterHide = function() {
-      if (resizable)
-        this._updateResizersPos();
-    };
-
-    win._positionChanged = function() {
-      if (resizable)
-        this._updateResizersPos();
-    };
-
-    win._updateContentPos = function() {
-      if (O$.getElementStyle(this._content, "position", true) != "absolute")
-        return; // todo: the case for Confirmation -- unify implementation if possible
-      var captionHeight = O$.getElementSize(this._caption).height;
-      if (!this._rect)
-        this._rect = O$.getElementBorderRectangle(this, true);
-      var borderLeft = O$.getNumericElementStyle(this, "border-left-width", true);
-      var borderRight = O$.getNumericElementStyle(this, "border-right-width", true);
-      var borderTop = O$.getNumericElementStyle(this, "border-top-width", true);
-      var borderBottom = O$.getNumericElementStyle(this, "border-bottom-width", true);
-      O$.setElementBorderRectangle(this._content, new O$.Rectangle(
-              0,
-              captionHeight,
-              this._rect.width - borderLeft - borderRight,
-              this._rect.height - borderTop - borderBottom - captionHeight
-              ));
-      this._content.style.visibility = "visible";
-    };
-
-    win._sizeChanged = function() {
-      this._updateContentPos();
-    };
-
-    win.isMinimized = function() {
-      return this._state == O$.Window.STATE_MINIMIZED;
-    };
-
-    win.isNormal = function() {
-      return this._state == O$.Window.STATE_NORMAL;
-    };
-
-    win.isMaximized = function() {
-      return this._state == O$.Window.STATE_MAXIMIZED;
-    };
-
-    win.minimize = function() {
-      if (this._state == O$.Window.STATE_MINIMIZED)
-        return;
-      this.restore();
-      this._setResizable(false);
-      this._setState(O$.Window.STATE_MINIMIZED);
-      this._normalSize = O$.getElementSize(this);
-      var contentSize = O$.getElementSize(this._content);
-      var footerSize = this._footerRow ? O$.getElementSize(this._footerRow) : null;
-      this._contentRow._originalDisplay = this._contentRow.style.display;
-      this._contentRow.style.display = "none";
-      if (this._footerRow) {
-        this._footerRow._originalDisplay = this._footerRow.style.display;
-        this._footerRow.style.display = "none";
-      }
-      var rect = O$.getElementBorderRectangle(this, true);
-      var newHeight = rect.height - contentSize.height - (this._footerRow ? footerSize.height : 0);
-      this._setRect(new O$.Rectangle(rect.x, rect.y, rect.width, newHeight));
-    };
-    win.maximize = function() {
-      if (this._state == O$.Window.STATE_MAXIMIZED)
-        return;
-      this.restore();
-      this._setResizable(false);
-      this._draggingDisabled = true;
-      this._setState(O$.Window.STATE_MAXIMIZED);
-
-      this._normalRectangle = O$.getElementBorderRectangle(this, true);
-      var rect = this._desktopElement ? O$.getElementPaddingRectangle(this._desktopElement) : O$.getVisibleAreaRectangle();
-      if (this._desktopElement || O$.isExplorer6() || O$.isExplorer7()) {
-        var container = O$.getContainingBlock(this, true);
-        if (container) {
-          var containerPos = O$.getElementBorderRectangle(container, false);
-          rect.x -= containerPos.x;
-          rect.y -= containerPos.y;
-        }
-      } else {
-        var scrollPos = O$.getPageScrollPos();
-        rect.x -= scrollPos.x;
-        rect.y -= scrollPos.y;
-        this.style.position = "fixed";
-      }
-      this._setRect(rect);
-    };
-    win.restore = function() {
-      if (this._state == O$.Window.STATE_NORMAL)
-        return;
-      if (this._state == O$.Window.STATE_MINIMIZED) {
-        this._contentRow.style.display = this._contentRow._originalDisplay;
-        if (this._footerRow)
-          this._footerRow.style.display = this._footerRow._originalDisplay;
-        var rect = O$.getElementBorderRectangle(this, true);
-        this._setRect(new O$.Rectangle(rect.x, rect.y, this._normalSize.width, this._normalSize.height));
-        this._normalSize = null;
-      }
-      if (this._state == O$.Window.STATE_MAXIMIZED) {
-        if (!this._desktopElement)
-          this.style.position = "absolute";
-        this._setRect(this._normalRectangle);
-        this._normalRectangle = null;
-      }
-      this._setState(O$.Window.STATE_NORMAL);
-      win._setResizable(win._declaredResizable);
-      this._draggingDisabled = false;
-    };
-
-    win._setState = function(state) {
-      this._state = state;
-      if (!this._stateChangeListeners)
-        return;
-      for (var i = 0, count = this._stateChangeListeners.length; i < count; i++) {
-        var listener = this._stateChangeListeners[i];
-        listener(this);
-      }
-    };
   },
 
   _addStateChangeListener: function(win, listener) {
@@ -364,12 +370,12 @@ O$.Window = {
       dy = Math.max(dy, win._minHeight - rect.height);
       rect.height += dy;
     };
-    win._resizeLeftEdge = function(rect, dx, dy) {
+    win._resizeLeftEdge = function(rect, dx/*, dy*/) {
       dx = Math.min(dx, rect.width - win._minWidth);
       rect.x += dx;
       rect.width -= dx;
     };
-    win._resizeRightEdge = function(rect, dx, dy) {
+    win._resizeRightEdge = function(rect, dx/*, dy*/) {
       dx = Math.max(dx, win._minWidth - rect.width);
       rect.width += dx;
     };
