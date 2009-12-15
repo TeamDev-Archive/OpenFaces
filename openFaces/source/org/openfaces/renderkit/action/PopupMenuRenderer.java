@@ -12,7 +12,6 @@
 package org.openfaces.renderkit.action;
 
 
-import org.openfaces.component.AbstractPopup;
 import org.openfaces.component.OUIClientActionHelper;
 import org.openfaces.component.action.MenuItem;
 import org.openfaces.component.action.MenuSeparator;
@@ -173,7 +172,7 @@ public class PopupMenuRenderer extends RendererBase {
         RenderingUtil.renderInitScript(facesContext, initScript,
                 ResourceUtil.getUtilJsURL(facesContext),
                 ResourceUtil.getInternalResourceURL(facesContext, PopupMenuRenderer.class, JS_SCRIPT_URL),
-                ResourceUtil.getInternalResourceURL(facesContext, AbstractPopup.class, "popup.js"));
+                ResourceUtil.getInternalResourceURL(facesContext, RendererBase.class, "popup.js"));
     }
 
     private PopupMenu getRootPopupMenu(PopupMenu popupMenu) {

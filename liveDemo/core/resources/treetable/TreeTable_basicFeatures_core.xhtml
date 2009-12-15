@@ -8,11 +8,17 @@
                  expansionState="#{ForumTreeTableBean.forumTreeTableExpansionState}"
                  columnIdVar="columnId"
                  sortColumnId="date"
-                 width="100%"
+                 style="width: 100%; height: 450px;"
                  headerVertSeparator="1px solid #a0a0a0"
+                 sortedAscendingImageUrl="../images/treetable/sort_a.gif"
+                 sortedDescendingImageUrl="../images/treetable/sort_d.gif"
+                 sortedColumnHeaderStyle="background: url('../images/treetable/tableHeader_sorted.gif') repeat-x;"
+                 headerRowStyle="background: url('../images/treetable/tableHeader.gif') repeat-x; height: 20px;"
+                 filterRowStyle="background: url('../images/datatable/filter.gif') repeat-x #f7f7f7; border-top: 1px solid #f6f7f8;"
                  textStyle="font-family: verdana,Helvetica,sans-serif; font-size: 10pt; white-space: nowrap">
       <o:dynamicTreeStructure nodeChildren="#{ForumTreeTableBean.nodeChildren}"
                               nodeHasChildren="#{ForumTreeTableBean.nodeHasChildren}" nodeKey="#{message.id}"/>
+      <o:scrolling/>
       <o:columnResizing/>
       <o:columnReordering/>
       <o:treeColumn id="subject" sortingExpression="#{message.subject}" bodyStyle="text-align: left;">
@@ -24,7 +30,7 @@
         </f:facet>
         <h:outputText value="#{message.subject}" styleClass="treeTableText"/>
       </o:treeColumn>
-      <o:column id="author" sortingExpression="#{message.author}" width="120px;">
+      <o:column id="author" sortingExpression="#{message.author}" style="width: 120px;">
         <f:facet name="header">
           <h:outputText value="From"/>
         </f:facet>
@@ -33,7 +39,7 @@
         </f:facet>
         <h:outputText value="#{message.author}" styleClass="treeTableText"/>
       </o:column>
-      <o:column id="date" sortingExpression="#{message.date}" width="120px;">
+      <o:column id="date" sortingExpression="#{message.date}" style="width: 120px;">
         <f:facet name="header">
           <h:outputText value="Sent"/>
         </f:facet>
@@ -54,10 +60,12 @@
       <li><strong>Filtering</strong> - Specify the filtering criteria in the appropriate fields under
         the header and press Enter to filter the displayed data.
         The rows that don't meet the filtering criteria but are required to show the tree structure are grayed.</li>
-      <li><strong>Dynamic loading for node expansion, sorting, and filtering</strong> - Only the
-        modified or revealed data is loaded using Ajax technology instead of reloading the whole page.</li>
       <li><strong>Column resizing</strong> - Drag column header separators to resize columns.</li>
       <li><strong>Drag &amp; drop column reordering</strong>&#8212;Drag a column header to move the appropriate column.</li>
+      <li><strong>Content scrolling</strong> - it's possible to scroll through the entire TreeTable contents when the
+        vertical space is limited.</li>
+      <li><strong>Dynamic loading for node expansion, sorting, and filtering</strong> - Only the
+        modified or revealed data is loaded using Ajax technology instead of reloading the whole page.</li>
       <li><strong>Dynamic tree structure</strong> - The data is retrieved dynamically from the backing bean.</li>
       <li><strong>Customizing default node expansion state</strong> - All top-level nodes are
         expanded by default when the TreeTable component is loaded.</li>

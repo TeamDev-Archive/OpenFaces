@@ -99,6 +99,7 @@ public class ClientFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         try {
             tabSet("fn:loadingModes").tabs().get(1).clickAndWait();
         } catch (Exception e) {
+            sleep(30);
             // trying to avoid strange intermittent build failures
             testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
             tabSet("fn:loadingModes").tabs().get(1).clickAndWait();

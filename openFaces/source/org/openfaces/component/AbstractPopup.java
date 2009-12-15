@@ -11,6 +11,7 @@
  */
 package org.openfaces.component;
 
+import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.Script;
@@ -89,11 +90,11 @@ public abstract class AbstractPopup extends UIPanel {
 
     private void renderInitScript(FacesContext context) throws IOException {
         boolean useDisplayNoneByDefault = getUseDisplayNoneByDefault();
-        Script initScript = new ScriptBuilder().initScript(context, this, "O$._initPopup",
+        Script initScript = new ScriptBuilder().initScript(context, this, "O$.Popup._init",
                 useDisplayNoneByDefault).semicolon();
         RenderingUtil.renderInitScript(context, initScript,
                 ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, AbstractPopup.class, "popup.js"));
+                ResourceUtil.getInternalResourceURL(context, RendererBase.class, "popup.js"));
     }
 
     protected boolean getUseDisplayNoneByDefault() {

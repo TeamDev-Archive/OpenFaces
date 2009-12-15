@@ -54,6 +54,8 @@ public class ForumTreeTableBean implements Serializable {
                 new ForumMessage("Re: Most popular design patterns", createDate(2008, 1, 30, 12, 36), u6, null))));
         rootMessages.add(new ForumMessage("What development methodology do you use?", createDate(2008, 9, 4, 2, 51), u3, Arrays.asList(
                 new ForumMessage("Re: What development methodology do you use?", createDate(2008, 9, 7, 20, 1), u2, null),
+                new ForumMessage("Re: What development methodology do you use?", createDate(2009, 4, 15, 14, 10), u1, Arrays.asList(
+                        new ForumMessage("Re: What development methodology do you use?", createDate(2009, 5, 7, 8, 30), u2, null))),
                 new ForumMessage("Re: What development methodology do you use?", createDate(2008, 9, 10, 12, 36), u6, null))));
         rootMessages.add(new ForumMessage("Scaling an image", createDate(2007, 6, 7, 8, 13), u2, Arrays.asList(
                 new ForumMessage("Re: Scaling an image", createDate(2007, 6, 8, 9, 47), u3, Arrays.asList(
@@ -61,6 +63,18 @@ public class ForumTreeTableBean implements Serializable {
                                 new ForumMessage("Re: Scaling an image", createDate(2007, 7, 3, 0, 12), u5, null))))))));
         rootMessages.add(new ForumMessage("Need to create a simple database web application", createDate(2007, 11, 7, 8, 13), u4, Arrays.asList(
                 new ForumMessage("Re: Need to create a simple database web application", createDate(2007, 11, 8, 9, 47), u1, null))));
+        rootMessages.add(new ForumMessage("OpenFaces Roadmap", createDate(2009, 11, 3, 17, 25), u3, Arrays.asList(
+                new ForumMessage("Re: OpenFaces Roadmap", createDate(2009, 11, 9, 11, 54), u2, Arrays.asList(
+                        new ForumMessage("Re: OpenFaces Roadmap", createDate(2009, 11, 9, 17, 5), u3, null))))));
+        rootMessages.add(new ForumMessage("Mojarra vs. MyFaces", createDate(2009, 5, 24, 12, 17), u6, Arrays.asList(
+                new ForumMessage("Re: Mojarra vs. MyFaces", createDate(2009, 5, 24, 12, 32), u2, null),
+                new ForumMessage("Re: Mojarra vs. MyFaces", createDate(2009, 5, 24, 19, 20), u5, Arrays.asList(
+                        new ForumMessage("Re: Mojarra vs. MyFaces", createDate(2009, 5, 24, 23, 23), u6, Arrays.asList(
+                                new ForumMessage("Re: Mojarra vs. MyFaces", createDate(2009, 5, 25, 33, 26), u5, null)
+                        ))
+                )),
+                new ForumMessage("Re: Mojarra vs. MyFaces", createDate(2009, 5, 25, 17, 3), u1, null),
+                new ForumMessage("Re: Mojarra vs. MyFaces", createDate(2009, 5, 28, 10, 45), u4, null))));
     }
 
     private ExpansionState forumTreeTableExpansionState = new SeveralLevelsExpanded(1);

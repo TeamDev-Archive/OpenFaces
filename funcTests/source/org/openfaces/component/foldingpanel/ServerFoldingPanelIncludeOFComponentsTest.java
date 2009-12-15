@@ -86,6 +86,7 @@ public class ServerFoldingPanelIncludeOFComponentsTest extends OpenFacesTestCase
         try {
             tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());
         } catch (Exception e) {
+            sleep(30);
             // trying to avoid strange intermittent build failures
             testAppFunctionalPage("/components/foldingpanel/dateChooserIn.jsf");
             tabSet("fn:loadingModes").setTabIndex(2, ServerLoadingMode.getInstance());

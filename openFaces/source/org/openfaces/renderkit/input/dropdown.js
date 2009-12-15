@@ -231,7 +231,7 @@ O$.DropDown = {
             return;
           button.className = dropDown._pressedButtonClass;
           dropDown._showHidePopup();
-          O$._hideAllPopupsExceptOne(popup);
+          O$.Popup._hideAllPopupsExceptOne(popup);
           O$.breakEvent(e);
         };
         button.ondblclick = function (e) {

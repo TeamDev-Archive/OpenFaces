@@ -11,7 +11,6 @@
  */
 package org.openfaces.renderkit.window;
 
-import org.openfaces.component.AbstractPopup;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
@@ -130,10 +129,10 @@ public class PopupLayerRenderer extends RendererBase {
 
         if (popup.getHideOnOuterClick()) {
             ScriptBuilder buf = new ScriptBuilder();
-            buf.functionCall("O$._initPopup", clientId).semicolon();
+            buf.functionCall("O$.Popup._init", clientId).semicolon();
             RenderingUtil.renderInitScript(context, buf,
                     ResourceUtil.getUtilJsURL(context),
-                    ResourceUtil.getInternalResourceURL(context, AbstractPopup.class, "popup.js"));
+                    ResourceUtil.getInternalResourceURL(context, RendererBase.class, "popup.js"));
         }
 
         ScriptBuilder sb = new ScriptBuilder();

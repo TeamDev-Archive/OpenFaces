@@ -60,7 +60,7 @@ O$.PopupMenu = {
 
     O$.setupArtificialFocus(popupMenu, null);
 
-    O$._initPopup(popupMenuId, false);
+    O$.Popup._init(popupMenuId, false);
 
     popupMenu._isRoot = function() {
       return !!isRootMenu;

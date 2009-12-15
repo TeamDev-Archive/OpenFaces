@@ -3950,7 +3950,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean -->
-      <!-- @default true -->
+      <!-- @default false -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -4046,6 +4046,51 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>CSS style for for the area that highlights the possible drop target when the user drags a column.
+        The usual attributes that should be configured in this style are the "background" and "width" CSS attributes.
+      </description>
+      <name>dropTargetStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS class name for for the area that highlights the possible drop target when the user drags a
+        column. The usual attributes that should be configured in this style are the "background" and "width" CSS
+        attributes.
+      </description>
+      <name>dropTargetClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Image that is displayed above the drop target when column dragging is in progress.</description>
+      <name>dropTargetTopImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Image that is displayed below the drop target when column dragging is in progress.</description>
+      <name>dropTargetBottomImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>CSS style for the header's area that allows scrolling the area for dragging to make all columns
         available for reordering even in scrollable tables.
       </description>
@@ -4079,49 +4124,6 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType double -->
       <!-- @default 0.5 -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>CSS style for for the area that highlights the possible drop target when the user drags a column.
-      </description>
-      <name>dropTargetStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>CSS class name for for the area that highlights the possible drop target when the user drags a
-        column.
-      </description>
-      <name>dropTargetClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Image that is displayed above the drop target when column dragging is in progress.</description>
-      <name>dropTargetTopImageUrl</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Image that is displayed below the drop target when column dragging is in progress.</description>
-      <name>dropTargetBottomImageUrl</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>

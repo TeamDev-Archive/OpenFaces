@@ -1572,7 +1572,7 @@ O$.Table = {
       return img;
     }
 
-    if (table._params.scrolling) {
+    if (table._params.scrolling && table._params.scrolling.horizontal) {
       function autoScrolArea(imageUrl) {
         var result = createTableWithoutTd();
         result.className = autoScrollAreaClass;
@@ -1754,7 +1754,7 @@ O$.Table = {
       var additionalAreaListener;
 
       function draggingStarted() {
-        if (!table._params.scrolling) return;
+        if (!(table._params.scrolling && table._params.scrolling.horizontal)) return;
         additionalAreaContainer.appendChild(leftAutoScrollArea);
         additionalAreaContainer.appendChild(rightAutoScrollArea);
         leftAutoScrollArea._update();
@@ -1776,7 +1776,7 @@ O$.Table = {
 
       function draggingMoved(e) {
         e = {clientX: e.clientX, clientY: e.clientY};
-        if (!table._params.scrolling) return;
+        if (!(table._params.scrolling && table._params.scrolling.horizontal)) return;
 
         function setActiveHelperArea(area) {
           if (activeHelperArea == area) return;
