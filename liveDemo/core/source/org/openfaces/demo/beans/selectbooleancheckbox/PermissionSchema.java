@@ -90,29 +90,25 @@ public class PermissionSchema {
                                 public void setState(Boolean state) {
                                     super.setState(state);
                                     if (state != null) {
-                                        Collection<Permission> dependendPermissions = permission.getDependent();
-                                        for (Permission dependendPermission : dependendPermissions) {
-                                            get(dependendPermission).setDependent(state);
-                                        }
-                                        Collection<PermissionGroup> dependentPermissionGroups = permissionGroup.getDependent();
-                                        for (PermissionGroup dependendPermissionGroup : dependentPermissionGroups) {
-                                            PermissionAssigmnent.this.get(dependendPermissionGroup).get(permission).setDependent(state);
-                                        }
-
+                                        setDependentPermissions(state);
                                     }
                                 }
 
                                 @Override
                                 public void setDependent(boolean dependent) {
-
                                     super.setDependent(dependent);
+                                    setDependentPermissions(dependent);
+
+                                }
+
+                                private void setDependentPermissions(boolean value) {
                                     Collection<Permission> dependendPermissions = permission.getDependent();
                                     for (Permission dependendPermission : dependendPermissions) {
-                                        get(dependendPermission).setDependent(dependent);
+                                        get(dependendPermission).setDependent(value);
                                     }
                                     Collection<PermissionGroup> dependentPermissionGroups = permissionGroup.getDependent();
                                     for (PermissionGroup dependendPermissionGroup : dependentPermissionGroups) {
-                                        PermissionAssigmnent.this.get(dependendPermissionGroup).get(permission).setDependent(dependent);
+                                        PermissionAssigmnent.this.get(dependendPermissionGroup).get(permission).setDependent(value);
                                     }
                                 }
                             };

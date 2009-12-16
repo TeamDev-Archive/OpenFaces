@@ -280,6 +280,12 @@
   </managed-bean>
 
   <managed-bean>
+    <managed-bean-name>DrinkOrder</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.selectbooleancheckbox.DrinkOrder</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
     <managed-bean-name>BookCatalog</managed-bean-name>
     <managed-bean-class>org.openfaces.demo.beans.selectmanycheckbox.BookCatalog</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>

@@ -471,7 +471,7 @@
   <menuItem>
     <name>Select Boolean Checkbox</name>
     <componentName>Select Boolean Checkbox</componentName>
-    <url>/selectbooleancheckbox/SelectBooleanCheckbox.jsf</url>
+    <url>/selectbooleancheckbox/SelectBooleanCheckbox_general.jsf</url>
     <shortPath>/selectbooleancheckbox/</shortPath>
     <image>SelectBooleanCheckbox</image>
     <selectedImage>/images/components/titles/SelectBooleanCheckbox.png</selectedImage>
@@ -484,7 +484,11 @@
     <demos>
       <demoItem>
         <demoName>General</demoName>
-        <demoUrl>/selectbooleancheckbox/SelectBooleanCheckbox.jsf</demoUrl>
+        <demoUrl>/selectbooleancheckbox/SelectBooleanCheckbox_general.jsf</demoUrl>
+      </demoItem>
+      <demoItem>
+        <demoName>Styles</demoName>
+        <demoUrl>/selectbooleancheckbox/SelectBooleanCheckbox_styles.jsf</demoUrl>
       </demoItem>
     </demos>
   </menuItem>

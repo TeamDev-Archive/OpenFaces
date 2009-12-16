@@ -65,7 +65,7 @@
 
       <div id="Content">
         <!-- start content -->
-        <%@ include file="SelectBooleanCheckbox_core.xhtml" %>
+        <%@ include file="SelectBooleanCheckbox_general_core.xhtml" %>
         <!-- end content -->
       </div>
     </h:form>

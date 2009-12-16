@@ -234,7 +234,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
 
         if (requestMap.containsKey(clientId)) {
             String requestValue = requestMap.get(clientId);
-            if (requestValue.equalsIgnoreCase(SELECTED_STATE) || requestValue.equalsIgnoreCase("yes") || requestValue.equalsIgnoreCase("true")) {
+            if (requestValue.equalsIgnoreCase(SELECTED_STATE) || requestValue.equalsIgnoreCase("yes") || requestValue.equalsIgnoreCase("on") || requestValue.equalsIgnoreCase("true")) {
                 submittedValue = BooleanObjectValue.TRUE;
             } else if (triStateAllowed && (requestValue.equalsIgnoreCase(UNDEFINED_STATE) || requestValue.equalsIgnoreCase("null"))) {
                 submittedValue = BooleanObjectValue.NULL; // normal null means no value submitted
