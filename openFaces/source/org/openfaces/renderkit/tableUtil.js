@@ -1477,6 +1477,7 @@ O$.Tables = {
 
     };
     column.setWidth = function(width) {
+      if (width < 0) width = 0;
       column._explicitWidth = width;
       var widthPx = width + "px";
       if (this._allCellsClass.style.setProperty) {
@@ -1492,6 +1493,8 @@ O$.Tables = {
     column.getDeclaredWidth = function(tableWidth) {
       if (tableWidth == undefined)
         tableWidth = O$.getElementSize(table).width;
+      tableWidth -= O$.getNumericElementStyle(table, "border-left-width", true);
+      tableWidth -= O$.getNumericElementStyle(table, "border-right-width", true);
       var widthStyleStr = O$.getStyleClassProperty(this._className, "width");
       var colWidth = O$.calculateNumericCSSValue(widthStyleStr, tableWidth);
       if (widthStyleStr && widthStyleStr.indexOf("%") != -1)
@@ -1813,7 +1816,7 @@ O$.Tables = {
 
     for (var i = 0, count = propertyNames.length; i < count; i++) {
       var propertyName = propertyNames[i];
-      cell.style[propertyName] = null;
+      cell.style[propertyName] = "";
     }
 
   },
@@ -1913,6 +1916,8 @@ O$.Tables = {
         var areaWidth = 0;
         var scrollerWidth = mainScrollingArea._scrollingDiv.offsetWidth - mainScrollingArea._scrollingDiv.clientWidth;
         var tableWidth = O$.getElementSize(table).width - scrollerWidth;
+        tableWidth -= O$.getNumericElementStyle(table, "border-left-width", true);
+        tableWidth -= O$.getNumericElementStyle(table, "border-right-width", true);
         if (tableWidth < 0)
           tableWidth = 0;
         var area = section[areaName];
@@ -2208,6 +2213,10 @@ O$.Tables = {
         width -= O$.getNumericElementStyle(table, "border-left-width", true);
         width -= O$.getNumericElementStyle(table, "border-right-width", true);
         table._topLevelScrollingDiv.style.width = width + "px";
+        [table.header, table.body, table.footer].forEach(function (section) {
+          if (section && section._sectionTable)
+            section._sectionTable.style.width = width + "px";
+        });
       }, [
               new O$.Timer("200"),
               new O$.EventListener(window, "resize")
