@@ -370,7 +370,7 @@ O$.Tables = {
             this._scrollingAreas.forEach(function(area) {elements.push(area._table);});
           }
           elements.forEach(function(element) {
-            O$.setStyleMappings(element, {sectionStyle: sectionParams.className});
+            applyStyle(element, sectionParams.className);
           });
         },
         _getRows: function() {
@@ -431,6 +431,7 @@ O$.Tables = {
                 var spacer = O$.getChildNodesByClass(scrollingDiv ? scrollingDiv : td, ["o_scrolling_area_spacer"], false, tbl)[0];
 
                 tbl.style.emptyCells = "show";
+                applyStyle(tbl, sectionParams.className);
                 var rowContainer = O$.getChildNodesWithNames(tbl, ["tbody"])[0];
                 var area = {
                   _horizontalIndex: areaCellIndex,
@@ -2173,11 +2174,11 @@ O$.Tables = {
     function accountForScrollersWidth() {
       [table.header, table.footer].map(function(s) {return s && s._centerScrollingArea;}).forEach(function(area) {
         if (!area) return;
-        O$.setElementSize(area._spacer, {width: 50, height: 1});
+        O$.setElementSize(area._spacer, {width: 30, height: 1});
       });
       [table.body._leftScrollingArea, table.body._rightScrollingArea].forEach(function(area) {
         if (!area) return;
-        O$.setElementSize(area._spacer, {width: 1, height: 50});
+        O$.setElementSize(area._spacer, {width: 1, height: 30});
       });
     }
     accountForScrollersWidth();
