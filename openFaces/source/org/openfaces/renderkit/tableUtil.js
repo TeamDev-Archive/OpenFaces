@@ -370,7 +370,7 @@ O$.Tables = {
             this._scrollingAreas.forEach(function(area) {elements.push(area._table);});
           }
           elements.forEach(function(element) {
-            applyStyle(element, sectionParams.className);
+            O$.setStyleMappings(element, {sectionStyle: sectionParams.className});
           });
         },
         _getRows: function() {

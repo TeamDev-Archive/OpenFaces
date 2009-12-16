@@ -955,6 +955,14 @@ if (!window.O$) {
     return false;
   };
 
+  O$.isChildNode = function(parent, child) {
+    for (var node = child; node; node = node.parentNode) {
+      if (node.parentNode == parent)
+        return true;
+    }
+    return false;
+  };
+
   O$.getChildNodesByClass = function(node, className, searchTopLevelOnly, excludeElementFromSearch) {
     var result = [];
     var children = node.childNodes;
@@ -1442,7 +1450,7 @@ if (!window.O$) {
 
     var container = forElement ? O$.getContainingBlock(forElement, true) : null;
     if (container) {
-      var containerPos = O$.getElementBorderRectangle(container);
+      var containerPos = O$.getElementPos(container);
       pos.x -= containerPos.x;
       pos.y -= containerPos.y;
     }
@@ -3169,10 +3177,10 @@ if (!window.O$) {
    Returns an object {x, y} that points to the top-left corner of the specified element. This method takes into account
    element's border if it exists, that is it determines the position of the element's border box.
 
-   If relativeToNearestContainingBlock parameter is not specified or specified as false, this method
+   If relativeToContainingBlock parameter is not specified or specified as false, this method
    calculates the elements' "absolute" position relative to the top-left corner of the entire document.
 
-   If relativeToNearestContainingBlock is specified as true, it returns an offset relative to the nearest containing block
+   If relativeToContainingBlock is specified as true, it returns an offset relative to the nearest containing block
    (see http://www.w3.org/TR/REC-CSS2/visuren.html#containing-block for definition of a containing block). More exactly
    it calculates offset relative to the containing block's client area. In other words if there is another absolutely
    positioned element in the same containing block, placing it at the position returned by this function will place that
@@ -3183,7 +3191,7 @@ if (!window.O$) {
 
    See also: O$.setElementPos, O$.getElementBorderRectangle, O$.setElementBorderRectangle.
    */
-  O$.getElementPos = function(element, relativeToNearestContainingBlock) {
+  O$.getElementPos = function(element, relativeToContainingBlock) {
     var left, top;
 
     if (element.getBoundingClientRect) {
@@ -3191,7 +3199,7 @@ if (!window.O$) {
       left = rect.left;
       top = rect.top;
       var containingBlock;
-      if (relativeToNearestContainingBlock) {
+      if (relativeToContainingBlock) {
         containingBlock = O$.getContainingBlock(element, true);
         if (containingBlock) {
           var containingRect = containingBlock.getBoundingClientRect();
@@ -3239,7 +3247,7 @@ if (!window.O$) {
       }
 
       var parentIsContainingBlock = O$.isContainingBlock(offsetParent);
-      if (relativeToNearestContainingBlock && parentIsContainingBlock) {
+      if (relativeToContainingBlock && parentIsContainingBlock) {
         if (offsetParent.tagName.toLowerCase() == "div" && (O$.isOpera9AndLate() || O$.isSafari2())) {
           if (O$.getElementStyle(offsetParent, "border-style") != "none") {
             var borderLeftWidth = O$.getNumericElementStyle(offsetParent, "border-left-width");
@@ -3339,10 +3347,10 @@ if (!window.O$) {
     return result;
   };
 
-  O$.getVisibleElementBorderRectangle = function(element, relativeToNearestContainingBlock, cachedDataContainer) {
-    var rect = O$.getElementBorderRectangle(element, relativeToNearestContainingBlock, cachedDataContainer);
+  O$.getVisibleElementBorderRectangle = function(element, relativeToContainingBlock, cachedDataContainer) {
+    var rect = O$.getElementBorderRectangle(element, relativeToContainingBlock, cachedDataContainer);
     var cuttingRect = O$.getCuttingContainingRectangle(element, cachedDataContainer);
-    if (relativeToNearestContainingBlock) {
+    if (relativeToContainingBlock) {
       var elementContainer = O$.getContainingBlock(element, true);
       var containerPos = elementContainer ? O$.getElementPos(elementContainer) : null;
       if (cuttingRect.left && containerPos)
@@ -3358,7 +3366,7 @@ if (!window.O$) {
    Returns the O$.Rectangle object that corresponds to the bounding rectangle of the passed element. This method takes
    into account element's border. That is it returns element's border box rectangle.
 
-   relativeToNearestContainingBlock is an optional parameter that specifies whether the position is calculated relative
+   relativeToContainingBlock is an optional parameter that specifies whether the position is calculated relative
    to the document (if not specified or specified as false), or the nearest containing block's client area.
 
    cachedDataContainer is an optional parameter that if specifies introduces caching of the calculated value for improved
@@ -3372,14 +3380,14 @@ if (!window.O$) {
 
    See also: O$.setElementBorderRectangle, O$.getElementPos, O$.setElementPos.
    */
-  O$.getElementBorderRectangle = function(element, relativeToNearestContainingBlock, cachedDataContainer) {
+  O$.getElementBorderRectangle = function(element, relativeToContainingBlock, cachedDataContainer) {
     if (cachedDataContainer) {
       if (!element._of_getElementRectangle)
         element._of_getElementRectangle = {};
       if (element._of_getElementRectangle._currentCache == cachedDataContainer)
         return element._of_getElementRectangle._cachedValue;
     }
-    var pos = O$.getElementPos(element, relativeToNearestContainingBlock);
+    var pos = O$.getElementPos(element, relativeToContainingBlock);
     var size = O$.getElementSize(element);
     var rect = new O$.Rectangle(pos.x, pos.y, size.width, size.height);
     if (cachedDataContainer) {
@@ -3401,8 +3409,8 @@ if (!window.O$) {
     return {width: width, height: height};
   };
 
-  O$.getElementPaddingRectangle = function(element, relativeToNearestContainngBlock, cachedDataContainer) {
-    var rect = O$.getElementBorderRectangle(element, relativeToNearestContainngBlock, cachedDataContainer);
+  O$.getElementPaddingRectangle = function(element, relativeToContainngBlock, cachedDataContainer) {
+    var rect = O$.getElementBorderRectangle(element, relativeToContainngBlock, cachedDataContainer);
     var borderLeftWidth = O$.getNumericElementStyle(element, "border-left-width");
     var borderRightWidth = O$.getNumericElementStyle(element, "border-right-width");
     var borderTopWidth = O$.getNumericElementStyle(element, "border-top-width");
