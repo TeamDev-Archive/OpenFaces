@@ -648,7 +648,7 @@
     <tag-name>floatingIconMessage</tag-name>
     <component>
       <component-type>org.openfaces.FloatingIconMessage</component-type>
-      <handler-class>org.openfaces.taglib.facelets.validation.FloatingIconTagHandler</handler-class>
+      <handler-class>org.openfaces.taglib.facelets.validation.FloatingIconMessageTagHandler</handler-class>
     </component>
   </tag>
 

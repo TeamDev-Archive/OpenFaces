@@ -9,7 +9,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-O$._FloatingIconMessageRenderer = function(clientId, forClientId, imageUrl, topOffset, leftOffset, css,
+O$._FloatingIconMessageRenderer = function(clientId, forClientId, imageUrl, topOffset, leftOffset, css, events,
                                            hideImg, showSummary, showDetail, defaultPresentation) {
   this.clientId = clientId;
   var messageElement = O$(this.clientId);
@@ -22,6 +22,7 @@ O$._FloatingIconMessageRenderer = function(clientId, forClientId, imageUrl, topO
   this.topOffset = topOffset;
   this.leftOffset = leftOffset;
   this.errorCss = css;
+  this.iconEvents = events;
   this.showImg = !hideImg;
   this.showSummary = showSummary;
   this.showDetail = showDetail;
@@ -49,6 +50,7 @@ O$.extend(O$._FloatingIconMessageRenderer.prototype, {
           messageElement.src = this.imageUrl;
           messageElement.style.position = "absolute";
           messageElement.style.zIndex = 700;
+          O$.assignEvents(messageElement, this.iconEvents);
           document.body.appendChild(messageElement);
           O$.getClientMessageRenderersWithVisibleBubble()[this.clientId + "_" + this.forId] = this;
         }

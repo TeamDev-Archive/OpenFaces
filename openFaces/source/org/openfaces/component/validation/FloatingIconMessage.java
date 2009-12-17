@@ -11,16 +11,15 @@
  */
 package org.openfaces.component.validation;
 
-import org.openfaces.util.ValueBindings;
 import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.ValueBindings;
 
-import javax.faces.component.UIMessage;
 import javax.faces.context.FacesContext;
 
 /**
  * @author Vladimir Korenev
  */
-public class FloatingIconMessage extends UIMessage {
+public class FloatingIconMessage extends OUIMessage {
     public static final String COMPONENT_TYPE = "org.openfaces.FloatingIconMessage";
 
     private static final String DEFAULT_RENDERER_TYPE = "org.openfaces.FloatingIconMessage";
@@ -31,8 +30,6 @@ public class FloatingIconMessage extends UIMessage {
     private String imageUrl;
     private Integer offsetTop;
     private Integer offsetLeft;
-    private String style;
-    private String styleClass;
     private Boolean noImage;
     private Boolean noStyle;
     private String clientIdFor;
@@ -75,30 +72,6 @@ public class FloatingIconMessage extends UIMessage {
 
     public void setClientIdFor(String clientIdFor) {
         this.clientIdFor = clientIdFor;
-    }
-
-    public String getStyle() {
-        Boolean noStyle = isNoStyle();
-        if (noStyle == null || !noStyle)
-            return ValueBindings.get(this, "style", style);
-        else
-            return null;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
-    }
-
-    public String getStyleClass() {
-        Boolean noStyle = isNoStyle();
-        if (noStyle == null || !noStyle)
-            return ValueBindings.get(this, "styleClass", styleClass);
-        else
-            return null;
-    }
-
-    public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
     }
 
     public boolean isNoImage() {
@@ -149,8 +122,6 @@ public class FloatingIconMessage extends UIMessage {
                 imageUrl,
                 offsetTop,
                 offsetLeft,
-                style,
-                styleClass,
                 noImage,
                 noStyle
         };
@@ -164,8 +135,6 @@ public class FloatingIconMessage extends UIMessage {
         imageUrl = (String) values[i++];
         offsetTop = (Integer) values[i++];
         offsetLeft = (Integer) values[i++];
-        style = (String) values[i++];
-        styleClass = (String) values[i++];
         noImage = (Boolean) values[i++];
         noStyle = (Boolean) values[i++];
     }

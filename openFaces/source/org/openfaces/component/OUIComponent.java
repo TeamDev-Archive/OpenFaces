@@ -54,7 +54,7 @@ public interface OUIComponent {
     String getOnblur();
     void setOnblur(String onblur);
 
-    String getOnkeydown(); // todo: this is actual only for focusable (or container?) components, consider separating into a separate interface. Consider HintLabel as an example.
+    String getOnkeydown();
     void setOnkeydown(String onkeydown);
 
     String getOnkeyup();

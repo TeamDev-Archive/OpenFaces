@@ -27,6 +27,10 @@ public class ScriptBuilder extends Script {
         append(s);
     }
 
+    public ScriptBuilder(Script s) {
+        append(s);
+    }
+
     public String getScript() {
         return scriptBuilder.toString();
     }

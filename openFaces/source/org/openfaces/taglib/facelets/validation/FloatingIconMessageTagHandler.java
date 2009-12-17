@@ -18,8 +18,8 @@ import org.openfaces.taglib.internal.validation.FloatingIconMessageTag;
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class FloatingIconTagHandler extends AbstractFaceletsComponentHandler {
-    public FloatingIconTagHandler(ComponentConfig componentConfig) {
+public class FloatingIconMessageTagHandler extends AbstractFaceletsComponentHandler {
+    public FloatingIconMessageTagHandler(ComponentConfig componentConfig) {
         super(componentConfig, new FloatingIconMessageTag());
     }
 }
