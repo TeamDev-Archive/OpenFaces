@@ -94,6 +94,7 @@ O$.Tables = {
   },
 
   // -------------------------- INITIALIZATION
+  
   _init: function(table, params) {
     if (!params.rowStylesMap) params.rowStylesMap = {};
     if (!params.cellStylesMap) params.cellStylesMap = {};
@@ -880,7 +881,6 @@ O$.Tables = {
       cell._row = row;
       var cellColSpan = O$.Tables._getCellColSpan(cell);
       cell._colSpan = cellColSpan;
-      cell._colIndex = colIndex;
       row._cellsByColumns[colIndex] = cell;
       colIndex += cellColSpan;
       if (cell.innerHTML == "")
@@ -910,7 +910,6 @@ O$.Tables = {
       for (var i = colIndex + 1, count = cellsByColumns.length; i < count; i++) {
         var shiftedCell = cellsByColumns[i];
         cellsByColumns[i - 1] = shiftedCell;
-        shiftedCell._colIndex--;
       }
       cellsByColumns[cellsByColumns.length - 1] = undefined;
       cell._row = null;
@@ -1528,7 +1527,6 @@ O$.Tables = {
 
   _initHeaderCell: function(cell, column) {
     cell._column = column;
-    cell._colIndex = column._index; // todo: review cell._colIndex usages. Remove cell._colIndex property and use appropriate column's property
 
     cell._updateStyle = function() {
       O$.Tables._applySimulatedColStylesToCell(cell);
@@ -1543,7 +1541,6 @@ O$.Tables = {
 
   _initSubHeaderCell: function(cell, column) {
     cell._column = column;
-    cell._colIndex = column._index;
 
     cell._updateStyle = function() {
       O$.Tables._applySimulatedColStylesToCell(cell);
@@ -1559,7 +1556,6 @@ O$.Tables = {
 
   _initFooterCell: function(cell, column) {
     cell._column = column;
-    cell._colIndex = column._index;
 
     cell._updateStyle = function() {
       O$.Tables._applySimulatedColStylesToCell(cell);

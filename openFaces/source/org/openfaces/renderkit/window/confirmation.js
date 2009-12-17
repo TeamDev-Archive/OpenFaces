@@ -19,8 +19,7 @@ O$.Confirmation = {
           eventHandlerName,
           defaultButton,
           bindToInvoker, styleParams) {
-    var confirmation = O$(confirmationId);
-    O$.extend(confirmation, {
+    var confirmation = O$.initComponent(confirmationId, null, {
       _invokerId: invokerId,
       _eventHandlerName: eventHandlerName ? eventHandlerName : "onclick",
       _defaultButton: defaultButton,
@@ -34,7 +33,74 @@ O$.Confirmation = {
       _messageText: O$(confirmationId + "::headerText"),
       _detailsText: O$(confirmationId + "::detailsText"),
       _okButton: O$(confirmationId + "::yes_button"),
-      _cancelButton: O$(confirmationId + "::no_button")
+      _cancelButton: O$(confirmationId + "::no_button"),
+
+      setTexts: function (messageText, detailsText, okButtonText, cancelButtonText) {
+        if (messageText || messageText == "") {
+          confirmation._messageText.innerHTML = messageText;
+        }
+        if (detailsText || detailsText == "") {
+          confirmation._detailsText.innerHTML = detailsText;
+        }
+        if (okButtonText || okButtonText == "") {
+          confirmation._okButton.value = okButtonText;
+        }
+        if (cancelButtonText || cancelButtonText == "") {
+          confirmation._cancelButton.value = cancelButtonText;
+        }
+      },
+
+      runConfirmedFunction: function (func) {
+        confirmation._listenerMode = 1;
+        confirmation._evaluatedFunction = func;
+        confirmation._confirmationShow();
+        return false;
+      },
+
+      _showForEvent: function (e) {
+        confirmation.invokerEvent = O$.getEvent(e);
+        confirmation._confirmationShow();
+        return false;
+      },
+
+      _getDefaultFocusComponent: function() {
+        if (confirmation._defaultButton == "ok")
+          return confirmation._okButton;
+        else
+          return confirmation._cancelButton;
+      },
+
+      _confirmationShow: function () {
+        var invoker = O$(confirmation._invokerId);
+        var oldScrollPos = O$.getPageScrollPos();
+        if (invoker)
+          O$.correctElementZIndex(confirmation, invoker);
+        O$.Confirmation._layoutConfirmation(confirmation, oldScrollPos);
+
+        confirmation.show();
+
+        // if not left-top set, move it to the center
+        O$.Confirmation._layoutConfirmation(confirmation, oldScrollPos);
+
+        confirmation._okButton.onfocus = function () {
+          confirmation._currentFocus = 0;
+        };
+
+        confirmation._cancelButton.onfocus = function () {
+          confirmation._currentFocus = 1;
+        };
+
+        // Fix for FF, when caption has a border
+        if (confirmation._caption) {
+          confirmation._caption.style.top = "0px";
+          confirmation._caption.style.left = "0px";
+          if (O$.isMozillaFF() || O$.isExplorer()) {
+            if (!confirmation._caption.style.width) {
+              confirmation._caption.style.width = confirmation.clientWidth - (confirmation._caption.clientWidth - confirmation.clientWidth) + "px";
+            }
+          }
+        }
+      }
     });
 
     confirmation._okButton.onclick = function (event) {
@@ -77,7 +143,7 @@ O$.Confirmation = {
 
     // Set listener on element
     if (confirmation._invokerId && confirmation._eventHandlerName) {
-      var attachConfirmation = function () {
+      var attachConfirmation = function() {
         var invoker = O$(confirmation._invokerId);
         if (!invoker) {
           var thisTime = new Date().getTime();
@@ -125,74 +191,6 @@ O$.Confirmation = {
         });
       }
     }
-
-    confirmation._showForEvent = function (e) {
-      confirmation.invokerEvent = O$.getEvent(e);
-      confirmation._confirmationShow();
-      return false;
-    };
-
-    confirmation._getDefaultFocusComponent = function() {
-      if (confirmation._defaultButton == "ok")
-        return confirmation._okButton;
-      else
-        return confirmation._cancelButton;
-    };
-
-    confirmation._confirmationShow = function () {
-      var invoker = O$(confirmation._invokerId);
-      var oldScrollPos = O$.getPageScrollPos();
-      if (invoker)
-        O$.correctElementZIndex(confirmation, invoker);
-      O$.Confirmation._layoutConfirmation(confirmation, oldScrollPos);
-
-      confirmation.show();
-
-      // if not left-top set, move it to the center
-      O$.Confirmation._layoutConfirmation(confirmation, oldScrollPos);
-
-      confirmation._okButton.onfocus = function () {
-        confirmation._currentFocus = 0;
-      };
-
-      confirmation._cancelButton.onfocus = function () {
-        confirmation._currentFocus = 1;
-      };
-
-      // Fix for FF, when caption has a border
-      if (confirmation._caption) {
-        confirmation._caption.style.top = "0px";
-        confirmation._caption.style.left = "0px";
-        if (O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/ || O$.isExplorer()) { // todo: checking O$.isExplorer might not be needed here -- check this
-          if (!confirmation._caption.style.width) {
-            confirmation._caption.style.width = confirmation.clientWidth - (confirmation._caption.clientWidth - confirmation.clientWidth) + "px";
-          }
-        }
-      }
-    };
-
-
-    confirmation.setTexts = function (messageText, detailsText, okButtonText, cancelButtonText) {
-      if (messageText || messageText == "") {
-        confirmation._messageText.innerHTML = messageText;
-      }
-      if (detailsText || detailsText == "") {
-        confirmation._detailsText.innerHTML = detailsText;
-      }
-      if (okButtonText || okButtonText == "") {
-        confirmation._okButton.value = okButtonText;
-      }
-      if (cancelButtonText || cancelButtonText == "") {
-        confirmation._cancelButton.value = cancelButtonText;
-      }
-    };
-
-    confirmation.runConfirmedFunction = function (func) {
-      confirmation._listenerMode = 1;
-      confirmation._evaluatedFunction = func;
-      confirmation._confirmationShow();
-      return false;
-    };
 
     O$.addLoadEvent(function() {
       // pull confirmation to the top hierarchy level to avoid possible z-index problems. E.g. a problem can occur if

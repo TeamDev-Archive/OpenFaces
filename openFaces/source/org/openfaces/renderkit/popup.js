@@ -157,5 +157,4 @@ O$.Popup = {
 
 };
 
-
 O$.Popup._initEventHandler();

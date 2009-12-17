@@ -210,19 +210,19 @@ public class ValidationProcessor extends UIComponentBase {
                 }
 
                 if (presentationInstance instanceof UIMessage) {
-                    Map presentationParams = new HashMap();
+                    Map<String, String> presentationParams = new HashMap<String, String>();
                     Map initParameters = externalContext.getInitParameterMap();
                     String paramPrefix = defaultValidationPresentationClass.substring(defaultValidationPresentationClass.lastIndexOf('.') + 1) + ".";
                     for (Map.Entry entry : (Set<Map.Entry>) initParameters.entrySet()) {
                         String key = (String) entry.getKey();
                         if (key.startsWith(paramPrefix)) {
                             String realParamName = key.substring(key.indexOf(".") + 1);
-                            presentationParams.put(realParamName, entry.getValue());
+                            presentationParams.put(realParamName, (String) entry.getValue());
                         }
                     }
-                    for (Map.Entry entry : (Set<Map.Entry>) presentationParams.entrySet()) {
-                        String propertyName = (String) entry.getKey();
-                        String propertyValue = (String) entry.getValue();
+                    for (Map.Entry<String, String> entry : presentationParams.entrySet()) {
+                        String propertyName = entry.getKey();
+                        String propertyValue = entry.getValue();
                         PropertyDescriptor pd = propertyDescriptorsMap.get(propertyName);
                         if (pd != null) {
                             Class propertyType = pd.getPropertyType();

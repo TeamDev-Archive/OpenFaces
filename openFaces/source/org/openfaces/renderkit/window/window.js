@@ -418,21 +418,19 @@ O$.Window = {
       var windowVisible = win.isVisible();
       var resizerDisplay = windowVisible ? "block" : "none";
       var windowRect = O$.getElementBorderRectangle(win, true);
-      win._resizers.every(function(resizer) {
+      win._resizers.forEach(function(resizer) {
         resizer.style.display = resizerDisplay;
         resizer._updatePos(windowRect);
         O$.correctElementZIndex(resizer, win);
-        return true;
       });
     };
     win._updateResizersPos();
   },
 
   _removeResizers: function(win) {
-    for (var i = 0, count = win._resizers.length; i < count; i++) {
-      var resizer = win._resizers[i];
-      resizer.parentNode.removeChild(resizer);
-    }
+    win._resizers.forEach(function(r) {
+      r.parentNode.removeChild(r);
+    });
     win._resizers = [];
   },
 
