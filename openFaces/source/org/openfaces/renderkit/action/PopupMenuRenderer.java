@@ -45,7 +45,7 @@ public class PopupMenuRenderer extends RendererBase {
     private static final String DEFAULT_CLASS = "o_popup_menu";
     private static final String DEFAULT_POPUPMENU_INDENTION_CLASS = "o_popup_menu_indent";
 
-    private static final String DEFAULT_SPAN_CLASS = "o_menu_list_item_span";
+    private static final String DEFAULT_ITEM_CLASS = "o_menu_list_item_span";
     private static final String DEFAULT_SELECTED_ITEM_CLASS = "o_menu_item_selected";
     private static final String DEFAULT_CONTENT_ITEM_CLASS = "o_menu_list_item_content";
     private static final String DEFAULT_DISABLED_ITEM = "o_menu_list_item_disabled";
@@ -113,7 +113,7 @@ public class PopupMenuRenderer extends RendererBase {
         String indentClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getIndentStyle(), StyleGroup.regularStyleGroup(), popupMenu.getIndentClass(),
                 DEFAULT_POPUPMENU_INDENTION_CLASS + " " + DefaultStyles.getPopupMenuBackgroundColorClass());
         String defaultItemClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getItemStyle(), StyleGroup.regularStyleGroup(), popupMenu.getItemClass(),
-                DEFAULT_SPAN_CLASS);
+                DEFAULT_ITEM_CLASS);
         String defaultSelectedClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getSelectedItemStyle(), StyleGroup.selectedStyleGroup(), popupMenu.getSelectedItemClass(),
                 DEFAULT_SELECTED_ITEM_CLASS);
         String defaultContentClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getItemContentStyle(), StyleGroup.regularStyleGroup(), popupMenu.getItemContentClass(),

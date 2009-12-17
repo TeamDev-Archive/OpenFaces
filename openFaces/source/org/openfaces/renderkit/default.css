@@ -972,7 +972,7 @@
 /* Popup Menu */
 
 .o_popup_menu {
-  padding: 0;
+  padding: 1px;
   margin: 0;
   position: absolute;
   visibility: hidden;
@@ -1037,12 +1037,12 @@
   cursor: default;
   color: menutext;
   font-family: times New Roman, sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  height: 25px;
-  line-height: 25px;
+  height: 23px;
+  line-height: 23px;
   /*text-align: left;
   text-decoration: none;
   border: 1px solid transparent;
@@ -1078,7 +1078,7 @@
 }
 
 .o_menu_list_item_separator {
-  height: 1px;
+  /*height: 1px;*/
   padding: 0;
 }
 
@@ -1096,10 +1096,11 @@
 .o_menu_separator {
   display: block;
   position: relative;
-  padding: 1px;
+  padding: 0;
   line-height: 1px;
   border-top: 1px solid gray;
-  margin: 0 2px 0 2px;
+  
+  margin: 1px 2px 1px 2px;
   height: 1px;
 }
 

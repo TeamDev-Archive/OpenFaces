@@ -1,42 +1,49 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-     >
+        >
 
   <div id="Demo">
 
     <script type="text/javascript">
       function showAlert(text) {
-        O$("alertText").innerHTML = text + "&lt;br/>&lt;br/> Please note popup menu serves demonstrational purposes only.";
-        O$('form:alertWindow').show();
+        O$("form:alertText").innerHTML = text;
+        O$("form:alertWindow").showCentered();
       }
     </script>
 
-    <h:panelGroup id="container" style="display: block; font-family: courier, monospace;
-      width:400px; padding-left: 25px; padding: 10px; border: 1px dashed;">
-      <h:outputText id="text"
-              escape="false"
-              title="Right-click here to see menu in action">
-            public class InputTextareaBean {<br/>
+    <style>
+      .keyword {color: #000080; font-weight: bold;}
+      .normal {color: black; font-weight: normal;}
+      .string {color: #008000; font-weight: bold;}
+    </style>
 
-                &#160;&#160;private String feedback;<br/>
-                <br/>
-                &#160;&#160;public String getFeedback() {<br/>
-                    &#160;&#160;&#160;&#160;return feedback;<br/>
-                &#160;&#160;}<br/>
-                <br/>
-                &#160;&#160;public void setFeedback(String feedback) {<br/>
-                    &#160;&#160;&#160;&#160;this.feedback = feedback;<br/>
-                &#160;&#160;}<br/>
-                <br/>
-                &#160;&#160;public String send() {<br/>
-                    &#160;&#160;&#160;&#160;mailService.sendFeedback(feedback);<br/>
-                    &#160;&#160;&#160;&#160;return "success";<br/>
-                &#160;&#160;}<br/>
-            }<br/>
+    <h:panelGroup id="container"
+                  style="display: block; font-family: courier, monospace; width: 400px; padding: 10px; border: 1px dashed;"
+                  styleClass="normal">
+      <h:outputText id="text"
+                    escape="false"
+                    title="Right-click here to see menu in action">
+        <span class="keyword">public class</span> InputTextareaBean {<br/>
+
+        &#160;&#160;<span class="keyword">private</span> String feedback;<br/>
+        <br/>
+        &#160;&#160;<span class="keyword">public</span> String getFeedback() {<br/>
+        &#160;&#160;&#160;&#160;return feedback;<br/>
+        &#160;&#160;}<br/>
+        <br/>
+        &#160;&#160;<span class="keyword">public</span> <span class="keyword">void</span> setFeedback(String feedback) {<br/>
+        &#160;&#160;&#160;&#160;this.feedback = feedback;<br/>
+        &#160;&#160;}<br/>
+        <br/>
+        &#160;&#160;<span class="keyword">public</span> String send() {<br/>
+        &#160;&#160;&#160;&#160;mailService.sendFeedback(feedback);<br/>
+        &#160;&#160;&#160;&#160;return <span class="string">"success";</span><br/>
+        &#160;&#160;}<br/>
+        }<br/>
       </h:outputText>
 
-      <o:popupMenu for="container" itemStyle="font-family: tahoma, arial, sans-serif;" >
+      <o:popupMenu for="container" itemStyle="font-family: tahoma, arial, sans-serif;">
 
         <o:menuItem iconUrl="icons/new-16x16.png" value="New">
           <o:popupMenu>
@@ -55,54 +62,66 @@
         <o:menuItem iconUrl="icons/save-16x16.png" value="Save" onclick="showAlert('File saved.');"/>
         <o:menuSeparator/>
 
-        <o:menuItem iconUrl="icons/cut-16x16.png" value="Cut" onclick="showAlert('Selection is cut.');"/>
-        <o:menuItem iconUrl="icons/copy-16x16.png" value="Copy" onclick="showAlert('Selection is copied.');"/>
+        <o:menuItem iconUrl="icons/cut-16x16.png" value="Cut" onclick="showAlert('Selection has been cut.');"/>
+        <o:menuItem iconUrl="icons/copy-16x16.png" value="Copy" onclick="showAlert('Selection has been copied.');"/>
         <o:menuItem iconUrl="icons/paste-16x16.png" value="Paste" onclick="showAlert('Buffer contents pasted.');"/>
         <o:menuSeparator/>
 
         <o:menuItem value="Refactor">
           <o:popupMenu>
 
-            <o:menuItem value="Rename..." onclick="showAlert('Renaming started.');"/>
+            <o:menuItem value="Rename..." onclick="showAlert('Rename invoked.');"/>
             <o:menuSeparator/>
 
-            <o:menuItem value="Move..."  onclick="showAlert('Moving started.');"/>
-            <o:menuItem value="Copy..."  onclick="showAlert('Copying started.');"/>
-            <o:menuItem value="Safe Delete..."  onclick="showAlert('Safe deleting started.');"/>
+            <o:menuItem value="Move..." onclick="showAlert('Move invoked.');"/>
+            <o:menuItem value="Copy..." onclick="showAlert('Copy invoked.');"/>
+            <o:menuItem value="Safe Delete..." onclick="showAlert('Safe Deleting invoked.');"/>
             <o:menuSeparator/>
 
-            <o:menuItem value="Extract Method..."  onclick="showAlert('Extracting of method started.');"/>
-            <o:menuItem value="Extract Class..."  onclick="showAlert('Extracting of class started.');"/>
+            <o:menuItem value="Extract Method..." onclick="showAlert('Extract Method invoked.');"/>
+            <o:menuItem value="Extract Class..." onclick="showAlert('Extract Class invoked.');"/>
             <o:menuSeparator/>
 
-            <o:menuItem value="Introduce Field..."  onclick="showAlert('Introducing a field started.');"/>
-            <o:menuItem value="Introduce Constant..."  onclick="showAlert('Introducing a constant started.');"/>
-            <o:menuItem value="Introduce Parameter..." onclick="showAlert('Introducing a parameter started.');"/>
+            <o:menuItem value="Introduce Field..." onclick="showAlert('Introduce Field invoked.');"/>
+            <o:menuItem value="Introduce Constant..." onclick="showAlert('Introduce Constant invoked.');"/>
+            <o:menuItem value="Introduce Parameter..." onclick="showAlert('Introduce Parameter invoked.');"/>
           </o:popupMenu>
         </o:menuItem>
       </o:popupMenu>
     </h:panelGroup>
 
-     <o:window id="alertWindow" resizable="false"
-            modal="true"
-            modalLayerClass="modalLayer"
-            rolloverStyle="background: #FEFEFE"
-            style="position: absolute; right: 150px; top: 160px"
-            width="200px"
-            height="150px">
-    <f:facet name="caption">
-      <h:outputText value="Action executed"/>
-    </f:facet>
-    <div align="left" id="alertText"/>
-  </o:window>
+    <o:window id="alertWindow" resizable="false"
+              modal="true"
+              modalLayerClass="modalLayer"
+              rolloverStyle="background: #eeeeee"
+              width="300px" height="180px"
+              contentStyle="padding: 10px; vertical-align: bottom">
+      <f:facet name="caption">
+        <h:outputText value="Action Invoked"/>
+      </f:facet>
+      <o:captionArea>
+        <o:closeWindowButton/>
+      </o:captionArea>
+      <h:outputText id="alertText" style="display: block; font-size: 130%; font-weight: bold; padding-bottom: 20px;"/>
+      <h:outputText value="Please note that popup menu serves demonstrational purposes only."
+              style="display: block; padding-bottom: 20px;"/>
+      <h:panelGroup layout="block" style="text-align: center">
+        <h:commandButton value="OK" onclick="O$('form:alertWindow').hide(); return false;"
+                style="width: 80px" />
+      </h:panelGroup>
+    </o:window>
 
   </div>
 
   <div id="Description">
-    <div><small>* Right click (except Opera browser) or Control + Left Click (in Opera browser) on Java code fragment to see Popup Menu component in action.</small><br/><br/></div>
+    <div>
+      <small>* Right click (except Opera browser) or Control + Left Click (in Opera browser) on Java code fragment to
+        see Popup Menu component in action.
+      </small>
+      <br/><br/></div>
   </div>
 
-   <div id="Description">
+  <div id="Description">
     <h4>Demonstrated Features</h4>
     <ul class="hang">
       <li>

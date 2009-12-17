@@ -208,9 +208,7 @@ O$.CheckboxItem = {
       }
     });
 
-    O$.addEventHandler(checkboxItem, "mousedown", function() {
-      itemMouseDown();
-    });
+    O$.addEventHandler(checkboxItem, "mousedown", function() { itemMouseDown(); });
     O$.addEventHandler(checkboxItem._label, "mousedown", function() {
       itemMouseDown();
       if (!checkboxItem.getDisabled() && !checkboxItem._readonly) {
@@ -246,12 +244,8 @@ O$.CheckboxItem = {
       }
     });
 
-    O$.addEventHandler(checkboxItem, "click", function(e) {
-      itemClick(e);
-    });
-    O$.addEventHandler(checkboxItem._label, "click", function(e) {
-      itemClick(e);
-    });
+    O$.addEventHandler(checkboxItem, "click", function(e) { itemClick(e); });
+    O$.addEventHandler(checkboxItem._label, "click", function(e) { itemClick(e); });
 
     function itemClick(e) {
       if (!checkboxItem.getDisabled() && !checkboxItem._readonly) {
@@ -274,12 +268,8 @@ O$.CheckboxItem = {
       }
     }
 
-    O$.addEventHandler(checkboxItem, "mouseover", function(e) {
-      itemMouseOver(e);
-    });
-    O$.addEventHandler(checkboxItem._label, "mouseover", function(e) {
-      itemMouseOver(e);
-    });
+    O$.addEventHandler(checkboxItem, "mouseover", function(e) { itemMouseOver(e); });
+    O$.addEventHandler(checkboxItem._label, "mouseover", function(e) { itemMouseOver(e); });
 
     function itemMouseOver(e) {
       if (shouldProcessEvents(checkboxItem)) {
@@ -301,12 +291,8 @@ O$.CheckboxItem = {
     }
 
 
-    O$.addEventHandler(checkboxItem, "mouseout", function() {
-      itemMouseOut();
-    });
-    O$.addEventHandler(checkboxItem._label, "mouseout", function() {
-      itemMouseOut();
-    });
+    O$.addEventHandler(checkboxItem, "mouseout", function() { itemMouseOut(); });
+    O$.addEventHandler(checkboxItem._label, "mouseout", function() { itemMouseOut(); });
 
     function itemMouseOut() {
       if (shouldProcessEvents(checkboxItem)) {

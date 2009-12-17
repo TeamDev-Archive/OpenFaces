@@ -42,8 +42,8 @@ public class MenuSeparatorRenderer extends RendererBase {
         writer.startElement("span", menuSeparator);
         writeAttribute(writer, "id", menuSeparator.getClientId(context) + DIV_PREFIX);
 
-        String styleClass = StyleUtil.getCSSClass(context, menuSeparator, menuSeparator.getStyle(), StyleGroup.regularStyleGroup(), menuSeparator.getStyleClass(),
-                DEFAULT_MENU_SEPARATOR_CLASS);
+        String styleClass = StyleUtil.getCSSClass(context, menuSeparator, menuSeparator.getStyle(), StyleGroup.regularStyleGroup(),
+                menuSeparator.getStyleClass(), DEFAULT_MENU_SEPARATOR_CLASS);
         writeAttribute(writer, "class", styleClass);
 
         StyleUtil.renderStyleClasses(context, menuSeparator);
