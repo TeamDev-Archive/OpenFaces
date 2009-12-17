@@ -22,11 +22,33 @@ O$.TabbedPane = {
       _rolloverContainerClass: rolloverContainerClass,
       onselectionchange: onselectionchange,
       _tabSet: O$(clientId + "--tabSet"),
+
+      getPageCount: function() {
+        return tabbedPane._tabSet.getTabCount();
+      },
+
+      getSelectedIndex: function () {
+        return tabbedPane._tabSet.getSelectedIndex();
+      },
+
+      setSelectedIndex: function(index) {
+        tabbedPane._tabSet.setSelectedIndex(index);
+      },
+
       _getPageContainer: function(pageIndex) {
         var result = O$(this.id + "::pane" + pageIndex);
         return result;
-      }
+      },
 
+      _changeCurrentPageContainer: function(newPageContainer) {
+        var prevPageContainer = this._currentPageContainer;
+        O$.TabbedPane._hideContainer(prevPageContainer);
+
+        O$.TabbedPane._getContianerStyleElement(newPageContainer).className = tabbedPane._containerClass;
+        O$.TabbedPane._showContainer(newPageContainer);
+        tabbedPane._currentPageContainer = newPageContainer;
+        O$.repaintAreaForOpera(tabbedPane);
+      }
     });
 
     tabbedPane._tabSet._tabbedPane = tabbedPane;
@@ -104,16 +126,6 @@ O$.TabbedPane = {
       O$.repaintAreaForOpera(this, true);
     });
 
-    tabbedPane._changeCurrentPageContainer = function (newPageContainer) {
-      var prevPageContainer = this._currentPageContainer;
-      O$.TabbedPane._hideContainer(prevPageContainer);
-
-      O$.TabbedPane._getContianerStyleElement(newPageContainer).className = tabbedPane._containerClass;
-      O$.TabbedPane._showContainer(newPageContainer);
-      tabbedPane._currentPageContainer = newPageContainer;
-      O$.repaintAreaForOpera(tabbedPane);
-    };
-
     tabbedPane._tabSet.onchange = function (evt) {
       var absoluteIndex = evt._absoluteIndex;
       var tabbedPane = this._tabbedPane;
@@ -128,7 +140,19 @@ O$.TabbedPane = {
       } else if (loadingMode == "ajax") {
         newPageContainer = tabbedPane._getPageContainer(absoluteIndex);
         if (!newPageContainer)
-          O$.requestComponentPortions(tabbedPane.id, ["page:" + absoluteIndex], null, tabbedPanePageLoaded);
+          O$.requestComponentPortions(tabbedPane.id, ["page:" + absoluteIndex], null, function(tabbedPane, portionName, portionHTML, portionScripts) {
+            var tempDiv = document.createElement("div");
+            tempDiv.innerHTML = portionHTML;
+            var newPageContainer = tempDiv.childNodes[0];
+            tabbedPane._pagesContainer.appendChild(newPageContainer);
+            O$.executeScripts(portionScripts);
+
+            O$.assert(portionName.substring(0, "page:".length) == "page:", "tabbedPanePageLoaded: illegal portion prefix:" + portionName);
+            var pageNoStr = portionName.substring("page:".length);
+            var pageNo = eval(pageNoStr);
+            tabbedPane._changeCurrentPageContainer(newPageContainer);
+            tabbedPane.setSelectedIndex(pageNo);
+          });
         else
           tabbedPane._changeCurrentPageContainer(newPageContainer);
       } else if (loadingMode == "client") {
@@ -138,38 +162,8 @@ O$.TabbedPane = {
         O$.assert(false, "tabSet.onchange - invalid loading mode: " + loadingMode);
     };
 
-    function tabbedPanePageLoaded(tabbedPane, portionName, portionHTML, portionScripts) {
-      var tempDiv = document.createElement("div");
-      tempDiv.innerHTML = portionHTML;
-      var newPageContainer = tempDiv.childNodes[0];
-      tabbedPane._pagesContainer.appendChild(newPageContainer);
-      O$.executeScripts(portionScripts);
-
-      O$.assert(portionName.substring(0, "page:".length) == "page:", "tabbedPanePageLoaded: illegal portion prefix:" + portionName);
-      var pageNoStr = portionName.substring("page:".length);
-      var pageNo = eval(pageNoStr);
-      tabbedPane._changeCurrentPageContainer(newPageContainer);
-      tabbedPane.setSelectedIndex(pageNo);
-    }
-
-    tabbedPane.getPageCount = function() {
-      return tabbedPane._tabSet.getTabCount();
-    };
-
-    tabbedPane.getSelectedIndex = function () {
-      return tabbedPane._tabSet.getSelectedIndex();
-    };
-
-    tabbedPane.setSelectedIndex = function (index) {
-      tabbedPane._tabSet.setSelectedIndex(index);
-    };
-
     // relayout pane container
     O$.TabbedPane._showContainer(currentPageContainer);
-
-    //  tabbedPane.onLoadHandler = O$.TabbedPane._showContainer;
-    //  var bodyOnLoadHandler = O$.getEventHandlerFunction('onLoadHandler', "'" + tabbedPane.id + "'", tabbedPane);
-    //  O$.addEventHandler(window, "load", bodyOnLoadHandler);
   },
 
   _hideContainer: function(paneContainer) {

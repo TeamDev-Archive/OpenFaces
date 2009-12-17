@@ -14,21 +14,21 @@ O$.Radio = {
 
   _init: function(radioId, images, styles, radioItemCount, disabled, readonly, onchange) {
 
-    var radioContainer = O$(radioId);
-
     function getClassName(classKey) {
       var className = styles ? styles[classKey] : null;
       return (className == null) ? "" : className;
     }
 
-    radioContainer.className = getClassName("styleClass");
-    radioContainer._styleClass = radioContainer.className;
-    radioContainer._rolloverClass = getClassName("rolloverClass");
-    radioContainer._focusedClass = getClassName("focusedClass");
+    var radioContainer = O$.initComponent(radioId, null, {
+      className: getClassName("styleClass"),
+      _rolloverClass: getClassName("rolloverClass"),
+      _focusedClass: getClassName("focusedClass"),
 
-    radioContainer._radioItems = [];
-    radioContainer._radioElems = [];
-    radioContainer._radioItemCount = radioItemCount;
+      _radioItems: [],
+      _radioElems: [],
+      _radioItemCount: radioItemCount
+    });
+    radioContainer._styleClass = radioContainer.className;
     for (var i = 0; i < radioItemCount; i++) {
       var radioItemId = radioId + ":" + i;
       radioContainer._radioElems[i] = O$(radioItemId);

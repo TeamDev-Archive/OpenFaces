@@ -9,26 +9,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-                                      
+
 O$.ManyCheckbox = {
 
   _init: function(checkboxId, images, styles, checkboxItemCount, disabled, readonly, onchange) {
-
-    var checkboxContainer = O$(checkboxId);
-
     function getClassName(classKey) {
       var className = styles ? styles[classKey] : null;
       return (className == null) ? "" : className;
     }
 
-    checkboxContainer.className = getClassName("styleClass");
-    checkboxContainer._styleClass = checkboxContainer.className;
-    checkboxContainer._rolloverClass = getClassName("rolloverClass");
-    checkboxContainer._focusedClass = getClassName("focusedClass");
+    var checkboxContainer = O$.initComponent(checkboxId, null, {
+      className: getClassName("styleClass"),
+      _rolloverClass: getClassName("rolloverClass"),
+      _focusedClass: getClassName("focusedClass"),
 
-    checkboxContainer._checkboxItems = [];
-    checkboxContainer._checkboxElems = [];
-    checkboxContainer._checkboxItemCount = checkboxItemCount;
+      _checkboxItems: [],
+      _checkboxElems: [],
+      _checkboxItemCount: checkboxItemCount
+    });
+    checkboxContainer._styleClass = checkboxContainer.className;
     for (var i = 0; i < checkboxItemCount; i++) {
       var checkboxItemId = checkboxId + ":" + i;
       checkboxContainer._checkboxElems[i] = O$(checkboxItemId);
@@ -209,7 +208,9 @@ O$.CheckboxItem = {
       }
     });
 
-    O$.addEventHandler(checkboxItem, "mousedown", function() { itemMouseDown(); });
+    O$.addEventHandler(checkboxItem, "mousedown", function() {
+      itemMouseDown();
+    });
     O$.addEventHandler(checkboxItem._label, "mousedown", function() {
       itemMouseDown();
       if (!checkboxItem.getDisabled() && !checkboxItem._readonly) {
@@ -245,8 +246,12 @@ O$.CheckboxItem = {
       }
     });
 
-    O$.addEventHandler(checkboxItem, "click", function(e) { itemClick(e); });
-    O$.addEventHandler(checkboxItem._label, "click", function(e) { itemClick(e); });
+    O$.addEventHandler(checkboxItem, "click", function(e) {
+      itemClick(e);
+    });
+    O$.addEventHandler(checkboxItem._label, "click", function(e) {
+      itemClick(e);
+    });
 
     function itemClick(e) {
       if (!checkboxItem.getDisabled() && !checkboxItem._readonly) {
@@ -269,8 +274,12 @@ O$.CheckboxItem = {
       }
     }
 
-    O$.addEventHandler(checkboxItem, "mouseover", function(e) { itemMouseOver(e); });
-    O$.addEventHandler(checkboxItem._label, "mouseover", function(e) { itemMouseOver(e); });
+    O$.addEventHandler(checkboxItem, "mouseover", function(e) {
+      itemMouseOver(e);
+    });
+    O$.addEventHandler(checkboxItem._label, "mouseover", function(e) {
+      itemMouseOver(e);
+    });
 
     function itemMouseOver(e) {
       if (shouldProcessEvents(checkboxItem)) {
@@ -292,8 +301,12 @@ O$.CheckboxItem = {
     }
 
 
-    O$.addEventHandler(checkboxItem, "mouseout", function() { itemMouseOut(); });
-    O$.addEventHandler(checkboxItem._label, "mouseout", function() { itemMouseOut(); });
+    O$.addEventHandler(checkboxItem, "mouseout", function() {
+      itemMouseOut();
+    });
+    O$.addEventHandler(checkboxItem._label, "mouseout", function() {
+      itemMouseOut();
+    });
 
     function itemMouseOut() {
       if (shouldProcessEvents(checkboxItem)) {

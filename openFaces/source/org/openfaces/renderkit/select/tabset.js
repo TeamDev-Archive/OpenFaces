@@ -214,8 +214,6 @@ O$.TabSet = {
       });
     }
 
-
-
     tabSet._setTabStyles.apply(tabSet, tabStylesParams);
     tabSet._setBorderClasses.apply(tabSet, borderClassesParams);
 

@@ -1,5 +1,5 @@
 /*
-/*
+ /*
  * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2009, TeamDev Ltd.
  * licensing@openfaces.org
@@ -22,19 +22,40 @@ O$.Spinner = {
                   disabled,
                   onchange,
                   formatOptions) {
-    var spinner = O$(spinnerId);
-    spinner._increaseButton = O$(spinnerId + "::increase_button");
-    spinner._decreaseButton = O$(spinnerId + "::decrease_button");
+    var spinner = O$.initComponent(spinnerId, null, {
+      getValue: function() {
+        if (!spinner._field)
+          return null;
+        var value = O$.Dojo.Number.parse(spinner._field.value, formatOptions);
+        if (isNaN(value)) {
+          value = parseFloat(spinner._field.value, 10);
+        }
+        return !isNaN(value) ? value : null;
+      },
 
-    var increaseButton = spinner._increaseButton;
-    var decreaseButton = spinner._decreaseButton;
+      setValue: function(value, silent) {
+        var newValue = value == null || isNaN(value)
+                ? ""
+                : value;
+        var prevValue;
+        if (!silent) {
+          prevValue = spinner.getValue();
+        }
+        spinner._field.value = O$.Dojo.Number.format(newValue, formatOptions);
+        if (!silent && newValue != prevValue) {
+          notifyOfInputChanges(spinner);
+        }
+      }
+
+    });
+
+    var increaseButton = O$(spinnerId + "::increase_button");
+    var decreaseButton = O$(spinnerId + "::decrease_button");
     var field = spinner._field;
 
-    spinner._buttonClass = O$.DropDown._getClassName(buttonClass);
-
     if (increaseButton && decreaseButton) {
-      increaseButton.className = spinner._buttonClass;
-      decreaseButton.className = spinner._buttonClass;
+      increaseButton.className = buttonClass;
+      decreaseButton.className = buttonClass;
     }
 
     if (onchange) {
@@ -44,13 +65,9 @@ O$.Spinner = {
     }
 
     formatOptions = formatOptions || {};
-    if (formatOptions.type && formatOptions.type == 'number') {
-      formatOptions.type = 'decimal';
+    if (formatOptions.type && formatOptions.type == "number") {
+      formatOptions.type = "decimal";
     }
-    spinner._formatOptions = formatOptions;
-
-    spinner._rolloverButtonClass = rolloverButtonClass;
-    spinner._pressedButtonClass = pressedButtonClass;
 
     if (!disabled) {
       field.onkeypress = function(e) {
@@ -100,38 +117,12 @@ O$.Spinner = {
     decreaseButton.ondblclick = O$.repeatClickOnDblclick;
     increaseButton.ondblclick = O$.repeatClickOnDblclick;
 
-    spinner.getValue = function() {
-      if (!spinner._field)
-        return null;
-      var value = O$.Dojo.Number.parse(spinner._field.value, spinner._formatOptions);
-      if (isNaN(value)){
-        value = parseFloat(spinner._field.value, 10);
-      }
-      return !isNaN(value) ? value : null;
-    };
-
-    spinner.setValue = function(value, silent) {
-      var newValue = value == null || isNaN(value)
-              ? ""
-              : value;
-      var prevValue;
-      if (!silent){
-        prevValue = spinner.getValue();
-      }
-      spinner._field.value = O$.Dojo.Number.format(newValue, spinner._formatOptions);
-      if (!silent && newValue != prevValue) {
-        notifyOfInputChanges(spinner);
-      }
-
-    };
-
     if (!disabled) {
-      spinner._increaseButton.onmousedown = function(e) {
-
+      increaseButton.onmousedown = function(e) {
         spinner._focusHandler();
-        
+
         O$.setStyleMappings(increaseButton, {
-          pressed: spinner._pressedButtonClass
+          pressed: pressedButtonClass
         });
 
         var value = spinner.getValue();
@@ -151,12 +142,11 @@ O$.Spinner = {
         }
         O$.breakEvent(e);
       };
-      spinner._decreaseButton.onmousedown = function(e) {
-
+      decreaseButton.onmousedown = function(e) {
         spinner._focusHandler();
 
         O$.setStyleMappings(decreaseButton, {
-          pressed: spinner._pressedButtonClass
+          pressed: pressedButtonClass
         });
 
         var value = spinner.getValue();
@@ -184,9 +174,9 @@ O$.Spinner = {
         if (!evt) return;
         var keyCode = evt.keyCode;
         if (keyCode == 38) { // Up key
-          spinner._increaseButton.onmousedown(e);
+          increaseButton.onmousedown(e);
         } else if (keyCode == 40) { // Down key
-          spinner._decreaseButton.onmousedown(e);
+          decreaseButton.onmousedown(e);
         }
         if (field._oldInkeydown)
           field._oldInkeydown(e);
@@ -198,9 +188,9 @@ O$.Spinner = {
         if (!evt) return;
         var keyCode = evt.keyCode;
         if (keyCode == 38) { // Up key
-          spinner._increaseButton.onmouseup(e);
+          increaseButton.onmouseup(e);
         } else if (keyCode == 40) { // Down key
-          spinner._decreaseButton.onmouseup(e);
+          decreaseButton.onmouseup(e);
         }
         if (field._oldOnkeyup)
           field._oldOnkeyup(e);
@@ -208,30 +198,28 @@ O$.Spinner = {
     }
 
     if (rolloverButtonClass) {
-      spinner._dropDownMouseOver = function() {
+      O$.addMouseOverListener(spinner, function() {
         if (spinner && spinner._containerClass != spinner._rolloverContainerClass)
           spinner.className = spinner._rolloverContainerClass;
         if (spinner != field && spinner._fieldClass != spinner._rolloverFieldClass)
           field.className = spinner._rolloverFieldClass;
-        if (increaseButton && decreaseButton && spinner._buttonClass != spinner._rolloverButtonClass) {
+        if (increaseButton && decreaseButton) {
           O$.setStyleMappings(increaseButton, {
-            mouseover: spinner._rolloverButtonClass
+            mouseover: rolloverButtonClass
           });
 
           O$.setStyleMappings(decreaseButton, {
-            mouseover: spinner._rolloverButtonClass
+            mouseover: rolloverButtonClass
           });
         }
         O$.repaintAreaForOpera(spinner, true);
-      };
-
-      spinner._dropDownMouseOut = function() {
+      });
+      O$.addMouseOutListener(spinner, function() {
         if (spinner && spinner._containerClass != spinner._rolloverContainerClass)
           spinner.className = spinner._containerClass;
         if (spinner._fieldClass != spinner._rolloverFieldClass)
           field.className = spinner._fieldClass;
-        if (increaseButton && decreaseButton && spinner._buttonClass != spinner._rolloverButtonClass) {
-
+        if (increaseButton && decreaseButton) {
           O$.setStyleMappings(increaseButton, {
             mouseover: null
           });
@@ -242,11 +230,7 @@ O$.Spinner = {
         }
 
         O$.repaintAreaForOpera(spinner, true);
-      };
-
-      O$.addMouseOverListener(spinner, spinner._dropDownMouseOver);
-
-      O$.addMouseOutListener(spinner, spinner._dropDownMouseOut);
+      });
     }
 
     function notifyOfInputChanges(spinner) {
@@ -264,9 +248,9 @@ O$.Spinner = {
           spinner.setValue(maxValue);
         }
         spinner.setValue(value, true);
-      }else{
-        if (spinner._field.value != ''){
-          spinner._field.value = '';
+      } else {
+        if (spinner._field.value != "") {
+          spinner._field.value = "";
           notifyOfInputChanges(spinner);
         }
       }
