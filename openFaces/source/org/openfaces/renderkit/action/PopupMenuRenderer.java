@@ -19,7 +19,6 @@ import org.openfaces.component.action.PopupMenu;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
@@ -51,9 +50,8 @@ public class PopupMenuRenderer extends RendererBase {
     private static final String DEFAULT_DISABLED_ITEM = "o_menu_list_item_disabled";
 
     private static final String DEFAULT_SUBMENU_IMAGE = "submenuImage.gif";
-    private static final String DEFAULT_SELECTED_SUBMENU_IMAGE = "selectedSubmenuImage.gif";
+    private static final String DEFAULT_SELECTED_SUBMENU_IMAGE = "submenuImage.gif";//"selectedSubmenuImage.gif";
     private static final String DEFAULT_DISABLED_SUBMENU_IMAGE = "disabledSubmenuImage.gif";
-
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -63,7 +61,7 @@ public class PopupMenuRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
 
         String styleClass = StyleUtil.getCSSClass(context, popupMenu, popupMenu.getStyle(), StyleGroup.regularStyleGroup(),
-                popupMenu.getStyleClass(), DEFAULT_CLASS + " " + DefaultStyles.getPopupMenuBackgroundColorClass());
+                popupMenu.getStyleClass(), DEFAULT_CLASS/* + " " + DefaultStyles.getPopupMenuBackgroundColorClass()*/);
 
         writer.startElement("ul", popupMenu);
         writeAttribute(writer, "id", popupMenu.getClientId(context));
@@ -111,7 +109,7 @@ public class PopupMenuRenderer extends RendererBase {
         String forId = OUIClientActionHelper.getClientActionInvoker(facesContext, popupMenu);
 
         String indentClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getIndentStyle(), StyleGroup.regularStyleGroup(), popupMenu.getIndentClass(),
-                DEFAULT_POPUPMENU_INDENTION_CLASS + " " + DefaultStyles.getPopupMenuBackgroundColorClass());
+                DEFAULT_POPUPMENU_INDENTION_CLASS/* + " " + DefaultStyles.getPopupMenuBackgroundColorClass()*/);
         String defaultItemClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getItemStyle(), StyleGroup.regularStyleGroup(), popupMenu.getItemClass(),
                 DEFAULT_ITEM_CLASS);
         String defaultSelectedClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getSelectedItemStyle(), StyleGroup.selectedStyleGroup(), popupMenu.getSelectedItemClass(),

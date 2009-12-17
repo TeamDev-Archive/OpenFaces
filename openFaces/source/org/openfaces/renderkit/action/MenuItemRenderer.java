@@ -15,9 +15,8 @@ import org.openfaces.component.action.MenuItem;
 import org.openfaces.component.action.PopupMenu;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.ResourceUtil;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -59,7 +58,7 @@ public class MenuItemRenderer extends RendererBase {
         PopupMenu popupMenu = (PopupMenu) menuItem.getParent();
 
         writer.startElement("li", menuItem);
-        writeAttribute(writer, "class", DEFAULT_LIST_ITEM_CLASS + " " + DefaultStyles.getPopupMenuBackgroundColorClass());
+        writeAttribute(writer, "class", DEFAULT_LIST_ITEM_CLASS/* + " " + DefaultStyles.getPopupMenuBackgroundColorClass()*/);
         writeAttribute(writer, "id", menuItem.getClientId(context));
 
         renderStartMenuItemSpan(context, menuItem, writer);

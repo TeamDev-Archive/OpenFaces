@@ -43,7 +43,7 @@
         }<br/>
       </h:outputText>
 
-      <o:popupMenu for="container" itemStyle="font-family: tahoma, arial, sans-serif;">
+      <o:popupMenu for="container">
 
         <o:menuItem iconUrl="icons/new-16x16.png" value="New">
           <o:popupMenu>
@@ -90,10 +90,10 @@
       </o:popupMenu>
     </h:panelGroup>
 
-    <o:window id="alertWindow" resizable="false"
+    <o:window id="alertWindow"
               modal="true"
               modalLayerClass="modalLayer"
-              rolloverStyle="background: #eeeeee"
+              resizable="false"
               width="300px" height="180px"
               contentStyle="padding: 10px; vertical-align: bottom">
       <f:facet name="caption">

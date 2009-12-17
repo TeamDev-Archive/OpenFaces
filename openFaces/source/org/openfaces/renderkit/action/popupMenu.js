@@ -458,10 +458,10 @@ O$.PopupMenu = {
     }
   },
 
-  _showSubmenu: function(popupMenu, this_, submenuHorisontalOffset) {
-    if (!this_.parentNode._disabled) {
-      if (!!this_._menuId) {
-        var childPopupMenu = O$(this_._menuId);
+  _showSubmenu: function(popupMenu, itemAnchor, submenuHorisontalOffset) {
+    if (!itemAnchor.parentNode._disabled) {
+      if (!!itemAnchor._menuId) {
+        var childPopupMenu = O$(itemAnchor._menuId);
         if (popupMenu._OpenedChildMenu != childPopupMenu) {
           popupMenu.closeAllChildMenus();
           var popupMenuRect = O$.getElementBorderRectangle(popupMenu, true);
@@ -469,8 +469,10 @@ O$.PopupMenu = {
 
           var popup_menu_border_top = O$.getNumericElementStyle(popupMenu, "border-top-width");
           var childPopupMenu_border_left = (!O$.isOpera()) ? O$.getNumericElementStyle(popupMenu, "border-left-width") : 0;
-          var item_border_left = O$.getNumericElementStyle(this_, "border-left-width");
-          childPopupMenu.showAtXY(popupMenuRect.width - this_.offsetLeft - childPopupMenu_border_left - item_border_left + submenuHorisontalOffset, -popup_menu_border_top);
+          var item_border_left = O$.getNumericElementStyle(itemAnchor, "border-left-width");
+          var x = popupMenuRect.width - O$.getElementPos(itemAnchor, true).x - childPopupMenu_border_left - item_border_left + submenuHorisontalOffset;
+          var y = -popup_menu_border_top - popupMenu.clientTop - O$.getNumericElementStyle(itemAnchor, "border-top-width");
+          childPopupMenu.showAtXY(x, y);
 
           O$.PopupMenu._clearSelection(childPopupMenu);
 
@@ -689,15 +691,17 @@ O$.PopupMenu = {
           menuItem, indentVisible, indentClass, defaultIconItemUrl, defaultSelectedIconItemUrl,
           defaultDisabledIconItemUrl, defaultSelectedDisabledIconItemUrl) {
     if (indentVisible) {
-      var width = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(indentClass, "width"));
-      var borderRight = O$.PopupMenu._getCssProperty(indentClass, "borderRight");
-      var borderRightWidth = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(indentClass, "borderRightWidth"));
-      menuItem.style.borderLeft = borderRight;
-      menuItem.style.marginLeft = width + "px";
+      var indentWidth = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(indentClass, "width"));
+      var indentAlign = O$.PopupMenu._getCssProperty(indentClass, "text-align");
+      var indentPaddingLeft = O$.PopupMenu._getCssProperty(indentClass, "padding-left");
+      var indentBorderRight = O$.PopupMenu._getCssProperty(indentClass, "borderRight");
+      var indentBorderRightWidth = O$.calculateNumericCSSValue(O$.PopupMenu._getCssProperty(indentClass, "borderRightWidth"));
+      menuItem.style.borderLeft = indentBorderRight;
+      menuItem.style.marginLeft = indentWidth + "px";
 
       if (!menuItem._separator) {
         var margin = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(menuItem._anchor, "margin-left"));
-        menuItem._anchor.style.marginLeft = (-1 * (width + borderRightWidth) + margin) + "px";
+        menuItem._anchor.style.marginLeft = (-1 * (indentWidth + indentBorderRightWidth) + margin) + "px";
 
         if (menuItem._icon) {
           menuItem._icon.imageSrc = menuItem._properties.imgSrc;
@@ -726,13 +730,15 @@ O$.PopupMenu = {
             menuItem._icon.disabledImgSelectedSrc = defaultSelectedDisabledIconItemUrl;
           }
         }
-        var icon_width = O$.PopupMenu._getWidth(menuItem._iconspan);
+        menuItem._iconspan.style.width = indentWidth + "px";
+        menuItem._iconspan.style.textAlign = indentAlign;
+        menuItem._iconspan.style.paddingLeft = indentPaddingLeft;
         var paddingLeft = O$.getNumericElementStyle(menuItem._caption, "padding-left");
-        menuItem._caption.style.paddingLeft = (paddingLeft + icon_width + borderRightWidth) + "px";
+        menuItem._caption.style.paddingLeft = (paddingLeft + indentWidth + indentBorderRightWidth) + "px";
       } else {
         margin = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(menuItem._separator, "margin-left"));
         var padding = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(menuItem, "padding-left"));
-        menuItem._separator.style.marginLeft = (-1 * (width + borderRightWidth) + margin + padding) + "px";
+        menuItem._separator.style.marginLeft = (-1 * (indentWidth + indentBorderRightWidth) + margin + padding) + "px";
       }
     }
   },

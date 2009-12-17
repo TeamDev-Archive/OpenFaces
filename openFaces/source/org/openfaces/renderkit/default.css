@@ -4,7 +4,7 @@
 
 .o_default_css_marker {}
 
-.clearfix {zoom:1;}
+.clearfix {zoom: 1;}
 .clearfix:after {
 	content: ' ';
 	clear: both;
@@ -771,10 +771,7 @@
 
 .o_tls_caption {
   font-weight: bold;
-  padding-top: 4px;
-  padding-left: 4px;
-  padding-right: 4px;
-  padding-bottom: 2px;
+  padding: 4px 4px 2px;
 }
 
 .o_tls_list {
@@ -981,6 +978,7 @@
   list-style: none;
   white-space: nowrap;
   text-align: left;
+  background: #f0f0f0;
 }
 
 .o_popup_menu_background {
@@ -988,19 +986,20 @@
 }
 
 .o_popup_menu_background_safari {
-  background: lightgray;
+  background: #d3d3d3;
 }
 
 .o_popup_menu_indent {
-  width: 30px;
+  width: 27px;
+  background: #e0e0e0;
+  text-align: left;
+  padding-left: 2px;
 }
 
 .o_menu_list_item {
-/*position: relative;*/
   display: block;
-  list-style-image: none;
-  list-style-position: outside;
-  list-style-type: none;
+  list-style: none outside none;
+
   white-space: nowrap;
   border: 0;
   margin: 0;
@@ -1014,7 +1013,7 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 24px; /*height: 24px;*/
+  width: 21px;
   text-align: center;
   vertical-align: middle;
 }
@@ -1025,7 +1024,7 @@
   right: 0;
   top: 0;
   bottom: 0;
-  width: 20px; /*height: 24px;*/
+  width: 20px;
   text-align: center;
   vertical-align: middle;
 }
@@ -1036,13 +1035,13 @@
   padding: 1px;
   cursor: default;
   color: menutext;
-  font-family: times New Roman, sans-serif;
+  font-family: tahoma, arial, sans-serif;
   font-size: 13px;
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  height: 23px;
-  line-height: 23px;
+  height: 21px;
+  line-height: 21px;
   /*text-align: left;
   text-decoration: none;
   border: 1px solid transparent;
@@ -1052,7 +1051,7 @@
 
 .o_menu_list_item_content {
   display: block;
-  padding: 0 .5em;
+  padding: 0 3px;
   text-align: left;
 }
 
@@ -1069,8 +1068,9 @@
 }
 
 .o_menu_item_selected {
-  background: highlight;
-  color: highlighttext;
+  background: #d4d4d4;
+  color: black;
+  border: 1px solid #909090;
 }
 
 .o_menu_list_item_disabled {
@@ -1078,8 +1078,7 @@
 }
 
 .o_menu_list_item_separator {
-  /*height: 1px;*/
-  padding: 0;
+  padding: 1px;
 }
 
 .o_menu_list_item_icon {
@@ -1089,7 +1088,7 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 25px;
+  width: 21px;
   text-align: center;
 }
 
@@ -1098,10 +1097,9 @@
   position: relative;
   padding: 0;
   line-height: 1px;
-  border-top: 1px solid gray;
+  border-top: 1px solid silver;
   
-  margin: 1px 2px 1px 2px;
-  height: 1px;
+  margin: 0 2px 0 2px;
 }
 
 /* SidePanel */
