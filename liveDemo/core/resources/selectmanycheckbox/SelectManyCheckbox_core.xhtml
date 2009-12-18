@@ -5,42 +5,62 @@
 
   <div id="Demo">
     <div style="text-align: center; font-weight: bold; font-size: 20px;">Construction in progress...</div>
+    <h:panelGroup id="bookList">
+      <o:forEach items="#{BookCatalog.books}" var="book">
+        <dl class="demoLibrary #{(BookCatalog.selectedBook.isbn == book.isbn)?'active':''}">
+          <dt><h:outputText value="#{book.title}"/></dt>
+          <dd class="demoLibrary-thumbnail">
+            <h:graphicImage url="../images/selectmanycheckbox/covers/#{book.isbn}.jpg" alt="#{book.title}"/>
+          </dd>
+          <dd class="demoLibrary-description">
+            <p><h:outputText value="#{book.authorsDescription}"/></p>
+
+            <p><h:outputText value="#{book.publisher}, #{book.year}, #{book.pages} pages"/></p>
+          </dd>
+          <dd class="demoLibrary-tags">
+            <ul class="demoLibrary-tagsList">
+              <o:forEach items="#{book.labels}" var="label">
+                <li><a href="#"><span><h:outputText id="label" value="#{label}"/></span></a></li>
+              </o:forEach>
+              <li><h:commandLink styleClass="demoLibrary-editTags">
+                <o:ajax render="bookList" listener="#{BookCatalog.selectBook}">
+                  <f:param name="isbn" value="#{book.isbn}"/>
+                </o:ajax>
+                <span><h:outputText id="editTagsLabel" value="Edit Tags"/></span>
+              </h:commandLink></li>
+            </ul>
+            <div class="demoLibrary-tagsEditBox">
+              <div class="demoLibrary-tagsEditBox-tail"><span></span></div>
+              <div class="demoLibrary-tagsEditBox-main">
+                <div class="demoLibrary-tagsEditBox-content">
+                  <o:selectManyCheckbox value="#{BookCatalog.selectedBookLabels}"
+                                        layout="pageDirection"
+                                        rendered="#{BookCatalog.selectedBook.isbn == book.isbn}"
+                                        selectedImageUrl="../images/selectmanycheckbox/tags-edit-checkbox-checked.png"
+                                        disabledSelectedImageUrl="../images/selectmanycheckbox/tags-edit-checkbox-checked.png"
+                                        unselectedImageUrl="../images/selectmanycheckbox/tags-edit-checkbox-unchecked.png"
+                                        disabledUnselectedImageUrl="../images/selectmanycheckbox/tags-edit-checkbox-unchecked.png"
+                          >
+                    <f:selectItems id="selectedBookLabels" value="#{BookCatalog.labelItems}"/>
+                  </o:selectManyCheckbox>
+
+                  <h:commandLink styleClass="demoLibrary-tagsEdit-apply">
+                    <o:ajax render="bookList" execute="selectedBookLabels"
+                            listener="#{BookCatalog.saveBookLabels}"/>
+                    <span><span>Apply Tags</span></span>
+                  </h:commandLink>
+
+                  <div class="demoLibrary-tagsEditBox-bottom"></div>
+                </div>
+              </div>
+
+            </div>
+          </dd>
+        </dl>
+      </o:forEach>
+    </h:panelGroup>
+
   </div>
-
-  <h:panelGroup id="bookList" style="width:350px; float:left;">
-    <o:forEach items="#{BookCatalog.books}" var="book">
-      <h:graphicImage url="../images/selectmanycheckbox/covers/#{book.isbn}.jpg" style="float:left; height:50px"/>
-      <h:outputText value="#{book.title}" style="float:left; width:300px"/>
-      <o:forEach items="#{book.authors}" var="author" style="float:left">
-        <h:outputText value="#{author}; "/>
-      </o:forEach>
-      <h:outputText value="#{book.publisher}, #{book.year}, #{book.pages} pages" style="float:left;  width:300px"/>
-      <o:forEach items="#{book.labels}" var="label" style="float:left" >
-        <h:outputText value="#{label}" style="background-color:orange; margin: 0 5px"/>
-      </o:forEach>
-      <h:commandLink value="..." style="float:left;">
-        <o:ajax render="selectedBookLabelsPanel" listener="#{BookCatalog.selectBook}">
-          <f:param name="isbn" value="#{book.isbn}"/>
-        </o:ajax>
-      </h:commandLink>
-
-      <!--o:selectManyCheckbox value="#{book.labels}" style="float:left;" layout="lineDirection">
-        <f:selectItems value="#{BookCatalog.labelItems}"/>
-      </o:selectManyCheckbox-->
-      <div style="clear:both"></div>
-      <hr/>
-    </o:forEach>
-  </h:panelGroup>
-
-  <h:panelGroup id="selectedBookLabelsPanel" style="float:left;">
-    <o:selectManyCheckbox value="#{BookCatalog.selectedBookLabels}" style="float:left;" layout="pageDirection"
-            rendered="#{BookCatalog.bookSelected}">
-    <f:selectItems id="selectedBookLabels" value="#{BookCatalog.labelItems}"/>
-    </o:selectManyCheckbox>
-    <h:commandButton value="Save" rendered="#{BookCatalog.bookSelected}">
-      <o:ajax render="bookList selectedBookLabelsPanel" execute="selectedBookLabels" listener="#{BookCatalog.saveBookLabels}"/>
-    </h:commandButton>
-  </h:panelGroup>
 
   <div style="clear:both"></div>
   <div id="Description">

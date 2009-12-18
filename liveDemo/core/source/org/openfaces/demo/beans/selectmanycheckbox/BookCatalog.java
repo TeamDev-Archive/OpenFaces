@@ -39,8 +39,7 @@ public class BookCatalog {
                     new Book("0764548395", "Java Servlet Programming Bible",
                             Arrays.asList("Suresh Rajagopalan", "Ramesh Rajamani", "Ramesh Krishnaswamy", "Sridhar Vijendran"),
                             "Wiley", 2002, 720,
-                            /*Arrays.<String>asList("java", "servlets", "web")*/
-                    null),
+                            Arrays.<String>asList("java", "servlets", "web")),
 
                     new Book("0131422464", "Core J2EE Patterns: Best Practices and Design Strategies",
                             Arrays.asList("Deepak Alur", "Dan Malks", "John Crupi"),
@@ -121,8 +120,8 @@ public class BookCatalog {
         }
     }
 
-    public boolean isBookSelected() {
-        return selectedBook!=null;
+    public Book getSelectedBook() {
+        return selectedBook;
     }
 
     public List<String> getSelectedBookLabels() {
@@ -134,7 +133,7 @@ public class BookCatalog {
     }
 
     public void saveBookLabels(ActionEvent event) {
-        if (isBookSelected()){
+        if (selectedBook != null){
             selectedBook.setLabels(selectedBookLabels);
             selectedBook = null;
             selectedBookLabels = null;

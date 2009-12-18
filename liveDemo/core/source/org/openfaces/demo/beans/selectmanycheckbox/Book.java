@@ -12,6 +12,8 @@
 
 package org.openfaces.demo.beans.selectmanycheckbox;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -58,6 +60,10 @@ public class Book {
 
     public List<String> getAuthors() {
         return authors;
+    }
+
+    public String getAuthorsDescription() {
+        return StringUtils.join(authors.iterator(), ", ");
     }
 
     public void setAuthors(List<String> authors) {

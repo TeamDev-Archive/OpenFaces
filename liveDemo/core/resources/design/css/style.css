@@ -373,3 +373,228 @@ ul.hang li {
 	padding-left:40px;
 }
 .demoPlayerControls input[type=image]{outline:none;}
+
+@charset "UTF-8";
+dl.demoLibrary{
+	margin:20px	 0 0 0;
+	padding:0 30px 10px 135px;
+	min-height:150px;
+	position:relative;
+	width:310px;
+}
+dl.demoLibrary:hover{
+	background:url(../../images/selectmanycheckbox/hover-bg.png) repeat-x 0 bottom;
+}
+dl.demoLibrary.active:hover{
+	background:none !important;
+}
+
+dl.demoLibrary dt{
+	margin:0;
+	padding:0;
+	font-size:14pt;
+	color:#111;
+}
+dl.demoLibrary dd{
+	margin:0;
+	padding:0;
+	text-indent:0;
+}
+dl.demoLibrary dd p{
+	margin:0;
+	padding:0 0 1em;
+}
+dl.demoLibrary dd.demoLibrary-thumbnail{
+	position:absolute;
+	width:112px;
+	height:150px;
+	left:10px;
+	top:0;
+	overflow:hidden;
+	z-index:1;
+}
+dl.demoLibrary dd.demoLibrary-thumbnail img{
+	max-width:110px;
+	max-height:150px;
+	border: solid 1px #c4c4c4;
+}
+dl.demoLibrary dd.demoLibrary-description{
+	font-size:8pt;
+	color:#111;
+	padding:0 0 1em 0;
+}
+dl.demoLibrary dd.demoLibrary-tags{
+	position:relative;
+	z-index:10;
+}
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList{
+	position:relative;
+	z-index:20;
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li{float:left; padding: 0 .5em 0 0;}
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a{
+	display:block;
+	margin:2px 0;
+	height:17px;
+	position:relative;
+	color:white;
+	text-decoration:none;
+	background:transparent url(../../images/selectmanycheckbox/tags-sprite.png) no-repeat 0 0;
+}
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a span{
+	display:block;
+	height:17px;
+	line-height:17px;
+	background:transparent url(../../images/selectmanycheckbox/tags-sprite.png) no-repeat right -36px;
+}
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a span span{
+	margin:0 8px;
+	background:transparent url(../../images/selectmanycheckbox/tags-sprite.png) repeat-x 0 -18px;
+	color:white;
+	padding:0 .25em;
+}
+
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a:hover{background-position:0 -54px;}
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a:hover span{background-position:right -90px;}
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a:hover span span{background-position:0 -72px;}
+
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a:active{background-position:0 -108px;}
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a:active span{background-position:right -144px;}
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a:active span span{background-position:0 -126px;}
+
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-editTags{
+	margin:0 0;
+	height:21px;
+	background:transparent url(../../images/selectmanycheckbox/tags-edit-sprite.png) no-repeat 0 0;
+	display:none;
+}
+dl.demoLibrary:hover dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-editTags,
+dl.demoLibrary:active dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-editTags{
+	display:block;
+}
+dl.demoLibrary.active dd.demoLibrary-tags ul.demoLibrary-tagsList li  a.demoLibrary-editTags{
+	display:none !important;
+}
+
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-editTags span{
+	height:21px;
+	line-height:21px;
+	background-image:url(../../images/selectmanycheckbox/tags-edit-sprite.png) ;
+	background-position:right -48px;
+}
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-editTags span span{
+	background-position:0 -24px;
+	text-shadow:#df6e04 1px 1px 0;
+}
+
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-editTags:hover{background-position:0 -72px;}
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-editTags:hover span{background-position:right -120px;}
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-editTags:hover span span{background-position:0 -96px;}
+
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-editTags:active{background-position:0 -144px;}
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-editTags:active span{background-position:right -192px;}
+dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-editTags:active span span{background-position:0 -168px;}
+
+.demoLibrary-tagsEditBox{
+	position:absolute;
+	width:266px;
+	min-height:145px;
+	left:320px;
+	top:-113px;
+	background:url(../../images/selectmanycheckbox/tags-edit-box-top.png) no-repeat 0 0;
+	z-index:10;
+	display:none;
+}
+dl.demoLibrary.active dd.demoLibrary-tags .demoLibrary-tagsEditBox{display:block;}
+
+.demoLibrary-tagsEditBox  .demoLibrary-tagsEditBox-tail{
+	display:block;
+	position:absolute;
+	height:27px;
+	left:-325px;
+	top:110px;
+	right:100%;
+	background:url(../../images/selectmanycheckbox/tags-edit-box-tail-bg.png) repeat-x 0 0;
+}
+.demoLibrary-tagsEditBox  .demoLibrary-tagsEditBox-tail span{
+	display:block;
+	position:absolute;
+	top:0;
+	right:100%;
+	height:27px;
+	width:	20px;
+	background:url(../../images/selectmanycheckbox/tags-edit-box-tail-left.png) no-repeat 0 0;
+}
+
+.demoLibrary-tagsEditBox  .demoLibrary-tagsEditBox-main{
+	position:relative;
+	top:145px;
+	background:url(../../images/selectmanycheckbox/tags-edit-box-main.png) repeat-y 0 0;
+	padding:15px;
+}
+.demoLibrary-tagsEditBox  .demoLibrary-tagsEditBox-content{
+	min-height:130px;
+	position:relative;
+	top:-145px;
+	margin-bottom:-145px;
+	background:#fff7ef;
+	border-top:solid 1px #fb6b08;
+	border-right:solid 1px #fff9bc;
+	border-bottom:solid 1px #fff760;
+	border-left:solid 1px #fb3304;
+	padding:10px 20px;
+}
+
+a.demoLibrary-tagsEdit-apply{
+	display:block;
+	height:33px;
+	line-height:30px;
+	font-size:12pt;
+	background:url(../../images/selectmanycheckbox/tags-edit-apply-button.png) no-repeat 0 0;
+	text-decoration:none;
+	color:white;
+	text-shadow:#df6e04 0 0 1px;
+	margin: 5px -2px -20px;
+	position:relative;
+	z-index:5;
+}
+a.demoLibrary-tagsEdit-apply span{
+	display:block;
+	height:33px;
+	background:url(../../images/selectmanycheckbox/tags-edit-apply-button.png) no-repeat right -66px;
+	padding:0 8px;
+}
+a.demoLibrary-tagsEdit-apply span span{
+	background-repeat: repeat-x;
+	background-position:0 -33px;
+	text-align:center;
+}
+
+a.demoLibrary-tagsEdit-apply:hover{background-position:0 -99px;}
+a.demoLibrary-tagsEdit-apply:hover span{background-position:right -165px;}
+a.demoLibrary-tagsEdit-apply:hover span span{background-position:0 -132px;}
+
+a.demoLibrary-tagsEdit-apply:active{background-position:0 -198px;}
+a.demoLibrary-tagsEdit-apply:active span{background-position:right -264px;}
+a.demoLibrary-tagsEdit-apply:active span span{background-position:0 -231px;}
+
+.demoLibrary-tagsEditBox .demoLibrary-tagsEditBox-bottom{
+	position:absolute;
+	height:10px;
+	width:100%;
+	right:0;
+	left:0;
+	top:100%;
+	background:url(../../images/selectmanycheckbox/tags-edit-box-bottom.png) no-repeat 0 0;
+	z-index:1;
+}
+
+ul.demoLibrary-tagsFullList{
+	margin:0; padding:0; list-style:none;
+}
+ul.demoLibrary-tagsFullList li{float:none; list-style:none; padding:.25em 0;}
+ul.demoLibrary-tagsFullList li a{text-decoration:none;}
+ul.demoLibrary-tagsFullList li img{margin: 0 .5em -3px 0;}
