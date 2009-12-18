@@ -17,9 +17,9 @@ import java.util.Arrays;
 
 public enum PermissionGroup {
 
-    ANONYMOUS("Anonymous"),
-    USER("User", ANONYMOUS),
-    ADMINISTRATOR("Administrator", ANONYMOUS, USER);
+    ADMINISTRATOR("Administrator"),
+    USER("User", ADMINISTRATOR),
+    ANONYMOUS("Anonymous", ADMINISTRATOR, USER);
 
     private String label;
     private Collection<PermissionGroup> dependent;

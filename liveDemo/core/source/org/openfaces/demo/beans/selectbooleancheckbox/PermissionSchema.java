@@ -13,19 +13,32 @@
 package org.openfaces.demo.beans.selectbooleancheckbox;
 
 import org.openfaces.component.input.SelectBooleanCheckbox;
+import static org.openfaces.demo.beans.selectbooleancheckbox.Permission.*;
 import org.openfaces.demo.beans.util.FacesUtils;
 
 import javax.faces.event.ActionEvent;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PermissionSchema {
 
+    private static final String SEPARATOR = "Separator";
+
     public PermissionSchema() {
-        setAssigned(Permission.EDIT_ANY_POST, PermissionGroup.USER, true);
+        setAssigned(Permission.VIEW_POSTS, PermissionGroup.ANONYMOUS, true);
+        setAssigned(Permission.CREATE_POSTS, PermissionGroup.USER, true);
+        setAssigned(Permission.EDIT_ANY_POST, PermissionGroup.ADMINISTRATOR, true);
+        setAssigned(Permission.DELETE_OWN_POST, PermissionGroup.USER, true);
+        setAssigned(Permission.DELETE_ANY_POST, PermissionGroup.ADMINISTRATOR, true);
+        setAssigned(Permission.CREATE_ATTACHEMENTS, PermissionGroup.USER, true);
+        setAssigned(Permission.REMOVE_ATTACHEMENTS, PermissionGroup.ADMINISTRATOR, true);
+        setAssigned(Permission.CREATE_NEWS, PermissionGroup.ADMINISTRATOR, true);
+        setAssigned(Permission.VIEW_HIDDEN_TIMED_NEWS, PermissionGroup.ADMINISTRATOR, true);
+        setAssigned(Permission.DELETE_NEWS, PermissionGroup.ADMINISTRATOR, true);
+        setAssigned(Permission.ADD_COMMENTS, PermissionGroup.USER, true);
+        setAssigned(Permission.REMOVE_COMMENTS, PermissionGroup.ADMINISTRATOR, true);
     }
 
     private Map<PermissionGroup, Map<Permission, State>> permissionsAssignment;
@@ -38,12 +51,44 @@ public class PermissionSchema {
         return permissionsAssignment;
     }
 
-    public Collection<Permission> getPermissions() {
-        return EnumSet.allOf(Permission.class);
+    public Collection<?> getPermissions() {
+
+        return Arrays.asList(
+                VIEW_POSTS,
+                CREATE_POSTS,
+                EDIT_ANY_POST,
+                DELETE_OWN_POST,
+                DELETE_ANY_POST,
+                SEPARATOR,
+                CREATE_ATTACHEMENTS,
+                REMOVE_ATTACHEMENTS,
+                SEPARATOR,
+                CREATE_NEWS,
+                VIEW_HIDDEN_TIMED_NEWS,
+                DELETE_NEWS,
+                SEPARATOR,
+                ADD_COMMENTS,
+                REMOVE_COMMENTS);
+
+        //return EnumSet.allOf(Permission.class);
     }
 
-    public Collection<PermissionGroup> getPermissionGroups() {
-        return EnumSet.allOf(PermissionGroup.class);
+    public HashMap<Object, Boolean> getIsSeparator() {
+        return new HashMap<Object, Boolean>() {
+            @Override
+            public Boolean get(Object permission) {
+                return permission.equals(SEPARATOR);
+            }
+        };
+    }
+
+    public HashMap<String, PermissionGroup> getPermissionGroup() {
+        return new HashMap<String, PermissionGroup>() {
+            @Override
+            public PermissionGroup get(Object permissionGroup) {
+                return PermissionGroup.valueOf(String.valueOf(permissionGroup));
+            }
+        };
     }
 
     public boolean isAssigned(Permission permission, PermissionGroup permissionGroup) {
@@ -66,7 +111,7 @@ public class PermissionSchema {
             if (key instanceof PermissionGroup) {
                 permissionGroup = (PermissionGroup) key;
             } else {
-                permissionGroup = PermissionGroup.valueOf(key.toString());
+                permissionGroup = PermissionGroup.valueOf(String.valueOf(key));
             }
             Map<Permission, State> value = super.get(permissionGroup);
             if (value == null) {
@@ -81,7 +126,7 @@ public class PermissionSchema {
                         if (key instanceof Permission) {
                             permission = (Permission) key;
                         } else {
-                            permission = Permission.valueOf(key.toString());
+                            permission = Permission.valueOf(String.valueOf(key));
                         }
                         State result = super.get(permission);
                         if (result == null) {

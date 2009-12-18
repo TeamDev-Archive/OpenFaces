@@ -284,6 +284,15 @@ ul.hang li {
   font-size: 0;
 }
 
+div.centered {
+  text-align: center;
+}
+
+div.centered table {
+  margin: 0 auto;
+  text-align: left;
+}
+
 .relative {
   position: relative;
 }
