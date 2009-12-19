@@ -1847,18 +1847,24 @@ O$.Table = {
     var table = O$(tableId);
     var menuInvokerAreaTransparency = 0;
     var columnMenu = O$(columnMenuId);
+    table._unloadHandlers.push(function() {
+      if (columnMenu.parentNode)
+        columnMenu.parentNode.removeChild(columnMenu);
+    });
     var columnMenuButton = O$(columnMenuButtonId);
     var columnMenuButtonTable = function() {
       var result = O$.Table._createTableWithoutTd();
-      result.className = "o_columnMenuInvoker";
+      result.style.position = "absolute";
       result._tr.appendChild(columnMenuButton);
       O$.setOpacityLevel(result, 1 - menuInvokerAreaTransparency);
       O$.extend(result, {
         showForCell: function(cell) {
           this.hide();
           cell.appendChild(this);
-          O$.setElementHeight(this, O$.getElementSize(cell).height);
-          O$.alignPopupByElement(this, cell, O$.RIGHT_EDGE, O$.CENTER, 0, 0, true, true);
+          var rightOffset = O$.getNumericElementStyle(cell, "border-right-width");
+          var bottomOffset = O$.getNumericElementStyle(cell, "border-bottom-width");
+          O$.setElementHeight(this, O$.getElementSize(cell).height - bottomOffset);
+          O$.alignPopupByElement(this, cell, O$.RIGHT_EDGE, O$.TOP_EDGE, rightOffset, 0, true, true);
           this._showForCell = cell;
         },
         hideForCell: function(cell) {
@@ -1876,10 +1882,12 @@ O$.Table = {
     }();
 
     var currentColumn = null;
+    var menuOpened = false;
     table._columns.forEach(function(column) {
       if (!column.header || !column.header._cell) return;
       var headerCell = column.header._cell;
       O$.setupHoverStateFunction(headerCell, function(mouseOver) {
+        if (menuOpened) return;
         if (mouseOver) {
           currentColumn = column;
           columnMenuButtonTable.showForCell(headerCell);
@@ -1901,12 +1909,13 @@ O$.Table = {
       var headerCell = currentColumn.header._cell;
       headerCell.setForceHover(true);
       columnMenuButton.setForceHover(true);
+      menuOpened = true;
       columnMenu.onhide = function(e) {
         if (prevOnhide)
           prevOnhide.call(columnMenu, e);
         headerCell.setForceHover(false);
         columnMenuButton.setForceHover(false);
-
+        menuOpened = false;
       };
     });
 

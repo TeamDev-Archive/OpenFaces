@@ -227,7 +227,7 @@
 }
 
 .o_columnMenuInvoker {
-  position: absolute;
+  text-align: center;
   border-left: 1px solid silver;
   vertical-align: middle;
   width: 20px;

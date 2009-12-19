@@ -12,7 +12,7 @@
 
 if (!window.O$) {
   window.OpenFaces = window.O$ = function(id) {
-    return document.getElementById(id);
+    return id ? document.getElementById(id) : null;
   };
 
   O$.extend = function(obj, withObj) {

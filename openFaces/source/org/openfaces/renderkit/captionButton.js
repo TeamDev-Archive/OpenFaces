@@ -24,7 +24,7 @@ O$._initCaptionButton = function(componentId,
     pressedUrl = rolloverUrl;
 
   var btn = O$.initComponent(componentId, null, {
-    _container:  O$(containerId),
+    _container: O$(containerId),
     _url:  url,
     _rolloverUrl:  rolloverUrl,
     _pressedUrl:  pressedUrl,

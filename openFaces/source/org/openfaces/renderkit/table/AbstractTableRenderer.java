@@ -23,6 +23,7 @@ import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.Scrolling;
 import org.openfaces.component.table.TableColumn;
 import org.openfaces.org.json.JSONArray;
+import org.openfaces.renderkit.CaptionButtonRenderer;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.AjaxUtil;
@@ -201,19 +202,24 @@ public abstract class AbstractTableRenderer extends RendererBase {
                             "though the following component was found: " + component.getClass().getName() +
                             ". table id: " + table.getClientId(context));
         UIComponent buttonComponent = table.getFacet(FACET_COLUMN_MENU_BUTTON);
-        if (buttonComponent != null && !(buttonComponent instanceof PopupMenu))
+        if (buttonComponent != null && !(buttonComponent instanceof CaptionButton))
             throw new FacesException(
                     "The component inside of \"" + FACET_COLUMN_MENU_BUTTON + "\" facet must be a CaptionButton or descendant component, " +
-                            "though the following component was found: " + component.getClass().getName() +
+                            "though the following component was found: " + buttonComponent.getClass().getName() +
                             ". table id: " + table.getClientId(context));
+        CaptionButton button = (CaptionButton) buttonComponent;
         boolean temporaryButton = false;
-        if (buttonComponent == null) {
-            buttonComponent = createDefaultColumnMenuButton(context);
+        if (button == null) {
+            button = createDefaultColumnMenuButton(context);
             temporaryButton = true;
-            table.getFacets().put(FACET_COLUMN_MENU_BUTTON, buttonComponent);
+            table.getFacets().put(FACET_COLUMN_MENU_BUTTON, button);
         }
+        if (button.getImageUrl() == null)
+            button.setImageUrl(getDefaultColumnMenuBtnImage(context));
 
-        buttonComponent.encodeAll(context);
+        button.getAttributes().put(CaptionButtonRenderer.ATTR_DEFAULT_STYLE_CLASS, "o_columnMenuInvoker");
+
+        button.encodeAll(context);
 
         PopupMenu columnMenu = (PopupMenu) component;
         columnMenu.setStandalone(true);
@@ -224,11 +230,14 @@ public abstract class AbstractTableRenderer extends RendererBase {
             table.getFacets().remove(FACET_COLUMN_MENU_BUTTON);
     }
 
-    private UIComponent createDefaultColumnMenuButton(FacesContext context) {
+    private CaptionButton createDefaultColumnMenuButton(FacesContext context) {
         CaptionButton captionButton = new CaptionButton();
-        captionButton.setImageUrl(
-                ResourceUtil.getInternalResourceURL(context, AbstractTableRenderer.class, "columnMenuDrop.gif", false));
+        captionButton.setImageUrl(getDefaultColumnMenuBtnImage(context));
         return captionButton;
+    }
+
+    private String getDefaultColumnMenuBtnImage(FacesContext context) {
+        return ResourceUtil.getInternalResourceURL(context, AbstractTableRenderer.class, "columnMenuDrop.gif", false);
     }
 
     private void preregisterNoFilterDataRowStyleForOpera(FacesContext context, AbstractTable table) {
