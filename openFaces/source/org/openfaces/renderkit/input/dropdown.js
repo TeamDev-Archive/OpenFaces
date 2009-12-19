@@ -438,18 +438,10 @@ O$.DropDown = {
 
   _alignPopup: function(dropDown, calendar) {
     var popup = dropDown._popup;
-
-    var dropDownRect = O$.getElementBorderRectangle(dropDown, true);
-
-    var left;
-    if (dropDown._listAlignment == "right" || calendar) { // to the right border
-      left = dropDownRect.x - ((calendar ? calendar.offsetWidth : popup.offsetWidth) - dropDownRect.width);
+    if (dropDown._listAlignment == "right" || calendar) { // align by the right edge
+      O$.alignPopupByElement(popup, dropDown, O$.RIGHT_EDGE, O$.BELOW);
     } else { // bind drop list to the left border
-      left = dropDownRect.x;
+      O$.alignPopupByElement(popup, dropDown, O$.LEFT_EDGE, O$.BELOW);
     }
-    var top = dropDownRect.getMaxY();
-
-    popup.setTop(top);
-    popup.setLeft(left);
   }
 };
