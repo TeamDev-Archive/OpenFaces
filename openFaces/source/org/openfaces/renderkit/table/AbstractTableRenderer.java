@@ -11,7 +11,9 @@
  */
 package org.openfaces.renderkit.table;
 
+import org.openfaces.component.CaptionButton;
 import org.openfaces.component.TableStyles;
+import org.openfaces.component.action.PopupMenu;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.AbstractTableSelection;
 import org.openfaces.component.table.BaseColumn;
@@ -32,6 +34,7 @@ import org.openfaces.util.StyleGroup;
 import org.openfaces.util.StyleUtil;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -55,6 +58,8 @@ public abstract class AbstractTableRenderer extends RendererBase {
 
     private static final String TABLE_STRUCTURE_ATTR = "_of_tableStructure";
 
+    private static final String FACET_COLUMN_MENU = "columnMenu";
+    private static final String FACET_COLUMN_MENU_BUTTON = "columnMenuButton";
 
     public static String getTableJsURL(FacesContext context) {
         return ResourceUtil.getInternalResourceURL(context, AbstractTableRenderer.class, "table.js");
@@ -179,11 +184,51 @@ public abstract class AbstractTableRenderer extends RendererBase {
         encodeInitialization(context, table, buf);
         encodeKeyboardSupport(context, table, buf);
         encodeSortingSupport(context, table, buf);
+        encodeColumnMenuSupport(context, table, buf);
 
         if (!table.isDataSourceEmpty())
             preregisterNoFilterDataRowStyleForOpera(context, table);
 
         encodeCheckboxColumnSupport(context, table, buf);
+    }
+
+    private void encodeColumnMenuSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
+        UIComponent component = table.getFacet(FACET_COLUMN_MENU);
+        if (component == null) return;
+        if (!(component instanceof PopupMenu))
+            throw new FacesException(
+                    "The component inside of \"" + FACET_COLUMN_MENU + "\" facet must be a PopupMenu or descendant component, " +
+                            "though the following component was found: " + component.getClass().getName() +
+                            ". table id: " + table.getClientId(context));
+        UIComponent buttonComponent = table.getFacet(FACET_COLUMN_MENU_BUTTON);
+        if (buttonComponent != null && !(buttonComponent instanceof PopupMenu))
+            throw new FacesException(
+                    "The component inside of \"" + FACET_COLUMN_MENU_BUTTON + "\" facet must be a CaptionButton or descendant component, " +
+                            "though the following component was found: " + component.getClass().getName() +
+                            ". table id: " + table.getClientId(context));
+        boolean temporaryButton = false;
+        if (buttonComponent == null) {
+            buttonComponent = createDefaultColumnMenuButton(context);
+            temporaryButton = true;
+            table.getFacets().put(FACET_COLUMN_MENU_BUTTON, buttonComponent);
+        }
+
+        buttonComponent.encodeAll(context);
+
+        PopupMenu columnMenu = (PopupMenu) component;
+        columnMenu.setStandalone(true);
+        columnMenu.encodeAll(context);
+        buf.initScript(context, table, "O$.Table._initColumnMenu", columnMenu, buttonComponent);
+
+        if (temporaryButton)
+            table.getFacets().remove(FACET_COLUMN_MENU_BUTTON);
+    }
+
+    private UIComponent createDefaultColumnMenuButton(FacesContext context) {
+        CaptionButton captionButton = new CaptionButton();
+        captionButton.setImageUrl(
+                ResourceUtil.getInternalResourceURL(context, AbstractTableRenderer.class, "columnMenuDrop.gif", false));
+        return captionButton;
     }
 
     private void preregisterNoFilterDataRowStyleForOpera(FacesContext context, AbstractTable table) {

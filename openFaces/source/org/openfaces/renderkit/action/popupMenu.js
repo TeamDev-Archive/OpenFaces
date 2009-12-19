@@ -54,22 +54,76 @@ O$.PopupMenu = {
                   submenuHideDelay,
                   selectDisabledItems,
                   events) {
-    var popupMenu = O$.initComponent(popupMenuId, {rollover: rolloverClass});
+    O$.Popup._init(popupMenuId, false);
+    var popupMenu = O$.initComponent(popupMenuId, {rollover: rolloverClass}, {
+      show: function() {
+        this.style.visibility = "visible";
+        this.style.display = "block";
+        O$.PopupMenu._initIEWidthWorkaround(this);
+        if (this.onshow)
+          this.onshow();
+      },
+
+      hide: function() {
+        this.closeChildMenus();
+        if (O$.PopupMenu._getStyleProperty(this, "visibility") != "hidden" &&
+            O$.PopupMenu._getStyleProperty(this, "display") != "none") {
+          this.style.visibility = "hidden";
+          this.style.display = "none";
+
+          O$.PopupMenu._clearSelection(popupMenu);
+
+          if (this.onhide)
+            this.onhide();
+        }
+      },
+
+      showAtXY: function (x, y /*, relativeToContainer*/ ) {
+        var relativeToContainer = arguments[2];
+        if (relativeToContainer !== undefined) {
+          var containerPos = relativeToContainer !== null ? O$.getElementPos(relativeToContainer) : {x: 0, y: 0};
+          var absoluteX = x + containerPos.x;
+          var absoluteY = y + containerPos.y;
+          var popupContainer = O$.getContainingBlock(popupMenu, true);
+          var popupContainerPos = O$.getElementPos(popupContainer);
+          x = absoluteX - popupContainerPos.x;
+          y = absoluteY - popupContainerPos.y;
+        }
+        this.setLeft(x);
+        this.setTop(y);
+        this.show();
+      },
+
+      showForEvent: function (event) {
+        var pos = O$.getEventPoint(event, this);
+        this.showAtXY(pos.x, pos.y);
+      },
+
+      closeChildMenus: function () {
+        if (!!popupMenu._openedChildMenu) {
+          popupMenu._openedChildMenu.closeChildMenus();
+          popupMenu._openedChildMenu.updateCoordinates = null;
+          popupMenu._openedChildMenu.hide();
+          popupMenu._openedChildMenu = null;
+        }
+      },
+      _isRoot: function() {
+        return !!isRootMenu;
+      },
+      _popupMenuItems: []
+    });
 
     O$.assignEvents(popupMenu, events, true);
 
     O$.setupArtificialFocus(popupMenu, null);
 
-    O$.Popup._init(popupMenuId, false);
 
-    popupMenu._isRoot = function() {
-      return !!isRootMenu;
-    };
+
     if (!isRootMenu) {
-      document._openFaces_popupsOnpage.pop(popupMenuId);
+      O$._popupsOnPage.pop(popupMenuId);
     }
 
-    popupMenu._popupMenuItems = [];
+
 
     var childNodes = popupMenu.childNodes;
 
@@ -172,7 +226,7 @@ O$.PopupMenu = {
           break;
         case 37: // left
           if (popupMenu._parentPopupMenu) {
-            popupMenu._parentPopupMenu.closeAllChildMenus();
+            popupMenu._parentPopupMenu.closeChildMenus();
             popupMenu._parentPopupMenu.focus();
           }
           break;
@@ -189,7 +243,6 @@ O$.PopupMenu = {
     for (i = 0; i < popupMenu._popupMenuItems.length; i++) {
       menuItem = popupMenu._popupMenuItems[i];
       if (!menuItem._separator) {
-
         menuItem.selectedDisabledClass = O$.combineClassNames([itemsProperties[i].selectedClass, defaultSelectedClass]);
         menuItem.selectedClass = O$.combineClassNames([itemsProperties[i].selectedClass, defaultSelectedClass]);
 
@@ -202,46 +255,6 @@ O$.PopupMenu = {
       }
     }
 
-    popupMenu.show = function() {
-      this.style.visibility = "visible";
-      this.style.display = "block";
-      O$.PopupMenu._initIEWidthWorkaround(this);
-      if (this.onshow)
-        this.onshow();
-    };
-
-    popupMenu.hide = function() {
-      if (O$.PopupMenu._getStyleProperty(this, "visibility") != "hidden" &&
-          O$.PopupMenu._getStyleProperty(this, "display") != "none") {
-        this.style.visibility = "hidden";
-        this.style.display = "none";
-
-        O$.PopupMenu._clearSelection(popupMenu);
-
-        if (this.onhide)
-          this.onhide();
-      }
-    };
-
-    popupMenu.showAtXY = function (x, y) {
-      this.setLeft(x);
-      this.setTop(y);
-      this.show();
-    };
-
-    popupMenu.showForEvent = function (event) {
-      var pos = O$.getEventPoint(event, this);
-      this.showAtXY(pos.x, pos.y);
-    };
-
-    popupMenu.closeAllChildMenus = function () {
-      if (!!popupMenu._OpenedChildMenu) {
-        popupMenu._OpenedChildMenu.closeAllChildMenus();
-        popupMenu._OpenedChildMenu.updateCoordinates = null;
-        popupMenu._OpenedChildMenu.hide();
-        popupMenu._OpenedChildMenu = null;
-      }
-    };
   },
 
   setMenuItemEnabled: function(menuItemId, enabled, selectDisabledItems) {
@@ -371,9 +384,9 @@ O$.PopupMenu = {
           arrow.src = arrow.arrowSelectedDisabledImage;
       }
       O$.PopupMenu._substractPaddingFromMenuItem(menuItem);
-      if (menuItem._popupMenu._OpenedChildMenu != null &&
-          menuItem._popupMenu._OpenedChildMenu == O$(menuItem._menuId)) {
-        var childMenu = menuItem._popupMenu._OpenedChildMenu;
+      if (menuItem._popupMenu._openedChildMenu != null &&
+          menuItem._popupMenu._openedChildMenu == O$(menuItem._menuId)) {
+        var childMenu = menuItem._popupMenu._openedChildMenu;
         if (childMenu.updateCoordinates) {
           childMenu.updateCoordinates = null;
           childMenu.style.left = (O$.calculateNumericCSSValue(childMenu.style.left) - menuItem._diffLeft) + "px";
@@ -411,9 +424,9 @@ O$.PopupMenu = {
         O$.PopupMenu._addPaddingToMenuItem(menuItem);
 
         /* avoid jumping submenu if border changes*/
-        if (menuItem._popupMenu._OpenedChildMenu != null &&
-            menuItem._popupMenu._OpenedChildMenu == O$(menuItem._menuId)) {
-          var childMenu = menuItem._popupMenu._OpenedChildMenu;
+        if (menuItem._popupMenu._openedChildMenu != null &&
+            menuItem._popupMenu._openedChildMenu == O$(menuItem._menuId)) {
+          var childMenu = menuItem._popupMenu._openedChildMenu;
           childMenu.updateCoordinates = true;
           childMenu.style.left = (O$.calculateNumericCSSValue(childMenu.style.left) + menuItem._diffLeft) + "px";
           childMenu.style.top = (O$.calculateNumericCSSValue(childMenu.style.top) + menuItem._diffTop) + "px";
@@ -462,10 +475,10 @@ O$.PopupMenu = {
     if (!itemAnchor.parentNode._disabled) {
       if (!!itemAnchor._menuId) {
         var childPopupMenu = O$(itemAnchor._menuId);
-        if (popupMenu._OpenedChildMenu != childPopupMenu) {
-          popupMenu.closeAllChildMenus();
+        if (popupMenu._openedChildMenu != childPopupMenu) {
+          popupMenu.closeChildMenus();
           var popupMenuRect = O$.getElementBorderRectangle(popupMenu, true);
-          popupMenu._OpenedChildMenu = childPopupMenu;
+          popupMenu._openedChildMenu = childPopupMenu;
 
           var popup_menu_border_top = O$.getNumericElementStyle(popupMenu, "border-top-width");
           var childPopupMenu_border_left = (!O$.isOpera()) ? O$.getNumericElementStyle(popupMenu, "border-left-width") : 0;
@@ -497,7 +510,7 @@ O$.PopupMenu = {
   },
 
   _closeAllMenu: function(popupMenu) {
-    popupMenu.closeAllChildMenus();
+    popupMenu.closeChildMenus();
     while (popupMenu) {
       popupMenu.hide();
       popupMenu = popupMenu._parentPopupMenu;
@@ -912,7 +925,7 @@ O$.PopupMenu = {
       }
 
       popupMenu._closeAllTask = setTimeout(function() {
-        popupMenu.closeAllChildMenus();
+        popupMenu.closeChildMenus();
         popupMenu.focus();
       }, submenuHideDelay);
 

@@ -39,6 +39,15 @@ O$.PopupLayer = {
       _rolloverStyleNames: rolloverStyle,
 
       // --------------- Popup functions start
+
+      getLeft: function() {
+        return O$.getElementPos(popup, true).x;
+      },
+
+      getTop: function() {
+        return O$.getElementPos(popup, true).y;
+      },
+
       setLeft: function (left) {
         if (left == null || left == undefined || isNaN(left))
           throw "popupLayer.setLeft: the integer number should be passed as a parameter, but the following value was passed: " + left;
@@ -79,7 +88,7 @@ O$.PopupLayer = {
         }, 1);
       },
 
-      show: function () { // todo: this overrides popup.show declared in popup.js, merge as much functionality in popupLayer.js and popup.js as possible
+      show: function () { // todo: this partially duplicates popup.show declared in popup.js, merge as much functionality in popupLayer.js and popup.js as possible
         if (popup.isVisible()) return;
         popup.style.display = "block";
         O$.addIETransparencyControl(popup);
@@ -186,13 +195,6 @@ O$.PopupLayer = {
         if (popup.hideTimer) {
           clearTimeout(popup.hideTimer);
         }
-
-        /*
-         if (O$.isExplorer()) {
-         popup.setLeft(popup.startX);
-         popup.setTop(popup.startY);
-         }
-         */
 
         if (popup._hidingTimeout && popup._hidingTimeout > 0) {
           popup.hideTimer = setTimeout(function() {
@@ -314,7 +316,6 @@ O$.PopupLayer = {
         throw e;
       }
 
-
     if (top != null)
       try {
         popup.setTop(top);
@@ -346,7 +347,6 @@ O$.PopupLayer = {
         if (focusable)
           focusable.focus();
       };
-
 
     O$.addLoadEvent(function () {
       if (popup._visibleField.value == "true")

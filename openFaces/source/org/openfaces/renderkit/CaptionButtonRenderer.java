@@ -32,6 +32,8 @@ import java.util.Map;
  * @author Dmitry Pikhulya
  */
 public class CaptionButtonRenderer extends RendererBase {
+    public static final String ATTR_DEFAULT_STYLE_CLASS = "_defaultStyleClass";
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
@@ -39,7 +41,7 @@ public class CaptionButtonRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("td", btn);
-        RenderingUtil.writeComponentClassAttribute(writer, btn, "o_captionButton");
+        RenderingUtil.writeComponentClassAttribute(writer, btn, getDefaultStyleClass(btn));
         writeIdAttribute(context, btn);
         RenderingUtil.writeStandardEvents(writer, btn);
 
@@ -61,6 +63,11 @@ public class CaptionButtonRenderer extends RendererBase {
         writer.endElement("img");
 
         writer.endElement("td");
+    }
+
+    private String getDefaultStyleClass(CaptionButton btn) {
+        String defaultStyleClass = (String) btn.getAttributes().get(ATTR_DEFAULT_STYLE_CLASS);
+        return defaultStyleClass != null ? defaultStyleClass : "o_captionButton";
     }
 
     protected List<String> getJsLibraries(FacesContext context) {

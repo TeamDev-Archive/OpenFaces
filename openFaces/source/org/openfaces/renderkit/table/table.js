@@ -1,4 +1,5 @@
 /*
+ /*
  * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2009, TeamDev Ltd.
  * licensing@openfaces.org
@@ -13,31 +14,34 @@
 
 O$.Table = {
   _initDataTableAPI: function(table) {
-    table.selectAllRows = function() {
-      this.__selectAllRows();
-    };
-    table.clearSelection = function() {
-      this.__clearSelection();
-    };
-    table.isSelectionEmpty = function() {
-      return this.__isSelectionEmpty();
-    };
-    table.getSelectedRowIndex = function() {
-      return this.__getSelectedRowIndex();
-    };
-    table.setSelectedRowIndex = function(rowIndex) {
-      this.__setSelectedRowIndex(rowIndex);
-    };
-    table.getSelectedRowIndexes = function() {
-      return this.__getSelectedRowIndexes();
-    };
-    table.setSelectedRowIndexes = function(rowIndexes) {
-      this.__setSelectedRowIndexes(rowIndexes);
-    };
-    table.getRowCount = function() {
-      return this.__getRowCount();
-    };
-    table._of_dataTableComponentMarker = true;
+    O$.extend(table, {
+      _of_dataTableComponentMarker: true,
+      selectAllRows: function() {
+        this.__selectAllRows();
+      },
+      clearSelection: function() {
+        this.__clearSelection();
+      },
+      isSelectionEmpty: function() {
+        return this.__isSelectionEmpty();
+      },
+      getSelectedRowIndex: function() {
+        return this.__getSelectedRowIndex();
+      },
+      setSelectedRowIndex: function(rowIndex) {
+        this.__setSelectedRowIndex(rowIndex);
+      },
+      getSelectedRowIndexes: function() {
+        return this.__getSelectedRowIndexes();
+      },
+      setSelectedRowIndexes: function(rowIndexes) {
+        this.__setSelectedRowIndexes(rowIndexes);
+      },
+      getRowCount: function() {
+        return this.__getRowCount();
+      }
+
+    });
   },
 
   _init: function(tableId, initParams, useAjax, rolloverClass, apiInitializationFunctionName) {
@@ -89,109 +93,134 @@ O$.Table = {
   },
 
   _initApiFunctions: function(table) {
-    table.__selectAllRows = function() {
-      if (this._selectableItems != "rows")
-        throw "selectAllRows: The table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
-      if (!this._multipleSelectionAllowed)
-        throw "selectAllRows: The table is not set up for multiple selection. Table's clientId is: " + this.id;
-      this._selectAllItems();
-    };
-    table.__clearSelection = function() {
-      this._unselectAllItems();
-    };
-    table.__isSelectionEmpty = function() {
-      var selectedItems = this._getSelectedItems();
-      if (!selectedItems || selectedItems.length == 0)
-        return true;
-      return selectedItems[0] == -1;
-    };
-    table.__getSelectedRowIndex = function() {
-      if (this._selectableItems != "rows")
-        throw "getSelectedRowIndex: The specified table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
-      if (this._multipleSelectionAllowed)
-        throw "getSelectedRowIndex can only used on a table with single selection mode; table's clientId is: " + this.id;
+    O$.extend(table, {
+      __selectAllRows: function() {
+        if (this._selectableItems != "rows")
+          throw "selectAllRows: The table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
+        if (!this._multipleSelectionAllowed)
+          throw "selectAllRows: The table is not set up for multiple selection. Table's clientId is: " + this.id;
+        this._selectAllItems();
+      },
+      __clearSelection: function() {
+        this._unselectAllItems();
+      },
+      __isSelectionEmpty: function() {
+        var selectedItems = this._getSelectedItems();
+        if (!selectedItems || selectedItems.length == 0)
+          return true;
+        return selectedItems[0] == -1;
+      },
+      __getSelectedRowIndex: function() {
+        if (this._selectableItems != "rows")
+          throw "getSelectedRowIndex: The specified table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
+        if (this._multipleSelectionAllowed)
+          throw "getSelectedRowIndex can only used on a table with single selection mode; table's clientId is: " + this.id;
 
-      var selectedItems = this._getSelectedItems();
-      if (selectedItems.length == 0)
-        return -1;
-      return selectedItems[0];
-    };
-    table.__setSelectedRowIndex = function(rowIndex) {
-      if (this._selectableItems != "rows")
-        throw "setSelectedRowIndex: The specified table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
-      if (this._multipleSelectionAllowed)
-        throw "setSelectedRowIndex can only used on a table with single selection mode; table's clientId is: " + this.id;
-      var bodyRows = table.body._getRows();
-      if ((rowIndex != -1) && (rowIndex < 0 || rowIndex >= bodyRows.length))
-        throw "setSelectedRowIndex parameter is out of range (" + rowIndex + "); table's clientId is: " + this.id + "; number of rows is: " + bodyRows.length;
-      this._setSelectedItems(rowIndex != -1 ? [rowIndex] : []);
-    };
-    table.__getSelectedRowIndexes = function() {
-      if (this._selectableItems != "rows")
-        throw "getSelectedRowIndexes: The specified table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
-      if (!this._multipleSelectionAllowed)
-        throw "getSelectedRowIndexes can only used on a table with multiple selection mode; table's clientId is: " + this.id;
+        var selectedItems = this._getSelectedItems();
+        if (selectedItems.length == 0)
+          return -1;
+        return selectedItems[0];
+      },
+      __setSelectedRowIndex: function(rowIndex) {
+        if (this._selectableItems != "rows")
+          throw "setSelectedRowIndex: The specified table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
+        if (this._multipleSelectionAllowed)
+          throw "setSelectedRowIndex can only used on a table with single selection mode; table's clientId is: " + this.id;
+        var bodyRows = table.body._getRows();
+        if ((rowIndex != -1) && (rowIndex < 0 || rowIndex >= bodyRows.length))
+          throw "setSelectedRowIndex parameter is out of range (" + rowIndex + "); table's clientId is: " + this.id + "; number of rows is: " + bodyRows.length;
+        this._setSelectedItems(rowIndex != -1 ? [rowIndex] : []);
+      },
+      __getSelectedRowIndexes: function() {
+        if (this._selectableItems != "rows")
+          throw "getSelectedRowIndexes: The specified table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
+        if (!this._multipleSelectionAllowed)
+          throw "getSelectedRowIndexes can only used on a table with multiple selection mode; table's clientId is: " + this.id;
 
-      var selectedItems = this._getSelectedItems();
-      if (!selectedItems || (selectedItems.length == 1 && selectedItems[0] == -1))
-        selectedItems = [];
-      return selectedItems;
-    };
-    table.__setSelectedRowIndexes = function(rowIndexes) {
-      if (this._selectableItems != "rows")
-        throw "setSelectedRowIndexes: The specified table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
-      if (!this._multipleSelectionAllowed)
-        throw "setSelectedRowIndexes can only used on a table with multiple selection mode; table's clientId is: " + this.id;
-      if (!rowIndexes)
-        rowIndexes = [];
+        var selectedItems = this._getSelectedItems();
+        if (!selectedItems || (selectedItems.length == 1 && selectedItems[0] == -1))
+          selectedItems = [];
+        return selectedItems;
+      },
+      __setSelectedRowIndexes: function(rowIndexes) {
+        if (this._selectableItems != "rows")
+          throw "setSelectedRowIndexes: The specified table is not set up for row selection. Selectable items are: " + this._selectableItems + "; table's clientId is: " + this.id;
+        if (!this._multipleSelectionAllowed)
+          throw "setSelectedRowIndexes can only used on a table with multiple selection mode; table's clientId is: " + this.id;
+        if (!rowIndexes)
+          rowIndexes = [];
 
-      var bodyRows = table.__getRowCount();
-      for (var i = 0, count = rowIndexes.length; i < count; i++) {
-        var rowIndex = rowIndexes[i];
-        if (rowIndex < 0 || rowIndex >= bodyRows.length)
-          throw "setSelectedRowIndexes parameter is out of range (" + rowIndex + "); table's clientId is: " + this.id + "; number of rows is: " + bodyRows.length;
+        var bodyRows = table.__getRowCount();
+        for (var i = 0, count = rowIndexes.length; i < count; i++) {
+          var rowIndex = rowIndexes[i];
+          if (rowIndex < 0 || rowIndex >= bodyRows.length)
+            throw "setSelectedRowIndexes parameter is out of range (" + rowIndex + "); table's clientId is: " + this.id + "; number of rows is: " + bodyRows.length;
+        }
+        this._setSelectedItems(rowIndexes);
+      },
+      __getRowCount: function() {
+        if (this._params.noDataRows)
+          return 0;
+        var bodyRows = this.body._getRows();
+        return bodyRows.length;
       }
-      this._setSelectedItems(rowIndexes);
-    };
-    table.__getRowCount = function() {
-      if (this._params.noDataRows)
-        return 0;
-      var bodyRows = this.body._getRows();
-      return bodyRows.length;
-    };
+    });
   },
+
+  _createTableWithoutTd: function () {
+    var tbl = document.createElement("table");
+    tbl.cellSpacing = "0";
+    tbl.cellPadding = "0";
+    tbl.border = "0";
+    var tbody = document.createElement("tbody");
+    tbl.appendChild(tbody);
+    var tr = document.createElement("tr");
+    tbody.appendChild(tr);
+    tbl._tr = tr;
+    return tbl;
+  },
+
+  _createImage: function (url) {
+    var img = document.createElement("img");
+    img.src = url;
+    return img;
+  },
+
+
 
   // -------------------------- KEYBOARD NAVIGATION SUPPORT
 
   _initKeyboardNavigation: function(tableId, controlPaginationWithKeyboard, focusedClassName, canPageBack, canPageForth,
                                     canSelectLastPage, tabindex) {
-    var table = O$(tableId);
+    var table = O$.initComponent(tableId, null, {
+      _performPagingAction: function(actionStr) {
+        O$.setHiddenField(this, this.id + "::pagination", actionStr);
+        O$._submitInternal(this);
+      },
+
+      _nextPage: function() {
+        if (canPageForth) this._performPagingAction("selectNextPage");
+      },
+      _previousPage: function() {
+        if (canPageBack) this._performPagingAction("selectPrevPage");
+      },
+      _firstPage: function() {
+        if (canPageBack) this._performPagingAction("selectFirstPage");
+      },
+      _lastPage: function() {
+        if (canSelectLastPage) this._performPagingAction("selectLastPage");
+      },
+      _selectPageNo: function(pageNo) {
+        this._performPagingAction("selectPageNo:" + pageNo);
+      }
+    });
 
     O$.setupArtificialFocus(table, focusedClassName, tabindex);
 
     var pagingFld = O$(table.id + "::pagination");
     if (pagingFld)
       pagingFld.value = "";
-    table._performPagingAction = function(actionStr) {
-      O$.setHiddenField(this, this.id + "::pagination", actionStr);
-      O$._submitInternal(this);
-    };
 
-    table._nextPage = function() {
-      if (canPageForth) this._performPagingAction("selectNextPage");
-    };
-    table._previousPage = function() {
-      if (canPageBack) this._performPagingAction("selectPrevPage");
-    };
-    table._firstPage = function() {
-      if (canPageBack) this._performPagingAction("selectFirstPage");
-    };
-    table._lastPage = function() {
-      if (canSelectLastPage) this._performPagingAction("selectLastPage");
-    };
-    table._selectPageNo = function(pageNo) {
-      this._performPagingAction("selectPageNo:" + pageNo);
-    };
 
     var eventName = (O$.isSafariOnMac() || O$.isOpera() || O$.isMozillaFF()) ? "onkeypress" : "onkeydown";
     table._prevKeyHandler = table[eventName];
@@ -544,147 +573,172 @@ O$.Table = {
                            multipleSelectionAllowed, selectedItems, selectionClass,
                            selectionChangeHandler, postEventOnSelectionChange, selectionColumnIndexes,
                            mouseSupport, keyboardSupport) {
-    var table = O$(tableId);
-    O$.assert(table, "Couldn't find table by id: " + tableId);
-
+    var table = O$.initComponent(tableId);
     O$.assert(!table._selectionInitialized, "O$.Table._initSelection shouldn't be called twice on the same table");
-    table._selectionInitialized = true;
+    O$.extend(table, {
+      _selectionInitialized: true,
 
-    // initialize fields
-    table._selectionEnabled = !table._params.noDataRows && enabled;
-    table._selectableItems = selectableItems;
-    table._multipleSelectionAllowed = multipleSelectionAllowed;
-    table._selectionClass = selectionClass;
-    table._selectionColumnIndexes = selectionColumnIndexes;
-    table._selectionMouseSupport = mouseSupport;
-    table._selectionKeyboardSupport = keyboardSupport;
+      _selectionEnabled: !table._params.noDataRows && enabled,
+      _selectableItems: selectableItems,
+      _multipleSelectionAllowed: multipleSelectionAllowed,
+      _selectionClass: selectionClass,
+      _selectionColumnIndexes: selectionColumnIndexes,
+      _selectionMouseSupport: mouseSupport,
+      _selectionKeyboardSupport: keyboardSupport,
 
-    // initialize function references
-    table._selectItem = O$.Table._selectItem;
-    table._unselectItem = O$.Table._unselectItem;
-    table._getSelectedItems = function() {
-      if (!this._selectedItems)
-        this._selectedItems = [];
-      return this._selectedItems;
-    };
-    table._setSelectionFieldValue = function (value) {
-      var selectionFieldId = this.id + "::selection";
-      var selectionField = O$(selectionFieldId);
-      O$.assert(selectionField, "Couldn't find selectionField by id: " + selectionFieldId);
-      selectionField.value = value;
-    };
-    table._setSelectedItems = function(items, forceUpdate) {
-      var changesArray = [];
-      var changesArrayIndexes = [];
-      var oldSelectedItemsStr = "";
-      var i;
-      if (this._selectedItems)
-        for (i = 0; i < this._selectedItems.length; i++) {
-          var item = this._selectedItems[i];
-          if (i > 0)
-            oldSelectedItemsStr += ",";
-          oldSelectedItemsStr += item;
-          changesArray[item] = "unselect";
-          changesArrayIndexes.push(item);
+      _selectItem: function(itemIndex) {
+        O$.assert(itemIndex, "table_selectItem: itemIndex should be specified");
+        if (this._selectableItems == "rows") {
+          if (itemIndex == -1)
+            return;
+          var rows = this.body._getRows();
+          if (itemIndex < 0 || itemIndex >= rows.length)
+            throw "Row index out of range: " + itemIndex;
+          var row = rows[itemIndex];
+          row._selected = true;
+          row._updateStyle();
+          O$.Table._setSelectionCheckboxesSelected(row, true);
         }
-      if (!this._multipleSelectionAllowed && items && items.length > 1)
-        items = [items[0]];
-      if (items.length == 1 && items[0] == -1)
-        items = [];
-      this._selectedItems = items;
-      var newSelectedItemsStr = "";
-      if (this._selectedItems) {
-        for (i = 0; i < this._selectedItems.length; i++) {
-          if (i > 0)
-            newSelectedItemsStr += ",";
-          var itemToSelect = this._selectedItems[i];
-          O$.assert(itemToSelect, "table._setSelectedItems: itemToSelect is undefined for index " + i);
-          newSelectedItemsStr += itemToSelect;
-          if (changesArray[itemToSelect] == "unselect" && !forceUpdate)
-            changesArray[itemToSelect] = null;
-          else
-            changesArray[itemToSelect] = "select";
-          changesArrayIndexes.push(itemToSelect);
-        }
-      }
+      },
 
-      var count = changesArrayIndexes.length;
-      for (i = 0; i < count; i++) {
-        var changesArrayIndex = changesArrayIndexes[i];
-        var change = changesArray[changesArrayIndex];
-        if (change) {
-          if (change == "select")
-            this._selectItem(changesArrayIndex);
-          if (change == "unselect")
-            this._unselectItem(changesArrayIndex);
-          changesArray[changesArrayIndex] = null;
-        }
-      }
+      _unselectItem: function(itemIndex) {
+        O$.assert(itemIndex, "table._unselectItem: itemIndex should be specified");
+        if (this._selectableItems == "rows") {
+          if (itemIndex == -1)
+            return;
+          var rows = this.body._getRows();
+          var row = rows[itemIndex];
 
-      var selectionFieldValue = O$.Table._formatSelectedItems(this._selectableItems, this._selectedItems);
-      this._setSelectionFieldValue(selectionFieldValue);
-      if (!this._blockSelectionChangeNotifications && oldSelectedItemsStr != newSelectedItemsStr) {
-        if (this._selectionChangeHandlers) {
-          for (var handlerIdx = 0, handlerCount = this._selectionChangeHandlers.length;
-               handlerIdx < handlerCount;
-               handlerIdx++) {
-            var handler = this._selectionChangeHandlers[handlerIdx];
-            var obj = handler[0];
-            var methodName = handler[1];
-            obj[methodName]();
+          row._selected = false;
+          row._updateStyle();
+          O$.Table._setSelectionCheckboxesSelected(row, false);
+        }
+      },
+
+      _getSelectedItems: function() {
+        if (!this._selectedItems)
+          this._selectedItems = [];
+        return this._selectedItems;
+      },
+      _setSelectionFieldValue: function (value) {
+        var selectionFieldId = this.id + "::selection";
+        var selectionField = O$(selectionFieldId);
+        O$.assert(selectionField, "Couldn't find selectionField by id: " + selectionFieldId);
+        selectionField.value = value;
+      },
+      _setSelectedItems: function(items, forceUpdate) {
+        var changesArray = [];
+        var changesArrayIndexes = [];
+        var oldSelectedItemsStr = "";
+        var i;
+        if (this._selectedItems)
+          for (i = 0; i < this._selectedItems.length; i++) {
+            var item = this._selectedItems[i];
+            if (i > 0)
+              oldSelectedItemsStr += ",";
+            oldSelectedItemsStr += item;
+            changesArray[item] = "unselect";
+            changesArrayIndexes.push(item);
+          }
+        if (!this._multipleSelectionAllowed && items && items.length > 1)
+          items = [items[0]];
+        if (items.length == 1 && items[0] == -1)
+          items = [];
+        this._selectedItems = items;
+        var newSelectedItemsStr = "";
+        if (this._selectedItems) {
+          for (i = 0; i < this._selectedItems.length; i++) {
+            if (i > 0)
+              newSelectedItemsStr += ",";
+            var itemToSelect = this._selectedItems[i];
+            O$.assert(itemToSelect, "table._setSelectedItems: itemToSelect is undefined for index " + i);
+            newSelectedItemsStr += itemToSelect;
+            if (changesArray[itemToSelect] == "unselect" && !forceUpdate)
+              changesArray[itemToSelect] = null;
+            else
+              changesArray[itemToSelect] = "select";
+            changesArrayIndexes.push(itemToSelect);
           }
         }
-        if (this._postEventOnSelectionChange) {
-          var eventFieldId = this.id + "::selectionEvent";
-          var eventField = O$(eventFieldId);
-          eventField.value = this._postEventOnSelectionChange;
-          window._submittingTable = this;
-          setTimeout(function() {
-            O$.submitEnclosingForm(window._submittingTable);
-          }, 1);
+
+        var count = changesArrayIndexes.length;
+        for (i = 0; i < count; i++) {
+          var changesArrayIndex = changesArrayIndexes[i];
+          var change = changesArray[changesArrayIndex];
+          if (change) {
+            if (change == "select")
+              this._selectItem(changesArrayIndex);
+            if (change == "unselect")
+              this._unselectItem(changesArrayIndex);
+            changesArray[changesArrayIndex] = null;
+          }
         }
+
+        var selectionFieldValue = O$.Table._formatSelectedItems(this._selectableItems, this._selectedItems);
+        this._setSelectionFieldValue(selectionFieldValue);
+        if (!this._blockSelectionChangeNotifications && oldSelectedItemsStr != newSelectedItemsStr) {
+          if (this._selectionChangeHandlers) {
+            for (var handlerIdx = 0, handlerCount = this._selectionChangeHandlers.length;
+                 handlerIdx < handlerCount;
+                 handlerIdx++) {
+              var handler = this._selectionChangeHandlers[handlerIdx];
+              var obj = handler[0];
+              var methodName = handler[1];
+              obj[methodName]();
+            }
+          }
+          if (this._postEventOnSelectionChange) {
+            var eventFieldId = this.id + "::selectionEvent";
+            var eventField = O$(eventFieldId);
+            eventField.value = this._postEventOnSelectionChange;
+            window._submittingTable = this;
+            setTimeout(function() {
+              O$.submitEnclosingForm(window._submittingTable);
+            }, 1);
+          }
+        }
+      },
+
+      _selectAllItems: function() {
+        O$.assert(this._multipleSelectionAllowed, "table._selectAllItems: multiple selection is not allowed for table: " + this.id);
+
+        if (this._params.noDataRows)
+          return;
+        if (this._selectableItems == "rows") {
+          var rows = this.body._getRows();
+          var allItems = [];
+          for (var i = 0, count = rows.length; i < count; i++)
+            allItems[i] = i;
+          this._setSelectedItems(allItems);
+        }
+      },
+
+      _unselectAllItems: function() {
+        this._setSelectedItems([]);
+      },
+
+      _isItemSelected: function(item) {
+        var result = O$.findValueInArray(item, selectedItems) != -1;
+        return result;
+      },
+
+      _toggleItemSelected: function(itemIndex) {
+        if (itemIndex == -1) {
+          O$.logError("_toggleItemSelected: itemIndex == -1");
+          return;
+        }
+        var selectedIndexes = this._selectedItems;
+        var newArray = [];
+        for (var i = 0, count = selectedIndexes.length; i < count; i++) {
+          var idx = selectedIndexes[i];
+          if (idx != itemIndex)
+            newArray.push(idx);
+        }
+        if (newArray.length == selectedIndexes.length)
+          newArray.push(itemIndex);
+        this._setSelectedItems(newArray);
       }
-    };
-
-    table._selectAllItems = function() {
-      O$.assert(this._multipleSelectionAllowed, "table._selectAllItems: multiple selection is not allowed for table: " + this.id);
-
-      if (this._params.noDataRows)
-        return;
-      if (this._selectableItems == "rows") {
-        var rows = this.body._getRows();
-        var allItems = [];
-        for (var i = 0, count = rows.length; i < count; i++)
-          allItems[i] = i;
-        this._setSelectedItems(allItems);
-      }
-    };
-
-    table._unselectAllItems = function() {
-      this._setSelectedItems([]);
-    };
-
-    table._isItemSelected = function(item) {
-      var result = O$.findValueInArray(item, selectedItems) != -1;
-      return result;
-    };
-
-    table._toggleItemSelected = function(itemIndex) {
-      if (itemIndex == -1) {
-        O$.logError("_toggleItemSelected: itemIndex == -1");
-        return;
-      }
-      var selectedIndexes = this._selectedItems;
-      var newArray = [];
-      for (var i = 0, count = selectedIndexes.length; i < count; i++) {
-        var idx = selectedIndexes[i];
-        if (idx != itemIndex)
-          newArray.push(idx);
-      }
-      if (newArray.length == selectedIndexes.length)
-        newArray.push(itemIndex);
-      this._setSelectedItems(newArray);
-    };
+    });
 
     // run initialization code
     if (selectableItems == "rows") {
@@ -772,7 +826,6 @@ O$.Table = {
 
   _initSelectionCell: function(cell) {
     var checkBoxAsArray = O$.getChildNodesWithNames(cell, ["input"]);
-    //  O$.assert(checkBoxAsArray.length == 1); // can be more than one because of service fields being rendered into the last table cell
     if (!checkBoxAsArray || checkBoxAsArray.length == 0)
       return;
     var checkBox = checkBoxAsArray[0];
@@ -883,35 +936,6 @@ O$.Table = {
       return result;
     }
     throw "O$.Table._formatSelectedItems: unknown selectableItems: " + selectableItems;
-  },
-
-  _selectItem: function(itemIndex) {
-    O$.assert(itemIndex, "O$.Table._selectItem: itemIndex should be specified");
-    if (this._selectableItems == "rows") {
-      if (itemIndex == -1)
-        return;
-      var rows = this.body._getRows();
-      if (itemIndex < 0 || itemIndex >= rows.length)
-        throw "Row index out of range: " + itemIndex;
-      var row = rows[itemIndex];
-      row._selected = true;
-      row._updateStyle();
-      O$.Table._setSelectionCheckboxesSelected(row, true);
-    }
-  },
-
-  _unselectItem: function(itemIndex) {
-    O$.assert(itemIndex, "O$.Table._unselectItem: itemIndex should be specified");
-    if (this._selectableItems == "rows") {
-      if (itemIndex == -1)
-        return;
-      var rows = this.body._getRows();
-      var row = rows[itemIndex];
-
-      row._selected = false;
-      row._updateStyle();
-      O$.Table._setSelectionCheckboxesSelected(row, false);
-    }
   },
 
   _setSelectionCheckboxesSelected: function(row, selected) {
@@ -1140,11 +1164,6 @@ O$.Table = {
     var table = O$(tableId);
     O$.assert(table, "Couldn't find table by id: " + tableId);
 
-    table._sortedColIndex = sortedColIndex;
-    table.sortedColClass = sortedColClass;
-    table.sortedColBodyClass = sortedColBodyClass;
-    table._sortableHeaderRolloverClass = sortableHeaderRolloverClass;
-
     O$.preloadImages(sortingImagesToPreload);
 
     table._columns.forEach(function(column) {
@@ -1165,16 +1184,14 @@ O$.Table = {
         O$.Table._toggleColumnSorting(table, column._index);
       });
 
-      O$.addEventHandler(colHeader, "mouseover", function() {
-        O$.setStyleMappings(colHeader, {sortedHeaderRolloverClass: table._sortableHeaderRolloverClass});
-      });
-      O$.addEventHandler(colHeader, "mouseout", function() {
-        O$.setStyleMappings(colHeader, {sortedHeaderRolloverClass: null});
+      O$.setupHoverStateFunction(colHeader, function(mouseInside) {
+        O$.setStyleMappings(colHeader, {
+          sortableHeaderRolloverClass: mouseInside ? sortableHeaderRolloverClass : null});
       });
     });
 
     if (sortedColIndex != -1) {
-      var sortedColumn = table._columns[table._sortedColIndex];
+      var sortedColumn = table._columns[sortedColIndex];
       // Applying style to cells is needed for sorted column styles to have priority over
       // even/odd row styles - for backward compatibility with versions earlier than 1.2.2 (JSFC-2884)
       sortedColumn._forceUsingCellStyles = true;
@@ -1185,8 +1202,8 @@ O$.Table = {
           sortedColClass: (table._params.forceUsingCellStyles || sortedColumn._useCellStyles) ? sortedColClass : null,
           sortedColHeaderClass: sortedColHeaderClass});
 
-      O$.setStyleMappings(sortedColumn, {sortedColClass: table.sortedColClass});
-      O$.setStyleMappings(sortedColumn.body, {sortedColBodyClass: table.sortedColBodyClass});
+      O$.setStyleMappings(sortedColumn, {sortedColClass: sortedColClass});
+      O$.setStyleMappings(sortedColumn.body, {sortedColBodyClass: sortedColBodyClass});
       sortedColumn._updateStyle();
 
       var footerCell = sortedColumn.footer ? sortedColumn.footer._cell : null;
@@ -1196,7 +1213,6 @@ O$.Table = {
           sortedColFooterClass: sortedColFooterClass});
     }
 
-    table._sortingEnabled = true;
   },
 
   _toggleColumnSorting: function(table, columnIndex) {
@@ -1332,147 +1348,150 @@ O$.Table = {
 
         column.header._cell.appendChild(resizeHandle);
         column._resizeHandle = resizeHandle;
-        resizeHandle._column = column;
-        resizeHandle.onmouseover = function() {
-          if (this._draggingInProgress)
-            return;
-          if (!table.parentNode)
-            this.parentNode.removeChild(this);
-          else
-            this._updatePos();
-        };
-        resizeHandle.onmousedown = function (e) {
-          O$.startDragging(e, this);
-        };
-        resizeHandle.onclick = function(e) {
-          O$.breakEvent(e);
-        };
-        resizeHandle.ondragstart = function() {
-          table._columnResizingInProgress = true;
-          var resizeDecorator = document.createElement("div");
-          resizeDecorator.style.position = "absolute";
-          resizeDecorator.style.borderLeft = "0px none transparent";//"1px solid gray";
-          table.parentNode.appendChild(resizeDecorator);
-          this._column._resizeDecorator = resizeDecorator;
-          resizeDecorator._column = this._column;
-
-          resizeDecorator._updatePos = function() {
-            var headerCell = this._column.header._cell;
-            var cellPos = O$.getElementBorderRectangle(headerCell, true);
-            var tablePos = O$.getElementPos(table, true);
-
-            this.style.top = cellPos.getMinY() + "px";
-            this.style.left = cellPos.getMaxX() + "px";
-            this.style.width = "0px";//"1px";
-            this.style.height = tablePos.y + table.offsetHeight - cellPos.getMinY() + "px";
-          };
-          resizeDecorator._updatePos();
-          var headerCell = this._column.header._cell;
-          this._dragStartCellPos = O$.getElementBorderRectangle(headerCell, true);
-        };
-        resizeHandle.setLeft = function(left) {
-          this.style.left = left + "px";
-          var newColRightEdge = left + Math.floor(resizeHandleWidth / 2) + 1;
-          var newColWidth = newColRightEdge - this._dragStartCellPos.getMinX();
-          if (newColWidth < this._column._minResizingWidth)
-            newColWidth = this._column._minResizingWidth;
-
-          var colWidths = getColWidths();
-          if (!table._params.scrolling) {
-            table.style.width = "auto";
-          } else {
-            var scrollingDiv = table.body._centerScrollingArea._scrollingDiv;
-            var scrollLeft = scrollingDiv.scrollLeft;
-            var scrollTop = scrollingDiv.scrollTop;
-            this._column._verticalArea._areas.forEach(function(a) {
-              a._table.style.width = "auto";
-            });
-          }
-          var thisAndNextColWidth;
-          var nextCol;
-          if (this._column._widthCompensationColIndex != -1) {
-            var nextColWidth = colWidths[this._column._widthCompensationColIndex];
-            var thisColWidth = colWidths[this._column._index];
-            thisAndNextColWidth = thisColWidth + nextColWidth;
-            nextCol = table._columns[this._column._widthCompensationColIndex];
-            var maxWidthForThisCol = thisAndNextColWidth - nextCol._minResizingWidth;
-            if (newColWidth > maxWidthForThisCol)
-              newColWidth = maxWidthForThisCol;
-            var newNextColWidth = thisAndNextColWidth - newColWidth;
-            nextCol.setWidth(newNextColWidth);
-            colWidths[this._column._widthCompensationColIndex] = newNextColWidth;
-          }
-
-          this._column.setWidth(newColWidth);
-          colWidths[this._column._index] = newColWidth;
-
-          if (!table._params.scrolling) {
-            if (!retainTableWidth)
-              recalculateTableWidth(colWidths);
+        O$.extend(resizeHandle, {
+          _column: column,
+          _of_excludeParentFromMouseEventNotifications: true,
+          onmouseover: function() {
+            if (this._draggingInProgress)
+              return;
+            if (!table.parentNode)
+              this.parentNode.removeChild(this);
             else
-              table.style.width = table._originalWidth + "px";
-          } else {
-            table._params.scrolling._widthAlignmentDisabled = true;
-            try {
-              this._column._verticalArea.updateWidth();
-            } finally {
-              table._params.scrolling._widthAlignmentDisabled = false;
+              this._updatePos();
+          },
+          onmousedown: function (e) {
+            O$.startDragging(e, this);
+          },
+          onclick: function(e) {
+            O$.breakEvent(e);
+          },
+          ondragstart: function() {
+            table._columnResizingInProgress = true;
+            var resizeDecorator = document.createElement("div");
+            resizeDecorator.style.position = "absolute";
+            resizeDecorator.style.borderLeft = "0px none transparent";//"1px solid gray";
+            table.parentNode.appendChild(resizeDecorator);
+            this._column._resizeDecorator = resizeDecorator;
+            resizeDecorator._column = this._column;
+
+            resizeDecorator._updatePos = function() {
+              var headerCell = this._column.header._cell;
+              var cellPos = O$.getElementBorderRectangle(headerCell, true);
+              var tablePos = O$.getElementPos(table, true);
+
+              this.style.top = cellPos.getMinY() + "px";
+              this.style.left = cellPos.getMaxX() + "px";
+              this.style.width = "0px";//"1px";
+              this.style.height = tablePos.y + table.offsetHeight - cellPos.getMinY() + "px";
+            };
+            resizeDecorator._updatePos();
+            var headerCell = this._column.header._cell;
+            this._dragStartCellPos = O$.getElementBorderRectangle(headerCell, true);
+          },
+          setLeft: function(left) {
+            this.style.left = left + "px";
+            var newColRightEdge = left + Math.floor(resizeHandleWidth / 2) + 1;
+            var newColWidth = newColRightEdge - this._dragStartCellPos.getMinX();
+            if (newColWidth < this._column._minResizingWidth)
+              newColWidth = this._column._minResizingWidth;
+
+            var colWidths = getColWidths();
+            if (!table._params.scrolling) {
+              table.style.width = "auto";
+            } else {
+              var scrollingDiv = table.body._centerScrollingArea._scrollingDiv;
+              var scrollLeft = scrollingDiv.scrollLeft;
+              var scrollTop = scrollingDiv.scrollTop;
+              this._column._verticalArea._areas.forEach(function(a) {
+                a._table.style.width = "auto";
+              });
             }
-            scrollingDiv.scrollLeft = scrollLeft;
-            scrollingDiv.scrollTop = scrollTop;
-          }
-          this._column._resizeDecorator._updatePos();
-          O$.repaintAreaForOpera(table);
-          table._fixFF3ColResizingIssue();
-          if (table._params.scrolling)
-            O$.invokeFunctionAfterDelay(table._alignRowHeights, 500);
-        };
-        resizeHandle.setTop = function(top) {
-          this.style.top = top + "px";
-        };
-        resizeHandle.ondragend = function() {
-          table._columnResizingInProgress = false;
-          this._column._resizeDecorator.parentNode.removeChild(this._column._resizeDecorator);
-          updateResizeHandlePositions();
+            var thisAndNextColWidth;
+            var nextCol;
+            if (this._column._widthCompensationColIndex != -1) {
+              var nextColWidth = colWidths[this._column._widthCompensationColIndex];
+              var thisColWidth = colWidths[this._column._index];
+              thisAndNextColWidth = thisColWidth + nextColWidth;
+              nextCol = table._columns[this._column._widthCompensationColIndex];
+              var maxWidthForThisCol = thisAndNextColWidth - nextCol._minResizingWidth;
+              if (newColWidth > maxWidthForThisCol)
+                newColWidth = maxWidthForThisCol;
+              var newNextColWidth = thisAndNextColWidth - newColWidth;
+              nextCol.setWidth(newNextColWidth);
+              colWidths[this._column._widthCompensationColIndex] = newNextColWidth;
+            }
 
-          var totalWidth = 0;
-          var colWidths = [];
-          for (var i = 0; i < colCount; i++) {
-            var col = table._columns[i];
-            var colWidth = col.getWidth();
-            colWidths[i] = colWidth + "px";
-            totalWidth += colWidth;
-          }
+            this._column.setWidth(newColWidth);
+            colWidths[this._column._index] = newColWidth;
 
-          colWidthsField.value = (O$.isOpera() ? table.style.width : totalWidth + "px") + ":" +
-                                 "[" + colWidths.join(",") + "]";
-          if (table._focusable) {
-            if (!table._focused)
-              table.focus();
-          }
-        };
-        resizeHandle._updatePos = function() {
-          var parentColumn = null;
-          for (var col = this._column; col._parentColumn; col = col._parentColumn) {
-            var indexAmongSiblings = O$.findValueInArray(col, col._parentColumn.subColumns);
-            var lastColInGroup = indexAmongSiblings == col._parentColumn.subColumns.length - 1;
-            if (!lastColInGroup)
-              break;
-            if (col._parentColumn.header && col._parentColumn.header._cell)
-              parentColumn = col._parentColumn;
-          }
-          var bottomCell = this._column.subHeader ? this._column.subHeader._cell : this._column.header._cell;
-          var bottomCellPos = O$.getElementBorderRectangle(bottomCell, true);
-          var topCellPos = parentColumn
-                  ? O$.getElementBorderRectangle(parentColumn.header._cell, true)
-                  : O$.getElementBorderRectangle(this._column.header._cell, true);
+            if (!table._params.scrolling) {
+              if (!retainTableWidth)
+                recalculateTableWidth(colWidths);
+              else
+                table.style.width = table._originalWidth + "px";
+            } else {
+              table._params.scrolling._widthAlignmentDisabled = true;
+              try {
+                this._column._verticalArea.updateWidth();
+              } finally {
+                table._params.scrolling._widthAlignmentDisabled = false;
+              }
+              scrollingDiv.scrollLeft = scrollLeft;
+              scrollingDiv.scrollTop = scrollTop;
+            }
+            this._column._resizeDecorator._updatePos();
+            O$.repaintAreaForOpera(table);
+            table._fixFF3ColResizingIssue();
+            if (table._params.scrolling)
+              O$.invokeFunctionAfterDelay(table._alignRowHeights, 500);
+          },
+          setTop: function(top) {
+            this.style.top = top + "px";
+          },
+          ondragend: function() {
+            table._columnResizingInProgress = false;
+            this._column._resizeDecorator.parentNode.removeChild(this._column._resizeDecorator);
+            updateResizeHandlePositions();
 
-          var minY = topCellPos.getMinY();
-          this.style.top = minY + "px";
-          this.style.left = bottomCellPos.getMaxX() - Math.floor(resizeHandleWidth / 2) - 1 + "px";
-          this.style.width = resizeHandleWidth + "px";
-          this.style.height = bottomCellPos.getMaxY() - minY + "px";
-        };
+            var totalWidth = 0;
+            var colWidths = [];
+            for (var i = 0; i < colCount; i++) {
+              var col = table._columns[i];
+              var colWidth = col.getWidth();
+              colWidths[i] = colWidth + "px";
+              totalWidth += colWidth;
+            }
+
+            colWidthsField.value = (O$.isOpera() ? table.style.width : totalWidth + "px") + ":" +
+                                   "[" + colWidths.join(",") + "]";
+            if (table._focusable) {
+              if (!table._focused)
+                table.focus();
+            }
+          },
+          _updatePos: function() {
+            var parentColumn = null;
+            for (var col = this._column; col._parentColumn; col = col._parentColumn) {
+              var indexAmongSiblings = O$.findValueInArray(col, col._parentColumn.subColumns);
+              var lastColInGroup = indexAmongSiblings == col._parentColumn.subColumns.length - 1;
+              if (!lastColInGroup)
+                break;
+              if (col._parentColumn.header && col._parentColumn.header._cell)
+                parentColumn = col._parentColumn;
+            }
+            var bottomCell = this._column.subHeader ? this._column.subHeader._cell : this._column.header._cell;
+            var bottomCellPos = O$.getElementBorderRectangle(bottomCell, true);
+            var topCellPos = parentColumn
+                    ? O$.getElementBorderRectangle(parentColumn.header._cell, true)
+                    : O$.getElementBorderRectangle(this._column.header._cell, true);
+
+            var minY = topCellPos.getMinY();
+            this.style.top = minY + "px";
+            this.style.left = bottomCellPos.getMaxX() - Math.floor(resizeHandleWidth / 2) - 1 + "px";
+            this.style.width = resizeHandleWidth + "px";
+            this.style.height = bottomCellPos.getMaxY() - minY + "px";
+          }
+        });
 
         column._resizeHandle._updatePos();
       }
@@ -1498,6 +1517,7 @@ O$.Table = {
         }
 
       }
+
       fixWidths();
 
       function updateResizeHandlePositions() {
@@ -1506,7 +1526,7 @@ O$.Table = {
           if (column._resizeHandle)
             column._resizeHandle._updatePos();
         }
-      };
+      }
 
       O$.addEventHandler(window, "resize", updateResizeHandlePositions);
       O$.addEventHandler(table, "mouseover", function() {
@@ -1540,7 +1560,7 @@ O$.Table = {
 
   },
 
-  // -------------------------- COLUMN REORDERING
+  // -------------------------- COLUMN REORDERING SUPPORT
 
   _initColumnReordering: function(tableId,
                                   draggedCellClass, draggedCellTransparency,
@@ -1553,30 +1573,12 @@ O$.Table = {
 
     O$.preloadImages([autoScrollLeftImage, autoScrollRightImage, dropTargetTopImage, dropTargetBottomImage]);
 
-    function createTableWithoutTd() {
-      var tbl = document.createElement("table");
-      tbl.cellSpacing = "0";
-      tbl.cellPadding = "0";
-      tbl.border = "0";
-      var tbody = document.createElement("tbody");
-      tbl.appendChild(tbody);
-      var tr = document.createElement("tr");
-      tbody.appendChild(tr);
-      tbl._tr = tr;
-      return tbl;
-    }
-
-    function createImage(url) {
-      var img = document.createElement("img");
-      img.src = url;
-      return img;
-    }
 
     if (table._params.scrolling && table._params.scrolling.horizontal) {
       function autoScrolArea(imageUrl) {
-        var result = createTableWithoutTd();
+        var result = O$.Table._createTableWithoutTd();
         result.className = autoScrollAreaClass;
-        var img = createImage(imageUrl);
+        var img = O$.Table._createImage(imageUrl);
         var td = document.createElement("td");
         td.align = "center";
         result._tr.appendChild(td);
@@ -1612,8 +1614,8 @@ O$.Table = {
         var bottomImageSize = O$.getElementSize(bottomImage);
         O$.setElementPos(bottomImage, {x: x - bottomImageSize.width / 2, y: y2});
       };
-      var topImage = createImage(dropTargetTopImage);
-      var bottomImage = createImage(dropTargetBottomImage);
+      var topImage = O$.Table._createImage(dropTargetTopImage);
+      var bottomImage = O$.Table._createImage(dropTargetBottomImage);
       topImage.style.position = "absolute";
       bottomImage.style.position = "absolute";
       dropTarget.show = function(container) {
@@ -1642,7 +1644,7 @@ O$.Table = {
       var headerCell = sourceColumn.header ? sourceColumn.header._cell : null;
       if (!headerCell) return;
       headerCell._clone = function() {
-        var tbl = createTableWithoutTd();
+        var tbl = O$.Table._createTableWithoutTd();
         var td = headerCell.cloneNode(true);
         tbl._tr.appendChild(td);
         tbl.className = O$.combineClassNames(
@@ -1766,8 +1768,8 @@ O$.Table = {
                   ? O$.getElementSize(table.header._getRows()[subHeaderIndex]._rowNode).height : 0;
           O$.setElementHeight(leftAutoScrollArea, rect.height - subHeaderHeight);
           O$.setElementHeight(rightAutoScrollArea, rect.height - subHeaderHeight);
-          O$.alignPopupByElement(leftAutoScrollArea, headerScroller, O$.LEFT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2);
-          O$.alignPopupByElement(rightAutoScrollArea, headerScroller, O$.RIGHT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2);
+          O$.alignPopupByElement(leftAutoScrollArea, headerScroller, O$.LEFT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
+          O$.alignPopupByElement(rightAutoScrollArea, headerScroller, O$.RIGHT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
         }, new O$.Timer(50));
       }
 
@@ -1837,6 +1839,77 @@ O$.Table = {
         [table.id + "::reorderColumns", srcColIndex + "->" + dstColIndex]
       ]);
     }
+  },
+
+  // -------------------------- COLUMN MENU SUPPORT
+
+  _initColumnMenu: function(tableId, columnMenuId, columnMenuButtonId) {
+    var table = O$(tableId);
+    var menuInvokerAreaTransparency = 0;
+    var columnMenu = O$(columnMenuId);
+    var columnMenuButton = O$(columnMenuButtonId);
+    var columnMenuButtonTable = function() {
+      var result = O$.Table._createTableWithoutTd();
+      result.className = "o_columnMenuInvoker";
+      result._tr.appendChild(columnMenuButton);
+      O$.setOpacityLevel(result, 1 - menuInvokerAreaTransparency);
+      O$.extend(result, {
+        showForCell: function(cell) {
+          this.hide();
+          cell.appendChild(this);
+          O$.setElementHeight(this, O$.getElementSize(cell).height);
+          O$.alignPopupByElement(this, cell, O$.RIGHT_EDGE, O$.CENTER, 0, 0, true, true);
+          this._showForCell = cell;
+        },
+        hideForCell: function(cell) {
+          if (this._showForCell == cell)
+            this.hide();
+        },
+        hide: function() {
+          if (this.parentNode) {
+            this.parentNode.removeChild(this);
+            this._showForCell = null;
+          }
+        }
+      });
+      return result;
+    }();
+
+    var currentColumn = null;
+    table._columns.forEach(function(column) {
+      if (!column.header || !column.header._cell) return;
+      var headerCell = column.header._cell;
+      O$.setupHoverStateFunction(headerCell, function(mouseOver) {
+        if (mouseOver) {
+          currentColumn = column;
+          columnMenuButtonTable.showForCell(headerCell);
+        } else {
+          if (currentColumn == column)
+            currentColumn = null;
+          columnMenuButtonTable.hideForCell(headerCell);
+        }
+      });
+
+    });
+
+    O$.addEventHandler(columnMenuButton, "click", function(evt) {
+      O$.breakEvent(evt);
+      var btnRect = O$.getElementBorderRectangle(columnMenuButtonTable, true);
+      O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
+      columnMenu.showAtXY(btnRect.getMinX(), btnRect.getMaxY(), O$.getContainingBlock(columnMenuButtonTable, true));
+      var prevOnhide = columnMenu.onhide;
+      var headerCell = currentColumn.header._cell;
+      headerCell.setForceHover(true);
+      columnMenuButton.setForceHover(true);
+      columnMenu.onhide = function(e) {
+        if (prevOnhide)
+          prevOnhide.call(columnMenu, e);
+        headerCell.setForceHover(false);
+        columnMenuButton.setForceHover(false);
+
+      };
+    });
+
   }
 
 };

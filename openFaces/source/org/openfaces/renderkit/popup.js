@@ -22,6 +22,14 @@ O$.Popup = {
         this._visibilityChangeListeners.push(listenerObjectFunction);
       },
 
+      getLeft: function() {
+        return O$.getElementPos(popup, true).x;
+      },
+
+      getTop: function() {
+        return O$.getElementPos(popup, true).y;
+      },
+
       setLeft: function (left) {
         popup.style.left = left + "px";
         if (popup._ieTransparencyControl)
@@ -89,10 +97,10 @@ O$.Popup = {
 
     O$.initIETransparencyWorkaround(popup);
 
-    if (!document._openFaces_popupsOnpage) {
-      document._openFaces_popupsOnpage = [];
+    if (!O$._popupsOnPage) {
+      O$._popupsOnPage = [];
     }
-    document._openFaces_popupsOnpage.push(popupId);
+    O$._popupsOnPage.push(popupId);
     if (useDisplayNoneByDefault) {
       if (popup._originalStyleDisplay == undefined)
         popup._originalStyleDisplay = popup.style.display;
@@ -110,51 +118,53 @@ O$.Popup = {
   },
 
   _hideAllPopupsExceptOne: function(popupToRetain) {
-    if (!document._openFaces_popupsOnpage)
+    if (!O$._popupsOnPage)
       return;
-    for (var i = 0, count = document._openFaces_popupsOnpage.length; i < count; i ++) {
-      var popupId = document._openFaces_popupsOnpage[i];
+    O$._popupsOnPage.forEach(function(popupId){
       var currPopup = O$(popupId);
       if (!currPopup)
-        continue; // popup can be removed from page with A4J
+        return; // popup can be removed from page with A4J
       if (currPopup != popupToRetain)
         currPopup.hide();
-    }
-  },
-
-  _initEventHandler: function() {
-    if (document._openFaces_clickHandler) {
-      return;
-    }
-    document._openFaces_clickHandler = function(e) {
-      var evt = O$.getEvent(e);
-      if (!evt) return;
-
-      var clickedElement;
-      if (evt.target) {
-        clickedElement = evt.target;
-      } else {
-        clickedElement = evt.srcElement;
-      }
-
-      var clickedElementId = clickedElement.id;
-
-      if (document._openFaces_popupsOnpage)
-        for (var i = 0, count = document._openFaces_popupsOnpage.length; i < count; i ++) {
-          var popupId = document._openFaces_popupsOnpage[i];
-          var popup = O$(popupId);
-          if (!popup)
-            continue; // popup can be removed from page with A4J
-          var clickedOnChild = O$.isChild(popup, clickedElement);
-          if (popupId == clickedElementId || clickedOnChild)
-            continue;
-          popup.hide();
-        }
-    };
-    var _clickHandler = O$.getEventHandlerFunction("_openFaces_clickHandler", null, document);
-    document._addClickListener(_clickHandler);
+    });
   }
 
 };
 
-O$.Popup._initEventHandler();
+document._addClickListener(function(e) {
+  var evt = O$.getEvent(e);
+  if (!evt || !O$._popupsOnPage) return;
+
+  var clickedElement;
+  if (evt.target) {
+    clickedElement = evt.target;
+  } else {
+    clickedElement = evt.srcElement;
+  }
+
+  var clickedElementId = clickedElement.id;
+
+  O$._popupsOnPage.forEach(function(popupId){
+    var popup = O$(popupId);
+    if (!popup)
+      return; // popup can be removed from page with A4J
+    var clickedOnChild = O$.isChild(popup, clickedElement);
+    if (popupId == clickedElementId || clickedOnChild)
+      return;
+    popup.hide();
+  });
+});
+
+O$.addEventHandler(document, "keydown", function(e) {
+  var evt = O$.getEvent(e);
+  if (evt.keyCode != 27 || !O$._popupsOnPage) return;
+
+  O$._popupsOnPage.forEach(function(popupId){
+    var popup = O$(popupId);
+    if (popup.blur)
+      popup.blur();
+    if (popup)
+      popup.hide();
+  });
+
+});

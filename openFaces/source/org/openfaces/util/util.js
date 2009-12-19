@@ -1801,7 +1801,7 @@ if (!window.O$) {
     if (O$._mouseListenerUtilsInitialized)
       return;
     O$._mouseListenerUtilsInitialized = true;
-    document._of_elementUnderMouse = null;
+    O$._elementUnderMouse = null;
     document._of_prevMouseMove = document.onmousemove;
     document.onmousemove = function(e) {
       var result = undefined;
@@ -1812,18 +1812,22 @@ if (!window.O$) {
       var element;
       var evt = O$.getEvent(e);
       var elementList = [];
-      if (document._of_elementUnderMouse) {
-        for (element = document._of_elementUnderMouse; element; element = element.parentNode) {
+      if (O$._elementUnderMouse) {
+        for (element = O$._elementUnderMouse; element; element = element.parentNode) {
           element._of_mouseInside = false;
           element._of_fireMouseOut = true;
+          if (element._of_excludeParentFromMouseEventNotifications)
+            break;
           elementList.push(element);
         }
       }
-      document._of_elementUnderMouse = evt.target ? evt.target : evt.srcElement;
-      if (document._of_elementUnderMouse) {
-        for (element = document._of_elementUnderMouse; element; element = element.parentNode) {
+      O$._elementUnderMouse = evt.target ? evt.target : evt.srcElement;
+      if (O$._elementUnderMouse) {
+        for (element = O$._elementUnderMouse; element; element = element.parentNode) {
           element._of_mouseInside = true;
           element._of_fireMouseOver = true;
+          if (element._of_excludeParentFromMouseEventNotifications)
+            break;
           elementList.push(element);
         }
       }
@@ -1951,6 +1955,29 @@ if (!window.O$) {
   };
 
   O$.setupHoverStateFunction = function(element, fn) {
+    var state = {
+      forceHover: false,
+      mouseInside: false,
+      hoverValue: false
+    };
+    function updateHover() {
+      var newHoverValue = state.forceHover || state.mouseInside;
+      if (state.hoverValue == newHoverValue) return;
+
+      state.hoverValue = newHoverValue;
+      fn.call(element, newHoverValue, element);
+    }
+    element.setForceHover = function(forceHover) {
+      state.forceHover = forceHover;
+      updateHover();
+    };
+    O$.setupHoverStateFunction_(element, function(mouseInside) {
+      state.mouseInside = mouseInside;
+      updateHover();
+    });
+  };
+
+  O$.setupHoverStateFunction_ = function(element, fn) {
     O$.addMouseOverListener(element, function() {
       fn.call(element, true, element);
     });
@@ -2356,81 +2383,62 @@ if (!window.O$) {
   };
 
   O$.setupArtificialFocus = function(component, focusedClassName, tabindex) {
-    component._focused = false;
-    component._updateOutline = function() {
-      if (this._outlineUpdateBlocked)
-        return;
-      O$.setStyleMappings(this, {
-        focused: this._focused ? focusedClassName : null
-      });
+    var prevOnfocusHandler = component.onfocus;
+    var prevOnblurHandler = component.onblur;
 
-      if (this._focused)
-        O$.showFocusOutline(this, null);
-      else
-        O$.hideFocusOutline(this);
-    };
+    O$.extend(component, {
+      _focused: false,
+      _updateOutline: function() {
+        if (this._outlineUpdateBlocked)
+          return;
+        O$.setStyleMappings(this, {
+          focused: this._focused ? focusedClassName : null
+        });
 
-    function blockOutlineUpdate() {
-      component._outlineUpdateBlocked = true;
-      component._focusedBeforeBlocking = this._focused;
-    }
+        if (this._focused)
+          O$.showFocusOutline(this, null);
+        else
+          O$.hideFocusOutline(this);
+      },
+      _doUnblockOutlineUpdate: function() {
+        this._outlineUpdateBlocked = false;
+        if (this._focusedBeforeBlocking != null && this._focusedBeforeBlocking != this._focused) {
+          this._focusedBeforeBlocking = null;
+          if (this._focused) {
+            if (prevOnfocusHandler)
+              prevOnfocusHandler.call(this, null);
+          } else {
+            if (prevOnblurHandler)
+              prevOnblurHandler.call(this, null);
+          }
+        }
+        this._updateOutline();
+      },
+      onfocus: function(evt) {
+        if (this._submitting)
+          return;
+        this._focused = true;
+        if (prevOnfocusHandler && !this._outlineUpdateBlocked)
+          prevOnfocusHandler.call(this, evt);
 
-    ;
-
-    function unblockOutlineUpdate() {
-      if (!O$._tableBlurCounter)
-        O$._tableBlurCounter = 0;
-      if (!O$.isMozillaFF()) {
-        setTimeout(function() {
-          component._doUnblockOutlineUpdate();
-        }, 1);
-      } else {
-        component._doUnblockOutlineUpdate();
-      }
-    }
-
-    ;
-    component._doUnblockOutlineUpdate = function() {
-      this._outlineUpdateBlocked = false;
-      if (this._focusedBeforeBlocking != null && this._focusedBeforeBlocking != this._focused) {
-        this._focusedBeforeBlocking = null;
-        if (this._focused) {
-          if (this._prevOnfocusHandler_af)
-            this._prevOnfocusHandler_af(null);
+        component._updateOutline();
+      },
+      onblur: function(evt) {
+        if (this._submitting)
+          return;
+        this._focused = false;
+        if (prevOnblurHandler && !this._outlineUpdateBlocked)
+          prevOnblurHandler.call(this, evt);
+        if (!O$.isMozillaFF()) {
+          setTimeout(function() {
+            component._updateOutline();
+          }, 1);
         } else {
-          if (this._prevOnblurHandler_af)
-            this._prevOnblurHandler_af(null);
+          component._updateOutline();
         }
       }
-      this._updateOutline();
-    };
 
-    component._prevOnfocusHandler_af = component.onfocus;
-    component._prevOnblurHandler_af = component.onblur;
-
-    component.onfocus = function(evt) {
-      if (this._submitting)
-        return;
-      this._focused = true;
-      if (this._prevOnfocusHandler_af && !this._outlineUpdateBlocked)
-        this._prevOnfocusHandler_af(evt);
-
-      component._updateOutline();
-    };
-    component.onblur = function(evt) {
-      if (this._submitting)
-        return;
-      this._focused = false;
-      if (this._prevOnblurHandler_af && !this._outlineUpdateBlocked)
-        this._prevOnblurHandler_af(evt);
-      if (!O$.isMozillaFF()) {
-        setTimeout(function() {
-          component._updateOutline();
-        }, 1);
-      } else {
-        component._updateOutline();
-      }
-    };
+    });
 
     var focusControl = O$.createHiddenFocusElement(tabindex, component.id);
 
@@ -2508,6 +2516,23 @@ if (!window.O$) {
       component.focus();
       component._preventPageScrolling = false;
     });
+
+    function blockOutlineUpdate() {
+      component._outlineUpdateBlocked = true;
+      component._focusedBeforeBlocking = this._focused;
+    }
+
+    function unblockOutlineUpdate() {
+      if (!O$._tableBlurCounter)
+        O$._tableBlurCounter = 0;
+      if (!O$.isMozillaFF()) {
+        setTimeout(function() {
+          component._doUnblockOutlineUpdate();
+        }, 1);
+      } else {
+        component._doUnblockOutlineUpdate();
+      }
+    }
     O$.addEventHandler(component, "mousedown", blockOutlineUpdate);
     O$.addEventHandler(component, "mouseup", unblockOutlineUpdate);
     O$.addEventHandler(component, "mouseout", unblockOutlineUpdate);
@@ -3042,6 +3067,8 @@ if (!window.O$) {
    Ensures that z-index of the specified element is greater than that of the specified reference element.
    */
   O$.correctElementZIndex = function(element, referenceElement, zIndexIncrement) {
+    if (!referenceElement)
+      return;
     if (zIndexIncrement === undefined)
       zIndexIncrement = 1;
     var zIndex = O$.getElementZIndex(element);
@@ -3785,7 +3812,11 @@ if (!window.O$) {
   O$.BOTTOM_EDGE = "bottomEdge";
   O$.BELOW = "below";
 
-  O$.alignPopupByElement = function(popup, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, disableRepositioning, repositioningAttempt) {
+  O$.alignPopupByElement = function(
+          popup, element, horizAlignment, vertAlignment,
+          horizDistance, vertDistance, ignoreVisibleArea,
+          disableRepositioning, repositioningAttempt)
+  {
     if (!horizAlignment) horizAlignment = O$.LEFT_EDGE;
     if (!vertAlignment) vertAlignment = O$.BELOW;
     if (!horizDistance) horizDistance = 0;
@@ -3882,8 +3913,6 @@ if (!window.O$) {
       var containerRect = O$.getElementPaddingRectangle(popupContainer);
       x -= containerRect.x;
       y -= containerRect.y;
-
-
     }
     if (popup.setLeft) {
       popup.setLeft(x);

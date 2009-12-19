@@ -226,6 +226,13 @@
   width: 20px;
 }
 
+.o_columnMenuInvoker {
+  position: absolute;
+  border-left: 1px solid silver;
+  vertical-align: middle;
+  width: 20px;
+}
+
 /* Checkbox column */
 .o_checkbox_column {
   width: 35px;
