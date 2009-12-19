@@ -1955,26 +1955,31 @@ if (!window.O$) {
   };
 
   O$.setupHoverStateFunction = function(element, fn) {
-    var state = {
-      forceHover: false,
-      mouseInside: false,
-      hoverValue: false
-    };
-    function updateHover() {
-      var newHoverValue = state.forceHover || state.mouseInside;
-      if (state.hoverValue == newHoverValue) return;
+    if (!element._hoverListeners) {
+      element._hoverListeners = [];
+      element._of_hoverState = {
+        forceHover: false,
+        mouseInside: false,
+        hoverValue: false
+      };
 
-      state.hoverValue = newHoverValue;
-      fn.call(element, newHoverValue, element);
+      element._updateHover = function() {
+        var newHoverValue = element._of_hoverState.forceHover || element._of_hoverState.mouseInside;
+        if (element._of_hoverState.hoverValue == newHoverValue) return;
+
+        element._of_hoverState.hoverValue = newHoverValue;
+        element._hoverListeners.forEach(function(fn){fn.call(element, newHoverValue, element);});
+      };
+      element.setForceHover = function(forceHover) {
+        element._of_hoverState.forceHover = forceHover;
+        element._updateHover();
+      };
+      O$.setupHoverStateFunction_(element, function(mouseInside) {
+        element._of_hoverState.mouseInside = mouseInside;
+        element._updateHover();
+      });
     }
-    element.setForceHover = function(forceHover) {
-      state.forceHover = forceHover;
-      updateHover();
-    };
-    O$.setupHoverStateFunction_(element, function(mouseInside) {
-      state.mouseInside = mouseInside;
-      updateHover();
-    });
+    element._hoverListeners.push(fn);
   };
 
   O$.setupHoverStateFunction_ = function(element, fn) {

@@ -1887,8 +1887,7 @@ O$.Table = {
       if (!column.header || !column.header._cell) return;
       var headerCell = column.header._cell;
       O$.setupHoverStateFunction(headerCell, function(mouseOver) {
-        if (menuOpened) return;
-        if (mouseOver) {
+        if (mouseOver && !menuOpened) {
           currentColumn = column;
           columnMenuButtonTable.showForCell(headerCell);
         } else {
@@ -1900,7 +1899,10 @@ O$.Table = {
 
     });
 
-    O$.addEventHandler(columnMenuButton, "click", function(evt) {
+    columnMenuButton.onclick = function(e) {
+      O$.breakEvent(e);
+    };
+    O$.addEventHandler(columnMenuButton, "mousedown", function(evt) {
       O$.breakEvent(evt);
       var btnRect = O$.getElementBorderRectangle(columnMenuButtonTable, true);
       O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
@@ -1913,8 +1915,8 @@ O$.Table = {
       columnMenu.onhide = function(e) {
         if (prevOnhide)
           prevOnhide.call(columnMenu, e);
-        headerCell.setForceHover(false);
         columnMenuButton.setForceHover(false);
+        headerCell.setForceHover(false);
         menuOpened = false;
       };
     });

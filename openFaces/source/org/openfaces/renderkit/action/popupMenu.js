@@ -10,19 +10,6 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-// ================================== PUBLIC API METHODS
-
-//  popupMenu.show();
-
-//  popupMenu.showAtXY(x, y);
-
-//  popupMenu.setLeft(x); // todo: consider replacing setLeft/setRight with setPosition(x, y)
-//  popupMenu.setTop(y);
-
-//  popupMenu.hide();
-
-//  popupMenu.showForEvent(event);
-
 // ================================== END OF PUBLIC API METHODS
 
 O$.PopupMenu = {

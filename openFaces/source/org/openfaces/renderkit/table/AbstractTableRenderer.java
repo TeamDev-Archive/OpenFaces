@@ -219,7 +219,13 @@ public abstract class AbstractTableRenderer extends RendererBase {
 
         button.getAttributes().put(CaptionButtonRenderer.ATTR_DEFAULT_STYLE_CLASS, "o_columnMenuInvoker");
 
+        ResponseWriter writer = context.getResponseWriter();
+        // mock table/tr enclosing tags must be rendered for IE8 to process the button's td tag properly 
+        writer.startElement("table", table);
+        writer.startElement("tr", table);
         button.encodeAll(context);
+        writer.endElement("tr");
+        writer.endElement("table");
 
         PopupMenu columnMenu = (PopupMenu) component;
         columnMenu.setStandalone(true);
