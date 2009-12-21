@@ -33,4 +33,8 @@ public class FoldingPanelBean implements Serializable {
     public List getPhotos() {
         return PHOTO_LIST;
     }
+
+    public String getAmp() {
+        return "&amp;";
+    }
 }
