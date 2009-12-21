@@ -75,6 +75,12 @@
   </component>
 
   <component>
+    <component-type>org.openfaces.ColumnVisibilityMenu</component-type>
+    <component-class>org.openfaces.component.table.ColumnVisibilityMenu</component-class>
+  </component>
+
+
+  <component>
     <component-type>org.openfaces.Scrolling</component-type>
     <component-class>org.openfaces.component.table.Scrolling</component-class>
   </component>
@@ -653,6 +659,11 @@
       <component-family>org.openfaces.ColumnReordering</component-family>
       <renderer-type>org.openfaces.ColumnReorderingRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.table.ColumnReorderingRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.ColumnVisibilityMenu</component-family>
+      <renderer-type>org.openfaces.ColumnVisibilityMenuRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.ColumnVisibilityMenuRenderer</renderer-class>
     </renderer>
     <renderer>
       <component-family>org.openfaces.SelectionColumn</component-family>

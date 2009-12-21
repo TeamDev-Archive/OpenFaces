@@ -4154,6 +4154,16 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>The PopupMenu that can be placed inside of the menu specified with DataTable's "columnMenu" facet to
+      allow user customize column visibility. This menu displays the list of all columns in the table with the check-box
+      against each one.</description>
+    <name>columnVisibilityMenu</name>
+    <tag-class>org.openfaces.taglib.jsp.table.ColumnVisibilityMenuJspTag</tag-class>
+    <body-content>JSP</body-content>
+    
+  </tag>
+
+  <tag>
     <description>The Row component is used to specify content, style or client-side events for specific rows
       selectively. The attributes and contents specified in this tag are applied to all rows that meet
       the criterion specified in the "condition" attribute. This tag can be specified only as a child tag of

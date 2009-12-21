@@ -30,7 +30,8 @@
                sortColumnId="institutionName"
                sortedAscendingImageUrl="../images/treetable/sort_a.gif"
                sortedDescendingImageUrl="../images/treetable/sort_d.gif"
-               sortedColumnHeaderStyle="background: url('../images/treetable/tableHeader_sorted.gif') repeat-x;"
+               sortedColumnHeaderStyle="background: url('../images/treetable/tableHeader_rollover.gif') repeat-x;"
+               sortableHeaderRolloverStyle="background: url('../images/treetable/tableHeader_sorted.gif') repeat-x !important;"
                sortedColumnBodyStyle="background: none;"
                horizontalGridLines="1px solid #f6f7f8"
                headerVertSeparator="1px solid #d0d0d0, 1px solid #a0a0a0"
@@ -43,6 +44,14 @@
             style="background: url('../images/treetable/selected.gif') repeat-x #5D8BBA !important; color: white !important;"/>
     <o:columnResizing/>
     <o:columnReordering/>
+    <f:facet name="columnMenu">
+      <o:columnVisibilityMenu/>
+    </f:facet>
+    <f:facet name="columnMenuButton">
+      <o:captionButton style="border-left: none; background: url('../images/treetable/columnMenuBtn.gif');"
+              rolloverStyle="border-left: none; background: url('../images/treetable/columnMenuBtnRollover.gif');"
+              pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
+    </f:facet>
     <f:facet name="below">
       <h:panelGroup style="width: 100%; text-align: center;">
         <o:dataTablePaginator id="paginator"
@@ -121,7 +130,7 @@
       <o:column id="zip"
                 width="7%"
                 bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
-                headerStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
+                headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;"
                 sortingExpression="#{bank.zip}">
         <f:facet name="header">
           <h:outputText value="Zip"/>

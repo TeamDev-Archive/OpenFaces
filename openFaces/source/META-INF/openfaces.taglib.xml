@@ -97,6 +97,14 @@
   </tag>
 
   <tag>
+    <tag-name>columnVisibilityMenu</tag-name>
+    <component>
+      <component-type>org.openfaces.ColumnVisibilityMenu</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.ColumnVisibilityMenuTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
     <tag-name>scrolling</tag-name>
     <component>
       <component-type>org.openfaces.Scrolling</component-type>
