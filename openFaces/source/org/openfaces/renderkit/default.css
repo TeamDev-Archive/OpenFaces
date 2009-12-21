@@ -1075,9 +1075,9 @@
 }
 
 .o_menu_item_selected {
-  background: #d4d4d4;
+  background: #b8d8f0;
+  border: 1px solid #7090b8;
   color: black;
-  border: 1px solid #909090;
 }
 
 .o_menu_list_item_disabled {

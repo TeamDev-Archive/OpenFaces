@@ -12,34 +12,90 @@
 O$.Checkbox = {
 
   _init: function(checkboxId, images, styles, stateList, disabled, onchange) {
-
-    var checkbox = O$(checkboxId);
-
     function getClassName(classKey) {
       var className = styles ? styles[classKey] : null;
       return (className == null) ? "" : className;
     }
 
-    checkbox.className = getClassName("styleClass");
+    var checkbox = O$.initComponent(checkboxId, null, {
+      className: getClassName("styleClass"),
 
-    checkbox._rolloverClass = getClassName("rolloverClass");
-    checkbox._focusedClass = getClassName("focusedClass");
-    checkbox._selectedClass = getClassName("selectedClass");
-    checkbox._unselectedClass = getClassName("unselectedClass");
-    checkbox._undefinedClass = getClassName("undefinedClass");
+      _rolloverClass: getClassName("rolloverClass"),
+      _focusedClass: getClassName("focusedClass"),
+      _selectedClass: getClassName("selectedClass"),
+      _unselectedClass: getClassName("unselectedClass"),
+      _undefinedClass: getClassName("undefinedClass"),
 
-    checkbox._onchange = onchange;
-
-    var isOpera = O$.isOpera();
+      _onchange: onchange
+    });
 
     if (images) {
 
       // image-based checkbox
 
-      checkbox._state = O$(checkboxId + "::state");
-      checkbox._images = images;
-      checkbox._stateList = stateList;
-      checkbox._disabled = disabled;
+      O$.extend(checkbox, {
+        _state: O$(checkboxId + "::state"),
+        _images: images,
+        _stateList: stateList,
+        _disabled: disabled,
+
+        _indents: {},
+        _defaultIndents: {
+          marginLeft: O$.getNumericElementStyle(checkbox, "margin-left") + "px",
+          marginRight: O$.getNumericElementStyle(checkbox, "margin-right") + "px",
+          marginBottom: O$.getNumericElementStyle(checkbox, "margin-bottom") + "px"
+        },
+
+        // using "getDisabled" instead of "isDisabled "
+        // because of standard "isDisabled" property
+        getDisabled: function() {
+          return this._disabled;
+        },
+
+        setDisabled: function(flag) {
+          if (this._disabled !== flag) {
+            this._disabled = flag;
+            if (flag) {
+              checkbox._tabIndex = checkbox.tabIndex;
+              checkbox.tabIndex = -1;
+            } else {
+              checkbox.tabIndex = checkbox._tabIndex;
+            }
+            updateImage(this);
+            updateStyles(this);
+          }
+        },
+
+        isSelected: function() {
+          return this._state.value === "selected";
+        },
+
+        setSelected: function(flag) {
+          if (this.isSelected() !== flag) {
+            this._state.value = flag ? "selected" : "unselected";
+            updateImage(this);
+            updateStyles(this);
+          }
+        },
+
+        isDefined: function() {
+          return this._state.value !== "undefined";
+        },
+
+        setDefined: function(flag) {
+          if (this.isDefined() !== flag) {
+            if (flag) {
+              if (this._state.value === "undefined") {
+                this._state.value = "unselected";
+              }
+            } else {
+              this._state.value = "undefined";
+            }
+            updateImage(this);
+            updateStyles(this);
+          }
+        }
+      });
 
       if (disabled) {
         checkbox._tabIndex = checkbox.tabIndex;
@@ -54,63 +110,6 @@ O$.Checkbox = {
       }
 
       updateImage(checkbox); // Firefox page reload keeps form values
-
-      checkbox._indents = {};
-      checkbox._defaultIndents = {
-        marginLeft: O$.getNumericElementStyle(checkbox, "margin-left") + "px",
-        marginRight: O$.getNumericElementStyle(checkbox, "margin-right") + "px",
-        marginBottom: O$.getNumericElementStyle(checkbox, "margin-bottom") + "px"
-      };
-
-      // using "getDisabled" instead of "isDisabled "
-      // because of standard "isDisabled" property
-      checkbox.getDisabled = function() {
-        return this._disabled;
-      };
-
-      checkbox.setDisabled = function(flag) {
-        if (this._disabled !== flag) {
-          this._disabled = flag;
-          if (flag) {
-            checkbox._tabIndex = checkbox.tabIndex;
-            checkbox.tabIndex = -1;
-          } else {
-            checkbox.tabIndex = checkbox._tabIndex;
-          }
-          updateImage(this);
-          updateStyles(this);
-        }
-      };
-
-      checkbox.isSelected = function() {
-        return this._state.value === "selected";
-      };
-
-      checkbox.setSelected = function(flag) {
-        if (this.isSelected() !== flag) {
-          this._state.value = flag ? "selected" : "unselected";
-          updateImage(this);
-          updateStyles(this);
-        }
-      };
-
-      checkbox.isDefined = function() {
-        return this._state.value !== "undefined";
-      };
-
-      checkbox.setDefined = function(flag) {
-        if (this.isDefined() !== flag) {
-          if (flag) {
-            if (this._state.value === "undefined") {
-              this._state.value = "unselected";
-            }
-          } else {
-            this._state.value = "undefined";
-          }
-          updateImage(this);
-          updateStyles(this);
-        }
-      };
 
       O$.addEventHandler(checkbox, "mousedown", function() {
         if (!checkbox._disabled) {
@@ -128,8 +127,8 @@ O$.Checkbox = {
         }
       });
 
-      // spacebar also fires "click" at non-Opera browsers
-      if (isOpera) {
+      // spacebar also fires "click" in non-Opera browsers
+      if (O$.isOpera()) {
         O$.addEventHandler(checkbox, "keypress", function(e) {
           if (!checkbox._disabled) {
             if (e.which === 32) {
@@ -145,12 +144,14 @@ O$.Checkbox = {
 
       // html checkbox
 
-      checkbox.setDisabled = function(flag) { this.disabled = flag; updateStyles(this); };
-      checkbox.getDisabled = function() { return this.disabled; };
-      checkbox.setSelected = function(flag) { this.checked = flag; updateStyles(this); };
-      checkbox.isSelected = function() { return this.checked; };
-      checkbox.setDefined = function() { }; // do nothing
-      checkbox.isDefined = function() { return true; };
+      O$.extend(checkbox, {
+        setDisabled: function(flag) { this.disabled = flag; updateStyles(this); },
+        getDisabled: function() { return this.disabled; },
+        setSelected: function(flag) { this.checked = flag; updateStyles(this); },
+        isSelected: function() { return this.checked; },
+        setDefined: function() { /* do nothing */ }, 
+        isDefined: function() { return true; }
+      });
 
     }
 
@@ -231,6 +232,7 @@ O$.Checkbox = {
         if (returnValue == undefined) { returnValue = event.returnValue; }
         return returnValue;
       }
+      return undefined;
     }
 
     function updateImage(checkbox) {

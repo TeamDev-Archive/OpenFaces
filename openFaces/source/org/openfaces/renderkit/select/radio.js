@@ -329,8 +329,6 @@ O$.RadioItem = {
         // no form URL in status bar
         if (e && e.preventDefault) {
           e.preventDefault();
-        } else {
-          return true; // IE
         }
       }
     }

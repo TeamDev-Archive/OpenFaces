@@ -1646,6 +1646,19 @@ O$.Table = {
       headerCell._clone = function() {
         var tbl = O$.Table._createTableWithoutTd();
         var td = headerCell.cloneNode(true);
+        function processAbsoluteChildren(children) {
+          var childArray = [];
+          for (var i = 0, count = children.length; i < count; i++)
+            childArray[i] = children[i];
+          childArray.forEach(function (el) {
+            if (O$.stringStartsWith(el.nodeName, "#")) return;
+            if (O$.getElementStyle(el, "position") == "absolute")
+              el.parentNode.removeChild(el);
+            else
+              processAbsoluteChildren(el.childNodes);
+          });
+        }
+        processAbsoluteChildren(td.childNodes);
         tbl._tr.appendChild(td);
         tbl.className = O$.combineClassNames(
                 [draggedCellClass, table._params.header.className, this._row.className, this._column.className]);
