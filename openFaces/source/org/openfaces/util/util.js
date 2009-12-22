@@ -4446,6 +4446,7 @@ if (!window.O$) {
   O$.addLoadEvent(function() {
     if (!O$.findCssRule(".o_default_css_marker"))
       O$.logError("default.css file is not loaded. The usual reason is application misconfiguration. See OpenFaces Installation and Configuration guide (resource filter configuration, etc).");
+    O$._loaded = true;
   });
 
   O$._submitComponentWithField = function(componentId, focusedField, additionalParams, execute) {

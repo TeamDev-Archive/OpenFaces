@@ -55,22 +55,18 @@ O$.TreeTable = {
         this._styleRecalculationOnNodeExpansionNeeded = !!this._params.body.oddRowClassName;
         var result = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, 0, rootNodeCount, true);
         if (this._styleRecalculationOnNodeExpansionNeeded) {
-          var rowIndex, count, visibleRows, row;
-          for (rowIndex = 0,count = rows.length,visibleRows = 0; rowIndex < count; rowIndex++) {
-            row = rows[rowIndex];
-            if (!row._isVisible())
-              continue;
-            row._notifyRowMoved(visibleRows++);
-          }
-          for (rowIndex = 0,count = rows.length,visibleRows = 0; rowIndex < count; rowIndex++) {
-            row = rows[rowIndex];
-            if (!row._isVisible())
-              continue;
-            // _updateStyle is used for two reasons:
-            // - show selection style if selected row was previously in an invisible branch
-            // - workaround for IE issue: when custom row style is applied to parent rows and a node is expanded, spacing between cells becomes white after node expansion
-            row._updateStyle();
-          }
+          var visibleRows = 0;
+          rows.forEach(function(row) {
+            if (row._isVisible()) row._notifyRowMoved(visibleRows++);
+          });
+          rows.forEach(function(row) {
+            if (row._isVisible()) {
+              // _updateStyle is used for two reasons:
+              // - show selection style if selected row was previously in an invisible branch
+              // - workaround for IE issue: when custom row style is applied to parent rows and a node is expanded, spacing between cells becomes white after node expansion
+              row._updateStyle();
+            }
+          });
 
         }
         return result;
@@ -311,11 +307,10 @@ O$.TreeTable = {
     if (newRows == null || newRows.length == 0) {
       parentRow._childrenEmpty = true;
       var toggles = parentRow._toggles;
-      for (var toggleIndex = 0, toggleCount = toggles.length; toggleIndex < toggleCount; toggleIndex++) {
-        var toggle = toggles[toggleIndex];
+      toggles.forEach(function(toggle) {
         toggle.style.visibility = "hidden";
         toggle.className = "";
-      }
+      });
     }
     parentRow._childrenLoaded = true;
     var addedRowCount = newRows.length;
@@ -357,11 +352,9 @@ O$.TreeTable = {
       throw "O$._setSelectedNodeIndexes: Invalid selectedNodeIndexes passed : " + treeTableId;
     }
     var selectedIndexes = [];
-    for (var i = 0; i < selectedNodeIndexes.length; i++) {
-      if (selectedNodeIndexes[i] > -1) {
-        selectedIndexes.push(selectedNodeIndexes[i]);
-      }
-    }
+    selectedNodeIndexes.forEach(function(idx) {
+      if (idx > -1) selectedIndexes.push(idx);
+    });
     table._setSelectedItems(selectedIndexes, true);
   }
 

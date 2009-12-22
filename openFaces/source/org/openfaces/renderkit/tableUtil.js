@@ -1354,6 +1354,8 @@ O$.Tables = {
   _initColumnOrGroup: function(column, table) {
     column._allCellsClassName = O$.createCssClass("overflow: hidden", true);
     column._allCellsClass = O$.findCssRule("." + column._allCellsClassName);
+    column._allCellsClassName_col = O$.createCssClass("overflow: hidden", true);
+    column._allCellsClass_col = O$.findCssRule("." + column._allCellsClassName_col);
 
     column._table = table;
 
@@ -1446,7 +1448,7 @@ O$.Tables = {
     }
 
     column._colTags.forEach(function(colTag) {
-      O$.setStyleMappings(colTag, {cellWidthClass: column._allCellsClassName});
+      O$.setStyleMappings(colTag, {cellWidthClass: column._allCellsClassName_col});
     });
 
     if (column._super_updateStyle)
@@ -1478,15 +1480,33 @@ O$.Tables = {
     column.setWidth = function(width) {
       if (width < 0) width = 0;
       column._explicitWidth = width;
-      var widthPx = width + "px";
+      if (column._widthCorrection == undefined) {
+        var firstCell = (column.header && column.header._cell) || (column.subHeader && column.subHeader._cell);
+        if (!firstCell) firstCell = column.body._cells[0];
+        if (!firstCell) firstCell = column.footer._cell;
+        column._widthCorrection = !firstCell ? 0 :
+                O$.getNumericElementStyle(firstCell, "padding-left", true) +
+                O$.getNumericElementStyle(firstCell, "padding-right", true) +
+                O$.getNumericElementStyle(firstCell, "border-left-width", true) +
+                O$.getNumericElementStyle(firstCell, "border-right-width", true);
+      }
+
+      var correctColWidth = O$.isStrictMode() && (O$.isExplorer6() || O$.isExplorer7());
+      var widthForCells = width - column._widthCorrection;
+      var widthForCol = width - (correctColWidth ? column._widthCorrection : 0);
+      if (widthForCells < 0) widthForCells = 0;
+      if (widthForCol < 0) widthForCol = 0;
+
       if (this._allCellsClass.style.setProperty) {
-        this._allCellsClass.style.setProperty("width", widthPx, "important");
+        this._allCellsClass_col.style.setProperty("width", widthForCol + "px", "important");
+        this._allCellsClass.style.setProperty("width", widthForCells + "px", "important");
       } else {
-        this._allCellsClass.style.width = widthPx;
+        this._allCellsClass_col.style.width = widthForCol + "px";
+        this._allCellsClass.style.width = widthForCells + "px";
       }
 
       this._colTags.forEach(function(colTag) {
-        O$.setElementWidth(colTag, width);
+        O$.setElementWidth(colTag, widthForCol);
       });
     };
     column.getDeclaredWidth = function(tableWidth) {
@@ -1910,7 +1930,10 @@ O$.Tables = {
       });
       function areaWidthByColumns(section, areaName, verticalAreaForInitialization) {
         var areaWidth = 0;
-        var scrollerWidth = mainScrollingArea._scrollingDiv.offsetWidth - mainScrollingArea._scrollingDiv.clientWidth;
+        var scrollerWidth = O$.isExplorer() || /* explorer reports too big values*/
+                            O$.isMozillaFF() /* mozilla reports 0 in some cases (see TreeTable demo 1) */ 
+                ? 17
+                : mainScrollingArea._scrollingDiv.offsetWidth - mainScrollingArea._scrollingDiv.clientWidth;
         var tableWidth = O$.getElementSize(table).width - scrollerWidth;
         tableWidth -= O$.getNumericElementStyle(table, "border-left-width", true);
         tableWidth -= O$.getNumericElementStyle(table, "border-right-width", true);
@@ -1942,7 +1965,7 @@ O$.Tables = {
 
           areaWidth += colWidth;
         });
-        if (!scrolling.horizontal && !scrolling._widthAlignmentDisabled) {
+        if (!scrolling.horizontal && !scrolling._widthAlignmentDisabled && (! (O$.isExplorer() && !tableWidth))) {
           var remainingWidth = tableWidth - nonRelativeWidth;
           if (remainingWidth > 0 && relativeWidthColumns.length > 0) {
             var unspecifiedWidthColCount = 0;
@@ -2208,6 +2231,8 @@ O$.Tables = {
       O$.listenProperty(table, "width", function(width) {
         width -= O$.getNumericElementStyle(table, "border-left-width", true);
         width -= O$.getNumericElementStyle(table, "border-right-width", true);
+        if (width < 0)
+          width = 0;
         table._topLevelScrollingDiv.style.width = width + "px";
         [table.header, table.body, table.footer].forEach(function (section) {
           if (section && section._sectionTable)
