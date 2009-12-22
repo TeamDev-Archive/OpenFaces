@@ -1282,7 +1282,7 @@ O$.Table = {
       }
 
       table._columns.forEach(function (col) {
-        var thisColumnParams = columnParams[colIndex];
+        var thisColumnParams = columnParams[col._index];
         if (thisColumnParams) {
           col._resizable = thisColumnParams.resizable;
           col._minResizingWidth = thisColumnParams.minWidth;
@@ -1300,12 +1300,9 @@ O$.Table = {
         cell.style.overflow = "hidden";
       });
 
-      var colCount = table._columns.length;
-      for (var colIndex = 0; colIndex < colCount; colIndex++) {
-        var column = table._columns[colIndex];
-
-        if (!column.header || !column.header._cell)
-          continue;
+      table._columns.forEach(function(column) {
+        var headerCell = column.header && column.header._cell;
+        if (!headerCell) return;
 
         var widthCompensationColIndex = -1;
         if (retainTableWidth) {
@@ -1328,12 +1325,12 @@ O$.Table = {
             }
           }
         }
-        if (widthCompensationColIndex != -1 && colIndex >= widthCompensationColIndex)
-          continue;
+        if (widthCompensationColIndex != -1 && column._index >= widthCompensationColIndex)
+          return;
 
         column._widthCompensationColIndex = widthCompensationColIndex;
         if (!column._resizable)
-          continue;
+          return;
         var resizeHandle = document.createElement("div");
         resizeHandle.style.cursor = "e-resize";
         resizeHandle.style.position = "absolute";
@@ -1346,7 +1343,7 @@ O$.Table = {
           resizeHandle.style.filter = "alpha(opacity=0)";
         }
 
-        column.header._cell.appendChild(resizeHandle);
+        headerCell.appendChild(resizeHandle);
         column._resizeHandle = resizeHandle;
         O$.extend(resizeHandle, {
           _column: column,
@@ -1358,6 +1355,19 @@ O$.Table = {
               this.parentNode.removeChild(this);
             else
               this._updatePos();
+            // don't let parent header cell hover to be activated since the handle is logically out of column (IE)
+            table._columns.forEach(function(c) {
+              var headerCell = c.header && c.header._cell;
+              if (headerCell && headerCell.setForceHover) headerCell.setForceHover(false);
+            });
+          },
+          onmouseout: function() {
+            if (table._columnResizingInProgress) return;
+            // don't let parent header cell hover to be activated since the handle is logically out of column (IE)
+            table._columns.forEach(function(c) {
+              var headerCell = c.header && c.header._cell;
+              if (headerCell && headerCell.setForceHover) headerCell.setForceHover(null);
+            });
           },
           onmousedown: function (e) {
             O$.startDragging(e, this);
@@ -1375,7 +1385,6 @@ O$.Table = {
             resizeDecorator._column = this._column;
 
             resizeDecorator._updatePos = function() {
-              var headerCell = this._column.header._cell;
               var cellPos = O$.getElementBorderRectangle(headerCell, true);
               var tablePos = O$.getElementPos(table, true);
 
@@ -1385,7 +1394,6 @@ O$.Table = {
               this.style.height = tablePos.y + table.offsetHeight - cellPos.getMinY() + "px";
             };
             resizeDecorator._updatePos();
-            var headerCell = this._column.header._cell;
             this._dragStartCellPos = O$.getElementBorderRectangle(headerCell, true);
           },
           setLeft: function(left) {
@@ -1455,7 +1463,7 @@ O$.Table = {
 
             var totalWidth = 0;
             var colWidths = [];
-            for (var i = 0; i < colCount; i++) {
+            for (var i = 0, count = table._columns.length; i < count; i++) {
               var col = table._columns[i];
               var colWidth = col.getWidth();
               colWidths[i] = colWidth + "px";
@@ -1494,7 +1502,7 @@ O$.Table = {
         });
 
         column._resizeHandle._updatePos();
-      }
+      });
 
       function fixWidths() {
         var colWidths = getColWidths();
@@ -1646,6 +1654,7 @@ O$.Table = {
       headerCell._clone = function() {
         var tbl = O$.Table._createTableWithoutTd();
         var td = headerCell.cloneNode(true);
+
         function processAbsoluteChildren(children) {
           var childArray = [];
           for (var i = 0, count = children.length; i < count; i++)
@@ -1658,6 +1667,7 @@ O$.Table = {
               processAbsoluteChildren(el.childNodes);
           });
         }
+
         processAbsoluteChildren(td.childNodes);
         tbl._tr.appendChild(td);
         tbl.className = O$.combineClassNames(
@@ -1928,8 +1938,8 @@ O$.Table = {
       columnMenu.onhide = function(e) {
         if (prevOnhide)
           prevOnhide.call(columnMenu, e);
-        columnMenuButton.setForceHover(false);
-        headerCell.setForceHover(false);
+        columnMenuButton.setForceHover(null);
+        headerCell.setForceHover(null);
         menuOpened = false;
       };
     });

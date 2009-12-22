@@ -1958,13 +1958,15 @@ if (!window.O$) {
     if (!element._hoverListeners) {
       element._hoverListeners = [];
       element._of_hoverState = {
-        forceHover: false,
+        forceHover: null,
         mouseInside: false,
         hoverValue: false
       };
 
       element._updateHover = function() {
-        var newHoverValue = element._of_hoverState.forceHover || element._of_hoverState.mouseInside;
+        var newHoverValue = element._of_hoverState.forceHover !== null
+                ? element._of_hoverState.forceHover
+                : element._of_hoverState.mouseInside;
         if (element._of_hoverState.hoverValue == newHoverValue) return;
 
         element._of_hoverState.hoverValue = newHoverValue;
