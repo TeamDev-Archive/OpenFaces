@@ -14,117 +14,117 @@
 
 O$.TreeTable = {
   _initTreeTableAPI: function(table) {
-    table.__getSelectedNodeCount = function () {
-      var selectedItems = this._getSelectedItems();
-      if (!selectedItems || (selectedItems.length == 1 && selectedItems[0] == -1))
-        return 0;
-      return selectedItems.length;
-    };
-    table.__setSelectedNodeIndexes = function (nodeIndexes) {
-      this.__setSelectedRowIndexes(nodeIndexes);
-    };
-    table.__setSelectedNodeIndex = function (nodeIndex) {
-      this.__setSelectedRowIndex(nodeIndex);
-    };
-    table.isSelectionEmpty = function() {
-      return this.__isSelectionEmpty();
-    };
-    table.getSelectedNodeCount = function() {
-      return this.__getSelectedNodeCount();
-    };
-    table._of_treeTableComponentMarker = true;
+    O$.extend(table, {
+      _of_treeTableComponentMarker: true,
+      __getSelectedNodeCount: function () {
+        var selectedItems = this._getSelectedItems();
+        if (!selectedItems || (selectedItems.length == 1 && selectedItems[0] == -1))
+          return 0;
+        return selectedItems.length;
+      },
+      __setSelectedNodeIndexes: function (nodeIndexes) {
+        this.__setSelectedRowIndexes(nodeIndexes);
+      },
+      __setSelectedNodeIndex: function (nodeIndex) {
+        this.__setSelectedRowIndex(nodeIndex);
+      },
+      isSelectionEmpty: function() {
+        return this.__isSelectionEmpty();
+      },
+      getSelectedNodeCount: function() {
+        return this.__getSelectedNodeCount();
+      }
+    });
   },
 
   // -------------------------- FOLDING SUPPORT
 
   _initFolding: function(tableId, toggleClassName, clientFoldingParams) {
-    var table = O$(tableId);
-
     var rowIndexToChildCount = clientFoldingParams ? clientFoldingParams[0] : null;
     var treeColumnExpansionDatas = clientFoldingParams ? clientFoldingParams[1] : null;
 
-    table._rowIndexToChildCount = rowIndexToChildCount;
-    table._foldingMode = clientFoldingParams ? "client" : "server";
-    table._treeColumnExpansionDatas = treeColumnExpansionDatas;
-    table._toggleClassName = toggleClassName;
+    var table = O$.initComponent(tableId, null, {
+      _rowIndexToChildCount: rowIndexToChildCount,
+      _foldingMode: clientFoldingParams ? "client" : "server",
+      _treeColumnExpansionDatas: treeColumnExpansionDatas,
+      _toggleClassName: toggleClassName,
+      _updateRowVisibility: function() {
+        var rootNodeCount = this._rowIndexToChildCount["root"];
+        var rows = table.body._getRows();
+        var rowIndexToChildCount = this._rowIndexToChildCount;
+        this._styleRecalculationOnNodeExpansionNeeded = !!this._params.body.oddRowClassName;
+        var result = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, 0, rootNodeCount, true);
+        if (this._styleRecalculationOnNodeExpansionNeeded) {
+          var rowIndex, count, visibleRows, row;
+          for (rowIndex = 0,count = rows.length,visibleRows = 0; rowIndex < count; rowIndex++) {
+            row = rows[rowIndex];
+            if (!row._isVisible())
+              continue;
+            row._notifyRowMoved(visibleRows++);
+          }
+          for (rowIndex = 0,count = rows.length,visibleRows = 0; rowIndex < count; rowIndex++) {
+            row = rows[rowIndex];
+            if (!row._isVisible())
+              continue;
+            // _updateStyle is used for two reasons:
+            // - show selection style if selected row was previously in an invisible branch
+            // - workaround for IE issue: when custom row style is applied to parent rows and a node is expanded, spacing between cells becomes white after node expansion
+            row._updateStyle();
+          }
 
-    table._updateRowVisibility = function() {
-      var rootNodeCount = this._rowIndexToChildCount["root"];
-      var rows = table.body._getRows();
-      var rowIndexToChildCount = this._rowIndexToChildCount;
-      this._styleRecalculationOnNodeExpansionNeeded = !!this._params.body.oddRowClassName;
-      var result = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, 0, rootNodeCount, true);
-      if (this._styleRecalculationOnNodeExpansionNeeded) {
-        var rowIndex, count, visibleRows, row;
-        for (rowIndex = 0,count = rows.length,visibleRows = 0; rowIndex < count; rowIndex++) {
-          row = rows[rowIndex];
-          if (!row._isVisible())
-            continue;
-          row._notifyRowMoved(visibleRows++);
         }
-        for (rowIndex = 0,count = rows.length,visibleRows = 0; rowIndex < count; rowIndex++) {
-          row = rows[rowIndex];
-          if (!row._isVisible())
-            continue;
-          // _updateStyle is used for two reasons:
-          // - show selection style if selected row was previously in an invisible branch
-          // - workaround for IE issue: when custom row style is applied to parent rows and a node is expanded, spacing between cells becomes white after node expansion
-          row._updateStyle();
+        return result;
+      },
+
+      _updateExpandedNodesField: function() {
+        var fieldId = this.id + "::expandedNodes";
+        var field = O$(fieldId);
+        var expandedRowIndexes = "";
+        var rows = this.body._getRows();
+        for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
+          var row = rows[rowIndex];
+          var expanded = row._expanded;
+          if (expanded) {
+            if (expandedRowIndexes.length > 0)
+              expandedRowIndexes += ",";
+            expandedRowIndexes += rowIndex;
+          }
+        }
+        field.value = expandedRowIndexes;
+      },
+
+      _onKeyboardNavigation: function(e) {
+        var selectedItems = this._getSelectedItems();
+        if (selectedItems.length != 1)
+          return true;
+        var selectedRowIndex = selectedItems[0];
+        if (selectedRowIndex == -1)
+          return true;
+        var bodyRows = this.body._getRows();
+        var row = bodyRows[selectedRowIndex];
+        if (!row._hasChildren)
+          return true;
+        if ((e.rightPressed || e.plusPressed) && !row._expanded) {
+          row._setExpanded(true);
+          return false;
+        }
+        if ((e.leftPressed || e.minusPressed) && row._expanded) {
+          row._setExpanded(false);
+          return false;
         }
 
+        return true;
       }
-      return result;
-    };
 
-    table._updateExpandedNodesField = function() {
-      var fieldId = this.id + "::expandedNodes";
-      var field = O$(fieldId);
-      var expandedRowIndexes = "";
-      var rows = this.body._getRows();
-      for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
-        var row = rows[rowIndex];
-        var expanded = row._toggled;
-        if (expanded) {
-          if (expandedRowIndexes.length > 0)
-            expandedRowIndexes += ",";
-          expandedRowIndexes += rowIndex;
-        }
-      }
-      field.value = expandedRowIndexes;
-    };
+    });
 
     var rows = table.body._getRows();
-    for (var rowIndex = 0, rowCount = rows.length; rowIndex < rowCount; rowIndex++) {
-      var row = rows[rowIndex];
-      O$.TreeTable._initRow(row);
-    }
+    rows.forEach(O$.TreeTable._initRow);
     if (table._foldingMode == "client") {
       table._updateRowVisibility();
       table._updateExpandedNodesField();
     }
 
-    table._onKeyboardNavigation = function(e) {
-      var selectedItems = this._getSelectedItems();
-      if (selectedItems.length != 1)
-        return true;
-      var selectedRowIndex = selectedItems[0];
-      if (selectedRowIndex == -1)
-        return true;
-      var bodyRows = this.body._getRows();
-      var row = bodyRows[selectedRowIndex];
-      if (!row._hasChildren)
-        return true;
-      if ((e.rightPressed || e.plusPressed) && !row._toggled) {
-        row._setExpanded(true);
-        return false;
-      }
-      if ((e.leftPressed || e.minusPressed) && row._toggled) {
-        row._setExpanded(false);
-        return false;
-      }
-
-      return true;
-    };
   },
 
   _processRowVisibility: function(rows, rowIndexToChildCount, rowIndex, rowCount, currentLevelVisible) {
@@ -141,7 +141,7 @@ O$.TreeTable = {
       if (childCount) {
         row._hasChildren = true;
         row._childrenLoaded = (childCount != "?");
-        var nextLevelVisible = currentLevelVisible && row._toggled;
+        var nextLevelVisible = currentLevelVisible && row._expanded;
         if (row._childrenLoaded) {
           rowIndex = O$.TreeTable._processRowVisibility(rows, rowIndexToChildCount, rowIndex + 1, childCount, nextLevelVisible);
         } else
@@ -155,89 +155,93 @@ O$.TreeTable = {
   },
 
   _initRow: function(row) {
-    var table = row._table;
-    var rowIndex = row._index;
-
-    row._setExpanded = function(expanded) { // _setExpanded(expaned) may not be able to set the "expanded" state to true in some cases. Invokers need to check _isExpanded() to see if expansion was successful
-      if (row._childrenEmpty)
-        return;
-      if (this._toggled == expanded)
-        return;
-      var rowTable = this._table;
-      var prevExpanded = this._toggled;
-      this._toggled = expanded;
-      var thisRow = this;
-
-      function changeToggleImage(showExpandedImage) {
-        var toggles = thisRow._toggles;
-        for (var toggleIndex = 0, toggleCount = toggles.length; toggleIndex < toggleCount; toggleIndex++) {
-          var toggle = toggles[toggleIndex];
-          var treeColExpansionData = rowTable._treeColumnExpansionDatas[toggleIndex];
-          toggle.src = showExpandedImage ? treeColExpansionData[0] : treeColExpansionData[1];
-        }
-      }
-
-      changeToggleImage(expanded);
-      rowTable._updateExpandedNodesField();
-      if (expanded && !this._childrenLoaded) {
-        if (rowTable._useAjax) {
-          var ajaxFailedProcessor = function() {
-            thisRow._toggled = prevExpanded;
-            changeToggleImage(prevExpanded);
-            rowTable._updateExpandedNodesField();
-          };
-          if (O$._ajaxRequestScheduled || O$._ajax_request_processing)
-            ajaxFailedProcessor();
-          else
-            O$.requestComponentPortions(rowTable.id, ["subRows:" + this._index], null, O$.TreeTable._subRowsLoaded, ajaxFailedProcessor);
-        } else
-          O$.submitFormWithAdditionalParam(rowTable, rowTable.id + "::toggleExpansion", this._index);
-      } else {
-        rowTable._updateRowVisibility();
-      }
-    };
-    row._isExpanded = function() {
-      return this._toggled;
-    };
-    var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
     var expandedToggles = [];
     var collapsedToggles = [];
-    rowNodes.forEach(function(n){if (n) expandedToggles = expandedToggles.concat(O$.getChildNodesByClass(n, "o_toggle_e"));});
-    rowNodes.forEach(function(n){if (n) collapsedToggles = collapsedToggles.concat(O$.getChildNodesByClass(n, "o_toggle_c"));});
+    [row._leftRowNode, row._rowNode, row._rightRowNode].forEach(function(n) {
+      if (!n) return;
+      expandedToggles = expandedToggles.concat(O$.getChildNodesByClass(n, "o_toggle_e"));
+      collapsedToggles = collapsedToggles.concat(O$.getChildNodesByClass(n, "o_toggle_c"));
+    });
     var expanded = expandedToggles && expandedToggles.length > 0;
-    O$.assert(expandedToggles.length == 0 || collapsedToggles.length == 0, "A row can't contain both expanded and collapsed nodes. rowIndex = " + rowIndex + "; table id = " + table.id);
+    O$.assert(expandedToggles.length == 0 || collapsedToggles.length == 0,
+            "A row can't contain both expanded and collapsed nodes. row._index = " + row._index +
+            "; table id = " + row._table.id);
     var toggles = expanded ? expandedToggles : collapsedToggles;
-    row._toggles = toggles;
-    row._hasChildren = toggles && toggles.length > 0;
 
-    if (row._hasChildren) {
-      row._toggled = expanded;
-    }
+    var hasChildren = toggles && toggles.length > 0;
+    O$.extend(row, {
+      _toggles: toggles,
+      _hasChildren: hasChildren,
+      _expanded: hasChildren && expanded,
 
-    for (var toggleIndex = 0, toggleCount = toggles.length; toggleIndex < toggleCount; toggleIndex++) {
-      var toggle = toggles[toggleIndex];
-      toggle.className = table._toggleClassName;
-      toggle._rowIndex = rowIndex;
-      toggle._row = row;
-      toggle.onclick = function(e) {
-        var evt = O$.getEvent(e);
-        var clickedRow = this._row;
-        var newExpanded = !clickedRow._toggled;
-        clickedRow._setExpanded(newExpanded);
-        evt.cancelBubble = true;
-        if (table._focusable) {
-          table._preventPageScrolling = true;
-          table.focus();
-          table._preventPageScrolling = false;
+      _setExpanded: function(expanded) { // _setExpanded(expaned) may not be able to set the "expanded" state to true in some cases. Invokers need to check _isExpanded() to see if expansion was successful
+        if (row._childrenEmpty)
+          return;
+        if (this._expanded == expanded)
+          return;
+        var rowTable = this._table;
+        var prevExpanded = this._expanded;
+        this._expanded = expanded;
+        var thisRow = this;
+
+        function changeToggleImage(showExpandedImage) {
+          var toggles = thisRow._toggles;
+          for (var toggleIndex = 0, toggleCount = toggles.length; toggleIndex < toggleCount; toggleIndex++) {
+            var toggle = toggles[toggleIndex];
+            var treeColExpansionData = rowTable._treeColumnExpansionDatas[toggleIndex];
+            toggle.src = showExpandedImage ? treeColExpansionData[0] : treeColExpansionData[1];
+          }
         }
-        evt.cancelBubble = true;
-        return false;
-      };
-      toggle.ondblclick = function(e) {
-        O$.repeatClickOnDblclick.apply(this, [e]);
-        O$.cancelBubble(e);
-      };
-    }
+
+        changeToggleImage(expanded);
+        rowTable._updateExpandedNodesField();
+        if (expanded && !this._childrenLoaded) {
+          if (rowTable._useAjax) {
+            var ajaxFailedProcessor = function() {
+              thisRow._expanded = prevExpanded;
+              changeToggleImage(prevExpanded);
+              rowTable._updateExpandedNodesField();
+            };
+            if (O$._ajaxRequestScheduled || O$._ajax_request_processing)
+              ajaxFailedProcessor();
+            else
+              O$.requestComponentPortions(rowTable.id, ["subRows:" + this._index], null, O$.TreeTable._subRowsLoaded, ajaxFailedProcessor);
+          } else
+            O$.submitFormWithAdditionalParam(rowTable, rowTable.id + "::toggleExpansion", this._index);
+        } else {
+          rowTable._updateRowVisibility();
+        }
+      },
+      _isExpanded: function() {
+        return this._expanded;
+      }
+    });
+
+    var table = row._table;
+    toggles.forEach(function(toggle) {
+      O$.extend(toggle, {
+        className: table._toggleClassName,
+        _row: row,
+        onclick: function(e) {
+          var evt = O$.getEvent(e);
+          var clickedRow = this._row;
+          var newExpanded = !clickedRow._expanded;
+          clickedRow._setExpanded(newExpanded);
+          evt.cancelBubble = true;
+          if (table._focusable) {
+            table._preventPageScrolling = true;
+            table.focus();
+            table._preventPageScrolling = false;
+          }
+          evt.cancelBubble = true;
+          return false;
+        },
+        ondblclick: function(e) {
+          O$.repeatClickOnDblclick.apply(this, [e]);
+          O$.cancelBubble(e);
+        }
+      });
+    });
   },
 
   _subRowsLoaded: function(treeTable, portionName, portionHTML, portionScripts) {
