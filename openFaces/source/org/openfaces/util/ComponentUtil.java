@@ -123,10 +123,14 @@ public class ComponentUtil {
     }
 
     public static <T extends UIComponent> List<T> findChildrenWithClass(UIComponent parent, Class<T> childClass) {
+        return findChildrenWithClass(parent, childClass, false);
+    }
+
+    public static <T> List<T> findChildrenWithClass(UIComponent parent, Class<? extends T> childClass, boolean onlyRendered) {
         List<T> result = new ArrayList<T>();
         List<UIComponent> children = parent.getChildren();
         for (UIComponent child : children) {
-            if (childClass.isAssignableFrom(child.getClass()))
+            if (childClass.isAssignableFrom(child.getClass()) && (!onlyRendered || child.isRendered()))
                 result.add((T) child);
         }
         return result;
@@ -361,4 +365,6 @@ public class ComponentUtil {
                 return true;
         return false;
     }
+
+
 }

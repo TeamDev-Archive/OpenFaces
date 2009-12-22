@@ -12,7 +12,9 @@
 package org.openfaces.util;
 
 import javax.el.ELContext;
+import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
+import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -163,5 +165,16 @@ public class ValueBindings {
 
     public static ValueExpression readValueExpression(ObjectInput in) throws IOException, ClassNotFoundException {
         return (ValueExpression) in.readObject();
+    }
+
+    public static ValueExpression createValueExpression(FacesContext context, String expressionString) {
+        ELContext elContext = context.getELContext();
+        Application application = context.getApplication();
+        ExpressionFactory expressionFactory = application.getExpressionFactory();
+        ValueExpression result = expressionFactory.createValueExpression(
+                elContext,
+                expressionString,
+                Object.class);
+        return result;
     }
 }

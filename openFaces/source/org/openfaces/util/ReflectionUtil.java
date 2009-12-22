@@ -13,12 +13,13 @@ package org.openfaces.util;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.beans.PropertyDescriptor;
-import java.beans.Introspector;
-import java.beans.IntrospectionException;
+import java.lang.reflect.ParameterizedType;
 
 /**
  * @author Eugene Goncharov
@@ -94,6 +95,18 @@ public class ReflectionUtil {
             String subpropertyName = propertyName.substring(propertySeparatorIndex + 1);
             return readProperty(immediatePropertyValue, subpropertyName);
         }
+        /*if (obj instanceof Map) {
+            return ((Map) obj).get(propertyName);
+        }
+        if (obj.getClass().isArray() || obj instanceof List) {
+            int index;
+                index = Integer.valueOf(propertyName);
+            if (obj.getClass().isArray()){
+                return ((Object[])obj)[index];
+            }else{
+                return ((List)obj).get(index);
+            }
+        }*/
         PropertyDescriptor propertyDescriptor = null;
         try {
             PropertyDescriptor[] propertyDescriptors =
@@ -116,6 +129,41 @@ public class ReflectionUtil {
         } catch (InvocationTargetException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Class definePropertyType(Class clazz, String propertyName) {
+        int propertySeparatorIndex = propertyName.indexOf(".");
+        if (propertySeparatorIndex != -1) {
+            String immediatePropertyName = propertyName.substring(0, propertySeparatorIndex);
+            Class immediatePropertyType = definePropertyType(clazz, immediatePropertyName);
+            String subpropertyName = propertyName.substring(propertySeparatorIndex + 1);
+            return definePropertyType(immediatePropertyType, subpropertyName);
+        }
+        PropertyDescriptor propertyDescriptor = null;
+        try {
+            PropertyDescriptor[] propertyDescriptors =
+                    Introspector.getBeanInfo(clazz).getPropertyDescriptors();
+            for (PropertyDescriptor pd : propertyDescriptors) {
+                if (propertyName.equals(pd.getName())) {
+                    propertyDescriptor = pd;
+                    break;
+                }
+            }
+        } catch (IntrospectionException e) {
+            throw new RuntimeException(e);
+        }
+        if (propertyDescriptor == null)
+            throw new IllegalArgumentException("There's no property named '" + propertyName + "' in class " + clazz.getName());
+        return propertyDescriptor.getReadMethod().getReturnType();
+
+    }
+
+    public static Class getGenericParameterClass(Class actualClass) {
+        return getGenericParameterClass(actualClass, 0);
+    }
+
+    public static Class getGenericParameterClass(Class actualClass, int parameterIndex) {
+        return (Class) ((ParameterizedType) actualClass.getGenericSuperclass()).getActualTypeArguments()[parameterIndex];
     }
 
 }
