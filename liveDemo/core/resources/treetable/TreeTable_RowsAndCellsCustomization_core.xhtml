@@ -7,19 +7,20 @@
 
     <o:treeTable id="emailsTreeTable"
                  var="email"
-                 style="width: 100%; height: 550px;"
+                 columnIdVar="columnId" nodeLevelVar="level"
                  expansionState="allExpanded"
                  sortAscending="#{EMailsTreeTableBean.sortAscending}"
                  sortColumnId="#{EMailsTreeTableBean.sortedColumnId}"
+                 style="width: 100%; height: 550px;"
                  rolloverRowStyle="background: #b6cfec;"
                  horizontalGridLines="1px solid #eef0f2"
-                 headerRowStyle="background: url('../images/treetable/header1.gif') repeat-x; height: 19px; text-align: left;"
+                 headerRowStyle="background: url('../images/treetable/tableHeader.gif') repeat-x; height: 19px; text-align: left;"
                  sortedAscendingImageUrl="../images/treetable/sort_a.gif"
                  sortedDescendingImageUrl="../images/treetable/sort_d.gif"
-                 sortedColumnHeaderStyle="background: url('../images/treetable/header_selected.gif') repeat-x;"
+                 sortedColumnHeaderStyle="background: url('../images/treetable/tableHeader_sorted.gif') repeat-x;"
+                 sortableHeaderRolloverStyle="background: url('../images/treetable/tableHeader_rollover.gif') repeat-x !important;"
                  sortedColumnStyle="background: #f2f5f6;"
-                 focusedStyle="border: 1px dotted black !important;"
-                 columnIdVar="columnId" nodeLevelVar="level">
+                 focusedStyle="border: 1px dotted black !important;">
       <o:singleNodeSelection
               style="background: url('../images/treetable/selection.gif') repeat-x #168aff !important; color: #f6f7f8 !important;"
               nodeData="#{EMailsTreeTableBean.selectedEMail}"/>

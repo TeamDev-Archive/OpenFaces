@@ -1964,7 +1964,7 @@ if (!window.O$) {
       };
 
       element._updateHover = function() {
-        var newHoverValue = element._of_hoverState.forceHover !== null
+        var newHoverValue = element._of_hoverState.forceHover != null
                 ? element._of_hoverState.forceHover
                 : element._of_hoverState.mouseInside;
         if (element._of_hoverState.hoverValue == newHoverValue) return;

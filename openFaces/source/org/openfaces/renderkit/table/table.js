@@ -1347,7 +1347,6 @@ O$.Table = {
         column._resizeHandle = resizeHandle;
         O$.extend(resizeHandle, {
           _column: column,
-          _of_excludeParentFromMouseEventNotifications: true,
           onmouseover: function() {
             if (this._draggingInProgress)
               return;

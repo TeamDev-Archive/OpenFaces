@@ -52,6 +52,7 @@ public class PopupMenuRenderer extends RendererBase {
     private static final String DEFAULT_SUBMENU_IMAGE = "submenuImage.gif";
     private static final String DEFAULT_SELECTED_SUBMENU_IMAGE = "submenuImage.gif";//"selectedSubmenuImage.gif";
     private static final String DEFAULT_DISABLED_SUBMENU_IMAGE = "disabledSubmenuImage.gif";
+    public static final String ATTR_DEFAULT_INDENT_CLASS = "_defaultIndentClass";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -109,7 +110,7 @@ public class PopupMenuRenderer extends RendererBase {
         String forId = OUIClientActionHelper.getClientActionInvoker(facesContext, popupMenu);
 
         String indentClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getIndentStyle(), StyleGroup.regularStyleGroup(), popupMenu.getIndentClass(),
-                DEFAULT_POPUPMENU_INDENTION_CLASS/* + " " + DefaultStyles.getPopupMenuBackgroundColorClass()*/);
+                getDefaultIndentClass(popupMenu));
         String defaultItemClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getItemStyle(), StyleGroup.regularStyleGroup(), popupMenu.getItemClass(),
                 DEFAULT_ITEM_CLASS);
         String defaultSelectedClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getSelectedItemStyle(), StyleGroup.selectedStyleGroup(), popupMenu.getSelectedItemClass(),
@@ -171,6 +172,11 @@ public class PopupMenuRenderer extends RendererBase {
                 ResourceUtil.getUtilJsURL(facesContext),
                 ResourceUtil.getInternalResourceURL(facesContext, PopupMenuRenderer.class, JS_SCRIPT_URL),
                 ResourceUtil.getInternalResourceURL(facesContext, RendererBase.class, "popup.js"));
+    }
+
+    private String getDefaultIndentClass(PopupMenu popupMenu) {
+        String defaultIndentClass = (String) popupMenu.getAttributes().get(ATTR_DEFAULT_INDENT_CLASS);
+        return defaultIndentClass != null ? defaultIndentClass : DEFAULT_POPUPMENU_INDENTION_CLASS;
     }
 
     private PopupMenu getRootPopupMenu(PopupMenu popupMenu) {

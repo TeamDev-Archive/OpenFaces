@@ -1003,6 +1003,10 @@
   padding-left: 2px;
 }
 
+.o_columnVisibilityMenuIndent {
+  padding-left: 4px;
+}
+
 .o_menu_list_item {
   display: block;
   list-style: none outside none;
