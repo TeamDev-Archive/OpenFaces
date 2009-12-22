@@ -36,4 +36,8 @@ public class CompositeFilterJspTag extends FilterJspTag {
         getDelegate().setPropertyValue("labels", labels);
     }
 
+    public void setAutoDetect(ValueExpression autoDetect) {
+        getDelegate().setPropertyValue("autoDetect", autoDetect);
+    }
+
 }

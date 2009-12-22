@@ -51,6 +51,7 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
         String clientId = compositeFilter.getClientId(context);
         writer.startElement("div", compositeFilter);
         writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", "clearfix", null);
         writer.flush();
     }
 

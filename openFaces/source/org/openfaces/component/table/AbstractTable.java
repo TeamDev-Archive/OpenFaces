@@ -1348,6 +1348,17 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return myFilters;
     }
 
+
+    public Class getFilteredValueType(
+            FacesContext context,
+            Object expression) {
+        if (expression instanceof ValueExpression) {
+            return TableUtil.getFilteredValueType(context, this, (ValueExpression) expression);
+        } else {
+            return Object.class;
+        }
+    }
+
     public Object getFilteredValueByData(
             FacesContext context,
             Object data,

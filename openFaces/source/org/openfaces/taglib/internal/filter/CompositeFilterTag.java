@@ -24,5 +24,6 @@ public class CompositeFilterTag extends FilterTag {
         setPropertyBinding(component, "value");
         setPropertyBinding(component, "noFilterMessage");
         setPropertyBinding(component, "labels");
+        setBooleanProperty(component, "autoDetect");
     }
 }

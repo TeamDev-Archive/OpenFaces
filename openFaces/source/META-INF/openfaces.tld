@@ -29617,6 +29617,19 @@ and it is automatically triggered on any form submission. -->
       <!-- @el false -->
     </attribute>
     <attribute>
+      <description>
+        A flag that indicates whether or not the component should automatically detect a list of
+        properties from a filterable component defined by "for" attribute.
+      </description>
+      <name>autoDetect</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Set of criteria.</description>
       <name>value</name>
       <deferred-value>

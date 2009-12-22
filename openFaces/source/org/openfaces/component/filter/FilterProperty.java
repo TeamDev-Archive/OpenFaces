@@ -44,7 +44,7 @@ public class FilterProperty extends OUIComponentBase implements ValueHolder, Ser
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
-    
+
     @Override
     public String getRendererType() {
         return null;
@@ -75,10 +75,13 @@ public class FilterProperty extends OUIComponentBase implements ValueHolder, Ser
     public Object getValue() {
         if (value != null) return value;
         ValueExpression ve = getValueExpression("value");
-        return ve != null ? String.valueOf(ve.getValue(getFacesContext().getELContext())) : null;        
+        return ve != null ? ve.getValue(getFacesContext().getELContext()) : null;
     }
 
 
+    public String getTitle() {
+        return (String) getValue();        
+    }
     public void setValue(Object value) {
         this.value = (String) value;
     }
@@ -88,7 +91,7 @@ public class FilterProperty extends OUIComponentBase implements ValueHolder, Ser
     }
 
     public String getName() {
-        if (name == null){
+        if (name == null) {
             return (String) getValue();
         }
         return name;
@@ -172,5 +175,9 @@ public class FilterProperty extends OUIComponentBase implements ValueHolder, Ser
 
     public void setCaseSensitive(boolean caseSensitive) {
         this.caseSensitive = caseSensitive;
+    }
+
+    public PropertyLocator getPropertyLocator() {
+        return new PropertyLocator(getName());
     }
 }

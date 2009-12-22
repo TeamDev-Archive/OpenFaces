@@ -13,10 +13,9 @@
 package org.openfaces.renderkit.filter.param;
 
 import org.openfaces.component.filter.CompositeFilter;
-import org.openfaces.component.filter.FilterProperty;
-import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
-import org.openfaces.component.filter.PropertyLocator;
+import org.openfaces.component.filter.FilterCondition;
+import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.renderkit.filter.FilterRow;
 
 import javax.faces.component.UIComponent;
@@ -34,7 +33,7 @@ public abstract class ParametersEditor {
 
     protected ParametersEditor(FilterProperty filterProperty, FilterCondition operation) {
         this.filterProperty = filterProperty;
-        criterion.setPropertyLocator(new PropertyLocator(filterProperty.getName()));
+        criterion.setPropertyLocator(filterProperty.getPropertyLocator());
         criterion.setCondition(operation);
     }
 

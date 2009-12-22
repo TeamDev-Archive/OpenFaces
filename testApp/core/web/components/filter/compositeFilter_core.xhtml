@@ -64,9 +64,9 @@
   <br/>
   <br/>
 
-  <h1>Automatic attachment to DataTable</h1>
+  <h1>Automatic attachment to DataTable with autoDetect = false</h1>
 
-  <o:compositeFilter for="table2" id="cf2">
+  <o:compositeFilter for="table2" id="cf2" autoDetect="false">
     <o:filterProperty name="firstName" value="#{CompositeFilterBean.firstNameLabel}" type="text"
                       dataProvider="#{CompositeFilterBean.names}" caseSensitive="false"/>
     <o:filterProperty name="age" value="Age" type="number" rendered="#{CompositeFilterBean.ageRendered}"/>
@@ -79,36 +79,43 @@
 
   <h:commandButton action="sbmt" value="Submit"/>
 
-  
-  <o:dataTable id="table2" value="#{CompositeFilterBean.users}" var="user">
-    <o:column>
-      <f:facet name="header">
-        <h:outputText value="Name"/>
-      </f:facet>
-      <h:outputText value="#{user.firstName}, #{user.lastName}"/>
-    </o:column>
-    <o:column>
-      <f:facet name="header">
-        <h:outputText value="Age"/>
-      </f:facet>
-      <h:outputText value="#{user.age}"/>
-    </o:column>
-    <o:column>
-      <f:facet name="header">
-        <h:outputText value="Date Of Birth"/>
-      </f:facet>
-      <h:outputText value="#{user.dateOfBirth}">
-        <f:convertDateTime pattern="dd-MM-yyyy z" timeZone="GMT"/>
-      </h:outputText>
-    </o:column>
-    <o:column>
-      <f:facet name="header">
-        <h:outputText value="Place Of Birth"/>
-      </f:facet>
-      <h:outputText value="#{user.placeOfBirth.country}, #{user.placeOfBirth.city}">
-      </h:outputText>
-    </o:column>
+  <h1>Automatic attachment to DataTable with autoDetect = true</h1>
 
-  </o:dataTable>
+    <o:compositeFilter for="table3" id="cf3">
+    </o:compositeFilter>
+
+
+    <h:commandButton action="sbmt" value="Submit"/>
+
+    <o:dataTable id="table3" value="#{CompositeFilterBean.users}" var="user">
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="Name"/>
+        </f:facet>
+        <h:outputText value="#{user.firstName}, #{user.lastName}"/>
+      </o:column>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="Age"/>
+        </f:facet>
+        <h:outputText value="#{user.age}"/>
+      </o:column>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="Date Of Birth"/>
+        </f:facet>
+        <h:outputText value="#{user.dateOfBirth}">
+          <f:convertDateTime pattern="dd-MM-yyyy z" timeZone="GMT"/>
+        </h:outputText>
+      </o:column>
+      <o:column>
+        <f:facet name="header">
+          <h:outputText value="Place Of Birth"/>
+        </f:facet>
+        <h:outputText value="#{user.placeOfBirth.country}, #{user.placeOfBirth.city}">
+        </h:outputText>
+      </o:column>
+
+    </o:dataTable>
 
 </div>

@@ -143,7 +143,7 @@ public class TableUtil {
      * @return Pattern group with indexe 2 of which selects expression after var
      */
     private static Pattern getExpressionPattern(String var) {
-        String pattern = "#\\{var(\\.)((([\\w\\.])*)+)}";
+        String pattern = "#\\{"+var+"(\\.)((([\\w\\.])*)+)}";
         return Pattern.compile(pattern);
     }
 
@@ -153,11 +153,11 @@ public class TableUtil {
         return matcher.find();
     }
 
-    public static UIOutput obtainColumOutput(BaseColumn column, String var) {
+    public static UIOutput obtainColumnOutput(BaseColumn column, String var) {
         return obtainOutput(column, var);
     }
 
-    public static String obtainColumHeader(BaseColumn column) {
+    public static String obtainColumnHeader(BaseColumn column) {
         UIComponent component = column.getHeader();
         return obtainOutputValue(component);
 
@@ -221,20 +221,23 @@ public class TableUtil {
             Class result = expression.getType(context.getELContext());
             table.setRowIndex(index);
             return result;
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             // means that there's no row data and row with index=0
             String expressionString = expression.getExpressionString();
-            if (expressionString.split("#").length > 1) { //consist of more than one expression
+            if (expressionString.split("#").length > 2) { //consist of more than one expression
                 return String.class; //than concatenation
             }
             String var = table.getVar();
+            if (var == null){
+                throw new IllegalArgumentException("Var isn't specified.");
+            }
             ValueExpression rowDataBeanValueExpression = table.getValueExpression("value");
 
-            Class rowDataBeanType = rowDataBeanValueExpression.getType(context.getELContext());
+            Class rowDataBeanType = rowDataBeanValueExpression.getValue(context.getELContext()).getClass();
             Class rowDataClass;
             if (rowDataBeanType.isArray()) {
                 rowDataClass = rowDataBeanType.getComponentType();
-            } else if (rowDataBeanType.isAssignableFrom(Collection.class)) {
+            } else if (Collection.class.isAssignableFrom(rowDataBeanType)) {
                 rowDataClass = ReflectionUtil.getGenericParameterClass(rowDataBeanType);
             } else {
                 return Object.class;

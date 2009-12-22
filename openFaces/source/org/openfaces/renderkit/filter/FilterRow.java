@@ -1,9 +1,9 @@
 package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.filter.CompositeFilter;
-import org.openfaces.component.filter.FilterProperty;
-import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
+import org.openfaces.component.filter.FilterCondition;
+import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItems;
 import org.openfaces.renderkit.filter.param.ParametersEditor;
@@ -183,7 +183,7 @@ public class FilterRow implements Serializable {
     private DropDownField createPropertySelector(FacesContext context, HtmlPanelGroup propertySelectorContainer, CompositeFilter compositeFilter) {
         DropDownField propertySelector = (DropDownField) ComponentUtil.createChildComponent(context, propertySelectorContainer, DropDownField.COMPONENT_TYPE, DROP_DOWN_ID_SUFFIX);
         DropDownItems dropDownItems = (DropDownItems) ComponentUtil.createChildComponent(context, propertySelector, DropDownItems.COMPONENT_TYPE, DROP_DOWN_ITEMS_ID_SUFFIX);
-        List<String> properties = compositeFilter.getProperties();
+        List<String> properties = compositeFilter.getFilterPropertiesTitles();
         dropDownItems.setValue(properties);
         propertySelector.setOnchange("O$('" + compositeFilter.getClientId(context) + "')._propertyChange(" + index + ");");
         propertySelector.setStyleClass(DEFAULT_PROPERTY_CLASS);
@@ -192,7 +192,7 @@ public class FilterRow implements Serializable {
     }
 
     private void initPropertySelector(DropDownField propertySelector) {
-        String propertyValue = (property != null) ? (String) property.getValue() : null;
+        String propertyValue = (property != null) ? property.getTitle() : null;
         propertySelector.setValue(propertyValue);
     }
 
@@ -381,8 +381,8 @@ public class FilterRow implements Serializable {
             return null;
         }
         String propertyValue = (String) propertySelector.getValue();
-        FilterProperty newProperty = compositeFilter.getFilterProperty(propertyValue);
-        boolean propertyModified = property == null ? newProperty != null : newProperty != null && !newProperty.getName().equals(property.getName());
+        FilterProperty newProperty = compositeFilter.getFilterPropertyByTitle(propertyValue);
+        boolean propertyModified = property == null ? newProperty != null : newProperty != null && !newProperty.getTitle().equals(property.getTitle());
         property = newProperty;
         DropDownField operationSelector = findOperationSelector(compositeFilter);
         HtmlSelectBooleanCheckbox inverseCheckBox = findInverseCheckBox(context, compositeFilter);
@@ -409,7 +409,7 @@ public class FilterRow implements Serializable {
     }
 
     public void updateRowModelFromCriterion(ExpressionFilterCriterion criterion, CompositeFilter compositeFilter) {
-        property = compositeFilter.getFilterPropertyByName(criterion.getExpressionStr());
+        property = compositeFilter.getFilterPropertyByPropertyLocator(criterion.getPropertyLocator());
         operation = criterion.getCondition();
         inverse = criterion.isInverse();
         parametersEditorType = ParametersEditor.getParameterEditorType(property, operation);

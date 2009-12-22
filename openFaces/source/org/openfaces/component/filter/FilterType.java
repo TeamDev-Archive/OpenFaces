@@ -1,7 +1,9 @@
 package org.openfaces.component.filter;
 
+import com.sun.el.lang.ELArithmetic;
 import static org.openfaces.component.filter.FilterCondition.*;
 
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +42,16 @@ public enum FilterType {
 
     public EnumSet<FilterCondition> getOperations() {
         return operations;
-    }   
+    }
+
+    public static FilterType defineByClass(Class clazz){        
+        if (ELArithmetic.isNumberType(clazz)){
+            return NUMBER;
+        }
+        if (clazz.isAssignableFrom(Date.class)){
+            return DATE;
+        }
+        return TEXT;
+    }
 
 }
