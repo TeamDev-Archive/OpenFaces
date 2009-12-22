@@ -2184,7 +2184,9 @@ O$.Tables = {
     if (!delayUnderIE)
       table._alignRowHeights();
     else
-      delayedInitFunctions.push(table._alignRowHeights);
+      delayedInitFunctions.push(function() {
+        setTimeout(table._alignRowHeights, 100);
+      });
 
 
     function fixIE6AreaDisappearing() {
