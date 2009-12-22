@@ -14,7 +14,9 @@ package org.openfaces.renderkit.util;
 import org.openfaces.component.LoadingMode;
 import org.openfaces.component.panel.TabbedPane;
 import org.openfaces.component.panel.TabbedPaneItem;
+import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.DataTable;
+import org.openfaces.component.table.Scrolling;
 import org.openfaces.component.table.TableColumn;
 import org.openfaces.component.util.Debug;
 import org.openfaces.component.window.PopupLayer;
@@ -58,8 +60,9 @@ public class DebugRenderer extends WindowRenderer implements CompoundComponentRe
                 ComponentUtil.createOutputText(context, "Element Inspector"),
                 elementProperties
         ));
-        elementProperties.setStyle("width: 100%;");
-//        elementProperties.getChildren().add(new ColumnResizing());
+        elementProperties.setStyle("width: 100%; height: 100%;");
+        elementProperties.getChildren().add(new Scrolling());
+        elementProperties.getChildren().add(new ColumnResizing());
         elementProperties.setVerticalGridLines("1px solid gray");
         TableColumn col1 = new TableColumn();
         col1.setStyle("width: 150px");
@@ -82,9 +85,11 @@ public class DebugRenderer extends WindowRenderer implements CompoundComponentRe
 
         DataTable logTable = (DataTable) ComponentUtil.createChildComponent(
                 context, panelGrid, DataTable.COMPONENT_TYPE, "log");
-//        ComponentUtil.createChildComponent(context, logTable, Scrolling.COMPONENT_TYPE, "scrolling");
-//        ComponentUtil.createChildComponent(context, logTable, ColumnResizing.COMPONENT_TYPE, "resizing");
-        logTable.setStyle("width: 100%; ");
+        Scrolling scrolling = new Scrolling();
+        logTable.getChildren().add(scrolling);
+        scrolling.setHorizontal(true);
+        logTable.getChildren().add(new ColumnResizing());
+        logTable.setStyle("width: 100%; height: 100%;");
         logTable.setVerticalGridLines("1px solid gray");
         TableColumn col1 = new TableColumn();
         col1.setStyle("width: 150px");

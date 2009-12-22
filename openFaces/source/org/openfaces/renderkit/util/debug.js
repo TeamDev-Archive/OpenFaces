@@ -18,8 +18,8 @@ O$.Debug = {
     O$.extend(debug, {
       _pages: O$(clientId + "--pages"),
       _logTable: O$(clientId + "--consoleContainer--log"),
-      _clearLogBtn: O$(clientId + "--consoleContainer--consoleToolbar--clearLog"),
-      _pauseLogBtn: O$(clientId + "--consoleContainer--consoleToolbar--pauseLog"),
+      _clearLogBtn: O$.byIdOrName(clientId + "--consoleContainer--consoleToolbar--clearLog"),
+      _pauseLogBtn: O$.byIdOrName(clientId + "--consoleContainer--consoleToolbar--pauseLog"),
       _elementProperties: O$(clientId + "--elementProperties"),
       _paused: false,
       _delayedMessages: [],
@@ -40,7 +40,7 @@ O$.Debug = {
         }
         var row = this._logTable.body._createRow();
         this._logTable._insertRowsAfter(-1, [row]);
-        row._cells[0].innerHTML = date;
+        row._cells[0].innerHTML = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ":" + date.getMilliseconds();
         row._cells[1].appendChild(document.createTextNode(text));
         this._pages.setSelectedIndex(0);
       },

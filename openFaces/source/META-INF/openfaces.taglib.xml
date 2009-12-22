@@ -909,7 +909,7 @@
     <component>
       <component-type>org.openfaces.SelectBooleanCheckbox</component-type>
       <renderer-type>org.openfaces.SelectBooleanCheckboxRenderer</renderer-type>
-      <handler-class>org.openfaces.taglib.facelets.input.SelectBooleanCheckboxTagHandler</handler-class>
+      <handler-class>org.openfaces.taglib.facelets.select.SelectBooleanCheckboxTagHandler</handler-class>
     </component>
   </tag>
 

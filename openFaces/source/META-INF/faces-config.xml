@@ -593,7 +593,7 @@
 
   <component>
     <component-type>org.openfaces.SelectBooleanCheckbox</component-type>
-    <component-class>org.openfaces.component.input.SelectBooleanCheckbox</component-class>
+    <component-class>org.openfaces.component.select.SelectBooleanCheckbox</component-class>
   </component>
 
   <component>
@@ -1032,7 +1032,7 @@
     <renderer>
       <component-family>org.openfaces.SelectBooleanCheckbox</component-family>
       <renderer-type>org.openfaces.SelectBooleanCheckboxRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.input.SelectBooleanCheckboxRenderer</renderer-class>
+      <renderer-class>org.openfaces.renderkit.select.SelectBooleanCheckboxRenderer</renderer-class>
     </renderer>
 
     <renderer>

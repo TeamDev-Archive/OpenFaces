@@ -9,9 +9,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.internal.input;
+package org.openfaces.taglib.internal.select;
 
-import org.openfaces.component.input.SelectBooleanCheckbox;
+import org.openfaces.component.select.SelectBooleanCheckbox;
 import org.openfaces.taglib.internal.AbstractUIInputTag;
 
 import javax.faces.FacesException;

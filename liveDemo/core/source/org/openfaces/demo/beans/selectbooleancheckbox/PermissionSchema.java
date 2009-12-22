@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.selectbooleancheckbox;
 
-import org.openfaces.component.input.SelectBooleanCheckbox;
+import org.openfaces.component.select.SelectBooleanCheckbox;
 import static org.openfaces.demo.beans.selectbooleancheckbox.Permission.*;
 import org.openfaces.demo.beans.util.FacesUtils;
 
@@ -231,7 +231,7 @@ public class PermissionSchema {
 
 
     public Iterable<String> getDefaultStateList() {
-        return SelectBooleanCheckbox.DAFAULT_STATE_LIST;
+        return Arrays.asList(SelectBooleanCheckbox.SELECTED_STATE, SelectBooleanCheckbox.UNSELECTED_STATE);
     }
 
     public Iterable<String> getDependentStateList() {

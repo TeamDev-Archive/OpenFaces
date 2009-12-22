@@ -9,18 +9,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.renderkit.input;
+package org.openfaces.renderkit.select;
 
-import org.openfaces.component.input.SelectBooleanCheckbox;
-import org.openfaces.component.input.SelectBooleanCheckbox.BooleanObjectValue;
-import static org.openfaces.component.input.SelectBooleanCheckbox.DAFAULT_STATE_LIST;
-import static org.openfaces.component.input.SelectBooleanCheckbox.SELECTED_STATE;
-import static org.openfaces.component.input.SelectBooleanCheckbox.UNDEFINED_STATE;
-import static org.openfaces.component.input.SelectBooleanCheckbox.UNSELECTED_STATE;
+import org.openfaces.component.select.SelectBooleanCheckbox;
+import org.openfaces.component.select.SelectBooleanCheckbox.BooleanObjectValue;
+import static org.openfaces.component.select.SelectBooleanCheckbox.SELECTED_STATE;
+import static org.openfaces.component.select.SelectBooleanCheckbox.UNDEFINED_STATE;
+import static org.openfaces.component.select.SelectBooleanCheckbox.UNSELECTED_STATE;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
-import static org.openfaces.renderkit.input.SelectBooleanCheckboxImageManager.*;
+import static org.openfaces.renderkit.select.SelectBooleanCheckboxImageManager.*;
 import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.RenderingUtil;
@@ -35,12 +34,14 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 
 /**
  * @author Roman Porotnikov
  */
 public class SelectBooleanCheckboxRenderer extends RendererBase {
+    private static final Iterable<String> DEFAULT_STATE_LIST = Arrays.asList(SELECTED_STATE, UNSELECTED_STATE);
 
     private static final String TAG_NAME = "input";
 
@@ -263,13 +264,13 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         if (triStateAllowed) {
             Iterable<String> stateList = checkbox.getStateList();
             if (stateList == null) {
-                return DAFAULT_STATE_LIST;
+                return DEFAULT_STATE_LIST;
             } else {
                 validateStateList(stateList);
                 return stateList;
             }
         }
-        return DAFAULT_STATE_LIST;
+        return DEFAULT_STATE_LIST;
     }
 
     protected String getStateFieldValue(SelectBooleanCheckbox checkbox, boolean triStateAllowed) {
@@ -314,11 +315,8 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         );
 
         RenderingUtil.renderInitScript(facesContext, initScript,
-                new String[]{
-                        ResourceUtil.getUtilJsURL(facesContext),
-                        ResourceUtil.getInternalResourceURL(facesContext, SelectBooleanCheckboxRenderer.class, "checkbox.js")
-                }
-        );
+                ResourceUtil.getUtilJsURL(facesContext),
+                ResourceUtil.getInternalResourceURL(facesContext, SelectBooleanCheckboxRenderer.class, "checkbox.js"));
     }
 
 }

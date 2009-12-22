@@ -9,7 +9,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.input;
+package org.openfaces.component.select;
 
 import org.openfaces.component.OUIInputBase;
 import org.openfaces.util.NullTypeELResolver;
@@ -17,17 +17,14 @@ import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
-import java.util.Arrays;
 
 /**
  * @author Roman Porotnikov
  */
 public class SelectBooleanCheckbox extends OUIInputBase {
-
     public static final String SELECTED_STATE = "selected";
     public static final String UNSELECTED_STATE = "unselected";
     public static final String UNDEFINED_STATE = "undefined";
-    public static final Iterable<String> DAFAULT_STATE_LIST = Arrays.asList(SELECTED_STATE, UNSELECTED_STATE);
 
     /**
      * This enumeration is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly

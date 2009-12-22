@@ -59,6 +59,8 @@ O$.PopupMenu = {
           this.style.display = "none";
 
           O$.PopupMenu._clearSelection(popupMenu);
+          if (popupMenu._closeAllTask)
+            clearTimeout(popupMenu._closeAllTask);
 
           if (this.onhide)
             this.onhide();
@@ -899,10 +901,9 @@ O$.PopupMenu = {
 
     });
 
-    O$.addMouseOutListener(menuItemElement, function(evt) {
+    O$.addMouseOutListener(menuItemElement, function() {
       var menuItem = menuItemElement.parentNode;
       if (menuItem._disabled && !selectDisabledItems) return;
-      if (menuItemElement._oldMouseOut) menuItemElement._oldMouseOut(evt);
       menuItemElement._focused = null;
 
       O$.PopupMenu._unselectMenuItem(menuItemElement.parentNode);
@@ -912,6 +913,8 @@ O$.PopupMenu = {
       }
 
       popupMenu._closeAllTask = setTimeout(function() {
+        if (!popupMenu.isVisible()) return;
+        popupMenu.closeChildMenus();
         popupMenu.closeChildMenus();
         popupMenu.focus();
       }, submenuHideDelay);

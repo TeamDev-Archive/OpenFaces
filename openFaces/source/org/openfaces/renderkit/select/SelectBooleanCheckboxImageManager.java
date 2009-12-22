@@ -10,11 +10,11 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.renderkit.input;
+package org.openfaces.renderkit.select;
 
 import javax.faces.context.FacesContext;
 
-import org.openfaces.component.input.SelectBooleanCheckbox;
+import org.openfaces.component.select.SelectBooleanCheckbox;
 import org.openfaces.util.ResourceUtil;
 
 public class SelectBooleanCheckboxImageManager {
