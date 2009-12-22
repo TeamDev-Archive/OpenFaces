@@ -960,6 +960,7 @@ O$.Tables = {
                               cell._row._table._params.additionalCellWrapperStyle]);
     if (cellWrapper.className != newWrapperClass)
       cellWrapper.className = newWrapperClass;
+    cellWrapper.style.tableLayout = "fixed";
     return true;
   },
 
