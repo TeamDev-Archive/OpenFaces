@@ -1662,7 +1662,7 @@ O$.Table = {
             childArray[i] = children[i];
           childArray.forEach(function (el) {
             if (O$.stringStartsWith(el.nodeName, "#")) return;
-            if (O$.getElementStyle(el, "position") == "absolute")
+            if (el.style.position == "absolute"|| O$.getElementStyle(el, "position") == "absolute")
               el.parentNode.removeChild(el);
             else
               processAbsoluteChildren(el.childNodes);
