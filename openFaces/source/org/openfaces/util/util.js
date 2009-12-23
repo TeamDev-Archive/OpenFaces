@@ -1205,6 +1205,19 @@ if (!window.O$) {
     return O$._formSubmissionJustStarted;
   };
 
+  O$._selectTextRange = function(field, beginIdx, endIdx) {
+    if (field.setSelectionRange) {
+      field.setSelectionRange(beginIdx, endIdx);
+    } else {
+      O$.assert(field.createTextRange, "Field should support either setSelectionRange, or createTextRange, but it supports neither.");
+
+      var range = field.createTextRange();
+      range.moveStart("character", beginIdx);
+      range.moveEnd("character", endIdx);
+      range.select();
+    }
+  };
+
   // ----------------- EVENT UTILITIES ---------------------------------------------------
 
   O$.getEventHandlerFunction = function(handlerName, handlerArgs, mainObj) { // todo: rework usages of this function with explicit closure creation
@@ -4460,12 +4473,15 @@ if (!window.O$) {
       var field = O$(focusedFieldId);
       if (!field)
         return;
-      if (field.focus)
+      if (field.focus) {
         try {
           field.focus();
         } catch(e) {
           // ignore failed focus attempts
         }
+        var len = field.value.length;
+        O$._selectTextRange(field, len, len);
+      }
     };
     O$._submitInternal(component, function() {
       setTimeout(focusFilterField, 1);

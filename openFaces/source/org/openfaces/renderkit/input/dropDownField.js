@@ -171,11 +171,11 @@ O$.DropDownField = {
         dropDown._setValue(text, itemValue, true);
         if (continuationLength) {
           textLength = text.length;
-          O$.DropDownField._selectTextRange(field, textLength - continuationLength, textLength);
+          O$._selectTextRange(field, textLength - continuationLength, textLength);
         }
       } else {
         textLength = field.value.length;
-        O$.DropDownField._selectTextRange(field, textLength, textLength);
+        O$._selectTextRange(field, textLength, textLength);
       }
 
       var highlightedItemIndex = dropDown._getHighlightedItemIndex();
@@ -400,7 +400,7 @@ O$.DropDownField = {
        dropDown._lastOnchangeItemValue != dropDown._selectedItemValue*/) {
         clearSuggestionTimer();
         if (dropDown._ddf_focused)
-          O$.DropDownField._selectTextRange(field, field.value.length, field.value.length);
+          O$._selectTextRange(field, field.value.length, field.value.length);
 
         dropDown._lastOnchangeItemLabel = dropDown.value;
         dropDown._lastOnchangeItemValue = dropDown._selectedItemValue;
@@ -481,7 +481,7 @@ O$.DropDownField = {
               if (continuationLength) {
                 dropDown._setValue(completedText, completedItemValue, true);
                 var textLength = completedText.length;
-                O$.DropDownField._selectTextRange(field, textLength - continuationLength, textLength);
+                O$._selectTextRange(field, textLength - continuationLength, textLength);
               }
             };
             if (suggestionDelay)
@@ -1010,20 +1010,8 @@ O$.DropDownField = {
   _acceptLoadedItems: function(dropDownFieldId, newItemParams) {
     var dropDownField = O$(dropDownFieldId);
     dropDownField.__acceptLoadedItems.apply(dropDownField, newItemParams);
-  },
-
-  _selectTextRange: function(field, beginIdx, endIdx) {
-    if (field.setSelectionRange) {
-      field.setSelectionRange(beginIdx, endIdx);
-    } else {
-      O$.assert(field.createTextRange, "Field should support either setSelectionRange, or createTextRange, but it supports neither.");
-
-      var range = field.createTextRange();
-      range.moveStart("character", beginIdx);
-      range.moveEnd("character", endIdx);
-      range.select();
-    }
   }
+
 
 
 };
