@@ -14,8 +14,6 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.ColumnReordering;
-import org.openfaces.component.table.ColumnResizing;
-import org.openfaces.component.table.ColumnResizingState;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
@@ -74,24 +72,8 @@ public class ColumnReorderingRenderer extends RendererBase {
         if (srcColIndex == dstColIndex)
             return;
         List<BaseColumn> columns = new ArrayList<BaseColumn>(table.getColumnsForRendering());
-        ColumnResizing columnResizing = table.getColumnResizing();
-        ColumnResizingState resizingState = columnResizing != null ? columnResizing.getResizingState() : null;
-        List<String> columnWidths = null;
-        if (resizingState != null) {
-            columnWidths = new ArrayList<String>();
-            for (int i = 0, count = resizingState.getColumnCount(); i < count; i++)
-                columnWidths.add(resizingState.getColumnWidth(i));
-        }
-
         BaseColumn column = columns.remove(srcColIndex);
         columns.add(dstColIndex < srcColIndex ? dstColIndex : dstColIndex - 1, column);
-        if (columnWidths != null) {
-            String columnWidth = columnWidths.remove(srcColIndex);
-            columnWidths.add(dstColIndex < srcColIndex ? dstColIndex : dstColIndex - 1, columnWidth);
-            columnResizing.setResizingState(new ColumnResizingState(
-                    columnWidths.toArray(new String[columnWidths.size()]),
-                    resizingState.getTableWidth()));
-        }
 
         List<String> columnsOrder = new ArrayList<String>(columns.size());
         for (BaseColumn col : columns) {

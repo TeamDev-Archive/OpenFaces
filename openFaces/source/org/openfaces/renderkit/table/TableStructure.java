@@ -232,7 +232,7 @@ public class TableStructure extends TableElement {
             ColumnResizing columnResizing = table.getColumnResizing();
             if (columnResizing != null) {
                 ColumnResizingState resizingState = columnResizing.getResizingState();
-                if (resizingState != null && resizingState.getColumnCount() == columns.size())
+                if (resizingState != null)
                     tableWidth = resizingState.getTableWidth();
                 if (columnResizing.isEnabled()) {
                     if (tableWidth != null || EnvironmentUtil.isMozilla()) {
@@ -414,7 +414,7 @@ public class TableStructure extends TableElement {
                 int thisGroupEnd = colIndex - 1;
                 List<BaseColumn> lastColumnHierarchy = columnHierarchies[thisGroupEnd];
 
-                JSONObject columnObj = getColumnParams(context, thisGroup, thisGroupEnd, level);
+                JSONObject columnObj = getColumnParams(context, thisGroup, level);
                 columnsArray.put(columnObj);
                 boolean hasSubColumns = lastColumnHierarchy.size() - 1 > level;
                 if (hasSubColumns) {
@@ -428,8 +428,7 @@ public class TableStructure extends TableElement {
         return columnsArray;
     }
 
-    private JSONObject getColumnParams(FacesContext context, BaseColumn columnOrGroup,
-                                       int colIndex, int level) throws JSONException {
+    private JSONObject getColumnParams(FacesContext context, BaseColumn columnOrGroup, int level) throws JSONException {
         JSONObject columnObj = new JSONObject();
 
         UIComponent styleOwnerComponent = getComponent();
@@ -446,7 +445,7 @@ public class TableStructure extends TableElement {
             AbstractTable table = styleOwnerComponent instanceof AbstractTable ? (AbstractTable) styleOwnerComponent : null;
             ColumnResizing columnResizing = (table != null) ? table.getColumnResizing() : null;
             ColumnResizingState columnResizingState = columnResizing != null ? columnResizing.getResizingState() : null;
-            String resizingWidth = columnResizingState != null ? columnResizingState.getColumnWidth(colIndex) : null;
+            String resizingWidth = columnResizingState != null ? columnResizingState.getColumnWidth(columnOrGroup.getId()) : null;
             if (resizingWidth != null) {
                 resizingWidthClass = StyleUtil.getCSSClass(context, table, "width: " + resizingWidth, StyleGroup.selectedStyleGroup(), null
                 );

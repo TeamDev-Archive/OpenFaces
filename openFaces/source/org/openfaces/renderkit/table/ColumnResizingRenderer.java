@@ -45,9 +45,9 @@ public class ColumnResizingRenderer extends RendererBase {
         AbstractTable table = (AbstractTable) component.getParent();
 
         JSONObject columnParams = new JSONObject();
-        List columns = table.getColumnsForRendering();
+        List<BaseColumn> columns = table.getColumnsForRendering();
         for (int i = 0; i < columns.size(); i++) {
-            BaseColumn column = (BaseColumn) columns.get(i);
+            BaseColumn column = columns.get(i);
             boolean resizable = column.isResizable();
             String minResizingWidth = column.getMinResizingWidth();
             if (!resizable || minResizingWidth != null) {
@@ -97,22 +97,29 @@ public class ColumnResizingRenderer extends RendererBase {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        List columns = table.getColumnsForRendering();
+        List<BaseColumn> columns = table.getColumnsForRendering();
         if (columns.size() != widthsArray.length())
             throw new IllegalStateException("columns.size() != widthsArray.length(): " + columns.size() + " != " + widthsArray.length());
 
-        String[] widthStringsArray = new String[columns.size()];
+        ColumnResizing columnResizing = (ColumnResizing) component;
+        ColumnResizingState resizingState = columnResizing.getResizingState();
+        if (resizingState == null) {
+            resizingState = new ColumnResizingState();
+            columnResizing.setResizingState(resizingState);
+        }
+
+        resizingState.setTableWidth(tableWidth);
+
         for (int i = 0, count = columns.size(); i < count; i++) {
+            BaseColumn column = columns.get(i);
             String newWidth;
             try {
                 newWidth = widthsArray.getString(i);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-            widthStringsArray[i] = newWidth;
+
+            resizingState.setColumnWidth(column.getId(), newWidth);
         }
-        ColumnResizingState resizingState = new ColumnResizingState(widthStringsArray, tableWidth);
-        ColumnResizing columnResizing = (ColumnResizing) component;
-        columnResizing.setResizingState(resizingState);
     }
 }

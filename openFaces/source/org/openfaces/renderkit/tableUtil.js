@@ -94,7 +94,7 @@ O$.Tables = {
   },
 
   // -------------------------- INITIALIZATION
-  
+
   _init: function(table, params) {
     if (!params.rowStylesMap) params.rowStylesMap = {};
     if (!params.cellStylesMap) params.cellStylesMap = {};
@@ -1923,81 +1923,24 @@ O$.Tables = {
 
     function alignColumnWidths() {
       var firstSection = table.header ? table.header : table.body;
-      var defaultColWidth = 120;
       var scrollingAreaColTags = [];
       [table.header, table.body, table.footer].forEach(function (area) {
         if (area && area._sectionTable)
           scrollingAreaColTags.push(O$.Tables._getTableColTags(area._sectionTable));
       });
       function areaWidthByColumns(section, areaName, verticalAreaForInitialization) {
-        var areaWidth = 0;
+
         var scrollerWidth = O$.isExplorer() || /* explorer reports too big values*/
-                            O$.isMozillaFF() /* mozilla reports 0 in some cases (see TreeTable demo 1) */ 
+                            O$.isMozillaFF() /* mozilla reports 0 in some cases (see TreeTable demo 1) */
                 ? 17
                 : mainScrollingArea._scrollingDiv.offsetWidth - mainScrollingArea._scrollingDiv.clientWidth;
-        var tableWidth = O$.getElementSize(table).width - scrollerWidth;
-        tableWidth -= O$.getNumericElementStyle(table, "border-left-width", true);
-        tableWidth -= O$.getNumericElementStyle(table, "border-right-width", true);
-        if (tableWidth < 0)
-          tableWidth = 0;
         var area = section[areaName];
-        verticalAreaForInitialization._columns = [];
-        var relativeWidthColumns = [];
-        var nonRelativeWidth = 0;
-        area._colTags.forEach(function(colTag) {
-          var column = colTag._column;
-          verticalAreaForInitialization._columns.push(column);
-          column._verticalArea = verticalAreaForInitialization;
-          var colWidth = firstInitialization ? column.getDeclaredWidth(tableWidth) : column._explicitWidth;
-          if (firstInitialization) {
-            if (!colWidth) {
-              column._widthNotSpecified = true;
-              colWidth = defaultColWidth;
-            }
-            column._tempWidth = colWidth;
-            column.setWidth(colWidth);
-          }
-          if (!scrolling.horizontal) {
-            if (column._relativeWidth || column._widthNotSpecified)
-              relativeWidthColumns.push(column);
-            else
-              nonRelativeWidth += colWidth;
-          }
-
-          areaWidth += colWidth;
+        var areaWidth = O$.Tables._alignTableColumns(
+                area._colTags, table, firstInitialization,
+                verticalAreaForInitialization, scrolling, scrollerWidth);
+        verticalAreaForInitialization._columns.forEach(function(c) {
+          c._verticalArea = verticalAreaForInitialization;
         });
-        if (!scrolling.horizontal && !scrolling._widthAlignmentDisabled && (! (O$.isExplorer() && !tableWidth))) {
-          var remainingWidth = tableWidth - nonRelativeWidth;
-          if (remainingWidth > 0 && relativeWidthColumns.length > 0) {
-            var unspecifiedWidthColCount = 0;
-            var totalSpecifiedWidth = 0;
-            relativeWidthColumns.forEach(function(c) {
-              if (!c._widthNotSpecified) {
-                var relativeWidth = c.getDeclaredWidth(10000) / 100;
-                c._tempWidth = relativeWidth;
-                totalSpecifiedWidth += relativeWidth;
-              } else
-                unspecifiedWidthColCount++;
-            });
-            var unspecifiedWidth = 100 - totalSpecifiedWidth;
-            var widthPerUnspecifiedWidthCol = unspecifiedWidthColCount ? (
-                    unspecifiedWidth > 0
-                      ? unspecifiedWidth / unspecifiedWidthColCount
-                      : 20 / unspecifiedWidthColCount ) : 0;
-            var relativeTotal = totalSpecifiedWidth + widthPerUnspecifiedWidthCol * unspecifiedWidthColCount;
-            relativeWidthColumns.forEach(function(c) {
-              c.setWidth(Math.floor(
-                      (c._widthNotSpecified ? widthPerUnspecifiedWidthCol : c._tempWidth)
-                              / relativeTotal * remainingWidth
-                      ));
-            });
-          } else {
-            verticalAreaForInitialization._columns.forEach(function(c) {
-              c.setWidth(Math.floor((c._tempWidth / areaWidth) * tableWidth));
-            });
-          }
-          areaWidth = tableWidth;
-        }
         var width = areaWidth + "px";
         verticalAreaForInitialization._areas = [];
         [table.header, table.body, table.footer].forEach(function (section) {
@@ -2254,7 +2197,81 @@ O$.Tables = {
         delayedInitFunctions.forEach(function (func) {func();});
       });
 
+  },
+
+  _alignTableColumns: function (colTags, table, firstInitialization, objectForSavingParams, scrolling, scrollerWidth) {
+    if (!scrollerWidth) scrollerWidth = 0;
+    var defaultColWidth = 120;
+
+    var tblWidth = 0;
+    var tableWidth = O$.getElementSize(table).width - scrollerWidth;
+    tableWidth -= O$.getNumericElementStyle(table, "border-left-width", true);
+    tableWidth -= O$.getNumericElementStyle(table, "border-right-width", true);
+    if (tableWidth < 0)
+      tableWidth = 0;
+    var columns = [];
+    if (objectForSavingParams)
+      objectForSavingParams._columns = columns;
+    var relativeWidthColumns = [];
+    var nonRelativeWidth = 0;
+    colTags.forEach(function(colTag) {
+      var column = colTag._column;
+      columns.push(column);
+      var colWidth = firstInitialization ? column.getDeclaredWidth(tableWidth) : column._explicitWidth;
+      if (firstInitialization) {
+        if (!colWidth) {
+          column._widthNotSpecified = true;
+          colWidth = defaultColWidth;
+        }
+        column._tempWidth = colWidth;
+        column.setWidth(colWidth);
+      }
+      if (!scrolling || !scrolling.horizontal) {
+        if (column._relativeWidth || column._widthNotSpecified)
+          relativeWidthColumns.push(column);
+        else
+          nonRelativeWidth += colWidth;
+      }
+
+      tblWidth += colWidth;
+    });
+    if ((
+            !scrolling || (!scrolling.horizontal && !scrolling._widthAlignmentDisabled)
+            ) && (! (O$.isExplorer() && !tableWidth))) {
+      var remainingWidth = tableWidth - nonRelativeWidth;
+      if (remainingWidth > 0 && relativeWidthColumns.length > 0) {
+        var unspecifiedWidthColCount = 0;
+        var totalSpecifiedWidth = 0;
+        relativeWidthColumns.forEach(function(c) {
+          if (!c._widthNotSpecified) {
+            var relativeWidth = c.getDeclaredWidth(10000) / 100;
+            c._tempWidth = relativeWidth;
+            totalSpecifiedWidth += relativeWidth;
+          } else
+            unspecifiedWidthColCount++;
+        });
+        var unspecifiedWidth = 100 - totalSpecifiedWidth;
+        var widthPerUnspecifiedWidthCol = unspecifiedWidthColCount ? (
+                unspecifiedWidth > 0
+                  ? unspecifiedWidth / unspecifiedWidthColCount
+                  : 20 / unspecifiedWidthColCount ) : 0;
+        var relativeTotal = totalSpecifiedWidth + widthPerUnspecifiedWidthCol * unspecifiedWidthColCount;
+        relativeWidthColumns.forEach(function(c) {
+          c.setWidth(Math.floor(
+                  (c._widthNotSpecified ? widthPerUnspecifiedWidthCol : c._tempWidth)
+                          / relativeTotal * remainingWidth
+                  ));
+        });
+      } else {
+        columns.forEach(function(c) {
+          c.setWidth(Math.floor((c._tempWidth / tblWidth) * tableWidth));
+        });
+      }
+      tblWidth = tableWidth;
+    }
+    return tblWidth;
   }
+
 
 
 };

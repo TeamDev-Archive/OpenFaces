@@ -54,12 +54,12 @@ public class TableUtil {
                 ((AbstractTable) component).getColumnResizing() : null;
         ColumnResizingState columnResizingState = columnResizing != null ? columnResizing.getResizingState() : null;
         int colCount = columns.size();
-        if (columnResizingState != null && columnResizingState.getColumnCount() != colCount)
-            columnResizingState = null;
         ResponseWriter writer = context.getResponseWriter();
         for (int colIndex = 0; colIndex < colCount; colIndex++) {
             BaseColumn column = (BaseColumn) columns.get(colIndex);
-            String colWidth = columnResizingState != null ? columnResizingState.getColumnWidth(colIndex) : column.getWidth();
+            String colWidth = columnResizingState != null ? columnResizingState.getColumnWidth(column.getId()) : null;
+            if (colWidth == null)
+                colWidth = column.getWidth();
             String align = column.getAlign();
             String valign = column.getValign();
             writeColTag(component, writer, colWidth, align, valign);

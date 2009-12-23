@@ -445,10 +445,9 @@ O$.Table = {
 
   _scrollToRowIndexes: function(table, rowIndexes) {
     var bodyRows = table.body._getRows();
-    var elements = rowIndexes.map(function(i) {
+    O$.scrollElementIntoView(rowIndexes.map(function(i) {
       return bodyRows[i]._rowNode;
-    });
-    O$.scrollElementIntoView(elements);
+    }));
   },
 
   _combineSelectedRowsWithRange: function(table, baseSelectedRowIndexes, baseRowIndex, rangeEndRowIndex) {
@@ -1241,7 +1240,7 @@ O$.Table = {
         minColWidth = 10;
 
       if (resizeHandleWidth == null)
-        resizeHandleWidth = 9;
+        resizeHandleWidth = 7;
       else
         resizeHandleWidth = O$.calculateNumericCSSValue(resizeHandleWidth);
       if (resizeHandleWidth < 1)
@@ -1507,6 +1506,10 @@ O$.Table = {
         var colWidths = getColWidths();
         table.style.tableLayout = "fixed";
 
+//        if (!table._params.scrolling)
+//          O$.Tables._alignTableColumns(table._columns.map(function(c){return c._colTags[0];}), table, true, null,
+//                  table._params.scrolling, 0);
+
         if (!table._params.scrolling)
           table.style.width = "auto";
         for (var i = 0, count = colWidths.length; i < count; i++) {
@@ -1524,7 +1527,6 @@ O$.Table = {
         }
 
       }
-
       fixWidths();
 
       function updateResizeHandlePositions() {
@@ -1771,86 +1773,84 @@ O$.Table = {
         }
         return null;
       });
-      headerCell.ondragstart = draggingStarted;
-      headerCell.ondragmove = draggingMoved;
-      headerCell.ondragend = draggingFinished;
-
       var additionalAreaListener;
-
-      function draggingStarted() {
-        if (!(table._params.scrolling && table._params.scrolling.horizontal)) return;
-        additionalAreaContainer.appendChild(leftAutoScrollArea);
-        additionalAreaContainer.appendChild(rightAutoScrollArea);
-        leftAutoScrollArea._update();
-        rightAutoScrollArea._update();
-
-        additionalAreaListener = O$.listenProperty(headerScroller, "rectangle", function(rect) {
-          var subHeaderIndex = table._subHeaderRowIndex;
-          var subHeaderHeight = subHeaderIndex != -1
-                  ? O$.getElementSize(table.header._getRows()[subHeaderIndex]._rowNode).height : 0;
-          O$.setElementHeight(leftAutoScrollArea, rect.height - subHeaderHeight);
-          O$.setElementHeight(rightAutoScrollArea, rect.height - subHeaderHeight);
-          O$.alignPopupByElement(leftAutoScrollArea, headerScroller, O$.LEFT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
-          O$.alignPopupByElement(rightAutoScrollArea, headerScroller, O$.RIGHT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
-        }, new O$.Timer(50));
-      }
 
       var activeHelperArea = null;
       var activeScrollingInterval;
 
-      function draggingMoved(e) {
-        e = {clientX: e.clientX, clientY: e.clientY};
-        if (!(table._params.scrolling && table._params.scrolling.horizontal)) return;
+      O$.extend(headerCell, {
+        ondragstart: function() {
+          if (!(table._params.scrolling && table._params.scrolling.horizontal)) return;
+          additionalAreaContainer.appendChild(leftAutoScrollArea);
+          additionalAreaContainer.appendChild(rightAutoScrollArea);
+          leftAutoScrollArea._update();
+          rightAutoScrollArea._update();
 
-        function setActiveHelperArea(area) {
-          if (activeHelperArea == area) return;
-          if (activeScrollingInterval)
-            clearInterval(activeScrollingInterval);
-          activeHelperArea = area;
-          var lastTimestamp = new Date().getTime();
+          additionalAreaListener = O$.listenProperty(headerScroller, "rectangle", function(rect) {
+            var subHeaderIndex = table._subHeaderRowIndex;
+            var subHeaderHeight = subHeaderIndex != -1
+                    ? O$.getElementSize(table.header._getRows()[subHeaderIndex]._rowNode).height : 0;
+            O$.setElementHeight(leftAutoScrollArea, rect.height - subHeaderHeight);
+            O$.setElementHeight(rightAutoScrollArea, rect.height - subHeaderHeight);
+            O$.alignPopupByElement(leftAutoScrollArea, headerScroller, O$.LEFT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
+            O$.alignPopupByElement(rightAutoScrollArea, headerScroller, O$.RIGHT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
+          }, new O$.Timer(50));
+        },
+        ondragmove: function(e) {
+          e = {clientX: e.clientX, clientY: e.clientY};
+          if (!(table._params.scrolling && table._params.scrolling.horizontal)) return;
 
-          function scrollingStep() {
-            var thisTimestamp = new Date().getTime();
-            var scrollingStep = autoscrollingSpeed * (thisTimestamp - lastTimestamp) / 1000;
-            lastTimestamp = thisTimestamp;
-            return scrollingStep;
+          function setActiveHelperArea(area) {
+            if (activeHelperArea == area) return;
+            if (activeScrollingInterval)
+              clearInterval(activeScrollingInterval);
+            activeHelperArea = area;
+            var lastTimestamp = new Date().getTime();
+
+            function scrollingStep() {
+              var thisTimestamp = new Date().getTime();
+              var scrollingStep = autoscrollingSpeed * (thisTimestamp - lastTimestamp) / 1000;
+              lastTimestamp = thisTimestamp;
+              return scrollingStep;
+            }
+
+            if (area == leftAutoScrollArea)
+              activeScrollingInterval = setInterval(function() {
+                var scrollLeft = mainScroller.scrollLeft - scrollingStep();
+                if (scrollLeft < 0) scrollLeft = 0;
+                mainScroller.scrollLeft = scrollLeft;
+                O$._draggedElement.updateCurrentDropTarget(e);
+                leftAutoScrollArea._update();
+                rightAutoScrollArea._update();
+              }, 30);
+            if (area == rightAutoScrollArea)
+              activeScrollingInterval = setInterval(function() {
+                mainScroller.scrollLeft = mainScroller.scrollLeft + scrollingStep();
+                O$._draggedElement.updateCurrentDropTarget(e);
+                leftAutoScrollArea._update();
+                rightAutoScrollArea._update();
+              }, 30);
           }
 
-          if (area == leftAutoScrollArea)
-            activeScrollingInterval = setInterval(function() {
-              var scrollLeft = mainScroller.scrollLeft - scrollingStep();
-              if (scrollLeft < 0) scrollLeft = 0;
-              mainScroller.scrollLeft = scrollLeft;
-              O$._draggedElement.updateCurrentDropTarget(e);
-              leftAutoScrollArea._update();
-              rightAutoScrollArea._update();
-            }, 30);
-          if (area == rightAutoScrollArea)
-            activeScrollingInterval = setInterval(function() {
-              mainScroller.scrollLeft = mainScroller.scrollLeft + scrollingStep();
-              O$._draggedElement.updateCurrentDropTarget(e);
-              leftAutoScrollArea._update();
-              rightAutoScrollArea._update();
-            }, 30);
+          if (O$.isCursorOverElement(e, leftAutoScrollArea))
+            setActiveHelperArea(leftAutoScrollArea);
+          else if (O$.isCursorOverElement(e, rightAutoScrollArea))
+            setActiveHelperArea(rightAutoScrollArea);
+          else
+            setActiveHelperArea(null);
+        },
+        ondragend: function() {
+          if (activeScrollingInterval) clearInterval(activeScrollingInterval);
+          if (additionalAreaContainer) {
+            additionalAreaContainer.removeChild(leftAutoScrollArea);
+            additionalAreaContainer.removeChild(rightAutoScrollArea);
+            additionalAreaListener.release();
+          }
+          dropTargetMark.hide();
         }
+      });
 
-        if (O$.isCursorOverElement(e, leftAutoScrollArea))
-          setActiveHelperArea(leftAutoScrollArea);
-        else if (O$.isCursorOverElement(e, rightAutoScrollArea))
-          setActiveHelperArea(rightAutoScrollArea);
-        else
-          setActiveHelperArea(null);
-      }
 
-      function draggingFinished() {
-        if (activeScrollingInterval) clearInterval(activeScrollingInterval);
-        if (additionalAreaContainer) {
-          additionalAreaContainer.removeChild(leftAutoScrollArea);
-          additionalAreaContainer.removeChild(rightAutoScrollArea);
-          additionalAreaListener.release();
-        }
-        dropTargetMark.hide();
-      }
     });
 
 
@@ -1943,6 +1943,22 @@ O$.Table = {
       };
     });
 
+    var idx = 0;
+    columnMenu._items.forEach(function(menuItem) {
+      var colIndex = idx++;
+      menuItem._anchor.onclick = function() {
+        O$.Table._toggleColumnVisibility(table, colIndex);
+      };
+    });
+
+  },
+
+  _toggleColumnVisibility: function(table, columnIndex) {
+    O$._submitInternal(table, null, [
+      [table.id + "::columnVisibility", "" + columnIndex]
+    ]);
   }
+
+
 
 };

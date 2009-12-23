@@ -2484,7 +2484,7 @@ if (!window.O$) {
 
     component._focusable = true;
     component.focus = function() {
-      if (this._preventPageScrolling) {
+      if (O$.getElementStyle(component, "position") == "absolute" || this._preventPageScrolling) {
         var pageScrollPos = O$.getPageScrollPos();
         this._focusControl.style.left = pageScrollPos.x + "px";
         this._focusControl.style.top = pageScrollPos.y + "px";
@@ -2495,7 +2495,7 @@ if (!window.O$) {
       try {
         this._focusControl.focus();
       } catch(e) {
-        //in IE hidden element can't receive focus
+        // in IE hidden element can't receive focus
       }
     };
 

@@ -12,28 +12,36 @@
 package org.openfaces.component.table;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
  */
 public class ColumnResizingState implements Serializable {
-    private final String[] columnWidths;
-    private final String tableWidth;
+    private Map<String, String> columnWidths = new HashMap<String, String>();
+    private String tableWidth;
 
-    public ColumnResizingState(String[] columnWidths, String tableWidth) {
-        this.columnWidths = columnWidths;
-        this.tableWidth = tableWidth;
+    public ColumnResizingState() {
     }
 
     public int getColumnCount() {
-        return columnWidths.length;
+        return columnWidths.size();
     }
 
-    public String getColumnWidth(int columnIndex) {
-        return columnWidths[columnIndex];
+    public String getColumnWidth(String columnId) {
+        return columnWidths.get(columnId);
+    }
+
+    public void setColumnWidth(String columnId, String width) {
+        columnWidths.put(columnId, width);
     }
 
     public String getTableWidth() {
         return tableWidth;
+    }
+
+    public void setTableWidth(String tableWidth) {
+        this.tableWidth = tableWidth;
     }
 }

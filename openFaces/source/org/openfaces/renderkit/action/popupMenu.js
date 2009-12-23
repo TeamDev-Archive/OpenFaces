@@ -107,18 +107,18 @@ O$.PopupMenu = {
     O$.setupArtificialFocus(popupMenu, null);
 
 
-
     if (!isRootMenu) {
       O$._popupsOnPage.pop(popupMenuId);
     }
 
 
-
     var childNodes = popupMenu.childNodes;
+    var items = popupMenu._items = [];
 
     // Create object tree for easy access to the PopupMenu and menuItems
     for (var i = 0; i < childNodes.length; i++) {
       var menuItem = popupMenu._popupMenuItems[i] = childNodes[i];
+      items.push(menuItem);
 
       menuItem._isSeparator = function() {
         return !!this._separator;

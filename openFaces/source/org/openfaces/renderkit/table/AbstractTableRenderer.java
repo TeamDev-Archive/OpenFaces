@@ -382,6 +382,10 @@ public abstract class AbstractTableRenderer extends RendererBase {
         return table.getClientId(context) + "::sorting";
     }
 
+    private String getColumnVisibilityFieldName(FacesContext context, UIComponent table) {
+        return table.getClientId(context) + "::columnVisibility";
+    }
+
     private String getSortedColumnClass(AbstractTable table) {
         String sortedColumnClass = table.getSortedColumnClass();
         if (!table.getApplyDefaultStyle())
@@ -441,6 +445,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
             columnResizing.processDecodes(context);
 
         decodeSorting(context, table);
+        decodeColumnVisibility(context, table);
 
         decodeCheckboxColumns(context, table);
 
@@ -470,6 +475,33 @@ public abstract class AbstractTableRenderer extends RendererBase {
             table.toggleSorting(columnToToggle);
         }
     }
+
+    private void decodeColumnVisibility(FacesContext context, AbstractTable table) {
+        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String fieldName = getColumnVisibilityFieldName(context, table);
+        String fieldValue = requestParameterMap.get(fieldName);
+        if (fieldValue != null && fieldValue.length() > 0) {
+            int columnToToggle = Integer.parseInt(fieldValue);
+            List<BaseColumn> allColumns = table.getAllColumns();
+            List<BaseColumn> renderedColumns = table.getColumnsForRendering();
+            BaseColumn column = allColumns.get(columnToToggle);
+            boolean columnWasVisible = renderedColumns.contains(column);
+            boolean showColumn = !columnWasVisible;
+            List<String> newColumnsOrder = new ArrayList<String>();
+            for (BaseColumn c : allColumns) {
+                String cid = c.getId();
+                if (c != column) {
+                    if (renderedColumns.contains(c))
+                        newColumnsOrder.add(cid);
+                } else {
+                    if (showColumn)
+                        newColumnsOrder.add(cid);
+                }
+            }
+            table.getAttributes().put("submittedColumnsOrder", newColumnsOrder);
+        }
+    }
+
 
     protected boolean isKeyboardNavigationApplicable(AbstractTable table) {
         AbstractTableSelection selection = table.getSelection();
