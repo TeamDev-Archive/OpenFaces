@@ -41,10 +41,18 @@
 <o:dynamicTreeStructure nodeChildren="#{RequestsTreeTableBean.requestsNodeChildren}"/>
 
 <o:multipleNodeSelection nodeDatas="#{RequestsTreeTableBean.selectedRequests}"
-                         style="background: url('../images/treetable/selected.gif') repeat-x #5D8BBA !important; color: white !important;"
+                         style="background: url('../images/treetable/selected.gif') repeat-x #5d8bba !important; color: white !important;"
                          onchange="requestsSelectionChanged();"/>
 <o:columnReordering/>
 
+<f:facet name="columnMenu">
+  <o:columnVisibilityMenu/>
+</f:facet>
+<f:facet name="columnMenuButton">
+  <o:captionButton style="border-left: none; background: url('../images/treetable/columnMenuBtn.gif');"
+          rolloverStyle="border-left: none; background: url('../images/treetable/columnMenuBtnRollover.gif');"
+          pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
+</f:facet>
 
 <o:row condition="#{thereAreSubRequests}" style="font-weight: bold"/>
 <o:row condition="#{RequestsTreeTableBean.editingThisRow}">
@@ -300,6 +308,7 @@
     <li><strong>Reordering columns</strong> - Click the <b>Customize Columns</b> button to add/remove
       columns or change their order, or drag a column header to move the appropriate column directly.
     </li>
+    <li><strong>Column visibility customization</strong>&#8212;Use the drop-down menu in column headers to show/hide columns.</li>
     <li><strong>Refreshing a TreeTable with Ajax</strong> - All of the request manipulation actions below
       are performed with Ajax.
     </li>

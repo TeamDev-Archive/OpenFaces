@@ -230,7 +230,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
         PopupMenu columnMenu = (PopupMenu) component;
         columnMenu.setStandalone(true);
         columnMenu.encodeAll(context);
-        buf.initScript(context, table, "O$.Table._initColumnMenu", columnMenu, buttonComponent);
+        buf.initScript(context, table, "O$.Table._initColumnMenu", columnMenu, button);
 
         if (temporaryButton)
             table.getFacets().remove(FACET_COLUMN_MENU_BUTTON);
@@ -238,6 +238,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
 
     private CaptionButton createDefaultColumnMenuButton(FacesContext context) {
         CaptionButton captionButton = new CaptionButton();
+        captionButton.setId("_columnMenuButton" + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR);
         captionButton.setImageUrl(getDefaultColumnMenuBtnImage(context));
         return captionButton;
     }
@@ -487,6 +488,8 @@ public abstract class AbstractTableRenderer extends RendererBase {
             BaseColumn column = allColumns.get(columnToToggle);
             boolean columnWasVisible = renderedColumns.contains(column);
             boolean showColumn = !columnWasVisible;
+            if (!showColumn && renderedColumns.size() == 1)
+                showColumn = true; // don't allow to hide the last column
             List<String> newColumnsOrder = new ArrayList<String>();
             for (BaseColumn c : allColumns) {
                 String cid = c.getId();

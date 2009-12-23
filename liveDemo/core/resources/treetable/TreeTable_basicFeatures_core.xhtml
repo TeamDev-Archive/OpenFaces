@@ -23,6 +23,15 @@
       <o:scrolling/>
       <o:columnResizing/>
       <o:columnReordering/>
+      <f:facet name="columnMenu">
+        <o:columnVisibilityMenu/>
+      </f:facet>
+      <f:facet name="columnMenuButton">
+        <o:captionButton style="border-left: none; background: url('../images/treetable/columnMenuBtn.gif');"
+                rolloverStyle="border-left: none; background: url('../images/treetable/columnMenuBtnRollover.gif');"
+                pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
+      </f:facet>
+      
       <o:treeColumn id="subject" sortingExpression="#{message.subject}" bodyStyle="text-align: left;">
         <f:facet name="header">
           <h:outputText value="Subject"/>
@@ -64,6 +73,7 @@
         The rows that don't meet the filtering criteria but are required to show the tree structure are grayed.</li>
       <li><strong>Column resizing</strong> - Drag column header separators to resize columns.</li>
       <li><strong>Drag &amp; drop column reordering</strong>&#8212;Drag a column header to move the appropriate column.</li>
+      <li><strong>Column visibility customization</strong>&#8212;Use the drop-down menu in column headers to show/hide columns.</li>
       <li><strong>Content scrolling</strong> - it's possible to scroll through the entire TreeTable contents when the
         vertical space is limited.</li>
       <li><strong>Dynamic loading for node expansion, sorting, and filtering</strong> - Only the
