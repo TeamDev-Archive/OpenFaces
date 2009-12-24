@@ -607,3 +607,88 @@ ul.demoLibrary-tagsFullList{
 ul.demoLibrary-tagsFullList li{float:none; list-style:none; padding:.25em 0;}
 ul.demoLibrary-tagsFullList li a{text-decoration:none;}
 ul.demoLibrary-tagsFullList li img{margin: 0 .5em -3px 0;}
+
+.demoLibrary-cafe{position:relative;}
+.demoLibrary-cafe h4{color:#111; padding:15px; font-size:12pt; font-weight:normal;}
+.demoLibrary-cafe img.componentLogo{float:left; margin:-5px 10px 10px -10px;}
+.demoLibrary-cafe .cafeBar{
+	position:relative;
+	width:655px;
+	height:90px;
+	z-index:10;
+	background:url(../../images/selectbooleancheckbox/cafe-bar.png) no-repeat 0 0;
+	margin:0 10px 300px 55px;
+}
+
+.demoLibrary-cafe .cafeBar ul{
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+.demoLibrary-cafe .cafeBar ul li{
+	position:relative;
+	margin:0 1%;
+	padding:0;
+	float:left;
+	width:22%;
+	display:block;
+	height:90px;
+	text-align:center;
+	text-decoration:none;
+}
+.demoLibrary-cafe .cafeBar ul li input.checkbox{
+	position:absolute;
+	bottom:20px;
+	left:50%;
+	margin-left:-32px;
+	z-index:2;
+}
+.demoLibrary-cafe .cafeBar ul li span{
+	position:relative;
+	top:65px;
+	display:block;
+	z-index:3;
+}
+
+.demoLibrary-cafe .cafeDropdown{
+	position:absolute;
+	top:100%;
+	left:0;
+	right:0;
+	background:url(../../images/selectbooleancheckbox/dropdown-bg.png) repeat 0 0;
+	border: solid 1px #d6c5b1;
+	border-top:none;
+	border-radius:0 0 6px 6px;
+	-moz-border-radius:0 0 6px 6px;
+	-webkit-border-radius:0 0 6px 6px;
+	padding:10px 0;
+  display:block;
+}
+
+.demoLibrary-cafe .cafeDropdown ul li{float:none;
+height:auto; font-size:12pt; color:#000; padding: 11px 10px 6px 40px; min-height:22px;}
+.demoLibrary-cafe .cafeDropdown ul li input.checkbox{
+	display:block;
+	width:24px;
+	height:24px;
+	position:absolute;
+	left:15px;
+	top:11px;
+	border:solid 1px #a79e93;
+	line-height:24px;
+	font-size:20px;
+  margin-left:-8px !important;
+}
+
+.demoLibrary-cafe .cafeDropdown ul li ul li{
+  min-height:16px;
+  font-size:11pt;
+padding:6px 10px 0 40px;
+}
+.demoLibrary-cafe .cafeDropdown ul li ul li input.checkbox{
+	width:16px;
+	height:16px;
+	line-height:16px;
+	font-size:14px;
+  margin-left:-8px !important;
+}

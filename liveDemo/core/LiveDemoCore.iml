@@ -113,6 +113,15 @@
     </orderEntry>
     <orderEntry type="module" module-name="OpenFaces" exported="" />
     <orderEntry type="library" exported="" name="commons-lang" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit-4.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

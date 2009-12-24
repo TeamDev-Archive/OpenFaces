@@ -3,175 +3,328 @@
      xmlns:o="http://openfaces.org/" xmlns:c="http://java.sun.com/jstl/core"
         >
 
-  <div id="Demo">
-    <div style="text-align: center; font-weight: bold; font-size: 20px;">Construction in progress...</div>
+<div id="Demo">
+<div class="demoLibrary-cafe">
+<img class="componentLogo" src="../images/selectbooleancheckbox/component-logo.png"
+     alt="Select Boolean Checkbox"/>
+<h4>Please, complete your order and let us know than.</h4>
 
-    <h:panelGroup id="chocolatePanel">
-      <c:set var="drinkReceipt" value="#{DrinkOrder.drinkReceipt['HOT_CHOCOLATE']}"/>
-      <c:set var="drink" value="#{DrinkOrder.drinks[drinkReceipt]}"/>
-      <c:set var="drinkOrdered" value="#{DrinkOrder.ordered[drinkReceipt]}"/>
-      <o:selectBooleanCheckbox value="#{drinkOrdered}" triStateAllowed="true">
-        <o:ajax event="change" render="chocolatePanel" listener="#{DrinkOrder.orderDrink}">
-          <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
-        </o:ajax>
-      </o:selectBooleanCheckbox>
-      <h:outputText value="#{drinkReceipt.label}" style="padding-right: 40px"/>
-
-      <o:popupLayer id="chocolatePopup"
-                    visible="true" rendered="#{drinkOrdered}">
+<div class="cafeBar">
+<ul>
+<li>
+  <h:panelGroup id="espressoPanel" layout="block">
+    <c:set var="drinkReceipt" value="#{DrinkOrder.drinkReceipt['ESPRESSO']}"/>
+    <c:set var="drink" value="#{DrinkOrder.drinks[drinkReceipt]}"/>
+    <c:set var="drinkOrdered" value="#{DrinkOrder.ordered[drinkReceipt]}"/>
+    <o:selectBooleanCheckbox id="espressoOrderCheckbox" value="#{drinkOrdered}"
+                             selectedImageUrl="../images/selectbooleancheckbox/thumb-espresso-checked.png"
+                             unselectedImageUrl="../images/selectbooleancheckbox/thumb-espresso.png"
+                             styleClass="checkbox">
+      <o:ajax event="change" render="espressoPanel" listener="#{DrinkOrder.orderDrink}">
+        <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
+      </o:ajax>
+    </o:selectBooleanCheckbox>
+    <h:outputText id="espressoLabel" value="#{drinkReceipt.label}"/>
+    <h:panelGroup layout="block" id="espressoIngredientsPanel" styleClass="cafeDropdown"
+                  rendered="#{drinkOrdered}">
+      <ul>
 
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['BASE']}"/>
         <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
-          <o:selectBooleanCheckbox value="#{drink[ingredient]}" triStateAllowed="true"
-                  onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});">
+          <li>
+            <o:selectBooleanCheckbox value="#{drink[ingredient]}"
+                                     onchange="O$.ajaxReload(['form:espressoPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                     selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                     unselectedImageUrl="../images/empty-pixel.png"
+                                     styleClass="checkbox">
               <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
               <f:param name="ingredient" value="#{ingredient}"/>
-          </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/><br/>
+            </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/>
+          </li>
+        </o:forEach>
+
+        <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['ADDINS']}"/>
+        <li>
+          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
+                                   onchange="O$.ajaxReload(['form:espressoPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
+                                   selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                   unselectedImageUrl="../images/empty-pixel.png"
+                                   undefinedImageUrl="../images/selectbooleancheckbox/icon-semi-checked-big.png"
+                                   styleClass="checkbox">
+            <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
+            <f:param name="ingredientGroup" value="#{ingredientGroup}"/>
+          </o:selectBooleanCheckbox><h:outputText value="#{ingredientGroup.label}"/>
+
+
+          <ul>
+            <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
+              <li>
+                <o:selectBooleanCheckbox value="#{drink[ingredient]}"
+                                         onchange="O$.ajaxReload(['form:espressoPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                         selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                         unselectedImageUrl="../images/empty-pixel.png"
+                                         styleClass="checkbox">
+                  <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
+                  <f:param name="ingredient" value="#{ingredient}"/>
+                </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/><br/>
+              </li>
+            </o:forEach>
+          </ul>
+        </li>
+      </ul>
+    </h:panelGroup>
+  </h:panelGroup>
+</li>
+<li>
+  <h:panelGroup id="chocolatePanel" layout="block">
+    <c:set var="drinkReceipt" value="#{DrinkOrder.drinkReceipt['HOT_CHOCOLATE']}"/>
+    <c:set var="drink" value="#{DrinkOrder.drinks[drinkReceipt]}"/>
+    <c:set var="drinkOrdered" value="#{DrinkOrder.ordered[drinkReceipt]}"/>
+    <o:selectBooleanCheckbox id="chocolateOrderCheckbox" value="#{drinkOrdered}"
+                             selectedImageUrl="../images/selectbooleancheckbox/thumb-hot-chocolate-checked.png"
+                             unselectedImageUrl="../images/selectbooleancheckbox/thumb-hot-chocolate.png"
+                             styleClass="checkbox">
+      <o:ajax event="change" render="chocolatePanel" listener="#{DrinkOrder.orderDrink}">
+        <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
+      </o:ajax>
+    </o:selectBooleanCheckbox>
+    <h:outputText id="chocolateLabel" value="#{drinkReceipt.label}"/>
+    <h:panelGroup layout="block" id="chocolateIngredientsPanel" styleClass="cafeDropdown"
+                  rendered="#{drinkOrdered}">
+      <ul>
+
+        <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['BASE']}"/>
+        <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
+          <li>
+            <o:selectBooleanCheckbox value="#{drink[ingredient]}"
+                                     onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                     selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                     unselectedImageUrl="../images/empty-pixel.png"
+                                     styleClass="checkbox">
+              <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
+              <f:param name="ingredient" value="#{ingredient}"/>
+            </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/>
+          </li>
         </o:forEach>
 
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['TOPPING']}"/>
-        <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
-                onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});">
+        <li>
+          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
+                                   onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
+                                   selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                   unselectedImageUrl="../images/empty-pixel.png"
+                                   undefinedImageUrl="../images/selectbooleancheckbox/icon-semi-checked-big.png"
+                                   styleClass="checkbox">
             <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
             <f:param name="ingredientGroup" value="#{ingredientGroup}"/>
-        </o:selectBooleanCheckbox><h:outputText value="#{ingredientGroup.label}"/><br/>
+          </o:selectBooleanCheckbox><h:outputText value="#{ingredientGroup.label}"/>
+          <ul>
+            <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
+              <li>
+                <o:selectBooleanCheckbox value="#{drink[ingredient]}"
+                                         onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                         selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                         unselectedImageUrl="../images/empty-pixel.png"
+                                         styleClass="checkbox">
+                  <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
+                  <f:param name="ingredient" value="#{ingredient}"/>
+                </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/>
+              </li>
+            </o:forEach>
 
-        <div style="padding-left:30px">
-          <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
-             <o:selectBooleanCheckbox value="#{drink[ingredient]}"  triStateAllowed="true"
-                  onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});">
-              <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
-              <f:param name="ingredient" value="#{ingredient}"/>
-          </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/><br/>
-          </o:forEach>
-        </div>
-
+          </ul>
+        </li>
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['ADDINS']}"/>
-        <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
-                onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});">
+        <li>
+          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
+                                   onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
+                                   selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                   unselectedImageUrl="../images/empty-pixel.png"
+                                   undefinedImageUrl="../images/selectbooleancheckbox/icon-semi-checked-big.png"
+                                   styleClass="checkbox">
             <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
-            <f:param name="ingredientGroup" value="#{ingredientGroup}"/>    
-        </o:selectBooleanCheckbox><h:outputText value="#{ingredientGroup.label}"/><br/>
+            <f:param name="ingredientGroup" value="#{ingredientGroup}"/>
+          </o:selectBooleanCheckbox><h:outputText value="#{ingredientGroup.label}"/>
 
-        <div style="padding-left:30px">
-          <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
-             <o:selectBooleanCheckbox value="#{drink[ingredient]}" triStateAllowed="true"
-                  onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});">
-              <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
-              <f:param name="ingredient" value="#{ingredient}"/>
-          </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/><br/>
-          </o:forEach>
-        </div>
 
-      </o:popupLayer>
+          <ul>
+            <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
+              <li>
+                <o:selectBooleanCheckbox value="#{drink[ingredient]}"
+                                         onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                         selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                         unselectedImageUrl="../images/empty-pixel.png"
+                                         styleClass="checkbox">
+                  <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
+                  <f:param name="ingredient" value="#{ingredient}"/>
+                </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/><br/>
+              </li>
+            </o:forEach>
+          </ul>
+        </li>
+      </ul>
     </h:panelGroup>
+  </h:panelGroup>
+</li>
 
-    <h:panelGroup id="teaPanel">
-      <c:set var="drinkReceipt" value="#{DrinkOrder.drinkReceipt['ICED_TEA']}"/>
-      <c:set var="drink" value="#{DrinkOrder.drinks[drinkReceipt]}"/>
-      <c:set var="drinkOrdered" value="#{DrinkOrder.ordered[drinkReceipt]}"/>
-      <o:selectBooleanCheckbox value="#{drinkOrdered}" triStateAllowed="true">
-        <o:ajax event="change" render="teaPanel" listener="#{DrinkOrder.orderDrink}">
-          <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
-        </o:ajax>
-      </o:selectBooleanCheckbox>
-      <h:outputText value="#{drinkReceipt.label}" style="padding-right: 40px"/>
-      <o:popupLayer id="teaPopup"
-                    visible="true" rendered="#{drinkOrdered}"
-                    left="170">
+<li>
+  <h:panelGroup id="teaPanel" layout="block">
+    <c:set var="drinkReceipt" value="#{DrinkOrder.drinkReceipt['ICED_TEA']}"/>
+    <c:set var="drink" value="#{DrinkOrder.drinks[drinkReceipt]}"/>
+    <c:set var="drinkOrdered" value="#{DrinkOrder.ordered[drinkReceipt]}"/>
+    <o:selectBooleanCheckbox id="teaOrderCheckbox" value="#{drinkOrdered}"
+                             selectedImageUrl="../images/selectbooleancheckbox/thumb-iced-tea-checked.png"
+                             unselectedImageUrl="../images/selectbooleancheckbox/thumb-iced-tea.png"
+                             styleClass="checkbox">
+      <o:ajax event="change" render="teaPanel" listener="#{DrinkOrder.orderDrink}">
+        <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
+      </o:ajax>
+    </o:selectBooleanCheckbox>
+    <h:outputText id="teaLabel" value="#{drinkReceipt.label}"/>
+    <h:panelGroup layout="block" id="teaIngredientsPanel" styleClass="cafeDropdown"
+                  rendered="#{drinkOrdered}">
+      <ul>
 
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['BASE']}"/>
         <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
-          <o:selectBooleanCheckbox value="#{drink[ingredient]}" triStateAllowed="true"
-                  onchange="O$.ajaxReload(['form:teaPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});">
+          <li>
+            <o:selectBooleanCheckbox value="#{drink[ingredient]}"
+                                     onchange="O$.ajaxReload(['form:teaPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                     selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                     unselectedImageUrl="../images/empty-pixel.png"
+                                     styleClass="checkbox">
               <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
               <f:param name="ingredient" value="#{ingredient}"/>
-          </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/><br/>
+            </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/>
+          </li>
         </o:forEach>
-        
-        <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['ADDINS']}"/>
-        <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
-                onchange="O$.ajaxReload(['form:teaPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});">
-            <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
-            <f:param name="ingredientGroup" value="#{ingredientGroup}"/>
-        </o:selectBooleanCheckbox><h:outputText value="#{ingredientGroup.label}"/><br/>
-
-        <div style="padding-left:30px">
-          <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
-             <o:selectBooleanCheckbox value="#{drink[ingredient]}" triStateAllowed="true"
-                  onchange="O$.ajaxReload(['form:teaPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});">
-              <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
-              <f:param name="ingredient" value="#{ingredient}"/>
-          </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/><br/>
-          </o:forEach>
-        </div>
-
-      </o:popupLayer>
-    </h:panelGroup>
-
-
-    <h:panelGroup id="waterPanel">
-      <c:set var="drinkReceipt" value="#{DrinkOrder.drinkReceipt['CLEAN_WATER']}"/>
-      <c:set var="drink" value="#{DrinkOrder.drinks[drinkReceipt]}"/>
-      <c:set var="drinkOrdered" value="#{DrinkOrder.ordered[drinkReceipt]}"/>
-      <o:selectBooleanCheckbox value="#{drinkOrdered}" triStateAllowed="true">
-        <o:ajax event="change" render="waterPanel" listener="#{DrinkOrder.orderDrink}">
-          <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
-        </o:ajax>
-      </o:selectBooleanCheckbox>
-      <h:outputText value="#{drinkReceipt.label}" style="padding-right: 40px"/>
-      <o:popupLayer id="waterPopup"
-                    visible="true" rendered="#{drinkOrdered}"
-                    left="270">
-
-
-        <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['SYRUP']}"/>
-        <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
-                onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});">
-            <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
-            <f:param name="ingredientGroup" value="#{ingredientGroup}"/>
-        </o:selectBooleanCheckbox><h:outputText value="#{ingredientGroup.label}"/><br/>
-
-        <div style="padding-left:30px">
-          <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
-             <o:selectBooleanCheckbox value="#{drink[ingredient]}" triStateAllowed="true"
-                  onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});">
-              <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
-              <f:param name="ingredient" value="#{ingredient}"/>
-          </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/><br/>
-          </o:forEach>
-        </div>
 
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['ADDINS']}"/>
-        <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
-                onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});">
+        <li>
+          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
+                                   onchange="O$.ajaxReload(['form:teaPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
+                                   selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                   unselectedImageUrl="../images/empty-pixel.png"
+                                   undefinedImageUrl="../images/selectbooleancheckbox/icon-semi-checked-big.png"
+                                   styleClass="checkbox">
             <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
             <f:param name="ingredientGroup" value="#{ingredientGroup}"/>
-        </o:selectBooleanCheckbox><h:outputText value="#{ingredientGroup.label}"/><br/>
+          </o:selectBooleanCheckbox><h:outputText value="#{ingredientGroup.label}"/>
 
-        <div style="padding-left:30px">
-          <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
-             <o:selectBooleanCheckbox value="#{drink[ingredient]}" triStateAllowed="true"
-                  onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});">
-              <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
-              <f:param name="ingredient" value="#{ingredient}"/>
-          </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/><br/>
-          </o:forEach>
-        </div>
 
-      </o:popupLayer>
+          <ul>
+            <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
+              <li>
+                <o:selectBooleanCheckbox value="#{drink[ingredient]}"
+                                         onchange="O$.ajaxReload(['form:teaPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                         selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                         unselectedImageUrl="../images/empty-pixel.png"
+                                         styleClass="checkbox">
+                  <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
+                  <f:param name="ingredient" value="#{ingredient}"/>
+                </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/><br/>
+              </li>
+            </o:forEach>
+          </ul>
+        </li>
+      </ul>
     </h:panelGroup>
+  </h:panelGroup>
+</li>
+
+<li>
+  <h:panelGroup id="waterPanel" layout="block">
+    <c:set var="drinkReceipt" value="#{DrinkOrder.drinkReceipt['CLEAN_WATER']}"/>
+    <c:set var="drink" value="#{DrinkOrder.drinks[drinkReceipt]}"/>
+    <c:set var="drinkOrdered" value="#{DrinkOrder.ordered[drinkReceipt]}"/>
+    <o:selectBooleanCheckbox id="waterOrderCheckbox" value="#{drinkOrdered}"
+                             selectedImageUrl="../images/selectbooleancheckbox/thumb-clean-water-checked.png"
+                             unselectedImageUrl="../images/selectbooleancheckbox/thumb-clean-water.png"
+                             styleClass="checkbox">
+      <o:ajax event="change" render="waterPanel" listener="#{DrinkOrder.orderDrink}">
+        <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
+      </o:ajax>
+    </o:selectBooleanCheckbox>
+    <h:outputText id="waterLabel" value="#{drinkReceipt.label}"/>
+    <h:panelGroup layout="block" id="waterIngredientsPanel" styleClass="cafeDropdown"
+                  rendered="#{drinkOrdered}">
+      <ul>
+
+        <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['SYRUPS']}"/>
+        <li>
+          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
+                                   onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
+                                   selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                   unselectedImageUrl="../images/empty-pixel.png"
+                                   undefinedImageUrl="../images/selectbooleancheckbox/icon-semi-checked-big.png"
+                                   styleClass="checkbox">
+            <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
+            <f:param name="ingredientGroup" value="#{ingredientGroup}"/>
+          </o:selectBooleanCheckbox><h:outputText value="#{ingredientGroup.label}"/>
 
 
-  </div>
-  <div id="Description">
-    <h4>Demonstrated Features</h4>
-    <ul class="hang">
-      <li><strong>Feature 1</strong> - feature 1 description.
-      </li>
-      <li><strong>Feature 2</strong> - feature 2 description.
-      </li>
-    </ul>
-  </div>
+          <ul>
+            <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
+              <li>
+                <o:selectBooleanCheckbox value="#{drink[ingredient]}"
+                                         onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                         selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                         unselectedImageUrl="../images/empty-pixel.png"
+                                         styleClass="checkbox">
+                  <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
+                  <f:param name="ingredient" value="#{ingredient}"/>
+                </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/><br/>
+              </li>
+            </o:forEach>
+          </ul>
+        </li>
+
+        <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['ADDINS']}"/>
+        <li>
+          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
+                                   onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
+                                   selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                   unselectedImageUrl="../images/empty-pixel.png"
+                                   undefinedImageUrl="../images/selectbooleancheckbox/icon-semi-checked-big.png"
+                                   styleClass="checkbox">
+            <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
+            <f:param name="ingredientGroup" value="#{ingredientGroup}"/>
+          </o:selectBooleanCheckbox><h:outputText value="#{ingredientGroup.label}"/>
+
+
+          <ul>
+            <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
+              <li>
+                <o:selectBooleanCheckbox value="#{drink[ingredient]}"
+                                         onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                         selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
+                                         unselectedImageUrl="../images/empty-pixel.png"
+                                         styleClass="checkbox">
+                  <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
+                  <f:param name="ingredient" value="#{ingredient}"/>
+                </o:selectBooleanCheckbox><h:outputText value="#{ingredient.label}"/><br/>
+              </li>
+            </o:forEach>
+          </ul>
+        </li>
+      </ul>
+    </h:panelGroup>
+  </h:panelGroup>
+</li>
+
+</ul>
+
+</div>
+</div>
+</div>
+<div id="Description">
+  <h4>Demonstrated Features</h4>
+  <ul class="hang">
+    <li><strong>Feature 1</strong> - feature 1 description.
+    </li>
+    <li><strong>Feature 2</strong> - feature 2 description.
+    </li>
+  </ul>
+</div>
 
 </div>

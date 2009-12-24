@@ -15,7 +15,7 @@ package org.openfaces.demo.beans.selectbooleancheckbox;
 import static org.openfaces.demo.beans.selectbooleancheckbox.Drink.Ingredient.*;
 import static org.openfaces.demo.beans.selectbooleancheckbox.Drink.IngredientGroup.ADDINS;
 import static org.openfaces.demo.beans.selectbooleancheckbox.Drink.IngredientGroup.BASE;
-import static org.openfaces.demo.beans.selectbooleancheckbox.Drink.IngredientGroup.SYRUP;
+import static org.openfaces.demo.beans.selectbooleancheckbox.Drink.IngredientGroup.SYRUPS;
 import static org.openfaces.demo.beans.selectbooleancheckbox.Drink.IngredientGroup.TOPPING;
 
 import java.util.ArrayList;
@@ -92,6 +92,7 @@ public class Drink extends HashMap<Object, Boolean> {
     }
 
     public enum DrinkReceipt {
+        ESPRESSO("Espresso", SYRUP, MILK, SUGAR, HONEY, ICE),
         HOT_CHOCOLATE("Hot Chocolate", CREAM, GINGER, MOCHA, NUTMEG, SEASALT, VANILLA_POWDER, BANANA, FRAPPS),
         ICED_TEA("Iced Tea", LEMON, VANILLA, SUGAR, HONEY, WATER),
         CLEAN_WATER("Clean Water", LEMON_SYRUP, VANILLA_SYRUP, GINGER_SYRUP, SUGAR, ICE);
@@ -137,7 +138,7 @@ public class Drink extends HashMap<Object, Boolean> {
         BASE("Base"),
         TOPPING("Topping"),
         ADDINS("Add-ins"),
-        SYRUP("Syrup");
+        SYRUPS("Syrup");
 
         private String label;
 
@@ -152,14 +153,16 @@ public class Drink extends HashMap<Object, Boolean> {
 
     public enum Ingredient {
         CREAM("Cream", BASE),
+        SYRUP("Syrup", BASE),
+        MILK("Milk", BASE),
         GINGER("Ginger", TOPPING),
         MOCHA("Mocha", TOPPING),
         NUTMEG("Nutmeg", TOPPING),
         SEASALT("SeaSalt", TOPPING),
         VANILLA_POWDER("Vanilla Powder", TOPPING),
-        LEMON_SYRUP("Lemon", SYRUP),
-        VANILLA_SYRUP("Vanilla", SYRUP),
-        GINGER_SYRUP("Ginger", SYRUP),
+        LEMON_SYRUP("Lemon", SYRUPS),
+        VANILLA_SYRUP("Vanilla", SYRUPS),
+        GINGER_SYRUP("Ginger", SYRUPS),
         LEMON("Lemon", BASE),
         VANILLA("Vanilla", BASE),
         BANANA("Banana", ADDINS),
