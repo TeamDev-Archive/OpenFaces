@@ -132,6 +132,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private String sortedDescendingImageUrl;
 
     private int toggleColumnSorting = -1;
+    private Boolean toggleColumnSortingDirection;
     private boolean beforeUpdateValuesPhase = true;
     private List<BaseColumn> cachedAllColumns;
     private List<BaseColumn> cachedColumnsForRendering;
@@ -264,6 +265,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
         beforeUpdateValuesPhase = true;
         toggleColumnSorting = -1;
+        toggleColumnSortingDirection = null;
     }
 
     protected void afterRestoreState(FacesContext context) {
@@ -972,8 +974,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     protected void processModelUpdates(FacesContext context) {
         beforeUpdateValuesPhase = false;
         if (toggleColumnSorting != -1) {
-            toggleSorting(toggleColumnSorting);
+            doToggleSorting(toggleColumnSorting, toggleColumnSortingDirection);
             toggleColumnSorting = -1;
+            toggleColumnSortingDirection = null;
         }
     }
 
@@ -1186,9 +1189,18 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public void toggleSorting(int columnIndex) {
+        doToggleSorting(columnIndex, null);
+    }
+
+    public void toggleSorting(int columnIndex, boolean ascending) {
+        doToggleSorting(columnIndex, ascending);
+    }
+
+    private void doToggleSorting(int columnIndex, Boolean ascending) {
         rememberSelectionByKeys();
         if (beforeUpdateValuesPhase) {
             toggleColumnSorting = columnIndex;
+            toggleColumnSortingDirection = ascending;
             return;
         }
 
@@ -1200,11 +1212,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             throw new IllegalArgumentException("Column is not sortable at index (" + columnIndex + "). Column class is " + column.getClass());
         String columnId = column.getId();
         if (columnId != null && columnId.equals(getSortColumnId())) {
-            boolean newDirection = !isSortAscending();
+            boolean newDirection = ascending != null ? ascending : !isSortAscending();
             setSortAscending(newDirection);
         } else {
             setSortColumnId(columnId);
-            setSortAscending(true);
+            setSortAscending(ascending != null ? ascending : true);
         }
     }
 

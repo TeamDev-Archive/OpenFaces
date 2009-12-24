@@ -200,13 +200,13 @@ public abstract class AbstractTableRenderer extends RendererBase {
             throw new FacesException(
                     "The component inside of \"" + FACET_COLUMN_MENU + "\" facet must be a PopupMenu or descendant component, " +
                             "though the following component was found: " + component.getClass().getName() +
-                            ". table id: " + table.getClientId(context));
+                            ". table id: \"" + table.getClientId(context) + "\"");
         UIComponent buttonComponent = table.getFacet(FACET_COLUMN_MENU_BUTTON);
         if (buttonComponent != null && !(buttonComponent instanceof CaptionButton))
             throw new FacesException(
                     "The component inside of \"" + FACET_COLUMN_MENU_BUTTON + "\" facet must be a CaptionButton or descendant component, " +
                             "though the following component was found: " + buttonComponent.getClass().getName() +
-                            ". table id: " + table.getClientId(context));
+                            ". table id: \"" + table.getClientId(context) + "\"");
         CaptionButton button = (CaptionButton) buttonComponent;
         boolean temporaryButton = false;
         if (button == null) {
@@ -230,7 +230,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
         PopupMenu columnMenu = (PopupMenu) component;
         columnMenu.setStandalone(true);
         columnMenu.encodeAll(context);
-        buf.initScript(context, table, "O$.Table._initColumnMenu", columnMenu, button);
+        buf.initScript(context, columnMenu, "O$.ColumnMenu._init", table, button);
 
         if (temporaryButton)
             table.getFacets().remove(FACET_COLUMN_MENU_BUTTON);
@@ -383,10 +383,6 @@ public abstract class AbstractTableRenderer extends RendererBase {
         return table.getClientId(context) + "::sorting";
     }
 
-    private String getColumnVisibilityFieldName(FacesContext context, UIComponent table) {
-        return table.getClientId(context) + "::columnVisibility";
-    }
-
     private String getSortedColumnClass(AbstractTable table) {
         String sortedColumnClass = table.getSortedColumnClass();
         if (!table.getApplyDefaultStyle())
@@ -446,7 +442,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
             columnResizing.processDecodes(context);
 
         decodeSorting(context, table);
-        decodeColumnVisibility(context, table);
+        decodeColumnMenu(context, table);
 
         decodeCheckboxColumns(context, table);
 
@@ -477,32 +473,66 @@ public abstract class AbstractTableRenderer extends RendererBase {
         }
     }
 
+    private void decodeColumnMenu(FacesContext context, AbstractTable table) {
+        decodeColumnVisibility(context, table);
+        decodeColumnSorting(context, table);
+        decodeColumnHiding(context, table);
+    }
+
     private void decodeColumnVisibility(FacesContext context, AbstractTable table) {
         Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String fieldName = getColumnVisibilityFieldName(context, table);
+        String fieldName = table.getClientId(context) + "::columnVisibility";
         String fieldValue = requestParameterMap.get(fieldName);
-        if (fieldValue != null && fieldValue.length() > 0) {
+        if (fieldValue != null) {
             int columnToToggle = Integer.parseInt(fieldValue);
             List<BaseColumn> allColumns = table.getAllColumns();
             List<BaseColumn> renderedColumns = table.getColumnsForRendering();
             BaseColumn column = allColumns.get(columnToToggle);
             boolean columnWasVisible = renderedColumns.contains(column);
             boolean showColumn = !columnWasVisible;
-            if (!showColumn && renderedColumns.size() == 1)
-                showColumn = true; // don't allow to hide the last column
-            List<String> newColumnsOrder = new ArrayList<String>();
-            for (BaseColumn c : allColumns) {
-                String cid = c.getId();
-                if (c != column) {
-                    if (renderedColumns.contains(c))
-                        newColumnsOrder.add(cid);
-                } else {
-                    if (showColumn)
-                        newColumnsOrder.add(cid);
-                }
-            }
-            table.getAttributes().put("submittedColumnsOrder", newColumnsOrder);
+            applyColumnVisibility(table, column, showColumn);
         }
+    }
+
+    private void decodeColumnSorting(FacesContext context, AbstractTable table) {
+        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String sortAscendingStr = requestParameterMap.get(table.getClientId(context) + "::sortAscending");
+        String sortDescendingStr = requestParameterMap.get(table.getClientId(context) + "::sortDescending");
+        if (sortAscendingStr != null || sortDescendingStr != null) {
+            int colIndex = sortAscendingStr != null ? Integer.parseInt(sortAscendingStr) : Integer.parseInt(sortDescendingStr);
+            table.toggleSorting(colIndex, sortAscendingStr != null);
+        }
+    }
+
+    private void decodeColumnHiding(FacesContext context, AbstractTable table) {
+        Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
+        String hideColumnStr = requestParameterMap.get(table.getClientId(context) + "::hideColumn");
+        if (hideColumnStr != null) {
+            List<BaseColumn> columns = table.getColumnsForRendering();
+            int colIndex = Integer.parseInt(hideColumnStr);
+            BaseColumn column = columns.get(colIndex);
+            applyColumnVisibility(table, column, false);
+        }
+    }
+
+    private void applyColumnVisibility(AbstractTable table, BaseColumn column, boolean showColumn) {
+        List<BaseColumn> allColumns = table.getAllColumns();
+        List<BaseColumn> renderedColumns = table.getColumnsForRendering();
+
+        if (!showColumn && renderedColumns.size() == 1)
+            showColumn = true; // don't allow to hide the last column
+        List<String> newColumnsOrder = new ArrayList<String>();
+        for (BaseColumn c : allColumns) {
+            String cid = c.getId();
+            if (c != column) {
+                if (renderedColumns.contains(c))
+                    newColumnsOrder.add(cid);
+            } else {
+                if (showColumn)
+                    newColumnsOrder.add(cid);
+            }
+        }
+        table.getAttributes().put("submittedColumnsOrder", newColumnsOrder);
     }
 
 

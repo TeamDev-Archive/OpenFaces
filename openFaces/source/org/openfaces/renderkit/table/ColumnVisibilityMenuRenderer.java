@@ -12,6 +12,7 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.action.MenuItem;
+import org.openfaces.component.action.PopupMenu;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.ColumnVisibilityMenu;
@@ -19,6 +20,8 @@ import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.action.PopupMenuRenderer;
 import org.openfaces.renderkit.select.SelectBooleanCheckboxImageManager;
 import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -32,10 +35,7 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
         ColumnVisibilityMenu cvm = (ColumnVisibilityMenu) component;
         List<UIComponent> menuChildren = cvm.getChildren();
         menuChildren.clear();
-        UIComponent parent = cvm.getParent();
-        if (!(parent instanceof AbstractTable))
-            throw new FacesException("<o:columnVisibilityMenu> can only be inserted into the \"columnMenu\" facet of the <o:dataTable> or <o:treeTable> components.");
-        AbstractTable table = (AbstractTable) parent;
+        AbstractTable table = getTable(cvm);
         cvm.getAttributes().put(PopupMenuRenderer.ATTR_DEFAULT_INDENT_CLASS, "o_popup_menu_indent o_columnVisibilityMenuIndent");
 
         List<BaseColumn> visibleColumns = table.getColumnsForRendering();
@@ -55,4 +55,25 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
         super.encodeBegin(context, component);
     }
 
+    private AbstractTable getTable(ColumnVisibilityMenu cvm) {
+        UIComponent parent = cvm.getParent();
+        while (parent != null && (parent instanceof MenuItem || parent instanceof PopupMenu))
+            parent = parent.getParent();
+        if (!(parent instanceof AbstractTable))
+            throw new FacesException("<o:columnVisibilityMenu> can only be inserted into the \"columnMenu\" facet of " +
+                    "the <o:dataTable> or <o:treeTable> components (either directly or as its sub-menu).");
+        AbstractTable table = (AbstractTable) parent;
+        return table;
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        super.encodeEnd(context, component);
+        ColumnVisibilityMenu cvm = (ColumnVisibilityMenu) component;
+        AbstractTable table = getTable(cvm);
+        RenderingUtil.renderInitScript(context, new ScriptBuilder().initScript(context,
+                component, "O$.ColumnMenu._initColumnVisibilityMenu", table),  
+                AbstractTableRenderer.getTableJsURL(context));
+
+    }
 }

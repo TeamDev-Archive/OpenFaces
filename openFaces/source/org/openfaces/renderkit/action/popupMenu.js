@@ -221,7 +221,6 @@ O$.PopupMenu = {
           break;
         case 39: // right
           menuItem = popupMenu._popupMenuItems[popupMenu._selectedIndex];
-          if (menuItem._openSubmenuTask)  clearTimeout(menuItem._openSubmenuTask);
           O$.PopupMenu._showSubmenu(popupMenu, menuItem._anchor, submenuHorisontalOffset);
           O$.PopupMenu._showFirstMenuItemonChild(menuItem, selectDisabledItems);
           break;
@@ -289,7 +288,7 @@ O$.PopupMenu = {
         menuItem._arrow.src = menuItem._arrow.arrowDisabledImage;
     }
 
-    /*Update selected class*/
+    /* Update selected class */
     var style = menuItem._anchor.className;
     var rolloverStyle = style;
     if (!enabled && selectDisabledItems) {
@@ -461,29 +460,48 @@ O$.PopupMenu = {
   },
 
   _showSubmenu: function(popupMenu, itemAnchor, submenuHorisontalOffset) {
-    if (!itemAnchor.parentNode._disabled) {
-      if (!!itemAnchor._menuId) {
-        var childPopupMenu = O$(itemAnchor._menuId);
-        if (popupMenu._openedChildMenu != childPopupMenu) {
-          popupMenu.closeChildMenus();
-          var popupMenuRect = O$.getElementBorderRectangle(popupMenu, true);
-          popupMenu._openedChildMenu = childPopupMenu;
-
-          var popup_menu_border_top = O$.getNumericElementStyle(popupMenu, "border-top-width");
-          var childPopupMenu_border_left = (!O$.isOpera()) ? O$.getNumericElementStyle(popupMenu, "border-left-width") : 0;
-          var item_border_left = O$.getNumericElementStyle(itemAnchor, "border-left-width");
-          var x = popupMenuRect.width - O$.getElementPos(itemAnchor, true).x - childPopupMenu_border_left - item_border_left + submenuHorisontalOffset;
-          var y = -popup_menu_border_top - popupMenu.clientTop - O$.getNumericElementStyle(itemAnchor, "border-top-width");
-          childPopupMenu.showAtXY(x, y);
-
-          O$.PopupMenu._clearSelection(childPopupMenu);
-
-          childPopupMenu.focus();
-        }
-        popupMenu._enter = false;
-      }
+    var menuItem = itemAnchor.parentNode;
+    if (popupMenu._closeAllTask) {
+      clearTimeout(popupMenu._closeAllTask);
+      popupMenu._closeAllTask = null;
     }
-  },
+    if (menuItem._openSubmenuTask) {
+      clearTimeout(menuItem._openSubmenuTask);
+      menuItem._openSubmenuTask = null;
+    }
+
+    if (menuItem._disabled)
+      return;
+    if (!itemAnchor._menuId)
+      return;
+    var childPopupMenu = O$(itemAnchor._menuId);
+    if (childPopupMenu.isVisible()) return;
+    if (popupMenu._openedChildMenu != childPopupMenu) {
+      popupMenu.closeChildMenus();
+      var popupMenuRect = O$.getElementBorderRectangle(popupMenu, true);
+      popupMenu._openedChildMenu = childPopupMenu;
+
+      var popup_menu_border_top = O$.getNumericElementStyle(popupMenu, "border-top-width");
+      var childPopupMenu_border_left = (!O$.isOpera()) ? O$.getNumericElementStyle(popupMenu, "border-left-width") : 0;
+      var item_border_left = O$.getNumericElementStyle(itemAnchor, "border-left-width");
+      var x = popupMenuRect.width - O$.getElementPos(itemAnchor, true).x - childPopupMenu_border_left - item_border_left + submenuHorisontalOffset;
+      var y = -popup_menu_border_top - popupMenu.clientTop - O$.getNumericElementStyle(itemAnchor, "border-top-width");
+      childPopupMenu.showAtXY(x, y);
+      var visibleRect = O$.getVisibleAreaRectangle();
+      var subMenuRect = O$.getElementBorderRectangle(childPopupMenu);
+      if (subMenuRect.getMaxX() > visibleRect.getMaxX()) {
+        childPopupMenu.setLeft(-subMenuRect.width - childPopupMenu_border_left - item_border_left);
+      }
+      if (subMenuRect.getMaxY() > visibleRect.getMaxY()) {
+        childPopupMenu.setTop(y - (subMenuRect.getMaxY() - visibleRect.getMaxY()) - 5);
+      }
+
+      O$.PopupMenu._clearSelection(childPopupMenu);
+
+      childPopupMenu.focus();
+    }
+    popupMenu._enter = false;
+},
 
   _showFirstMenuItemonChild: function(menuItem, selectDisabledItems) {
     if (!!menuItem._menuId && !menuItem._disabled) {
@@ -861,9 +879,11 @@ O$.PopupMenu = {
             if (menuItem._menuId) {
               if (menuItem._openSubmenuTask) {
                 clearTimeout(menuItem._openSubmenuTask);
+                menuItem._openSubmenuTask = null;
               }
-              if (popupMenu._parentPopupMenu) {
+              if (popupMenu._parentPopupMenu && popupMenu._parentPopupMenu._closeAllTask) {
                 clearTimeout(popupMenu._parentPopupMenu._closeAllTask);
+                popupMenu._parentPopupMenu._closeAllTask = null;
               }
               O$.PopupMenu._showSubmenu(popupMenu, menuItem._anchor, submenuHorisontalOffset);
               O$.PopupMenu._showFirstMenuItemonChild(menuItem, selectDisabledItems);
@@ -884,16 +904,21 @@ O$.PopupMenu = {
     var popupMenu = menuItem._popupMenu;
     var menuItemElement = menuItem._anchor;
 
-    O$.addMouseOverListener(menuItemElement, function(evt) {
+    O$.addMouseOverListener(menuItemElement, function() {
       var menuItem = menuItemElement.parentNode;
       if (menuItem._disabled && !selectDisabledItems) return;
 
-      if (popupMenu._parentPopupMenu) {
+      if (popupMenu._parentPopupMenu && popupMenu._parentPopupMenu._closeAllTask) {
         clearTimeout(popupMenu._parentPopupMenu._closeAllTask);
+        popupMenu._parentPopupMenu._closeAllTask = null;
       }
 
       O$.PopupMenu._setHighlightMenuItem(popupMenu, menuItemElement, selectDisabledItems);
 
+      if (popupMenu._closeAllTask) {
+        clearTimeout(popupMenu._closeAllTask);
+        popupMenu._closeAllTask = null;
+      }
       menuItem._openSubmenuTask = setTimeout(function() {
         if (menuItemElement._focused)
           O$.PopupMenu._showSubmenu(popupMenu, menuItemElement, submenuHorisontalOffset);
@@ -910,11 +935,11 @@ O$.PopupMenu = {
 
       if (popupMenu._closeAllTask) {
         clearTimeout(popupMenu._closeAllTask);
+        popupMenu._closeAllTask = null;
       }
 
       popupMenu._closeAllTask = setTimeout(function() {
         if (!popupMenu.isVisible()) return;
-        popupMenu.closeChildMenus();
         popupMenu.closeChildMenus();
         popupMenu.focus();
       }, submenuHideDelay);

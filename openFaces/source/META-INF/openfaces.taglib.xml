@@ -105,6 +105,15 @@
   </tag>
 
   <tag>
+    <tag-name>columnMenu</tag-name>
+    <component>
+      <component-type>org.openfaces.ColumnMenu</component-type>
+      <renderer-type>org.openfaces.ColumnMenuRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.ColumnMenuTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
     <tag-name>scrolling</tag-name>
     <component>
       <component-type>org.openfaces.Scrolling</component-type>
@@ -818,7 +827,7 @@
     </component>
   </tag>
 
-   <tag>
+  <tag>
     <tag-name>inputTextarea</tag-name>
     <component>
       <component-type>org.openfaces.InputTextarea</component-type>
@@ -873,7 +882,7 @@
     <component>
       <component-type>org.openfaces.BorderLayoutPanel</component-type>
       <renderer-type>org.openfaces.BorderLayoutPanelRenderer</renderer-type>
-	  <handler-class>org.openfaces.taglib.facelets.panel.BorderLayoutPanelTagHandler</handler-class>
+      <handler-class>org.openfaces.taglib.facelets.panel.BorderLayoutPanelTagHandler</handler-class>
     </component>
   </tag>
 
@@ -886,7 +895,7 @@
     </component>
   </tag>
 
-   <tag>
+  <tag>
     <tag-name>spinner</tag-name>
     <component>
       <component-type>org.openfaces.Spinner</component-type>
@@ -930,7 +939,7 @@
       <handler-class>org.openfaces.taglib.facelets.select.SelectManyCheckboxTagHandler</handler-class>
     </component>
   </tag>
-  
+
   <tag>
     <tag-name>validateAll</tag-name>
     <component>
@@ -940,7 +949,7 @@
     </component>
   </tag>
 
-   <tag>
+  <tag>
     <tag-name>compositeFilter</tag-name>
     <component>
       <component-type>org.openfaces.CompositeFilter</component-type>
@@ -949,12 +958,36 @@
     </component>
   </tag>
 
-   <tag>
+  <tag>
     <tag-name>filterProperty</tag-name>
     <component>
       <component-type>org.openfaces.FilterProperty</component-type>
       <renderer-type>org.openfaces.FilterPropertyRenderer</renderer-type>
       <handler-class>org.openfaces.taglib.facelets.filter.FilterPropertyTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>sortAscendingMenuItem</tag-name>
+    <component>
+      <component-type>org.openfaces.SortAscendingMenuItem</component-type>
+      <renderer-type>org.openfaces.SortAscendingMenuItemRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.SortAscendingMenuItemTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>sortDescendingMenuItem</tag-name>
+    <component>
+      <component-type>org.openfaces.SortDescendingMenuItem</component-type>
+      <renderer-type>org.openfaces.SortDescendingMenuItemRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.SortDescendingMenuItemTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>hideColumnMenuItem</tag-name>
+    <component>
+      <component-type>org.openfaces.HideColumnMenuItem</component-type>
+      <renderer-type>org.openfaces.HideColumnMenuItemRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.table.HideColumnMenuItemTagHandler</handler-class>
     </component>
   </tag>
 

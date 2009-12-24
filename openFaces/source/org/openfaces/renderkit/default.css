@@ -227,10 +227,11 @@
 }
 
 .o_columnMenuInvoker {
+  width: 20px;
   text-align: center;
   border-left: 1px solid silver;
   vertical-align: middle;
-  width: 20px;
+  background-color: silver;
 }
 
 /* Checkbox column */

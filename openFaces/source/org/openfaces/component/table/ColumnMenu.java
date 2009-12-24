@@ -15,12 +15,12 @@ import org.openfaces.component.action.PopupMenu;
 
 import javax.faces.context.FacesContext;
 
-public class ColumnVisibilityMenu extends PopupMenu {
-    public static final String COMPONENT_TYPE = "org.openfaces.ColumnVisibilityMenu";
-    public static final String COMPONENT_FAMILY = "org.openfaces.ColumnVisibilityMenu";
+public class ColumnMenu extends PopupMenu {
+    public static final String COMPONENT_TYPE = "org.openfaces.ColumnMenu";
+    public static final String COMPONENT_FAMILY = "org.openfaces.ColumnMenu";
 
-    public ColumnVisibilityMenu() {
-        setRendererType("org.openfaces.ColumnVisibilityMenuRenderer");
+    public ColumnMenu() {
+        setRendererType("org.openfaces.ColumnMenuRenderer");
     }
 
     @Override

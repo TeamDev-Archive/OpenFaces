@@ -12,6 +12,7 @@
 package org.openfaces.taglib.jsp.action;
 
 import org.openfaces.taglib.internal.action.PopupMenuTag;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
 import javax.el.ValueExpression;
@@ -23,6 +24,10 @@ public class PopupMenuJspTag extends AbstractComponentJspTag {
 
     public PopupMenuJspTag() {
         super(new PopupMenuTag());
+    }
+
+    public PopupMenuJspTag(AbstractComponentTag delegate) {
+        super(delegate);
     }
 
     public void setFor(ValueExpression forElement) {

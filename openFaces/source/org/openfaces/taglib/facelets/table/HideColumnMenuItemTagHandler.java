@@ -9,16 +9,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.jsp.table;
+package org.openfaces.taglib.facelets.table;
 
-import org.openfaces.taglib.internal.table.ColumnVisibilityMenuTag;
-import org.openfaces.taglib.jsp.action.PopupMenuJspTag;
+import com.sun.facelets.tag.jsf.ComponentConfig;
+import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.table.HideColumnMenuItemTag;
 
-public class ColumnVisibilityMenuJspTag extends PopupMenuJspTag {
+public class HideColumnMenuItemTagHandler extends AbstractFaceletsComponentHandler {
 
-    public ColumnVisibilityMenuJspTag() {
-        super(new ColumnVisibilityMenuTag());
+    public HideColumnMenuItemTagHandler(ComponentConfig componentConfig) {
+        super(componentConfig, new HideColumnMenuItemTag());
     }
-
 
 }

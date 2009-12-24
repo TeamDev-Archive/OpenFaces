@@ -11,13 +11,13 @@
  */
 package org.openfaces.taglib.jsp.table;
 
-import org.openfaces.taglib.internal.table.ColumnVisibilityMenuTag;
+import org.openfaces.taglib.internal.table.ColumnMenuTag;
 import org.openfaces.taglib.jsp.action.PopupMenuJspTag;
 
-public class ColumnVisibilityMenuJspTag extends PopupMenuJspTag {
+public class ColumnMenuJspTag extends PopupMenuJspTag {
 
-    public ColumnVisibilityMenuJspTag() {
-        super(new ColumnVisibilityMenuTag());
+    public ColumnMenuJspTag() {
+        super(new ColumnMenuTag());
     }
 
 

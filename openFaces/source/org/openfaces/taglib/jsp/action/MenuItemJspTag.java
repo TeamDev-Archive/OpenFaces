@@ -13,6 +13,7 @@ package org.openfaces.taglib.jsp.action;
 
 
 import org.openfaces.taglib.internal.action.MenuItemTag;
+import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
 import javax.el.MethodExpression;
@@ -25,6 +26,10 @@ public class MenuItemJspTag extends AbstractComponentJspTag {
 
     public MenuItemJspTag() {
         super(new MenuItemTag());
+    }
+
+    public MenuItemJspTag(AbstractComponentTag delegate) {
+        super(delegate);
     }
 
     public void setValue(ValueExpression value) {

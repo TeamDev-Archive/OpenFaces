@@ -54,6 +54,16 @@ public class MenuItem extends OUICommand {
         setRendererType("org.openfaces.MenuItemRenderer");
     }
 
+    public MenuItem(String value) {
+        this();
+        setValue(value);
+    }
+
+    public MenuItem(String value, PopupMenu submenu) {
+        this(value);
+        getChildren().add(submenu);
+    }
+
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

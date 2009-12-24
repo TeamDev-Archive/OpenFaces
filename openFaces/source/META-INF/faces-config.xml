@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <faces-config
-    xmlns="http://java.sun.com/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
-    version="1.2">
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+        version="1.2">
 
   <application>
     <el-resolver>org.openfaces.util.NullTypeELResolver</el-resolver>
@@ -92,6 +92,25 @@
     <component-class>org.openfaces.component.table.ColumnVisibilityMenu</component-class>
   </component>
 
+  <component>
+    <component-type>org.openfaces.SortAscendingMenuItem</component-type>
+    <component-class>org.openfaces.component.table.SortAscendingMenuItem</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.SortDescendingMenuItem</component-type>
+    <component-class>org.openfaces.component.table.SortDescendingMenuItem</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.HideColumnMenuItem</component-type>
+    <component-class>org.openfaces.component.table.HideColumnMenuItem</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.ColumnMenu</component-type>
+    <component-class>org.openfaces.component.table.ColumnMenu</component-class>
+  </component>
 
   <component>
     <component-type>org.openfaces.Scrolling</component-type>
@@ -624,7 +643,7 @@
     <component-class>org.openfaces.component.filter.CompositeFilter</component-class>
   </component>
 
-   <component>
+  <component>
     <component-type>org.openfaces.FilterProperty</component-type>
     <component-class>org.openfaces.component.filter.FilterProperty</component-class>
   </component>
@@ -656,6 +675,26 @@
       <component-family>org.openfaces.ColumnReordering</component-family>
       <renderer-type>org.openfaces.ColumnReorderingRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.table.ColumnReorderingRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.ColumnMenu</component-family>
+      <renderer-type>org.openfaces.ColumnMenuRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.ColumnMenuRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.SortAscendingMenuItem</component-family>
+      <renderer-type>org.openfaces.SortAscendingMenuItemRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.SortAscendingMenuItemRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.SortDescendingMenuItem</component-family>
+      <renderer-type>org.openfaces.SortDescendingMenuItemRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.SortDescendingMenuItemRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.HideColumnMenuItem</component-family>
+      <renderer-type>org.openfaces.HideColumnMenuItemRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.table.HideColumnMenuItemRenderer</renderer-class>
     </renderer>
     <renderer>
       <component-family>org.openfaces.ColumnVisibilityMenu</component-family>

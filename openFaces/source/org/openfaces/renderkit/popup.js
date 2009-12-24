@@ -55,6 +55,12 @@ O$.Popup = {
         this.show();
       },
 
+      _showByElement: function(element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, disableRepositioning) {
+        this.show();
+        O$.alignPopupByElement(this, element, horizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, disableRepositioning);
+      },
+
+
       show: function() {
         if (this.isVisible())
           return;

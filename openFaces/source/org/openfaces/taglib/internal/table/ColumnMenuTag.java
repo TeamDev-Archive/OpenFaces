@@ -11,20 +11,20 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.ColumnVisibilityMenu;
+import org.openfaces.component.table.ColumnMenu;
 import org.openfaces.taglib.internal.action.PopupMenuTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class ColumnVisibilityMenuTag extends PopupMenuTag {
+public class ColumnMenuTag extends PopupMenuTag {
 
     public String getComponentType() {
-        return ColumnVisibilityMenu.COMPONENT_TYPE;
+        return ColumnMenu.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
-        return "org.openfaces.ColumnVisibilityMenuRenderer";
+        return "org.openfaces.ColumnMenuRenderer";
     }
 
     @Override

@@ -11,16 +11,16 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.component.action.PopupMenu;
+import org.openfaces.component.action.MenuItem;
 
 import javax.faces.context.FacesContext;
 
-public class ColumnVisibilityMenu extends PopupMenu {
-    public static final String COMPONENT_TYPE = "org.openfaces.ColumnVisibilityMenu";
-    public static final String COMPONENT_FAMILY = "org.openfaces.ColumnVisibilityMenu";
+public class SortDescendingMenuItem extends MenuItem {
+    public static final String COMPONENT_TYPE = "org.openfaces.SortDescendingMenuItem";
+    public static final String COMPONENT_FAMILY = "org.openfaces.SortDescendingMenuItem";
 
-    public ColumnVisibilityMenu() {
-        setRendererType("org.openfaces.ColumnVisibilityMenuRenderer");
+    public SortDescendingMenuItem() {
+        setRendererType("org.openfaces.SortDescendingMenuItemRenderer");
     }
 
     @Override
