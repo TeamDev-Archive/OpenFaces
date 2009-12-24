@@ -1354,18 +1354,20 @@ O$.Table = {
             else
               this._updatePos();
             // don't let parent header cell hover to be activated since the handle is logically out of column (IE)
-            table._columns.forEach(function(c) {
-              var headerCell = c.header && c.header._cell;
-              if (headerCell && headerCell.setForceHover) headerCell.setForceHover(false);
-            });
+            if (!table._showingMenuForColumn)
+              table._columns.forEach(function(c) {
+                var headerCell = c.header && c.header._cell;
+                if (headerCell && headerCell.setForceHover) headerCell.setForceHover(false);
+              });
           },
           onmouseout: function() {
             if (table._columnResizingInProgress) return;
             // don't let parent header cell hover to be activated since the handle is logically out of column (IE)
-            table._columns.forEach(function(c) {
-              var headerCell = c.header && c.header._cell;
-              if (headerCell && headerCell.setForceHover) headerCell.setForceHover(null);
-            });
+            if (!table._showingMenuForColumn)
+              table._columns.forEach(function(c) {
+                var headerCell = c.header && c.header._cell;
+                if (headerCell && headerCell.setForceHover) headerCell.setForceHover(null);
+              });
           },
           onmousedown: function (e) {
             O$.startDragging(e, this);
@@ -1928,6 +1930,7 @@ O$.Table = {
       O$.breakEvent(evt);
       var btnRect = O$.getElementBorderRectangle(columnMenuButtonTable, true);
       O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
+      table._showingMenuForColumn = currentColumn;
       columnMenu.showAtXY(btnRect.getMinX(), btnRect.getMaxY(), O$.getContainingBlock(columnMenuButtonTable, true));
       var prevOnhide = columnMenu.onhide;
       var headerCell = currentColumn.header._cell;
@@ -1935,6 +1938,7 @@ O$.Table = {
       columnMenuButton.setForceHover(true);
       menuOpened = true;
       columnMenu.onhide = function(e) {
+        table._showingMenuForColumn = null;
         if (prevOnhide)
           prevOnhide.call(columnMenu, e);
         columnMenuButton.setForceHover(null);

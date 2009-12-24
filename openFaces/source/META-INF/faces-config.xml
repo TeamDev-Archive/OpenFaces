@@ -13,6 +13,19 @@
     <application-factory>org.openfaces.application.OpenFacesApplicationFactory</application-factory>
   </factory>
 
+  <lifecycle>
+    <phase-listener>org.openfaces.component.validation.RenderKitReplacerPhaseListener</phase-listener>
+  </lifecycle>
+  <lifecycle>
+    <phase-listener>org.openfaces.component.validation.ValidatorPhaseListener</phase-listener>
+  </lifecycle>
+  <lifecycle>
+    <phase-listener>org.openfaces.util.UtilPhaseListener</phase-listener>
+  </lifecycle>
+  <lifecycle>
+    <phase-listener>org.openfaces.util.RendererRequestPhaseListener</phase-listener>
+  </lifecycle>
+
   <component>
     <component-type>org.openfaces.ajax.AjaxViewRoot</component-type>
     <component-class>org.openfaces.ajax.AjaxViewRoot</component-class>
@@ -623,23 +636,7 @@
   </component>
 
 
-  <lifecycle>
-    <phase-listener>org.openfaces.component.validation.RenderKitReplacerPhaseListener</phase-listener>
-  </lifecycle>
-  <lifecycle>
-    <phase-listener>org.openfaces.component.validation.ValidatorPhaseListener</phase-listener>
-  </lifecycle>
-  <lifecycle>
-    <phase-listener>org.openfaces.util.UtilPhaseListener</phase-listener>
-  </lifecycle>
-  <lifecycle>
-    <phase-listener>org.openfaces.util.RendererRequestPhaseListener</phase-listener>
-  </lifecycle>
-
-
-  <!-- TABLE-RELATED RENDER-KIT DECLARATION -->
   <render-kit>
-
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
       <renderer-type>org.openfaces.DataTableRenderer</renderer-type>
@@ -1072,6 +1069,7 @@
       org.openfaces.validator.CustomValidator
     </validator-class>
   </validator>
+
   <validator>
     <description>
       Email validator
@@ -1083,6 +1081,7 @@
       org.openfaces.validator.EMailValidator
     </validator-class>
   </validator>
+
   <validator>
     <description>
       URL validator
@@ -1094,6 +1093,7 @@
       org.openfaces.validator.URLValidator
     </validator-class>
   </validator>
+
   <validator>
     <description>
       Regex validator
@@ -1105,6 +1105,7 @@
       org.openfaces.validator.RegexValidator
     </validator-class>
   </validator>
+
   <validator>
     <description>
       Equal validator
