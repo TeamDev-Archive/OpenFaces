@@ -19,13 +19,13 @@ import java.io.Serializable;
  * @author Dmitry Pikhulya
  */
 public abstract class AbstractDynamicColumnExpression extends ValueExpression implements Serializable {
-    protected transient DynamicTableColumn column;
+    protected transient DynamicColumn column;
     protected transient ValueExpression expressionFromColumnsComponent;
 
     protected AbstractDynamicColumnExpression() {
     }
 
-    protected AbstractDynamicColumnExpression(DynamicTableColumn column, ValueExpression expressionFromColumnsComponent) {
+    protected AbstractDynamicColumnExpression(DynamicColumn column, ValueExpression expressionFromColumnsComponent) {
         this.column = column;
         this.expressionFromColumnsComponent = expressionFromColumnsComponent;
     }

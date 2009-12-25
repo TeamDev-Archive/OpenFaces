@@ -24,9 +24,9 @@ import java.util.Map;
 /**
  * @author Dmitry Pikhulya
  */
-public class TableCell extends UIComponentBase {
-    public static final String COMPONENT_TYPE = "org.openfaces.TableCell";
-    public static final String COMPONENT_FAMILY = "org.openfaces.TableCell";
+public class Cell extends UIComponentBase {
+    public static final String COMPONENT_TYPE = "org.openfaces.Cell";
+    public static final String COMPONENT_FAMILY = "org.openfaces.Cell";
 
     private Object columnIds;
     private Integer span;
@@ -44,7 +44,7 @@ public class TableCell extends UIComponentBase {
     private String onkeyup;
     private String onkeypress;
 
-    public TableCell() {
+    public Cell() {
     }
 
     public String getFamily() {

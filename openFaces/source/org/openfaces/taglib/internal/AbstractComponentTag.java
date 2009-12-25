@@ -180,8 +180,82 @@ public abstract class AbstractComponentTag extends AbstractTag {
             else if ("false".equals(value))
                 bValue = false;
             else
-                throw new IllegalArgumentException("Invalid attribute value. Attribute name: " + propertyName + ". Boolean value expected, but found: " + value);
+                throw new IllegalArgumentException("Invalid attribute value. Attribute name: " + propertyName + ". Boolean value expected, but the following was found: " + value);
             component.getAttributes().put(propertyName, bValue);
+        }
+    }
+
+    protected void setCharProperty(UIComponent component, String propertyName) {
+        String value = getPropertyValue(propertyName);
+        setCharProperty(component, propertyName, value);
+    }
+
+    protected void setCharProperty(UIComponent component, String propertyName, String value) {
+        if (value == null) {
+            return;
+        }
+
+        if (getExpressionCreator().isValueReference(propertyName, value)) {
+            FacesContext facesContext = getFacesContext();
+            ValueExpression ve = createValueExpression(facesContext, propertyName, value, Boolean.class);
+            component.setValueExpression(propertyName, ve);
+        } else {
+            if (value.length() != 1)
+                throw new IllegalArgumentException("Invalid attribute value. Attribute name: " + propertyName + ". Char value (as a string with one character) expected, but the following was found: " + value);
+            char c = value.charAt(0);
+            component.getAttributes().put(propertyName, c);
+        }
+    }
+
+    protected void setByteProperty(UIComponent component, String propertyName) {
+        String value = getPropertyValue(propertyName);
+        setByteProperty(component, propertyName, value);
+    }
+
+    protected void setByteProperty(UIComponent component, String propertyName, String value) {
+        if (value == null) {
+            return;
+        }
+
+        if (getExpressionCreator().isValueReference(propertyName, value)) {
+            FacesContext facesContext = getFacesContext();
+            ValueExpression ve = createValueExpression(facesContext, propertyName, value, Boolean.class);
+            component.setValueExpression(propertyName, ve);
+        } else {
+            byte convertedValue;
+            try {
+                convertedValue = Byte.parseByte(value);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid attribute value. Attribute name: " + propertyName + ". Byte value expected, but the following was found: " + value, e);
+            }
+
+            component.getAttributes().put(propertyName, convertedValue);
+        }
+    }
+
+    protected void setShortProperty(UIComponent component, String propertyName) {
+        String value = getPropertyValue(propertyName);
+        setShortProperty(component, propertyName, value);
+    }
+
+    protected void setShortProperty(UIComponent component, String propertyName, String value) {
+        if (value == null) {
+            return;
+        }
+
+        if (getExpressionCreator().isValueReference(propertyName, value)) {
+            FacesContext facesContext = getFacesContext();
+            ValueExpression ve = createValueExpression(facesContext, propertyName, value, Boolean.class);
+            component.setValueExpression(propertyName, ve);
+        } else {
+            short convertedValue;
+            try {
+                convertedValue = Short.parseShort(value);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid attribute value. Attribute name: " + propertyName + ". Short type value expected, but the following was found: " + value, e);
+            }
+
+            component.getAttributes().put(propertyName, convertedValue);
         }
     }
 
@@ -201,6 +275,32 @@ public abstract class AbstractComponentTag extends AbstractTag {
         } else {
             int iValue = Integer.parseInt(value);
             component.getAttributes().put(propertyName, iValue);
+        }
+    }
+
+    protected void setLongProperty(UIComponent component, String propertyName) {
+        String value = getPropertyValue(propertyName);
+        setLongProperty(component, propertyName, value);
+    }
+
+    protected void setLongProperty(UIComponent component, String propertyName, String value) {
+        if (value == null) {
+            return;
+        }
+
+        if (getExpressionCreator().isValueReference(propertyName, value)) {
+            FacesContext facesContext = getFacesContext();
+            ValueExpression ve = createValueExpression(facesContext, propertyName, value, Boolean.class);
+            component.setValueExpression(propertyName, ve);
+        } else {
+            long convertedValue;
+            try {
+                convertedValue = Long.parseLong(value);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid attribute value. Attribute name: " + propertyName + ". Long type value expected, but the following was found: " + value, e);
+            }
+
+            component.getAttributes().put(propertyName, convertedValue);
         }
     }
 
@@ -316,11 +416,24 @@ public abstract class AbstractComponentTag extends AbstractTag {
             UIComponent component,
             String propertyName,
             String valueDeclaration) {
+      return setPropertyAsBinding(component, propertyName, valueDeclaration, propertyName);
+    }
+    /**
+     * @param component        component
+     * @param propertyName     property name
+     * @param valueDeclaration value declaration
+     * @return false if value declaration is not a value expression, so explicit setter invokation is required
+     */
+    protected boolean setPropertyAsBinding(
+            UIComponent component,
+            String propertyName,
+            String valueDeclaration,
+            String attributeName) {
         if (valueDeclaration == null)
             return true;
-        if (getExpressionCreator().isValueReference(propertyName, valueDeclaration)) {
+        if (getExpressionCreator().isValueReference(attributeName, valueDeclaration)) {
             ValueExpression ve = createValueExpression(getFacesContext(), propertyName, valueDeclaration);
-            component.setValueExpression(propertyName, ve);
+            component.setValueExpression(attributeName, ve);
             return true;
         } else
             return false;
@@ -332,7 +445,11 @@ public abstract class AbstractComponentTag extends AbstractTag {
     }
 
     protected void setPropertyBinding(UIComponent component, String propertyName, String propertyValue) {
-        if (!setPropertyAsBinding(component, propertyName, propertyValue)) {
+        setPropertyBinding(component, propertyName, propertyValue, propertyName);
+    }
+
+    protected void setPropertyBinding(UIComponent component, String propertyName, String propertyValue, String attributeName) {
+        if (!setPropertyAsBinding(component, propertyName, propertyValue, attributeName)) {
             throw new IllegalArgumentException(propertyName + " property for " + component.getFamily() + " component " +
                     "should be declared as a value binding expression, but it is declared as follows: \"" + propertyValue + "\"");
         }

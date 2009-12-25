@@ -11,19 +11,28 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.TableColumnGroup;
+import org.openfaces.component.table.Row;
+import org.openfaces.taglib.internal.AbstractComponentTag;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class TableColumnGroupTag extends BaseColumnTag {
+public class RowTag extends AbstractComponentTag {
 
     public String getComponentType() {
-        return TableColumnGroup.COMPONENT_TYPE;
+        return Row.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
         return null;
     }
 
+    @Override
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
+        setBooleanProperty(component, "condition");
+    }
 }

@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.jsp.table;
 
-import org.openfaces.taglib.internal.table.TableCellTag;
+import org.openfaces.taglib.internal.table.CellTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
 import javax.el.ValueExpression;
@@ -19,10 +19,10 @@ import javax.el.ValueExpression;
 /**
  * @author Dmitry Pikhulya
  */
-public class TableCellJspTag extends AbstractComponentJspTag {
+public class CellJspTag extends AbstractComponentJspTag {
 
-    public TableCellJspTag() {
-        super(new TableCellTag());
+    public CellJspTag() {
+        super(new CellTag());
     }
 
     public void setColumnIds(ValueExpression column) {

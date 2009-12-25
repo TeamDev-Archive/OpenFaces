@@ -11,7 +11,7 @@
  */
 package org.openfaces.renderkit.table;
 
-import org.openfaces.component.table.TableRow;
+import org.openfaces.component.table.Row;
 import org.openfaces.util.RenderingUtil;
 
 import javax.faces.component.UIComponent;
@@ -59,7 +59,7 @@ public class BodyRow extends AbstractRow {
         writer.endElement("tr");
     }
 
-    public void extractCustomEvents(List<TableRow> applicableCustomRows) throws IOException {
+    public void extractCustomEvents(List<Row> applicableCustomRows) throws IOException {
         this.events = prepareCustomRowOrCellEvents(applicableCustomRows);
     }
 

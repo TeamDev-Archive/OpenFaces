@@ -69,26 +69,22 @@
     </f:facet>
 
     <o:column id="institutionName"
+              header="Institution Name"
               width="30%"
               sortingExpression="#{bank.institutionName}"
               bodyStyle="text-align: left; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
               headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
-      <f:facet name="header">
-        <h:outputText value="Institution Name"/>
-      </f:facet>
       <f:facet name="subHeader">
         <o:inputTextFilter id="filter1" expression="#{bank.institutionName}"/>
       </f:facet>
       <h:outputText value="#{bank.institutionName}"/>
     </o:column>
     <o:column id="certificateNumber"
+              header="Certificate Number"
               width="10%"
               headerStyle="white-space: normal;"
               sortingExpression="#{bank.certificateNumber}"
               bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;">
-      <f:facet name="header">
-        <h:outputText style="white-space: normal;" value="Certificate Number"/>
-      </f:facet>
       <f:facet name="subHeader">
         <o:inputTextFilter id="filter2" expression="#{bank.certificateNumber}" maxlength="5" value="equals" autoFilterDelay="-1">
           <f:convertNumber integerOnly="true" groupingUsed="false"/>
@@ -96,18 +92,13 @@
       </f:facet>
       <h:outputText value="#{bank.certificateNumber}"/>
     </o:column>
-    <o:columnGroup>
-      <f:facet name="header">
-        <h:outputText value="Address"/>
-      </f:facet>
+    <o:columnGroup header="Address">
       <o:column id="city"
+                header="City"
                 width="14%"
                 sortingExpression="#{bank.city}"
                 bodyStyle="padding-left: 5px; padding-right: 5px;"
                 headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
-        <f:facet name="header">
-          <h:outputText value="City"/>
-        </f:facet>
         <f:facet name="subHeader">
           <o:inputTextFilter id="filter3" expression="#{bank.city}"/>
         </f:facet>
@@ -115,26 +106,22 @@
         <h:outputText value="#{bank.city}"/>
       </o:column>
       <o:column id="state"
+                header="State"
                 width="7%"
                 sortingExpression="#{bank.state}"
                 bodyStyle="padding-left: 5px; padding-right: 5px;"
                 headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
-        <f:facet name="header">
-          <h:outputText value="State"/>
-        </f:facet>
         <f:facet name="subHeader">
           <o:dropDownFieldFilter id="filter4" expression="#{bank.state}" value="equals" maxlength="2"/>
         </f:facet>
         <h:outputText value="#{bank.state}"/>
       </o:column>
       <o:column id="zip"
+                header="Zip"
                 width="7%"
                 bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
                 headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;"
                 sortingExpression="#{bank.zip}">
-        <f:facet name="header">
-          <h:outputText value="Zip"/>
-        </f:facet>
         <f:facet name="subHeader">
           <o:inputTextFilter id="filter5" expression="#{bank.zip}" maxlength="5" value="equals" autoFilterDelay="-1">
             <f:convertNumber integerOnly="true" groupingUsed="false"/>
@@ -143,13 +130,11 @@
         <h:outputText value="#{bank.zip}"/>
       </o:column>
       <o:column id="county"
+                header="County"
                 width="13%"
                 sortingExpression="#{bank.county}"
                 bodyStyle="padding-left: 5px; padding-right: 5px; white-space: nowrap;"
                 headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
-        <f:facet name="header">
-          <h:outputText value="County"/>
-        </f:facet>
         <f:facet name="subHeader">
           <o:inputTextFilter id="filter6" expression="#{bank.county}"/>
         </f:facet>
@@ -158,13 +143,11 @@
       </o:column>
     </o:columnGroup>
     <o:column id="averageAssets"
+              header="Average Assets"
               width="19%"
               bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
-              headerStyle="text-align: center; padding-left: 5px; padding-right: 5px;"
+              headerStyle="text-align: center; padding-left: 5px; padding-right: 5px; white-space: normal;"
               sortingExpression="#{bank.averageAssets}">
-      <f:facet name="header">
-        <h:outputText value="Average Assets"/>
-      </f:facet>
       <f:facet name="subHeader">
         <o:comboBoxFilter id="filter7" expression="#{BanksList.averageAssetsRange}"
                           options="#{BanksList.averageAssetsFilterValues}"/>

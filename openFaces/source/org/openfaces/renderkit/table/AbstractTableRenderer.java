@@ -21,7 +21,7 @@ import org.openfaces.component.table.CheckboxColumn;
 import org.openfaces.component.table.ColumnReordering;
 import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.Scrolling;
-import org.openfaces.component.table.TableColumn;
+import org.openfaces.component.table.Column;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.renderkit.CaptionButtonRenderer;
 import org.openfaces.renderkit.RendererBase;
@@ -339,7 +339,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
                 sortable = columnSortableAttr;
             else {
                 ValueExpression sortingExpression =
-                        (column instanceof TableColumn) ? ((TableColumn) column).getSortingExpression() : null;
+                        (column instanceof Column) ? ((Column) column).getSortingExpression() : null;
                 sortable = (sortingExpression != null);
             }
             atLeastOneColumnSortable1 |= sortable;

@@ -25,6 +25,14 @@ public abstract class BaseColumnJspTag extends AbstractComponentJspTag {
         super(delegate);
     }
 
+    public void setHeader(ValueExpression header) {
+        getDelegate().setPropertyValue("header", header);
+    }
+
+    public void setFooter(ValueExpression footer) {
+        getDelegate().setPropertyValue("footer", footer);
+    }
+
     public void setWidth(ValueExpression width) {
         getDelegate().setPropertyValue("width", width);
     }

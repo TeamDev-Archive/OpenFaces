@@ -18,7 +18,7 @@ import javax.el.ValueExpression;
 /**
  * @author Dmitry Pikhulya
  */
-public class TreeColumnJspTag extends TableColumnJspTag {
+public class TreeColumnJspTag extends ColumnJspTag {
 
     public TreeColumnJspTag() {
         super(new TreeColumnTag());

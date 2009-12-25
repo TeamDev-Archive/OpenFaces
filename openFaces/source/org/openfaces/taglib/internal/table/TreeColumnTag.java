@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Pavel Kaplin
  */
-public class TreeColumnTag extends TableColumnTag {
+public class TreeColumnTag extends ColumnTag {
 
     @Override
     public String getComponentType() {

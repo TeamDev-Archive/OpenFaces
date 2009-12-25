@@ -898,12 +898,12 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     }
 
-    private List<TableColumns> findColumnsComponents() {
-        List<TableColumns> columnsComponents = new ArrayList<TableColumns>();
+    private List<Columns> findColumnsComponents() {
+        List<Columns> columnsComponents = new ArrayList<Columns>();
         List<UIComponent> children = getChildren();
         for (UIComponent component : children) {
-            if (component instanceof TableColumns)
-                columnsComponents.add((TableColumns) component);
+            if (component instanceof Columns)
+                columnsComponents.add((Columns) component);
         }
         return columnsComponents;
     }
@@ -1048,9 +1048,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
-        List<TableColumns> columnsComponents = findColumnsComponents();
-        for (TableColumns tableColumns : columnsComponents) {
-            tableColumns.resetCachedColumnList();
+        List<Columns> columnsComponents = findColumnsComponents();
+        for (Columns columns : columnsComponents) {
+            columns.resetCachedColumnList();
         }
 
         getAttributes().put(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY, new HashMap());
@@ -1208,7 +1208,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         if (columnIndex < 0 || columnIndex >= columns.size())
             throw new IllegalArgumentException("columnIndex out of range. No of columns available: " + columns.size());
         BaseColumn column = columns.get(columnIndex);
-        if (!(column instanceof TableColumn || column instanceof SelectionColumn || column instanceof CheckboxColumn))
+        if (!(column instanceof Column || column instanceof SelectionColumn || column instanceof CheckboxColumn))
             throw new IllegalArgumentException("Column is not sortable at index (" + columnIndex + "). Column class is " + column.getClass());
         String columnId = column.getId();
         if (columnId != null && columnId.equals(getSortColumnId())) {
@@ -1256,13 +1256,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             return null;
         List<BaseColumn> allColumns = getAllColumns();
         BaseColumn column = findColumnById(allColumns, sortedColumnId);
-        boolean ordinaryColumn = column instanceof TableColumn;
+        boolean ordinaryColumn = column instanceof Column;
         if (column == null ||
                 !(ordinaryColumn || column instanceof CheckboxColumn || column instanceof SelectionColumn))
             return null;
         ValueExpression sortingExpression;
         if (ordinaryColumn) {
-            TableColumn tableColumn = (TableColumn) column;
+            Column tableColumn = (Column) column;
             sortingExpression = tableColumn.getSortingExpression();
         } else {
             sortingExpression = itemSelectedExpressionForColumn(column);
@@ -1270,7 +1270,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         if (sortingExpression == null)
             return null;
 
-        ValueExpression sortingComparatorBinding = ordinaryColumn ? ((TableColumn) column).getSortingComparatorBinding() : null;
+        ValueExpression sortingComparatorBinding = ordinaryColumn ? ((Column) column).getSortingComparatorBinding() : null;
         Comparator<Object> comparator = sortingComparatorBinding != null
                 ? (Comparator<Object>) sortingComparatorBinding.getValue(facesContext.getELContext())
                 : null;
@@ -1537,11 +1537,11 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             }
         }
 
-        List<TableRow> customRows = getCustomRows();
-        for (TableRow customRow : customRows) {
+        List<Row> customRows = getCustomRows();
+        for (Row customRow : customRows) {
             List<UIComponent> rowChildren = customRow.getChildren();
             for (UIComponent rowChild : rowChildren) {
-                if (!(rowChild instanceof TableCell))
+                if (!(rowChild instanceof Cell))
                     continue;
                 List<UIComponent> cellChildren = rowChild.getChildren();
                 for (UIComponent cellChild : cellChildren) {

@@ -18,11 +18,11 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class TableColumn extends BaseColumn {
-    public static final String COMPONENT_TYPE = "org.openfaces.TableColumn";
-    public static final String COMPONENT_FAMILY = "org.openfaces.TableColumn";
+public class Column extends BaseColumn {
+    public static final String COMPONENT_TYPE = "org.openfaces.Column";
+    public static final String COMPONENT_FAMILY = "org.openfaces.Column";
 
-    public TableColumn() {
+    public Column() {
     }
 
     @Override

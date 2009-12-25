@@ -15,8 +15,8 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.ColumnResizingState;
-import org.openfaces.component.table.TableColumnGroup;
-import org.openfaces.component.table.TableColumns;
+import org.openfaces.component.table.ColumnGroup;
+import org.openfaces.component.table.Columns;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.ComponentUtil;
@@ -105,14 +105,14 @@ public class TableUtil {
     public static List<BaseColumn> getColumnsFromList(FacesContext context, List<UIComponent> children) {
         List<BaseColumn> columns = new ArrayList<BaseColumn>();
         for (UIComponent child : children) {
-            if (child instanceof BaseColumn && !(child instanceof TableColumnGroup)) {
+            if (child instanceof BaseColumn && !(child instanceof ColumnGroup)) {
                 ComponentUtil.generateIdIfNotSpecified(child);
                 columns.add((BaseColumn) child);
-            } else if (child instanceof TableColumns) {
-                TableColumns tableColumns = (TableColumns) child;
+            } else if (child instanceof Columns) {
+                Columns tableColumns = (Columns) child;
                 columns.addAll(tableColumns.toColumnList(context));
-            } else if (child instanceof TableColumnGroup) {
-                TableColumnGroup tcg = (TableColumnGroup) child;
+            } else if (child instanceof ColumnGroup) {
+                ColumnGroup tcg = (ColumnGroup) child;
                 columns.addAll(getColumnsFromList(context, tcg.getChildren()));
             }
         }
@@ -158,6 +158,9 @@ public class TableUtil {
     }
 
     public static String obtainColumnHeader(BaseColumn column) {
+        String header = column.getHeaderValue();
+        if (header != null)
+            return header;
         UIComponent component = column.getHeader();
         return obtainOutputValue(component);
 

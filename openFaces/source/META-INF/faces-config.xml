@@ -38,13 +38,13 @@
   </component>
 
   <component>
-    <component-type>org.openfaces.TableRow</component-type>
-    <component-class>org.openfaces.component.table.TableRow</component-class>
+    <component-type>org.openfaces.Row</component-type>
+    <component-class>org.openfaces.component.table.Row</component-class>
   </component>
 
   <component>
-    <component-type>org.openfaces.TableCell</component-type>
-    <component-class>org.openfaces.component.table.TableCell</component-class>
+    <component-type>org.openfaces.Cell</component-type>
+    <component-class>org.openfaces.component.table.Cell</component-class>
   </component>
 
   <component>
@@ -58,23 +58,23 @@
   </component>
 
   <component>
-    <component-type>org.openfaces.TableColumn</component-type>
-    <component-class>org.openfaces.component.table.TableColumn</component-class>
+    <component-type>org.openfaces.Column</component-type>
+    <component-class>org.openfaces.component.table.Column</component-class>
   </component>
 
   <component>
-    <component-type>org.openfaces.DynamicTableColumn</component-type>
-    <component-class>org.openfaces.component.table.DynamicTableColumn</component-class>
+    <component-type>org.openfaces.DynamicColumn</component-type>
+    <component-class>org.openfaces.component.table.DynamicColumn</component-class>
   </component>
 
   <component>
-    <component-type>org.openfaces.TableColumns</component-type>
-    <component-class>org.openfaces.component.table.TableColumns</component-class>
+    <component-type>org.openfaces.Columns</component-type>
+    <component-class>org.openfaces.component.table.Columns</component-class>
   </component>
 
   <component>
-    <component-type>org.openfaces.TableColumnGroup</component-type>
-    <component-class>org.openfaces.component.table.TableColumnGroup</component-class>
+    <component-type>org.openfaces.ColumnGroup</component-type>
+    <component-class>org.openfaces.component.table.ColumnGroup</component-class>
   </component>
 
   <component>

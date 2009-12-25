@@ -156,11 +156,11 @@ public class TreeTable extends AbstractTable {
             }
         }
 
-        List<TableRow> customRows = getCustomRows();
-        for (TableRow customRow : customRows) {
+        List<Row> customRows = getCustomRows();
+        for (Row customRow : customRows) {
             List<UIComponent> rowChildren = customRow.getChildren();
             for (UIComponent rowChild : rowChildren) {
-                if (!(rowChild instanceof TableCell))
+                if (!(rowChild instanceof Cell))
                     continue;
                 List<UIComponent> cellChildren = rowChild.getChildren();
                 for (UIComponent cellChild : cellChildren) {

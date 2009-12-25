@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class TreeColumn extends TableColumn implements CompoundComponent {
+public class TreeColumn extends Column implements CompoundComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.TreeColumn";
     public static final String COMPONENT_FAMILY = "org.openfaces.TreeColumn";
 

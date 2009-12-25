@@ -11,8 +11,8 @@
  */
 package org.openfaces.renderkit.table;
 
-import org.openfaces.component.table.TableCell;
-import org.openfaces.component.table.TableRow;
+import org.openfaces.component.table.Cell;
+import org.openfaces.component.table.Row;
 
 import javax.faces.component.UIComponent;
 import java.io.Serializable;
@@ -31,15 +31,15 @@ public class CustomContentCellRenderingInfo extends CustomCellRenderingInfo impl
         this.tableCellDeclarationIndex = tableCellDeclarationIndex;
     }
 
-    public TableCell findTableCell(List customRows) {
-        TableRow tableRow = (TableRow) customRows.get(tableRowDeclarationIndex);
-        List<TableCell> cells = new ArrayList<TableCell>();
+    public Cell findTableCell(List customRows) {
+        Row tableRow = (Row) customRows.get(tableRowDeclarationIndex);
+        List<Cell> cells = new ArrayList<Cell>();
         List<UIComponent> children = tableRow.getChildren();
         for (UIComponent child : children) {
-            if (child instanceof TableCell)
-                cells.add((TableCell) child);
+            if (child instanceof Cell)
+                cells.add((Cell) child);
         }
-        TableCell result = cells.get(tableCellDeclarationIndex);
+        Cell result = cells.get(tableCellDeclarationIndex);
         return result;
     }
 }

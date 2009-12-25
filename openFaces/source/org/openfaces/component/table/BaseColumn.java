@@ -22,6 +22,9 @@ import javax.faces.context.FacesContext;
  * @author Dmitry Pikhulya
  */
 public class BaseColumn extends UIColumn {
+    private String headerValue;
+    private String footerValue;
+
     private String align;
     private String valign;
     private String width;
@@ -76,7 +79,8 @@ public class BaseColumn extends UIColumn {
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, align, valign, width, resizable, minResizingWidth, fixed,
+        return new Object[]{superState,
+                headerValue, footerValue, align, valign, width, resizable, minResizingWidth, fixed,
                 style, styleClass, headerStyle, headerClass,
                 subHeaderStyle, subHeaderClass, bodyStyle, bodyClass, footerStyle, footerClass,
                 onclick, ondblclick, onmousedown, onmouseover, onmousemove,
@@ -92,6 +96,8 @@ public class BaseColumn extends UIColumn {
         Object[] state = (Object[]) stateObj;
         int i = 0;
         super.restoreState(context, state[i++]);
+        headerValue = (String) state[i++];
+        footerValue = (String) state[i++];
         align = (String) state[i++];
         valign = (String) state[i++];
         width = (String) state[i++];
@@ -136,6 +142,22 @@ public class BaseColumn extends UIColumn {
         footerOnmousemove = (String) state[i++];
         footerOnmouseout = (String) state[i++];
         footerOnmouseup = (String) state[i++];
+    }
+
+    public String getHeaderValue() {
+        return ValueBindings.get(this, "headerValue", headerValue);
+    }
+
+    public void setHeaderValue(String headerValue) {
+        this.headerValue = headerValue;
+    }
+
+    public String getFooterValue() {
+        return ValueBindings.get(this, "footerValue", footerValue);
+    }
+
+    public void setFooterValue(String footerValue) {
+        this.footerValue = footerValue;
     }
 
     public String getAlign() {
@@ -497,7 +519,7 @@ public class BaseColumn extends UIColumn {
 
     protected AbstractTable getTable() {
         UIComponent parent = getParent();
-        while (parent instanceof TableColumnGroup)
+        while (parent instanceof ColumnGroup)
             parent = parent.getParent();
         if (parent != null && !(parent instanceof AbstractTable))
             throw new RuntimeException("Columns can only be inserted inside DataTable or TreeTable. Column id: " + getId());

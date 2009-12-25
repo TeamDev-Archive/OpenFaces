@@ -15,7 +15,7 @@ import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.Scrolling;
-import org.openfaces.component.table.TableColumn;
+import org.openfaces.component.table.Column;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableUtil;
@@ -77,11 +77,11 @@ public abstract class TableHeaderOrFooter extends TableSection {
             cells.add(scrollingAreaCell(tableStructure, cellTag, columns, totalColCount - rightFixedCols, totalColCount, false));
 
         boolean contentsSpecified = false;
-        TableScrollingArea firstArea = (TableScrollingArea) cells.get(0).getComponent();
+        TableScrollingArea firstArea = (TableScrollingArea) cells.get(0).getContent();
         for (int rowIndex = 0, rowCount = firstArea.getRows().size(); rowIndex < rowCount; rowIndex++) {
             boolean rowContentSpecified = false;
             for (HeaderCell areaCell : cells) {
-                TableScrollingArea area = (TableScrollingArea) areaCell.getComponent();
+                TableScrollingArea area = (TableScrollingArea) areaCell.getContent();
                 if (area.getRows().get(rowIndex).isAtLeastOneComponentInThisRow()) {
                     rowContentSpecified = true;
                     contentsSpecified = true;
@@ -89,7 +89,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
                 }
             }
             for (HeaderCell areaCell : cells) {
-                TableScrollingArea area = (TableScrollingArea) areaCell.getComponent();
+                TableScrollingArea area = (TableScrollingArea) areaCell.getContent();
                 ((HeaderRow) area.getRows().get(rowIndex)).setAtLeastOneComponentInThisRow(rowContentSpecified);
             }
         }
@@ -168,7 +168,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
                  column != null;
                  column = column.getParent() instanceof BaseColumn ? (BaseColumn) column.getParent() : null) {
                 if (skipEmptyHeaders && column != startingColumn) {
-                    UIComponent header = isHeader ? column.getHeader() : column.getFooter();
+                    Object header = getHeaderOrFooterCellContent(column, isHeader);
                     if (header == null)
                         continue;
                 }
@@ -238,7 +238,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
                 if (cell == null)
                     continue;
                 rowCells.add(cell);
-                if (cell.getComponent() != null)
+                if (cell.getContent() != null)
                     atLeastOneComponentInThisRow = true;
                 colIndex += cell.getColSpan() - 1;
             }
@@ -279,8 +279,9 @@ public abstract class TableHeaderOrFooter extends TableSection {
             colSpan++;
         }
 
-        HeaderCell cell = new HeaderCell(col, isHeader ? col.getHeader() : col.getFooter(),
-                cellTag, CellKind.COL_HEADER, isHeader, isHeader);
+        Object cellContent = getHeaderOrFooterCellContent(col, isHeader);
+        HeaderCell cell = new HeaderCell(col, cellContent, cellTag, CellKind.COL_HEADER, isHeader, isHeader);
+        cell.setEscapeText(true);
         if (isHeader) {
             boolean lastInThisHierarchy = thisHierarchySize - 1 == rowIndex;
             cell.setSpans(colSpan, rowIndex, lastInThisHierarchy ? columnHierarchyLevels - 1 : rowIndex);
@@ -289,6 +290,20 @@ public abstract class TableHeaderOrFooter extends TableSection {
             cell.setSpans(colSpan, 0, verticallySpannedCell ? columnHierarchyLevels - thisHierarchySize : 0);
         }
         return cell;
+    }
+
+    private static Object getHeaderOrFooterCellContent(BaseColumn col, boolean isHeader) {
+        Object cellContent;
+        if (isHeader) {
+            cellContent = col.getHeaderValue();
+            if (cellContent == null)
+                cellContent = col.getHeader();
+        } else {
+            cellContent = col.getFooterValue();
+            if (cellContent == null)
+                cellContent = col.getFooter();
+        }
+        return cellContent;
     }
 
     public boolean hasSubHeader() {
@@ -414,7 +429,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
             List<HeaderCell> cells = row.getCells();
             for (int i = 0, count = cells.size(); i < count; i++) {
                 HeaderCell cell = cells.get(i);
-                TableScrollingArea scrollingArea = (TableScrollingArea) cell.getComponent();
+                TableScrollingArea scrollingArea = (TableScrollingArea) cell.getContent();
                 List<HeaderRow> rows = (List<HeaderRow>) scrollingArea.getRows();
                 CellCoordinates coords = findCell(column, rows, cellKind);
                 if (coords != null) {
@@ -448,9 +463,9 @@ public abstract class TableHeaderOrFooter extends TableSection {
     }
 
     private UIComponent getColumnSubHeader(BaseColumn column) {
-        if (!(column instanceof TableColumn))
+        if (!(column instanceof Column))
             return null;
-        TableColumn tableColumn = ((TableColumn) column);
+        Column tableColumn = ((Column) column);
 
         return tableColumn.getSubHeader();
     }

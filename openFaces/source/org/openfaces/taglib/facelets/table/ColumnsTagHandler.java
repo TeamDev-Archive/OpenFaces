@@ -9,17 +9,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.jsp.table;
+package org.openfaces.taglib.facelets.table;
 
-import org.openfaces.taglib.internal.table.TableColumnGroupTag;
+import com.sun.facelets.tag.jsf.ComponentConfig;
+import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
+import org.openfaces.taglib.internal.table.ColumnsTag;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class TableColumnGroupJspTag extends BaseColumnJspTag {
-
-    public TableColumnGroupJspTag() {
-        super(new TableColumnGroupTag());
+public class ColumnsTagHandler extends AbstractFaceletsComponentHandler {
+    public ColumnsTagHandler(ComponentConfig componentConfig) {
+        super(componentConfig, new ColumnsTag());
     }
-
 }

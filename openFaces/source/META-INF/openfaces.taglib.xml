@@ -59,24 +59,24 @@
   <tag>
     <tag-name>column</tag-name>
     <component>
-      <component-type>org.openfaces.TableColumn</component-type>
-      <handler-class>org.openfaces.taglib.facelets.table.TableColumnTagHandler</handler-class>
+      <component-type>org.openfaces.Column</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.ColumnTagHandler</handler-class>
     </component>
   </tag>
 
   <tag>
     <tag-name>columns</tag-name>
     <component>
-      <component-type>org.openfaces.TableColumns</component-type>
-      <handler-class>org.openfaces.taglib.facelets.table.TableColumnsTagHandler</handler-class>
+      <component-type>org.openfaces.Columns</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.ColumnsTagHandler</handler-class>
     </component>
   </tag>
 
   <tag>
     <tag-name>columnGroup</tag-name>
     <component>
-      <component-type>org.openfaces.TableColumnGroup</component-type>
-      <handler-class>org.openfaces.taglib.facelets.table.TableColumnGroupTagHandler</handler-class>
+      <component-type>org.openfaces.ColumnGroup</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.ColumnGroupTagHandler</handler-class>
     </component>
   </tag>
 
@@ -124,16 +124,16 @@
   <tag>
     <tag-name>row</tag-name>
     <component>
-      <component-type>org.openfaces.TableRow</component-type>
-      <handler-class>org.openfaces.taglib.facelets.table.TableRowTagHandler</handler-class>
+      <component-type>org.openfaces.Row</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.RowTagHandler</handler-class>
     </component>
   </tag>
 
   <tag>
     <tag-name>cell</tag-name>
     <component>
-      <component-type>org.openfaces.TableCell</component-type>
-      <handler-class>org.openfaces.taglib.facelets.table.TableCellTagHandler</handler-class>
+      <component-type>org.openfaces.Cell</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.CellTagHandler</handler-class>
     </component>
   </tag>
 

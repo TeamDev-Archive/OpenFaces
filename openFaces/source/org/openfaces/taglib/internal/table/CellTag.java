@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.TableCell;
+import org.openfaces.component.table.Cell;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
@@ -20,9 +20,9 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class TableCellTag extends AbstractComponentTag {
+public class CellTag extends AbstractComponentTag {
     public String getComponentType() {
-        return TableCell.COMPONENT_TYPE;
+        return Cell.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
@@ -32,7 +32,7 @@ public class TableCellTag extends AbstractComponentTag {
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
-        TableCell tableCell = (TableCell) component;
+        Cell cell = (Cell) component;
 
         String columnIds = getPropertyValue("columnIds");
         if (columnIds != null) {
@@ -40,7 +40,7 @@ public class TableCellTag extends AbstractComponentTag {
                 setObjectProperty(component, "columnIds", columnIds);
             else {
                 String[] ids = columnIds.split(",");
-                tableCell.setColumnIds(ids);
+                cell.setColumnIds(ids);
             }
         }
         setPropertyBinding(component, "condition");

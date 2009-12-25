@@ -9,19 +9,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.facelets.table;
-
-import com.sun.facelets.tag.jsf.ComponentConfig;
-import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
-import org.openfaces.taglib.internal.table.TableColumnGroupTag;
+package org.openfaces.component.table;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class TableColumnGroupTagHandler extends AbstractFaceletsComponentHandler {
+public class ColumnGroup extends BaseColumn {
+    public static final String COMPONENT_TYPE = "org.openfaces.ColumnGroup";
+    public static final String COMPONENT_FAMILY = "org.openfaces.ColumnGroup";
 
-    public TableColumnGroupTagHandler(ComponentConfig componentConfig) {
-        super(componentConfig, new TableColumnGroupTag());
+    public String getFamily() {
+        return COMPONENT_FAMILY;
     }
 
 }

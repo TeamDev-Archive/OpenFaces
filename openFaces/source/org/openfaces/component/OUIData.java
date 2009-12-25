@@ -13,10 +13,10 @@ package org.openfaces.component;
 
 // todo: resolve datatable package depencencies
 
-import org.openfaces.component.table.DynamicColumn;
-import org.openfaces.component.table.TableCell;
-import org.openfaces.component.table.TableColumns;
-import org.openfaces.component.table.TableRow;
+import org.openfaces.component.table.DynamicCol;
+import org.openfaces.component.table.Cell;
+import org.openfaces.component.table.Columns;
+import org.openfaces.component.table.Row;
 import org.openfaces.renderkit.table.CustomCellRenderingInfo;
 import org.openfaces.renderkit.table.CustomContentCellRenderingInfo;
 import org.openfaces.renderkit.table.CustomRowRenderingInfo;
@@ -718,10 +718,10 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
 
                 // <MOD-5>
                 Map colFacets;
-                if (child instanceof DynamicColumn) {
-                    DynamicColumn dynamicColumn = (DynamicColumn) child;
-                    dynamicColumn.declareContextVariables();
-                    colFacets = dynamicColumn.getFacetsForProcessing();
+                if (child instanceof DynamicCol) {
+                    DynamicCol dynamicCol = (DynamicCol) child;
+                    dynamicCol.declareContextVariables();
+                    colFacets = dynamicCol.getFacetsForProcessing();
                 } else
                     colFacets = child.getFacets();
                 // </MOD-5>
@@ -732,8 +732,8 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
                 }
 
                 // <MOD-5>
-                if (child instanceof DynamicColumn)
-                    ((DynamicColumn) child).undeclareContextVariables();
+                if (child instanceof DynamicCol)
+                    ((DynamicCol) child).undeclareContextVariables();
                 // </MOD-5>
 
             }
@@ -795,10 +795,10 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
 
                     // <MOD-5>
                     List<UIComponent> colChildren;
-                    if (child instanceof DynamicColumn) {
-                        DynamicColumn dynamicColumn = (DynamicColumn) child;
-                        dynamicColumn.declareContextVariables();
-                        colChildren = dynamicColumn.getChildrenForProcessing();
+                    if (child instanceof DynamicCol) {
+                        DynamicCol dynamicCol = (DynamicCol) child;
+                        dynamicCol.declareContextVariables();
+                        colChildren = dynamicCol.getChildrenForProcessing();
                     } else
                         colChildren = child.getChildren();
                     // </MOD-5>
@@ -808,8 +808,8 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
                     }
 
                     // <MOD-5>
-                    if (child instanceof DynamicColumn)
-                        ((DynamicColumn) child).undeclareContextVariables();
+                    if (child instanceof DynamicCol)
+                        ((DynamicCol) child).undeclareContextVariables();
                     // </MOD-5>
 
                 }
@@ -825,7 +825,7 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
                     CustomCellRenderingInfo customCellRenderingInfo = customRowRenderingInfo.getCustomCellRenderingInfo(i);
                     if (customCellRenderingInfo == null || (!(customCellRenderingInfo instanceof CustomContentCellRenderingInfo)))
                         continue;
-                    TableCell customCell = ((CustomContentCellRenderingInfo) customCellRenderingInfo).findTableCell(customRows);
+                    Cell customCell = ((CustomContentCellRenderingInfo) customCellRenderingInfo).findTableCell(customRows);
                     process(context, customCell, processAction);
                 }
             }
@@ -1131,13 +1131,13 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
 
     // <MOD-4>
 
-    protected List<TableRow> getCustomRows() {
-        List<TableRow> customRows = new ArrayList<TableRow>();
+    protected List<Row> getCustomRows() {
+        List<Row> customRows = new ArrayList<Row>();
         List children = getChildren();
         for (int i = 0, childCount = children.size(); i < childCount; i++) {
             UIComponent child = (UIComponent) children.get(i);
-            if (child instanceof TableRow)
-                customRows.add((TableRow) child);
+            if (child instanceof Row)
+                customRows.add((Row) child);
         }
         return customRows;
     }
@@ -1147,38 +1147,38 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
     // <MOD-5> (added dynamic column state management methods)
 
     private List<Object> saveDynamicColumnsState() {
-        List<TableColumns> dynamicColumnComponents = findDynamicColumnComponents();
+        List<Columns> dynamicColumnComponents = findDynamicColumnComponents();
         List<Object> allStates = new ArrayList<Object>();
-        for (TableColumns tableColumns : dynamicColumnComponents) {
-            Object theseColumnStates = tableColumns.getColumnStates();
+        for (Columns columns : dynamicColumnComponents) {
+            Object theseColumnStates = columns.getColumnStates();
             allStates.add(theseColumnStates);
         }
         return allStates;
     }
 
     private void restoreDynamicColumnsState(List<Object> state) {
-        List<TableColumns> children = findDynamicColumnComponents();
+        List<Columns> children = findDynamicColumnComponents();
         for (int i = 0, count = children.size(); i < count; i++) {
-            TableColumns tableColumns = children.get(i);
+            Columns columns = children.get(i);
             Object theseColumnStates = state.get(i);
-            tableColumns.setColumnStates(theseColumnStates);
+            columns.setColumnStates(theseColumnStates);
         }
     }
 
     private void resetDynamicColumnsStates(boolean noValidationErrors) {
-        List<TableColumns> children = findDynamicColumnComponents();
-        for (TableColumns tableColumns : children) {
-            tableColumns.resetColumnStates(noValidationErrors);
+        List<Columns> children = findDynamicColumnComponents();
+        for (Columns columns : children) {
+            columns.resetColumnStates(noValidationErrors);
         }
 
     }
 
-    private List<TableColumns> findDynamicColumnComponents() {
-        List<TableColumns> dynamicColumnComponents = new ArrayList<TableColumns>();
+    private List<Columns> findDynamicColumnComponents() {
+        List<Columns> dynamicColumnComponents = new ArrayList<Columns>();
         List<UIComponent> children = getChildren();
         for (UIComponent child : children) {
-            if (child instanceof TableColumns)
-                dynamicColumnComponents.add((TableColumns) child);
+            if (child instanceof Columns)
+                dynamicColumnComponents.add((Columns) child);
         }
         return dynamicColumnComponents;
     }

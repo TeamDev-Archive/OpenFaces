@@ -22,9 +22,9 @@ import javax.faces.context.FacesContext;
 /**
  * @author Dmitry Pikhulya
  */
-public class TableRow extends UIComponentBase {
-    public static final String COMPONENT_TYPE = "org.openfaces.TableRow";
-    public static final String COMPONENT_FAMILY = "org.openfaces.TableRow";
+public class Row extends UIComponentBase {
+    public static final String COMPONENT_TYPE = "org.openfaces.Row";
+    public static final String COMPONENT_FAMILY = "org.openfaces.Row";
 
     private Boolean condition;
     private String style;
@@ -41,7 +41,7 @@ public class TableRow extends UIComponentBase {
     private String onkeyup;
     private String onkeypress;
 
-    public TableRow() {
+    public Row() {
     }
 
     public String getFamily() {

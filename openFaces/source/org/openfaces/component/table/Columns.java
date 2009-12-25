@@ -32,15 +32,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class TableColumns extends UIComponentBase implements NamingContainer {
-    public static final String COMPONENT_TYPE = "org.openfaces.TableColumns";
-    public static final String COMPONENT_FAMILY = "org.openfaces.TableColumns";
+public class Columns extends UIComponentBase implements NamingContainer {
+    public static final String COMPONENT_TYPE = "org.openfaces.Columns";
+    public static final String COMPONENT_FAMILY = "org.openfaces.Columns";
 
     private Object prevValueFromBinding;
 
-    private List<DynamicTableColumn> columnList;
+    private List<DynamicColumn> columnList;
 
     private Boolean columnRendered;
+    private String headerValue;
+    private String footerValue;
     private String var;
     private Boolean sortingEnabled;
     private Comparator sortingComparator;
@@ -99,7 +101,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
     private Object defaultState;
     private Map<String, Object> columnStates = new HashMap<String, Object>();
 
-    public TableColumns() {
+    public Columns() {
     }
 
     @Override
@@ -111,7 +113,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context), prevValueFromBinding,
-                columnRendered, var, sortingEnabled, sortingComparator,
+                columnRendered, headerValue, footerValue, var, sortingEnabled, sortingComparator,
                 align, valign, width, resizable, minResizingWidth,
                 style, styleClass, headerStyle, headerClass,
                 subHeaderStyle, subHeaderClass, bodyStyle, bodyClass, footerStyle, footerClass,
@@ -131,6 +133,8 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         super.restoreState(context, state[i++]);
         prevValueFromBinding = state[i++];
         columnRendered = (Boolean) state[i++];
+        headerValue = (String) state[i++];
+        footerValue = (String) state[i++];
         var = (String) state[i++];
         sortingEnabled = (Boolean) state[i++];
         sortingComparator = (Comparator) state[i++];
@@ -210,6 +214,22 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
 
     public void setColumnRendered(boolean columnRendered) {
         this.columnRendered = columnRendered;
+    }
+
+    public String getHeaderValue() {
+        return ValueBindings.get(this, "headerValue", headerValue);
+    }
+
+    public void setHeaderValue(String headerValue) {
+        this.headerValue = headerValue;
+    }
+
+    public String getFooterValue() {
+        return ValueBindings.get(this, "footerValue", footerValue);
+    }
+
+    public void setFooterValue(String footerValue) {
+        this.footerValue = footerValue;
     }
 
     public ValueExpression getSortingExpression() {
@@ -587,7 +607,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
 
     protected AbstractTable getTable() {
         UIComponent parent = getParent();
-        while (parent instanceof TableColumnGroup)
+        while (parent instanceof ColumnGroup)
             parent = parent.getParent();
         if (parent != null && !(parent instanceof AbstractTable))
             throw new RuntimeException("Columns can only be inserted inside DataTable or TreeTable. Column id: " + getId());
@@ -611,13 +631,13 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         return getFacets().get("footer");
     }
 
-    public List<DynamicTableColumn> toColumnList(FacesContext context) {
+    public List<DynamicColumn> toColumnList(FacesContext context) {
         if (columnList == null)
             columnList = createColumnList(context);
         return columnList;
     }
 
-    private List<DynamicTableColumn> createColumnList(FacesContext context) {
+    private List<DynamicColumn> createColumnList(FacesContext context) {
         boolean[] prevValueChangedFlag = new boolean[1];
         Collection colDatas = getColDatas(context, prevValueChangedFlag);
 
@@ -625,7 +645,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         int currentColCount = currentCols.size();
         boolean justUpdateColDatas = !prevValueChangedFlag[0] && currentColCount > 0 && colDatas.size() == currentColCount;
 
-        List<DynamicTableColumn> columns = new ArrayList<DynamicTableColumn>(colDatas.size());
+        List<DynamicColumn> columns = new ArrayList<DynamicColumn>(colDatas.size());
         String var = getVar();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         Object prevVarValue = requestMap.get(var);
@@ -634,9 +654,9 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         for (Iterator iterator = colDatas.iterator(); iterator.hasNext(); colIndex++) {
             Object colData = iterator.next();
             requestMap.put(var, colData);
-            DynamicTableColumn column = justUpdateColDatas
-                    ? (DynamicTableColumn) currentCols.get(colIndex)
-                    : new DynamicTableColumn();
+            DynamicColumn column = justUpdateColDatas
+                    ? (DynamicColumn) currentCols.get(colIndex)
+                    : new DynamicColumn();
             column.setColumns(this);
             column.setColData(colData);
             column.setColIndex(colIndex);
@@ -654,7 +674,8 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
                 }
                 column.setRendered(getColumnRendered());
 
-                String[] copiedAttributes = new String[]{"width", "align", "valign", "resizable", "minResizingWidth",
+                String[] copiedAttributes = new String[]{
+                        "headerValue", "footerValue", "width", "align", "valign", "resizable", "minResizingWidth",
                         "style", "styleClass", "headerStyle", "headerClass", "subHeaderStyle", "subHeaderClass",
                         "bodyStyle", "bodyClass", "footerStyle", "footerClass",
                         "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove", "onmouseout", "onmouseup",
@@ -681,7 +702,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         return columns;
     }
 
-    private void applyFilteringParameters(FacesContext context, DynamicTableColumn column) {
+    private void applyFilteringParameters(FacesContext context, DynamicColumn column) {
         // todo: review this with new filtering API
 //        FilterKind filterKind = getFilterKind();
 //        if (filterKind != null) {
@@ -737,7 +758,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         return colDatas;
     }
 
-    private void applySortingParameters(DynamicTableColumn column) {
+    private void applySortingParameters(DynamicColumn column) {
         if (getSortingEnabled()) {
             Comparator sortingComparator = getSortingComparator();
             if (sortingComparator != null)
@@ -751,8 +772,8 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
     @Override
     public void processDecodes(FacesContext context) {
 //    columnList = null;
-        List<DynamicTableColumn> columns = toColumnList(context);
-        for (DynamicTableColumn column : columns) {
+        List<DynamicColumn> columns = toColumnList(context);
+        for (DynamicColumn column : columns) {
             if (!column.isRendered())
                 continue;
             column.processDecodes(context);
@@ -761,8 +782,8 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
 
     @Override
     public void processValidators(FacesContext context) {
-        List<DynamicTableColumn> columns = toColumnList(context);
-        for (DynamicTableColumn column : columns) {
+        List<DynamicColumn> columns = toColumnList(context);
+        for (DynamicColumn column : columns) {
             if (!column.isRendered())
                 continue;
             column.processValidators(context);
@@ -771,8 +792,8 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
 
     @Override
     public void processUpdates(FacesContext context) {
-        List<DynamicTableColumn> columns = toColumnList(context);
-        for (DynamicTableColumn column : columns) {
+        List<DynamicColumn> columns = toColumnList(context);
+        for (DynamicColumn column : columns) {
             if (!column.isRendered())
                 continue;
             column.processUpdates(context);
@@ -786,7 +807,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         return columnContainer.getChildren();
     }
 
-    private void setColumnComponents(List<DynamicTableColumn> columns) {
+    private void setColumnComponents(List<DynamicColumn> columns) {
         UIComponent columnContainer = FacesContext.getCurrentInstance().getApplication().createComponent("javax.faces.HtmlPanelGroup");
         getFacets().put("_column_components_", columnContainer);
         columnContainer.getChildren().addAll(columns);
@@ -851,7 +872,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         public FilterExpressionExpression() {
         }
 
-        public FilterExpressionExpression(DynamicTableColumn column, ValueExpression expressionFromColumnsComponent) {
+        public FilterExpressionExpression(DynamicColumn column, ValueExpression expressionFromColumnsComponent) {
             super(column, expressionFromColumnsComponent);
         }
 
@@ -869,7 +890,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         public FilterValueExpression() {
         }
 
-        public FilterValueExpression(DynamicTableColumn column, ValueExpression expressionFromColumnsComponent) {
+        public FilterValueExpression(DynamicColumn column, ValueExpression expressionFromColumnsComponent) {
             super(column, expressionFromColumnsComponent);
         }
 
@@ -896,7 +917,7 @@ public class TableColumns extends UIComponentBase implements NamingContainer {
         public SortingExpressionExpression() {
         }
 
-        public SortingExpressionExpression(DynamicTableColumn column, ValueExpression expressionFromColumnsComponent) {
+        public SortingExpressionExpression(DynamicColumn column, ValueExpression expressionFromColumnsComponent) {
             super(column, expressionFromColumnsComponent);
         }
 

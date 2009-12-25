@@ -17,7 +17,7 @@ import org.openfaces.component.panel.TabbedPaneItem;
 import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.Scrolling;
-import org.openfaces.component.table.TableColumn;
+import org.openfaces.component.table.Column;
 import org.openfaces.component.util.Debug;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.CompoundComponentRenderer;
@@ -64,11 +64,11 @@ public class DebugRenderer extends WindowRenderer implements CompoundComponentRe
         elementProperties.getChildren().add(new Scrolling());
         elementProperties.getChildren().add(new ColumnResizing());
         elementProperties.setVerticalGridLines("1px solid gray");
-        TableColumn col1 = new TableColumn();
+        Column col1 = new Column();
         col1.setStyle("width: 150px");
         col1.setHeader(ComponentUtil.createOutputText(context, "Property"));
         elementProperties.getChildren().add(col1);
-        TableColumn col2 = new TableColumn();
+        Column col2 = new Column();
         col2.setHeader(ComponentUtil.createOutputText(context, "Value"));
         elementProperties.getChildren().add(col2);
     }
@@ -91,11 +91,11 @@ public class DebugRenderer extends WindowRenderer implements CompoundComponentRe
         logTable.getChildren().add(new ColumnResizing());
         logTable.setStyle("width: 100%; height: 100%;");
         logTable.setVerticalGridLines("1px solid gray");
-        TableColumn col1 = new TableColumn();
+        Column col1 = new Column();
         col1.setStyle("width: 150px");
         col1.setHeader(ComponentUtil.createOutputText(context, "Time"));
         logTable.getChildren().add(col1);
-        TableColumn col2 = new TableColumn();
+        Column col2 = new Column();
         col2.setHeader(ComponentUtil.createOutputText(context, "Message"));
         logTable.getChildren().add(col2);
 

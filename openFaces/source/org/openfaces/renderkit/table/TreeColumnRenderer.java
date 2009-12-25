@@ -12,8 +12,8 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.ExpansionToggle;
-import org.openfaces.component.table.TableCell;
-import org.openfaces.component.table.TableColumnGroup;
+import org.openfaces.component.table.Cell;
+import org.openfaces.component.table.ColumnGroup;
 import org.openfaces.component.table.TreeColumn;
 import org.openfaces.component.table.TreeTable;
 import org.openfaces.renderkit.RendererBase;
@@ -44,7 +44,7 @@ public class TreeColumnRenderer extends RendererBase {
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         TreeColumn treeColumn = ((TreeColumn) component);
-        TableCell customCell = (TableCell) treeColumn.getAttributes().get(ATTR_CUSTOM_CELL);
+        Cell customCell = (Cell) treeColumn.getAttributes().get(ATTR_CUSTOM_CELL);
         if (!treeColumn.getShowAsTree()) {
             if (customCell != null)
                 RenderingUtil.renderChildren(context, customCell);
@@ -125,7 +125,7 @@ public class TreeColumnRenderer extends RendererBase {
 
     private TreeTable getTreeTable(UIComponent column) {
         UIComponent parent = column.getParent();
-        while (parent instanceof TableColumnGroup)
+        while (parent instanceof ColumnGroup)
             parent = parent.getParent();
         return (TreeTable) parent;
     }

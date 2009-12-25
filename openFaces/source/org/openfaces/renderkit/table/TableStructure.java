@@ -17,7 +17,7 @@ import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.ColumnResizingState;
 import org.openfaces.component.table.Scrolling;
-import org.openfaces.component.table.TableColumnGroup;
+import org.openfaces.component.table.ColumnGroup;
 import org.openfaces.component.table.TreeColumn;
 import org.openfaces.component.table.TreeTable;
 import org.openfaces.org.json.JSONArray;
@@ -433,7 +433,7 @@ public class TableStructure extends TableElement {
 
         UIComponent styleOwnerComponent = getComponent();
         boolean noDataRows = getBody().isNoDataRows();
-        boolean ordinaryColumn = !(columnOrGroup instanceof TableColumnGroup);
+        boolean ordinaryColumn = !(columnOrGroup instanceof ColumnGroup);
 
         String defaultColumnStyleClass = getColumnDefaultClass(columnOrGroup);
         String colClassName = StyleUtil.getCSSClass(context,
@@ -557,7 +557,7 @@ public class TableStructure extends TableElement {
         String style = column.getBodyStyle();
         if (column instanceof TreeColumn) {
             UIComponent columnParent = column.getParent();
-            while (columnParent instanceof TableColumnGroup)
+            while (columnParent instanceof ColumnGroup)
                 columnParent = columnParent.getParent();
             TreeTable treeTable = (TreeTable) columnParent;
             String textStyle = treeTable.getTextStyle();
@@ -570,7 +570,7 @@ public class TableStructure extends TableElement {
         String cls = column.getBodyClass();
         if (column instanceof TreeColumn) {
             UIComponent columnParent = column.getParent();
-            while (columnParent instanceof TableColumnGroup)
+            while (columnParent instanceof ColumnGroup)
                 columnParent = columnParent.getParent();
             TreeTable treeTable = (TreeTable) columnParent;
             String textClass = treeTable.getTextClass();

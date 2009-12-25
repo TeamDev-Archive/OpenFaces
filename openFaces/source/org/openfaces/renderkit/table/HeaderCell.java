@@ -13,7 +13,7 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
-import org.openfaces.component.table.DynamicColumn;
+import org.openfaces.component.table.DynamicCol;
 import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
@@ -29,7 +29,7 @@ import java.util.List;
  */
 class HeaderCell extends TableElement {
     private BaseColumn column;
-    private Object component;
+    private Object content;
     private int colSpan;
     private int rowIndexMin;
     private int rowIndexMax;
@@ -38,14 +38,15 @@ class HeaderCell extends TableElement {
     private boolean renderNonBreakable;
     private boolean renderSortingToggle;
     private CellKind cellKind;
+    private boolean escapeText;
 
-    public HeaderCell(BaseColumn column, Object component, String cellTag, CellKind cellKind) {
-        this(column, component, cellTag, cellKind, false, false);
+    public HeaderCell(BaseColumn column, Object content, String cellTag, CellKind cellKind) {
+        this(column, content, cellTag, cellKind, false, false);
     }
 
-    public HeaderCell(BaseColumn column, Object component, String cellTag, CellKind cellKind, boolean renderNonBreakable, boolean renderSortingToggle) {
+    public HeaderCell(BaseColumn column, Object content, String cellTag, CellKind cellKind, boolean renderNonBreakable, boolean renderSortingToggle) {
         this.column = column;
-        this.component = component;
+        this.content = content;
         this.cellTag = cellTag;
         this.cellKind = cellKind;
         this.renderNonBreakable = renderNonBreakable;
@@ -66,12 +67,16 @@ class HeaderCell extends TableElement {
         return column;
     }
 
-    public Object getComponent() {
-        return component;
+    public Object getContent() {
+        return content;
     }
 
     public int getColSpan() {
         return colSpan;
+    }
+
+    public void setEscapeText(boolean escapeText) {
+        this.escapeText = escapeText;
     }
 
     public interface AdditionalContentWriter {
@@ -83,8 +88,8 @@ class HeaderCell extends TableElement {
         List<HeaderRow> rows = getParent(HeaderRow.class).getRowsForSpans();
         TableStructure tableStructure = getParent(TableStructure.class);
         UIComponent table = tableStructure.getComponent();
-        if (column instanceof DynamicColumn)
-            ((DynamicColumn) column).declareContextVariables();
+        if (column instanceof DynamicCol)
+            ((DynamicCol) column).declareContextVariables();
 
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement(cellTag, table);
@@ -108,16 +113,20 @@ class HeaderCell extends TableElement {
                 writer.startElement("span", table);
             writer.writeAttribute("class", "o_noWrapHeaderCell", null);
         }
-        if (component != null) {
-            if (component instanceof UIComponent) {
-                UIComponent uiComponent = (UIComponent) component;
+        if (content != null) {
+            if (content instanceof UIComponent) {
+                UIComponent uiComponent = (UIComponent) content;
                 uiComponent.encodeAll(facesContext);
                 if (TableStructure.isComponentEmpty(uiComponent) && tableStructure.isEmptyCellsTreatmentRequired())
                     RenderingUtil.writeNonBreakableSpace(writer);
-            } else if (component instanceof TableElement)
-                ((TableElement) component).render(facesContext, null);
-            else
-                writer.writeText(component.toString(), null);
+            } else if (content instanceof TableElement)
+                ((TableElement) content).render(facesContext, null);
+            else {
+                if (escapeText)
+                    writer.writeText(content.toString(), null);
+                else
+                    writer.write(content.toString());
+            }
         } else if (tableStructure.isEmptyCellsTreatmentRequired())
             RenderingUtil.writeNonBreakableSpace(writer);
 
@@ -133,8 +142,8 @@ class HeaderCell extends TableElement {
 
         writer.endElement(cellTag);
 
-        if (column instanceof DynamicColumn)
-            ((DynamicColumn) column).undeclareContextVariables();
+        if (column instanceof DynamicCol)
+            ((DynamicCol) column).undeclareContextVariables();
     }
 
     protected void renderColumnSortingDirection(

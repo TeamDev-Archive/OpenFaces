@@ -9,24 +9,21 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.jsp.table;
+package org.openfaces.component.table;
 
-import org.openfaces.taglib.internal.table.TableRowTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
-
-import javax.el.ValueExpression;
+import java.util.List;
+import java.util.Map;
 
 /**
- * @author Dmitry Pikhulya
+ * This interface is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly by any
+ * application code.
  */
-public class TableRowJspTag extends AbstractComponentJspTag {
+public interface DynamicCol {
+    void declareContextVariables();
 
-    public TableRowJspTag() {
-        super(new TableRowTag());
-    }
+    void undeclareContextVariables();
 
-    public void setCondition(ValueExpression condition) {
-        getDelegate().setPropertyValue("condition", condition);
-    }
+    Map getFacetsForProcessing();
 
+    List getChildrenForProcessing();
 }

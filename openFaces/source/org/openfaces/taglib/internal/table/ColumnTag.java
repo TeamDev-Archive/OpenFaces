@@ -12,7 +12,7 @@
 package org.openfaces.taglib.internal.table;
 
 import org.openfaces.component.table.CaseInsensitiveTextComparator;
-import org.openfaces.component.table.TableColumn;
+import org.openfaces.component.table.Column;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -24,11 +24,11 @@ import java.util.Comparator;
 /**
  * @author Pavel Kaplin
  */
-public class TableColumnTag extends BaseColumnTag {
+public class ColumnTag extends BaseColumnTag {
     public static final String CASE_INSENSITIVE_TEXT_COMPARATOR = "caseInsensitiveText";
 
     public String getComponentType() {
-        return TableColumn.COMPONENT_TYPE;
+        return Column.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
@@ -38,7 +38,7 @@ public class TableColumnTag extends BaseColumnTag {
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
-        TableColumn column = ((TableColumn) component);
+        Column column = ((Column) component);
         setPropertyBinding(component, "sortingExpression");
 
         String sortingComparator = getPropertyValue("sortingComparator");

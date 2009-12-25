@@ -11,17 +11,17 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.TableColumns;
+import org.openfaces.component.table.Columns;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-public class TableColumnsTag extends AbstractComponentTag {
+public class ColumnsTag extends AbstractComponentTag {
 
     public String getComponentType() {
-        return TableColumns.COMPONENT_TYPE;
+        return Columns.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
@@ -32,10 +32,11 @@ public class TableColumnsTag extends AbstractComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        TableColumns columns = (TableColumns) component;
+        Columns columns = (Columns) component;
 
         setPropertyBinding(component, "value");
         setStringProperty(component, "var", false, true);
+        setPropertyBinding(component, "headerValue", getPropertyValue("header"), "header");
 
         setPropertyBinding(component, "columnId");
         setBooleanProperty(component, "columnRendered");
@@ -46,10 +47,10 @@ public class TableColumnsTag extends AbstractComponentTag {
         if (sortingComparator != null) {
             ValueExpression comparatorExpression;
             if (!isValueReference(sortingComparator)) {
-                if (TableColumnTag.CASE_INSENSITIVE_TEXT_COMPARATOR.equals(sortingComparator))
-                    comparatorExpression = new TableColumnTag.CaseInsensitiveComparatorBinding();
+                if (ColumnTag.CASE_INSENSITIVE_TEXT_COMPARATOR.equals(sortingComparator))
+                    comparatorExpression = new ColumnTag.CaseInsensitiveComparatorBinding();
                 else
-                    throw new IllegalArgumentException("sortingComparator attribute should either be defined as binding or as \"" + TableColumnTag.CASE_INSENSITIVE_TEXT_COMPARATOR + "\", but it is defined as follows: " + sortingComparator);
+                    throw new IllegalArgumentException("sortingComparator attribute should either be defined as binding or as \"" + ColumnTag.CASE_INSENSITIVE_TEXT_COMPARATOR + "\", but it is defined as follows: " + sortingComparator);
             } else {
                 comparatorExpression = createValueExpression(facesContext, "sortingComparator", sortingComparator);
             }

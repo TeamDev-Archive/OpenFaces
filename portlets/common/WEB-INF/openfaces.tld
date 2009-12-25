@@ -1157,7 +1157,7 @@
       in the {@link dropDownField}, you cannot use attributes related to filtering, sorting, selection.
     </description>
     <name>column</name>
-    <tag-class>org.openfaces.taglib.jsp.table.TableColumnJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.table.ColumnJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
       <description>The component identifier.</description>
@@ -1175,9 +1175,9 @@
       </description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.table.TableColumn</type>
+        <type>org.openfaces.component.table.Column</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. TableColumn -->
+      <!-- @bindingType org.openfaces.component.table. Column -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -2804,7 +2804,7 @@ entering a value and returns a list of suggestions from the server -->
       Component can be specified only as a child tag for the {@link dataTable} or {@link treeTable}.
     </description>
     <name>columns</name>
-    <tag-class>org.openfaces.taglib.jsp.table.TableColumnsJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.table.ColumnsJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
       <description>Specifies an array or a collection of objects that serve as column data objects.
@@ -3485,16 +3485,16 @@ entering a value and returns a list of suggestions from the server -->
       enclose the appropriate &lt;o:column&gt; tags into a &lt;o:columnGroup&gt; tag.
     </description>
     <name>columnGroup</name>
-    <tag-class>org.openfaces.taglib.jsp.table.TableColumnGroupJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.table.ColumnGroupJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
       <description>A value-binding expression that associates the column group with a backing bean property.
       </description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.table.TableColumnGroup</type>
+        <type>org.openfaces.component.table.ColumnGroup</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.table. TableColumnGroup -->
+      <!-- @bindingType org.openfaces.component.table. ColumnGroup -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -4055,7 +4055,7 @@ entering a value and returns a list of suggestions from the server -->
       as child tags for the Row component.
     </description>
     <name>row</name>
-    <tag-class>org.openfaces.taglib.jsp.table.TableRowJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.table.RowJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
       <description>The condition that defines the rows customized with this tag. Should be specified as a EL
@@ -4219,7 +4219,7 @@ entering a value and returns a list of suggestions from the server -->
       specified only as a child tag of the {@link row} component.
     </description>
     <name>cell</name>
-    <tag-class>org.openfaces.taglib.jsp.table.TableCellJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.table.CellJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
       <description>Ids of the columns in which the cells are customized. This attribute is mutually exclusive with the

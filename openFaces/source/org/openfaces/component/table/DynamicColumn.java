@@ -11,19 +11,158 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.util.RenderingUtil;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 /**
- * This interface is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly by any
- * application code.
+ * @author Dmitry Pikhulya
  */
-public interface DynamicColumn {
-    void declareContextVariables();
+public class DynamicColumn extends Column implements DynamicCol {
+    public static final String COMPONENT_TYPE = "org.openfaces.DynamicColumn";
+    public static final String COMPONENT_FAMILY = "org.openfaces.DynamicColumn";
 
-    void undeclareContextVariables();
+    private Columns columns;
+    private Object colData;
+    private Object prevVarValue;
+    private int colIndex;
 
-    Map getFacetsForProcessing();
+    public DynamicColumn() {
+    }
 
-    List getChildrenForProcessing();
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+    public void setColumns(Columns columns) {
+        this.columns = columns;
+    }
+
+    public void setColData(Object colData) {
+        this.colData = colData;
+    }
+
+    public void setColIndex(int colIndex) {
+        this.colIndex = colIndex;
+    }
+
+    @Override
+    protected AbstractTable getTable() {
+        return columns.getTable();
+    }
+
+    @Override
+    public UIComponent getHeader() {
+        return columns.getHeader();
+    }
+
+    @Override
+    public void setHeader(UIComponent header) {
+        columns.setHeader(header);
+    }
+
+    @Override
+    public UIComponent getFooter() {
+        return columns.getFooter();
+    }
+
+    @Override
+    public void setFooter(UIComponent footer) {
+        columns.setFooter(footer);
+    }
+
+    public void declareContextVariables() {
+        Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        String var = columns.getVar();
+        prevVarValue = requestMap.get(var);
+        requestMap.put(var, colData);
+        columns.setColumnIndex(colIndex);
+    }
+
+    public void undeclareContextVariables() {
+        Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        requestMap.put(columns.getVar(), prevVarValue);
+        prevVarValue = null;
+        columns.setColumnIndex(-1);
+    }
+
+    @Override
+    public void encodeBegin(FacesContext context) throws IOException {
+        declareContextVariables();
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
+
+    @Override
+    public void encodeChildren(FacesContext context) throws IOException {
+        RenderingUtil.renderChildren(context, columns);
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context) throws IOException {
+        undeclareContextVariables();
+    }
+
+    public List getChildrenForProcessing() {
+        return columns.getChildren();
+    }
+
+    public Map getFacetsForProcessing() {
+        return columns.getFacets();
+    }
+
+    @Override
+    public void processDecodes(FacesContext context) {
+        declareContextVariables();
+        Collection<UIComponent> facets = getFacetCollection();
+        for (UIComponent component : facets) {
+            component.processDecodes(context);
+        }
+        undeclareContextVariables();
+    }
+
+    private Collection<UIComponent> getFacetCollection() {
+        ArrayList<UIComponent> facets = new ArrayList<UIComponent>();
+        UIComponent header = getHeader();
+        UIComponent footer = getFooter();
+        UIComponent subHeader = getSubHeader();
+        if (header != null)
+            facets.add(header);
+        if (footer != null)
+            facets.add(footer);
+        if (subHeader != null)
+            facets.add(subHeader);
+        return facets;
+    }
+
+    @Override
+    public void processValidators(FacesContext context) {
+        declareContextVariables();
+        Collection<UIComponent> facets = getFacetCollection();
+        for (UIComponent component : facets) {
+            component.processValidators(context);
+        }
+        undeclareContextVariables();
+    }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        declareContextVariables();
+        Collection<UIComponent> facets = getFacetCollection();
+        for (UIComponent component : facets) {
+            component.processUpdates(context);
+        }
+        undeclareContextVariables();
+    }
+
 }

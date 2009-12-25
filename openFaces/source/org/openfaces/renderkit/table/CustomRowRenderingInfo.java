@@ -11,7 +11,7 @@
  */
 package org.openfaces.renderkit.table;
 
-import org.openfaces.component.table.TableRow;
+import org.openfaces.component.table.Row;
 import org.openfaces.util.RenderingUtil;
 
 import javax.faces.component.UIComponent;
@@ -48,7 +48,7 @@ public class CustomRowRenderingInfo implements Serializable {
             return Collections.emptyList();
         List<UIComponent> result = new ArrayList<UIComponent>();
         for (Integer index : a4jEnabledRowDeclarationIndexes) {
-            TableRow tableRow = (TableRow) customRows.get(index);
+            Row tableRow = (Row) customRows.get(index);
             UIComponent a4jSupport = RenderingUtil.getA4jSupportForComponent(tableRow);
             result.add(a4jSupport);
         }

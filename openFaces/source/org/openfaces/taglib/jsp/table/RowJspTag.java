@@ -11,32 +11,22 @@
  */
 package org.openfaces.taglib.jsp.table;
 
-import org.openfaces.taglib.internal.table.BaseColumnTag;
-import org.openfaces.taglib.internal.table.TableColumnTag;
+import org.openfaces.taglib.internal.table.RowTag;
+import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
 import javax.el.ValueExpression;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class TableColumnJspTag extends BaseColumnJspTag {
+public class RowJspTag extends AbstractComponentJspTag {
 
-    public TableColumnJspTag(BaseColumnTag delegate) {
-        super(delegate);
+    public RowJspTag() {
+        super(new RowTag());
     }
 
-    public TableColumnJspTag() {
-        super(new TableColumnTag());
+    public void setCondition(ValueExpression condition) {
+        getDelegate().setPropertyValue("condition", condition);
     }
-
-    public void setSortingExpression(ValueExpression sortingExpression) {
-        getDelegate().setPropertyValue("sortingExpression", sortingExpression);
-    }
-
-    public void setSortingComparator(ValueExpression sortingComparator) {
-        getDelegate().setPropertyValue("sortingComparator", sortingComparator);
-    }
-
-
 
 }

@@ -14,7 +14,7 @@ package org.openfaces.renderkit.input;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.input.DropDownFieldBase;
 import org.openfaces.component.table.BaseColumn;
-import org.openfaces.component.table.TableColumn;
+import org.openfaces.component.table.Column;
 import org.openfaces.component.table.Scrolling;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.ComponentUtil;
@@ -184,12 +184,12 @@ public class DropDownFieldTableStyles implements TableStyles {
         FacesContext context = FacesContext.getCurrentInstance();
         List<BaseColumn> columns = TableUtil.getColumnsFromList(context, dropDownField.getChildren());
         for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
-            TableColumn column = (TableColumn) iterator.next();
+            Column column = (Column) iterator.next();
             if (!column.isRendered())
                 iterator.remove();
         }
         if (childComponents.size() > 0 || columns.size() == 0)
-            columns.add(new TableColumn());
+            columns.add(new Column());
 
         return columns;
     }

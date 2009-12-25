@@ -15,9 +15,9 @@ import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.Scrolling;
-import org.openfaces.component.table.TableCell;
-import org.openfaces.component.table.TableColumn;
-import org.openfaces.component.table.TableRow;
+import org.openfaces.component.table.Cell;
+import org.openfaces.component.table.Column;
+import org.openfaces.component.table.Row;
 import org.openfaces.component.table.TreeColumn;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
@@ -224,7 +224,7 @@ public class TableBody extends TableSection {
         List<BodyRow> rows = new ArrayList<BodyRow>();
         List<BodyRow> rightRows = scrolling != null && tableStructure.getRightFixedCols() > 0 ? new ArrayList<BodyRow>() : null;
         ResponseWriter writer = context.getResponseWriter();
-        List<TableRow> customRows = getCustomRows(table);
+        List<Row> customRows = getCustomRows(table);
         int lastRowIndex = firstRowIndex + rowsToRender - 1;
         Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos =
                 (Map<Integer, CustomRowRenderingInfo>) table.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
@@ -242,7 +242,7 @@ public class TableBody extends TableSection {
             rows.add(row);
             if (rightRows != null)
                 rightRows.add(rightRow);
-            List<TableRow> applicableCustomRows = getApplicableCustomRows(customRows);
+            List<Row> applicableCustomRows = getApplicableCustomRows(customRows);
             if (leftRow != null)
                 leftRow.extractCustomEvents(applicableCustomRows);
             row.extractCustomEvents(applicableCustomRows);
@@ -271,7 +271,7 @@ public class TableBody extends TableSection {
 
             CustomRowRenderingInfo customRowRenderingInfo = null;
             List<Integer> applicableRowDeclarationIndexes = new ArrayList<Integer>();
-            for (TableRow tableRow : applicableCustomRows) {
+            for (Row tableRow : applicableCustomRows) {
                 if (RenderingUtil.isComponentWithA4jSupport(tableRow)) {
                     if (customRowRenderingInfo == null)
                         customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
@@ -334,7 +334,7 @@ public class TableBody extends TableSection {
                     int customCellCount = customCells.size();
 
                     for (int i = 0; i < customCellCount; i++) {
-                        TableCell cell = (TableCell) customCells.get(i);
+                        Cell cell = (Cell) customCells.get(i);
                         boolean cellWithCustomContent = cell.getChildCount() > 0;
                         if (cellWithCustomContent || RenderingUtil.isComponentWithA4jSupport(cell)) {
                             if (customRowRenderingInfo == null)
@@ -380,7 +380,7 @@ public class TableBody extends TableSection {
                 StringBuffer buf = stringWriter.getBuffer();
                 int startIdx = buf.length();
                 if (!remainingPortionOfBrokenSpannedCell) {
-                    boolean renderCustomTreeCell = column instanceof TreeColumn && cellContentsContainer instanceof TableCell;
+                    boolean renderCustomTreeCell = column instanceof TreeColumn && cellContentsContainer instanceof Cell;
                     if (renderCustomTreeCell) {
                         column.getAttributes().put(TreeColumnRenderer.ATTR_CUSTOM_CELL, cellContentsContainer);
                         try {
@@ -413,7 +413,7 @@ public class TableBody extends TableSection {
 
     private boolean isColumnApplicable(
             FacesContext context,
-            TableCell cell,
+            Cell cell,
             AbstractTable table,
             BaseColumn column,
             int originalColIndex) {
@@ -456,7 +456,7 @@ public class TableBody extends TableSection {
     }
 
     private void writeNonBreakableSpaceForEmptyCell(ResponseWriter writer, AbstractTable table, UIComponent cellComponentsContainer) throws IOException {
-        if (cellComponentsContainer instanceof TableColumn || cellComponentsContainer instanceof TableCell) {
+        if (cellComponentsContainer instanceof Column || cellComponentsContainer instanceof Cell) {
             List<UIComponent> children = cellComponentsContainer.getChildren();
             boolean childrenEmpty = true;
             for (int childIndex = 0, childCount = children.size(); childIndex < childCount; childIndex++) {
@@ -471,9 +471,9 @@ public class TableBody extends TableSection {
         }
     }
 
-    private List<TableRow> getApplicableCustomRows(List<TableRow> customRows) {
-        List<TableRow> applicableRows = new ArrayList<TableRow>(customRows.size());
-        for (TableRow tableRow : customRows) {
+    private List<Row> getApplicableCustomRows(List<Row> customRows) {
+        List<Row> applicableRows = new ArrayList<Row>(customRows.size());
+        for (Row tableRow : customRows) {
             if (tableRow.getCondition())
                 applicableRows.add(tableRow);
         }
@@ -542,7 +542,7 @@ public class TableBody extends TableSection {
      *         (3) List containing only one SpannedTableCell instance if an appropriate cell is part of a cell span - all
      *         cells referring to the same SpannedTableCell will be rendered as one cell spanning across several columns.
      */
-    private List[] prepareCustomCells(AbstractTable table, List<TableRow> applicableCustomRows) {
+    private List[] prepareCustomCells(AbstractTable table, List<Row> applicableCustomRows) {
         List<BaseColumn> allColumns = table.getAllColumns();
         List<BaseColumn> columnsForRendering = table.getColumnsForRendering();
         int allColCount = allColumns.size();
@@ -555,18 +555,18 @@ public class TableBody extends TableSection {
         List[] rowCellsByAbsoluteIndex = new List[allColCount];
 
         boolean thereAreCellSpans = false;
-        List<TableCell> rowCellsByColReference = new ArrayList<TableCell>();
+        List<Cell> rowCellsByColReference = new ArrayList<Cell>();
         for (int i = 0, icount = applicableCustomRows.size(); i < icount; i++) {
-            TableRow row = applicableCustomRows.get(i);
+            Row row = applicableCustomRows.get(i);
             int customRowIndex = (Integer) row.getAttributes().get(CUSTOM_ROW_INDEX_ATTRIBUTE);
             List<UIComponent> children = row.getChildren();
             int freeCellIndex = 0;
             int customCellIndex = 0;
             for (int j = 0, jcount = children.size(); j < jcount; j++) {
                 Object child = children.get(j);
-                if (!(child instanceof TableCell))
+                if (!(child instanceof Cell))
                     continue;
-                TableCell cell = (TableCell) child;
+                Cell cell = (Cell) child;
 
                 cell.getAttributes().put(CUSTOM_CELL_RENDERING_INFO_ATTRIBUTE, new CustomContentCellRenderingInfo(customRowIndex, customCellIndex++));
                 int span = cell.getSpan();
@@ -585,9 +585,9 @@ public class TableBody extends TableSection {
                     freeCellIndex += span;
                     if (thisColIndex >= allColCount)
                         throw new FacesException("The number of free cells (cells without 'column' attribute) inside of <o:row> tag should not be greater than the total number of columns in a table (" + allColCount + ")");
-                    List<TableCell> applicableCells = rowCellsByAbsoluteIndex[thisColIndex];
+                    List<Cell> applicableCells = rowCellsByAbsoluteIndex[thisColIndex];
                     if (applicableCells == null) {
-                        applicableCells = new ArrayList<TableCell>();
+                        applicableCells = new ArrayList<Cell>();
                         rowCellsByAbsoluteIndex[thisColIndex] = applicableCells;
                     }
                     applicableCells.add(cell);
@@ -600,11 +600,11 @@ public class TableBody extends TableSection {
             FacesContext context = FacesContext.getCurrentInstance();
             for (int i = 0; i < allColCount; i++) {
                 BaseColumn col = allColumns.get(i);
-                for (TableCell cell : rowCellsByColReference) {
+                for (Cell cell : rowCellsByColReference) {
                     if (isColumnApplicable(context, cell, table, col, i)) {
-                        List<TableCell> applicableCells = rowCellsByAbsoluteIndex[i];
+                        List<Cell> applicableCells = rowCellsByAbsoluteIndex[i];
                         if (applicableCells == null) {
-                            applicableCells = new ArrayList<TableCell>();
+                            applicableCells = new ArrayList<Cell>();
                             rowCellsByAbsoluteIndex[i] = applicableCells;
                         }
                         applicableCells.add(cell);
@@ -620,7 +620,7 @@ public class TableBody extends TableSection {
                     continue;
                 int cellSpan = 1;
                 for (int j = 0, jcount = customCellList.size(); j < jcount; j++) {
-                    TableCell cell = (TableCell) customCellList.get(j);
+                    Cell cell = (Cell) customCellList.get(j);
 
                     int currentCellSpan = cell.getSpan();
                     if (currentCellSpan != 1)
@@ -645,20 +645,20 @@ public class TableBody extends TableSection {
         return applicableCells;
     }
 
-    private List<TableRow> getCustomRows(AbstractTable table) {
-        List<TableRow> customRows = new ArrayList<TableRow>();
+    private List<Row> getCustomRows(AbstractTable table) {
+        List<Row> customRows = new ArrayList<Row>();
         List<UIComponent> children = table.getChildren();
         int customRowIndex = 0;
         int customCellIndex = 0;
         for (UIComponent child : children) {
-            if (child instanceof TableRow) {
-                TableRow customRow = (TableRow) child;
+            if (child instanceof Row) {
+                Row customRow = (Row) child;
                 customRows.add(customRow);
                 customRow.getAttributes().put(CUSTOM_ROW_INDEX_ATTRIBUTE, customRowIndex++);
                 List<UIComponent> customRowChildren = customRow.getChildren();
                 for (UIComponent rowChild : customRowChildren) {
-                    if (rowChild instanceof TableCell) {
-                        TableCell customCell = (TableCell) rowChild;
+                    if (rowChild instanceof Cell) {
+                        Cell customCell = (Cell) rowChild;
                         customCell.getAttributes().put(CUSTOM_CELL_INDEX_ATTRIBUTE, customCellIndex++);
                     }
                 }
@@ -667,9 +667,9 @@ public class TableBody extends TableSection {
         return customRows;
     }
 
-    private List<String> getApplicableRowStyles(FacesContext context, List<TableRow> customRows, AbstractTable table) {
+    private List<String> getApplicableRowStyles(FacesContext context, List<Row> customRows, AbstractTable table) {
         List<String> result = new ArrayList<String>();
-        for (TableRow customRow : customRows) {
+        for (Row customRow : customRows) {
             String cls = customRow.getStyleClassForRow(context, table);
             if (cls != null)
                 result.add(cls);

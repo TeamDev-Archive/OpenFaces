@@ -102,19 +102,6 @@
 }
 
 
-.o_captionButton {
-  width: 16px;
-  text-align: center;
-}
-
-.o_captionButton_rollover {
-  background: #a0a0a0;
-}
-
-.o_captionButton_pressed {
-  background: #808080;
-}
-
 /* getDialogControlsFontFamily */
 .o_calendar_day,
   .o_calendar_days_header,
@@ -1428,6 +1415,19 @@
 
 
 /* == Shared among components styles (higher priority than usual component's default styles) == */
+
+.o_captionButton {
+  width: 16px;
+  text-align: center;
+}
+
+.o_captionButton_rollover {
+  background: #a0a0a0;
+}
+
+.o_captionButton_pressed {
+  background: #808080;
+}
 
 .o_fullWidth {
   width: 100%;

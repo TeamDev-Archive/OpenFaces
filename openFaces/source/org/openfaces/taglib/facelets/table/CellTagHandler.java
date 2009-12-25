@@ -13,13 +13,13 @@ package org.openfaces.taglib.facelets.table;
 
 import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
-import org.openfaces.taglib.internal.table.TableColumnsTag;
+import org.openfaces.taglib.internal.table.CellTag;
 
 /**
  * @author Dmitry Pikhulya
  */
-public class TableColumnsTagHandler extends AbstractFaceletsComponentHandler {
-    public TableColumnsTagHandler(ComponentConfig componentConfig) {
-        super(componentConfig, new TableColumnsTag());
+public class CellTagHandler extends AbstractFaceletsComponentHandler {
+    public CellTagHandler(ComponentConfig componentConfig) {
+        super(componentConfig, new CellTag());
     }
 }

@@ -24,6 +24,9 @@ public abstract class BaseColumnTag extends AbstractComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        setStringProperty(component, "headerValue", getPropertyValue("header"), "header");
+        setStringProperty(component, "footerValue", getPropertyValue("footer"), "footer");
+
         setStringProperty(component, "width");
         setStringProperty(component, "align");
         setStringProperty(component, "valign");

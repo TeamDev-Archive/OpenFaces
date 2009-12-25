@@ -13,7 +13,7 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
-import org.openfaces.component.table.TableColumnGroup;
+import org.openfaces.component.table.ColumnGroup;
 import org.openfaces.renderkit.RendererBase;
 
 import javax.faces.component.UIComponent;
@@ -24,7 +24,7 @@ import javax.faces.component.UIComponent;
 public class BaseColumnRenderer extends RendererBase {
     protected AbstractTable getTable(BaseColumn column) {
         UIComponent parent = column.getParent();
-        while (parent instanceof TableColumnGroup)
+        while (parent instanceof ColumnGroup)
             parent = parent.getParent();
         if (parent == null || !(parent instanceof AbstractTable))
             throw new RuntimeException("Columns can only be inserted into a either DataTable or TreeTable. Column id: " + column.getId() +
