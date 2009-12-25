@@ -26,6 +26,7 @@ public class TrackList {
     private Track playing;
     private TrackConverter trackConverter;
 
+    private List<SelectItem> equalizerSettingsItems;
     private List<SelectItem> effectItems;
 
     private List<Track> getTrackList() {
@@ -137,6 +138,19 @@ public class TrackList {
 
     }
 
+    public List<SelectItem> getEqualizerSettingsItems() {
+        if (equalizerSettingsItems == null) {
+            equalizerSettingsItems = Arrays.asList(
+                    new SelectItem("Natural"),
+                    new SelectItem("Rock"),
+                    new SelectItem("Pop"),
+                    new SelectItem("Classic"),
+                    new SelectItem("Soft"),
+                    new SelectItem("Jazz"),
+                    new SelectItem("DBB"));                        
+        }
+        return equalizerSettingsItems;
+    }
     public List<SelectItem> getEffectItems() {
         if (effectItems == null) {
             effectItems = Arrays.asList(

@@ -7,7 +7,6 @@ American National Bank and Trust Company	6837	Danville	VA	24543	Danville City	77
 Abbeville Building & Loan	30332	Abbeville	LA	70511	Vermilion	26488
 American Bank & Trust Company	19234	Coushatta	LA	71019	St. Tammany	86437
 American Bank & Trust Company	17906	Opelousas	LA	70571	St. Landry	114912
-Amerika Samoa Bank	23671	Pago Pago	AS	96799	Eastern	117756
 AFB&T	28225	Athens	GA	30603	Clarke	1241590
 Albany Bank & Trust, National Association	35029	Albany	GA	31708	Dougherty	178104
 Alliance National Bank	35173	Dalton	GA	30722	Whitfield	134014
@@ -26,8 +25,6 @@ Alliance Banking Company	57424	Winchester	KY	40391	Clark	47363
 1st Security Bank of Washington	57633	Mountlake Terrace	WA	98043	Snohomish	258813
 American Marine Bank	16730	Bainbridge Island	WA	98110	Kitsap	385198
 AmericanWest Bank	22441	Spokane	WA	99201	Spokane	2043206
-Bank of Guam	20884	Hagatna	GU	96932	Guam	815142
-Citizens Security Bank (Guam), Inc.	33316	Hagatna	GU	96910	Guam	148656
 1st Community Bank	11706	Sherrard	IL	61281	Mercer	49726
 1st Equity Bank	34393	Skokie	IL	60076	Cook	127982
 1st Equity Bank Northwest	57611	Buffalo Grove	IL	60089	Cook	51589
@@ -49,9 +46,6 @@ Bank of Benoit	15817	Benoit	MS	38725	Bolivar	16437
 Bank of Charles Town	9023	Charles Town	WV	25414	Jefferson	298124
 Bank of Gassaway	15397	Gassaway	WV	26624	Braxton	150425
 Bank of Mingo	22273	Naugatuck	WV	25685	Mingo	106050
-Bank of St. Croix, Inc.	33990	Christiansted	VI	820	St. Croix	98162
-Merchants Commercial Bank	58184	St Thomas	VI	802	St. Thomas	29086
-Virgin Islands Community Bank	33964	Christiansted	VI	821	St. Croix	65122
 Bank of Hawaii	18053	Honolulu	HI	96813	Honolulu	10506253
 Central Pacific Bank	17308	Honolulu	HI	96811	Honolulu	5563703
 Finance Factors, Ltd.	25158	Honolulu	HI	96813	Honolulu	684695
@@ -117,9 +111,6 @@ Connecticut River Bank, National Association	6209	Springfield	VT	5156	Windsor	22
 1st Bank Yuma	57298	Yuma	AZ	85364	Yuma	114793
 Alliance Bank of Arizona	57512	Phoenix	AZ	85016	Maricopa	728349
 Arizona Bank & Trust	57620	Chandler	AZ	85226	Maricopa	228721
-Banco Bilbao Vizcaya Argentaria Puerto Rico	19919	San Juan	PR	918	San Juan	6195648
-Banco Popular de Puerto Rico	34968	San Juan	PR	936	San Juan	25366750
-Banco Santander Puerto Rico	20828	San Juan	PR	936	San Juan	8335935
 1st Source Bank	9087	South Bend	IN	46634	St Joseph	3845866
 Alliance Bank	197	Francesville	IN	47946	Pulaski	222145
 Ameriana Bank, SB	29031	New Castle	IN	47362	Henry	424698
@@ -135,7 +126,6 @@ America West Bank	35461	Layton	UT	84041	Davis	220641
 1ST BANK	16522	Evanston	WY	82931	Uinta	450182
 Bank of Commerce	22639	Rawlins	WY	82301	Carbon	95130
 Bank of Jackson Hole	23826	Jackson	WY	83001	Teton	314334
-Bank of the Federated States of Micronesia	26539	Pohnpei	FM	96941	Pohnpei	80092
 1st Summit Bank	8426	Johnstown	PA	15904	Cambria	449217
 Abington Savings Bank	27942	Jenkintown	PA	19046	Montgomery	1008551
 Adams County National Bank	7506	Gettysburg	PA	17325	Adams	968464
@@ -189,7 +179,6 @@ Woodforest National Bank	23220	Houston	TX	77015	Harris	2928263
 Provident Bank	30337	Montebello	NY	10901	Rockland	2914160
 The Mechanics Bank	1768	Richmond	CA	94806	Contra Costa	2869683
 Orion Bank	22427	Naples	FL	34102	Collier	2866585
-Eurobank	27150	San Juan	PR	926	San Juan	2859489
 Liberty Bank	17943	Middletown	CT	6457	Middlesex	2854357
 Salem Five Cents Savings Bank	23296	Salem	MA	1970	Essex	2845712
 Carter Bank & Trust	58596	Martinsville	VA	24112	Martinsville City	2800478

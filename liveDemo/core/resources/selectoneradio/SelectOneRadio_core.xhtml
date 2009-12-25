@@ -4,12 +4,12 @@
      xmlns:c="http://java.sun.com/jsp/jstl/core"
         >
 
-  <div id="Demo">
-    <div style="text-align: center; font-weight: bold; font-size: 20px;">Construction in progress...</div>
+  <div id="Demo" style="float:left">
 
     <h:panelGroup id="header">
       <h:panelGroup styleClass="demoPlayerBox" layout="block">
-        <h:graphicImage url="../images/selectoneradio/#{TrackList.playing != null?'soundwawe-live.gif':'soundwawe-still.gif'}"/>
+        <h:graphicImage
+                url="../images/selectoneradio/#{TrackList.playing != null?'soundwawe-live.gif':'soundwawe-still.gif'}"/>
         <h:panelGroup rendered="#{TrackList.playing != null}">
           <dl>
             <dt><h:outputText id="playingAlbumName" value="#{TrackList.playing.albumName}"/></dt>
@@ -25,6 +25,7 @@
     <div class="demoPlayerControls">
       <o:selectOneRadio id="radio" value="#{TrackList.playing}" converter="#{TrackList.trackConverter}"
                         layout="pageDirection"
+                        styleClass="radio"
                         unselectedImageUrl="../images/selectoneradio/regular.png"
                         rolloverUnselectedImageUrl="../images/selectoneradio/rollover.png"
                         selectedItemStyle="font-weigth: bold;"
@@ -37,11 +38,14 @@
         <o:ajax render="header" event="change"/>
       </o:selectOneRadio>
     </div>
+    <div class="demoPlayerEqualizer">
+      <span>Equalizer Settings:</span>
+      <o:selectOneRadio layout="pageDirection">
+        <f:selectItems value="#{TrackList.equalizerSettingsItems}"/>
+      </o:selectOneRadio>
+    </div>
+    <div style="clear:both"></div>
   </div>
-  Audio Effects:
-  <o:selectOneRadio layout="pageDirection">
-    <f:selectItems value="#{TrackList.effectItems}"/>
-  </o:selectOneRadio>
 
   <div id="Description">
     <h4>Demonstrated Features</h4>

@@ -20,7 +20,7 @@ public class Bank implements Serializable {
     private String institutionName;
     private int certificateNumber;
     private String city;
-    private String state;
+    private State state;
     private int zip;
     private String county;
     private int averageAssets;
@@ -36,7 +36,7 @@ public class Bank implements Serializable {
         this.institutionName = institutionName;
         this.certificateNumber = certificateNumber;
         this.city = city;
-        this.state = state;
+        this.state = State.valueOf(state);
         this.zip = zip;
         this.county = county;
         this.averageAssets = averageAssets;
@@ -54,7 +54,7 @@ public class Bank implements Serializable {
         return city;
     }
 
-    public String getState() {
+    public State getState() {
         return state;
     }
 
@@ -98,5 +98,68 @@ public class Bank implements Serializable {
         result = 31 * result + (county != null ? county.hashCode() : 0);
         result = 31 * result + averageAssets;
         return result;
+    }
+
+    public enum State {
+        AK("Alaska"),
+        AL("Alabama"),
+        AR("Arkansas"),
+        AZ("Arizona"),
+        CA("California"),
+        CO("Colorado"),
+        CT("Connecticut"),
+        DC("Dist Of Col"),
+        DE("Delaware"),
+        FL("Florida"),
+        GA("Georgia"),
+        HI("Hawaii"),
+        IA("Iowa"),
+        ID("Idaho"),
+        IL("Illinois"),
+        IN("Indiana"),
+        KS("Kansas"),
+        KY("Kentucky"),
+        LA("Louisiana"),
+        MA("Massachusetts"),
+        MD("Maryland"),
+        ME("Maine"),
+        MI("Michigan"),
+        MN("Minnesota"),
+        MO("Missouri"),
+        MS("Mississippi"),
+        MT("Montana"),
+        NC("North Carolina"),
+        ND("North Dakota"),
+        NE("Nebraska"),
+        NH("New Hampshire"),
+        NJ("New Jersey"),
+        NM("New Mexico"),
+        NV("Nevada"),
+        NY("New York"),
+        OH("Ohio"),
+        OK("Oklahoma"),
+        OR("Oregon"),
+        PA("Pennsylvania"),
+        RI("Rhode Island"),
+        SC("South Carolina"),
+        SD("South Dakota"),
+        TN("Tennessee"),
+        TX("Texas"),
+        UT("Utah"),
+        VA("Virginia"),
+        VT("Vermont"),
+        WA("Washington"),
+        WI("Wisconsin"),
+        WV("West Virginia"),
+        WY("Wyoming");
+        private String description;
+
+        private State(String desciption) {
+            this.description = desciption;
+        }
+
+        public String getDescription() {
+            return description;
+        }
     }
 }

@@ -98,7 +98,7 @@ public class BanksList implements Serializable {
         if (bankStates == null) {
             Map<String, State> stateBanksMap = new HashMap<String, State>();
             for (Bank bank : banks) {
-                String stateName = bank.getState();
+                String stateName = bank.getState().getDescription();
                 State state = stateBanksMap.get(stateName);
                 if (state == null) {
                     state = new State(stateName);

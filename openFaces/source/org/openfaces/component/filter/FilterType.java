@@ -51,6 +51,9 @@ public enum FilterType {
         if (clazz.isAssignableFrom(Date.class)){
             return DATE;
         }
+        if (clazz.isEnum()){
+            return SELECT;
+        }
         return TEXT;
     }
 
