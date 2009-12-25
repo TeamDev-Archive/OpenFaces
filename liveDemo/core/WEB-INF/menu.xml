@@ -121,6 +121,22 @@
     </demos>
   </menuItem>
   <menuItem>
+    <name>Composite Filter</name>
+    <componentName>Composite Filter</componentName>
+    <url>/compositefilter/CompositeFilter.jsf</url>
+    <shortPath>/compositefilter/</shortPath>
+    <image>CompositeFilter</image>
+    <selectedImage>/images/components/titles/CompositeFilter.png</selectedImage>
+    <keyFeatures>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/compositefilter/CompositeFilter.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
     <name>Confirmation</name>
     <componentName>Confirmation</componentName>
     <url>/confirmation/ConfirmationDefault.jsf</url>
@@ -139,22 +155,6 @@
       <demoItem>
         <demoName>General</demoName>
         <demoUrl>/confirmation/ConfirmationDefault.jsf</demoUrl>
-      </demoItem>
-    </demos>
-  </menuItem>
-  <menuItem>
-    <name>Composite Filter</name>
-    <componentName>Composite Filter</componentName>
-    <url>/compositefilter/CompositeFilter.jsf</url>
-    <shortPath>/compositefilter/</shortPath>
-    <image>CompositeFilter</image>
-    <selectedImage>/images/components/titles/CompositeFilter.png</selectedImage>
-    <keyFeatures>
-    </keyFeatures>
-    <demos>
-      <demoItem>
-        <demoName>General</demoName>
-        <demoUrl>/compositefilter/CompositeFilter.jsf</demoUrl>
       </demoItem>
     </demos>
   </menuItem>
