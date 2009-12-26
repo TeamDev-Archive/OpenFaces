@@ -1364,10 +1364,12 @@ O$.Table = {
             if (table._columnResizingInProgress) return;
             // don't let parent header cell hover to be activated since the handle is logically out of column (IE)
             if (!table._showingMenuForColumn)
-              table._columns.forEach(function(c) {
-                var headerCell = c.header && c.header._cell;
-                if (headerCell && headerCell.setForceHover) headerCell.setForceHover(null);
-              });
+              setTimeout(function() {
+                table._columns.forEach(function(c) {
+                  var headerCell = c.header && c.header._cell;
+                  if (headerCell && headerCell.setForceHover) headerCell.setForceHover(null);
+                });
+              }, 1);
           },
           onmousedown: function (e) {
             O$.startDragging(e, this);

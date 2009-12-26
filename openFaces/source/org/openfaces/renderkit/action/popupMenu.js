@@ -567,67 +567,97 @@ O$.PopupMenu = {
   },
 
   _substractPaddingFromMenuItem: function(menuItem) {
-    var anchorStyle = menuItem._anchor.style;
-    anchorStyle.paddingTop = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-top") - menuItem._diffTop) + "px";
-    anchorStyle.paddingBottom = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-bottom") - menuItem._diffBottom) + "px";
-    anchorStyle.paddingRight = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-right") - menuItem._diffRight) + "px";
-    anchorStyle.paddingLeft = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-left") - menuItem._diffLeft) + "px";
+    function substractPaddings(element, paddings, diffs) {
+      var len = paddings.length;
+      if (diffs.length != len) throw "paddings and diffs arrays should be of the same length";
+
+      for (var i = 0; i < len; i++) {
+        var paddingName = paddings[i];
+        var diff = diffs[i];
+        if (!element._cachedSubstractedPaddings)
+          element._cachedSubstractedPaddings = {};
+
+        var padding = element._cachedSubstractedPaddings[paddingName];
+        if (!padding)
+          padding = element._cachedSubstractedPaddings[paddingName] = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(element, paddingName) - diff) + "px";
+        element.style[paddingName] = padding;
+      }
+    }
+    substractPaddings(menuItem._anchor,
+            ["paddingTop", "paddingBottom", "paddingLeft", "paddingRight"],
+            [menuItem._diffTop, menuItem._diffBottom, menuItem._diffLeft, menuItem._diffRight]);
 
     if (menuItem._iconspan != null) {
+      substractPaddings(menuItem._iconspan,
+              ["paddingTop", "paddingBottom", "paddingLeft"],
+              [menuItem._diffTop, menuItem._diffBottom, menuItem._diffLeft]);
       var iconSpanStyle = menuItem._iconspan.style;
-      iconSpanStyle.paddingTop = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-top") - menuItem._diffTop) + "px";
-      iconSpanStyle.paddingLeft = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-left") - menuItem._diffLeft) + "px";
-      iconSpanStyle.paddingBottom = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-bottom") - menuItem._diffBottom) + "px";
       if (O$.isExplorer())
         iconSpanStyle.width = O$.calculateNumericCSSValue(O$.getElementStyle(menuItem._iconspan, "width")) - menuItem._diffLeft + "px";
     }
 
     if (menuItem._arrowspan != null) {
       var arrowSpanStyle = menuItem._arrowspan.style;
-      arrowSpanStyle.paddingTop = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-top") - menuItem._diffTop) + "px";
-      arrowSpanStyle.paddingRight = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-right") - menuItem._diffRight) + "px";
-      arrowSpanStyle.paddingBottom = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-bottom") - menuItem._diffBottom) + "px";
+      substractPaddings(menuItem._arrowspan,
+              ["paddingTop", "paddingBottom", "paddingRight"],
+              [menuItem._diffTop, menuItem._diffBottom, menuItem._diffRight]);
       if (O$.isExplorer())
         arrowSpanStyle.width = O$.calculateNumericCSSValue(O$.getElementStyle(menuItem._arrowspan, "width")) - menuItem._diffRight + "px";
-
     }
   },
 
   _addPaddingToMenuItem: function(menuItem) {
-    var anchorStyle = menuItem._anchor.style;
-    anchorStyle.paddingTop = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-top") + menuItem._diffTop) + "px";
-    anchorStyle.paddingBottom = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-bottom") + menuItem._diffBottom) + "px";
-    anchorStyle.paddingRight = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-right") + menuItem._diffRight) + "px";
-    anchorStyle.paddingLeft = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._anchor, "padding-left") + menuItem._diffLeft) + "px";
+    function addPaddings(element, paddings, diffs) {
+      var len = paddings.length;
+      if (diffs.length != len) throw "paddings and diffs arrays should be of the same length";
+
+      for (var i = 0; i < len; i++) {
+        var paddingName = paddings[i];
+        var diff = diffs[i];
+        if (!element._cachedAddedPaddings)
+          element._cachedAddedPaddings = {};
+
+        var padding = element._cachedAddedPaddings[paddingName];
+        if (!padding)
+          padding = element._cachedAddedPaddings[paddingName] = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(element, paddingName) + diff) + "px";
+        element.style[paddingName] = padding;
+      }
+    }
+
+    addPaddings(menuItem._anchor,
+            ["paddingTop", "paddingBottom", "paddingLeft", "paddingRight"],
+            [menuItem._diffTop, menuItem._diffBottom, menuItem._diffLeft, menuItem._diffRight]);
 
     if (menuItem._iconspan != null) {
+      addPaddings(menuItem._iconspan,
+              ["paddingTop", "paddingBottom"],
+              [menuItem._diffTop, menuItem._diffBottom]);
       var iconSpanStyle = menuItem._iconspan.style;
-      iconSpanStyle.paddingTop = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-top") + menuItem._diffTop) + "px";
       if (O$.isExplorer() && O$.isStrictMode()) {
         iconSpanStyle.paddingLeft = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-left") + menuItem._diffLeft -
-                                                                 O$.getNumericElementStyle(menuItem._anchor, "border-left-width") -
-                                                                 O$.getNumericElementStyle(menuItem._anchor, "border-right-width")) + "px";
+                                                                 O$.getNumericElementStyle(menuItem._anchor, "border-left-width", true) -
+                                                                 O$.getNumericElementStyle(menuItem._anchor, "border-right-width", true)) + "px";
       }
       else {
         iconSpanStyle.paddingLeft = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-left") + menuItem._diffLeft) + "px";
       }
-      iconSpanStyle.paddingBottom = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "padding-bottom") + menuItem._diffBottom) + "px";
       if (O$.isExplorer())
         iconSpanStyle.width = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._iconspan, "width") + menuItem._diffLeft) + "px";
     }
 
     if (menuItem._arrowspan != null) {
+      addPaddings(menuItem._arrowspan,
+              ["paddingTop", "paddingBottom"],
+              [menuItem._diffTop, menuItem._diffBottom]);
       var arrowSpanStyle = menuItem._arrowspan.style;
-      arrowSpanStyle.paddingTop = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-top") + menuItem._diffTop) + "px";
       if (O$.isExplorer() && O$.isStrictMode()) {
         arrowSpanStyle.paddingRight = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-right") + menuItem._diffRight -
-                                                                   O$.getNumericElementStyle(menuItem._anchor, "border-left-width") -
-                                                                   O$.getNumericElementStyle(menuItem._anchor, "border-right-width")) + "px";
+                                                                   O$.getNumericElementStyle(menuItem._anchor, "border-left-width", true) -
+                                                                   O$.getNumericElementStyle(menuItem._anchor, "border-right-width", true)) + "px";
       }
       else {
         arrowSpanStyle.paddingRight = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-right") + menuItem._diffRight) + "px";
       }
-      arrowSpanStyle.paddingBottom = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "padding-bottom") + menuItem._diffBottom) + "px";
       if (O$.isExplorer())
         arrowSpanStyle.width = O$.PopupMenu._getNonNegative(O$.getNumericElementStyle(menuItem._arrowspan, "width") + menuItem._diffRight) + "px";
     }
@@ -806,7 +836,7 @@ O$.PopupMenu = {
     }
     if (menuItem._arrowspan != null) {
       /* set margin for the arrow */
-      var arrowAreaWidth = O$.PopupMenu._getWidth(menuItem._arrowspan);
+      var arrowAreaWidth = O$._getWidth(menuItem._arrowspan);
       menuItem._caption.style.paddingRight = O$.calculateNumericCSSValue(menuItem._caption.style.paddingRight) + arrowAreaWidth + "px";
     }
   },
