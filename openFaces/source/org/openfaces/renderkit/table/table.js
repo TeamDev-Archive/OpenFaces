@@ -478,7 +478,7 @@ O$.Table = {
 
     var bodyRows = table.body._getRows();
     for (i = rangeStart; i <= rangeEnd; i++) {
-      if (O$.findValueInArray(i, alreadyIncludedIndexes) == -1) {
+      if (alreadyIncludedIndexes.indexOf(i ) == -1) {
         var row = bodyRows[i];
         if (row._visible)
           result.push(i);
@@ -717,7 +717,7 @@ O$.Table = {
       },
 
       _isItemSelected: function(item) {
-        var result = O$.findValueInArray(item, selectedItems) != -1;
+        var result = selectedItems.indexOf(item) != -1;
         return result;
       },
 
@@ -807,7 +807,7 @@ O$.Table = {
       var cell = cells[cellIndex];
       var cellSpan = O$.Tables._getCellColSpan(cell);
       var colIndex = cell._column._index;
-      if ((colIndex != undefined) && (O$.findValueInArray(colIndex, table._selectionColumnIndexes) != -1))
+      if ((colIndex != undefined) && (table._selectionColumnIndexes.indexOf(colIndex) != -1))
         O$.Table._initSelectionCell(cell);
       colIndex += cellSpan;
     }
@@ -913,7 +913,7 @@ O$.Table = {
         if (e.ctrlKey || e.metaKey) {
           table._toggleItemSelected(row._index);
           var newSelectedRowIndexes = table.__getSelectedRowIndexes();
-          table._baseRowIndex = (O$.findValueInArray(row._index, newSelectedRowIndexes) != -1) ? row._index : null;
+          table._baseRowIndex = (newSelectedRowIndexes.indexOf(row._index) != -1) ? row._index : null;
           table._baseSelectedRowIndexes = newSelectedRowIndexes;
           table._rangeEndRowIndex = null;
         } else
@@ -1069,7 +1069,7 @@ O$.Table = {
         cell._column = tableColumn;
         O$.Table._initCheckboxCell(cell, columnObj);
         if (cell._checkBox) {
-          cell._checkBox.checked = O$.findValueInArray(i, checkedIndexes) != -1;
+          cell._checkBox.checked = checkedIndexes.indexOf(i) != -1;
         }
       }
       tableColumn._updateSubmissionField();
@@ -1482,7 +1482,7 @@ O$.Table = {
           _updatePos: function() {
             var parentColumn = null;
             for (var col = this._column; col._parentColumn; col = col._parentColumn) {
-              var indexAmongSiblings = O$.findValueInArray(col, col._parentColumn.subColumns);
+              var indexAmongSiblings = col._parentColumn.subColumns.indexOf(col);
               var lastColInGroup = indexAmongSiblings == col._parentColumn.subColumns.length - 1;
               if (!lastColInGroup)
                 break;
@@ -1708,7 +1708,7 @@ O$.Table = {
                   dropTargetMark.show(container);
                   var gridLineWidthCorrection = function() {
                     var parentColumnList = columnOrGroup._parentColumn ? columnOrGroup._parentColumn.subColumns : table._columns;
-                    var thisIdx = O$.findValueInArray(columnOrGroup, parentColumnList);
+                    var thisIdx = parentColumnList.indexOf(columnOrGroup);
                     var col = rightEdge
                             ? thisIdx < parentColumnList.length - 1 ? columnOrGroup : null
                             : parentColumnList[thisIdx - 1];

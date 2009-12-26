@@ -592,12 +592,7 @@ if (!window.O$) {
   };
 
   O$.findValueInArray = function(value, arr) {
-    for (var i = 0, count = arr.length; i < count; i++) {
-      var obj = arr[i];
-      if (obj == value)
-        return i;
-    }
-    return -1;
+    return arr.indexOf(value);// todo: inline and remove this method
   };
 
   O$.getArrayFromString = function(str, delimiter) {
@@ -614,7 +609,7 @@ if (!window.O$) {
   };
 
   O$.arrayContainsValue = function(array, value) {
-    var idx = O$.findValueInArray(value, array);
+    var idx = array.indexOf(value);
     return idx != -1;
   };
 
@@ -625,6 +620,26 @@ if (!window.O$) {
     }
     return val;
   };
+
+  if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function(elt /*, from*/) {
+      var len = this.length >>> 0;
+
+      var from = Number(arguments[1]) || 0;
+      from = (from < 0)
+              ? Math.ceil(from)
+              : Math.floor(from);
+      if (from < 0)
+        from += len;
+
+      for (; from < len; from++) {
+        if (from in this &&
+            this[from] === elt)
+          return from;
+      }
+      return -1;
+    };
+  }
 
   if (!Array.prototype.every) {
     Array.prototype.every = function(fun /*, thisp*/) {
@@ -939,7 +954,7 @@ if (!window.O$) {
   O$.getAnyParentNode = function(element, tagNames) {
     for (var i = 0, count = tagNames.length; i < count; i++)
       tagNames[i] = tagNames[i].toUpperCase();
-    while (element && O$.findValueInArray(element.nodeName.toUpperCase(), tagNames) == -1)
+    while (element && tagNames.indexOf(element.nodeName.toUpperCase()) == -1)
       element = element.parentNode;
     if (element != null)
       return element;
@@ -1983,7 +1998,9 @@ if (!window.O$) {
         if (element._of_hoverState.hoverValue == newHoverValue) return;
 
         element._of_hoverState.hoverValue = newHoverValue;
-        element._hoverListeners.forEach(function(fn){fn.call(element, newHoverValue, element);});
+        element._hoverListeners.forEach(function(fn) {
+          fn.call(element, newHoverValue, element);
+        });
       };
       element.setForceHover = function(forceHover) {
         element._of_hoverState.forceHover = forceHover;
@@ -2499,8 +2516,10 @@ if (!window.O$) {
     component.focus = function() {
       if (O$.getElementStyle(component, "position") == "absolute" || this._preventPageScrolling) {
         var pageScrollPos = O$.getPageScrollPos();
-        this._focusControl.style.left = pageScrollPos.x + "px";
-        this._focusControl.style.top = pageScrollPos.y + "px";
+        var container = O$.getContainingBlock(this._focusControl, true);
+        var containerPos = container ? O$.getElementPos(container) : {x: 0, y: 0};
+        this._focusControl.style.left = pageScrollPos.x - containerPos.x + "px";
+        this._focusControl.style.top = pageScrollPos.y - containerPos.y + "px";
       } else {
         this._focusControl.style.left = "";
         this._focusControl.style.top = "";
@@ -2553,6 +2572,7 @@ if (!window.O$) {
         component._doUnblockOutlineUpdate();
       }
     }
+
     O$.addEventHandler(component, "mousedown", blockOutlineUpdate);
     O$.addEventHandler(component, "mouseup", unblockOutlineUpdate);
     O$.addEventHandler(component, "mouseout", unblockOutlineUpdate);
@@ -2688,6 +2708,11 @@ if (!window.O$) {
    * in order of their occurence in DOM
    */
   O$.findCssRules = function(selectors) {
+    if (!O$._cssRulesBySelectors) O$._cssRulesBySelectors = {};
+    var selectorsKey = selectors.join(" ");
+    var cachedRules = O$._cssRulesBySelectors[selectorsKey];
+    if (cachedRules) return cachedRules;
+
     var styleSheets = document.styleSheets;
     if (!styleSheets)
       return undefined;
@@ -2717,10 +2742,11 @@ if (!window.O$) {
         if (!selectorName)
           continue;
         selectorName = selectorName.toLowerCase();
-        if (O$.findValueInArray(selectorName, selectors) != -1)
+        if (selectors.indexOf(selectorName) != -1)
           rulesFound.push(rule);
       }
     }
+    O$._cssRulesBySelectors[selectorsKey] = rulesFound;
     return rulesFound;
   };
 
@@ -2833,7 +2859,7 @@ if (!window.O$) {
     for (var nameIndex = 0, nameCount = clsNames.length; nameIndex < nameCount; nameIndex++) {
       var currName = clsNames[nameIndex];
       if (currName) {
-        if (O$.findValueInArray(currName, newClassesToExclude) == -1)
+        if (newClassesToExclude.indexOf(currName) == -1)
           newNames.push(currName);
         else
           someClassesExcluded = true;
@@ -2895,7 +2921,15 @@ if (!window.O$) {
   };
 
   O$.getElementStyle = function(element, propertyNames, enableValueCaching) {
-    if (!(propertyNames instanceof Array)) {
+    if (typeof propertyNames == "string") {
+      if (!enableValueCaching) {
+        var currentStyle, computedStyle;
+        var result = (currentStyle = element.currentStyle)
+                ? currentStyle[O$._capitalizeCssPropertyName(propertyNames)]
+                : (computedStyle = !currentStyle && document.defaultView && document.defaultView.getComputedStyle(element, ""))
+                  ? computedStyle.getPropertyValue(O$._dashizeCssPropertyName(propertyNames)) : "";
+        return result ? result : "";
+      }
       return O$.getElementStyle(element, [propertyNames], enableValueCaching)[propertyNames];
     }
     if (enableValueCaching) {
@@ -2903,8 +2937,8 @@ if (!window.O$) {
         element._cachedStyleValues = {};
     }
     var propertyValues = {};
-    var currentStyle = element.currentStyle;
-    var computedStyle = !currentStyle && document.defaultView ? document.defaultView.getComputedStyle(element, "") : null;
+    currentStyle = element.currentStyle;
+    computedStyle = !currentStyle && document.defaultView && document.defaultView.getComputedStyle(element, "");
     for (var i = 0, count = propertyNames.length; i < count; i++) {
       var propertyName = propertyNames[i];
       var capitalizedPropertyName = O$._capitalizeCssPropertyName(propertyName);
@@ -2937,10 +2971,16 @@ if (!window.O$) {
   };
 
   O$._capitalizeCssPropertyName = function(propertyName) {
+    if (!O$._capitalizedValues) O$._capitalizedValues = {};
+    var value = O$._capitalizedValues[propertyName];
+    if (value) return value;
+    var originalPropertyName = propertyName;
     while (true) {
       var idx = propertyName.indexOf("-");
-      if (idx == -1)
+      if (idx == -1) {
+        O$._capitalizedValues[originalPropertyName] = propertyName;
         return propertyName;
+      }
       var firstPart = propertyName.substring(0, idx);
       var secondPart = propertyName.substring(idx + 1);
       if (secondPart.length > 0) {
@@ -2954,14 +2994,18 @@ if (!window.O$) {
   };
 
   O$._dashizeCssPropertyName = function(propertyName) {
+    if (!O$._dashizedValues) O$._dashizedValues = {};
+    var value = O$._dashizedValues[propertyName];
+    if (value) return value;
     var result = "";
     for (var i = 0, count = propertyName.length; i < count; i++) {
       var ch = propertyName.substring(i, i + 1);
-      if (O$.isUpperCase(ch))
+      if (ch != "-" && O$.isUpperCase(ch))
         result += "-" + ch.toLowerCase();
       else
         result += ch;
     }
+    O$._dashizedValues[propertyName] = result;
     return result;
   };
 
@@ -4364,7 +4408,7 @@ if (!window.O$) {
         });
       }
     };
-    notifiers.forEach(function(n){
+    notifiers.forEach(function(n) {
       n.addListener(function() {
         listener.update();
       });
@@ -4399,7 +4443,7 @@ if (!window.O$) {
       this._listeners.push(listener);
     },
     removeListener: function(listener) {
-      var idx = O$.findValueInArray(listener, this._listeners);
+      var idx = this._listeners.indexOf(listener);
       if (idx == -1) return;
       this._listeners = this._listeners.slice(idx, 1);
     },
@@ -4423,7 +4467,7 @@ if (!window.O$) {
       this._listeners.push(listener);
     },
     removeListener: function(listener) {
-      var idx = O$.findValueInArray(listener, this._listeners);
+      var idx = this._listeners.indexOf(listener);
       if (idx == -1) return;
       this._listeners = this._listeners.slice(idx, 1);
     },

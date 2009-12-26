@@ -46,8 +46,10 @@ O$.Tables = {
       });
       var lineHeight = O$.Tables._getUserClassPropertyValue(row, "line-height", "normal");
 
-      if (paddingNames.some(function (n) {return paddings[n];}) || lineHeight) {
-        for (cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
+      if (paddingNames.some(function (n) {
+        return paddings[n];
+      }) || lineHeight) {
+        for (cellIndex = 0,cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
           cell = cells[cellIndex];
 
           paddingNames.forEach(function (n) {
@@ -62,8 +64,10 @@ O$.Tables = {
     var borders = O$.Tables._evaluateStyleClassProperties_cached(
             row.className, borderNames,
             row._row ? row._row._table : row._table);
-    if (borderNames.some(function (n) {return borders[n];})) {
-      for (cellIndex = 0, cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
+    if (borderNames.some(function (n) {
+      return borders[n];
+    })) {
+      for (cellIndex = 0,cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
         cell = cells[cellIndex];
         borderNames.forEach(function(n) {
           O$.Tables._setCellStyleProperty(cell, n, borders[n]);
@@ -103,17 +107,17 @@ O$.Tables = {
 
     var tempIdx = 0;
     table._gridLines = {
-        horizontal: params.gridLines[tempIdx++],
-        vertical: params.gridLines[tempIdx++],
-        commonHeader: params.gridLines[tempIdx++],
-        commonFooter: params.gridLines[tempIdx++],
-        headerHoriz: params.gridLines[tempIdx++],
-        headerVert: params.gridLines[tempIdx++],
-        subHeaderRow: params.gridLines[tempIdx++],
-        multiHeader: params.gridLines[tempIdx++],
-        multiFooter: params.gridLines[tempIdx++],
-        footerHoriz: params.gridLines[tempIdx++],
-        footerVert: params.gridLines[tempIdx++]
+      horizontal: params.gridLines[tempIdx++],
+      vertical: params.gridLines[tempIdx++],
+      commonHeader: params.gridLines[tempIdx++],
+      commonFooter: params.gridLines[tempIdx++],
+      headerHoriz: params.gridLines[tempIdx++],
+      headerVert: params.gridLines[tempIdx++],
+      subHeaderRow: params.gridLines[tempIdx++],
+      multiHeader: params.gridLines[tempIdx++],
+      multiFooter: params.gridLines[tempIdx++],
+      footerHoriz: params.gridLines[tempIdx++],
+      footerVert: params.gridLines[tempIdx++]
     };
     table.style.emptyCells = "show";
 
@@ -152,6 +156,7 @@ O$.Tables = {
       function fixInputWidths(element) {
         if (element) O$.fixInputsWidthStrict(element);
       }
+
       fixInputWidths(area._tag);
       fixInputWidths(area._leftScrollingArea && area._leftScrollingArea._rowContainer);
       fixInputWidths(area._centerScrollingArea && area._centerScrollingArea._rowContainer);
@@ -200,9 +205,9 @@ O$.Tables = {
       }
     }
 
-   rowsToInsert.forEach(function(f){
-     if (!f._rowNode && f.nodeName && f.nodeName.toUpperCase() == "TR") f._rowNode = f;
-   });
+    rowsToInsert.forEach(function(f) {
+      if (!f._rowNode && f.nodeName && f.nodeName.toUpperCase() == "TR") f._rowNode = f;
+    });
 
     var visibleInsertedRows;
     if (!this._params.invisibleRowsAllowed)
@@ -233,7 +238,7 @@ O$.Tables = {
       }
 
       var colIndex, colCount, column, bodyCells;
-      for (colIndex = 0, colCount = columns.length; colIndex < colCount; colIndex++) {
+      for (colIndex = 0,colCount = columns.length; colIndex < colCount; colIndex++) {
         column = columns[colIndex];
         bodyCells = column.body._cells;
         var movedCell = bodyCells[originalRowIndex];
@@ -253,7 +258,7 @@ O$.Tables = {
 
     var newVisibleRowsForNow = 0;
     var callbackIndex, callbackCount;
-    for (i = 0, count = rowsToInsert.length; i < count; i++) {
+    for (i = 0,count = rowsToInsert.length; i < count; i++) {
       var newRow = rowsToInsert[i];
       if (!this._params.scrolling) {
         if (bodyRows.length > 0) {
@@ -276,6 +281,7 @@ O$.Tables = {
           else
             area._rowContainer.appendChild(rowNode);
         }
+
         addRow(this.body._leftScrollingArea, newRow._leftRowNode);
         addRow(this.body._centerScrollingArea, newRow._rowNode);
         addRow(this.body._rightScrollingArea, newRow._rightRowNode);
@@ -301,7 +307,7 @@ O$.Tables = {
       if (newRow._isVisible())
         newVisibleRowsForNow++;
 
-      for (colIndex = 0, colCount = columns.length; colIndex < colCount; colIndex++) {
+      for (colIndex = 0,colCount = columns.length; colIndex < colCount; colIndex++) {
         column = columns[colIndex];
         var cellStyleKey = newRowIndex + "x" + colIndex;
         this._params.cellStylesMap[cellStyleKey] = newRowCellsToStylesMap ? newRowCellsToStylesMap[i + "x" + colIndex] : undefined;
@@ -310,11 +316,11 @@ O$.Tables = {
         bodyCells = column.body._cells;
         bodyCells[newRowIndex] = cell;
         if (cell)
-          for (callbackIndex = 0, callbackCount = this._cellInsertionCallbacks.length; callbackIndex < callbackCount; callbackIndex++)
+          for (callbackIndex = 0,callbackCount = this._cellInsertionCallbacks.length; callbackIndex < callbackCount; callbackIndex++)
             this._cellInsertionCallbacks[callbackIndex](cell, newRow, column);
       }
 
-      for (callbackIndex = 0, callbackCount = this._singleRowInsertionCallbacks.length; callbackIndex < callbackCount; i++)
+      for (callbackIndex = 0,callbackCount = this._singleRowInsertionCallbacks.length; callbackIndex < callbackCount; i++)
         this._singleRowInsertionCallbacks[callbackIndex](newRow);
     }
 
@@ -339,6 +345,7 @@ O$.Tables = {
         }
         return rows;
       }
+
       var rows = tableRows(table, "tbody");
       if (rows.length != 1)
         throw "O$._initRows: one root row expected, but was: " + rows.length;
@@ -354,6 +361,7 @@ O$.Tables = {
       function applyStyle(element, style) {
         if (element) O$.setStyleMappings(element, {sectionStyle: style});
       }
+
       applyStyle(headTable, table._params.header.className);
       applyStyle(bodyTable, table._params.body.className);
       applyStyle(footTable, table._params.footer.className);
@@ -368,7 +376,9 @@ O$.Tables = {
           if (table._params.scrolling && O$.isQuirksMode()) {
             // allow header sections font-weight and other attributes to be passed onto actual header cells under
             // quirks mode
-            this._scrollingAreas.forEach(function(area) {elements.push(area._table);});
+            this._scrollingAreas.forEach(function(area) {
+              elements.push(area._table);
+            });
           }
           elements.forEach(function(element) {
             O$.setStyleMappings(element, {sectionStyle: sectionParams.className});
@@ -395,9 +405,9 @@ O$.Tables = {
                 else if (sectionTagName == "tbody")
                   return bodyTable;
                 else if (sectionTagName == "tfoot")
-                  return footTable;
-                else
-                  throw "Unknown section tag name: " + sectionTagName;
+                    return footTable;
+                  else
+                    throw "Unknown section tag name: " + sectionTagName;
               }();
               if (!this._sectionTable)
                 return [];
@@ -417,6 +427,7 @@ O$.Tables = {
               var leftCellIndex = scrolling.leftFixedCols ? 0 : undefined;
               var centerCellIndex = leftCellIndex != undefined ? 1 : 0;
               var rightCellIndex = scrolling.rightFixedCols ? centerCellIndex + 1 : undefined;
+
               function scrollingArea(areaCellIndex, scrollingKind) {
                 var td = containerRow.childNodes[areaCellIndex];
                 td.style.verticalAlign = "top";
@@ -450,19 +461,20 @@ O$.Tables = {
                   } else if (scrollingKind == "x")
                     area._scrollingDiv.style.overflowX = "scroll";
                   else if (scrollingKind == "y")
-                    area._scrollingDiv.style.overflowY = "scroll";
+                      area._scrollingDiv.style.overflowY = "scroll";
                   else if (scrollingKind == "both")
-                    area._scrollingDiv.style.overflow = "scroll";
+                      area._scrollingDiv.style.overflow = "scroll";
                   else
                     throw "initTableSection/scrollingArea: unknown scrollingKind: " + scrollingKind;
                 }
                 return area;
               }
+
               var scrollingKinds;
               if (sectionTagName == "thead") scrollingKinds = {left: "none", center: "none", right: "none"};
               else if (sectionTagName == "tbody") scrollingKinds = {left: "none", center: scrolling.horizontal ? "both" : "y", right: "none"};
               else if (sectionTagName == "tfoot") scrollingKinds = {left: "none", center: "none", right: "none"};
-              else throw "initTableSection: unknown sectionTagName: " + sectionTagName;
+                else throw "initTableSection: unknown sectionTagName: " + sectionTagName;
               this._leftScrollingArea = leftCellIndex != undefined ? scrollingArea(leftCellIndex, scrollingKinds.left) : null;
               this._centerScrollingArea = scrollingArea(centerCellIndex, scrollingKinds.center);
               this._rightScrollingArea = rightCellIndex != undefined ? scrollingArea(rightCellIndex, scrollingKinds.right) : null;
@@ -526,6 +538,7 @@ O$.Tables = {
             }
             return newRow;
           }
+
           if (!table._params.scrolling)
             return createRow(table._columns.length);
           else {
@@ -549,7 +562,7 @@ O$.Tables = {
         },
 
         _rowFromPoint: function(x, y, relativeToNearestContainingBlock, cachedDataContainer) {
-          var tableRect = function(){
+          var tableRect = function() {
             if (!table._params.scrolling)
               return O$.getElementBorderRectangle(table, relativeToNearestContainingBlock, cachedDataContainer);
             return null;
@@ -579,7 +592,10 @@ O$.Tables = {
         _removeAllRows: function() {
           var rows = this._getRows();
           rows.forEach(function(row) {
-            function removeRow(row) {if (row) row.parentNode.removeChild(row);}
+            function removeRow(row) {
+              if (row) row.parentNode.removeChild(row);
+            }
+
             removeRow(row._leftRowNode);
             removeRow(row._rowNode);
             removeRow(row._rightRowNode);
@@ -599,7 +615,7 @@ O$.Tables = {
         return null;
       section._updateStyle();
       return section;
-    };
+    }
 
     table.header = initTableSection(table, table._params.header, "thead", table._params.header && table._params.header.commonHeader ? true : undefined);
     table.footer = initTableSection(table, table._params.footer, "tfoot", table._params.footer && table._params.footer.commonHeader ? false : undefined);
@@ -627,7 +643,7 @@ O$.Tables = {
     var visibleRowCount = 0;
     var bodyRows = table.body._getRows();
     var rowIndex, rowCount, row;
-    for (rowIndex = 0, rowCount = bodyRows.length; rowIndex < rowCount; rowIndex++) {
+    for (rowIndex = 0,rowCount = bodyRows.length; rowIndex < rowCount; rowIndex++) {
       row = bodyRows[rowIndex];
       O$.Tables._initBodyRow(row, table, rowIndex, visibleRowCount);
       if (row._isVisible())
@@ -639,7 +655,7 @@ O$.Tables = {
       var lastNonCommonFooter = footRows.length - 1;
       if (table._params.footer && table._params.footer.commonHeader)
         lastNonCommonFooter--;
-      for (rowIndex = 0, rowCount = footRows.length; rowIndex < rowCount; rowIndex++) {
+      for (rowIndex = 0,rowCount = footRows.length; rowIndex < rowCount; rowIndex++) {
         row = footRows[rowIndex];
         O$.Tables._initRow(row);
 
@@ -738,8 +754,13 @@ O$.Tables = {
         if (row._rightRowNode)
           O$.addEventHandler(row._rightRowNode, event, handler);
       }
-      addEventHandler(row, "mouseover", function(){row._mouseOverHandler();});
-      addEventHandler(row, "mouseout", function(){row._mouseOutHandler();});
+
+      addEventHandler(row, "mouseover", function() {
+        row._mouseOverHandler();
+      });
+      addEventHandler(row, "mouseout", function() {
+        row._mouseOutHandler();
+      });
     }
     function processHiddenRowClass(row) {
       if (!row) return;
@@ -748,6 +769,7 @@ O$.Tables = {
         row.className = "";
       }
     }
+
     processHiddenRowClass(row._leftRowNode);
     processHiddenRowClass(row._rowNode);
     processHiddenRowClass(row._rightRowNode);
@@ -784,7 +806,7 @@ O$.Tables = {
       });
       for (var i = 0, count = row._cells.length; i < count; i++) {
         var cell = row._cells[i];
-        for (callbackIndex = 0, callbackCount = table._cellMoveCallbacks.length; callbackIndex < callbackCount; callbackIndex++)
+        for (callbackIndex = 0,callbackCount = table._cellMoveCallbacks.length; callbackIndex < callbackCount; callbackIndex++)
           table._cellMoveCallbacks[callbackIndex](cell, row, cell._column);
       }
     };
@@ -825,6 +847,7 @@ O$.Tables = {
             row.style.background = "#fefefe";
             row.style.background = oldBackground1;
           }
+
           resetOperaStyle(row._leftRowNode);
           resetOperaStyle(row._rowNode);
           resetOperaStyle(row._rightRowNode);
@@ -835,7 +858,7 @@ O$.Tables = {
       if (rowTable._needUsingCellStyles === undefined) {
         rowTable._needUsingCellStyles = false;
         var columns = rowTable._columns;
-        for (i = 0, count = columns.length; i < count; i++) {
+        for (i = 0,count = columns.length; i < count; i++) {
           col = columns[i];
           if ((col.body && col.body._getCompoundClassName()) || col._useCellStyles) {
             rowTable._needUsingCellStyles = true;
@@ -846,7 +869,7 @@ O$.Tables = {
 
       if (rowTable._params.forceUsingCellStyles || rowTable._needUsingCellStyles) {
         var cells = this._cells;
-        for (i = 0, count = cells.length; i < count; i++) {
+        for (i = 0,count = cells.length; i < count; i++) {
           var cell = cells[i];
           col = cell._column;
           if (!rowTable._params.forceUsingCellStyles && !(col.body && col.body._getCompoundClassName()) && !col._useCellStyles)
@@ -930,6 +953,7 @@ O$.Tables = {
       if (!atLeastOneCellWrapperFound)
         row._noCellWrappersFound = true;
     }
+
     f(row._rowNode);
     f(row._leftRowNode);
     f(row._rightRowNode);
@@ -955,9 +979,9 @@ O$.Tables = {
       cell._cellWrapper = cellWrapper;
     }
     var newWrapperClass = O$.combineClassNames([
-                              cell.className,
-                              cell._row.className,
-                              cell._row._table._params.additionalCellWrapperStyle]);
+      cell.className,
+      cell._row.className,
+      cell._row._table._params.additionalCellWrapperStyle]);
     if (cellWrapper.className != newWrapperClass)
       cellWrapper.className = newWrapperClass;
     cellWrapper.style.tableLayout = "fixed";
@@ -1178,72 +1202,72 @@ O$.Tables = {
       table.body._updateVerticalGridlines();
     };
     var tableBody = table.body;
-    {
-      tableBody._getBorderBottomForCell = function(/*rowIndex, colIndex, cell*/) {
-        return table._gridLines.horizontal;
-      };
-      function updateBodyCellBorders(cell, rowIndex, column, rowCount, colCount) {
-        var correctedRowIndex = rowIndex + cell.rowSpan - 1;
-        var displayGridLineUnderBottomRow = !!table._params.scrolling;
-        var borderBottom = (correctedRowIndex < (displayGridLineUnderBottomRow ? rowCount : rowCount - 1))
-                ? tableBody._getBorderBottomForCell(rowIndex, column._index, cell)
-                : "0px none white";
-        O$.Tables._setCellStyleProperty(cell, "borderBottom", borderBottom);
-        if (column._index != colCount - 1) {
-          var rightBorder = column.body._rightBorder;
-          if (table.body._overriddenVerticalGridlines) {
-            var overriddenGridlineStyle = table.body._overriddenVerticalGridlines[column._index];
-            if (overriddenGridlineStyle)
-              rightBorder = overriddenGridlineStyle;
-          }
+  {
+    tableBody._getBorderBottomForCell = function(/*rowIndex, colIndex, cell*/) {
+      return table._gridLines.horizontal;
+    };
+    function updateBodyCellBorders(cell, rowIndex, column, rowCount, colCount) {
+      var correctedRowIndex = rowIndex + cell.rowSpan - 1;
+      var displayGridLineUnderBottomRow = !!table._params.scrolling;
+      var borderBottom = (correctedRowIndex < (displayGridLineUnderBottomRow ? rowCount : rowCount - 1))
+              ? tableBody._getBorderBottomForCell(rowIndex, column._index, cell)
+              : "0px none white";
+      O$.Tables._setCellStyleProperty(cell, "borderBottom", borderBottom);
+      if (column._index != colCount - 1) {
+        var rightBorder = column.body._rightBorder;
+        if (table.body._overriddenVerticalGridlines) {
+          var overriddenGridlineStyle = table.body._overriddenVerticalGridlines[column._index];
+          if (overriddenGridlineStyle)
+            rightBorder = overriddenGridlineStyle;
+        }
 
-          O$.Tables._setCellRightBorder(cell, rightBorder);
+        O$.Tables._setCellRightBorder(cell, rightBorder);
+      }
+    }
+
+    tableBody._updateVerticalGridlines = function() {
+      function setBodyVerticalGridlines(parentGroup) {
+        var separators = getSeparatorsForGroup(parentGroup);
+        var gridLine = separators.body;
+        var columns = parentGroup == table ? table._params.columns : parentGroup.subColumns;
+        for (var i = 0, count = columns.length; i < count; i++) {
+          var col = columns[i];
+          if (i < count - 1) {
+            var rightBorderCol = col;
+            while (rightBorderCol.subColumns)
+              rightBorderCol = rightBorderCol.subColumns[rightBorderCol.subColumns.length - 1];
+            rightBorderCol.body._rightBorder = gridLine;
+          }
+          if (col.subColumns)
+            setBodyVerticalGridlines(col);
         }
       }
 
-      tableBody._updateVerticalGridlines = function() {
-        function setBodyVerticalGridlines(parentGroup) {
-          var separators = getSeparatorsForGroup(parentGroup);
-          var gridLine = separators.body;
-          var columns = parentGroup == table ? table._params.columns : parentGroup.subColumns;
-          for (var i = 0, count = columns.length; i < count; i++) {
-            var col = columns[i];
-            if (i < count - 1) {
-              var rightBorderCol = col;
-              while (rightBorderCol.subColumns)
-                rightBorderCol = rightBorderCol.subColumns[rightBorderCol.subColumns.length - 1];
-              rightBorderCol.body._rightBorder = gridLine;
-            }
-            if (col.subColumns)
-              setBodyVerticalGridlines(col);
-          }
+      setBodyVerticalGridlines(table);
+
+      var columns = table._columns;
+      for (var i = 0, colCount = columns.length; i < colCount; i++) {
+        var column = columns[i];
+        var bodyCells = column.body ? column.body._cells : [];
+
+        for (var bodyCellIndex = 0, cellCount = bodyCells.length; bodyCellIndex < cellCount; bodyCellIndex++) {
+          var cell = bodyCells[bodyCellIndex];
+          if (!cell)
+            continue;
+          updateBodyCellBorders(cell, bodyCellIndex, column, cellCount, colCount);
         }
+      }
+    };
 
-        setBodyVerticalGridlines(table);
+    table._addCellInsertionCallback(function(cell, row, column) {
+      updateBodyCellBorders(cell, row._index, column, table.body._getRows().length, table._columns.length);
+    });
+    table._addCellMoveCallback(function(cell, row, column) {
+      updateBodyCellBorders(cell, row._index, column, table.body._getRows().length, table._columns.length);
+    });
 
-        var columns = table._columns;
-        for (var i = 0, colCount = columns.length; i < colCount; i++) {
-          var column = columns[i];
-          var bodyCells = column.body ? column.body._cells : [];
-
-          for (var bodyCellIndex = 0, cellCount = bodyCells.length; bodyCellIndex < cellCount; bodyCellIndex++) {
-            var cell = bodyCells[bodyCellIndex];
-            if (!cell)
-              continue;
-            updateBodyCellBorders(cell, bodyCellIndex, column, cellCount, colCount);
-          }
-        }
-      };
-
-      table._addCellInsertionCallback(function(cell, row, column) {
-        updateBodyCellBorders(cell, row._index, column, table.body._getRows().length, table._columns.length);
-      });
-      table._addCellMoveCallback(function(cell, row, column) {
-        updateBodyCellBorders(cell, row._index, column, table.body._getRows().length, table._columns.length);
-      });
-
-      tableBody._updateVerticalGridlines();
-    }
+    tableBody._updateVerticalGridlines();
+  }
 
   },
 
@@ -1314,6 +1338,7 @@ O$.Tables = {
         function addSectionCols(section) {
           if (!section) return;
           var colIndex = 0;
+
           function saveAreaCols(area) {
             if (!area) return;
             var cols = O$.getChildNodesWithNames(area._table, ["col"]);
@@ -1322,16 +1347,21 @@ O$.Tables = {
               cols = colGroup ? O$.getChildNodesWithNames(colGroup, ["col"]) : [];
             }
             area._colTags = cols;
-            for (var i = 0, count = cols.length; i < count; i++, colIndex++) {
+            for (var i = 0, count = cols.length; i < count; i++,colIndex++) {
               var arr = result[colIndex];
-              if (!arr) {arr = []; result[colIndex] = arr;}
+              if (!arr) {
+                arr = [];
+                result[colIndex] = arr;
+              }
               arr.push(cols[i]);
             }
           }
+
           saveAreaCols(section._leftScrollingArea);
           saveAreaCols(section._centerScrollingArea);
           saveAreaCols(section._rightScrollingArea);
         }
+
         addSectionCols(table.header);
         addSectionCols(table.body);
         addSectionCols(table.footer);
@@ -1486,10 +1516,10 @@ O$.Tables = {
         if (!firstCell) firstCell = column.body._cells[0];
         if (!firstCell) firstCell = column.footer._cell;
         column._widthCorrection = !firstCell ? 0 :
-                O$.getNumericElementStyle(firstCell, "padding-left", true) +
-                O$.getNumericElementStyle(firstCell, "padding-right", true) +
-                O$.getNumericElementStyle(firstCell, "border-left-width", true) +
-                O$.getNumericElementStyle(firstCell, "border-right-width", true);
+                                  O$.getNumericElementStyle(firstCell, "padding-left", true) +
+                                  O$.getNumericElementStyle(firstCell, "padding-right", true) +
+                                  O$.getNumericElementStyle(firstCell, "border-left-width", true) +
+                                  O$.getNumericElementStyle(firstCell, "border-right-width", true);
       }
 
       var correctColWidth = O$.isStrictMode() && (O$.isExplorer6() || O$.isExplorer7());
@@ -1512,7 +1542,7 @@ O$.Tables = {
     };
     column.getDeclaredWidth = function(tableWidth) {
       if (tableWidth == undefined)
-        tableWidth = O$.getElementSize(table).width;
+        tableWidth = table.offsetWidth;
       tableWidth -= O$.getNumericElementStyle(table, "border-left-width", true);
       tableWidth -= O$.getNumericElementStyle(table, "border-right-width", true);
       var widthStyleStr = O$.getStyleClassProperty(this._className, "width");
@@ -1952,6 +1982,7 @@ O$.Tables = {
         });
         return width;
       }
+
       if (firstSection._leftScrollingArea) {
         table._leftArea = {
           updateWidth: function() {
@@ -2013,6 +2044,7 @@ O$.Tables = {
         });
       }
     }
+
     alignColumnWidths();
 
     function fixBodyHeight() {
@@ -2022,7 +2054,7 @@ O$.Tables = {
           [table.header, table.footer].forEach(function (section) {
             if (!section) return;
             var sectionTable = section._sectionTable;
-            var sectionHeight = O$.getElementSize(sectionTable).height;
+            var sectionHeight = sectionTable.offsetHeight;
             height -= sectionHeight;
           });
           return height;
@@ -2044,6 +2076,7 @@ O$.Tables = {
           });
       });
     }
+
     fixBodyHeight();
 
 
@@ -2061,12 +2094,15 @@ O$.Tables = {
         });
       };
     }
+
     synchronizeAreaScrolling();
 
     table._alignRowHeights = function() {
+      if (!table._leftArea && !table._rightArea)
+        return;
       [table.header, table.body, table.footer].forEach(function(section) {
         if (!section) return;
-        var assignCellHeights = O$.isChrome() || O$.isSafari() || (O$.isExplorer() && O$.isStrictMode() &&!O$.isExplorer8());
+        var assignCellHeights = O$.isChrome() || O$.isSafari() || (O$.isExplorer() && O$.isStrictMode() && !O$.isExplorer8());
 
         var areaHeight = 0;
         var rows = section._getRows();
@@ -2074,6 +2110,7 @@ O$.Tables = {
           var artificialRow = !row.nodeName || row.nodeName.toUpperCase() != "TR";
           if (!artificialRow) return;
           var rowNodes = [row._leftRowNode, row._rowNode, row._rightRowNode];
+
           function setRowHeight(rowNode, height) {
             row.__height = height;
             rowNode.style.height = height + "px";
@@ -2083,12 +2120,13 @@ O$.Tables = {
               }
             }
           }
+
           var height = 0;
           rowNodes.forEach(function(rowNode) {
             if (!rowNode) return;
             if (!(O$.isExplorer() && O$.isQuirksMode()))
-                setRowHeight(rowNode, 0);
-            var rowHeight = O$.getElementSize(rowNode).height;
+              setRowHeight(rowNode, 0);
+            var rowHeight = rowNode.offsetHeight;
             if (rowHeight > height)
               height = rowHeight;
           });
@@ -2099,7 +2137,9 @@ O$.Tables = {
           areaHeight += height;
         });
         if ((O$.isChrome() || O$.isSafari()) && O$.isQuirksMode())
-          section._scrollingAreas.forEach(function(area){O$.setElementHeight(area._table, areaHeight);});
+          section._scrollingAreas.forEach(function(area) {
+            O$.setElementHeight(area._table, areaHeight);
+          });
 
 
         if (assignCellHeights) {
@@ -2138,11 +2178,14 @@ O$.Tables = {
       mainScrollingArea._scrollingDiv.onresize = function() {
       };
     }
+
     fixIE6AreaDisappearing();
 
 
     function accountForScrollersWidth() {
-      [table.header, table.footer].map(function(s) {return s && s._centerScrollingArea;}).forEach(function(area) {
+      [table.header, table.footer].map(function(s) {
+        return s && s._centerScrollingArea;
+      }).forEach(function(area) {
         if (!area) return;
         O$.setElementSize(area._spacer, {width: 30, height: 1});
       });
@@ -2151,6 +2194,7 @@ O$.Tables = {
         O$.setElementSize(area._spacer, {width: 1, height: 30});
       });
     }
+
     accountForScrollersWidth();
 
     function scrollToPosition() {
@@ -2158,12 +2202,13 @@ O$.Tables = {
       mainScrollingArea._scrollingDiv.scrollLeft = scrollPos[0];
       mainScrollingArea._scrollingDiv.scrollTop = scrollPos[1];
     }
+
     scrollToPosition();
 
     function markColumns() {
       [table._leftArea, table._centerArea, table._rightArea].forEach(function(area) {
         if (!area) return;
-        area._columns.forEach(function(c){
+        area._columns.forEach(function(c) {
           do {
             c._scrollingArea = area;
             c = c.parentColumn;
@@ -2171,6 +2216,7 @@ O$.Tables = {
         });
       });
     }
+
     markColumns();
 
     function fixTopLevelScrollingDivWidth() {
@@ -2185,16 +2231,19 @@ O$.Tables = {
             section._sectionTable.style.width = width + "px";
         });
       }, [
-              new O$.Timer("200"),
-              new O$.EventListener(window, "resize")
+        new O$.Timer("200"),
+        new O$.EventListener(window, "resize")
       ]);
       table._topLevelScrollingDiv.style.visibility = "visible";
     }
+
     fixTopLevelScrollingDivWidth();
 
     if (delayedInitFunctions.length)
       O$.addLoadEvent(function() {
-        delayedInitFunctions.forEach(function (func) {func();});
+        delayedInitFunctions.forEach(function (func) {
+          func();
+        });
       });
 
   },
@@ -2204,7 +2253,7 @@ O$.Tables = {
     var defaultColWidth = 120;
 
     var tblWidth = 0;
-    var tableWidth = O$.getElementSize(table).width - scrollerWidth;
+    var tableWidth = table.offsetWidth - scrollerWidth;
     tableWidth -= O$.getNumericElementStyle(table, "border-left-width", true);
     tableWidth -= O$.getNumericElementStyle(table, "border-right-width", true);
     if (tableWidth < 0)
@@ -2253,8 +2302,8 @@ O$.Tables = {
         var unspecifiedWidth = 100 - totalSpecifiedWidth;
         var widthPerUnspecifiedWidthCol = unspecifiedWidthColCount ? (
                 unspecifiedWidth > 0
-                  ? unspecifiedWidth / unspecifiedWidthColCount
-                  : 20 / unspecifiedWidthColCount ) : 0;
+                        ? unspecifiedWidth / unspecifiedWidthColCount
+                        : 20 / unspecifiedWidthColCount ) : 0;
         var relativeTotal = totalSpecifiedWidth + widthPerUnspecifiedWidthCol * unspecifiedWidthColCount;
         relativeWidthColumns.forEach(function(c) {
           c.setWidth(Math.floor(

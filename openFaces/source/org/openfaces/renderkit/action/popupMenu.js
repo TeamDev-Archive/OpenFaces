@@ -44,6 +44,7 @@ O$.PopupMenu = {
     O$.Popup._init(popupMenuId, false);
     var popupMenu = O$.initComponent(popupMenuId, {rollover: rolloverClass}, {
       show: function() {
+        finishInitialization();
         this.style.visibility = "visible";
         this.style.display = "block";
         O$.PopupMenu._initIEWidthWorkaround(this);
@@ -52,6 +53,7 @@ O$.PopupMenu = {
       },
 
       hide: function() {
+        finishInitialization();
         this.closeChildMenus();
         if (O$.PopupMenu._getStyleProperty(this, "visibility") != "hidden" &&
             O$.PopupMenu._getStyleProperty(this, "display") != "none") {
@@ -68,6 +70,7 @@ O$.PopupMenu = {
       },
 
       showAtXY: function (x, y /*, relativeToContainer*/ ) {
+        finishInitialization();
         var relativeToContainer = arguments[2];
         if (relativeToContainer !== undefined) {
           var containerPos = relativeToContainer !== null ? O$.getElementPos(relativeToContainer) : {x: 0, y: 0};
@@ -84,6 +87,7 @@ O$.PopupMenu = {
       },
 
       showForEvent: function (event) {
+        finishInitialization();
         var pos = O$.getEventPoint(event, this);
         this.showAtXY(pos.x, pos.y);
       },
@@ -98,8 +102,7 @@ O$.PopupMenu = {
       },
       _isRoot: function() {
         return !!isRootMenu;
-      },
-      _popupMenuItems: []
+      }
     });
 
     O$.assignEvents(popupMenu, events, true);
@@ -111,13 +114,12 @@ O$.PopupMenu = {
       O$._popupsOnPage.pop(popupMenuId);
     }
 
-
     var childNodes = popupMenu.childNodes;
     var items = popupMenu._items = [];
 
     // Create object tree for easy access to the PopupMenu and menuItems
     for (var i = 0; i < childNodes.length; i++) {
-      var menuItem = popupMenu._popupMenuItems[i] = childNodes[i];
+      var menuItem = childNodes[i];
       items.push(menuItem);
 
       menuItem._isSeparator = function() {
@@ -154,95 +156,104 @@ O$.PopupMenu = {
       menuItem._properties = itemsProperties[i];
     }
 
-    O$.PopupMenu._handlePaddings(popupMenu);
+    var initialized = false;
+    function finishInitialization() {
+      if (initialized) return;
+      initialized = true;
+      O$.PopupMenu._handlePaddings(popupMenu);
 
-    if (popupMenu._isRoot() && forId)
-      O$.PopupMenu._addHandlersToOpenMenu(popupMenu, forId, forEventName);
+      if (popupMenu._isRoot() && forId)
+        O$.PopupMenu._addHandlersToOpenMenu(popupMenu, forId, forEventName);
 
-    /*Set styles for each item*/
-    for (i = 0; i < popupMenu._popupMenuItems.length; i++) {
-      menuItem = popupMenu._popupMenuItems[i];
+      /*Set styles for each item*/
+      for (i = 0; i < popupMenu._items.length; i++) {
+        menuItem = popupMenu._items[i];
 
-      O$.PopupMenu._updateMenuItemBackground(menuItem);
+        O$.PopupMenu._updateMenuItemBackground(menuItem);
 
-      if (!menuItem._isSeparator()) {
-        O$.setStyleMappings(menuItem._anchor, {
-          defaultClass:  menuItem._anchor._defaultItemClass
-        });
+        if (!menuItem._isSeparator()) {
+          O$.setStyleMappings(menuItem._anchor, {
+            defaultClass:  menuItem._anchor._defaultItemClass
+          });
 
-        menuItem._disabled = menuItem._properties.disabled;
+          menuItem._disabled = menuItem._properties.disabled;
 
-        O$.PopupMenu._setStyleForSubmenuArea(menuItem, submenuImageUrl, selectedSubmenuImageUrl, disabledSubmenuImageUrl, selectedDisabledSubmenuImageUrl);
+          O$.PopupMenu._setStyleForSubmenuArea(menuItem, submenuImageUrl, selectedSubmenuImageUrl, disabledSubmenuImageUrl, selectedDisabledSubmenuImageUrl);
+        }
+
+        O$.PopupMenu._setStylesForIndentArea(menuItem, indentVisible, indentClass, itemIconUrl, selectedItemIconUrl, disabledItemIconUrl, selectedDisabledItemIconUrl);
+
+        /* Update styles of fake spans */
+        if (menuItem._iconspan)
+          menuItem._imagefakespan.style.verticalAlign = O$.PopupMenu._getStyleProperty(menuItem._iconspan, "vertical-align");
+        if (menuItem._arrowfakespan)
+          menuItem._arrowfakespan.style.verticalAlign = O$.PopupMenu._getStyleProperty(menuItem._arrowspan, "vertical-align");
       }
 
-      O$.PopupMenu._setStylesForIndentArea(menuItem, indentVisible, indentClass, itemIconUrl, selectedItemIconUrl, disabledItemIconUrl, selectedDisabledItemIconUrl);
-
-      /* Update styles of fake spans*/
-      if (menuItem._iconspan)
-        menuItem._imagefakespan.style.verticalAlign = O$.PopupMenu._getStyleProperty(menuItem._iconspan, "vertical-align");
-      if (menuItem._arrowfakespan)
-        menuItem._arrowfakespan.style.verticalAlign = O$.PopupMenu._getStyleProperty(menuItem._arrowspan, "vertical-align");
-    }
-
-    if (!indentVisible) {
-      /*set default style if indent is not visible*/
-      popupMenu.style.backgroundColor = O$.PopupMenu._getStyleProperty(popupMenu, "backgroundColor");
-    }
-
-    O$.PopupMenu._updatePopupMenuBackground(popupMenu, indentClass);
-
-    //-------------------------Events----------------------------------
-    var eventName = (O$.isSafariOnMac() || O$.isOpera() || O$.isMozillaFF()) ? "onkeypress" : "onkeydown";
-    popupMenu._prevKeyHandler = popupMenu[eventName];
-    popupMenu[eventName] = function (evt) {
-      var e = evt ? evt : window.event;
-      var menuItem;
-      switch (e.keyCode) {
-        case 27: // escape
-          O$.PopupMenu._closeAllMenu(popupMenu);
-          break;
-        case 13: // enter
-          if (popupMenu._selectedIndex != null) {
-            menuItem = popupMenu._popupMenuItems[popupMenu._selectedIndex];
-            O$.sendEvent(menuItem._anchor, "click");
-          }
-          break;
-        case 38: // up
-          O$.PopupMenu._setSelectedMenuItem(popupMenu, -1, selectDisabledItems);
-          break;
-        case 40: // down
-          O$.PopupMenu._setSelectedMenuItem(popupMenu, 1, selectDisabledItems);
-          break;
-        case 37: // left
-          if (popupMenu._parentPopupMenu) {
-            popupMenu._parentPopupMenu.closeChildMenus();
-            popupMenu._parentPopupMenu.focus();
-          }
-          break;
-        case 39: // right
-          menuItem = popupMenu._popupMenuItems[popupMenu._selectedIndex];
-          O$.PopupMenu._showSubmenu(popupMenu, menuItem._anchor, submenuHorisontalOffset);
-          O$.PopupMenu._showFirstMenuItemonChild(menuItem, selectDisabledItems);
-          break;
+      if (!indentVisible) {
+        /*set default style if indent is not visible*/
+        popupMenu.style.backgroundColor = O$.PopupMenu._getStyleProperty(popupMenu, "backgroundColor");
       }
-      O$.cancelBubble(e);
-    };
 
-    for (i = 0; i < popupMenu._popupMenuItems.length; i++) {
-      menuItem = popupMenu._popupMenuItems[i];
-      if (!menuItem._separator) {
-        menuItem.selectedDisabledClass = O$.combineClassNames([itemsProperties[i].selectedClass, defaultSelectedClass]);
-        menuItem.selectedClass = O$.combineClassNames([itemsProperties[i].selectedClass, defaultSelectedClass]);
+      O$.PopupMenu._updatePopupMenuBackground(popupMenu, indentClass);
 
-        O$.PopupMenu.setMenuItemEnabled(menuItem.id, !menuItem._properties.disabled, selectDisabledItems);
+      //-------------------------Events----------------------------------
+      var eventName = (O$.isSafariOnMac() || O$.isOpera() || O$.isMozillaFF()) ? "onkeypress" : "onkeydown";
+      popupMenu._prevKeyHandler = popupMenu[eventName];
+      popupMenu[eventName] = function (evt) {
+        var e = evt ? evt : window.event;
+        var menuItem;
+        switch (e.keyCode) {
+          case 27: // escape
+            O$.PopupMenu._closeAllMenu(popupMenu);
+            break;
+          case 13: // enter
+            if (popupMenu._selectedIndex != null) {
+              menuItem = popupMenu._items[popupMenu._selectedIndex];
+              O$.sendEvent(menuItem._anchor, "click");
+            }
+            break;
+          case 38: // up
+            O$.PopupMenu._setSelectedMenuItem(popupMenu, -1, selectDisabledItems);
+            break;
+          case 40: // down
+            O$.PopupMenu._setSelectedMenuItem(popupMenu, 1, selectDisabledItems);
+            break;
+          case 37: // left
+            if (popupMenu._parentPopupMenu) {
+              popupMenu._parentPopupMenu.closeChildMenus();
+              popupMenu._parentPopupMenu.focus();
+            }
+            break;
+          case 39: // right
+            menuItem = popupMenu._items[popupMenu._selectedIndex];
+            O$.PopupMenu._showSubmenu(popupMenu, menuItem._anchor, submenuHorisontalOffset);
+            O$.PopupMenu._showFirstMenuItemonChild(menuItem, selectDisabledItems);
+            break;
+        }
+        O$.cancelBubble(e);
+      };
 
-        O$.PopupMenu._setAdditionalIEStylesForMenuItem(menuItem);
-        O$.PopupMenu._addMenuItemClickHandler(menuItem, submenuHorisontalOffset, selectDisabledItems);
+      for (i = 0; i < popupMenu._items.length; i++) {
+        menuItem = popupMenu._items[i];
+        if (!menuItem._separator) {
+          menuItem.selectedDisabledClass = O$.combineClassNames([itemsProperties[i].selectedClass, defaultSelectedClass]);
+          menuItem.selectedClass = O$.combineClassNames([itemsProperties[i].selectedClass, defaultSelectedClass]);
 
-        O$.PopupMenu._addMouseOverOutEvents(menuItem, selectDisabledItems, submenuHorisontalOffset, submenuShowDelay, submenuHideDelay);
+          O$.PopupMenu.setMenuItemEnabled(menuItem.id, !menuItem._properties.disabled, selectDisabledItems);
+
+          O$.PopupMenu._setAdditionalIEStylesForMenuItem(menuItem);
+          O$.PopupMenu._addMenuItemClickHandler(menuItem, submenuHorisontalOffset, selectDisabledItems);
+
+          O$.PopupMenu._addMouseOverOutEvents(menuItem, selectDisabledItems, submenuHorisontalOffset, submenuShowDelay, submenuHideDelay);
+        }
       }
     }
 
+    setTimeout(function() {
+      // deferring full initialization to avoid extra delays in page loading, or Ajax reloads including the PopupMenu
+      O$.addLoadEvent(finishInitialization);
+    }, 100);
   },
 
   setMenuItemEnabled: function(menuItemId, enabled, selectDisabledItems) {
@@ -439,8 +450,8 @@ O$.PopupMenu = {
       inc = 0;
     }
 
-    var length = popupMenu._popupMenuItems.length;
-    var menuItems = popupMenu._popupMenuItems;
+    var length = popupMenu._items.length;
+    var menuItems = popupMenu._items;
     var nextIndex = index + inc;
 
     if (nextIndex >= length) {
@@ -454,7 +465,7 @@ O$.PopupMenu = {
       O$.PopupMenu._setSelectedMenuItem(popupMenu, inc_add, selectDisabledItems);
     }
     else {
-      O$.PopupMenu._setHighlightMenuItem(popupMenu, popupMenu._popupMenuItems[nextIndex]._anchor, selectDisabledItems);
+      O$.PopupMenu._setHighlightMenuItem(popupMenu, popupMenu._items[nextIndex]._anchor, selectDisabledItems);
       //popupMenu._selectedItem = this._menuItem;
     }
   },
@@ -529,14 +540,14 @@ O$.PopupMenu = {
       popupMenu._menuItemsAlign = true;
       var maxWidthItem = 0;
       var width;
-      popupMenu._popupMenuItems.forEach(function(menuItem) {
+      popupMenu._items.forEach(function(menuItem) {
         if (!menuItem._isSeparator()) {
           width = menuItem._anchor.offsetWidth;
         }
         if (width > maxWidthItem)
           maxWidthItem = width;
       });
-      popupMenu._popupMenuItems.forEach(function(menuItem) {
+      popupMenu._items.forEach(function(menuItem) {
         var paddingLeft, paddingRight;
         if (menuItem._isSeparator()) {
           var separator = menuItem._separator;
@@ -703,15 +714,15 @@ O$.PopupMenu = {
     var paddingTop = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(popupMenu, "padding-top"));
     var paddingRight = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(popupMenu, "padding-right"));
 
-    popupMenu._popupMenuItems[0].style.paddingTop = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(popupMenu._popupMenuItems[0], "padding-top")) + paddingTop + "px";
-    var lastMenuItem = popupMenu._popupMenuItems[popupMenu._popupMenuItems.length - 1];
+    popupMenu._items[0].style.paddingTop = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(popupMenu._items[0], "padding-top")) + paddingTop + "px";
+    var lastMenuItem = popupMenu._items[popupMenu._items.length - 1];
     lastMenuItem.style.paddingBottom = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(lastMenuItem, "padding-bottom")) + paddingBottom + "px";
     popupMenu.style.paddingTop = 0;
     popupMenu.style.paddingBottom = 0;
     popupMenu.style.paddingRight = 0;
 
-    for (var i = 0; i < popupMenu._popupMenuItems.length; i++) {
-      var menuItem = popupMenu._popupMenuItems[i];
+    for (var i = 0; i < popupMenu._items.length; i++) {
+      var menuItem = popupMenu._items[i];
       menuItem.style.paddingRight = O$.calculateNumericCSSValue(O$.PopupMenu._getStyleProperty(lastMenuItem, "padding-right")) + paddingRight + "px";
     }
   },
@@ -836,7 +847,7 @@ O$.PopupMenu = {
     }
     if (menuItem._arrowspan != null) {
       /* set margin for the arrow */
-      var arrowAreaWidth = O$._getWidth(menuItem._arrowspan);
+      var arrowAreaWidth = O$.PopupMenu._getWidth(menuItem._arrowspan);
       menuItem._caption.style.paddingRight = O$.calculateNumericCSSValue(menuItem._caption.style.paddingRight) + arrowAreaWidth + "px";
     }
   },

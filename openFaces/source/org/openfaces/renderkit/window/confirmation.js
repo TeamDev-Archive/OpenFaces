@@ -163,7 +163,7 @@ O$.Confirmation = {
           return;
         }
         if (invoker._of_confirmationIds && O$.arrayContainsValue(invoker._of_confirmationIds, confirmation.id)) {
-          var idx = O$.findValueInArray(confirmation.id, invoker._of_confirmationIds);
+          var idx = invoker._of_confirmationIds.indexOf(confirmation.id);
           invoker._of_confirmationIds.splice(idx - 1, 1);
         }
         if (!O$._confirmationEventHandlers)

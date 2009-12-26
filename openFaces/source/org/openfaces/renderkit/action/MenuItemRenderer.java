@@ -14,6 +14,7 @@ package org.openfaces.renderkit.action;
 import org.openfaces.component.action.MenuItem;
 import org.openfaces.component.action.PopupMenu;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.StyleUtil;
@@ -241,21 +242,8 @@ public class MenuItemRenderer extends RendererBase {
         if (!menuItem.isDisabled() && (menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0)) // todo: should adding actionListener turn on form submission indeed?
             addMenuItemParameter(menuItem, "action", "O$.submitFormWithAdditionalParam(this, '" + menuItem.getClientId(context) + "::clicked', 'true');");
 
-
-        if (!menuItem.isDisabled()) {
-            writeAttribute(writer, "onclick", menuItem.getOnclick());
-            writeAttribute(writer, "ondblclick", menuItem.getOndblclick());
-            writeAttribute(writer, "onmousedown", menuItem.getOnmousedown());
-            writeAttribute(writer, "onmouseup", menuItem.getOnmouseup());
-            writeAttribute(writer, "onmouseover", menuItem.getOnmouseover());
-            writeAttribute(writer, "onmousemove", menuItem.getOnmousemove());
-            writeAttribute(writer, "onmouseout", menuItem.getOnmouseout());
-            writeAttribute(writer, "onkeypress", menuItem.getOnkeypress());
-            writeAttribute(writer, "onkeydown", menuItem.getOnkeydown());
-            writeAttribute(writer, "onkeyup", menuItem.getOnkeyup());
-            writeAttribute(writer, "onblur", menuItem.getOnblur());
-            writeAttribute(writer, "onfocus", menuItem.getOnfocus());
-        }
+        if (!menuItem.isDisabled())
+            RenderingUtil.writeStandardEvents(writer, menuItem);
     }
 
     private void addSelectedStyleClass(FacesContext context, MenuItem menuItem) {

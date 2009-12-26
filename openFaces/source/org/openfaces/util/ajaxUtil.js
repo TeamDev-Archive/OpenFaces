@@ -1276,7 +1276,7 @@ O$.escapeSymbol = function(portionName, param) {
     if (temp == "\\") {
       res.append("\\");
     } else {
-      var index = O$.findValueInArray(temp, param);
+      var index = param.indexOf(temp);
       if (index != -1) {
         var fullCharCode = new String(param[index].charCodeAt() + 10000);
         res.append("\\" + fullCharCode.substr(1, fullCharCode.length));

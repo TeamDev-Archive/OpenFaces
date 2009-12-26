@@ -341,7 +341,6 @@ O$.getClientMessageRenderers = function() {
 O$.getClientMessageRenderersWithVisibleBubble = function() {
   if (!document.clientMessageRenderersWithVisibleBubble) {
     document.clientMessageRenderersWithVisibleBubble = {};
-    ;
   }
   return document.clientMessageRenderersWithVisibleBubble;
 }
@@ -633,7 +632,7 @@ O$._scheduleUpdateMessagesPosition = function() {
   setTimeout(function() {
     O$.updateClientMessagesPosition();
     O$._scheduleUpdateMessagesPosition();
-  }, 100);
+  }, 150);
 }
 
 O$.invokeOnce(O$._scheduleUpdateMessagesPosition, "O$._scheduleUpdateMessagesPosition");
