@@ -180,7 +180,7 @@ public class DropDownFieldTableStyles implements TableStyles {
         dropDownField.setListFooterRowClass(footerRowClass);
     }
 
-    public List<BaseColumn> getColumnsForRendering() {
+    public List<BaseColumn> getRenderedColumns() {
         FacesContext context = FacesContext.getCurrentInstance();
         List<BaseColumn> columns = TableUtil.getColumnsFromList(context, dropDownField.getChildren());
         for (Iterator iterator = columns.iterator(); iterator.hasNext();) {

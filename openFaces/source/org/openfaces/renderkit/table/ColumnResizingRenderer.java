@@ -45,7 +45,7 @@ public class ColumnResizingRenderer extends RendererBase {
         AbstractTable table = (AbstractTable) component.getParent();
 
         JSONObject columnParams = new JSONObject();
-        List<BaseColumn> columns = table.getColumnsForRendering();
+        List<BaseColumn> columns = table.getRenderedColumns();
         for (int i = 0; i < columns.size(); i++) {
             BaseColumn column = columns.get(i);
             boolean resizable = column.isResizable();
@@ -97,7 +97,7 @@ public class ColumnResizingRenderer extends RendererBase {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        List<BaseColumn> columns = table.getColumnsForRendering();
+        List<BaseColumn> columns = table.getRenderedColumns();
         if (columns.size() != widthsArray.length())
             throw new IllegalStateException("columns.size() != widthsArray.length(): " + columns.size() + " != " + widthsArray.length());
 

@@ -233,7 +233,7 @@ public class DefaultTableStyles implements TableStyles {
         this.footerRowClass = footerRowClass;
     }
 
-    public List<BaseColumn> getColumnsForRendering() {
+    public List<BaseColumn> getRenderedColumns() {
         return Collections.emptyList();
     }
 

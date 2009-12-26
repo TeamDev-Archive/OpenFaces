@@ -135,7 +135,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private Boolean toggleColumnSortingDirection;
     private boolean beforeUpdateValuesPhase = true;
     private List<BaseColumn> cachedAllColumns;
-    private List<BaseColumn> cachedColumnsForRendering;
+    private List<BaseColumn> cachedRenderedColumns;
     private String cachedClientId;
     private List<Filter> myFilters = new ArrayList<Filter>();
     private Integer autoFilterDelay;
@@ -287,7 +287,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     protected void beforeProcessDecodes(FacesContext context) {
         cachedAllColumns = null;
-        cachedColumnsForRendering = null;
+        cachedRenderedColumns = null;
     }
 
     public void invokeBeforeProcessDecodes(FacesContext context) {
@@ -372,17 +372,17 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     @Override
     protected List<BaseColumn> getColumnsForProcessing() {
-        return getColumnsForRendering();
+        return getRenderedColumns();
     }
 
-    public List<BaseColumn> getColumnsForRendering() {
-        if (cachedColumnsForRendering == null) {
-            cachedColumnsForRendering = calculateColumnsForRendering();
+    public List<BaseColumn> getRenderedColumns() {
+        if (cachedRenderedColumns == null) {
+            cachedRenderedColumns = calculateRenderedColumns();
         }
-        return cachedColumnsForRendering;
+        return cachedRenderedColumns;
     }
 
-    private List<BaseColumn> calculateColumnsForRendering() {
+    private List<BaseColumn> calculateRenderedColumns() {
         Iterable<String> columnsOrder = getColumnsOrder();
         if (columnsOrder == null) {
             List<BaseColumn> allColumns = getAllColumns();
@@ -497,7 +497,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         if (colIndex == -1)
             return null;
 
-        List<BaseColumn> columns = getColumnsForRendering();
+        List<BaseColumn> columns = getRenderedColumns();
         int colCount = columns.size();
         if (colIndex >= colCount)
             throw new IllegalArgumentException("colIndex points to a non-existing column: " + colIndex + ". Number of columns is " + colCount);
@@ -1002,7 +1002,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     protected void beforeRenderResponse(FacesContext context) {
         cachedAllColumns = null;
-        cachedColumnsForRendering = null;
+        cachedRenderedColumns = null;
 
         List<Filter> filters = getFilters();
         for (Filter filter : filters) {
@@ -1077,7 +1077,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public int getSortColumnIndex() {
         String sortColumnId = getSortColumnId();
-        List<BaseColumn> columns = getColumnsForRendering();
+        List<BaseColumn> columns = getRenderedColumns();
         for (int i = 0, count = columns.size(); i < count; i++) {
             BaseColumn column = columns.get(i);
             String id = column.getId();
@@ -1204,7 +1204,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             return;
         }
 
-        List<BaseColumn> columns = getColumnsForRendering();
+        List<BaseColumn> columns = getRenderedColumns();
         if (columnIndex < 0 || columnIndex >= columns.size())
             throw new IllegalArgumentException("columnIndex out of range. No of columns available: " + columns.size());
         BaseColumn column = columns.get(columnIndex);

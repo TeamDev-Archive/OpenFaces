@@ -96,7 +96,7 @@ public class TableBody extends TableSection {
 
     protected void renderRows(FacesContext context, HeaderCell.AdditionalContentWriter additionalContentWriter) throws IOException {
         AbstractTable table = (AbstractTable) tableStructure.getComponent();
-        List<BaseColumn> columns = table.getColumnsForRendering();
+        List<BaseColumn> columns = table.getRenderedColumns();
         int first = table.getFirst();
         if (table.getRows() != 0)
             throw new IllegalStateException("table.getRows() should always be null in OpenFaces tables, but it is: " + table.getRows());
@@ -544,7 +544,7 @@ public class TableBody extends TableSection {
      */
     private List[] prepareCustomCells(AbstractTable table, List<Row> applicableCustomRows) {
         List<BaseColumn> allColumns = table.getAllColumns();
-        List<BaseColumn> columnsForRendering = table.getColumnsForRendering();
+        List<BaseColumn> columnsForRendering = table.getRenderedColumns();
         int allColCount = allColumns.size();
         for (int i = 0; i < allColCount; i++) {
             UIComponent col = allColumns.get(i);

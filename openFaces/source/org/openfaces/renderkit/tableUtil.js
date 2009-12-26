@@ -1460,6 +1460,12 @@ O$.Tables = {
   },
 
   _initColumn: function(column, colTagArray, colIndex) {
+    function initPublicClientAPI() {
+      column.index = colIndex;
+    }
+
+    initPublicClientAPI();
+
     column._colTags = colTagArray;
     column._index = colIndex;
 

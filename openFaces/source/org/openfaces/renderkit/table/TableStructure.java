@@ -77,7 +77,7 @@ public class TableStructure extends TableElement {
         super(null);
         this.component = component;
         this.tableStyles = tableStyles;
-        columns = tableStyles.getColumnsForRendering();
+        columns = tableStyles.getRenderedColumns();
         scrolling = tableStyles.getScrolling();
         leftFixedCols = 0;
         rightFixedCols = 0;
@@ -179,7 +179,7 @@ public class TableStructure extends TableElement {
             RenderingUtil.writeAttribute(writer, "cellspacing", cellspacing);
             RenderingUtil.writeAttribute(writer, "cellpadding", getTableCellPadding());
 
-            List<BaseColumn> columns1 = table.getColumnsForRendering();
+            List<BaseColumn> columns1 = table.getRenderedColumns();
             TableUtil.writeColumnTags(context, table, columns1);
         } else {
             RenderingUtil.writeAttribute(writer, "cellspacing", "0");
@@ -217,7 +217,7 @@ public class TableStructure extends TableElement {
     }
 
     private void writeStyleAndClass(FacesContext context, AbstractTable table, ResponseWriter writer) throws IOException {
-        List<BaseColumn> columns = table.getColumnsForRendering();
+        List<BaseColumn> columns = table.getRenderedColumns();
 
         String style = table.getStyle();
         String textStyle = getTextStyle(table);

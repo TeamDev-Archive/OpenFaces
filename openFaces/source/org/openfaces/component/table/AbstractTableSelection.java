@@ -238,7 +238,7 @@ public abstract class AbstractTableSelection extends UICommand implements Compon
 
     private List<Integer> getSelectionColumnIndexes(AbstractTable table) {
         List<Integer> result = new ArrayList<Integer>();
-        List<BaseColumn> columns = table.getColumnsForRendering();
+        List<BaseColumn> columns = table.getRenderedColumns();
         for (int i = 0, colIndex = 0, colCount = columns.size(); i < colCount; i++) {
             BaseColumn column = columns.get(i);
             if (column instanceof SelectionColumn) {

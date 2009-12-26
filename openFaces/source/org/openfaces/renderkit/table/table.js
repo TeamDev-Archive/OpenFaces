@@ -1,4 +1,3 @@
-/*
  /*
  * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2009, TeamDev Ltd.
@@ -46,7 +45,11 @@ O$.Table = {
 
   _init: function(tableId, initParams, useAjax, rolloverClass, apiInitializationFunctionName) {
     var table = O$.initComponent(tableId, {rollover: rolloverClass}, {
-      _useAjax: useAjax
+      _useAjax: useAjax,
+
+      getCurrentColumn: function() {
+        return this._showingMenuForColumn ? this._showingMenuForColumn : null;
+      }
     });
     if (table._commonTableFunctionsInitialized)
       return;
@@ -2017,11 +2020,4 @@ O$.ColumnMenu = {
     ]);
 
   }
-
-
-
-
-
-
-
 };

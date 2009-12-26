@@ -36,7 +36,6 @@ public class ColumnMenuRenderer extends PopupMenuRenderer {
             menuItems.add(new HideColumnMenuItem());
             menuItems.add(new MenuSeparator());
             menuItems.add(new MenuItem("Columns", new ColumnVisibilityMenu()));
-
         }
 
         super.encodeBegin(context, component);

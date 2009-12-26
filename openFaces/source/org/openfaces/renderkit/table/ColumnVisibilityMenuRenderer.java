@@ -38,7 +38,7 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
         AbstractTable table = getTable(cvm);
         cvm.getAttributes().put(PopupMenuRenderer.ATTR_DEFAULT_INDENT_CLASS, "o_popup_menu_indent o_columnVisibilityMenuIndent");
 
-        List<BaseColumn> visibleColumns = table.getColumnsForRendering();
+        List<BaseColumn> visibleColumns = table.getRenderedColumns();
         List<BaseColumn> allColumns = table.getAllColumns();
         for (BaseColumn column : allColumns) {
             MenuItem menuItem = new MenuItem();

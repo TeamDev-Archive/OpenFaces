@@ -123,7 +123,7 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         result.put(formatNodeParams(treeTable, context, -1, -1));
         JSONArray expansionDatasArray = new JSONArray();
         List<Object> expansionDatas = new ArrayList<Object>();
-        List<BaseColumn> columns = treeTable.getColumnsForRendering();
+        List<BaseColumn> columns = treeTable.getRenderedColumns();
         for (BaseColumn column : columns) {
             if (!(column instanceof TreeColumn))
                 continue;
@@ -275,7 +275,7 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         context.setResponseWriter(clonedResponseWriter);
         try {
             if (addedRowCount > 0) {
-                List<BaseColumn> columns = treeTable.getColumnsForRendering();
+                List<BaseColumn> columns = treeTable.getRenderedColumns();
                 Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos =
                         (Map<Integer, CustomRowRenderingInfo>) treeTable.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
                 for (int i = treeTable.getRowCount(); i > rowIndex; i--) {

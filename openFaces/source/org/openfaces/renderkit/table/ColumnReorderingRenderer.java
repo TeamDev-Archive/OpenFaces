@@ -71,7 +71,7 @@ public class ColumnReorderingRenderer extends RendererBase {
         int dstColIndex = Integer.parseInt(reorderingStr.substring(separatorIdx + separator.length()));
         if (srcColIndex == dstColIndex)
             return;
-        List<BaseColumn> columns = new ArrayList<BaseColumn>(table.getColumnsForRendering());
+        List<BaseColumn> columns = new ArrayList<BaseColumn>(table.getRenderedColumns());
         BaseColumn column = columns.remove(srcColIndex);
         columns.add(dstColIndex < srcColIndex ? dstColIndex : dstColIndex - 1, column);
 

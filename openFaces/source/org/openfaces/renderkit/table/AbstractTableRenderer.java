@@ -327,7 +327,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
     }
 
     private void encodeSortingSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
-        List<BaseColumn> columns = table.getColumnsForRendering();
+        List<BaseColumn> columns = table.getRenderedColumns();
         boolean atLeastOneColumnSortable1 = false;
         JSONArray columnSortableFlags = new JSONArray();
         int colCount = columns.size();
@@ -486,7 +486,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
         if (fieldValue != null) {
             int columnToToggle = Integer.parseInt(fieldValue);
             List<BaseColumn> allColumns = table.getAllColumns();
-            List<BaseColumn> renderedColumns = table.getColumnsForRendering();
+            List<BaseColumn> renderedColumns = table.getRenderedColumns();
             BaseColumn column = allColumns.get(columnToToggle);
             boolean columnWasVisible = renderedColumns.contains(column);
             boolean showColumn = !columnWasVisible;
@@ -508,7 +508,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
         Map<String, String> requestParameterMap = context.getExternalContext().getRequestParameterMap();
         String hideColumnStr = requestParameterMap.get(table.getClientId(context) + "::hideColumn");
         if (hideColumnStr != null) {
-            List<BaseColumn> columns = table.getColumnsForRendering();
+            List<BaseColumn> columns = table.getRenderedColumns();
             int colIndex = Integer.parseInt(hideColumnStr);
             BaseColumn column = columns.get(colIndex);
             applyColumnVisibility(table, column, false);
@@ -517,7 +517,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
 
     private void applyColumnVisibility(AbstractTable table, BaseColumn column, boolean showColumn) {
         List<BaseColumn> allColumns = table.getAllColumns();
-        List<BaseColumn> renderedColumns = table.getColumnsForRendering();
+        List<BaseColumn> renderedColumns = table.getRenderedColumns();
 
         if (!showColumn && renderedColumns.size() == 1)
             showColumn = true; // don't allow to hide the last column
@@ -547,7 +547,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
     private void encodeCheckboxColumnSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
         List<CheckboxColumn> checkboxColumns = new ArrayList<CheckboxColumn>(1);
         List<Integer> checkBoxColIndexes = new ArrayList<Integer>(1);
-        List<BaseColumn> columns = table.getColumnsForRendering();
+        List<BaseColumn> columns = table.getRenderedColumns();
         for (int i = 0, colIndex = 0, colCount = columns.size(); i < colCount; i++) {
             BaseColumn column = columns.get(i);
             if (column instanceof CheckboxColumn) {
@@ -585,7 +585,7 @@ public abstract class AbstractTableRenderer extends RendererBase {
 
     protected void decodeCheckboxColumns(FacesContext context, AbstractTable table) {
         Map<String, String> requestMap = context.getExternalContext().getRequestParameterMap();
-        List<BaseColumn> columns = table.getColumnsForRendering();
+        List<BaseColumn> columns = table.getRenderedColumns();
         for (BaseColumn column : columns) {
             if (!(column instanceof CheckboxColumn))
                 continue;

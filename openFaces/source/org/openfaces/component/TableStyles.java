@@ -91,7 +91,7 @@ public interface TableStyles {
 
     void setFooterRowClass(String footerRowClass);
 
-    List<BaseColumn> getColumnsForRendering();
+    List<BaseColumn> getRenderedColumns();
 
     UIComponent getHeader();
 
