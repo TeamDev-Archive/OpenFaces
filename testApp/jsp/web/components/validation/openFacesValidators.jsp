@@ -11,32 +11,32 @@
   <title>Testing OpenFaces validators</title>
   <script type="text/javascript">
     function fillInvalidData(formName) {
-      var field = document.getElementById(formName + "equal1");
+      var field = O$(formName + "equal1");
       field.value = "text";
-      field = document.getElementById(formName + "equal2");
+      field = O$(formName + "equal2");
       field.value = "another text";
-      field = document.getElementById(formName + "url");
+      field = O$(formName + "url");
       field.value = "not url";
-      field = document.getElementById(formName + "email");
+      field = O$(formName + "email");
       field.value = "not email";
-      field = document.getElementById(formName + "regExp");
+      field = O$(formName + "regExp");
       field.value = "not number";
-      field = document.getElementById(formName + "custom");
+      field = O$(formName + "custom");
       field.value = "not 10";
     }
 
     function fillValidData(formName) {
-      var field = document.getElementById(formName + "equal1");
+      var field = O$(formName + "equal1");
       field.value = "password";
-      field = document.getElementById(formName + "equal2");
+      field = O$(formName + "equal2");
       field.value = "password";
-      field = document.getElementById(formName + "url");
+      field = O$(formName + "url");
       field.value = "http://www.teamdev.com";
-      field = document.getElementById(formName + "email");
+      field = O$(formName + "email");
       field.value = "support@teamdev.com";
-      field = document.getElementById(formName + "regExp");
+      field = O$(formName + "regExp");
       field.value = "-1.3";
-      field = document.getElementById(formName + "custom");
+      field = O$(formName + "custom");
       field.value = "10";
     }
   </script>

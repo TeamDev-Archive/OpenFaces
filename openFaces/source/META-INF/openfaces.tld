@@ -16991,8 +16991,9 @@ and it is automatically triggered on any form submission. -->
       <name>serverFunction</name>
       <deferred-method>
         <method-signature>
-          boolean customValidatorTest(javax.faces.context.FacesContext, javax.faces.component.UIComponent,
-          java.lang.Object)
+          <![CDATA[
+          boolean customValidatorTest(javax.faces.context.FacesContext, javax.faces.component.UIComponent, java.lang.Object)
+          ]]>
         </method-signature>
       </deferred-method>
       <!-- @bindingType java.lang.String -->
@@ -30912,7 +30913,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the menu item.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the menu
+        item.
       </description>
       <name>onmouseout</name>
       <deferred-value>
@@ -30964,7 +30966,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases a key over the menu item.</description>
+      <description>JavaScript code that should be executed when the user releases a key over the menu item.
+      </description>
       <name>onkeyup</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -31192,7 +31195,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the menu item.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the menu
+        item.
       </description>
       <name>onmouseout</name>
       <deferred-value>
@@ -31244,7 +31248,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases a key over the menu item.</description>
+      <description>JavaScript code that should be executed when the user releases a key over the menu item.
+      </description>
       <name>onkeyup</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -31473,7 +31478,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the menu item.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the menu
+        item.
       </description>
       <name>onmouseout</name>
       <deferred-value>
@@ -31525,7 +31531,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases a key over the menu item.</description>
+      <description>JavaScript code that should be executed when the user releases a key over the menu item.
+      </description>
       <name>onkeyup</name>
       <deferred-value>
         <type>java.lang.String</type>

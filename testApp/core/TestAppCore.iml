@@ -91,7 +91,7 @@
             <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
-          <containerElement type="library" name="JSF Implementation - MyFaces 1.2" level="project">
+          <containerElement type="library" name="JSF Implementation - Mojarra 1.2" level="project">
             <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
@@ -135,10 +135,6 @@
             <attribute name="method" value="2" />
             <attribute name="URI" value="/" />
           </containerElement>
-          <containerElement type="library" name="JSF Implementation - MyFaces 1.2" level="project">
-            <attribute name="method" value="2" />
-            <attribute name="URI" value="/" />
-          </containerElement>
         </packaging>
       </configuration>
     </facet>
@@ -164,7 +160,6 @@
     <orderEntry type="library" name="JEE" level="project" />
     <orderEntry type="library" name="servlet-api" level="project" />
     <orderEntry type="library" name="hibernate" level="project" />
-    <orderEntry type="library" exported="" name="JSF Implementation - MyFaces 1.2" level="project" />
   </component>
 </module>
 

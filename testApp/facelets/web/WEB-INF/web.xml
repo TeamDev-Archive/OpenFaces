@@ -9,8 +9,7 @@
 
   <!--This listener is responsible for bootstrapping Seam,
 and for destroying session and application contexts.-->
-    <!--
-  <listener>
+  <!--<listener>
     <listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
   </listener>
    -->
@@ -37,6 +36,11 @@ and for destroying session and application contexts.-->
   </context-param>
 
   <context-param>
+    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+    <param-value>server</param-value>
+  </context-param>
+
+  <context-param>
     <param-name>org.ajax4jsf.COMPRESS_SCRIPT</param-name>
     <param-value>
       false
@@ -49,15 +53,14 @@ and for destroying session and application contexts.-->
   </context-param>
 
   <context-param>
-    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-    <param-value>server</param-value>
-  </context-param>
-
-  <context-param>
     <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
     <param-value>.xhtml</param-value>
   </context-param>
 
+  <context-param>
+    <param-name>org.openfaces.disabledContextMenu</param-name>
+    <param-value>false</param-value>
+  </context-param>
 
   <context-param>
     <param-name>org.openfaces.validation.clientValidation</param-name>
@@ -100,8 +103,7 @@ and for destroying session and application contexts.-->
   </context-param>
 
   <!--JBOSS SEAM 2.0 RESOURCE SERVLET AND RESOURCE FILTER-->
-    <!--
-  <servlet>
+<!-- <servlet>
     <servlet-name>Seam Resource Servlet</servlet-name>
     <servlet-class>org.jboss.seam.servlet.SeamResourceServlet</servlet-class>
   </servlet>
@@ -119,8 +121,7 @@ and for destroying session and application contexts.-->
   <filter-mapping>
     <filter-name>Seam ExpressionFilter</filter-name>
     <url-pattern>/*</url-pattern>
-  </filter-mapping>
-        -->
+  </filter-mapping> -->
 
   <!-- RICHFACES FILTER -->
   <filter>
@@ -135,7 +136,7 @@ and for destroying session and application contexts.-->
     <filter-class>org.openfaces.util.ResourceFilter</filter-class>
   </filter>
 
-  <!--MYFACES EXXTENSION FILTER-->
+  <!--MYFACES EXTENSIONS FILTER-->
   <filter>
     <filter-name>ExtensionsFilter</filter-name>
     <filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>

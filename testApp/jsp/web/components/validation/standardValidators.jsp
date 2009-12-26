@@ -11,57 +11,57 @@
   <title>Testing stardard validators and converters on client side</title>
   <script type="text/javascript">
     function fillInvalidData(formName) {
-      var field = document.getElementById(formName + "required");
+      var field = O$(formName + "required");
       field.value = "";
-      field = document.getElementById(formName + "validDR");
+      field = O$(formName + "validDR");
       field.value = 5;
-      field = document.getElementById(formName + "validLR");
+      field = O$(formName + "validLR");
       field.value = 101;
-      field = document.getElementById(formName + "validL");
+      field = O$(formName + "validL");
       field.value = 1111;
-      field = document.getElementById(formName + "intConv");
+      field = O$(formName + "intConv");
       field.value = "Non-integer value";
-      field = document.getElementById(formName + "doubleConv");
+      field = O$(formName + "doubleConv");
       field.value = "Non-double value";
-      field = document.getElementById(formName + "byteConv");
+      field = O$(formName + "byteConv");
       field.value = "2V0";
-      field = document.getElementById(formName + "shortConv");
+      field = O$(formName + "shortConv");
       field.value = "999999999";
-      field = document.getElementById(formName + "floatConv");
+      field = O$(formName + "floatConv");
       field.value = "2V0";
-      field = document.getElementById(formName + "dateConv");
+      field = O$(formName + "dateConv");
       field.value = "12/02/2007";
-      field = document.getElementById(formName + "dateConv2");
+      field = O$(formName + "dateConv2");
       field.value = "12/02/2007";
-      field = document.getElementById(formName + "numberConv");
+      field = O$(formName + "numberConv");
       field.value = "Not Number";
     }
 
     function fillValidData(formName) {
-      var field = document.getElementById(formName + "required");
+      var field = O$(formName + "required");
       field.value = "text";
-      field = document.getElementById(formName + "validDR");
+      field = O$(formName + "validDR");
       field.value = 0.1;
-      field = document.getElementById(formName + "validLR");
+      field = O$(formName + "validLR");
       field.value = 55;
-      field = document.getElementById(formName + "validL");
+      field = O$(formName + "validL");
       field.value = 12;
-      field = document.getElementById(formName + "intConv");
+      field = O$(formName + "intConv");
       field.value = 10;
-      field = document.getElementById(formName + "doubleConv");
+      field = O$(formName + "doubleConv");
       field.value = 8.6;
-      field = document.getElementById(formName + "byteConv");
+      field = O$(formName + "byteConv");
       field.value = 12;
-      field = document.getElementById(formName + "shortConv");
+      field = O$(formName + "shortConv");
       field.value = 95;
-      field = document.getElementById(formName + "floatConv");
+      field = O$(formName + "floatConv");
       field.value = 7.8;
-      field = document.getElementById(formName + "dateConv");
+      field = O$(formName + "dateConv");
       //field.value = "\u0418\u044e\u043d-07-2006 12:00";
       field.value = "Jun-07-2006 12:00";
-      field = document.getElementById(formName + "dateConv2");
+      field = O$(formName + "dateConv2");
       field.value = "Thursday, June 8, 2006 10:00 PM";
-      field = document.getElementById(formName + "numberConv");
+      field = O$(formName + "numberConv");
       field.value = 1055.6;
     }
 

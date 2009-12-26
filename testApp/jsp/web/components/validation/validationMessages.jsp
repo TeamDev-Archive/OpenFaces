@@ -11,84 +11,26 @@
   <title>Validation messages</title>
   <script type="text/javascript">
     function fillInvalidData(formName) {
-      var field = document.getElementById(formName + & quot;
-    :
-      required & quot;
-    )
-      ;
-      field.value =
-    &
-      quot;
-    &
-      quot;
-      ;
-      field = document.getElementById(formName + & quot;
-    :
-      validDR & quot;
-    )
-      ;
+      var field = O$(formName + ":required");
+      field.value = "";
+      field = O$(formName + ":validDR");
       field.value = 5;
-      field = document.getElementById(formName + & quot;
-    :
-      url & quot;
-    )
-      ;
-      field.value =
-    &
-      quot;
-      not
-      url & quot;
-      ;
-      field = document.getElementById(formName + & quot;
-    :
-      ddf & quot;
-    )
-      ;
-      field.value =
-    &
-      quot;
-    &
-      quot;
-      ;
+      field = O$(formName + ":url");
+      field.value = "not url";
+      field = O$(formName + ":ddf");
+      field.value = "";
 
     }
 
     function fillValidData(formName) {
-      var field = document.getElementById(formName + & quot;
-    :
-      required & quot;
-    )
-      ;
-      field.value =
-    &
-      quot;
-      text & quot;
-      ;
-      field = document.getElementById(formName + & quot;
-    :
-      validDR & quot;
-    )
-      ;
+      var field = O$(formName + ":required");
+      field.value = "text";
+      field = O$(formName + ":validDR");
       field.value = 0.1;
-      field = document.getElementById(formName + & quot;
-    :
-      url & quot;
-    )
-      ;
-      field.value =
-    &
-      quot;
-      http://www.teamdev.com&quot;;
-              field = document.getElementById(formName + & quot;
-    :
-      ddf & quot;
-    )
-      ;
-      field.value =
-    &
-      quot;
-      text & quot;
-      ;
+      field = O$(formName + ":url");
+      field.value = "http://www.teamdev.com";
+      field = O$(formName + ":ddf");
+      field.value = "text";
 
     }
   </script>
