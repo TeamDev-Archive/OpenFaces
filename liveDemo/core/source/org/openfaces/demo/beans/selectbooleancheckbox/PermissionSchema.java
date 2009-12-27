@@ -147,13 +147,13 @@ public class PermissionSchema {
                                 }
 
                                 private void setDependentPermissions(boolean value) {
-                                    Collection<Permission> dependendPermissions = permission.getDependent();
-                                    for (Permission dependendPermission : dependendPermissions) {
-                                        get(dependendPermission).setDependent(value);
+                                    Collection<Permission> dependentPermissions = permission.getDependent();
+                                    for (Permission dependentPermission : dependentPermissions) {
+                                        get(dependentPermission).setDependent(value);
                                     }
                                     Collection<PermissionGroup> dependentPermissionGroups = permissionGroup.getDependent();
-                                    for (PermissionGroup dependendPermissionGroup : dependentPermissionGroups) {
-                                        PermissionAssigmnent.this.get(dependendPermissionGroup).get(permission).setDependent(value);
+                                    for (PermissionGroup dependentPermissionGroup : dependentPermissionGroups) {
+                                        PermissionAssigmnent.this.get(dependentPermissionGroup).get(permission).setDependent(value);
                                     }
                                 }
                             };
