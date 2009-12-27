@@ -7,7 +7,8 @@
     <div style="text-align: center; font-weight: bold; font-size: 20px;">Construction in progress...</div>
     <h:panelGroup id="bookList">
       <o:forEach items="#{BookCatalog.books}" var="book">
-        <dl class="demoLibrary #{(BookCatalog.selectedBook.isbn == book.isbn)?'active':''}">
+        <dl class="demoLibrary">
+          <h:panelGroup styleClass="#{(BookCatalog.selectedBook.isbn == book.isbn)?'active':''}">
           <dt><h:outputText value="#{book.title}"/></dt>
           <dd class="demoLibrary-thumbnail">
             <h:graphicImage url="../images/selectmanycheckbox/covers/#{book.isbn}.jpg" alt="#{book.title}"/>
@@ -22,7 +23,7 @@
               <o:forEach items="#{book.labels}" var="label">
                 <li><a href="#"><span><h:outputText id="label" value="#{label}"/></span></a></li>
               </o:forEach>
-              <li><h:commandLink styleClass="demoLibrary-editTags">
+              <li><h:commandLink id="editTagsLink" styleClass="demoLibrary-editTags">
                 <o:ajax render="bookList" listener="#{BookCatalog.selectBook}">
                   <f:param name="isbn" value="#{book.isbn}"/>
                 </o:ajax>
@@ -44,7 +45,7 @@
                     <f:selectItems id="selectedBookLabels" value="#{BookCatalog.labelItems}"/>
                   </o:selectManyCheckbox>
 
-                  <h:commandLink styleClass="demoLibrary-tagsEdit-apply">
+                  <h:commandLink styleClass="demoLibrary-tagsEdit-apply" id="applyLink">
                     <o:ajax render="bookList" execute="selectedBookLabels"
                             listener="#{BookCatalog.saveBookLabels}"/>
                     <span><span>Apply Tags</span></span>
@@ -56,6 +57,7 @@
 
             </div>
           </dd>
+          </h:panelGroup>
         </dl>
       </o:forEach>
     </h:panelGroup>

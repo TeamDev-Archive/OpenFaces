@@ -414,7 +414,7 @@ dl.demoLibrary{
 dl.demoLibrary:hover{
 	background:url(../../images/selectmanycheckbox/hover-bg.png) repeat-x 0 bottom;
 }
-dl.demoLibrary.active:hover{
+dl.demoLibrary .active:hover{
 	background:none !important;
 }
 
@@ -504,7 +504,7 @@ dl.demoLibrary:hover dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrar
 dl.demoLibrary:active dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-editTags{
 	display:block;
 }
-dl.demoLibrary.active dd.demoLibrary-tags ul.demoLibrary-tagsList li  a.demoLibrary-editTags{
+dl.demoLibrary .active dd.demoLibrary-tags ul.demoLibrary-tagsList li  a.demoLibrary-editTags{
 	display:none !important;
 }
 
@@ -537,7 +537,7 @@ dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-edit
 	z-index:10;
 	display:none;
 }
-dl.demoLibrary.active dd.demoLibrary-tags .demoLibrary-tagsEditBox{display:block;}
+dl.demoLibrary .active dd.demoLibrary-tags .demoLibrary-tagsEditBox{display:block;}
 
 .demoLibrary-tagsEditBox  .demoLibrary-tagsEditBox-tail{
 	display:block;
