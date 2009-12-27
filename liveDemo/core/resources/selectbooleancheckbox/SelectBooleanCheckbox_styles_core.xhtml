@@ -4,12 +4,30 @@
         >
 
 <div id="Demo">
+<o:tabSet id="viewSelector"
+          style="margin-top: 10px; margin-left: 450px;"
+          selectedIndex="#{SelectedViewBean.selectedViewIndex}"
+          gapWidth="2"
+          tabClass="tabButton"
+          selectedTabClass="tabButton_active"
+          frontBorderStyle="0px"
+          backBorderStyle="0px">
+  <o:ajax event="change" render="cafeBar"
+          execute="viewSelector"/>
+  <o:tabSetItem>
+    <h:outputText value="Original View"/>
+  </o:tabSetItem>
+  <o:tabSetItem>
+    <h:outputText value="Behind the Scene"/>
+  </o:tabSetItem>
+</o:tabSet>
+
 <div class="demoLibrary-cafe">
 <img class="componentLogo" src="../images/selectbooleancheckbox/component-logo.png"
      alt="Select Boolean Checkbox"/>
 <h4>Please, complete your order and let us know than.</h4>
 
-<div class="cafeBar">
+<h:panelGroup id="cafeBar" styleClass="cafeBar" layout="block">
 <ul>
 <li>
   <h:panelGroup id="espressoPanel" layout="block">
@@ -17,8 +35,8 @@
     <c:set var="drink" value="#{DrinkOrder.drinks[drinkReceipt]}"/>
     <c:set var="drinkOrdered" value="#{DrinkOrder.ordered[drinkReceipt]}"/>
     <o:selectBooleanCheckbox id="espressoOrderCheckbox" value="#{drinkOrdered}"
-                             selectedImageUrl="../images/selectbooleancheckbox/thumb-espresso-checked.png"
-                             unselectedImageUrl="../images/selectbooleancheckbox/thumb-espresso.png"
+                             selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-espresso-checked.png':''}"
+                             unselectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-espresso.png':''}"
                              styleClass="checkbox">
       <o:ajax event="change" render="espressoPanel" listener="#{DrinkOrder.orderDrink}">
         <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
@@ -34,8 +52,8 @@
           <li>
             <o:selectBooleanCheckbox value="#{drink[ingredient]}"
                                      onchange="O$.ajaxReload(['form:espressoPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
-                                     selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                     unselectedImageUrl="../images/empty-pixel.png"
+                                     selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                     unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                      styleClass="checkbox">
               <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
               <f:param name="ingredient" value="#{ingredient}"/>
@@ -45,11 +63,11 @@
 
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['ADDINS']}"/>
         <li>
-          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
+          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="#{SelectedViewBean.originalView}"
                                    onchange="O$.ajaxReload(['form:espressoPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
-                                   selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                   unselectedImageUrl="../images/empty-pixel.png"
-                                   undefinedImageUrl="../images/selectbooleancheckbox/icon-semi-checked-big.png"
+                                   selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                   unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
+                                   undefinedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-semi-checked-big.png':''}"
                                    styleClass="checkbox">
             <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
             <f:param name="ingredientGroup" value="#{ingredientGroup}"/>
@@ -61,8 +79,8 @@
               <li>
                 <o:selectBooleanCheckbox value="#{drink[ingredient]}"
                                          onchange="O$.ajaxReload(['form:espressoPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
-                                         selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                         unselectedImageUrl="../images/empty-pixel.png"
+                                         selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                         unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                          styleClass="checkbox">
                   <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
                   <f:param name="ingredient" value="#{ingredient}"/>
@@ -81,8 +99,8 @@
     <c:set var="drink" value="#{DrinkOrder.drinks[drinkReceipt]}"/>
     <c:set var="drinkOrdered" value="#{DrinkOrder.ordered[drinkReceipt]}"/>
     <o:selectBooleanCheckbox id="chocolateOrderCheckbox" value="#{drinkOrdered}"
-                             selectedImageUrl="../images/selectbooleancheckbox/thumb-hot-chocolate-checked.png"
-                             unselectedImageUrl="../images/selectbooleancheckbox/thumb-hot-chocolate.png"
+                             selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-hot-chocolate-checked.png':''}"
+                             unselectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-hot-chocolate.png':''}"
                              styleClass="checkbox">
       <o:ajax event="change" render="chocolatePanel" listener="#{DrinkOrder.orderDrink}">
         <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
@@ -98,8 +116,8 @@
           <li>
             <o:selectBooleanCheckbox value="#{drink[ingredient]}"
                                      onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
-                                     selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                     unselectedImageUrl="../images/empty-pixel.png"
+                                     selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                     unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                      styleClass="checkbox">
               <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
               <f:param name="ingredient" value="#{ingredient}"/>
@@ -109,11 +127,11 @@
 
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['TOPPING']}"/>
         <li>
-          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
+          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="#{SelectedViewBean.originalView}"
                                    onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
-                                   selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                   unselectedImageUrl="../images/empty-pixel.png"
-                                   undefinedImageUrl="../images/selectbooleancheckbox/icon-semi-checked-big.png"
+                                   selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                   unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
+                                   undefinedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-semi-checked-big.png':''}"
                                    styleClass="checkbox">
             <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
             <f:param name="ingredientGroup" value="#{ingredientGroup}"/>
@@ -123,8 +141,8 @@
               <li>
                 <o:selectBooleanCheckbox value="#{drink[ingredient]}"
                                          onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
-                                         selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                         unselectedImageUrl="../images/empty-pixel.png"
+                                         selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                         unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                          styleClass="checkbox">
                   <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
                   <f:param name="ingredient" value="#{ingredient}"/>
@@ -136,11 +154,11 @@
         </li>
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['ADDINS']}"/>
         <li>
-          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
+          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="#{SelectedViewBean.originalView}"
                                    onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
-                                   selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                   unselectedImageUrl="../images/empty-pixel.png"
-                                   undefinedImageUrl="../images/selectbooleancheckbox/icon-semi-checked-big.png"
+                                   selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                   unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
+                                   undefinedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-semi-checked-big.png':''}"
                                    styleClass="checkbox">
             <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
             <f:param name="ingredientGroup" value="#{ingredientGroup}"/>
@@ -152,8 +170,8 @@
               <li>
                 <o:selectBooleanCheckbox value="#{drink[ingredient]}"
                                          onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
-                                         selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                         unselectedImageUrl="../images/empty-pixel.png"
+                                         selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                         unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                          styleClass="checkbox">
                   <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
                   <f:param name="ingredient" value="#{ingredient}"/>
@@ -173,8 +191,8 @@
     <c:set var="drink" value="#{DrinkOrder.drinks[drinkReceipt]}"/>
     <c:set var="drinkOrdered" value="#{DrinkOrder.ordered[drinkReceipt]}"/>
     <o:selectBooleanCheckbox id="teaOrderCheckbox" value="#{drinkOrdered}"
-                             selectedImageUrl="../images/selectbooleancheckbox/thumb-iced-tea-checked.png"
-                             unselectedImageUrl="../images/selectbooleancheckbox/thumb-iced-tea.png"
+                             selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-iced-tea-checked.png':''}"
+                             unselectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-iced-tea.png':''}"
                              styleClass="checkbox">
       <o:ajax event="change" render="teaPanel" listener="#{DrinkOrder.orderDrink}">
         <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
@@ -190,8 +208,8 @@
           <li>
             <o:selectBooleanCheckbox value="#{drink[ingredient]}"
                                      onchange="O$.ajaxReload(['form:teaPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
-                                     selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                     unselectedImageUrl="../images/empty-pixel.png"
+                                     selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                     unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                      styleClass="checkbox">
               <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
               <f:param name="ingredient" value="#{ingredient}"/>
@@ -201,11 +219,11 @@
 
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['ADDINS']}"/>
         <li>
-          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
+          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="#{SelectedViewBean.originalView}"
                                    onchange="O$.ajaxReload(['form:teaPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
-                                   selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                   unselectedImageUrl="../images/empty-pixel.png"
-                                   undefinedImageUrl="../images/selectbooleancheckbox/icon-semi-checked-big.png"
+                                   selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                   unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
+                                   undefinedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-semi-checked-big.png':''}"
                                    styleClass="checkbox">
             <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
             <f:param name="ingredientGroup" value="#{ingredientGroup}"/>
@@ -217,8 +235,8 @@
               <li>
                 <o:selectBooleanCheckbox value="#{drink[ingredient]}"
                                          onchange="O$.ajaxReload(['form:teaPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
-                                         selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                         unselectedImageUrl="../images/empty-pixel.png"
+                                         selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                         unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                          styleClass="checkbox">
                   <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
                   <f:param name="ingredient" value="#{ingredient}"/>
@@ -238,8 +256,8 @@
     <c:set var="drink" value="#{DrinkOrder.drinks[drinkReceipt]}"/>
     <c:set var="drinkOrdered" value="#{DrinkOrder.ordered[drinkReceipt]}"/>
     <o:selectBooleanCheckbox id="waterOrderCheckbox" value="#{drinkOrdered}"
-                             selectedImageUrl="../images/selectbooleancheckbox/thumb-clean-water-checked.png"
-                             unselectedImageUrl="../images/selectbooleancheckbox/thumb-clean-water.png"
+                             selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-clean-water-checked.png':''}"
+                             unselectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/thumb-clean-water.png':''}"
                              styleClass="checkbox">
       <o:ajax event="change" render="waterPanel" listener="#{DrinkOrder.orderDrink}">
         <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
@@ -252,11 +270,11 @@
 
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['SYRUPS']}"/>
         <li>
-          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
+          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="#{SelectedViewBean.originalView}"
                                    onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
-                                   selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                   unselectedImageUrl="../images/empty-pixel.png"
-                                   undefinedImageUrl="../images/selectbooleancheckbox/icon-semi-checked-big.png"
+                                   selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                   unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
+                                   undefinedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-semi-checked-big.png':''}"
                                    styleClass="checkbox">
             <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
             <f:param name="ingredientGroup" value="#{ingredientGroup}"/>
@@ -268,8 +286,8 @@
               <li>
                 <o:selectBooleanCheckbox value="#{drink[ingredient]}"
                                          onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
-                                         selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                         unselectedImageUrl="../images/empty-pixel.png"
+                                         selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                         unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                          styleClass="checkbox">
                   <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
                   <f:param name="ingredient" value="#{ingredient}"/>
@@ -281,11 +299,11 @@
 
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['ADDINS']}"/>
         <li>
-          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="true"
+          <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="#{SelectedViewBean.originalView}"
                                    onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
-                                   selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                   unselectedImageUrl="../images/empty-pixel.png"
-                                   undefinedImageUrl="../images/selectbooleancheckbox/icon-semi-checked-big.png"
+                                   selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                   unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
+                                   undefinedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-semi-checked-big.png':''}"
                                    styleClass="checkbox">
             <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
             <f:param name="ingredientGroup" value="#{ingredientGroup}"/>
@@ -297,8 +315,8 @@
               <li>
                 <o:selectBooleanCheckbox value="#{drink[ingredient]}"
                                          onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
-                                         selectedImageUrl="../images/selectbooleancheckbox/icon-checked-big.png"
-                                         unselectedImageUrl="../images/empty-pixel.png"
+                                         selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
+                                         unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                          styleClass="checkbox">
                   <f:param name="drinkReceipt" value="#{drinkReceipt}"/>
                   <f:param name="ingredient" value="#{ingredient}"/>
@@ -313,8 +331,7 @@
 </li>
 
 </ul>
-
-</div>
+</h:panelGroup>
 </div>
 </div>
 <div id="Description">
