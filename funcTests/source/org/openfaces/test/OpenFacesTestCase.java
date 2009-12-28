@@ -27,7 +27,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
     private static BrowserType browserType = BrowserType.FIREFOX;
 
     /* Configuration */
-    protected static final boolean IS_FACELETS = false;//getBooleansSystemProperty("test.app.is.facelets", true);
+    protected static final boolean IS_FACELETS = getBooleansSystemProperty("test.app.is.facelets", true);
     // SUN12 - Sun Reference Implemenetation 1.2
     // SUN11 - Sun Reference Implemenetation 1.1
     protected static final String IMPLEMENTATION = getSystemProperty("test.app.jsf.implementation", "SUN12");
