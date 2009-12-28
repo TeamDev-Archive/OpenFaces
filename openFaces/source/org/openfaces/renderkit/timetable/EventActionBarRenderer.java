@@ -93,7 +93,7 @@ public class EventActionBarRenderer extends RendererBase {
                 if (deleteEventAction.getId() == null)
                     deleteEventAction.setId(context.getViewRoot().createUniqueId());
                 confirmation.setFor(deleteEventAction.getId());
-                confirmation.setEvent("onclick");
+                confirmation.setEvent("click");
             } else
                 confirmation.setRendered(false);
         }

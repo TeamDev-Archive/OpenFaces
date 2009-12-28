@@ -130,7 +130,7 @@ public class FilterProperty extends OUIComponentBase implements ValueHolder, Ser
     }
 
     public Number getMaxValue() {
-        return maxValue;
+        return ValueBindings.get(this, "maxValue", maxValue, Integer.MAX_VALUE, true, Number.class);
     }
 
     public void setMaxValue(Number maxValue) {
@@ -138,7 +138,7 @@ public class FilterProperty extends OUIComponentBase implements ValueHolder, Ser
     }
 
     public Number getMinValue() {
-        return minValue;
+        return ValueBindings.get(this, "minValue", minValue, 0, true, Number.class);
     }
 
     public void setMinValue(Number minValue) {
@@ -146,7 +146,7 @@ public class FilterProperty extends OUIComponentBase implements ValueHolder, Ser
     }
 
     public Number getStep() {
-        return step;
+        return ValueBindings.get(this, "step", step, 1, true, Number.class);
     }
 
     public void setStep(Number step) {
@@ -170,7 +170,7 @@ public class FilterProperty extends OUIComponentBase implements ValueHolder, Ser
     }
 
     public boolean isCaseSensitive() {
-        return caseSensitive;
+        return ValueBindings.get(this, "caseSensitive", caseSensitive, false);
     }
 
     public void setCaseSensitive(boolean caseSensitive) {
