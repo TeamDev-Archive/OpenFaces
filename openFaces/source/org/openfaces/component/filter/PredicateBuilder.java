@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 
-public class PredicateAdapter extends FilterCriterionProcessor {
+public class PredicateBuilder extends FilterCriterionProcessor {
     private static final Comparator<Number> NUMBER_COMPARATOR = new NumberComparator();
     private static final Comparator<Date> COMPARABLE_COMPARATOR = new ComparableComparator();
 
@@ -38,15 +38,15 @@ public class PredicateAdapter extends FilterCriterionProcessor {
         }
     }
 
-    private static PredicateAdapter instance;
+    private static PredicateBuilder instance;
 
-    public static PredicateAdapter getInstance() {
+    public static PredicateBuilder getInstance() {
         if (instance == null)
-            instance = new PredicateAdapter();
+            instance = new PredicateBuilder();
         return instance;
     }
 
-    public static Predicate convertToPredicate(FilterCriterion criterion) {
+    public static Predicate build(FilterCriterion criterion) {
         return (Predicate) criterion.process(getInstance());
     }
 
@@ -276,6 +276,7 @@ public class PredicateAdapter extends FilterCriterionProcessor {
 
     private static class TruePredicate implements Predicate {
         private static TruePredicate instance = new TruePredicate();
+
         public boolean evaluate(Object o) {
             return true;
         }

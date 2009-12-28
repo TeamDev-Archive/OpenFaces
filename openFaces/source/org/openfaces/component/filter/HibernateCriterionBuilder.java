@@ -21,17 +21,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-public class HibernateCriterionAdapter extends FilterCriterionProcessor {
+public class HibernateCriterionBuilder extends FilterCriterionProcessor {
 
-    private static HibernateCriterionAdapter instance;
+    private static HibernateCriterionBuilder instance;
 
-    public static HibernateCriterionAdapter getInstance() {
+    public static HibernateCriterionBuilder getInstance() {
         if (instance == null)
-            instance = new HibernateCriterionAdapter();
+            instance = new HibernateCriterionBuilder();
         return instance;
     }
 
-    public static Criterion convertToHibernateCriterion(FilterCriterion filterCriterion) {
+    public static Criterion build(FilterCriterion filterCriterion) {
         return (Criterion) filterCriterion.process(getInstance());
     }
 

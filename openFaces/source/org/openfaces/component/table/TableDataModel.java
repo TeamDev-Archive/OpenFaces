@@ -15,7 +15,7 @@ import org.apache.commons.collections.Predicate;
 import org.openfaces.component.filter.AndFilterCriterion;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.PredicateAdapter;
+import org.openfaces.component.filter.PredicateBuilder;
 import org.openfaces.util.DataUtil;
 import org.openfaces.util.ValueBindings;
 
@@ -587,7 +587,7 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
             Filter filter = filters.get(filterIndex);
             FilterCriterion filterValue = (FilterCriterion) filter.getValue();
 
-            Predicate predicate = filterValue != null ? PredicateAdapter.convertToPredicate(filterValue) : null;
+            Predicate predicate = filterValue != null ? PredicateBuilder.build(filterValue) : null;
             boolean filterAcceptsData = predicate == null || predicate.evaluate(data);
             if (!filterAcceptsData)
                 rowAccepted = false;

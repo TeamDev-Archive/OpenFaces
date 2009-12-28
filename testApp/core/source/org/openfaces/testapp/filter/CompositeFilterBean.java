@@ -16,7 +16,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.openfaces.component.filter.AndFilterCriterion;
 import org.openfaces.component.filter.CompositeFilterCriterion;
-import org.openfaces.component.filter.PredicateAdapter;
+import org.openfaces.component.filter.PredicateBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -58,7 +58,7 @@ public class CompositeFilterBean {
     private CompositeFilterCriterion criteria2 = new AndFilterCriterion();
 
     public List<User> getFilteredUsers() {
-        Predicate predicate = PredicateAdapter.convertToPredicate(criteria);
+        Predicate predicate = PredicateBuilder.build(criteria);
         ArrayList<User> result = new ArrayList<User>(users);
         CollectionUtils.filter(result, predicate);
         return result;
