@@ -9,7 +9,7 @@
   <br/>
   
 <h:commandButton value="Test" action="#{TreeTableTestBean.test}"/>
-<h:commandButton onclick="O$.ajaxReload(['form1:treeTable1', 'form1:forumTree', 'form1:forumTree', 'form1:permissionsTreeTable', 'form1:bigNodesTreeTable']); return false;" value="Rerender with q_refreshTable"/>
+<h:commandButton onclick="O$.ajax.request(this, event, {render: 'form1:treeTable1 form1:forumTree form1:forumTree form1:permissionsTreeTable form1:bigNodesTreeTable'}); return false;" value="Rerender with q_refreshTable"/>
 
 <div style="font: 12pt Times; font-weight: normal; border-bottom: 1px solid gray; ">TreeTable with a static structure
   (using o:staticTreeStructure)</div>

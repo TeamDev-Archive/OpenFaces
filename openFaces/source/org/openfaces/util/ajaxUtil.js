@@ -21,7 +21,7 @@ O$.extend(O$, {
     },
 
     run: function() {
-      O$.ajaxReload(this.render, this);
+      O$._ajaxReload(this.render, this);
     }
   }),
 
@@ -52,19 +52,43 @@ O$.extend(O$, {
 
 });
 
+O$.ajax = {
+  /**
+   * @param source - (optional) string id or a reference to the element that invokes this request
+   * @param event - (optional) event object that triggered this request
+   * @param options - (optional) is an object, which the following fields:
+   *    - render - (required) a space separated list of component client id(s) that should be reloaded
+   *    - execute - (optional) a space separated list of component client id(s) for components whose processDecodes->...->processUpdates phases should be invoked in addition to the component(s) being reloaded
+   *    - onajaxstart - (optional) the function that should be invoked before ajax request is started
+   *    - onajaxend - (optional) the function that should be invoked when ajax request is fully processed
+   *    - onerror - (optional) the function that should be invoked when ajax request fails to complete successfully for some reason
+   *    - listener - (optional) server action listener in the form of EL, which should be executed during this Ajax request. It is written in a convention BeanName.functionName, similar to the listener attribute of <o:ajax> tag, though without the #{ and } parts.
+   *    - immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
+   *    - params - (optional) an object containing the additional request parameters
+   */
+  request: function(source, event, options) {
+    var args = options ? options : {};
 
-/**
- * render - components to which an ajax request is being made
- * agrs - (optional) is an object, which consist of:
- *    onajaxend - (optional) the function that should be invoked when ajax request is fully processed
- *    execute - (optional) array of clientIds for components whose processDecodes->...->processUpdates phases should be invoked in addition to the component being reloaded
- *    onerror - (optional) the function that should be invoked when ajax request fails to complete successfully for some reason
- *    onajaxstart - (optional) the function that should be invoked before ajax request is started
- *    immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
- */
-O$.ajaxReload = function(render, args) {
-  O$._ajaxReload(render, args);
+    args.actionComponent = source && typeof source != "string" ? source.id : source;
+    var render = options.render ? options.render.split(" ") : undefined;
+    args.execute = options.execute ? options.execute.split(" ") : undefined;
+    args.onajaxstart = options.onajaxstart;
+    args.onajaxend = options.onajaxend;
+    args.onerror = options.onerror;
+    args.listener = options.listener;
+    args.immediate = options.immediate;
+    if (options.params) {
+      args.additionalParams = [];
+      for (var param in options.params) {
+        var value = options.params[param];
+        args.additionalParams.push([param, value]);
+      }
+    }
+
+    O$._ajaxReload(render, args);
+  }
 };
+
 
 // ================================== IMPLEMENTATION
 
@@ -171,6 +195,15 @@ O$.reloadPage = function(loc) {
   window.location = loc;
 }
 
+/**
+ * render - components to which an ajax request is being made
+ * agrs - (optional) is an object, which consist of:
+ *    onajaxend - (optional) the function that should be invoked when ajax request is fully processed
+ *    execute - (optional) array of clientIds for components whose processDecodes->...->processUpdates phases should be invoked in addition to the component being reloaded
+ *    onerror - (optional) the function that should be invoked when ajax request fails to complete successfully for some reason
+ *    onajaxstart - (optional) the function that should be invoked before ajax request is started
+ *    immediate - (optional) true means that the action should be executed during Apply Request Values phase, rather than waiting until the Invoke Application phase
+ */
 O$._ajaxReload = function(render, args) {
   if (!args) args = {};
   var params = args.additionalParams ? args.additionalParams : [];

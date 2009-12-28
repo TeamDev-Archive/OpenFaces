@@ -10,7 +10,7 @@
         <a href="../../SupportPages.jsf">Return to support pages list</a>
       <br/>
       <br/>
-      <h:commandButton onclick="O$.ajaxReload(['form1:treeTable2']); return false;" value="reload"/>
+      <h:commandButton onclick="O$.ajax.request(this, event, {render: 'form1:treeTable2'}); return false;" value="reload"/>
       <o:treeTable id="treeTable2" var="message" rolloverRowStyle="background:#F0F0F0;"
                    nodeLevelVar="level" expansionState="#{SupportTreeTableBean.expansionState}">
         <o:multipleNodeSelection nodeDatas="#{SupportTreeTableBean.selectedNodeDatas2}"/>

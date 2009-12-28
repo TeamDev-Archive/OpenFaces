@@ -21,7 +21,7 @@
     </o:dataTable>
     <h:commandButton value="Add selected people"
                      type="button"
-                     onclick="O$.ajaxReload(['form1:selectedPeople'], {execute: ['form1:allPeople']}); "/>
+                     onclick="O$.ajax.request(this, event, {render: 'form1:selectedPeople', execute: 'form1:allPeople'}); "/>
     <o:dataTable id="selectedPeople"
                  var="selectedPeople"
                  value="#{PeopleListBean.selectedRows}">

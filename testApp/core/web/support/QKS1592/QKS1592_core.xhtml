@@ -8,7 +8,7 @@
   <a href="../../main.jsf">Back to the main page</a>
   <br/>
   
-    <h:commandButton onclick="O$.ajaxReload(['form1:fleetTreeTable']);" value="q refresh"/>
+    <h:commandButton onclick="O$.ajax.request(this, event, {render: 'form1:fleetTreeTable'});" value="q refresh"/>
     <a4j:commandButton reRender="fleetTreeTable" value="a4j rerender"/>
     <o:treeTable id="fleetTreeTable"
                  var="message"

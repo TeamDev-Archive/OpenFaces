@@ -59,7 +59,7 @@ public class AjaxHelper extends OUIClientActionHelper {
         String idExpression = "O$._renderIds['" + id + "']";
         Script render = new RawScript("(" + idExpression + " ? " + idExpression + " : " + renderArray.toString() + ")" );
 
-        buf.functionCall("O$.ajaxReload",
+        buf.functionCall("O$._ajaxReload",
                 render,
                 ajaxInitializer.getAjaxParams(context, ajax)).semicolon();
         return buf.toString();

@@ -73,8 +73,8 @@
 <h:inputText id="i1"/>
 <h:inputText id="i2"/>
 <a4j:commandButton reRender="dataFetchTestTable" value="Rerender with Ajax4jsf"/>
-<h:commandButton onclick="O$.ajaxReload(['form1:dataFetchTestTable']); return false;"
-                 value="Rerender with O$.ajaxReload"/>
+<h:commandButton onclick="O$.ajax.request(this, event, {render: 'form1:dataFetchTestTable'}); return false;"
+                 value="Rerender with O$.ajax.request"/>
 <o:dataTable id="table1" var="row" value="#{TableTestBean.collection1}" useAjax="true"
              style="border: 1px solid black; background: #eaf5fa" styleClass="cls1"
              sortColumnId="col2" sortAscending="true" rowKey="#{row.id}" pageSize="#{TableTestBean.pageSize}"

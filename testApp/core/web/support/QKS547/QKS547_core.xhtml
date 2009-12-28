@@ -85,7 +85,7 @@
     </o:dataTable>
     </h:panelGrid>
     <h:inputText id="inputText" value="#{sessionScope['qks547_testText']}"/>
-    <input type="button" value=" -> (qk ajax) -> " onclick="O$.ajaxReload(['content:outputText'], {execute: ['content:inputText']});"/>
+    <input type="button" value=" -> (qk ajax) -> " onclick="O$.ajax.request(this, event, {render: 'content:outputText', execute: 'content:inputText'});"/>
     <a4j:commandButton value=" -> (a4j ajax) -> " reRender="outputText"/>
     <input type="submit" value=" -> (submit) -> "/>
 

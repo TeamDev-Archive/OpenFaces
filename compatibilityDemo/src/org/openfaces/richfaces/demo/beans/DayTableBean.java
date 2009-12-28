@@ -452,28 +452,28 @@ public class DayTableBean implements CalendarDataModel, Serializable {
         return (Task) FacesUtil.getRequestMapValue("task");
     }
 
-    public void editTask() {
+    public void editTask(ActionEvent event) {
         cachedTask = new Task(selectedTask.getName(), selectedTask.getStartDate(), selectedTask.getEndDate(), selectedTask.getDescription());
         currentlyEditedTask = selectedTask;
     }
 
-    public void deleteTask() {
+    public void deleteTask(ActionEvent event) {
         tasks.remove(selectedTask);
         selectedTask = tasks.get(0);
     }
 
-    public void addNewTask() {
+    public void addNewTask(ActionEvent event) {
         Task newTask = new Task("", new Date(), new Date(), "");
         tasks.add(newTask);
         currentlyEditedTask = newTask;
         selectedTask = newTask;
     }
 
-    public void saveChanges() {
+    public void saveChanges(ActionEvent event) {
         currentlyEditedTask = null;
     }
 
-    public void cancelEditing(){
+    public void cancelEditing(ActionEvent event){
         currentlyEditedTask.setName(cachedTask.getName());
         currentlyEditedTask.setStartDate(cachedTask.getStartDate());
         currentlyEditedTask.setEndDate(cachedTask.getEndDate());

@@ -102,6 +102,6 @@
     </o:dataTable>
 
     <h:commandButton id="refresher" value="Refresh DataTable"
-                     onclick="O$.ajaxReload(['formID:checkedPersons']); return false;"/>
+                     onclick="O.ajax.request(this, event, {render: 'formID:checkedPersons'}); return false;"/>
   
 </div>

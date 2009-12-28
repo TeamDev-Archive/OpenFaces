@@ -406,11 +406,10 @@ public abstract class CommonAjaxViewRoot {
             MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
                     elContext, "#{" + listener + "}", void.class, new Class[]{ActionEvent.class});
             UIComponent component = null;
-            if (actionComponentId != null){
-                component = findComponentById(viewRoot, actionComponentId);
-            }else{
-                component = viewRoot; 
-            }
+            if (actionComponentId != null)
+                component = findComponentById(viewRoot, actionComponentId, false, false, false);
+            if (component == null)
+                component = viewRoot;
             ActionEvent event = new ActionEvent(component);
             event.setPhaseId(Boolean.valueOf(request.getParameter(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
             methodExpression.invoke(elContext, new Object[]{event});
@@ -1279,7 +1278,7 @@ public abstract class CommonAjaxViewRoot {
         if (isValuePatternFound) {
             int startIndex = matcher.start();
             int endIndex = matcher.end();
-            String valueString = stateString.substring(startIndex,endIndex);
+            String valueString = stateString.substring(startIndex, endIndex);
             int firstIndex = VALUE_ATTR_STRING.length();
 
             String viewStateString = valueString.substring(firstIndex, valueString.lastIndexOf("\""));

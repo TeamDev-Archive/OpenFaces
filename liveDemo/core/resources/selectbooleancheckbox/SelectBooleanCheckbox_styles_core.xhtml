@@ -51,7 +51,7 @@
         <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
           <li>
             <o:selectBooleanCheckbox value="#{drink[ingredient]}"
-                                     onchange="O$.ajaxReload(['form:espressoPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                     onchange="O$.ajax.request(this, event, {render: 'form:espressoPanel', listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
                                      selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                      unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                      styleClass="checkbox">
@@ -64,7 +64,7 @@
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['ADDINS']}"/>
         <li>
           <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="#{SelectedViewBean.originalView}"
-                                   onchange="O$.ajaxReload(['form:espressoPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
+                                   onchange="O$.ajax.request(this, event, {render: 'form:espressoPanel', listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
                                    selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                    unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                    undefinedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-semi-checked-big.png':''}"
@@ -78,7 +78,7 @@
             <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
               <li>
                 <o:selectBooleanCheckbox value="#{drink[ingredient]}"
-                                         onchange="O$.ajaxReload(['form:espressoPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                         onchange="O$.ajax.request(this, event, {render: 'form:espressoPanel', listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
                                          selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                          unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                          styleClass="checkbox">
@@ -115,7 +115,7 @@
         <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
           <li>
             <o:selectBooleanCheckbox value="#{drink[ingredient]}"
-                                     onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                     onchange="O$.ajax.request(this, event, {render: 'form:chocolatePanel', listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
                                      selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                      unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                      styleClass="checkbox">
@@ -128,7 +128,7 @@
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['TOPPING']}"/>
         <li>
           <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="#{SelectedViewBean.originalView}"
-                                   onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
+                                   onchange="O$.ajax.request(this, event, {render: 'form:chocolatePanel', listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
                                    selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                    unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                    undefinedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-semi-checked-big.png':''}"
@@ -140,7 +140,7 @@
             <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
               <li>
                 <o:selectBooleanCheckbox value="#{drink[ingredient]}"
-                                         onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                         onchange="O$.ajax.request(this, event, {render: 'form:chocolatePanel', listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
                                          selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                          unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                          styleClass="checkbox">
@@ -155,7 +155,7 @@
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['ADDINS']}"/>
         <li>
           <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="#{SelectedViewBean.originalView}"
-                                   onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
+                                   onchange="O$.ajax.request(this, event, {render: 'form:chocolatePanel', listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
                                    selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                    unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                    undefinedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-semi-checked-big.png':''}"
@@ -169,7 +169,7 @@
             <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
               <li>
                 <o:selectBooleanCheckbox value="#{drink[ingredient]}"
-                                         onchange="O$.ajaxReload(['form:chocolatePanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                         onchange="O$.ajax.request(this, event, {render: 'form:chocolatePanel', listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
                                          selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                          unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                          styleClass="checkbox">
@@ -207,7 +207,7 @@
         <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
           <li>
             <o:selectBooleanCheckbox value="#{drink[ingredient]}"
-                                     onchange="O$.ajaxReload(['form:teaPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                     onchange="O$.ajax.request(this, event, {render: 'form:teaPanel', listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
                                      selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                      unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                      styleClass="checkbox">
@@ -220,7 +220,7 @@
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['ADDINS']}"/>
         <li>
           <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="#{SelectedViewBean.originalView}"
-                                   onchange="O$.ajaxReload(['form:teaPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
+                                   onchange="O$.ajax.request(this, event, {render: 'form:teaPanel', listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
                                    selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                    unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                    undefinedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-semi-checked-big.png':''}"
@@ -234,7 +234,7 @@
             <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
               <li>
                 <o:selectBooleanCheckbox value="#{drink[ingredient]}"
-                                         onchange="O$.ajaxReload(['form:teaPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                         onchange="O$.ajax.request(this, event, {render: 'form:teaPanel', listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
                                          selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                          unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                          styleClass="checkbox">
@@ -271,7 +271,7 @@
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['SYRUPS']}"/>
         <li>
           <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="#{SelectedViewBean.originalView}"
-                                   onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
+                                   onchange="O$.ajax.request(this, event, {render: 'form:waterPanel', listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
                                    selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                    unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                    undefinedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-semi-checked-big.png':''}"
@@ -285,7 +285,7 @@
             <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
               <li>
                 <o:selectBooleanCheckbox value="#{drink[ingredient]}"
-                                         onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                         onchange="O$.ajax.request(this, event, {render: 'form:waterPanel', listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
                                          selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                          unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                          styleClass="checkbox">
@@ -300,7 +300,7 @@
         <c:set var="ingredientGroup" value="#{DrinkOrder.ingredientGroup['ADDINS']}"/>
         <li>
           <o:selectBooleanCheckbox value="#{drink[ingredientGroup]}" triStateAllowed="#{SelectedViewBean.originalView}"
-                                   onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
+                                   onchange="O$.ajax.request(this, event, {render: 'form:waterPanel', listener: 'DrinkOrder.orderGroup', actionComponent: this.id});"
                                    selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                    unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                    undefinedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-semi-checked-big.png':''}"
@@ -314,7 +314,7 @@
             <o:forEach items="#{drinkReceipt.ingredientsByGroup[ingredientGroup]}" var="ingredient">
               <li>
                 <o:selectBooleanCheckbox value="#{drink[ingredient]}"
-                                         onchange="O$.ajaxReload(['form:waterPanel'], {listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
+                                         onchange="O$.ajax.request(this, event, {render: 'form:waterPanel', listener: 'DrinkOrder.orderIngredient', actionComponent: this.id});"
                                          selectedImageUrl="#{SelectedViewBean.originalView?'../images/selectbooleancheckbox/icon-checked-big.png':''}"
                                          unselectedImageUrl="#{SelectedViewBean.originalView?'../images/empty-pixel.png':''}"
                                          styleClass="checkbox">

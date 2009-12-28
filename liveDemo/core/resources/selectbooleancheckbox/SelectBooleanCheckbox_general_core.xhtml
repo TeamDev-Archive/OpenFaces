@@ -36,7 +36,7 @@
                                    value="#{PermissionSchema.permissionsAssignment[group][permission].outputState}"
                                    undefinedImageUrl="../images/selectbooleancheckbox/undefinedCheckbox.png"                                   
                                    stateList="#{stateList}"
-                                   onchange="O$.ajaxReload(['form:permissionsTable'], {listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
+                                   onchange="O$.ajax.request(this, event, {render: 'form:permissionsTable', listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
             <f:param name="group" value="#{group}"/>
             <f:param name="permission" value="#{permission}"/>
           </o:selectBooleanCheckbox>
@@ -55,7 +55,7 @@
                                    value="#{PermissionSchema.permissionsAssignment[group][permission].outputState}"
                                    undefinedImageUrl="../images/selectbooleancheckbox/undefinedCheckbox.png"
                                    stateList="#{stateList}"
-                                   onchange="O$.ajaxReload(['form:permissionsTable'], {listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
+                                   onchange="O$.ajax.request(this, event, {render: 'form:permissionsTable', listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
             <f:param name="group" value="#{group}"/>
             <f:param name="permission" value="#{permission}"/>
           </o:selectBooleanCheckbox>
@@ -74,7 +74,7 @@
                                    value="#{PermissionSchema.permissionsAssignment[group][permission].outputState}"
                                    undefinedImageUrl="../images/selectbooleancheckbox/undefinedCheckbox.png"
                                    stateList="#{stateList}"
-                                   onchange="O$.ajaxReload(['form:permissionsTable'], {listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
+                                   onchange="O$.ajax.request(this, event, {render: 'form:permissionsTable', listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
             <f:param name="group" value="#{group}"/>
             <f:param name="permission" value="#{permission}"/>
           </o:selectBooleanCheckbox>

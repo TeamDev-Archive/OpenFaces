@@ -61,12 +61,12 @@
                                   styleClass="NavigationControls">
                         <h:commandLink id="saveChangesLink"
                                        styleClass="NavigationControls-tasks-save"
-                                       onclick="O$.ajaxReload(['form:tasks', 'form:operations'], {action: 'DayTableBean.saveChanges'}); return false;">
+                                       onclick="O$.ajax.request(this, event, {render: 'form:tasks form:operations', listener: 'DayTableBean.saveChanges'}); return false;">
                             <h:outputText id="saveChanges" value="Save Changes"/>
                         </h:commandLink>
                         <h:commandLink id="cancelChangesLink"
                                        styleClass="CancelChanges"
-                                       onclick="O$.ajaxReload(['form:tasks', 'form:operations'], {action: 'DayTableBean.cancelEditing'}); return false;">
+                                       onclick="O$.ajax.request(this, event, {render: 'form:tasks form:operations', listener: 'DayTableBean.cancelEditing'}); return false;">
                             <h:outputText id="cancelChanges" value="Cancel"/>
                         </h:commandLink>
                     </h:panelGroup>
@@ -74,17 +74,17 @@
                                   styleClass="NavigationControls">
                         <h:commandLink id="addTaskLink"
                                        styleClass="NavigationControls-tasks-new"
-                                       onclick="O$.ajaxReload(['form:tasks', 'form:operations'], {action: 'DayTableBean.addNewTask'}); return false;">
+                                       onclick="O$.ajax.request(this, event, {render: 'form:tasks form:operations', listener: 'DayTableBean.addNewTask'}); return false;">
                             <h:outputText id="addTask" value="New Task"/>
                         </h:commandLink>
                         <h:commandLink id="editTaskLink"
                                        styleClass="NavigationControls-tasks-edit"
-                                       onclick="O$.ajaxReload(['form:tasks', 'form:operations'], {action: 'DayTableBean.editTask'}); return false;">
+                                       onclick="O$.ajax.request(this, event, {render: 'form:tasks form:operations', listener: 'DayTableBean.editTask'}); return false;">
                             <h:outputText id="editTask" value="Edit Task"/>
                         </h:commandLink>
                         <h:commandLink id="deleteTaskLink"
                                        styleClass="NavigationControls-tasks-delete"
-                                       onclick="O$.ajaxReload(['form:tasks'], {action: 'DayTableBean.deleteTask'}); return false;">
+                                       onclick="O$.ajax.request(this, event, {render: 'form:tasks', listener: 'DayTableBean.deleteTask'}); return false;">
                             <h:outputText id="deleteTask" value="Delete Task"/>
                         </h:commandLink>
                         <img src="images/icons/navigation-tasks-separator.png" alt="" style="float:left; margin:5px;"/>

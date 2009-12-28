@@ -61,7 +61,7 @@
         </td>
         <td style="vertical-align: top; width: 50%;">
           <h:commandButton value="Update"
-                           onclick="O$.ajaxReload(['tlsForm:detailTable'], {execute: ['tlsForm:tasksTLS']}); return false;"/>
+                           onclick="O$.ajax.request(this, event, {render: 'tlsForm:detailTable', execute: 'tlsForm:tasksTLS'}); return false;"/>
           <o:dataTable id="detailTable"
                        style="width: 100%;"
                        var="task"

@@ -179,8 +179,9 @@
         <h:panelGroup styleClass="select_columns_button_area">
           <h:commandButton value="OK"
                            onclick="O$('form1:requestsTreeTable:selectColumnsDialog').hide();
-                             O$.ajaxReload(['form1:requestsTreeTable'], {
-                                execute: ['form1:requestsTreeTable:optionsTLS']});
+                             O$.ajax.request(this, event, {
+                                render: 'form1:requestsTreeTable',
+                                execute: 'form1:requestsTreeTable:optionsTLS'});
                              return false;"
                            styleClass="select_columns_ok"/>
           <h:commandButton value="Cancel" onclick="cancelColumnsDialog(); return false;"
@@ -203,7 +204,7 @@
                 <h:outputLink id="addRequestBtn"
                               styleClass="HK_holder"
                               style="width: 85px;"
-                              onclick="if(this.className=='HK_holder') O$.ajaxReload(['form1:requestsTreeTable'], {listener: 'RequestsTreeTableBean.addRequest'}); return false;">
+                              onclick="if(this.className=='HK_holder') O$.ajax.request(this, event, {render: 'form1:requestsTreeTable', listener: 'RequestsTreeTableBean.addRequest'}); return false;">
                   <h:panelGroup id="addRequestHolderLeftId" styleClass="HK_holder_left" style="display:block;">
                     <h:panelGroup id="addRequestHolderRightId" styleClass="HK_holder_right" style="display:block;">
                       <h:panelGroup id="addRequestIconId" styleClass="HK_icon_add_req"><!--Key icon--></h:panelGroup>
@@ -216,7 +217,7 @@
                 <h:outputLink id="addSubrequestBtn"
                               styleClass="HK_holder"
                               style="width: 115px;"
-                              onclick="if(this.className=='HK_holder') O$.ajaxReload(['form1:requestsTreeTable'], {listener: 'RequestsTreeTableBean.addSubrequest'}); return false;">
+                              onclick="if(this.className=='HK_holder') O$.ajax.request(this, event, {render: 'form1:requestsTreeTable', listener: 'RequestsTreeTableBean.addSubrequest'}); return false;">
                   <h:panelGroup id="addSubRequestHolderLeftId" styleClass="HK_holder_left" style="display:block;">
                     <h:panelGroup id="addSubRequestHolderRightId" styleClass="HK_holder_right" style="display: block;">
                       <h:panelGroup id="addSubRequestIconId"
@@ -230,7 +231,7 @@
                 <h:outputLink id="editRequestBtn"
                               styleClass="HK_holder"
                               style="width: 85px;"
-                              onclick="if(this.className=='HK_holder') O$.ajaxReload(['form1:requestsTreeTable'], {listener: 'RequestsTreeTableBean.editRequest'}); return false;">
+                              onclick="if(this.className=='HK_holder') O$.ajax.request(this, event, {render: 'form1:requestsTreeTable', listener: 'RequestsTreeTableBean.editRequest'}); return false;">
                   <h:panelGroup id="editRequestHolderLeftId" styleClass="HK_holder_left" style="display:block;">
                     <h:panelGroup id="editRequestHolderRightId" styleClass="HK_holder_right" style="display:block;">
                       <h:panelGroup id="editRequestIconId" styleClass="HK_icon_edit_req"><!--Key icon--></h:panelGroup>
@@ -243,7 +244,7 @@
                 <h:outputLink id="deleteRequestBtn"
                               styleClass="HK_holder"
                               style="width: 115px;"
-                              onclick="if(this.className=='HK_holder') O$.ajaxReload(['form1:requestsTreeTable'], {listener: 'RequestsTreeTableBean.deleteRequest'}); return false;">
+                              onclick="if(this.className=='HK_holder') O$.ajax.request(this, event, {render: 'form1:requestsTreeTable', listener: 'RequestsTreeTableBean.deleteRequest'}); return false;">
                   <h:panelGroup id="deleteRequestHolderLeftId" styleClass="HK_holder_left" style="display:block;">
                     <h:panelGroup id="deleteRequestHolderRightId" styleClass="HK_holder_right" style="display:block;">
                       <h:panelGroup id="deleteRequestIconId" styleClass="HK_icon_del_req"><!--Key icon--></h:panelGroup>
@@ -264,7 +265,7 @@
                 <h:outputLink id="saveChangesBtn"
                               styleClass="HK_holder"
                               style="width: 140px;"
-                              onclick="if(this.className=='HK_holder') O$.ajaxReload(['form1:requestsTreeTable'], {listener: 'RequestsTreeTableBean.saveChanges'}); return false;">
+                              onclick="if(this.className=='HK_holder') O$.ajax.request(this, event, {render: 'form1:requestsTreeTable', listener: 'RequestsTreeTableBean.saveChanges'}); return false;">
                   <h:panelGroup id="saveChangesHolderLeftId" styleClass="HK_holder_left" style="display:block;">
                     <h:panelGroup id="saveChangesHolderRightId" styleClass="HK_holder_right" style="display:block;">
                       <h:panelGroup id="saveChangesIconId"
@@ -295,28 +296,28 @@
 <div id="Description">
   <h4>Demonstrated Features</h4>
   <ul class="hang">
+    <li><strong>Columns customization</strong> - Click the <b>Customize Columns</b> button to add/remove
+      columns or change their order, or drag a column header to move the appropriate column directly.
+    </li>
+    <li><strong>Column menu</strong>&#8212;Use the drop-down menu in column headers to sort, show and hide columns.</li>
     <li><strong>Multiple node selection</strong> - click any row to select it and use the keyboard to
       change selection. Use Ctrl-click or Shift-Up, Shift-Down key combinations to make multiple selection.
     </li>
     <li><strong>Keyboard navigation</strong> - Use the Up, Down, Home, End keys to move selection, and
       Right/Left or +/- keys to expand/collapse the selected node.
     </li>
-    <li><strong>Embedding components</strong> - Double-click the icons for a particular request to switch
-      to edit mode.
-    </li>
     <li><strong>Conditional styling</strong> - The rows displaying compound requests are bold.</li>
-    <li><strong>Reordering columns</strong> - Click the <b>Customize Columns</b> button to add/remove
-      columns or change their order, or drag a column header to move the appropriate column directly.
-    </li>
-    <li><strong>Column menu</strong>&#8212;Use the drop-down menu in column headers to sort, show and hide columns.</li>
-    <li><strong>Refreshing a TreeTable with Ajax</strong> - All of the request manipulation actions below
-      are performed with Ajax.
-    </li>
     <li><strong>Sorting with Ajax technology</strong> - Click the column header to sort the data without
       refreshing the entire page.
     </li>
+    <li><strong>Refreshing a TreeTable with Ajax</strong> - All of the request manipulation actions below
+      are performed with Ajax.
+    </li>
     <li><strong>Customizing default node expansion state</strong> - All nodes are expanded by default
       when the TreeTable component is loaded.
+    </li>
+    <li><strong>Embedding components</strong> - Double-click the icons for a particular request to switch
+      to edit mode.
     </li>
     <li><strong>Standard HTML events support</strong> - The onkeydown event is used to support the
       shortcuts for manipulating requests.

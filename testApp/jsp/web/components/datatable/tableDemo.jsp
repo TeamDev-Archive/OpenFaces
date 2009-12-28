@@ -45,7 +45,7 @@
       var idx = table.getSelectedRowIndex();
       var rowIndex = document.getElementById("form1:rowIndex");
       rowIndex.innerHTML = "table.getSelectedRowIndex() returns: " + idx;
-      O$.ajaxReload(['form1:checkedUsers'], {execute: ['form1:checkBoxColumnTable']});
+      O$.ajax.request(this, event, {render: 'form1:checkedUsers', execute: 'form1:checkBoxColumnTable'});
     }
   </script>
 </head>

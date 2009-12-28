@@ -39,7 +39,7 @@ public class AjaxRendererHelper extends OUIClientActionRendererHelper {
         Ajax ajax = (Ajax) clientAction;
         AjaxInitializer initializer = new AjaxInitializer();
         ScriptBuilder script = new ScriptBuilder();
-        script.functionCall("O$.ajaxReload",
+        script.functionCall("O$._ajaxReload",
                 initializer.getRenderArray(context, ajax, ajax.getRender()),
                 initializer.getAjaxParams(context, ajax)).semicolon();
         if (isDisableDefaultRequired(ajax))

@@ -8,7 +8,7 @@
 
 <html>
 <head>
-  <title>Reload DataTable by 'O$.ajaxReload'</title>
+  <title>Reload DataTable by 'O$.ajax.request'</title>
   <link rel="STYLESHEET" type="text/css" href="../../main.css"/>
 </head>
 

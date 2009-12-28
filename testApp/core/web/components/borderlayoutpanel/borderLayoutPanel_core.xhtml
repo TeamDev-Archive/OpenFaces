@@ -314,7 +314,7 @@
         <h:panelGroup>
           <f:verbatim>Custom filter with Ajax:&#160;</f:verbatim>
           <h:selectOneMenu id="manualFilter" value="#{UserPermissionsTableDemoBean.manualFilterValue}"
-                           onchange="O$.ajaxReload(['form1:filterTable']);">
+                           onchange="O$.ajax.request(this, event, {render: 'form1:filterTable'});">
             <f:selectItems value="#{UserPermissionsTableDemoBean.manualFilterItems}"/>
           </h:selectOneMenu>
         </h:panelGroup>

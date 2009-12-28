@@ -47,12 +47,12 @@
       var idx = table.getSelectedRowIndex();
       var rowIndex = document.getElementById("form1:rowIndex");
       rowIndex.innerHTML = "table.getSelectedRowIndex() returns: " + idx;
-      O$.ajaxReload(['form1:checkedUsers'], {execute: ['form1:checkBoxColumnTable']});
+      O$.ajax.request(this, event, {render: 'form1:checkedUsers', execute: 'form1:checkBoxColumnTable'});
     }
   </script>
 </head>
 
-<body onload="showCurrentIndex();" onclick="O$('form1:selectColumnsPopup').hide()">
+<body onload="showCurrentIndex();" onclick="O$('form1:selectColumnsPopup').hide();">
 <h2 style="background: #e0e0e0; padding-bottom: 5px; border-bottom: 1px solid black;">Table Component Demo</h2>
 <f:view>
   <h:form id="form1">

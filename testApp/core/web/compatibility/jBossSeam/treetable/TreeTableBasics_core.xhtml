@@ -48,10 +48,10 @@
 </o:treeTable>
 <br/>
 <h:commandButton value="Re-render TreeTable"
-                 onclick="O$.ajaxReload(['form1:treeTable'], {execute: ['form1:treeTable']});return false;"/>
+                 onclick="O$.ajax.request(this, event, {render: 'form1:treeTable', execute: 'form1:treeTable'});return false;"/>
 <br/>
 <h:commandButton value="Sort by first column Ajax"
-                 onclick="O$.ajaxReload(['form1:treeTable'], {execute: ['form1:treeTable'], listener: 'seamTreeTable.sortByFirstColumn'});return false;"/>
+                 onclick="O$.ajax.request(this, event, {render: 'form1:treeTable', execute: 'form1:treeTable', listener: 'seamTreeTable.sortByFirstColumn'});return false;"/>
 <br/>
 <h:commandButton value="Sort by first column server" action="#{seamTreeTable.sortByFirstColumn}"/>
 <hr/>
@@ -62,7 +62,7 @@
              textStyle="font-family: verdana,Helvetica,sans-serif; font-size: 10pt;"
              sortColumnId="date">
   <o:singleNodeSelection nodeData="#{seamTreeTable.singleSelectionItem}"
-                         onchange="O$.ajaxReload(['form1:treeTableSingleSelection'], {execute: ['form1:treeTableSingleSelection']});"/>
+                         onchange="O$.ajax.request(this, event, {render: 'form1:treeTableSingleSelection', execute: 'form1:treeTableSingleSelection'});"/>
   <o:dynamicTreeStructure nodeChildren="#{seamTreeTable.nodeChildren}"/>
   <o:treeColumn id="subject" sortingExpression="#{item.subject}" style="text-align: left;">
     <f:facet name="header">
