@@ -13,6 +13,7 @@ package org.openfaces.component;
 
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
@@ -88,7 +89,7 @@ public abstract class OUIClientActionHelper {
             StyleUtil.requestDefaultCss(context);
         }
 
-        String event = action.getEvent();
+        String event = RenderingUtil.getEventWithOnPrefix(context, action, null);
         parent.getAttributes().put(event, script);
     }
 

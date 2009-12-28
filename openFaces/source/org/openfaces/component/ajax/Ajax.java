@@ -87,11 +87,7 @@ public class Ajax extends UICommand implements OUIClientAction {
     }
 
     public String getEvent() {
-        String event = ValueBindings.get(this, "event", this.event, "click");
-        if (!event.startsWith("on")) {
-            event = "on" + event;
-        }
-        return event;
+        return ValueBindings.get(this, "event", this.event, "click");
     }
 
     public void setEvent(String event) {

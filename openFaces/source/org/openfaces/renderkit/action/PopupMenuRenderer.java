@@ -25,7 +25,6 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.StyleUtil;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -106,23 +105,23 @@ public class PopupMenuRenderer extends RendererBase {
         return menuItemParameters;
     }
 
-    private void renderInitJS(FacesContext facesContext, PopupMenu popupMenu) throws IOException {
-        String forId = OUIClientActionHelper.getClientActionInvoker(facesContext, popupMenu);
+    private void renderInitJS(FacesContext context, PopupMenu popupMenu) throws IOException {
+        String forId = OUIClientActionHelper.getClientActionInvoker(context, popupMenu);
 
-        String indentClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getIndentStyle(), StyleGroup.regularStyleGroup(), popupMenu.getIndentClass(),
+        String indentClass = StyleUtil.getCSSClass(context, popupMenu, popupMenu.getIndentStyle(), StyleGroup.regularStyleGroup(), popupMenu.getIndentClass(),
                 getDefaultIndentClass(popupMenu));
-        String defaultItemClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getItemStyle(), StyleGroup.regularStyleGroup(), popupMenu.getItemClass(),
+        String defaultItemClass = StyleUtil.getCSSClass(context, popupMenu, popupMenu.getItemStyle(), StyleGroup.regularStyleGroup(), popupMenu.getItemClass(),
                 DEFAULT_ITEM_CLASS);
-        String defaultSelectedClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getSelectedItemStyle(), StyleGroup.selectedStyleGroup(), popupMenu.getSelectedItemClass(),
+        String defaultSelectedClass = StyleUtil.getCSSClass(context, popupMenu, popupMenu.getSelectedItemStyle(), StyleGroup.selectedStyleGroup(), popupMenu.getSelectedItemClass(),
                 DEFAULT_SELECTED_ITEM_CLASS);
-        String defaultContentClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getItemContentStyle(), StyleGroup.regularStyleGroup(), popupMenu.getItemContentClass(),
+        String defaultContentClass = StyleUtil.getCSSClass(context, popupMenu, popupMenu.getItemContentStyle(), StyleGroup.regularStyleGroup(), popupMenu.getItemContentClass(),
                 DEFAULT_CONTENT_ITEM_CLASS);
-        String defaultDisabledClass = StyleUtil.getCSSClass(facesContext, popupMenu, popupMenu.getDisabledItemStyle(), StyleGroup.disabledStyleGroup(1), popupMenu.getDisabledItemClass(),
+        String defaultDisabledClass = StyleUtil.getCSSClass(context, popupMenu, popupMenu.getDisabledItemStyle(), StyleGroup.disabledStyleGroup(1), popupMenu.getDisabledItemClass(),
                 DEFAULT_DISABLED_ITEM);
 
-        String submenuImageUrl = ResourceUtil.getResourceURL(facesContext, popupMenu.getSubmenuImageUrl(), PopupMenuRenderer.class, DEFAULT_SUBMENU_IMAGE);
-        String disabledSubmenuImageUrl = ResourceUtil.getResourceURL(facesContext, popupMenu.getDisabledSubmenuImageUrl(), PopupMenuRenderer.class, DEFAULT_DISABLED_SUBMENU_IMAGE);
-        String selectedSubmenuImageUrl = ResourceUtil.getResourceURL(facesContext, popupMenu.getSelectedSubmenuImageUrl(), PopupMenuRenderer.class, DEFAULT_SELECTED_SUBMENU_IMAGE);
+        String submenuImageUrl = ResourceUtil.getResourceURL(context, popupMenu.getSubmenuImageUrl(), PopupMenuRenderer.class, DEFAULT_SUBMENU_IMAGE);
+        String disabledSubmenuImageUrl = ResourceUtil.getResourceURL(context, popupMenu.getDisabledSubmenuImageUrl(), PopupMenuRenderer.class, DEFAULT_DISABLED_SUBMENU_IMAGE);
+        String selectedSubmenuImageUrl = ResourceUtil.getResourceURL(context, popupMenu.getSelectedSubmenuImageUrl(), PopupMenuRenderer.class, DEFAULT_SELECTED_SUBMENU_IMAGE);
 
         JSONObject eventsObj = new JSONObject();
         RenderingUtil.addJsonParam(eventsObj, "onhide", popupMenu.getOnhide());
@@ -130,13 +129,10 @@ public class PopupMenuRenderer extends RendererBase {
 
         boolean isRootMenu = !(popupMenu.getParent() instanceof MenuItem);
         PopupMenu rootPopupMenu = getRootPopupMenu(popupMenu);
-        String event = popupMenu.getEvent();
-        if (event != null && !event.startsWith("on"))
-            throw new FacesException("o:popupMenu's event attribute value should start with \"on\", e.g. \"onclick\", " +
-                    "but was: \"" + event + "\"; PopupMenu's client-id: " + popupMenu.getClientId(facesContext));
+        String event = RenderingUtil.getEventWithOnPrefix(context, popupMenu, "o:popupMenu");
         ScriptBuilder initScript = new ScriptBuilder();
-        initScript.initScript(facesContext, popupMenu, "O$.PopupMenu._init",
-                RenderingUtil.getRolloverClass(facesContext, popupMenu),
+        initScript.initScript(context, popupMenu, "O$.PopupMenu._init",
+                RenderingUtil.getRolloverClass(context, popupMenu),
                 forId,
                 event,
                 popupMenu.isIndentVisible(),
@@ -166,12 +162,12 @@ public class PopupMenuRenderer extends RendererBase {
 
                 eventsObj);
 
-        StyleUtil.renderStyleClasses(facesContext, popupMenu);
+        StyleUtil.renderStyleClasses(context, popupMenu);
 
-        RenderingUtil.renderInitScript(facesContext, initScript,
-                ResourceUtil.getUtilJsURL(facesContext),
-                ResourceUtil.getInternalResourceURL(facesContext, PopupMenuRenderer.class, JS_SCRIPT_URL),
-                ResourceUtil.getInternalResourceURL(facesContext, RendererBase.class, "popup.js"));
+        RenderingUtil.renderInitScript(context, initScript,
+                ResourceUtil.getUtilJsURL(context),
+                ResourceUtil.getInternalResourceURL(context, PopupMenuRenderer.class, JS_SCRIPT_URL),
+                ResourceUtil.getInternalResourceURL(context, RendererBase.class, "popup.js"));
     }
 
     private String getDefaultIndentClass(PopupMenu popupMenu) {

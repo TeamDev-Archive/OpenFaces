@@ -267,9 +267,11 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
         rolloverCancelButtonStyle = StyleUtil.mergeClassNames(cancelButtonStyle, rolloverCancelButtonStyle);
 
         ScriptBuilder sb = new ScriptBuilder();
+        String event = RenderingUtil.getEventWithOnPrefix(context, confirmation, "o:confirmation");
+
         sb.initScript(context, confirmation, "O$.Confirmation._init",
                 invokerId,
-                confirmation.getEvent(),
+                event,
                 confirmation.getDefaultButton(),
                 confirmation.getAlignToInvoker(),
                 new Object[]{

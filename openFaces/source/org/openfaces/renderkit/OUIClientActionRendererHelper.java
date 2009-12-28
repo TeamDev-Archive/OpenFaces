@@ -29,7 +29,7 @@ public abstract class OUIClientActionRendererHelper {
         ScriptBuilder javaScript = new ScriptBuilder();
         if (invokerId != null) {
             javaScript.functionCall("O$.byIdOrName", invokerId).dot();
-            javaScript.append(clientAction.getEvent()).append("=");
+            javaScript.append(RenderingUtil.getEventWithOnPrefix(context, clientAction, null)).append("=");
             javaScript.anonymousFunction(getClientActionScript(context, clientAction), "event").semicolon();
         }
         encodeAdditionalScript(context, javaScript, clientAction);

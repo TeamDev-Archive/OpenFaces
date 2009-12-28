@@ -57,8 +57,8 @@
   <tr>
     <td class="container">
       <h:panelGroup id="panel1" style="display: block; border: 1px solid gold;">
-        <f:verbatim><h4>panelGroup1:Click left mouse buntton on this element (event="onclick")</h4></f:verbatim>
-        <o:popupMenu event="onclick">
+        <f:verbatim><h4>panelGroup1:Click left mouse buntton on this element (event="click")</h4></f:verbatim>
+        <o:popupMenu event="click">
           <o:menuItem value="New" iconUrl="newIcon.gif"/>
           <o:menuItem value="Open" iconUrl="openIcon.gif" disabled="true"/>
           <o:menuItem value="Close"/>
@@ -81,8 +81,8 @@
     </td>
     <td class="container">
       <div style="border: 1px solid cadetblue;">
-        <h4>DIV: Click left mouse button on this element (event="onclick")</h4>
-        <o:popupMenu event="onclick">
+        <h4>DIV: Click left mouse button on this element (event="click")</h4>
+        <o:popupMenu event="click">
           <o:menuItem value="New" iconUrl="newIcon.gif"/>
           <o:menuItem value="Open" iconUrl="openIcon.gif" disabled="true"/>
           <o:menuItem value="Close"/>
@@ -117,7 +117,7 @@
 <td class="container">
   <h:panelGroup style="display: block; border:1px solid black;">
     <f:verbatim><h3>Click!</h3></f:verbatim>
-    <o:popupMenu event="onclick">
+    <o:popupMenu event="click">
       <o:menuItem value="New" iconUrl="newIcon.gif">
         <o:popupMenu>
           <o:menuItem value="Close">
@@ -166,7 +166,7 @@
 <td class="container">
   <h:panelGroup style="display: block; border:1px solid black;">
     <f:verbatim><h3>Click!</h3></f:verbatim>
-    <o:popupMenu event="onclick" indentVisible="false">
+    <o:popupMenu event="click" indentVisible="false">
       <o:menuItem value="New">
         <o:popupMenu>
           <o:menuItem value="New 1">
@@ -207,7 +207,7 @@
 <td class="container">
   <h:panelGroup style="display: block; border:1px solid black;">
     <f:verbatim><h3>Click!</h3></f:verbatim>
-    <o:popupMenu event="onclick">
+    <o:popupMenu event="click">
       <o:menuItem value="Indent" iconUrl="newIcon.gif">
         <o:popupMenu indentVisible="false">
           <o:menuItem value="No indent">
@@ -246,7 +246,7 @@
     <td class="container">
       <h:panelGroup style="display: block; border: 1px solid black; ">
         <f:verbatim><h3>Click!</h3></f:verbatim>
-        <o:popupMenu event="onclick">
+        <o:popupMenu event="click">
           <o:menuItem value="Item1:Client side onclick" onclick="alert('Client side onclick');"/>
           <o:menuItem value="Item2:Server side action" action="#{PopupMenuBean.menuItem2Action}"/>
           <o:menuItem value="Item3:Server side action listener" actionListener="#{PopupMenuBean.menuItem3Listener}"/>
@@ -263,7 +263,7 @@
     <td class="container">
       <h:panelGroup style="display: block; border: 1px solid black; ">
         <f:verbatim><h3>Click!</h3></f:verbatim>
-        <o:popupMenu event="onclick" onshow="alert('onshow');" onhide="alert('onhide');">
+        <o:popupMenu event="click" onshow="alert('onshow');" onhide="alert('onhide');">
           <o:menuItem value="Item1"/>
           <o:menuItem value="Item2"/>
           <o:menuItem value="Item3"/>
@@ -278,7 +278,7 @@
     <td class="container">
       <h:panelGroup style="display: block; border: 1px solid black; ">
         <f:verbatim><h3>Click!</h3></f:verbatim>
-        <o:popupMenu event="onclick" itemIconUrl="submenuImage.gif"
+        <o:popupMenu event="click" itemIconUrl="submenuImage.gif"
                      selectedSubmenuImageUrl="submenuSelectedImage.gif">
           <o:menuItem value="Item1: default image"/>
           <o:menuItem value="Item2: disabled, default image" disabled="true"/>
@@ -296,7 +296,7 @@
     <td class="container">
       <h:panelGroup style="display: block; border: 1px solid black; ">
         <f:verbatim><h3>Click!</h3></f:verbatim>
-        <o:popupMenu event="onclick"
+        <o:popupMenu event="click"
                      disabledSubmenuImageUrl="openIcon.gif"
                      submenuImageUrl="plus.gif"
                      selectedSubmenuImageUrl="minus.gif"
@@ -339,7 +339,7 @@
     <td class="container">
       <h:panelGroup style="display: block; border: 1px solid black; ">
         <f:verbatim><h3>Click!</h3></f:verbatim>
-        <o:popupMenu event="onclick">
+        <o:popupMenu event="click">
           <o:menuItem>
             Text
             <o:popupMenu>
@@ -366,7 +366,7 @@
     <td class="container">
       <h:panelGroup>
         <f:verbatim><h3>Click!</h3></f:verbatim>
-        <o:popupMenu style="padding: 5px;" indentStyle="background:white;" event="onclick">
+        <o:popupMenu style="padding: 5px;" indentStyle="background:white;" event="click">
           <o:menuItem value="Item1">
           </o:menuItem>
           <o:menuItem disabled="true" value="Item2">
@@ -384,7 +384,7 @@
     <td class="container">
       <h:panelGroup>
         <f:verbatim><h3>Click!</h3></f:verbatim>
-        <o:popupMenu itemStyle="margin: 3px;" event="onclick">
+        <o:popupMenu itemStyle="margin: 3px;" event="click">
           <o:menuItem value="Item1">
           </o:menuItem>
           <o:menuItem disabled="true" value="Item2">
@@ -402,7 +402,7 @@
     <td class="container">
       <h:panelGroup style="display: block; border: 1px solid black; vertical-align:baseline; ">
         <f:verbatim><h3>Click!</h3></f:verbatim>
-        <o:popupMenu event="onclick"
+        <o:popupMenu event="click"
                      itemIconUrl="plus.gif"
                      submenuImageUrl="plus.gif">
           <o:menuItem value="Top Right" indentAreaStyle="vertical-align:top; text-align:right;"
@@ -459,7 +459,7 @@
       <h:panelGroup style="display: block; border:1px solid black;">
         <f:verbatim><h3>Click!</h3></f:verbatim>
 
-        <o:popupMenu event="onclick" style="border:4px dashed green;"
+        <o:popupMenu event="click" style="border:4px dashed green;"
                      itemStyle="border:1px dashed black"
                      rolloverStyle="border:4px solid blue;"
                      selectedItemStyle="border:4px dashed yellow;"
@@ -489,7 +489,7 @@
     </td>
     <td class="container" style="text-align:left;">
       <pre>
-          &lt;o:popupMenu event="onclick"&gt;
+          &lt;o:popupMenu event="click"&gt;
                      itemStyle="border:2px dashed black; height:50px;"
                      rolloverStyle="border:2px solid blue;"
                      selectedItemStyle="border:2px dashed yellow;"
@@ -512,7 +512,7 @@
     <td class="container">
       <h:panelGroup style="display: block; border:1px solid black;">
         <f:verbatim><h3>Click!</h3></f:verbatim>
-        <o:popupMenu event="onclick"
+        <o:popupMenu event="click"
                      styleClass="popup"
                      itemClass="popup_item"
                      rolloverClass="popup_rollover">

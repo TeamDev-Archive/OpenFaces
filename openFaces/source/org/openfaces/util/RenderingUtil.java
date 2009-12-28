@@ -1311,4 +1311,16 @@ public class RenderingUtil {
         writeAttribute(writer, "onkeydown", component.getOnkeydown());
         writeAttribute(writer, "onkeyup", component.getOnkeyup());
     }
+
+    public static String getEventWithOnPrefix(FacesContext context, OUIClientAction component, String componentName) {
+        String event = component.getEvent();
+        if (event != null) {
+            if (event.startsWith("on"))
+                throw new FacesException((componentName != null ? componentName + "'s " : "") +
+                        "\"event\" attribute value shouldn't start with \"on\" prefix, for example you should use \"click\" instead of \"onclick\", " +
+                        "but the following value was found: \"" + event + "\"; Component's client-id: " + ((UIComponent) component).getClientId(context));
+            event = "on" + event;
+        }
+        return event;
+    }
 }

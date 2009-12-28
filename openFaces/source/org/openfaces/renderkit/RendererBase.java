@@ -40,4 +40,5 @@ public class RendererBase extends Renderer {
     protected void writeAttribute(ResponseWriter writer, String name, int value, int emptyValue) throws IOException {
         RenderingUtil.writeAttribute(writer, name, value, emptyValue);
     }
+
 }
