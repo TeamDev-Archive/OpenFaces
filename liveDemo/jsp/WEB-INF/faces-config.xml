@@ -5,6 +5,7 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
   <application>
+    <state-manager>org.openfaces.demo.application.AjaxStateManager</state-manager>
     <locale-config>
       <default-locale>en</default-locale>
       <supported-locale>de</supported-locale>

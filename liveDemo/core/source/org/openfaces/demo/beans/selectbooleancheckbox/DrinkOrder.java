@@ -20,11 +20,22 @@ import java.util.Map;
 
 public class DrinkOrder {
 
-    public HashMap<Drink.DrinkReceipt, Drink> drinks = new HashMap<Drink.DrinkReceipt, Drink>();
+    public HashMap<Drink.DrinkReceipt, Drink> drinks = new HashMap<Drink.DrinkReceipt, Drink>() {
+        @Override
+        public Drink get(Object key) {
+            if (key instanceof String){
+                key = Drink.DrinkReceipt.valueOf((String) key);
+            }
+            return super.get(key);
+        }
+    };
 
     private Map<Drink.DrinkReceipt, Boolean> ordered = new HashMap<Drink.DrinkReceipt, Boolean>() {
         @Override
         public Boolean get(Object key) {
+            if (key instanceof String){
+                key = Drink.DrinkReceipt.valueOf((String) key);
+            }
             return drinks.get(key) != null;
         }
     };
@@ -38,7 +49,8 @@ public class DrinkOrder {
     }
 
     public void orderDrink(ActionEvent actionEvent) {
-        Drink.DrinkReceipt drinkReceipt =FacesUtils.getEventParameter(actionEvent, "drinkReceipt");
+        Object drinkReceiptParameter = FacesUtils.getEventParameter(actionEvent, "drinkReceipt");
+        Drink.DrinkReceipt drinkReceipt = Drink.DrinkReceipt.valueOf(String.valueOf(drinkReceiptParameter));
         if (drinks.get(drinkReceipt) == null) {
             drinks.put(drinkReceipt, new Drink(drinkReceipt));
         } else {
@@ -74,8 +86,10 @@ public class DrinkOrder {
     }
 
     public void orderIngredient(ActionEvent actionEvent) {
-        Drink.DrinkReceipt drinkReceipt =FacesUtils.getEventParameter(actionEvent, "drinkReceipt");
-        Drink.Ingredient ingredient =FacesUtils.getEventParameter(actionEvent, "ingredient");
+        Object drinkReceiptParameter = FacesUtils.getEventParameter(actionEvent, "drinkReceipt");
+        Drink.DrinkReceipt drinkReceipt = Drink.DrinkReceipt.valueOf(String.valueOf(drinkReceiptParameter));
+        Object ingredientParameter = FacesUtils.getEventParameter(actionEvent, "ingredient");
+        Drink.Ingredient ingredient = Drink.Ingredient.valueOf(String.valueOf(ingredientParameter));
         Drink drink = drinks.get(drinkReceipt);
         if (drink != null) {
             drink.order(ingredient);
@@ -83,8 +97,10 @@ public class DrinkOrder {
     }
 
     public void orderGroup(ActionEvent actionEvent) {
-        Drink.DrinkReceipt drinkReceipt =FacesUtils.getEventParameter(actionEvent, "drinkReceipt");
-        Drink.IngredientGroup group  = FacesUtils.getEventParameter(actionEvent, "ingredientGroup");
+          Object drinkReceiptParameter = FacesUtils.getEventParameter(actionEvent, "drinkReceipt");
+        Drink.DrinkReceipt drinkReceipt = Drink.DrinkReceipt.valueOf(String.valueOf(drinkReceiptParameter));
+        Object ingredientGroupParameter = FacesUtils.getEventParameter(actionEvent, "ingredientGroup");
+        Drink.IngredientGroup group = Drink.IngredientGroup.valueOf(String.valueOf(ingredientGroupParameter));  
         Drink drink = drinks.get(drinkReceipt);
         if (drink != null) {
             drink.orderGroup(group);

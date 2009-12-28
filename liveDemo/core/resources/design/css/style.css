@@ -1,4 +1,3 @@
-@charset "utf-8";
 /* CSS Document */
 
 html {
@@ -379,8 +378,7 @@ div.centered table {
 }
 
 .demoPlayerControls{
-	padding-left:40px;
-  padding-right: 145px;
+	padding-left:40px;  
   float: left;
 }
 .demoPlayerControls input[type=image]{outline:none;}
@@ -392,8 +390,7 @@ div.centered table {
 }
 
 .demoPlayerEqualizer{
-  float: left;
-  margin-top: 40px;
+  margin: 40px 10px 0 560px;
   border: 1px solid orange;
   background: #fafafa;
   padding: 10px;
@@ -403,7 +400,7 @@ div.centered table {
   padding-left:5px;
 }
 
-@charset "UTF-8";
+
 dl.demoLibrary{
 	margin:20px	 0 0 0;
 	padding:0 30px 10px 135px;
@@ -453,8 +450,11 @@ dl.demoLibrary dd.demoLibrary-description{
 	padding:0 0 1em 0;
 }
 dl.demoLibrary dd.demoLibrary-tags{
-	position:relative;
-	z-index:10;
+	bottom:12px;
+  left:132px;
+  right:10px;
+  position:absolute;
+  z-index:10;
 }
 dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList{
 	position:relative;
@@ -495,7 +495,7 @@ dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a:active span{back
 dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a:active span span{background-position:0 -126px;}
 
 dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-editTags{
-	margin:0 0;
+	margin:0 -10px 0 0;
 	height:21px;
 	background:transparent url(../../images/selectmanycheckbox/tags-edit-sprite.png) no-repeat 0 0;
 	display:none;
@@ -537,6 +537,8 @@ dl.demoLibrary dd.demoLibrary-tags ul.demoLibrary-tagsList li a.demoLibrary-edit
 	z-index:10;
 	display:none;
 }
+
+dl.demoLibrary .active dd.demoLibrary-tags ul.demoLibrary-tagsList{height:24px; overflow:hidden;}
 dl.demoLibrary .active dd.demoLibrary-tags .demoLibrary-tagsEditBox{display:block;}
 
 .demoLibrary-tagsEditBox  .demoLibrary-tagsEditBox-tail{
@@ -559,23 +561,25 @@ dl.demoLibrary .active dd.demoLibrary-tags .demoLibrary-tagsEditBox{display:bloc
 }
 
 .demoLibrary-tagsEditBox  .demoLibrary-tagsEditBox-main{
-	position:relative;
-	top:145px;
-	background:url(../../images/selectmanycheckbox/tags-edit-box-main.png) repeat-y 0 0;
-	padding:15px;
+       position:relative;
+       top:145px;
+       background:url(../../images/selectmanycheckbox/tags-edit-box-main.png) repeat-y 0 0;
+       padding:15px;
+       zoom:1;
 }
 .demoLibrary-tagsEditBox  .demoLibrary-tagsEditBox-content{
-	min-height:130px;
-	position:relative;
-	top:-145px;
-	margin-bottom:-145px;
-	background:#fff7ef;
-	border-top:solid 1px #fb6b08;
-	border-right:solid 1px #fff9bc;
-	border-bottom:solid 1px #fff760;
-	border-left:solid 1px #fb3304;
-	padding:10px 20px;
+       min-height:130px;
+       position:relative;
+       top:0;
+       margin-top:-145px;
+       background:#fff7ef;
+       border-top:solid 1px #fb6b08;
+       border-right:solid 1px #fff9bc;
+       border-bottom:solid 1px #fff760;
+       border-left:solid 1px #fb3304;
+       padding:10px 20px;
 }
+.demoLibrary-tagsEditBox  .demoLibrary-tagsEditBox-content input[type=image]{margin-bottom:-3px;}
 
 a.demoLibrary-tagsEdit-apply{
 	display:block;
@@ -701,14 +705,16 @@ height:auto; font-size:12pt; color:#000; padding: 11px 10px 6px 40px; min-height
 }
 
 .demoLibrary-cafe .cafeDropdown ul li ul li{
-  min-height:16px;
   font-size:11pt;
-padding:6px 10px 0 40px;
+  line-height:120%;
+  min-height:16px;
+  padding:12px 10px 0 26px;
 }
+
 .demoLibrary-cafe .cafeDropdown ul li ul li input.checkbox{
 	width:16px;
 	height:16px;
 	line-height:16px;
 	font-size:14px;
-  margin-left:-8px !important;
+  margin-left:-15px !important;
 }

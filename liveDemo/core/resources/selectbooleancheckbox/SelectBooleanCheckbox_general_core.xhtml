@@ -26,18 +26,16 @@
         <o:column width="75"
                   bodyStyle="text-align: center; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
                   headerStyle="text-align: center; padding-left: 5px; padding-right: 5px;">
-          <c:set var="group" value="#{PermissionSchema.permissionGroup['ANONYMOUS']}"/>
           <f:facet name="header">
             <h:outputText value="#{group.label}"/>
           </f:facet>
-          <c:set var="stateList"
-                 value="#{PermissionSchema.permissionsAssignment[group][permission].dependent ? PermissionSchema.dependentStateList :PermissionSchema.defaultStateList}"/>
+
           <o:selectBooleanCheckbox triStateAllowed="true"
-                                   value="#{PermissionSchema.permissionsAssignment[group][permission].outputState}"
+                                   value="#{PermissionSchema.permissionsAssignment[PermissionSchema.permissionGroup['ANONYMOUS']][permission].outputState}"
                                    undefinedImageUrl="../images/selectbooleancheckbox/undefinedCheckbox.png"                                   
-                                   stateList="#{stateList}"
+                                   stateList="#{PermissionSchema.stateList[PermissionSchema.permissionGroup['ANONYMOUS']][permission]}"
                                    onchange="O$.ajax.request(this, event, {render: 'form:permissionsTable', listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
-            <f:param name="group" value="#{group}"/>
+            <f:param name="group" value="#{PermissionSchema.permissionGroup['ANONYMOUS']}"/>
             <f:param name="permission" value="#{permission}"/>
           </o:selectBooleanCheckbox>
         </o:column>
@@ -45,18 +43,15 @@
         <o:column width="75"
                   bodyStyle="text-align: center; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
                   headerStyle="text-align: center; padding-left: 5px; padding-right: 5px;">
-          <c:set var="group" value="#{PermissionSchema.permissionGroup['USER']}"/>
           <f:facet name="header">
             <h:outputText value="#{group.label}"/>
           </f:facet>
-          <c:set var="stateList"
-                 value="#{PermissionSchema.permissionsAssignment[group][permission].dependent ? PermissionSchema.dependentStateList :PermissionSchema.defaultStateList}"/>
           <o:selectBooleanCheckbox triStateAllowed="true"
-                                   value="#{PermissionSchema.permissionsAssignment[group][permission].outputState}"
+                                   value="#{PermissionSchema.permissionsAssignment[PermissionSchema.permissionGroup['USER']][permission].outputState}"
                                    undefinedImageUrl="../images/selectbooleancheckbox/undefinedCheckbox.png"
-                                   stateList="#{stateList}"
+                                   stateList="#{PermissionSchema.stateList[PermissionSchema.permissionGroup['USER']][permission]}"
                                    onchange="O$.ajax.request(this, event, {render: 'form:permissionsTable', listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
-            <f:param name="group" value="#{group}"/>
+            <f:param name="group" value="#{PermissionSchema.permissionGroup['USER']}"/>
             <f:param name="permission" value="#{permission}"/>
           </o:selectBooleanCheckbox>
         </o:column>
@@ -64,18 +59,15 @@
         <o:column width="75"
                   bodyStyle="text-align: center; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
                   headerStyle="text-align: center; padding-left: 5px; padding-right: 5px;">
-          <c:set var="group" value="#{PermissionSchema.permissionGroup['ADMINISTRATOR']}"/>
           <f:facet name="header">
             <h:outputText value="#{group.label}"/>
           </f:facet>
-          <c:set var="stateList"
-                 value="#{PermissionSchema.permissionsAssignment[group][permission].dependent ? PermissionSchema.dependentStateList :PermissionSchema.defaultStateList}"/>
           <o:selectBooleanCheckbox triStateAllowed="true"
-                                   value="#{PermissionSchema.permissionsAssignment[group][permission].outputState}"
+                                   value="#{PermissionSchema.permissionsAssignment[PermissionSchema.permissionGroup['ADMINISTRATOR']][permission].outputState}"
                                    undefinedImageUrl="../images/selectbooleancheckbox/undefinedCheckbox.png"
-                                   stateList="#{stateList}"
+                                   stateList="#{PermissionSchema.stateList[PermissionSchema.permissionGroup['ADMINISTRATOR']][permission]}"
                                    onchange="O$.ajax.request(this, event, {render: 'form:permissionsTable', listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
-            <f:param name="group" value="#{group}"/>
+            <f:param name="group" value="#{PermissionSchema.permissionGroup['ADMINISTRATOR']}"/>
             <f:param name="permission" value="#{permission}"/>
           </o:selectBooleanCheckbox>
         </o:column>

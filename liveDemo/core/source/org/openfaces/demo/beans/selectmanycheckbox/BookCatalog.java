@@ -39,29 +39,29 @@ public class BookCatalog {
                     new Book("0764548395", "Java Servlet Programming Bible",
                             Arrays.asList("Suresh Rajagopalan", "Ramesh Rajamani", "Ramesh Krishnaswamy", "Sridhar Vijendran"),
                             "Wiley", 2002, 720,
-                            Arrays.<String>asList("java", "servlets", "web")),
+                            Arrays.<String>asList("J2EE", "JSP")),
 
                     new Book("0131422464", "Core J2EE Patterns: Best Practices and Design Strategies",
                             Arrays.asList("Deepak Alur", "Dan Malks", "John Crupi"),
                             "Prentice Hall", 2003, 528,
-                            Arrays.<String>asList("J2EE", "java")),
+                            Arrays.<String>asList("J2EE", "Patterns")),
 
                     new Book("0596007124", "Head First Design Patterns",
                             Arrays.asList("Elisabeth Freeman", "Eric Freeman", "Kathy Sierra"),
                             "O'Reilly Media", 2004, 676,
-                            Arrays.<String>asList("design patterns")),
+                            Arrays.<String>asList("Patterns")),
 
-                    new Book("0735711952", "Java for the Web with Servlets, JSP, and EJB: A Developer's Guide to J2EE Solutions",
+                    new Book("0735711952", "Java for the Web with Servlets, JSP, and EJB",
                             Arrays.asList("Budi Kurniawan"),
                             "Sams", 2002, 992,
-                            Arrays.<String>asList("JSP", "EJB", "servlets", "java", "web")),
+                            Arrays.<String>asList("JSP", "EJB")),
 
                     new Book("1590595807", "Pro JSF and Ajax: Building Rich Internet Components",
                             Arrays.asList("John R. Fallows", "Jonas Jacobi"),
                             "Apress", 2006, 464,
                             Arrays.<String>asList("JSF", "Ajax", "RIA")),
 
-                    new Book("0596517327", "Learning Flex 3: Getting Up to Speed with Rich Internet Applications",
+                    new Book("0596517327", "Learning Flex 3: Getting Up to Speed with RIA",
                             Arrays.asList("Alaric Cole"),
                             "O'Reilly Media", 2008, 304,
                             Arrays.<String>asList("Flex", "RIA")),
@@ -74,7 +74,7 @@ public class BookCatalog {
                     new Book("0131587560", "Persistence in the Enterprise: A Guide to Persistence Technologies ",
                             Arrays.asList("David Geary", "Cay S. Horstmann"),
                             "IBM Press", 2008, 464,
-                            Arrays.<String>asList("J2EE", "ORM", "JDBC", "Hibernate"))
+                            Arrays.<String>asList("J2EE", "ORM", "JDBC"))
 
             );
         }

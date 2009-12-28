@@ -42,6 +42,9 @@ public class PermissionSchema {
     }
 
     private Map<PermissionGroup, Map<Permission, State>> permissionsAssignment;
+    private Map<PermissionGroup, Map<Permission, Iterable<String>>> stateList;
+    private Iterable<String> defaultStateList;
+    private Iterable<String> dependentStateList;
 
 
     public Map<PermissionGroup, Map<Permission, State>> getPermissionsAssignment() {
@@ -231,11 +234,38 @@ public class PermissionSchema {
 
 
     public Iterable<String> getDefaultStateList() {
-        return Arrays.asList(SelectBooleanCheckbox.SELECTED_STATE, SelectBooleanCheckbox.UNSELECTED_STATE);
+        if (defaultStateList == null) {
+            defaultStateList = Arrays.asList(SelectBooleanCheckbox.SELECTED_STATE, SelectBooleanCheckbox.UNSELECTED_STATE);
+        }
+        return defaultStateList;
     }
 
     public Iterable<String> getDependentStateList() {
-        return Arrays.asList(SelectBooleanCheckbox.SELECTED_STATE, SelectBooleanCheckbox.UNDEFINED_STATE);
+        if (dependentStateList == null) {
+            dependentStateList = Arrays.asList(SelectBooleanCheckbox.SELECTED_STATE, SelectBooleanCheckbox.UNDEFINED_STATE);
+        }
+        return dependentStateList;
+    }
+
+    public Map<PermissionGroup, Map<Permission, Iterable<String>>> getStateList() {
+        if (stateList == null) {
+            stateList = new HashMap<PermissionGroup, Map<Permission, Iterable<String>>>() {
+                @Override
+                public Map<Permission, Iterable<String>> get(final Object group) {
+                    return new HashMap<Permission, Iterable<String>>() {
+                        @Override
+                        public Iterable<String> get(final Object permission) {
+                            if (permissionsAssignment.get(group).get(permission).isDependent()) {
+                                return getDependentStateList();
+                            } else {
+                                return getDefaultStateList();
+                            }
+                        }
+                    };
+                }
+            };
+        }
+        return stateList;
     }
 
 }

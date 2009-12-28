@@ -64,6 +64,18 @@ public class Drink extends HashMap<Object, Boolean> {
 
     @Override
     public Boolean get(Object key) {
+        if (key instanceof String) {
+            try{
+                key = Ingredient.valueOf((String)key);
+            }catch (Exception e1){
+                try{
+                key = IngredientGroup.valueOf((String)key);
+            }
+            catch (Exception e2){
+                return super.get(key);
+            }
+            }
+        }
         if (key instanceof Ingredient) {
             if (!containsKey(key)) {
                 super.put(key, false);
@@ -116,7 +128,15 @@ public class Drink extends HashMap<Object, Boolean> {
 
         public Map<IngredientGroup, Collection<Ingredient>> getIngredientsByGroup() {
             if (ingredientsByGroup == null) {
-                ingredientsByGroup = new HashMap<IngredientGroup, Collection<Ingredient>>();
+                ingredientsByGroup = new HashMap<IngredientGroup, Collection<Ingredient>>(){
+                    @Override
+                    public Collection<Ingredient> get(Object key) {
+                        if (key instanceof String){
+                            key = IngredientGroup.valueOf((String) key);
+                        }
+                        return super.get(key);
+                    }
+                };
                 for (Ingredient ingredient : getIngredients()) {
                     IngredientGroup group = ingredient.getGroup();
                     Collection<Ingredient> ingredients = ingredientsByGroup.get(group);
