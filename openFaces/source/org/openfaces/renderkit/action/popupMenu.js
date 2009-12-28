@@ -960,10 +960,11 @@ O$.PopupMenu = {
         clearTimeout(popupMenu._closeAllTask);
         popupMenu._closeAllTask = null;
       }
-      menuItem._openSubmenuTask = setTimeout(function() {
-        if (menuItemElement._focused)
-          O$.PopupMenu._showSubmenu(popupMenu, menuItemElement, submenuHorisontalOffset);
-      }, submenuShowDelay);
+      if (submenuShowDelay >= 0)
+        menuItem._openSubmenuTask = setTimeout(function() {
+          if (menuItemElement._focused)
+            O$.PopupMenu._showSubmenu(popupMenu, menuItemElement, submenuHorisontalOffset);
+        }, submenuShowDelay);
 
     });
 
@@ -979,11 +980,12 @@ O$.PopupMenu = {
         popupMenu._closeAllTask = null;
       }
 
-      popupMenu._closeAllTask = setTimeout(function() {
-        if (!popupMenu.isVisible()) return;
-        popupMenu.closeChildMenus();
-        popupMenu.focus();
-      }, submenuHideDelay);
+      if (submenuHideDelay >= 0)
+        popupMenu._closeAllTask = setTimeout(function() {
+          if (!popupMenu.isVisible()) return;
+          popupMenu.closeChildMenus();
+          popupMenu.focus();
+        }, submenuHideDelay);
 
     });
 

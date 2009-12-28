@@ -38,7 +38,7 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction {
 
     /*  properties that inherited from the parent PopupMenu */
     private Boolean indentVisible;
-    private Integer submenuHorisontalOffset;
+    private Integer submenuHorizontalOffset;
 
     private String itemIconUrl;
     private String disabledItemIconUrl;
@@ -308,16 +308,16 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction {
         this.itemStyle = itemStyle;
     }
 
-    public int getSubmenuHorisontalOffset() {
-        Integer result = ValueBindings.get(this, "submenuHorisontalOffset", submenuHorisontalOffset, Integer.class);
+    public int getSubmenuHorizontalOffset() {
+        Integer result = ValueBindings.get(this, "submenuHorisontalOffset", submenuHorizontalOffset, Integer.class);
         if (result == null && getPopupMenuParent() != null) {
-            result = getPopupMenuParent().submenuHorisontalOffset;
+            result = getPopupMenuParent().submenuHorizontalOffset;
         }
-        return result == null ? ValueBindings.get(this, "submenuHorisontalOffset", submenuHorisontalOffset, 0) : result;
+        return result == null ? ValueBindings.get(this, "submenuHorisontalOffset", submenuHorizontalOffset, 0) : result;
     }
 
-    public void setSubmenuHorisontalOffset(int submenuHorisontalOffset) {
-        this.submenuHorisontalOffset = submenuHorisontalOffset;
+    public void setSubmenuHorizontalOffset(int submenuHorizontalOffset) {
+        this.submenuHorizontalOffset = submenuHorizontalOffset;
     }
 
     public String getOnshow() {
@@ -484,7 +484,7 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction {
 
                 submenuShowDelay,
                 submenuHideDelay,
-                submenuHorisontalOffset,
+                submenuHorizontalOffset,
 
                 indentVisible,
                 selectDisabledItems,
@@ -530,7 +530,7 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction {
 
         submenuShowDelay = (Integer) values[i++];
         submenuHideDelay = (Integer) values[i++];
-        submenuHorisontalOffset = (Integer) values[i++];
+        submenuHorizontalOffset = (Integer) values[i++];
 
         indentVisible = (Boolean) values[i++];
         selectDisabledItems = (Boolean) values[i++];

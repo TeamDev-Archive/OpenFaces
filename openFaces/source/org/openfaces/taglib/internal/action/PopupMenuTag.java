@@ -43,8 +43,6 @@ public class PopupMenuTag extends AbstractComponentTag {
         setBooleanProperty(uiComponent, "indentVisible");
         setBooleanProperty(uiComponent, "selectDisabledItems");
 
-        setIntProperty(uiComponent, "submenuHorisontalOffset");
-
         setStringProperty(uiComponent, "itemIconUrl");
         setStringProperty(uiComponent, "disabledItemIconUrl");
         setStringProperty(uiComponent, "selectedItemIconUrl");

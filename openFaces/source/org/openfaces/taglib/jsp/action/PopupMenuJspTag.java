@@ -163,8 +163,4 @@ public class PopupMenuJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("onhide", onhide);
     }
 
-    public void setSubmenuHorisontalOffset(ValueExpression submenuHorisontalOffset) {
-        getDelegate().setPropertyValue("submenuHorisontalOffset", submenuHorisontalOffset);
-    }
-
 }

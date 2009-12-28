@@ -154,7 +154,7 @@ public class PopupMenuRenderer extends RendererBase {
 
                 isRootMenu,
                 getMenuItemParameters(popupMenu),
-                popupMenu.getSubmenuHorisontalOffset(),
+                popupMenu.getSubmenuHorizontalOffset(),
 
                 rootPopupMenu.getSubmenuShowDelay(),
                 rootPopupMenu.getSubmenuHideDelay(),

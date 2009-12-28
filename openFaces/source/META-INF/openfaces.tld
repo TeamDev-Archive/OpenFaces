@@ -4420,26 +4420,6 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>A default style for indent area of menu items of the popup menu component.</description>
-      <name>itemIndentStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A CSS class name for indent area of menu items of the popup menu component.</description>
-      <name>itemIndentClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
 
     <attribute>
       <description>A default style for submenu icon area of menu items of the popup menu component.</description>
@@ -4840,26 +4820,6 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>A CSS class name for indent area of the popup menu component.</description>
       <name>indentClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A default style for indent area of menu items of the popup menu component.</description>
-      <name>itemIndentStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A CSS class name for indent area of menu items of the popup menu component.</description>
-      <name>itemIndentClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -22946,26 +22906,6 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>A CSS class name for indent area of the PopupMenu component.</description>
       <name>indentClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A default style for indent area of menu items of the PopupMenu component.</description>
-      <name>itemIndentStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A CSS class name for indent area of menu items of the PopupMenu component.</description>
-      <name>itemIndentClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
