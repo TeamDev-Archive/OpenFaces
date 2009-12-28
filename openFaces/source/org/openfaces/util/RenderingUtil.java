@@ -680,7 +680,7 @@ public class RenderingUtil {
             combinedJsFiles.addAll(Arrays.asList(jsFiles));
         }
 
-        renderInitScript(context, 
+        renderInitScript(context,
                 new RawScript(combinedInitScript),
                 combinedJsFiles.toArray(new String[combinedJsFiles.size()]));
     }
@@ -1119,10 +1119,22 @@ public class RenderingUtil {
                 if (kid instanceof UIAjaxSupport)
                     return kid;
             } catch (Throwable e) {
-                return null; // the component can't have A4j support if HtmlAjaxSupport class can't be found
+                return null; // the component can't have A4j support if UIAjaxSupport class can't be found
             }
         }
         return null;
+    }
+
+    public static boolean isA4jSupportComponent(UIComponent component) {
+        boolean result;
+        try {
+            result = component.getClass().getName().equals("org.ajax4jsf.component.html.HtmlAjaxSupport") ||
+            component instanceof UIAjaxSupport;
+        } catch (Throwable e) {
+            return false; // failure to find a component means that it's not actually a4j:support component
+        }
+        return result;
+
     }
 
     /**

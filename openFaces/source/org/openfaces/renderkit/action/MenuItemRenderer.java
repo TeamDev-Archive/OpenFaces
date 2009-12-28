@@ -11,6 +11,7 @@
  */
 package org.openfaces.renderkit.action;
 
+import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.action.MenuItem;
 import org.openfaces.component.action.PopupMenu;
 import org.openfaces.renderkit.RendererBase;
@@ -118,7 +119,7 @@ public class MenuItemRenderer extends RendererBase {
     }
 
     private void renderMenuItemChildren(FacesContext context, MenuItem menuItem, ResponseWriter writer) throws IOException {
-        boolean isNeededValue = true;
+        boolean renderValueAsContent = true;
         if (menuItem.getChildCount() > 0) {
             List<UIComponent> children = menuItem.getChildren();
             for (UIComponent child : children) {
@@ -126,11 +127,12 @@ public class MenuItemRenderer extends RendererBase {
                     addMenuItemParameter(menuItem, "menuId", child.getClientId(context));
                 } else {
                     child.encodeAll(context);
-                    isNeededValue = false;
+                    if (!(child instanceof OUIClientAction) && !RenderingUtil.isA4jSupportComponent(child))
+                        renderValueAsContent = false;
                 }
             }
         }
-        if (isNeededValue) {
+        if (renderValueAsContent) {
             String value = (String) menuItem.getValue();
             if (value != null)
                 writer.writeText(value, null);

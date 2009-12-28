@@ -43,11 +43,9 @@
         }<br/>
       </h:outputText>
 
-      <o:popupMenu for="container">
-
+      <o:popupMenu>
         <o:menuItem iconUrl="icons/new-16x16.png" value="New">
           <o:popupMenu>
-
             <o:menuItem value="Class" onclick="showAlert('New class created.');"/>
             <o:menuItem value="Interface" onclick="showAlert('New interface created.');"/>
             <o:menuItem value="Enum" onclick="showAlert('New enum created.');"/>
@@ -69,7 +67,6 @@
 
         <o:menuItem value="Refactor">
           <o:popupMenu>
-
             <o:menuItem value="Rename..." onclick="showAlert('Rename invoked.');"/>
             <o:menuSeparator/>
 

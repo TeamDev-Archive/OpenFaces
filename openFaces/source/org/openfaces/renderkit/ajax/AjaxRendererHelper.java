@@ -21,8 +21,9 @@ import org.openfaces.renderkit.OUIClientActionRendererHelper;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.ScriptBuilder;
 
-import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlCommandButton;
+import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.context.FacesContext;
 
 /**
@@ -63,9 +64,8 @@ public class AjaxRendererHelper extends OUIClientActionRendererHelper {
         return false;
     }
 
-    private static boolean isCommandComponent(UIComponent component){
-        //return (component instanceof HtmlCommandButton || component instanceof HtmlCommandLink);
-        return component instanceof UICommand;
+    private static boolean isCommandComponent(UIComponent component) {
+        return component instanceof HtmlCommandButton || component instanceof HtmlCommandLink;
     }
 
     protected void appendMissingParameters(FacesContext context, Ajax ajax, ScriptBuilder script) {
