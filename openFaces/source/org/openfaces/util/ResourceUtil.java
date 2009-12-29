@@ -12,10 +12,10 @@
 package org.openfaces.util;
 
 import org.ajax4jsf.renderkit.RendererUtils;
-import org.openfaces.renderkit.filter.ExpressionFilterRenderer;
+import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.org.json.JSONTokener;
-import org.openfaces.org.json.JSONException;
+import org.openfaces.renderkit.filter.ExpressionFilterRenderer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -52,7 +52,7 @@ public class ResourceUtil {
     public static final String POSTPONE_JS_LINK_RENDERING = "org.openfaces.util.ResourceUtil.postponeJsLinkRendering";
     public static final String JSON_JS_LIB_NAME = "json2.js";
 
-    private static final String OPENFACES_VERSION = "/META-INF/openFacesVersion.txt";
+    private static final String OPENFACES_VERSION_TXT = "/META-INF/openFacesVersion.txt";
     private static final String VERSION_PLACEHOLDER_STR = "version";
 
     private static String SCRIPT = RendererUtils.HTML.SCRIPT_ELEM;
@@ -130,6 +130,7 @@ public class ResourceUtil {
         }
         return packagePath;
     }
+
     /**
      * @param context            Current FacesContext
      * @param componentClass     Class, relative to which the resourcePath is specified
@@ -148,7 +149,7 @@ public class ResourceUtil {
         if (context == null) throw new NullPointerException("context");
         if (resourcePath == null) throw new NullPointerException("resourcePath");
 
-         String packagePath = getPackagePath(componentClass);
+        String packagePath = getPackagePath(componentClass);
 
         String versionString = getVersionString();
         int extensionIndex = resourcePath.lastIndexOf(".");
@@ -172,52 +173,56 @@ public class ResourceUtil {
         if (versionString != null)
             return versionString;
 
-        InputStream versionStream = ResourceUtil.class.getResourceAsStream(OPENFACES_VERSION);
+        String buildInfo = readBuildInfo();
+
         String version = "";
-        if (versionStream != null) {
-            BufferedReader bufferedReader = null;
-            try {
-                bufferedReader = new BufferedReader(new InputStreamReader(versionStream));
-                String buildInfo = bufferedReader.readLine();
-                if (buildInfo != null) {
-                    int idx1 = buildInfo.indexOf(",");
-                    version = buildInfo.substring(0, idx1).trim();
-                    if (version.contains("EAP")) {
-                        int idx2 = buildInfo.indexOf(",", idx1 + 1);
-                        String buildStr = buildInfo.substring(idx1 + 1, idx2).trim();
-                        String buildNoPrefix1 = "build.nightly-";
-                        String buildNoPrefix2 = "build.";
-                        if (buildStr.startsWith(buildNoPrefix1)) {
-                            version += "." + buildStr.substring(buildNoPrefix1.length());
-                        } else if (buildStr.startsWith(buildNoPrefix2)) {
-                            version += ".b" + buildStr.substring(buildNoPrefix2.length());
-                        }
-                    }
-                }
-            } catch (IOException e) {
-                Log.log("Couldn't read version string", e);
-            } finally {
-                if (bufferedReader != null) {
-                    try {
-                        bufferedReader.close();
-                    } catch (IOException e) {
-                        //
-                    }
+        if (buildInfo != null) {
+            int idx1 = buildInfo.indexOf(",");
+            version = buildInfo.substring(0, idx1).trim();
+            if (VERSION_PLACEHOLDER_STR.equals(version)) {
+                long startTime = System.currentTimeMillis() / 1000;
+                version = Long.toString(startTime, 36);
+            } else if (version.contains("EAP")) {
+                int idx2 = buildInfo.indexOf(",", idx1 + 1);
+                String buildStr = buildInfo.substring(idx1 + 1, idx2).trim();
+                String buildNoPrefix1 = "build.nightly-";
+                String buildNoPrefix2 = "build.";
+                if (buildStr.startsWith(buildNoPrefix1)) {
+                    version += "." + buildStr.substring(buildNoPrefix1.length());
+                } else if (buildStr.startsWith(buildNoPrefix2)) {
+                    version += ".b" + buildStr.substring(buildNoPrefix2.length());
                 }
             }
-        }
-        if (VERSION_PLACEHOLDER_STR.equals(version)) {
-            long startTime = System.currentTimeMillis() / 1000;
-            version = Long.toString(startTime, 36);
         }
 
         versionString = version;
         return version;
     }
 
+    private static String readBuildInfo() {
+        InputStream versionStream = ResourceUtil.class.getResourceAsStream(OPENFACES_VERSION_TXT);
+        if (versionStream == null)
+            throw new IllegalStateException("Couldn't find resource file: " + OPENFACES_VERSION_TXT);
+
+        String buildInfo = null;
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(versionStream));
+        try {
+            buildInfo = bufferedReader.readLine();
+        } catch (IOException e) {
+            Log.log("Couldn't read version string", e);
+        } finally {
+            try {
+                bufferedReader.close();
+            } catch (IOException e) {
+                //
+            }
+        }
+        return buildInfo;
+    }
+
 
     public static JSONObject getNumberFormatSettings(Locale locale) throws IOException, JSONException {
-        String cldrPath = "/"+getPackagePath(ResourceUtil.class) + CLDR;
+        String cldrPath = "/" + getPackagePath(ResourceUtil.class) + CLDR;
 
         InputStream numberStream = null;
         if (locale != null) {
@@ -227,10 +232,10 @@ public class ResourceUtil {
             numberStream = ResourceUtil.class.getResourceAsStream(cldrPath + "/" + NUMBER_LOCALE_SETTINGS);
         }
         BufferedReader bufferedReader = null;
-        try {            
+        try {
             bufferedReader = new BufferedReader(new InputStreamReader(numberStream, "UTF-8"));
             String text = bufferedReader.readLine();
-            text = text.substring(1, text.length()-1);
+            text = text.substring(1, text.length() - 1);
             JSONObject result = new JSONObject(new JSONTokener(text));
             return result;
         } finally {
@@ -308,8 +313,8 @@ public class ResourceUtil {
     /**
      * Register javascript library to future adding to response
      *
-     * @param context {@link FacesContext} for the current request
-     * @param jsFileUrl    Url for the javascript file
+     * @param context   {@link FacesContext} for the current request
+     * @param jsFileUrl Url for the javascript file
      */
     public static void registerJavascriptLibrary(FacesContext context, String jsFileUrl) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();

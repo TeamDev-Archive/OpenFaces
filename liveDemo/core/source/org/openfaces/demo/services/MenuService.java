@@ -14,6 +14,7 @@ package org.openfaces.demo.services;
 import org.apache.commons.digester.Digester;
 import org.openfaces.util.FacesUtil;
 import org.openfaces.util.Log;
+import org.openfaces.util.ResourceUtil;
 import org.xml.sax.SAXException;
 
 import javax.faces.context.ExternalContext;
@@ -139,6 +140,20 @@ public class MenuService implements Serializable {
             menuUrl = menuUrl.substring(0, menuUrl.length() - 4);
         }
         return menuUrl;
+    }
+
+    public String getOpenFacesVersion() {
+        // note: ResourceUtil.getVersionString() is an internal OpenFaces function
+        // and it shouldn't be used explicitly in any application's code 
+        String str = ResourceUtil.getVersionString();
+        if (str == null || str.length() == 0 || !Character.isDigit(str.charAt(0)))
+            return "";
+
+        if (!str.toUpperCase().contains("EAP"))
+            return str;
+        int buildNoSeparator = str.lastIndexOf(".");
+        str = str.substring(0, buildNoSeparator);
+        return str;
     }
 
 }
