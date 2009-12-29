@@ -16,6 +16,7 @@ import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlCommandButton;
@@ -50,8 +51,10 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
         ResponseWriter writer = context.getResponseWriter();
         String clientId = compositeFilter.getClientId(context);
         writer.startElement("div", compositeFilter);
-        writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("class", "clearfix", null);
+        writer.writeAttribute("id", clientId, "id");        
+        String styleClass = StyleUtil.getCSSClass(context,
+                compositeFilter, compositeFilter.getStyle(), "clearfix", compositeFilter.getStyleClass());
+        writer.writeAttribute("class", styleClass, null);
         writer.flush();
     }
 
