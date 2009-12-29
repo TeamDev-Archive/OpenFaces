@@ -185,10 +185,13 @@ public class ResourceUtil {
                     if (version.contains("EAP")) {
                         int idx2 = buildInfo.indexOf(",", idx1 + 1);
                         String buildStr = buildInfo.substring(idx1 + 1, idx2).trim();
-                        String buildNoPrefix = "build.";
-                        if (buildStr.startsWith(buildNoPrefix)) {
-                            version += "." + buildStr.substring(buildNoPrefix.length());
-                        } 
+                        String buildNoPrefix1 = "build.nightly-";
+                        String buildNoPrefix2 = "build.";
+                        if (buildStr.startsWith(buildNoPrefix1)) {
+                            version += "." + buildStr.substring(buildNoPrefix1.length());
+                        } else if (buildStr.startsWith(buildNoPrefix2)) {
+                            version += ".b" + buildStr.substring(buildNoPrefix2.length());
+                        }
                     }
                 }
             } catch (IOException e) {
