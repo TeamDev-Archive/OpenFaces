@@ -33,9 +33,9 @@ public class VersionStringTest extends ComponentTestCase {
         assertTrue("OpenFaces version string should be trimmed", versionString.trim().equals(versionString));
 
         String[] versionComponents = versionString.split("[.]");
-        assertTrue("There should be two or three version number components in the openfaces version string, but was: " +
+        assertTrue("There should be from two to four version number components in the openfaces version string, but was: " +
                 versionComponents.length + "; version string: " + versionString,
-                versionComponents.length >= 2 && versionComponents.length <= 3);
+                versionComponents.length >= 2 && versionComponents.length <= 4);
         for (int i = 0, count = versionComponents.length; i < count; i++) {
             String versionComponent = versionComponents[i];
             if (i == count - 1) {
