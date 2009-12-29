@@ -317,7 +317,7 @@
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>The number of rows to be displayed on each table page. If it is set to "0", no paging is
+      <description>The number of rows to be displayed on each table page. If it is set to "0", no pagination is
         available.
       </description>
       <name>pageSize</name>
@@ -343,7 +343,8 @@
     <attribute>
       <description>Specifies the delay in milliseconds when the filtering is performed automatically after the user has
         entered some value in an associated filter, or turns off automatic filtering in case -1 is specified as a value
-        for this attribute.</description>
+        for this attribute.
+      </description>
       <name>autoFilterDelay</name>
       <deferred-value>
         <type>int</type>
@@ -402,7 +403,7 @@
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>A flag that indicates whether or not to enable the keyboard support for paging.</description>
+      <description>A flag that indicates whether or not to enable the keyboard support for pagination.</description>
       <name>paginationKeyboardSupport</name>
       <deferred-value>
         <type>boolean</type>
@@ -918,8 +919,8 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the row that contains the filter components.</description>
-      <name>filterRowStyle</name>
+      <description>A style for the sub-header row (usually contains the filter components).</description>
+      <name>subHeaderRowStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -928,8 +929,8 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the row that contains the filter components.</description>
-      <name>filterRowClass</name>
+      <description>A CSS class name for the sub-header row (usually contains the filter components).</description>
+      <name>subHeaderRowClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -938,9 +939,9 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for a line that separates a row with filter components and the column header.
+      <description>A style for a line that separates a sub-header row and the column header.
       </description>
-      <name>filterRowSeparator</name>
+      <name>subHeaderRowSeparator</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -1189,6 +1190,31 @@
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
+        column's &quot;header&quot; facet, or serve for identifying the column name in such components as &lt;o:comopsitefilter&gt;
+        or &lt;o:columnVisibilityMenu&gt;.
+      </description>
+      <name>header</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
+        column's &quot;footer&quot; facet.
+      </description>
+      <name>footer</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -1743,7 +1769,8 @@
     <attribute>
       <description>Specifies the delay in milliseconds when the filtering is performed automatically after the user has
         entered some value in the filter, or turns off automatic filtering in case -1 is specified as a value for this
-        attribute.</description>
+        attribute.
+      </description>
       <name>autoFilterDelay</name>
       <deferred-value>
         <type>int</type>
@@ -1787,7 +1814,8 @@
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>Specifies whether letter case should be exactly matched when obtaining filtering results.</description>
+      <description>Specifies whether letter case should be exactly matched when obtaining filtering results.
+      </description>
       <name>caseSensitive</name>
       <deferred-value>
         <type>boolean</type>
@@ -1797,7 +1825,8 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A converter for the filter value. Should be specified as a value-binding expression or converter identifier.
+      <description>A converter for the filter value. Should be specified as a value-binding expression or converter
+        identifier.
       </description>
       <name>converter</name>
       <deferred-value>
@@ -1875,7 +1904,8 @@
 
     <attribute>
       <description>Specifies whether the "autocomplete" attribute is rendered for this input element, which
-      makes a browser provide suggestions based on the previosly typed values.</description>
+        makes a browser provide suggestions based on the previosly typed values.
+      </description>
       <name>autocomplete</name>
       <deferred-value>
         <type>boolean</type>
@@ -2028,7 +2058,8 @@
     <attribute>
       <description>Specifies the delay in milliseconds when the filtering is performed automatically after the user has
         entered some value in the filter, or turns off automatic filtering in case -1 is specified as a value for this
-        attribute.</description>
+        attribute.
+      </description>
       <name>autoFilterDelay</name>
       <deferred-value>
         <type>int</type>
@@ -2084,7 +2115,8 @@
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>Specifies whether letter case should be exactly matched when obtaining filtering results.</description>
+      <description>Specifies whether letter case should be exactly matched when obtaining filtering results.
+      </description>
       <name>caseSensitive</name>
       <deferred-value>
         <type>boolean</type>
@@ -2245,8 +2277,6 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @value "right" -->
       <!-- @el true -->
     </attribute>
-
-
 
 
     <attribute>
@@ -2701,7 +2731,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>Specifies whether letter case should be exactly matched when obtaining filtering results.</description>
+      <description>Specifies whether letter case should be exactly matched when obtaining filtering results.
+      </description>
       <name>caseSensitive</name>
       <deferred-value>
         <type>boolean</type>
@@ -2859,6 +2890,31 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
+        column's &quot;header&quot; facet, or serve for identifying the column name in such components as &lt;o:comopsitefilter&gt;
+        or &lt;o:columnVisibilityMenu&gt;.
+      </description>
+      <name>header</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
+        column's &quot;footer&quot; facet.
+      </description>
+      <name>footer</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
@@ -3500,6 +3556,30 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
+      <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
+        column group's &quot;header&quot; facet.
+      </description>
+      <name>header</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
+        column group's &quot;footer&quot; facet.
+      </description>
+      <name>footer</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Applicable only when horizontal scrolling is enabled for a table. Assigning true to this attribute
         "fixes" the column group which means that it is excluded from horizontal scrolling and is always visible
         regardless of scroll position.
@@ -3950,7 +4030,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean -->
-      <!-- @default true -->
+      <!-- @default false -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -4009,7 +4089,8 @@ entering a value and returns a list of suggestions from the server -->
 
   <tag>
     <description>Turns on drag&amp;drop column reordering feature for a DataTable or TreeTable where this tag is
-      inserted.</description>
+      inserted.
+    </description>
     <name>columnReordering</name>
     <tag-class>org.openfaces.taglib.jsp.table.ColumnReorderingJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -4043,6 +4124,851 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType double -->
       <!-- @default 0.5 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS style for for the area that highlights the possible drop target when the user drags a column.
+        The usual attributes that should be configured in this style are the "background" and "width" CSS attributes.
+      </description>
+      <name>dropTargetStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS class name for for the area that highlights the possible drop target when the user drags a
+        column. The usual attributes that should be configured in this style are the "background" and "width" CSS
+        attributes.
+      </description>
+      <name>dropTargetClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Image that is displayed above the drop target when column dragging is in progress.</description>
+      <name>dropTargetTopImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Image that is displayed below the drop target when column dragging is in progress.</description>
+      <name>dropTargetBottomImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS style for the header's area that allows scrolling the area for dragging to make all columns
+        available for reordering even in scrollable tables.
+      </description>
+      <name>autoScrollAreaStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS class name for the header's area that allows scrolling the area for dragging to make all columns
+        available for reordering even in scrollable tables.
+      </description>
+      <name>autoScrollAreaClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies the transparency level for the area that allows horizontal scrolling during column
+        reordering.
+      </description>
+      <name>autoScrollAreaTransparency</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.5 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Image that will be displayed in the right auto-scrolling area that appears when reordering columns in
+        a scrollable table.
+      </description>
+      <name>autoScrollRightImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Image that will be displayed in the left auto-scrolling area that appears when reordering columns in
+        a scrollable table.
+      </description>
+      <name>autoScrollLeftImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+  </tag>
+
+  <tag>
+    <description>A popup menu that can be placed into the "columnMenu" facet of &lt;o:dataTable> or &lt;o:treeTable>
+      components to provide standard column operations.
+    </description>
+    <name>columnMenu</name>
+    <tag-class>org.openfaces.taglib.jsp.table.ColumnMenuJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates the TwoListSelection component with
+        a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.ColumnVisibilityMenu</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table.ColumnVisibilityMenu -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>Delay in milliseconds that specifies how much time should pass between user makes mouseover of
+        menu item and child popup menu becomes visible.
+      </description>
+      <name>submenuShowDelay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 500 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Delay in milliseconds that specifies how much time should pass between user makes mouseout
+        of menu item and child popup menu hides.
+      </description>
+      <name>submenuHideDelay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 500 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the popup menu component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the popup menu component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the popup menu component in the rollover state.</description>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the popup menu component in the rollover state.</description>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A default style for menu item of the popup menu component.</description>
+      <name>itemStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for menu item of the popup menu component.</description>
+      <name>itemClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A default style for selected menu items of the popup menu component.</description>
+      <name>selectedItemStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for selected menu items of the popup menu component.</description>
+      <name>selectedItemClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A default style for content of menu items of the popup menu component.</description>
+      <name>itemContentStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for content of menu items of the popup menu component.</description>
+      <name>itemContentClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A default style for indent area of the popup menu component.</description>
+      <name>indentStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for indent area of the popup menu component.</description>
+      <name>indentClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A default style for submenu icon area of menu items of the popup menu component.</description>
+      <name>itemSubmenuIconStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for submenu icon area of menu items of the popup menu component.</description>
+      <name>itemSubmenuIconClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the popup menu.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the popup menu.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks the
+        button with either mouse popup menu.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the popup menu.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the popup menu.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        away from the popup menu.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a mouse button over the popup menu.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the popup menu receives focus.</description>
+      <name>onfocus</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the popup menu loses focus.</description>
+      <name>onblur</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the popup menu.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the popup menu.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the popup menu shows.</description>
+      <name>onshow</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the popup menu hides.</description>
+      <name>onhide</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Delay in milliseconds that specifies how much time should pass between user makes mouseover of
+        menu item and child PopupMenu becomes visible.
+      </description>
+      <name>submenuShowDelay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 500 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Delay in milliseconds that specifies how much time should pass between user makes mouseout
+        of menu item and child PopupMenu hides.
+      </description>
+      <name>submenuHideDelay</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 500 -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>An URL of image which is marker to show user that some menu item has submenu.</description>
+      <name>submenuImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An URL of image file that is used for disabled menu items which have submenu.</description>
+      <name>disabledSubmenuImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An URL of image file that is used for selected menu items which have submenu.</description>
+      <name>selectedSubmenuImageUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A default style for submenu icon area of menu items of the PopupMenu component.</description>
+      <name>itemSubmenuIconStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for submenu icon area of menu items of the PopupMenu component.</description>
+      <name>itemSubmenuIconClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+  </tag>
+
+  <tag>
+    <description>A popup menu that can be placed inside of the menu specified with DataTable's "columnMenu" facet to
+      allow user customize column visibility. This menu displays the list of all columns in the table with the check-box
+      against each one.
+    </description>
+    <name>columnVisibilityMenu</name>
+    <tag-class>org.openfaces.taglib.jsp.table.ColumnVisibilityMenuJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates the TwoListSelection component with
+        a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.ColumnVisibilityMenu</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table.ColumnVisibilityMenu -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the popup menu component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the popup menu component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the popup menu component in the rollover state.</description>
+      <name>rolloverStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the popup menu component in the rollover state.</description>
+      <name>rolloverClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A default style for menu item of the popup menu component.</description>
+      <name>itemStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for menu item of the popup menu component.</description>
+      <name>itemClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A default style for selected menu items of the popup menu component.</description>
+      <name>selectedItemStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for selected menu items of the popup menu component.</description>
+      <name>selectedItemClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A default style for content of menu items of the popup menu component.</description>
+      <name>itemContentStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for content of menu items of the popup menu component.</description>
+      <name>itemContentClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A default style for indent area of the popup menu component.</description>
+      <name>indentStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for indent area of the popup menu component.</description>
+      <name>indentClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the popup menu.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the popup menu.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks the
+        button with either mouse popup menu.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the popup menu.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the popup menu.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        away from the popup menu.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a mouse button over the popup menu.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the popup menu receives focus.</description>
+      <name>onfocus</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the popup menu loses focus.</description>
+      <name>onblur</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the popup menu.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the popup menu.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the popup menu shows.</description>
+      <name>onshow</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the popup menu hides.</description>
+      <name>onhide</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -4654,6 +5580,31 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
+        column's &quot;header&quot; facet, or serve for identifying the column name in such components as &lt;o:comopsitefilter&gt;
+        or &lt;o:columnVisibilityMenu&gt;.
+      </description>
+      <name>header</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
+        column's &quot;footer&quot; facet.
+      </description>
+      <name>footer</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -5777,6 +6728,31 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
+        column's &quot;header&quot; facet, or serve for identifying the column name in such components as &lt;o:comopsitefilter&gt;
+        or &lt;o:columnVisibilityMenu&gt;.
+      </description>
+      <name>header</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
+        column's &quot;footer&quot; facet.
+      </description>
+      <name>footer</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 
@@ -6227,7 +7203,8 @@ means that only root nodes and their immediate children are preloaded -->
     <attribute>
       <description>Specifies the delay in milliseconds when the filtering is performed automatically after the user has
         entered some value in an associated filter, or turns off automatic filtering in case -1 is specified as a value
-        for this attribute.</description>
+        for this attribute.
+      </description>
       <name>autoFilterDelay</name>
       <deferred-value>
         <type>int</type>
@@ -6311,8 +7288,8 @@ means that only root nodes and their immediate children are preloaded -->
 
 
     <attribute>
-      <description>A style for the row that contains the filter components.</description>
-      <name>filterRowStyle</name>
+      <description>A style for the sub-header row (usually contains the filter components).</description>
+      <name>subHeaderRowStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -6321,8 +7298,8 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the row that contains the filter components.</description>
-      <name>filterRowClass</name>
+      <description>A CSS class name for the sub-header row (usually contains the filter components).</description>
+      <name>subHeaderRowClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -6332,7 +7309,7 @@ means that only root nodes and their immediate children are preloaded -->
     </attribute>
     <attribute>
       <description>A style for the line that separates the sub-header row.</description>
-      <name>filterRowSeparator</name>
+      <name>subHeaderRowSeparator</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -7361,6 +8338,31 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
       <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
+        column's &quot;header&quot; facet, or serve for identifying the column name in such components as &lt;o:comopsitefilter&gt;
+        or &lt;o:columnVisibilityMenu&gt;.
+      </description>
+      <name>header</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
+        column's &quot;footer&quot; facet.
+      </description>
+      <name>footer</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>Defines the row's value that is used during sorting. Is used to make column sortable.</description>
@@ -10574,6 +11576,10 @@ entering a value and returns a list of suggestions from the server -->
 
   <!-- WINDOW TAG DECLARATOIN -->
   <tag>
+    <description>The Window component is a window-styled container for other JSF components that is displayed over the
+      page content. The Window component has a caption and a content area, it can be dragged around on the page, and
+      resized. Besides, it has the usual maximize/restore, minimize and close buttons in the caption.
+    </description>
     <name>window</name>
     <tag-class>org.openfaces.taglib.jsp.window.WindowJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -10607,7 +11613,6 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
-
 
     <attribute>
       <description>A flag that indicates whether or not the user can move the window by dragging its title.
@@ -10745,7 +11750,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
+      <!-- @default "300px" -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -10755,7 +11760,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
+      <!-- @default "200px" -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -10768,7 +11773,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
+      <!-- @default "150px" -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -10781,7 +11786,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
+      <!-- @default "80px" -->
       <!-- @el true -->
     </attribute>
 
@@ -11011,6 +12016,9 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>This component can be placed inside of components with caption such as Window, Confirmation and
+      FoldingPanel to customize the default set and appearance of component's caption buttons.
+    </description>
     <name>captionArea</name>
     <tag-class>org.openfaces.taglib.jsp.CaptionAreaJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -11172,6 +12180,8 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>This component can be placed inside of the CaptionArea component to add a custom caption button.
+    </description>
     <name>captionButton</name>
     <tag-class>org.openfaces.taglib.jsp.CaptionButtonJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -11411,6 +12421,9 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>This component can be placed inside of the CaptionArea component (which is in turn located in
+      FoldingPanel component) to customize the appearance of FoldingPanel's expansion toggle caption button.
+    </description>
     <name>expansionToggleButton</name>
     <tag-class>org.openfaces.taglib.jsp.ExpansionToggleButtonJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -11660,6 +12673,9 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>This component can be placed inside of the CaptionArea component to specify the caption button that
+      allows closing the window.
+    </description>
     <name>closeWindowButton</name>
     <tag-class>org.openfaces.taglib.jsp.window.CloseWindowButtonJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -11874,6 +12890,9 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>This component can be placed inside of the CaptionArea component to specify the caption button that
+      allows maximizing the window.
+    </description>
     <name>maximizeWindowButton</name>
     <tag-class>org.openfaces.taglib.jsp.window.MaximizeWindowButtonJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -12126,6 +13145,9 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>This component can be placed inside of the CaptionArea component to specify the caption button that
+      allows minimizing the window.
+    </description>
     <name>minimizeWindowButton</name>
     <tag-class>org.openfaces.taglib.jsp.window.MinimizeWindowButtonJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -12592,7 +13614,8 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>An id of the scrollable component. If specified - the scroll position of the scrollable component will
+      <description>An id of the scrollable component. If specified - the scroll position of the scrollable component
+        will
         be saved, otherwise the scroll position of the page will be saved.
       </description>
       <name>for</name>
@@ -15928,7 +16951,9 @@ and it is automatically triggered on any form submission. -->
       <name>serverFunction</name>
       <deferred-method>
         <method-signature>
+          <![CDATA[
           boolean customValidatorTest(javax.faces.context.FacesContext, javax.faces.component.UIComponent, java.lang.Object)
+          ]]>
         </method-signature>
       </deferred-method>
       <!-- @bindingType java.lang.String -->
@@ -16253,6 +17278,89 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the icon.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the icon.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks over the icon with either
+        mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the icon.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the icon.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        away from the icon.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a mouse button
+        over the icon.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -18989,7 +20097,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description></description>
+      <description>Allows disabling typing in the date with keyboard when this attribute is set to false.</description>
       <name>typingAllowed</name>
       <deferred-value>
         <type>boolean</type>
@@ -20648,7 +21756,8 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>Specifies whether the "autocomplete" attribute is rendered for this input element, which
-      makes a browser provide suggestions based on the previosly typed values.</description>
+        makes a browser provide suggestions based on the previosly typed values.
+      </description>
       <name>autocomplete</name>
       <deferred-value>
         <type>boolean</type>
@@ -21602,17 +22711,6 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A flag that indicates whether or not PopupMenu select disabled menu items.</description>
-      <name>selectDisabledItems</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default true -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
       <description>An URL of image which is marker to show user that some menu item has submenu.</description>
       <name>submenuImageUrl</name>
       <deferred-value>
@@ -21635,16 +22733,6 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>An URL of image file that is used for selected menu items which have submenu.</description>
       <name>selectedSubmenuImageUrl</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>An URL of image file that is used for selected disabled menu items which have submenu.</description>
-      <name>selectedDisabledSubmenuImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -21676,16 +22764,6 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>An URL of default image for disabled menu items.</description>
       <name>disabledItemIconUrl</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>An URL of default image for selected disabled menu items.</description>
-      <name>selectedDisabledItemIconUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -21796,26 +22874,6 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A default style for selected desabled menu items of the PopupMenu component.</description>
-      <name>selectedDisabledItemStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A CSS class name for selected disabled menu items of the PopupMenu component.</description>
-      <name>selectedDisabledItemClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
       <description>A default style for content of menu items of the PopupMenu component.</description>
       <name>itemContentStyle</name>
       <deferred-value>
@@ -21848,26 +22906,6 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>A CSS class name for indent area of the PopupMenu component.</description>
       <name>indentClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A default style for indent area of menu items of the PopupMenu component.</description>
-      <name>itemIndentStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A CSS class name for indent area of menu items of the PopupMenu component.</description>
-      <name>itemIndentClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -22123,16 +23161,6 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <description>An URL of image for the selected and disabled menu item.</description>
-      <name>selectedDisabledIconUrl</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
 
     <attribute>
       <description>An URL of image that represents submenu marker of the menu item.</description>
@@ -22157,16 +23185,6 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>An URL of image that represents submenu marker of the selected menu item.</description>
       <name>selectedSubmenuImageUrl</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>An URL of image that represents submenu marker of the selected and disabled menu item.</description>
-      <name>selectedDisabledSubmenuImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -22239,26 +23257,6 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>A CSS class name for the disabled menu item.</description>
       <name>disabledClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A style for the selected disabled MenuItem.</description>
-      <name>selectedDisabledItemStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A CSS class name for the selected disabled menu item.</description>
-      <name>selectedDisabledItemClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -23626,42 +24624,43 @@ and it is automatically triggered on any form submission. -->
   </tag>
 
   <tag>
-      <description>Displays a time-table for one day. A time-table consists of a set of events with different time spans
-        arranged within a day.
+    <description>Displays a time-table for one day. A time-table consists of a set of events with different time spans
+      arranged within a day.
+    </description>
+    <name>daySwitcher</name>
+    <tag-class>org.openfaces.taglib.jsp.timetable.DaySwitcherJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <description>A value-binding expression that associates the DaySwitcher with a backing bean property.
       </description>
-      <name>daySwitcher</name>
-      <tag-class>org.openfaces.taglib.jsp.timetable.DaySwitcherJspTag</tag-class>
-      <body-content>JSP</body-content>
-      <attribute>
-        <description>A value-binding expression that associates the DaySwitcher with a backing bean property.</description>
-        <name>binding</name>
-        <deferred-value>
-          <type>org.openfaces.component.timetable.DaySwitcher</type>
-        </deferred-value>
-        <!-- @bindingType org.openfaces.component.timetable.DaySwitcher -->
-        <!-- @default null -->
-        <!-- @el only -->
-      </attribute>
-      <attribute>
-        <description>The component identifier.</description>
-        <name>id</name>
-        <deferred-value>
-          <type>java.lang.String</type>
-        </deferred-value>
-        <!-- @bindingType java.lang.String -->
-        <!-- @default null -->
-        <!-- @el false -->
-      </attribute>
-      <attribute>
-        <description>A flag that indicates whether or not the component is visible.</description>
-        <name>rendered</name>
-        <deferred-value>
-          <type>boolean</type>
-        </deferred-value>
-        <!-- @bindingType boolean -->
-        <!-- @default false -->
-        <!-- @el true -->
-      </attribute>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.timetable.DaySwitcher</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.timetable.DaySwitcher -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
     <attribute>
       <description>ID of a DayTable component that should be synchronized with this component. It should be defined in
         the same way as the "for" property of the standard HTMLOutputLabel component. If this attribute is not specified
@@ -23676,16 +24675,17 @@ and it is automatically triggered on any form submission. -->
       <!-- @el false -->
     </attribute>
     <attribute>
-          <description>This attribute defines which of the predefined date formats for a given locale should be used for text.
-          </description>
-          <name>dateFormat</name>
-          <deferred-value>
-            <type>java.lang.String</type>
-          </deferred-value>
-          <!-- @bindingType java.lang.String -->
-          <!-- @default "medium" -->
-          <!-- @value "short" the same as "SHORT" format in the java.text.DateFormat -->
-          <!-- @value "medium" the same as "MEDIUM" format in the java.text.DateFormat -->
+      <description>This attribute defines which of the predefined date formats for a given locale should be used for
+        text.
+      </description>
+      <name>dateFormat</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "medium" -->
+      <!-- @value "short" the same as "SHORT" format in the java.text.DateFormat -->
+      <!-- @value "medium" the same as "MEDIUM" format in the java.text.DateFormat -->
       <!-- @value "long" the same as "LONG" format in the java.text.DateFormat -->
       <!-- @value "full" the same as "FULL" format in the java.text.DateFormat -->
       <!-- @el true -->
@@ -26578,7 +27578,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>
+      <description>Allows disabling typing in the the value with keyboard so the user will only be able to use the
+        up/down butttons to select the value if this attribute is set to false.
       </description>
       <name>typingAllowed</name>
       <deferred-value>
@@ -27109,6 +28110,9 @@ and it is automatically triggered on any form submission. -->
 
   <!-- FOREACH TAG DECLARATION -->
   <tag>
+    <description>An iterator component that renders the specified set of components multiple times based on its
+      parameters
+    </description>
     <name>forEach</name>
     <tag-class>org.openfaces.taglib.jsp.util.ForEachJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -27157,7 +28161,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>Iteration </description>
+      <description>Iteration start index. Defaults to 0 if not specified.</description>
       <name>begin</name>
       <deferred-value>
         <type>int</type>
@@ -27167,7 +28171,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description></description>
+      <description>Iteration end index. Defaults to Integer.MAX_VALUE (2147483647) if not specified.</description>
       <name>end</name>
       <deferred-value>
         <type>int</type>
@@ -27177,7 +28181,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description></description>
+      <description>Iteration step index. Defaults to 1 if not specified.</description>
       <name>step</name>
       <deferred-value>
         <type>int</type>
@@ -27187,7 +28191,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description></description>
+      <description>Name of the request-scope variable under which the current iteration step object is available.
+      </description>
       <name>var</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27197,7 +28202,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description></description>
+      <description>Name of the request-scope variable under which the current iteration status object (of type
+        org.openfaces.component.util.IterationStatus) is available.</description>
       <name>varStatus</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27207,7 +28213,10 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description></description>
+      <description>Allows specifying the name of the tag that the iterated content should be wrapped into. By default
+        no outer tag is rendered unless outer-tag-specific attributes are specified (id, style or styleClass), in which
+        case the default &lt;span&gt; outer tag is rendered even if no wrapperTagName is specified.
+      </description>
       <name>wrapperTagName</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27218,7 +28227,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A style of the entire SidePanel component except the splitter area</description>
+      <description>A style of the entire ForEach component.</description>
       <name>style</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27228,7 +28237,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name of the entire SidePanel component except the splitter area</description>
+      <description>A CSS class name of the entire ForEach component.</description>
       <name>styleClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27382,7 +28391,8 @@ and it is automatically triggered on any form submission. -->
   <tag>
     <description>The SelectBooleanCheckbox component is an extended version of the standard
       &lt;h:selectBooleanCheckbox&gt; component that adds such possibilities as tri-state support, customizing checkbox
-      images and state-dependent styles.</description>
+      images and state-dependent styles.
+    </description>
     <name>selectBooleanCheckbox</name>
     <tag-class>org.openfaces.taglib.jsp.select.SelectBooleanCheckboxJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -27407,7 +28417,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A value-binding expression that associates the SelectBooleanCheckbox with a backing bean property.</description>
+      <description>A value-binding expression that associates the SelectBooleanCheckbox with a backing bean property.
+      </description>
       <name>binding</name>
       <deferred-value>
         <type>org.openfaces.component.select.SelectBooleanCheckbox</type>
@@ -27537,7 +28548,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed on the client when the value of the SelectBooleanCheckbox has changed.
+      <description>JavaScript code that should be executed on the client when the value of the SelectBooleanCheckbox has
+        changed.
       </description>
       <name>onchange</name>
       <deferred-value>
@@ -27596,7 +28608,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the SelectBooleanCheckbox.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the
+        SelectBooleanCheckbox.
       </description>
       <name>onmouseover</name>
       <deferred-value>
@@ -27607,7 +28620,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer over the SelectBooleanCheckbox.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the
+        SelectBooleanCheckbox.
       </description>
       <name>onmousemove</name>
       <deferred-value>
@@ -27618,7 +28632,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the SelectBooleanCheckbox.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the
+        SelectBooleanCheckbox.
       </description>
       <name>onmouseout</name>
       <deferred-value>
@@ -27629,7 +28644,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases the mouse button over the SelectBooleanCheckbox.
+      <description>JavaScript code that should be executed when the user releases the mouse button over the
+        SelectBooleanCheckbox.
       </description>
       <name>onmouseup</name>
       <deferred-value>
@@ -27761,7 +28777,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
 
-     <attribute>
+    <attribute>
       <description>
         A sequence of states the user is allowed to cycle through.
         Can contain state constants : 'selected', 'unselected' and 'undefined'.
@@ -28074,7 +29090,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Width (in pixels) of the border to be drawn around the table containing the options list.</description>
+      <description>Width (in pixels) of the border to be drawn around the table containing the options list.
+      </description>
       <name>border</name>
       <deferred-value>
         <type>java.lang.Integer</type>
@@ -28087,7 +29104,8 @@ and it is automatically triggered on any form submission. -->
       <description>Orientation of the options list to be created.
         Valid values are "pageDirection" (list is laid out vertically),
         or "lineDirection" (list is laid out horizontally).
-        If not specified, the default value is "lineDirection".</description>
+        If not specified, the default value is "lineDirection".
+      </description>
       <name>layout</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28199,7 +29217,8 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>Space-separated list of CSS style class(es) to be applied
         when this element is in the enabled state. This value must be passed through
-        as the "class" attribute on generated markup.</description>
+        as the "class" attribute on generated markup.
+      </description>
       <name>enabledClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28233,7 +29252,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>CSS style(s) to be applied when this component is in the rollover state,
-        i.e. when pointer is over this component.</description>
+        i.e. when pointer is over this component.
+      </description>
       <name>rolloverStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28303,7 +29323,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code executed when the user clicks the pointer button over the SelectOneRadio.</description>
+      <description>JavaScript code executed when the user clicks the pointer button over the SelectOneRadio.
+      </description>
       <name>onclick</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28365,7 +29386,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code executed when the user releases the mouse button over the SelectOneRadio.</description>
+      <description>JavaScript code executed when the user releases the mouse button over the SelectOneRadio.
+      </description>
       <name>onmouseup</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28505,7 +29527,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL to the image file, corresponding to the rolled over state of the selected component.</description>
+      <description>URL to the image file, corresponding to the rolled over state of the selected component.
+      </description>
       <name>rolloverSelectedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28515,7 +29538,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL to the image file, corresponding to the rolled over state of the unselected component.</description>
+      <description>URL to the image file, corresponding to the rolled over state of the unselected component.
+      </description>
       <name>rolloverUnselectedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28751,7 +29775,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Width (in pixels) of the border to be drawn around the table containing the options list.</description>
+      <description>Width (in pixels) of the border to be drawn around the table containing the options list.
+      </description>
       <name>border</name>
       <deferred-value>
         <type>java.lang.Integer</type>
@@ -28764,7 +29789,8 @@ and it is automatically triggered on any form submission. -->
       <description>Orientation of the options list to be created.
         Valid values are "pageDirection" (list is laid out vertically),
         or "lineDirection" (list is laid out horizontally).
-        If not specified, the default value is "lineDirection".</description>
+        If not specified, the default value is "lineDirection".
+      </description>
       <name>layout</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28877,7 +29903,8 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>Space-separated list of CSS style class(es) to be applied
         when this element is in the enabled state. This value must be passed through
-        as the "class" attribute on generated markup.</description>
+        as the "class" attribute on generated markup.
+      </description>
       <name>enabledClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28911,7 +29938,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>CSS style(s) to be applied when this component is in the rollover state,
-        i.e. when pointer is over this component.</description>
+        i.e. when pointer is over this component.
+      </description>
       <name>rolloverStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28981,7 +30009,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code executed when the user clicks the pointer button over the SelectManyCheckbox.</description>
+      <description>JavaScript code executed when the user clicks the pointer button over the SelectManyCheckbox.
+      </description>
       <name>onclick</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -29003,7 +30032,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code executed when a pointer button is pressed down over the SelectManyCheckbox.</description>
+      <description>JavaScript code executed when a pointer button is pressed down over the SelectManyCheckbox.
+      </description>
       <name>onmousedown</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -29033,7 +30063,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code executed when the user moves a pointer away from the SelectManyCheckbox.</description>
+      <description>JavaScript code executed when the user moves a pointer away from the SelectManyCheckbox.
+      </description>
       <name>onmouseout</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -29043,7 +30074,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code executed when the user releases the mouse button over the SelectManyCheckbox.</description>
+      <description>JavaScript code executed when the user releases the mouse button over the SelectManyCheckbox.
+      </description>
       <name>onmouseup</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -29183,7 +30215,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL to the image file, corresponding to the rolled over state of the selected component.</description>
+      <description>URL to the image file, corresponding to the rolled over state of the selected component.
+      </description>
       <name>rolloverSelectedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -29193,7 +30226,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>URL to the image file, corresponding to the rolled over state of the unselected component.</description>
+      <description>URL to the image file, corresponding to the rolled over state of the unselected component.
+      </description>
       <name>rolloverUnselectedImageUrl</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -29397,6 +30431,19 @@ and it is automatically triggered on any form submission. -->
       <!-- @el false -->
     </attribute>
     <attribute>
+      <description>
+        A flag that indicates whether or not the component should automatically detect a list of
+        properties from a filterable component defined by "for" attribute.
+      </description>
+      <name>autoDetect</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>Set of criteria.</description>
       <name>value</name>
       <deferred-value>
@@ -29417,7 +30464,8 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A map where custom operation name texts can be supplied, e.g. for localization purposes.</description>
+      <description>A map where custom operation name texts can be supplied, e.g. for localization purposes.
+      </description>
       <name>labels</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -29475,12 +30523,12 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Property type (tetx, number, date or select) </description>
+      <description>Property type (tetx, number, date or select)</description>
       <name>type</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
-     <!-- @bindingType java.lang.String -->
+      <!-- @bindingType java.lang.String -->
       <!-- @required true-->
       <!-- @el false -->
     </attribute>
@@ -29561,7 +30609,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el false -->
     </attribute>
-     <attribute>
+    <attribute>
       <description>Time zone in which to interpret any time information in the date String. Value must be either a VB
         expression that evaluates to a java.util.TimeZone instance, or a String that is a timezone ID as described in
         the javadocs for java.util.TimeZone.getTimeZone().
@@ -29583,6 +30631,854 @@ and it is automatically triggered on any form submission. -->
       <!-- @bindingType boolean -->
       <!-- @default true -->
       <!-- @el false -->
+    </attribute>
+
+  </tag>
+  <tag>
+    <description>A menu item that can be inserted into the column menu for DataTable/TreeTable components to provide
+      colum sorting capability.
+    </description>
+    <name>sortAscendingMenuItem</name>
+    <tag-class>org.openfaces.taglib.jsp.table.SortAscendingMenuItemJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>A value-binding expression that associates the menu item with a backing bean property.</description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.SortAscendingMenuItem</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table.SortAscendingMenuItem-->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The string that displays as text of the menu item.</description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An URL of image for the menu item.</description>
+      <name>iconUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An URL of image for the disabled menu item.</description>
+      <name>disabledIconUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An URL of image for the selected menu item.</description>
+      <name>selectedIconUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the menu item.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the menu item.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the menu item in selected state.</description>
+      <name>selectedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the menu item in selected state.</description>
+      <name>selectedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the disabled menu item.</description>
+      <name>disabledStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the disabled menu item.</description>
+      <name>disabledClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for content of the menu item.</description>
+      <name>contentAreaStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for content of the menu item.</description>
+      <name>contentAreaClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for indent area of the menu item.</description>
+      <name>indentAreaStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for indent area of the menu item.</description>
+      <name>indentAreaClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the menu item.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the menu item.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks the button with either mouse menu item.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the menu item.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the menu item.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the menu
+        item.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a mouse button over the menu item.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the menu item receives focus.</description>
+      <name>onfocus</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the menu item loses focus.</description>
+      <name>onblur</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the menu item.</description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the menu item.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+  <tag>
+    <description>A menu item that can be inserted into the column menu for DataTable/TreeTable components to provide
+      colum sorting capability.
+    </description>
+    <name>sortDescendingMenuItem</name>
+    <tag-class>org.openfaces.taglib.jsp.table.SortDescendingMenuItemJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>A value-binding expression that associates the menu item with a backing bean property.</description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.SortDescendingMenuItem</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table.SortDescendingMenuItem-->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The string that displays as text of the menu item.</description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An URL of image for the menu item.</description>
+      <name>iconUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An URL of image for the disabled menu item.</description>
+      <name>disabledIconUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An URL of image for the selected menu item.</description>
+      <name>selectedIconUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the menu item.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the menu item.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the menu item in selected state.</description>
+      <name>selectedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the menu item in selected state.</description>
+      <name>selectedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the disabled menu item.</description>
+      <name>disabledStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the disabled menu item.</description>
+      <name>disabledClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for content of the menu item.</description>
+      <name>contentAreaStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for content of the menu item.</description>
+      <name>contentAreaClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for indent area of the menu item.</description>
+      <name>indentAreaStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for indent area of the menu item.</description>
+      <name>indentAreaClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the menu item.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the menu item.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks the button with either mouse menu item.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the menu item.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the menu item.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the menu
+        item.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a mouse button over the menu item.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the menu item receives focus.</description>
+      <name>onfocus</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the menu item loses focus.</description>
+      <name>onblur</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the menu item.</description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the menu item.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+  </tag>
+  <tag>
+    <description>A menu item that can be inserted into the column menu of DataTable/TreeTable components to provide
+      column hiding capability.
+    </description>
+    <name>hideColumnMenuItem</name>
+    <tag-class>org.openfaces.taglib.jsp.table.HideColumnMenuItemJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>A value-binding expression that associates the menu item with a backing bean property.</description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.table.SortDescendingMenuItem</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.table.SortDescendingMenuItem-->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The string that displays as text of the menu item.</description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An URL of image for the menu item.</description>
+      <name>iconUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An URL of image for the disabled menu item.</description>
+      <name>disabledIconUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An URL of image for the selected menu item.</description>
+      <name>selectedIconUrl</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the menu item.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the menu item.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the menu item in selected state.</description>
+      <name>selectedStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the menu item in selected state.</description>
+      <name>selectedClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for the disabled menu item.</description>
+      <name>disabledStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the disabled menu item.</description>
+      <name>disabledClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for content of the menu item.</description>
+      <name>contentAreaStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for content of the menu item.</description>
+      <name>contentAreaClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A style for indent area of the menu item.</description>
+      <name>indentAreaStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for indent area of the menu item.</description>
+      <name>indentAreaClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the menu item.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the menu item.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks the button with either mouse menu item.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the menu item.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the menu item.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer away from the menu
+        item.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a mouse button over the menu item.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the menu item receives focus.</description>
+      <name>onfocus</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the menu item loses focus.</description>
+      <name>onblur</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the menu item.</description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the menu item.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
     </attribute>
 
   </tag>

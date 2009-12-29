@@ -600,7 +600,7 @@ public class TableStructure extends TableElement {
         if (!(tableStyles instanceof AbstractTable))
             return null;
         AbstractTable table = ((AbstractTable) tableStyles);
-        String result = table.getFilterRowSeparator();
+        String result = table.getSubHeaderRowSeparator();
         if (result == null && table.getApplyDefaultStyle())
             result = DEFAULT_SUBHEADER_ROW_SEPARATOR;
         return result;
@@ -689,7 +689,7 @@ public class TableStructure extends TableElement {
                 getHeaderHorizSeparator(tableStyles, defaultStyles) != null || getHeaderVertSeparator(tableStyles, defaultStyles) != null ||
                 getFooterHorizSeparator(tableStyles, defaultStyles) != null || getFooterVertSeparator(tableStyles, defaultStyles) != null ||
                 getMultiHeaderSeparator(tableStyles, defaultStyles) != null || getMultiFooterSeparator(tableStyles, defaultStyles) != null ||
-                (table != null && table.getFilterRowSeparator() != null);
+                (table != null && table.getSubHeaderRowSeparator() != null);
     }
 
 }

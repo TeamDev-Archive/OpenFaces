@@ -368,14 +368,14 @@ public abstract class TableHeaderOrFooter extends TableSection {
         if (!(tableStyles instanceof AbstractTable))
             return null;
         AbstractTable table = ((AbstractTable) tableStyles);
-        return table.getFilterRowClass();
+        return table.getSubHeaderRowClass();
     }
 
     private String getSubHeaderRowStyle(TableStyles tableStyles) {
         if (!(tableStyles instanceof AbstractTable))
             return null;
         AbstractTable table = ((AbstractTable) tableStyles);
-        return table.getFilterRowStyle();
+        return table.getSubHeaderRowStyle();
     }
 
     protected String getSectionName() {

@@ -254,16 +254,16 @@ public abstract class AbstractTableJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("nonEmptyRecordsFilterText", nonEmptyRecordsFilterText);
     }
 
-    public void setFilterRowStyle(ValueExpression filterRowStyle) {
-        getDelegate().setPropertyValue("filterRowStyle", filterRowStyle);
+    public void setSubHeaderRowStyle(ValueExpression subHeaderRowStyle) {
+        getDelegate().setPropertyValue("subHeaderRowStyle", subHeaderRowStyle);
     }
 
-    public void setFilterRowClass(ValueExpression filterRowClass) {
-        getDelegate().setPropertyValue("filterRowClass", filterRowClass);
+    public void setSubHeaderRowClass(ValueExpression subHeaderRowClass) {
+        getDelegate().setPropertyValue("subHeaderRowClass", subHeaderRowClass);
     }
 
-    public void setFilterRowSeparator(ValueExpression filterRowSeparator) {
-        getDelegate().setPropertyValue("filterRowSeparator", filterRowSeparator);
+    public void setSubHeaderRowSeparator(ValueExpression subHeaderRowSeparator) {
+        getDelegate().setPropertyValue("subHeaderRowSeparator", subHeaderRowSeparator);
     }
 
     public void setRolloverRowStyle(ValueExpression rolloverRowStyle) {

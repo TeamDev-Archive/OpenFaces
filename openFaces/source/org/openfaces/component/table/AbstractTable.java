@@ -84,9 +84,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private String commonFooterRowStyle;
     private String commonFooterRowClass;
 
-    private String filterRowStyle;
-    private String filterRowClass;
-    private String filterRowSeparator;
+    private String subHeaderRowStyle;
+    private String subHeaderRowClass;
+    private String subHeaderRowSeparator;
     private String allRecordsFilterText;
     private String emptyRecordsFilterText;
     private String nonEmptyRecordsFilterText;
@@ -172,7 +172,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 headerHorizSeparator, headerVertSeparator, multiHeaderSeparator, multiFooterSeparator,
                 footerHorizSeparator, footerVertSeparator,
                 useAjax, allRecordsFilterText, emptyRecordsFilterText, nonEmptyRecordsFilterText,
-                filterRowStyle, filterRowClass, filterRowSeparator, focusedStyle, focusedClass,
+                subHeaderRowStyle, subHeaderRowClass, subHeaderRowSeparator, focusedStyle, focusedClass,
                 rolloverRowStyle, rolloverRowClass, noDataRowStyle, noDataRowClass,
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
@@ -243,9 +243,9 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         allRecordsFilterText = (String) state[i++];
         emptyRecordsFilterText = (String) state[i++];
         nonEmptyRecordsFilterText = (String) state[i++];
-        filterRowStyle = (String) state[i++];
-        filterRowClass = (String) state[i++];
-        filterRowSeparator = (String) state[i++];
+        subHeaderRowStyle = (String) state[i++];
+        subHeaderRowClass = (String) state[i++];
+        subHeaderRowSeparator = (String) state[i++];
 
         focusedStyle = (String) state[i++];
         focusedClass = (String) state[i++];
@@ -1096,28 +1096,28 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         setSortColumnId(column.getId());
     }
 
-    public String getFilterRowStyle() {
-        return ValueBindings.get(this, "filterRowStyle", filterRowStyle);
+    public String getSubHeaderRowStyle() {
+        return ValueBindings.get(this, "subHeaderRowStyle", subHeaderRowStyle);
     }
 
-    public void setFilterRowStyle(String filterRowStyle) {
-        this.filterRowStyle = filterRowStyle;
+    public void setSubHeaderRowStyle(String subHeaderRowStyle) {
+        this.subHeaderRowStyle = subHeaderRowStyle;
     }
 
-    public String getFilterRowClass() {
-        return ValueBindings.get(this, "filterRowClass", filterRowClass);
+    public String getSubHeaderRowClass() {
+        return ValueBindings.get(this, "subHeaderRowClass", subHeaderRowClass);
     }
 
-    public void setFilterRowClass(String filterRowClass) {
-        this.filterRowClass = filterRowClass;
+    public void setSubHeaderRowClass(String subHeaderRowClass) {
+        this.subHeaderRowClass = subHeaderRowClass;
     }
 
-    public String getFilterRowSeparator() {
-        return ValueBindings.get(this, "filterRowSeparator", filterRowSeparator);
+    public String getSubHeaderRowSeparator() {
+        return ValueBindings.get(this, "subHeaderRowSeparator", subHeaderRowSeparator);
     }
 
-    public void setFilterRowSeparator(String filterRowSeparator) {
-        this.filterRowSeparator = filterRowSeparator;
+    public void setSubHeaderRowSeparator(String subHeaderRowSeparator) {
+        this.subHeaderRowSeparator = subHeaderRowSeparator;
     }
 
     public String getAllRecordsFilterText() {

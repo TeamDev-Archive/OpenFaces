@@ -12,7 +12,7 @@
   <h:form id="form1">
      <o:dataTable cellspacing="1" cellpadding="1"
                  id="newItemsListExpanded" styleClass="standard100"
-                 headerRowClass="mainDatatblHead" filterRowClass="mainDatatblFilhead"
+                 headerRowClass="mainDatatblHead" subHeaderRowClass="mainDatatblFilhead"
                  var="NewItemMessage" value="#{TableTestBean.collection1}" rowKey="#{NewItemMessage.id}" pageSize="5"
              columnsOrder="#{QKS1731.colOrder}">
       <o:column id="col1" sortingExpression="#{NewItemMessage.field1}">

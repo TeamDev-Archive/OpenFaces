@@ -90,9 +90,9 @@ public abstract class AbstractTableTag extends AbstractComponentTag {
         setStringProperty(component, "emptyRecordsFilterText");
         setStringProperty(component, "nonEmptyRecordsFilterText");
 
-        setStringProperty(component, "filterRowStyle");
-        setStringProperty(component, "filterRowClass");
-        setStringProperty(component, "filterRowSeparator");
+        setStringProperty(component, "subHeaderRowStyle");
+        setStringProperty(component, "subHeaderRowClass");
+        setStringProperty(component, "subHeaderRowSeparator");
 
         setStringProperty(component, "sortedAscendingImageUrl");
         setStringProperty(component, "sortedDescendingImageUrl");
