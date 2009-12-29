@@ -675,21 +675,22 @@ ul.demoLibrary-tagsFullList li img{margin: 0 .5em -3px 0;}
 }
 
 .demoLibrary-cafe .cafeDropdown{
-	position:absolute;
-	top:100%;
-	left:0;
-	right:0;
-	background:url(../../images/selectbooleancheckbox/dropdown-bg.png) repeat 0 0;
-	border: solid 1px #d6c5b1;
-	border-top:none;
-	border-radius:0 0 6px 6px;
-	-moz-border-radius:0 0 6px 6px;
-	-webkit-border-radius:0 0 6px 6px;
-	padding:10px 0;
-  display:block;
+       position:absolute;
+       top:100%;
+       left:0;
+       right:0;
+       background:url(../../images/selectbooleancheckbox/dropdown-bg.png) repeat 0 0;
+       border: solid 1px #d6c5b1;
+       border-top:none;
+       border-radius:0 0 6px 6px;
+       -moz-border-radius:0 0 6px 6px;
+       -webkit-border-bottom-left-radius:6px;
+       -webkit-border-bottom-right-radius:6px;
+       padding:10px 0;       
 }
 
 .demoLibrary-cafe .cafeDropdown ul li{float:none;
+   width:auto; text-align:left;
 height:auto; font-size:12pt; color:#000; padding: 11px 10px 6px 40px; min-height:22px;}
 .demoLibrary-cafe .cafeDropdown ul li input.checkbox{
 	display:block;
