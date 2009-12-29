@@ -180,7 +180,16 @@ public class ResourceUtil {
                 bufferedReader = new BufferedReader(new InputStreamReader(versionStream));
                 String buildInfo = bufferedReader.readLine();
                 if (buildInfo != null) {
-                    version = buildInfo.substring(0, buildInfo.indexOf(",")).trim();
+                    int idx1 = buildInfo.indexOf(",");
+                    version = buildInfo.substring(0, idx1).trim();
+                    if (version.contains("EAP")) {
+                        int idx2 = buildInfo.indexOf(",", idx1 + 1);
+                        String buildStr = buildInfo.substring(idx1 + 1, idx2).trim();
+                        String buildNoPrefix = "build.";
+                        if (buildStr.startsWith(buildNoPrefix)) {
+                            version += "." + buildStr.substring(buildNoPrefix.length());
+                        } 
+                    }
                 }
             } catch (IOException e) {
                 Log.log("Couldn't read version string", e);
