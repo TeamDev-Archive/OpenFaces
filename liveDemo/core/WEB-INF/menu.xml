@@ -128,6 +128,11 @@
     <image>CompositeFilter</image>
     <selectedImage>/images/components/titles/CompositeFilter.png</selectedImage>
     <keyFeatures>
+      <feature>Type-specific editors</feature>
+      <feature>In-memory collections filtering</feature>
+      <feature>Hibernate Criteria builder</feature>
+      <feature>DataTable and TreeTable integration</feature>
+      <feature>I18n support</feature>
     </keyFeatures>
     <demos>
       <demoItem>
