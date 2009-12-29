@@ -30420,6 +30420,26 @@ and it is automatically triggered on any form submission. -->
       <!-- @el only -->
     </attribute>
     <attribute>
+      <description>A style for the CompositeFilter.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the CompositeFilter.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>ID of a filterable component that should be filtered with this component. It should be defined in
         the same way as the "for" property of the standard HTMLOutputLabel component.
       </description>
