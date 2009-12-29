@@ -8,7 +8,7 @@
   </h2>
   <ul>
 
-    <o:forEach var="demoItem" items="#{MenuService.selectedMenu.demos}" statusVar="status"
+    <o:forEach var="demoItem" items="#{MenuService.selectedMenu.demos}" varStatus="status"
                rendered="#{MenuService.selectedMenu.demoCount > 1}">
       <h:panelGroup rendered="#{status.index eq MenuService.selectedMenu.selectedTabIndex}">
         <li class="active">

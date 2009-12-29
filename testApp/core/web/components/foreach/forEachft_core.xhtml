@@ -22,25 +22,25 @@
 <h4>items not specified</h4>
 
 <h:outputText value="for 1 to 10        :   "/>
-<o:forEach begin="1" end="10" statusVar="itemStatus" id="fe1">
+<o:forEach begin="1" end="10" varStatus="itemStatus" id="fe1">
   <h:outputText value="#{itemStatus.index}, " id="hot1"/>
 </o:forEach>
 
 <br/><h:outputText value="for 1 to 10 step 2 :   "/>
-<o:forEach begin="1" end="10" step="2" statusVar="itemStatus" id="fe2">
+<o:forEach begin="1" end="10" step="2" varStatus="itemStatus" id="fe2">
   <h:outputText value="#{itemStatus.index}, " id="hot1"/>
 </o:forEach>
 
 <br/><h:outputText value="for 10 to -10 step -1 :   "/>
-<o:forEach begin="10" end="-10" step="-1" statusVar="itemStatus" id="fe3">
+<o:forEach begin="10" end="-10" step="-1" varStatus="itemStatus" id="fe3">
   <h:outputText value="#{itemStatus.index}, " id="hot1"/>
 </o:forEach>
 
 <h4>nested ForEach</h4>
 
 <h:outputText value="for 0 to 9 do {for 0 to 9}:   "/><br/>
-<o:forEach begin="0" end="9" statusVar="itemStatus1" id="fe4">
-  <o:forEach begin="0" end="9" statusVar="itemStatus2" id="fe5">
+<o:forEach begin="0" end="9" varStatus="itemStatus1" id="fe4">
+  <o:forEach begin="0" end="9" varStatus="itemStatus2" id="fe5">
     <h:outputText value="#{itemStatus1.index}x#{itemStatus2.index}, " id="hot1"/>
   </o:forEach>
   <f:verbatim><br/></f:verbatim>
@@ -80,7 +80,7 @@
 
 <h4>conversion+validation test (Long)(2 - length - 5)</h4>
 
-<o:forEach items="#{ForEachBean.validationObjectList}" var="item" id="fe9" statusVar="itemStatus">
+<o:forEach items="#{ForEachBean.validationObjectList}" var="item" id="fe9" varStatus="itemStatus">
   <h:outputText value="#{itemStatus.index}. " id="hot1"/>
   <o:inputText value="#{item.longValue}" id="qit1"/>
   <h:message for="qit1" tooltip="true" style="color: red; font-family: serif" id="hm1"/>
@@ -96,7 +96,7 @@
 
 <h4>Ajax</h4>
 
-<o:forEach items="#{ForEachBean.suggestionsList}" var="item" id="fe10" statusVar="itemStatus">
+<o:forEach items="#{ForEachBean.suggestionsList}" var="item" id="fe10" varStatus="itemStatus">
   <h:outputText value="#{itemStatus.index}. " id="hot1"/>
   <o:suggestionField id="sf1"
                      suggestionMode="custom"
@@ -110,21 +110,21 @@
 
 <h:outputText value="blank wrapperTagName :"/>
 <br/>
-<o:forEach begin="1" end="10" id="fe11" statusVar="itemStatus" wrapperTagName=""
+<o:forEach begin="1" end="10" id="fe11" varStatus="itemStatus" wrapperTagName=""
            style="border: 2px gray solid; padding: 10px;">
   <h:outputText value="#{itemStatus.index}, " id="hot1"/>
 </o:forEach>
 
 <br/><br/><h:outputText value="wrapperTagName = div :"/>
-<o:forEach begin="1" end="10" id="fe12" statusVar="itemStatus" wrapperTagName="div"
+<o:forEach begin="1" end="10" id="fe12" varStatus="itemStatus" wrapperTagName="div"
            style="border: 2px gray solid; padding: 10px;">
   <h:outputText value="#{itemStatus.index}, " id="hot1"/>
 </o:forEach>
 
 <br/><h:outputText value="wrapperTagName = table :"/>
-<o:forEach begin="0" end="9" id="fe13" statusVar="itemStatus1" wrapperTagName="table"
+<o:forEach begin="0" end="9" id="fe13" varStatus="itemStatus1" wrapperTagName="table"
            style="border: 1px gray solid; padding: 10px;">
-  <o:forEach begin="0" end="9" id="fe14" statusVar="itemStatus2" wrapperTagName="tr">
+  <o:forEach begin="0" end="9" id="fe14" varStatus="itemStatus2" wrapperTagName="tr">
     <o:forEach end="0" id="fe15" wrapperTagName="td">
       <h:outputText value=" #{itemStatus1.index}x#{itemStatus2.index} " id="hot1"/>
     </o:forEach>

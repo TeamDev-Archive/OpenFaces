@@ -38,7 +38,7 @@
 
       <h5>Undone tasks</h5>
       <h:panelGroup id="taskList" styleClass="tasks">
-        <o:forEach items="#{TaskBean.tasks}" id="undoneTasks" var="task" statusVar="taskListStatus">
+        <o:forEach items="#{TaskBean.tasks}" id="undoneTasks" var="task" varStatus="taskListStatus">
           <h:panelGrid id="taskListItem" onmouseover="this.className='rollover';"
                        onmouseout="this.className='';" columns="3" cellspacing="0" cellpadding="0">
             <o:selectBooleanCheckbox value="#{task.completed}"
@@ -90,7 +90,7 @@
         </h:panelGroup>
       </h5>
       <h:panelGroup id="doneList" styleClass="tasks">
-        <o:forEach items="#{TaskBean.doneTasks}" var="task" id="doneTasks" statusVar="taskListStatus">
+        <o:forEach items="#{TaskBean.doneTasks}" var="task" id="doneTasks" varStatus="taskListStatus">
           <h:panelGrid onmouseover="this.className='rollover';"
                        onmouseout="this.className='';" columns="3" cellspacing="0" cellpadding="0">
             <o:selectBooleanCheckbox value="#{task.completed}"

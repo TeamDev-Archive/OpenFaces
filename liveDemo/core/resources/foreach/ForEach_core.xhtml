@@ -30,7 +30,7 @@
           <h2>Banks</h2>
           <h:panelGroup id="banksList">
             <h:panelGroup rendered="#{BanksList.selectedState ne null}">
-              <o:forEach items="#{BanksList.selectedState.banks}" var="bank" statusVar="status">
+              <o:forEach items="#{BanksList.selectedState.banks}" var="bank" varStatus="status">
                 <ul>
                   <li>
                     <h:outputText value="#{bank.institutionName}"/>, &#160;<h:outputText value="#{bank.city}"/>

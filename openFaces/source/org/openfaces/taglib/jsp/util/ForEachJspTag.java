@@ -51,8 +51,8 @@ public class ForEachJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("var", var);
     }
 
-    public void setStatusVar(ValueExpression statusVar) {
-        getDelegate().setPropertyValue("statusVar", statusVar);
+    public void setVarStatus(ValueExpression varStatus) {
+        getDelegate().setPropertyValue("varStatus", varStatus);
     }
 
     public void setWrapperTagName(ValueExpression wrapperTagName) {

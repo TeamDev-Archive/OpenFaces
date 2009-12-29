@@ -13,7 +13,7 @@ package org.openfaces.component.util;
 
 /**
  * IterationStatus is simple storage object class for OpenFaces's <code>ForEach</code> component class.
- * After it is been created all it's values may be read only. It's constructor called by <code>org.openfaces.component.foreach.ForEach</code> class into <code>setStatusVar()</code> method.
+ * After it is been created all it's values may be read only. It's constructor called by <code>org.openfaces.component.foreach.ForEach</code> class into <code>setVarStatus()</code> method.
  *
  * @author Alexey Tarasyuk
  * @see ForEach
@@ -29,7 +29,7 @@ public class IterationStatus {
     private final Integer step;
 
     /**
-     * see constructor call sequence into setStatusVar() method of org.openfaces.component.foreach.ForEach class.
+     * see constructor call sequence into setVarStatus() method of org.openfaces.component.foreach.ForEach class.
      *
      * @param current is current iterated object in the value-binded collection of data. If no value-binded collection is exist <code>current</code> must be a <code>null</code>.
      * @param index   is index of current iteration. If value-binded data collection is specified it also the index of currend data object into collection.

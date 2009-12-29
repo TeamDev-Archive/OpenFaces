@@ -38,7 +38,7 @@ public class ForEachTag extends AbstractComponentTag {
         setIntProperty(component, "end");
         setIntProperty(component, "step");
         setStringProperty(component, "var");
-        setStringProperty(component, "statusVar");
+        setStringProperty(component, "varStatus");
         setStringProperty(component, "wrapperTagName");
     }
 }

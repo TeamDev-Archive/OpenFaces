@@ -27198,7 +27198,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description></description>
-      <name>statusVar</name>
+      <name>varStatus</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

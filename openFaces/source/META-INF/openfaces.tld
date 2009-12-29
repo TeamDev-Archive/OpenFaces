@@ -28205,7 +28205,7 @@ and it is automatically triggered on any form submission. -->
       <description>Name of the request-scope variable under which the current iteration status object (of type
         org.openfaces.component.util.IterationStatus) is available.
       </description>
-      <name>statusVar</name>
+      <name>varStatus</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
