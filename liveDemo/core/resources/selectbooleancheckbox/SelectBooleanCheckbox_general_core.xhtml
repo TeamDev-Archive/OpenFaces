@@ -27,7 +27,7 @@
                   bodyStyle="text-align: center; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
                   headerStyle="text-align: center; padding-left: 5px; padding-right: 5px;">
           <f:facet name="header">
-            <h:outputText value="#{group.label}"/>
+            <h:outputText value="#{PermissionSchema.permissionGroup['ANONYMOUS'].label}"/>
           </f:facet>
 
           <o:selectBooleanCheckbox triStateAllowed="true"
@@ -44,7 +44,7 @@
                   bodyStyle="text-align: center; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
                   headerStyle="text-align: center; padding-left: 5px; padding-right: 5px;">
           <f:facet name="header">
-            <h:outputText value="#{group.label}"/>
+            <h:outputText value="#{PermissionSchema.permissionGroup['USER'].label}"/>
           </f:facet>
           <o:selectBooleanCheckbox triStateAllowed="true"
                                    value="#{PermissionSchema.permissionsAssignment[PermissionSchema.permissionGroup['USER']][permission].outputState}"
@@ -60,7 +60,7 @@
                   bodyStyle="text-align: center; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
                   headerStyle="text-align: center; padding-left: 5px; padding-right: 5px;">
           <f:facet name="header">
-            <h:outputText value="#{group.label}"/>
+            <h:outputText value="#{PermissionSchema.permissionGroup['ADMINISTRATOR'].label}"/>
           </f:facet>
           <o:selectBooleanCheckbox triStateAllowed="true"
                                    value="#{PermissionSchema.permissionsAssignment[PermissionSchema.permissionGroup['ADMINISTRATOR']][permission].outputState}"
