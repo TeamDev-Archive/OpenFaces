@@ -1,7 +1,7 @@
 package org.openfaces.component.filter;
 
-import com.sun.el.lang.ELArithmetic;
 import static org.openfaces.component.filter.FilterCondition.*;
+import org.openfaces.util.ReflectionUtil;
 
 import java.util.Date;
 import java.util.EnumSet;
@@ -45,7 +45,7 @@ public enum FilterType {
     }
 
     public static FilterType defineByClass(Class clazz){        
-        if (ELArithmetic.isNumberType(clazz)){
+        if (ReflectionUtil.isNumberType(clazz)){
             return NUMBER;
         }
         if (clazz.isAssignableFrom(Date.class)){

@@ -158,6 +158,13 @@ public class ReflectionUtil {
 
     }
 
+    public final static boolean isNumberType(final Class<?> type) {
+        return type == Long.TYPE || type == Double.TYPE ||
+                type == Byte.TYPE || type == Short.TYPE ||
+                type == Integer.TYPE || type == Float.TYPE ||
+                Number.class.isAssignableFrom(type);
+    }
+
     public static Class getGenericParameterClass(Class actualClass) {
         return getGenericParameterClass(actualClass, 0);
     }
