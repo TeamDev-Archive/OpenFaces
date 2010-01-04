@@ -41,25 +41,19 @@ public class FloatingIconMessage extends OUIMessage {
         setShowSummary(false);
     }
 
-    public FloatingIconMessage(FloatingIconMessage bubble, boolean runtime) {
+    public FloatingIconMessage(FloatingIconMessage template, boolean runtime) {
+        super(template);
         runtimeDefined = runtime;
         setRendererType(DEFAULT_RENDERER_TYPE);
-        if (bubble == null)
+        if (template == null)
             return;
-        if (bubble.getImageUrl() != null)
-            imageUrl = bubble.getImageUrl();
-        if (bubble.getOffsetLeft() != DEFAULT_OFFSET_LEFT)
-            offsetLeft = bubble.getOffsetLeft();
-        if (bubble.getOffsetTop() != DEFAULT_OFFSET_TOP)
-            offsetTop = bubble.getOffsetTop();
-        noImage = bubble.isNoImage();
-        noStyle = bubble.isNoStyle();
-        if (bubble.getStyle() != null)
-            style = bubble.getStyle();
-        if (bubble.getStyleClass() != null)
-            styleClass = bubble.getStyleClass();
-        setShowSummary(bubble.isShowSummary());
-        setShowDetail(bubble.isShowDetail());
+        if (template.getImageUrl() != null)
+            imageUrl = template.getImageUrl();
+        if (template.getOffsetLeft() != DEFAULT_OFFSET_LEFT)
+            offsetLeft = template.getOffsetLeft();
+        if (template.getOffsetTop() != DEFAULT_OFFSET_TOP)
+            offsetTop = template.getOffsetTop();
+        copyAttributes(template, "noImage", "noStyle", "showSummary", "showDetail");
     }
 
     public boolean isRuntimeDefined() {

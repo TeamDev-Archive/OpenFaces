@@ -14,6 +14,7 @@ package org.openfaces.component.validation;
 import org.openfaces.component.OUIComponent;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIMessage;
 import javax.faces.context.FacesContext;
 
@@ -21,11 +22,11 @@ import javax.faces.context.FacesContext;
  * @author Dmitry Pikhulya
  */
 public abstract class OUIMessage extends UIMessage implements OUIComponent {
-    protected String style;
-    protected String styleClass;
+    private String style;
+    private String styleClass;
 
-    protected String rolloverStyle;
-    protected String rolloverClass;
+    private String rolloverStyle;
+    private String rolloverClass;
 
     private String onclick;
     private String ondblclick;
@@ -34,6 +35,22 @@ public abstract class OUIMessage extends UIMessage implements OUIComponent {
     private String onmousemove;
     private String onmouseout;
     private String onmouseup;
+
+    protected OUIMessage() {
+    }
+
+    public OUIMessage(OUIMessage template) {
+        copyAttributes(template, "style", "styleClass",
+                "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove", "onmouseout", "onmouseup");
+    }
+
+    protected void copyAttributes(UIComponent template, String... attributes) {
+        for (String attribute : attributes) {
+            Object value = template.getAttributes().get(attribute);
+            if (value != null)
+                this.getAttributes().put(attribute, value);
+        }
+    }
 
 
     public String getStyle() {

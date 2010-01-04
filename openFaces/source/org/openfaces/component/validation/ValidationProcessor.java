@@ -208,7 +208,7 @@ public class ValidationProcessor extends UIComponentBase {
                             " init parameter in web.xml. The specified class is not a validation message class as it " +
                             "doesn't extend the javax.faces.component.UIMessage class: " + defaultValidationPresentationClass);
                 }
-                configureDefaultPresentationInstance(context, externalContext, presentationInstance);
+                configureDefaultPresentationInstance(externalContext, presentationInstance);
                 processor.setDefaultPresentationInstance((UIMessage) presentationInstance);
 
             } catch (ClassNotFoundException e) {
@@ -226,7 +226,7 @@ public class ValidationProcessor extends UIComponentBase {
         }
     }
 
-    private static void configureDefaultPresentationInstance(FacesContext context, ExternalContext externalContext, Object presentationInstance)
+    private static void configureDefaultPresentationInstance(ExternalContext externalContext, Object presentationInstance)
             throws IntrospectionException, IllegalAccessException, InvocationTargetException {
         Map<String, PropertyDescriptor> propertyDescriptorsMap = getPropertyDescriptors(presentationInstance.getClass());
         Map<String, String> presentationParams = new HashMap<String, String>();
