@@ -11,9 +11,10 @@
  */
 package org.openfaces.component.validation;
 
-import org.openfaces.util.Finder;
 import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Finder;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIForm;
@@ -195,54 +196,24 @@ public class ValidationProcessor extends UIComponentBase {
             try {
                 Class presentationClass = Class.forName(defaultValidationPresentationClass);
                 Field field = presentationClass.getField("COMPONENT_TYPE");
+                if (field == null)
+                    throw new FacesException("Invalid value of " + APPLICATION_PARAM_DEFAULT_VALIDATION_PRESENTATION_CLASS + 
+                            " init parameter in web.xml. Seems that the specified class is not a component class since the " +
+                            "COMPONENT_TYPE constant field cannot be found in this class: " + defaultValidationPresentationClass);
                 String componentType = (String) field.get(null);
                 Object presentationInstance = context.getApplication().createComponent(componentType);
 
-                BeanInfo presentationBeanInfo = Introspector.getBeanInfo(presentationClass);
-                PropertyDescriptor[] propertyDescriptors = presentationBeanInfo.getPropertyDescriptors();
-                Map<String, PropertyDescriptor> propertyDescriptorsMap = new HashMap<String, PropertyDescriptor>();
-
-                for (int i = 0, propertyCount = propertyDescriptors.length; i < propertyCount; i++) {
-                    PropertyDescriptor pd = propertyDescriptors[i];
-                    if (pd.getReadMethod() != null) {
-                        propertyDescriptorsMap.put(pd.getName(), pd);
-                    }
+                if (!(presentationInstance instanceof UIMessage)) {
+                    throw new FacesException("Invalid value of " + APPLICATION_PARAM_DEFAULT_VALIDATION_PRESENTATION_CLASS +
+                            " init parameter in web.xml. The specified class is not a validation message class as it " +
+                            "doesn't extend the javax.faces.component.UIMessage class: " + defaultValidationPresentationClass);
                 }
+                configureDefaultPresentationInstance(context, externalContext, presentationInstance);
+                processor.setDefaultPresentationInstance((UIMessage) presentationInstance);
 
-                if (presentationInstance instanceof UIMessage) {
-                    Map<String, String> presentationParams = new HashMap<String, String>();
-                    Map initParameters = externalContext.getInitParameterMap();
-                    String paramPrefix = defaultValidationPresentationClass.substring(defaultValidationPresentationClass.lastIndexOf('.') + 1) + ".";
-                    for (Map.Entry entry : (Set<Map.Entry>) initParameters.entrySet()) {
-                        String key = (String) entry.getKey();
-                        if (key.startsWith(paramPrefix)) {
-                            String realParamName = key.substring(key.indexOf(".") + 1);
-                            presentationParams.put(realParamName, (String) entry.getValue());
-                        }
-                    }
-                    for (Map.Entry<String, String> entry : presentationParams.entrySet()) {
-                        String propertyName = entry.getKey();
-                        String propertyValue = entry.getValue();
-                        PropertyDescriptor pd = propertyDescriptorsMap.get(propertyName);
-                        if (pd != null) {
-                            Class propertyType = pd.getPropertyType();
-                            Object resValue;
-                            if (propertyType.equals(Boolean.TYPE)) {
-                                resValue = Boolean.valueOf(propertyValue);
-                            } else if (propertyType.equals(String.class)) {
-                                resValue = propertyValue;
-                            } else if (propertyType.equals(Integer.TYPE)) {
-                                resValue = Integer.valueOf(propertyValue);
-                            } else {
-                                throw new UnsupportedOperationException("Attribute type '" + propertyType + "' for attribute '" + propertyName + "' currently does not supported.");
-                            }
-                            pd.getWriteMethod().invoke(presentationInstance, resValue);
-                        }
-                    }
-                    processor.setDefaultPresentationInstance((UIMessage) presentationInstance);
-                }
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                throw new FacesException("Invalid value of " + APPLICATION_PARAM_DEFAULT_VALIDATION_PRESENTATION_CLASS +
+                        " init parameter in web.xml. Could not find the specified class: " + defaultValidationPresentationClass, e);
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             } catch (NoSuchFieldException e) {
@@ -253,6 +224,66 @@ public class ValidationProcessor extends UIComponentBase {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private static void configureDefaultPresentationInstance(FacesContext context, ExternalContext externalContext, Object presentationInstance)
+            throws IntrospectionException, IllegalAccessException, InvocationTargetException {
+        Map<String, PropertyDescriptor> propertyDescriptorsMap = getPropertyDescriptors(presentationInstance.getClass());
+        Map<String, String> presentationParams = new HashMap<String, String>();
+        Map initParameters = externalContext.getInitParameterMap();
+        String className = presentationInstance.getClass().getName();
+        String paramPrefix = className.substring(className.lastIndexOf('.') + 1) + ".";
+        for (Map.Entry entry : (Set<Map.Entry>) initParameters.entrySet()) {
+            String key = (String) entry.getKey();
+            if (!key.startsWith(paramPrefix)) continue;
+            String realParamName = key.substring(key.indexOf(".") + 1);
+            presentationParams.put(realParamName, (String) entry.getValue());
+        }
+        for (Map.Entry<String, String> entry : presentationParams.entrySet()) {
+            String propertyName = entry.getKey();
+            String propertyValue = entry.getValue();
+            PropertyDescriptor pd = propertyDescriptorsMap.get(propertyName);
+            if (pd == null) {
+                throw new FacesException("Error processing init parameter " + paramPrefix + propertyName + ": couldn't find property \"" + propertyName + "\" in  class: " + presentationInstance.getClass().getName());
+            } else {
+                Class propertyType = pd.getPropertyType();
+                Object resValue;
+                if (propertyType.equals(Boolean.TYPE)) {
+                    resValue = Boolean.valueOf(propertyValue);
+                } else if (propertyType.equals(String.class)) {
+                    resValue = propertyValue;
+                } else if (propertyType.equals(Short.TYPE)) {
+                    resValue = Short.valueOf(propertyValue);
+                } else if (propertyType.equals(Integer.TYPE)) {
+                    resValue = Integer.valueOf(propertyValue);
+                } else if (propertyType.equals(Long.TYPE)) {
+                    resValue = Long.valueOf(propertyValue);
+                } else if (propertyType.equals(Float.TYPE)) {
+                    resValue = Float.valueOf(propertyValue);
+                } else if (propertyType.equals(Double.TYPE)) {
+                    resValue = Double.valueOf(propertyValue);
+                } else if (propertyType.equals(Character.TYPE)) {
+                    resValue = propertyValue.length() >= 1 ? propertyValue.charAt(0) : '?';
+                } else {
+                    throw new UnsupportedOperationException("Attribute type '" + propertyType.getName() + "' for attribute '" + propertyName + "' is not supported.");
+                }
+                pd.getWriteMethod().invoke(presentationInstance, resValue);
+            }
+        }
+    }
+
+    private static Map<String, PropertyDescriptor> getPropertyDescriptors(Class presentationClass) throws IntrospectionException {
+        BeanInfo presentationBeanInfo = Introspector.getBeanInfo(presentationClass);
+        PropertyDescriptor[] propertyDescriptors = presentationBeanInfo.getPropertyDescriptors();
+        Map<String, PropertyDescriptor> propertyDescriptorsMap = new HashMap<String, PropertyDescriptor>();
+
+        for (int i = 0, propertyCount = propertyDescriptors.length; i < propertyCount; i++) {
+            PropertyDescriptor pd = propertyDescriptors[i];
+            if (pd.getReadMethod() != null) {
+                propertyDescriptorsMap.put(pd.getName(), pd);
+            }
+        }
+        return propertyDescriptorsMap;
     }
 
     public ClientValidationMode getClientValidationRuleForComponent(VerifiableComponent vc) {
