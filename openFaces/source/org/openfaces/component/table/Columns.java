@@ -685,9 +685,14 @@ public class Columns extends UIComponentBase implements NamingContainer {
                         "footerOnclick", "footerOndblclick", "footerOnmousedown", "footerOnmouseover", "footerOnmousemove",
                         "footerOnmouseout", "footerOnmouseup"};
                 for (String attrName : copiedAttributes) {
-                    Object attributeValue = getAttributes().get(attrName);
-                    if (attributeValue != null)
-                        column.getAttributes().put(attrName, attributeValue);
+                    ValueExpression expression = getValueExpression(attrName);
+                    if (expression != null)
+                        column.setValueExpression(attrName, expression);
+                    else {
+                        Object attributeValue = getAttributes().get(attrName);
+                        if (attributeValue != null)
+                            column.getAttributes().put(attrName, attributeValue);
+                    }
                 }
             }
             applySortingParameters(column);

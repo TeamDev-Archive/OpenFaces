@@ -432,8 +432,8 @@ public abstract class AbstractComponentTag extends AbstractTag {
         if (valueDeclaration == null)
             return true;
         if (getExpressionCreator().isValueReference(attributeName, valueDeclaration)) {
-            ValueExpression ve = createValueExpression(getFacesContext(), propertyName, valueDeclaration);
-            component.setValueExpression(attributeName, ve);
+            ValueExpression ve = createValueExpression(getFacesContext(), attributeName, valueDeclaration);
+            component.setValueExpression(propertyName, ve);
             return true;
         } else
             return false;

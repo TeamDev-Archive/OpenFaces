@@ -2867,7 +2867,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>A value-binding expression that should reference an identifier for each dynamic column. You
         can use a column data variable specified in the "var" in the expression for this attribute. Note that
         column IDs evaluated for columns inside the o:columns tag are used in the same way as "id" attributes
-        of ordinary o:column tags, so the identifiers evaluated using this expression should be unique in
+        of ordinary &lt;o:column&gt; tags, so the identifiers evaluated using this expression should be unique in
         bounds of the containing table.
       </description>
       <name>columnId</name>
@@ -2895,7 +2895,8 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
         column's &quot;header&quot; facet, or serve for identifying the column name in such components as &lt;o:comopsitefilter&gt;
-        or &lt;o:columnVisibilityMenu&gt;.
+        or &lt;o:columnVisibilityMenu&gt;. You can use a column data variable specified in the "var" in the expression for this
+        attribute.
       </description>
       <name>header</name>
       <deferred-value>

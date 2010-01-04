@@ -14,8 +14,9 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
-import org.openfaces.component.table.Scrolling;
 import org.openfaces.component.table.Column;
+import org.openfaces.component.table.DynamicCol;
+import org.openfaces.component.table.Scrolling;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableUtil;
@@ -293,17 +294,23 @@ public abstract class TableHeaderOrFooter extends TableSection {
     }
 
     private static Object getHeaderOrFooterCellContent(BaseColumn col, boolean isHeader) {
-        Object cellContent;
-        if (isHeader) {
-            cellContent = col.getHeaderValue();
-            if (cellContent == null)
+        DynamicCol dynamicCol = col instanceof DynamicCol ? (DynamicCol) col : null;
+        if (dynamicCol != null) dynamicCol.declareContextVariables();
+        try {
+            Object cellContent;
+            if (isHeader) {
                 cellContent = col.getHeader();
-        } else {
-            cellContent = col.getFooterValue();
-            if (cellContent == null)
+                if (cellContent == null)
+                    cellContent = col.getHeaderValue();
+            } else {
                 cellContent = col.getFooter();
+                if (cellContent == null)
+                    cellContent = col.getFooterValue();
+            }
+            return cellContent;
+        } finally {
+            if (dynamicCol != null) dynamicCol.undeclareContextVariables();
         }
-        return cellContent;
     }
 
     public boolean hasSubHeader() {

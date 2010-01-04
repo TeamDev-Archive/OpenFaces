@@ -13,10 +13,11 @@ package org.openfaces.renderkit;
 
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
+import org.openfaces.component.table.ColumnGroup;
 import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.ColumnResizingState;
-import org.openfaces.component.table.ColumnGroup;
 import org.openfaces.component.table.Columns;
+import org.openfaces.component.table.DynamicCol;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.ComponentUtil;
@@ -158,11 +159,20 @@ public class TableUtil {
     }
 
     public static String obtainColumnHeader(BaseColumn column) {
-        String header = column.getHeaderValue();
-        if (header != null)
-            return header;
-        UIComponent component = column.getHeader();
-        return obtainOutputValue(component);
+        DynamicCol dynamicCol = (column instanceof DynamicCol) ? (DynamicCol) column : null;
+        if (dynamicCol != null) dynamicCol.declareContextVariables();
+        try {
+            String header = column.getHeaderValue();
+            if (header != null)
+                return header;
+            UIComponent component = column.getHeader();
+            if (component == null)
+                return "";
+
+            return obtainOutputValue(component);
+        } finally {
+            if (dynamicCol != null) dynamicCol.undeclareContextVariables();
+        }
 
         /*FacesContext context = FacesContext.getCurrentInstance();
         ResponseWriter responseWriter = context.getResponseWriter();
@@ -202,7 +212,8 @@ public class TableUtil {
 
     private static String obtainOutputValue(UIComponent component) {
         if (component instanceof UIOutput) {
-            return String.valueOf(((UIOutput) component).getValue());
+            Object value = ((UIOutput) component).getValue();
+            return (value != null) ? value.toString() : "";
         }
         for (UIComponent child : component.getChildren()) {
             String childValue = obtainOutputValue(child);

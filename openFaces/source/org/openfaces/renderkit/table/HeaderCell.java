@@ -113,22 +113,28 @@ class HeaderCell extends TableElement {
                 writer.startElement("span", table);
             writer.writeAttribute("class", "o_noWrapHeaderCell", null);
         }
-        if (content != null) {
-            if (content instanceof UIComponent) {
-                UIComponent uiComponent = (UIComponent) content;
-                uiComponent.encodeAll(facesContext);
-                if (TableStructure.isComponentEmpty(uiComponent) && tableStructure.isEmptyCellsTreatmentRequired())
-                    RenderingUtil.writeNonBreakableSpace(writer);
-            } else if (content instanceof TableElement)
-                ((TableElement) content).render(facesContext, null);
-            else {
-                if (escapeText)
-                    writer.writeText(content.toString(), null);
-                else
-                    writer.write(content.toString());
-            }
-        } else if (tableStructure.isEmptyCellsTreatmentRequired())
-            RenderingUtil.writeNonBreakableSpace(writer);
+        DynamicCol dynamicCol = column instanceof DynamicCol ? (DynamicCol) column : null;
+        if (dynamicCol != null) dynamicCol.declareContextVariables();
+        try {
+            if (content != null) {
+                if (content instanceof UIComponent) {
+                    UIComponent uiComponent = (UIComponent) content;
+                    uiComponent.encodeAll(facesContext);
+                    if (TableStructure.isComponentEmpty(uiComponent) && tableStructure.isEmptyCellsTreatmentRequired())
+                        RenderingUtil.writeNonBreakableSpace(writer);
+                } else if (content instanceof TableElement)
+                    ((TableElement) content).render(facesContext, null);
+                else {
+                    if (escapeText)
+                        writer.writeText(content.toString(), null);
+                    else
+                        writer.write(content.toString());
+                }
+            } else if (tableStructure.isEmptyCellsTreatmentRequired())
+                RenderingUtil.writeNonBreakableSpace(writer);
+        } finally {
+            if (dynamicCol != null) dynamicCol.undeclareContextVariables();
+        }
 
         if (renderSortingToggle && column != null && table instanceof AbstractTable)
             renderColumnSortingDirection(facesContext, (AbstractTable) table, column);

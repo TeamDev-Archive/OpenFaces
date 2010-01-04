@@ -11,6 +11,7 @@
  */
 package org.openfaces.util;
 
+import javax.el.ELContext;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.text.ParseException;
@@ -45,13 +46,30 @@ public class FacesUtil {
         return value;
     }
 
-    /*
-    public static Object evaluateVariable(String varName) {
+    public static <T>T getRequestMapValue(String requestMapKey, Class<T> cls) {
+        Object value = getRequestMapValue(requestMapKey);
+        if (value == null)
+            return null;
+        if (!cls.isAssignableFrom(value.getClass()))
+            throw new ClassCastException("Improper type for request map value " + requestMapKey + ". Requested " + cls.getName() + ", but was " + value.getClass());
+        return (T) value;
+    }
+
+
+    public static <T>T var(String varName, Class<T> cls) {
+        Object value = var(varName);
+        if (value == null)
+            return null;
+        if (!cls.isAssignableFrom(value.getClass()))
+            throw new ClassCastException("Improper type for variable " + varName + ". Requested " + cls.getName() + ", but was " + value.getClass());
+        return (T) value;
+    }
+
+    public static Object var(String varName) {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext elContext = context.getELContext();
         return elContext.getELResolver().getValue(elContext, null, varName);
     }
-    */
 
     /**
      * This method retrieve value from request parameters map by key.
