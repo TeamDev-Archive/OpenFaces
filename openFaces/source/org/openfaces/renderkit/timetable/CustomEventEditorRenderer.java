@@ -38,8 +38,8 @@ public class CustomEventEditorRenderer extends RendererBase {
         DayTable dayTable = (DayTable) editor.getParent();
         RenderingUtil.renderInitScript(context, new ScriptBuilder().initScript(context, dayTable, "O$._initCustomEventEditor",
                 editor,
-                new AnonymousFunction(editor.getOncreate(), "dayTable", "timetableEvent"),
-                new AnonymousFunction(editor.getOnedit(), "dayTable", "timetableEvent")).semicolon());
+                new AnonymousFunction(editor.getOncreate(), "timetable", "timetableEvent"),
+                new AnonymousFunction(editor.getOnedit(), "timetable", "timetableEvent")).semicolon());
         writer.endElement("span");
     }
 
