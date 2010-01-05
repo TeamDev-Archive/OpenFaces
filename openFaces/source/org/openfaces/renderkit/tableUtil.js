@@ -2319,7 +2319,7 @@ O$.Tables = {
         });
       } else {
         columns.forEach(function(c) {
-          c.setWidth(Math.floor((c._tempWidth / tblWidth) * tableWidth));
+          c.setWidth(Math.floor((c._explicitWidth / tblWidth) * tableWidth));
         });
       }
       tblWidth = tableWidth;
