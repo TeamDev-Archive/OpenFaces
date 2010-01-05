@@ -112,7 +112,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
     private void encodeEventEditor(FacesContext context, DayTable dayTable, List<TimetableResource> resources) throws IOException {
         UIComponent eventEditor = dayTable.getEventEditor();
         if (eventEditor == null) {
-            eventEditor = RenderingUtil.getOrCreateFacet(context, dayTable,
+            eventEditor = ComponentUtil.getOrCreateFacet(context, dayTable,
                     EventEditorDialog.COMPONENT_TYPE, "eventEditor", "_eventEditor", EventEditorDialog.class);
         }
         if (eventEditor instanceof EventEditorDialog)

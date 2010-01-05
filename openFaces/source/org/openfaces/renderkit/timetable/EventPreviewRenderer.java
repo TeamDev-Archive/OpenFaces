@@ -20,6 +20,7 @@ import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.StyleUtil;
+import org.openfaces.util.ComponentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -39,7 +40,7 @@ public class EventPreviewRenderer extends RendererBase {
         writer.startElement("div", eventPreview);
         writer.writeAttribute("id", clientId, null);
 
-        PopupLayer popupLayer = RenderingUtil.getOrCreateFacet(
+        PopupLayer popupLayer = ComponentUtil.getOrCreateFacet(
                 context, component, PopupLayer.COMPONENT_TYPE, "_popupLayer", PopupLayer.class);
         popupLayer.setId(eventPreview.getId() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "popupLayer");
         popupLayer.setStyle(eventPreview.getStyle());

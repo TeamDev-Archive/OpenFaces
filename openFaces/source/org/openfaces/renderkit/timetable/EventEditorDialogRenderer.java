@@ -185,7 +185,7 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
     }
 
     private UIComponent getDescriptionField(FacesContext context, EventEditorDialog dialog) {
-        UIInput descriptionField = RenderingUtil.getOrCreateFacet(context, dialog,
+        UIInput descriptionField = ComponentUtil.getOrCreateFacet(context, dialog,
                 HtmlInputTextarea.COMPONENT_TYPE, "descriptionArea", UIInput.class);
         descriptionField.getAttributes().put("styleClass", "o_fullWidthAndHeight");
         descriptionField.getAttributes().put("style", "resize: none");
@@ -193,16 +193,16 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
     }
 
     private UIComponent getNameField(FacesContext context, EventEditorDialog dialog) {
-        UIInput nameField = RenderingUtil.getOrCreateFacet(context, dialog, HtmlInputText.COMPONENT_TYPE, "nameField", UIInput.class);
+        UIInput nameField = ComponentUtil.getOrCreateFacet(context, dialog, HtmlInputText.COMPONENT_TYPE, "nameField", UIInput.class);
         nameField.getAttributes().put("styleClass", "o_fullWidth");
         return nameField;
     }
 
     private UIComponent createDateTimeFields(FacesContext context, final EventEditorDialog dialog, final String idPrefix) {
 
-        DateChooser dateField = RenderingUtil.getOrCreateFacet(context, dialog, DateChooser.COMPONENT_TYPE, idPrefix + "DateField", DateChooser.class);
+        DateChooser dateField = ComponentUtil.getOrCreateFacet(context, dialog, DateChooser.COMPONENT_TYPE, idPrefix + "DateField", DateChooser.class);
         HtmlOutputText nbsp = ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY, false);
-        UIInput timeField = RenderingUtil.getOrCreateFacet(context, dialog, HtmlInputText.COMPONENT_TYPE, idPrefix + "TimeField", UIInput.class);
+        UIInput timeField = ComponentUtil.getOrCreateFacet(context, dialog, HtmlInputText.COMPONENT_TYPE, idPrefix + "TimeField", UIInput.class);
         String timeCls = StyleUtil.mergeClassNames((String) timeField.getAttributes().get("styleClass"), "o_eventEditor_timeField");
         timeField.getAttributes().put("styleClass", timeCls);
 
@@ -223,7 +223,7 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
     }
 
     private UIComponent getResourceField(FacesContext context, EventEditorDialog dialog) {
-        DropDownField field = RenderingUtil.getOrCreateFacet(context, dialog, DropDownField.COMPONENT_TYPE,
+        DropDownField field = ComponentUtil.getOrCreateFacet(context, dialog, DropDownField.COMPONENT_TYPE,
                 "resourceField", DropDownField.class);
 
         List<TimetableResource> resources = (List<TimetableResource>) dialog.getAttributes().get(

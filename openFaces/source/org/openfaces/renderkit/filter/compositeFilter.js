@@ -10,41 +10,53 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-O$.Filter = {
+O$.CompositeFilter = {
 
-  _init: function(filterComponentId) {
-    O$.initComponent(filterComponentId, null, {
+  _init: function(clientId) {
+    O$.initComponent(clientId, null, {
+      apply: function() {
+        this._ajaxForApply().run();
+      },
+
       add: function() {
-        O$.requestComponentPortions(filterComponentId, ["newRow"], JSON.stringify({operation: 'add'}),
+        O$.requestComponentPortions(clientId, ["newRow"], JSON.stringify({operation: "add"}),
                 this._ajaxResponseProcessor);
       },
 
       clear: function() {
-        O$.requestComponentPortions(filterComponentId, ["removedFilter"], JSON.stringify({operation: 'clear'}),
+        O$.requestComponentPortions(clientId, ["removedFilter"], JSON.stringify({operation: "clear"}),
                 this._ajaxResponseProcessor);
       },
 
       remove: function(index) {
-        O$.requestComponentPortions(filterComponentId, ["removedRow:" + index], JSON.stringify({operation: 'remove', index: index}),
+        O$.requestComponentPortions(clientId, ["removedRow:" + index], JSON.stringify({operation: "remove", index: index}),
                 this._ajaxResponseProcessor);
       },
 
       _propertyChange: function(index) {
-        O$.requestComponentPortions(filterComponentId, ["operation:" + index], JSON.stringify({operation: 'propertyChange', index: index}),
+        O$.requestComponentPortions(clientId, ["operation:" + index], JSON.stringify({operation: "propertyChange", index: index}),
                 this._ajaxResponseProcessor);
       },
 
       _operationChange: function(index) {
-        O$.requestComponentPortions(filterComponentId, ["parameters:" + index], JSON.stringify({operation: 'operationChange', index: index}),
+        O$.requestComponentPortions(clientId, ["parameters:" + index], JSON.stringify({operation: "operationChange", index: index}),
                 this._ajaxResponseProcessor);
       },
 
       _rowContainer: function(index) {
-        return O$.byIdOrName(filterComponentId + "--row--" + index);
+        return O$.byIdOrName(clientId + "--row--" + index);
       },
 
       _noFilterRowContainer: function() {
-        return O$.byIdOrName(filterComponentId + "--no_filter");
+        return O$.byIdOrName(clientId + "--no_filter");
+      },
+
+      _applyButton: function() {
+        return O$.byIdOrName(clientId + "--applyButton");
+      },
+
+      _ajaxForApply: function() {
+        return O$.byIdOrName(clientId + "--ajaxForApply");
       },
 
       _operationSelectorContainer: function(rowContainer) {
@@ -91,7 +103,7 @@ O$.Filter = {
 
       _ajaxResponseProcessor: function(filter, portionName, portionHTML, portionScripts) {
         var index, rowContainer;
-        var newNode = O$.Filter._htmlToNode(portionHTML);
+        var newNode = O$.CompositeFilter._htmlToNode(portionHTML);
         if (portionName.match("newRow")) {
 
           filter._removeAddButton();
@@ -118,7 +130,7 @@ O$.Filter = {
           filter.appendChild(newNode);
 
         } else if (portionName.match("operation")) {
-          var newNodes = O$.Filter._htmlToNodes(portionHTML);
+          var newNodes = O$.CompositeFilter._htmlToNodes(portionHTML);
           var newNode2 = newNodes[1];
           index = portionName.split(":")[1];
           rowContainer = filter._rowContainer(index);

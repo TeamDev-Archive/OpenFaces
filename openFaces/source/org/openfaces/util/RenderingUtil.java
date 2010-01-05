@@ -103,61 +103,6 @@ public class RenderingUtil {
     }
 
     /**
-     * This method checks and create, if needed new facet of parent component.
-     *
-     * @param context               {@link FacesContext} for the current request
-     * @param parent                Method will search fo facet in this component or create it, if needed
-     * @param componentType         The component type for which to create and return a new {@link UIComponent} instance
-     * @param identifier            The id identifying the {@link UIComponent} to be returned
-     * @param enforceComponentClass If facet with given identifier exist, but it's class doesn't
-     *                              seem to be equal to enforceComponentClass, facet will be recreated
-     * @return facet of parent component
-     */
-    public static <E extends UIComponent> E getOrCreateFacet(
-            FacesContext context, UIComponent parent, String componentType, String identifier, Class<E> enforceComponentClass) {
-        String id = ComponentUtil.generateIdWithSuffix(parent, identifier);
-        return getOrCreateFacet(context, parent, componentType, identifier, id, enforceComponentClass);
-    }
-
-    public static <E extends UIComponent> E getOrCreateFacet(
-            FacesContext context, UIComponent parent, String componentType, String facetName, String id, Class<E> enforceComponentClass) {
-
-        UIComponent component = parent.getFacet(facetName);
-        if (component != null) {
-            if (enforceComponentClass == null || enforceComponentClass.isAssignableFrom(component.getClass())) {
-                if (!id.equals(component.getId()))
-                    component.setId(id);
-                return (E) component;
-            }
-        }
-
-        component = ComponentUtil.createComponent(context, id, componentType);
-        parent.getFacets().put(facetName, component);
-        return (E) component;
-    }
-
-    /**
-     * This method searches in parent component for facet with given name and throw exception, if not found.
-     *
-     * @param parent                The component, in which facet will be searched
-     * @param identifier            The id identifying the {@link UIComponent} to be returned
-     * @param enforceComponentClass If facet with given identifier exist, but it's class doesn't
-     *                              seem to be equal to enforceComponentClass, exception will be thrown
-     * @return facet with given name
-     */
-    public static UIComponent getFacet(UIComponent parent, String identifier, Class enforceComponentClass) {
-        UIComponent component = parent.getFacet(identifier);
-        if (component != null) {
-            if (enforceComponentClass == null || component.getClass().equals(enforceComponentClass))
-                return component;
-        } else {
-            throw new IllegalStateException("There is no facet with id - " + identifier + " in component - " + parent);
-        }
-
-        return component;
-    }
-
-    /**
      * Log OpenFaces warning to external context
      *
      * @param context {@link FacesContext} for the current request

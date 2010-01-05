@@ -85,4 +85,12 @@ public class ScriptBuilder extends Script {
         return functionCall("O$.addLoadEvent", new AnonymousFunction(script));
     }
 
+    public ScriptBuilder O$(UIComponent component) {
+        return functionCall("O$", component);
+    }
+
+    public ScriptBuilder O$(String id) {
+        return functionCall("O$", id);
+    }
+
 }

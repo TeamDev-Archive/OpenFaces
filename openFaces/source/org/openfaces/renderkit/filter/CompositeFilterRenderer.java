@@ -1,10 +1,11 @@
 package org.openfaces.renderkit.filter;
 
+import org.openfaces.component.ajax.Ajax;
 import org.openfaces.component.filter.CompositeFilter;
-import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.CompositeFilterCriterion;
-import org.openfaces.component.filter.OrFilterCriterion;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
+import org.openfaces.component.filter.FilterCriterion;
+import org.openfaces.component.filter.OrFilterCriterion;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
@@ -13,11 +14,12 @@ import org.openfaces.renderkit.input.DateChooserRenderer;
 import org.openfaces.renderkit.input.DropDownComponentRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.StyleUtil;
 
+import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlOutputText;
@@ -25,9 +27,10 @@ import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * @author Natalia Zolochevska
@@ -118,14 +121,14 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
     }
 
     private void renderInitScript( FacesContext context, CompositeFilter compositeFilter) throws IOException {
-        ScriptBuilder sb = new ScriptBuilder().initScript(context, compositeFilter, "O$.Filter._init");
+        ScriptBuilder sb = new ScriptBuilder().initScript(context, compositeFilter, "O$.CompositeFilter._init");
 
         String[] libs = getNecessaryJsLibs(context);
         RenderingUtil.renderInitScript(context, sb, libs);
     }
 
     public static String getFilterJsURL(FacesContext facesContext) {
-        return ResourceUtil.getInternalResourceURL(facesContext, CompositeFilterRenderer.class, "filter.js");
+        return ResourceUtil.getInternalResourceURL(facesContext, CompositeFilterRenderer.class, "compositeFilter.js");
     }
 
     private String[] getNecessaryJsLibs(FacesContext context) {
@@ -144,12 +147,31 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
         super.encodeEnd(context, component);
         CompositeFilter compositeFilter = (CompositeFilter) component;
         ResponseWriter writer = context.getResponseWriter();
-        
-      /*  writer.startElement("div", component);
-        writer.writeAttribute("style", "clear:both;", null);
-        writer.endElement("div");*/
-        
+
         writer.endElement("div");
+        
+        String _for = compositeFilter.getFor();
+        if (_for != null) {
+            UICommand applyButton = ComponentUtil.getOrCreateFacet(context, compositeFilter, HtmlCommandButton.COMPONENT_TYPE, "applyButton", "applyButton", UICommand.class);
+            if (applyButton.getValue() == null)
+                applyButton.setValue("Apply");
+            applyButton.getAttributes().put("onclick", new ScriptBuilder().O$(compositeFilter).dot().functionCall("apply").append(";return false;").toString());
+            applyButton.encodeAll(context);
+
+            String ajaxForApplyId = ComponentUtil.generateIdWithSuffix(compositeFilter, "ajaxForApply");
+            Ajax ajaxForApply = (Ajax) compositeFilter.findComponent(ajaxForApplyId);
+            if (ajaxForApply == null) {
+                ajaxForApply = new Ajax();
+                ajaxForApply.setId(ajaxForApplyId);
+                ajaxForApply.setExecute(Arrays.asList(":" + compositeFilter.getClientId(context)));
+                ajaxForApply.setRender(Arrays.asList(_for));
+                ajaxForApply.setStandalone(true);
+                compositeFilter.getChildren().add(ajaxForApply);
+            }
+            ajaxForApply.encodeAll(context);
+        }
+
+
         renderInitScript(context, compositeFilter);
 
         writer.flush();

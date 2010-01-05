@@ -163,7 +163,7 @@ public class ComponentUtil {
      * @return created or existed output text component
      */
     public static HtmlOutputText composeHtmlOutputText(FacesContext context, UIComponent parent, String idSuffix, String text) {
-        HtmlOutputText outputText = RenderingUtil.getOrCreateFacet(context, parent,
+        HtmlOutputText outputText = getOrCreateFacet(context, parent,
                 HtmlOutputText.COMPONENT_TYPE, idSuffix, HtmlOutputText.class);
         outputText.setValue(text);
         return outputText;
@@ -235,7 +235,7 @@ public class ComponentUtil {
      * @return created or existed command button component
      */
     public static HtmlCommandButton createButtonFacet(FacesContext context, UIComponent parent, String idSuffix, String text) {
-        HtmlCommandButton prevBtn = RenderingUtil.getOrCreateFacet(
+        HtmlCommandButton prevBtn = getOrCreateFacet(
                 context, parent, HtmlCommandButton.COMPONENT_TYPE, idSuffix, HtmlCommandButton.class);
         prevBtn.setValue(text);
         return prevBtn;
@@ -367,4 +367,58 @@ public class ComponentUtil {
     }
 
 
+    /**
+     * This method checks and create, if needed new facet of parent component.
+     *
+     * @param context               {@link javax.faces.context.FacesContext} for the current request
+     * @param parent                Method will search fo facet in this component or create it, if needed
+     * @param componentType         The component type for which to create and return a new {@link javax.faces.component.UIComponent} instance
+     * @param identifier            The id identifying the {@link javax.faces.component.UIComponent} to be returned
+     * @param enforceComponentClass If facet with given identifier exist, but it's class doesn't
+     *                              seem to be equal to enforceComponentClass, facet will be recreated
+     * @return facet of parent component
+     */
+    public static <E extends UIComponent> E getOrCreateFacet(
+            FacesContext context, UIComponent parent, String componentType, String identifier, Class<E> enforceComponentClass) {
+        String id = generateIdWithSuffix(parent, identifier);
+        return getOrCreateFacet(context, parent, componentType, identifier, id, enforceComponentClass);
+    }
+
+    public static <E extends UIComponent> E getOrCreateFacet(
+            FacesContext context, UIComponent parent, String componentType, String facetName, String id, Class<E> enforceComponentClass) {
+
+        UIComponent component = parent.getFacet(facetName);
+        if (component != null) {
+            if (enforceComponentClass == null || enforceComponentClass.isAssignableFrom(component.getClass())) {
+                if (!id.equals(component.getId()))
+                    component.setId(id);
+                return (E) component;
+            }
+        }
+
+        component = createComponent(context, id, componentType);
+        parent.getFacets().put(facetName, component);
+        return (E) component;
+    }
+
+    /**
+     * This method searches in parent component for facet with given name and throw exception, if not found.
+     *
+     * @param parent                The component, in which facet will be searched
+     * @param identifier            The id identifying the {@link javax.faces.component.UIComponent} to be returned
+     * @param enforceComponentClass If facet with given identifier exist, but it's class doesn't
+     *                              seem to be equal to enforceComponentClass, exception will be thrown
+     * @return facet with given name
+     */
+    public static UIComponent getFacet(UIComponent parent, String identifier, Class enforceComponentClass) {
+        UIComponent component = parent.getFacet(identifier);
+        if (component != null) {
+            if (enforceComponentClass == null || component.getClass().equals(enforceComponentClass))
+                return component;
+        } else {
+            throw new IllegalStateException("There is no facet with id - " + identifier + " in component - " + parent);
+        }
+
+        return component;
+    }
 }

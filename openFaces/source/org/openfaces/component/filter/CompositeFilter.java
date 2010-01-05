@@ -210,17 +210,16 @@ public class CompositeFilter extends Filter {
     public EnumSet<FilterCondition> getOperations(FilterProperty filterProperty) {
         FilterType filterType = filterProperty.getType();
         EnumSet<FilterCondition> operations = EnumSet.copyOf(filterType.getOperations());
-        if (filterProperty instanceof FilterProperty) {
-            if (filterType.equals(FilterType.SELECT) && operations.contains(FilterCondition.EQUALS)) {
-                if (((FilterProperty) filterProperty).getDataProvider() == null) {
-                    operations.remove(FilterCondition.EQUALS);
-                }
+        if (filterType.equals(FilterType.SELECT) && operations.contains(FilterCondition.EQUALS)) {
+            if (filterProperty.getDataProvider() == null) {
+                operations.remove(FilterCondition.EQUALS);
             }
         }
         return operations;
     }
 
     public FilterProperty getFilterPropertyByTitle(String title) {
+        if (title == null) return null;
         for (FilterProperty filterProperty : getFilterProperties()) {
             if (title.equals(filterProperty.getValue())) {
                 return filterProperty;

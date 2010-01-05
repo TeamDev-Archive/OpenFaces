@@ -20,7 +20,6 @@ import org.openfaces.util.ValueBindings;
 import org.openfaces.event.StateChangeListener;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.RenderingUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -258,7 +257,7 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
     }
 
     public void createSubComponents(FacesContext context) {
-        CaptionArea captionArea = RenderingUtil.getOrCreateFacet(
+        CaptionArea captionArea = ComponentUtil.getOrCreateFacet(
                 context, this, CaptionArea.COMPONENT_TYPE, "_defaultButtonsArea", CaptionArea.class);
         ComponentUtil.createChildComponent(context, captionArea, ExpansionToggleButton.COMPONENT_TYPE, "toggle");
     }
