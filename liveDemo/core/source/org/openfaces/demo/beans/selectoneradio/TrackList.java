@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 2.0
- * Copyright (C) 2007-2009, TeamDev Ltd.
+ * Copyright (C) 2007-2010, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -154,16 +154,16 @@ public class TrackList {
     public List<SelectItem> getEffectItems() {
         if (effectItems == null) {
             effectItems = Arrays.asList(
-                    new SelectItem("Compressor"), //Динамическое сжатие
+                    new SelectItem("Compressor"), //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                     new SelectItem("Crystality"),
-                    new SelectItem("True Bass"), //Усиление низких частот
-                    new SelectItem("Band Pass"), //Частотный фильтр
+                    new SelectItem("True Bass"), //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+                    new SelectItem("Band Pass"), //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                     new SelectItem("Voice Removal"),
-                    new SelectItem("Normalizer"), //Автоподбор громкости
-                    new SelectItem("Freeverb"), //Объемность
-                    new SelectItem("Treble Enhancer"), //Усиление высоких частот
-                    new SelectItem("Downmix to mono"), //Преобразование в моно
-                    new SelectItem("Voice Emphasis"), //Усиление голоса
+                    new SelectItem("Normalizer"), //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                    new SelectItem("Freeverb"), //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+                    new SelectItem("Treble Enhancer"), //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+                    new SelectItem("Downmix to mono"), //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ
+                    new SelectItem("Voice Emphasis"), //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                     new SelectItem("Noise Reduction"),
                     new SelectItem("3D Effect"));
         }

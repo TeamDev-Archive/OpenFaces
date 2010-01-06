@@ -15,7 +15,7 @@ on<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="AUTHOR" content="TeamDev Ltd."/>
   <meta name="CONTENT-LANGUAGE" content="en-US,ru"/>
-  <meta name="COPYRIGHT" content=" 2009 TeamDev Ltd."/>
+  <meta name="COPYRIGHT" content=" 2010 TeamDev Ltd."/>
   <meta name="CACHE-CONTROL" content="Public"/>
 
   <%@ include file="../template/keywords.xhtml" %>

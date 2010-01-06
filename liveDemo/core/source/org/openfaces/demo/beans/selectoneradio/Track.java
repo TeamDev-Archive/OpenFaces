@@ -1,6 +1,6 @@
 /*
  * OpenFaces - JSF Component Library 2.0
- * Copyright (C) 2007-2009, TeamDev Ltd.
+ * Copyright (C) 2007-2010, TeamDev Ltd.
  * licensing@openfaces.org
  * Unless agreed in writing the contents of this file are subject to
  * the GNU Lesser General Public License Version 2.1 (the "LGPL" License).
@@ -95,9 +95,9 @@ public class Track {
 
     @Override
     public String toString() {
-        /*return new StringBuilder().append(getWriter()).append(" — ")
+        /*return new StringBuilder().append(getWriter()).append(" ï¿½ ")
                 .append(getTitle()).append(" (").append(getLength()).append(")").toString();*/
-        return new StringBuilder().append(getTitle()).append(" — ")
+        return new StringBuilder().append(getTitle()).append(" ï¿½ ")
                 .append(getArtist()).append(" (").append(getAlbumName()).append(")").toString();
     }
 }
