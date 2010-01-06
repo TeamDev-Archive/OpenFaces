@@ -320,7 +320,7 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
     }
 
     public LoadingMode getLoadingMode() {
-        return ValueBindings.get(this, "loadingMode", loadingMode, LoadingMode.AJAX, LoadingMode.class);
+        return ValueBindings.get(this, "loadingMode", loadingMode, LoadingMode.AJAX_LAZY, LoadingMode.class);
     }
 
     public void setLoadingMode(LoadingMode loadingMode) {

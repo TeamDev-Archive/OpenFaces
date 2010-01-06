@@ -37,7 +37,7 @@
   <managed-bean>
     <managed-bean-name>RichTestBean</managed-bean-name>
     <managed-bean-class>org.openfaces.testapp.richfaces.RichTestBean</managed-bean-class>
-    <managed-bean-scope>request</managed-bean-scope>
+    <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
 
   <managed-bean>

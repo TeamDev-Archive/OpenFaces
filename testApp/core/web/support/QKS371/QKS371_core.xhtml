@@ -11,7 +11,7 @@
     <o:tabbedPane
             selectedIndex="#{QKS371.selectedIndex}"
             id="tabbedPane1"
-            loadingMode="ajax"
+            loadingMode="ajaxLazy"
             tabPlacement="top"
             tabAlignment="topOrLeft"
             frontBorderStyle="1px solid gray"
@@ -73,19 +73,19 @@
         </f:facet>
         <h:outputText value="Tab 0"/>
       </o:tabbedPaneItem>
-      <o:tabbedPaneItem rendered="#{QKS371.selectedDropDownItem ==  \"Tab 1\"}">
+      <o:tabbedPaneItem rendered="#{QKS371.selectedDropDownItem ==  'Tab 1'}">
         <f:facet name="tab">
           <h:outputText value="Tab 1"/>
         </f:facet>
         <h:outputText value="Tab 1"/>
       </o:tabbedPaneItem>
-      <o:tabbedPaneItem rendered="#{QKS371.selectedDropDownItem ==  \"Tab 2\"}">
+      <o:tabbedPaneItem rendered="#{QKS371.selectedDropDownItem ==  'Tab 2'}">
         <f:facet name="tab">
           <h:outputText value="Tab 2"/>
         </f:facet>
         <h:outputText value="Tab 2"/>
       </o:tabbedPaneItem>
-      <o:tabbedPaneItem rendered="#{QKS371.selectedDropDownItem ==  \"Tab 3\"}">
+      <o:tabbedPaneItem rendered="#{QKS371.selectedDropDownItem ==  'Tab 3'}">
         <f:facet name="tab">
           <h:outputText value="Tab 3"/>
         </f:facet>

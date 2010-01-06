@@ -137,9 +137,9 @@ O$.TabbedPane = {
       var newPageContainer;
       if (loadingMode == "server") {
         O$.submitEnclosingForm(tabbedPane);
-      } else if (loadingMode == "ajax") {
+      } else if (loadingMode == "ajaxLazy" || loadingMode == "ajaxAlways") {
         newPageContainer = tabbedPane._getPageContainer(absoluteIndex);
-        if (!newPageContainer)
+        if (!newPageContainer || loadingMode == "ajaxAlways")
           O$.requestComponentPortions(tabbedPane.id, ["page:" + absoluteIndex], null, function(tabbedPane, portionName, portionHTML, portionScripts) {
             var tempDiv = document.createElement("div");
             tempDiv.innerHTML = portionHTML;

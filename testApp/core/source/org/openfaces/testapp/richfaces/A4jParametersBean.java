@@ -25,7 +25,7 @@ public class A4jParametersBean {
 
     public String defineAjaxMode() {
         useAjax = true;
-        loadingMode = LoadingMode.AJAX;
+        loadingMode = LoadingMode.AJAX_LAZY;
         return null;
     }
 

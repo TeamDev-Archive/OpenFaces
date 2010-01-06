@@ -135,7 +135,7 @@ public class LoadingModesBean {
 
     private static List<LoadingModeItem> loadingModes() {
         List<LoadingModeItem> tempLoadingModesList = new ArrayList<LoadingModeItem>();
-        tempLoadingModesList.add(new LoadingModeItem(LoadingMode.AJAX, "ajax"));
+        tempLoadingModesList.add(new LoadingModeItem(LoadingMode.AJAX_LAZY, "ajax"));
         tempLoadingModesList.add(new LoadingModeItem(LoadingMode.CLIENT, "client"));
         tempLoadingModesList.add(new LoadingModeItem(LoadingMode.SERVER, "server"));
         return tempLoadingModesList;
@@ -143,7 +143,7 @@ public class LoadingModesBean {
 
     private static List<FoldingPanelLoadingModeItem> loadingModesFP() {
         List<FoldingPanelLoadingModeItem> tempLoadingModesList = new ArrayList<FoldingPanelLoadingModeItem>();
-        tempLoadingModesList.add(new FoldingPanelLoadingModeItem(LoadingMode.AJAX, "ajax"));
+        tempLoadingModesList.add(new FoldingPanelLoadingModeItem(LoadingMode.AJAX_LAZY, "ajax"));
         tempLoadingModesList.add(new FoldingPanelLoadingModeItem(LoadingMode.CLIENT, "client"));
         tempLoadingModesList.add(new FoldingPanelLoadingModeItem(LoadingMode.SERVER, "server"));
         return tempLoadingModesList;

@@ -72,7 +72,7 @@ public class TabbedPaneRenderer extends BaseTabSetRenderer implements AjaxPortio
         TabbedPane tabbedPane = (TabbedPane) component;
 
         LoadingMode loadingMode = tabbedPane.getLoadingMode();
-        if (LoadingMode.AJAX.equals(loadingMode))
+        if (LoadingMode.AJAX_LAZY.equals(loadingMode) || LoadingMode.AJAX_ALWAYS.equals(loadingMode))
             AjaxUtil.prepareComponentForAjax(context, component);
 
         List<TabbedPaneItem> allItems = tabbedPane.getTabbedPaneItems(true);
@@ -226,9 +226,6 @@ public class TabbedPaneRenderer extends BaseTabSetRenderer implements AjaxPortio
         writer.writeAttribute("width", "100%", null);
         writer.writeAttribute("style", "vertical-align: top;", null); // required for correct content alignment with left/right tab placements under strict mode
 
-        // note, there is a bug under Mozilla with height - setting 100% height moved into js (JSFC-746)
-//    writer.writeAttribute("height", "100%", null);
-
         int allItemCount = tabbedPaneItems.size();
         tabbedPane.setRenderedItemFlags(new boolean[allItemCount]);
 
@@ -251,15 +248,12 @@ public class TabbedPaneRenderer extends BaseTabSetRenderer implements AjaxPortio
                     encodePageContent(context, tabbedPane, tabbedPaneItems, i, thisPageVisible, containerClass);
                 tabbedPane.setItemRendered(i, true);
             }
-        } else if (loadingMode.equals(LoadingMode.AJAX)) {
+        } else if (loadingMode.equals(LoadingMode.AJAX_LAZY)) {
             encodePageContent(context, tabbedPane, tabbedPaneItems, selectedTabIndex, true, containerClass);
             tabbedPane.setItemRendered(selectedTabIndex, true);
-//      for (int i = 0, count = tabbedPaneItems.size(); i < count; i++) {
-//        boolean thisPageVisible = selectedTabIndex == i;
-//        if (tabbedPane.isItemRendered(i)) {
-//          encodePageContent(context, tabbedPane, tabbedPaneItems, i, thisPageVisible);
-//        }
-//      }
+        } else if (loadingMode.equals(LoadingMode.AJAX_ALWAYS)) {
+            encodePageContent(context, tabbedPane, tabbedPaneItems, selectedTabIndex, true, containerClass);
+            tabbedPane.setItemRendered(selectedTabIndex, true);
         } else
             throw new IllegalStateException("Invalid loading mode: " + loadingMode);
     }

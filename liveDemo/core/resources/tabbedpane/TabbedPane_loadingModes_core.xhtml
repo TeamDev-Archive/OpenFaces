@@ -64,12 +64,41 @@
       </o:tabbedPane>
     </div>
     <div style="float: left; width: 315px; margin-bottom: 2em;">
-      <h3 style="text-align: left;">Ajax</h3>
+      <h3 style="text-align: left;">AjaxLazy</h3>
       <br/>
-      <span class="simple_text"> The tab content is retrieved from the server by the Ajax request on the first switch to the tab.</span>
+      <span class="simple_text"> The tab content is retrieved from the server with Ajax request on the first switch to the tab.</span>
       <br/>
 
-      <o:tabbedPane loadingMode="ajax"
+      <o:tabbedPane loadingMode="ajaxLazy"
+                    style="margin-top: 10px;"
+                    containerStyle="padding: 15px 15px 15px 15px;">
+        <o:tabbedPaneItem>
+          <f:facet name="tab">
+            <h:outputText value="Poppy" styleClass="tab_name"/>
+          </f:facet>
+          <h:graphicImage url="../images/tabbedpane/bigFlower_small.jpg" width="228" height="171"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem>
+          <f:facet name="tab">
+            <h:outputText value="Tree stump" styleClass="tab_name"/>
+          </f:facet>
+          <h:graphicImage url="../images/tabbedpane/bole_small.jpg" width="228" height="171"/>
+        </o:tabbedPaneItem>
+        <o:tabbedPaneItem>
+          <f:facet name="tab">
+            <h:outputText value="Lane" styleClass="tab_name"/>
+          </f:facet>
+          <h:graphicImage url="../images/tabbedpane/pathway_small.jpg" width="228" height="171"/>
+        </o:tabbedPaneItem>
+      </o:tabbedPane>
+    </div>
+    <div style="float: left; width: 315px; margin-bottom: 2em;">
+      <h3 style="text-align: left;">AjaxAlways</h3>
+      <br/>
+      <span class="simple_text"> The tab content is retrieved from the server with Ajax request on every tab switch.</span>
+      <br/>
+
+      <o:tabbedPane loadingMode="ajaxAlways"
                     style="margin-top: 10px;"
                     containerStyle="padding: 15px 15px 15px 15px;">
         <o:tabbedPaneItem>

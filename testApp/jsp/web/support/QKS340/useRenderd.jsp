@@ -30,7 +30,7 @@
           </a4j:outputPanel>
           <a4j:outputPanel rendered="#{QKS340.renderedDataTable}">
             <h:form>
-              <o:tabbedPane loadingMode="ajax"
+              <o:tabbedPane loadingMode="ajaxLazy"
                             tabPlacement="top"
                             tabAlignment="topOrLeft"
                             style="margin-top: 10px;"

@@ -15,8 +15,7 @@ O$.FoldingPanel = {
                   expanded,
                   direction,
                   rolloverClass,
-                  contentPreloaded,
-                  useAjax,
+                  loadingMode,
                   focusable,
                   focusedClass,
                   focusedContentClass,
@@ -26,9 +25,8 @@ O$.FoldingPanel = {
       _contentHolderId: controlId + "::content",
       _captionContentId: controlId + "::caption_content",
       _captionId: controlId + "::caption",
-      _useAjax: useAjax,
 
-      _contentLoaded: contentPreloaded || expanded,
+      _contentLoaded: loadingMode == "client" || expanded,
       _expanded: expanded,
       _direction: direction,
 
@@ -54,8 +52,8 @@ O$.FoldingPanel = {
 
         var contentHolder = O$(this._contentHolderId);
         contentHolder.style.display = this._expanded ? "block" : "none";
-        if (this._expanded && !this._contentLoaded) {
-          if (this._useAjax) {
+        if (this._expanded && (!this._contentLoaded || loadingMode == "ajaxAlways")) {
+          if (loadingMode != "server") {
             O$.requestComponentPortions(this.id, ["content"], null, O$.FoldingPanel._ajaxResponseProcessor);
           } else {
             O$.submitEnclosingForm(this);

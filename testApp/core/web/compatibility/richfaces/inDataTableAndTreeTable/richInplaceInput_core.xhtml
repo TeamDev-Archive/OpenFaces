@@ -12,6 +12,8 @@
   <h:commandButton value="Set Client loading mode" action="#{A4jParametersBean.defineClientMode}"/>
   <br/>
 
+  <input type="submit" value="Submit"/>
+
   <o:dataTable id="datatable"
                value="#{RichTestBean.tableValue}"
                var="row"
@@ -31,12 +33,10 @@
       <f:facet name="subHeader">
         <o:inputTextFilter expression="#{row.stringField1}"/>
       </f:facet>
-      <rich:inplaceInput layout="block"
+      <rich:inplaceInput id="inplace11"
+                         layout="block"
                          value="#{row.intField1}"
-                         id="inplace11"
-                         selectOnEdit="true"
                          editEvent="onclick">
-        <a4j:support event="onviewactivated" reRender="datatable"/>
       </rich:inplaceInput>
     </o:column>
 
@@ -49,12 +49,9 @@
         <o:inputTextFilter expression="#{row.stringField2}"/>
       </f:facet>
       <rich:inplaceInput layout="block"
-                         value="#{row.intField2}"
+                         value="#{row.stringField2}"
                          id="inplace12"
-                         selectOnEdit="true"
-                         editEvent="onclick">
-        <a4j:support event="onviewactivated" reRender="datatable"/>
-      </rich:inplaceInput>
+                         />
 
     </o:column>
   </o:dataTable>

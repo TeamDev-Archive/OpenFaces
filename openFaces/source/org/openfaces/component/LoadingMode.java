@@ -16,8 +16,9 @@ package org.openfaces.component;
  */
 public enum LoadingMode {
     CLIENT("client"),
-    SERVER("server"),
-    AJAX("ajax");
+    AJAX_LAZY("ajaxLazy"),
+    AJAX_ALWAYS("ajaxAlways"),
+    SERVER("server");
 
     private final String mode;
 

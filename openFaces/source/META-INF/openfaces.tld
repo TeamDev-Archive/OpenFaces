@@ -15528,12 +15528,15 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.util. LoadingMode -->
-      <!-- @default "ajax" -->
+      <!-- @default "ajaxLazy" -->
       <!-- @value "client" The content of all tabs is loaded to the client side
 on the first page load. So when the user changes a tab, the corresponding page is not reloaded. -->
+      <!-- @value "ajaxLazy"  The tab content is retrieved from the server with Ajax request
+on the first switch to the tab. Once requested, the content is stored on the client and is shown without additional
+server requests. -->
+      <!-- @value "ajaxAlways"  The tab content is retrieved from the server with Ajax request
+on every switch to the tab.-->
       <!-- @value "server"  Every time a tab is changed, a corresponding tabbed page is reloaded with the tab content. -->
-      <!-- @value "ajax"  The tab content is retrieved from the server by the AJAX request
-on the first switch to the tab. Once requested, the content is stored on the client. -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -16136,11 +16139,16 @@ on the first switch to the tab. Once requested, the content is stored on the cli
         <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.util. LoadingMode -->
-      <!-- @default "ajax" -->
+      <!-- @default "ajaxLazy" -->
       <!-- @value "client"  the FoldingPanel component renders all content on first load regardless
  of the component's expanded state. -->
+      <!-- @value "ajaxLazy"  expanding the FoldingPanel makes the embedded content to be loaded from the server with
+      Ajax request. Once loaded, it will be cached on the client and shown without additional server requests on further expansions.
+       -->
+      <!-- @value "ajaxAlways"  expanding the FoldingPanel makes the embedded content to be loaded from the server with
+      Ajax request. Unlike ajaxLazy mode, ajaxAlways doesn't cache the loaded content and reloads the content each time
+      the FoldingPanel is expanded.  -->
       <!-- @value "server"  the FoldingPanel component submits the page to re-render itself in the expanded state. -->
-      <!-- @value "ajax"  the FoldingPanel component transparently retrieves the embedded content from the server.  -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -26630,6 +26638,7 @@ and it is automatically triggered on any form submission. -->
   </tag>
 
   <tag>
+    <description>Allows customizing various aspects of timetable editing behavior.</description>
     <name>timetableEditingOptions</name>
     <tag-class>org.openfaces.taglib.jsp.timetable.TimetableEditingOptionsJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -26697,6 +26706,8 @@ and it is automatically triggered on any form submission. -->
   </tag>
 
   <tag>
+    <description>Turns on and allows customizing the box that is displayed when the mouse hovers over the event to show
+    event contents that might not fully fit in the normal event display.</description>
     <name>eventPreview</name>
     <tag-class>org.openfaces.taglib.jsp.timetable.EventPreviewJspTag</tag-class>
     <body-content>JSP</body-content>

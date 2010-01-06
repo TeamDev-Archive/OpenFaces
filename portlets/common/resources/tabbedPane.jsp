@@ -23,7 +23,7 @@
 
     <h:commandButton action="sbmt" value="Submit"/>
     <h:commandLink value="back" action="index"/>
-    <o:tabbedPane loadingMode="ajax"
+    <o:tabbedPane loadingMode="ajaxLazy"
                   tabAlignment="bottomOrRight"
                   tabPlacement="left"
                   style="height:250px;">

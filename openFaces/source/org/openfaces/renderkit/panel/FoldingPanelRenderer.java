@@ -51,7 +51,8 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
 
         FoldingPanel foldingPanel = (FoldingPanel) component;
         ResponseWriter writer = context.getResponseWriter();
-        if (!foldingPanel.isExpanded() && foldingPanel.getLoadingMode().equals(LoadingMode.AJAX)) {
+        if (!foldingPanel.isExpanded() && (foldingPanel.getLoadingMode().equals(LoadingMode.AJAX_LAZY) ||
+                                           foldingPanel.getLoadingMode().equals(LoadingMode.AJAX_ALWAYS))) {
             AjaxUtil.prepareComponentForAjax(context, component);
         }
         writer.startElement("table", foldingPanel);
@@ -191,8 +192,7 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
                 foldingPanel.isExpanded(),
                 foldingPanel.getFoldingDirection(),
                 RenderingUtil.getRolloverClass(context, foldingPanel),
-                LoadingMode.CLIENT.equals(loadingMode) || foldingPanel.isExpanded(),
-                LoadingMode.AJAX.equals(loadingMode),
+                loadingMode,
                 foldingPanel.isFocusable(),
                 focusedClass,
                 focusedContentClass,

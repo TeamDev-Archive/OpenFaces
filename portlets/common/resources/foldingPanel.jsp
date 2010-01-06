@@ -44,12 +44,12 @@
       </tr>
       <tr>
         <td>
-          loadingMode="ajax"
+          loadingMode="ajaxLazy"
           expanded="false"
           foldingDirection="up"
         </td>
         <td>
-          <o:foldingPanel loadingMode="ajax"
+          <o:foldingPanel loadingMode="ajaxLazy"
                           expanded="false"
                           foldingDirection="up">
             <f:facet name="caption">
