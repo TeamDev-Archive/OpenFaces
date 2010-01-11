@@ -41,9 +41,15 @@ public abstract class TextSearchFilter extends ExpressionFilter {
 
     public UIComponent getSearchComponent() {
         List children = getChildren();
-        if (children.size() != 1)
-            throw new IllegalStateException("TextSearchFilter should have exactly one child component - " +
-                    "the search component. children.size = " + children.size());
+        if (children.size() != 1) {
+            String message = "TextSearchFilter should have exactly one child component - " +
+                    "the search component. children.size = " + children.size();
+            if (children.size() == 0)
+                message += " ; If you're creating the filter component programmatically, make sure to invoke its " +
+                        "createSubComponents() method (see the Creating Componetns Dynamically section in the " +
+                        "documentation: http://openfaces.org/documentation/developersGuide/index.html.";
+            throw new IllegalStateException(message);
+        }
         UIComponent searchComponent = (UIComponent) children.get(0);
         return searchComponent;
     }
