@@ -1353,7 +1353,9 @@ O$.Tables = {
                 arr = [];
                 result[colIndex] = arr;
               }
-              arr.push(cols[i]);
+              var col = cols[i];
+              col._section = section;
+              arr.push(col);
             }
           }
 
@@ -1383,10 +1385,17 @@ O$.Tables = {
   },
 
   _initColumnOrGroup: function(column, table) {
-    column._allCellsClassName = O$.createCssClass("overflow: hidden", true);
-    column._allCellsClass = O$.findCssRule("." + column._allCellsClassName);
-    column._allCellsClassName_col = O$.createCssClass("overflow: hidden", true);
-    column._allCellsClass_col = O$.findCssRule("." + column._allCellsClassName_col);
+    function newClass(declaration) {
+      var className = O$.createCssClass(declaration, true);
+      var cls = O$.findCssRule("." + className);
+      return {className: className, classObj: cls};
+    }
+    column._headerCellsClass = newClass("overflow: hidden");
+    column._bodyCellsClass = newClass("overflow: hidden");
+    column._footerCellsClass = newClass("overflow: hidden");
+    column._headerColClass = newClass("overflow: hidden");
+    column._bodyColClass = newClass("overflow: hidden");
+    column._footerColClass = newClass("overflow: hidden");
 
     column._table = table;
 
@@ -1441,20 +1450,20 @@ O$.Tables = {
     column._updateStyle = function() {
       var headerCell = column.header ? column.header._cell : null;
       if (headerCell) {
-        O$.setStyleMappings(headerCell, {cellWidthClass: column._allCellsClassName});
+        O$.setStyleMappings(headerCell, {cellWidthClass: column._headerCellsClass.className});
         headerCell._updateStyle();
       }
 
       var subHeaderCell = column.subHeader ? column.subHeader._cell : null;
       if (subHeaderCell) {
-        O$.setStyleMappings(subHeaderCell, {cellWidthClass: column._allCellsClassName});
+        O$.setStyleMappings(subHeaderCell, {cellWidthClass: column._headerCellsClass.className});
         subHeaderCell._updateStyle();
       }
 
       var footerCell = column.footer ? column.footer._cell : null;
       if (footerCell) {
         footerCell._updateStyle();
-        O$.setStyleMappings(footerCell, {cellWidthClass: column._allCellsClassName});
+        O$.setStyleMappings(footerCell, {cellWidthClass: column._footerCellsClass.className});
       }
     };
   },
@@ -1485,7 +1494,12 @@ O$.Tables = {
     }
 
     column._colTags.forEach(function(colTag) {
-      O$.setStyleMappings(colTag, {cellWidthClass: column._allCellsClassName_col});
+      if (table.header && colTag._section == table.header)
+        O$.setStyleMappings(colTag, {cellWidthClass: column._headerColClass.className});
+      else if (colTag._section == table.body)
+        O$.setStyleMappings(colTag, {cellWidthClass: column._bodyColClass.className});
+      else if (table.footer && colTag._section == table.footer)
+        O$.setStyleMappings(colTag, {cellWidthClass: column._footerColClass.className});
     });
 
     if (column._super_updateStyle)
@@ -1510,41 +1524,54 @@ O$.Tables = {
         if (!cell) continue;
         cell._updateStyle();
         if (!cell.colSpan || cell.colSpan == 1)
-          O$.setStyleMappings(cell, {cellWidthClass: column._allCellsClassName});
+          O$.setStyleMappings(cell, {cellWidthClass: column._bodyCellsClass.className});
       }
 
     };
     column.setWidth = function(width) {
       if (width < 0) width = 0;
       column._explicitWidth = width;
-      if (column._widthCorrection == undefined) {
-        var firstCell = (column.header && column.header._cell) || (column.subHeader && column.subHeader._cell);
-        if (!firstCell) firstCell = column.body._cells[0];
-        if (!firstCell) firstCell = column.footer._cell;
-        column._widthCorrection = !firstCell ? 0 :
-                                  O$.getNumericElementStyle(firstCell, "padding-left", true) +
-                                  O$.getNumericElementStyle(firstCell, "padding-right", true) +
-                                  O$.getNumericElementStyle(firstCell, "border-left-width", true) +
-                                  O$.getNumericElementStyle(firstCell, "border-right-width", true);
+      function calculateWidthCorrection(headerCell) {
+        if (headerCell._widthCorrection != undefined) return;
+        headerCell._widthCorrection = !headerCell ? 0 :
+                                  O$.getNumericElementStyle(headerCell, "padding-left", true) +
+                                  O$.getNumericElementStyle(headerCell, "padding-right", true) +
+                                  O$.getNumericElementStyle(headerCell, "border-left-width", true) +
+                                  O$.getNumericElementStyle(headerCell, "border-right-width", true);
       }
+      var headerCell = (column.header && column.header._cell) || (column.subHeader && column.subHeader._cell);
+      var bodyCell = column.body._cells[0];
+      var footerCell = column.footer && column.footer._cell;
 
       var correctColWidth = O$.isStrictMode() && (O$.isExplorer6() || O$.isExplorer7());
-      var widthForCells = width - column._widthCorrection;
-      var widthForCol = width - (correctColWidth ? column._widthCorrection : 0);
-      if (widthForCells < 0) widthForCells = 0;
-      if (widthForCol < 0) widthForCol = 0;
 
-      if (this._allCellsClass.style.setProperty) {
-        this._allCellsClass_col.style.setProperty("width", widthForCol + "px", "important");
-        this._allCellsClass.style.setProperty("width", widthForCells + "px", "important");
-      } else {
-        this._allCellsClass_col.style.width = widthForCol + "px";
-        this._allCellsClass.style.width = widthForCells + "px";
+      function setWidth(cellClass, colClass, cell, tableSection) {
+        if (!cell) return;
+        calculateWidthCorrection(cell);
+        var widthForCell = width - cell._widthCorrection;
+        if (widthForCell < 0) widthForCell = 0;
+        var widthForCol = width - (correctColWidth ? cell._widthCorrection : 0);
+        if (widthForCol < 0) widthForCol = 0;
+
+        if (cellClass.style.setProperty) {
+          cellClass.style.setProperty("width", widthForCell + "px", "important");
+          colClass.style.setProperty("width", widthForCol + "px", "important");
+        } else {
+          cellClass.style.width = widthForCell + "px";
+          colClass.style.width = widthForCol + "px";
+        }
+
+        var colTag = null;
+        column._colTags.forEach(function(col) {
+          if (col._section == tableSection)
+            colTag = col;
+        });
+        if (colTag) O$.setElementWidth(colTag, widthForCol);
       }
+      setWidth(this._headerCellsClass.classObj, this._headerColClass.classObj, headerCell, table.header);
+      setWidth(this._bodyCellsClass.classObj, this._bodyColClass.classObj, bodyCell, table.body);
+      setWidth(this._footerCellsClass.classObj, this._footerColClass.classObj, footerCell, table.footer);
 
-      this._colTags.forEach(function(colTag) {
-        O$.setElementWidth(colTag, widthForCol);
-      });
     };
     column.getDeclaredWidth = function(tableWidth) {
       if (tableWidth == undefined)
