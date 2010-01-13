@@ -50,7 +50,7 @@ public class ForEach extends OUIObjectIteratorBase {
     private Integer endIndex;
     private Integer step;
     private String var;
-    private String varStatus;
+    private String statusVar;
     private String wrapperTagName;
 
     private IterationStatus status;
@@ -166,7 +166,7 @@ public class ForEach extends OUIObjectIteratorBase {
     }
 
     /**
-     * reset inner variables and remove 'var' and 'varStatus' from requestMap. This method must been called at the start of iteration and at the end.
+     * reset inner variables and remove 'var' and 'statusVar' from requestMap. This method must been called at the start of iteration and at the end.
      */
     private void reset() {
         saveChildrenState();
@@ -180,11 +180,11 @@ public class ForEach extends OUIObjectIteratorBase {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String var = getVar();
-        String varStatus = getVarStatus();
+        String statusVar = getStatusVar();
         if (var != null)
             requestMap.remove(var);
-        if (varStatus != null)
-            requestMap.remove(varStatus);
+        if (statusVar != null)
+            requestMap.remove(statusVar);
     }
 
     /**
@@ -259,19 +259,19 @@ public class ForEach extends OUIObjectIteratorBase {
     }
 
     /**
-     * Put 'var' and 'varStatus' variables into request context.
+     * Put 'var' and 'statusVar' variables into request context.
      */
     private void putVariables() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String var = getVar();
-        String varStatus = getVarStatus();
+        String statusVar = getStatusVar();
         if (var != null) {
             Object varObj = status.getCurrent();
             requestMap.put(var, varObj);
         }
-        if (varStatus != null) {
-            requestMap.put(varStatus, status);
+        if (statusVar != null) {
+            requestMap.put(statusVar, status);
         }
     }
 
@@ -325,7 +325,7 @@ public class ForEach extends OUIObjectIteratorBase {
                 endIndex,
                 step,
                 var,
-                varStatus,
+                statusVar,
                 wrapperTagName
         };
     }
@@ -340,7 +340,7 @@ public class ForEach extends OUIObjectIteratorBase {
         endIndex = (Integer) values[i++];
         step = (Integer) values[i++];
         var = (String) values[i++];
-        varStatus = (String) values[i++];
+        statusVar = (String) values[i++];
         wrapperTagName = (String) values[i];
     }
 
@@ -458,12 +458,12 @@ public class ForEach extends OUIObjectIteratorBase {
         this.var = var;
     }
 
-    public java.lang.String getVarStatus() {
-        return ValueBindings.get(this, "varStatus", varStatus);
+    public java.lang.String getStatusVar() {
+        return ValueBindings.get(this, "statusVar", statusVar);
     }
 
-    public void setVarStatus(java.lang.String varStatus) {
-        this.varStatus = varStatus;
+    public void setStatusVar(java.lang.String statusVar) {
+        this.statusVar = statusVar;
     }
 
     public java.lang.String getWrapperTagName() {
