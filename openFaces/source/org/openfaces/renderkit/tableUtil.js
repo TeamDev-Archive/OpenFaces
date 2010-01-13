@@ -1331,8 +1331,11 @@ O$.Tables = {
       var result;
       if (!table._params.scrolling) {
         result = O$.Tables._getTableColTags(table);
-        for (var i = 0, count = result.length; i < count; i++)
-          result[i] = [result[i]];
+        for (var i = 0, count = result.length; i < count; i++) {
+          var col = result[i];
+          col._section = table.header || table.body;
+          result[i] = [col];
+        }
       } else {
         result = [];
         function addSectionCols(section) {
