@@ -139,7 +139,7 @@ public class QKS30 {
     }
 
     public List getNodeChildren() {
-        ForumMessage message = (ForumMessage) FacesUtil.getRequestMapValue("treetest");
+        ForumMessage message = (ForumMessage) FacesUtil.var("treetest");
         return message != null ? message.getReplies() : rootMessages;
     }
 

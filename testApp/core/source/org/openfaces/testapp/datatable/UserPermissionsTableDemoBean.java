@@ -170,7 +170,7 @@ public class UserPermissionsTableDemoBean {
     }
 
     public String getAdvancedUserFilter() {
-        User user = (User) FacesUtil.getRequestMapValue("user");
+        User user = FacesUtil.var("user", User.class);
         if (smallUserList.contains(user)) {
             return "Advanced Users";
         } else {
@@ -217,7 +217,7 @@ public class UserPermissionsTableDemoBean {
     }
 
     public List<Serializable> getUsersTreeChildren() {
-        Object node = FacesUtil.getRequestMapValue("node");
+        Object node = FacesUtil.var("node");
         if (node == null) {
             return permissions;
         }
@@ -229,7 +229,7 @@ public class UserPermissionsTableDemoBean {
     }
 
     public Object getUsersTreeNodeKey() {
-        Object node = FacesUtil.getRequestMapValue("node");
+        Object node = FacesUtil.var("node");
         String id = (node instanceof Permission) ? ((Permission) node).getId() : ((User) node).getId();
         return Arrays.asList(new Object[]{node.getClass(), id});
     }

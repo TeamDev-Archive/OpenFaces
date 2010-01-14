@@ -36,21 +36,21 @@ public class ColorListBean {
     }
 
     public int getRowCount() {
-        CompositeFilterCriterion filterCriteria = (CompositeFilterCriterion) FacesUtil.getRequestMapValue("filterCriteria");
+        CompositeFilterCriterion filterCriteria = FacesUtil.var("filterCriteria", CompositeFilterCriterion.class);
         return colorDB.getFilteredColorCount(filterCriteria);
     }
 
     public List getColorList() {
-        CompositeFilterCriterion filterCriteria = (CompositeFilterCriterion) FacesUtil.getRequestMapValue("filterCriteria");
-        boolean sortAscending = (Boolean) FacesUtil.getRequestMapValue("sortAscending");
-        String sortColumnId = (String) FacesUtil.getRequestMapValue("sortColumnId");
-        int pageStart = (Integer) FacesUtil.getRequestMapValue("pageStart");
-        int pageSize = (Integer) FacesUtil.getRequestMapValue("pageSize");
+        CompositeFilterCriterion filterCriteria = FacesUtil.var("filterCriteria", CompositeFilterCriterion.class);
+        boolean sortAscending = FacesUtil.var("sortAscending", Boolean.class);
+        String sortColumnId = FacesUtil.var("sortColumnId", String.class);
+        int pageStart = FacesUtil.var("pageStart", Integer.class);
+        int pageSize = FacesUtil.var("pageSize", Integer.class);
         return colorDB.findColorsForPage(filterCriteria, sortColumnId, sortAscending, pageStart, pageSize);
     }
 
     public Color getColorByKey() {
-        Integer key = (Integer) FacesUtil.getRequestMapValue("rowKey");
+        Integer key = FacesUtil.var("rowKey", Integer.class);
         return colorDB.getColorByKey(key);
     }
 

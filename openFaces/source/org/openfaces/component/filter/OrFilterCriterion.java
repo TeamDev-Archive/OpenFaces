@@ -14,6 +14,9 @@ package org.openfaces.component.filter;
 import java.util.List;
 
 /**
+ * A filter criterion that aggregates several filter criterion objects with the "or" condition, that is this criterion
+ * accepts a data record when any of the contained criteria accepts that record.
+ *
  * @author Dmitry Pikhulya
  */
 public class OrFilterCriterion extends CompositeFilterCriterion {

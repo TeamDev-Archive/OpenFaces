@@ -93,12 +93,12 @@ public class ForumTreeTableBean implements Serializable {
   }
 
   public List getNodeChildren() {
-    ForumMessage message = (ForumMessage) FacesUtil.getRequestMapValue("message");
+    ForumMessage message = FacesUtil.var("message", ForumMessage.class);
     return message != null ? message.getReplies() : ForumTreeTableBean.ourRootMessages;
   }
 
   public String getDateCategory() {
-    ForumMessage message = (ForumMessage) FacesUtil.getRequestMapValue("message");
+    ForumMessage message = FacesUtil.var("message", ForumMessage.class);
     Date date = message.getDate();
     return formatDate(date);
   }

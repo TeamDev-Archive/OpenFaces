@@ -260,7 +260,7 @@ public class SuggestionFieldBean implements Serializable {
 
     public List<String> getSuggestedCountries() {
         List<String> suggestedCountries = new ArrayList<String>();
-        String typedValue = (String) FacesUtil.getRequestMapValue("searchString");
+        String typedValue = FacesUtil.var("searchString", String.class);
         if (typedValue != null) {
             for (String country : countries) {
                 String countryForComparison = country.toLowerCase();

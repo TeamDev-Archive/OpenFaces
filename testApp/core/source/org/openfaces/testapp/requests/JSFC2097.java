@@ -67,7 +67,7 @@ public class JSFC2097 {
 
 
     public List getNodeChildren() {
-        ForumMessage message = (ForumMessage) FacesUtil.getRequestMapValue("treetest");
+        ForumMessage message = FacesUtil.var("treetest", ForumMessage.class);
         return message != null ? message.getReplies() : rootMessages;
     }
 

@@ -92,8 +92,9 @@ public class FilterProperty extends OUIComponentBase implements ValueHolder, Ser
 
 
     public String getTitle() {
-        return (String) getValue();        
+        return (String) getValue();
     }
+
     public void setValue(Object value) {
         this.value = (String) value;
     }

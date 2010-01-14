@@ -90,7 +90,7 @@ public class MenuService implements Serializable {
 
     public void selectionChanged(ActionEvent e) {
         MenuItem selectedMenu = getSelectedMenu();
-        int newIndex = Integer.valueOf(FacesUtil.getRequestParameterMapValue("menuItemIndex").toString());  
+        int newIndex = FacesUtil.requestParam("menuItemIndex", Integer.class);
         DemoItem di = selectedMenu.getDemos().get(newIndex);
         selectedMenu.setSelectedDemo(di);
         selectedMenu.setSelectedTabIndex(newIndex);

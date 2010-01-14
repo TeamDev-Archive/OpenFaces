@@ -168,6 +168,6 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
     }
 
     private TimetableEvent getEvent() {
-        return (TimetableEvent) FacesUtil.getRequestMapValue("event");
+        return FacesUtil.var("event", TimetableEvent.class);
     }
 }

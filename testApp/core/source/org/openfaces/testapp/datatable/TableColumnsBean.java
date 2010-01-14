@@ -51,12 +51,12 @@ public class TableColumnsBean {
     }
 
     public boolean isColumnRendered() {
-        String colData = (String) FacesUtil.getRequestMapValue("col");
+        String colData = FacesUtil.var("col", String.class);
         return renderedColumns.contains(colData);
     }
 
     public boolean isSortingEnabled() {
-        String colData = (String) FacesUtil.getRequestMapValue("col");
+        String colData = FacesUtil.var("col", String.class);
         try {
             int colIndex = Integer.parseInt(colData);
             return colIndex % 2 == 0;
@@ -67,7 +67,7 @@ public class TableColumnsBean {
     }
 
     public FilterKind getFilterKind() {
-        String col = (String) FacesUtil.getRequestMapValue("col");
+        String col = FacesUtil.var("col", String.class);
         try {
             int colIndex = Integer.parseInt(col);
             if (colIndex < 4) {
@@ -108,7 +108,7 @@ public class TableColumnsBean {
     }
 
     public String getColumnStyle() {
-        String col = (String) FacesUtil.getRequestMapValue("col");
+        String col = FacesUtil.var("col", String.class);
         String defaultStyle = "width: 150px; text-align: left;";
         String columnStyle;
         try {
@@ -125,7 +125,7 @@ public class TableColumnsBean {
     }
 
     public List getFilterValues() {
-        String col = (String) FacesUtil.getRequestMapValue("col");
+        String col = FacesUtil.var("col", String.class);
         List<String> filterValues = new ArrayList<String>();
         for (int i = 0; i < 9; i++) {
             filterValues.add(String.valueOf(i));

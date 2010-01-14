@@ -69,7 +69,7 @@ public class TreeTableColumnsBean {
     }
 
     private TreeTableItem getNode() {
-        return (TreeTableItem) FacesUtil.getRequestMapValue("node");
+        return (TreeTableItem) FacesUtil.var("node");
     }
 
     public boolean isColumnRendered() {
@@ -89,7 +89,7 @@ public class TreeTableColumnsBean {
     }
 
     private String getCurrentColumn() {
-        return (String) FacesUtil.getRequestMapValue("col");
+        return (String) FacesUtil.var("col");
     }
 
     public FilterKind getFilterKind() {
@@ -193,7 +193,7 @@ public class TreeTableColumnsBean {
     }
 
     public boolean isHighlightedByNodePath() {
-        TreePath path = (TreePath) FacesUtil.getRequestMapValue("nodePath");
+        TreePath path = (TreePath) FacesUtil.var("nodePath");
         TreePath pathToCompare = new TreePath(treeTableItem, new TreePath(treeTableItemChild, new TreePath(treeTableItemRoot, null)));
         return path.equals(pathToCompare);
     }

@@ -59,7 +59,7 @@ public class QKS646 implements Serializable {
     }
 
     public List getChildren() {
-        Object node = FacesUtil.getRequestMapValue("node");
+        Object node = FacesUtil.var("node");
 
 
         if (node == null)

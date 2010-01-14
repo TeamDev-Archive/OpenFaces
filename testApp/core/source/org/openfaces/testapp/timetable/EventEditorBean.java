@@ -35,17 +35,17 @@ public class EventEditorBean {
 
 
         if (editedEvent == null) {
-            String mode = (String) FacesUtil.getRequestParameterMapValue("mode");
+            String mode = FacesUtil.requestParam("mode");
             FacesContext context = FacesContext.getCurrentInstance();
             if (mode == null)
                 return (TimetableEvent) context.getExternalContext().getSessionMap().get("editedEvent");
             if (mode.equals("create")) {
-                Date eventStart = FacesUtil.getRequestParameterMapValueAsDate("eventStart");
-                Date eventEnd = FacesUtil.getRequestParameterMapValueAsDate("eventEnd");
-                String resourceId = (String) FacesUtil.getRequestParameterMapValue("resourceId");
+                Date eventStart = FacesUtil.requestParam("eventStart", Date.class);
+                Date eventEnd = FacesUtil.requestParam("eventEnd", Date.class);
+                String resourceId = FacesUtil.requestParam("resourceId");
                 editedEvent = new TimetableEvent(null, eventStart, eventEnd, "", "", null, resourceId);
             } else {
-                String eventId = (String) FacesUtil.getRequestParameterMapValue("eventId");
+                String eventId = FacesUtil.requestParam("eventId");
                 TimeTableBean timetableBean = getTimeTableBean();
                 editedEvent = (TimetableEvent) timetableBean.eventById(timetableBean.getEvents(), eventId).clone();
             }

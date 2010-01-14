@@ -87,7 +87,7 @@ public class SuggestionFieldBean {
 
     public List<String> getSuggestedPlants() {
         List<String> suggestedPlants = new ArrayList<String>();
-        String typedValue = (String) FacesUtil.getRequestMapValue("searchString");
+        String typedValue = (String) FacesUtil.var("searchString");
         if (typedValue != null) {
             for (Object myPlant : plants) {
                 String plant = (String) myPlant;
@@ -141,7 +141,7 @@ public class SuggestionFieldBean {
 
     public List<Color> getColors() {
         List<Color> allColors = colors.getColors();
-        String searchString = (String) FacesUtil.getRequestMapValue("searchString");
+        String searchString = (String) FacesUtil.var("searchString");
         if (searchString == null)
             return allColors;
         List<Color> result = new ArrayList<Color>();

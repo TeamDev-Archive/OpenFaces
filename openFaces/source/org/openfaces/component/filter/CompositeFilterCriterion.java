@@ -11,12 +11,12 @@
  */
 package org.openfaces.component.filter;
 
-import org.openfaces.component.filter.FilterCriterion;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * An abstract base class for a criterion that aggregates several filter criteria.
+ *
  * @author Dmitry Pikhulya
  */
 public abstract class CompositeFilterCriterion extends FilterCriterion {

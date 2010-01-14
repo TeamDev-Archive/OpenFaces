@@ -159,7 +159,7 @@ public class TreeTableRequestBean {
     }
 
     public String getAdvancedUserFilter() {
-        User user = (User) FacesUtil.getRequestMapValue("user");
+        User user = (User) FacesUtil.var("user");
         if (smallUserList.contains(user))
             return "Advanced Users";
         else
@@ -201,7 +201,7 @@ public class TreeTableRequestBean {
     }
 
     public List getUsersTreeChildren() {
-        Object node = FacesUtil.getRequestMapValue("node");
+        Object node = FacesUtil.var("node");
         if (node == null)
             return permissions;
         if (node instanceof Permission) {
@@ -212,7 +212,7 @@ public class TreeTableRequestBean {
     }
 
     public Object getUsersTreeNodeKey() {
-        Object node = FacesUtil.getRequestMapValue("node");
+        Object node = FacesUtil.var("node");
         String id = (node instanceof Permission) ? ((Permission) node).getId() : ((User) node).getId();
         return Arrays.asList(new Object[]{node.getClass(), id});
     }

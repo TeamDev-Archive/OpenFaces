@@ -193,7 +193,7 @@ public class DropDownBean_Portlets {
 
   public List getColors() {
     List allColors = getAllColors();
-    String searchString = (String) FacesUtil.getRequestMapValue("searchString");
+    String searchString = FacesUtil.var("searchString", String.class);
     if (searchString == null)
       return allColors;
     List result = new ArrayList();
@@ -280,7 +280,7 @@ public class DropDownBean_Portlets {
 
   public List getSuggestedPlants() {
     List suggestedPlants = new ArrayList();
-    String typedValue = (String) FacesUtil.getRequestMapValue("searchString");
+    String typedValue = FacesUtil.var("searchString", String.class);
     if (typedValue != null) {
       for (int i = 0; i < myPlants.size(); i++) {
         String plant = (String) myPlants.get(i);

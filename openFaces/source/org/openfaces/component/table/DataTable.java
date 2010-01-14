@@ -315,7 +315,7 @@ public class DataTable extends AbstractTable {
     }
 
     protected boolean isRowInColumnSelected(BaseColumn column, Map<String, Object> requestMap, String var) {
-        Object rowData = FacesUtil.getRequestMapValue(getVar());
+        Object rowData = FacesUtil.var(getVar());
         Object rowKey = getModel().requestRowKeyByRowData(FacesContext.getCurrentInstance(), requestMap, var, rowData, -1, -1);
         List selectedRowKeys = getSelectedRowKeys(column);
         return selectedRowKeys.contains(rowKey);

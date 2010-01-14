@@ -20,7 +20,7 @@ import java.util.TimeZone;
 public class ParametersInterpreter {
 
     public static Date dayStart(Date date, TimeZone timeZone) {
-        if (timeZone==null){
+        if (timeZone == null) {
             timeZone = TimeZone.getDefault();
         }
         Calendar calendar = Calendar.getInstance(timeZone);
@@ -33,7 +33,7 @@ public class ParametersInterpreter {
     }
 
     public static Date dayEnd(Date date, TimeZone timeZone) {
-        if (timeZone==null){
+        if (timeZone == null) {
             timeZone = TimeZone.getDefault();
         }
         Calendar calendar = Calendar.getInstance(timeZone);

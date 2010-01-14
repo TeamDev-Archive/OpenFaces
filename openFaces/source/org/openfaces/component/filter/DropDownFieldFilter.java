@@ -11,9 +11,9 @@
  */
 package org.openfaces.component.filter;
 
+import org.openfaces.component.HorizontalAlignment;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItems;
-import org.openfaces.component.HorizontalAlignment;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.ValueBindings;
 

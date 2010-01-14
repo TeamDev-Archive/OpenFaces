@@ -90,7 +90,7 @@ public class QKS174 {
     }
 
     public List getNodeChildren() {
-        org.openfaces.testapp.screenshot.ForumMessage message = (ForumMessage) FacesUtil.getRequestMapValue("message");
+        org.openfaces.testapp.screenshot.ForumMessage message = (ForumMessage) FacesUtil.var("message");
         return message != null ? message.getReplies() : rootMessages;
     }
 }

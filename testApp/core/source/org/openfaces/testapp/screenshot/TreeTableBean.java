@@ -98,7 +98,7 @@ public class TreeTableBean {
     }
 
     public List getNodeChildren() {
-        ForumMessage message = (ForumMessage) FacesUtil.getRequestMapValue("message");
+        ForumMessage message = (ForumMessage) FacesUtil.var("message");
         return message != null
                 ? message.getReplies()
                 : rootMessages;
@@ -106,7 +106,7 @@ public class TreeTableBean {
 
 
     public String getDateCategory() {
-        ForumMessage message = (ForumMessage) FacesUtil.getRequestMapValue("message");
+        ForumMessage message = (ForumMessage) FacesUtil.var("message");
         Date date = message.getDate();
 
         return formatDate(date);

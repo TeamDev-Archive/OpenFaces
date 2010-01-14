@@ -102,7 +102,7 @@ public class DropDownAjaxBean {
 
     public List<String> getSuggestedAnimals() {
         List<String> suggestedAnimals = new ArrayList<String>();
-        String typedValue = (String) FacesUtil.getRequestMapValue("searchString");
+        String typedValue = FacesUtil.var("searchString", String.class);
         if (typedValue != null) {
             for (String animal : animals) {
                 String animalForComparison = animal.toLowerCase();
@@ -123,7 +123,7 @@ public class DropDownAjaxBean {
 
     public List<String> getSuggestedPlants() {
         List<String> suggestedPlants = new ArrayList<String>();
-        String typedValue = (String) FacesUtil.getRequestMapValue("searchString");
+        String typedValue = FacesUtil.var("searchString", String.class);
         if (typedValue != null) {
             for (String plant : plants) {
                 String plantForComparison = plant.toLowerCase();
@@ -145,7 +145,7 @@ public class DropDownAjaxBean {
 
     public List<City> getSuggestedCities() {
         List<City> suggestedCities = new ArrayList<City>();
-        String typedValue = (String) FacesUtil.getRequestMapValue("searchString");
+        String typedValue = FacesUtil.var("searchString", String.class);
         if (typedValue != null) {
             for (City city : cities) {
                 String cityForComparison = city.getName().toLowerCase();

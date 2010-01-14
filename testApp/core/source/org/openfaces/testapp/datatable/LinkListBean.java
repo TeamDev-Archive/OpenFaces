@@ -147,7 +147,7 @@ public class LinkListBean {
     }
 
     public String removeLink() {
-        editedLinks.remove(FacesUtil.getRequestMapValue("link"));
+        editedLinks.remove(FacesUtil.var("link"));
         return "";
     }
 
@@ -167,7 +167,7 @@ public class LinkListBean {
     }
 
     private Link getCurrentLink() {
-        Link linkData = (Link) FacesUtil.getRequestMapValue("link");
+        Link linkData = (Link) FacesUtil.var("link");
         if (linkData == null)
             return null;
         return linkData;

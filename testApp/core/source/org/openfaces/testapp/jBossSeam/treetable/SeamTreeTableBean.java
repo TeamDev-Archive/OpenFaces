@@ -62,7 +62,7 @@ public class SeamTreeTableBean implements Serializable, SeamTreeTable {
     private ExpressionFilterCriterion filterValue = new ExpressionFilterCriterion("2006");
 
     public List getNodeChildren() {
-        TreeTableItem item = (TreeTableItem) FacesUtil.getRequestMapValue("item");
+        TreeTableItem item = FacesUtil.var("item", TreeTableItem.class);
         return item != null ? item.getItems() :
                 em.createQuery("select item from TreeTableItem item where item.parent is null").getResultList();
     }
@@ -93,7 +93,7 @@ public class SeamTreeTableBean implements Serializable, SeamTreeTable {
     }
 
     public String getDateCategory() {
-        TreeTableItem item = (TreeTableItem) FacesUtil.getRequestMapValue("item");
+        TreeTableItem item = FacesUtil.var("item", TreeTableItem.class);
         Date date = item.getDate();
         return formatDate(date);
     }

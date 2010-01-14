@@ -12,9 +12,9 @@
 
 package org.openfaces.demo.beans.datatable;
 
-import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.component.filter.CompositeFilterCriterion;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
+import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.demo.beans.util.City;
 import org.openfaces.util.FacesUtil;
 
@@ -55,25 +55,25 @@ public class CitiesList implements Serializable {
     }
 
     public List<City> getCitiesList() {
-        CompositeFilterCriterion filterCriteria = (CompositeFilterCriterion) FacesUtil.getRequestMapValue("filterCriteria");
-        boolean sortAscending = (Boolean) FacesUtil.getRequestMapValue("sortAscending");
-        String sortColumnId = (String) FacesUtil.getRequestMapValue("sortColumnId");
-        int pageStart = (Integer) FacesUtil.getRequestMapValue("pageStart");
-        int pageSize = (Integer) FacesUtil.getRequestMapValue("pageSize");
+        CompositeFilterCriterion filterCriteria = FacesUtil.var("filterCriteria", CompositeFilterCriterion.class);
+        boolean sortAscending = FacesUtil.var("sortAscending", Boolean.class);
+        String sortColumnId = FacesUtil.var("sortColumnId", String.class);
+        int pageStart = FacesUtil.var("pageStart", Integer.class);
+        int pageSize = FacesUtil.var("pageSize", Integer.class);
         CitiesDB.CitySelectionCriteria filterConditions = calculateFilterConditions(filterCriteria);
         return citiesDB.getCitiesByParameters(filterConditions, sortColumnId, sortAscending, pageStart, pageSize);
     }
 
     private CitiesDB.CitySelectionCriteria calculateFilterConditions(CompositeFilterCriterion filterCriteria) {
         CitiesDB.CitySelectionCriteria filterConditions = new CitiesDB.CitySelectionCriteria();
-        for (FilterCriterion c : filterCriteria.getCriteria()) {
-            ExpressionFilterCriterion criterion = (ExpressionFilterCriterion) c;
-            String propertyName = criterion.getExpressionStr();
-            if (propertyName.equals("name")) {
-                String searchString = criterion.getArg1().toString();
+        for (FilterCriterion entry : filterCriteria.getCriteria()) {
+            ExpressionFilterCriterion criterion = (ExpressionFilterCriterion) entry;
+            String columnId = criterion.getExpressionStr();
+            if (columnId.equals("name")) {
+                String searchString = criterion.toString();
                 filterConditions.setCityNameSearchString(searchString);
-            } else if (propertyName.equals("population")) {
-                String searchString = criterion.getArg1().toString();
+            } else if (columnId.equals("population")) {
+                String searchString = criterion.toString();
                 String[] result = searchString.split(" \u2013 ");
 
                 String[] minLimit = result[0].split(",");
@@ -92,8 +92,8 @@ public class CitiesList implements Serializable {
 
                 filterConditions.setMinPopulation(min);
                 filterConditions.setMaxPopulation(max);
-            } else if (propertyName.equals("country")) {
-                String searchString = criterion.getArg1().toString();
+            } else if (columnId.equals("country")) {
+                String searchString = criterion.toString();
                 filterConditions.setCountry(searchString);
             }
         }
@@ -116,13 +116,13 @@ public class CitiesList implements Serializable {
     }
 
     public int getRowCount() {
-        CompositeFilterCriterion filterCriteria = (CompositeFilterCriterion) FacesUtil.getRequestMapValue("filterCriteria");
+        CompositeFilterCriterion filterCriteria = FacesUtil.var("filterCriteria", CompositeFilterCriterion.class);
         CitiesDB.CitySelectionCriteria filterConditions = calculateFilterConditions(filterCriteria);
         return citiesDB.getRecordCount(filterConditions);
     }
 
     public City getRowByKey() {
-        Integer key = (Integer) FacesUtil.getRequestMapValue("rowKey");
+        Integer key = FacesUtil.var("rowKey", Integer.class);
         return citiesDB.getCityById(key);
     }
 

@@ -48,7 +48,7 @@ public class TabSet extends OUIInputBase implements TabSelectionHolder {
     private TabAlignment alignment;
     private TabPlacement placement;
 
-    private Integer gapWidth;
+    private Integer gapWidth;                                                        
 
     private String tabStyle;
     private String rolloverTabStyle;

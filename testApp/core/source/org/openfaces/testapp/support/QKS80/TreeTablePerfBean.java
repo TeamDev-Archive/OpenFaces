@@ -43,8 +43,8 @@ public class TreeTablePerfBean {
     }
 
     public List<ForumMessage> getNodeChildren() {
-        ForumMessage message = (ForumMessage) FacesUtil.getRequestMapValue("message");
-        int level = (Integer) FacesUtil.getRequestMapValue("level");
+        ForumMessage message = (ForumMessage) FacesUtil.var("message");
+        int level = (Integer) FacesUtil.var("level");
         int count;
         switch (level) {
             case -1:
@@ -72,7 +72,7 @@ public class TreeTablePerfBean {
     }
 
     public boolean isNodeHasChildren() {
-        int level = (Integer) FacesUtil.getRequestMapValue("level");
+        int level = (Integer) FacesUtil.var("level");
         switch (level) {
             case -1:
                 return true;
@@ -87,7 +87,7 @@ public class TreeTablePerfBean {
 
 
     public String getDateCategory() {
-        ForumMessage message = (ForumMessage) FacesUtil.getRequestMapValue("message");
+        ForumMessage message = (ForumMessage) FacesUtil.var("message");
         Date date = message.getDate();
 
         return formatDate(date);

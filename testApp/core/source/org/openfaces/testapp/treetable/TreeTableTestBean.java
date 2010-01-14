@@ -107,7 +107,7 @@ public class TreeTableTestBean {
     }
 
     private ForumMessage getMessage() {
-        return (ForumMessage) FacesUtil.getRequestMapValue("message");
+        return (ForumMessage) FacesUtil.var("message");
     }
 
     private String newMessageSubject;
@@ -138,12 +138,12 @@ public class TreeTableTestBean {
     }
 
     public String getPageNameFromPageInfo() {
-        String pageInfo = (String) FacesUtil.getRequestMapValue("pageInfo");
+        String pageInfo = (String) FacesUtil.var("pageInfo");
         return (String) new StringTokenizer(pageInfo, "|", false).nextElement();
     }
 
     public String getPageUrlFromPageInfo() {
-        String pageInfo = (String) FacesUtil.getRequestMapValue("pageInfo");
+        String pageInfo = (String) FacesUtil.var("pageInfo");
         StringTokenizer stringTokenizer = new StringTokenizer(pageInfo, "|", false);
         stringTokenizer.nextElement();
         return (String) stringTokenizer.nextElement();
@@ -241,7 +241,7 @@ public class TreeTableTestBean {
     }
 
     public String getDynamicRowStyle() {
-        int level = (Integer) FacesUtil.getRequestMapValue("level");
+        int level = (Integer) FacesUtil.var("level");
         if (level > 10)
             level = 10;
         double color = 1.0 - (1.0 / 20) * level;

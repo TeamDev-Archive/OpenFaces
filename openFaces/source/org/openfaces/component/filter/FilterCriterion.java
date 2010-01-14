@@ -14,6 +14,10 @@ package org.openfaces.component.filter;
 import java.io.Serializable;
 
 /**
+ * An abstract base class for all filter criterion classes. A filter criterion is an entity that identifies a rule for
+ * passing or rejecting data objects during the filtering procedure. The actual rule is defined in the concrete
+ * implementations of this class.
+ *
  * @author Dmitry Pikhulya
  */
 public abstract class FilterCriterion implements Serializable {

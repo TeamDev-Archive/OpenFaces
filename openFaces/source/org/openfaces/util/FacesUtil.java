@@ -20,8 +20,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- *
- * Class intended to retrieve various parameters from request. 
+ * Class intended to retrieve various parameters from request.
  *
  * @author Dmitry Pikhulya
  */
@@ -32,39 +31,35 @@ public class FacesUtil {
     }
 
     /**
-     * This method retrieve value from request map by key.
+     * Returns the value of the specified variable in the current expression context and casts it to the specified class.
+     * This method returns the same value as would be returned by the #{varName} expression and is an easy way to get
+     * variable value in a backing bean if you can't write the value expression on your page directly and need to
+     * implement a more complex logic in the backing bean.
      *
-     * @see javax.faces.context.ExternalContext#getRequestMap() More about request map
-     * @param requestMapKey - key
-     * @return corresponding value from request map
+     * @param varName      variable name
+     * @param expectedType expected variable type
+     * @return variable value
+     * @throws ClassCastException if the variable value is not of the expected type
      */
-    public static Object getRequestMapValue(String requestMapKey) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = facesContext.getExternalContext();
-        Map requestMap = externalContext.getRequestMap();
-        Object value = requestMap.get(requestMapKey);
-        return value;
-    }
-
-    public static <T>T getRequestMapValue(String requestMapKey, Class<T> cls) {
-        Object value = getRequestMapValue(requestMapKey);
-        if (value == null)
-            return null;
-        if (!cls.isAssignableFrom(value.getClass()))
-            throw new ClassCastException("Improper type for request map value " + requestMapKey + ". Requested " + cls.getName() + ", but was " + value.getClass());
-        return (T) value;
-    }
-
-
-    public static <T>T var(String varName, Class<T> cls) {
+    public static <T> T var(String varName, Class<T> expectedType) throws ClassCastException {
         Object value = var(varName);
         if (value == null)
             return null;
-        if (!cls.isAssignableFrom(value.getClass()))
-            throw new ClassCastException("Improper type for variable " + varName + ". Requested " + cls.getName() + ", but was " + value.getClass());
+        if (!expectedType.isAssignableFrom(value.getClass()))
+            throw new ClassCastException("Improper type for variable " + varName + ". Requested " + expectedType.getName() + ", but was " + value.getClass());
         return (T) value;
     }
 
+    /**
+     * Returns the value of the specified variable in the current expression context. This method returns the same value
+     * as would be returned by the #{varName} expression and is an easy way to get variable value in a backing bean if
+     * you can't write the value expression on your page directly and need to implement a more complex logic in the
+     * backing bean.
+     *
+     * @param varName variable name
+     * @return variable value
+     * @throws ClassCastException if the variable value is not of the expected type
+     */
     public static Object var(String varName) {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext elContext = context.getELContext();
@@ -72,40 +67,58 @@ public class FacesUtil {
     }
 
     /**
-     * This method retrieve value from request parameters map by key.
+     * Retrieves a value from the request parameters map and converts it to the specified type.
      *
-     * @see javax.faces.context.ExternalContext#getRequestParameterMap() More about request parameters map 
-     * @param requestParameterMapKey - key
+     * @param paramName    - request parameter name
+     * @param expectedType - expected parameter type
      * @return corresponding value from request parameters map
+     * @see javax.faces.context.ExternalContext#getRequestParameterMap() More about request parameters map
      */
-    public static Object getRequestParameterMapValue(String requestParameterMapKey) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = facesContext.getExternalContext();
-        Map requestParameterMap = externalContext.getRequestParameterMap();
-        Object value = requestParameterMap.get(requestParameterMapKey);
-        return value;
+    public static <T> T requestParam(String paramName, Class<T> expectedType) {
+        String value = requestParam(paramName);
+        if (value == null)
+            return null;
+        if (expectedType.equals(String.class)) {
+            return (T) value;
+        } else if (expectedType.equals(Date.class)) {
+            try {
+                return (T) DATE_PARAMS_FORMAT.parse(value);
+            } catch (ParseException e) {
+                throw new RuntimeException("Request parameter \"" + paramName + "\" is expected to have date format of \"" +
+                        DATE_PARAMS_FORMAT.toPattern() + "\", but the following value couldn't be parsed \"" + value + "\"", e);
+            }
+        } else if (expectedType.equals(Integer.class)) {
+            try {
+                return (T) (Integer) Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                throw new RuntimeException("Request parameter \"" + paramName + "\" is expected to be an integer number " +
+                        "string, but the following value was found: \"" + value + "\"", e);
+            }
+        } else if (expectedType.equals(Boolean.class)) {
+            return (T) (Boolean) Boolean.parseBoolean(value);
+        } else if (expectedType.equals(Double.class)) {
+            try {
+                return (T) (Double) Double.parseDouble(value);
+            } catch (NumberFormatException e) {
+                throw new RuntimeException("Request parameter \"" + paramName + "\" is expected to be an double number " +
+                        "string, but the following value was found: \"" + value + "\"", e);
+            }
+        } else
+            throw new IllegalArgumentException("Unexpected expectedType value: " + expectedType.getName() + "; string, boolean, int, and double values are supported. Consider parsing a string manually.");
     }
 
     /**
-     * This method retrieve value from request parameters map by key, convert it into {@link java.util.Date Date}
-     * using "dd/MM/yyyy HH:mm" format and return. If requested value doesn't represent date, of has another format
-     * the {@link java.lang.RuntimeException RuntimeException} is thrown.
+     * Retrieves a value from the request parameters map.
      *
-     * @see javax.faces.context.ExternalContext#getRequestParameterMap() More about request parameters map
      * @param requestParameterMapKey - key
-     * @return corresponding {@link java.util.Date Date} object from request parameters map
+     * @return corresponding value from request parameters map
+     * @see javax.faces.context.ExternalContext#getRequestParameterMap() More about request parameters map
      */
-    public static Date getRequestParameterMapValueAsDate(String requestParameterMapKey) {
-        String paramValue = (String) getRequestParameterMapValue(requestParameterMapKey);
-        if (paramValue == null)
-            return null;
-
-        Date result;
-        try {
-            result = DATE_PARAMS_FORMAT.parse(paramValue);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        return result;
+    public static String requestParam(String requestParameterMapKey) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        Map<String, String> requestParameterMap = externalContext.getRequestParameterMap();
+        return requestParameterMap.get(requestParameterMapKey);
     }
+
 }

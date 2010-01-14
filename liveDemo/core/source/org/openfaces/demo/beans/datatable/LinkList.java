@@ -101,7 +101,7 @@ public class LinkList implements Serializable {
     }
 
     public String removeLink() {
-        editedLinks.remove(FacesUtil.getRequestMapValue("link"));
+        editedLinks.remove(FacesUtil.var("link", Link.class));
         return "";
     }
 
@@ -121,10 +121,7 @@ public class LinkList implements Serializable {
     }
 
     private Link getCurrentLink() {
-        Link linkData = (Link) FacesUtil.getRequestMapValue("link");
-        if (linkData == null)
-            return null;
-        return linkData;
+        return FacesUtil.var("link", Link.class);
     }
 
     public String addLink() {

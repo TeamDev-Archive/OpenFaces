@@ -11,14 +11,14 @@
  */
 package org.openfaces.component.filter;
 
-import org.openfaces.component.OUIComponentBase;
 import org.openfaces.component.FilterableComponent;
+import org.openfaces.component.OUIComponentBase;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.SelfScheduledAction;
 
-import javax.faces.context.FacesContext;
-import javax.faces.component.UIComponent;
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import java.util.List;
 
 /**

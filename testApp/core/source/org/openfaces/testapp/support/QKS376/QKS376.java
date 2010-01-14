@@ -52,12 +52,12 @@ public class QKS376 {
     }
 
     public List getNodeChildren() {
-        TreeTableItems tree = (TreeTableItems) FacesUtil.getRequestMapValue("tree");
+        TreeTableItems tree = (TreeTableItems) FacesUtil.var("tree");
         return tree != null ? tree.getReplies() : root;
     }
 
     public String updateTreeTable() {
-        TreeTableItems tree = (TreeTableItems) FacesUtil.getRequestMapValue("tree");
+        TreeTableItems tree = (TreeTableItems) FacesUtil.var("tree");
         boolean checked = tree.isChecked();
         if (tree.getReplies() != null) {
             recursiveUpdate(tree, checked);

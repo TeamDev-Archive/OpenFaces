@@ -14,6 +14,9 @@ package org.openfaces.component.filter;
 import java.util.List;
 
 /**
+ * A filter criterion that aggregates several filter criterion objects with the "and" condition, that is this criterion
+ * accepts a data record only when all of the contained criteria accept that record.
+ *
  * @author Dmitry Pikhulya
  */
 public class AndFilterCriterion extends CompositeFilterCriterion {

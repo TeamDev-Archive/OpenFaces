@@ -13,6 +13,8 @@
 package org.openfaces.component.filter;
 
 /**
+ * This enumeration defines a list of filter conditions that can be used by the filter components. 
+ *
  * @author Natalia Zolochevska
  */
 public enum FilterCondition {

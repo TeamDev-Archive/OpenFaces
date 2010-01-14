@@ -62,7 +62,7 @@ public class QKS1599 {
 
     public List<String> getItems1() {
         List<String> items = new ArrayList<String>();
-        String typedValue = (String) FacesUtil.getRequestMapValue("searchString");
+        String typedValue = (String) FacesUtil.var("searchString");
         if (typedValue != null) {
             for (String item : values1) {
                 String itemForComparison = item.toLowerCase();
@@ -76,7 +76,7 @@ public class QKS1599 {
 
     public List<String> getItems2() {
         List<String> items = new ArrayList<String>();
-        String typedValue = (String) FacesUtil.getRequestMapValue("searchString");
+        String typedValue = (String) FacesUtil.var("searchString");
         if (typedValue != null) {
             for (String aMyValues2 : values2) {
                 if (aMyValues2.toLowerCase().startsWith(value1.toLowerCase())) {

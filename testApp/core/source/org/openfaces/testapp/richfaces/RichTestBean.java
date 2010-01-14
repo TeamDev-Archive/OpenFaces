@@ -116,7 +116,7 @@ public class RichTestBean {
     }
 
     private TreeItem getNode() {
-        return (TreeItem) FacesUtil.getRequestMapValue("node");
+        return FacesUtil.var("node", TreeItem.class);
     }
 
     public RenderedImage getTestImage() {

@@ -87,7 +87,7 @@ public class DropDownBean implements Serializable {
 
     public List<Color> getColors() {
         List<Color> allColors = colors.getColors();
-        String searchString = (String) FacesUtil.getRequestMapValue("searchString");
+        String searchString = FacesUtil.var("searchString", String.class);
         if (searchString == null)
             return allColors;
         List<Color> result = new ArrayList<Color>();

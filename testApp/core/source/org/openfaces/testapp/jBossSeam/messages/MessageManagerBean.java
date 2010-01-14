@@ -52,12 +52,12 @@ public class MessageManagerBean implements Serializable, MessageManager {
     }
 
     public void select() {
-        Message currentMessage = (Message) FacesUtil.getRequestMapValue("msg");
+        Message currentMessage = FacesUtil.var("msg", Message.class);
         if (currentMessage != null) currentMessage.setRead(true);
     }
 
     public void delete() {
-        Message currentMessage = (Message) FacesUtil.getRequestMapValue("msg");
+        Message currentMessage = FacesUtil.var("msg", Message.class);
         if (currentMessage != null) {
             messageList.remove(currentMessage);
             em.refresh(currentMessage);

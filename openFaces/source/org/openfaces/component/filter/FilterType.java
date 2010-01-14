@@ -48,7 +48,7 @@ public enum FilterType {
         return name;
     }
 
-     public static FilterType fromString(String name) {
+    public static FilterType fromString(String name) {
         return stringToEnum.get(name);
     }
 
@@ -56,14 +56,14 @@ public enum FilterType {
         return operations;
     }
 
-    public static FilterType defineByClass(Class clazz){        
-        if (ReflectionUtil.isNumberType(clazz)){
+    public static FilterType defineByClass(Class clazz) {
+        if (ReflectionUtil.isNumberType(clazz)) {
             return NUMBER;
         }
-        if (clazz.isAssignableFrom(Date.class)){
+        if (clazz.isAssignableFrom(Date.class)) {
             return DATE;
         }
-        if (clazz.isEnum()){
+        if (clazz.isEnum()) {
             return SELECT;
         }
         return TEXT;

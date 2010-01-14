@@ -321,7 +321,7 @@ public class RequestsTreeTableBean implements Serializable {
     }
 
     private Request fetchRequestVariable() {
-        return (Request) FacesUtil.getRequestMapValue("rq");
+        return FacesUtil.var("rq", Request.class);
     }
 
     public boolean isRequestEditingButtonsEnabled() {

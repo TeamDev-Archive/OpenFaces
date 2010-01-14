@@ -40,7 +40,6 @@ public class BorderLayoutBean {
 
 
     public BorderLayoutBean() {
-
         List<String> componentsList = new ArrayList<String>();
         componentsList.add("Data Table");
         componentsList.add("Hint Label");
@@ -71,7 +70,7 @@ public class BorderLayoutBean {
     }
 
     public String getNormalizedSelectedComponent() {
-        return getSelectedComponent() == null ? null : ((String) getSelectedComponent()).replace(" ", "");
+        return getSelectedComponent() == null ? null : getSelectedComponent().replace(" ", "");
     }
 
     public void setNormalizedSelectedComponent(String value) {
@@ -112,11 +111,11 @@ public class BorderLayoutBean {
 			return ComponentLevel.ROOT;
 		}
 
-        if (COMPONENTS_ROOT.equals((String) treeNode)) {
+        if (COMPONENTS_ROOT.equals(treeNode)) {
             return ComponentLevel.CATEGORY;
         }
 
-        if (componentsByCategories.keySet().contains((String) treeNode)) {
+        if (componentsByCategories.keySet().contains(treeNode)) {
             return ComponentLevel.COMPONENT;
         }
 
@@ -124,14 +123,14 @@ public class BorderLayoutBean {
 	}
 
 	private Object getTreeNode() {
-		return FacesUtil.getRequestMapValue(TREE_NODE_VAR);
+		return FacesUtil.var(TREE_NODE_VAR);
 	}
 
 	public boolean isNodeHasChildren() {
         Object node = getTreeNode();
 
-		return COMPONENTS_ROOT.equals((String) node)
-                || componentsByCategories.keySet().contains((String) node);
+		return COMPONENTS_ROOT.equals(node)
+                || componentsByCategories.keySet().contains(node);
 	}
 
     public boolean isComponentNode() {

@@ -151,7 +151,7 @@ public class DropDownBean {
 
     public List<String> getSuggestedPlants() {
         List<String> suggestedPlants = new ArrayList<String>();
-        String typedValue = (String) FacesUtil.getRequestMapValue("searchString");
+        String typedValue = FacesUtil.var("searchString", String.class);
         if (typedValue != null) {
             for (Object myPlant : plants) {
                 String plant = (String) myPlant;
@@ -238,7 +238,7 @@ public class DropDownBean {
 
     public List<Color> getColors() {
         List<Color> allColors = colors.getColors();
-        String searchString = (String) FacesUtil.getRequestMapValue("searchString");
+        String searchString = FacesUtil.var("searchString", String.class);
         if (searchString == null) {
             return allColors;
         }

@@ -89,8 +89,8 @@ public class DayTableBean2 extends DayTableBean implements Serializable {
     }
 
     public List<AbstractTimetableEvent> getEvents() {
-        Date startTime = (Date) FacesUtil.getRequestMapValue("startTime");
-        Date endTime = (Date) FacesUtil.getRequestMapValue("endTime");
+        Date startTime = FacesUtil.var("startTime", Date.class);
+        Date endTime = FacesUtil.var("endTime", Date.class);
         if (startTime == null || endTime == null)
             return events;
         List<AbstractTimetableEvent> result = new ArrayList<AbstractTimetableEvent>();
@@ -151,7 +151,7 @@ public class DayTableBean2 extends DayTableBean implements Serializable {
     }
 
     private TimetableEvent getEvent() {
-        return (TimetableEvent) FacesUtil.getRequestMapValue("event");
+        return FacesUtil.var("event", TimetableEvent.class);
     }
 
 }

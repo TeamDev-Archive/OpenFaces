@@ -98,7 +98,7 @@ O$.FoldingPanel = {
             fp._prevOnKeyDown(e);
           var code = O$.isExplorer() || O$.isOpera() ? e.keyCode : e.charCode;
           switch (code) {
-            case 32: // white space
+            case 32: // spacebar
               if (fp._expanded)
                 fp.collapse();
               else

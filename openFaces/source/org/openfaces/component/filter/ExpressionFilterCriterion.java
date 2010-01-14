@@ -16,6 +16,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * An expression-based filter criterion that compares a particular property (or expression) of a filtered object with
+ * the specified parameters based on the specified condition. It consists of an expression (see the
+ * <code>getPropertyLocator()</code> method, or a quick expression accessor <code>getExpressionStr()</code>), a condition
+ * (see the <code>getCondition()</code> method), and a list of parameters (see the <code>getParameters()<code> method,
+ * or convenience parameter access methods <code>getArg1()</code>, <code>getArg2()<code>, and <code>isCaseSensitive</code>).
+ * There's an additional <code>inverse</code> property that works in conjunction with property expression and inverts
+ * the result of comparison if set to <code>true</code>.
+ *
+ *
  * @author Natalia Zolochevska
  */
 public class ExpressionFilterCriterion extends FilterCriterion {

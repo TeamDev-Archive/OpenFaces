@@ -105,7 +105,7 @@ public class TestNonLatinBean {
 
     public List getSuggestedValues() {
         List<String> suggestedValues = new ArrayList<String>();
-        String typedValue = (String) FacesUtil.getRequestMapValue("searchString");
+        String typedValue = (String) FacesUtil.var("searchString");
         if (typedValue != null) {
             for (String value : dropDownValues) {
                 String valueForComparison = value.toLowerCase();

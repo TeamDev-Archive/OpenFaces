@@ -79,7 +79,7 @@ public class ChartView implements Serializable {
     }
 
     private PieSectorInfo getSector() {
-        return (PieSectorInfo) FacesUtil.getRequestMapValue("sector");
+        return FacesUtil.var("sector", PieSectorInfo.class);
     }
 
     public void quarterClickListener(ActionEvent event) {

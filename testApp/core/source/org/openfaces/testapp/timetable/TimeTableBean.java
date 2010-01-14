@@ -128,8 +128,8 @@ public class TimeTableBean {
     }
 
     public List<AbstractTimetableEvent> getEvents() {
-        Date startTime = (Date) FacesUtil.getRequestMapValue("startTime");
-        Date endTime = (Date) FacesUtil.getRequestMapValue("endTime");
+        Date startTime = (Date) FacesUtil.var("startTime");
+        Date endTime = (Date) FacesUtil.var("endTime");
         if (startTime == null || endTime == null)
             return events;
         List<AbstractTimetableEvent> result = new ArrayList<AbstractTimetableEvent>();
@@ -149,20 +149,20 @@ public class TimeTableBean {
     }
 
     public String editEvent() {
-        String mode = (String) FacesUtil.getRequestParameterMapValue("mode");
+        String mode = FacesUtil.requestParam("mode");
         TimetableEvent editedEvent;
         if (mode.equals("create")) {
-            Date eventStart = FacesUtil.getRequestParameterMapValueAsDate("eventStart");
-            Date eventEnd = FacesUtil.getRequestParameterMapValueAsDate("eventEnd");
-            String resourceId = (String) FacesUtil.getRequestParameterMapValue("resourceId");
+            Date eventStart = FacesUtil.requestParam("eventStart", Date.class);
+            Date eventEnd = FacesUtil.requestParam("eventEnd", Date.class);
+            String resourceId = FacesUtil.requestParam("resourceId");
             editedEvent = new TimetableEvent(null, eventStart, eventEnd, "", "", null, resourceId);
         } else {
-            String eventId = (String) FacesUtil.getRequestParameterMapValue("eventId");
+            String eventId = FacesUtil.requestParam("eventId");
             editedEvent = (TimetableEvent) eventById(events, eventId).clone();
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
-        Map sessionMap = context.getExternalContext().getSessionMap();
+        Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
         sessionMap.put("editedEvent", editedEvent);
         return "eventEditor";
     }
@@ -357,7 +357,7 @@ public class TimeTableBean {
     }
 
     private TimetableEvent getEvent() {
-        return (TimetableEvent) FacesUtil.getRequestMapValue("event");
+        return (TimetableEvent) FacesUtil.var("event");
     }
 
     public void moveEvent1() {

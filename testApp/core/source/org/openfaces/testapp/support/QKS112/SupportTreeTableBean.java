@@ -104,7 +104,7 @@ public class SupportTreeTableBean {
     }
 
     public List getNodeChildren() {
-        ForumMessage message = (ForumMessage) FacesUtil.getRequestMapValue("message");
+        ForumMessage message = (ForumMessage) FacesUtil.var("message");
         if (message == null) {
             return getRootMessages();
         } else {
@@ -114,7 +114,7 @@ public class SupportTreeTableBean {
 
 
     public String getDateCategory() {
-        ForumMessage message = (ForumMessage) FacesUtil.getRequestMapValue("message");
+        ForumMessage message = (ForumMessage) FacesUtil.var("message");
         Date date = message.getDate();
 
         return formatDate(date);
@@ -144,7 +144,7 @@ public class SupportTreeTableBean {
     }
 
     public boolean isNodeHasChildren() {
-        ForumMessage message = (ForumMessage) FacesUtil.getRequestMapValue("message");
+        ForumMessage message = (ForumMessage) FacesUtil.var("message");
         return message.hasReplies();
     }
 

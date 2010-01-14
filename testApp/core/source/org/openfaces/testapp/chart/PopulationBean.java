@@ -49,7 +49,7 @@ public class PopulationBean {
     }
 
     public String getTooltip() {
-        PieSectorInfo sector = (PieSectorInfo) FacesUtil.getRequestMapValue("sector");
+        PieSectorInfo sector = FacesUtil.var("sector", PieSectorInfo.class);
         DecimalFormat format = new DecimalFormat("#,###");
         return sector.getKey() + " - " + format.format(sector.getValue());
     }

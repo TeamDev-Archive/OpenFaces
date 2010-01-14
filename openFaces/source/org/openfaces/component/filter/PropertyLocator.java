@@ -35,9 +35,8 @@ public class PropertyLocator implements Serializable {
         if (expression instanceof ValueExpression) {
             if (component == null)
                 throw new IllegalArgumentException("component can't be null when expression is ValueExpression");
-        } else
-            if (!(expression instanceof String))
-                throw new IllegalArgumentException("expression can be either ValueExpression or String, but it is: " + expression.getClass().getName());
+        } else if (!(expression instanceof String))
+            throw new IllegalArgumentException("expression can be either ValueExpression or String, but it is: " + expression.getClass().getName());
         this.expression = expression;
         this.component = component;
     }
@@ -63,7 +62,8 @@ public class PropertyLocator implements Serializable {
 
         PropertyLocator that = (PropertyLocator) o;
 
-        if (expression != null ? !expressionToComparableString(expression).equals(expressionToComparableString(that.expression)) : that.expression != null) return false;
+        if (expression != null ? !expressionToComparableString(expression).equals(expressionToComparableString(that.expression)) : that.expression != null)
+            return false;
 
         return true;
     }

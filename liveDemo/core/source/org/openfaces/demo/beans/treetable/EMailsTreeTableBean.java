@@ -509,7 +509,7 @@ public class EMailsTreeTableBean {
     }
 
     private Object getEmailVar() {
-        return FacesUtil.getRequestMapValue("email");
+        return FacesUtil.var("email");
     }
 
     public Date getSortByDateExpression() {

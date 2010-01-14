@@ -77,7 +77,7 @@ public class StylingBean implements Serializable {
     }
 
     private String calculatePayment(int deptIndex) {
-        PaymentItem paymentItem = (PaymentItem) FacesUtil.getRequestMapValue("payments");
+        PaymentItem paymentItem = FacesUtil.var("payments", PaymentItem.class);
         float payment = 0;
         if (deptIndex == 1) {
             payment = paymentItem.getDept1();

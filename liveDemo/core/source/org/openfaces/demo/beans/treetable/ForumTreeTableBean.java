@@ -114,7 +114,7 @@ public class ForumTreeTableBean implements Serializable {
     }
 
     private ForumMessage getMessage() {
-        return (ForumMessage) FacesUtil.getRequestMapValue("message");
+        return FacesUtil.var("message", ForumMessage.class);
     }
 
 
