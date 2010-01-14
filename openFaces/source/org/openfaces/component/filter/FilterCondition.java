@@ -21,8 +21,8 @@ public enum FilterCondition {
     EMPTY("empty", "Empty"),
     EQUALS("equals", "Equals"),
     CONTAINS("contains", "Contains"),
-    BEGINS("begins", "Begins with"),
-    ENDS("ends", "Ends with"),
+    BEGINS_WITH("beginsWith", "Begins with"),
+    ENDS_WITH("endsWith", "Ends with"),
     LESS("less", "<"),
     GREATER("greater", ">"),
     LESS_OR_EQUAL("lessOrEqual", "<="),
@@ -57,9 +57,9 @@ public enum FilterCondition {
                 return processor.processEquals();
             case CONTAINS:
                 return processor.processContains();
-            case BEGINS:
+            case BEGINS_WITH:
                 return processor.processBegins();
-            case ENDS:
+            case ENDS_WITH:
                 return processor.processEnds();
             case LESS:
                 return processor.processLess();

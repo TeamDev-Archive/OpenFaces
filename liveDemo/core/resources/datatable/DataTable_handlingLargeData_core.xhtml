@@ -4,14 +4,14 @@
      style="win-height: 700px;">
   <div id="Demo">
     <o:dataTable id="citiesTable"
+                 value="#{CitiesList.citiesList}"
                  var="city"
                  customDataProviding="true"
                  pageSize="12"
-                 width="100%"
-                 value="#{CitiesList.citiesList}"
                  totalRowCount="#{CitiesList.rowCount}"
                  rowDataByKey="#{CitiesList.rowByKey}"
                  rowKey="#{city.id}"
+                 width="100%"
                  styleClass="cities">
       <f:facet name="below">
         <h:panelGroup>

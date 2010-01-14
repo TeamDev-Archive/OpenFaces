@@ -24,7 +24,7 @@ import java.util.Map;
  * @author Natalia Zolochevska
  */
 public enum FilterType {
-    TEXT("text", EnumSet.of(EQUALS, CONTAINS, BEGINS, ENDS)),
+    TEXT("text", EnumSet.of(EQUALS, CONTAINS, BEGINS_WITH, ENDS_WITH)),
     NUMBER("number", EnumSet.of(EQUALS, LESS_OR_EQUAL, GREATER_OR_EQUAL, GREATER, LESS, BETWEEN)),
     SELECT("select", EnumSet.of(EQUALS)),
     DATE("date", EnumSet.of(EQUALS, LESS_OR_EQUAL, GREATER_OR_EQUAL, GREATER, LESS, BETWEEN));

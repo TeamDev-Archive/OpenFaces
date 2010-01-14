@@ -107,8 +107,8 @@ public abstract class ParametersEditor {
                 }
             }
             case CONTAINS:
-            case BEGINS:
-            case ENDS:
+            case BEGINS_WITH:
+            case ENDS_WITH:
             default:
                 return ParameterEditorType.INPUT_TEXT_PARAMETRS_EDITOR;
 

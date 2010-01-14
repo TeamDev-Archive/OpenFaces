@@ -138,10 +138,22 @@ public class ExpressionFilterCriterion extends FilterCriterion {
         this.propertyLocator = propertyLocator;
     }
 
+    /**
+     * Returns the expression string for this criterion. This is essentially the expression that is specified for the
+     * filter component from which this criterion originates.
+     * @return the expression string for this criterion
+     */
     public String getExpressionStr() {
         return propertyLocator.getExpression().toString();
     }
 
+    /**
+     * Returns the filtering condition for this criterion. Note that the filtering condition affects the set and number
+     * of arguments that the filter criterion possesses. E.g. FilterCriterion.EQUALS and FilterCriterion.GREATER require
+     * just one argument, FilterCriterion.BETWEEN requires two arguments, and FilterCriterion.EMPTY doesn't require
+     * arguments at all.
+     * @return the filter condition for this criterion
+     */
     public FilterCondition getCondition() {
         return condition;
     }
@@ -158,6 +170,11 @@ public class ExpressionFilterCriterion extends FilterCriterion {
         parameters.put(PARAM_ARG1, arg1);
     }
 
+    /**
+     * Returns the first argument of this criterion. This method is applicable when the criterion has a condition that
+     * requires one or more arguments (e.g. FilterCondition.EQUALS or FilterCondition.BETWEEN).
+     * @return the first argument of this criterion
+     */
     public Object getArg1() {
         return parameters.get(PARAM_ARG1);
     }
@@ -166,10 +183,22 @@ public class ExpressionFilterCriterion extends FilterCriterion {
         parameters.put(PARAM_ARG2, arg2);
     }
 
+    /**
+     * Returns the second argument of this criterion. This method is applicable when the criterion has a condition that
+     * requires two or more arguments (there's presently just one such condition -- FilterCondition.BETWEEN).
+     * @return the second argument of this criterion
+     */
     public Object getArg2() {
         return parameters.get(PARAM_ARG2);
     }
 
+    /**
+     * Identifies whether text comparison should be performed in a case-sensitive way. This parameter is applicable only
+     * when this criterion contains a condition that operates with string values (e.g. FilterCondition.CONTAINS,
+     * FilterCondition.BEGINS_WITH, or FilterCondition.EQUALS)
+     *
+     * @return true if text comparison should be performed in a case-sensitive way
+     */
     public boolean isCaseSensitive() {
         Object paramValue = parameters.get(PARAM_CASE_SENSITIVE);
         return paramValue != null && (Boolean) paramValue;
@@ -179,6 +208,12 @@ public class ExpressionFilterCriterion extends FilterCriterion {
         parameters.put(PARAM_CASE_SENSITIVE, caseSensitive);
     }
 
+    /**
+     * Specifies whether the condition specified with the "condition" property should be treated in the
+     * opposite way. For example when condition is FilterCondition.EQUALS and "inverse" property is set to true,
+     * the expected filtering behavior is matching the values that are _not_ equal to the filter criterion's argument.
+     * @return true if filter's condition should be treated in the opposite way.
+     */
     public boolean isInverse() {
         return inverse;
     }
