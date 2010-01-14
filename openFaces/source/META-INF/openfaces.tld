@@ -14753,13 +14753,13 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Specifies whether this TabSet component can have input focus for keyboard control.</description>
+      <description>Specifies whether this component can have input focus for keyboard control.</description>
       <name>focusable</name>
       <deferred-value>
         <type>java.lang.Boolean</type>
       </deferred-value>
       <!-- @bindingType java.lang.Boolean -->
-      <!-- @default false -->
+      <!-- @default true -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -15204,13 +15204,13 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>Specifies whether this TabbedPane can have input focus for keyboard control.</description>
+      <description>Specifies whether this component can have input focus for keyboard control.</description>
       <name>focusable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean -->
-      <!-- @default false -->
+      <!-- @default true -->
       <!-- @el true -->
     </attribute>
 
@@ -15817,14 +15817,13 @@ on every switch to the tab.-->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>
-      </description>
+      <description>Specifies whether this component can have input focus for keyboard control.</description>
       <name>focusable</name>
       <deferred-value>
         <type>java.lang.Boolean</type>
       </deferred-value>
       <!-- @bindingType java.lang.Boolean -->
-      <!-- @default false -->
+      <!-- @default true -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -19096,13 +19095,13 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A flag that make Calendar focusable component.</description>
+      <description>Specifies whether this component can have input focus for keyboard control.</description>
       <name>focusable</name>
       <deferred-value>
         <type>java.lang.Boolean</type>
       </deferred-value>
       <!-- @bindingType java.lang.Boolean -->
-      <!-- @default false -->
+      <!-- @default true -->
       <!-- @el true -->
     </attribute>
 
@@ -20084,13 +20083,13 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A flag that indicates whether or not the DateChooser is focusable.</description>
+      <description>Specifies whether this component can have input focus for keyboard control.</description>
       <name>focusable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean -->
-      <!-- @default false -->
+      <!-- @default true -->
       <!-- @el true -->
     </attribute>
 
