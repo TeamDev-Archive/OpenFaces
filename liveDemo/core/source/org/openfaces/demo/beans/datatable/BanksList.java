@@ -138,7 +138,7 @@ public class BanksList implements Serializable {
     }
 
     public String getAverageAssetsRange() {
-        Bank bank = (Bank) FacesUtil.getRequestMapValue("bank");
+        Bank bank = FacesUtil.var("bank", Bank.class);
         int averageAsset = bank.getAverageAssets();
         if (averageAsset <= 50000)
             return "< 50,000";
