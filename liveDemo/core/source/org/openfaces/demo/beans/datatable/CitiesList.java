@@ -69,11 +69,10 @@ public class CitiesList implements Serializable {
         for (FilterCriterion entry : filterCriteria.getCriteria()) {
             ExpressionFilterCriterion criterion = (ExpressionFilterCriterion) entry;
             String columnId = criterion.getExpressionStr();
+            String searchString = criterion.getArg1().toString();
             if (columnId.equals("name")) {
-                String searchString = criterion.toString();
                 filterConditions.setCityNameSearchString(searchString);
             } else if (columnId.equals("population")) {
-                String searchString = criterion.toString();
                 String[] result = searchString.split(" \u2013 ");
 
                 String[] minLimit = result[0].split(",");
@@ -93,7 +92,6 @@ public class CitiesList implements Serializable {
                 filterConditions.setMinPopulation(min);
                 filterConditions.setMaxPopulation(max);
             } else if (columnId.equals("country")) {
-                String searchString = criterion.toString();
                 filterConditions.setCountry(searchString);
             }
         }

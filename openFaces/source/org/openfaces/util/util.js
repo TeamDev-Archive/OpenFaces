@@ -4524,7 +4524,9 @@ if (!window.O$) {
           // ignore failed focus attempts
         }
         var len = field.value.length;
-        O$._selectTextRange(field, len, len);
+        var fieldTag = field.nodeName.toLowerCase();
+        if (fieldTag != "select")
+          O$._selectTextRange(field, len, len);
       }
     };
     O$._submitInternal(component, function() {
