@@ -682,7 +682,11 @@
 }
 
 .o_dropdown_field {
-  background-color: transparent;
+  background-color: white;
+  filter: alpha(opacity = 0);
+  -moz-opacity: 0;
+  opacity: 0;
+
   margin: 0;
   padding: 2px 2px 0 2px;
   border: 0 solid;
@@ -733,7 +737,6 @@
 }
 
 .o_combo_field_disabled {
-  background-color: transparent;
 }
 
 .o_dropdown_disabled {
