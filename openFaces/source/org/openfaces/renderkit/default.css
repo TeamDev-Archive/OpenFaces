@@ -978,6 +978,9 @@
   text-align: left;
   background: #f0f0f0;
 }
+.o_popup_menu_iequirks {
+  width: 0;
+}
 
 .o_popup_menu_background {
   background: menu;

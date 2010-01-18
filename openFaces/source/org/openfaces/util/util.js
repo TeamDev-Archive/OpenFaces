@@ -3972,7 +3972,7 @@ if (!window.O$) {
       }
     }
 
-    var popupContainer = O$.getContainingBlock(popup, true);
+    var popupContainer = popup.offsetParent;
     if (popupContainer) {
       var containerRect = O$.getElementPaddingRectangle(popupContainer);
       x -= containerRect.x;

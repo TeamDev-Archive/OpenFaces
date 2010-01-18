@@ -105,6 +105,10 @@ O$.PopupMenu = {
       }
     });
 
+    if (O$.isQuirksMode() && O$.isExplorer()) {
+      O$.setStyleMappings(popupMenu, {ieQuirksFix: "o_popup_menu_iequirks"});
+    }
+
     O$.assignEvents(popupMenu, events, true);
 
     O$.setupArtificialFocus(popupMenu, null);
@@ -536,8 +540,8 @@ O$.PopupMenu = {
   },
 
   _initIEWidthWorkaround: function(popupMenu) {
-    if (O$.isExplorer() && popupMenu._menuItemsAlign == null) {
-      popupMenu._menuItemsAlign = true;
+    if (O$.isExplorer() && popupMenu._menuItemsAligned == null) {
+      popupMenu._menuItemsAligned = true;
       var maxWidthItem = 0;
       var width;
       popupMenu._items.forEach(function(menuItem) {

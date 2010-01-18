@@ -1883,8 +1883,8 @@ O$.Table = {
 
 };
 
+// -------------------------- COLUMN MENU SUPPORT
 O$.ColumnMenu = {
-  // -------------------------- COLUMN MENU SUPPORT
 
   _init: function(columnMenuId, tableId, columnMenuButtonId) {
     var table = O$(tableId);
