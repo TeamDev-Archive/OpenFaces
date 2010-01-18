@@ -386,9 +386,21 @@ O$.Tables = {
         },
         _getRows: function() {
           if (!this._rows) {
+            var fakeRowRequired = O$.isStrictMode() && (O$.isExplorer6() || O$.isExplorer7());
+            // no-cells fake row is required under IE6/7+strict to make column width calculation uniform across browsers (see OF-24)
+
             var scrolling = table._params.scrolling;
             if (!scrolling) {
+              if (fakeRowRequired) {
+                if (!this._fakeRow) {
+                  this._fakeRow = document.createElement("tr");
+                  this._fakeRow.style.display = "none";
+                  if (this._tag)
+                    this._tag.insertBefore(this._fakeRow, this._tag.firstChild);
+                }
+              }
               this._rows = this._tag ? O$.getChildNodesWithNames(this._tag, ["tr"]) : [];
+              if (this._fakeRow) this._rows = this._rows.slice(1);
               this._rows.forEach(function(row) {
                 row._table = table;
                 row._index = i;
@@ -445,6 +457,14 @@ O$.Tables = {
                 tbl.style.emptyCells = "show";
                 applyStyle(tbl, sectionParams.className);
                 var rowContainer = O$.getChildNodesWithNames(tbl, ["tbody"])[0];
+                if (fakeRowRequired) {
+                  if (!rowContainer._fakeRow) {
+                    rowContainer._fakeRow = document.createElement("tr");
+                    rowContainer._fakeRow.style.display = "none";
+                    rowContainer.insertBefore(rowContainer._fakeRow, rowContainer.firstChild);
+                  }
+                }
+
                 var area = {
                   _horizontalIndex: areaCellIndex,
                   _td: td,
@@ -455,6 +475,8 @@ O$.Tables = {
                   _rows: O$.getChildNodesWithNames(rowContainer, ["tr"]),
                   _spacer: spacer
                 };
+                if (rowContainer._fakeRow)
+                  area._rows = area._rows.slice(1);
                 if (area._scrollingDiv) {
                   if (scrollingKind == "none") {
                     // leave overflow as specified during rendering
@@ -1546,14 +1568,12 @@ O$.Tables = {
       var bodyCell = column.body._cells[0];
       var footerCell = column.footer && column.footer._cell;
 
-      var correctColWidth = O$.isStrictMode() && (O$.isExplorer6() || O$.isExplorer7());
-
       function setWidth(cellClass, colClass, cell, tableSection) {
         if (!cell) return;
         calculateWidthCorrection(cell);
         var widthForCell = width - cell._widthCorrection;
         if (widthForCell < 0) widthForCell = 0;
-        var widthForCol = width - (correctColWidth ? cell._widthCorrection : 0);
+        var widthForCol = width;
         if (widthForCol < 0) widthForCol = 0;
 
         if (cellClass.style.setProperty) {
