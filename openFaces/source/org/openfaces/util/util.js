@@ -825,11 +825,11 @@ if (!window.O$) {
   };
 
   O$.isMozillaFF2 = function() {
-    return O$.isMozillaFF() && !O$.userAgentContains("Firefox/3.0");
+    return O$.isMozillaFF() && !O$.userAgentContains("Firefox/3.");
   };
 
   O$.isMozillaFF3 = function() {
-    return O$.isMozillaFF() && O$.userAgentContains("Firefox/3.0");
+    return O$.isMozillaFF() && O$.userAgentContains("Firefox/3.");
   };
 
   O$.isExplorer = function() {
