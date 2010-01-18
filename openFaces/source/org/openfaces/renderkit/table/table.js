@@ -1385,7 +1385,7 @@ O$.Table = {
             var resizeDecorator = document.createElement("div");
             resizeDecorator.style.position = "absolute";
             resizeDecorator.style.borderLeft = "0px none transparent";//"1px solid gray";
-            table.parentNode.appendChild(resizeDecorator);
+//            table.parentNode.appendChild(resizeDecorator);
             this._column._resizeDecorator = resizeDecorator;
             resizeDecorator._column = this._column;
 
@@ -1398,7 +1398,7 @@ O$.Table = {
               this.style.width = "0px";//"1px";
               this.style.height = tablePos.y + table.offsetHeight - cellPos.getMinY() + "px";
             };
-            resizeDecorator._updatePos();
+//            resizeDecorator._updatePos();
             this._dragStartCellPos = O$.getElementBorderRectangle(headerCell, true);
           },
           setLeft: function(left) {
@@ -1463,7 +1463,7 @@ O$.Table = {
           },
           ondragend: function() {
             table._columnResizingInProgress = false;
-            this._column._resizeDecorator.parentNode.removeChild(this._column._resizeDecorator);
+//            this._column._resizeDecorator.parentNode.removeChild(this._column._resizeDecorator);
             updateResizeHandlePositions();
 
             var totalWidth = 0;
@@ -1499,10 +1499,21 @@ O$.Table = {
                     : O$.getElementBorderRectangle(this._column.header._cell, true);
 
             var minY = topCellPos.getMinY();
-            this.style.top = minY + "px";
-            this.style.left = bottomCellPos.getMaxX() - Math.floor(resizeHandleWidth / 2) - 1 + "px";
-            this.style.width = resizeHandleWidth + "px";
-            this.style.height = bottomCellPos.getMaxY() - minY + "px";
+            var x = bottomCellPos.getMaxX() - Math.floor(resizeHandleWidth / 2) - 1;
+            var y = minY;
+            var height = bottomCellPos.getMaxY() - minY;
+            var container = O$.getContainingBlock(this, true);
+            var visibleArea = container ? new O$.Rectangle(0, 0, container.offsetWidth, container.offsetHeight) : null;
+            var visible = visibleArea.intersects(new O$.Rectangle(x, y, resizeHandleWidth, height));
+            var newDisplay = visibleArea ? (visible ? "block" : "none") : "block";
+            if (this.style.display != newDisplay)
+              this.style.display = newDisplay;
+            if (visible) {
+              this.style.top = y + "px";
+              this.style.left = x + "px";
+              this.style.width = resizeHandleWidth + "px";
+              this.style.height = height + "px";
+            }
           }
         });
 
