@@ -131,7 +131,7 @@
       <td style="width: 60px; height: 30px;"></td>
       <td style="width: 125px;">
         <h:commandButton value="Display Search Results" style="margin-top: 15px;">
-          <o:ajax render="mainForm:peopleByCriteria"
+          <o:ajax render=":mainForm:peopleByCriteria"
                               execute="mainForm:country mainForm:industry mainForm:degree mainForm:hobby"
                               listener="#{SuggestionFieldBean.findPeople}"/>
         </h:commandButton>
