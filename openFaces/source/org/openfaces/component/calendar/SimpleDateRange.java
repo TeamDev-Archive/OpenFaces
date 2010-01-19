@@ -20,7 +20,8 @@ import java.util.Date;
  * @author Kharchenko
  */
 public class SimpleDateRange extends AbstractDateRange {
-    public static final String COMPONENT_TYPE = "org.openfaces.DateRange";
+    public static final String COMPONENT_TYPE = "org.openfaces.SimpleDateRange";
+    public static final String COMPONENT_FAMILY = "org.openfaces.SimpleDateRange";
 
     private String dayStyle;
     private String rolloverDayStyle;
@@ -38,6 +39,10 @@ public class SimpleDateRange extends AbstractDateRange {
     private Date toDate; // required property
 
     public SimpleDateRange() {
+    }
+
+    public String getFamily() {
+        return COMPONENT_FAMILY;
     }
 
     public Date getFromDate() {

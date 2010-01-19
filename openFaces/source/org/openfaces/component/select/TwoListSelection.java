@@ -226,7 +226,7 @@ public class TwoListSelection extends OUISelectMany {
         return ValueBindings.get(this, "size", size, -1);
     }
 
-    public void setSize(Integer size) {
+    public void setSize(int size) {
         this.size = size;
     }
 

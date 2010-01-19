@@ -17,7 +17,6 @@ import javax.faces.component.UIComponentBase;
  * @author Kharchenko
  */
 public abstract class AbstractDateRange extends UIComponentBase {
-    public static final String COMPONENT_FAMILY = "org.openfaces.DateRange";
 
     protected AbstractDateRange() {
     }
@@ -54,7 +53,4 @@ public abstract class AbstractDateRange extends UIComponentBase {
 
     public abstract String getRolloverSelectedDayClass();
 
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
 }

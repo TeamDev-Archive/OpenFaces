@@ -76,7 +76,7 @@ O$.PopupMenu = {
           var containerPos = relativeToContainer !== null ? O$.getElementPos(relativeToContainer) : {x: 0, y: 0};
           var absoluteX = x + containerPos.x;
           var absoluteY = y + containerPos.y;
-          var popupContainer = O$.getContainingBlock(popupMenu, true);
+          var popupContainer = popupMenu.offsetParent;
           var popupContainerPos = O$.getElementPos(popupContainer);
           x = absoluteX - popupContainerPos.x;
           y = absoluteY - popupContainerPos.y;

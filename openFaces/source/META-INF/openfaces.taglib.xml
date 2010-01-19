@@ -650,6 +650,7 @@
     <component>
       <component-type>org.openfaces.TwoListSelection</component-type>
       <renderer-type>org.openfaces.TwoListSelectionRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.select.TwoListSelectionTagHandler</handler-class>
     </component>
   </tag>
 
