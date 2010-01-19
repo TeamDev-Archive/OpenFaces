@@ -65,7 +65,7 @@ O$.Dojo = {
       var _14 = 10 / (increment || 10);
       var _15 = (_14 * +value).toFixed(places) / _14;
       if ((0.9).toFixed() == 0) {
-        var d = Math.pow(10, -places || 0),a = Math.abs(v);
+        var d = Math.pow(10, -places || 0),a = Math.abs(value);
         if (!value || a >= d || a * Math.pow(10, places + 1) < 5) {
           d = 0;
         }
