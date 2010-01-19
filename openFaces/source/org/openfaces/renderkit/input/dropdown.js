@@ -23,6 +23,7 @@ O$.DropDown = {
 
     dropDown._field = O$(dropDownId + "::field");
     dropDown._statePrompt = O$(dropDownId + "::field" + "::statePrompt");
+    dropDown._o_inputField = dropDown._field; // for O$._selectTextRange to be able to access the text field
 
     dropDown._initialText = initialText;
 

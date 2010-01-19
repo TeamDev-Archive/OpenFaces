@@ -1223,8 +1223,8 @@ O$.Tables = {
       table.body._overriddenVerticalGridlines[afterColIndex] = gridlineStyle;
       table.body._updateVerticalGridlines();
     };
+
     var tableBody = table.body;
-  {
     tableBody._getBorderBottomForCell = function(/*rowIndex, colIndex, cell*/) {
       return table._gridLines.horizontal;
     };
@@ -1289,7 +1289,6 @@ O$.Tables = {
     });
 
     tableBody._updateVerticalGridlines();
-  }
 
   },
 
@@ -2027,6 +2026,7 @@ O$.Tables = {
         verticalAreaForInitialization._columns.forEach(function(c) {
           c._verticalArea = verticalAreaForInitialization;
         });
+        if (areaWidth < 0) areaWidth = 0;
         var width = areaWidth + "px";
         verticalAreaForInitialization._areas = [];
         [table.header, table.body, table.footer].forEach(function (section) {
@@ -2081,10 +2081,17 @@ O$.Tables = {
         table._rightArea.updateWidth();
       firstInitialization = false;
 
-      if (!scrolling.horizontal)
+      if (!scrolling.horizontal) {
+        var firstUpdate = true;
         O$.listenProperty(table, "width", function(/*width*/) {
+          if (firstUpdate) {
+            // already updated during inintialization
+            firstUpdate = false;
+            return;
+          }
           table._centerArea.updateWidth();
         });
+      }
       if (O$.isChrome() || O$.isSafari()) {
         // fix Chrome/Safari not respecting table-layout="fixed" in _some_ cases
         [table.header, table.body, table.footer].forEach(function (section) {
@@ -2329,7 +2336,6 @@ O$.Tables = {
           colWidth = defaultColWidth;
         }
         column._tempWidth = colWidth;
-        column.setWidth(colWidth);
       }
       if (!scrolling || !scrolling.horizontal) {
         if (column._relativeWidth || column._widthNotSpecified)
@@ -2369,10 +2375,15 @@ O$.Tables = {
         });
       } else {
         columns.forEach(function(c) {
-          c.setWidth(Math.floor((c._explicitWidth / tblWidth) * tableWidth));
+          c.setWidth(Math.floor((c._explicitWidth || c._tempWidth / tblWidth) * tableWidth));
         });
       }
       tblWidth = tableWidth;
+    }
+    if (firstInitialization) {
+      columns.forEach(function(column) {
+        if (!column._explicitWidth) column.setWidth(column._tempWidth);
+      });
     }
     return tblWidth;
   }

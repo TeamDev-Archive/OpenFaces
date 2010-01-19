@@ -1221,6 +1221,7 @@ if (!window.O$) {
   };
 
   O$._selectTextRange = function(field, beginIdx, endIdx) {
+    if (field._o_inputField) field = field._o_inputField;
     if (field.setSelectionRange) {
       field.setSelectionRange(beginIdx, endIdx);
     } else {

@@ -449,7 +449,7 @@ O$.Table = {
   _scrollToRowIndexes: function(table, rowIndexes) {
     var bodyRows = table.body._getRows();
     O$.scrollElementIntoView(rowIndexes.map(function(i) {
-      return bodyRows[i]._rowNode;
+      return i != -1 && bodyRows[i]._rowNode;
     }));
   },
 
@@ -538,10 +538,6 @@ O$.Table = {
         }
 
       }
-    } else if (e.pageUpPressed) {
-      newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, -rowCount);
-    } else if (e.pageDownPressed) {
-      newIndex = O$.Table._getNeighboringVisibleRowIndex(table, idx, rowCount);
     }
 
     return newIndex;
@@ -1521,6 +1517,7 @@ O$.Table = {
       });
 
       function fixWidths() {
+        if (table._params.scrolling) return;
         var colWidths = getColWidths();
         table.style.tableLayout = "fixed";
 

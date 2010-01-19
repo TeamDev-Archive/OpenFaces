@@ -174,13 +174,13 @@
       <feature>Ajax sorting</feature>
       <feature>Ajax pagination</feature>
       <feature>Ajax filtering</feature>
-      <feature>Handling large data sets</feature>
       <feature>Single and multiple row selection</feature>
       <feature>Column resizing</feature>
-      <feature>Drag &amp; drop column reordering</feature>
+      <feature>Showing, hiding and reordering columns</feature>
+      <feature>Content scrolling with row/column freezing</feature>
       <feature>Dynamic columns</feature>
       <feature>Multiple headers and footers</feature>
-      <feature>Merging row cells</feature>
+      <feature>Handling large data sets</feature>
       <feature>Individual rows and cells customization</feature>
       <feature>Keyboard navigation</feature>
     </keyFeatures>
@@ -645,10 +645,10 @@
       <feature>Configurable preloaded nodes</feature>
       <feature>Single and multiple selection</feature>
       <feature>Column resizing</feature>
-      <feature>Drag &amp; drop column reordering</feature>
+      <feature>Showing, hiding and reordering columns</feature>
+      <feature>Content scrolling with row/column freezing</feature>
       <feature>Dynamic columns</feature>
       <feature>Multiple headers and footers</feature>
-      <feature>Merging row cells</feature>
       <feature>Individual rows and cells customization</feature>
       <feature>Keyboard navigation</feature>
     </keyFeatures>

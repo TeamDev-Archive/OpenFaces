@@ -3,210 +3,164 @@
      xmlns:o="http://openfaces.org/">
 
 
-<div id="Demo">
+  <div id="Demo">
 
-  <table style="width: 100%" cellspacing="0" cellpadding="0" borer="0">
-    <tr>
-      <td>
-        <h3>U.S. Banks Directory
-          <small>(an extract, full list: <a href="http://www.fdic.gov" target="_blank">FDIC</a>)</small>
-        </h3>
-      </td>
-      <td style="padding-right: 6px; padding-top: 5px; width: 250px;">
-        <o:inputTextFilter for="banks"
-                           expression="#{bank.institutionName},#{bank.certificateNumber},#{bank.city},#{bank.state},#{bank.zip},#{bank.county},#{bank.averageAssets}"
-                           promptText="Search all fields"/>
-      </td>
-    </tr>
+    <table style="width: 100%" cellspacing="0" cellpadding="0" borer="0">
+      <tr>
+        <td>
+          <h3>U.S. Banks Directory
+            <small>(an extract, full list: <a href="http://www.fdic.gov" target="_blank">FDIC</a>)</small>
+          </h3>
+        </td>
+        <td style="padding-right: 6px; padding-top: 5px; width: 250px;">
+          <o:inputTextFilter for="banks"
+                             expression="#{bank.institutionName},#{bank.certificateNumber},#{bank.city},#{bank.state},#{bank.zip},#{bank.county},#{bank.averageAssets}"
+                             promptText="Search all fields"/>
+        </td>
+      </tr>
 
-  </table>
+    </table>
 
-  <o:dataTable id="banks" var="bank"
-               value="#{BanksList.banks}"
-               pageSize="14"
-               width="100%"
-               style="margin-top: 15px;"
-               sortColumnId="institutionName"
-               sortedAscendingImageUrl="../images/treetable/sort_a.gif"
-               sortedDescendingImageUrl="../images/treetable/sort_d.gif"
-               sortedColumnHeaderStyle="background: url('../images/treetable/tableHeader_sorted.gif') repeat-x;"
-               sortableHeaderRolloverStyle="background: url('../images/treetable/tableHeader_rollover.gif') repeat-x !important;"
-               sortedColumnBodyStyle="background: none;"
-               horizontalGridLines="1px solid #f6f7f8"
-               headerVertSeparator="1px solid #d0d0d0, 1px solid #a0a0a0"
-               headerRowStyle="background: url('../images/treetable/tableHeader.gif') repeat-x; height: 20px;"
-               subHeaderRowStyle="background: url('../images/datatable/filter.gif') repeat-x #f7f7f7; border-top: 1px solid #f6f7f8;"
-               bodyRowStyle="background: #ffffff !important; height: 21px;"
-               bodyOddRowStyle="background: #f5f5f5 ! important; height: 21px;"
-          >
-    <o:multipleRowSelection
-            style="background: url('../images/treetable/selected.gif') repeat-x #5D8BBA !important; color: white !important;"/>
-    <o:columnResizing/>
-    <o:columnReordering/>
-    <f:facet name="columnMenu">
-      <o:columnMenu/>
-    </f:facet>
-    <f:facet name="columnMenuButton">
-      <o:captionButton style="border-left: none; background: url('../images/treetable/columnMenuBtn.gif');"
-              rolloverStyle="border-left: none; background: url('../images/treetable/columnMenuBtnRollover.gif');"
-              pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
-    </f:facet>
-    <f:facet name="below">
-      <h:panelGroup style="width: 100%; text-align: center;">
-        <o:dataTablePaginator id="paginator"
-                              style="margin-left: auto; margin-right: auto; margin-top: 10px;"
-                              firstDisabledImageUrl="#{BanksList.firstDisabledImageUrl}"
-                              firstImageUrl="#{BanksList.firstImageUrl}"
-                              nextDisabledImageUrl="#{BanksList.nextDisabledImageUrl}"
-                              nextImageUrl="#{BanksList.nextImageUrl}"
-                              previousDisabledImageUrl="#{BanksList.previousDisabledImageUrl}"
-                              previousImageUrl="#{BanksList.previousImageUrl}"
-                              lastDisabledImageUrl="#{BanksList.lastDisabledImageUrl}"
-                              lastImageUrl="#{BanksList.lastImageUrl}"
-                              pageNumberFieldStyle="#{BanksList.pageNumberFieldStyle}"/>
-      </h:panelGroup>
-    </f:facet>
+    <o:dataTable id="banks" var="bank"
+                 value="#{BanksList.banks}"
+                 style="margin-top: 15px; width: 100%; height: 420px;"
 
-    <o:column id="institutionName"
-              header="Institution Name"
-              width="30%"
-              sortingExpression="#{bank.institutionName}"
-              bodyStyle="text-align: left; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
-              headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
-      <f:facet name="subHeader">
-        <o:inputTextFilter id="filter1" expression="#{bank.institutionName}"/>
+                 sortColumnId="institutionName"
+                 sortedAscendingImageUrl="../images/treetable/sort_a.gif"
+                 sortedDescendingImageUrl="../images/treetable/sort_d.gif"
+                 sortedColumnHeaderStyle="background: url('../images/treetable/tableHeader_sorted.gif') repeat-x;"
+
+                 sortableHeaderRolloverStyle="background: url('../images/treetable/tableHeader_rollover.gif') repeat-x !important;"
+                 sortedColumnBodyStyle="background: none;"
+                 headerRowStyle="background: url('../images/treetable/tableHeader.gif') repeat-x; height: 20px;"
+                 subHeaderRowStyle="background: url('../images/datatable/filter.gif') repeat-x #f7f7f7; border-top: 1px solid #f6f7f8;"
+
+                 bodySectionStyle="background: #ffffff"
+                 bodyRowStyle="background: #ffffff !important; height: 21px;"
+                 bodyOddRowStyle="background: #f5f5f5 !important; height: 21px;"
+
+                 headerVertSeparator="1px solid #d0d0d0, 1px solid #a0a0a0"
+                 horizontalGridLines="1px solid #f6f7f8"
+            >
+      <o:singleRowSelection
+              style="background: url('../images/treetable/selected.gif') repeat-x #5D8BBA !important; color: white !important;"/>
+      <o:scrolling/>
+      <o:columnResizing/>
+      <o:columnReordering/>
+      <f:facet name="columnMenu">
+        <o:columnMenu/>
       </f:facet>
-      <h:outputText value="#{bank.institutionName}"/>
-    </o:column>
-    <o:column id="certificateNumber"
-              header="Certificate Number"
-              width="10%"
-              headerStyle="white-space: normal;"
-              sortingExpression="#{bank.certificateNumber}"
-              bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;">
-      <f:facet name="subHeader">
-        <o:inputTextFilter id="filter2" expression="#{bank.certificateNumber}" maxlength="5" value="equals" autoFilterDelay="-1">
-          <f:convertNumber integerOnly="true" groupingUsed="false"/>
-        </o:inputTextFilter>
+      <f:facet name="columnMenuButton">
+        <o:captionButton style="border-left: none; background: url('../images/treetable/columnMenuBtn.gif');"
+                         rolloverStyle="border-left: none; background: url('../images/treetable/columnMenuBtnRollover.gif');"
+                         pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
       </f:facet>
-      <h:outputText value="#{bank.certificateNumber}"/>
-    </o:column>
-    <o:columnGroup header="Address">
-      <o:column id="city"
-                header="City"
-                width="14%"
-                sortingExpression="#{bank.city}"
-                bodyStyle="padding-left: 5px; padding-right: 5px;"
+
+      <o:column header="Institution Name"
+                width="30%"
+                sortingExpression="#{bank.institutionName}"
+                bodyStyle="text-align: left; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
                 headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
         <f:facet name="subHeader">
-          <o:inputTextFilter id="filter3" expression="#{bank.city}"/>
+          <o:inputTextFilter id="filter1" expression="#{bank.institutionName}"/>
         </f:facet>
-
-        <h:outputText value="#{bank.city}"/>
+        <h:outputText value="#{bank.institutionName}"/>
       </o:column>
-      <o:column id="state"
-                header="State"
-                width="7%"
-                sortingExpression="#{bank.state}"
-                bodyStyle="padding-left: 5px; padding-right: 5px;"
-                headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
+      <o:column header="Certificate Number"
+                width="10%"
+                headerStyle="white-space: normal;"
+                sortingExpression="#{bank.certificateNumber}"
+                bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;">
         <f:facet name="subHeader">
-          <o:dropDownFieldFilter id="filter4" expression="#{bank.state}" value="equals" maxlength="2"/>
-        </f:facet>
-        <h:outputText value="#{bank.state}"/>
-      </o:column>
-      <o:column id="zip"
-                header="Zip"
-                width="7%"
-                bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
-                headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;"
-                sortingExpression="#{bank.zip}">
-        <f:facet name="subHeader">
-          <o:inputTextFilter id="filter5" expression="#{bank.zip}" maxlength="5" value="equals" autoFilterDelay="-1">
+          <o:inputTextFilter id="filter2" expression="#{bank.certificateNumber}" maxlength="5" value="equals"
+                             autoFilterDelay="-1">
             <f:convertNumber integerOnly="true" groupingUsed="false"/>
           </o:inputTextFilter>
         </f:facet>
-        <h:outputText value="#{bank.zip}"/>
+        <h:outputText value="#{bank.certificateNumber}"/>
       </o:column>
-      <o:column id="county"
-                header="County"
-                width="13%"
-                sortingExpression="#{bank.county}"
-                bodyStyle="padding-left: 5px; padding-right: 5px; white-space: nowrap;"
-                headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
+      <o:columnGroup header="Address">
+        <o:column header="City"
+                  width="14%"
+                  sortingExpression="#{bank.city}"
+                  bodyStyle="padding-left: 5px; padding-right: 5px;"
+                  headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
+          <f:facet name="subHeader">
+            <o:inputTextFilter id="filter3" expression="#{bank.city}"/>
+          </f:facet>
+
+          <h:outputText value="#{bank.city}"/>
+        </o:column>
+        <o:column header="State"
+                  width="7%"
+                  sortingExpression="#{bank.state}"
+                  bodyStyle="padding-left: 5px; padding-right: 5px;"
+                  headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
+          <f:facet name="subHeader">
+            <o:dropDownFieldFilter id="filter4" expression="#{bank.state}" value="equals" maxlength="2"/>
+          </f:facet>
+          <h:outputText value="#{bank.state}"/>
+        </o:column>
+        <o:column header="Zip"
+                  width="7%"
+                  bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
+                  headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;"
+                  sortingExpression="#{bank.zip}">
+          <f:facet name="subHeader">
+            <o:inputTextFilter id="filter5" expression="#{bank.zip}" maxlength="5" value="equals" autoFilterDelay="-1">
+              <f:convertNumber integerOnly="true" groupingUsed="false"/>
+            </o:inputTextFilter>
+          </f:facet>
+          <h:outputText value="#{bank.zip}"/>
+        </o:column>
+        <o:column header="County"
+                  width="13%"
+                  sortingExpression="#{bank.county}"
+                  bodyStyle="padding-left: 5px; padding-right: 5px; white-space: nowrap;"
+                  headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
+          <f:facet name="subHeader">
+            <o:inputTextFilter id="filter6" expression="#{bank.county}"/>
+          </f:facet>
+
+          <h:outputText value="#{bank.county}"/>
+        </o:column>
+      </o:columnGroup>
+      <o:column header="Average Assets"
+                width="19%"
+                bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
+                headerStyle="text-align: center; padding-left: 5px; padding-right: 5px; white-space: normal;"
+                sortingExpression="#{bank.averageAssets}">
         <f:facet name="subHeader">
-          <o:inputTextFilter id="filter6" expression="#{bank.county}"/>
+          <o:comboBoxFilter id="filter7" expression="#{BanksList.averageAssetsRange}"
+                            options="#{BanksList.averageAssetsFilterValues}"/>
         </f:facet>
 
-        <h:outputText value="#{bank.county}"/>
+        <h:outputText value="#{bank.averageAssets}">
+          <f:convertNumber type="number"/>
+        </h:outputText>
       </o:column>
-    </o:columnGroup>
-    <o:column id="averageAssets"
-              header="Average Assets"
-              width="19%"
-              bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
-              headerStyle="text-align: center; padding-left: 5px; padding-right: 5px; white-space: normal;"
-              sortingExpression="#{bank.averageAssets}">
-      <f:facet name="subHeader">
-        <o:comboBoxFilter id="filter7" expression="#{BanksList.averageAssetsRange}"
-                          options="#{BanksList.averageAssetsFilterValues}"/>
-      </f:facet>
-
-      <h:outputText value="#{bank.averageAssets}">
-        <f:convertNumber type="number"/>
-      </h:outputText>
-    </o:column>
-  </o:dataTable>
-</div>
-
-<div class="componentTabs serif" align="center">
-  <table>
-    <tr>
-      <td width="34%"/>
-      <td width="32%">
-        <div style="width: 300px;">
-          <o:tabSet id="paginatorStyleSelector"
-                    style="margin-top: 10px;"
-                    selectedIndex="#{BanksList.paginatorStyleSelectedIndex}"
-                    gapWidth="2"
-                    tabClass="tabButton"
-                    selectedTabClass="tabButton_active"
-                    frontBorderStyle="0px"
-                    backBorderStyle="0px">
-            <o:ajax event="change" render=":form:banks"
-                                execute="form:paginatorStyleSelector"/>
-            <o:tabSetItem>
-              <h:outputText value="Default Paginator"/>
-            </o:tabSetItem>
-            <o:tabSetItem>
-              <h:outputText value="Custom Paginator"/>
-            </o:tabSetItem>
-          </o:tabSet>
-        </div>
-      </td>
-      <td width="34%"/>
-    </tr>
-  </table>
-</div>
+    </o:dataTable>
+  </div>
 
 
-<div id="Description">
-  <h4>Demonstrated Features</h4>
-  <ul class="hang">
-    <li><strong>Filtering</strong>&#8212;The DataTable component allows the user to filter the original set
-      of displayed records. To see this feature in action type search string in the input field or select it from the
-      perdefined list under the table header.</li>
-    <li><strong>Sorting</strong>&#8212;Just click the column header to sort the data or to change sorting order.</li>
-    <li><strong>Pagination</strong>&#8212;Use the paginator at the bottom of the DataTable component to
-      navigate between the table pages.</li>
-    <li><strong>Selection</strong>&#8212;Use mouse or keyboard to select DataTable rows.</li>
-    <li><strong>Column resizing</strong>&#8212;Drag column header separators to resize columns.</li>
-    <li><strong>Column menu</strong>&#8212;Use the drop-down menu in column headers to sort, show and hide columns.</li>
-    <li><strong>Drag &amp; drop column reordering</strong>&#8212;Drag a column header to move the appropriate column.</li>
-    <li><strong>Keyboard navigation</strong>&#8212;While the DataTable is in focus, you can navigate between
-      pages ("Page Up", "Page Down", "Ctrl+Home", "Ctrl+End") and by the currently visible page ("Up/Down Arrow",
-      "Home", "End").</li>
-  </ul>
-</div>
+  <div id="Description">
+    <h4>Demonstrated Features</h4>
+    <ul class="hang">
+      <li><strong>Filtering</strong>&#8212;The DataTable component allows the user to filter the original set
+        of displayed records. To see this feature in action type search string in the input field or select it from the
+        perdefined list under the table header.
+      </li>
+      <li><strong>Sorting</strong>&#8212;Just click the column header to sort the data or to change sorting order.</li>
+      <li><strong>Selection</strong>&#8212;Use mouse or keyboard to select DataTable rows.</li>
+      <li><strong>Column resizing</strong>&#8212;Drag column header separators to resize columns.</li>
+      <li><strong>Column menu</strong>&#8212;Use the drop-down menu in column headers to sort, show and hide columns.
+      </li>
+      <li><strong>Drag &amp; drop column reordering</strong>&#8212;Drag a column header to move the appropriate column.
+      </li>
+      <li><strong>Keyboard navigation</strong>&#8212;While the DataTable is in focus, you can change selection with
+        Up/Down and Home/End keys.
+      </li>
+    </ul>
+  </div>
 
 </div>

@@ -86,10 +86,7 @@
   "leak" events to underlying elmenets */
 .o_explicitly_transparent_background,
   .o_popuplayer_modal_layer {
-  background-image: url(clear.gif);
-  background-position: center center;
-  background-repeat: repeat;
-
+  background: url(clear.gif) repeat center center;
 }
 
 .o_debugRow1 {
@@ -682,10 +679,7 @@
 }
 
 .o_dropdown_field {
-  background-color: white;
-  filter: alpha(opacity = 0);
-  -moz-opacity: 0;
-  opacity: 0;
+  background: url(clear.gif) repeat center center;
 
   margin: 0;
   padding: 2px 2px 0 2px;

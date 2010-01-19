@@ -32,6 +32,7 @@ import java.util.Map;
  */
 public class BanksList implements Serializable {
 
+    private List<Bank> allBanks = new ArrayList<Bank>();
     private List<Bank> banks = new ArrayList<Bank>();
     private int paginatorStyleSelectedIndex;
     private List<PaginatorStyleItem> paginatorStyles = new ArrayList<PaginatorStyleItem>();
@@ -56,6 +57,7 @@ public class BanksList implements Serializable {
             InputStream resource = BanksList.class.getResourceAsStream("Banks.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
             String currentString;
+            int i = 0;
             while (true) {
                 currentString = reader.readLine();
                 if (currentString == null) break;
@@ -69,7 +71,9 @@ public class BanksList implements Serializable {
                 String averageAssets = new String(bankAttributes[6].getBytes(), "utf-8");
                 Bank bank = new Bank(institutionName.trim(), Integer.parseInt(certificateNumber.trim()), city.trim(), state.trim(),
                         Integer.parseInt(zip.trim()), country.trim(), Integer.parseInt(averageAssets.replaceAll(",", "").trim()));
-                banks.add(bank);
+                allBanks.add(bank);
+                if (i++ % 10 == 0)
+                    banks.add(bank);
             }
             reader.close();
         } catch (IOException e) {
@@ -83,8 +87,12 @@ public class BanksList implements Serializable {
         return banks;
     }
 
-    public void setBanks(List<Bank> banks) {
-        this.banks = banks;
+    public List<Bank> getAllBanks() {
+        return allBanks;
+    }
+
+    public void setAllBanks(List<Bank> allBanks) {
+        this.allBanks = allBanks;
     }
 
     public State getSelectedState() {
@@ -98,7 +106,7 @@ public class BanksList implements Serializable {
     public Collection<State> getBankStates() {
         if (bankStates == null) {
             Map<String, State> stateBanksMap = new HashMap<String, State>();
-            for (Bank bank : banks) {
+            for (Bank bank : allBanks) {
                 String stateName = bank.getState().getDescription();
                 State state = stateBanksMap.get(stateName);
                 if (state == null) {
