@@ -174,7 +174,7 @@ O$._initDayTable = function(componentId,
   O$.Tables._init(table, {
     columns: columns,
     gridLines: [primaryRowSeparator, resourceColumnSeparator, null, null, null, null, null, null, null, null, null],
-    rowStyles: {bodyRowClass: dayTableRowClass},
+    body: {rowClassName: dayTableRowClass},
     forceUsingCellStyles: forceUsingCellStyles
   });
 

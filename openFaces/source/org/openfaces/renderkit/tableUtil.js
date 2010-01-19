@@ -386,7 +386,7 @@ O$.Tables = {
         },
         _getRows: function() {
           if (!this._rows) {
-            var fakeRowRequired = O$.isStrictMode() && (O$.isExplorer6() || O$.isExplorer7());
+            var fakeRowRequired = O$.Tables._isFakeRowRequired();
             // no-cells fake row is required under IE6/7+strict to make column width calculation uniform across browsers (see OF-24)
 
             var scrolling = table._params.scrolling;
@@ -687,6 +687,10 @@ O$.Tables = {
       if (table._params.footer && table._params.footer.commonHeader)
         O$.Tables._setRowStyle(footRows[footRows.length - 1], {commonFooterRow: table._params.footer ? table._params.footer.commonHeader.className : null});
     }
+  },
+
+  _isFakeRowRequired: function() {
+    return O$.isStrictMode() && (O$.isExplorer6() || O$.isExplorer7());
   },
 
   _setRowStyle: function(row, styleMappings) {
@@ -1535,6 +1539,13 @@ O$.Tables = {
       column._useCellStyles = O$.Tables._getUseCellStylesForColumn(column);
       column._className = column._getCompoundClassName();
       var colTagClassName = !column._useCellStyles ? column._className : "";
+      if (column._useCellStyles && O$.Tables._isFakeRowRequired() && column._className) {
+        var width = O$.getStyleClassProperty(column._className, "width");
+        // don't allow the column width to be ignore due to the fake row, e.g. in the 50px width in DayTable's time column
+        if (width) {
+          colTagClassName += " " + O$.createCssClass("width: " + width);
+        }
+      }
       column._colTags.forEach(function(colTag) {
         colTag.className = colTagClassName ? colTagClassName : "";
         colTag._column = column;
