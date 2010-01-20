@@ -748,7 +748,7 @@
   <tag>
     <tag-name>simpleDateRange</tag-name>
     <component>
-      <component-type>org.openfaces.DateRange</component-type>
+      <component-type>org.openfaces.SimpleDateRange</component-type>
     </component>
   </tag>
   <tag>

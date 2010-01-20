@@ -535,7 +535,7 @@
   </component>
 
   <component>
-    <component-type>org.openfaces.DateRange</component-type>
+    <component-type>org.openfaces.SimpleDateRange</component-type>
     <component-class>org.openfaces.component.calendar.SimpleDateRange</component-class>
   </component>
 
