@@ -976,14 +976,6 @@
   width: 0;
 }
 
-.o_popup_menu_background {
-  background: menu;
-}
-
-.o_popup_menu_background_safari {
-  background: #d3d3d3;
-}
-
 .o_popup_menu_indent {
   width: 27px;
   background: #e0e0e0;
@@ -1033,7 +1025,7 @@
   position: relative;
   padding: 1px;
   cursor: default;
-  color: menutext;
+  color: black;
   font-family: tahoma, arial, sans-serif;
   font-size: 13px;
   font-style: normal;

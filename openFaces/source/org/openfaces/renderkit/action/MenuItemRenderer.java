@@ -60,7 +60,7 @@ public class MenuItemRenderer extends RendererBase {
         PopupMenu popupMenu = (PopupMenu) menuItem.getParent();
 
         writer.startElement("li", menuItem);
-        writeAttribute(writer, "class", DEFAULT_LIST_ITEM_CLASS/* + " " + DefaultStyles.getPopupMenuBackgroundColorClass()*/);
+        writeAttribute(writer, "class", DEFAULT_LIST_ITEM_CLASS);
         writeAttribute(writer, "id", menuItem.getClientId(context));
 
         renderStartMenuItemSpan(context, menuItem, writer);

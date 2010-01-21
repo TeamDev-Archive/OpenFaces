@@ -51,14 +51,6 @@ public class DefaultStyles {
         }
     }
 
-    public static String getPopupMenuBackgroundColorClass() {
-        if (EnvironmentUtil.isSafari() || EnvironmentUtil.isUndefinedBrowser() || EnvironmentUtil.isOpera()) {
-            return "o_popup_menu_background_safari";
-        } else {
-            return "o_popup_menu_background";
-        }
-    }
-
     public static String getTextColorClass() {
         if (EnvironmentUtil.isSafari() || EnvironmentUtil.isUndefinedBrowser()) {
             return "o_text_color_safari";
