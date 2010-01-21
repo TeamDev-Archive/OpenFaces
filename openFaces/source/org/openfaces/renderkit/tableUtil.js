@@ -1565,6 +1565,8 @@ O$.Tables = {
     };
     column.setWidth = function(width) {
       if (width < 0) width = 0;
+      if (column._explicitWidth == width)
+        return;
       column._explicitWidth = width;
       function calculateWidthCorrection(headerCell) {
         if (headerCell._widthCorrection != undefined) return;
@@ -2386,7 +2388,8 @@ O$.Tables = {
         });
       } else {
         columns.forEach(function(c) {
-          c.setWidth(Math.floor((c._explicitWidth || c._tempWidth / tblWidth) * tableWidth));
+          var width = firstInitialization ? c._tempWidth : c._explicitWidth;
+          c.setWidth(Math.floor((width / tblWidth) * tableWidth));
         });
       }
       tblWidth = tableWidth;

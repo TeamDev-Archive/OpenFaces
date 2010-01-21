@@ -49,11 +49,12 @@ public class AjaxSettings extends UIComponentBase {
     @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
-        super.restoreState(context, stateArray[0]);
-        onerror = (String) stateArray[1];
-        onsessionexpired = (String) stateArray[2];
-        onajaxstart = (String) stateArray[3];
-        onajaxend = (String) stateArray[4];
+        int i = 0;
+        super.restoreState(context, stateArray[i++]);
+        onerror = (String) stateArray[i++];
+        onsessionexpired = (String) stateArray[i++];
+        onajaxstart = (String) stateArray[i++];
+        onajaxend = (String) stateArray[i++];
     }
 
     public ProgressMessage getProgressMessage() {
