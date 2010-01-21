@@ -12,7 +12,7 @@
 
 package org.openfaces.component.input;
 
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.util.NullTypeELResolver;
 
@@ -45,12 +45,12 @@ public class Spinner extends DropDownComponent {
     }
 
     @Override
-    public HorizontalAlignment getButtonAlignment() {
+    public Side getButtonAlignment() {
         return super.getButtonAlignment();
     }
 
     @Override
-    public void setButtonAlignment(HorizontalAlignment buttonAlignment) {
+    public void setButtonAlignment(Side buttonAlignment) {
         super.setButtonAlignment(buttonAlignment);
     }
 

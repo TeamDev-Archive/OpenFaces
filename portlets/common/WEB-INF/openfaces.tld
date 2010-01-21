@@ -2259,7 +2259,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @bindingType org.openfaces.component.Side -->
       <!-- @default "right" -->
       <!-- @value "left" -->
       <!-- @value "right" -->
@@ -2271,7 +2271,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @bindingType org.openfaces.component.Side -->
       <!-- @default "left" -->
       <!-- @value "left" -->
       <!-- @value "right" -->
@@ -2867,7 +2867,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>A value-binding expression that should reference an identifier for each dynamic column. You
         can use a column data variable specified in the "var" in the expression for this attribute. Note that
         column IDs evaluated for columns inside the o:columns tag are used in the same way as "id" attributes
-        of ordinary o:column tags, so the identifiers evaluated using this expression should be unique in
+        of ordinary &lt;o:column&gt; tags, so the identifiers evaluated using this expression should be unique in
         bounds of the containing table.
       </description>
       <name>columnId</name>
@@ -2895,7 +2895,8 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
         column's &quot;header&quot; facet, or serve for identifying the column name in such components as &lt;o:comopsitefilter&gt;
-        or &lt;o:columnVisibilityMenu&gt;.
+        or &lt;o:columnVisibilityMenu&gt;. You can use a column data variable specified in the "var" in the expression for this
+        attribute.
       </description>
       <name>header</name>
       <deferred-value>
@@ -9534,7 +9535,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @bindingType org.openfaces.component.Side -->
       <!-- @default "right" -->
       <!-- @value "left" -->
       <!-- @value "right" -->
@@ -9546,7 +9547,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @bindingType org.openfaces.component.Side -->
       <!-- @default "left" -->
       <!-- @value "left" -->
       <!-- @value "right" -->
@@ -10626,7 +10627,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @bindingType org.openfaces.component.Side -->
       <!-- @default "left" -->
       <!-- @value "left" -->
       <!-- @value "right" -->
@@ -12050,7 +12051,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @bindingType org.openfaces.component.Side -->
       <!-- @default "right" -->
       <!-- @value "left" -->
       <!-- @value "right" -->
@@ -14752,13 +14753,13 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Specifies whether this TabSet component can have input focus for keyboard control.</description>
+      <description>Specifies whether this component can have input focus for keyboard control.</description>
       <name>focusable</name>
       <deferred-value>
         <type>java.lang.Boolean</type>
       </deferred-value>
       <!-- @bindingType java.lang.Boolean -->
-      <!-- @default false -->
+      <!-- @default true -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -15203,13 +15204,13 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>Specifies whether this TabbedPane can have input focus for keyboard control.</description>
+      <description>Specifies whether this component can have input focus for keyboard control.</description>
       <name>focusable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean -->
-      <!-- @default false -->
+      <!-- @default true -->
       <!-- @el true -->
     </attribute>
 
@@ -15527,12 +15528,15 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.util. LoadingMode -->
-      <!-- @default "ajax" -->
+      <!-- @default "ajaxLazy" -->
       <!-- @value "client" The content of all tabs is loaded to the client side
 on the first page load. So when the user changes a tab, the corresponding page is not reloaded. -->
+      <!-- @value "ajaxLazy"  The tab content is retrieved from the server with Ajax request
+on the first switch to the tab. Once requested, the content is stored on the client and is shown without additional
+server requests. -->
+      <!-- @value "ajaxAlways"  The tab content is retrieved from the server with Ajax request
+on every switch to the tab.-->
       <!-- @value "server"  Every time a tab is changed, a corresponding tabbed page is reloaded with the tab content. -->
-      <!-- @value "ajax"  The tab content is retrieved from the server by the AJAX request
-on the first switch to the tab. Once requested, the content is stored on the client. -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -15813,14 +15817,13 @@ on the first switch to the tab. Once requested, the content is stored on the cli
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>
-      </description>
+      <description>Specifies whether this component can have input focus for keyboard control.</description>
       <name>focusable</name>
       <deferred-value>
         <type>java.lang.Boolean</type>
       </deferred-value>
       <!-- @bindingType java.lang.Boolean -->
-      <!-- @default false -->
+      <!-- @default true -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -16135,11 +16138,16 @@ on the first switch to the tab. Once requested, the content is stored on the cli
         <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.util. LoadingMode -->
-      <!-- @default "ajax" -->
+      <!-- @default "ajaxLazy" -->
       <!-- @value "client"  the FoldingPanel component renders all content on first load regardless
  of the component's expanded state. -->
+      <!-- @value "ajaxLazy"  expanding the FoldingPanel makes the embedded content to be loaded from the server with
+      Ajax request. Once loaded, it will be cached on the client and shown without additional server requests on further expansions.
+       -->
+      <!-- @value "ajaxAlways"  expanding the FoldingPanel makes the embedded content to be loaded from the server with
+      Ajax request. Unlike ajaxLazy mode, ajaxAlways doesn't cache the loaded content and reloads the content each time
+      the FoldingPanel is expanded.  -->
       <!-- @value "server"  the FoldingPanel component submits the page to re-render itself in the expanded state. -->
-      <!-- @value "ajax"  the FoldingPanel component transparently retrieves the embedded content from the server.  -->
       <!-- @el true -->
     </attribute>
   </tag>
@@ -19087,13 +19095,13 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A flag that make Calendar focusable component.</description>
+      <description>Specifies whether this component can have input focus for keyboard control.</description>
       <name>focusable</name>
       <deferred-value>
         <type>java.lang.Boolean</type>
       </deferred-value>
       <!-- @bindingType java.lang.Boolean -->
-      <!-- @default false -->
+      <!-- @default true -->
       <!-- @el true -->
     </attribute>
 
@@ -20075,13 +20083,13 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A flag that indicates whether or not the DateChooser is focusable.</description>
+      <description>Specifies whether this component can have input focus for keyboard control.</description>
       <name>focusable</name>
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean -->
-      <!-- @default false -->
+      <!-- @default true -->
       <!-- @el true -->
     </attribute>
 
@@ -26085,12 +26093,12 @@ and it is automatically triggered on any form submission. -->
         <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.timetable. HorizontalAlignment -->
-      <!-- @default "leftEdge" -->
-      <!-- @value "left" makes an area to be displayed to the left of an event rectangle -->
-      <!-- @value "leftEdge" makes the left edge of an area to be algined with the left edge of an event rectangle -->
+      <!-- @default "left" -->
+      <!-- @value "leftOutside" makes an area to be displayed to the left of an event rectangle -->
+      <!-- @value "left" makes the left edge of an area to be algined with the left edge of an event rectangle -->
       <!-- @value "center" makes an area centered horizontally relative to an event rectangle -->
-      <!-- @value "rightEdge" makes the right edge of an area to be algined with the right edge of an event rectangle -->
-      <!-- @value "right" makes an area to be displayed to the right of an event rectangle -->
+      <!-- @value "right" makes the right edge of an area to be algined with the right edge of an event rectangle -->
+      <!-- @value "rightOutside" makes an area to be displayed to the right of an event rectangle -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -26101,9 +26109,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @bindingType org.openfaces.component.timetable. VerticalAlignment -->
       <!-- @default "below" -->
       <!-- @value "above" makes an area to be displayed above an event rectangle -->
-      <!-- @value "topEdge" makes the top edge of an area to be algined with the top edge of an event rectangle -->
+      <!-- @value "top" makes the top edge of an area to be algined with the top edge of an event rectangle -->
       <!-- @value "center" makes an area centered vertically relative to an event rectangle -->
-      <!-- @value "bottomEdge" makes the bottom edge of an area to be algined with the bottom edge of an event rectangle -->
+      <!-- @value "bottom" makes the bottom edge of an area to be algined with the bottom edge of an event rectangle -->
       <!-- @value "below" makes an area to be displayed below an event rectangle -->
       <!-- @el true -->
     </attribute>
@@ -26629,6 +26637,7 @@ and it is automatically triggered on any form submission. -->
   </tag>
 
   <tag>
+    <description>Allows customizing various aspects of timetable editing behavior.</description>
     <name>timetableEditingOptions</name>
     <tag-class>org.openfaces.taglib.jsp.timetable.TimetableEditingOptionsJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -26696,6 +26705,8 @@ and it is automatically triggered on any form submission. -->
   </tag>
 
   <tag>
+    <description>Turns on and allows customizing the box that is displayed when the mouse hovers over the event to show
+    event contents that might not fully fit in the normal event display.</description>
     <name>eventPreview</name>
     <tag-class>org.openfaces.taglib.jsp.timetable.EventPreviewJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -26760,12 +26771,12 @@ and it is automatically triggered on any form submission. -->
         <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.timetable. HorizontalAlignment -->
-      <!-- @default "leftEdge" -->
-      <!-- @value "left" makes a preview to be displayed to the left of an event rectangle -->
-      <!-- @value "leftEdge" makes the left edge of a preview to be algined with the left edge of an event rectangle -->
+      <!-- @default "left" -->
+      <!-- @value "leftOutside" makes a preview to be displayed to the left of an event rectangle -->
+      <!-- @value "left" makes the left edge of a preview to be algined with the left edge of an event rectangle -->
       <!-- @value "center" makes a preview centered horizontally relative to an event rectangle -->
-      <!-- @value "rightEdge" makes the right edge of a preview to be algined with the right edge of an event rectangle -->
-      <!-- @value "right" makes a preview to be displayed to the right of an event rectangle -->
+      <!-- @value "right" makes the right edge of a preview to be algined with the right edge of an event rectangle -->
+      <!-- @value "rightOutside" makes a preview to be displayed to the right of an event rectangle -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -26776,9 +26787,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @bindingType org.openfaces.component.timetable. VerticalAlignment -->
       <!-- @default "below" -->
       <!-- @value "above" makes a preview to be displayed above an event rectangle -->
-      <!-- @value "topEdge" makes the top edge of a preview to be algined with the top edge of an event rectangle -->
+      <!-- @value "top" makes the top edge of a preview to be algined with the top edge of an event rectangle -->
       <!-- @value "center" makes a preview centered vertically relative to an event rectangle -->
-      <!-- @value "bottomEdge" makes the bottom edge of a preview to be algined with the bottom edge of an event rectangle -->
+      <!-- @value "bottom" makes the bottom edge of a preview to be algined with the bottom edge of an event rectangle -->
       <!-- @value "below" makes a preview to be displayed below an event rectangle -->
       <!-- @el true -->
     </attribute>
@@ -27684,7 +27695,7 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @bindingType org.openfaces.component.Side -->
       <!-- @default "right" -->
       <!-- @value "left" -->
       <!-- @value "right" -->
@@ -28203,7 +28214,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>Name of the request-scope variable under which the current iteration status object (of type
-        org.openfaces.component.util.IterationStatus) is available.</description>
+        org.openfaces.component.util.IterationStatus) is available.
+      </description>
       <name>varStatus</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -30417,6 +30429,26 @@ and it is automatically triggered on any form submission. -->
       <!-- @bindingType org.openfaces.component.filter.CompositeFilter-->
       <!-- @default null -->
       <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>A style for the CompositeFilter.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A CSS class name for the CompositeFilter.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
     </attribute>
     <attribute>
       <description>ID of a filterable component that should be filtered with this component. It should be defined in

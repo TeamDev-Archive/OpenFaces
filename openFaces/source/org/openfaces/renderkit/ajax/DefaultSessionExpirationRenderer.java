@@ -12,7 +12,7 @@
 package org.openfaces.renderkit.ajax;
 
 import org.openfaces.component.ajax.DefaultSessionExpiration;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.component.window.Confirmation;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -29,9 +29,6 @@ public class DefaultSessionExpirationRenderer extends AbstractSettingsRenderer {
 
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        if (isAjaxSessionExpirationProcessing(context)) {
-            RenderingUtil.renderChildren(context, component);
-        }
     }
 
     @Override
@@ -39,13 +36,31 @@ public class DefaultSessionExpirationRenderer extends AbstractSettingsRenderer {
         if (isAjaxSessionExpirationProcessing(context)) {
             DefaultSessionExpiration defaultSessionExpiration = (DefaultSessionExpiration) component;
 
-            String clientId = defaultSessionExpiration.getConfirmation().getClientId(context);
+            Confirmation confirmation = defaultSessionExpiration.getConfirmation();
+            if (confirmation == null) {
+                confirmation = new Confirmation();
+                defaultSessionExpiration.setConfirmation(confirmation);
+                confirmation.setId("openfaces_internal_sessionexpiration_confirmation");
+                confirmation.setStandalone(true);
+                confirmation.setCaptionText("Session Expired");
+                confirmation.setDraggable(false);
+                confirmation.setMessage("Your session has expired");
+                confirmation.setDetails("A new session will be created when the page is reloaded");
+                confirmation.setOkButtonText("Reload page now");
+                confirmation.setCancelButtonText("Reload later");
+                confirmation.setModal(true);
+                confirmation.setWidth("400px");
+                confirmation.setHeight("160px");
+                confirmation.setModalLayerStyle("background: black; filter: alpha(opacity=50); opacity: .50;");
+            }
+            confirmation.encodeAll(context);
+            String clientId = confirmation.getClientId(context);
             String confirmationId = (clientId != null)
                     ? clientId
-                    : defaultSessionExpiration.getConfirmation().getId();
+                    : confirmation.getId();
 
             String location = getRedirectLocationOnSessionExpired(context);
-            String onExpiredEventFunction = "O$('" + confirmationId + "').runConfirmedFunction(function(){O$.reloadPage('" + location + "')});";
+            String onExpiredEventFunction = "O$._pageReloadConfirmation('" + confirmationId + "', '" + location + "');";
             processEvent(context, component.getParent(), "onsessionexpired", onExpiredEventFunction);
         }
     }

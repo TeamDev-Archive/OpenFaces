@@ -13,7 +13,7 @@ package org.openfaces.renderkit.window;
 
 import org.openfaces.component.CaptionArea;
 import org.openfaces.component.ComponentWithCaption;
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 import org.openfaces.component.window.AbstractWindow;
 import org.openfaces.component.window.CloseWindowButton;
 import org.openfaces.component.window.MaximizeWindowButton;
@@ -65,7 +65,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
 
         @Override
         protected void createDefaultAreaButtons(FacesContext context, ComponentWithCaption component, CaptionArea area) {
-            area.setAlignment(HorizontalAlignment.RIGHT);
+            area.setAlignment(Side.RIGHT);
             AbstractWindow win = (AbstractWindow) component;
             CloseWindowButton closeButton = new CloseWindowButton();
             closeButton.setId(win.getId() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "closeButton");

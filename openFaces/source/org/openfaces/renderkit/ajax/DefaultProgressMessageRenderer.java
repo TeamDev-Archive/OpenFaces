@@ -11,6 +11,8 @@
  */
 package org.openfaces.renderkit.ajax;
 
+import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.VerticalAlignment;
 import org.openfaces.component.ajax.DefaultProgressMessage;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RenderingUtil;
@@ -55,7 +57,13 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
         if (requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED) || requestMap.containsKey(RENDERING)) {
             String ajaxMessageHTML = defaultProgressMessage.getAjaxMessageHTML();
 
-            ScriptBuilder setMessageScript = new ScriptBuilder().functionCall("O$.setAjaxMessageHTML", ajaxMessageHTML).semicolon();
+            ScriptBuilder setMessageScript = new ScriptBuilder().functionCall("O$.setAjaxMessageHTML",
+                    ajaxMessageHTML,
+                    HorizontalAlignment.RIGHT,
+                    VerticalAlignment.TOP,
+                    0,
+                    0,
+                    null).semicolon();
 
             if (isAjaxCleanupRequired()) {
                 setMessageScript.functionCall("O$.setAjaxCleanupRequired", true).semicolon();

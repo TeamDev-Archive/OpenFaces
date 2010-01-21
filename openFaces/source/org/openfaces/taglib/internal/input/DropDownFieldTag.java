@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.internal.input;
 
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 import org.openfaces.component.input.SuggestionMode;
 
 import javax.faces.component.UIComponent;
@@ -68,7 +68,7 @@ public class DropDownFieldTag extends DropDownComponentTag {
         setStringProperty(component, "ondropdown");
         setStringProperty(component, "oncloseup");
 
-        setEnumerationProperty(component, "listAlignment", HorizontalAlignment.class);
+        setEnumerationProperty(component, "listAlignment", Side.class);
 
         setLineStyleProperty(component, "horizontalGridLines");
         setLineStyleProperty(component, "verticalGridLines");

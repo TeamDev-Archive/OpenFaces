@@ -1807,8 +1807,8 @@ O$.Table = {
                     ? O$.getElementSize(table.header._getRows()[subHeaderIndex]._rowNode).height : 0;
             O$.setElementHeight(leftAutoScrollArea, rect.height - subHeaderHeight);
             O$.setElementHeight(rightAutoScrollArea, rect.height - subHeaderHeight);
-            O$.alignPopupByElement(leftAutoScrollArea, headerScroller, O$.LEFT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
-            O$.alignPopupByElement(rightAutoScrollArea, headerScroller, O$.RIGHT_EDGE, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
+            O$.alignPopupByElement(leftAutoScrollArea, headerScroller, O$.LEFT, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
+            O$.alignPopupByElement(rightAutoScrollArea, headerScroller, O$.RIGHT, O$.CENTER, 0, -subHeaderHeight / 2, true, true);
           }, new O$.Timer(50));
         },
         ondragmove: function(e) {
@@ -1904,7 +1904,7 @@ O$.ColumnMenu = {
           var rightOffset = O$.getNumericElementStyle(cell, "border-right-width");
           var bottomOffset = O$.getNumericElementStyle(cell, "border-bottom-width");
           O$.setElementHeight(this, O$.getElementSize(cell).height - bottomOffset);
-          O$.alignPopupByElement(this, cell, O$.RIGHT_EDGE, O$.TOP_EDGE, rightOffset, 0, true, true);
+          O$.alignPopupByElement(this, cell, O$.RIGHT, O$.TOP, rightOffset, 0, true, true);
           this._showForCell = cell;
         },
         hideForCell: function(cell) {
@@ -1948,7 +1948,7 @@ O$.ColumnMenu = {
       O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
       table._showingMenuForColumn = currentColumn;
       columnMenu._column = currentColumn;
-      columnMenu._showByElement(columnMenuButtonTable, O$.LEFT_EDGE, O$.BELOW, 0, 0);
+      columnMenu._showByElement(columnMenuButtonTable, O$.LEFT, O$.BELOW, 0, 0);
       var prevOnhide = columnMenu.onhide;
       var headerCell = currentColumn.header._cell;
       headerCell.setForceHover(true);

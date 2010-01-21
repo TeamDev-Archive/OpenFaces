@@ -26,6 +26,11 @@
   font-weight: bold;
 }
 
+.o_ajax_blockingLayer {
+  position: absolute;
+  background: #d8d8d8;
+}
+
 /* == Shared among components styles == */
 
 /* DEFAULT_BORDER */

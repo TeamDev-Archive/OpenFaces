@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.input;
 
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 import org.openfaces.component.OUIInputText;
 import org.openfaces.util.ValueBindings;
 
@@ -22,7 +22,7 @@ import javax.faces.context.FacesContext;
  */
 public abstract class DropDownComponent extends OUIInputText {
 
-    private HorizontalAlignment buttonAlignment;
+    private Side buttonAlignment;
 
     private String fieldStyle;
     private String rolloverFieldStyle;
@@ -186,11 +186,11 @@ public abstract class DropDownComponent extends OUIInputText {
         this.rolloverButtonClass = rolloverButtonClass;
     }
 
-    protected HorizontalAlignment getButtonAlignment() {
-        return ValueBindings.get(this, "buttonAlignment", buttonAlignment, HorizontalAlignment.RIGHT, HorizontalAlignment.class);
+    protected Side getButtonAlignment() {
+        return ValueBindings.get(this, "buttonAlignment", buttonAlignment, Side.RIGHT, Side.class);
     }
 
-    protected void setButtonAlignment(HorizontalAlignment buttonAlignment) {
+    protected void setButtonAlignment(Side buttonAlignment) {
         this.buttonAlignment = buttonAlignment;
     }
 
@@ -274,7 +274,7 @@ public abstract class DropDownComponent extends OUIInputText {
         int i = 0;
         super.restoreState(context, values[i++]);
 
-        buttonAlignment = (HorizontalAlignment) values[i++];
+        buttonAlignment = (Side) values[i++];
 
         listStyle = (String) values[i++];
         rolloverListStyle = (String) values[i++];

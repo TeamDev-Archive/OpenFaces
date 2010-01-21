@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.filter;
 
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 import org.openfaces.component.input.SuggestionMode;
 import org.openfaces.util.ValueBindings;
 
@@ -23,7 +23,7 @@ import javax.faces.context.FacesContext;
 public abstract class AutoCompleteFilter extends TextSearchFilter {
 
     private Boolean autoComplete;
-    private HorizontalAlignment listAlignment;
+    private Side listAlignment;
     private Boolean customValueAllowed;
     private SuggestionMode suggestionMode;
     private Integer suggestionDelay;
@@ -75,7 +75,7 @@ public abstract class AutoCompleteFilter extends TextSearchFilter {
 
         timeout = (Integer) values[i++];
 
-        listAlignment = (HorizontalAlignment) values[i++];
+        listAlignment = (Side) values[i++];
         suggestionMode = (SuggestionMode) values[i++];
         suggestionDelay = (Integer) values[i++];
         suggestionMinChars = (Integer) values[i++];
@@ -134,12 +134,12 @@ public abstract class AutoCompleteFilter extends TextSearchFilter {
         this.rolloverListItemStyle = rolloverListItemStyle;
     }
 
-    public HorizontalAlignment getListAlignment() {
+    public Side getListAlignment() {
         return ValueBindings.get(
-                this, "listAlignment", listAlignment, HorizontalAlignment.LEFT, HorizontalAlignment.class);
+                this, "listAlignment", listAlignment, Side.LEFT, Side.class);
     }
 
-    public void setListAlignment(HorizontalAlignment listAlignment) {
+    public void setListAlignment(Side listAlignment) {
         this.listAlignment = listAlignment;
     }
 

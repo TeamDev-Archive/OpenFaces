@@ -9,26 +9,25 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.timetable;
+package org.openfaces.component;
 
+//todo: there's one more "HorizontalAlignment" class in org.openfaces.component.timetable package. Review this: rename one/both of them, consider merging etc.
 /**
- * @author Dmitry Pikhulya
+ * @author Andrew Palval
  */
-public enum VerticalAlignment {
-    ABOVE("above"),
-    TOP_EDGE("topEdge"),
-    CENTER("center"),
-    BOTTOM_EDGE("bottomEdge"),
-    BELOW("below");
+public enum Side {
+    LEFT("left"),
+    RIGHT("right");
 
-    private final String name;
+    private final String align;
 
-    VerticalAlignment(String name) {
-        this.name = name;
+    Side(String align) {
+        this.align = align;
     }
 
     @Override
     public String toString() {
-        return name;
+        return align;
     }
+
 }

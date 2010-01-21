@@ -16,7 +16,7 @@ import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.StyleUtil;
 import org.openfaces.component.ComponentWithCaption;
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -47,9 +47,9 @@ public abstract class ComponentWithCaptionRenderer extends RendererBase {
         writer.startElement("tr", uiComponent);
 
         List<CaptionArea> captionAreas = getCaptionAreas(component);
-        renderCaptionAreas(context, captionAreas, HorizontalAlignment.LEFT);
+        renderCaptionAreas(context, captionAreas, Side.LEFT);
         renderCaptionContentCell(context, component);
-        renderCaptionAreas(context, captionAreas, HorizontalAlignment.RIGHT);
+        renderCaptionAreas(context, captionAreas, Side.RIGHT);
 
         writer.endElement("tr");
         writer.endElement("table");
@@ -78,9 +78,9 @@ public abstract class ComponentWithCaptionRenderer extends RendererBase {
             captionContent.encodeAll(context);
     }
 
-    protected void renderCaptionAreas(FacesContext context, List<CaptionArea> captionAreas, HorizontalAlignment alignment) throws IOException {
+    protected void renderCaptionAreas(FacesContext context, List<CaptionArea> captionAreas, Side alignment) throws IOException {
         if (alignment == null)
-            alignment = HorizontalAlignment.RIGHT;
+            alignment = Side.RIGHT;
         for (CaptionArea area : captionAreas) {
             if (alignment.equals(area.getAlignment()))
                 area.encodeAll(context);
@@ -104,7 +104,7 @@ public abstract class ComponentWithCaptionRenderer extends RendererBase {
         CaptionArea area = (CaptionArea) uiComponent.getFacet("_defaultButtonsArea");
         if (area == null) {
             area = new CaptionArea();
-            area.setAlignment(HorizontalAlignment.RIGHT);
+            area.setAlignment(Side.RIGHT);
             uiComponent.getFacets().put("_defaultButtonsArea", area);
 
             FacesContext context = FacesContext.getCurrentInstance();

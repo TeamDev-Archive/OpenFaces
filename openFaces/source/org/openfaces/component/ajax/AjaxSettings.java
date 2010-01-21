@@ -70,7 +70,6 @@ public class AjaxSettings extends UIComponentBase {
         SessionExpiration sessionExpiration = (SessionExpiration) getFacet(SESSION_EXPIRATION_FACET);
         if (sessionExpiration == null) {
             sessionExpiration = new DefaultSessionExpiration();
-            ((DefaultSessionExpiration) sessionExpiration).createSubComponents(getFacesContext());
             setSessionExpiration(sessionExpiration);
         }
         return sessionExpiration;

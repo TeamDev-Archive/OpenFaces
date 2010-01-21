@@ -12,6 +12,8 @@
 package org.openfaces.component.timetable;
 
 import org.openfaces.util.ValueBindings;
+import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.VerticalAlignment;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
@@ -144,7 +146,7 @@ public class EventPreview extends UIComponentBase {
 
     public HorizontalAlignment getHorizontalAlignment() {
         return ValueBindings.get(
-                this, "horizontalAlignment", horizontalAlignment, HorizontalAlignment.LEFT_EDGE, HorizontalAlignment.class);
+                this, "horizontalAlignment", horizontalAlignment, HorizontalAlignment.LEFT, HorizontalAlignment.class);
     }
 
     public void setHorizontalAlignment(HorizontalAlignment horizontalAlignment) {

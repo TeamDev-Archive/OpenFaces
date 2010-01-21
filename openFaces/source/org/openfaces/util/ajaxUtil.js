@@ -544,72 +544,133 @@ O$.setAjaxCleanupRequired = function(ajaxCleanupRequired) {
   document._ajaxCleanupRequired = ajaxCleanupRequired;
 };
 
-O$.setAjaxMessageHTML = function(messageHTML) {
+O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, transparency, opacityTransitionPeriod, blockingLayer) {
   if (document._ajaxInProgressMessage) {
     return;
   }
 
-  var div = document.createElement("div");
-  var simulateFixedPos = O$.isExplorer();
-  div.style.position = simulateFixedPos ? "absolute" : "fixed";
-  div.style.zIndex = 1000;
-  div.style.right = 0;
-  div.style.top = 0;
-  div.style.visibility = "hidden";
-  div.innerHTML = messageHTML;
-  document._ajaxInProgressMessage = div;
+  var msg = document.createElement("div");
+  msg._horizAlignment = horizAlignment || O$.RIGHT;
+  msg._vertAlignment = vertAlignment || O$.TOP;
+  var simulateFixedPos = true;//O$.isExplorer();
+  msg.style.position = simulateFixedPos ? "absolute" : "fixed";
+  msg.style.zIndex = 1000;
+  msg.style.left = 0;
+  msg.style.top = 0;
+  msg.style.visibility = "hidden";
+  msg.innerHTML = messageHTML;
+  msg._opacity = 1 - transparency;
+  msg._opacityTransitionPeriod = opacityTransitionPeriod;
+  document._ajaxInProgressMessage = msg;
+
+  if (blockingLayer) {
+    msg._blockingLayer = function() {
+      var div = document.createElement("div");
+      div.className = "o_ajax_blockingLayer " + (blockingLayer.className ? blockingLayer.className : "");
+      div.style.visibility = "hidden";
+      var opacity = blockingLayer.transparency != undefined ? 1 - blockingLayer.transparency : 0;
+      div._opacity = opacity;
+      div._opacityTransitionPeriod = blockingLayer.opacityTransitionPeriod ? blockingLayer.opacityTransitionPeriod : 180;
+      O$.setOpacityLevel(div, 0);
+      div.updatePos = function() {
+        var rect = O$.getVisibleAreaRectangle();
+        div.style.zIndex = O$.getElementZIndex(msg) - 1;
+        O$.setElementBorderRectangle(div, rect);
+      };
+      return div;
+    }();
+  }
+
   O$.addLoadEvent(function() {
     var prnt = O$.getDefaultAbsolutePositionParent();
 
-    prnt.appendChild(document._ajaxInProgressMessage);
+    prnt.appendChild(msg);
+    if (document._ajaxInProgressMessage._blockingLayer)
+      prnt.appendChild(document._ajaxInProgressMessage._blockingLayer);
     setTimeout(
             function() {
-              if (document._ajaxInProgressMessage.style.visibility == "hidden") {
-                document._ajaxInProgressMessage.style.display = "none";
-                document._ajaxInProgressMessage.style.visibility = "";
+              if (msg.style.visibility == "hidden") {
+                msg.style.display = "none";
+                msg.style.visibility = "";
+              }
+              if (msg._blockingLayer && msg._blockingLayer.style.visibility == "hidden") {
+                msg._blockingLayer.style.display = "none";
+                msg._blockingLayer.style.visibility = "";
               }
             }, 1000);
   });
-}
+};
 
 O$.showAjaxProgressMessage = function() {
-  var message = document._ajaxInProgressMessage;
-  O$.assert(message, "O$.showAjaxProgressMessage: no message was registered");
-  var simulateFixedPos = O$.isExplorer();
+  var msg = document._ajaxInProgressMessage;
+  O$.assert(msg, "O$.showAjaxProgressMessage: no message was registered");
+  var simulateFixedPos = true;//O$.isExplorer();
   if (simulateFixedPos)
     O$.updateAjaxInProgressMessagePos();
 
-  if (message.style.visibility == "hidden")
-    message.style.visibility = "";
-  else
-    message.style.display = "";
+  function show(elt, opacity, opacityTransitionPeriod) {
+    O$.setOpacityLevel(elt, 0);
+    if (elt.style.visibility == "hidden")
+      elt.style.visibility = "";
+    else
+      elt.style.display = "";
+    O$.runTransitionEffect(elt, "opacity", opacity, opacityTransitionPeriod, 10);
+  }
+
+  show(msg, msg._opacity, msg._opacityTransitionPeriod);
+  if (msg._blockingLayer) {
+    O$.setOpacityLevel(msg._blockingLayer, 0);
+    show(msg._blockingLayer, msg._blockingLayer._opacity, msg._blockingLayer._opacityTransitionPeriod);
+    O$.updateAjaxInProgressMessagePos();
+  }
+
   if (document.body.style.cursor != "progress") {
     document.body.oldCursor = document.body.style.cursor;
   }
   document.body.style.cursor = "progress";
 
   if (simulateFixedPos) {
-    window.attachEvent("onscroll", O$.updateAjaxInProgressMessagePos);
-    window.attachEvent("onresize", O$.updateAjaxInProgressMessagePos);
+    O$.addEventHandler(window, "scroll", O$.updateAjaxInProgressMessagePos);
+    O$.addEventHandler(window, "resize", O$.updateAjaxInProgressMessagePos);
   }
-}
+};
 
 O$.hideAjaxProgressMessage = function() {
-  var simulateFixedPos = O$.isExplorer();
+  var msg = document._ajaxInProgressMessage;
+  O$.assert(msg, "O$.hideAjaxProgressMessage: no message was registered");
+  var simulateFixedPos = true;//O$.isExplorer();
   if (simulateFixedPos) {
-    window.detachEvent("onscroll", O$.updateAjaxInProgressMessagePos);
-    window.detachEvent("onresize", O$.updateAjaxInProgressMessagePos);
+    O$.removeEventHandler(window, "scroll", O$.updateAjaxInProgressMessagePos);
+    O$.removeEventHandler(window, "resize", O$.updateAjaxInProgressMessagePos);
   }
   document.body.style.cursor = document.body.oldCursor;
-  var message = document._ajaxInProgressMessage;
-  O$.assert(message, "O$.hideAjaxProgressMessage: no message was registered");
-  message.style.display = "none";
-}
+  msg.style.display = "none";
+  if (msg._blockingLayer)
+    msg._blockingLayer.style.display = "none";
+};
 
 O$.updateAjaxInProgressMessagePos = function() {
-  var message = document._ajaxInProgressMessage;
-  message.style.top = O$.getPageScrollPos().y;
-}
+  var msg = document._ajaxInProgressMessage;
+  if (msg.style.display == "none") {
+    // replace hiding with "visibility" instead of "display" to allow element size measurement,
+    // but don't actually show yet to prevent early misplaced display 
+    msg.style.visibility = "hidden";
+    msg.style.display = "";
+  }
+
+  O$.alignPopupByElement(msg, window, msg._horizAlignment, msg._vertAlignment, 0, 0);
+  if (msg._blockingLayer)
+    msg._blockingLayer.updatePos();
+};
+
+O$._pageReloadConfirmation = function(confirmationId, location) {
+  var confirmation = O$(confirmationId);
+  if (document._ajaxInProgressMessage._blockingLayer)
+    O$.correctElementZIndex(confirmation, document._ajaxInProgressMessage._blockingLayer);
+  confirmation.runConfirmedFunction(function(){
+    O$.reloadPage(location);
+  });
+};
 
 // O$.AjaxObject class
 O$.AjaxObject = function(render) {
@@ -878,7 +939,7 @@ O$.AjaxObject = function(render) {
       this._completionCallback(this._requestedRender);
     if (O$.Ajax.onajaxend)
       O$.Ajax.onajaxend();
-  }
+  };
 
   this._processUpdateOnExpirationOrError = function (updId, updHTML, updScripts, updateStateHTML) {
     if (document.__sessionExpirationUpd) {
@@ -926,7 +987,7 @@ O$.AjaxObject = function(render) {
     }
 
     document.__sessionExpirationUpd = true;
-  }
+  };
   this._processSimpleUpdate = function(updId, updHTML, updScripts, updateStateHTML) {
 
     var replacedElement = O$(updId);
@@ -964,7 +1025,7 @@ O$.AjaxObject = function(render) {
         O$.destroyAllFunctions(tempDiv);
       tempDiv.innerHTML = "";
     }
-  }
+  };
 
   this._processPortionUpdate = function(portionName, portionHTML, portionScripts, portionDataStr) {
     var componentId = this._targetIds;
@@ -974,7 +1035,7 @@ O$.AjaxObject = function(render) {
     this._customProcessor(component, portionName, portionHTML, portionScripts, portionData);
   };
 
-}
+};
 
 /*
  Replaces all elements in htmlPortion if they have an appropriate counterpart with the same Id in the document. All

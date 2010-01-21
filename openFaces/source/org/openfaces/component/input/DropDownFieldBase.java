@@ -12,7 +12,7 @@
 package org.openfaces.component.input;
 
 import org.openfaces.component.CompoundComponent;
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ComponentUtil;
@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 
 public abstract class DropDownFieldBase extends DropDownComponent implements CompoundComponent {
     private Boolean autoComplete;
-    private HorizontalAlignment listAlignment;
+    private Side listAlignment;
     private Boolean customValueAllowed;
     private String var;
     private SuggestionMode suggestionMode;
@@ -149,12 +149,12 @@ public abstract class DropDownFieldBase extends DropDownComponent implements Com
         this.rolloverListItemStyle = rolloverListItemStyle;
     }
 
-    public HorizontalAlignment getListAlignment() {
+    public Side getListAlignment() {
         return ValueBindings.get(
-                this, "listAlignment", listAlignment, HorizontalAlignment.LEFT, HorizontalAlignment.class);
+                this, "listAlignment", listAlignment, Side.LEFT, Side.class);
     }
 
-    public void setListAlignment(HorizontalAlignment listAlignment) {
+    public void setListAlignment(Side listAlignment) {
         this.listAlignment = listAlignment;
     }
 
@@ -364,7 +364,7 @@ public abstract class DropDownFieldBase extends DropDownComponent implements Com
         ondropdown = (String) values[i++];
         oncloseup = (String) values[i++];
 
-        listAlignment = (HorizontalAlignment) values[i++];
+        listAlignment = (Side) values[i++];
         suggestionMode = (SuggestionMode) values[i++];
         suggestionDelay = (Integer) values[i++];
         suggestionMinChars = (Integer) values[i++];

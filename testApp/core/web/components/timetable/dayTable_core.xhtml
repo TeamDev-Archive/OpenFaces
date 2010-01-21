@@ -43,7 +43,7 @@
             </f:facet>
           </o:eventEditorDialog>
         </f:facet>
-        <o:eventArea horizontalAlignment="rightEdge" verticalAlignment="topEdge" style="margin: 0; padding: 0;">
+        <o:eventArea horizontalAlignment="right" verticalAlignment="top" style="margin: 0; padding: 0;">
           <o:dropDownField id="colorField"
                            value="#{TimeTableBean.eventColor1}"
                            converter="#{TimeTableBean.colorConverter}"
@@ -58,10 +58,10 @@
           </o:dropDownField>
           <h:commandButton value="Move" action="#{TimeTableBean.moveEvent1}"/>
         </o:eventArea>
-        <o:eventArea horizontalAlignment="leftEdge" verticalAlignment="above">
+        <o:eventArea horizontalAlignment="left" verticalAlignment="above">
           <h:outputText value="#{event.name}" style="color: gray"/>
         </o:eventArea>
-        <o:eventArea horizontalAlignment="right" verticalAlignment="above">
+        <o:eventArea horizontalAlignment="rightOutside" verticalAlignment="above">
           <h:commandLink value="Remove" action="#{TimeTableBean.removeEvent1}" style="margin: 10px"/>
         </o:eventArea>
 
@@ -115,7 +115,7 @@
                 eventResourceEditable="false"
                 eventDurationEditable="false"
                 defaultEventDuration="45"/>
-        <o:eventArea id="area1" horizontalAlignment="rightEdge" verticalAlignment="topEdge" style="margin: 0; padding: 0;">
+        <o:eventArea id="area1" horizontalAlignment="right" verticalAlignment="top" style="margin: 0; padding: 0;">
           <o:dropDownField id="colorField"
                            value="#{TimeTableBean.eventColor2}"
                            converter="#{TimeTableBean.colorConverter}"
@@ -130,7 +130,7 @@
           </o:dropDownField>
           <h:commandButton value="Move" action="#{TimeTableBean.moveEvent}"/>
         </o:eventArea>
-        <o:eventArea horizontalAlignment="right" verticalAlignment="above">
+        <o:eventArea horizontalAlignment="rightOutside" verticalAlignment="above">
           <h:commandLink value="Remove" action="#{TimeTableBean.removeEvent}" style="margin: 10px"/>
         </o:eventArea>
         <o:eventActionBar>

@@ -12,7 +12,7 @@
 package org.openfaces.taglib.internal;
 
 import org.openfaces.component.CaptionArea;
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -34,6 +34,6 @@ public class CaptionAreaTag extends AbstractComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setEnumerationProperty(component, "alignment", HorizontalAlignment.class);
+        setEnumerationProperty(component, "alignment", Side.class);
     }
 }

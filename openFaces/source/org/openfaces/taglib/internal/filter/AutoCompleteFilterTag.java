@@ -11,12 +11,11 @@
  */
 package org.openfaces.taglib.internal.filter;
 
-import org.openfaces.taglib.internal.filter.ExpressionFilterTag;
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 import org.openfaces.component.input.SuggestionMode;
 
-import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
@@ -50,7 +49,7 @@ public abstract class AutoCompleteFilterTag extends ExpressionFilterTag {
 
         setIntProperty(component, "timeout");
 
-        setEnumerationProperty(component, "listAlignment", HorizontalAlignment.class);
+        setEnumerationProperty(component, "listAlignment", Side.class);
 
         setLineStyleProperty(component, "horizontalGridLines");
         setLineStyleProperty(component, "verticalGridLines");

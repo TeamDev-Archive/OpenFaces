@@ -649,7 +649,6 @@ public abstract class CommonAjaxViewRoot {
     private AjaxSettings createDefaultSessionExpirationSettings(FacesContext context) {
         AjaxSettings result = new AjaxSettings();
         DefaultSessionExpiration dse = new DefaultSessionExpiration();
-        dse.createSubComponents(context);
         result.setSessionExpiration(dse);
         return result;
     }

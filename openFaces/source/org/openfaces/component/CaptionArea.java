@@ -23,7 +23,7 @@ public class CaptionArea extends UIPanel {
     public static final String COMPONENT_TYPE = "org.openfaces.CaptionArea";
     public static final String COMPONENT_FAMILY = "org.openfaces.CaptionArea";
 
-    private HorizontalAlignment alignment;
+    private Side alignment;
 
     public CaptionArea() {
         setRendererType("org.openfaces.CaptionAreaRenderer");
@@ -34,12 +34,12 @@ public class CaptionArea extends UIPanel {
         return COMPONENT_FAMILY;
     }
 
-    public HorizontalAlignment getAlignment() {
+    public Side getAlignment() {
         return ValueBindings.get(this, "alignment",
-                alignment, HorizontalAlignment.RIGHT, HorizontalAlignment.class);
+                alignment, Side.RIGHT, Side.class);
     }
 
-    public void setAlignment(HorizontalAlignment alignment) {
+    public void setAlignment(Side alignment) {
         this.alignment = alignment;
     }
 
@@ -56,6 +56,6 @@ public class CaptionArea extends UIPanel {
         Object[] state = (Object[]) object;
         int i = 0;
         super.restoreState(context, state[i++]);
-        alignment = (HorizontalAlignment) state[i++];
+        alignment = (Side) state[i++];
     }
 }

@@ -11,23 +11,26 @@
  */
 package org.openfaces.component;
 
-//todo: there's one more "HorizontalAlignment" class in org.openfaces.component.timetable package. Review this: rename one/both of them, consider merging etc.
 /**
- * @author Andrew Palval
+ * Defines horizontal alignment of a rectangular shape relatively another rectangular shape.
+ * @author Dmitry Pikhulya
  */
 public enum HorizontalAlignment {
+    LEFT_OUTSIDE("leftOutside"),
     LEFT("left"),
-    RIGHT("right");
+    CENTER("center"),
+    RIGHT("right"),
+    RIGHT_OUTSIDE("rightOutside");
 
-    private final String align;
+    private final String name;
 
-    HorizontalAlignment(String align) {
-        this.align = align;
+    HorizontalAlignment(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return align;
+        return name;
     }
 
 }

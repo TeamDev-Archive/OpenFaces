@@ -12,8 +12,8 @@
 package org.openfaces.taglib.internal.timetable;
 
 import org.openfaces.component.timetable.EventPreview;
-import org.openfaces.component.timetable.HorizontalAlignment;
-import org.openfaces.component.timetable.VerticalAlignment;
+import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.VerticalAlignment;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;

@@ -2259,7 +2259,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @bindingType org.openfaces.component.Side -->
       <!-- @default "right" -->
       <!-- @value "left" -->
       <!-- @value "right" -->
@@ -2271,7 +2271,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @bindingType org.openfaces.component.Side -->
       <!-- @default "left" -->
       <!-- @value "left" -->
       <!-- @value "right" -->
@@ -9535,7 +9535,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @bindingType org.openfaces.component.Side -->
       <!-- @default "right" -->
       <!-- @value "left" -->
       <!-- @value "right" -->
@@ -9547,7 +9547,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @bindingType org.openfaces.component.Side -->
       <!-- @default "left" -->
       <!-- @value "left" -->
       <!-- @value "right" -->
@@ -10627,7 +10627,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @bindingType org.openfaces.component.Side -->
       <!-- @default "left" -->
       <!-- @value "left" -->
       <!-- @value "right" -->
@@ -12051,7 +12051,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @bindingType org.openfaces.component.Side -->
       <!-- @default "right" -->
       <!-- @value "left" -->
       <!-- @value "right" -->
@@ -26093,12 +26093,12 @@ and it is automatically triggered on any form submission. -->
         <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.timetable. HorizontalAlignment -->
-      <!-- @default "leftEdge" -->
-      <!-- @value "left" makes an area to be displayed to the left of an event rectangle -->
-      <!-- @value "leftEdge" makes the left edge of an area to be algined with the left edge of an event rectangle -->
+      <!-- @default "left" -->
+      <!-- @value "leftOutside" makes an area to be displayed to the left of an event rectangle -->
+      <!-- @value "left" makes the left edge of an area to be algined with the left edge of an event rectangle -->
       <!-- @value "center" makes an area centered horizontally relative to an event rectangle -->
-      <!-- @value "rightEdge" makes the right edge of an area to be algined with the right edge of an event rectangle -->
-      <!-- @value "right" makes an area to be displayed to the right of an event rectangle -->
+      <!-- @value "right" makes the right edge of an area to be algined with the right edge of an event rectangle -->
+      <!-- @value "rightOutside" makes an area to be displayed to the right of an event rectangle -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -26109,9 +26109,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @bindingType org.openfaces.component.timetable. VerticalAlignment -->
       <!-- @default "below" -->
       <!-- @value "above" makes an area to be displayed above an event rectangle -->
-      <!-- @value "topEdge" makes the top edge of an area to be algined with the top edge of an event rectangle -->
+      <!-- @value "top" makes the top edge of an area to be algined with the top edge of an event rectangle -->
       <!-- @value "center" makes an area centered vertically relative to an event rectangle -->
-      <!-- @value "bottomEdge" makes the bottom edge of an area to be algined with the bottom edge of an event rectangle -->
+      <!-- @value "bottom" makes the bottom edge of an area to be algined with the bottom edge of an event rectangle -->
       <!-- @value "below" makes an area to be displayed below an event rectangle -->
       <!-- @el true -->
     </attribute>
@@ -26771,12 +26771,12 @@ and it is automatically triggered on any form submission. -->
         <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.timetable. HorizontalAlignment -->
-      <!-- @default "leftEdge" -->
-      <!-- @value "left" makes a preview to be displayed to the left of an event rectangle -->
-      <!-- @value "leftEdge" makes the left edge of a preview to be algined with the left edge of an event rectangle -->
+      <!-- @default "left" -->
+      <!-- @value "leftOutside" makes a preview to be displayed to the left of an event rectangle -->
+      <!-- @value "left" makes the left edge of a preview to be algined with the left edge of an event rectangle -->
       <!-- @value "center" makes a preview centered horizontally relative to an event rectangle -->
-      <!-- @value "rightEdge" makes the right edge of a preview to be algined with the right edge of an event rectangle -->
-      <!-- @value "right" makes a preview to be displayed to the right of an event rectangle -->
+      <!-- @value "right" makes the right edge of a preview to be algined with the right edge of an event rectangle -->
+      <!-- @value "rightOutside" makes a preview to be displayed to the right of an event rectangle -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -26787,9 +26787,9 @@ and it is automatically triggered on any form submission. -->
       <!-- @bindingType org.openfaces.component.timetable. VerticalAlignment -->
       <!-- @default "below" -->
       <!-- @value "above" makes a preview to be displayed above an event rectangle -->
-      <!-- @value "topEdge" makes the top edge of a preview to be algined with the top edge of an event rectangle -->
+      <!-- @value "top" makes the top edge of a preview to be algined with the top edge of an event rectangle -->
       <!-- @value "center" makes a preview centered vertically relative to an event rectangle -->
-      <!-- @value "bottomEdge" makes the bottom edge of a preview to be algined with the bottom edge of an event rectangle -->
+      <!-- @value "bottom" makes the bottom edge of a preview to be algined with the bottom edge of an event rectangle -->
       <!-- @value "below" makes a preview to be displayed below an event rectangle -->
       <!-- @el true -->
     </attribute>
@@ -27695,7 +27695,7 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @bindingType org.openfaces.component.Side -->
       <!-- @default "right" -->
       <!-- @value "left" -->
       <!-- @value "right" -->

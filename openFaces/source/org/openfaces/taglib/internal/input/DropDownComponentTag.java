@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.internal.input;
 
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 import org.openfaces.taglib.internal.OUIInputTextTag;
 
 import javax.faces.component.UIComponent;
@@ -25,7 +25,7 @@ public abstract class DropDownComponentTag extends OUIInputTextTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setEnumerationProperty(component, "buttonAlignment", HorizontalAlignment.class);
+        setEnumerationProperty(component, "buttonAlignment", Side.class);
         setStringProperty(component, "fieldStyle");
         setStringProperty(component, "disabledFieldStyle");
         setStringProperty(component, "rolloverFieldStyle");

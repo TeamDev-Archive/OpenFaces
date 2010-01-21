@@ -11,6 +11,9 @@
  */
 package org.openfaces.component.timetable;
 
+import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.VerticalAlignment;
+
 import java.io.Serializable;
 
 /**

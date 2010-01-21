@@ -3868,13 +3868,13 @@ if (!window.O$) {
   };
 
   O$.CENTER = "center";
+  O$.LEFT_OUTSIDE = "leftOutside";
   O$.LEFT = "left";
-  O$.LEFT_EDGE = "leftEdge";
-  O$.RIGHT_EDGE = "rightEdge";
   O$.RIGHT = "right";
+  O$.RIGHT_OUTSIDE = "rightOutside";
   O$.ABOVE = "above";
-  O$.TOP_EDGE = "topEdge";
-  O$.BOTTOM_EDGE = "bottomEdge";
+  O$.TOP = "top";
+  O$.BOTTOM = "bottom";
   O$.BELOW = "below";
 
   O$.alignPopupByElement = function(
@@ -3882,35 +3882,39 @@ if (!window.O$) {
           horizDistance, vertDistance, ignoreVisibleArea,
           disableRepositioning, repositioningAttempt)
   {
-    if (!horizAlignment) horizAlignment = O$.LEFT_EDGE;
+    if (!horizAlignment) horizAlignment = O$.LEFT;
     if (!vertAlignment) vertAlignment = O$.BELOW;
     if (!horizDistance) horizDistance = 0;
     if (!vertDistance) vertDistance = 0;
     horizDistance = O$.calculateNumericCSSValue(horizDistance);
     vertDistance = O$.calculateNumericCSSValue(vertDistance);
 
-    var elementRect = ignoreVisibleArea
+    var elementRect = function() {
+      if (element != window)
+        return ignoreVisibleArea
             ? O$.getElementBorderRectangle(element)
             : O$.getVisibleElementBorderRectangle(element);
+      return O$.getVisibleAreaRectangle();
+    }();
     var popupSize = O$.getElementSize(popup);
     var popupWidth = popupSize.width;
     var popupHeight = popupSize.height;
 
     var x;
     switch (horizAlignment) {
-      case O$.LEFT:
+      case O$.LEFT_OUTSIDE:
         x = elementRect.getMinX() - popupWidth - horizDistance;
         break;
-      case O$.LEFT_EDGE:
+      case O$.LEFT:
         x = elementRect.getMinX() + horizDistance;
         break;
       case O$.CENTER:
         x = elementRect.getMinX() + (elementRect.width - popupWidth) / 2 + horizDistance;
         break;
-      case O$.RIGHT_EDGE:
+      case O$.RIGHT:
         x = elementRect.getMaxX() - popupWidth - horizDistance;
         break;
-      case O$.RIGHT:
+      case O$.RIGHT_OUTSIDE:
         x = elementRect.getMaxX() + horizDistance;
         break;
       default:
@@ -3921,13 +3925,13 @@ if (!window.O$) {
       case O$.ABOVE:
         y = elementRect.getMinY() - popupHeight - vertDistance;
         break;
-      case O$.TOP_EDGE:
+      case O$.TOP:
         y = elementRect.getMinY() + vertDistance;
         break;
       case O$.CENTER:
         y = elementRect.getMinY() + (elementRect.height - popupHeight) / 2 + vertDistance;
         break;
-      case O$.BOTTOM_EDGE:
+      case O$.BOTTOM:
         y = elementRect.getMaxY() - popupHeight - vertDistance;
         break;
       case O$.BELOW:
@@ -3951,8 +3955,8 @@ if (!window.O$) {
           if (O$.alignPopupByElement(popup, element, horizAlignment, alternativeVertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true))
             return;
         }
-        var alternativeHorizAlignment = horizAlignment == O$.LEFT || horizAlignment == O$.RIGHT
-                ? horizAlignment == O$.RIGHT ? O$.LEFT : O$.RIGHT
+        var alternativeHorizAlignment = horizAlignment == O$.LEFT_OUTSIDE || horizAlignment == O$.RIGHT_OUTSIDE
+                ? horizAlignment == O$.RIGHT_OUTSIDE ? O$.LEFT_OUTSIDE : O$.RIGHT_OUTSIDE
                 : null;
         if (alternativeHorizAlignment) {
           if (O$.alignPopupByElement(popup, element, alternativeHorizAlignment, vertAlignment, horizDistance, vertDistance, ignoreVisibleArea, false, true))
@@ -3974,7 +3978,7 @@ if (!window.O$) {
     }
 
     var popupContainer = popup.offsetParent;
-    if (popupContainer) {
+    if (popupContainer && popupContainer.nodeName.toLowerCase() != "body") {
       var containerRect = O$.getElementPaddingRectangle(popupContainer);
       x -= containerRect.x;
       y -= containerRect.y;
@@ -3990,8 +3994,8 @@ if (!window.O$) {
   };
 
   O$.isAlignmentInsideOfElement = function(horizAlignment, vertAlignment) {
-    var insideHorizontaly = horizAlignment == O$.LEFT_EDGE || horizAlignment == O$.CENTER || horizAlignment == O$.RIGHT_EDGE;
-    var insideVertically = vertAlignment == O$.TOP_EDGE || vertAlignment == O$.CENTER || vertAlignment == O$.BOTTOM_EDGE;
+    var insideHorizontaly = horizAlignment == O$.LEFT || horizAlignment == O$.CENTER || horizAlignment == O$.RIGHT;
+    var insideVertically = vertAlignment == O$.TOP || vertAlignment == O$.CENTER || vertAlignment == O$.BOTTOM;
     return insideHorizontaly && insideVertically;
   };
 
@@ -4248,8 +4252,13 @@ if (!window.O$) {
     if (transitionPeriod === undefined || transitionPeriod < 0)
       transitionPeriod = 0;
     if (!updateInterval)
-      updateInterval = 50;
+      updateInterval = 40;
     var initialValues = {};
+    if (! (propertyNames instanceof Array)) {
+      propertyNames = [propertyNames];
+      if (newValues instanceof Array) throw "newValues must be a single value (not an array) in case when propertyNames is not an array";
+      newValues = [newValues];
+    }
     var propertyCount = propertyNames.length;
     O$.assertEquals(propertyCount, newValues.length, "O$.runTransitionEffect: checking propertyNames.length == newValues.length");
 

@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.internal.filter;
 
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 import org.openfaces.component.filter.DropDownFieldFilter;
 
 import javax.faces.component.UIComponent;
@@ -33,7 +33,7 @@ public class DropDownFieldFilterTag extends AutoCompleteFilterTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setEnumerationProperty(component, "buttonAlignment", HorizontalAlignment.class);
+        setEnumerationProperty(component, "buttonAlignment", Side.class);
         setStringProperty(component, "fieldStyle");
         setStringProperty(component, "disabledFieldStyle");
         setStringProperty(component, "rolloverFieldStyle");

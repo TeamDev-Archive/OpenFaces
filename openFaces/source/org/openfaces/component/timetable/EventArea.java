@@ -12,6 +12,8 @@
 package org.openfaces.component.timetable;
 
 import org.openfaces.component.OUIPanel;
+import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.VerticalAlignment;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
@@ -36,7 +38,7 @@ public class EventArea extends OUIPanel {
 
     public HorizontalAlignment getHorizontalAlignment() {
         return ValueBindings.get(
-                this, "horizontalAlignment", horizontalAlignment, HorizontalAlignment.LEFT_EDGE, HorizontalAlignment.class);
+                this, "horizontalAlignment", horizontalAlignment, HorizontalAlignment.LEFT, HorizontalAlignment.class);
     }
 
     public void setHorizontalAlignment(HorizontalAlignment horizontalAlignment) {
@@ -45,7 +47,7 @@ public class EventArea extends OUIPanel {
 
     public VerticalAlignment getVerticalAlignment() {
         return ValueBindings.get(
-                this, "verticalAlignment", verticalAlignment, VerticalAlignment.TOP_EDGE, VerticalAlignment.class);
+                this, "verticalAlignment", verticalAlignment, VerticalAlignment.TOP, VerticalAlignment.class);
     }
 
     public void setVerticalAlignment(VerticalAlignment verticalAlignment) {

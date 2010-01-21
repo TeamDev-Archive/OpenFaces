@@ -14,7 +14,7 @@ package org.openfaces.renderkit.panel;
 import org.openfaces.component.CaptionArea;
 import org.openfaces.component.ComponentWithCaption;
 import org.openfaces.component.ExpansionToggleButton;
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 import org.openfaces.component.LoadingMode;
 import org.openfaces.component.ToggleCaptionButton;
 import org.openfaces.component.panel.FoldingDirection;
@@ -221,7 +221,7 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
         boolean horizontalFoldingDirection =
                 FoldingDirection.LEFT.equals(foldingDirection) || FoldingDirection.RIGHT.equals(foldingDirection);
         boolean buttonsOnTheLeft = horizontalFoldingDirection && FoldingDirection.RIGHT.equals(foldingDirection);
-        area.setAlignment(buttonsOnTheLeft ? HorizontalAlignment.LEFT : HorizontalAlignment.RIGHT);
+        area.setAlignment(buttonsOnTheLeft ? Side.LEFT : Side.RIGHT);
         return area;
     }
 

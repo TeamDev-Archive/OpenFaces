@@ -11,7 +11,7 @@
  */
 package org.openfaces.renderkit.input;
 
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 import org.openfaces.component.input.DropDownComponent;
 import org.openfaces.util.InitScript;
 import org.openfaces.renderkit.RendererBase;
@@ -79,8 +79,8 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         writer.startElement("tr", dropDownComponent);
         writer.writeAttribute("height", "100%", null);
         writer.startElement("td", dropDownComponent);
-        HorizontalAlignment buttonAlignment = (HorizontalAlignment) dropDownComponent.getAttributes().get("buttonAlignment");
-        if (buttonAlignment.equals(HorizontalAlignment.RIGHT)) {
+        Side buttonAlignment = (Side) dropDownComponent.getAttributes().get("buttonAlignment");
+        if (buttonAlignment.equals(Side.RIGHT)) {
             encodeField(context, dropDownComponent);
             writer.endElement("td");
             writer.startElement("td", dropDownComponent);

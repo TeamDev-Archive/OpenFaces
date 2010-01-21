@@ -9,21 +9,22 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.timetable;
+package org.openfaces.component;
 
 /**
+ * Defines vertical alignment of a rectangular shape relatively another rectangular shape.
  * @author Dmitry Pikhulya
  */
-public enum HorizontalAlignment {
-    LEFT("left"),
-    LEFT_EDGE("leftEdge"),
+public enum VerticalAlignment {
+    ABOVE("above"),
+    TOP("top"),
     CENTER("center"),
-    RIGHT_EDGE("rightEdge"),
-    RIGHT("right");
+    BOTTOM("bottom"),
+    BELOW("below");
 
     private final String name;
 
-    HorizontalAlignment(String name) {
+    VerticalAlignment(String name) {
         this.name = name;
     }
 
@@ -31,5 +32,4 @@ public enum HorizontalAlignment {
     public String toString() {
         return name;
     }
-
 }

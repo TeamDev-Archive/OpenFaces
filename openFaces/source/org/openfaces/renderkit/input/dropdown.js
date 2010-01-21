@@ -440,9 +440,9 @@ O$.DropDown = {
   _alignPopup: function(dropDown, calendar) {
     var popup = dropDown._popup;
     if (dropDown._listAlignment == "right" || calendar) { // align by the right edge
-      O$.alignPopupByElement(popup, dropDown, O$.RIGHT_EDGE, O$.BELOW);
+      O$.alignPopupByElement(popup, dropDown, O$.RIGHT, O$.BELOW);
     } else { // bind drop list to the left border
-      O$.alignPopupByElement(popup, dropDown, O$.LEFT_EDGE, O$.BELOW);
+      O$.alignPopupByElement(popup, dropDown, O$.LEFT, O$.BELOW);
     }
   }
 };

@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.filter;
 
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItems;
 import org.openfaces.util.ComponentUtil;
@@ -26,7 +26,7 @@ public class DropDownFieldFilter extends AutoCompleteFilter {
     public static final String COMPONENT_TYPE = "org.openfaces.DropDownFieldFilter";
     public static final String COMPONENT_FAMILY = "org.openfaces.DropDownFieldFilter";
 
-    private HorizontalAlignment buttonAlignment;
+    private Side buttonAlignment;
 
     private String fieldStyle;
     private String rolloverFieldStyle;
@@ -149,11 +149,11 @@ public class DropDownFieldFilter extends AutoCompleteFilter {
         this.rolloverButtonClass = rolloverButtonClass;
     }
 
-    protected HorizontalAlignment getButtonAlignment() {
-        return ValueBindings.get(this, "buttonAlignment", buttonAlignment, HorizontalAlignment.RIGHT, HorizontalAlignment.class);
+    protected Side getButtonAlignment() {
+        return ValueBindings.get(this, "buttonAlignment", buttonAlignment, Side.RIGHT, Side.class);
     }
 
-    protected void setButtonAlignment(HorizontalAlignment buttonAlignment) {
+    protected void setButtonAlignment(Side buttonAlignment) {
         this.buttonAlignment = buttonAlignment;
     }
 
@@ -230,7 +230,7 @@ public class DropDownFieldFilter extends AutoCompleteFilter {
         int i = 0;
         super.restoreState(context, values[i++]);
 
-        buttonAlignment = (HorizontalAlignment) values[i++];
+        buttonAlignment = (Side) values[i++];
 
         listStyle = (String) values[i++];
         rolloverListStyle = (String) values[i++];

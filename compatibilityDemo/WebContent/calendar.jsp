@@ -128,7 +128,7 @@
                         timeSuffixStyle="font-size: 7pt; line-height: 1em;">
                 <o:timetableEvent style="text-align:center;" descriptionStyle="color: #5f5f5f;"
                                   escapeDescription="false" escapeName="false"/>
-                <o:eventArea id="eventArea" horizontalAlignment="rightEdge" verticalAlignment="above">
+                <o:eventArea id="eventArea" horizontalAlignment="right" verticalAlignment="above">
                     <h:commandLink id="postponeOneHour" title="Postpone training for 1 hour" style="margin: 10px">
                         <h:outputText value="1&#160;hour&#160;later" escape="false"/>
                         <o:ajax render=":form:dayTable" listener="#{DayTableBean.doLater}"/>

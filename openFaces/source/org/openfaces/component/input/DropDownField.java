@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.input;
 
-import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.Side;
 
 /**
  *
@@ -188,12 +188,12 @@ public class DropDownField extends DropDownFieldBase {
     }
 
     @Override
-    public HorizontalAlignment getButtonAlignment() {
+    public Side getButtonAlignment() {
         return super.getButtonAlignment();
     }
 
     @Override
-    public void setButtonAlignment(HorizontalAlignment buttonAlignment) {
+    public void setButtonAlignment(Side buttonAlignment) {
         super.setButtonAlignment(buttonAlignment);
     }
 
