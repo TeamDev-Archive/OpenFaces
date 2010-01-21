@@ -11,6 +11,8 @@
  */
 package org.openfaces.taglib.internal.ajax;
 
+import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.VerticalAlignment;
 import org.openfaces.component.ajax.DefaultProgressMessage;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
@@ -35,6 +37,15 @@ public class DefaultProgressMessageTag extends AbstractComponentTag {
 
         setStringProperty(component, "text");
         setStringProperty(component, "imageUrl");
+        setEnumerationProperty(component, "horizontalAlignment", HorizontalAlignment.class);
+        setEnumerationProperty(component, "verticalAlignment", VerticalAlignment.class);
+        setDoubleProperty(component, "transparency");
+        setIntProperty(component, "transparencyTransitionPeriod");
+        setBooleanProperty(component, "fillBackground");
+        setDoubleProperty(component, "backgroundTransparency");
+        setIntProperty(component, "backgroundTransparencyTransitionPeriod");
+        setStringProperty(component, "backgroundStyle");
+        setStringProperty(component, "backgroundClass");
     }
 }
 

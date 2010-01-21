@@ -11,8 +11,10 @@
  */
 package org.openfaces.component.ajax;
 
-import org.openfaces.util.ValueBindings;
+import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.VerticalAlignment;
 import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -36,6 +38,15 @@ public class DefaultProgressMessage extends ProgressMessage {
     private String imageUrl;
     private String style;
     private String styleClass;
+    private HorizontalAlignment horizontalAlignment;
+    private VerticalAlignment verticalAlignment;
+    private Double transparency;
+    private Integer transparencyTransitionPeriod;
+    private Boolean fillBackground;
+    private Double backgroundTransparency;
+    private Integer backgroundTransparencyTransitionPeriod;
+    private String backgroundStyle;
+    private String backgroundClass;
 
     public String getFamily() {
         return COMPONENT_FAMILY;
@@ -48,17 +59,37 @@ public class DefaultProgressMessage extends ProgressMessage {
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, text, imageUrl, style, styleClass};
+        return new Object[]{superState,
+                text,
+                imageUrl,
+                style,
+                styleClass,
+                horizontalAlignment,
+                verticalAlignment,
+                transparency,
+                transparencyTransitionPeriod,
+                fillBackground,
+                backgroundTransparency,
+                backgroundTransparencyTransitionPeriod
+        };
     }
 
     @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] stateArray = (Object[]) state;
-        super.restoreState(context, stateArray[0]);
-        text = (String) stateArray[1];
-        imageUrl = (String) stateArray[2];
-        style = (String) stateArray[3];
-        styleClass = (String) stateArray[4];
+        int i = 0;
+        super.restoreState(context, stateArray[i++]);
+        text = (String) stateArray[i++];
+        imageUrl = (String) stateArray[i++];
+        style = (String) stateArray[i++];
+        styleClass = (String) stateArray[i++];
+        horizontalAlignment = (HorizontalAlignment) stateArray[i++];
+        verticalAlignment = (VerticalAlignment) stateArray[i++];
+        transparency = (Double) stateArray[i++];
+        transparencyTransitionPeriod = (Integer) stateArray[i++];
+        fillBackground = (Boolean) stateArray[i++];
+        backgroundTransparency = (Double) stateArray[i++];
+        backgroundTransparencyTransitionPeriod = (Integer) stateArray[i++];
     }
 
     public String getText() {
@@ -126,4 +157,75 @@ public class DefaultProgressMessage extends ProgressMessage {
         return ajaxMessage;
     }
 
+    public HorizontalAlignment getHorizontalAlignment() {
+        return ValueBindings.get(this, "horizontalAlignment", horizontalAlignment, HorizontalAlignment.RIGHT, HorizontalAlignment.class);
+    }
+
+    public void setHorizontalAlignment(HorizontalAlignment horizontalAlignment) {
+        this.horizontalAlignment = horizontalAlignment;
+    }
+
+    public VerticalAlignment getVerticalAlignment() {
+        return ValueBindings.get(this, "verticalAlignment", verticalAlignment, VerticalAlignment.TOP, VerticalAlignment.class);
+    }
+
+    public void setVerticalAlignment(VerticalAlignment verticalAlignment) {
+        this.verticalAlignment = verticalAlignment;
+    }
+
+    public double getTransparency() {
+        return ValueBindings.get(this, "transparency", transparency, 0);
+    }
+
+    public void setTransparency(double transparency) {
+        this.transparency = transparency;
+    }
+
+    public int getTransparencyTransitionPeriod() {
+        return ValueBindings.get(this, "transparencyTransitionPeriod", transparencyTransitionPeriod, 0);
+    }
+
+    public void setTransparencyTransitionPeriod(int transparencyTransitionPeriod) {
+        this.transparencyTransitionPeriod = transparencyTransitionPeriod;
+    }
+
+    public boolean getFillBackground() {
+        return ValueBindings.get(this, "fillBackground", fillBackground, false);
+    }
+
+    public void setFillBackground(boolean fillBackground) {
+        this.fillBackground = fillBackground;
+    }
+
+    public double getBackgroundTransparency() {
+        return ValueBindings.get(this, "backgroundTransparency", backgroundTransparency, 0.6);
+    }
+
+    public void setBackgroundTransparency(double backgroundTransparency) {
+        this.backgroundTransparency = backgroundTransparency;
+    }
+
+    public int getBackgroundTransparencyTransitionPeriod() {
+        return ValueBindings.get(this, "backgroundTransparencyTransitionPeriod", backgroundTransparencyTransitionPeriod, 180);
+    }
+
+    public void setBackgroundTransparencyTransitionPeriod(int backgroundTransparencyTransitionPeriod) {
+        this.backgroundTransparencyTransitionPeriod = backgroundTransparencyTransitionPeriod;
+    }
+
+    public String getBackgroundStyle() {
+        return ValueBindings.get(this, "backgroundStyle", backgroundStyle);
+    }
+
+    public void setBackgroundStyle(String backgroundStyle) {
+        this.backgroundStyle = backgroundStyle;
+    }
+
+    public String getBackgroundClass() {
+        return ValueBindings.get(this, "backgroundClass", backgroundClass);
+    }
+
+    public void setBackgroundClass(String backgroundClass) {
+        this.backgroundClass = backgroundClass;
+    }
 }

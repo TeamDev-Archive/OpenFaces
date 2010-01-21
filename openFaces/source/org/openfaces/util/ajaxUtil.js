@@ -566,7 +566,7 @@ O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, tra
   if (blockingLayer) {
     msg._blockingLayer = function() {
       var div = document.createElement("div");
-      div.className = "o_ajax_blockingLayer " + (blockingLayer.className ? blockingLayer.className : "");
+      div.className = blockingLayer.className ? blockingLayer.className : "";
       div.style.visibility = "hidden";
       var opacity = blockingLayer.transparency != undefined ? 1 - blockingLayer.transparency : 0;
       div._opacity = opacity;

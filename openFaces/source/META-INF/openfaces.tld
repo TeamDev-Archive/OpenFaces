@@ -13504,6 +13504,118 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Defines the horizontal position in browser&apos;s window where the Ajax progress message should be
+        shown.
+      </description>
+      <name>horizontalAlignment</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.HorizontalAlignment -->
+      <!-- @default "right" -->
+      <!-- @value "left" displays the progress message by the left side of a browser window -->
+      <!-- @value "center" centers the progress message horizontally within browser's window -->
+      <!-- @value "right" displays the progress message by the right side of a browser window -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Defines the horizontal position in browser&apos;s window where the Ajax progress message should be
+        shown.
+      </description>
+      <name>verticalAlignment</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.VerticalAlignment -->
+      <!-- @default "top" -->
+      <!-- @value "top" displays the progress message by the top side of a browser window -->
+      <!-- @value "center" centers the progress message vertically within browser's window -->
+      <!-- @value "bottom" displays the progress message by the bottom side of a browser window -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies the transparency level in range [0..1] for the Ajax progress message.</description>
+      <name>transparency</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies time in milliseconds that will elapse until Ajax progress message transparency gradually
+        gains its full value (as specified by the &quot;transparency&quot; attribute).
+      </description>
+      <name>transparencyTransitionPeriod</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 180 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Setting this attribute to true allows shading the browser window while the Ajax is in progress, which
+        makes it impossible to click any component until the Ajax request finishes.
+      </description>
+      <name>fillBackground</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies the transparency level in range [0..1] for the background layer of the Ajax progress
+        message. Applicable only when fillBackground attribute is set to true.
+      </description>
+      <name>backgroundTransparency</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.6 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies time in milliseconds that will elapse until transparency of the background layer gradually
+        gains its full value (as specified by the &quot;backgroundTransparency&quot; attribute). Applicable only when
+        &quot;fillBackground&quot; attribute is set to true.
+      </description>
+      <name>backgroundTransparencyTransitionPeriod</name>
+      <deferred-value>
+        <type>int</type>
+      </deferred-value>
+      <!-- @bindingType int -->
+      <!-- @default 180 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS style for a background layer of Ajax progress message. Applicable only when
+        &quot;fillBackground&quot; attribute is set to true.</description>
+      <name>backgroundStyle</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>CSS class name for a background layer of Ajax progress message. Applicable only when &quot;fillBackground&quot;
+        attribute is set to true.
+      </description>
+      <name>backgroundClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default  -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>

@@ -31,4 +31,40 @@ public class DefaultProgressMessageJspTag extends AbstractComponentJspTag {
     public void setImageUrl(ValueExpression imageUrl) {
         getDelegate().setPropertyValue("imageUrl", imageUrl);
     }
+
+    public void setHorizontalAlignment(ValueExpression horizontalAlignment) {
+        getDelegate().setPropertyValue("horizontalAlignment", horizontalAlignment);
+    }
+
+    public void setVerticalAlignment(ValueExpression verticalAlignment) {
+        getDelegate().setPropertyValue("verticalAlignment", verticalAlignment);
+    }
+
+    public void setTransparency(ValueExpression transparency) {
+        getDelegate().setPropertyValue("transparency", transparency);
+    }
+
+    public void setTransparencyTransitionPeriod(ValueExpression transparencyTransitionPeriod) {
+        getDelegate().setPropertyValue("transparencyTransitionPeriod", transparencyTransitionPeriod);
+    }
+
+    public void setFillBackground(ValueExpression fillBackground) {
+        getDelegate().setPropertyValue("fillBackground", fillBackground);
+    }
+
+    public void setBackgroundTransparency(ValueExpression backgroundTransparency) {
+        getDelegate().setPropertyValue("backgroundTransparency", backgroundTransparency);
+    }
+
+    public void setBackgroundTransparencyTransitionPeriod(ValueExpression backgroundTransparencyTransitionPeriod) {
+        getDelegate().setPropertyValue("backgroundTransparencyTransitionPeriod", backgroundTransparencyTransitionPeriod);
+    }
+
+    public void setBackgroundStyle(ValueExpression backgroundStyle) {
+        getDelegate().setPropertyValue("backgroundStyle", backgroundStyle);
+    }
+
+    public void setBackgroundClass(ValueExpression backgroundClass) {
+        getDelegate().setPropertyValue("backgroundClass", backgroundClass);
+    }
 }
