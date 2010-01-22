@@ -105,7 +105,7 @@ O$.PopupMenu = {
       }
     });
 
-    if (O$.isQuirksMode() && O$.isExplorer()) {
+    if ((O$.isQuirksMode() && O$.isExplorer()) || (O$.isExplorer6() && O$.isStrictMode())) {
       O$.setStyleMappings(popupMenu, {ieQuirksFix: "o_popup_menu_iequirks"});
     }
 

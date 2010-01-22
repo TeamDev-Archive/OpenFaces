@@ -13,6 +13,7 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.action.MenuItem;
 import org.openfaces.util.ScriptBuilder;
+import org.openfaces.util.ResourceUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -26,6 +27,9 @@ public class SortDescendingMenuItemRenderer extends ColumnMenuItemRenderer {
             menuItem.setValue("Sort Descending");
         menuItem.setOnclick(new ScriptBuilder().functionCall("O$.ColumnMenu._sortColumnDescending",
                 getTable("<o:sortDescendingMenuItem>", menuItem)).toString());
+        if (menuItem.getIconUrl() == null)
+            menuItem.setIconUrl(ResourceUtil.getInternalResourceURL(
+                    context, SortDescendingMenuItemRenderer.class, "images/sortDescending.png", false));
         super.encodeBegin(context, component);
     }
 }
