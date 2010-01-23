@@ -42,11 +42,13 @@
                  headerVertSeparator="1px solid #d0d0d0, 1px solid #a0a0a0"
                  horizontalGridLines="1px solid #f6f7f8"
             >
+
       <o:singleRowSelection
-              style="background: url('../images/treetable/selected.gif') repeat-x #5D8BBA !important; color: white !important;"/>
+              style="background: url('../images/treetable/selected.gif') repeat-x #5d8bba !important; color: white !important;"/>
       <o:scrolling/>
       <o:columnResizing/>
       <o:columnReordering/>
+
       <f:facet name="columnMenu">
         <o:columnMenu/>
       </f:facet>
@@ -56,15 +58,16 @@
                          pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
       </f:facet>
 
-      <o:column header="Institution Name"
+      <o:column id="institutionName"
+                header="Institution Name"
                 width="30%"
                 sortingExpression="#{bank.institutionName}"
                 bodyStyle="text-align: left; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
                 headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
         <f:facet name="subHeader">
-          <o:inputTextFilter id="filter1" expression="#{bank.institutionName}"/>
+          <o:inputTextFilter expression="#{bank.institutionName}"/>
         </f:facet>
-        <h:outputText value="#{bank.institutionName}"/>
+        <h:outputText value="#{bank.institutionName}" style="white-space: nowrap;"/>
       </o:column>
       <o:column header="Certificate Number"
                 width="10%"
@@ -72,7 +75,7 @@
                 sortingExpression="#{bank.certificateNumber}"
                 bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;">
         <f:facet name="subHeader">
-          <o:inputTextFilter id="filter2" expression="#{bank.certificateNumber}" maxlength="5" value="equals"
+          <o:inputTextFilter expression="#{bank.certificateNumber}" maxlength="5" value="equals"
                              autoFilterDelay="-1">
             <f:convertNumber integerOnly="true" groupingUsed="false"/>
           </o:inputTextFilter>
@@ -86,7 +89,7 @@
                   bodyStyle="padding-left: 5px; padding-right: 5px;"
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
-            <o:inputTextFilter id="filter3" expression="#{bank.city}"/>
+            <o:inputTextFilter expression="#{bank.city}"/>
           </f:facet>
 
           <h:outputText value="#{bank.city}"/>
@@ -97,7 +100,7 @@
                   bodyStyle="padding-left: 5px; padding-right: 5px;"
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
-            <o:dropDownFieldFilter id="filter4" expression="#{bank.state}" value="equals" maxlength="2"/>
+            <o:dropDownFieldFilter expression="#{bank.state}" value="equals" maxlength="2"/>
           </f:facet>
           <h:outputText value="#{bank.state}"/>
         </o:column>
@@ -107,7 +110,7 @@
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;"
                   sortingExpression="#{bank.zip}">
           <f:facet name="subHeader">
-            <o:inputTextFilter id="filter5" expression="#{bank.zip}" maxlength="5" value="equals" autoFilterDelay="-1">
+            <o:inputTextFilter expression="#{bank.zip}" maxlength="5" value="equals" autoFilterDelay="-1">
               <f:convertNumber integerOnly="true" groupingUsed="false"/>
             </o:inputTextFilter>
           </f:facet>
@@ -119,7 +122,7 @@
                   bodyStyle="padding-left: 5px; padding-right: 5px; white-space: nowrap;"
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
-            <o:inputTextFilter id="filter6" expression="#{bank.county}"/>
+            <o:inputTextFilter expression="#{bank.county}"/>
           </f:facet>
 
           <h:outputText value="#{bank.county}"/>
@@ -131,7 +134,7 @@
                 headerStyle="text-align: center; padding-left: 5px; padding-right: 5px; white-space: normal;"
                 sortingExpression="#{bank.averageAssets}">
         <f:facet name="subHeader">
-          <o:comboBoxFilter id="filter7" expression="#{BanksList.averageAssetsRange}"
+          <o:comboBoxFilter expression="#{BanksList.averageAssetsRange}"
                             options="#{BanksList.averageAssetsFilterValues}"/>
         </f:facet>
 

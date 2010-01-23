@@ -1,4 +1,4 @@
- /*
+/*
  * OpenFaces - JSF Component Library 2.0
  * Copyright (C) 2007-2010, TeamDev Ltd.
  * licensing@openfaces.org
@@ -481,7 +481,7 @@ O$.Table = {
 
     var bodyRows = table.body._getRows();
     for (i = rangeStart; i <= rangeEnd; i++) {
-      if (alreadyIncludedIndexes.indexOf(i ) == -1) {
+      if (alreadyIncludedIndexes.indexOf(i) == -1) {
         var row = bodyRows[i];
         if (row._visible)
           result.push(i);
@@ -1244,6 +1244,9 @@ O$.Table = {
         resizeHandleWidth = O$.calculateNumericCSSValue(resizeHandleWidth);
       if (resizeHandleWidth < 1)
         resizeHandleWidth = 1;
+      // this offset moves the resize handle slightly to the right to reduce overlapping space conflict between column
+      // menu invoker and resize handle
+      var resizeHandleOffset = 1;
 
       var table = O$(tableId);
       var tableBordersCollapsed = O$.getElementStyle(table, "border-collapse") == "collapse";
@@ -1342,6 +1345,7 @@ O$.Table = {
         }
 
         headerCell.appendChild(resizeHandle);
+        O$.correctElementZIndex(resizeHandle, headerCell, O$.Table.HEADER_CELL_Z_INDEX_COLUMN_MENU_RESIZE_HANDLE);
         column._resizeHandle = resizeHandle;
         O$.extend(resizeHandle, {
           _column: column,
@@ -1371,6 +1375,12 @@ O$.Table = {
               }, 1);
           },
           onmousedown: function (e) {
+            setTimeout(function() {
+              table._columns.forEach(function(c) {
+                var headerCell = c.header && c.header._cell;
+                if (headerCell && headerCell.setForceHover) headerCell.setForceHover(false);
+              });
+            }, 1);
             O$.startDragging(e, this);
           },
           onclick: function(e) {
@@ -1381,7 +1391,7 @@ O$.Table = {
             var resizeDecorator = document.createElement("div");
             resizeDecorator.style.position = "absolute";
             resizeDecorator.style.borderLeft = "0px none transparent";//"1px solid gray";
-//            table.parentNode.appendChild(resizeDecorator);
+            //            table.parentNode.appendChild(resizeDecorator);
             this._column._resizeDecorator = resizeDecorator;
             resizeDecorator._column = this._column;
 
@@ -1394,12 +1404,12 @@ O$.Table = {
               this.style.width = "0px";//"1px";
               this.style.height = tablePos.y + table.offsetHeight - cellPos.getMinY() + "px";
             };
-//            resizeDecorator._updatePos();
+            //            resizeDecorator._updatePos();
             this._dragStartCellPos = O$.getElementBorderRectangle(headerCell, true);
           },
           setLeft: function(left) {
             this.style.left = left + "px";
-            var newColRightEdge = left + Math.floor(resizeHandleWidth / 2) + 1;
+            var newColRightEdge = left + Math.floor(resizeHandleWidth / 2) + 1 - resizeHandleOffset;
             var newColWidth = newColRightEdge - this._dragStartCellPos.getMinX();
             if (newColWidth < this._column._minResizingWidth)
               newColWidth = this._column._minResizingWidth;
@@ -1459,7 +1469,7 @@ O$.Table = {
           },
           ondragend: function() {
             table._columnResizingInProgress = false;
-//            this._column._resizeDecorator.parentNode.removeChild(this._column._resizeDecorator);
+            //            this._column._resizeDecorator.parentNode.removeChild(this._column._resizeDecorator);
             updateResizeHandlePositions();
 
             var totalWidth = 0;
@@ -1495,7 +1505,7 @@ O$.Table = {
                     : O$.getElementBorderRectangle(this._column.header._cell, true);
 
             var minY = topCellPos.getMinY();
-            var x = bottomCellPos.getMaxX() - Math.floor(resizeHandleWidth / 2) - 1;
+            var x = bottomCellPos.getMaxX() - Math.floor(resizeHandleWidth / 2) - 1 + resizeHandleOffset;
             var y = minY;
             var height = bottomCellPos.getMaxY() - minY;
             var container = O$.getContainingBlock(this, true);
@@ -1521,9 +1531,9 @@ O$.Table = {
         var colWidths = getColWidths();
         table.style.tableLayout = "fixed";
 
-//        if (!table._params.scrolling)
-//          O$.Tables._alignTableColumns(table._columns.map(function(c){return c._colTags[0];}), table, true, null,
-//                  table._params.scrolling, 0);
+        //        if (!table._params.scrolling)
+        //          O$.Tables._alignTableColumns(table._columns.map(function(c){return c._colTags[0];}), table, true, null,
+        //                  table._params.scrolling, 0);
 
         if (!table._params.scrolling)
           table.style.width = "auto";
@@ -1542,6 +1552,7 @@ O$.Table = {
         }
 
       }
+
       fixWidths();
 
       function updateResizeHandlePositions() {
@@ -1677,7 +1688,7 @@ O$.Table = {
             childArray[i] = children[i];
           childArray.forEach(function (el) {
             if (O$.stringStartsWith(el.nodeName, "#")) return;
-            if (el.style.position == "absolute"|| O$.getElementStyle(el, "position") == "absolute")
+            if (el.style.position == "absolute" || O$.getElementStyle(el, "position") == "absolute")
               el.parentNode.removeChild(el);
             else
               processAbsoluteChildren(el.childNodes);
@@ -1876,7 +1887,10 @@ O$.Table = {
         [table.id + "::reorderColumns", srcColIndex + "->" + dstColIndex]
       ]);
     }
-  }
+  },
+
+  HEADER_CELL_Z_INDEX_COLUMN_MENU_BUTTON: 1,
+  HEADER_CELL_Z_INDEX_COLUMN_MENU_RESIZE_HANDLE: 2
 
 };
 
@@ -1901,6 +1915,7 @@ O$.ColumnMenu = {
         showForCell: function(cell) {
           this.hide();
           cell.appendChild(this);
+          O$.correctElementZIndex(this, cell, O$.Table.HEADER_CELL_Z_INDEX_COLUMN_MENU_BUTTON);
           var rightOffset = O$.getNumericElementStyle(cell, "border-right-width");
           var bottomOffset = O$.getNumericElementStyle(cell, "border-bottom-width");
           O$.setElementHeight(this, O$.getElementSize(cell).height - bottomOffset);
@@ -1944,7 +1959,6 @@ O$.ColumnMenu = {
     };
     O$.addEventHandler(columnMenuButton, "mousedown", function(evt) {
       O$.breakEvent(evt);
-      var btnRect = O$.getElementBorderRectangle(columnMenuButtonTable, true);
       O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
       table._showingMenuForColumn = currentColumn;
       columnMenu._column = currentColumn;
@@ -1955,7 +1969,7 @@ O$.ColumnMenu = {
       columnMenuButton.setForceHover(true);
       menuOpened = true;
       columnMenu.onhide = function(e) {
-        setTimeout(function(){
+        setTimeout(function() {
           table._showingMenuForColumn = null;
           columnMenu._column = null;
         }, 1);
