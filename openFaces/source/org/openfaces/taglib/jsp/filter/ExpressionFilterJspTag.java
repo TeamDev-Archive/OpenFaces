@@ -27,6 +27,10 @@ public class ExpressionFilterJspTag extends FilterJspTag {
         getDelegate().setPropertyValue("expression", expression);
     }
 
+    public void setCondition(ValueExpression condition) {
+        getDelegate().setPropertyValue("condition", condition);
+    }
+
     public void setValue(ValueExpression value) {
         getDelegate().setPropertyValue("value", value);
     }

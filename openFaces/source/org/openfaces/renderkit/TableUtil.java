@@ -272,7 +272,7 @@ public class TableUtil {
                         var + ") for column with id: " + column.getId() + "; table id: " + table.getId());
         ValueExpression expression = columnOutput.getValueExpression("value");
 
-        Class valueType;
+        Class valueType = valueType = Object.class;
         Converter valueConverter = null;
         FacesContext context = FacesContext.getCurrentInstance();
         int index = table.getRowIndex();
@@ -291,28 +291,27 @@ public class TableUtil {
                     throw new IllegalArgumentException("Var isn't specified.");
                 }
                 ValueExpression rowDataBeanValueExpression = table.getValueExpression("value");
-
-                Class rowDataBeanType = rowDataBeanValueExpression.getValue(context.getELContext()).getClass();
-                Class rowDataClass = null;
-                if (rowDataBeanType.isArray()) {
-                    rowDataClass = rowDataBeanType.getComponentType();
-                } else if (Collection.class.isAssignableFrom(rowDataBeanType)) {
-                    rowDataClass = ReflectionUtil.getGenericParameterClass(rowDataBeanType);
-                }
-                if (rowDataClass == null)
-                    valueType = Object.class;
-                else {
-                    Matcher expressionMatcher = getExpressionPattern(var).matcher(expressionString);
-                    if (!expressionMatcher.find()) {
-                        throw new IllegalArgumentException("Unsupported expression: " + expression);
+                if (rowDataBeanValueExpression != null) {
+                    Class rowDataBeanType = rowDataBeanValueExpression.getValue(context.getELContext()).getClass();
+                    Class rowDataClass = null;
+                    if (rowDataBeanType.isArray()) {
+                        rowDataClass = rowDataBeanType.getComponentType();
+                    } else if (Collection.class.isAssignableFrom(rowDataBeanType)) {
+                        rowDataClass = ReflectionUtil.getGenericParameterClass(rowDataBeanType);
                     }
+                    if (rowDataClass != null) {
+                        Matcher expressionMatcher = getExpressionPattern(var).matcher(expressionString);
+                        if (!expressionMatcher.find()) {
+                            throw new IllegalArgumentException("Unsupported expression: " + expression);
+                        }
 
-                    // String expressionBeforeVar = expressionMatcher.group(2);
-                    /*if (expressionBeforeVar != null) {
-                        Class typeOfExpressionBefore = ValueBindings.createValueExpression(context, "#{" + expressionBeforeVar + "}").getType(context.getELContext());
-                    }*/
-                    String expressionAfterVar = expressionMatcher.group(2);
-                    valueType = ReflectionUtil.definePropertyType(rowDataClass, expressionAfterVar);
+                        // String expressionBeforeVar = expressionMatcher.group(2);
+                        /*if (expressionBeforeVar != null) {
+                            Class typeOfExpressionBefore = ValueBindings.createValueExpression(context, "#{" + expressionBeforeVar + "}").getType(context.getELContext());
+                        }*/
+                        String expressionAfterVar = expressionMatcher.group(2);
+                        valueType = ReflectionUtil.definePropertyType(rowDataClass, expressionAfterVar);
+                    }
                 }
             }
         }

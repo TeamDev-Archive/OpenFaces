@@ -14,6 +14,7 @@ package org.openfaces.renderkit.filter;
 import org.openfaces.component.filter.ComboBoxFilter;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.filter.FilterCondition;
+import org.openfaces.component.filter.ExpressionFilter;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
 import org.openfaces.util.RenderingUtil;
@@ -185,7 +186,7 @@ public class ComboBoxFilterRenderer extends ExpressionFilterRenderer {
     }
 
     @Override
-    protected FilterCondition getDefaultCondition() {
+    protected FilterCondition getDefaultCondition(ExpressionFilter filter) {
         return FilterCondition.EQUALS;
     }
 }

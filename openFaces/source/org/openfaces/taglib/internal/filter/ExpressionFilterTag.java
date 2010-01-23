@@ -37,10 +37,10 @@ public abstract class ExpressionFilterTag extends FilterTag {
                 filter.setExpression(expression);
         }
 
-        String value = getPropertyValue("value");
-        if (!setPropertyAsBinding(component, "value", value)) {
-            setValueAsCondition(filter, value);
-        }
+        String condition = getPropertyValue("condition");
+        if (condition != null)
+            setCondition(filter, condition);
+        setPropertyBinding(component, "value");
 
         setPropertyBinding(component, "options");
         setConverterProperty(context, component, "converter");
@@ -60,7 +60,7 @@ public abstract class ExpressionFilterTag extends FilterTag {
         setIntProperty(component, "autoFilterDelay");
     }
 
-    private void setValueAsCondition(ExpressionFilter filter, String value) {
+    private void setCondition(ExpressionFilter filter, String value) {
         String[] parts = value.split(" ");
         String conditionName = parts[parts.length - 1];
         FilterCondition condition = null;
@@ -76,11 +76,11 @@ public abstract class ExpressionFilterTag extends FilterTag {
                 condition = c;
         }
         if (parts.length > 2 || condition == null)
-            throw new FacesException("Improper 'criterion' attribute value: \"" + value + "\". It should be of \"<condition>\" or \"not <condition>\", where <condition> is one of: " + possibleConditionsStr +"; but it was: " + value);
+            throw new FacesException("Improper 'condition' attribute value: \"" + value + "\". It should be of \"<condition>\" or \"not <condition>\", where <condition> is one of: " + possibleConditionsStr +"; but it was: " + value);
         boolean inverse = false;
         if (parts.length == 2) {
             if (!parts[0].equals("not"))
-                throw new FacesException("Improper 'criterion' attribute value: \"" + value + "\". It should be of \"<condition>\" or \"not <condition>\", where <condition> is one of: " + possibleConditionsStr +"; but it was: " + value);
+                throw new FacesException("Improper 'condition' attribute value: \"" + value + "\". It should be of \"<condition>\" or \"not <condition>\", where <condition> is one of: " + possibleConditionsStr +"; but it was: " + value);
             inverse = true;
         }
         filter.setValue(new ExpressionFilterCriterion(condition, inverse));

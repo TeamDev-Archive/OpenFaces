@@ -1814,6 +1814,21 @@
       <!-- @el only -->
     </attribute>
     <attribute>
+      <description>The filtering condition that should be used for comparing the values specified in this filter component
+      to the values specified in data records. It should have a format of "&lt;condition&gt;" or "not &lt;condition&gt;",
+        where &lt;condition&gt; is one of the following values: equals, contains, beginsWith, endsWith, less, greater,
+        lessOrEqual, greaterOrEqual. This attribute is not effective when the "value" attribute is defined. In case of
+        specifying the "value" attribute, you should specify the condition as part of the ExpressionFilterCriterion
+        object bound to the "value" attribute.</description>
+      <name>condition</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.filter.FilterCondition -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+    <attribute>
       <description>Specifies whether letter case should be exactly matched when obtaining filtering results.
       </description>
       <name>caseSensitive</name>
@@ -2101,6 +2116,21 @@
       <!-- @bindingType org.openfaces.component.filter. ExpressionFilterCriterion -->
       <!-- @default null -->
       <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The filtering condition that should be used for comparing the values specified in this filter component
+      to the values specified in data records. It should have a format of "&lt;condition&gt;" or "not &lt;condition&gt;",
+        where &lt;condition&gt; is one of the following values: equals, contains, beginsWith, endsWith, less, greater,
+        lessOrEqual, greaterOrEqual. This attribute is not effective when the "value" attribute is defined. In case of
+        specifying the "value" attribute, you should specify the condition as part of the ExpressionFilterCriterion
+        object bound to the "value" attribute.</description>
+      <name>condition</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.filter.FilterCondition -->
+      <!-- @default null -->
+      <!-- @el false -->
     </attribute>
     <attribute>
       <description>The filtering options that appear in the filter's drop-down list instead of displaying all of the
@@ -2717,6 +2747,21 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @bindingType org.openfaces.component.filter. ExpressionFilterCriterion -->
       <!-- @default null -->
       <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The filtering condition that should be used for comparing the values specified in this filter component
+      to the values specified in data records. It should have a format of "&lt;condition&gt;" or "not &lt;condition&gt;",
+        where &lt;condition&gt; is one of the following values: equals, contains, beginsWith, endsWith, less, greater,
+        lessOrEqual, greaterOrEqual. This attribute is not effective when the "value" attribute is defined. In case of
+        specifying the "value" attribute, you should specify the condition as part of the ExpressionFilterCriterion
+        object bound to the "value" attribute.</description>
+      <name>condition</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.filter.FilterCondition -->
+      <!-- @default null -->
+      <!-- @el false -->
     </attribute>
     <attribute>
       <description>The filtering options that appear in the filter's drop-down list instead of displaying all of the

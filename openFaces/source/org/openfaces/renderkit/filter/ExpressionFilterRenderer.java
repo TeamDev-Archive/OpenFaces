@@ -13,10 +13,12 @@ package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.filter.ExpressionFilter;
-import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
+import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.PropertyLocator;
+import org.openfaces.component.table.BaseColumn;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.ScriptBuilder;
@@ -58,16 +60,16 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
 
     protected void setDecodedString(ExpressionFilter filter, String searchString) {
         Converter converter = getConverter(filter);
+        Object argAsObject = converter.getAsObject(FacesContext.getCurrentInstance(), filter, searchString);
         ExpressionFilterCriterion oldCriterion = (ExpressionFilterCriterion) filter.getValue();
         ExpressionFilterCriterion newCriterion;
         if (oldCriterion != null &&
                 !oldCriterion.getCondition().equals(FilterCondition.EMPTY) &&
                 !oldCriterion.getCondition().equals(FilterCondition.CONTAINS) ) {
             newCriterion = new ExpressionFilterCriterion(oldCriterion);
-            Object argAsObject = converter.getAsObject(FacesContext.getCurrentInstance(), filter, searchString);
             newCriterion.setArg1(argAsObject);
         } else
-            newCriterion = createDefaultCriterion(filter, searchString);
+            newCriterion = createDefaultCriterion(filter, argAsObject);
         setDecodedCriterion(filter, newCriterion);
     }
 
@@ -79,7 +81,7 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
     protected ExpressionFilterCriterion createDefaultCriterion(ExpressionFilter filter, Object specifiedValue) {
         Object expression = filter.getExpression();
         PropertyLocator propertyLocator = new PropertyLocator(expression, filter.getFilteredComponent());
-        FilterCondition condition = getDefaultCondition();
+        FilterCondition condition = getDefaultCondition(filter);
 
         ExpressionFilterCriterion criterion = new ExpressionFilterCriterion(
                 propertyLocator,
@@ -89,8 +91,17 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
         return criterion;
     }
 
-    protected FilterCondition getDefaultCondition() {
-        return FilterCondition.CONTAINS;
+    protected FilterCondition getDefaultCondition(ExpressionFilter filter) {
+        UIComponent parent = filter.getParent();
+        if (parent == null || !(parent instanceof BaseColumn))
+            return FilterCondition.CONTAINS;
+        BaseColumn column = (BaseColumn) parent;
+        TableUtil.ColumnExpressionData data = TableUtil.getColumnExpressionData(column);
+        Class type = data.getValueType();
+        if (String.class.equals(type))
+            return FilterCondition.CONTAINS;
+        else
+            return FilterCondition.EQUALS;
     }
 
 }
