@@ -30,10 +30,12 @@ public abstract class ExpressionFilterTag extends FilterTag {
         ExpressionFilter filter = (ExpressionFilter) component;
 
         String expression = getPropertyValue("expression");
-        if (getExpressionCreator().isValueReference("expression", expression))
-            filter.setExpression(createValueExpression(context, "expression", expression));
-        else
-            filter.setExpression(expression);
+        if (expression != null) {
+            if (getExpressionCreator().isValueReference("expression", expression))
+                filter.setExpression(createValueExpression(context, "expression", expression));
+            else
+                filter.setExpression(expression);
+        }
 
         String value = getPropertyValue("value");
         if (!setPropertyAsBinding(component, "value", value)) {

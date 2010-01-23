@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * @author Eugene Goncharov
@@ -170,7 +171,8 @@ public class ReflectionUtil {
     }
 
     public static Class getGenericParameterClass(Class actualClass, int parameterIndex) {
-        return (Class) ((ParameterizedType) actualClass.getGenericSuperclass()).getActualTypeArguments()[parameterIndex];
+        Type type = ((ParameterizedType) actualClass.getGenericSuperclass()).getActualTypeArguments()[parameterIndex];
+        return type instanceof Class ? (Class) type : null;
     }
 
 }

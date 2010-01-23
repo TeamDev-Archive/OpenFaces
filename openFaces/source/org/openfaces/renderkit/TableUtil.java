@@ -27,12 +27,14 @@ import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.StyleUtil;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -163,10 +165,7 @@ public class TableUtil {
     }
 
     public static Converter getColumnValueConverter(BaseColumn column) {
-        String var = column.getTable().getVar();
-        UIOutput columnOutput = obtainOutput(column, var);
-        if (columnOutput == null) return null;
-        return columnOutput.getConverter();
+        return getColumnExpressionData(column).getValueConverter();
     }
 
     public static String getColumnHeader(BaseColumn column) {
@@ -236,50 +235,92 @@ public class TableUtil {
 
     }
 
-    public static Class getFilteredValueType(
-            FacesContext context,
-            AbstractTable table,
-            ValueExpression expression) {
+    public static class ColumnExpressionData implements Serializable {
+        private ValueExpression valueExpression;
+        private Class valueType;
+        private Converter valueConverter;
+
+        public ColumnExpressionData(ValueExpression valueExpression, Class valueType, Converter valueConverter) {
+            this.valueExpression = valueExpression;
+            this.valueType = valueType;
+            this.valueConverter = valueConverter;
+        }
+
+        public ValueExpression getValueExpression() {
+            return valueExpression;
+        }
+
+        public Class getValueType() {
+            return valueType;
+        }
+
+        public Converter getValueConverter() {
+            return valueConverter;
+        }
+    }
+
+    public static ColumnExpressionData getColumnExpressionData(BaseColumn column) {
+        String cachedDataVar = "_OpenFaces_columnExpressionData";
+        ColumnExpressionData data = (ColumnExpressionData) column.getAttributes().get(cachedDataVar);
+        if (data != null)
+            return data;
+        AbstractTable table = column.getTable();
+        String var = column.getTable().getVar();
+        UIOutput columnOutput = obtainOutput(column, var);
+        if (columnOutput == null) throw new FacesException(
+                "Can't find column output component (UIOutput component with a value expression containing variable " +
+                        var + ") for column with id: " + column.getId() + "; table id: " + table.getId());
+        ValueExpression expression = columnOutput.getValueExpression("value");
+
+        Class valueType;
+        Converter valueConverter = null;
+        FacesContext context = FacesContext.getCurrentInstance();
         int index = table.getRowIndex();
         try {
             table.setRowIndex(0);
-            Class result = expression.getType(context.getELContext());
+            valueType = expression.getType(context.getELContext());
+            valueConverter = RenderingUtil.getConverter(context, columnOutput);
             table.setRowIndex(index);
-            return result;
         } catch (Exception e) {
             // means that there's no row data and row with index == 0
             String expressionString = expression.getExpressionString();
             if (expressionString.split("#").length > 2) { // consist of more than one expression
-                return String.class; // than concatenation
-            }
-            String var = table.getVar();
-            if (var == null) {
-                throw new IllegalArgumentException("Var isn't specified.");
-            }
-            ValueExpression rowDataBeanValueExpression = table.getValueExpression("value");
-
-            Class rowDataBeanType = rowDataBeanValueExpression.getValue(context.getELContext()).getClass();
-            Class rowDataClass;
-            if (rowDataBeanType.isArray()) {
-                rowDataClass = rowDataBeanType.getComponentType();
-            } else if (Collection.class.isAssignableFrom(rowDataBeanType)) {
-                rowDataClass = ReflectionUtil.getGenericParameterClass(rowDataBeanType);
+                valueType = String.class; // multiple expression concatenation result is a string
             } else {
-                return Object.class;
-            }
+                if (var == null) {
+                    throw new IllegalArgumentException("Var isn't specified.");
+                }
+                ValueExpression rowDataBeanValueExpression = table.getValueExpression("value");
 
-            Matcher expressionMatcher = getExpressionPattern(var).matcher(expressionString);
-            if (!expressionMatcher.find()) {
-                throw new IllegalArgumentException("Unsupported expression: " + expression);
-            }
+                Class rowDataBeanType = rowDataBeanValueExpression.getValue(context.getELContext()).getClass();
+                Class rowDataClass = null;
+                if (rowDataBeanType.isArray()) {
+                    rowDataClass = rowDataBeanType.getComponentType();
+                } else if (Collection.class.isAssignableFrom(rowDataBeanType)) {
+                    rowDataClass = ReflectionUtil.getGenericParameterClass(rowDataBeanType);
+                }
+                if (rowDataClass == null)
+                    valueType = Object.class;
+                else {
+                    Matcher expressionMatcher = getExpressionPattern(var).matcher(expressionString);
+                    if (!expressionMatcher.find()) {
+                        throw new IllegalArgumentException("Unsupported expression: " + expression);
+                    }
 
-            // String expressionBeforeVar = expressionMatcher.group(2);
-            /*if (expressionBeforeVar != null) {
-                Class typeOfExpressionBefore = ValueBindings.createValueExpression(context, "#{" + expressionBeforeVar + "}").getType(context.getELContext());
-            }*/
-            String expressionAfterVar = expressionMatcher.group(2);
-            return ReflectionUtil.definePropertyType(rowDataClass, expressionAfterVar);
+                    // String expressionBeforeVar = expressionMatcher.group(2);
+                    /*if (expressionBeforeVar != null) {
+                        Class typeOfExpressionBefore = ValueBindings.createValueExpression(context, "#{" + expressionBeforeVar + "}").getType(context.getELContext());
+                    }*/
+                    String expressionAfterVar = expressionMatcher.group(2);
+                    valueType = ReflectionUtil.definePropertyType(rowDataClass, expressionAfterVar);
+                }
+            }
         }
+        if (valueConverter == null)
+            valueConverter = RenderingUtil.getConverterForType(context, valueType);
+        ColumnExpressionData result = new ColumnExpressionData(expression, valueType, valueConverter);
+        column.getAttributes().put(cachedDataVar, result);
+        return result;
     }
 
 

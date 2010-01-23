@@ -65,7 +65,7 @@
                 bodyStyle="text-align: left; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
                 headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
         <f:facet name="subHeader">
-          <o:inputTextFilter expression="#{bank.institutionName}"/>
+          <o:inputTextFilter/>
         </f:facet>
         <h:outputText value="#{bank.institutionName}" style="white-space: nowrap;"/>
       </o:column>
@@ -75,10 +75,9 @@
                 sortingExpression="#{bank.certificateNumber}"
                 bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;">
         <f:facet name="subHeader">
-          <o:inputTextFilter expression="#{bank.certificateNumber}" maxlength="5" value="equals"
-                             autoFilterDelay="-1">
-            <f:convertNumber integerOnly="true" groupingUsed="false"/>
-          </o:inputTextFilter>
+          <o:inputTextFilter maxlength="5"
+                             value="equals"
+                             autoFilterDelay="1000"/>
         </f:facet>
         <h:outputText value="#{bank.certificateNumber}"/>
       </o:column>
@@ -89,7 +88,7 @@
                   bodyStyle="padding-left: 5px; padding-right: 5px;"
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
-            <o:inputTextFilter expression="#{bank.city}"/>
+            <o:inputTextFilter/>
           </f:facet>
 
           <h:outputText value="#{bank.city}"/>
@@ -100,7 +99,7 @@
                   bodyStyle="padding-left: 5px; padding-right: 5px;"
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
-            <o:dropDownFieldFilter expression="#{bank.state}" value="equals" maxlength="2"/>
+            <o:dropDownFieldFilter value="equals" maxlength="2"/>
           </f:facet>
           <h:outputText value="#{bank.state}"/>
         </o:column>
@@ -110,7 +109,7 @@
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;"
                   sortingExpression="#{bank.zip}">
           <f:facet name="subHeader">
-            <o:inputTextFilter expression="#{bank.zip}" maxlength="5" value="equals" autoFilterDelay="-1">
+            <o:inputTextFilter maxlength="5" value="equals" autoFilterDelay="1000">
               <f:convertNumber integerOnly="true" groupingUsed="false"/>
             </o:inputTextFilter>
           </f:facet>
@@ -122,7 +121,7 @@
                   bodyStyle="padding-left: 5px; padding-right: 5px; white-space: nowrap;"
                   headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="subHeader">
-            <o:inputTextFilter expression="#{bank.county}"/>
+            <o:inputTextFilter/>
           </f:facet>
 
           <h:outputText value="#{bank.county}"/>

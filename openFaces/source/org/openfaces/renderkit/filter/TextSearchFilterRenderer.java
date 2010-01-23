@@ -12,9 +12,8 @@
 package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.filter.ExpressionFilter;
-import org.openfaces.component.filter.FilterCriterion;
-import org.openfaces.component.filter.TextSearchFilter;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
+import org.openfaces.component.filter.TextSearchFilter;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
@@ -47,8 +46,9 @@ public abstract class TextSearchFilterRenderer extends ExpressionFilterRenderer 
         TextSearchFilter filter = (TextSearchFilter) component;
 
         UIInput inputComponent = (UIInput) filter.getSearchComponent();
-        inputComponent.setConverter(getConverter(filter));
-        inputComponent.setValue(getStringValue(filter));
+        inputComponent.setConverter(filter.getConverter());
+        ExpressionFilterCriterion filterCriterion = (ExpressionFilterCriterion) filter.getValue();
+        inputComponent.setValue(filterCriterion != null ? filterCriterion.getArg1() : null);
         configureInputComponent(context, filter, inputComponent);
         configureInputFromFilter(filter, inputComponent);
 
@@ -79,19 +79,6 @@ public abstract class TextSearchFilterRenderer extends ExpressionFilterRenderer 
                 new RawScript("this"),
                 new RawScript("event"),
                 filter.getAutoFilterDelay()).semicolon().toString();
-    }
-
-    protected String getStringValue(ExpressionFilter filter) {
-        FilterCriterion filterCriterion = (FilterCriterion) filter.getValue();
-        if (filterCriterion == null) {
-            return "";
-        }
-        if (!(filterCriterion instanceof ExpressionFilterCriterion)) {
-            throw new IllegalStateException("Illegal filter criterion: " + filterCriterion);
-        }
-        ExpressionFilterCriterion criterion = (ExpressionFilterCriterion) filterCriterion;
-        Object arg1 = criterion.getArg1();
-        return getConverter(filter).getAsString(FacesContext.getCurrentInstance(), filter, arg1);
     }
 
     private void configureInputFromFilter(ExpressionFilter filter, UIInput input) {

@@ -115,11 +115,10 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
         List<Object> availableItems = new ArrayList<Object>(possibleValuesCollection);
         List<DropDownItem> itemList = new ArrayList<DropDownItem>(availableItems.size());
         for (Object itemObj : availableItems) {
-            String itemStr = itemObj != null ? itemObj.toString() : "";
-            DropDownItem item = createDropDownItem(context, itemStr);
+            DropDownItem item = createDropDownItem(context, itemObj);
             itemList.add(item);
         }
-        DropDownItem allRecordsItem = createDropDownItem(context, "");
+        DropDownItem allRecordsItem = createDropDownItem(context, null);
         String allRecordsCriterionName = filter.getAllRecordsText();
         HtmlOutputText outputText = ComponentUtil.createOutputText(context, allRecordsCriterionName);
         String predefinedCriterionsClass = getPredefinedCriterionClass(context, filter);
@@ -136,9 +135,9 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
         return DROP_DOWN_FIELD_ATTRIBUTES;
     }
 
-    private DropDownItem createDropDownItem(FacesContext context, String text) {
+    private DropDownItem createDropDownItem(FacesContext context, Object value) {
         DropDownItem item = (DropDownItem) context.getApplication().createComponent(DropDownItem.COMPONENT_TYPE);
-        item.setValue(text);
+        item.setValue(value);
         return item;
     }
 

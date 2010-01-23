@@ -131,23 +131,16 @@ public class CompositeFilter extends Filter {
 
 
     private FilterProperty getColumnFilterProperty(FilterableComponent filteredComponent, BaseColumn column) {
-        ValueExpression expression = TableUtil.getColumnValueExpression(column);
+        final TableUtil.ColumnExpressionData columnExpressionData = TableUtil.getColumnExpressionData(column);
+        ValueExpression expression = columnExpressionData.getValueExpression();
         if (expression == null) return null;
         final PropertyLocator propertyLocator = new PropertyLocator(expression, filteredComponent);
 
         final String title = TableUtil.getColumnHeader(column);
-        if (title == null) {
-            return null;
-        }
-        final Class expressionType = TableUtil.getFilteredValueType(
-                FacesContext.getCurrentInstance(), (AbstractTable) filteredComponent, expression);
-        final Object dataProvider;
-        if (expressionType.isEnum()) {
-            dataProvider = expressionType.getEnumConstants();
-        } else {
-            dataProvider = null;
-        }
-        final Converter converter = TableUtil.getColumnValueConverter(column);
+        if (title == null) return null;
+
+        final Class expressionType = columnExpressionData.getValueType();
+        final Object dataProvider = expressionType.isEnum() ? expressionType.getEnumConstants() : null;
         final FilterType filterType = FilterType.defineByClass(expressionType);
 
         return new FilterProperty() {
@@ -173,7 +166,7 @@ public class CompositeFilter extends Filter {
 
             @Override
             public Converter getConverter() {
-                return converter;
+                return columnExpressionData.getValueConverter();
             }
         };
     }

@@ -23,6 +23,7 @@
       <o:scrolling/>
       <o:columnResizing/>
       <o:columnReordering/>
+
       <f:facet name="columnMenu">
         <o:columnMenu/>
       </f:facet>
@@ -32,28 +33,21 @@
                 pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
       </f:facet>
       
-      <o:treeColumn id="subject" sortingExpression="#{message.subject}" bodyStyle="text-align: left;">
-        <f:facet name="header">
-          <h:outputText value="Subject"/>
-        </f:facet>
+      <o:treeColumn header="Subject" sortingExpression="#{message.subject}" bodyStyle="text-align: left;">
         <f:facet name="subHeader">
-          <o:inputTextFilter expression="#{message.subject}"/>
+          <o:inputTextFilter/>
         </f:facet>
         <h:outputText value="#{message.subject}" styleClass="treeTableText"/>
       </o:treeColumn>
-      <o:column id="author" sortingExpression="#{message.author}" style="width: 120px;">
-        <f:facet name="header">
-          <h:outputText value="From"/>
-        </f:facet>
+
+      <o:column header="From" sortingExpression="#{message.author}" style="width: 120px;">
         <f:facet name="subHeader">
-          <o:dropDownFieldFilter expression="#{message.author}"/>
+          <o:dropDownFieldFilter/>
         </f:facet>
         <h:outputText value="#{message.author}" styleClass="treeTableText"/>
       </o:column>
-      <o:column id="date" sortingExpression="#{message.date}" style="width: 120px;">
-        <f:facet name="header">
-          <h:outputText value="Sent"/>
-        </f:facet>
+
+      <o:column id="date" header="Sent" sortingExpression="#{message.date}" style="width: 120px;">
         <f:facet name="subHeader">
           <o:dropDownFieldFilter expression="#{ForumTreeTableBean.dateCategory}"/>
         </f:facet>
@@ -61,6 +55,7 @@
           <f:convertDateTime type="date" dateStyle="medium"/>
         </h:outputText>
       </o:column>
+
     </o:treeTable>
   </div>
 

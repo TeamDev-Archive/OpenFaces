@@ -495,7 +495,7 @@ public class RenderingUtil {
         }
     }
 
-    private static Converter getConverter(FacesContext context, UIComponent component) {
+    public static Converter getConverter(FacesContext context, UIComponent component) {
         Converter converter = null;
         if (component instanceof ValueHolder)
             converter = ((ValueHolder) component).getConverter();
@@ -504,12 +504,16 @@ public class RenderingUtil {
             if (ve == null)
                 return null;
             Class valueType = ve.getType(context.getELContext());
-            if (valueType == null || valueType == String.class || valueType == Object.class)
-                return null;
-            Application application = context.getApplication();
-            converter = application.createConverter(valueType);
+            converter = getConverterForType(context, valueType);
         }
         return converter;
+    }
+
+    public static Converter getConverterForType(FacesContext context, Class valueType) {
+        if (valueType == null || valueType == String.class || valueType == Object.class)
+            return null;
+        Application application = context.getApplication();
+        return application.createConverter(valueType);
     }
 
     /**

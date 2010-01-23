@@ -168,10 +168,16 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
             itemValues = new ArrayList<String[]>(items.size());
             for (DropDownItem item : items) {
                 Object itemValue = item.getValue();
-                String convertedItemValue = RenderingUtil.convertToString(context, dropDownField, itemValue);
+                String convertedItemValue = itemValue instanceof String
+                        ? (String) itemValue
+                        : itemValue == null ? "" 
+                        : RenderingUtil.convertToString(context, dropDownField, itemValue);
 
                 Map<String, Object> itemAttributes = item.getAttributes();
-                itemAttributes.put(ORIGINAL_VALUE_ATTR, itemValue);
+                if (itemValue != null)
+                    itemAttributes.put(ORIGINAL_VALUE_ATTR, itemValue);
+                else
+                    itemAttributes.remove(ORIGINAL_VALUE_ATTR);
                 itemAttributes.put(DISPLAYED_VALUE_ATTR, convertedItemValue);
                 itemValues.add(new String[]{convertedItemValue, convertedItemValue});
 

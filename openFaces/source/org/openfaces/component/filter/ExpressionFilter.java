@@ -13,9 +13,12 @@ package org.openfaces.component.filter;
 
 import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.FilterableComponent;
+import org.openfaces.component.table.BaseColumn;
+import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
+import javax.faces.component.UIComponent;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -35,6 +38,7 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
 
     private ExpressionFilterCriterion value;
     private Object expression;
+    private boolean explicitExpression;
     private Converter converter;
     private boolean criterionModelUpdateRequired;
 
@@ -57,7 +61,7 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, value, saveAttachedState(context, converter), expression,
+        return new Object[]{superState, value, saveAttachedState(context, converter), expression, explicitExpression,
                 predefinedCriterionStyle, predefinedCriterionClass,
                 allRecordsText, emptyRecordsText, nonEmptyRecordsText,
                 promptText, promptTextStyle, promptTextClass, caseSensitive, accesskey, tabindex, title, autoFilterDelay
@@ -72,6 +76,7 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
         value = (ExpressionFilterCriterion) state[i++];
         converter = (Converter) restoreAttachedState(context, state[i++]);
         expression = state[i++];
+        explicitExpression = (Boolean) state[i++];
         predefinedCriterionStyle = (String) state[i++];
         predefinedCriterionClass = (String) state[i++];
         allRecordsText = (String) state[i++];
@@ -99,7 +104,20 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
     public Converter getConverter() {
         if (converter != null) return converter;
         ValueExpression ve = getValueExpression("converter");
-        return ve != null ? (Converter) ve.getValue(getFacesContext().getELContext()) : null;
+        if (ve != null)
+            return (Converter) ve.getValue(getFacesContext().getELContext());
+        if (explicitExpression) {
+            // don't derive converter from a column if an expression is specified explicitly for the filter
+            // explicitly specified expression requires an explicitly specified converter (for the appropriate
+            // expression's type) so the absense of explicit converter specification should be interpreted as intentional.
+            return null;
+        }
+        BaseColumn column = getColumn();
+        if (column != null) {
+            converter = TableUtil.getColumnValueConverter(column);
+            return converter;
+        }
+        return null;
     }
 
     public void setConverter(Converter converter) {
@@ -147,12 +165,31 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
         this.promptTextClass = promptTextClass;
     }
 
+    private BaseColumn getColumn() {
+        UIComponent component = getParent();
+        if (component instanceof BaseColumn)
+            return (BaseColumn) component;
+        else
+            return null;
+    }
+
     public Object getExpression() {
+        if (expression == null) {
+            BaseColumn column = getColumn();
+            if (column != null)
+                expression = TableUtil.getColumnValueExpression(column);
+        }
         return expression;
     }
 
+    /**
+     * Expression should usually be a ValueExpression instance, though it is possible to specify a string value in
+     * case of using the custom data providing mode, where expression identifies the filter for the user's custom data
+     * providing code.
+     */
     public void setExpression(Object expression) {
         this.expression = expression;
+        this.explicitExpression = true;
     }
 
     public String getAllRecordsText() {

@@ -58,6 +58,8 @@ public class BanksList implements Serializable {
             BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
             String currentString;
             int i = 0;
+            int c1 = 0;
+            int c2 = 0;
             while (true) {
                 currentString = reader.readLine();
                 if (currentString == null) break;
@@ -74,6 +76,17 @@ public class BanksList implements Serializable {
                 allBanks.add(bank);
                 if (i++ % 10 == 0)
                     banks.add(bank);
+                else {
+                    // fill the empty Average-Assets filter sets 
+                    if (bank.getAverageAssets() < 50000 && c1 < 2) {
+                        c1++;
+                        banks.add(bank);
+                    }
+                    if (bank.getAverageAssets() > 10000000 && c2 < 1) {
+                        c2++;
+                        banks.add(bank);
+                    }
+                }
             }
             reader.close();
         } catch (IOException e) {

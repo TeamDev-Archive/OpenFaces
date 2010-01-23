@@ -19,30 +19,19 @@
                  rolloverRowStyle="background: #f1f1f1;">
       <o:singleRowSelection rowData="#{BookList.selectedBook}" style="background: #a4aec5; color: white"/>
 
-      <o:column id="title" sortingExpression="#{book.bookTitle}" style="width: 35%; padding-left: 5%;">
-        <f:facet name="header">
-          <h:outputText value="Title"/>
-        </f:facet>
+      <o:column id="title" header="Title" sortingExpression="#{book.bookTitle}"
+                style="width: 35%; padding-left: 5%;">
         <h:outputText value="#{book.bookTitle}"/>
       </o:column>
-      <o:column id="isbn" sortingExpression="#{book.isbn}" style="width: 13%; text-align: center;">
-        <f:facet name="header">
-          <h:outputText value="ISBN"/>
-        </f:facet>
+      <o:column header="ISBN" sortingExpression="#{book.isbn}" style="width: 13%; text-align: center;">
         <h:outputText value="#{book.isbn}"/>
       </o:column>
-      <o:column id="pubDate" sortingExpression="#{book.publicationDate}" style="width: 13%;"
-                bodyStyle="text-align: right;">
-        <f:facet name="header">
-          <h:outputText value="Publication Date"/>
-        </f:facet>
+      <o:column header="Publication Date" sortingExpression="#{book.publicationDate}"
+                style="width: 13%;" bodyStyle="text-align: right;">
         <h:outputText value="#{book.publicationDate}"/>
       </o:column>
-      <o:column id="publisher" sortingExpression="#{book.publisher}" style="width: 39%;"
-                bodyStyle="padding-left: 20px;">
-        <f:facet name="header">
-          <h:outputText value="Publisher"/>
-        </f:facet>
+      <o:column header="Publisher" sortingExpression="#{book.publisher}"
+                style="width: 39%;" bodyStyle="padding-left: 20px;">
         <h:outputText value="#{book.publisher}"/>
       </o:column>
     </o:dataTable>
@@ -67,30 +56,18 @@
           <o:selectAllCheckbox/>
         </f:facet>
       </o:selectionColumn>
-      <o:column id="title" sortingExpression="#{book.bookTitle}" style="width: 29%;">
-        <f:facet name="header">
-          <h:outputText value="Title"/>
-        </f:facet>
+      <o:column id="title" header="Title" sortingExpression="#{book.bookTitle}" style="width: 29%;">
         <h:outputText value="#{book.bookTitle}"/>
       </o:column>
-      <o:column id="isbn" sortingExpression="#{book.isbn}" style="width: 13%; text-align: center;">
-        <f:facet name="header">
-          <h:outputText value="ISBN"/>
-        </f:facet>
+      <o:column header="ISBN" sortingExpression="#{book.isbn}" style="width: 13%; text-align: center;">
         <h:outputText value="#{book.isbn}"/>
       </o:column>
-      <o:column id="pubDate" sortingExpression="#{book.publicationDate}" style="width: 13%;"
-                bodyStyle="text-align: right;">
-        <f:facet name="header">
-          <h:outputText value="Publication Date"/>
-        </f:facet>
+      <o:column header="Publication Date" sortingExpression="#{book.publicationDate}"
+                style="width: 13%;" bodyStyle="text-align: right;">
         <h:outputText value="#{book.publicationDate}"/>
       </o:column>
-      <o:column id="publisher" sortingExpression="#{book.publisher}" style="width: 39%;"
-                bodyStyle="padding-left: 20px;">
-        <f:facet name="header">
-          <h:outputText value="Publisher"/>
-        </f:facet>
+      <o:column header="Publisher" sortingExpression="#{book.publisher}"
+                style="width: 39%;" bodyStyle="padding-left: 20px;">
         <h:outputText value="#{book.publisher}"/>
       </o:column>
     </o:dataTable>

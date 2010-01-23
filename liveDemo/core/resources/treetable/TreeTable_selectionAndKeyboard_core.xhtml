@@ -21,10 +21,10 @@
 <o:treeTable id="requestsTreeTable" var="rq" columnIdVar="columnId" nodeHasChildrenVar="thereAreSubRequests"
              sortColumnId="id"
              columnsOrder="#{RequestsTreeTableBean.requestsColumnsOrder}"
-             onkeydown="checkRequestKeys(event);"
-             ondblclick="editRequest();"
              expansionState="#{RequestsTreeTableBean.requestsTreeTableExpansionState}"
              preloadedNodes="all"
+             onkeydown="checkRequestKeys(event);"
+             ondblclick="editRequest();"
 
              style="width: 100%; border: 1px solid #f6f7f8;"
              horizontalGridLines="0px"
@@ -50,8 +50,8 @@
 </f:facet>
 <f:facet name="columnMenuButton">
   <o:captionButton style="border-left: none; background: url('../images/treetable/columnMenuBtn.gif');"
-          rolloverStyle="border-left: none; background: url('../images/treetable/columnMenuBtnRollover.gif');"
-          pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
+                   rolloverStyle="border-left: none; background: url('../images/treetable/columnMenuBtnRollover.gif');"
+                   pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
 </f:facet>
 
 <o:row condition="#{thereAreSubRequests}" style="font-weight: bold"/>
@@ -92,59 +92,46 @@
   </o:cell>
 </o:row>
 
-<o:column id="id" sortingExpression="#{rq.requestId}"
+<o:column id="id" header="ID" sortingExpression="#{rq.requestId}"
           style="text-align: left; width: 40px; padding-left: 4px; padding-right: 4px;"
           sortingComparator="#{RequestsTreeTableBean.idComparator}">
-  <f:facet name="header">
-    <h:outputText value="ID"/>
-  </f:facet>
   <h:outputText value="#{rq.requestId}" style="white-space: nowrap;"/>
 </o:column>
-<o:treeColumn id="description"
-              sortingExpression="#{rq.description}"
-              style="text-align: left;"
-              sortingComparator="caseInsensitiveText">
-  <f:facet name="header">
-    <h:outputText value="Description"/>
-  </f:facet>
+
+<o:treeColumn id="description" header="Description" sortingExpression="#{rq.description}"
+              sortingComparator="caseInsensitiveText" style="text-align: left;">
   <h:outputText value="#{rq.description}"/>
 </o:treeColumn>
-<o:column id="type" sortingExpression="#{rq.type}" style="text-align: left; width: 70px;">
-  <f:facet name="header">
-    <h:outputText value="Type"/>
-  </f:facet>
+
+<o:column id="type" header="Type" sortingExpression="#{rq.type}" style="text-align: left; width: 70px;">
   <h:graphicImage url="#{RequestsTreeTableBean.requestTypeImageUrl}"/>
   <h:outputText value="#{rq.type}"/>
 </o:column>
-<o:column id="work" sortingExpression="#{rq.estimatedWorkDays}"
+
+<o:column id="work" header="Work (days)" sortingExpression="#{rq.estimatedWorkDays}"
           style="text-align: right; width: 70px; padding-right: 7px; ">
-  <f:facet name="header">
-    <h:outputText value="Work (days)"/>
-  </f:facet>
   <h:outputText value="#{rq.estimatedWorkDays}"/>
 </o:column>
-<o:column id="priority" sortingExpression="#{rq.priority}" style="text-align: left; width: 75px;">
-  <f:facet name="header">
-    <h:outputText value="Priority"/>
-  </f:facet>
+
+<o:column id="priority" header="Priority" sortingExpression="#{rq.priority}" style="text-align: left; width: 75px;">
   <h:graphicImage url="#{RequestsTreeTableBean.requestPriorityImageUrl}" style="padding: 4px 0 1px 0;"/>
   <h:outputText value="#{rq.priority}" style="white-space: nowrap; padding-left:4px;"/>
 </o:column>
-<o:column id="status" sortingExpression="#{rq.status}"
+
+<o:column id="status" header="Status" sortingExpression="#{rq.status}"
           style="text-align: left; width: 100px; padding-right: 7px;">
-  <f:facet name="header">
-    <h:outputText value="Status"/>
-  </f:facet>
   <h:graphicImage url="#{RequestsTreeTableBean.requestStatusImageUrl}"/>
   <h:outputText value="#{rq.status}"/>
 </o:column>
-<o:column id="assignee" sortingExpression="#{rq.assignee}" style="text-align: left; width: 70px;">
+
+<o:column id="assignee" header="Assignee" sortingExpression="#{rq.assignee}" style="text-align: left; width: 70px;">
   <f:facet name="header">
     <h:outputText value="Assignee"/>
   </f:facet>
   <h:outputText value="#{rq.assignee}"/>
 </o:column>
-<o:column id="reporter" sortingExpression="#{rq.reporter}" style="text-align: left; width: 70px;">
+
+<o:column id="reporter" header="Reporter" sortingExpression="#{rq.reporter}" style="text-align: left; width: 70px;">
   <f:facet name="header">
     <h:outputText value="Reporter"/>
   </f:facet>
@@ -152,7 +139,7 @@
 </o:column>
 
 <f:facet name="above">
-  <h:panelGroup id="columnSelector" 
+  <h:panelGroup id="columnSelector"
                 style="white-space: nowrap; display: block; width: 100%; margin-top: -15px; margin-bottom: 15px;">
     <o:window id="selectColumnsDialog"
               modal="true"

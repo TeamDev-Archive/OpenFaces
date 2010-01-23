@@ -143,7 +143,7 @@ public class CitiesList implements Serializable {
             for (int j = 0; j < currentStringArray.length; j++) {
                 currentStringBuffer.append(currentStringArray[j]);
                 if ((j != 0) && (j != currentStringArray.length - 1))
-                    currentStringBuffer.append("<br>");
+                    currentStringBuffer.append("<br/>");
             }
             prepared.add(currentStringBuffer.toString());
         }
