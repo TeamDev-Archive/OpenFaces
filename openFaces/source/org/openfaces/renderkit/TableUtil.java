@@ -31,6 +31,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.convert.Converter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -144,7 +145,7 @@ public class TableUtil {
      * @return Pattern group with indexe 2 of which selects expression after var
      */
     private static Pattern getExpressionPattern(String var) {
-        String pattern = "#\\{"+var+"(\\.)((([\\w\\.])*)+)}";
+        String pattern = "#\\{" + var + "(\\.)((([\\w\\.])*)+)}";
         return Pattern.compile(pattern);
     }
 
@@ -154,11 +155,21 @@ public class TableUtil {
         return matcher.find();
     }
 
-    public static UIOutput obtainColumnOutput(BaseColumn column, String var) {
-        return obtainOutput(column, var);
+    public static ValueExpression getColumnValueExpression(BaseColumn column) {
+        String var = column.getTable().getVar();
+        UIOutput columnOutput = obtainOutput(column, var);
+        if (columnOutput == null) return null;
+        return columnOutput.getValueExpression("value");
     }
 
-    public static String obtainColumnHeader(BaseColumn column) {
+    public static Converter getColumnValueConverter(BaseColumn column) {
+        String var = column.getTable().getVar();
+        UIOutput columnOutput = obtainOutput(column, var);
+        if (columnOutput == null) return null;
+        return columnOutput.getConverter();
+    }
+
+    public static String getColumnHeader(BaseColumn column) {
         DynamicCol dynamicCol = (column instanceof DynamicCol) ? (DynamicCol) column : null;
         if (dynamicCol != null) dynamicCol.declareContextVariables();
         try {
@@ -227,7 +238,7 @@ public class TableUtil {
 
     public static Class getFilteredValueType(
             FacesContext context,
-            AbstractTable table,            
+            AbstractTable table,
             ValueExpression expression) {
         int index = table.getRowIndex();
         try {
@@ -236,13 +247,13 @@ public class TableUtil {
             table.setRowIndex(index);
             return result;
         } catch (Exception e) {
-            // means that there's no row data and row with index=0
+            // means that there's no row data and row with index == 0
             String expressionString = expression.getExpressionString();
-            if (expressionString.split("#").length > 2) { //consist of more than one expression
-                return String.class; //than concatenation
+            if (expressionString.split("#").length > 2) { // consist of more than one expression
+                return String.class; // than concatenation
             }
             String var = table.getVar();
-            if (var == null){
+            if (var == null) {
                 throw new IllegalArgumentException("Var isn't specified.");
             }
             ValueExpression rowDataBeanValueExpression = table.getValueExpression("value");
@@ -262,7 +273,7 @@ public class TableUtil {
                 throw new IllegalArgumentException("Unsupported expression: " + expression);
             }
 
-            //String expressionBeforeVar = expressionMatcher.group(2);
+            // String expressionBeforeVar = expressionMatcher.group(2);
             /*if (expressionBeforeVar != null) {
                 Class typeOfExpressionBefore = ValueBindings.createValueExpression(context, "#{" + expressionBeforeVar + "}").getType(context.getELContext());
             }*/

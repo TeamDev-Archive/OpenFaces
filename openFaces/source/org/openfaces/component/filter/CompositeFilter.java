@@ -25,7 +25,6 @@ import org.openfaces.util.ValueExpressionImpl;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import java.io.Serializable;
@@ -131,28 +130,24 @@ public class CompositeFilter extends Filter {
     }
 
 
-    private FilterProperty getColumnFilterProperty(FilterableComponent filteredComponent, BaseColumn column, String var) {
-        UIOutput columnOutput = TableUtil.obtainColumnOutput(column, var);
-        if (columnOutput == null) {
-            return null;
-        }
-        Object expression = columnOutput.getValueExpression("value");
-        if (expression == null) {
-            return null;
-        }
+    private FilterProperty getColumnFilterProperty(FilterableComponent filteredComponent, BaseColumn column) {
+        ValueExpression expression = TableUtil.getColumnValueExpression(column);
+        if (expression == null) return null;
         final PropertyLocator propertyLocator = new PropertyLocator(expression, filteredComponent);
-        final String title = TableUtil.obtainColumnHeader(column);
+
+        final String title = TableUtil.getColumnHeader(column);
         if (title == null) {
             return null;
         }
-        final Class expressionType = filteredComponent.getFilteredValueType(FacesContext.getCurrentInstance(), expression);
+        final Class expressionType = TableUtil.getFilteredValueType(
+                FacesContext.getCurrentInstance(), (AbstractTable) filteredComponent, expression);
         final Object dataProvider;
         if (expressionType.isEnum()) {
             dataProvider = expressionType.getEnumConstants();
         } else {
             dataProvider = null;
         }
-        final Converter converter = columnOutput.getConverter();
+        final Converter converter = TableUtil.getColumnValueConverter(column);
         final FilterType filterType = FilterType.defineByClass(expressionType);
 
         return new FilterProperty() {
@@ -191,10 +186,8 @@ public class CompositeFilter extends Filter {
                     filterProperties = new ArrayList<FilterProperty>();
                     AbstractTable abstractTable = (AbstractTable) filteredComponent;
                     List<BaseColumn> columns = abstractTable.getAllColumns();
-                    String var = abstractTable.getVar();
-                    //TODO: validate var for null
                     for (BaseColumn column : columns) {
-                        FilterProperty filterProperty = getColumnFilterProperty(filteredComponent, column, var);
+                        FilterProperty filterProperty = getColumnFilterProperty(filteredComponent, column);
                         if (filterProperty != null) {
                             filterProperties.add(filterProperty);
                         }

@@ -517,7 +517,7 @@ public class BaseColumn extends UIColumn {
         footerOnmouseup = onmouseup;
     }
 
-    protected AbstractTable getTable() {
+    public AbstractTable getTable() {
         UIComponent parent = getParent();
         while (parent instanceof ColumnGroup)
             parent = parent.getParent();

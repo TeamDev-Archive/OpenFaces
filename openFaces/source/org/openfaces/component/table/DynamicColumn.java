@@ -54,7 +54,7 @@ public class DynamicColumn extends Column implements DynamicCol {
     }
 
     @Override
-    protected AbstractTable getTable() {
+    public AbstractTable getTable() {
         return columns.getTable();
     }
 

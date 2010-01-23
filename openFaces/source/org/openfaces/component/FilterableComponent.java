@@ -63,10 +63,6 @@ public interface FilterableComponent {
             Object expression
     );
 
-    public Class getFilteredValueType(
-            FacesContext context,
-            Object expression);
-
     void filterChanged(Filter filter);
 
 }
