@@ -261,26 +261,35 @@ public class TableUtil {
     }
 
     public static ColumnExpressionData getColumnExpressionData(BaseColumn column) {
+        return getColumnExpressionData(column, null);
+    }
+
+    public static ColumnExpressionData getColumnExpressionData(BaseColumn column, ValueExpression explicitColumnFilterExpression) {
         String cachedDataVar = "_OpenFaces_columnExpressionData";
         ColumnExpressionData data = (ColumnExpressionData) column.getAttributes().get(cachedDataVar);
         if (data != null)
             return data;
         AbstractTable table = column.getTable();
         String var = column.getTable().getVar();
-        UIOutput columnOutput = obtainOutput(column, var);
-        if (columnOutput == null) throw new FacesException(
+        UIOutput columnOutput = explicitColumnFilterExpression != null ? null : obtainOutput(column, var);
+        if (columnOutput == null && explicitColumnFilterExpression == null) throw new FacesException(
                 "Can't find column output component (UIOutput component with a value expression containing variable " +
-                        var + ") for column with id: " + column.getId() + "; table id: " + table.getId());
-        ValueExpression expression = columnOutput.getValueExpression("value");
+                        var + ") for column with id: " + column.getId() + "; table id: " + table.getId() +
+                        " ; consider declaring the filter expression explicitly if you're using a filter component in this column.");
+        ValueExpression expression = explicitColumnFilterExpression != null
+                ? explicitColumnFilterExpression : columnOutput.getValueExpression("value");
 
-        Class valueType = valueType = Object.class;
+        Class valueType = Object.class;
         Converter valueConverter = null;
         FacesContext context = FacesContext.getCurrentInstance();
         int index = table.getRowIndex();
         try {
             table.setRowIndex(0);
             valueType = expression.getType(context.getELContext());
-            valueConverter = RenderingUtil.getConverter(context, columnOutput);
+            if (columnOutput != null)
+                valueConverter = RenderingUtil.getConverter(context, columnOutput);
+            else
+                valueConverter = RenderingUtil.getConverterForType(context, valueType);
             table.setRowIndex(index);
         } catch (Exception e) {
             // means that there's no row data and row with index == 0
