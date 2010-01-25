@@ -28,6 +28,7 @@ import org.openfaces.util.StyleUtil;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.el.ValueExpression;
 
 /**
  * @author Dmitry Pikhulya
@@ -78,30 +79,48 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
         return converter != null ? converter : new StringConverter();
     }
 
+    protected FilterCondition getForceDefaultCondition(ExpressionFilter filter) {
+        return null;
+    }
+
     protected ExpressionFilterCriterion createDefaultCriterion(ExpressionFilter filter, Object specifiedValue) {
         Object expression = filter.getExpression();
         PropertyLocator propertyLocator = new PropertyLocator(expression, filter.getFilteredComponent());
-        FilterCondition condition = getDefaultCondition(filter);
+        FilterCondition condition;
+
+        boolean inverse = false;
+        ExpressionFilterCriterion defaultCriterion = (ExpressionFilterCriterion) filter.getAttributes().get("condition");
+        if (defaultCriterion != null) {
+            condition = defaultCriterion.getCondition();
+            inverse = defaultCriterion.isInverse();
+        } else {
+            FilterCondition forcedCondition = getForceDefaultCondition(filter);
+            if (forcedCondition != null)
+              condition = forcedCondition;
+            else {
+                UIComponent parent = filter.getParent();
+                if (parent == null || !(parent instanceof BaseColumn))
+                    condition = FilterCondition.CONTAINS;
+                else {
+                    BaseColumn column = (BaseColumn) parent;
+                    TableUtil.ColumnExpressionData data = TableUtil.getColumnExpressionData(column, (ValueExpression) filter.getExpression());
+                    Class type = data.getValueType();
+                    if (String.class.equals(type))
+                        condition = FilterCondition.CONTAINS;
+                    else
+                        condition = FilterCondition.EQUALS;
+                }
+            }
+        }
 
         ExpressionFilterCriterion criterion = new ExpressionFilterCriterion(
                 propertyLocator,
                 condition,
                 specifiedValue);
+        criterion.setInverse(inverse);
         criterion.setCaseSensitive(filter.isCaseSensitive());
         return criterion;
     }
 
-    protected FilterCondition getDefaultCondition(ExpressionFilter filter) {
-        UIComponent parent = filter.getParent();
-        if (parent == null || !(parent instanceof BaseColumn))
-            return FilterCondition.CONTAINS;
-        BaseColumn column = (BaseColumn) parent;
-        TableUtil.ColumnExpressionData data = TableUtil.getColumnExpressionData(column);
-        Class type = data.getValueType();
-        if (String.class.equals(type))
-            return FilterCondition.CONTAINS;
-        else
-            return FilterCondition.EQUALS;
-    }
 
 }

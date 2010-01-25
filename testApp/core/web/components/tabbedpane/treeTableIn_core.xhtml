@@ -50,7 +50,7 @@
                     <h:outputText value="Subject" id="first_treeTableHeaderID"/>
                   </f:facet>
                   <f:facet name="subHeader">
-                    <o:inputTextFilter id="filter1" expression="#{color}"/>
+                    <o:inputTextFilter id="filter1" expression="#{color}" condition="contains"/>
                   </f:facet>
                   <h:outputText value="#{color}" id="first_treeTableContent">
                   </h:outputText>

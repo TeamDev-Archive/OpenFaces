@@ -83,6 +83,8 @@ public abstract class ExpressionFilterTag extends FilterTag {
                 throw new FacesException("Improper 'condition' attribute value: \"" + value + "\". It should be of \"<condition>\" or \"not <condition>\", where <condition> is one of: " + possibleConditionsStr +"; but it was: " + value);
             inverse = true;
         }
-        filter.setValue(new ExpressionFilterCriterion(condition, inverse));
+        ExpressionFilterCriterion filterCriterion = new ExpressionFilterCriterion(condition, inverse);
+        filter.setValue(filterCriterion);
+        filter.getAttributes().put("condition", filterCriterion);
     }
 }

@@ -186,7 +186,7 @@ public class ComboBoxFilterRenderer extends ExpressionFilterRenderer {
     }
 
     @Override
-    protected FilterCondition getDefaultCondition(ExpressionFilter filter) {
+    protected FilterCondition getForceDefaultCondition(ExpressionFilter filter) {
         return FilterCondition.EQUALS;
     }
 }
