@@ -210,7 +210,7 @@ public class DefaultProgressMessage extends ProgressMessage {
     }
 
     public int getBackgroundTransparencyTransitionPeriod() {
-        return ValueBindings.get(this, "backgroundTransparencyTransitionPeriod", backgroundTransparencyTransitionPeriod, 180);
+        return ValueBindings.get(this, "backgroundTransparencyTransitionPeriod", backgroundTransparencyTransitionPeriod, 150);
     }
 
     public void setBackgroundTransparencyTransitionPeriod(int backgroundTransparencyTransitionPeriod) {

@@ -570,7 +570,7 @@ O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, tra
       div.style.visibility = "hidden";
       var opacity = blockingLayer.transparency != undefined ? 1 - blockingLayer.transparency : 0;
       div._opacity = opacity;
-      div._opacityTransitionPeriod = blockingLayer.transparencyTransitionPeriod != undefined ? blockingLayer.transparencyTransitionPeriod : 180;
+      div._opacityTransitionPeriod = blockingLayer.transparencyTransitionPeriod != undefined ? blockingLayer.transparencyTransitionPeriod : 150;
       O$.setOpacityLevel(div, 0);
       div.updatePos = function() {
         var rect = O$.getVisibleAreaRectangle();

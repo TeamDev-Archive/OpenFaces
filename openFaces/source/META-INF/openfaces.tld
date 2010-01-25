@@ -13598,7 +13598,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>int</type>
       </deferred-value>
       <!-- @bindingType int -->
-      <!-- @default 180 -->
+      <!-- @default 0 -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -13635,7 +13635,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>int</type>
       </deferred-value>
       <!-- @bindingType int -->
-      <!-- @default 180 -->
+      <!-- @default 150 -->
       <!-- @el true -->
     </attribute>
     <attribute>

@@ -19,7 +19,7 @@
 
 <table cellspacing="0" cellpadding="0">
   <tr>
-    <h:commandButton value="Ajax settings..." style="position: absolute; right: 15px; top: 20px;"
+    <h:commandButton value="Ajax settings..." style="position: absolute; right: 15px; top: 25px;"
                      onclick="O$('form:ajaxSettingsWindow').show(); return false;"/>
     <td><h3>Task List</h3></td>
 
@@ -142,15 +142,15 @@
   <f:facet name="caption">
     <h:outputText value="#{AjaxSettings.windowCaption}"/>
   </f:facet>
-  <o:tabbedPane style="width: 100%; height: 330px" loadingMode="client">
+  <o:tabbedPane style="width: 100%; height: 325px" loadingMode="client">
     <o:tabbedPaneItem>
       <f:facet name="tab">
         <h:outputText value="Progress Message"/>
       </f:facet>
       <verbatim>These are some of the options provided by the <a class="tagReference" target="_blank"
                                                                  href="http://openfaces.org/documentation/tagReference/o/defaultProgressMessage.html">
-        &lt;o:defaultProgressMessage></a> tag placed in the <span class="codeSnippet">"progressMessage"</span> facet of
-        <a class="tagReference" target="_blank"
+        &lt;o:defaultProgressMessage></a> tag placed into the <span class="codeSnippet">"progressMessage"</span> facet
+        of <a class="tagReference" target="_blank"
            href="http://openfaces.org/documentation/tagReference/o/ajaxSettings.html">&lt;ajaxSettings></a> tag.
 
       </verbatim>
@@ -204,7 +204,7 @@
     </o:tabbedPaneItem>
 
   </o:tabbedPane>
-  <h:commandButton value="Apply" style="position: absolute; right: 10px; bottom: 10px"/>
+  <h:commandButton value="Apply" style="width: 90px; position: absolute; right: 10px; bottom: 10px"/>
 </o:window>
 
 </div>
