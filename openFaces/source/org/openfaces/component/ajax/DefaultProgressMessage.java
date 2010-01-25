@@ -70,7 +70,9 @@ public class DefaultProgressMessage extends ProgressMessage {
                 transparencyTransitionPeriod,
                 fillBackground,
                 backgroundTransparency,
-                backgroundTransparencyTransitionPeriod
+                backgroundTransparencyTransitionPeriod,
+                backgroundStyle,
+                backgroundClass
         };
     }
 
@@ -90,6 +92,8 @@ public class DefaultProgressMessage extends ProgressMessage {
         fillBackground = (Boolean) stateArray[i++];
         backgroundTransparency = (Double) stateArray[i++];
         backgroundTransparencyTransitionPeriod = (Integer) stateArray[i++];
+        backgroundStyle = (String) stateArray[i++];
+        backgroundClass = (String) stateArray[i++];
     }
 
     public String getText() {

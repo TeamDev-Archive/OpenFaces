@@ -3,176 +3,267 @@
      xmlns:o="http://openfaces.org/"
         >
 
-  <div id="Demo">
-    <script type="text/javascript">
-      function addTask(e) {
-        var unicode = e.charCode ? e.charCode : e.keyCode;
+<div id="Demo">
+<script type="text/javascript">
+  function addTask(e) {
+    var unicode = e.charCode ? e.charCode : e.keyCode;
 
-        if (unicode == 13) {
-          O$("form:addTask").click();
-          return false;
-        }
+    if (unicode == 13) {
+      O$("form:addTask").click();
+      return false;
+    }
 
-        return true;
-      }
-    </script>
+    return true;
+  }
+</script>
 
-    <table cellspacing="0" cellpadding="0">
-      <tr>
-        <td><h3>Task List</h3></td>
+<table cellspacing="0" cellpadding="0">
+  <tr>
+    <h:commandButton value="Ajax settings..." style="position: absolute; right: 15px; top: 20px;"
+                     onclick="O$('form:ajaxSettingsWindow').show(); return false;"/>
+    <td><h3>Task List</h3></td>
 
-        <td style="vertical-align: top;">
-          <div>
-            <o:inputText id="filter" value="#{TaskBean.filter}" promptText="Search" styleClass="taskInput"
-                         style="margin: 8px 0 0 12px;">
-              <o:ajax event="keyup"
-                                  render=":form:taskList :form:doneList :form:doneListCaption"
-                                  delay="500">
-              </o:ajax>
-            </o:inputText>
-          </div>
-        </td>
-      </tr>
-    </table>
-    <div class="taskDemo" style="width: 100%; overflow: hidden; float: none;">
+    <td style="vertical-align: top;">
+      <div>
+        <o:inputText id="filter" value="#{TaskBean.filter}" promptText="Search" styleClass="taskInput"
+                     style="margin: 8px 0 0 12px;">
+          <o:ajax event="keyup"
+                  render=":form:taskList :form:doneList :form:doneListCaption"
+                  delay="500">
+          </o:ajax>
+        </o:inputText>
+      </div>
+    </td>
+  </tr>
+</table>
+<div class="taskDemo" style="width: 100%; overflow: hidden; float: none;">
 
-      <h5>Undone tasks</h5>
-      <h:panelGroup id="taskList" styleClass="tasks">
-        <o:forEach items="#{TaskBean.tasks}" id="undoneTasks" var="task" varStatus="taskListStatus">
-          <h:panelGrid id="taskListItem" onmouseover="this.className='rollover';"
-                       onmouseout="this.className='';" columns="3" cellspacing="0" cellpadding="0">
-            <o:selectBooleanCheckbox value="#{task.completed}"
-                                     onclick="O$('form:updateTasks').run();"
-                                     styleClass="styledCheckbox"
-                                     selectedImageUrl="../images/ajax/checked.png"
-                                     rolloverSelectedImageUrl="../images/ajax/checked-rollover.png"
-                                     pressedSelectedImageUrl="../images/ajax/checked-pressed.png"
-                                     unselectedImageUrl="../images/ajax/unchecked.png"
-                                     rolloverUnselectedImageUrl="../images/ajax/unchecked-rollover.png"
-                                     pressedUnselectedImageUrl="../images/ajax/unchecked-pressed.png"/>
-            <h:outputText styleClass="taskText" value="#{task.name}"/>
-            <h:commandLink styleClass="delete" id="delete">
-              <h:graphicImage value="../images/ajax/delete.png" alt="Delete Task">
-              </h:graphicImage>
-              <o:ajax listener="#{TaskBean.deleteTask}"
-                                  render=":form:taskList" delay="500">
-                <f:param name="taskId" value="#{task.id}"/>
-              </o:ajax>
-            </h:commandLink>
-          </h:panelGrid>
-        </o:forEach>
+  <h5>Undone tasks</h5>
+  <h:panelGroup id="taskList" styleClass="tasks">
+    <o:forEach items="#{TaskBean.tasks}" id="undoneTasks" var="task" varStatus="taskListStatus">
+      <h:panelGrid id="taskListItem" onmouseover="this.className='rollover';"
+                   onmouseout="this.className='';" columns="3" cellspacing="0" cellpadding="0">
+        <o:selectBooleanCheckbox value="#{task.completed}"
+                                 onclick="O$('form:updateTasks').run();"
+                                 styleClass="styledCheckbox"
+                                 selectedImageUrl="../images/ajax/checked.png"
+                                 rolloverSelectedImageUrl="../images/ajax/checked-rollover.png"
+                                 pressedSelectedImageUrl="../images/ajax/checked-pressed.png"
+                                 unselectedImageUrl="../images/ajax/unchecked.png"
+                                 rolloverUnselectedImageUrl="../images/ajax/unchecked-rollover.png"
+                                 pressedUnselectedImageUrl="../images/ajax/unchecked-pressed.png"/>
+        <h:outputText styleClass="taskText" value="#{task.name}"/>
+        <h:commandLink styleClass="delete" id="delete">
+          <h:graphicImage value="../images/ajax/delete.png" alt="Delete Task">
+          </h:graphicImage>
+          <o:ajax listener="#{TaskBean.deleteTask}"
+                  render=":form:taskList" delay="500">
+            <f:param name="taskId" value="#{task.id}"/>
+          </o:ajax>
+        </h:commandLink>
+      </h:panelGrid>
+    </o:forEach>
 
-        <div>
-          <h:panelGroup styleClass="taskText" style="padding-left: 0; margin-left: 37px;">
-            <o:inputText id="newTask" value="#{TaskBean.newTaskName}" onfocus="addTaskFocus();"
-                         required="true"
-                         onblur="addTaskBlur();"
-                         promptText="Type here to add a new task"
-                         onkeydown="return addTask(event);"
-                         promptTextClass="addTaskPrompt"
-                         styleClass="taskInput addTask"/>
-          </h:panelGroup>
-          <h:commandButton image="../images/ajax/plus.png" alt="Add Task" styleClass="left"
-                           style="margin: 3px 0 0 6px; display: none;"
-                           id="addTask">
-            <o:ajax listener="#{TaskBean.addTask}"
-                                execute=":form:newTask"
-                                render=":form:taskList"/>
-          </h:commandButton>
-        </div>
+    <div>
+      <h:panelGroup styleClass="taskText" style="padding-left: 0; margin-left: 37px;">
+        <o:inputText id="newTask" value="#{TaskBean.newTaskName}" onfocus="addTaskFocus();"
+                     required="true"
+                     onblur="addTaskBlur();"
+                     promptText="Type here to add a new task"
+                     onkeydown="return addTask(event);"
+                     promptTextClass="addTaskPrompt"
+                     styleClass="taskInput addTask"/>
       </h:panelGroup>
+      <h:commandButton image="../images/ajax/plus.png" alt="Add Task" styleClass="left"
+                       style="margin: 3px 0 0 6px; display: none;"
+                       id="addTask">
+        <o:ajax listener="#{TaskBean.addTask}"
+                execute=":form:newTask"
+                render=":form:taskList"/>
+      </h:commandButton>
+    </div>
+  </h:panelGroup>
 
 
-      <div style="clear:both;"></div>
-      <h5>
-        <h:panelGroup id="doneListCaption">
-          <h:outputText id="text" value="Done List" rendered="#{not empty TaskBean.doneTasks}"/>
+  <div style="clear:both;"></div>
+  <h5>
+    <h:panelGroup id="doneListCaption">
+      <h:outputText id="text" value="Done List" rendered="#{not empty TaskBean.doneTasks}"/>
+    </h:panelGroup>
+  </h5>
+  <h:panelGroup id="doneList" styleClass="tasks">
+    <o:forEach items="#{TaskBean.doneTasks}" var="task" id="doneTasks" varStatus="taskListStatus">
+      <h:panelGrid onmouseover="this.className='rollover';"
+                   onmouseout="this.className='';" columns="3" cellspacing="0" cellpadding="0">
+        <o:selectBooleanCheckbox value="#{task.completed}"
+                                 onclick="O$('form:updateTasks').run();"
+                                 styleClass="left styledCheckbox"
+                                 selectedImageUrl="../images/ajax/checked.png"
+                                 rolloverSelectedImageUrl="../images/ajax/checked-rollover.png"
+                                 pressedSelectedImageUrl="../images/ajax/checked-pressed.png"
+                                 unselectedImageUrl="../images/ajax/unchecked.png"
+                                 rolloverUnselectedImageUrl="../images/ajax/unchecked-rollover.png"
+                                 pressedUnselectedImageUrl="../images/ajax/unchecked-pressed.png"/>
+        <h:outputText styleClass="taskText" value="#{task.name}"/>
+        <h:commandLink styleClass="delete" id="delete">
+          <h:graphicImage value="../images/ajax/delete.png" alt="Delete Task">
+          </h:graphicImage>
+          <o:ajax listener="#{TaskBean.deleteTask}"
+                  render=":form:doneList :form:doneListCaption" delay="500">
+            <f:param name="taskId" value="#{task.id}"/>
+          </o:ajax>
+        </h:commandLink>
+      </h:panelGrid>
+    </o:forEach>
+  </h:panelGroup>
+</div>
+
+<o:ajax id="updateTasks" standalone="true"
+        render="taskList doneList doneListCaption" immediate="true" delay="500"/>
+
+<o:ajaxSettings>
+  <f:facet name="progressMessage">
+    <o:defaultProgressMessage
+            text="#{AjaxSettings.text}"
+            style="#{AjaxSettings.style}"
+            horizontalAlignment="#{AjaxSettings.horizontalAlignment}"
+            verticalAlignment="#{AjaxSettings.verticalAlignment}"
+            transparency="#{AjaxSettings.transparency}"
+            transparencyTransitionPeriod="#{AjaxSettings.transparencyTransitionPeriod}"
+            fillBackground="#{AjaxSettings.fillBackground}"
+            backgroundStyle="#{AjaxSettings.backgroundStyle}"
+            backgroundTransparency="#{AjaxSettings.backgroundTransparency}"
+            backgroundTransparencyTransitionPeriod="#{AjaxSettings.backgroundTransparencyTransitionPeriod}"
+            />
+  </f:facet>
+</o:ajaxSettings>
+
+<o:window id="ajaxSettingsWindow" width="600px" height="410px" left="140" top="65" resizable="false">
+  <f:facet name="caption">
+    <h:outputText value="#{AjaxSettings.windowCaption}"/>
+  </f:facet>
+  <o:tabbedPane style="width: 100%; height: 330px" loadingMode="client">
+    <o:tabbedPaneItem>
+      <f:facet name="tab">
+        <h:outputText value="Progress Message"/>
+      </f:facet>
+      <verbatim>These are some of the options provided by the <a class="tagReference" target="_blank"
+                                                                 href="http://openfaces.org/documentation/tagReference/o/defaultProgressMessage.html">
+        &lt;o:defaultProgressMessage></a> tag placed in the <span class="codeSnippet">"progressMessage"</span> facet of
+        <a class="tagReference" target="_blank"
+           href="http://openfaces.org/documentation/tagReference/o/ajaxSettings.html">&lt;ajaxSettings></a> tag.
+
+      </verbatim>
+      <h:panelGrid columns="2" style="margin-top: 2px;">
+        <h:outputText value="text:"/>
+        <h:inputText value="#{AjaxSettings.text}" style="width: 320px"/>
+
+        <h:outputText value="style:"/>
+        <h:inputText value="#{AjaxSettings.style}" style="width: 320px"/>
+
+
+        <h:outputText value="horizontalAlignment:"/>
+        <h:selectOneMenu value="#{AjaxSettings.horizontalAlignment}"
+                         converter="#{AjaxSettings.horizontalAlignmentConverter}"
+                         style="width: 150px">
+          <f:selectItems value="#{AjaxSettings.horizontalAlignmentOptions}"/>
+        </h:selectOneMenu>
+
+        <h:outputText value="verticalAlignment:"/>
+        <h:selectOneMenu value="#{AjaxSettings.verticalAlignment}"
+                         converter="#{AjaxSettings.verticalAlignmentConverter}"
+                         style="width: 150px">
+          <f:selectItems value="#{AjaxSettings.verticalAlignmentOptions}"/>
+        </h:selectOneMenu>
+
+        <h:outputText value="transparency:"/>
+        <o:spinner value="#{AjaxSettings.transparency}" minValue="0" maxValue="1" step="0.1"/>
+
+        <h:outputText value="transparencyTransitionPeriod:"/>
+        <o:spinner value="#{AjaxSettings.transparencyTransitionPeriod}" minValue="0" maxValue="1000" step="10"/>
+
+        <h:panelGroup>
+          <h:selectBooleanCheckbox id="fillBackground" value="#{AjaxSettings.fillBackground}"/>
+          <h:outputLabel for="fillBackground" value="fillBackground"/>
         </h:panelGroup>
-      </h5>
-      <h:panelGroup id="doneList" styleClass="tasks">
-        <o:forEach items="#{TaskBean.doneTasks}" var="task" id="doneTasks" varStatus="taskListStatus">
-          <h:panelGrid onmouseover="this.className='rollover';"
-                       onmouseout="this.className='';" columns="3" cellspacing="0" cellpadding="0">
-            <o:selectBooleanCheckbox value="#{task.completed}"
-                                     onclick="O$('form:updateTasks').run();"
-                                     styleClass="left styledCheckbox"
-                                     selectedImageUrl="../images/ajax/checked.png"
-                                     rolloverSelectedImageUrl="../images/ajax/checked-rollover.png"
-                                     pressedSelectedImageUrl="../images/ajax/checked-pressed.png"
-                                     unselectedImageUrl="../images/ajax/unchecked.png"
-                                     rolloverUnselectedImageUrl="../images/ajax/unchecked-rollover.png"
-                                     pressedUnselectedImageUrl="../images/ajax/unchecked-pressed.png"/>
-            <h:outputText styleClass="taskText" value="#{task.name}"/>
-            <h:commandLink styleClass="delete" id="delete">
-              <h:graphicImage value="../images/ajax/delete.png" alt="Delete Task">
-              </h:graphicImage>
-              <o:ajax listener="#{TaskBean.deleteTask}"
-                                  render=":form:doneList :form:doneListCaption" delay="500">
-                <f:param name="taskId" value="#{task.id}"/>
-              </o:ajax>
-            </h:commandLink>
-          </h:panelGrid>
-        </o:forEach>
-      </h:panelGroup></div>
+        <h:outputText value=""/>
 
-    <o:ajax id="updateTasks" standalone="true"
-                        render="taskList doneList doneListCaption" immediate="true" delay="500"/>
+        <h:outputText value="backgroundStyle:"/>
+        <h:inputText value="#{AjaxSettings.backgroundStyle}" style="width: 320px"
+                     onchange="O$('form:fillBackground').checked='checked'"/>
 
-  </div>
+        <h:outputText value="backgroundTransparency:"/>
+        <o:spinner value="#{AjaxSettings.backgroundTransparency}" minValue="0" maxValue="1" step="0.1"
+                   onchange="O$('form:fillBackground').checked='checked'"/>
 
-  <div id="Description">
-    OpenFaces library has a range of Ajax-powered features built-in in components themselves, and facilities for
-    introducing inter-component Ajax-based interaction using OpenFaces Ajax component. This is a non-visual
-    component that can be attached to any other JSF component to reload other components when some particular event
-    occurs. Actually Ajax component has a wider purpose than just reloading components which makes it possible to
-    perform dynamic page updates to meet a wide range of scenarios that require Ajax page updates.
+        <h:outputText value="backgroundTransparencyTransitionPeriod:"/>
+        <o:spinner value="#{AjaxSettings.backgroundTransparencyTransitionPeriod}" minValue="0" maxValue="1000"
+                   onchange="O$('form:fillBackground').checked='checked'"
+                   step="10"/>
+      </h:panelGrid>
+    </o:tabbedPaneItem>
 
-    Here are the major features of the Ajax component:
-    <ul class="hang">
-      <li><strong>Reloading components</strong> - The main purpose of this component is to reload one or
-        more components with Ajax without reloading the whole page. Just specify the comma-separated list of component
-        ids in the "render" attribute.
-      </li>
-      <li><strong>Two ways of attaching to components</strong> - You can either embed &lt;o:ajax>
-        tag right into the component that initiates Ajax reload, or attach to a component using the "for" attribute.
-      </li>
-      <li><strong>Standalone mode for programmatic usage</strong> - Declare standalone="true" attribute,
-        and it becomes possible to run Ajax component reload programmatically. This is especially useful for complex scenarios
-        with conditional reloads, or when the same Ajax component should be reused in different places.
-      </li>
-      <li><strong>Submitting additional components</strong> - Specifying a comma-separated component ids in
-        the "execute" attribute includes data from other components into the reload procedure.
-        This is useful when the reloaded data or server action depends on data in various page's components.
-      </li>
-      <li><strong>Executing server action</strong> - Specifying the "action" attribute allows executing
-        a server action before reloading the components.                                      coma
-      </li>
-      <li><strong>Avoiding frequent requests</strong> - Sends only one request in case of several events
-        during the short period of time specified with the "delay" attribute.
-      </li>
-      <li><strong>Ajax request lifecycle events</strong> - Use "onajaxstart", "onajaxend", and "onerror" events
-        to implement additional logic that is bound to the ajax reloading process itself.
-      </li>
-    </ul>
-    <br/>
-    Another valuable facility is an AjaxSettings component that allows customizing various aspects of Ajax
-    functionality on a page:
-    <ul class="hang">
-      <li><strong>Customizing ajax progress message</strong> - It is possible to change the text, style and
-        image displayed in the Ajax progress message, or it is possible to fully redefine the progress message by
-        specifying its HTML source.
-      </li>
-      <li><strong>Customizing session expiration message</strong> - Any Ajax action on an expired session
-        leads to showing a message where the user chooses either to reload the page or cancel the action. The
-        AjaxSettings component can be used to define the policy on handling session expiration: showing a message, or
-        silent page reload.
-      </li>
-      <li><strong>Page-wide Ajax request lifecycle events</strong> - The AjaxSettings component allows
-        receiving notifications for tracking Ajax request state on a page level using the "onajaxstart", "onajaxend",
-        "onerror", and "onsessionexpired" events.
-      </li>
-    </ul>
+  </o:tabbedPane>
+  <h:commandButton value="Apply" style="position: absolute; right: 10px; bottom: 10px"/>
+</o:window>
 
-  </div>
+</div>
+
+<div id="Description">
+  OpenFaces library has a range of Ajax-powered features built-in in components themselves, and facilities for
+  introducing inter-component Ajax-based interaction using OpenFaces Ajax component. This is a non-visual
+  component that can be attached to any other JSF component to reload other components when some particular event
+  occurs. Actually Ajax component has a wider purpose than just reloading components which makes it possible to
+  perform dynamic page updates to meet a wide range of scenarios that require Ajax page updates.
+
+  Here are the major features of the Ajax component:
+  <ul class="hang">
+    <li><strong>Reloading components</strong> - The main purpose of this component is to reload one or
+      more components with Ajax without reloading the whole page. Just specify the comma-separated list of component
+      ids in the "render" attribute.
+    </li>
+    <li><strong>Two ways of attaching to components</strong> - You can either embed
+      <a class="tagReference" target="_blank" href="http://openfaces.org/documentation/tagReference/o/ajax.html">&lt;o:ajax></a>
+      tag right into the component that initiates Ajax reload, or attach to a component using the "for" attribute.
+    </li>
+    <li><strong>Standalone mode for programmatic usage</strong> - Declare standalone="true" attribute,
+      and it becomes possible to run Ajax component reload programmatically. This is especially useful for complex
+      scenarios
+      with conditional reloads, or when the same Ajax component should be reused in different places.
+    </li>
+    <li><strong>Submitting additional components</strong> - Specifying a comma-separated component ids in
+      the "execute" attribute includes data from other components into the reload procedure.
+      This is useful when the reloaded data or server action depends on data in various page's components.
+    </li>
+    <li><strong>Executing server action</strong> - Specifying the "action" attribute allows executing
+      a server action before reloading the components. coma
+    </li>
+    <li><strong>Avoiding frequent requests</strong> - Sends only one request in case of several events
+      during the short period of time specified with the "delay" attribute.
+    </li>
+    <li><strong>Ajax request lifecycle events</strong> - Use "onajaxstart", "onajaxend", and "onerror" events
+      to implement additional logic that is bound to the ajax reloading process itself.
+    </li>
+  </ul>
+  <br/>
+  Another valuable facility is an AjaxSettings component that allows customizing various aspects of Ajax
+  functionality on a page:
+  <ul class="hang">
+    <li><strong>Customizing ajax progress message</strong> - It is possible to change the text, style and
+      image displayed in the Ajax progress message, or it is possible to fully redefine the progress message by
+      specifying its HTML source.
+    </li>
+    <li><strong>Customizing session expiration message</strong> - Any Ajax action on an expired session
+      leads to showing a message where the user chooses either to reload the page or cancel the action. The
+      AjaxSettings component can be used to define the policy on handling session expiration: showing a message, or
+      silent page reload.
+    </li>
+    <li><strong>Page-wide Ajax request lifecycle events</strong> - The AjaxSettings component allows
+      receiving notifications for tracking Ajax request state on a page level using the "onajaxstart", "onajaxend",
+      "onerror", and "onsessionexpired" events.
+    </li>
+  </ul>
+
+</div>
 
 </div>

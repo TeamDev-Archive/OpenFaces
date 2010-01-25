@@ -13665,8 +13665,10 @@ entering a value and returns a list of suggestions from the server -->
 
   <tag>
     <description>If the DefaultSessionExpiration component is used, the confirmation that asks the user to reload
-      the page appears when the current session is expired. Should be specified in the "sessionExpiration" facet
-      of the AjaxSettings component.
+      the page appears when the current session is expired. This tag should be specified in the "sessionExpiration" facet
+      of the AjaxSettings component. You can customize the session expiration confirmation by placing the
+      &lt;o:confirmation> tag into the "confirmation" facet of the &lt;defaultSessionExpiration> tag and configuring its
+      attributes appropriately.
     </description>
     <name>defaultSessionExpiration</name>
     <tag-class>org.openfaces.taglib.jsp.ajax.DefaultSessionExpirationJspTag</tag-class>

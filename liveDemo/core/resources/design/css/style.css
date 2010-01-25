@@ -327,6 +327,17 @@ div.centered table {
   width: 12px;
 }
 
+.tagReference {
+  font-family: Courier New, monospace;
+  text-decoration: none;
+  color: navy;
+}
+
+.codeSnippet {
+  font-family: Courier New, monospace;
+}
+
+
 /******************Daytable pages*************************/
 .eventWithBackground {
   background-image: url(../../images/daytable/daytable-gradient.png);

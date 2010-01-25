@@ -115,32 +115,32 @@ public class UtilPhaseListener extends PhaseListenerBase {
         return result;
     }
 
-    private String encodeFocusTracking(FacesContext facesContext) {
+    private Script encodeFocusTracking(FacesContext facesContext) {
         if (!isAutoFocusTrackingEnabled(facesContext))
             return null;
         ExternalContext externalContext = facesContext.getExternalContext();
         Map requestMap = externalContext.getRequestMap();
         String focusedComponentId = (String) requestMap.get(FOCUSED_COMPONENT_ID_KEY);
-        return "O$.initDefaultFocus('" +
-                FOCUS_TRACKER_FIELD_ID + "', " +
-                (focusedComponentId != null ? "'" + focusedComponentId + "'" : "null") + ");";
+        return new ScriptBuilder().functionCall("O$.initDefaultFocus",
+                FOCUS_TRACKER_FIELD_ID,
+                focusedComponentId != null ? focusedComponentId: null).semicolon();
     }
 
-    private String encodeScrollPosTracking(FacesContext facesContext) {
+    private Script encodeScrollPosTracking(FacesContext facesContext) {
         if (!isAutoScrollPosTrackingEnabled(facesContext))
             return null;
         ExternalContext externalContext = facesContext.getExternalContext();
         Map requestMap = externalContext.getRequestMap();
         String scrollPos = (String) requestMap.get(SCROLL_POS_KEY);
-        return "O$.initDefaultScrollPosition('" +
-                SCROLL_POS_TRACKER_FIELD_ID + "', " +
-                (scrollPos != null ? "'" + scrollPos + "'" : "null") + ");";
+        return new ScriptBuilder().functionCall("O$.initDefaultScrollPosition",
+                SCROLL_POS_TRACKER_FIELD_ID,
+                scrollPos != null ? scrollPos : null).semicolon();
     }
 
-    private String encodeDisabledContextMenu(FacesContext facesContext) {
+    private Script encodeDisabledContextMenu(FacesContext facesContext) {
         if (!isDisabledContextMenuEnabled(facesContext))
             return null;
-        return "O$.disabledContextMenuFor(document);";
+        return new RawScript("O$.disabledContextMenuFor(document);");
     }
 
     private void decodeFocusTracking(FacesContext facesContext) {

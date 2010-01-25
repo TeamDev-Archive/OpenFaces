@@ -70,7 +70,7 @@ public class FloatingIconMessageRenderer extends BaseMessageRenderer {
         if (clientScript.toString().length() > 0) {
             if (!isDefaultPresentation(fim))
                 ValidatorUtil.renderPresentationExistsForComponent(forComponentClientId, context);
-            StyleUtil.renderStyleClasses(context, fim, true);
+            StyleUtil.renderStyleClasses(context, fim, true, false);
         }
     }
 

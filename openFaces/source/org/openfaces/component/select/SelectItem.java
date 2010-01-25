@@ -20,6 +20,9 @@ import javax.faces.context.FacesContext;
 import java.io.Serializable;
 
 /**
+ * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
+ * by any application code. Use javax.faces.model.SelectItem class instead.
+ *
  * @author Oleg Marshalenko
  */
 public class SelectItem extends UIComponentBase implements Serializable {
@@ -37,7 +40,7 @@ public class SelectItem extends UIComponentBase implements Serializable {
     public SelectItem() {
     }
 
-    
+
     public SelectItem(Object itemValue) {
         this.itemValue = itemValue;
     }

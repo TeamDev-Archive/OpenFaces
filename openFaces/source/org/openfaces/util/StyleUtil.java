@@ -299,10 +299,10 @@ public class StyleUtil {
      * @param context   {@link FacesContext} for the current request
      * @param component The component, which styles are rendered
      * @throws IOException if an input/output error occurs while rendering
-     * @see #renderStyleClasses(javax.faces.context.FacesContext, javax.faces.component.UIComponent, boolean)
+     * @see #renderStyleClasses(javax.faces.context.FacesContext, javax.faces.component.UIComponent, boolean, boolean)
      */
     public static void renderStyleClasses(FacesContext context, UIComponent component) throws IOException {
-        renderStyleClasses(context, component, false);
+        renderStyleClasses(context, component, false, false);
     }
 
     /**
@@ -314,7 +314,7 @@ public class StyleUtil {
      * @throws IOException if an input/output error occurs while rendering
      */
     public static void renderStyleClasses(FacesContext context, UIComponent component,
-                                          boolean forcedStyleAsScript) throws IOException {
+                                          boolean forcedStyleAsScript, boolean forceStyleAsOnloadScript) throws IOException {
         requestDefaultCss(context);
         List<String> cssClasses = getAllStyleClassesForComponent(context, component);
         if (cssClasses != null && cssClasses.size() > 0) {
@@ -336,7 +336,7 @@ public class StyleUtil {
                 // is slightly slower than just adding <style> tags to DOM, so that's why this approach is not used
                 // under IE and Opera
                 //todo: is rendering styles with scripts needed on non-ajax requests?
-                writeCssClassesAsScriptElement(context, cssClasses);
+                writeCssClassesAsScriptElement(context, cssClasses, forceStyleAsOnloadScript);
             } else {
                 writeCssClassesAsStyleElement(context, component, stylesId, cssClasses);
             }
@@ -351,9 +351,12 @@ public class StyleUtil {
      * @param cssRules The list of css rules for rendering
      * @throws IOException if an input/output error occurs while rendering
      */
-    public static void writeCssClassesAsScriptElement(FacesContext context, List<String> cssRules) throws IOException {
+    public static void writeCssClassesAsScriptElement(FacesContext context, List<String> cssRules, boolean asOnloadScript) throws IOException {
         ScriptBuilder styleRegistrationScript = new ScriptBuilder().functionCall("O$.addCssRules", cssRules).semicolon();
-        RenderingUtil.renderInitScript(context, styleRegistrationScript, ResourceUtil.getUtilJsURL(context));
+        if (asOnloadScript)
+            RenderingUtil.appendOnLoadScript(context, styleRegistrationScript);
+        else
+            RenderingUtil.renderInitScript(context, styleRegistrationScript, ResourceUtil.getUtilJsURL(context));
     }
 
     /**

@@ -14,6 +14,7 @@ package org.openfaces.renderkit.ajax;
 import org.openfaces.component.ajax.DefaultProgressMessage;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.RawScript;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceFilter;
 import org.openfaces.util.ResourceUtil;
@@ -62,10 +63,10 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
             if (dpm.getFillBackground()) {
                 backgroundLayerParams = new JSONObject();
                 RenderingUtil.addJsonParam(backgroundLayerParams, "className", new StyleParam(dpm, "background", "o_ajax_blockingLayer"));
-                RenderingUtil.addJsonParam(backgroundLayerParams, "transparency", dpm.getBackgroundTransparency());
-                RenderingUtil.addJsonParam(backgroundLayerParams, "transparencyTransitionPeriod", dpm.getBackgroundTransparencyTransitionPeriod());
+                RenderingUtil.addJsonParam(backgroundLayerParams, "transparency", (double) dpm.getBackgroundTransparency());
+                RenderingUtil.addJsonParam(backgroundLayerParams, "transparencyTransitionPeriod", (int) dpm.getBackgroundTransparencyTransitionPeriod());
             }
-            StyleUtil.renderStyleClasses(context, dpm);
+            StyleUtil.renderStyleClasses(context, dpm, true, true);
 
             ScriptBuilder setMessageScript = new ScriptBuilder().functionCall("O$.setAjaxMessageHTML",
                     ajaxMessageHTML,
@@ -95,9 +96,9 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
                     sessionMap.put(uniqueRTLibraryName, setMessageScript.toString());
                 }
             } else {
-                RenderingUtil.appendOnLoadScript(context, setMessageScript.toString());
+                RenderingUtil.appendOnLoadScript(context, setMessageScript);
                 if (isAjaxCleanupRequired()) {
-                    RenderingUtil.appendOnLoadScript(context, "O$.setAjaxCleanupRequired(true);");
+                    RenderingUtil.appendOnLoadScript(context, new RawScript("O$.setAjaxCleanupRequired(true);"));
                 }
             }
         }

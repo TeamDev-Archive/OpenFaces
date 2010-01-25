@@ -574,8 +574,10 @@ public class RenderingUtil {
      * @param context {@link FacesContext} for the current request
      * @param script  The script to append
      */
-    public static void appendOnLoadScript(FacesContext context, String script) {
-        if (script == null || script.length() == 0)
+    public static void appendOnLoadScript(FacesContext context, Script script) {
+        if (script == null) return;
+        String scriptStr = script.toString();
+        if (scriptStr.length() == 0)
             return;
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         StringBuilder buf = (StringBuilder) requestMap.get(ON_LOAD_SCRIPTS_KEY);
@@ -583,7 +585,7 @@ public class RenderingUtil {
             buf = new StringBuilder();
             requestMap.put(ON_LOAD_SCRIPTS_KEY, buf);
         }
-        buf.append(script);
+        buf.append(scriptStr);
     }
 
     /**
@@ -1009,6 +1011,22 @@ public class RenderingUtil {
     }
 
     /**
+     * Add double parameter to json parameters
+     *
+     * @param paramsObject The json parameters
+     * @param paramName    The name of parameter
+     * @param paramValue   The value of parameter
+     */
+    public static void addJsonParam(JSONObject paramsObject, String paramName, double paramValue) {
+        try {
+            paramsObject.put(paramName, paramValue);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
      * Add boolean parameter to json parameters
      *
      * @param paramsObject The json parameters
@@ -1040,6 +1058,21 @@ public class RenderingUtil {
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
+    }
+
+    /**
+     * Add integer parameter to json parameters
+     *
+     * @param paramsObject The json parameters
+     * @param paramName    The name of parameter
+     * @param paramValue   The value of parameter
+     */
+    public static void addJsonParam(JSONObject paramsObject, String paramName, int paramValue) {
+        try {
+            paramsObject.put(paramName, paramValue);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

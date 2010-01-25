@@ -500,15 +500,12 @@ public abstract class CommonAjaxViewRoot {
         List<UIComponent> children = viewRoot.getChildren();
         AjaxSettings ajaxSettings = null;
 
-        String componentId = request.getParameter(AjaxUtil.PARAM_RENDER);
+        String[] componentIds = extractRender(request);
         Map<String, Object> requestMap = externalContext.getRequestMap();
-        if (!requestMap.containsKey(AjaxViewHandler.SESSION_EXPIRATION_PROCESSING)
-                && componentId == null)
-            throw new IllegalStateException("processAjaxRequest: " + AjaxUtil.PARAM_RENDER + " == null");
 
         assertChildren(viewRoot);
 
-        UIComponent component = findComponentById(viewRoot, componentId, false, false);
+        UIComponent component = componentIds.length > 0 ? findComponentById(viewRoot, componentIds[0], false, false) : null;
         if (component != null && component.getChildCount() > 0) {
             List<UIComponent> ajaxSubmittedComponentChildren = component.getChildren();
             ajaxSettings = findAjaxSettings(ajaxSubmittedComponentChildren);
