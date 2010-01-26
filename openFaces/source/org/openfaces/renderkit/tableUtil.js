@@ -2122,6 +2122,8 @@ O$.Tables = {
     }
 
     alignColumnWidths();
+    if (table._relayoutRelativeWidthColumns)
+      setTimeout(alignColumnWidths, 1);
 
     function fixBodyHeight() {
       var fixture = O$.fixElement(table.body._sectionTable, {
@@ -2338,6 +2340,7 @@ O$.Tables = {
     if (objectForSavingParams)
       objectForSavingParams._columns = columns;
     var relativeWidthColumns = [];
+    var thereAreRelativeWidthColumns = false;
     var nonRelativeWidth = 0;
     colTags.forEach(function(colTag) {
       var column = colTag._column;
@@ -2355,10 +2358,17 @@ O$.Tables = {
           relativeWidthColumns.push(column);
         else
           nonRelativeWidth += colWidth;
+      } else {
+        if (column._relativeWidth) thereAreRelativeWidthColumns = true;
       }
 
       tblWidth += colWidth;
     });
+    if (thereAreRelativeWidthColumns && tableWidth == 0 && (O$.isExplorer() && !(O$.isExplorer8() && O$.isStrictMode()))) {
+      // table width is not know in the initialization stage under IE (except IE8/strict) so postponed relayout is
+      // required to calculate relative width columns properly
+      table._relayoutRelativeWidthColumns = true;
+    }
     if ((
             !scrolling || (!scrolling.horizontal && !scrolling._widthAlignmentDisabled)
             ) && (! (O$.isExplorer() && !tableWidth))) {

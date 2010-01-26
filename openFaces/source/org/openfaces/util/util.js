@@ -3539,6 +3539,14 @@ if (!window.O$) {
     return rect;
   };
 
+  O$.getElementClientRectangle = function(element, relativeToContainngBlock, cachedDataContainer) {
+    var rect = O$.getElementPaddingRectangle(element, relativeToContainngBlock, cachedDataContainer);
+    rect.width = element.clientWidth;
+    rect.height = element.clientHeight;
+    return rect;
+  };
+
+
   /*
    Moves the specified element to the specified position (specified as {x, y} object). More exactly the top-left
    corner of element's border box will be at the specified position after this method is invoked.

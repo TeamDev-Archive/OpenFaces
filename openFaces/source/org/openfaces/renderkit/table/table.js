@@ -512,8 +512,11 @@ O$.Table = {
     }
     if (table._params.scrolling) {
       if (e.pageUpPressed || e.pageDownPressed) {
-        var scrollingAreaRect = O$.getElementBorderRectangle(table.body._centerScrollingArea._scrollingDiv);
-        var row = table.body._rowFromPoint(scrollingAreaRect.x + 10, e.pageUpPressed ? scrollingAreaRect.getMinY() + 1 : scrollingAreaRect.getMaxY() - 1);
+        var scrollingAreaRect = O$.getElementClientRectangle(table.body._centerScrollingArea._scrollingDiv);
+        var row = table.body._rowFromPoint(
+                scrollingAreaRect.x + 10, 
+                e.pageUpPressed ? scrollingAreaRect.getMinY() + 1 : scrollingAreaRect.getMaxY() - 1);
+        if (!row) return O$.Table._getNeighboringVisibleRowIndex(table, idx, rowCount);
         var selectedRowY = null;
         if (e.pageUpPressed) {
           if (idx > row._index)
