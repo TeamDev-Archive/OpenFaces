@@ -1558,6 +1558,31 @@ if (!window.O$) {
     return O$._documentLoaded;
   };
 
+  O$.getFirstFocusableControl = function(parent, approvalFunction) {
+    for (var i = 0, count = parent.childNodes.length; i < count; i++) {
+      var child = parent.childNodes[i];
+      if (!child._focusControlElement && O$.isControlFocusable(child) && (!approvalFunction || approvalFunction(child)))
+        return child;
+      var focusable = O$.getFirstFocusableControl(child, approvalFunction);
+      if (focusable)
+        return focusable;
+    }
+    return null;
+  };
+
+  O$.getLastFocusableControl = function(parent, approvalFunction) {
+    for (var i = parent.childNodes.length - 1; i >= 0; i--) {
+      var child = parent.childNodes[i];
+      if (!child._focusControlElement && O$.isControlFocusable(child) && (!approvalFunction || approvalFunction(child)))
+        return child;
+      var focusable = O$.getLastFocusableControl(child, approvalFunction);
+      if (focusable)
+        return focusable;
+    }
+    return null;
+  };
+
+
   O$.createHiddenFocusElement = function(tabindex, componentId) {
     var createTextArea = true;
     var focusControl = document.createElement(createTextArea ? "textarea" : "input");

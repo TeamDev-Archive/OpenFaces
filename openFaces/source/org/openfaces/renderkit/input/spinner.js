@@ -118,7 +118,7 @@ O$.Spinner = {
 
     if (!disabled) {
       increaseButton.onmousedown = function(e) {
-        spinner._focusHandler();
+        spinner._field.focus();
 
         O$.setStyleMappings(increaseButton, {
           pressed: pressedButtonClass
@@ -142,7 +142,7 @@ O$.Spinner = {
         O$.breakEvent(e);
       };
       decreaseButton.onmousedown = function(e) {
-        spinner._focusHandler();
+        spinner._field.focus();
 
         O$.setStyleMappings(decreaseButton, {
           pressed: pressedButtonClass
@@ -153,8 +153,7 @@ O$.Spinner = {
           spinner.setValue(minValue, true);
         } else if (value - step >= minValue) {
           spinner.setValue(value - step, true);
-        }
-        else {
+        } else {
           if (cycled) {
             spinner.setValue(maxValue, true);
           } else {

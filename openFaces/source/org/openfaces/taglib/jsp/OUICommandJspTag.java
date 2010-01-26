@@ -14,6 +14,7 @@ package org.openfaces.taglib.jsp;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.el.MethodExpression;
+import javax.el.ValueExpression;
 
 /**
  * @author Dmitry Pikhulya
@@ -29,5 +30,9 @@ public class OUICommandJspTag extends AbstractComponentJspTag {
 
     public void setActionListener(MethodExpression actionListener) {
         getDelegate().setPropertyValue("actionListener", actionListener);
+    }
+
+    public void setImmediate(ValueExpression immediate) {
+        getDelegate().setPropertyValue("immediate", immediate);
     }
 }

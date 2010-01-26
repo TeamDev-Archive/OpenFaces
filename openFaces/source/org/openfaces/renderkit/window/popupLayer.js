@@ -30,7 +30,7 @@ O$.PopupLayer = {
       blockingLayer: O$(id + "::blockingLayer"),
 
       _getDefaultFocusComponent: function() {
-        return O$.PopupLayer.getFirstFocusableControl(popup);
+        return O$.getFirstFocusableControl(popup);
       },
 
       _draggable: draggable,
@@ -137,7 +137,7 @@ O$.PopupLayer = {
           popup._firstInternalAnchor._focusControlElement = true;
           popup.insertBefore(popup._firstInternalAnchor, popup.firstChild);
           popup._firstInternalAnchor.onfocus = function() {
-            var focusable = O$.PopupLayer.getLastFocusableControl(popup);
+            var focusable = O$.getLastFocusableControl(popup);
             if (focusable)
               focusable.focus();
             else
@@ -148,7 +148,7 @@ O$.PopupLayer = {
           popup._lastInternalAnchor = O$.createHiddenFocusElement(popup.id);
           popup._lastInternalAnchor._focusControlElement = true;
           popup._lastInternalAnchor.onfocus = function() {
-            var focusable = O$.PopupLayer.getFirstFocusableControl(popup);
+            var focusable = O$.getFirstFocusableControl(popup);
             if (focusable)
               focusable.focus();
             else
@@ -421,31 +421,8 @@ O$.PopupLayer = {
     var y = visibleAreaSize.height / 2 - popup.offsetHeight / 2 - prntPos.y + oldScrollPos.y;
     popup.setLeft(x);
     popup.setTop(y);
-  },
-
-  getFirstFocusableControl: function(parent) {
-    for (var i = 0, count = parent.childNodes.length; i < count; i++) {
-      var child = parent.childNodes[i];
-      if (!child._focusControlElement && O$.isControlFocusable(child))
-        return child;
-      var focusable = O$.PopupLayer.getFirstFocusableControl(child);
-      if (focusable)
-        return focusable;
-    }
-    return null;
-  },
-
-  getLastFocusableControl: function(parent) {
-    for (var i = parent.childNodes.length - 1; i >= 0; i--) {
-      var child = parent.childNodes[i];
-      if (!child._focusControlElement && O$.isControlFocusable(child))
-        return child;
-      var focusable = O$.PopupLayer.getLastFocusableControl(child);
-      if (focusable)
-        return focusable;
-    }
-    return null;
   }
+
 
 };
 

@@ -27,5 +27,6 @@ public abstract class OUICommandTag extends AbstractComponentTag {
         OUICommand quiCommand = (OUICommand) component;
         setActionProperty(context, quiCommand);
         setActionListener(context, quiCommand);
+        setBooleanProperty(component, "immediate");
     }
 }

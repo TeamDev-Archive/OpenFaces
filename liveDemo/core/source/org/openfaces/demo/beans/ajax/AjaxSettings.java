@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class AjaxSettings {
     private String text = "Loading...";
-    private String style = "border: 1px solid #939393; background: #ffffff;";
+    private String style = "border: 1px solid gray; background: white;";
     private HorizontalAlignment horizontalAlignment = HorizontalAlignment.RIGHT;
     private VerticalAlignment verticalAlignment = VerticalAlignment.TOP;
     private boolean fillBackground = false;

@@ -15,25 +15,31 @@
     <o:dataTable id="banks" var="bank"
                  value="#{BanksList.allBanks}"
                  pageSize="14"
-                 width="100%"
-                 style="margin-top: 15px;"
+                 style="margin-top: 15px; width: 100%;"
+
                  sortColumnId="institutionName"
                  sortedAscendingImageUrl="../images/treetable/sort_a.gif"
                  sortedDescendingImageUrl="../images/treetable/sort_d.gif"
                  sortedColumnHeaderStyle="background: url('../images/treetable/tableHeader_sorted.gif') repeat-x;"
+
                  sortableHeaderRolloverStyle="background: url('../images/treetable/tableHeader_rollover.gif') repeat-x !important;"
                  sortedColumnBodyStyle="background: none;"
-                 horizontalGridLines="1px solid #f6f7f8"
-                 headerVertSeparator="1px solid #d0d0d0, 1px solid #a0a0a0"
                  headerRowStyle="background: url('../images/treetable/tableHeader.gif') repeat-x; height: 20px;"
                  subHeaderRowStyle="background: url('../images/datatable/filter.gif') repeat-x #f7f7f7; border-top: 1px solid #f6f7f8;"
+
+                 bodySectionStyle="background: #ffffff"
                  bodyRowStyle="background: #ffffff !important; height: 21px;"
-                 bodyOddRowStyle="background: #f5f5f5 ! important; height: 21px;"
+                 bodyOddRowStyle="background: #f5f5f5 !important; height: 21px;"
+
+                 headerVertSeparator="1px solid #d0d0d0, 1px solid #a0a0a0"
+                 horizontalGridLines="1px solid #f6f7f8"
             >
-      <o:multipleRowSelection
-              style="background: url('../images/treetable/selected.gif') repeat-x #5D8BBA !important; color: white !important;"/>
+
+      <o:singleRowSelection
+              style="background: url('../images/treetable/selected.gif') repeat-x #5d8bba !important; color: white !important;"/>
       <o:columnResizing/>
       <o:columnReordering/>
+
       <f:facet name="columnMenu">
         <o:columnMenu/>
       </f:facet>
@@ -42,6 +48,62 @@
                          rolloverStyle="border-left: none; background: url('../images/treetable/columnMenuBtnRollover.gif');"
                          pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
       </f:facet>
+
+      <o:column id="institutionName"
+                header="Institution Name"
+                width="30%"
+                sortingExpression="#{bank.institutionName}"
+                bodyStyle="text-align: left; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
+                headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
+        <h:outputText value="#{bank.institutionName}" style="white-space: nowrap;"/>
+      </o:column>
+      <o:column header="Certificate Number"
+                width="10%"
+                headerStyle="white-space: normal;"
+                sortingExpression="#{bank.certificateNumber}"
+                bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;">
+        <h:outputText value="#{bank.certificateNumber}"/>
+      </o:column>
+      <o:columnGroup header="Address">
+        <o:column header="City"
+                  width="14%"
+                  sortingExpression="#{bank.city}"
+                  bodyStyle="padding-left: 5px; padding-right: 5px;"
+                  headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
+          <h:outputText value="#{bank.city}"/>
+        </o:column>
+        <o:column header="State"
+                  width="7%"
+                  sortingExpression="#{bank.state}"
+                  bodyStyle="padding-left: 5px; padding-right: 5px;"
+                  headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
+          <h:outputText value="#{bank.state}"/>
+        </o:column>
+        <o:column header="Zip"
+                  width="7%"
+                  bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
+                  headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;"
+                  sortingExpression="#{bank.zip}">
+          <h:outputText value="#{bank.zip}"/>
+        </o:column>
+        <o:column header="County"
+                  width="13%"
+                  sortingExpression="#{bank.county}"
+                  bodyStyle="padding-left: 5px; padding-right: 5px; white-space: nowrap;"
+                  headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
+          <h:outputText value="#{bank.county}"/>
+        </o:column>
+      </o:columnGroup>
+      <o:column header="Average Assets"
+                width="19%"
+                bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
+                headerStyle="text-align: center; padding-left: 5px; padding-right: 5px; white-space: normal;"
+                sortingExpression="#{bank.averageAssets}">
+        <h:outputText value="#{bank.averageAssets}">
+          <f:convertNumber type="number"/>
+        </h:outputText>
+      </o:column>
+
       <f:facet name="below">
         <h:panelGroup style="width: 100%; text-align: center;">
           <o:dataTablePaginator id="paginator"
@@ -57,87 +119,6 @@
                                 pageNumberFieldStyle="#{BanksList.pageNumberFieldStyle}"/>
         </h:panelGroup>
       </f:facet>
-
-      <o:column id="institutionName"
-                width="30%"
-                sortingExpression="#{bank.institutionName}"
-                bodyStyle="text-align: left; white-space: nowrap; padding-left: 5px; padding-right: 5px;"
-                headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
-        <f:facet name="header">
-          <h:outputText value="Institution Name"/>
-        </f:facet>
-        <h:outputText value="#{bank.institutionName}"/>
-      </o:column>
-      <o:column id="certificateNumber"
-                width="10%"
-                headerStyle="white-space: normal;"
-                sortingExpression="#{bank.certificateNumber}"
-                bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;">
-        <f:facet name="header">
-          <h:outputText style="white-space: normal;" value="Certificate Number"/>
-        </f:facet>
-        <h:outputText value="#{bank.certificateNumber}"/>
-      </o:column>
-      <o:columnGroup>
-        <f:facet name="header">
-          <h:outputText value="Address"/>
-        </f:facet>
-        <o:column id="city"
-                  width="14%"
-                  sortingExpression="#{bank.city}"
-                  bodyStyle="padding-left: 5px; padding-right: 5px;"
-                  headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
-          <f:facet name="header">
-            <h:outputText value="City"/>
-          </f:facet>
-
-          <h:outputText value="#{bank.city}"/>
-        </o:column>
-        <o:column id="state"
-                  width="7%"
-                  sortingExpression="#{bank.state}"
-                  bodyStyle="padding-left: 5px; padding-right: 5px;"
-                  headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
-          <f:facet name="header">
-            <h:outputText value="State"/>
-          </f:facet>
-          <h:outputText value="#{bank.state}"/>
-        </o:column>
-        <o:column id="zip"
-                  width="7%"
-                  bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
-                  headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;"
-                  sortingExpression="#{bank.zip}">
-          <f:facet name="header">
-            <h:outputText value="Zip"/>
-          </f:facet>
-          <h:outputText value="#{bank.zip}"/>
-        </o:column>
-        <o:column id="county"
-                  width="13%"
-                  sortingExpression="#{bank.county}"
-                  bodyStyle="padding-left: 5px; padding-right: 5px; white-space: nowrap;"
-                  headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
-          <f:facet name="header">
-            <h:outputText value="County"/>
-          </f:facet>
-
-          <h:outputText value="#{bank.county}"/>
-        </o:column>
-      </o:columnGroup>
-      <o:column id="averageAssets"
-                width="19%"
-                bodyStyle="text-align: right; padding-left: 5px; padding-right: 5px;"
-                headerStyle="text-align: center; padding-left: 5px; padding-right: 5px;"
-                sortingExpression="#{bank.averageAssets}">
-        <f:facet name="header">
-          <h:outputText value="Average Assets"/>
-        </f:facet>
-
-        <h:outputText value="#{bank.averageAssets}">
-          <f:convertNumber type="number"/>
-        </h:outputText>
-      </o:column>
     </o:dataTable>
   </div>
   <!--TODO: add features list to menu.xml-->

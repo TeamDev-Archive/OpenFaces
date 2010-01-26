@@ -28,4 +28,17 @@ public class CommandButtonTag extends OUICommandTag {
     public String getRendererType() {
         return "org.openfaces.CommandButtonRenderer";
     }
+
+    @Override
+    public void setComponentProperties(FacesContext context, UIComponent component) {
+        super.setComponentProperties(context, component);
+
+        setBooleanProperty(component, "disabled");
+        setStringProperty(component, "type");
+        setStringProperty(component, "accesskey");
+        setStringProperty(component, "tabindex");
+        setStringProperty(component, "lang");
+        setStringProperty(component, "title");
+        setStringProperty(component, "alt");
+    }
 }

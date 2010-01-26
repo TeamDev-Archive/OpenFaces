@@ -732,6 +732,10 @@ public class RenderingUtil {
             writer.writeAttribute("class", styleClass, null);
     }
 
+    public static void writeStyleAndClassAttributes(ResponseWriter writer, OUIComponent component) throws IOException {
+        writeStyleAndClassAttributes(writer, component.getStyle(), component.getStyleClass());
+    }
+
     /**
      * Write style and class html attributes
      *

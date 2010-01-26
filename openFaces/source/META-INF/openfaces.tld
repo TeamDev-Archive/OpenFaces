@@ -106,7 +106,9 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The reading order of the table columns and content.</description>
+      <description>The reading order of the table columns and content. Valid values are "LTR" (left-to-right) and "RTL"
+        (right-to-left)
+      </description>
       <name>dir</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -1814,12 +1816,14 @@
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>The filtering condition that should be used for comparing the values specified in this filter component
-      to the values specified in data records. It should have a format of "&lt;condition&gt;" or "not &lt;condition&gt;",
+      <description>The filtering condition that should be used for comparing the values specified in this filter
+        component
+        to the values specified in data records. It should have a format of "&lt;condition&gt;" or "not &lt;condition&gt;",
         where &lt;condition&gt; is one of the following values: equals, contains, beginsWith, endsWith, less, greater,
         lessOrEqual, greaterOrEqual. This attribute is not effective when the "value" attribute is defined. In case of
         specifying the "value" attribute, you should specify the condition as part of the ExpressionFilterCriterion
-        object bound to the "value" attribute.</description>
+        object bound to the "value" attribute.
+      </description>
       <name>condition</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -1932,7 +1936,9 @@
 
 
     <attribute>
-      <description>The base direction of directionally neutral text.</description>
+      <description>The base direction of directionally neutral text. Valid values are "LTR" (left-to-right) and "RTL"
+        (right-to-left).
+      </description>
       <name>dir</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -1989,7 +1995,7 @@
     </attribute>
 
     <attribute>
-      <description>Position of the filter component in the tabbing order for the current document.</description>
+      <description>Position of the component in the focus transition chain for the current document.</description>
       <name>tabindex</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -2118,12 +2124,14 @@
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>The filtering condition that should be used for comparing the values specified in this filter component
-      to the values specified in data records. It should have a format of "&lt;condition&gt;" or "not &lt;condition&gt;",
+      <description>The filtering condition that should be used for comparing the values specified in this filter
+        component
+        to the values specified in data records. It should have a format of "&lt;condition&gt;" or "not &lt;condition&gt;",
         where &lt;condition&gt; is one of the following values: equals, contains, beginsWith, endsWith, less, greater,
         lessOrEqual, greaterOrEqual. This attribute is not effective when the "value" attribute is defined. In case of
         specifying the "value" attribute, you should specify the condition as part of the ExpressionFilterCriterion
-        object bound to the "value" attribute.</description>
+        object bound to the "value" attribute.
+      </description>
       <name>condition</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -2167,7 +2175,7 @@
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Position of this component in the tabbing order for the current document.</description>
+      <description>Position of the component in the focus transition chain for the current document.</description>
       <name>tabindex</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -2749,12 +2757,14 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>The filtering condition that should be used for comparing the values specified in this filter component
-      to the values specified in data records. It should have a format of "&lt;condition&gt;" or "not &lt;condition&gt;",
+      <description>The filtering condition that should be used for comparing the values specified in this filter
+        component
+        to the values specified in data records. It should have a format of "&lt;condition&gt;" or "not &lt;condition&gt;",
         where &lt;condition&gt; is one of the following values: equals, contains, beginsWith, endsWith, less, greater,
         lessOrEqual, greaterOrEqual. This attribute is not effective when the "value" attribute is defined. In case of
         specifying the "value" attribute, you should specify the condition as part of the ExpressionFilterCriterion
-        object bound to the "value" attribute.</description>
+        object bound to the "value" attribute.
+      </description>
       <name>condition</name>
       <deferred-value>
         <type>java.lang.Object</type>
@@ -2788,7 +2798,9 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>The base direction of directionally neutral text.</description>
+      <description>The base direction of directionally neutral text. Valid values are "LTR" (left-to-right) and "RTL"
+        (right-to-left).
+      </description>
       <name>dir</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -2940,7 +2952,8 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>The value that can serve as a convenience substitution for specifying &lt;h:outputText&gt; in the
         column's &quot;header&quot; facet, or serve for identifying the column name in such components as &lt;o:comopsitefilter&gt;
-        or &lt;o:columnVisibilityMenu&gt;. You can use a column data variable specified in the "var" in the expression for this
+        or &lt;o:columnVisibilityMenu&gt;. You can use a column data variable specified in the "var" in the expression
+        for this
         attribute.
       </description>
       <name>header</name>
@@ -9427,7 +9440,7 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A flag that enabled or disabled DropDownField.</description>
+      <description>A flag that enables or disables the component.</description>
       <name>disabled</name>
       <deferred-value>
         <type>boolean</type>
@@ -9460,7 +9473,7 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Position of the DropDownField component in the tabbing order for the current document.</description>
+      <description>Position of the component in the focus transition chain for the current document.</description>
       <name>tabindex</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -10442,7 +10455,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Position of the SuggestionField component in the tabbing order for the current document.
+      <description>Position of the component in the focus transition chain for the current document.
       </description>
       <name>tabindex</name>
       <deferred-value>
@@ -10564,7 +10577,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A flag that enabled or disabled SuggestionField.</description>
+      <description>A flag that enables or disables the component.</description>
       <name>disabled</name>
       <deferred-value>
         <type>boolean</type>
@@ -13640,7 +13653,8 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>CSS style for a background layer of Ajax progress message. Applicable only when
-        &quot;fillBackground&quot; attribute is set to true.</description>
+        &quot;fillBackground&quot; attribute is set to true.
+      </description>
       <name>backgroundStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -13665,7 +13679,8 @@ entering a value and returns a list of suggestions from the server -->
 
   <tag>
     <description>If the DefaultSessionExpiration component is used, the confirmation that asks the user to reload
-      the page appears when the current session is expired. This tag should be specified in the "sessionExpiration" facet
+      the page appears when the current session is expired. This tag should be specified in the "sessionExpiration"
+      facet
       of the AjaxSettings component. You can customize the session expiration confirmation by placing the
       &lt;o:confirmation> tag into the "confirmation" facet of the &lt;defaultSessionExpiration> tag and configuring its
       attributes appropriately.
@@ -16392,7 +16407,7 @@ on every switch to the tab.-->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A flag that enabled or disabled TwoListSelection.</description>
+      <description>A flag that enables or disables the component.</description>
       <name>disabled</name>
       <deferred-value>
         <type>boolean</type>
@@ -16481,7 +16496,7 @@ on every switch to the tab.-->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Position of the TwoListSelection component in the tabbing order for the current document.
+      <description>Position of the component in the focus transition chain for the current document.
       </description>
       <name>tabindex</name>
       <deferred-value>
@@ -19243,7 +19258,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A flag that enabled or disabled Calendar.</description>
+      <description>A flag that enables or disables the component.</description>
       <name>disabled</name>
       <deferred-value>
         <type>boolean</type>
@@ -20253,7 +20268,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A flag that enabled or disabled DateChooser.</description>
+      <description>A flag that enables or disables the component.</description>
       <name>disabled</name>
       <deferred-value>
         <type>boolean</type>
@@ -20297,7 +20312,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Position of the DateChooser component in the tabbing order for the current document.</description>
+      <description>Position of the component in the focus transition chain for the current document.</description>
       <name>tabindex</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -21244,6 +21259,44 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
+      <description>Similar to the "action" attribute of the HTMLCommandButton component. It can be defined as a
+        MethodBinding that should point to an action method that is called when the user clicks this button.
+      </description>
+      <name>action</name>
+      <deferred-method>
+        <method-signature>java.lang.Object action()</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Similar to the "actionListener" attribute of the HTMLCommandButton component.
+        A MethodBinding that should point to an action listener that is called when the user invokes this action.
+      </description>
+      <name>actionListener</name>
+      <deferred-method>
+        <method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not actionListener should be executed immediately (during the Apply
+        Request Values phase of the request processing lifecycle instead of Process Validations phase).
+      </description>
+      <name>immediate</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+
+    <attribute>
       <description>The text displayed in the button.</description>
       <name>value</name>
       <deferred-value>
@@ -21251,6 +21304,18 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Input type string for the rendered &lt;input> tag. Can be "submit", "reset", or "button".
+      </description>
+      <name>type</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default "submit" -->
       <!-- @el true -->
     </attribute>
 
@@ -21475,6 +21540,78 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>JavaScript code that should be executed when the CommandButton receives focus.</description>
       <name>onfocus</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An access key for the component.</description>
+      <name>accesskey</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Position of the component in the focus transition chain for the current document.</description>
+      <name>tabindex</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that enables or disables the component.</description>
+      <name>disabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The base direction of directionally neutral text. Valid values are &quot;LTR&quot; (left-to-right)
+        and &quot;RTL&quot; (right-to-left).
+      </description>
+      <name>dir</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
+      <name>lang</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An advisory title for the text field of this filter component.</description>
+      <name>title</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Alternate textual description of the element rendered by this component.</description>
+      <name>alt</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -21936,7 +22073,9 @@ and it is automatically triggered on any form submission. -->
 
 
     <attribute>
-      <description>The base direction of directionally neutral text.</description>
+      <description>The base direction of directionally neutral text. Valid values are "LTR" (left-to-right) and "RTL"
+        (right-to-left).
+      </description>
       <name>dir</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -22188,7 +22327,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A flag that enabled or disabled InputText.</description>
+      <description>A flag that enables or disables the component.</description>
       <name>disabled</name>
       <deferred-value>
         <type>boolean</type>
@@ -22212,7 +22351,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>Position of the InputText component in the tabbing order for the current document.</description>
+      <description>Position of the component in the focus transition chain for the current document.</description>
       <name>tabindex</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -22488,7 +22627,9 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>The base direction of directionally neutral text.</description>
+      <description>The base direction of directionally neutral text. Valid values are "LTR" (left-to-right) and "RTL"
+        (right-to-left).
+      </description>
       <name>dir</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -22731,7 +22872,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A flag that enabled or disabled InputTextarea.</description>
+      <description>A flag that enables or disables the component.</description>
       <name>disabled</name>
       <deferred-value>
         <type>boolean</type>
@@ -22755,7 +22896,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>Position of the InputTextarea component in the tabbing order for the current document.</description>
+      <description>Position of the component in the focus transition chain for the current document.</description>
       <name>tabindex</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -23361,7 +23502,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A flag that enabled or disabled MenuItem.</description>
+      <description>A flag that enables or disables the component.</description>
       <name>disabled</name>
       <deferred-value>
         <type>boolean</type>
@@ -26865,7 +27006,8 @@ and it is automatically triggered on any form submission. -->
 
   <tag>
     <description>Turns on and allows customizing the box that is displayed when the mouse hovers over the event to show
-    event contents that might not fully fit in the normal event display.</description>
+      event contents that might not fully fit in the normal event display.
+    </description>
     <name>eventPreview</name>
     <tag-class>org.openfaces.taglib.jsp.timetable.EventPreviewJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -27695,7 +27837,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A flag that enabled or disabled Spinner.</description>
+      <description>A flag that enables or disables the component.</description>
       <name>disabled</name>
       <deferred-value>
         <type>boolean</type>
@@ -27728,7 +27870,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Position of the Spinner component in the tabbing order for the current document.</description>
+      <description>Position of the component in the focus transition chain for the current document.</description>
       <name>tabindex</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -28619,7 +28761,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A flag that enabled or disabled SelectBooleanCheckbox.</description>
+      <description>A flag that enables or disables the component.</description>
       <name>disabled</name>
       <deferred-value>
         <type>boolean</type>
@@ -28881,7 +29023,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Position of the SelectBooleanCheckbox component in the tabbing order for the current document.
+      <description>Position of the component in the focus transition chain for the current document.
       </description>
       <name>tabindex</name>
       <deferred-value>
@@ -28904,7 +29046,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>Direction of the SelectBooleanCheckbox text.
+      <description>The base direction of directionally neutral text. Valid values are "LTR" (left-to-right) and "RTL"
+        (right-to-left).
       </description>
       <name>dir</name>
       <deferred-value>
@@ -29330,10 +29473,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Flag indicating that this element must never receive focus or
-        be included in a subsequent submit. A value of false causes no attribute to be rendered,
-        while a value of true causes the attribute to be rendered as disabled="disabled".
-      </description>
+      <description>A flag that enables or disables the component.</description>
       <name>disabled</name>
       <deferred-value>
         <type>boolean</type>
@@ -29643,8 +29783,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>Direction indication for text that does not inherit directionality.
-        Valid values are "LTR" (left-to-right) and "RTL" (right-to-left).
+      <description>The base direction of directionally neutral text. Valid values are "LTR" (left-to-right) and "RTL"
+        (right-to-left).
       </description>
       <name>dir</name>
       <deferred-value>
@@ -30016,10 +30156,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Flag indicating that this element must never receive focus or
-        be included in a subsequent submit. A value of false causes no attribute to be rendered,
-        while a value of true causes the attribute to be rendered as disabled="disabled".
-      </description>
+      <description>A flag that enables or disables the component.</description>
       <name>disabled</name>
       <deferred-value>
         <type>boolean</type>
@@ -30331,8 +30468,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>Direction indication for text that does not inherit directionality.
-        Valid values are "LTR" (left-to-right) and "RTL" (right-to-left).
+      <description>The base direction of directionally neutral text. Valid values are "LTR" (left-to-right) and "RTL"
+        (right-to-left).
       </description>
       <name>dir</name>
       <deferred-value>

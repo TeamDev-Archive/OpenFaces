@@ -14,6 +14,8 @@ package org.openfaces.taglib.jsp.action;
 import org.openfaces.taglib.internal.action.CommandButtonTag;
 import org.openfaces.taglib.jsp.OUICommandJspTag;
 
+import javax.el.ValueExpression;
+
 /**
  * @author Dmitry Pikhulya
  */
@@ -21,5 +23,33 @@ public class CommandButtonJspTag extends OUICommandJspTag {
 
     public CommandButtonJspTag() {
         super(new CommandButtonTag());
+    }
+
+    public void setType(ValueExpression type) {
+        getDelegate().setPropertyValue("type", type);
+    }
+
+    public void setDisabled(ValueExpression disabled) {
+        getDelegate().setPropertyValue("disabled", disabled); 
+    }
+
+    public void setAccesskey(ValueExpression accesskey) {
+        getDelegate().setPropertyValue("accesskey", accesskey);
+    }
+
+    public void setTabindex(ValueExpression tabindex) {
+        getDelegate().setPropertyValue("tabindex", tabindex);
+    }
+
+    public void setLang(ValueExpression lang) {
+        getDelegate().setPropertyValue("lang", lang);
+    }
+
+    public void setTitle(ValueExpression title) {
+        getDelegate().setPropertyValue("title", title);
+    }
+
+    public void setAlt(ValueExpression alt) {
+        getDelegate().setPropertyValue("alt", alt);
     }
 }

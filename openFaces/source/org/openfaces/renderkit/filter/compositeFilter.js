@@ -102,12 +102,21 @@ O$.CompositeFilter = {
       },
 
       _ajaxResponseProcessor: function(filter, portionName, portionHTML, portionScripts) {
+        function focusLastField(container) {
+          var fc = O$.getLastFocusableControl(container, function(el) {
+            // don't auto-focus add/remove buttons
+            return !(el.nodeName.toLowerCase() == "input" && el.type == "button");
+          });
+          if (fc)
+            fc.focus();
+        }
+
         var index, rowContainer;
         var newNode = O$.CompositeFilter._htmlToNode(portionHTML);
         if (portionName.match("newRow")) {
-
           filter._removeAddButton();
           filter.appendChild(newNode);
+          focusLastField(newNode);
           var noFilterRowContainer = filter._noFilterRowContainer();
           if (noFilterRowContainer) {
             filter.removeChild(noFilterRowContainer);
@@ -124,6 +133,7 @@ O$.CompositeFilter = {
             O$.removeAllChildNodes(filter);
             filter.appendChild(newNode);
           }
+          focusLastField(filter);
 
         } else if (portionName.match("removedFilter")) {
           O$.removeAllChildNodes(filter);
@@ -134,8 +144,7 @@ O$.CompositeFilter = {
           var newNode2 = newNodes[1];
           index = portionName.split(":")[1];
           rowContainer = filter._rowContainer(index);
-          var oldNode1 =
-                  filter._inverseContainer(rowContainer);
+          var oldNode1 = filter._inverseContainer(rowContainer);
           var deleteButton = filter._deleteButton(rowContainer);
 
           if (oldNode1 != null) {
@@ -157,6 +166,8 @@ O$.CompositeFilter = {
           if (parametersEditorContainer) {
             rowContainer.removeChild(parametersEditorContainer);
           }
+          
+          focusLastField(rowContainer);
 
         } else if (portionName.match("parameters")) {
           index = portionName.split(":")[1];
@@ -169,7 +180,7 @@ O$.CompositeFilter = {
             deleteButton = filter._deleteButton(rowContainer);
             rowContainer.insertBefore(newNode, deleteButton);
           }
-
+          focusLastField(rowContainer);
         }
         O$.executeScripts(portionScripts);
       }

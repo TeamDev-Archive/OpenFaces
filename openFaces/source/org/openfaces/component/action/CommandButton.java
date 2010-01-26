@@ -12,6 +12,9 @@
 package org.openfaces.component.action;
 
 import org.openfaces.component.OUICommand;
+import org.openfaces.util.ValueBindings;
+
+import javax.faces.context.FacesContext;
 
 /**
  * This component is under construction. API is subject to change. Please avoid using this component in a production
@@ -23,11 +26,96 @@ public class CommandButton extends OUICommand {
     public static final String COMPONENT_TYPE = "org.openfaces.CommandButton";
     public static final String COMPONENT_FAMILY = "org.openfaces.CommandButton";
 
+    private Boolean disabled;
+    private String type;
+    private String accesskey;
+    private String tabindex;
+    private String lang;
+    private String title;
+    private String alt;
+
     public CommandButton() {
         setRendererType("org.openfaces.CommandButtonRenderer");
     }
 
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        return new Object[]{
+                super.saveState(context),
+                disabled,
+                type,
+                accesskey,
+                tabindex,
+                lang,
+                title,
+                alt
+        };
+    }
+
+    @Override
+    public void restoreState(FacesContext context, Object object) {
+        Object[] state = (Object[]) object;
+        int i = 0;
+        super.restoreState(context, state[i++]);
+        disabled = (Boolean) state[i++];
+        type = (String) state[i++];
+        accesskey = (String) state[i++];
+        tabindex = (String) state[i++];
+        lang = (String) state[i++];
+        title = (String) state[i++];
+        alt = (String) state[i++];
+
+    }
+
+    public String getType() {
+        return ValueBindings.get(this, "type", type, "submit");
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getAccesskey() {
+        return ValueBindings.get(this, "accesskey", accesskey);
+    }
+
+    public void setAccesskey(String accesskey) {
+        this.accesskey = accesskey;
+    }
+
+    public String getTabindex() {
+        return ValueBindings.get(this, "tabindex", tabindex);
+    }
+
+    public void setTabindex(String tabindex) {
+        this.tabindex = tabindex;
+    }
+
+    public String getLang() {
+        return ValueBindings.get(this, "lang", lang);
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
+    public String getTitle() {
+        return ValueBindings.get(this, "title", title);
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAlt() {
+        return ValueBindings.get(this, "alt", alt);
+    }
+
+    public void setAlt(String alt) {
+        this.alt = alt;
     }
 }
