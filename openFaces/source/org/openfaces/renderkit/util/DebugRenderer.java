@@ -14,15 +14,16 @@ package org.openfaces.renderkit.util;
 import org.openfaces.component.LoadingMode;
 import org.openfaces.component.panel.TabbedPane;
 import org.openfaces.component.panel.TabbedPaneItem;
+import org.openfaces.component.table.Column;
 import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.Scrolling;
-import org.openfaces.component.table.Column;
 import org.openfaces.component.util.Debug;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.CompoundComponentRenderer;
 import org.openfaces.renderkit.window.WindowRenderer;
 import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
@@ -87,9 +88,11 @@ public class DebugRenderer extends WindowRenderer implements CompoundComponentRe
                 context, panelGrid, DataTable.COMPONENT_TYPE, "log");
         Scrolling scrolling = new Scrolling();
         logTable.getChildren().add(scrolling);
-        scrolling.setHorizontal(true);
         logTable.getChildren().add(new ColumnResizing());
-        logTable.setStyle("width: 100%; height: 100%;");
+        if (EnvironmentUtil.isExplorer())
+            logTable.setStyle("width: 100%");
+        else
+            logTable.setStyle("width: 100%; height: 100%;");
         logTable.setVerticalGridLines("1px solid gray");
         Column col1 = new Column();
         col1.setStyle("width: 150px");

@@ -2694,6 +2694,7 @@ if (!window.O$) {
       } else { // all others
         styleSheet.insertRule(strRule, styleSheet.cssRules.length);
       }
+      return styleSheet;
     } catch (e) {
       O$.logError("O$.addCssRule throw an exception " + (e ? e.message : e) +
                   "; tried to add the following rule: " + strRule);
@@ -2709,11 +2710,30 @@ if (!window.O$) {
         document._cachedDynamicCssRules = {};
       var cachedClassName = document._cachedDynamicCssRules[declaration];
       if (cachedClassName)
-        return;
+        return cachedClassName;
     }
     var className = "of_dynamicRule" + O$._dynamicRulesCreated++;
-    var ruleText = "." + className + " {" + declaration + "}";
-    O$.addCssRule(ruleText);
+    var selector = "." + className;
+    var ruleText = selector + " {" + declaration + "}";
+    var styleSheet = O$.addCssRule(ruleText);
+    if (!styleSheet)
+      return null;
+    var rules = styleSheet.cssRules ? styleSheet.cssRules : styleSheet.rules;
+    var sel_lc = selector.toLowerCase();
+    var rule = null;
+    for (var i = rules.length - 1; i >= 0; i--) {
+      var r = rules[i];
+      var sel = r.selectorText;
+      if (sel && sel.toLowerCase() == sel_lc) {
+        rule = r;
+        break;
+      }
+    }
+    if (rule) {
+      if (!O$._cssRulesBySelectors) O$._cssRulesBySelectors = {};
+      O$._cssRulesBySelectors[selector] = [rule];
+    }
+
     if (!disableCaching) {
       document._cachedDynamicCssRules[declaration] = className;
     }
@@ -2971,12 +2991,13 @@ if (!window.O$) {
       var dashizedPropertyName = O$._dashizeCssPropertyName(capitalizedPropertyName);
 
       var propertyValue = undefined;
-      if (enableValueCaching)
+      if (enableValueCaching) {
         propertyValue = element._cachedStyleValues[dashizedPropertyName];
-      if (propertyValue != undefined) {
-        propertyValues[dashizedPropertyName] = propertyValue;
-        propertyValues[capitalizedPropertyName] = propertyValue;
-        continue;
+        if (propertyValue != undefined) {
+          propertyValues[dashizedPropertyName] = propertyValue;
+          propertyValues[capitalizedPropertyName] = propertyValue;
+          continue;
+        }
       }
 
       if (currentStyle) {
@@ -3637,6 +3658,7 @@ if (!window.O$) {
    */
   O$.isContainingBlock = function(elt) {
     O$.assert(elt, "elt is null");
+    if (elt._containingBlock != undefined) return elt._containingBlock;
     if (elt == document) {
       // O$.calculateElementStyleProperty fails to determine position on the document element, and
       // document element can't have a non-static position
@@ -3644,7 +3666,7 @@ if (!window.O$) {
     }
     var position = O$.getElementStyle(elt, "position");
     if (!position) return false;
-    return position != "static";
+    return elt._containingBlock = position != "static";
   };
 
 
@@ -3813,10 +3835,8 @@ if (!window.O$) {
       var borderName = capitalizedPropertyName.substring(0, capitalizedPropertyName.length - "Width".length);
       var borderStyleName = borderName + "Style";
       if (O$.isOpera()) {
-        if (O$.getElementStyle(element, borderStyleName) == "none") {
-          //          if (O$.debug)O$.debug.log(element.nodeName + "; id=" + element.id + "; className=" + element.className +"; border: " + O$.getElementStyle(element, borderName));
+        if (O$.getElementStyle(element, borderStyleName) == "none")
           return 0;
-        }
       } else if (O$.isExplorer()) {
         var borderWidthName = borderName + "Width";
         if (O$.getElementStyle(element, borderStyleName) == "none" &&

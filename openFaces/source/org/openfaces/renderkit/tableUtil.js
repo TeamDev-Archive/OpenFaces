@@ -14,8 +14,8 @@ O$.Tables = {
 
   // -------------------------- COMMON UTILITIES
 
-  _getUserStylePropertyValue: function(element, propertyName, defaultValue1, defaultValue2) {
-    var value = O$.getElementStyle(element, propertyName);
+  _getUserStylePropertyValue: function(propertyValues, propertyName, defaultValue1, defaultValue2) {
+    var value = propertyValues[propertyName];
     if (!value || value == defaultValue1 || value == defaultValue2)
       return null;
     return value;
@@ -40,14 +40,14 @@ O$.Tables = {
     var cellIndex, cellCount, cell;
     if (!O$.isExplorer()) {
       var paddingNames = ["padding-left", "padding-right", "padding-top", "padding-bottom"];
-      var paddings = {};
-      paddingNames.forEach(function(n) {
-        paddings[n] = O$.Tables._getUserStylePropertyValue(row, n, "0px");
-      });
+
+      var paddings = O$.getElementStyle(row, paddingNames);
+
       var lineHeight = O$.Tables._getUserClassPropertyValue(row, "line-height", "normal");
 
       if (paddingNames.some(function (n) {
-        return paddings[n];
+        var padding = paddings[n];
+        return padding && padding != "0px";
       }) || lineHeight) {
         for (cellIndex = 0,cellCount = cells.length; cellIndex < cellCount; cellIndex++) {
           cell = cells[cellIndex];
@@ -1611,8 +1611,11 @@ O$.Tables = {
     column.getDeclaredWidth = function(tableWidth) {
       if (tableWidth == undefined)
         tableWidth = table.offsetWidth;
-      tableWidth -= O$.getNumericElementStyle(table, "border-left-width", true);
-      tableWidth -= O$.getNumericElementStyle(table, "border-right-width", true);
+      if (table._verticalBordersWidth == undefined) {
+        table._verticalBordersWidth = O$.getNumericElementStyle(table, "border-left-width", true) +
+                                      O$.getNumericElementStyle(table, "border-right-width", true);
+      }
+      tableWidth -= table._verticalBordersWidth;
       var widthStyleStr = O$.getStyleClassProperty(this._className, "width");
       var colWidth = O$.calculateNumericCSSValue(widthStyleStr, tableWidth);
       if (widthStyleStr && widthStyleStr.indexOf("%") != -1)
@@ -1874,13 +1877,14 @@ O$.Tables = {
       if (!cellStyles) cellStyles = {};
       cellStyles.width = colStyleProperties.width;
       cellStyles.textAlign = colStyleProperties.textAlign;
-      cellStyles.verticalAlign = O$.Tables._getUserStylePropertyValue(colTag, "vertical-align", "baseline", "auto");
+      var values = O$.getElementStyle(colTag, ["vertical-align", "line-height", "padding-left", "padding-right", "padding-top", "padding-bottom"]);
+      cellStyles.verticalAlign = O$.Tables._getUserStylePropertyValue(values, "vertical-align", "baseline", "auto");
       cellStyles.lineHeight = O$.Tables._getUserClassPropertyValue(colTag, "line-height", "normal");
 
-      cellStyles.paddingLeft = O$.Tables._getUserStylePropertyValue(colTag, "padding-left", "0px");
-      cellStyles.paddingRight = O$.Tables._getUserStylePropertyValue(colTag, "padding-right", "0px");
-      cellStyles.paddingTop = O$.Tables._getUserStylePropertyValue(colTag, "padding-top", "0px");
-      cellStyles.paddingBottom = O$.Tables._getUserStylePropertyValue(colTag, "padding-bottom", "0px");
+      cellStyles.paddingLeft = O$.Tables._getUserStylePropertyValue(values, "padding-left", "0px");
+      cellStyles.paddingRight = O$.Tables._getUserStylePropertyValue(values, "padding-right", "0px");
+      cellStyles.paddingTop = O$.Tables._getUserStylePropertyValue(values, "padding-top", "0px");
+      cellStyles.paddingBottom = O$.Tables._getUserStylePropertyValue(values, "padding-bottom", "0px");
 
       cellStyles.color = colStyleProperties.color;
       cellStyles.fontWeight = colStyleProperties.fontWeight;
