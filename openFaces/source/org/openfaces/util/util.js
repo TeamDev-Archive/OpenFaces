@@ -2973,7 +2973,7 @@ if (!window.O$) {
         var result = (currentStyle = element.currentStyle)
                 ? currentStyle[O$._capitalizeCssPropertyName(propertyNames)]
                 : (computedStyle = !currentStyle && document.defaultView && document.defaultView.getComputedStyle(element, ""))
-                  ? computedStyle.getPropertyValue(O$._dashizeCssPropertyName(propertyNames)) : "";
+                ? computedStyle.getPropertyValue(O$._dashizeCssPropertyName(propertyNames)) : "";
         return result ? result : "";
       }
       return O$.getElementStyle(element, [propertyNames], enableValueCaching)[propertyNames];
@@ -3182,6 +3182,16 @@ if (!window.O$) {
       return;
     if (zIndexIncrement === undefined)
       zIndexIncrement = 1;
+    if (element.parentNode && (element.offsetParent == O$.getDefaultAbsolutePositionParent())) {
+      var ref = referenceElement;
+      var elt = ref;
+      while (elt && elt.offsetParent && elt.offsetParent != element.offsetParent) {
+        elt = elt.offsetParent;
+        if (O$.getElementStyle(elt, "position") != "static")
+          ref = elt;
+      }
+      referenceElement = ref;
+    }
     var zIndex = O$.getElementZIndex(element);
     var refZIndex = referenceElement._maxZIndex ? referenceElement._maxZIndex : O$.getElementZIndex(referenceElement);
     if (zIndex <= refZIndex)
@@ -3461,9 +3471,12 @@ if (!window.O$) {
   O$.getCuttingContainingRectangle = function(element, cachedDataContainer) {
     var left, right, top, bottom;
 
+    var position = O$.getElementStyle(element, "position");
+    if (position != "static" && !(O$.isExplorer() && O$.isQuirksMode()))
+      return O$.getVisibleAreaRectangle();
     while (true) {
-      var container = O$.getContainingBlock(element, true);
-      if (!container)
+      var container = element.parentNode;
+      if (!container || container == document)
         break;
       var overflowX = O$.getElementStyle(container, "overflow-x");
       var overflowY = O$.getElementStyle(container, "overflow-y");
@@ -3930,6 +3943,21 @@ if (!window.O$) {
   O$.BOTTOM = "bottom";
   O$.BELOW = "below";
 
+  /**
+   *
+   *
+   * @param popup
+   * @param element
+   * @param horizAlignment
+   * @param vertAlignment
+   * @param horizDistance
+   * @param vertDistance
+   * @param ignoreVisibleArea missing or false declaration will use position the popup relatively the visible portion of
+   *                          the reference element (e.g. when it is partially occluded due to scrolling and hidden
+   *                          overflow declarations)
+   * @param disableRepositioning
+   * @param repositioningAttempt
+   */
   O$.alignPopupByElement = function(
           popup, element, horizAlignment, vertAlignment,
           horizDistance, vertDistance, ignoreVisibleArea,
@@ -3945,8 +3973,8 @@ if (!window.O$) {
     var elementRect = function() {
       if (element != window)
         return ignoreVisibleArea
-            ? O$.getElementBorderRectangle(element)
-            : O$.getVisibleElementBorderRectangle(element);
+                ? O$.getElementBorderRectangle(element)
+                : O$.getVisibleElementBorderRectangle(element);
       return O$.getVisibleAreaRectangle();
     }();
     var popupSize = O$.getElementSize(popup);
@@ -4035,6 +4063,8 @@ if (!window.O$) {
       var containerRect = O$.getElementPaddingRectangle(popupContainer);
       x -= containerRect.x;
       y -= containerRect.y;
+      if (popupContainer.scrollLeft) x += containerRect.scrollLeft;
+      if (containerRect.scrollTop) y += containerRect.scrollTop;
     }
     if (popup.setLeft) {
       popup.setLeft(x);

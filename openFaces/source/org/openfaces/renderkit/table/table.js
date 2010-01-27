@@ -1922,7 +1922,7 @@ O$.ColumnMenu = {
           var rightOffset = O$.getNumericElementStyle(cell, "border-right-width");
           var bottomOffset = O$.getNumericElementStyle(cell, "border-bottom-width");
           O$.setElementHeight(this, O$.getElementSize(cell).height - bottomOffset);
-          O$.alignPopupByElement(this, cell, O$.RIGHT, O$.TOP, rightOffset, 0, true, true);
+          O$.alignPopupByElement(this, cell, O$.RIGHT, O$.TOP, rightOffset, 0, false, true);
           this._showForCell = cell;
         },
         hideForCell: function(cell) {
@@ -1965,6 +1965,10 @@ O$.ColumnMenu = {
       O$.correctElementZIndex(columnMenu, currentColumn._resizeHandle);
       table._showingMenuForColumn = currentColumn;
       columnMenu._column = currentColumn;
+      if (columnMenu.parentNode != O$.getDefaultAbsolutePositionParent()) {
+        O$.getDefaultAbsolutePositionParent().appendChild(columnMenu);
+        O$.correctElementZIndex(columnMenu, columnMenuButton);
+      }
       columnMenu._showByElement(columnMenuButtonTable, O$.LEFT, O$.BELOW, 0, 0);
       var prevOnhide = columnMenu.onhide;
       var headerCell = currentColumn.header._cell;
