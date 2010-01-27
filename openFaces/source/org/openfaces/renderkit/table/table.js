@@ -1399,7 +1399,7 @@ O$.Table = {
             resizeDecorator._column = this._column;
 
             resizeDecorator._updatePos = function() {
-              var cellPos = O$.getElementBorderRectangle(headerCell, true);
+              var cellPos = O$.getElementBorderRectangle(headerCell, resizeHandle);
               var tablePos = O$.getElementPos(table, true);
 
               this.style.top = cellPos.getMinY() + "px";
@@ -1408,7 +1408,7 @@ O$.Table = {
               this.style.height = tablePos.y + table.offsetHeight - cellPos.getMinY() + "px";
             };
             //            resizeDecorator._updatePos();
-            this._dragStartCellPos = O$.getElementBorderRectangle(headerCell, true);
+            this._dragStartCellPos = O$.getElementBorderRectangle(headerCell, this);
           },
           setLeft: function(left) {
             this.style.left = left + "px";
@@ -1502,10 +1502,10 @@ O$.Table = {
                 parentColumn = col._parentColumn;
             }
             var bottomCell = this._column.subHeader ? this._column.subHeader._cell : this._column.header._cell;
-            var bottomCellPos = O$.getElementBorderRectangle(bottomCell, true);
+            var bottomCellPos = O$.getElementBorderRectangle(bottomCell, this);
             var topCellPos = parentColumn
-                    ? O$.getElementBorderRectangle(parentColumn.header._cell, true)
-                    : O$.getElementBorderRectangle(this._column.header._cell, true);
+                    ? O$.getElementBorderRectangle(parentColumn.header._cell, this)
+                    : O$.getElementBorderRectangle(this._column.header._cell, this);
 
             var minY = topCellPos.getMinY();
             var x = bottomCellPos.getMaxX() - Math.floor(resizeHandleWidth / 2) - 1 + resizeHandleOffset;

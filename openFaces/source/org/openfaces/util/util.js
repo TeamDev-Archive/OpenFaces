@@ -3348,7 +3348,7 @@ if (!window.O$) {
       top = rect.top;
       var containingBlock;
       if (relativeToContainingBlock) {
-        containingBlock = O$.getContainingBlock(element, true);
+        containingBlock = relativeToContainingBlock === true ? O$.getContainingBlock(element, true) : relativeToContainingBlock.offsetParent;
         if (containingBlock) {
           var containingRect = containingBlock.getBoundingClientRect();
           left += containingBlock.scrollLeft - containingRect.left - containingBlock.clientLeft;
@@ -3370,6 +3370,12 @@ if (!window.O$) {
         }
       }
       return {x: left, y: top};
+    }
+
+    if (relativeToContainingBlock && relativeToContainingBlock !== true) {
+      var pos = O$.getElementPos(element);
+      var containerPos = O$.getElementPos(relativeToContainingBlock.offsetParent);
+      return {x: pos.x - containerPos.x, y: pos.y - containerPos.y};
     }
 
     left = top = 0;
@@ -4063,8 +4069,8 @@ if (!window.O$) {
       var containerRect = O$.getElementPaddingRectangle(popupContainer);
       x -= containerRect.x;
       y -= containerRect.y;
-      if (popupContainer.scrollLeft) x += containerRect.scrollLeft;
-      if (containerRect.scrollTop) y += containerRect.scrollTop;
+      if (popupContainer.scrollLeft) x += popupContainer.scrollLeft;
+      if (containerRect.scrollTop) y += popupContainer.scrollTop;
     }
     if (popup.setLeft) {
       popup.setLeft(x);
