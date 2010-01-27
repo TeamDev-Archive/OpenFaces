@@ -2127,7 +2127,7 @@ O$.Tables = {
 
     alignColumnWidths();
     if (table._relayoutRelativeWidthColumns)
-      setTimeout(alignColumnWidths, 1);
+      setTimeout(alignColumnWidths, 100);
 
     function fixBodyHeight() {
       var fixture = O$.fixElement(table.body._sectionTable, {

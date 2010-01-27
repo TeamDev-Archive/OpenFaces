@@ -346,6 +346,12 @@ O$.DropDown = {
   _initPopup: function(dropDown, calendar) {
     var repaintDropDown = false;
     var popup = dropDown._popup;
+    var container = O$.getDefaultAbsolutePositionParent();
+    if (O$.isExplorer() && O$.isQuirksMode() && dropDown._popup.parentNode != container) {
+      // prevent clipping the drop-down with parent nodes with hidden overflow (possible only in IE+quirks)
+      // (e.g. scrollable table header might prevent drop-down filter popup from displaying fully) 
+      container.appendChild(dropDown._popup);
+    }
 
     var sizeChanged = false;
     if (calendar) {
