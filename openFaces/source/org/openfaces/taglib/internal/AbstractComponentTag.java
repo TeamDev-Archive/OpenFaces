@@ -389,7 +389,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
             return;
         }
         if (!setPropertyAsBinding(component, propertyName, value)) {
-            Collection<String> collection = Arrays.asList(value.trim().split(" "));
+            Collection<String> collection = Arrays.asList(value.trim().split(" +"));
             component.getAttributes().put(propertyName, collection);
         }
     }
