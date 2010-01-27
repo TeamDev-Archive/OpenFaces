@@ -45,6 +45,9 @@ O$.PopupMenu = {
     var popupMenu = O$.initComponent(popupMenuId, {rollover: rolloverClass}, {
       show: function() {
         finishInitialization();
+        setTimeout(function() {
+          O$.addIETransparencyControl(popupMenu);
+        }, 1);
         this.style.visibility = "visible";
         this.style.display = "block";
         O$.PopupMenu._initIEWidthWorkaround(this);
@@ -54,6 +57,7 @@ O$.PopupMenu = {
 
       hide: function() {
         finishInitialization();
+        O$.removeIETransparencyControl(popupMenu);
         this.closeChildMenus();
         if (O$.PopupMenu._getStyleProperty(this, "visibility") != "hidden" &&
             O$.PopupMenu._getStyleProperty(this, "display") != "none") {

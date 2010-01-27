@@ -4203,10 +4203,14 @@ if (!window.O$) {
     // to support transparency of the popup itself
 
     iframe._updatePositionAndSize = function() {
-      iframe.style.width = popup.offsetWidth + "px";
-      iframe.style.height = popup.offsetHeight + "px";
-      iframe.style.left = popup.offsetLeft + "px";
-      iframe.style.top = popup.offsetTop + "px";
+      if (this.parentNode != popup.parentNode) {
+        popup.parentNode.appendChild(this);
+      }
+      this.style.width = popup.offsetWidth + "px";
+      this.style.height = popup.offsetHeight + "px";
+      this.style.left = popup.offsetLeft + "px";
+      this.style.top = popup.offsetTop + "px";
+      O$.correctElementZIndex(this, popup);
     };
 
     var popupZIndex = O$.getElementStyle(popup, "z-index");
