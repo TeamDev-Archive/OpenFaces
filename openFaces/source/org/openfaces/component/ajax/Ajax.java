@@ -12,7 +12,6 @@
 package org.openfaces.component.ajax;
 
 import org.openfaces.component.OUIClientAction;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.StyleUtil;
 import org.openfaces.util.ValueBindings;
 
@@ -162,8 +161,7 @@ public class Ajax extends UICommand implements OUIClientAction {
 
     @Override
     public Object saveState(FacesContext context) {
-        Object superState = super.saveState(context);
-        AjaxUtil.addJSLinks(context, getParent());
+        Object superState = super.saveState(context);        
         StyleUtil.requestDefaultCss(FacesContext.getCurrentInstance());
 
         return new Object[]{superState,
