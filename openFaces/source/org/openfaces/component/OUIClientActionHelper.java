@@ -77,7 +77,7 @@ public abstract class OUIClientActionHelper {
         if (action.isStandalone() || action.getFor() != null ||
                 parent instanceof HtmlCommandButton || parent instanceof HtmlCommandLink) {
             if (context.getResponseWriter() != null) {
-                AjaxUtil.addJSLinks(context, parent);
+                AjaxUtil.renderJSLinks(context, (UIComponent) action);
                 StyleUtil.requestDefaultCss(context);
             }
             return;
@@ -85,7 +85,7 @@ public abstract class OUIClientActionHelper {
 
         String script = getClientActionScript(context, action);
         if (context.getResponseWriter() != null) {
-            AjaxUtil.addJSLinks(context, parent);
+            AjaxUtil.renderJSLinks(context, (UIComponent) action);
             StyleUtil.requestDefaultCss(context);
         }
 

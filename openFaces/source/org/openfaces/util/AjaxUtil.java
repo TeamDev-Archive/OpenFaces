@@ -223,12 +223,12 @@ public class AjaxUtil {
     }
 
     public static void prepareComponentForAjax(FacesContext context, UIComponent component) {
-        if (addJSLinks(context, component)) {
+        if (renderJSLinks(context, component)) {
             makeComponentsNonTransient(context, component);
         }
     }
 
-    public static boolean addJSLinks(FacesContext context, UIComponent component) {
+    public static boolean renderJSLinks(FacesContext context, UIComponent component) {
         if (!component.isRendered())
             return false;
 
