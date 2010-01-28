@@ -49,7 +49,23 @@ O$.Table = {
 
       getCurrentColumn: function() {
         return this._showingMenuForColumn ? this._showingMenuForColumn : null;
+      },
+      _loadRows: function() {
+        O$.requestComponentPortions(this.id, ["rows"], null, function(table, portionName, portionHTML, portionScripts, portionData) {
+          if(portionName != "rows") throw "Unknown portionName: " + portionName;
+          table.body._removeAllRows();
+          O$.Table._acceptLoadedRows(table, portionName, portionHTML, portionScripts, portionData);
+        });
+      },
+      _addLoadedRows: function(rowsData) {
+        var newRows = this.__newRows;
+        var afterRowIndex = this.__afterRowIndex;
+        var newRowsToStylesMap = rowsData["rowStylesMap"];
+        var newRowCellsToStylesMap = rowsData["cellStylesMap"];
+
+        this._insertRowsAfter(afterRowIndex, newRows, newRowsToStylesMap, newRowCellsToStylesMap);
       }
+
     });
     if (table._commonTableFunctionsInitialized)
       return;
@@ -93,6 +109,9 @@ O$.Table = {
         if (section) section._rows = [];
       });
     };
+//    O$.addInternalLoadEvent(function() {
+//      table._loadRows();
+//    });
   },
 
   _initApiFunctions: function(table) {
@@ -190,6 +209,56 @@ O$.Table = {
   },
 
 
+  _acceptLoadedRows: function(table, portionName, portionHTML, portionScripts, portionData) {
+    var sepIdx = portionName.indexOf(":");
+    table.__afterRowIndex = sepIdx != -1 ? eval(portionName.substring(sepIdx + 1)) : -1;
+
+    var tempDiv = document.createElement("div");
+    tempDiv.style.display = "none";
+    tempDiv.innerHTML = "<table><tbody>" + portionHTML + "</tbody></table>";
+    var tableBody = tempDiv.getElementsByTagName("tbody")[0];
+    var children = tableBody.childNodes;
+    var newNodes = [];
+    for (var childIndex = 0, childCount = children.length; childIndex < childCount; childIndex++) {
+      var child = children[childIndex];
+      newNodes.push(child);
+    }
+
+    var newRows = [];
+    for (var nodeIndex = 0, nodeCount = newNodes.length; nodeIndex < nodeCount; nodeIndex++) {
+      var newNode = newNodes[nodeIndex];
+      var prnt = newNode.parentNode;
+      prnt.removeChild(newNode);
+      if (!newNode || !newNode.tagName)
+        continue;
+      var tagName = newNode.tagName.toLowerCase();
+      if (tagName == "tr") {
+        newRows.push(newNode);
+      }
+    }
+
+    var scrolling = table._params.scrolling;
+    if (scrolling) {
+      var compositeRows = [];
+      var i = 0, count = newRows.length;
+      while (i < count) {
+        var leftRowNode = scrolling.leftFixedCols ? newRows[i++] : null;
+        var centerRowNode = newRows[i++];
+        var rightRowNode = scrolling.rightFixedCols ? newRows[i++] : null;
+
+        compositeRows.push({
+          _leftRowNode: leftRowNode,
+          _rowNode: centerRowNode,
+          _rightRowNode: rightRowNode
+        });
+      }
+      newRows = compositeRows;
+    }
+    table.__newRows = newRows;
+
+    O$.executeScripts(portionScripts);
+    table._addLoadedRows(portionData);
+  },
 
   // -------------------------- KEYBOARD NAVIGATION SUPPORT
 
@@ -514,7 +583,7 @@ O$.Table = {
       if (e.pageUpPressed || e.pageDownPressed) {
         var scrollingAreaRect = O$.getElementClientRectangle(table.body._centerScrollingArea._scrollingDiv);
         var row = table.body._rowFromPoint(
-                scrollingAreaRect.x + 10, 
+                scrollingAreaRect.x + 10,
                 e.pageUpPressed ? scrollingAreaRect.getMinY() + 1 : scrollingAreaRect.getMaxY() - 1);
         if (!row) return O$.Table._getNeighboringVisibleRowIndex(table, idx, rowCount);
         var selectedRowY = null;

@@ -124,12 +124,12 @@ public abstract class CommonAjaxViewRoot {
             doProcessDecodes(context, this);
             broadcastForPhase(PhaseId.APPLY_REQUEST_VALUES);
         } catch (RuntimeException e) {
-            processExceptionDuringAjax(e);
+            processExceptionDuringAjax(context, e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
         } catch (Error e) {
-            processExceptionDuringAjax(e);
+            processExceptionDuringAjax(context, e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
@@ -155,12 +155,12 @@ public abstract class CommonAjaxViewRoot {
             doProcessValidators(context);
             broadcastForPhase(PhaseId.PROCESS_VALIDATIONS);
         } catch (RuntimeException e) {
-            processExceptionDuringAjax(e);
+            processExceptionDuringAjax(context, e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
         } catch (Error e) {
-            processExceptionDuringAjax(e);
+            processExceptionDuringAjax(context, e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
@@ -186,12 +186,12 @@ public abstract class CommonAjaxViewRoot {
             doProcessUpdates(context);
             broadcastForPhase(PhaseId.UPDATE_MODEL_VALUES);
         } catch (RuntimeException e) {
-            processExceptionDuringAjax(e);
+            processExceptionDuringAjax(context, e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
         } catch (Error e) {
-            processExceptionDuringAjax(e);
+            processExceptionDuringAjax(context, e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
@@ -217,12 +217,12 @@ public abstract class CommonAjaxViewRoot {
             doProcessApplication(context);
             broadcastForPhase(PhaseId.INVOKE_APPLICATION);
         } catch (RuntimeException e) {
-            processExceptionDuringAjax(e);
+            processExceptionDuringAjax(context, e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
         } catch (Error e) {
-            processExceptionDuringAjax(e);
+            processExceptionDuringAjax(context, e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
@@ -245,12 +245,12 @@ public abstract class CommonAjaxViewRoot {
             // in ajax response
             doEncodeChildren(context);
         } catch (RuntimeException e) {
-            processExceptionDuringAjax(e);
+            processExceptionDuringAjax(context, e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
         } catch (Error e) {
-            processExceptionDuringAjax(e);
+            processExceptionDuringAjax(context, e);
             if (e.getMessage() != null) {
                 Log.log(context, e.getMessage(), e);
             }
@@ -451,13 +451,13 @@ public abstract class CommonAjaxViewRoot {
         Map<String, Object> requestMap = externalContext.getRequestMap();
         if (requestMap.containsKey(AjaxViewHandler.SESSION_EXPIRATION_PROCESSING)) {
             handleSessionExpirationOnEncodeChildren(context, request);
-            releaseSyncObject();
+            releaseSyncObject(context);
             return;
         }
 
         if (AjaxUtil.isPortletRequest(context)) {
             renderPortletsAjaxResponse(context);
-            releaseSyncObject();
+            releaseSyncObject(context);
             return;
         }
 
@@ -475,7 +475,7 @@ public abstract class CommonAjaxViewRoot {
         Integer sequence = getSequenceIdForMyFaces(context);
         finishProcessAjaxRequest(context, request, response, components, sequence);
 
-        releaseSyncObject();
+        releaseSyncObject(context);
 
     }
 
@@ -552,8 +552,8 @@ public abstract class CommonAjaxViewRoot {
         }
     }
 
-    private static void releaseSyncObject() {
-        Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+    private static void releaseSyncObject(FacesContext context) {
+        Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
         // TODO [sanders] (Apr 1, 2009, 5:09 AM): Can't we synchronize on something shorter?.. :)
         // TODO [sanders] (Apr 1, 2009, 5:09 AM): Won't java.util.concurrent help?
         RequestsSyncObject syncObject = (RequestsSyncObject) sessionMap.get(AjaxViewHandler.SESSION_SYNCHRONIZATION);
@@ -600,9 +600,8 @@ public abstract class CommonAjaxViewRoot {
         return result;
     }
 
-    public static void processExceptionDuringAjax(Throwable exception) {
+    public static void processExceptionDuringAjax(FacesContext context, Throwable exception) {
         try {
-            FacesContext context = FacesContext.getCurrentInstance();
             ExternalContext externalContext = context.getExternalContext();
             Map<String, Object> requestMap = externalContext.getRequestMap();
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
@@ -628,7 +627,7 @@ public abstract class CommonAjaxViewRoot {
                 requestMap.put(AjaxViewHandler.ERROR_CAUSE_MESSAGE_HEADER, exception.getCause());
             }
         } finally {
-            releaseSyncObject();
+            releaseSyncObject(context);
         }
 
     }

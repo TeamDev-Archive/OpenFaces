@@ -103,12 +103,19 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
                     condition = FilterCondition.CONTAINS;
                 else {
                     BaseColumn column = (BaseColumn) parent;
-                    TableUtil.ColumnExpressionData data = TableUtil.getColumnExpressionData(column, (ValueExpression) filter.getExpression());
-                    Class type = data.getValueType();
-                    if (String.class.equals(type))
-                        condition = FilterCondition.CONTAINS;
-                    else
+                    if (expression instanceof ValueExpression) {
+                        TableUtil.ColumnExpressionData data = TableUtil.getColumnExpressionData(column, (ValueExpression) expression);
+                        Class type = data.getValueType();
+                        if (String.class.equals(type))
+                            condition = FilterCondition.CONTAINS;
+                        else
+                            condition = FilterCondition.EQUALS;
+                    } else {
+                        // it is allowed to specify expression as a string, e.g. in case of custom data providing,
+                        // in which case the actual filtering is performed by the application code so the condition
+                        // specified in the ValueExpression object doesn't matter 
                         condition = FilterCondition.EQUALS;
+                    }
                 }
             }
         }

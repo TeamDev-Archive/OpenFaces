@@ -18,11 +18,13 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.AbstractTableSelection;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.CheckboxColumn;
+import org.openfaces.component.table.Column;
 import org.openfaces.component.table.ColumnReordering;
 import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.Scrolling;
-import org.openfaces.component.table.Column;
 import org.openfaces.org.json.JSONArray;
+import org.openfaces.org.json.JSONObject;
+import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.CaptionButtonRenderer;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
@@ -40,6 +42,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +51,7 @@ import java.util.Map;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class AbstractTableRenderer extends RendererBase {
+public abstract class AbstractTableRenderer extends RendererBase implements AjaxPortionRenderer {
 
     private static final String DEFAULT_SORTED_COLUMN_CLASS = null;//"o_table_sorted_column";
     private static final String DEFAULT_SORTED_COLUMN_HEADER_CLASS = "o_table_sorted_column_header";
@@ -606,5 +610,87 @@ public abstract class AbstractTableRenderer extends RendererBase {
             CheckboxColumn checkboxColumn = ((CheckboxColumn) column);
             checkboxColumn.decodeSelectionFromIndexes(rowIndexes);
         }
+    }
+
+    public JSONObject encodeAjaxPortion(FacesContext context, UIComponent component, String portionName, JSONObject jsonParam) throws IOException {
+        if (!"rows".equals(portionName))
+            throw new FacesException("Unknown portion name: " + portionName);
+        AbstractTable table = (AbstractTable) component;
+        return serveDynamicRowsRequest(context, table, 0, Integer.MAX_VALUE);
+    }
+
+    protected JSONObject serveDynamicRowsRequest(
+            FacesContext context,
+            AbstractTable table,
+            int rowIndex,
+            int rowCount
+    ) throws IOException {
+        TableStructure tableStructure = createTableStructure(table);
+        ResponseWriter responseWriter = context.getResponseWriter();
+        Writer stringWriter = new StringWriter();
+        ResponseWriter clonedResponseWriter = responseWriter.cloneWithWriter(stringWriter);
+        context.setResponseWriter(clonedResponseWriter);
+        try {
+            if (rowCount > 0) {
+                List<BaseColumn> columns = table.getRenderedColumns();
+                List<BodyRow> rows = tableStructure.getBody().createRows(context, rowIndex + 1, rowCount, columns);
+                if (tableStructure.getScrolling() == null) {
+                    for (int i = 0, count = rows.size(); i < count; i++) {
+                        BodyRow row = rows.get(i);
+                        row.render(context, null);
+                    }
+                } else {
+                    if (rows.size() != 1)
+                        throw new IllegalStateException("There should be one pseudo-row in the scrollable version");
+                    BodyRow pseudoRow = rows.get(0);
+                    List<BodyCell> cells = pseudoRow.getCells();
+                    int ci = 0;
+                    List<BodyRow> leftRows = tableStructure.getLeftFixedCols() > 0 ? getScrollingAreaRows(cells.get(ci++)) : null;
+                    List<BodyRow> centerRows = getScrollingAreaRows(cells.get(ci++));
+                    List<BodyRow> rightRows = tableStructure.getRightFixedCols() > 0 ? getScrollingAreaRows(cells.get(ci)) : null;
+                    for (int i = 0, count = centerRows.size(); i < count; i++) {
+                        if (leftRows != null)
+                            leftRows.get(i).render(context, null);
+                        centerRows.get(i).render(context, null);
+                        if (rightRows != null)
+                            rightRows.get(i).render(context, null);
+                    }
+                }
+
+                AbstractTableSelection selection = table.getSelection();
+                if (selection != null)
+                    selection.encodeOnAjaxNodeFolding(context);
+                for (BaseColumn column : columns) {
+                    if (column instanceof CheckboxColumn)
+                        ((CheckboxColumn) column).encodeOnAjaxNodeFolding(context);
+                }
+            }
+        } finally {
+            context.setResponseWriter(responseWriter);
+        }
+        table.setRowIndex(-1);
+        responseWriter.write(stringWriter.toString());
+
+        JSONObject rowsInitInfo = new JSONObject();
+        fillDynamicRowsInitInfo(context, table, rowIndex, rowCount, tableStructure, rowsInitInfo);
+        
+        return rowsInitInfo;
+    }
+
+    private List<BodyRow> getScrollingAreaRows(BodyCell scrollingAreaCell) {
+        TableScrollingArea area = (TableScrollingArea) scrollingAreaCell.getContent();
+        return (List<BodyRow>) area.getRows();
+    }
+
+    protected void fillDynamicRowsInitInfo(FacesContext context,
+                                           AbstractTable table,
+                                           int rowIndex,
+                                           int addedRowCount,
+                                           TableStructure tableStructure,
+                                           JSONObject rowsInitInfo) {
+        Map<Object, String> rowStylesMap = tableStructure.getRowStylesMap();
+        Map<Object, String> cellStylesMap = tableStructure.getCellStylesMap();
+        RenderingUtil.addJsonParam(rowsInitInfo, "rowStylesMap", TableUtil.getStylesMapAsJSONObject(rowStylesMap));
+        RenderingUtil.addJsonParam(rowsInitInfo, "cellStylesMap", TableUtil.getStylesMapAsJSONObject(cellStylesMap));
     }
 }

@@ -103,6 +103,7 @@ public class FilterRow implements Serializable {
     private UIComponent createRowContainer(FacesContext context, CompositeFilter compositeFilter) {
         HtmlPanelGroup rowContainer = (HtmlPanelGroup) ComponentUtil.createChildComponent(
                 context, compositeFilter, HtmlPanelGroup.COMPONENT_TYPE, rowIdSuffix);
+        rowContainer.setLayout("block");
         rowContainer.setStyleClass(DEFAULT_ROW_CLASS);
 
         createDeleteButton(context, rowContainer, compositeFilter);

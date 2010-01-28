@@ -13,8 +13,6 @@ package org.openfaces.component.table;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -288,9 +286,6 @@ public abstract class TreeTableSelection extends AbstractTableSelection {
         TreeTable treeTable = getTreeTable();
         TreePath result = treeTable.getNodeKeyPath(index);
         return result;
-    }
-
-    public void encodeOnAjaxNodeFolding(FacesContext context) throws IOException {
     }
 
 

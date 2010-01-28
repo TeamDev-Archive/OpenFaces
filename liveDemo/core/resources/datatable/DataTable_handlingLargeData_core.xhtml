@@ -15,7 +15,7 @@
                  styleClass="cities">
       <o:singleRowSelection/>
 
-      <o:column header="City" sortingExpression="#{city.name}"
+      <o:column id="name" header="City" sortingExpression="#{city.name}"
                 bodyStyle="padding-left: 10px;">
         <f:facet name="subHeader">
           <o:inputTextFilter expression="name"/>
@@ -23,7 +23,7 @@
         <h:outputText value="#{city.name}"/>
       </o:column>
 
-      <o:column header="Population" sortingExpression="#{city.population}"
+      <o:column id="population" header="Population" sortingExpression="#{city.population}"
                 style="width: 20%;"
                 bodyStyle="text-align: right; padding-right: 15px;">
         <f:facet name="subHeader">
@@ -34,7 +34,7 @@
         </h:outputText>
       </o:column>
 
-      <o:column header="Country" sortingExpression="#{city.country}"
+      <o:column id="country" header="Country" sortingExpression="#{city.country}"
                 style="width: 40%;"
                 bodyStyle="padding-left: 10px;">
         <f:facet name="subHeader">

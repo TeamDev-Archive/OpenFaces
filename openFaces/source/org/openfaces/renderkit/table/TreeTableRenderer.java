@@ -13,17 +13,13 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
-import org.openfaces.component.table.CheckboxColumn;
-import org.openfaces.component.table.NodeInfoForRow;
 import org.openfaces.component.table.TreeColumn;
 import org.openfaces.component.table.TreePath;
 import org.openfaces.component.table.TreeTable;
-import org.openfaces.component.table.TreeTableSelection;
+import org.openfaces.component.table.NodeInfoForRow;
 import org.openfaces.org.json.JSONArray;
-import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
-import org.openfaces.renderkit.AjaxPortionRenderer;
-import org.openfaces.renderkit.TableUtil;
+import org.openfaces.org.json.JSONException;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
@@ -35,8 +31,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -46,7 +40,7 @@ import java.util.Set;
 /**
  * @author Dmitry Pikhulya
  */
-public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPortionRenderer {
+public class TreeTableRenderer extends AbstractTableRenderer {
     private static final String DEFAULT_AUXILARY_NODE_CLASS = "o_treetable_auxilary_node";
     private static final String SUB_ROWS_PORTION = "subRows:";
     private static final String DEFAULT_FOLDING_CLASS = "o_treetable_folding";
@@ -140,35 +134,6 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         return result;
     }
 
-    private JSONObject formatNodeParams(TreeTable treeTable, FacesContext context, int fromRowIndex, int rowCount) {
-        JSONObject result = new JSONObject();
-        Map<Object, NodeInfoForRow> map = treeTable.getNodeExpansionDataMap(context);
-        Set<Map.Entry<Object, NodeInfoForRow>> entries = map.entrySet();
-        for (Map.Entry<Object, NodeInfoForRow> entry : entries) {
-            Object rowIndex = entry.getKey();
-            if (fromRowIndex != -1) {
-                if (!(rowIndex instanceof Integer))
-                    continue;
-                int intRowIndex = (Integer) rowIndex;
-                if (intRowIndex < fromRowIndex || intRowIndex >= fromRowIndex + rowCount)
-                    continue;
-                intRowIndex -= fromRowIndex;
-                rowIndex = intRowIndex;
-            }
-            NodeInfoForRow expansionData = entry.getValue();
-            boolean nodeHasChildren = expansionData.getNodeHasChildren();
-            Object childCount = nodeHasChildren
-                    ? (expansionData.getChildrenPreloaded() ? String.valueOf(expansionData.getChildNodeCount()) : "?")
-                    : 0;
-            try {
-                result.put(String.valueOf(rowIndex), childCount);
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return result;
-    }
-
     @Override
     public void decode(FacesContext context, UIComponent component) {
         super.decode(context, component);
@@ -244,17 +209,15 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         return ((TreeTable) table).getTextClass();
     }
 
-    private List<BodyRow> getScrollingAreaRows(BodyCell scrollingAreaCell) {
-        TableScrollingArea area = (TableScrollingArea) scrollingAreaCell.getContent();
-        return (List<BodyRow>) area.getRows();
-    }
-
     public JSONObject encodeAjaxPortion(
             FacesContext context,
             UIComponent component,
             String portionName,
             JSONObject jsonParam
     ) throws IOException {
+        if (portionName.equals("rows")) {
+            return super.encodeAjaxPortion(context, component, portionName, jsonParam);
+        }
         if (!portionName.startsWith(SUB_ROWS_PORTION))
             throw new IllegalArgumentException("Unknown portionName: " + portionName);
         String portionNameSuffix = portionName.substring(SUB_ROWS_PORTION.length());
@@ -268,70 +231,50 @@ public class TreeTableRenderer extends AbstractTableRenderer implements AjaxPort
         }
         int addedRowCount = rowAvailableAfterRestoring ? treeTable.loadSubNodes(rowIndex) : 0;
 
-        TableStructure tableStructure = createTableStructure(treeTable);
-        ResponseWriter responseWriter = context.getResponseWriter();
-        Writer stringWriter = new StringWriter();
-        ResponseWriter clonedResponseWriter = responseWriter.cloneWithWriter(stringWriter);
-        context.setResponseWriter(clonedResponseWriter);
-        try {
-            if (addedRowCount > 0) {
-                List<BaseColumn> columns = treeTable.getRenderedColumns();
-                Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos =
-                        (Map<Integer, CustomRowRenderingInfo>) treeTable.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
-                for (int i = treeTable.getRowCount(); i > rowIndex; i--) {
-                    CustomRowRenderingInfo rowInfo = customRowRenderingInfos.remove(i);
-                    if (rowInfo == null)
-                        continue;
-                    customRowRenderingInfos.put(i + addedRowCount, rowInfo);
-                }
-                List<BodyRow> rows = tableStructure.getBody().createRows(context, rowIndex + 1, addedRowCount, columns);
-                if (tableStructure.getScrolling() == null) {
-                    for (int i = 0, count = rows.size(); i < count; i++) {
-                        BodyRow row = rows.get(i);
-                        row.render(context, null);
-                    }
-                } else {
-                    if (rows.size() != 1)
-                        throw new IllegalStateException("There should be one pseudo-row in the scrollable version");
-                    BodyRow pseudoRow = rows.get(0);
-                    List<BodyCell> cells = pseudoRow.getCells();
-                    int ci = 0;
-                    List<BodyRow> leftRows = tableStructure.getLeftFixedCols() > 0 ? getScrollingAreaRows(cells.get(ci++)) : null;
-                    List<BodyRow> centerRows = getScrollingAreaRows(cells.get(ci++));
-                    List<BodyRow> rightRows = tableStructure.getRightFixedCols() > 0 ? getScrollingAreaRows(cells.get(ci)) : null;
-                    for (int i = 0, count = centerRows.size(); i < count; i++) {
-                        if (leftRows != null)
-                            leftRows.get(i).render(context, null);
-                        centerRows.get(i).render(context, null);
-                        if (rightRows != null)
-                            rightRows.get(i).render(context, null);
-                    }
-                }
-
-                TreeTableSelection selection = (TreeTableSelection) treeTable.getSelection();
-                if (selection != null)
-                    selection.encodeOnAjaxNodeFolding(context);
-                for (BaseColumn column : columns) {
-                    if (column instanceof CheckboxColumn)
-                        ((CheckboxColumn) column).encodeOnAjaxNodeFolding(context);
-                }
-            }
-        } finally {
-            context.setResponseWriter(responseWriter);
+        Map<Integer, CustomRowRenderingInfo> customRowRenderingInfos =
+                (Map<Integer, CustomRowRenderingInfo>) treeTable.getAttributes().get(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY);
+        for (int i = treeTable.getRowCount(); i > rowIndex; i--) {
+            CustomRowRenderingInfo rowInfo = customRowRenderingInfos.remove(i);
+            if (rowInfo == null)
+                continue;
+            customRowRenderingInfos.put(i + addedRowCount, rowInfo);
         }
 
-        JSONObject newNodesInitInfo = new JSONObject();
-        RenderingUtil.addJsonParam(newNodesInitInfo, "structureMap", formatNodeParams(treeTable, context, rowIndex, addedRowCount));
-        Map<Object, String> rowStylesMap = tableStructure.getRowStylesMap();
-        Map<Object, String> cellStylesMap = tableStructure.getCellStylesMap();
-        RenderingUtil.addJsonParam(newNodesInitInfo, "rowStylesMap", TableUtil.getStylesMapAsJSONObject(rowStylesMap));
-        RenderingUtil.addJsonParam(newNodesInitInfo, "cellStylesMap", TableUtil.getStylesMapAsJSONObject(cellStylesMap));
-
-        treeTable.setRowIndex(-1);
-
-        RenderingUtil.renderInitScript(context, new ScriptBuilder().initScript(context, treeTable,
-                "O$.TreeTable._insertSubrows", newNodesInitInfo));
-        responseWriter.write(stringWriter.toString());
-        return null;
+        return serveDynamicRowsRequest(context, treeTable, rowIndex, addedRowCount);
     }
+
+    protected void fillDynamicRowsInitInfo(FacesContext context, AbstractTable table, int rowIndex, int addedRowCount, TableStructure tableStructure, JSONObject newNodesInitInfo) {
+        super.fillDynamicRowsInitInfo(context, table, rowIndex, addedRowCount, tableStructure, newNodesInitInfo);
+        RenderingUtil.addJsonParam(newNodesInitInfo, "structureMap", formatNodeParams((TreeTable) table, context, rowIndex, addedRowCount));
+    }
+
+    private JSONObject formatNodeParams(TreeTable treeTable, FacesContext context, int fromRowIndex, int rowCount) {
+        JSONObject result = new JSONObject();
+        Map<Object, NodeInfoForRow> map = treeTable.getNodeExpansionDataMap(context);
+        Set<Map.Entry<Object, NodeInfoForRow>> entries = map.entrySet();
+        for (Map.Entry<Object, NodeInfoForRow> entry : entries) {
+            Object rowIndex = entry.getKey();
+            if (fromRowIndex != -1) {
+                if (!(rowIndex instanceof Integer))
+                    continue;
+                int intRowIndex = (Integer) rowIndex;
+                if (intRowIndex < fromRowIndex || intRowIndex >= fromRowIndex + rowCount)
+                    continue;
+                intRowIndex -= fromRowIndex;
+                rowIndex = intRowIndex;
+            }
+            NodeInfoForRow expansionData = entry.getValue();
+            boolean nodeHasChildren = expansionData.getNodeHasChildren();
+            Object childCount = nodeHasChildren
+                    ? (expansionData.getChildrenPreloaded() ? String.valueOf(expansionData.getChildNodeCount()) : "?")
+                    : 0;
+            try {
+                result.put(String.valueOf(rowIndex), childCount);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return result;
+    }
+
 }

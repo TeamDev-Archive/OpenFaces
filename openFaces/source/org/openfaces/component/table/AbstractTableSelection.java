@@ -320,4 +320,7 @@ public abstract class AbstractTableSelection extends UICommand implements Compon
         }
         throw new RuntimeException("Value of invalid type was provided by the '" + attributeName + "' attribute binding: " + valueClass + "; expected either a collection or an array");
     }
+
+    public void encodeOnAjaxNodeFolding(FacesContext context) throws IOException {
+    }
 }

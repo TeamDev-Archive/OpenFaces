@@ -294,11 +294,13 @@ O$.Tables = {
         newRow._cells = newRow.cells;
       else {
         var cells = [];
-        [newRow._leftRowNode, newRow._rowNode,  newRow._rightRowNode].forEach(function(rowNode) {
+        [newRow._leftRowNode, newRow._rowNode, newRow._rightRowNode].forEach(function(rowNode) {
           if (!rowNode) return;
           rowNode._row = newRow;
-          for (var i = 0, count = rowNode.cells.length; i < count; i++)
-            cells.push(rowNode.cells[i]);
+          rowNode._cells = rowNode.cells;
+          for (var i = 0, count = rowNode.cells.length; i < count; i++) {
+            cells.push(rowNode._cells[i]);
+          }
         });
         newRow._cells = cells;
       }
@@ -622,7 +624,7 @@ O$.Tables = {
             removeRow(row._rowNode);
             removeRow(row._rightRowNode);
           });
-          this._rows = undefined;
+          this._rows = [];
 
           if (sectionTagName == "tbody") {
             table._params.rowStylesMap = {};

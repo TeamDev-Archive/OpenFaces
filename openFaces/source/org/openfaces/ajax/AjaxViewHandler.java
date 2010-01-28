@@ -101,7 +101,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
                 // If exception was caught during our ajax request then we need to process it
                 // and send ajax response with details about exception.
                 if (AjaxUtil.isAjaxRequest(context)) {
-                    CommonAjaxViewRoot.processExceptionDuringAjax(e);
+                    CommonAjaxViewRoot.processExceptionDuringAjax(context, e);
                     Log.log(context, e.getMessage(), e);
                 } else {
                     // If current request is not our ajax request and exception was caught then we need to rethrow exception.
@@ -111,7 +111,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
                 // If exception was caught during our ajax request then we need to process it
                 // and send ajax response with details about exception.
                 if (AjaxUtil.isAjaxRequest(context)) {
-                    CommonAjaxViewRoot.processExceptionDuringAjax(e);
+                    CommonAjaxViewRoot.processExceptionDuringAjax(context, e);
                     Log.log(context, e.getMessage(), e);
                 } else {
                     // If current request is not our ajax request and exception was caught then we need to rethrow exception.
@@ -210,7 +210,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
             if (AjaxUtil.isAjaxRequest(context)) {
                 // If exception was caught during our ajax request then we need to process it
                 // and send ajax response with details about exception.
-                CommonAjaxViewRoot.processExceptionDuringAjax(e);
+                CommonAjaxViewRoot.processExceptionDuringAjax(context, e);
                 Log.log(context, e.getMessage(), e);
             } else {
                 // We need to rethrow exception.
@@ -220,7 +220,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
             if (AjaxUtil.isAjaxRequest(context)) {
                 // If exception was caught during our ajax request then we need to process it
                 // and send ajax response with details about exception.
-                CommonAjaxViewRoot.processExceptionDuringAjax(e);
+                CommonAjaxViewRoot.processExceptionDuringAjax(context, e);
                 Log.log(context, e.getMessage(), e);
             } else {
                 // We need to rethrow exception.
@@ -341,7 +341,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
             Map<String, Object> requestMap = externalContext.getRequestMap();
 
             if (externalContext.getSessionMap().containsKey(ERROR_OCCURED_UNDER_PORTLETS)) {
-                processExceptionUnderPortlets(externalContext);
+                processExceptionUnderPortlets(context);
                 return;
             }
 
@@ -397,11 +397,11 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
                         root.encodeEnd(context);
                     }
                 } catch (RuntimeException e) {
-                    CommonAjaxViewRoot.processExceptionDuringAjax(e);
+                    CommonAjaxViewRoot.processExceptionDuringAjax(context, e);
                     externalContext.log(e.getMessage(), e);
                 }
                 catch (Error e) {
-                    CommonAjaxViewRoot.processExceptionDuringAjax(e);
+                    CommonAjaxViewRoot.processExceptionDuringAjax(context, e);
                     externalContext.log(e.getMessage(), e);
                 }
 
@@ -491,10 +491,11 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
         }
     }
 
-    private void processExceptionUnderPortlets(ExternalContext externalContext) {
+    private void processExceptionUnderPortlets(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
         final Map<String, Object> sessionMan = externalContext.getSessionMap();
         Throwable exception = (Throwable) sessionMan.get(ERROR_OBJECT_UNDER_PORTLETS);
-        CommonAjaxViewRoot.processExceptionDuringAjax(exception);
+        CommonAjaxViewRoot.processExceptionDuringAjax(context, exception);
         sessionMan.remove(ERROR_OBJECT_UNDER_PORTLETS);
         sessionMan.remove(ERROR_OCCURED_UNDER_PORTLETS);
     }

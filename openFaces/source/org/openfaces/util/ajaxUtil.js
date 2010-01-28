@@ -548,6 +548,8 @@ O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, tra
   if (document._ajaxInProgressMessage) {
     return;
   }
+  if (O$._ajaxRequestsInProgress > 0)
+    O$.showAjaxProgressMessage();  
 
   var msg = document.createElement("div");
   msg._horizAlignment = horizAlignment || O$.RIGHT;
@@ -603,7 +605,8 @@ O$.setAjaxMessageHTML = function(messageHTML, horizAlignment, vertAlignment, tra
 
 O$.showAjaxProgressMessage = function() {
   var msg = document._ajaxInProgressMessage;
-  O$.assert(msg, "O$.showAjaxProgressMessage: no message was registered");
+  if (!msg)
+    return;
   var simulateFixedPos = true;//O$.isExplorer();
   if (simulateFixedPos)
     O$.updateAjaxInProgressMessagePos();

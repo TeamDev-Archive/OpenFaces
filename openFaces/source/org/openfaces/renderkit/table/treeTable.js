@@ -114,6 +114,57 @@ O$.TreeTable = {
 
     });
 
+    var super_addLoadedRows = table._addLoadedRows;
+    table._addLoadedRows = function(subRowsData) {
+      super_addLoadedRows.apply(this, arguments);
+
+      var newRows = this.__newRows;
+      var parentRowIndex = this.__afterRowIndex;
+      var newRowIndexToChildCount = subRowsData["structureMap"];
+
+      var rows = this.body._getRows();
+      var parentRow = parentRowIndex != -1 ? rows[parentRowIndex] : null;
+
+      if (parentRow) {
+        if (newRows == null || newRows.length == 0) {
+          parentRow._childrenEmpty = true;
+          var toggles = parentRow._toggles;
+          toggles.forEach(function(toggle) {
+            toggle.style.visibility = "hidden";
+            toggle.className = "";
+          });
+        }
+        parentRow._childrenLoaded = true;
+      }
+      var addedRowCount = newRows.length;
+      var i;
+      for (i = 0; i < addedRowCount; i++) {
+        var newRow = newRows[i];
+        O$.TreeTable._initRow(newRow);
+      }
+
+      if (parentRowIndex == -1)
+        this._rowIndexToChildCount = newRowIndexToChildCount;
+      else {
+        var rowIndexToChildCount = this._rowIndexToChildCount;
+        var newRowIndex;
+        for (var rowIndex = rows.length - 1 - addedRowCount; rowIndex > parentRowIndex; rowIndex--) {
+          if (rowIndexToChildCount[rowIndex] != undefined) {
+            newRowIndex = rowIndex + addedRowCount;
+            rowIndexToChildCount[newRowIndex] = rowIndexToChildCount[rowIndex];
+            rowIndexToChildCount[rowIndex] = undefined;
+          }
+        }
+        rowIndexToChildCount[parentRowIndex] = newRowIndexToChildCount[0];
+        for (i = 0; i < addedRowCount; i++) {
+          newRowIndex = parentRowIndex + 1 + i;
+          rowIndexToChildCount[newRowIndex] = newRowIndexToChildCount[i + 1];
+        }
+      }
+
+      this._updateExpandedNodesField();
+    };
+
     var rows = table.body._getRows();
     rows.forEach(O$.TreeTable._initRow);
     if (table._foldingMode == "client") {
@@ -170,7 +221,12 @@ O$.TreeTable = {
       _hasChildren: hasChildren,
       _expanded: hasChildren && expanded,
 
-      _setExpanded: function(expanded) { // _setExpanded(expaned) may not be able to set the "expanded" state to true in some cases. Invokers need to check _isExpanded() to see if expansion was successful
+
+      /*
+       _setExpanded(expaned) may not be able to set the "expanded" state to true in some cases.
+       Invokers must check _isExpanded() to see if expansion was successful.
+       */
+      _setExpanded: function(expanded) {
         if (row._childrenEmpty)
           return;
         if (this._expanded == expanded)
@@ -201,7 +257,7 @@ O$.TreeTable = {
             if (O$._ajaxRequestScheduled || O$._ajax_request_processing)
               ajaxFailedProcessor();
             else
-              O$.requestComponentPortions(rowTable.id, ["subRows:" + this._index], null, O$.TreeTable._subRowsLoaded, ajaxFailedProcessor);
+              O$.requestComponentPortions(rowTable.id, ["subRows:" + this._index], null, O$.Table._acceptLoadedRows, ajaxFailedProcessor);
           } else
             O$.submitFormWithAdditionalParam(rowTable, rowTable.id + "::toggleExpansion", this._index);
         } else {
@@ -238,104 +294,6 @@ O$.TreeTable = {
         }
       });
     });
-  },
-
-  _subRowsLoaded: function(treeTable, portionName, portionHTML, portionScripts) {
-    var sepIdx = portionName.indexOf(":");
-    var indexStr = portionName.substring(sepIdx + 1);
-    var parentRowIndex = eval(indexStr);
-
-    var tempDiv = document.createElement("div");
-    tempDiv.style.display = "none";
-    tempDiv.innerHTML = "<table><tbody>" + portionHTML + "</tbody></table>";
-    var tableBody = tempDiv.getElementsByTagName("tbody")[0];
-    var children = tableBody.childNodes;
-    var newNodes = [];
-    for (var childIndex = 0, childCount = children.length; childIndex < childCount; childIndex++) {
-      var child = children[childIndex];
-      newNodes.push(child);
-    }
-
-    var newRows = [];
-    for (var nodeIndex = 0, nodeCount = newNodes.length; nodeIndex < nodeCount; nodeIndex++) {
-      var newNode = newNodes[nodeIndex];
-      var prnt = newNode.parentNode;
-      prnt.removeChild(newNode);
-      if (!newNode || !newNode.tagName)
-        continue;
-      var tagName = newNode.tagName.toLowerCase();
-      if (tagName == "tr") {
-        newRows.push(newNode);
-      }
-    }
-
-    treeTable.__parentRowIndex = parentRowIndex;
-    var scrolling = treeTable._params.scrolling;
-    if (scrolling) {
-      var compositeRows = [];
-      var i = 0, count = newRows.length;
-      while (i < count) {
-        var leftRowNode = scrolling.leftFixedCols ? newRows[i++] : null;
-        var centerRowNode = newRows[i++];
-        var rightRowNode = scrolling.rightFixedCols ? newRows[i++] : null;
-
-        compositeRows.push({
-          _leftRowNode: leftRowNode,
-          _rowNode: centerRowNode,
-          _rightRowNode: rightRowNode
-        });
-      }
-      newRows = compositeRows;
-    }
-    treeTable.__newRows = newRows;
-    O$.executeScripts(portionScripts);
-  },
-
-  _insertSubrows: function(treeTableId, subRowsData) {
-    var treeTable = O$(treeTableId);
-    var newRows = treeTable.__newRows;
-    var parentRowIndex = treeTable.__parentRowIndex;
-    var newRowIndexToChildCount = subRowsData["structureMap"];
-    var newRowsToStylesMap = subRowsData["rowStylesMap"];
-    var newRowCellsToStylesMap = subRowsData["cellStylesMap"];
-
-    treeTable._insertRowsAfter(parentRowIndex, newRows, newRowsToStylesMap, newRowCellsToStylesMap);
-
-    var rows = treeTable.body._getRows();
-    var parentRow = rows[parentRowIndex];
-
-    if (newRows == null || newRows.length == 0) {
-      parentRow._childrenEmpty = true;
-      var toggles = parentRow._toggles;
-      toggles.forEach(function(toggle) {
-        toggle.style.visibility = "hidden";
-        toggle.className = "";
-      });
-    }
-    parentRow._childrenLoaded = true;
-    var addedRowCount = newRows.length;
-    var i;
-    for (i = 0; i < addedRowCount; i++) {
-      var newRow = newRows[i];
-      O$.TreeTable._initRow(newRow);
-    }
-
-    var rowIndexToChildCount = treeTable._rowIndexToChildCount;
-    var newRowIndex;
-    for (var rowIndex = rows.length - 1 - addedRowCount; rowIndex > parentRowIndex; rowIndex--) {
-      if (rowIndexToChildCount[rowIndex] != undefined) {
-        newRowIndex = rowIndex + addedRowCount;
-        rowIndexToChildCount[newRowIndex] = rowIndexToChildCount[rowIndex];
-        rowIndexToChildCount[rowIndex] = undefined;
-      }
-    }
-    rowIndexToChildCount[parentRowIndex] = newRowIndexToChildCount[0];
-    for (i = 0; i < addedRowCount; i++) {
-      newRowIndex = parentRowIndex + 1 + i;
-      rowIndexToChildCount[newRowIndex] = newRowIndexToChildCount[i + 1];
-    }
-
-    treeTable._updateExpandedNodesField();
   },
 
   _setSelectedNodeIndexes: function(treeTableId, selectedNodeIndexes) {

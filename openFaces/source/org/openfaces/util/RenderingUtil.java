@@ -593,13 +593,13 @@ public class RenderingUtil {
      * the rendered page prior to the rendered script.
      *
      * @param context    {@link FacesContext} for the current request
-     * @param initScript The javascript to be rendered
+     * @param script The javascript to be rendered
      * @param jsFiles    The collection of javascript files to be added
      * @throws IOException if an input/output error occurs
      */
-    public static void renderInitScript(FacesContext context, Script initScript, String... jsFiles) throws IOException {
-        String initScript1 = initScript.toString();
-        if (initScript1 == null || initScript1.trim().length() == 0) {
+    public static void renderInitScript(FacesContext context, Script script, String... jsFiles) throws IOException {
+        String initScript = script.toString();
+        if (initScript == null || initScript.trim().length() == 0) {
             return;
         }
         if (jsFiles != null)
@@ -610,7 +610,7 @@ public class RenderingUtil {
 
         ResponseWriter writer = context.getResponseWriter();
         renderJavascriptStart(writer, null);
-        writer.writeText(initScript1, null);
+        writer.writeText(initScript, null);
         renderJavascriptEnd(writer);
     }
 
