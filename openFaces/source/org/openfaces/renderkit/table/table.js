@@ -1991,7 +1991,7 @@ O$.ColumnMenu = {
           var rightOffset = O$.getNumericElementStyle(cell, "border-right-width");
           var bottomOffset = O$.getNumericElementStyle(cell, "border-bottom-width");
           O$.setElementHeight(this, O$.getElementSize(cell).height - bottomOffset);
-          O$.alignPopupByElement(this, cell, O$.RIGHT, O$.TOP, rightOffset, 0, false, true);
+          O$.alignPopupByElement(this, cell, O$.RIGHT, O$.BOTTOM, rightOffset, bottomOffset, false, true);
           this._showForCell = cell;
         },
         hideForCell: function(cell) {
