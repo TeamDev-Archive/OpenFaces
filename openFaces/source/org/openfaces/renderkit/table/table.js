@@ -256,8 +256,8 @@ O$.Table = {
     }
     table.__newRows = newRows;
 
-    O$.executeScripts(portionScripts);
     table._addLoadedRows(portionData);
+    O$.executeScripts(portionScripts);
   },
 
   // -------------------------- KEYBOARD NAVIGATION SUPPORT
