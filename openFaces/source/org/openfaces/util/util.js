@@ -4070,7 +4070,7 @@ if (!window.O$) {
       x -= containerRect.x;
       y -= containerRect.y;
       if (popupContainer.scrollLeft) x += popupContainer.scrollLeft;
-      if (containerRect.scrollTop) y += popupContainer.scrollTop;
+      if (popupContainer.scrollTop) y += popupContainer.scrollTop;
     }
     if (popup.setLeft) {
       popup.setLeft(x);
