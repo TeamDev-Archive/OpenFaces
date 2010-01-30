@@ -889,6 +889,8 @@ O$.DropDownField = {
 
     if (newHighlightedItemIndex != null && newHighlightedItemIndex != highlightedItemIndex) {
       dropDown._setHighlightedItemIndex(newHighlightedItemIndex);
+      if (dropDown.onDropdownNavigation)
+        dropDown.onDropdownNavigation();  
       dropDown._scrollToHighlightedItem();
     }
 

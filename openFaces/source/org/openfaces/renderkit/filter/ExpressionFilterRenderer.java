@@ -25,10 +25,12 @@ import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StringConverter;
 import org.openfaces.util.StyleUtil;
 
+import javax.el.ValueExpression;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.el.ValueExpression;
+import javax.faces.convert.ConverterException;
 
 /**
  * @author Dmitry Pikhulya
@@ -61,12 +63,21 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
 
     protected void setDecodedString(ExpressionFilter filter, String searchString) {
         Converter converter = getConverter(filter);
-        Object argAsObject = converter.getAsObject(FacesContext.getCurrentInstance(), filter, searchString);
+        Object argAsObject = null;
+        try {
+            argAsObject = converter.getAsObject(FacesContext.getCurrentInstance(), filter, searchString);
+        } catch (ConverterException e) {
+            FacesMessage facesMessage = e.getFacesMessage();
+            FacesContext context = FacesContext.getCurrentInstance();
+            if (facesMessage == null)
+                facesMessage = new FacesMessage("Conversion error");
+            context.addMessage(filter.getClientId(context), facesMessage);
+        }
         ExpressionFilterCriterion oldCriterion = (ExpressionFilterCriterion) filter.getValue();
         ExpressionFilterCriterion newCriterion;
         if (oldCriterion != null &&
                 !oldCriterion.getCondition().equals(FilterCondition.EMPTY) &&
-                !oldCriterion.getCondition().equals(FilterCondition.CONTAINS) ) {
+                !oldCriterion.getCondition().equals(FilterCondition.CONTAINS)) {
             newCriterion = new ExpressionFilterCriterion(oldCriterion);
             newCriterion.setArg1(argAsObject);
         } else
@@ -96,7 +107,7 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
         } else {
             FilterCondition forcedCondition = getForceDefaultCondition(filter);
             if (forcedCondition != null)
-              condition = forcedCondition;
+                condition = forcedCondition;
             else {
                 UIComponent parent = filter.getParent();
                 if (parent == null || !(parent instanceof BaseColumn))

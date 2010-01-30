@@ -71,7 +71,7 @@ public abstract class TextSearchFilterRenderer extends ExpressionFilterRenderer 
         setDecodedString(filter, newSearchString);
     }
 
-    protected String getFilterOnEnterScript(ExpressionFilter filter) {
+    protected String getFilterKeyPressScript(ExpressionFilter filter) {
         UIComponent component = (UIComponent) filter.getFilteredComponent();
         return new ScriptBuilder().append("return ").functionCall("O$.Filters._filterFieldKeyPressHandler",
                 component,

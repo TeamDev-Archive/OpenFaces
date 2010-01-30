@@ -83,7 +83,7 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
     protected void configureInputComponent(FacesContext context, ExpressionFilter filter, UIInput inputComponent) {
         DropDownField field = (DropDownField) inputComponent;
         field.setOnchange(getFilterSubmissionScript(filter));
-        field.setOnkeypress(getFilterOnEnterScript(filter));
+        field.setOnkeypress(getFilterKeyPressScript(filter));
         field.setStyle(filter.getStyle());
         field.setStyleClass(StyleUtil.mergeClassNames(filter.getStyleClass(), "o_fullWidth"));
         field.setListStyle("font-weight: normal;");

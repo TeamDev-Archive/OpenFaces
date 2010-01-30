@@ -52,4 +52,8 @@ public class CommandButtonJspTag extends OUICommandJspTag {
     public void setAlt(ValueExpression alt) {
         getDelegate().setPropertyValue("alt", alt);
     }
+
+    public void setDir(ValueExpression dir) {
+        getDelegate().setPropertyValue("dir", dir);
+    }
 }

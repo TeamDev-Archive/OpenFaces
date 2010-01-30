@@ -1830,6 +1830,18 @@
       </deferred-value>
       <!-- @bindingType org.openfaces.component.filter.FilterCondition -->
       <!-- @default null -->
+      <!-- @value "equals" -->
+      <!-- @value "contains" -->
+      <!-- @value "beginsWith" -->
+      <!-- @value "endsWith" -->
+      <!-- @value "less" -->
+      <!-- @value "greater" -->
+      <!-- @value "lessOrEqual" -->
+      <!-- @value "greaterOrEqual" -->
+      <!-- @value "not equals" -->
+      <!-- @value "not contains" -->
+      <!-- @value "not beginsWith" -->
+      <!-- @value "not endsWith" -->
       <!-- @el false -->
     </attribute>
     <attribute>
@@ -2138,6 +2150,18 @@
       </deferred-value>
       <!-- @bindingType org.openfaces.component.filter.FilterCondition -->
       <!-- @default null -->
+      <!-- @value "equals" -->
+      <!-- @value "contains" -->
+      <!-- @value "beginsWith" -->
+      <!-- @value "endsWith" -->
+      <!-- @value "less" -->
+      <!-- @value "greater" -->
+      <!-- @value "lessOrEqual" -->
+      <!-- @value "greaterOrEqual" -->
+      <!-- @value "not equals" -->
+      <!-- @value "not contains" -->
+      <!-- @value "not beginsWith" -->
+      <!-- @value "not endsWith" -->
       <!-- @el false -->
     </attribute>
     <attribute>
@@ -2771,6 +2795,18 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType org.openfaces.component.filter.FilterCondition -->
       <!-- @default null -->
+      <!-- @value "equals" -->
+      <!-- @value "contains" -->
+      <!-- @value "beginsWith" -->
+      <!-- @value "endsWith" -->
+      <!-- @value "less" -->
+      <!-- @value "greater" -->
+      <!-- @value "lessOrEqual" -->
+      <!-- @value "greaterOrEqual" -->
+      <!-- @value "not equals" -->
+      <!-- @value "not contains" -->
+      <!-- @value "not beginsWith" -->
+      <!-- @value "not endsWith" -->
       <!-- @el false -->
     </attribute>
     <attribute>
@@ -21578,18 +21614,6 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>The base direction of directionally neutral text. Valid values are &quot;LTR&quot; (left-to-right)
-        and &quot;RTL&quot; (right-to-left).
-      </description>
-      <name>dir</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
       <description>Language code for this component. Rendered as the HTML lang attribute.</description>
       <name>lang</name>
       <deferred-value>
@@ -21612,6 +21636,18 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>Alternate textual description of the element rendered by this component.</description>
       <name>alt</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The base direction of directionally neutral text. Valid values are &quot;LTR&quot; (left-to-right)
+        and &quot;RTL&quot; (right-to-left).
+      </description>
+      <name>dir</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

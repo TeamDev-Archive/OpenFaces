@@ -33,6 +33,7 @@ public class CommandButton extends OUICommand {
     private String lang;
     private String title;
     private String alt;
+    private String dir;
 
     public CommandButton() {
         setRendererType("org.openfaces.CommandButtonRenderer");
@@ -52,7 +53,8 @@ public class CommandButton extends OUICommand {
                 tabindex,
                 lang,
                 title,
-                alt
+                alt,
+                dir
         };
     }
 
@@ -68,7 +70,7 @@ public class CommandButton extends OUICommand {
         lang = (String) state[i++];
         title = (String) state[i++];
         alt = (String) state[i++];
-
+        dir = (String) state[i++];
     }
 
     public String getType() {
@@ -117,5 +119,21 @@ public class CommandButton extends OUICommand {
 
     public void setAlt(String alt) {
         this.alt = alt;
+    }
+
+    public boolean isDisabled() {
+        return ValueBindings.get(this, "disabled", disabled, false);
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    public String getDir() {
+        return ValueBindings.get(this, "dir", dir);
+    }
+
+    public void setDir(String dir) {
+        this.dir = dir;
     }
 }

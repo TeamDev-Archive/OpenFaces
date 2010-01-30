@@ -21,6 +21,7 @@ O$.Filters = {
   },
 
   _filterComponent: function(componentId, filterId, filterField) {
+    if (filterField._checkFieldValueAgainstList) filterField._checkFieldValueAgainstList();
     O$.cancelDelayedAction(null, componentId);
     // setTimeout in the following script is needed to avoid page blinking when using combo-box filter in IE (JSFC-2263)
     setTimeout(function() {
@@ -50,12 +51,31 @@ O$.Filters = {
       var valueBefore = filterField.getValue ? filterField.getValue() : filterField.value;
       setTimeout(function() {
         var valueAfter = filterField.getValue ? filterField.getValue() : filterField.value;
-        if (valueBefore == valueAfter)
+        if (filterField.isOpened && !filterField.isOpened)
+          filterField._dropDownNavigationStarted = false;
+        if (filterField._dropDownNavigationStarted) return;
+        if (valueBefore == valueAfter) {
+          if (filterField._autoFilterAlreadyScheduled) {
+            // postpone auto-filtering until the user stops pressing the buttons
+            // (e.g. cursor navigation in the field)
+            O$.invokeFunctionAfterDelay(function() {
+              O$.Filters._filterComponent(componentId, filterId, filterField);
+            }, autoFilteringDelay, componentId);
+          }
           return;
+        }
+        // prevent autofiltering when a user started drop-down navigation
+        filterField._autoFilterAlreadyScheduled = true;
+        if (filterField.getValue) {
+          filterField.onDropdownNavigation = function() {
+            filterField._dropDownNavigationStarted = true;
+            O$.cancelDelayedAction(null, componentId);
+          };
+        }
         O$.invokeFunctionAfterDelay(function() {
           O$.Filters._filterComponent(componentId, filterId, filterField);
         }, autoFilteringDelay, componentId);
-      }, 1);
+      }, 50);
 
     }
     var inFieldNavigation = (event.keyCode >= 35 && event.keyCode <= 40);
