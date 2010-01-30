@@ -26,6 +26,15 @@
               nodeData="#{EMailsTreeTableBean.selectedEMail}"/>
       <o:dynamicTreeStructure nodeChildren="#{EMailsTreeTableBean.EMailsTreeChildren}"/>
       <o:scrolling/>
+      
+      <f:facet name="columnMenu">
+        <o:columnMenu/>
+      </f:facet>
+      <f:facet name="columnMenuButton">
+        <o:captionButton style="border-left: none; background: url('../images/treetable/columnMenuBtn.gif');"
+                         rolloverStyle="border-left: none; background: url('../images/treetable/columnMenuBtnRollover.gif');"
+                         pressedStyle="border-left: none; background: url('../images/treetable/columnMenuBtnPressed.gif');"/>
+      </f:facet>
 
       <o:row condition="#{level == 0}" style="background: #e6e7e8 !important;">
         <o:cell span="6" styleClass="category_name">
@@ -33,7 +42,7 @@
         </o:cell>
       </o:row>
 
-      <o:treeColumn id="importance"
+      <o:treeColumn id="importance" header="Importance"
                     expandedToggleImageUrl="../images/treetable/expanded.gif"
                     collapsedToggleImageUrl="../images/treetable/collapsed.gif"
                     width="32px"
@@ -45,7 +54,7 @@
         </f:facet>
         <h:graphicImage url="#{EMailsTreeTableBean.importanceIcon}"/>
       </o:treeColumn>
-      <o:column id="attachment"
+      <o:column id="attachment" header="Attachment"
                 width="32px"
                 style="text-align: center;"
                 headerStyle="text-align: center !important;"
@@ -55,39 +64,30 @@
         </f:facet>
         <h:graphicImage url="../images/treetable/attachment.gif" rendered="#{email.hasAttachment}"/>
       </o:column>
-      <o:column width="16px"
+      <o:column width="16px" header="Letter"
                 style="text-align: center;">
         <f:facet name="header">
           <h:outputText value=""/>
         </f:facet>
         <h:graphicImage url="../images/treetable/letter.gif"/>
       </o:column>
-      <o:column id="sender"
+      <o:column id="sender" header="From"
                 width="21%"
                 style="padding-left: 5px;"
                 sortingExpression="#{EMailsTreeTableBean.sortBySenderExpression}">
-        <f:facet name="header">
-          <h:outputText value="From"/>
-        </f:facet>
         <h:outputText value="#{email.sender}" style="margin-left: 5px;"/>
       </o:column>
-      <o:column id="subject"
+      <o:column id="subject" header="Subject"
                 width="61%"
                 bodyStyle="text-align: left;"
                 style="padding-left: 5px;"
                 sortingExpression="#{EMailsTreeTableBean.sortBySubjectExpression}">
-        <f:facet name="header">
-          <h:outputText value="Subject"/>
-        </f:facet>
         <h:outputText value="#{email.subject}" style="margin-left: 5px;"/>
       </o:column>
-      <o:column id="date"
+      <o:column id="date" header="Received"
                 width="16%"
                 style="padding-left: 5px;"
                 sortingExpression="#{EMailsTreeTableBean.sortByDateExpression}">
-        <f:facet name="header">
-          <h:outputText value="Received"/>
-        </f:facet>
         <h:outputText value="#{email.receivedDate}" style="margin-left: 5px;"
                       converter="#{EMailsTreeTableBean.receivedDateConverter}"/>
       </o:column>

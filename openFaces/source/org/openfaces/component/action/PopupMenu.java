@@ -154,10 +154,10 @@ public class PopupMenu extends OUIComponentBase implements OUIClientAction {
 
     private PopupMenu getPopupMenuParent() {
         UIComponent parent = this.getParent();
-        if (parent != null && !parent.getClass().isAssignableFrom(PopupMenu.class)) {
+        if (parent != null && !PopupMenu.class.isAssignableFrom(parent.getClass())) {
             parent = parent.getParent();
         }
-        if (parent != null && parent.getClass().isAssignableFrom(PopupMenu.class)) {
+        if (parent != null && PopupMenu.class.isAssignableFrom(parent.getClass())) {
             return (PopupMenu) parent;
         }
         return null;

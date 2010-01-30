@@ -41,10 +41,11 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
     private boolean explicitExpression;
     private Converter converter;
     private boolean criterionModelUpdateRequired;
+    private Boolean caseSensitive;
+    private Integer autoFilterDelay;
 
     private String predefinedCriterionStyle;
     private String predefinedCriterionClass;
-    private Boolean caseSensitive;
 
     protected String allRecordsText;
     protected String emptyRecordsText;
@@ -56,7 +57,6 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
     private String accesskey;
     private String tabindex;
     private String title;
-    private Integer autoFilterDelay;
 
     @Override
     public Object saveState(FacesContext context) {

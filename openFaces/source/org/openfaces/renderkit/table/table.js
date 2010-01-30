@@ -2075,7 +2075,7 @@ O$.ColumnMenu = {
   },
 
   _toggleColumnVisibility: function(table, columnIndex) {
-    if (!columnIndex) {
+    if (columnIndex == undefined) {
       columnIndex = table._showingMenuForColumn._index;
     }
     O$._submitInternal(table, null, [
@@ -2085,7 +2085,7 @@ O$.ColumnMenu = {
 
   _sortColumnAscending: function(tableId, columnIndex) {
     var table = O$(tableId);
-    if (!columnIndex) {
+    if (columnIndex == undefined) {
       columnIndex = table._showingMenuForColumn._index;
     }
     var column = table._columns[columnIndex];
@@ -2097,7 +2097,7 @@ O$.ColumnMenu = {
 
   _sortColumnDescending: function(tableId, columnIndex) {
     var table = O$(tableId);
-    if (!columnIndex) {
+    if (columnIndex == undefined) {
       columnIndex = table._showingMenuForColumn._index;
     }
     var column = table._columns[columnIndex];
@@ -2110,7 +2110,7 @@ O$.ColumnMenu = {
 
   _hideColumn: function(tableId, columnIndex) {
     var table = O$(tableId);
-    if (!columnIndex) {
+    if (columnIndex == undefined) {
       columnIndex = table._showingMenuForColumn._index;
     }
     O$._submitInternal(table, null, [

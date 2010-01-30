@@ -14,6 +14,10 @@
                  width="100%"
                  styleClass="cities">
       <o:singleRowSelection/>
+      <o:columnReordering/>
+      <f:facet name="columnMenu">
+        <o:columnMenu/>
+      </f:facet>
 
       <o:column id="name" header="City" sortingExpression="#{city.name}"
                 bodyStyle="padding-left: 10px;">

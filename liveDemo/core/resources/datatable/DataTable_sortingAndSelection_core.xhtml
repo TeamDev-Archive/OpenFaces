@@ -14,10 +14,14 @@
                  sortColumnId="title"
                  sortAscending="true"
                  sortableHeaderRolloverStyle="background: #d4d4d4"
-                 style="margin-left: 20px; line-height: 17px;"
+                 style="width: 700px; margin-left: 20px; line-height: 17px;"
                  styleClass="datatable"
                  rolloverRowStyle="background: #f1f1f1;">
       <o:singleRowSelection rowData="#{BookList.selectedBook}" style="background: #a4aec5; color: white"/>
+      <o:columnReordering/>
+      <f:facet name="columnMenu">
+        <o:columnMenu/>
+      </f:facet>
 
       <o:column id="title" header="Title" sortingExpression="#{book.bookTitle}"
                 style="width: 35%; padding-left: 5%;">
@@ -46,12 +50,16 @@
                  sortColumnId="title"
                  sortAscending="true"
                  sortableHeaderRolloverStyle="background: #d4d4d4"
-                 style="margin-left: 20px; line-height: 17px;"
+                 style="width: 700px; margin-left: 20px; line-height: 17px;"
                  styleClass="datatable"
                  rolloverRowStyle="background: #f1f1f1;">
       <o:multipleRowSelection rowDatas="#{BookList.list}" style="background: #a4aec5; color: white;"/>
+      <o:columnReordering/>
+      <f:facet name="columnMenu">
+        <o:columnMenu/>
+      </f:facet>
 
-      <o:selectionColumn style="width: 6%;" sortable="true">
+      <o:selectionColumn style="width: 6%;" sortable="true" header="Selection">
         <f:facet name="header">
           <o:selectAllCheckbox/>
         </f:facet>
@@ -79,6 +87,9 @@
     <ul class="hang">
       <li>
         <strong>Sorting</strong> - Click any column header in the DataTable component to sort the column data in ascending or descending order.
+      </li>
+      <li>
+        <strong>Column menu</strong> - You can change sorting order and show/hide columns in the column menu invokable from column's header.
       </li>
       <li>
         <strong>Single and Multiple Row Selection</strong> - Click a row to select it. Or, select a number of rows by holding down the "Ctrl" key (or
