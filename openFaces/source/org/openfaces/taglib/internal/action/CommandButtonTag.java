@@ -33,6 +33,7 @@ public class CommandButtonTag extends OUICommandTag {
     public void setComponentProperties(FacesContext context, UIComponent component) {
         super.setComponentProperties(context, component);
 
+        setStringProperty(component, "value");
         setBooleanProperty(component, "disabled");
         setStringProperty(component, "type");
         setStringProperty(component, "accesskey");

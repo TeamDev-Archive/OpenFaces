@@ -31,13 +31,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * @author Dmitry Pikhulya
@@ -898,16 +897,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     }
 
-    private List<Columns> findColumnsComponents() {
-        List<Columns> columnsComponents = new ArrayList<Columns>();
-        List<UIComponent> children = getChildren();
-        for (UIComponent component : children) {
-            if (component instanceof Columns)
-                columnsComponents.add((Columns) component);
-        }
-        return columnsComponents;
-    }
-
     @Override
     public void processDecodes(FacesContext context) {
         beforeProcessDecodes(context);
@@ -1003,6 +992,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     protected void beforeRenderResponse(FacesContext context) {
         cachedAllColumns = null;
         cachedRenderedColumns = null;
+        List<Columns> columnsComponents = ComponentUtil.findChildrenWithClass(this, Columns.class);
+        for (Columns columns : columnsComponents) {
+            columns.resetCachedColumnList();
+        }
+
+        getAttributes().put(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY, new HashMap());
+
 
         List<Filter> filters = getFilters();
         for (Filter filter : filters) {
@@ -1044,17 +1040,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 return true;
         }
         return false;
-    }
-
-    @Override
-    public void encodeBegin(FacesContext context) throws IOException {
-        List<Columns> columnsComponents = findColumnsComponents();
-        for (Columns columns : columnsComponents) {
-            columns.resetCachedColumnList();
-        }
-
-        getAttributes().put(TableStructure.CUSTOM_ROW_RENDERING_INFOS_KEY, new HashMap());
-        super.encodeBegin(context);
     }
 
     public void setSortColumnId(String sortColumnId) {

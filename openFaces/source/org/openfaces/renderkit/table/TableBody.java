@@ -14,10 +14,10 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
-import org.openfaces.component.table.Scrolling;
 import org.openfaces.component.table.Cell;
 import org.openfaces.component.table.Column;
 import org.openfaces.component.table.Row;
+import org.openfaces.component.table.Scrolling;
 import org.openfaces.component.table.TreeColumn;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
@@ -293,10 +293,24 @@ public class TableBody extends TableSection {
             row.setCells(cells);
             if (rightRow != null)
                 rightRow.setCells(rightCells);
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             for (int colIndex = 0; colIndex < columnCount;) {
                 BaseColumn column = columns.get(colIndex);
                 if (!column.isRendered())
                     throw new IllegalStateException("Only rendered columns are expected in columns list. column id: " + column.getId() + "; column index = " + colIndex);
+
+                String columnIndexVar = table.getColumnIndexVar();
+                String columnIdVar = table.getColumnIdVar();
+                Object prevColumnIndexVarValue = null;
+                Object prevColumnIdVarValue = null;
+                int originalColIndex = (Integer) column.getAttributes().get(COLUMN_ATTR_ORIGINAL_INDEX);
+                if (columnIndexVar != null)
+                    prevColumnIndexVarValue = requestMap.put(columnIndexVar, originalColIndex);
+                if (columnIdVar != null) {
+                    String columnId = column.getId();
+                    prevColumnIdVarValue = requestMap.put(columnIdVar, columnId);
+                }
+
 
                 List customCells = applicableCustomCells[colIndex];
                 SpannedTableCell spannedTableCell =
@@ -399,6 +413,12 @@ public class TableBody extends TableSection {
                 int endIdx = buf.length();
                 String content = buf.substring(startIdx, endIdx);
                 cell.setContent(content);
+                
+                if (columnIndexVar != null)
+                    requestMap.put(columnIndexVar, prevColumnIndexVarValue);
+                if (columnIdVar != null)
+                    requestMap.put(columnIdVar, prevColumnIdVarValue);
+
 
                 colIndex += span;
             }
