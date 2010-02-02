@@ -21,6 +21,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.util.Map;
+import java.util.List;
 
 /**
  * @author Dmitry Pikhulya
@@ -43,16 +44,20 @@ public class UtilPhaseListener extends PhaseListenerBase {
         if (checkPortletMultipleNotifications(event, false))
             return;
 
-        FacesContext facesContext = event.getFacesContext();
+        FacesContext context = event.getFacesContext();
         PhaseId phaseId = event.getPhaseId();
         if (phaseId.equals(PhaseId.RENDER_RESPONSE)) {
-            RenderingUtil.appendOnLoadScript(facesContext, encodeFocusTracking(facesContext));
-            RenderingUtil.appendOnLoadScript(facesContext, encodeScrollPosTracking(facesContext));
-            RenderingUtil.appendOnLoadScript(facesContext, encodeDisabledContextMenu(facesContext));
-            encodeAjaxProgressMessage(facesContext);
+            List<String> renderedJsLinks = ResourceUtil.getRenderedJsLinks(context);
+            String utilJs = ResourceUtil.getUtilJsURL(context);
+            if (!renderedJsLinks.contains(utilJs))
+                ResourceUtil.registerJavascriptLibrary(context, utilJs);
+            RenderingUtil.appendOnLoadScript(context, encodeFocusTracking(context));
+            RenderingUtil.appendOnLoadScript(context, encodeScrollPosTracking(context));
+            RenderingUtil.appendOnLoadScript(context, encodeDisabledContextMenu(context));
+            encodeAjaxProgressMessage(context);
         } else if (phaseId.equals(PhaseId.APPLY_REQUEST_VALUES)) {
-            decodeFocusTracking(facesContext);
-            decodeScrollPosTracking(facesContext);
+            decodeFocusTracking(context);
+            decodeScrollPosTracking(context);
         }
     }
 
