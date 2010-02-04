@@ -265,6 +265,11 @@ O$.DropDownField = {
       var item = dropDown._items[itemIndex];
       O$.assert(item, "setItemSelected: couldn't find item at index: " + itemIndex);
       item._selected = selected;
+      if (!item._updateStyle) {
+        // can be the case in case of O$.destroyAllFunctions functioning during Ajax when
+        // org.openfaces.ajaxCleanupRequired init parameter is set to true
+        return;
+      }
       item._updateStyle();
     }
 

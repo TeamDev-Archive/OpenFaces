@@ -17,7 +17,7 @@
         </o:row>
 
         <o:column width="150"
-                headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
+                  headerStyle="text-align: left; padding-left: 5px; padding-right: 5px;">
           <f:facet name="header">
             <h:outputText value="Permission"/>
           </f:facet>
@@ -32,7 +32,6 @@
 
           <o:selectBooleanCheckbox triStateAllowed="true"
                                    value="#{PermissionSchema.permissionsAssignment[PermissionSchema.permissionGroup['ANONYMOUS']][permission].outputState}"
-                                   undefinedImageUrl="../images/selectbooleancheckbox/undefinedCheckbox.png"                                   
                                    stateList="#{PermissionSchema.stateList[PermissionSchema.permissionGroup['ANONYMOUS']][permission]}"
                                    onchange="O$.ajax.request(this, event, {render: 'form:permissionsTable', listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
             <f:param name="group" value="#{PermissionSchema.permissionGroup['ANONYMOUS']}"/>
@@ -48,7 +47,6 @@
           </f:facet>
           <o:selectBooleanCheckbox triStateAllowed="true"
                                    value="#{PermissionSchema.permissionsAssignment[PermissionSchema.permissionGroup['USER']][permission].outputState}"
-                                   undefinedImageUrl="../images/selectbooleancheckbox/undefinedCheckbox.png"
                                    stateList="#{PermissionSchema.stateList[PermissionSchema.permissionGroup['USER']][permission]}"
                                    onchange="O$.ajax.request(this, event, {render: 'form:permissionsTable', listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
             <f:param name="group" value="#{PermissionSchema.permissionGroup['USER']}"/>
@@ -64,7 +62,6 @@
           </f:facet>
           <o:selectBooleanCheckbox triStateAllowed="true"
                                    value="#{PermissionSchema.permissionsAssignment[PermissionSchema.permissionGroup['ADMINISTRATOR']][permission].outputState}"
-                                   undefinedImageUrl="../images/selectbooleancheckbox/undefinedCheckbox.png"
                                    stateList="#{PermissionSchema.stateList[PermissionSchema.permissionGroup['ADMINISTRATOR']][permission]}"
                                    onchange="O$.ajax.request(this, event, {render: 'form:permissionsTable', listener: 'PermissionSchema.updateAssignment', actionComponent: this.id});">
             <f:param name="group" value="#{PermissionSchema.permissionGroup['ADMINISTRATOR']}"/>
@@ -77,9 +74,16 @@
   <div id="Description">
     <h4>Demonstrated Features</h4>
     <ul class="hang">
-      <li><strong>Tri-state mode</strong> - The third 'undefined' state in this demo has a special meaning and allows to show a 'dependent' permission state.
+      <li><strong>Tri-state mode</strong> - The third 'undefined' state in this demo has a special meaning and allows to
+        show a 'dependent' permission state.
       </li>
-      <li><strong>Customized states list</strong> - For a permission in 'dependent' state the checkbox is configured to have only two states: 'selected' and 'undefined', in other case - only states 'selected' and 'unselected' are allowed for user to cycle through.
+      <li><strong>State list customization</strong> - When in tri-state mode, it is possible to customize the states and
+        their toggling order which might be required by application logic. E.g. see some of the check-boxes toggle
+        between the 'undefined' and 'checked' state.
+      </li>
+      <li><strong>Customized states list</strong> - For a permission in 'dependent' state the checkbox is configured to
+        have only two states: 'selected' and 'undefined', in other case - only states 'selected' and 'unselected' are
+        allowed for user to cycle through.
       </li>
     </ul>
   </div>

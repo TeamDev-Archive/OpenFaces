@@ -172,13 +172,15 @@ O$.CompositeFilter = {
         } else if (portionName.match("parameters")) {
           index = portionName.split(":")[1];
           rowContainer = filter._rowContainer(index);
-          var oldNode =
-                  filter._parametersEditorContainer(rowContainer);
-          if (oldNode != null) {
-            rowContainer.replaceChild(newNode, oldNode);
-          } else {
-            deleteButton = filter._deleteButton(rowContainer);
-            rowContainer.insertBefore(newNode, deleteButton);
+          if (newNode) {
+            var oldNode =
+                    filter._parametersEditorContainer(rowContainer);
+            if (oldNode != null) {
+              rowContainer.replaceChild(newNode, oldNode);
+            } else {
+              deleteButton = filter._deleteButton(rowContainer);
+              rowContainer.insertBefore(newNode, deleteButton);
+            }
           }
           focusLastField(rowContainer);
         }

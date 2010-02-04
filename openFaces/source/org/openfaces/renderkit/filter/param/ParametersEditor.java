@@ -67,6 +67,8 @@ public abstract class ParametersEditor {
     }
 
     public static ParameterEditorType getParameterEditorType(FilterProperty filterProperty, FilterCondition operation) {
+        if (operation == null)
+            operation = FilterCondition.EQUALS;
         switch (operation) {
             case LESS_OR_EQUAL:
             case GREATER_OR_EQUAL:

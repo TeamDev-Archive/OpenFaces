@@ -483,6 +483,7 @@
     <keyFeatures>
       <feature>All features of the standard &lt;h:selectBooleanCheckbox&gt; component</feature>
       <feature>Tri-state mode</feature>
+      <feature>State list and order customization</feature>
       <feature>Customizing appearance with images</feature>
       <feature>Customizing state-dependent styles</feature>
     </keyFeatures>

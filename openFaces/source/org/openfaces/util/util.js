@@ -2592,6 +2592,11 @@ if (!window.O$) {
         O$._tableBlurCounter = 0;
       if (!O$.isMozillaFF()) {
         setTimeout(function() {
+          if (!component._doUnblockOutlineUpdate) {
+            // can be the case in case of O$.destroyAllFunctions functioning during Ajax when
+            // org.openfaces.ajaxCleanupRequired init parameter is set to true
+            return;
+          }
           component._doUnblockOutlineUpdate();
         }, 1);
       } else {

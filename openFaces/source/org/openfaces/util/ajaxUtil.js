@@ -978,12 +978,6 @@ O$.AjaxObject = function(render) {
 
     O$.processStateUpdate(updId, updateStateHTML);
 
-    if (O$.isExplorer()) {
-      if (document._ajaxCleanupRequired)
-        O$.destroyAllFunctions(tempDiv);
-      tempDiv.innerHTML = "";
-    }
-
     if (this._mode == "Expiration-Handling") {
       O$.processSessionExpiration(this._loc, this._targetIds, this, false);
       O$.requestFinished(this);
@@ -1022,12 +1016,6 @@ O$.AjaxObject = function(render) {
     O$.executeScripts(updScripts);
 
     O$.processStateUpdate(updId, updateStateHTML);
-
-    if (O$.isExplorer()) {
-      if (document._ajaxCleanupRequired)
-        O$.destroyAllFunctions(tempDiv);
-      tempDiv.innerHTML = "";
-    }
   };
 
   this._processPortionUpdate = function(portionName, portionHTML, portionScripts, portionDataStr) {
@@ -1079,7 +1067,9 @@ O$.replaceDocumentElements = function(htmlPortion, allowElementsWithNewIds) {
         oldElement._cleanUp();
       }
       if (document._ajaxCleanupRequired)
-        O$.destroyAllFunctions(oldElement);
+        setTimeout(function() {
+//          O$.destroyAllFunctions(oldElement);
+        }, 1);
     }
 
     parent.replaceChild(newElement, oldElement);
