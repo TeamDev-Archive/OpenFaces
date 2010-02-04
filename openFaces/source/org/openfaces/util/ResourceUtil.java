@@ -441,9 +441,8 @@ public class ResourceUtil {
 
             for (String headerLibrary : headerLibraries) {
                 Element element = document.createElement("script");
-
-                element.setAttribute("type", "text/javascript");
                 element.setAttribute("src", headerLibrary);
+                element.setAttribute("type", "text/javascript");
 
                 node.appendChild(element);
             }
@@ -534,11 +533,12 @@ public class ResourceUtil {
             registerJavascriptLibrary(context, jsFile);
         } else {
             writer.startElement("script", null);
-            writer.writeAttribute("type", "text/javascript", null);
             writer.writeAttribute("src", jsFile, null);
+            writer.writeAttribute("type", "text/javascript", null);
             // write white-space to avoid creating self-closing <script/> tags
             // under certain servers, which are not correctly interpreted by browsers (JSFC-2303)
-            writer.writeText(" ", null);
+            if (EnvironmentUtil.isExoPortal())
+                writer.writeText(" ", null);
             writer.endElement("script");
         }
     }

@@ -236,13 +236,17 @@ public class EnvironmentUtil {
         return stateManager.getClass().getName().equalsIgnoreCase("org.ajax4jsf.application.AjaxStateManager");
     }
 
+    private static Boolean exoPortal;
     public static boolean isExoPortal() {
+        if (exoPortal != null)
+            return exoPortal;
         try {
             Class.forName("org.exoplatform.portlet.faces.component.UIExoViewRoot");
-            return true;
+            exoPortal = true;
         } catch (ClassNotFoundException e) {
-            return false;
+            exoPortal = false;
         }
+        return exoPortal;
     }
 
     public static boolean isTrinidad() {

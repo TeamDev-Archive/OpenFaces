@@ -415,9 +415,9 @@ public class ResourceFilter implements Filter {
 
         if (jsLibraries != null) {
             for (String jsFileUrl : jsLibraries) {
-                writer.print("<script type=\"text/javascript\" src=\"");
+                writer.print("<script src=\"");
                 writer.print(jsFileUrl);
-                writer.println("\"></script>");
+                writer.println("\" type=\"text/javascript\"></script>");
             }
         }
 
