@@ -73,6 +73,7 @@ public abstract class CommonAjaxViewRoot {
     private static final String PARAM_EXECUTE = "_of_execute";
     private static final String PARAM_ACTION_COMPONENT = "_of_actionComponent";
     private static final String PARAM_ACTION_LISTENER = "_of_actionListener";
+    private static final String PARAM_ACTION = "_of_action";
     private static final String PARAM_IMMEDIATE = "_of_immediate";
     // a copy of org.apache.myfaces.shared_impl.renderkit.RendererUtils.SEQUENCE_PARAM
     private static final String MYFACES_SEQUENCE_PARAM = "jsf_sequence";
@@ -399,20 +400,29 @@ public abstract class CommonAjaxViewRoot {
 
 
         String listener = request.getParameter(PARAM_ACTION_LISTENER);
+        String action = request.getParameter(PARAM_ACTION);
         String actionComponentId = request.getParameter(PARAM_ACTION_COMPONENT);
         Log.log(context, "try invoke listener");
-        if (listener != null) {
+        if (listener != null || action != null) {
             ELContext elContext = context.getELContext();
-            MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
-                    elContext, "#{" + listener + "}", void.class, new Class[]{ActionEvent.class});
             UIComponent component = null;
             if (actionComponentId != null)
                 component = findComponentById(viewRoot, actionComponentId, false, false, false);
             if (component == null)
                 component = viewRoot;
-            ActionEvent event = new ActionEvent(component);
-            event.setPhaseId(Boolean.valueOf(request.getParameter(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
-            methodExpression.invoke(elContext, new Object[]{event});
+
+            if (action != null) {
+                MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
+                            elContext, "#{" + action + "}", String.class, new Class[]{});
+                    methodBinding.invoke(elContext, null);
+            }
+            if (listener != null) {
+                ActionEvent event = new ActionEvent(component);
+                event.setPhaseId(Boolean.valueOf(request.getParameter(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
+                MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
+                        elContext, "#{" + listener + "}", void.class, new Class[]{ActionEvent.class});
+                methodExpression.invoke(elContext, new Object[]{event});
+            }
         }
         // invoke application should be after notification listeners
         Log.log(context, "invoke listener finished");

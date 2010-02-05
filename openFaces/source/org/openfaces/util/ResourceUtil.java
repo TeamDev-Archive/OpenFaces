@@ -512,11 +512,11 @@ public class ResourceUtil {
     /**
      * Render javascript file link, if not rendered early
      *
+     * @param context {@link javax.faces.context.FacesContext} for the current request
      * @param jsFile  Javascript file to include
-     * @param context {@link FacesContext} for the current request
      * @throws IOException if an input/output error occurs
      */
-    public static void renderJSLinkIfNeeded(String jsFile, FacesContext context) throws IOException {
+    public static void renderJSLinkIfNeeded(FacesContext context, String jsFile) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         List<String> renderedJsLinks = getRenderedJsLinks(context);
         if (renderedJsLinks.contains(jsFile)) {

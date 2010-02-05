@@ -11,8 +11,12 @@
  */
 package org.openfaces.renderkit;
 
+import org.openfaces.component.OUICommand;
+import org.openfaces.component.ajax.AjaxInitializer;
 import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ScriptBuilder;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -41,4 +45,27 @@ public class RendererBase extends Renderer {
         RenderingUtil.writeAttribute(writer, name, value, emptyValue);
     }
 
+    protected boolean writeEventsWithAjaxSupport(FacesContext context, ResponseWriter writer, OUICommand btn) throws IOException {
+        String userClickHandler = btn.getOnclick();
+        String buttonClickHandler = null;
+        Iterable<String> render = btn.getRender();
+        Iterable<String> execute = btn.getExecute();
+        boolean ajaxJsRequired = false;
+        if (render != null || (execute != null && execute.iterator().hasNext())) {
+            if (render == null)
+                throw new FacesException("'execute' attribute can't be specified without the 'render' attribute. Component id: " + btn.getId());
+
+            AjaxInitializer initializer = new AjaxInitializer();
+            ScriptBuilder script = new ScriptBuilder();
+            buttonClickHandler = script.functionCall("O$._ajaxReload",
+                    initializer.getRenderArray(context, btn, render),
+                    initializer.getAjaxParams(context, btn)).semicolon().append("return false;").toString();
+            ajaxJsRequired = true;
+        }
+        String clickHandler = RenderingUtil.joinScripts(userClickHandler, buttonClickHandler);
+        if (!RenderingUtil.isNullOrEmpty(clickHandler))
+            writer.writeAttribute("onclick", clickHandler, null);
+        RenderingUtil.writeStandardEvents(writer, btn, true);
+        return ajaxJsRequired;
+    }
 }

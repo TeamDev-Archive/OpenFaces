@@ -60,8 +60,7 @@
           </table>
         </td>
         <td style="vertical-align: top; width: 50%;">
-          <h:commandButton value="Update"
-                           onclick="O$.ajax.request(this, event, {render: 'tlsForm:detailTable', execute: 'tlsForm:tasksTLS'}); return false;"/>
+          <o:commandButton value="Update" execute="tlsForm:tasksTLS" render="tlsForm:detailTable"/>
           <o:dataTable id="detailTable"
                        style="width: 100%;"
                        var="task"

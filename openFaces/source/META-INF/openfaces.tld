@@ -21257,7 +21257,14 @@ and it is automatically triggered on any form submission. -->
 
   <!-- CommandButton tag declaration -->
   <tag>
-    <description>This component is under construction.</description>
+    <description>This is an analog of the standard &lt;h:commandButton> component extended with Ajax features making it
+      possible to use Ajax request instead of form submission to execute an action and reload components. By default it
+      behaves as its standard analog though Ajax functionality will be turned on if you specify its "render" attribute,
+      which is similar to that of &lt;o:ajax> component and specifies the list of components that should be reloaded
+      when the button is clicked. An additional optional attribute is "execute", which just like in the &lt;o:ajax>
+      component allows specifying a list of components whose data should be submitted to the server for processing
+      during the Ajax request.
+    </description>
     <name>commandButton</name>
     <tag-class>org.openfaces.taglib.jsp.action.CommandButtonJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -21330,7 +21337,35 @@ and it is automatically triggered on any form submission. -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
-
+    <attribute>
+      <description>Id's of components, which will be rerendered after succcesfull ajax request.
+        Evaluates to Iterable. If a literal is specified
+        can be a single id or a comma-separated list if id's.
+      </description>
+      <name>render</name>
+      <required>true</required>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Id's of components whose data should be submitted and processed on the server in addition to the
+        reloaded components. The difference with render is that components listed in execute will
+        just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
+        depends on some other component on a page.
+        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated
+        list if id's.
+      </description>
+      <name>execute</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>The text displayed in the button.</description>

@@ -223,35 +223,34 @@ public class AjaxUtil {
     }
 
     public static void prepareComponentForAjax(FacesContext context, UIComponent component) {
-        if (renderJSLinks(context, component)) {
-            makeComponentsNonTransient(context, component);
-        }
+        if (!component.isRendered())
+            return;
+        if (isAjaxRequest(context))
+            return;
+        renderJSLinks(context);
+        makeComponentsNonTransient(context, component);
     }
 
-    public static boolean renderJSLinks(FacesContext context, UIComponent component) {
-        if (!component.isRendered())
-            return false;
-
+    public static void renderJSLinks(FacesContext context) {
         if (isAjaxRequest(context))
-            return false;
+            return;
         ExternalContext externalContext = context.getExternalContext();
         Map<String, Object> requestMap = externalContext.getRequestMap();
         if (requestMap.put(AJAX_SUPPORT_RENDERED, Boolean.TRUE) == null) {
             try {
-                ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getUtilJsURL(context), context);
-                ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getAjaxUtilJsURL(context), context);
+                ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getUtilJsURL(context));
+                ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getAjaxUtilJsURL(context));
                 if (isPortletRequest(context)) {
                     String uniqueRTLibraryName = ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + generateUniqueInitLibraryName();
                     context.getExternalContext().getSessionMap().put(ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME, uniqueRTLibraryName);
                     String initLibraryUrl = ResourceUtil.getApplicationResourceURL(context, uniqueRTLibraryName);
-                    ResourceUtil.renderJSLinkIfNeeded(initLibraryUrl, context);
+                    ResourceUtil.renderJSLinkIfNeeded(context, initLibraryUrl);
                 }
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        return true;
     }
 
     public static Object retrieveAjaxStateObject(FacesContext context, UIComponent component) {

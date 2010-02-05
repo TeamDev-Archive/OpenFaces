@@ -12,19 +12,18 @@
 package org.openfaces.component.ajax;
 
 import org.openfaces.component.OUIClientAction;
+import org.openfaces.component.OUICommand;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.StyleUtil;
 import org.openfaces.util.ValueBindings;
 
-import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import java.util.Collections;
 
 /**
  * @author Ilya Musihin
  */
-public class Ajax extends UICommand implements OUIClientAction {
+public class Ajax extends OUICommand implements OUIClientAction {
     public static final String COMPONENT_TYPE = "org.openfaces.Ajax";
     public static final String COMPONENT_FAMILY = "org.openfaces.Ajax";
 
@@ -32,8 +31,6 @@ public class Ajax extends UICommand implements OUIClientAction {
     private String _for;
     private Boolean standalone;
 
-    private Iterable<String> render;
-    private Iterable<String> execute;
     private Boolean submitInvoker;
     private Integer delay;
 
@@ -62,13 +59,6 @@ public class Ajax extends UICommand implements OUIClientAction {
             helper.onParentChange(this, parent);
     }
 
-    public void setRender(Iterable<String> render) {
-        this.render = render;
-    }
-
-    public Iterable<String> getRender() {
-        return ValueBindings.get(this, "render", render, Iterable.class);
-    }
 
     public boolean getSubmitInvoker() { // todo: remove the "submitInvoker" property and hard-code the "true" behavior if no use-case where this should be customizible arises
         return ValueBindings.get(this, "submitInvoker", submitInvoker, true);
@@ -76,14 +66,6 @@ public class Ajax extends UICommand implements OUIClientAction {
 
     public void setSubmitInvoker(boolean submitInvoker) {
         this.submitInvoker = submitInvoker;
-    }
-
-    public Iterable<String> getExecute() {
-        return ValueBindings.get(this, "execute", execute, Collections.<String>emptySet(), Iterable.class);
-    }
-
-    public void setExecute(Iterable<String> execute) {
-        this.execute = execute;
     }
 
     public String getEvent() {
@@ -163,12 +145,10 @@ public class Ajax extends UICommand implements OUIClientAction {
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        AjaxUtil.renderJSLinks(context, this);
+        AjaxUtil.renderJSLinks(context);
         StyleUtil.requestDefaultCss(FacesContext.getCurrentInstance());
 
         return new Object[]{superState,
-                saveAttachedState(context, render),
-                saveAttachedState(context, execute),
                 event,
                 _for,
                 standalone,
@@ -183,22 +163,20 @@ public class Ajax extends UICommand implements OUIClientAction {
     }
 
     @Override
-    public void restoreState(FacesContext context, Object state) {
-        Object[] stateArray = (Object[]) state;
+    public void restoreState(FacesContext context, Object object) {
+        Object[] state = (Object[]) object;
         int i = 0;
-        super.restoreState(context, stateArray[i++]);
-        render = (Iterable<String>) restoreAttachedState(context, stateArray[i++]);
-        execute = (Iterable<String>) restoreAttachedState(context, stateArray[i++]);
-        event = (String) stateArray[i++];
-        _for = (String) stateArray[i++];
-        standalone = (Boolean) stateArray[i++];
-        disabled = (Boolean) stateArray[i++];
-        submitInvoker = (Boolean) stateArray[i++];
-        delay = (Integer) stateArray[i++];
-        onevent = (String) stateArray[i++];
-        onerror = (String) stateArray[i++];
-        onajaxstart = (String) stateArray[i++];
-        onajaxend = (String) stateArray[i++];
+        super.restoreState(context, state[i++]);
+        event = (String) state[i++];
+        _for = (String) state[i++];
+        standalone = (Boolean) state[i++];
+        disabled = (Boolean) state[i++];
+        submitInvoker = (Boolean) state[i++];
+        delay = (Integer) state[i++];
+        onevent = (String) state[i++];
+        onerror = (String) state[i++];
+        onajaxstart = (String) state[i++];
+        onajaxend = (String) state[i++];
     }
 
 }

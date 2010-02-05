@@ -35,4 +35,13 @@ public class OUICommandJspTag extends AbstractComponentJspTag {
     public void setImmediate(ValueExpression immediate) {
         getDelegate().setPropertyValue("immediate", immediate);
     }
+
+    public void setRender(ValueExpression render) {
+        getDelegate().setPropertyValue("render", render);
+    }
+
+    public void setExecute(ValueExpression execute) {
+        getDelegate().setPropertyValue("execute", execute);
+    }
+    
 }

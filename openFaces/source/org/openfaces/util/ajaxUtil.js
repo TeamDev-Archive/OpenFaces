@@ -100,6 +100,7 @@ O$.PARAM_RENDER = "_of_render";
 O$.CUSTOM_JSON_PARAM = "_of_customJsonParam";
 O$.SUBMITTED_COMPONENT_IDS = "_of_execute";
 O$.ACTION_LISTENER = "_of_actionListener";
+O$.ACTION = "_of_action";
 O$.ACTION_COMPONENT = "_of_actionComponent";
 O$.IMMEDIATE = "_of_immediate";
 
@@ -386,6 +387,10 @@ O$.sendAjaxRequest = function(render, args) {
   if (args.listener) {
     paramsBuf.append("&").append(O$.ACTION_LISTENER).append("=").append(args.listener);
   }
+  if (args._action) {
+    paramsBuf.append("&").append(O$.ACTION).append("=").append(args._action);
+  }
+
   if (args.actionComponent) {
     paramsBuf.append("&").append(O$.ACTION_COMPONENT).append("=").append(args.actionComponent);
   }
@@ -640,7 +645,7 @@ O$.showAjaxProgressMessage = function() {
 
 O$.hideAjaxProgressMessage = function() {
   var msg = document._ajaxInProgressMessage;
-  O$.assert(msg, "O$.hideAjaxProgressMessage: no message was registered");
+  if(!msg) return;
   var simulateFixedPos = true;//O$.isExplorer();
   if (simulateFixedPos) {
     O$.removeEventHandler(window, "scroll", O$.updateAjaxInProgressMessagePos);

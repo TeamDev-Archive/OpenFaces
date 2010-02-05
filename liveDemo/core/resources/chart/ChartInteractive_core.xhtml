@@ -46,11 +46,11 @@
               <o:floatingIconMessage for="input2" showDetail="true" showSummary="false"/>
             </o:column>
             <f:facet name="footer">
-              <h:panelGrid columns="2" style="margin-left:auto; margin-right:auto;">
+              <h:panelGrid columns="2" style="margin-left: auto; margin-right: auto;">
                 <h:commandButton value="Update" action="#{ChartView.selectSector}"/>
                 <h:commandButton value="Generate New Data"
                                  action="#{ChartView.incomeData.generateNewData}"
-                                 style="padding:0 .25em 0 .25em; width:130px; overflow:visible; margin:0 !important;"/>
+                                 style="padding: 0 .25em 0 .25em; width: 130px; overflow: visible; margin: 0 !important;"/>
               </h:panelGrid>
             </f:facet>
             <o:row condition="#{income.quarter=='Q1'}" style="background-color: #3e8eb3"/>

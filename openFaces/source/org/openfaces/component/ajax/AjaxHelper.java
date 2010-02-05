@@ -13,6 +13,7 @@ package org.openfaces.component.ajax;
 
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
+import org.openfaces.component.OUICommand;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.Script;
@@ -45,17 +46,17 @@ public class AjaxHelper extends OUIClientActionHelper {
         AjaxInitializer ajaxInitializer = new AjaxInitializer() {
 
             @Override
-            protected Object getAjaxComponentParam(FacesContext context, Ajax ajax) {
+            protected Object getAjaxComponentParam(FacesContext context, OUICommand ajax) {
                 return new RawScript("O$._actionIds['" + id + "']");
             }
 
             @Override
-            protected Object getExecuteParam(FacesContext context, Ajax ajax, Iterable<String> execute) {
+            protected Object getExecuteParam(FacesContext context, OUICommand ajax, Iterable<String> execute) {
                 return new RawScript("O$._executeIds['" + id + "']");
             }
         };
 
-        JSONArray renderArray = ajaxInitializer.getRenderArray(context, action, ajax.getRender());
+        JSONArray renderArray = ajaxInitializer.getRenderArray(context, (OUICommand) action, ajax.getRender());
         String idExpression = "O$._renderIds['" + id + "']";
         Script render = new RawScript("(" + idExpression + " ? " + idExpression + " : " + renderArray.toString() + ")" );
 

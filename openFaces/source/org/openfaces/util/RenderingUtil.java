@@ -605,7 +605,7 @@ public class RenderingUtil {
         if (jsFiles != null)
             for (String jsFile : jsFiles) {
                 if (jsFile != null)
-                    ResourceUtil.renderJSLinkIfNeeded(jsFile, context);
+                    ResourceUtil.renderJSLinkIfNeeded(context, jsFile);
             }
 
         ResponseWriter writer = context.getResponseWriter();
@@ -1283,7 +1283,12 @@ public class RenderingUtil {
     }
 
     public static void writeStandardEvents(ResponseWriter writer, OUIComponent component) throws IOException {
-        writeAttribute(writer, "onclick", component.getOnclick());
+        writeStandardEvents(writer, component, false);
+    }
+
+    public static void writeStandardEvents(ResponseWriter writer, OUIComponent component, boolean skipOnclick) throws IOException {
+        if (!skipOnclick)
+            writeAttribute(writer, "onclick", component.getOnclick());
         writeAttribute(writer, "ondblclick", component.getOndblclick());
         writeAttribute(writer, "onmousedown", component.getOnmousedown());
         writeAttribute(writer, "onmouseup", component.getOnmouseup());

@@ -1,7 +1,7 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:o="http://openfaces.org/"
-     >
+        >
 
   <div id="Description">
     The Chart component lets you plot data in pie, bar, or line charts. With numerous chart options, you can modify any
@@ -12,11 +12,9 @@
 
   <div id="Demo">
     <div style="margin-bottom:10px;">
-    <h:commandButton value="Generate New Data">
-      <o:ajax
-              render="yearPrecipitationChart temperatureChart monthPrecipitationChart temperatureChart2"
-              listener="#{ChartDemo.generateNewData}"/>
-    </h:commandButton>
+      <o:commandButton value="Generate New Data"
+                       actionListener="#{ChartDemo.generateNewData}"
+                       render="yearPrecipitationChart temperatureChart monthPrecipitationChart temperatureChart2"/>
     </div>
 
     <table>

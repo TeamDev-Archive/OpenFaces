@@ -26,7 +26,9 @@
     <td style="vertical-align: top;">
       <div>
         <o:inputText id="filter" value="#{TaskBean.filter}" promptText="Search" styleClass="taskInput"
-                     style="margin: 8px 0 0 12px;">
+                     style="margin: 8px 0 0 12px;"
+                     autocomplete="false"
+                     onkeypress="if (event.keyCode == 13) return false;">
           <o:ajax event="keyup"
                   render=":form:taskList :form:doneList :form:doneListCaption"
                   delay="500">
@@ -151,7 +153,7 @@
                                                                  href="http://openfaces.org/documentation/tagReference/o/defaultProgressMessage.html">
         &lt;o:defaultProgressMessage></a> tag placed into the <span class="codeSnippet">"progressMessage"</span> facet
         of <a class="tagReference" target="_blank"
-           href="http://openfaces.org/documentation/tagReference/o/ajaxSettings.html">&lt;ajaxSettings></a> tag.
+              href="http://openfaces.org/documentation/tagReference/o/ajaxSettings.html">&lt;o:ajaxSettings></a> tag.
 
       </verbatim>
       <h:panelGrid columns="2" style="margin-top: 2px;">
@@ -190,21 +192,21 @@
 
         <h:outputText value="backgroundStyle:"/>
         <h:inputText value="#{AjaxSettings.backgroundStyle}" style="width: 320px"
-                     onchange="O$('form:fillBackground').checked='checked'"/>
+                     onchange="O$('form:fillBackground').checked='checked';"/>
 
         <h:outputText value="backgroundTransparency:"/>
         <o:spinner value="#{AjaxSettings.backgroundTransparency}" minValue="0" maxValue="1" step="0.1"
-                   onchange="O$('form:fillBackground').checked='checked'"/>
+                   onchange="O$('form:fillBackground').checked='checked';"/>
 
         <h:outputText value="backgroundTransparencyTransitionPeriod:"/>
         <o:spinner value="#{AjaxSettings.backgroundTransparencyTransitionPeriod}" minValue="0" maxValue="1000"
-                   onchange="O$('form:fillBackground').checked='checked'"
+                   onchange="O$('form:fillBackground').checked='checked';"
                    step="10"/>
       </h:panelGrid>
     </o:tabbedPaneItem>
 
   </o:tabbedPane>
-  <h:commandButton value="Apply" style="width: 90px; position: absolute; right: 10px; bottom: 10px"/>
+  <o:commandButton value="Apply" style="width: 90px; position: absolute; right: 10px; bottom: 10px"/>
 </o:window>
 
 </div>

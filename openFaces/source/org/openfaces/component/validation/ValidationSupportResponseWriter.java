@@ -275,8 +275,8 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
     private void processGlobalMessages(FacesContext context, ValidationProcessor processor) throws IOException {
         Iterator<FacesMessage> globalMessages = context.getMessages(null);
         if (globalMessages.hasNext()) {
-            ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getUtilJsURL(context), context);
-            ResourceUtil.renderJSLinkIfNeeded(ValidatorUtil.getValidatorUtilJsUrl(context), context);
+            ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getUtilJsURL(context));
+            ResourceUtil.renderJSLinkIfNeeded(context, ValidatorUtil.getValidatorUtilJsUrl(context));
             while (globalMessages.hasNext()) {
                 FacesMessage message = globalMessages.next();
                 RenderingUtil.renderInitScript(context, ClientValidatorUtil.getScriptAddGlobalMessage(message));
@@ -410,7 +410,7 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
             List<String> renderedJsLinks = ResourceUtil.getRenderedJsLinks(context);
             for (String js : validationScripts) {
                 if (!renderedJsLinks.contains(js))
-                    ResourceUtil.renderJSLinkIfNeeded(js, context);
+                    ResourceUtil.renderJSLinkIfNeeded(context, js);
             }
         } finally {
             context.setResponseWriter(prevWriter);

@@ -116,7 +116,7 @@ public class ChartRenderer extends RendererBase {
         dynamicImage.encodeBegin(facesContext);
         dynamicImage.encodeEnd(facesContext);
         if (map != null)
-            ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getUtilJsURL(facesContext), facesContext);
+            ResourceUtil.renderJSLinkIfNeeded(facesContext, ResourceUtil.getUtilJsURL(facesContext));
         writer.endElement("div");
     }
 

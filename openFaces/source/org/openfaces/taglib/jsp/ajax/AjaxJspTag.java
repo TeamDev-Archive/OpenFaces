@@ -12,7 +12,7 @@
 package org.openfaces.taglib.jsp.ajax;
 
 import org.openfaces.taglib.internal.ajax.AjaxTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
+import org.openfaces.taglib.jsp.OUICommandJspTag;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -20,7 +20,7 @@ import javax.el.ValueExpression;
 /**
  * @author Ilya Musihin
  */
-public class AjaxJspTag extends AbstractComponentJspTag {
+public class AjaxJspTag extends OUICommandJspTag {
     public AjaxJspTag() {
         super(new AjaxTag());
     }
@@ -41,14 +41,6 @@ public class AjaxJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("disabled", disabled);
     }
 
-    public void setRender(ValueExpression render) {
-        getDelegate().setPropertyValue("render", render);
-    }
-
-    public void setExecute(ValueExpression execute) {
-        getDelegate().setPropertyValue("execute", execute);
-    }
-
     public void setSubmitInvoker(ValueExpression submitInvoker) {
         getDelegate().setPropertyValue("submitInvoker", submitInvoker);
     }
@@ -60,10 +52,6 @@ public class AjaxJspTag extends AbstractComponentJspTag {
 
     public void setListener(MethodExpression listener) {
         getDelegate().setPropertyValue("listener", listener);
-    }
-
-    public void setImmediate(ValueExpression immediate) {
-        getDelegate().setPropertyValue("immediate", immediate);
     }
 
     public void setOnevent(ValueExpression onevent) {

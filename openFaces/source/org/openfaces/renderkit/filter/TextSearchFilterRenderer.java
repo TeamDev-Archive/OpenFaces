@@ -41,8 +41,8 @@ public abstract class TextSearchFilterRenderer extends ExpressionFilterRenderer 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
-        ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getUtilJsURL(context), context);
-        ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getFiltersJsURL(context), context);
+        ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getUtilJsURL(context));
+        ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getFiltersJsURL(context));
         TextSearchFilter filter = (TextSearchFilter) component;
 
         UIInput inputComponent = (UIInput) filter.getSearchComponent();

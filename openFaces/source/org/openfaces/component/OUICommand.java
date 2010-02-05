@@ -15,11 +15,15 @@ import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
+import java.util.Collections;
 
 /**
  * @author Dmitry Pikhulya
  */
 public abstract class OUICommand extends UICommand implements OUIComponent {
+    private Iterable<String> execute;
+    private Iterable<String> render;
+
     private String style;
     private String styleClass;
     private String rolloverStyle;
@@ -41,36 +45,55 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, style, styleClass, rolloverStyle, rolloverClass, onclick, ondblclick,
-                onmousedown, onmouseover, onmousemove, onmouseout, onmouseup, onfocus, onblur, onkeydown,
-                onkeyup, onkeypress};
+        return new Object[]{superState,
+                saveAttachedState(context, execute),
+                saveAttachedState(context, render),
+                style, styleClass, rolloverStyle, rolloverClass, onclick, ondblclick, onmousedown, onmouseover,
+                onmousemove, onmouseout, onmouseup, onfocus, onblur, onkeydown, onkeyup, onkeypress};
     }
 
     public abstract String getFamily();
 
     @Override
     public void restoreState(FacesContext context, Object object) {
-        Object[] values = (Object[]) object;
+        Object[] state = (Object[]) object;
         int i = 0;
-        super.restoreState(context, values[i++]);
-        style = (String) values[i++];
-        styleClass = (String) values[i++];
-        rolloverStyle = (String) values[i++];
-        rolloverClass = (String) values[i++];
-        onclick = (String) values[i++];
-        ondblclick = (String) values[i++];
-        onmousedown = (String) values[i++];
-        onmouseover = (String) values[i++];
-        onmousemove = (String) values[i++];
-        onmouseout = (String) values[i++];
-        onmouseup = (String) values[i++];
-        onfocus = (String) values[i++];
-        onblur = (String) values[i++];
-        onkeydown = (String) values[i++];
-        onkeyup = (String) values[i++];
-        onkeypress = (String) values[i++];
+        super.restoreState(context, state[i++]);
+        execute = (Iterable<String>) restoreAttachedState(context, state[i++]);
+        render = (Iterable<String>) restoreAttachedState(context, state[i++]);
+        style = (String) state[i++];
+        styleClass = (String) state[i++];
+        rolloverStyle = (String) state[i++];
+        rolloverClass = (String) state[i++];
+        onclick = (String) state[i++];
+        ondblclick = (String) state[i++];
+        onmousedown = (String) state[i++];
+        onmouseover = (String) state[i++];
+        onmousemove = (String) state[i++];
+        onmouseout = (String) state[i++];
+        onmouseup = (String) state[i++];
+        onfocus = (String) state[i++];
+        onblur = (String) state[i++];
+        onkeydown = (String) state[i++];
+        onkeyup = (String) state[i++];
+        onkeypress = (String) state[i++];
     }
 
+    public Iterable<String> getExecute() {
+        return ValueBindings.get(this, "execute", execute, Collections.<String>emptySet(), Iterable.class);
+    }
+
+    public void setExecute(Iterable<String> execute) {
+        this.execute = execute;
+    }
+
+    public void setRender(Iterable<String> render) {
+        this.render = render;
+    }
+
+    public Iterable<String> getRender() {
+        return ValueBindings.get(this, "render", render, Iterable.class);
+    }
 
     public String getStyle() {
         return ValueBindings.get(this, "style", style);

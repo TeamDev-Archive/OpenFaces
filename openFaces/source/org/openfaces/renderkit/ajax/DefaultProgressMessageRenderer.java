@@ -48,8 +48,8 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
 
         if (!requestMap.containsKey(PROGRESS_MESSAGE) && !requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED)) {
             requestMap.put(PROGRESS_MESSAGE, dpm);
-            ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getUtilJsURL(context), context);
-            ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getAjaxUtilJsURL(context), context);
+            ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getUtilJsURL(context));
+            ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getAjaxUtilJsURL(context));
             return;
         }
 
@@ -89,7 +89,7 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
                 String initLibraryUrl = ResourceUtil.getApplicationResourceURL(context, uniqueRTLibraryName);
 
                 if (isAjax4jsfRequest) {
-                    ResourceUtil.renderJSLinkIfNeeded(initLibraryUrl, context);
+                    ResourceUtil.renderJSLinkIfNeeded(context, initLibraryUrl);
                 }
 
                 if (sessionMap != null && uniqueRTLibraryName != null) {

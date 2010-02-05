@@ -120,7 +120,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     private void encodeJsLinks(FacesContext context) throws IOException {
         String[] libs = getNecessaryJsLibs(context);
         for (String lib : libs) {
-            ResourceUtil.renderJSLinkIfNeeded(lib, context);
+            ResourceUtil.renderJSLinkIfNeeded(context, lib);
         }
     }
 

@@ -13,6 +13,7 @@ package org.openfaces.renderkit.action;
 
 import org.openfaces.component.action.CommandButton;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RenderingUtil;
 
 import javax.faces.component.UIComponent;
@@ -48,7 +49,10 @@ public class CommandButtonRenderer extends RendererBase {
         RenderingUtil.writeAttribute(writer, "alt", btn.getAlt());
         RenderingUtil.writeAttribute(writer, "dir", btn.getDir());
         RenderingUtil.writeStyleAndClassAttributes(writer, btn);
-        RenderingUtil.writeStandardEvents(writer, btn);
+
+        boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, btn);
+        if (ajaxJsRequired)
+            AjaxUtil.renderJSLinks(context);
     }
 
     @Override

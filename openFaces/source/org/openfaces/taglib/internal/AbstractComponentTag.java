@@ -379,9 +379,10 @@ public abstract class AbstractComponentTag extends AbstractTag {
             component.getAttributes().put(propertyName, Collections.singletonList(value));
     }
 
-    protected void setLiteralCollectionProperty(UIComponent component, String propertyName) {
+    protected boolean setLiteralCollectionProperty(UIComponent component, String propertyName) {
         String value = getPropertyValue(propertyName);
         setLiteralCollectionProperty(component, propertyName, value);
+        return value != null;
     }
 
     protected void setLiteralCollectionProperty(UIComponent component, String propertyName, String value) {

@@ -18,7 +18,6 @@ import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.renderkit.window.ConfirmationRenderer;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.RenderingUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -34,9 +33,9 @@ public class AjaxSettingsRenderer extends AbstractSettingsRenderer implements Aj
         AjaxSettings ajaxSettings = (AjaxSettings) component;
         if (!(AjaxUtil.isAjaxRequest(context))) {
             processOnsessionexpired(context, ajaxSettings);
-            ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getUtilJsURL(context), context);
-            ResourceUtil.renderJSLinkIfNeeded(ResourceUtil.getInternalResourceURL(context,
-                    ConfirmationRenderer.class, ConfirmationRenderer.JS_SCRIPT_URL), context);
+            ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getUtilJsURL(context));
+            ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getInternalResourceURL(context,
+                    ConfirmationRenderer.class, ConfirmationRenderer.JS_SCRIPT_URL));
         }
 
         processOnerror(context, ajaxSettings);

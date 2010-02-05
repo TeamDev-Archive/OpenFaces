@@ -12,7 +12,7 @@
 package org.openfaces.taglib.internal.ajax;
 
 import org.openfaces.component.ajax.Ajax;
-import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.taglib.internal.OUICommandTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -20,7 +20,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Ilya Musihin
  */
-public class AjaxTag extends AbstractComponentTag {
+public class AjaxTag extends OUICommandTag {
     public String getComponentType() {
         return Ajax.COMPONENT_TYPE;
     }
@@ -37,13 +37,10 @@ public class AjaxTag extends AbstractComponentTag {
         setBooleanProperty(component, "standalone");
         setBooleanProperty(component, "disabled");        
 
-        setLiteralCollectionProperty(component, "render");
-        setLiteralCollectionProperty(component, "execute");
         setBooleanProperty(component, "submitInvoker");
         setIntProperty(component, "delay");
         
         setPropertyBinding(component, "listener");
-        setBooleanProperty(component, "immediate");
 
         setStringProperty(component, "onevent");
         setStringProperty(component, "onerror");

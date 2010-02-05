@@ -12,8 +12,8 @@
 package org.openfaces.component.ajax;
 
 import org.openfaces.component.ComponentConfigurator;
-import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
+import org.openfaces.component.OUICommand;
 import org.openfaces.component.OUIObjectIterator;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
@@ -30,14 +30,14 @@ import java.util.List;
 /**
  * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
  * by any application code.
- * 
+ *
  * @author Dmitry Pikhulya
  */
 public class AjaxInitializer {
     private static final String EXPRESSION_PREFIX = "#{";
     private static final String EXPRESSION_SUFFIX = "}";
 
-    public JSONArray getRenderArray(FacesContext context, OUIClientAction action, Iterable<String> render) {
+    public JSONArray getRenderArray(FacesContext context, OUICommand command, Iterable<String> render) {
         JSONArray idsArray = new JSONArray();
         if (render != null)
             for (String componentId : render) {
@@ -45,7 +45,7 @@ public class AjaxInitializer {
                     idsArray.put(componentId.substring(1));
                     continue;
                 }
-                UIComponent component = findComponent((UIComponent) action, componentId);
+                UIComponent component = findComponent(command, componentId);
                 if (component == null) {
                     idsArray.put(componentId);
                     continue;
@@ -72,8 +72,8 @@ public class AjaxInitializer {
 
     private UIComponent findComponent(UIComponent base, String componentId) {
         if (componentId == null || componentId.equals(""))
-        if (base == null)
-            base = FacesContext.getCurrentInstance().getViewRoot();
+            if (base == null)
+                base = FacesContext.getCurrentInstance().getViewRoot();
         if (base == null)
             return null;
         UIComponent locationBase = base;
@@ -106,31 +106,47 @@ public class AjaxInitializer {
     }
 
 
-    public JSONObject getAjaxParams(FacesContext context, Ajax ajax) {
+    public JSONObject getAjaxParams(FacesContext context, OUICommand ajax) {
         try {
             JSONObject result = new JSONObject();
             Iterable<String> execute = ajax.getExecute();
-            if (execute.iterator().hasNext() || (!ajax.isStandalone() && ajax.getSubmitInvoker())) {
+            boolean submitAjaxInvoker = ajax instanceof Ajax &&
+                            !((Ajax) ajax).isStandalone()
+                            && ((Ajax) ajax).getSubmitInvoker();
+            if (execute.iterator().hasNext() || submitAjaxInvoker) {
                 result.put("execute", getExecuteParam(context, ajax, execute));
             }
-            String onajaxstart = ajax.getOnajaxstart();
+            String onajaxstart = (String) ajax.getAttributes().get("onajaxstart");
             if (onajaxstart != null && onajaxstart.length() != 0) {
                 result.put("onajaxstart", new AnonymousFunction(onajaxstart, "event"));
             }
-            String onajaxend = ajax.getOnajaxend();
+            String onajaxend = (String) ajax.getAttributes().get("onajaxend");
             if (onajaxend != null && onajaxend.length() != 0) {
                 result.put("onajaxend", new AnonymousFunction(onajaxend, "event"));
             }
-            String onerror = ajax.getOnerror();
+            String onerror = (String) ajax.getAttributes().get("onerror");
             if (onerror != null && onerror.length() != 0) {
                 result.put("onerror", new AnonymousFunction(onerror, "event"));
             }
-            int delay = ajax.getDelay();
+            Integer delayObj = (Integer) ajax.getAttributes().get("delay");
+            int delay = delayObj != null ? delayObj : 0;
             if (delay > 0) {
                 result.put("delay", delay);
                 result.put("delayId", getAjaxComponentParam(context, ajax));
             }
-            ValueExpression actionListener = ajax.getValueExpression("listener");
+
+            ValueExpression action = !(ajax instanceof Ajax) ? ajax.getValueExpression("action") : null;
+            if (action != null) {
+                String actionExpressionString = action.getExpressionString();
+                validateExpressionString(actionExpressionString);
+                result.put("_action", actionExpressionString.substring(
+                        EXPRESSION_PREFIX.length(), actionExpressionString.length() - EXPRESSION_SUFFIX.length()));
+                result.put("actionComponent", ajax.getClientId(context));
+            }
+
+            ValueExpression actionListener = ajax instanceof Ajax
+                    ? ajax.getValueExpression("listener")
+                    : ajax.getValueExpression("actionListener");
             if (actionListener != null) {
                 String actionListenerExpressionString = actionListener.getExpressionString();
                 validateExpressionString(actionListenerExpressionString);
@@ -154,9 +170,12 @@ public class AjaxInitializer {
     }
 
     protected Object getExecuteParam(FacesContext context,
-                                                   Ajax ajax,
-                                                   Iterable<String> execute) {
-        JSONArray renderArray = getRenderArray(context, ajax, execute);
+                                     OUICommand command,
+                                     Iterable<String> execute) {
+        JSONArray renderArray = getRenderArray(context, command, execute);
+        if (!(command instanceof Ajax))
+            return renderArray;
+        Ajax ajax = (Ajax) command;
         if (!ajax.isStandalone() && ajax.getSubmitInvoker()) {
             String invokerId = OUIClientActionHelper.getClientActionInvoker(context, ajax);
             if (context.getViewRoot().findComponent(":" + invokerId) != null) {
@@ -167,7 +186,7 @@ public class AjaxInitializer {
         return renderArray;
     }
 
-    protected Object getAjaxComponentParam(FacesContext context, Ajax ajax) {
+    protected Object getAjaxComponentParam(FacesContext context, OUICommand ajax) {
         return ajax.getClientId(context);
     }
 
