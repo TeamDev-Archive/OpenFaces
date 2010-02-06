@@ -53,10 +53,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -123,7 +121,7 @@ public abstract class CommonAjaxViewRoot {
             // If the exception is catched here, the appropriate message is sent back to the client
             // in ajax response
             doProcessDecodes(context, this);
-            broadcastForPhase(PhaseId.APPLY_REQUEST_VALUES);
+            broadcastEvents(context, PhaseId.APPLY_REQUEST_VALUES);
         } catch (RuntimeException e) {
             processExceptionDuringAjax(context, e);
             if (e.getMessage() != null) {
@@ -154,7 +152,7 @@ public abstract class CommonAjaxViewRoot {
             // If the exception is catched here, the appropriate message is sent back to the client
             // in ajax response
             doProcessValidators(context);
-            broadcastForPhase(PhaseId.PROCESS_VALIDATIONS);
+            broadcastEvents(context, PhaseId.PROCESS_VALIDATIONS);
         } catch (RuntimeException e) {
             processExceptionDuringAjax(context, e);
             if (e.getMessage() != null) {
@@ -185,7 +183,7 @@ public abstract class CommonAjaxViewRoot {
             // If the exception is catched here, the appropriate message is sent back to the client
             // in ajax response
             doProcessUpdates(context);
-            broadcastForPhase(PhaseId.UPDATE_MODEL_VALUES);
+            broadcastEvents(context, PhaseId.UPDATE_MODEL_VALUES);
         } catch (RuntimeException e) {
             processExceptionDuringAjax(context, e);
             if (e.getMessage() != null) {
@@ -216,7 +214,7 @@ public abstract class CommonAjaxViewRoot {
             // If the exception is catched here, the appropriate message is sent back to the client
             // in ajax response
             doProcessApplication(context);
-            broadcastForPhase(PhaseId.INVOKE_APPLICATION);
+            broadcastEvents(context, PhaseId.INVOKE_APPLICATION);
         } catch (RuntimeException e) {
             processExceptionDuringAjax(context, e);
             if (e.getMessage() != null) {
@@ -413,8 +411,8 @@ public abstract class CommonAjaxViewRoot {
 
             if (action != null) {
                 MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
-                            elContext, "#{" + action + "}", String.class, new Class[]{});
-                    methodBinding.invoke(elContext, null);
+                        elContext, "#{" + action + "}", String.class, new Class[]{});
+                methodBinding.invoke(elContext, null);
             }
             if (listener != null) {
                 ActionEvent event = new ActionEvent(component);
@@ -1447,60 +1445,25 @@ public abstract class CommonAjaxViewRoot {
             context.setResponseWriter(originalWriter);
     }
 
-    /**
-     * This method is copied from MyFaces 1.1.4. The only change is the clearEvents invokation (see comments at the end of
-     * the method).
-     */
-    private void broadcastForPhase(PhaseId phaseId) {
+    private void broadcastEvents(FacesContext context, PhaseId phaseId) {
         if (events == null) return;
 
-        boolean abort = false;
-
-        int phaseIdOrdinal = phaseId.getOrdinal();
-        for (ListIterator<FacesEvent> listiterator = events.listIterator(); listiterator.hasNext();) {
-            FacesEvent event = listiterator.next();
-            int ordinal = event.getPhaseId().getOrdinal();
-            if (ordinal == PhaseId.ANY_PHASE.getOrdinal() ||
-                    ordinal == phaseIdOrdinal) {
-                UIComponent source = event.getComponent();
-                try {
-                    source.broadcast(event);
-                } catch (AbortProcessingException e) {
-                    // abort event processing
-                    // Page 3-30 of JSF 1.1 spec: "Throw an AbortProcessingException, to tell the JSF implementation
-                    //  that no further broadcast of this event, or any further events, should take place."
-                    abort = true;
-                    break;
-                } finally {
-
-                    try {
-                        listiterator.remove();
-                    } catch (ConcurrentModificationException cme) {
-                        int eventIndex = listiterator.previousIndex();
-                        events.remove(eventIndex);
-                        listiterator = events.listIterator();
-                    }
-                }
+        for (FacesEvent event : new ArrayList<FacesEvent>(events)) {
+            events.remove(event);
+            PhaseId eventPhaseId = event.getPhaseId();
+            if (eventPhaseId.compareTo(PhaseId.ANY_PHASE) != 0 && eventPhaseId.compareTo(phaseId) != 0)
+                continue;
+            UIComponent source = event.getComponent();
+            try {
+                source.broadcast(event);
+            } catch (AbortProcessingException e) {
+                break;
             }
         }
 
-        if (abort) {
-            clearEvents();
-        }
-
-        // <MOD> added to the original code from MyFaces since this should always be performed after broadcastForPhase anyway
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (context.getRenderResponse() || context.getResponseComplete()) {
-            clearEvents();
-        }
-        // </MOD>
-
+        if (context.getRenderResponse() || context.getResponseComplete())
+            events = null;
     }
-
-    private void clearEvents() {
-        events = null;
-    }
-
 
     public void queueEvent(FacesEvent event) {
         if (event == null) throw new NullPointerException("event");

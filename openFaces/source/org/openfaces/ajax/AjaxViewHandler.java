@@ -16,6 +16,7 @@ import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.Log;
 import org.openfaces.util.ResourceUtil;
+import org.openfaces.component.validation.ValidationSupportResponseWriter;
 
 import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
@@ -355,8 +356,11 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
                 processSessionExpirationUnderPortletsRI(context, root, externalContext);
             }
 
-            if (AjaxUtil.isAjaxRequest(context)) {
+            boolean ajaxRequest = AjaxUtil.isAjaxRequest(context);
+            if (!ajaxRequest && !AjaxUtil.isAjax4jsfRequest())
+                ValidationSupportResponseWriter.resetBubbleIndex(context);
 
+            if (ajaxRequest) {
                 updateSessionExpirationFlagUnderPortlets(context, root, externalContext, requestMap);
                 try {
                     // HACK for MyFaces ( <f:view> tag not call renderers )

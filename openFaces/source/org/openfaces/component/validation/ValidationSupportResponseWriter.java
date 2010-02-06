@@ -11,14 +11,14 @@
  */
 package org.openfaces.component.validation;
 
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
 import org.openfaces.renderkit.validation.BaseMessageRenderer;
 import org.openfaces.renderkit.validation.ValidatorUtil;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.ConverterUtil;
 import org.openfaces.util.Log;
-import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.RawScript;
+import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ResourceUtil;
 import org.openfaces.validator.ClientValidatorUtil;
 
 import javax.faces.application.FacesMessage;
@@ -54,7 +54,6 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
     };
 
     private ResponseWriter writer;
-    private int bubbleIndex;
     private StringWriter validationScriptWriter;
     private List<String> validationScripts;
     private Set<String> formsHaveOnSubmitRendered;
@@ -71,7 +70,6 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
 
     public ValidationSupportResponseWriter(ResponseWriter writer, ValidationSupportResponseWriter parent) {
         this.writer = writer;
-        bubbleIndex = parent.bubbleIndex;
         validationScriptWriter = parent.validationScriptWriter;
         validationScripts = parent.validationScripts;
         formsHaveOnSubmitRendered = parent.formsHaveOnSubmitRendered;
@@ -295,8 +293,8 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
         // then render default validation presentation for component (currently floating icon message)
         UIForm parentForm = vc.getParentForm();
         if (vp.isUseDefaultClientValidationPresentationForForm(parentForm) || vp.isUseDefaultServerValidationPresentationForForm(parentForm)) {
+            int bubbleIndex = nextBubbleIndex(context);
             addPresentationComponent(vc, bubbleIndex, vp);
-            bubbleIndex++;
         }
         if (!vp.getClientValidationRuleForComponent(vc).equals(ClientValidationMode.OFF)) {
             List<String> javascriptLibraries = vc.getJavascriptLibrariesUrls();
@@ -313,10 +311,28 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
                 formsHaveOnSubmitRendered.add(formClientId);
             }
         } else if (clientValidationRuleForComponent.equals(ClientValidationMode.ON_DEMAND)) {
-            RenderingUtil.renderInitScript(context, 
+            RenderingUtil.renderInitScript(context,
                     new RawScript("O$.addNotValidatedInput('" + vc.getClientId() + "');"),
                     ValidatorUtil.getValidatorUtilJsUrl(context));
         }
+    }
+
+    public static void resetBubbleIndex(FacesContext context) {
+        Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+        sessionMap.remove(getBubbleIndexKey());
+    }
+
+    private static int nextBubbleIndex(FacesContext context) {
+        Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+        String key = getBubbleIndexKey();
+        Integer bubbleIndex = (Integer) sessionMap.get(key);
+        if (bubbleIndex == null) bubbleIndex = 0;
+        sessionMap.put(key, bubbleIndex + 1);
+        return bubbleIndex;
+    }
+
+    private static String getBubbleIndexKey() {
+        return ValidationSupportResponseWriter.class.getName() + ".bubbleIndex";
     }
 
     private void addPresentationComponent(VerifiableComponent vc, int idx, ValidationProcessor vp) throws IOException {

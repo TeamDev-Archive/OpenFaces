@@ -84,7 +84,6 @@ public class FloatingIconMessageRenderer extends BaseMessageRenderer {
         if (forComponentClientId == null) {
             throw new NullPointerException("forComponentClientId");
         }
-        FloatingIconMessage flMessage = (FloatingIconMessage) fim;
         ScriptBuilder resultScript = new ScriptBuilder();
         Iterator messages = context.getMessages(forComponentClientId);
         FacesMessage message = null;
@@ -107,10 +106,10 @@ public class FloatingIconMessageRenderer extends BaseMessageRenderer {
                         getOffsetLeft(fim),
                         css,
                         events,
-                        flMessage.isNoImage(),
-                        flMessage.isShowSummary(),
-                        flMessage.isShowDetail(),
-                        isDefaultPresentation(flMessage))).semicolon();
+                        fim.isNoImage(),
+                        fim.isShowSummary(),
+                        fim.isShowDetail(),
+                        isDefaultPresentation(fim))).semicolon();
 
         ScriptBuilder serverValidationScript = new ScriptBuilder();
         if (message != null) {
@@ -127,10 +126,10 @@ public class FloatingIconMessageRenderer extends BaseMessageRenderer {
                             getOffsetLeft(fim),
                             css,
                             events,
-                            flMessage.isNoImage(),
-                            flMessage.isShowSummary(),
-                            flMessage.isShowDetail(),
-                            isDefaultPresentation(flMessage)).append(".update();\n"));
+                            fim.isNoImage(),
+                            fim.isShowSummary(),
+                            fim.isShowDetail(),
+                            isDefaultPresentation(fim)).append(".update();\n"));
         }
 
         if (pageDefinedMessage) {
