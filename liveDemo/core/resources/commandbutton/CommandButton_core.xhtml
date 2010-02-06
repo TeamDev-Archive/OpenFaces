@@ -1,0 +1,128 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+        >
+
+  <div id="Demo">
+    <div style="font-size: 15pt; margin-bottom: 10px; color: #404040;">Standard and Ajax functionality</div>
+    <h:panelGrid id="input" columns="2" style="margin-bottom: 5px;">
+      <o:inputText value="#{requestScope['firstName']}" promptText="First name"/>
+      <o:inputText value="#{requestScope['lastName']}" promptText="Last name"/>
+    </h:panelGrid>
+    <o:commandButton value="Standard Submit"/>
+    <o:commandButton value="Ajax Submit" execute="input" render="output"/>
+    <div style="margin-top: 5px; padding-left: 5px;">
+      <h:outputText id="output" value="Full name: #{requestScope['firstName']} #{requestScope['lastName']}"/>
+    </div>
+
+    <br/>
+    <br/>
+
+    <div style="font-size: 15pt; margin-bottom: 10px; color: #404040">Client-side functionality and a non-text
+      content
+    </div>
+
+    <span class="codeSnippet">&lt;o:commandButton></span> tag with <span class="codeSnippet">type="button"</span> and
+    embedded components:<br/>
+    <o:inputText id="searchField" style="width: 250px" value="OpenFaces Ajax Button"
+                 onkeypress="if (event.keyCode == 13) {O$('form:searchButton').click(); return false;}"/>
+    <o:commandButton id="searchButton" type="button"
+                     onclick="var menu = O$('form:searchMenu'); menu.show(); menu.focus(); " style="width: 100px;">
+      <h:outputText value="Search"/>
+      <h:graphicImage url="dropArea.gif"/>
+    </o:commandButton>
+    <o:popupMenu id="searchMenu"  standalone="true" style="left: 277px; z-index: 1">
+      <o:menuItem value="Google" onclick="searchGoogle(O$('form:searchField').value);"/>
+      <o:menuItem value="Yahoo" onclick="searchYahoo(O$('form:searchField').value);"/>
+      <o:menuItem value="Wikipedia" onclick="searchWikipedia(O$('form:searchField').value);"/>
+    </o:popupMenu>
+    <br/>
+    <br/>
+
+    <script>
+      function searchGoogle(searchString) {
+        showPage("http://www.google.com/search?q=" + escape(searchString),
+                "Google Search for \"" + searchString + "\"");
+      }
+      function searchYahoo(searchString) {
+        showPage("http://search.yahoo.com/search?p=" + escape(searchString),
+                "Yahoo! Search for \"" + searchString + "\"");
+      }
+      function searchWikipedia(searchString) {
+        showPage("http://en.wikipedia.org/wiki/" + escape(searchString),
+                "Wikipedia Search for \"" + searchString + "\"");
+      }
+      function showPage(url, caption) {
+        O$('searchFrame').src = url;
+        O$('form:searchWindowCaption').innerHTML = caption;
+        O$('form:searchWindow').show();
+      }
+    </script>
+
+    <o:window id="searchWindow"
+              resizable="true"
+              width="900px"
+              height="550px"
+              contentStyle="overflow: hidden;"
+              style="left: -100px; top: 100px;">
+
+      <f:facet name="caption">
+        <h:outputText id="searchWindowCaption" value="Search results"/>
+      </f:facet>
+
+      <iframe id="searchFrame"
+              frameborder="true"
+              width="100%"
+              height="100%" style="border: none">
+
+      </iframe>
+    </o:window>
+
+    <br/>
+    <br/>
+
+    <div style="font-size: 15pt; margin-bottom: 10px; color: #404040">Embedding images and text</div>
+
+    <h:panelGrid columns="3">
+      <o:commandButton style="width: 180px; height: 85px; margin-right: 15px;" type="button"
+                       onclick="window.open('http://twitter.com/openfaces_jsf', '_blank');">
+        <h:graphicImage url="twitter.png"/>
+        <br/>
+        <span style="font-size: 10px; font-family: arial,serif; color: gray">Follow OpenFaces on Twitter</span>
+      </o:commandButton>
+
+      <o:commandButton style="width: 180px; height: 85px; margin-right: 15px;" type="button"
+                       onclick="window.open('http://www.linkedin.com/groupInvitation?groupID=1970874&amp;sharedKey=6AA5A612A62B', '_blank');">
+        <h:graphicImage url="linkedin.png"/>
+        <br/>
+        <span style="font-size: 10px; font-family: arial,serif; color: gray">Join OpenFaces on LinkedIn</span>
+      </o:commandButton>
+
+      <o:commandButton style="width: 180px; height: 85px; margin-right: 15px;" type="button"
+                       onclick="window.open('http://openfaces.org/downloads/', '_blank');">
+        <span style="font-size: 10px; font-family: arial,serif; color: gray">Download OpenFaces</span>
+      </o:commandButton>
+    </h:panelGrid>
+
+    <div id="Description">
+      <h4>Demonstrated Features</h4>
+      <ul class="hang">
+        <li>
+          <strong>Standard button mode</strong> - The way that the "Standard Submit" button is declared and functioning
+          is identical to the standard <span class="codeSnippet">&lt;h:commandButton> tag</span>.
+        </li>
+        <li>
+          <strong>Ajax support</strong> - The <span class="codeSnippet">render</span> and <span class="codeSnippet">execute</span>
+          attributes are identical to those of the <span class="codeSnippet">&lt;o:ajax> tag</span> and allow turning
+          the button into the Ajax-based one as demonstrated in the "Ajax Submit" button above.
+        </li>
+        <li>
+          <strong>Specifying content with components</strong> - It is possible to place any HTML or components into the
+          <span class="codeSnippet">&lt;o:commandButton> tag to specify a content of any complexity instead of mere text.</span>.
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>

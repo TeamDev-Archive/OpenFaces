@@ -1392,7 +1392,7 @@ if (!window.O$) {
   /*
    * eventName should be without the "on" prefix, for example: "change", "click", etc.
    */
-  O$.sendEvent = function(object, eventName) {
+  O$.sendEvent = function(elt, eventName) {
     var safari = O$.isSafari();
     var e = safari ? {} :
             document.createEvent ? document.createEvent("Event") :
@@ -1401,15 +1401,15 @@ if (!window.O$) {
       e.initEvent(eventName, true, true);
       e._of_event = true;
       e.returnValue = true;
-      object.dispatchEvent(e);
+      elt.dispatchEvent(e);
       return e.returnValue;
     } else {
       e.name = "on" + eventName;
       e._of_event = true;
-      var handler = object[e.name];
+      var handler = elt[e.name];
       if (!handler)
         return true;
-      return object[e.name](e);
+      return handler(e);
       //    object.fireEvent(e.name, e); // - didn't work for firing "onchange" for <table>
     }
 

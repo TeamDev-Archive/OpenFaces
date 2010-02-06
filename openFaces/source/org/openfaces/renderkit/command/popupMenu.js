@@ -223,6 +223,7 @@ O$.PopupMenu = {
             if (popupMenu._selectedIndex != null) {
               menuItem = popupMenu._items[popupMenu._selectedIndex];
               O$.sendEvent(menuItem._anchor, "click");
+              O$.PopupMenu._closeAllMenu(popupMenu);
             }
             break;
           case 38: // up

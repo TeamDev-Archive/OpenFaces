@@ -121,6 +121,27 @@
     </demos>
   </menuItem>
   <menuItem>
+    <name>Command Button</name>
+    <componentName>Command Button</componentName>
+    <url>/commandbutton/CommandButton.jsf</url>
+    <shortPath>/commandbutton/</shortPath>
+    <image>CommandButton</image>
+    <selectedImage>/images/components/titles/CommandButton.png</selectedImage>
+    <keyFeatures>
+      <feature>All features of the standard &lt;h:commandButton&gt; component</feature>
+      <feature>Support for Ajax action execution</feature>
+      <feature>Support for Ajax component submission/reloading</feature>
+      <feature>Specifying contents with HTML or child components</feature>
+      <feature>Allows specifying type="button"</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/commandbutton/CommandButton.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
     <name>Composite Filter</name>
     <componentName>Composite Filter</componentName>
     <url>/compositefilter/CompositeFilter.jsf</url>
@@ -331,7 +352,7 @@
       </demoItem>
     </demos>
   </menuItem>
-   <menuItem>
+  <menuItem>
     <name>For Each</name>
     <componentName>For Each</componentName>
     <url>/foreach/ForEach.jsf</url>
