@@ -12,7 +12,7 @@
 package org.openfaces.taglib.jsp.table;
 
 import org.openfaces.taglib.internal.table.ColumnMenuTag;
-import org.openfaces.taglib.jsp.action.PopupMenuJspTag;
+import org.openfaces.taglib.jsp.command.PopupMenuJspTag;
 
 public class ColumnMenuJspTag extends PopupMenuJspTag {
 

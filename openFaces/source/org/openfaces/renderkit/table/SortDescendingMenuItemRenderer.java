@@ -11,7 +11,7 @@
  */
 package org.openfaces.renderkit.table;
 
-import org.openfaces.component.action.MenuItem;
+import org.openfaces.component.command.MenuItem;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.ResourceUtil;
 

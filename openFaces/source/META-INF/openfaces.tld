@@ -21266,7 +21266,7 @@ and it is automatically triggered on any form submission. -->
       during the Ajax request.
     </description>
     <name>commandButton</name>
-    <tag-class>org.openfaces.taglib.jsp.action.CommandButtonJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.command.CommandButtonJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
       <description>A flag that indicates whether or not the component is visible.</description>
@@ -21284,9 +21284,9 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.action.CommandButton</type>
+        <type>org.openfaces.component.command.CommandButton</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.action. CommandButton -->
+      <!-- @bindingType org.openfaces.component.command.CommandButton -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -22983,7 +22983,7 @@ and it is automatically triggered on any form submission. -->
 
   <tag>
     <name>popupMenu</name>
-    <tag-class>org.openfaces.taglib.jsp.action.PopupMenuJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.command.PopupMenuJspTag</tag-class>
     <body-content>JSP</body-content>
 
     <attribute>
@@ -23012,9 +23012,9 @@ and it is automatically triggered on any form submission. -->
       </description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.action.PopupMenu</type>
+        <type>org.openfaces.component.command.PopupMenu</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.action.PopupMenu -->
+      <!-- @bindingType org.openfaces.component.command.PopupMenu -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -23461,16 +23461,16 @@ and it is automatically triggered on any form submission. -->
 
   <tag>
     <name>menuItem</name>
-    <tag-class>org.openfaces.taglib.jsp.action.MenuItemJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.command.MenuItemJspTag</tag-class>
     <body-content>JSP</body-content>
 
     <attribute>
       <description>A value-binding expression that associates the MenuItem with a backing bean property.</description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.action.MenuItem</type>
+        <type>org.openfaces.component.command.MenuItem</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.action.MenuItem -->
+      <!-- @bindingType org.openfaces.component.command.MenuItem -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
@@ -23827,7 +23827,7 @@ and it is automatically triggered on any form submission. -->
 
   <tag>
     <name>menuSeparator</name>
-    <tag-class>org.openfaces.taglib.jsp.action.MenuSeparatorJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.command.MenuSeparatorJspTag</tag-class>
     <body-content>empty</body-content>
 
     <attribute>

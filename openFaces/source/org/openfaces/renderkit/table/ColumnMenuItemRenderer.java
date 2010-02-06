@@ -11,10 +11,10 @@
  */
 package org.openfaces.renderkit.table;
 
-import org.openfaces.component.action.MenuItem;
-import org.openfaces.component.action.PopupMenu;
+import org.openfaces.component.command.MenuItem;
+import org.openfaces.component.command.PopupMenu;
 import org.openfaces.component.table.AbstractTable;
-import org.openfaces.renderkit.action.MenuItemRenderer;
+import org.openfaces.renderkit.command.MenuItemRenderer;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;

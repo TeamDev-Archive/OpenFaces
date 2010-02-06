@@ -815,7 +815,7 @@
     <component>
       <component-type>org.openfaces.CommandButton</component-type>
       <renderer-type>org.openfaces.CommandButtonRenderer</renderer-type>
-      <handler-class>org.openfaces.taglib.facelets.action.CommandButtonTagHandler</handler-class>
+      <handler-class>org.openfaces.taglib.facelets.command.CommandButtonTagHandler</handler-class>
     </component>
   </tag>
 
@@ -842,7 +842,7 @@
     <component>
       <component-type>org.openfaces.PopupMenu</component-type>
       <renderer-type>org.openfaces.PopupMenuRenderer</renderer-type>
-      <handler-class>org.openfaces.taglib.facelets.action.PopupMenuTagHandler</handler-class>
+      <handler-class>org.openfaces.taglib.facelets.command.PopupMenuTagHandler</handler-class>
     </component>
   </tag>
   <tag>
@@ -850,7 +850,7 @@
     <component>
       <component-type>org.openfaces.MenuSeparator</component-type>
       <renderer-type>org.openfaces.MenuSeparatorRenderer</renderer-type>
-      <handler-class>org.openfaces.taglib.facelets.action.MenuSeparatorTagHandler</handler-class>
+      <handler-class>org.openfaces.taglib.facelets.command.MenuSeparatorTagHandler</handler-class>
     </component>
   </tag>
   <tag>
@@ -858,7 +858,7 @@
     <component>
       <component-type>org.openfaces.MenuItem</component-type>
       <renderer-type>org.openfaces.MenuItemRenderer</renderer-type>
-      <handler-class>org.openfaces.taglib.facelets.action.MenuItemTagHandler</handler-class>
+      <handler-class>org.openfaces.taglib.facelets.command.MenuItemTagHandler</handler-class>
     </component>
   </tag>
 

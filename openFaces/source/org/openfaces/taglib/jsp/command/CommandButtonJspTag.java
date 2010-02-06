@@ -9,9 +9,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.jsp.action;
+package org.openfaces.taglib.jsp.command;
 
-import org.openfaces.taglib.internal.action.CommandButtonTag;
+import org.openfaces.taglib.internal.command.CommandButtonTag;
 import org.openfaces.taglib.jsp.OUICommandJspTag;
 
 import javax.el.ValueExpression;
@@ -23,6 +23,10 @@ public class CommandButtonJspTag extends OUICommandJspTag {
 
     public CommandButtonJspTag() {
         super(new CommandButtonTag());
+    }
+
+    public void setValue(ValueExpression value) {
+        getDelegate().setPropertyValue("value", value);
     }
 
     public void setType(ValueExpression type) {

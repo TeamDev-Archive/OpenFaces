@@ -571,7 +571,7 @@
 
   <component>
     <component-type>org.openfaces.CommandButton</component-type>
-    <component-class>org.openfaces.component.action.CommandButton</component-class>
+    <component-class>org.openfaces.component.command.CommandButton</component-class>
   </component>
 
   <component>
@@ -592,15 +592,15 @@
   <!--Menu COMPONENT -->
   <component>
     <component-type>org.openfaces.PopupMenu</component-type>
-    <component-class>org.openfaces.component.action.PopupMenu</component-class>
+    <component-class>org.openfaces.component.command.PopupMenu</component-class>
   </component>
   <component>
     <component-type>org.openfaces.MenuItem</component-type>
-    <component-class>org.openfaces.component.action.MenuItem</component-class>
+    <component-class>org.openfaces.component.command.MenuItem</component-class>
   </component>
   <component>
     <component-type>org.openfaces.MenuSeparator</component-type>
-    <component-class>org.openfaces.component.action.MenuSeparator</component-class>
+    <component-class>org.openfaces.component.command.MenuSeparator</component-class>
   </component>
 
   <component>
@@ -1000,7 +1000,7 @@
     <renderer>
       <component-family>org.openfaces.CommandButton</component-family>
       <renderer-type>org.openfaces.CommandButtonRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.action.CommandButtonRenderer</renderer-class>
+      <renderer-class>org.openfaces.renderkit.command.CommandButtonRenderer</renderer-class>
     </renderer>
 
     <renderer>
@@ -1025,19 +1025,19 @@
     <renderer>
       <component-family>org.openfaces.PopupMenu</component-family>
       <renderer-type>org.openfaces.PopupMenuRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.action.PopupMenuRenderer</renderer-class>
+      <renderer-class>org.openfaces.renderkit.command.PopupMenuRenderer</renderer-class>
     </renderer>
 
     <renderer>
       <component-family>org.openfaces.MenuItem</component-family>
       <renderer-type>org.openfaces.MenuItemRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.action.MenuItemRenderer</renderer-class>
+      <renderer-class>org.openfaces.renderkit.command.MenuItemRenderer</renderer-class>
     </renderer>
 
     <renderer>
       <component-family>org.openfaces.MenuSeparator</component-family>
       <renderer-type>org.openfaces.MenuSeparatorRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.action.MenuSeparatorRenderer</renderer-class>
+      <renderer-class>org.openfaces.renderkit.command.MenuSeparatorRenderer</renderer-class>
     </renderer>
 
     <!-- BorderLayoutPanel COMPONENT-->

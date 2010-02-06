@@ -12,7 +12,7 @@
 package org.openfaces.taglib.internal.table;
 
 import org.openfaces.component.table.SortDescendingMenuItem;
-import org.openfaces.taglib.internal.action.MenuItemTag;
+import org.openfaces.taglib.internal.command.MenuItemTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

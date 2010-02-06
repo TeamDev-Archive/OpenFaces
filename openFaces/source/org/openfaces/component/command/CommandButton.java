@@ -9,7 +9,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.action;
+package org.openfaces.component.command;
 
 import org.openfaces.component.OUICommand;
 import org.openfaces.util.ValueBindings;

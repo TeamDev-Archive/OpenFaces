@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.component.action.PopupMenu;
+import org.openfaces.component.command.PopupMenu;
 
 import javax.faces.context.FacesContext;
 

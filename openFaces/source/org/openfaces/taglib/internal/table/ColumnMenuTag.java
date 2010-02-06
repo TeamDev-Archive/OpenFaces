@@ -12,7 +12,7 @@
 package org.openfaces.taglib.internal.table;
 
 import org.openfaces.component.table.ColumnMenu;
-import org.openfaces.taglib.internal.action.PopupMenuTag;
+import org.openfaces.taglib.internal.command.PopupMenuTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

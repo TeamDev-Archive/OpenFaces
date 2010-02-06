@@ -12,7 +12,7 @@
 package org.openfaces.taglib.jsp.table;
 
 import org.openfaces.taglib.internal.table.SortAscendingMenuItemTag;
-import org.openfaces.taglib.jsp.action.MenuItemJspTag;
+import org.openfaces.taglib.jsp.command.MenuItemJspTag;
 
 public class SortAscendingMenuItemJspTag extends MenuItemJspTag {
 

@@ -13,7 +13,7 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.CaptionButton;
 import org.openfaces.component.TableStyles;
-import org.openfaces.component.action.PopupMenu;
+import org.openfaces.component.command.PopupMenu;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.AbstractTableSelection;
 import org.openfaces.component.table.BaseColumn;

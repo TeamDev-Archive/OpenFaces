@@ -9,17 +9,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.facelets.action;
+package org.openfaces.taglib.facelets.command;
 
 import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
-import org.openfaces.taglib.internal.action.PopupMenuTag;
+import org.openfaces.taglib.internal.command.MenuSeparatorTag;
 
 /**
  * @author Vladimir Kurganov
  */
-public class PopupMenuTagHandler extends AbstractFaceletsComponentHandler {
-    public PopupMenuTagHandler(ComponentConfig componentConfig) {
-        super(componentConfig, new PopupMenuTag());
+public class MenuSeparatorTagHandler extends AbstractFaceletsComponentHandler {
+    public MenuSeparatorTagHandler(ComponentConfig componentConfig) {
+        super(componentConfig, new MenuSeparatorTag());
     }
 }

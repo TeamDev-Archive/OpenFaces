@@ -9,9 +9,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.jsp.action;
+package org.openfaces.taglib.jsp.command;
 
-import org.openfaces.taglib.internal.action.PopupMenuTag;
+import org.openfaces.taglib.internal.command.PopupMenuTag;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 

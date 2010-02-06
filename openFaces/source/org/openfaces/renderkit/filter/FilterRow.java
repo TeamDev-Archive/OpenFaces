@@ -12,7 +12,7 @@
 
 package org.openfaces.renderkit.filter;
 
-import org.openfaces.component.action.CommandButton;
+import org.openfaces.component.command.CommandButton;
 import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.filter.FilterCondition;

@@ -9,7 +9,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.internal.action;
+package org.openfaces.taglib.internal.command;
 
 import org.openfaces.component.action.PopupMenu;
 import org.openfaces.taglib.internal.AbstractComponentTag;
