@@ -12,10 +12,10 @@
 package org.openfaces.renderkit.command;
 
 
-import org.openfaces.component.action.MenuSeparator;
+import org.openfaces.component.command.MenuSeparator;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.StyleUtil;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.StyleUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

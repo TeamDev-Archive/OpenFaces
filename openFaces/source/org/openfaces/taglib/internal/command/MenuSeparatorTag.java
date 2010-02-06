@@ -12,7 +12,7 @@
 package org.openfaces.taglib.internal.command;
 
 
-import org.openfaces.component.action.MenuSeparator;
+import org.openfaces.component.command.MenuSeparator;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;

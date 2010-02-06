@@ -11,7 +11,7 @@
  */
 package org.openfaces.renderkit.command;
 
-import org.openfaces.component.action.CommandButton;
+import org.openfaces.component.command.CommandButton;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RenderingUtil;

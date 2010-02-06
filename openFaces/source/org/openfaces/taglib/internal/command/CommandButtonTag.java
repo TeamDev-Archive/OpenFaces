@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.internal.command;
 
-import org.openfaces.component.action.CommandButton;
+import org.openfaces.component.command.CommandButton;
 import org.openfaces.taglib.internal.OUICommandTag;
 
 import javax.faces.component.UIComponent;

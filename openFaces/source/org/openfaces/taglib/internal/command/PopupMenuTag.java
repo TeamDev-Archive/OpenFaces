@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.internal.command;
 
-import org.openfaces.component.action.PopupMenu;
+import org.openfaces.component.command.PopupMenu;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;

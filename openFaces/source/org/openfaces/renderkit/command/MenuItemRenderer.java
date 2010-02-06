@@ -12,8 +12,8 @@
 package org.openfaces.renderkit.command;
 
 import org.openfaces.component.OUIClientAction;
-import org.openfaces.component.action.MenuItem;
-import org.openfaces.component.action.PopupMenu;
+import org.openfaces.component.command.MenuItem;
+import org.openfaces.component.command.PopupMenu;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;

@@ -13,9 +13,9 @@ package org.openfaces.renderkit.command;
 
 
 import org.openfaces.component.OUIClientActionHelper;
-import org.openfaces.component.action.MenuItem;
-import org.openfaces.component.action.MenuSeparator;
-import org.openfaces.component.action.PopupMenu;
+import org.openfaces.component.command.MenuItem;
+import org.openfaces.component.command.MenuSeparator;
+import org.openfaces.component.command.PopupMenu;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
