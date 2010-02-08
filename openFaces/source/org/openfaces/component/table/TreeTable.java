@@ -697,26 +697,34 @@ public class TreeTable extends AbstractTable {
         }
 
 
-        protected void populateSortingExpressionParams(Map<String, Object> requestMap, Object collectionObject) {
+        protected Runnable populateSortingExpressionParams(final Map<String, Object> requestMap, Object collectionObject) {
             TempNodeParams nodeParams = (TempNodeParams) collectionObject;
             Object nodeData = nodeParams.getNodeData();
             NodeInfoForRow nodeInfo = nodeParams.getNodeInfoForRow();
 
             requestMap.put(var, nodeData);
+            final Object prevNodePathVarValue;
             if (nodePathVar != null)
-                requestMap.put(nodePathVar, nodeInfo.getNodePath());
+                prevNodePathVarValue = requestMap.put(nodePathVar, nodeInfo.getNodePath());
+            else
+                prevNodePathVarValue = null;
+            final Object prevNodeHasChildrenVarValue;
             if (nodeHasChildrenVar != null)
-                requestMap.put(nodeHasChildrenVar, nodeInfo.getNodeHasChildren());
+                prevNodeHasChildrenVarValue = requestMap.put(nodeHasChildrenVar, nodeInfo.getNodeHasChildren());
+            else
+                prevNodeHasChildrenVarValue = null;
             String nodeParamsKey = TempNodeParams.class.getName();
-            requestMap.put(nodeParamsKey, nodeParams);
-        }
-
-        protected void clearSortingExpressionParams(Map requestMap) {
-            requestMap.remove(var);
-            if (nodePathVar != null)
-                requestMap.remove(nodePathVar);
-            if (nodeHasChildrenVar != null)
-                requestMap.remove(nodeHasChildrenVar);
+            final Object prevNodeParamsValue = requestMap.put(nodeParamsKey, nodeParams);
+            return new Runnable() {
+                public void run() {
+                    if (nodePathVar != null)
+                        requestMap.put(nodePathVar, prevNodePathVarValue);
+                    if (nodeHasChildrenVar != null)
+                        requestMap.put(nodeHasChildrenVar, prevNodeHasChildrenVarValue);
+                    String nodeParamsKey = TempNodeParams.class.getName();
+                    requestMap.put(nodeParamsKey, prevNodeParamsValue);
+                }
+            };
         }
 
     }

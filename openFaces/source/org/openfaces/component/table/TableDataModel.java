@@ -665,8 +665,9 @@ public class TableDataModel extends DataModel implements DataModelListener, Exte
         if (var == null) {
             var = getTable().getVar();
         }
-        requestMap.put(var, rowData);
+        Object prevVarValue = requestMap.put(var, rowData);
         Object result = rowKeyExpression.getValue(facesContext.getELContext());
+        requestMap.put(var, prevVarValue);
         if (result == null)
             throw new RuntimeException("The rowKey binding \"" + rowKeyExpression.getExpressionString() + "\" of table with client id \"" + getTable().getClientId(facesContext) + "\" must return a non-null value\n");
         if (!isValidRowKey(result))

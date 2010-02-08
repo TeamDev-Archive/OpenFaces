@@ -1360,9 +1360,17 @@ public abstract class CommonAjaxViewRoot {
                 }
 
                 int rowIndex = Integer.parseInt(id);
+                if (table.getRowIndex() == rowIndex) {
+                    // ensure row index setting will be run anew to ensure proper request-scope variable values
+                    table.setRowIndex(-1);
+                }
                 table.setRowIndex(rowIndex);
             } else {
                 int rowIndex = Integer.parseInt(id);
+                if (table.getRowIndex() == rowIndex) {
+                    // ensure row index setting will be run anew to ensure proper request-scope variable values
+                    table.setRowIndex(-1);
+                }
                 table.setRowIndex(rowIndex);
             }
             return table;

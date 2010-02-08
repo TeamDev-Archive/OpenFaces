@@ -1566,12 +1566,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         }
 
         public int compare(Object o1, Object o2) {
-            populateSortingExpressionParams(requestMap, o1);
+            Runnable restorePrevParams = populateSortingExpressionParams(requestMap, o1);
             ELContext elContext = facesContext.getELContext();
             Object value1 = sortingExpressionBinding.getValue(elContext);
-            populateSortingExpressionParams(requestMap, o2);
+            restorePrevParams.run();
+            restorePrevParams = populateSortingExpressionParams(requestMap, o2);
             Object value2 = sortingExpressionBinding.getValue(elContext);
-            clearSortingExpressionParams(requestMap);
+            restorePrevParams.run();
             int result;
             if (value1 == null)
                 result = (value2 == null) ? 0 : -1;
@@ -1589,12 +1590,13 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
             return result;
         }
 
-        protected void clearSortingExpressionParams(Map requestMap) {
-            requestMap.remove(var);
-        }
-
-        protected void populateSortingExpressionParams(Map<String, Object> requestMap, Object collectionObject) {
-            requestMap.put(var, collectionObject);
+        protected Runnable populateSortingExpressionParams(final Map<String, Object> requestMap, Object collectionObject) {
+            final Object prevValue = requestMap.put(var, collectionObject);
+            return new Runnable() {
+                public void run() {
+                    requestMap.put(var, prevValue);
+                }
+            };
         }
     }
 
