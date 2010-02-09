@@ -4225,7 +4225,7 @@ if (!window.O$) {
       this.style.height = popup.offsetHeight + "px";
       this.style.left = popup.offsetLeft + "px";
       this.style.top = popup.offsetTop + "px";
-      O$.correctElementZIndex(this, popup);
+      O$.correctElementZIndex(this, popup, -1);
     };
 
     var popupZIndex = O$.getElementStyle(popup, "z-index");

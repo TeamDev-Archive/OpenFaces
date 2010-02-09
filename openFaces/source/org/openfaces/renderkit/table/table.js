@@ -1572,6 +1572,7 @@ O$.Table = {
             }
             var bottomCell = this._column.subHeader ? this._column.subHeader._cell : this._column.header._cell;
             var bottomCellPos = O$.getElementBorderRectangle(bottomCell, this);
+
             var topCellPos = parentColumn
                     ? O$.getElementBorderRectangle(parentColumn.header._cell, this)
                     : O$.getElementBorderRectangle(this._column.header._cell, this);
@@ -1581,9 +1582,16 @@ O$.Table = {
             var y = minY;
             var height = bottomCellPos.getMaxY() - minY;
             var container = O$.getContainingBlock(this, true);
-            var visibleArea = container ? new O$.Rectangle(container.scrollLeft, 0, container.offsetWidth, container.offsetHeight) : null;
-            var visible = visibleArea ? visibleArea.intersects(new O$.Rectangle(x, y, resizeHandleWidth, height)) : true;
-            var newDisplay = visibleArea ? (visible ? "block" : "none") : "block";
+            var visible = true;
+            if (table._params.scrolling && table._params.scrolling.horizontal) {
+              var bottomCellAbsPos = O$.getElementBorderRectangle(bottomCell);
+              var xAbs = bottomCellAbsPos.getMaxX() - Math.floor(resizeHandleWidth / 2) - 1 + resizeHandleOffset;
+              var yAbs = bottomCellAbsPos.getMinY();
+              var containerRect = O$.getElementBorderRectangle(container);
+
+              visible = containerRect.intersects(new O$.Rectangle(xAbs, yAbs, resizeHandleWidth, height));
+            }
+            var newDisplay = visible ? "block" : "none";
             if (this.style.display != newDisplay)
               this.style.display = newDisplay;
             if (visible) {
