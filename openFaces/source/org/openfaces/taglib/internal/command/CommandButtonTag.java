@@ -42,5 +42,6 @@ public class CommandButtonTag extends OUICommandTag {
         setStringProperty(component, "title");
         setStringProperty(component, "alt");
         setStringProperty(component, "dir");
+        setStringProperty(component, "image");
     }
 }

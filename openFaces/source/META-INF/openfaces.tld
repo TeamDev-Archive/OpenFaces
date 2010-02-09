@@ -21391,31 +21391,6 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>Similar to the "action" attribute of the HTMLCommandButton component. It can be defined as a
-        MethodBinding that should point to an action method that is called when the user clicks this button.
-      </description>
-      <name>action</name>
-      <deferred-method>
-        <method-signature>java.lang.Object action()</method-signature>
-      </deferred-method>
-      <!-- @bindingType javax.el.MethodExpression -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>Similar to the "actionListener" attribute of the HTMLCommandButton component.
-        A MethodBinding that should point to an action listener that is called when the user invokes this action.
-      </description>
-      <name>actionListener</name>
-      <deferred-method>
-        <method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
-      </deferred-method>
-      <!-- @bindingType javax.el.MethodExpression -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
       <description>A style for the CommandButton component.</description>
       <name>style</name>
       <deferred-value>
@@ -21438,29 +21413,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A style for the entire CommandButton component in a rollover state.</description>
-      <name>rolloverStyle</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A CSS class name for the entire CommandButton component in a rollover state.</description>
-      <name>rolloverClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-
-    <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
-        the left mouse button over the CommandButton.
+        the left mouse button over the component.
       </description>
       <name>onclick</name>
       <deferred-value>
@@ -21473,7 +21427,7 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user double-clicks
-        the left mouse button over the CommandButton.
+        the left mouse button over the component.
       </description>
       <name>ondblclick</name>
       <deferred-value>
@@ -21486,7 +21440,7 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>JavaScript code that should be executed when the user clicks over
-        the CommandButton with either mouse button.
+        the component with either mouse button.
       </description>
       <name>onmousedown</name>
       <deferred-value>
@@ -21499,7 +21453,7 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>JavaScript code that should be executed when the user releases the mouse button over the
-        CommandButton.
+        component.
       </description>
       <name>onmouseup</name>
       <deferred-value>
@@ -21512,7 +21466,7 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>JavaScript code that should be executed when the user clicks over
-        the CommandButton with either mouse button.
+        the component with either mouse button.
       </description>
       <name>onmousedown</name>
       <deferred-value>
@@ -21524,7 +21478,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the CommandButton.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the component.
       </description>
       <name>onmouseover</name>
       <deferred-value>
@@ -21536,7 +21490,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer over the CommandButton.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the component.
       </description>
       <name>onmousemove</name>
       <deferred-value>
@@ -21549,7 +21503,7 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>JavaScript code that should be executed when the user moves the mouse pointer
-        away from the CommandButton.
+        away from the component.
       </description>
       <name>onmouseout</name>
       <deferred-value>
@@ -21562,7 +21516,7 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user presses and releases a key
-        over the CommandButton.
+        over the component.
       </description>
       <name>onkeypress</name>
       <deferred-value>
@@ -21574,7 +21528,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>JavaScript code that should be executed when the user presses a key over the CommandButton.
+      <description>JavaScript code that should be executed when the user presses a key over the component.
       </description>
       <name>onkeydown</name>
       <deferred-value>
@@ -21586,7 +21540,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>JavaScript code that should be executed when the user releases a key over the CommandButton.
+      <description>JavaScript code that should be executed when the user releases a key over the component.
       </description>
       <name>onkeyup</name>
       <deferred-value>
@@ -21598,7 +21552,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>JavaScript code that should be executed when the CommandButton loses focus.</description>
+      <description>JavaScript code that should be executed when the component loses focus.</description>
       <name>onblur</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -21609,7 +21563,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>JavaScript code that should be executed when the CommandButton receives focus.</description>
+      <description>JavaScript code that should be executed when the component receives focus.</description>
       <name>onfocus</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -21690,10 +21644,483 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Absolute or relative URL of the image to be displayed for this button. If specified, this &quot;input&quot;
+        element will be of type &quot;image&quot;. Otherwise, it will be of the type specified by the &quot;type&quot;
+        property with a label specified by the &quot;value&quot; property. If there are child components inside of the
+        &lt;o:commandButton&gt; tag, the &quot;image&quot; attribute&apos;s value will be ignored and child components
+        will be displayed as the button&apos;s content.
+      </description>
+      <name>image</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 
-  <!-- CommandButton tag declaration -->
+  <!-- CommandLink tag declaration -->
+  <tag>
+    <description>This is an analog of the standard &lt;h:commandLink&gt; component extended with Ajax features making it
+      possible to use Ajax request instead of form submission to execute an action and reload components. By default it
+      behaves as its standard analog though Ajax functionality will be turned on if you specify its &quot;render&quot;
+      attribute, which is similar to that of &lt;o:ajax&gt; component and specifies the list of components that should
+      be reloaded when the link is clicked. An additional optional attribute is &quot;execute&quot;, which just like
+      in the &lt;o:ajax&gt; component allows specifying a list of components whose data should be submitted to the
+      server for processing during the Ajax request.
+    </description>
+    <name>commandLink</name>
+    <tag-class>org.openfaces.taglib.jsp.command.CommandLinkJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>A flag that indicates whether or not the component is visible.</description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A value-binding expression that associates the CommandLink with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.command.CommandLink</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.command.CommandLink -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The component identifier.</description>
+      <name>id</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el false -->
+    </attribute>
+
+    <attribute>
+      <description>Similar to the "action" attribute of the HTMLCommandLink component. It can be defined as a
+        MethodBinding that should point to an action method that is called when the user clicks this link.
+      </description>
+      <name>action</name>
+      <deferred-method>
+        <method-signature>java.lang.Object action()</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Similar to the "actionListener" attribute of the HTMLCommandLink component.
+        A MethodBinding that should point to an action listener that is called when the user invokes this action.
+      </description>
+      <name>actionListener</name>
+      <deferred-method>
+        <method-signature>void actionListener(javax.faces.event.ActionEvent)</method-signature>
+      </deferred-method>
+      <!-- @bindingType javax.el.MethodExpression -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that indicates whether or not actionListener should be executed immediately (during the Apply
+        Request Values phase of the request processing lifecycle instead of Process Validations phase).
+      </description>
+      <name>immediate</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Id's of components, which will be rerendered after succcesfull ajax request.
+        Evaluates to Iterable. If a literal is specified
+        can be a single id or a comma-separated list if id's.
+      </description>
+      <name>render</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Id's of components whose data should be submitted and processed on the server in addition to the
+        reloaded components. The difference with render is that components listed in execute will
+        just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
+        depends on some other component on a page.
+        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated
+        list if id's.
+      </description>
+      <name>execute</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>The text displayed in the link.</description>
+      <name>value</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A style for the CommandLink component.</description>
+      <name>style</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>A CSS class name for the InputText component.</description>
+      <name>styleClass</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user clicks
+        the left mouse button over the component.
+      </description>
+      <name>onclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user double-clicks
+        the left mouse button over the component.
+      </description>
+      <name>ondblclick</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks over
+        the component with either mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases the mouse button over the
+        component.
+      </description>
+      <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user clicks over
+        the component with either mouse button.
+      </description>
+      <name>onmousedown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the component.
+      </description>
+      <name>onmouseover</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the component.
+      </description>
+      <name>onmousemove</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user moves the mouse pointer
+        away from the component.
+      </description>
+      <name>onmouseout</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed on the client when the user presses and releases a key
+        over the component.
+      </description>
+      <name>onkeypress</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key over the component.
+      </description>
+      <name>onkeydown</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the user releases a key over the component.
+      </description>
+      <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the component loses focus.</description>
+      <name>onblur</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>JavaScript code that should be executed when the component receives focus.</description>
+      <name>onfocus</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An access key for the component.</description>
+      <name>accesskey</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Position of the component in the focus transition chain for the current document.</description>
+      <name>tabindex</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that enables or disables the component.</description>
+      <name>disabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Language code for this component. Rendered as the HTML lang attribute.</description>
+      <name>lang</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>An advisory title for the text field of this filter component.</description>
+      <name>title</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The base direction of directionally neutral text. Valid values are &quot;LTR&quot; (left-to-right)
+        and &quot;RTL&quot; (right-to-left).
+      </description>
+      <name>dir</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The character encoding of the resource designated by this hyperlink.</description>
+      <name>charset</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!--k @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The position and shape of the hot spot on the screen (for use in client-side image maps).
+      </description>
+      <name>coords</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The language code of the resource designated by this hyperlink.</description>
+      <name>hreflang</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The relationship from the current document to the anchor specified by this hyperlink. The value of
+        this attribute is a space-separated list of link types.
+      </description>
+      <name>rel</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A reverse link from the anchor specified by this hyperlink to the current document. The value of this
+        attribute is a space-separated list of link types.
+      </description>
+      <name>rev</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The shape of the hot spot on the screen (for use in client-side image maps). Valid values are:
+        default (entire region); rect (rectangular region); circle (circular region); and poly (polygonal region).
+      </description>
+      <name>shape</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Name of a frame where the resource retrieved via this hyperlink is to be displayed.</description>
+      <name>target</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The content type of the resource designated by this hyperlink.</description>
+      <name>type</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+  </tag>
+
+  <!-- Debug tag declaration -->
   <tag>
     <description>This component is under construction.</description>
     <name>debug</name>

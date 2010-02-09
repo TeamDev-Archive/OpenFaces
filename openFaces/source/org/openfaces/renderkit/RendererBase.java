@@ -13,7 +13,9 @@ package org.openfaces.renderkit;
 
 import org.openfaces.component.OUICommand;
 import org.openfaces.component.ajax.AjaxInitializer;
+import org.openfaces.util.FunctionCallScript;
 import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.FacesException;
@@ -45,27 +47,36 @@ public class RendererBase extends Renderer {
         RenderingUtil.writeAttribute(writer, name, value, emptyValue);
     }
 
-    protected boolean writeEventsWithAjaxSupport(FacesContext context, ResponseWriter writer, OUICommand btn) throws IOException {
-        String userClickHandler = btn.getOnclick();
-        String buttonClickHandler = null;
-        Iterable<String> render = btn.getRender();
-        Iterable<String> execute = btn.getExecute();
+    protected boolean writeEventsWithAjaxSupport(FacesContext context, ResponseWriter writer, OUICommand command) throws IOException {
+        return writeEventsWithAjaxSupport(context, writer, command, false);
+    }
+
+    protected boolean writeEventsWithAjaxSupport(FacesContext context, ResponseWriter writer, OUICommand command, boolean submitIfNoAjax) throws IOException {
+        String userClickHandler = command.getOnclick();
+        Script buttonClickHandler = null;
+        Iterable<String> render = command.getRender();
+        Iterable<String> execute = command.getExecute();
         boolean ajaxJsRequired = false;
         if (render != null || (execute != null && execute.iterator().hasNext())) {
             if (render == null)
-                throw new FacesException("'execute' attribute can't be specified without the 'render' attribute. Component id: " + btn.getId());
+                throw new FacesException("'execute' attribute can't be specified without the 'render' attribute. Component id: " + command.getId());
 
             AjaxInitializer initializer = new AjaxInitializer();
-            ScriptBuilder script = new ScriptBuilder();
-            buttonClickHandler = script.functionCall("O$._ajaxReload",
-                    initializer.getRenderArray(context, btn, render),
-                    initializer.getAjaxParams(context, btn)).semicolon().append("return false;").toString();
+            buttonClickHandler = new ScriptBuilder().functionCall("O$._ajaxReload",
+                    initializer.getRenderArray(context, command, render),
+                    initializer.getAjaxParams(context, command)).semicolon().append("return false;");
             ajaxJsRequired = true;
+        } else {
+            if (submitIfNoAjax) {
+                buttonClickHandler = new FunctionCallScript("O$.submitWithParam", command, command, true);
+            }
         }
-        String clickHandler = RenderingUtil.joinScripts(userClickHandler, buttonClickHandler);
+        String clickHandler = RenderingUtil.joinScripts(
+                userClickHandler,
+                buttonClickHandler != null ? buttonClickHandler.toString() : null);
         if (!RenderingUtil.isNullOrEmpty(clickHandler))
             writer.writeAttribute("onclick", clickHandler, null);
-        RenderingUtil.writeStandardEvents(writer, btn, true);
+        RenderingUtil.writeStandardEvents(writer, command, true);
         return ajaxJsRequired;
     }
 }

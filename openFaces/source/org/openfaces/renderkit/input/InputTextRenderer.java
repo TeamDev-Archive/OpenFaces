@@ -13,6 +13,7 @@ package org.openfaces.renderkit.input;
 
 import org.openfaces.component.OUIInputText;
 import org.openfaces.component.input.InputText;
+import org.openfaces.util.RenderingUtil;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -32,14 +33,8 @@ public class InputTextRenderer extends AbstractInputTextRenderer {
         ResponseWriter writer = context.getResponseWriter();
         InputText inputText = (InputText) input;
         String value = getConvertedValue(context, inputText);
-        writeAttribute(writer, "value", value);
-
-        writeAttribute(writer, "type", "text");
+        RenderingUtil.writeAttributes(writer, inputText, "value", "type", "dir", "lang", "alt", "onselect");
         writeAttribute(writer, "maxlength", inputText.getMaxlength(), Integer.MIN_VALUE);
-        writeAttribute(writer, "dir", inputText.getDir());
-        writeAttribute(writer, "lang", inputText.getLang());
-        writeAttribute(writer, "onselect", inputText.getOnselect());
-        writeAttribute(writer, "alt", inputText.getAlt());
         writeAttribute(writer, "size", inputText.getSize(), Integer.MIN_VALUE);
         if (inputText.isReadonly())
             writeAttribute(writer, "readonly", "readonly");

@@ -34,6 +34,7 @@ public class CommandButton extends OUICommand {
     private String title;
     private String alt;
     private String dir;
+    private String image;
 
     public CommandButton() {
         setRendererType("org.openfaces.CommandButtonRenderer");
@@ -54,7 +55,8 @@ public class CommandButton extends OUICommand {
                 lang,
                 title,
                 alt,
-                dir
+                dir,
+                image
         };
     }
 
@@ -71,6 +73,7 @@ public class CommandButton extends OUICommand {
         title = (String) state[i++];
         alt = (String) state[i++];
         dir = (String) state[i++];
+        image = (String) state[i++];
     }
 
     public String getType() {
@@ -135,5 +138,13 @@ public class CommandButton extends OUICommand {
 
     public void setDir(String dir) {
         this.dir = dir;
+    }
+
+    public String getImage() {
+        return ValueBindings.get(this, "image", image);
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

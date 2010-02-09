@@ -14,8 +14,9 @@ package org.openfaces.renderkit.command;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.command.CommandButton;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.ResourceUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -34,22 +35,31 @@ public class CommandButtonRenderer extends RendererBase {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         CommandButton btn = (CommandButton) component;
-        writer.startElement(getTagName(btn), btn);
+        String tagName = getTagName(btn);
+        writer.startElement(tagName, btn);
         RenderingUtil.writeIdAttribute(context, component);
         RenderingUtil.writeNameAttribute(context, component);
         String type = btn.getType();
         if (!("submit".equals(type) || "reset".equals(type) || "button".equals(type)))
             type = "submit";
+        if ("input".equals(tagName)) {
+            String image = btn.getImage();
+            if (image != null)
+                type = "image";
+            writer.writeAttribute("src", ResourceUtil.getApplicationResourceURL(context, image), "image");
+        }
         writer.writeAttribute("type", type, "type");
-        writer.writeAttribute("value", btn.getValue(), "value");
         if (btn.isDisabled())
             writer.writeAttribute("disabled", "disabled", "");
-        RenderingUtil.writeAttribute(writer, "accesskey", btn.getAccesskey());
-        RenderingUtil.writeAttribute(writer, "tabindex", btn.getTabindex());
-        RenderingUtil.writeAttribute(writer, "lang", btn.getLang());
-        RenderingUtil.writeAttribute(writer, "title", btn.getTitle());
-        RenderingUtil.writeAttribute(writer, "alt", btn.getAlt());
-        RenderingUtil.writeAttribute(writer, "dir", btn.getDir());
+        
+        RenderingUtil.writeAttributes(writer, btn,
+                "value",
+                "accesskey",
+                "tabindex",
+                "lang",
+                "title",
+                "alt",
+                "dir");
         RenderingUtil.writeStyleAndClassAttributes(writer, btn);
 
 

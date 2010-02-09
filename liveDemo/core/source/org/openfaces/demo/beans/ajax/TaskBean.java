@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.ajax;
 
-import org.openfaces.demo.beans.util.FacesUtils;
+import org.openfaces.util.FacesUtil;
 
 import javax.faces.event.ActionEvent;
 import java.util.ArrayList;
@@ -59,13 +59,8 @@ public class TaskBean {
     }
 
     public void deleteTask(ActionEvent event) {
-        Integer taskId = (Integer) FacesUtils.getEventParameter(event, "taskId");
-        for (int i = 0; i < tasks.size(); i++) {
-            if (tasks.get(i).getId().equals(taskId)) {
-                tasks.remove(i);
-                break;
-            }
-        }
+        Task task = FacesUtil.var("task", Task.class);
+        tasks.remove(task);
     }
 
     public List<Task> getTasks() {

@@ -142,6 +142,26 @@
     </demos>
   </menuItem>
   <menuItem>
+    <name>Command Link</name>
+    <componentName>Command Link</componentName>
+    <url>/commandlink/CommandLink.jsf</url>
+    <shortPath>/commandlink/</shortPath>
+    <image>CommandLink</image>
+    <selectedImage>/images/components/titles/CommandLink.png</selectedImage>
+    <keyFeatures>
+      <feature>All features of the standard &lt;h:commandLink&gt; component</feature>
+      <feature>Support for Ajax action execution</feature>
+      <feature>Support for Ajax component submission/reloading</feature>
+      <feature>Specifying contents with HTML or child components</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/commandlink/CommandLink.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
     <name>Composite Filter</name>
     <componentName>Composite Filter</componentName>
     <url>/compositefilter/CompositeFilter.jsf</url>

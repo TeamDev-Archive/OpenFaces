@@ -1258,6 +1258,17 @@ public class RenderingUtil {
             writer.writeAttribute(name, value, null);
     }
 
+    /**
+     * Renders the specified list of component's attributes as is for all non-null attributes.
+     */
+    public static void writeAttributes(ResponseWriter writer, UIComponent component, String... attributes) throws IOException {
+        for (String name : attributes) {
+            Object value = component.getAttributes().get(name);
+            if (value != null)
+                writer.writeAttribute(name, value, name);
+        }
+    }
+
     public static String writeIdAttribute(FacesContext context, UIComponent component) throws IOException {
         String clientId = component.getClientId(context);
         context.getResponseWriter().writeAttribute("id", clientId, null);

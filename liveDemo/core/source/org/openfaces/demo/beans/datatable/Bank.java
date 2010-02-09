@@ -71,6 +71,34 @@ public class Bank implements Serializable {
         return averageAssets;
     }
 
+    public void setInstitutionName(String institutionName) {
+        this.institutionName = institutionName;
+    }
+
+    public void setCertificateNumber(int certificateNumber) {
+        this.certificateNumber = certificateNumber;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public void setZip(int zip) {
+        this.zip = zip;
+    }
+
+    public void setCounty(String county) {
+        this.county = county;
+    }
+
+    public void setAverageAssets(int averageAssets) {
+        this.averageAssets = averageAssets;
+    }
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Bank)) return false;

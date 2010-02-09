@@ -60,4 +60,8 @@ public class CommandButtonJspTag extends OUICommandJspTag {
     public void setDir(ValueExpression dir) {
         getDelegate().setPropertyValue("dir", dir);
     }
+
+    public void setImage(ValueExpression image) {
+        getDelegate().setPropertyValue("image", image);
+    }
 }

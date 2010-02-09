@@ -1148,6 +1148,10 @@ if (!window.O$) {
     frm.submit();
   };
 
+  O$.submitWithParam = function(eltId, paramName, paramValue) {
+    O$.submitFormWithAdditionalParam(O$(eltId), paramName, paramValue);
+  };
+
   O$.submitFormWithAdditionalParam = function(element, paramName, paramValue) {
     O$.submitFormWithAdditionalParams(element, [
       [paramName, paramValue]

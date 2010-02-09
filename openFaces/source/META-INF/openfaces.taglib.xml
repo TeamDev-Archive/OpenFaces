@@ -991,5 +991,13 @@
       <handler-class>org.openfaces.taglib.facelets.table.HideColumnMenuItemTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>commandLink</tag-name>
+    <component>
+      <component-type>org.openfaces.CommandLink</component-type>
+      <renderer-type>org.openfaces.CommandLinkRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.command.CommandLinkTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>
