@@ -13913,7 +13913,7 @@ entering a value and returns a list of suggestions from the server -->
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
-      <!-- @bindingType false -->
+      <!-- @bindingType boolean -->
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
@@ -23049,7 +23049,7 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
-      <!-- @bindingType false -->
+      <!-- @bindingType boolean -->
       <!-- @default true -->
       <!-- @el true -->
     </attribute>
@@ -24154,7 +24154,7 @@ and it is automatically triggered on any form submission. -->
       <deferred-value>
         <type>boolean</type>
       </deferred-value>
-      <!-- @bindingType false -->
+      <!-- @bindingType boolean -->
       <!-- @default true -->
       <!-- @el true -->
     </attribute>

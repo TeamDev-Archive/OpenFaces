@@ -2165,7 +2165,7 @@ O$.Tables = {
 
 
     function synchronizeAreaScrolling() {
-      mainScrollingArea._scrollingDiv.onscroll = function() {
+      mainScrollingArea._scrollingDiv.onscroll = function(e) {
         O$.setHiddenField(table, table.id + "::scrollPos",
                 "[" + mainScrollingArea._scrollingDiv.scrollLeft + "," + mainScrollingArea._scrollingDiv.scrollTop + "]");
         [table.header, table.footer].forEach(function (section) {
@@ -2176,6 +2176,8 @@ O$.Tables = {
           if (!area) return;
           area._scrollingDiv.scrollTop = mainScrollingArea._scrollingDiv.scrollTop;
         });
+        if (table.onscroll)
+          table.onscroll(e);
       };
     }
 

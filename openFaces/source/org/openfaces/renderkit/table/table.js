@@ -1581,7 +1581,7 @@ O$.Table = {
             var y = minY;
             var height = bottomCellPos.getMaxY() - minY;
             var container = O$.getContainingBlock(this, true);
-            var visibleArea = container ? new O$.Rectangle(0, 0, container.offsetWidth, container.offsetHeight) : null;
+            var visibleArea = container ? new O$.Rectangle(container.scrollLeft, 0, container.offsetWidth, container.offsetHeight) : null;
             var visible = visibleArea ? visibleArea.intersects(new O$.Rectangle(x, y, resizeHandleWidth, height)) : true;
             var newDisplay = visibleArea ? (visible ? "block" : "none") : "block";
             if (this.style.display != newDisplay)
@@ -1647,6 +1647,11 @@ O$.Table = {
             updateResizeHandlePositions();
         }, 1000);
       }
+      var prevOnscroll = table.onscroll;
+      table.onscroll = function(e) {
+        if (prevOnscroll) prevOnscroll.call(table, e);
+        setTimeout(updateResizeHandlePositions, 10);
+      };
 
       table._unloadHandlers.push(function() {
         O$.removeEventHandler(window, "resize", updateResizeHandlePositions);

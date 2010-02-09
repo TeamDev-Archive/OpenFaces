@@ -28,7 +28,7 @@
                      onclick="var menu = O$('form:searchMenu'); menu.show(); menu.focus(); " style="width: 100px;">
       Search <img src="dropArea.gif" width="12" height="12"/>
     </o:commandButton>
-    <o:popupMenu id="searchMenu"  standalone="true" style="left: 277px; z-index: 1">
+    <o:popupMenu id="searchMenu" standalone="true" style="left: 277px; z-index: 1">
       <o:menuItem value="Google" onclick="searchGoogle(O$('form:searchField').value);"/>
       <o:menuItem value="Yahoo" onclick="searchYahoo(O$('form:searchField').value);"/>
       <o:menuItem value="Wikipedia" onclick="searchWikipedia(O$('form:searchField').value);"/>
@@ -81,7 +81,11 @@
     <div style="font-size: 15pt; margin-bottom: 10px; color: #404040">Embedding Images and Text</div>
 
     <style>
-      .btn {width: 170px; height: 80px; margin-right: 15px;}
+      .btn {
+        width: 170px;
+        height: 80px;
+        margin-right: 15px;
+      }
     </style>
 
     <h:panelGrid columns="3">
@@ -89,21 +93,22 @@
                        onclick="window.open('http://twitter.com/openfaces_jsf', '_blank');">
         <h:graphicImage url="twitter.png" style="margin-bottom: 5px"/>
         <br/>
-        <span style="font-size: 10px; font-family: arial,serif; color: gray">Follow OpenFaces on Twitter</span>
+        <span style="font-size: 10px; font-family: arial,serif; color: #606060">Follow OpenFaces on Twitter</span>
       </o:commandButton>
 
       <o:commandButton styleClass="btn" type="button"
                        onclick="window.open('http://www.linkedin.com/groupInvitation?groupID=1970874&amp;sharedKey=6AA5A612A62B', '_blank');">
         <h:graphicImage url="linkedin.png" style="margin-bottom: 5px"/>
         <br/>
-        <span style="font-size: 10px; font-family: arial,serif; color: gray">Join OpenFaces on LinkedIn</span>
+        <span style="font-size: 10px; font-family: arial,serif; color: #606060">Join OpenFaces on LinkedIn</span>
       </o:commandButton>
 
       <o:commandButton styleClass="btn" type="button"
                        onclick="window.open('http://openfaces.org/downloads/', '_blank');">
-        <h:graphicImage url="download.png"/>
-        <br/>
-        <span style="font-size: 10px; font-family: arial,serif; color: gray">Download OpenFaces</span>
+        <h:panelGrid columns="2">
+          <h:graphicImage url="download.png"/>
+          <h:outputText style="font-size: 15px; font-family: arial,serif; color: #606060" value="Download OpenFaces"/>
+        </h:panelGrid>
       </o:commandButton>
     </h:panelGrid>
 
