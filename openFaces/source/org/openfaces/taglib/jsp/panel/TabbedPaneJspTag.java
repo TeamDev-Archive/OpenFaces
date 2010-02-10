@@ -12,15 +12,13 @@
 package org.openfaces.taglib.jsp.panel;
 
 import org.openfaces.taglib.internal.panel.TabbedPaneTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
-import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 
 /**
  * @author Andrew Palval
  */
-public class TabbedPaneJspTag extends AbstractComponentJspTag {
+public class TabbedPaneJspTag extends MultiPageContainerJspTag {
 
     public TabbedPaneJspTag() {
         super(new TabbedPaneTag());
@@ -42,24 +40,12 @@ public class TabbedPaneJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("tabGapWidth", tabGapWidth);
     }
 
-    public void setContainerStyle(ValueExpression containerStyle) {
-        getDelegate().setPropertyValue("containerStyle", containerStyle);
-    }
-
     public void setRolloverContainerStyle(ValueExpression rolloverContainerStyle) {
         getDelegate().setPropertyValue("rolloverContainerStyle", rolloverContainerStyle);
     }
 
-    public void setContainerClass(ValueExpression containerClass) {
-        getDelegate().setPropertyValue("containerClass", containerClass);
-    }
-
     public void setRolloverContainerClass(ValueExpression rolloverContainerClass) {
         getDelegate().setPropertyValue("rolloverContainerClass", rolloverContainerClass);
-    }
-
-    public void setSelectedIndex(ValueExpression selectedIndex) {
-        getDelegate().setPropertyValue("selectedIndex", selectedIndex);
     }
 
     public void setTabAlignment(ValueExpression tabAlignment) {
@@ -118,16 +104,8 @@ public class TabbedPaneJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("rolloverSelectedTabClass", rolloverSelectedTabClass);
     }
 
-    public void setLoadingMode(ValueExpression loadingMode) {
-        getDelegate().setPropertyValue("loadingMode", loadingMode);
-    }
-
     public void setOnselectionchange(ValueExpression onselectionchange) {
         getDelegate().setPropertyValue("onselectionchange", onselectionchange);
-    }
-
-    public void setSelectionChangeListener(MethodExpression selectionChangeListener) {
-        getDelegate().setPropertyValue("selectionChangeListener", selectionChangeListener);
     }
 
     public void setFocusable(ValueExpression focusable) {

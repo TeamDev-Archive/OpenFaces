@@ -11,12 +11,9 @@
  */
 package org.openfaces.taglib.internal.panel;
 
-import org.openfaces.component.LoadingMode;
 import org.openfaces.component.panel.TabbedPane;
 import org.openfaces.component.select.TabAlignment;
 import org.openfaces.component.select.TabPlacement;
-import org.openfaces.event.SelectionChangeEvent;
-import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -24,7 +21,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Pavel Kaplin
  */
-public class TabbedPaneTag extends AbstractComponentTag {
+public class TabbedPaneTag extends MultiPageContainerTag {
 
     public String getComponentType() {
         return TabbedPane.COMPONENT_TYPE;
@@ -43,13 +40,11 @@ public class TabbedPaneTag extends AbstractComponentTag {
         setStringProperty(component, "rolloverStyle");
         setStringProperty(component, "rolloverClass");
 
-        setStringProperty(component, "containerStyle");
         setStringProperty(component, "rolloverContainerStyle");
-        setStringProperty(component, "containerClass");
         setStringProperty(component, "rolloverContainerClass");
 
         TabbedPane tabbedPane = (TabbedPane) component;
-        setIntProperty(component, "selectedIndex");
+
         setEnumerationProperty(component, "tabAlignment", TabAlignment.class);
         setEnumerationProperty(component, "tabPlacement", TabPlacement.class);
         setStringProperty(component, "tabStyle");
@@ -71,12 +66,9 @@ public class TabbedPaneTag extends AbstractComponentTag {
         setStringProperty(component, "focusAreaClass");
         setStringProperty(component, "focusAreaStyle");
 
-        setEnumerationProperty(component, "loadingMode", LoadingMode.class);
         String onselectionchange = getPropertyValue("onselectionchange");
         if (!setPropertyAsBinding(component, "onselectionchange", onselectionchange))
             tabbedPane.setOnchange(onselectionchange);
-        setMethodExpressionProperty(facesContext, component, "selectionChangeListener",
-                new Class[]{SelectionChangeEvent.class}, void.class);
         setBooleanProperty(component, "immediate");
     }
 }

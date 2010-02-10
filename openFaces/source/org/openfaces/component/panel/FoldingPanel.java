@@ -13,28 +13,27 @@ package org.openfaces.component.panel;
 
 import org.openfaces.component.CaptionArea;
 import org.openfaces.component.CompoundComponent;
+import org.openfaces.component.EditableStateHolder;
 import org.openfaces.component.ExpansionToggleButton;
 import org.openfaces.component.LoadingMode;
-import org.openfaces.component.EditableStateHolder;
-import org.openfaces.util.ValueBindings;
 import org.openfaces.event.StateChangeListener;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.el.MethodBinding;
-import javax.faces.validator.Validator;
-import javax.faces.event.ValueChangeListener;
 import javax.faces.convert.Converter;
+import javax.faces.el.MethodBinding;
+import javax.faces.event.ValueChangeListener;
+import javax.faces.validator.Validator;
 
 /**
- *
  * The FoldingPanel component is a container for other components that can be expanded
  * and collapsed by the user. The component supports different folding directions to reveal
  * its content and provides various options to customize its appearance. Plus, there are
  * several ways to control the content loading (using Ajax).
- * 
+ *
  * @author Kharchenko
  */
 public class FoldingPanel extends AbstractPanelWithCaption implements CompoundComponent, EditableStateHolder {

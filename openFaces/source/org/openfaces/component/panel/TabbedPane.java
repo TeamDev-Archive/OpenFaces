@@ -12,54 +12,36 @@
 package org.openfaces.component.panel;
 
 import org.openfaces.component.CompoundComponent;
-import org.openfaces.component.LoadingMode;
-import org.openfaces.component.OUIPanel;
-import org.openfaces.util.ValueBindings;
 import org.openfaces.component.select.TabAlignment;
 import org.openfaces.component.select.TabPlacement;
 import org.openfaces.component.select.TabSelectionHolder;
 import org.openfaces.component.select.TabSet;
 import org.openfaces.component.select.TabSetItems;
-import org.openfaces.event.SelectionChangeEvent;
-import org.openfaces.event.SelectionChangeListener;
-import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.ValueBindings;
 
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.FacesEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
- *
  * The TabbedPane component is a container that consists of several sub-containers called
  * pages and allows the user to switch between these pages using a set of tabs. It provides
  * flexibility in configuring the tabs and the page content within them and offers several
  * ways for content loading. A variety of style options lets you customize the appearance of
  * the entire TabbedPane component and its individual elements.
- * 
+ *
  * @author Andrew Palval
  */
-public class TabbedPane extends OUIPanel implements TabSelectionHolder, CompoundComponent {
+public class TabbedPane extends MultiPageContainer implements TabSelectionHolder, CompoundComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.TabbedPane";
     public static final String COMPONENT_FAMILY = "org.openfaces.TabbedPane";
 
     private static final String TAB_SET_SUFFIX = "tabSet";
 
-    private String containerStyle;
     private String rolloverContainerStyle;
 
-    private String containerClass;
     private String rolloverContainerClass;
 
-    // TasSet properties START -------------------------
-    private Integer selectedIndex;
     private TabAlignment tabAlignment;
     private TabPlacement tabPlacement;
 
@@ -81,18 +63,13 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
     private String focusedTabClass;
     private String rolloverSelectedTabClass;
     private String tabEmptySpaceClass;
-    //--------------------------------------------------
-    private LoadingMode loadingMode;
     private String onselectionchange;
-    private MethodExpression selectionChangeListener;
-    // TabSet properties END ----------------------------
 
     private Boolean focusable;
     private String focusAreaClass;
     private String focusAreaStyle;
     private String focusedClass;
     private String focusedStyle;
-    private boolean[] renderedItemFlags;
 
     public TabbedPane() {
         setRendererType("org.openfaces.TabbedPaneRenderer");
@@ -167,14 +144,6 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
         this.tabGapWidth = tabGapWidth;
     }
 
-    public void setContainerStyle(String containerStyle) {
-        this.containerStyle = containerStyle;
-    }
-
-    public String getContainerStyle() {
-        return ValueBindings.get(this, "containerStyle", containerStyle);
-    }
-
     public String getRolloverContainerStyle() {
         return ValueBindings.get(this, "rolloverContainerStyle", rolloverContainerStyle);
     }
@@ -183,28 +152,12 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
         this.rolloverContainerStyle = rolloverContainerStyle;
     }
 
-    public String getContainerClass() {
-        return ValueBindings.get(this, "containerClass", containerClass);
-    }
-
-    public void setContainerClass(String containerClass) {
-        this.containerClass = containerClass;
-    }
-
     public String getRolloverContainerClass() {
         return ValueBindings.get(this, "rolloverContainerClass", rolloverContainerClass);
     }
 
     public void setRolloverContainerClass(String rolloverContainerClass) {
         this.rolloverContainerClass = rolloverContainerClass;
-    }
-
-    public int getSelectedIndex() {
-        return ValueBindings.get(this, "selectedIndex", selectedIndex, 0);
-    }
-
-    public void setSelectedIndex(int selectedIndex) {
-        this.selectedIndex = selectedIndex;
     }
 
     public TabAlignment getTabAlignment() {
@@ -319,14 +272,6 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
         this.rolloverSelectedTabClass = rolloverSelectedTabClass;
     }
 
-    public LoadingMode getLoadingMode() {
-        return ValueBindings.get(this, "loadingMode", loadingMode, LoadingMode.AJAX_LAZY, LoadingMode.class);
-    }
-
-    public void setLoadingMode(LoadingMode loadingMode) {
-        this.loadingMode = loadingMode;
-    }
-
     public String getOnselectionchange() {
         return ValueBindings.get(this, "onselectionchange", onselectionchange);
     }
@@ -343,38 +288,14 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
         setOnselectionchange(onselectionchange);
     }
 
-    public MethodExpression getSelectionChangeListener() {
-        return selectionChangeListener;
-    }
-
-    public void setSelectionChangeListener(MethodExpression selectionChangeListener) {
-        this.selectionChangeListener = selectionChangeListener;
-    }
-
-    public void addSelectionListener(SelectionChangeListener changeListener) {
-        addFacesListener(changeListener);
-    }
-
-    public SelectionChangeListener[] getSelectionListeners() {
-        return (SelectionChangeListener[]) getFacesListeners(SelectionChangeListener.class);
-    }
-
-    public void removeSelectionListener(SelectionChangeListener changeListener) {
-        removeFacesListener(changeListener);
-    }
-
     @Override
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
 
-                containerStyle,
                 rolloverContainerStyle,
-                containerClass,
                 rolloverContainerClass,
 
-                selectedIndex,
-                renderedItemFlags,
                 tabAlignment,
                 tabPlacement,
                 tabGapWidth,
@@ -393,14 +314,11 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
                 rolloverSelectedTabClass,
                 tabEmptySpaceClass,
 
-                loadingMode,
                 onselectionchange,
 
                 focusable,
                 focusAreaStyle,
                 focusAreaClass,
-
-                saveAttachedState(context, selectionChangeListener),
         };
     }
 
@@ -410,13 +328,9 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
         int i = 0;
         super.restoreState(context, values[i++]);
 
-        containerStyle = (String) values[i++];
         rolloverContainerStyle = (String) values[i++];
-        containerClass = (String) values[i++];
         rolloverContainerClass = (String) values[i++];
 
-        selectedIndex = (Integer) values[i++];
-        renderedItemFlags = (boolean[]) values[i++];
         tabAlignment = (TabAlignment) values[i++];
         tabPlacement = (TabPlacement) values[i++];
         tabGapWidth = (Integer) values[i++];
@@ -435,135 +349,11 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
         rolloverSelectedTabClass = (String) values[i++];
         tabEmptySpaceClass = (String) values[i++];
 
-        loadingMode = (LoadingMode) values[i++];
         onselectionchange = (String) values[i++];
 
         focusable = (Boolean) values[i++];
         focusAreaStyle = (String) values[i++];
         focusAreaClass = (String) values[i++];
-
-        selectionChangeListener = (MethodExpression) restoreAttachedState(context, values[i++]);
-    }
-
-    @Override
-    public void broadcast(FacesEvent event) throws AbortProcessingException {
-        super.broadcast(event);
-        if (selectionChangeListener != null && event instanceof SelectionChangeEvent) {
-            try {
-                ELContext elContext = getFacesContext().getELContext();
-                selectionChangeListener.invoke(elContext, new Object[]{event});
-            } catch (FacesException e) {
-                if (e.getCause() != null && e.getCause() instanceof AbortProcessingException)
-                    throw (AbortProcessingException) e.getCause();
-                else
-                    throw e;
-            }
-        }
-    }
-
-    public List<TabbedPaneItem> getTabbedPaneItems(boolean returnNotRenderedItems) {
-        List<TabbedPaneItem> itemsList = new ArrayList<TabbedPaneItem>();
-
-        List<UIComponent> children = getChildren();
-        for (UIComponent child : children) {
-            if (child instanceof TabbedPaneItem) {
-                itemsList.add((TabbedPaneItem) child);
-            } else if (child instanceof TabbedPaneItems) {
-                TabbedPaneItems tabbedPaneItems = (TabbedPaneItems) child;
-                Object value = tabbedPaneItems.getValue();
-                if (value == null)
-                    continue;
-                if (!(value instanceof Collection))
-                    throw new FacesException("The 'value' attribute of TabbedPaneItems should return an object that implements java.util.Collection intface, but object of the following class was returned: " + value.getClass().getName());
-
-                Collection<TabbedPaneItem> items = (Collection<TabbedPaneItem>) value;
-                itemsList.addAll(items);
-                List<UIComponent> tabbedPaneItemsChildren = tabbedPaneItems.getChildren();
-                tabbedPaneItemsChildren.clear();
-                tabbedPaneItemsChildren.addAll(items);
-            }
-        }
-
-        if (returnNotRenderedItems)
-            return itemsList;
-
-        List<TabbedPaneItem> renderedItemsList = new ArrayList<TabbedPaneItem>();
-        for (TabbedPaneItem paneItem : itemsList) {
-            if (paneItem.isRendered()) {
-                renderedItemsList.add(paneItem);
-            }
-        }
-        return renderedItemsList;
-    }
-
-    @Override
-    public void processRestoreState(FacesContext context, Object state) {
-        Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
-        super.processRestoreState(context, ajaxState != null ? ajaxState : state);
-    }
-
-    public void setRenderedItemFlags(boolean[] renderedItemFlags) {
-        this.renderedItemFlags = renderedItemFlags;
-    }
-
-    public boolean[] getRenderedItemFlags() {
-        return renderedItemFlags;
-    }
-
-    public void setItemRendered(int index, boolean value) {
-        renderedItemFlags[index] = value;
-    }
-
-    private boolean[] calculateRenderedItemFlags(List<TabbedPaneItem> items) {
-        boolean[] flags = new boolean[items.size()];
-        boolean[] itemFlags = getRenderedItemFlags();
-        for (int i = 0; i < items.size(); i++) {
-            flags[i] = (items.get(i)).isRendered() && itemFlags != null && itemFlags[i];
-        }
-        return flags;
-    }
-
-    private void processPhaseForItems(FacesContext context, ComponentPhaseProcessor processor) {
-        List<TabbedPaneItem> items = getTabbedPaneItems(true);
-        boolean[] renderedItems = calculateRenderedItemFlags(items);
-        for (int i = 0; i < items.size(); i++) {
-            TabbedPaneItem item = items.get(i);
-            if (renderedItems[i]) {
-                processor.processComponentPhase(context, item);
-            } else {
-                UIComponent tab = item.getTab();
-                if (tab != null)
-                    processor.processComponentPhase(context, tab);
-            }
-        }
-    }
-
-    @Override
-    public void processDecodes(FacesContext context) {
-        if (!isRendered()) return;
-        processPhaseForItems(context, new DecodesComponentPhaseProcessor());
-        try {
-            decode(context);
-        }
-        catch (RuntimeException e) {
-            context.renderResponse();
-            throw e;
-        }
-    }
-
-    @Override
-    public void processValidators(FacesContext context) {
-        if (!isRendered()) return;
-        processPhaseForItems(context, new ValidatorComponentPhaseProcessor());
-    }
-
-    @Override
-    public void processUpdates(FacesContext context) {
-        if (!isRendered()) return;
-        processPhaseForItems(context, new UpdateComponentPhaseProcessor());
-
-        if (selectedIndex != null && ValueBindings.set(this, "selectedIndex", selectedIndex))
-            selectedIndex = null;
     }
 
     public void createSubComponents(FacesContext context) {
@@ -576,25 +366,4 @@ public class TabbedPane extends OUIPanel implements TabSelectionHolder, Compound
         return (TabSet) ComponentUtil.getChildBySuffix(this, TAB_SET_SUFFIX);
     }
 
-    private interface ComponentPhaseProcessor {
-        void processComponentPhase(FacesContext context, UIComponent component);
-    }
-
-    private static class DecodesComponentPhaseProcessor implements ComponentPhaseProcessor {
-        public void processComponentPhase(FacesContext context, UIComponent component) {
-            component.processDecodes(context);
-        }
-    }
-
-    private static class ValidatorComponentPhaseProcessor implements ComponentPhaseProcessor {
-        public void processComponentPhase(FacesContext context, UIComponent component) {
-            component.processValidators(context);
-        }
-    }
-
-    private static class UpdateComponentPhaseProcessor implements ComponentPhaseProcessor {
-        public void processComponentPhase(FacesContext context, UIComponent component) {
-            component.processUpdates(context);
-        }
-    }
 }

@@ -999,5 +999,13 @@
       <handler-class>org.openfaces.taglib.facelets.command.CommandLinkTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>layeredPane</tag-name>
+    <component>
+      <component-type>org.openfaces.LayeredPane</component-type>
+      <renderer-type>org.openfaces.LayeredPaneRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.panel.LayeredPaneTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

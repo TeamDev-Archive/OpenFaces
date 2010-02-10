@@ -592,9 +592,9 @@ public class RenderingUtil {
      * Renders the specified JavaScript code into the response and ensures including the specified JavaScript files to
      * the rendered page prior to the rendered script.
      *
-     * @param context    {@link FacesContext} for the current request
-     * @param script The javascript to be rendered
-     * @param jsFiles    The collection of javascript files to be added
+     * @param context {@link FacesContext} for the current request
+     * @param script  The javascript to be rendered
+     * @param jsFiles The collection of javascript files to be added
      * @throws IOException if an input/output error occurs
      */
     public static void renderInitScript(FacesContext context, Script script, String... jsFiles) throws IOException {
@@ -1115,7 +1115,7 @@ public class RenderingUtil {
         boolean result;
         try {
             result = component.getClass().getName().equals("org.ajax4jsf.component.html.HtmlAjaxSupport") ||
-            component instanceof UIAjaxSupport;
+                    component instanceof UIAjaxSupport;
         } catch (Throwable e) {
             return false; // failure to find a component means that it's not actually a4j:support component
         }

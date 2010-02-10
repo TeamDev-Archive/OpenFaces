@@ -659,6 +659,11 @@
     <component-type>org.openfaces.CommandLink</component-type>
     <component-class>org.openfaces.component.command.CommandLink</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.LayeredPane</component-type>
+    <component-class>org.openfaces.component.panel.LayeredPane</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -819,6 +824,12 @@
       <component-family>org.openfaces.TabbedPane</component-family>
       <renderer-type>org.openfaces.TabbedPaneRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.panel.TabbedPaneRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>org.openfaces.LayeredPane</component-family>
+      <renderer-type>org.openfaces.LayeredPaneRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.panel.LayeredPaneRenderer</renderer-class>
     </renderer>
 
     <!-- CHART COMPONENTS DECLARATION -->
