@@ -1,17 +1,17 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:o="http://openfaces.org/"
-        >
+     xmlns:o="http://openfaces.org/">
 
   <div id="Demo">
     <div style="font-size: 15pt; margin-bottom: 10px; color: #404040;">Standard and Ajax Functionality</div>
+
     <h:panelGrid id="input" columns="2" style="margin-bottom: 5px;">
       <o:inputText value="#{requestScope['firstName']}" promptText="First name"/>
       <o:inputText value="#{requestScope['lastName']}" promptText="Last name"/>
     </h:panelGrid>
-    <o:commandButton value="Standard Submit"/>
+    <o:commandButton value="Standard Submit"/>&#160;
     <o:commandButton value="Ajax Submit" execute="input" render="output"/>
-    <div style="margin-top: 5px; padding-left: 5px;">
+    <div style="margin-top: 5px; margin-bottom: 5px; padding-left: 5px;">
       <h:outputText id="output" value="Full name: #{requestScope['firstName']} #{requestScope['lastName']}"/>
     </div>
 
@@ -22,12 +22,16 @@
 
     <span class="codeSnippet">&lt;o:commandButton></span> tag with <span class="codeSnippet">type="button"</span> and
     embedded HTML:<br/>
-    <o:inputText id="searchField" style="width: 250px; font-size: 16px; height: 24px; " value="OpenFaces Ajax Button"
-                 onkeypress="if (event.keyCode == 13) {O$('form:searchButton').click(); return false;}"/>
-    <o:commandButton id="searchButton" type="button"
-                     onclick="var menu = O$('form:searchMenu'); menu.show(); menu.focus(); " style="width: 130px; padding: 2px; font-size: 16px; color: #30699a">
-      <img src="find.png" width="16" height="17"/>&#160;&#160;Search&#160;&#160;<img src="dropArea.gif" width="11" height="11"/>
-    </o:commandButton>
+    <h:panelGrid columns="2" cellspacing="0" cellpadding="0" border="0" style="margin-top: 3px">
+      <o:inputText id="searchField" style="width: 250px; font-size: 18px; height: 24px;" value="OpenFaces Ajax Button"
+                   onkeypress="if (event.keyCode == 13) {O$('form:searchButton').click(); return false;}"/>
+      <o:commandButton id="searchButton" type="button"
+                       onclick="var menu = O$('form:searchMenu'); menu.show(); menu.focus(); "
+                       style="width: 130px; padding: 2px; font-size: 16px; color: #30699a">
+        <img src="find.png" width="16" height="17"/>&#160;&#160;Search&#160;&#160;<img src="dropArea.gif" width="11"
+                                                                                       height="11"/>
+      </o:commandButton>
+    </h:panelGrid>
     <o:popupMenu id="searchMenu" standalone="true" style="left: 277px; z-index: 1; width: 130px;">
       <o:menuItem value="Google" onclick="searchGoogle(O$('form:searchField').value);"/>
       <o:menuItem value="Yahoo" onclick="searchYahoo(O$('form:searchField').value);"/>
@@ -85,6 +89,7 @@
         width: 170px;
         height: 80px;
         margin-right: 15px;
+        padding: 5px;
       }
     </style>
 
@@ -126,7 +131,8 @@
         </li>
         <li>
           <strong>Specifying content with components</strong> - It is possible to place any HTML or components into the
-          <span class="codeSnippet">&lt;o:commandButton> tag to specify a content of any complexity instead of mere text.</span>.
+          <span class="codeSnippet">&lt;o:commandButton></span> tag to specify a content of any complexity instead of
+          mere text.
         </li>
       </ul>
     </div>
