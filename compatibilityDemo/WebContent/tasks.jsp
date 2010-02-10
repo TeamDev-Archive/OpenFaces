@@ -143,7 +143,7 @@
             </div>
         </div>
 
-        <div id="Content" class="Content">
+        <div id="Content" class="Content" style="overflow-y: hidden">
             <o:dataTable id="tasks" var="task"
                          value="#{DayTableBean.tasks}"
                          headerRowClass="TableHeader"
@@ -151,7 +151,8 @@
                          sortedColumnClass="SortedColumn"
                          bodyRowStyle="height: 40px;"
                          bodyOddRowStyle="background: #f4f4f4; height: 40px;"
-                         width="100%">
+                         style="width: 100%; height: 100%;">
+                <o:scrolling/>
                 <o:singleRowSelection onchange="requestsSelectionChanged();"
                                       rowData="#{DayTableBean.selectedTask}"/>
                 <o:row condition="#{DayTableBean.editingThisRow}" styleClass="EditableRow">

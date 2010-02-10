@@ -248,47 +248,49 @@
   <component name="libraryTable">
     <library name="commons-lang">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-lang-2.1.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/apache/commons-lang-2.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="OpenFaces Dependencies">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/jdom-1.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/jcommon-1.0.15.jar!/" />
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/jfreechart-1.0.12.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/openfaces-dependencies/jfreechart-1.0.13.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/openfaces-dependencies/jcommon-1.0.16.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/openfaces-dependencies/jdom-1.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="OpenFaces">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/openfaces-2.0.EAP2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES />
+      <SOURCES>
+        <root url="file://C:/Projects/TeamDev/OpenFaces/trunk/openFaces/source" />
+      </SOURCES>
     </library>
     <library name="JSF Implementation - Mojarra 1.2_12">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-el-1.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-digester-1.8.jar!/" />
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-collections-3.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/jsf-impl-1.2_12.jar!/" />
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-logging-1.0.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/jsf-api-1.2_12.jar!/" />
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/jstl-1.1.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/standard-1.1.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/commons-beanutils-1.6.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/mojarra/jsf-api-1.2_12-b01.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/mojarra/jsf-impl-1.2_12-b01.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/apache/commons-digester-1.8.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/apache/commons-logging-1.0.4.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/apache/commons-beanutils-1.6.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/apache/commons-el-1.0.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/apache/commons-collections-3.1.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/apache/standard-1.1.2.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/jstl-1.1.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="RichFaces">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/richfaces-api-3.3.1.GA.jar!/" />
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/richfaces-impl-3.3.1.GA.jar!/" />
-        <root url="jar://$PROJECT_DIR$/WebContent/WEB-INF/lib/richfaces-ui-3.3.1.GA.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/richfaces/richfaces-api-3.3.2.SR1.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/richfaces/richfaces-ui-3.3.2.SR1.jar!/" />
+        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/richfaces/richfaces-impl-3.3.2.SR1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

@@ -188,7 +188,7 @@ public class DayTableBean implements CalendarDataModel, Serializable {
     }
 
     private TimetableEvent getEvent() {
-        return (TimetableEvent) FacesUtil.getRequestMapValue("event");
+        return (TimetableEvent) FacesUtil.var("event");
     }
 
     private Date date = new Date();
@@ -449,7 +449,7 @@ public class DayTableBean implements CalendarDataModel, Serializable {
     }
 
     private Task fetchTaskVariable() {
-        return (Task) FacesUtil.getRequestMapValue("task");
+        return (Task) FacesUtil.var("task");
     }
 
     public void editTask(ActionEvent event) {
