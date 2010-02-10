@@ -22,13 +22,13 @@
 
     <span class="codeSnippet">&lt;o:commandButton></span> tag with <span class="codeSnippet">type="button"</span> and
     embedded HTML:<br/>
-    <o:inputText id="searchField" style="width: 250px" value="OpenFaces Ajax Button"
+    <o:inputText id="searchField" style="width: 250px; font-size: 16px; height: 24px; " value="OpenFaces Ajax Button"
                  onkeypress="if (event.keyCode == 13) {O$('form:searchButton').click(); return false;}"/>
     <o:commandButton id="searchButton" type="button"
-                     onclick="var menu = O$('form:searchMenu'); menu.show(); menu.focus(); " style="width: 100px;">
-      Search <img src="dropArea.gif" width="12" height="12"/>
+                     onclick="var menu = O$('form:searchMenu'); menu.show(); menu.focus(); " style="width: 130px; padding: 2px; font-size: 16px; color: #30699a">
+      <img src="find.png" width="16" height="17"/>&#160;&#160;Search&#160;&#160;<img src="dropArea.gif" width="11" height="11"/>
     </o:commandButton>
-    <o:popupMenu id="searchMenu" standalone="true" style="left: 277px; z-index: 1">
+    <o:popupMenu id="searchMenu" standalone="true" style="left: 277px; z-index: 1; width: 130px;">
       <o:menuItem value="Google" onclick="searchGoogle(O$('form:searchField').value);"/>
       <o:menuItem value="Yahoo" onclick="searchYahoo(O$('form:searchField').value);"/>
       <o:menuItem value="Wikipedia" onclick="searchWikipedia(O$('form:searchField').value);"/>
