@@ -2179,6 +2179,19 @@ O$.Tables = {
         if (table.onscroll)
           table.onscroll(e);
       };
+      var synchronizationCorrectionInterval = setInterval(function() {
+        if (!O$.isElementPresentInDocument(table)) {
+          clearInterval(synchronizationCorrectionInterval);
+          return;
+        }
+        var correctScrollLeft = mainScrollingArea._scrollingDiv.scrollLeft;
+        [table.header, table.footer].forEach(function (section) {
+          if (!section || !section._centerScrollingArea) return;
+          var scrollingDiv = section._centerScrollingArea._scrollingDiv;
+          if (scrollingDiv.scrollLeft != correctScrollLeft)
+            scrollingDiv.scrollLeft = correctScrollLeft;
+        });
+      }, 250);
     }
 
     synchronizeAreaScrolling();
