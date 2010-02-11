@@ -14,15 +14,15 @@ package org.openfaces.renderkit.validation;
 import org.openfaces.component.validation.ClientValidationMode;
 import org.openfaces.component.validation.FloatingIconMessage;
 import org.openfaces.component.validation.ValidationProcessor;
+import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.FunctionCallScript;
 import org.openfaces.util.NewInstanceScript;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleUtil;
-import org.openfaces.org.json.JSONObject;
+import org.openfaces.validator.ClientValidatorUtil;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -113,10 +113,8 @@ public class FloatingIconMessageRenderer extends BaseMessageRenderer {
 
         ScriptBuilder serverValidationScript = new ScriptBuilder();
         if (message != null) {
-            serverValidationScript.onLoadScript(new ScriptBuilder().functionCall("O$.addMessage",
-                    new FunctionCallScript("O$.byIdOrName", forComponentClientId),
-                    message.getSummary(),
-                    message.getDetail()).semicolon().
+            serverValidationScript.onLoadScript(new ScriptBuilder().append(
+                    ClientValidatorUtil.getScriptAddMessageById(message, forComponentClientId)).
 
                     newInstance("O$._FloatingIconMessageRenderer",
                             fim,

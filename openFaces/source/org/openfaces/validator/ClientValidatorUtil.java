@@ -13,17 +13,22 @@
 package org.openfaces.validator;
 
 import org.openfaces.component.validation.VerifiableComponent;
+import org.openfaces.util.RawScript;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.convert.*;
 import javax.faces.validator.DoubleRangeValidator;
 import javax.faces.validator.LengthValidator;
 import javax.faces.validator.LongRangeValidator;
 import javax.faces.validator.Validator;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -56,6 +61,17 @@ public class ClientValidatorUtil {
             return null;
         if (clientId == null)
             return null;
+
+        Map<String,Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        String messagesKey = "org.openfaces.validator.ClientValidatorUtil.renderedMessages";
+        List renderedMessages = (List) requestMap.get(messagesKey);
+        if (renderedMessages == null) {
+            renderedMessages = new ArrayList();
+            requestMap.put(messagesKey, renderedMessages);
+        }
+        if (renderedMessages.contains(message))
+            return new RawScript("");
+        renderedMessages.add(message);
 
         return new ScriptBuilder().functionCall("O$.addMessageById",
                 clientId,

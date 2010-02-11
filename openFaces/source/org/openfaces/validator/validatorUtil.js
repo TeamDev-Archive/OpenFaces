@@ -321,7 +321,7 @@ O$.addMessage = function(input, summary, detail, severity) {
 }
 
 O$.addMessageById = function(inputId, summary, detail, severity) {
-  var input = O$(inputId);
+  var input = O$.byIdOrName(inputId);
   O$.addMessage(input, summary, detail, severity);
 }
 
