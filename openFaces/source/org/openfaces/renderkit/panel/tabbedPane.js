@@ -23,6 +23,10 @@ O$.TabbedPane = {
       _rolloverContainerClass: rolloverContainerClass,
       onselectionchange: onselectionchange,
 
+      getSelectedIndex: function () {
+        return tabbedPane._tabSet.getSelectedIndex();
+      },
+
       setSelectedIndex: function(index) {
         tabbedPane._tabSet.setSelectedIndex(index);
       }
