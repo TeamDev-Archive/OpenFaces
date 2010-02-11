@@ -52,18 +52,6 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
         }
 
         @Override
-        protected void renderCaptionContent(FacesContext context, ComponentWithCaption component, UIComponent captionContent) throws IOException {
-            if (captionContent != null)
-                super.renderCaptionContent(context, component, captionContent);
-            else {
-                String captionText = component.getCaption();
-                if (captionText != null)
-                    context.getResponseWriter().writeText(captionText, null);
-            }
-
-        }
-
-        @Override
         protected void createDefaultAreaButtons(FacesContext context, ComponentWithCaption component, CaptionArea area) {
             area.setAlignment(Side.RIGHT);
             AbstractWindow win = (AbstractWindow) component;

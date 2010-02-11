@@ -34,4 +34,8 @@ public class SubPanel extends AbstractPanelWithCaption implements Serializable {
         return COMPONENT_FAMILY;
     }
 
+    @Override
+    public UIComponent getCaptionFacet() {
+        return super.getCaptionFacet();
+    }
 }

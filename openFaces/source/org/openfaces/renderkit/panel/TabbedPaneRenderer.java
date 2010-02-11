@@ -12,14 +12,15 @@
 package org.openfaces.renderkit.panel;
 
 import org.openfaces.component.LoadingMode;
-import org.openfaces.component.panel.TabbedPane;
 import org.openfaces.component.panel.SubPanel;
+import org.openfaces.component.panel.TabbedPane;
 import org.openfaces.component.select.TabPlacement;
 import org.openfaces.component.select.TabSet;
 import org.openfaces.component.select.TabSetItems;
 import org.openfaces.renderkit.select.TabSetRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.AnonymousFunction;
+import org.openfaces.util.ComponentUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.ScriptBuilder;
@@ -186,18 +187,23 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
     private void initInnerTabSet(TabbedPane tabbedPane, TabSet innerTabSet, List<SubPanel> subPanels) {
         List<UIComponent> tabs = new ArrayList<UIComponent>();
         for (SubPanel item : subPanels) {
-            UIComponent tabContentComponent = item.getCaptionFacet();
-            if (tabContentComponent != null) {
-                // Note that non-rendered tabs should still be added (though with the "non-rendered" flag) to the TabSet for
-                // correct tab indexing.
+            UIComponent captionComponent = item.getCaptionFacet();
+            String caption = item.getCaption();
+            if (captionComponent != null || caption != null) {
+                if (captionComponent == null) {
+                    captionComponent = ComponentUtil.createOutputText(FacesContext.getCurrentInstance(), caption);
+                }
+
+                // Note that non-rendered tabs should still be added (though with the "non-rendered" flag) to the TabSet
+                // for correct tab indexing.
                 // Custom component attribute is used instead of the "rendered" property in order not to interfere with
                 // user's specification of the "rendered" property.
                 if (!item.isRendered())
-                    tabContentComponent.getAttributes().put(TabSetRenderer.ATTR_CONSIDER_TAB_NON_RENDERED, Boolean.TRUE);
+                    captionComponent.getAttributes().put(TabSetRenderer.ATTR_CONSIDER_TAB_NON_RENDERED, Boolean.TRUE);
                 else
-                    tabContentComponent.getAttributes().remove(TabSetRenderer.ATTR_CONSIDER_TAB_NON_RENDERED);
+                    captionComponent.getAttributes().remove(TabSetRenderer.ATTR_CONSIDER_TAB_NON_RENDERED);
             }
-            tabs.add(tabContentComponent);
+            tabs.add(captionComponent);
         }
         TabSetItems items = (TabSetItems) innerTabSet.getChildren().get(0);
         items.setValue(tabs);

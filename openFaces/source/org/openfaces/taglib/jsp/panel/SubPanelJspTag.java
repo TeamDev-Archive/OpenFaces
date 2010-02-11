@@ -12,12 +12,11 @@
 package org.openfaces.taglib.jsp.panel;
 
 import org.openfaces.taglib.internal.panel.SubPanelTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
 /**
  * @author Andrew Palval
  */
-public class SubPanelJspTag extends AbstractComponentJspTag {
+public class SubPanelJspTag extends AbstractPanelWithCaptionJspTag {
 
     public SubPanelJspTag() {
         super(new SubPanelTag());

@@ -67,15 +67,20 @@ public abstract class ComponentWithCaptionRenderer extends RendererBase {
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", uiComponent.getClientId(context) + CAPTION_CONTENT_SUFFIX, null);
         writeAdditionalCaptionCellContent(writer, component);
-        UIComponent captionContent = component.getCaptionFacet();
-        renderCaptionContent(context, component, captionContent);
+        renderCaptionContent(context, component);
         writer.endElement("div");
         writer.endElement("td");
     }
 
-    protected void renderCaptionContent(FacesContext context, ComponentWithCaption component, UIComponent captionContent) throws IOException {
-        if (captionContent != null)
-            captionContent.encodeAll(context);
+    protected void renderCaptionContent(FacesContext context, ComponentWithCaption component) throws IOException {
+        UIComponent captionFacet = component.getCaptionFacet();
+        if (captionFacet != null)
+            captionFacet.encodeAll(context);
+        else {
+            String captionText = component.getCaption();
+            if (captionText != null)
+                context.getResponseWriter().writeText(captionText, null);
+        }
     }
 
     protected void renderCaptionAreas(FacesContext context, List<CaptionArea> captionAreas, Side alignment) throws IOException {

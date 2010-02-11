@@ -47,11 +47,9 @@
                   tabAlignment="#{TabbedPaneBean.selectedAlignment}"
                   tabGapWidth="3"
                   style="width: 260px; height: 290px;"
-                  containerStyle="vertical-align: middle;">
-      <o:subPanel>
-        <f:facet name="caption">
-          <h:outputText value="a-h" styleClass="tab_name"/>
-        </f:facet>
+                  containerStyle="vertical-align: middle;"
+                  tabClass="tab_name">
+      <o:subPanel caption="a-h">
         <h:panelGrid columns="1" rowClasses=", name, tel, name, tel, name, tel"
                      style="line-height: 30px; width: 210px; margin: 0 auto;" columnClasses="col">
           <h:column><f:verbatim escape="false">&#160;</f:verbatim></h:column>
@@ -64,10 +62,7 @@
           <h:column><f:verbatim escape="false">&#160;</f:verbatim></h:column>
         </h:panelGrid>
       </o:subPanel>
-      <o:subPanel>
-        <f:facet name="caption">
-          <h:outputText value="i-p" styleClass="tab_name"/>
-        </f:facet>
+      <o:subPanel caption="i-p">
         <h:panelGrid columns="1" rowClasses=", name, tel, name, tel, name, tel"
                      style="line-height: 30px; width: 210px; margin: 0 auto;" columnClasses="col">
           <h:column><f:verbatim escape="false">&#160;</f:verbatim></h:column>
@@ -80,10 +75,7 @@
           <h:column><f:verbatim escape="false">&#160;</f:verbatim></h:column>
         </h:panelGrid>
       </o:subPanel>
-      <o:subPanel>
-        <f:facet name="caption">
-          <h:outputText value="q-z" styleClass="tab_name"/>
-        </f:facet>
+      <o:subPanel caption="q-z">
         <h:panelGrid columns="1" rowClasses=", name, tel, name, tel, name, tel"
                      style="line-height: 30px; width: 210px; margin: 0 auto;" columnClasses="col">
           <h:column><f:verbatim escape="false">&#160;</f:verbatim></h:column>
