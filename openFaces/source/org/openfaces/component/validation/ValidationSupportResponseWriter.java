@@ -264,7 +264,7 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
             vc.setRequired(editableValueHolder.isRequired());
             vc.setConverter(ConverterUtil.getConverter(component, context));
             vc.addMessageFromContext(context);
-            vc.updateClientValidatorsScriptsAndLibraries(context);
+            vc.updateClientValidatorsScriptsAndLibraries(context, processor);
             processor.addVerifiableComponent(vc);
             handleEditableValueHolder(context, vc, processor);
         }

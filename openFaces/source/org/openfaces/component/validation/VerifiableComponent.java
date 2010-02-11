@@ -100,10 +100,6 @@ public class VerifiableComponent {
         return commonScript;
     }
 
-    public List<String> getMessagesScripts() {
-        return messagesScripts;
-    }
-
     public List<String> getClientValidatorsScripts() {
         return clientValidatorsScripts;
     }
@@ -211,10 +207,11 @@ public class VerifiableComponent {
         messagesScripts.add(script);
     }
 
-    public void addMessagesScripts() {
+    public void addMessagesScripts(ValidationProcessor validationProcessor) {
         if (messages == null)
             return;
 
+        if (validationProcessor.getClientValidationRuleForComponent(this).equals(ClientValidationMode.OFF)) return;
         for (FacesMessage facesMessage : messages) {
             addMessageScript(ClientValidatorUtil.getScriptAddMessageById(facesMessage, clientId).toString());
         }
@@ -350,7 +347,7 @@ public class VerifiableComponent {
     }
 
 
-    public void updateClientValidatorsScriptsAndLibraries(FacesContext context) {
+    public void updateClientValidatorsScriptsAndLibraries(FacesContext context, ValidationProcessor validationProcessor) {
         List<ClientValidator> clientValidators = getClientValidators();
 
         if (clientValidators != null) {
@@ -359,7 +356,7 @@ public class VerifiableComponent {
                 addJavascriptLibraryUrls(context, clientValidator.getJavascriptLibraries());
             }
         }
-        addMessagesScripts();
+        addMessagesScripts(validationProcessor);
         updateCommonScript();
     }
 
