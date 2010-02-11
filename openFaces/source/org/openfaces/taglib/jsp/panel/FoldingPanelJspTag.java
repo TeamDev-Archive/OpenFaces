@@ -12,14 +12,13 @@
 package org.openfaces.taglib.jsp.panel;
 
 import org.openfaces.taglib.internal.panel.FoldingPanelTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
 import javax.el.ValueExpression;
 
 /**
  * @author Kharchenko
  */
-public class FoldingPanelJspTag extends AbstractComponentJspTag {
+public class FoldingPanelJspTag extends AbstractPanelWithCaptionJspTag {
 
     public FoldingPanelJspTag() {
         super(new FoldingPanelTag());
@@ -29,25 +28,11 @@ public class FoldingPanelJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("expanded", expanded);
     }
 
-    public void setCaptionStyle(ValueExpression captionStyle) {
-        getDelegate().setPropertyValue("captionStyle", captionStyle);
-    }
-
-    public void setContentStyle(ValueExpression contentStyle) {
-        getDelegate().setPropertyValue("contentStyle", contentStyle);
-    }
 
     public void setOnstatechange(ValueExpression onstatechange) {
         getDelegate().setPropertyValue("onstatechange", onstatechange);
     }
 
-    public void setCaptionClass(ValueExpression captionClass) {
-        getDelegate().setPropertyValue("captionClass", captionClass);
-    }
-
-    public void setContentClass(ValueExpression contentClass) {
-        getDelegate().setPropertyValue("contentClass", contentClass);
-    }
 
     public void setFoldingDirection(ValueExpression foldingDirection) {
         getDelegate().setPropertyValue("foldingDirection", foldingDirection);

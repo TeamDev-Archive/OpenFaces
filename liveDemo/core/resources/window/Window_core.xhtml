@@ -91,20 +91,18 @@
                    top: 250px;
                    filter: alpha(opacity = 75); -moz-opacity: .75;opacity: .75;
                    background: #bbbbbb"
+              caption="Calculator"
               captionStyle="background: #bbbbbb;
                           border-bottom: #e9e9e9 solid 1px;
                           position:relative;
-                          top: -4px"
+                          top: -4px;
+                          color: white;"
               contentStyle="overflow: visible"
               height="330px"
               width="212px">
       <o:captionArea style="padding: 0 0 10px 0">
         <o:closeWindowButton imageUrl="./images/win_close_single.jpg" rolloverClass="buttonRollover"/>
       </o:captionArea>
-
-      <f:facet name="caption">
-        <h:outputText style="color: #ffffff;" value="Calculator"/>
-      </f:facet>
 
       <div style="background: #bbbbbb; padding: 3px; height: 97%">
         <div style="background: #999999;">
@@ -211,15 +209,14 @@
                 resizable="false"
                 modal="true"
                 styleClass="window"
+                caption="Full Size Image"
                 captionStyle="background: #bbbbbb;
                           border-bottom: #e9e9e9 solid 1px;
                           position:relative;
-                          padding: 0 0 0 6px;"
+                          padding: 0 0 0 6px;
+                          color: white;"
                 style="position: absolute; top: 50px; left: 50px;
                        width:auto; overflow:visible;">
-        <f:facet name="caption">
-          <h:outputText style="color: #ffffff" value="Full Size Image"/>
-        </f:facet>
 
         <o:captionArea>
           <o:minimizeWindowButton minimizeImageUrl="./images/win_minimize.png" restoreImageUrl="./images/win_restore.jpg" styleClass="customButton"
@@ -242,7 +239,9 @@
 
               style="position: absolute; left: -110px; top: 130px; padding: 10px;"
               styleClass="window"
-              captionStyle="background: #bbbbbb;
+              caption="Image Gallery"
+              captionStyle="color: white;
+                            background: #bbbbbb;
                             border-bottom: #e9e9e9 solid 1px;
                             position: relative;
                             padding: 0 0 0 6px;"
@@ -259,10 +258,6 @@
         <o:closeWindowButton imageUrl="./images/win_close.png" styleClass="customButton"
                              rolloverClass="buttonRollover"/>
       </o:captionArea>
-
-      <f:facet name="caption">
-        <h:outputText style="color: #ffffff" value="Image Gallery"/>
-      </f:facet>
 
       <div class="img">
         <h:outputLink onclick="showFullSizeImage(event); return false;">
@@ -324,17 +319,14 @@
               width="236px"
               height="228px"
               contentStyle="overflow: visible; background: #bbbbbb;"
-              captionStyle="background: #bbbbbb;
+              caption="Calendar"
+              captionStyle="color: white; background: #bbbbbb;
                           border-bottom: 1px solid #e9e9e9;">
 
       <o:captionArea>
         <o:closeWindowButton imageUrl="./images/win_close_single.jpg" styleClass="customButton"
                              rolloverClass="buttonRollover"/>
       </o:captionArea>
-
-      <f:facet name="caption">
-        <h:outputText style="color: #ffffff;" value="Calendar"/>
-      </f:facet>
 
       <div align="center" style="padding:20px"><o:calendar/></div>
     </o:window>
@@ -356,10 +348,12 @@
               style="position: absolute;
                     left: -100px;
                     top: 0px;"
+              caption="OpenFaces Documentation - http://www.openfaces.org/documentation/"
               captionStyle="background: #bbbbbb;
                             border-bottom: #e9e9e9 solid 1px;
                             position: relative;
-                            padding: 0 0 0 6px;"
+                            padding: 0 0 0 6px;
+                            color: white;"
               modal="true"
               modalLayerClass="modalLayer">
 
@@ -372,10 +366,6 @@
         <o:closeWindowButton imageUrl="./images/win_close.png"
                              styleClass="customButton" rolloverClass="buttonRollover"/>
       </o:captionArea>
-
-      <f:facet name="caption">
-        <h:outputText style="color: #ffffff;" value="OpenFaces Documentation - http://www.openfaces.org/documentation/"/>
-      </f:facet>
 
       <iframe id="documentationSiteContent"
               frameborder="true"
@@ -402,14 +392,9 @@
               style="position: absolute;
                          left: -130px;
                          top: -50px;"
-              contentStyle="padding: 0; width: 100% !important;"
+              caption="Web Browser"
+              contentStyle="padding: 0; width: 100% !important; text-align: center"
               captionClass="browserCaption">
-
-      <f:facet name="caption">
-        <h:panelGroup style="text-align: center">
-          <h:outputText value="Web Browser"/>
-        </h:panelGroup>
-      </f:facet>
 
       <o:captionArea alignment="left">
         <o:closeWindowButton rolloverImageUrl="./images/mac_close.png" imageUrl="./images/mac_inactive.png"

@@ -14,7 +14,6 @@ package org.openfaces.taglib.internal.panel;
 import org.openfaces.component.LoadingMode;
 import org.openfaces.component.panel.FoldingDirection;
 import org.openfaces.component.panel.FoldingPanel;
-import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -22,7 +21,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Pavel Kaplin
  */
-public class FoldingPanelTag extends AbstractComponentTag {
+public class FoldingPanelTag extends AbstractPanelWithCaptionTag {
     public String getComponentType() {
         return FoldingPanel.COMPONENT_TYPE;
     }
@@ -36,11 +35,7 @@ public class FoldingPanelTag extends AbstractComponentTag {
         super.setComponentProperties(facesContext, component);
         setEnumerationProperty(component, "loadingMode", LoadingMode.class);
         setBooleanProperty(component, "expanded");
-        setStringProperty(component, "captionStyle");
-        setStringProperty(component, "contentStyle");
         setStringProperty(component, "onstatechange");
-        setStringProperty(component, "captionClass");
-        setStringProperty(component, "contentClass");
         setEnumerationProperty(component, "foldingDirection", FoldingDirection.class);
 
         setBooleanProperty(component, "focusable");

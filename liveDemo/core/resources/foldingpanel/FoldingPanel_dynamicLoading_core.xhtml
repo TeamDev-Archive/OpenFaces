@@ -10,7 +10,9 @@
         <f:facet name="header">
           <h:outputText value="Photos"/>
         </f:facet>
-        <o:foldingPanel expanded="false" style="width: 100%; border: 1px solid #f6f7f8;"
+        <o:foldingPanel expanded="false"
+                        caption="#{photo.name}"
+                        style="width: 100%; border: 1px solid #f6f7f8;"
                         contentStyle="background: transparent;"
                         captionStyle="border-bottom: none; background: transparent; font-weight: bold;">
           <o:captionArea alignment="left">
@@ -24,7 +26,6 @@
                     collapsedPressedImageUrl="../images/foldingpanel/collapsed_rollover.gif"
                     />
           </o:captionArea>
-          <f:facet name="caption"><h:outputText value="#{photo.name}"/></f:facet>
           <h:graphicImage url="../images/foldingpanel/#{photo.imageFileName}" width="480" height="360"
                           style="margin: 2px;"/>
         </o:foldingPanel>

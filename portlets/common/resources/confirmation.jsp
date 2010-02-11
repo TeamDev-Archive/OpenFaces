@@ -26,7 +26,7 @@
       </tr>
       <tr>
         <td>
-          for="confInvoker"           captionText="Confirmation caption" draggable="true"
+          for="confInvoker"           caption="Confirmation caption" draggable="true"
           alignToInvoker="true"
         </td>
         <td>
@@ -55,14 +55,14 @@
     <o:confirmation id="conf"
                     for="confInvoker"
                     alignToInvoker="true"
-                    captionText="Confirmation caption"
+                    caption="Confirmation caption"
                     draggable="true"/>
     <o:confirmation id="styleConf"
                     for="button1"
                     buttonAreaStyle="background: blue;"
                     cancelButtonStyle="border: 1px dashed black;"
                     captionStyle="border: 1px dashed white;"
-                    captionText="Caption Text"
+                    caption="Caption Text"
                     detailsStyle="color: red;"
                     iconAreaStyle="border: 1px solid orange;"
                     messageStyle="color: blue;"

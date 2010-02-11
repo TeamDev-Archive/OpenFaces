@@ -11884,6 +11884,19 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default "80px" -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>The text that should be displayed in the caption. This is a convenient alternative for using
+        the "caption" facet. If both "caption" facet and "caption" attribute is specified, the content specified in the
+        facet is used.
+      </description>
+      <name>caption</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>A style for the entire Window component.</description>
@@ -14414,8 +14427,9 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>A flag that indicates whether or not the Confirmation component has the title bar.
-        In this attribute, you should specify the text that is displayed in the title bar.
+      <description>The text that should be displayed in the caption. This is a convenient alternative for using
+        the "caption" facet. If both "caption" facet and "caption" attribute is specified, the content specified in the
+        facet is used.
       </description>
       <name>caption</name>
       <deferred-value>
@@ -16048,6 +16062,19 @@ on every switch to the tab.-->
       </deferred-value>
       <!-- @bindingType java.lang.Boolean -->
       <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The text that should be displayed in the caption. This is a convenient alternative for using
+        the "caption" facet. If both "caption" facet and "caption" attribute is specified, the content specified in the
+        facet is used.
+      </description>
+      <name>caption</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -27963,6 +27990,19 @@ and it is automatically triggered on any form submission. -->
       <!-- @value "top" -->
       <!-- @value "bottom" -->
       <!-- @default "left" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The text that should be displayed in the caption. This is a convenient alternative for using
+        the "caption" facet. If both "caption" facet and "caption" attribute is specified, the content specified in the
+        facet is used.
+      </description>
+      <name>caption</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
