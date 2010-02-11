@@ -1029,31 +1029,56 @@ O$.Tables = {
       var horizSeparationIndex = table._deepestColumnHierarchyLevel - horizSeparationLevel;
       var result = {};
 
-      var verticalGridLines = table._gridLines.vertical ? table._gridLines.vertical.split(",") : [];
+      function splitColorsStr(str) {
+        // take care of possible rgb(r,g,b) color syntax (instead of #rrggbb)
+        if (str.indexOf("(") == -1)
+          return str.split(",");
+        var parts = [];
+        while (true) {
+          var commaIdx = str.indexOf(",");
+          var bracketIdx = str.indexOf("(");
+          if (commaIdx == -1) {
+            parts.push(str);
+            return parts;
+          }
+          if (commaIdx < bracketIdx) {
+            parts.push(str.substring(0, commaIdx));
+          } else {
+            var closingBracketIdx = str.indexOf(")");
+            parts.push(str.substring(0, closingBracketIdx + 1));
+            commaIdx = str.indexOf(",", closingBracketIdx);
+            if (commaIdx == -1)
+              return parts;
+          }
+          str = str.substring(commaIdx + 1);
+        }
+      }
+
+      var verticalGridLines = table._gridLines.vertical ? splitColorsStr(table._gridLines.vertical) : [];
       var verticalGridLines_length = verticalGridLines.length;
       result.body = verticalGridLines_length
               ? verticalGridLines[index >= verticalGridLines_length ? verticalGridLines_length - 1 : index]
               : null;
 
-      var headerVerticalGridLines = table._gridLines.headerVert ? table._gridLines.headerVert.split(",") : [];
+      var headerVerticalGridLines = table._gridLines.headerVert ? splitColorsStr(table._gridLines.headerVert) : [];
       var headerVerticalGridLines_length = headerVerticalGridLines.length;
       result.header = headerVerticalGridLines_length
               ? headerVerticalGridLines[index >= headerVerticalGridLines_length ? headerVerticalGridLines_length - 1 : index]
               : null;
 
-      var footerVerticalGridLines = table._gridLines.footerVert ? table._gridLines.footerVert.split(",") : [];
+      var footerVerticalGridLines = table._gridLines.footerVert ? splitColorsStr(table._gridLines.footerVert) : [];
       var footerVerticalGridLines_length = footerVerticalGridLines.length;
       result.footer = footerVerticalGridLines_length
               ? footerVerticalGridLines[index >= footerVerticalGridLines_length ? footerVerticalGridLines_length - 1 : index]
               : null;
 
-      var multiHeaderSeparators = table._gridLines.multiHeader ? table._gridLines.multiHeader.split(",") : [];
+      var multiHeaderSeparators = table._gridLines.multiHeader ? splitColorsStr(table._gridLines.multiHeader) : [];
       var multiHeaderSeparators_length = multiHeaderSeparators.length;
       result.multiHeaderSeparator = multiHeaderSeparators_length
               ? multiHeaderSeparators[horizSeparationIndex >= multiHeaderSeparators_length ? multiHeaderSeparators_length - 1 : horizSeparationIndex]
               : null;
 
-      var multiFooterSeparators = table._gridLines.multiFooter ? table._gridLines.multiFooter.split(",") : [];
+      var multiFooterSeparators = table._gridLines.multiFooter ? splitColorsStr(table._gridLines.multiFooter) : [];
       var multiFooterSeparators_length = multiFooterSeparators.length;
       result.multiFooterSeparator = multiFooterSeparators_length
               ? multiFooterSeparators[horizSeparationIndex >= multiFooterSeparators_length ? multiFooterSeparators_length - 1 : horizSeparationIndex]
