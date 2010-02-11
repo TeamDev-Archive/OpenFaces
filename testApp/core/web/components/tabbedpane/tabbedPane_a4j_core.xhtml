@@ -22,18 +22,18 @@
                       tabEmptySpaceStyle="background: LightBlue;"
                       tabStyle="color: red;"
                       style="height: 300px; width: 200px;">
-          <o:tabbedPaneItem>
-            <f:facet name="tab">
+          <o:subPanel>
+            <f:facet name="caption">
               <h:outputText id="tab_first" value="#{FoldingPanelBean.currentHeader}"/>
             </f:facet>
             <h:outputText value="#{TabSetA4jBean.first}" id="first_content"/>
-          </o:tabbedPaneItem>
-          <o:tabbedPaneItem>
-            <f:facet name="tab">
+          </o:subPanel>
+          <o:subPanel>
+            <f:facet name="caption">
               <h:outputText id="tab_second" value="#{FoldingPanelBean.currentHeader}"/>
             </f:facet>
             <h:outputText value="#{TabSetA4jBean.second}" id="second_content"/>
-          </o:tabbedPaneItem>
+          </o:subPanel>
         </o:tabbedPane>
     </td>
     <td class="cells">
@@ -53,18 +53,18 @@
                           tabEmptySpaceStyle="background: LightBlue;"
                           tabStyle="color: red;"
                           style="height: 300px; width: 200px;"&gt;
-              &lt;o:tabbedPaneItem&gt;
-                &lt;f:facet name="tab"&gt;
+              &lt;o:subPanel&gt;
+                &lt;f:facet name="caption"&gt;
                   &lt;h:outputText id="tab_first" value="FoldingPanelBean.currentHeader"/&gt;
                 &lt;/f:facet&gt;
                 &lt;h:outputText value="TabSet_a4j_Bean.first" id="first_content"/&gt;
-              &lt;/o:tabbedPaneItem&gt;
-              &lt;o:tabbedPaneItem&gt;
-                &lt;f:facet name="tab"&gt;
+              &lt;/o:subPanel&gt;
+              &lt;o:subPanel&gt;
+                &lt;f:facet name="caption"&gt;
                   &lt;h:outputText id="tab_second" value="FoldingPanelBean.currentHeader"/&gt;
                 &lt;/f:facet&gt;
                 &lt;h:outputText value="TabSet_a4j_Bean.second" id="second_content"/&gt;
-              &lt;/o:tabbedPaneItem&gt;
+              &lt;/o:subPanel&gt;
             &lt;/o:tabbedPane&gt;
           </pre>
     </td>
@@ -84,18 +84,18 @@
                       tabEmptySpaceStyle="background: LightBlue;"
                       tabStyle="color: red;"
                       style="height: 300px; width: 200px;">
-          <o:tabbedPaneItem>
-            <f:facet name="tab">
+          <o:subPanel>
+            <f:facet name="caption">
               <a4j:commandButton id="tab_first_a4j" value="#{FoldingPanelBean.currentHeader}"/>
             </f:facet>
             <h:commandLink value="#{TabSetA4jBean.first}" id="first_content_a4j"/>
-          </o:tabbedPaneItem>
-          <o:tabbedPaneItem>
-            <f:facet name="tab">
+          </o:subPanel>
+          <o:subPanel>
+            <f:facet name="caption">
               <a4j:commandButton id="tab_second_a4j" value="#{FoldingPanelBean.currentHeader}"/>
             </f:facet>
             <h:commandLink value="#{TabSetA4jBean.second}" id="second_content_a4j"/>
-          </o:tabbedPaneItem>
+          </o:subPanel>
         </o:tabbedPane>
     </td>
     <td class="cells">

@@ -35,20 +35,20 @@
                             tabAlignment="topOrLeft"
                             style="margin-top: 10px;"
                             containerStyle="padding: 15px 15px 15px 15px;">
-                <o:tabbedPaneItem>
-                  <f:facet name="tab">
+                <o:subPanel>
+                  <f:facet name="caption">
                     <h:outputText value="Poppy" styleClass="tab_name"/>
                   </f:facet>
                   <o:calendar/>
-                </o:tabbedPaneItem>
-                <o:tabbedPaneItem>
-                  <f:facet name="tab">
+                </o:subPanel>
+                <o:subPanel>
+                  <f:facet name="caption">
                     <h:outputText value="Tree stump" styleClass="tab_name"/>
                   </f:facet>
                   <o:dateChooser/>
-                </o:tabbedPaneItem>
-                <o:tabbedPaneItem>
-                  <f:facet name="tab">
+                </o:subPanel>
+                <o:subPanel>
+                  <f:facet name="caption">
                     <h:outputText value="Lane" styleClass="tab_name"/>
                   </f:facet>
                   <o:dropDownField>
@@ -56,7 +56,7 @@
                     <o:dropDownItem value="blue"/>
                     <o:dropDownItem value="green"/>
                   </o:dropDownField>
-                </o:tabbedPaneItem>
+                </o:subPanel>
               </o:tabbedPane>
             </h:form>
           </a4j:outputPanel>

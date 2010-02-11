@@ -13,7 +13,7 @@ package org.openfaces.renderkit.util;
 
 import org.openfaces.component.LoadingMode;
 import org.openfaces.component.panel.TabbedPane;
-import org.openfaces.component.panel.TabbedPaneItem;
+import org.openfaces.component.panel.SubPanel;
 import org.openfaces.component.table.Column;
 import org.openfaces.component.table.ColumnResizing;
 import org.openfaces.component.table.DataTable;
@@ -51,13 +51,13 @@ public class DebugRenderer extends WindowRenderer implements CompoundComponentRe
         tabbedPane.setLoadingMode(LoadingMode.CLIENT);
         tabbedPane.setStyle("width: 100%; height: 100%;");
 
-        tabbedPane.getChildren().add(new TabbedPaneItem(
+        tabbedPane.getChildren().add(new SubPanel(
                 ComponentUtil.createOutputText(context, "Console"),
                 createLogPageContent(context, debug)
         ));
         DataTable elementProperties = (DataTable) ComponentUtil.createChildComponent(
                 context, debug, DataTable.COMPONENT_TYPE, "elementProperties");
-        tabbedPane.getChildren().add(new TabbedPaneItem(
+        tabbedPane.getChildren().add(new SubPanel(
                 ComponentUtil.createOutputText(context, "Element Inspector"),
                 elementProperties
         ));

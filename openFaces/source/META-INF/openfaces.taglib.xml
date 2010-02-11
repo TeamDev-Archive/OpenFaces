@@ -633,15 +633,15 @@
     </component>
   </tag>
   <tag>
-    <tag-name>tabbedPaneItem</tag-name>
+    <tag-name>subPanel</tag-name>
     <component>
-      <component-type>org.openfaces.TabbedPaneItem</component-type>
+      <component-type>org.openfaces.SubPanel</component-type>
     </component>
   </tag>
   <tag>
-    <tag-name>tabbedPaneItems</tag-name>
+    <tag-name>subPanels</tag-name>
     <component>
-      <component-type>org.openfaces.TabbedPaneItems</component-type>
+      <component-type>org.openfaces.SubPanels</component-type>
     </component>
   </tag>
 

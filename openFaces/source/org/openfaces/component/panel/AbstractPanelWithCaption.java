@@ -24,6 +24,8 @@ import javax.faces.context.FacesContext;
 public abstract class AbstractPanelWithCaption extends OUIPanel implements ComponentWithCaption {
     private static final String CAPTION_FACET_NAME = "caption";
 
+    private String caption;
+
     private String captionStyle;
     private String captionClass;
     private String contentStyle;
@@ -32,7 +34,12 @@ public abstract class AbstractPanelWithCaption extends OUIPanel implements Compo
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
-        return new Object[]{superState, captionStyle, captionClass, contentStyle, contentClass};
+        return new Object[]{superState,
+                caption,
+                captionStyle,
+                captionClass,
+                contentStyle,
+                contentClass};
     }
 
     @Override
@@ -40,17 +47,26 @@ public abstract class AbstractPanelWithCaption extends OUIPanel implements Compo
         Object[] values = (Object[]) object;
         int i = 0;
         super.restoreState(context, values[i++]);
+        caption = (String) values[i++];
         captionStyle = (String) values[i++];
         captionClass = (String) values[i++];
         contentStyle = (String) values[i++];
         contentClass = (String) values[i++];
     }
 
-    public UIComponent getCaption() {
+    public String getCaption() {
+        return ValueBindings.get(this, "caption", caption);
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
+
+    public UIComponent getCaptionFacet() {
         return getFacet(CAPTION_FACET_NAME);
     }
 
-    public void setCaption(UIComponent component) {
+    public void setCaptionFacet(UIComponent component) {
         getFacets().put(CAPTION_FACET_NAME, component);
     }
 

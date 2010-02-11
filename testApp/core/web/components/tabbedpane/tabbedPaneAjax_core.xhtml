@@ -9,8 +9,8 @@
     <o:clientValidationSupport clientValidation="onSubmit"/>
     <o:tabbedPane id="tp1" style="width: 300px; height: 80px; padding: 2px" tabStyle="white-space: nowrap"
                   loadingMode="ajaxLazy">
-      <o:tabbedPaneItem id="tab1">
-        <f:facet name="tab">
+      <o:subPanel id="tab1">
+        <f:facet name="caption">
           <h:outputText value="First tab"/>
         </f:facet>
         <h:outputText id="tab1Output" value="Some text on the first tab"/>
@@ -18,9 +18,9 @@
         <h:message for="input1" style="color:red;"/>
         <h:message for="input1" style="color:blue;"/>
         <h:commandButton id="button1" value="validate" onclick="O$.validateById('form1:input1');return false;"/>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem id="tab2">
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel id="tab2">
+        <f:facet name="caption">
           <h:outputText value="Second tab"/>
         </f:facet>
         <h:outputText id="tab2Output" value="Some text on the second tab"/>
@@ -29,25 +29,25 @@
         <h:message for="input2" style="color:blue;"/>
         <h:commandButton id="button2" value="validate" onclick="O$.validateById('form1:input2');return false;"/>
         <h:commandButton id="button3" value="validate input1" onclick="O$.validateById('form1:input1');return false;"/>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem id="tab3">
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel id="tab3">
+        <f:facet name="caption">
           <h:outputText value="Third tab"/>
         </f:facet>
         <h:outputText id="tab3Output" value="Some text on the third tab"/>
         <h:inputText id="input3" value="Input tab 3" required="true"/>
         <h:message for="input3" style="color:red;"/>
         <h:message for="input3" style="color:blue;"/>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem id="tab4">
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel id="tab4">
+        <f:facet name="caption">
           <h:outputText value="Forth tab"/>
         </f:facet>
         <h:outputText id="tab4Output" value="Some text on the forth tab"/>
         <h:inputText id="input4" value="Input tab 4" required="true"/>
         <h:message for="input4" style="color:red;"/>
         <h:message for="input4" style="color:blue;"/>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
     <h:messages id="formQKMessages" style="color:blue;"/>
     <h:messages id="formMessages" style="color:red;"/>

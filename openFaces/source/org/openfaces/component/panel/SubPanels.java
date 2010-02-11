@@ -20,9 +20,9 @@ import java.io.Serializable;
 /**
  * @author Andrew Palval
  */
-public class TabbedPaneItems extends UIComponentBase implements Serializable {
-    public static final String COMPONENT_TYPE = "org.openfaces.TabbedPaneItems";
-    public static final String COMPONENT_FAMILY = "org.openfaces.TabbedPaneItems";
+public class SubPanels extends UIComponentBase implements Serializable {
+    public static final String COMPONENT_TYPE = "org.openfaces.SubPanels";
+    public static final String COMPONENT_FAMILY = "org.openfaces.SubPanels";
 
     private Object value;
 
@@ -49,7 +49,8 @@ public class TabbedPaneItems extends UIComponentBase implements Serializable {
     @Override
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
-        super.restoreState(context, values[0]);
-        value = values[1];
+        int i = 0;
+        super.restoreState(context, values[i++]);
+        value = values[i++];
     }
 }

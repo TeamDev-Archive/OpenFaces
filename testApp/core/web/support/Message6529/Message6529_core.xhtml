@@ -10,20 +10,20 @@
   
 
     <o:tabbedPane>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="First Tab"/>
         </f:facet>
         <h:outputText value="Stub Content"/>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Tab Title"/>
         </f:facet>
         <f:subview id="subview1">
           <jsp:include page="xxxx.jsf"/>
         </f:subview>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
 
   

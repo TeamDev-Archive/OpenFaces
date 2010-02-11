@@ -97,34 +97,34 @@ public abstract class MultiPageContainer extends OUIPanel {
         removeFacesListener(changeListener);
     }
 
-    public List<TabbedPaneItem> getTabbedPaneItems(boolean returnNotRenderedItems) {
-        List<TabbedPaneItem> itemsList = new ArrayList<TabbedPaneItem>();
+    public List<SubPanel> getSubPanels(boolean returnNotRenderedItems) {
+        List<SubPanel> itemsList = new ArrayList<SubPanel>();
 
         List<UIComponent> children = getChildren();
         for (UIComponent child : children) {
-            if (child instanceof TabbedPaneItem) {
-                itemsList.add((TabbedPaneItem) child);
-            } else if (child instanceof TabbedPaneItems) {
-                TabbedPaneItems tabbedPaneItems = (TabbedPaneItems) child;
-                Object value = tabbedPaneItems.getValue();
+            if (child instanceof SubPanel) {
+                itemsList.add((SubPanel) child);
+            } else if (child instanceof SubPanels) {
+                SubPanels subPanels = (SubPanels) child;
+                Object value = subPanels.getValue();
                 if (value == null)
                     continue;
                 if (!(value instanceof Collection))
-                    throw new FacesException("The 'value' attribute of TabbedPaneItems should return an object that implements java.util.Collection intface, but object of the following class was returned: " + value.getClass().getName());
+                    throw new FacesException("The 'value' attribute of SubPanels should return an object that implements java.util.Collection intface, but object of the following class was returned: " + value.getClass().getName());
 
-                Collection<TabbedPaneItem> items = (Collection<TabbedPaneItem>) value;
+                Collection<SubPanel> items = (Collection<SubPanel>) value;
                 itemsList.addAll(items);
-                List<UIComponent> tabbedPaneItemsChildren = tabbedPaneItems.getChildren();
-                tabbedPaneItemsChildren.clear();
-                tabbedPaneItemsChildren.addAll(items);
+                List<UIComponent> subPanelsChildren = subPanels.getChildren();
+                subPanelsChildren.clear();
+                subPanelsChildren.addAll(items);
             }
         }
 
         if (returnNotRenderedItems)
             return itemsList;
 
-        List<TabbedPaneItem> renderedItemsList = new ArrayList<TabbedPaneItem>();
-        for (TabbedPaneItem paneItem : itemsList) {
+        List<SubPanel> renderedItemsList = new ArrayList<SubPanel>();
+        for (SubPanel paneItem : itemsList) {
             if (paneItem.isRendered()) {
                 renderedItemsList.add(paneItem);
             }
@@ -144,7 +144,7 @@ public abstract class MultiPageContainer extends OUIPanel {
         renderedItemFlags[index] = value;
     }
 
-    private boolean[] calculateRenderedItemFlags(List<TabbedPaneItem> items) {
+    private boolean[] calculateRenderedItemFlags(List<SubPanel> items) {
         boolean[] flags = new boolean[items.size()];
         boolean[] itemFlags = getRenderedItemFlags();
         for (int i = 0; i < items.size(); i++) {
@@ -154,14 +154,14 @@ public abstract class MultiPageContainer extends OUIPanel {
     }
 
     private void processPhaseForItems(FacesContext context, ComponentPhaseProcessor processor) {
-        List<TabbedPaneItem> items = getTabbedPaneItems(true);
+        List<SubPanel> items = getSubPanels(true);
         boolean[] renderedItems = calculateRenderedItemFlags(items);
         for (int i = 0; i < items.size(); i++) {
-            TabbedPaneItem item = items.get(i);
+            SubPanel item = items.get(i);
             if (renderedItems[i]) {
                 processor.processComponentPhase(context, item);
             } else {
-                UIComponent tab = item.getTab();
+                UIComponent tab = item.getCaptionFacet();
                 if (tab != null)
                     processor.processComponentPhase(context, tab);
             }

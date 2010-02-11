@@ -20,20 +20,20 @@
                         tabAlignment="bottomOrRight"
                         tabPlacement="left"
                         style="height:250px;">
-            <o:tabbedPaneItem>
-              <f:facet name="tab">
+            <o:subPanel>
+              <f:facet name="caption">
                 <h:outputText value="Tab1"/>
               </f:facet>
               <h:inputText value="Tab1 inner text" required="true"/>
               <h:commandButton value="submit"/>
-            </o:tabbedPaneItem>
-            <o:tabbedPaneItem>
-              <f:facet name="tab">
+            </o:subPanel>
+            <o:subPanel>
+              <f:facet name="caption">
                 <h:outputText value="Tab2"/>
               </f:facet>
               <h:outputText value="Tab2 inner text"/>
               <o:calendar/>
-            </o:tabbedPaneItem>
+            </o:subPanel>
           </o:tabbedPane>
         </td>
       </tr>
@@ -61,18 +61,18 @@
                         tabEmptySpaceStyle="background: LightBlue;"
                         tabStyle="color: red;"
                         style="height: 300px; width: 200px;">
-            <o:tabbedPaneItem>
-              <f:facet name="tab">
+            <o:subPanel>
+              <f:facet name="caption">
                 <h:outputText value="Tab1"/>
               </f:facet>
               <h:outputText value="Tab1 inner text"/>
-            </o:tabbedPaneItem>
-            <o:tabbedPaneItem>
-              <f:facet name="tab">
+            </o:subPanel>
+            <o:subPanel>
+              <f:facet name="caption">
                 <h:outputText value="Tab2"/>
               </f:facet>
               <h:outputText value="Tab2 inner text"/>
-            </o:tabbedPaneItem>
+            </o:subPanel>
           </o:tabbedPane>
         </td>
       </tr>

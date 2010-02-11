@@ -27,20 +27,20 @@
                   tabAlignment="bottomOrRight"
                   tabPlacement="left"
                   style="height:250px;">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Tab1"/>
         </f:facet>
         <h:inputText value="Tab1 inner text" required="true"/>
         <h:commandButton value="submit"/>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Tab2"/>
         </f:facet>
         <h:outputText value="Tab2 inner text"/>
         <o:calendar/>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
     <o:tabbedPane loadingMode="server"
                   containerStyle="background: beige;"
@@ -52,18 +52,18 @@
                   tabEmptySpaceStyle="background: LightBlue;"
                   tabStyle="color: red;"
                   style="height: 300px; width: 200px;">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Tab1"/>
         </f:facet>
         <h:outputText value="Tab1 inner text"/>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Tab2"/>
         </f:facet>
         <h:outputText value="Tab2 inner text"/>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
     <br>
 
@@ -71,18 +71,18 @@
     <o:loadBundle basename="org.openfaces.portlets.TestLoadBundle" var="bundle"/>
     <o:tabbedPane id="tabbedPaneID"
                   containerStyle="padding: 10px 10px 10px 10px;">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="#{bundle.today}" id="firstTabID"/>
         </f:facet>
         <h:outputText value="#{bundle['week']}"/>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="#{bundle['week']}" id="secondTabID"/>
         </f:facet>
         <h:outputText value="#{bundle.today}"/>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
 
 

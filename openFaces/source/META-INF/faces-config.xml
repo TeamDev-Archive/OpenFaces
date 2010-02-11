@@ -386,12 +386,12 @@
   </component>
 
   <component>
-    <component-type>org.openfaces.TabbedPaneItem</component-type>
-    <component-class>org.openfaces.component.panel.TabbedPaneItem</component-class>
+    <component-type>org.openfaces.SubPanel</component-type>
+    <component-class>org.openfaces.component.panel.SubPanel</component-class>
   </component>
   <component>
-    <component-type>org.openfaces.TabbedPaneItems</component-type>
-    <component-class>org.openfaces.component.panel.TabbedPaneItems</component-class>
+    <component-type>org.openfaces.SubPanels</component-type>
+    <component-class>org.openfaces.component.panel.SubPanels</component-class>
   </component>
 
   <!-- CHART COMPONENTS DECLARATION -->

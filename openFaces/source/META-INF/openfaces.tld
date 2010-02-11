@@ -14417,7 +14417,7 @@ entering a value and returns a list of suggestions from the server -->
       <description>A flag that indicates whether or not the Confirmation component has the title bar.
         In this attribute, you should specify the text that is displayed in the title bar.
       </description>
-      <name>captionText</name>
+      <name>caption</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -15363,7 +15363,7 @@ entering a value and returns a list of suggestions from the server -->
   <tag>
     <description>The TabbedPane component allows you to present related information on separate pages and can be viewed
       by users by clicking a corresponding tab. Each page of the TabbedPane component can contain a number of other
-      JSF components. Child tags: {@link tabbedPaneItem}, {@link tabbedPaneItems}.
+      JSF components. Child tags: {@link subPanel}, {@link subPanels}.
     </description>
     <name>tabbedPane</name>
     <tag-class>org.openfaces.taglib.jsp.panel.TabbedPaneJspTag</tag-class>
@@ -15912,12 +15912,12 @@ on every switch to the tab.-->
   </tag>
 
   <tag>
-    <description>The TabbedPaneItem tag is used to create a fixed set of tabs right on a JSF page. To specify the object
-      to be displayed in the tab, use the "tab" facet. The components that define the page content should be added as
-      children of the TabbedPaneItem tag. This tag should be specified only in the {@link tabbedPane} tag.
+    <description>The SubPanel tag is used to specify a page in multi-page components such as TabbedPane. You can specify
+      the content to be displayed in the panel's caption (e.g. the appropriate tab in TabbedPane) using the "caption"
+      facet. The components that define the page content should be added as children of the SubPanel tag.
     </description>
-    <name>tabbedPaneItem</name>
-    <tag-class>org.openfaces.taglib.jsp.panel.TabbedPaneItemJspTag</tag-class>
+    <name>subPanel</name>
+    <tag-class>org.openfaces.taglib.jsp.panel.SubPanelJspTag</tag-class>
     <body-content>JSP</body-content>
     <attribute>
       <description>The component identifier.</description>
@@ -15940,34 +15940,49 @@ on every switch to the tab.-->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A value-binding expression that associates the TabbedPaneItem with a backing bean property.
+      <description>A value-binding expression that associates the SubPanel with a backing bean property.
       </description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.panel.TabbedPaneItem</type>
+        <type>org.openfaces.component.panel.SubPanel</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.panel. TabbedPaneItem -->
+      <!-- @bindingType org.openfaces.component.panel. SubPanel -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
+
+    <attribute>
+      <description>The text that should be displayed in the caption. This is a convenient alternative for using
+        the "caption" facet. If both "caption" facet and "caption" attribute is specified, the content specified in the
+        facet is used.
+      </description>
+      <name>caption</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
   </tag>
 
   <tag>
-    <description>The TabbedPaneItems tag is used to retrieve dynamically changing data
+    <description>The SubPanels tag is used to retrieve dynamically changing data
       from a backing bean. This tag should be specified only in the {@link tabbedPane} tag.
     </description>
-    <name>tabbedPaneItems</name>
-    <tag-class>org.openfaces.taglib.jsp.panel.TabbedPaneItemsJspTag</tag-class>
+    <name>subPanels</name>
+    <tag-class>org.openfaces.taglib.jsp.panel.SubPanelsJspTag</tag-class>
     <body-content>empty</body-content>
     <attribute>
       <description>This attribute should be specified as a value-binding expression
-        that references a collection of org.openfaces.component.panel.TabbedPaneItem objects.
+        that references a collection of org.openfaces.component.panel.SubPanel objects.
       </description>
       <name>value</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType collection of org.openfaces.component.panel. TabbedPaneItem -->
+      <!-- @bindingType collection of org.openfaces.component.panel. SubPanel -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>

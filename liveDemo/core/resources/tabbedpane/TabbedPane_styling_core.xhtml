@@ -17,8 +17,8 @@
             frontBorderStyle="1px solid #99acb7"
             backBorderStyle="1px solid #a4a9ab"
             >
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Calendar"/>
         </f:facet>
         <h:graphicImage url="../images/tabbedpane/calendar_thumb.jpg" styleClass="componentImage"/>
@@ -28,9 +28,9 @@
         <h:outputText
                 value="The Calendar component enables the user to select a date from a one-month calendar and navigate between months and years."
                 styleClass="componentDescription"/>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Confirmation"/>
         </f:facet>
         <h:graphicImage url="../images/tabbedpane/confirm_th.jpg" styleClass="componentImage"/>
@@ -39,9 +39,9 @@
         <h:outputText
                 value="The Confirmation component is a DHTML modal window containing a main instruction and two buttons that allow the user to confirm or reject execution of some operation. A Confirmation works asynchronously, i.e. it does not stop a script's execution when called: it returns false and waits for user input. When the user clicks OK, the Confirmation runs the JavaScript function that was intended for confirmation."
                 styleClass="componentDescription"/>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Date Chooser"/>
         </f:facet>
         <h:graphicImage url="../images/tabbedpane/datach_th.jpg" styleClass="componentImage"/>
@@ -50,7 +50,7 @@
         <h:outputText
                 value="The DateChooser component allows the user to enter a date either by typing it in the text field or select it from the calendar that appears when the user clicks a button next to text field. The selected date is displayed in the text field in the specified format."
                 styleClass="componentDescription"/>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   </div>
 

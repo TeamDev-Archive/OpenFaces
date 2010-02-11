@@ -42,7 +42,7 @@ public class DefaultSessionExpirationRenderer extends AbstractSettingsRenderer {
                 defaultSessionExpiration.setConfirmation(confirmation);
                 confirmation.setId("openfaces_internal_sessionexpiration_confirmation");
                 confirmation.setStandalone(true);
-                confirmation.setCaptionText("Session Expired");
+                confirmation.setCaption("Session Expired");
                 confirmation.setDraggable(false);
                 confirmation.setMessage("Your session has expired");
                 confirmation.setDetails("A new session will be created when the page is reloaded");

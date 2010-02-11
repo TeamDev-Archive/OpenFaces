@@ -15,27 +15,27 @@
                 containerStyle="padding:2px"
                 tabStyle="white-space: nowrap; padding:2px"
                 loadingMode="#{A4jParametersBean.loadingMode}">
-    <o:tabbedPaneItem>
-      <f:facet name="tab">
+    <o:subPanel>
+      <f:facet name="caption">
         <h:outputText value="First tab"/>
       </f:facet>
       <rich:inputNumberSlider maxValue="50"
                               showToolTip="false"/>
-    </o:tabbedPaneItem>
-    <o:tabbedPaneItem>
-      <f:facet name="tab">
+    </o:subPanel>
+    <o:subPanel>
+      <f:facet name="caption">
         <h:outputText value="Second tab"/>
       </f:facet>
       <rich:inputNumberSlider maxValue="50"
                               showToolTip="false"/>
-    </o:tabbedPaneItem>
-    <o:tabbedPaneItem>
-      <f:facet name="tab">
+    </o:subPanel>
+    <o:subPanel>
+      <f:facet name="caption">
         <h:outputText value="Third tab"/>
       </f:facet>
       <rich:inputNumberSlider maxValue="50"
                               showToolTip="false"/>
-    </o:tabbedPaneItem>
+    </o:subPanel>
   </o:tabbedPane>
 
   <o:foldingPanel expanded="false"

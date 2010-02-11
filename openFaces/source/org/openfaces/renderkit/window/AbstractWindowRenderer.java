@@ -56,7 +56,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
             if (captionContent != null)
                 super.renderCaptionContent(context, component, captionContent);
             else {
-                String captionText = ((AbstractWindow) component).getCaptionText();
+                String captionText = component.getCaption();
                 if (captionText != null)
                     context.getResponseWriter().writeText(captionText, null);
             }
@@ -126,8 +126,8 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
     }
 
     protected void encodeCaption(FacesContext context, AbstractWindow window) throws IOException {
-        UIComponent captionFacet = window.getCaption();
-        String captionText = window.getCaptionText();
+        UIComponent captionFacet = window.getCaptionFacet();
+        String captionText = window.getCaption();
 
         if (captionFacet == null && captionText == null && !getForceRenderCaptionIfNotSpecified())
             return;

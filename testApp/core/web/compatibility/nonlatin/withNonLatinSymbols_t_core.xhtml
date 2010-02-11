@@ -103,18 +103,18 @@
   </td>
   <td class="date_chooser">
     <o:tabbedPane loadingMode="ajaxLazy">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Первый таб"/>
         </f:facet>
         <h:outputText value="Тестовое текстовое содержание первого таба"/>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Второй таб"/>
         </f:facet>
         <h:outputText value="Тестовое текстовое содержание второго таба"/>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   </td>
   <td class="date_chooser">
@@ -261,18 +261,18 @@
   </td>
   <td class="date_chooser">
     <o:tabbedPane loadingMode="ajaxLazy">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="#{LoadingModesBean.firstTab}"/>
         </f:facet>
         <h:outputText value="#{LoadingModesBean.firstTabContent}"/>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="#{LoadingModesBean.secondTab}"/>
         </f:facet>
         <h:outputText value="#{LoadingModesBean.secondTabContent}"/>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   </td>
   <td class="date_chooser">

@@ -13,7 +13,7 @@ package org.openfaces.renderkit.panel;
 
 import org.openfaces.component.LoadingMode;
 import org.openfaces.component.panel.MultiPageContainer;
-import org.openfaces.component.panel.TabbedPaneItem;
+import org.openfaces.component.panel.SubPanel;
 import org.openfaces.event.SelectionChangeEvent;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
@@ -44,8 +44,8 @@ public abstract class MultiPageContainerRenderer extends BaseTabSetRenderer impl
         String pageIndexStr = portionName.substring(PAGE_PORTION_NAME_PREFIX.length());
         int absolutePageIndex = Integer.parseInt(pageIndexStr);
         MultiPageContainer container = (MultiPageContainer) component;
-        List tabbedPaneItems = container.getTabbedPaneItems(true);
-        encodePageContent(context, container, tabbedPaneItems, absolutePageIndex, false, null);
+        List subPanels = container.getSubPanels(true);
+        encodePageContent(context, container, subPanels, absolutePageIndex, false, null);
         container.setItemRendered(absolutePageIndex, true);
         return null;
     }
@@ -53,7 +53,7 @@ public abstract class MultiPageContainerRenderer extends BaseTabSetRenderer impl
     protected void encodePageContent(
             FacesContext context,
             MultiPageContainer container,
-            List allTabbedPaneItems,
+            List allSubPanels,
             int absolutePageIndex,
             boolean initiallyVisible,
             String containerClass
@@ -77,7 +77,7 @@ public abstract class MultiPageContainerRenderer extends BaseTabSetRenderer impl
 
         writeAttribute(writer, "class", containerClass);
 
-        TabbedPaneItem item = (TabbedPaneItem) allTabbedPaneItems.get(absolutePageIndex);
+        SubPanel item = (SubPanel) allSubPanels.get(absolutePageIndex);
         Collection<UIComponent> paneContent = item.getChildren();
         encodeComponents(context, paneContent);
 
@@ -104,40 +104,40 @@ public abstract class MultiPageContainerRenderer extends BaseTabSetRenderer impl
     protected void encodePane(
             FacesContext context,
             MultiPageContainer container,
-            List tabbedPaneItems,
+            List<SubPanel> subPanels,
             String containerClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.writeAttribute("width", "100%", null);
         writer.writeAttribute("style", "vertical-align: top;", null); // required for correct content alignment with left/right tab placements under strict mode
 
-        int allItemCount = tabbedPaneItems.size();
+        int allItemCount = subPanels.size();
         container.setRenderedItemFlags(new boolean[allItemCount]);
 
         if (allItemCount == 0)
             return;
 
-        int selectedTabIndex = getSelectedIndex(container, tabbedPaneItems);
+        int selectedTabIndex = getSelectedIndex(container, subPanels);
         if (selectedTabIndex == -1)
             return; // if there are no rendered items
 
         LoadingMode loadingMode = container.getLoadingMode();
         if (loadingMode.equals(LoadingMode.SERVER)) {
-            encodePageContent(context, container, tabbedPaneItems, selectedTabIndex, true, containerClass);
+            encodePageContent(context, container, subPanels, selectedTabIndex, true, containerClass);
             container.setItemRendered(selectedTabIndex, true);
         } else if (loadingMode.equals(LoadingMode.CLIENT)) {
             for (int i = 0; i < allItemCount; i++) {
                 boolean thisPageVisible = selectedTabIndex == i;
-                TabbedPaneItem tabbedPaneItem = (TabbedPaneItem) tabbedPaneItems.get(i);
-                if (tabbedPaneItem.isRendered())
-                    encodePageContent(context, container, tabbedPaneItems, i, thisPageVisible, containerClass);
+                SubPanel subPanel = subPanels.get(i);
+                if (subPanel.isRendered())
+                    encodePageContent(context, container, subPanels, i, thisPageVisible, containerClass);
                 container.setItemRendered(i, true);
             }
         } else if (loadingMode.equals(LoadingMode.AJAX_LAZY)) {
-            encodePageContent(context, container, tabbedPaneItems, selectedTabIndex, true, containerClass);
+            encodePageContent(context, container, subPanels, selectedTabIndex, true, containerClass);
             container.setItemRendered(selectedTabIndex, true);
         } else if (loadingMode.equals(LoadingMode.AJAX_ALWAYS)) {
-            encodePageContent(context, container, tabbedPaneItems, selectedTabIndex, true, containerClass);
+            encodePageContent(context, container, subPanels, selectedTabIndex, true, containerClass);
             container.setItemRendered(selectedTabIndex, true);
         } else
             throw new IllegalStateException("Invalid loading mode: " + loadingMode);
@@ -147,17 +147,17 @@ public abstract class MultiPageContainerRenderer extends BaseTabSetRenderer impl
      * @return value of container's selectedIndex property. If it points to a non-existing or non-rendered tab then the
      *         index of the first rendered tab is returned. If there are no rendered tabs then -1 is returned.
      */
-    protected int getSelectedIndex(MultiPageContainer container, List tabbedPaneItems) {
+    protected int getSelectedIndex(MultiPageContainer container, List<SubPanel> subPanels) {
         int selectedTabIndex = container.getSelectedIndex();
-        int allItemCount = tabbedPaneItems.size();
+        int allItemCount = subPanels.size();
         if (selectedTabIndex < 0 || selectedTabIndex >= allItemCount)
             selectedTabIndex = 0;
-        TabbedPaneItem selectedItem = (TabbedPaneItem) tabbedPaneItems.get(selectedTabIndex);
+        SubPanel selectedItem = subPanels.get(selectedTabIndex);
         if (!selectedItem.isRendered()) {
             selectedTabIndex = -1;
             for (int i = 0; i < allItemCount; i++) {
-                TabbedPaneItem tabbedPaneItem = (TabbedPaneItem) tabbedPaneItems.get(i);
-                if (tabbedPaneItem.isRendered()) {
+                SubPanel subPanel = subPanels.get(i);
+                if (subPanel.isRendered()) {
                     selectedTabIndex = i;
                     break;
                 }

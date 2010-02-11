@@ -9,27 +9,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component;
+package org.openfaces.taglib.jsp.panel;
 
-import javax.faces.component.UIComponent;
+import org.openfaces.taglib.internal.panel.SubPanelTag;
+import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
 /**
- * @author Dmitry Pikhulya
+ * @author Andrew Palval
  */
-public interface ComponentWithCaption extends OUIComponent {
-    UIComponent getCaptionFacet();
+public class SubPanelJspTag extends AbstractComponentJspTag {
 
-    void setCaptionFacet(UIComponent component);
-
-    String getCaption();
-
-    void setCaption(String caption);
-    
-    String getCaptionStyle();
-
-    void setCaptionStyle(String captionStyle);
-
-    String getCaptionClass();
-
-    void setCaptionClass(String captionClass);
+    public SubPanelJspTag() {
+        super(new SubPanelTag());
+    }
 }

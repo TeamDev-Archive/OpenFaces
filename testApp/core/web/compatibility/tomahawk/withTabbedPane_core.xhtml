@@ -15,8 +15,8 @@
 <tr>
   <td class="container">
     <o:tabbedPane loadingMode="ajaxLazy" containerStyle="padding: 15px 15px 15px 15px; width: 230px; height: 185px;">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="First tab"/>
         </f:facet>
         <t:jscookMenu layout="hbr" theme="ThemePanel">
@@ -31,9 +31,9 @@
             </t:navigationMenuItem>
           </t:navigationMenuItem>
         </t:jscookMenu>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Second tab"/>
         </f:facet>
         <t:jscookMenu layout="hbl" theme="ThemeMiniBlack">
@@ -48,7 +48,7 @@
             </t:navigationMenuItem>
           </t:navigationMenuItem>
         </t:jscookMenu>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   </td>
 </tr>
@@ -58,8 +58,8 @@
 <tr>
   <td class="container">
     <o:tabbedPane loadingMode="ajaxLazy" containerStyle="padding: 15px 15px 15px 15px;">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="First tab"/>
         </f:facet>
         <t:panelTabbedPane selectedIndex="1">
@@ -70,9 +70,9 @@
             <h:outputText value="Test Tab 1.2" />
           </t:panelTab>
         </t:panelTabbedPane>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Second tab"/>
         </f:facet>
         <t:panelTabbedPane selectedIndex="1">
@@ -83,7 +83,7 @@
             <h:outputText value="Test Tab 2.2" />
           </t:panelTab>
         </t:panelTabbedPane>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   </td>
 </tr>
@@ -93,8 +93,8 @@
 <tr>
   <td class="container">
     <o:tabbedPane loadingMode="ajaxLazy" containerStyle="padding: 15px 15px 15px 15px;">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="First tab"/>
         </f:facet>
         <t:tree2 id="clientTree" value="#{TreeBackerBean.treeData}" var="node" varNodeToggler="t" showRootNode="false">
@@ -105,9 +105,9 @@
             </f:facet>
           </f:facet>
         </t:tree2>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Second tab"/>
         </f:facet>
         <t:tree2 id="clientTree2" value="#{TreeBackerBean.treeData}" var="node1" varNodeToggler="t" showRootNode="false">
@@ -118,7 +118,7 @@
             </f:facet>
           </f:facet>
         </t:tree2>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   </td>
 </tr>
@@ -128,18 +128,18 @@
 <tr>
   <td class="container">
     <o:tabbedPane loadingMode="ajaxLazy" containerStyle="padding: 15px 15px 15px 15px;">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="First tab"/>
         </f:facet>
         <t:inputCalendar id="testCalendar" />
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Second tab"/>
         </f:facet>
         <t:inputCalendar id="testCalendar1" />
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   </td>
 </tr>
@@ -149,8 +149,8 @@
 <tr>
   <td class="container">
     <o:tabbedPane loadingMode="ajaxLazy" containerStyle="padding: 15px 15px 15px 15px;">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="First tab"/>
         </f:facet>
         <t:newspaperTable id="dataOld"
@@ -178,9 +178,9 @@
             <h:outputText value="#{country.isoCode}" />
           </h:column>
         </t:newspaperTable>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Second tab"/>
         </f:facet>
         <t:newspaperTable id="dataOld1"
@@ -208,7 +208,7 @@
             <h:outputText value="#{country.isoCode}" />
           </h:column>
         </t:newspaperTable>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   </td>
 </tr>
@@ -218,18 +218,18 @@
 <tr>
   <td class="container">
     <o:tabbedPane loadingMode="ajaxLazy" containerStyle="padding: 15px 15px 15px 15px;">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="First tab"/>
         </f:facet>
         <t:inputDate id="date1" ampm="true" type="full" popupCalendar="true"/>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Second tab"/>
         </f:facet>
         <t:inputDate id="date2" ampm="true" type="full" popupCalendar="true"/>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   </td>
 </tr>
@@ -239,24 +239,24 @@
 <tr>
   <td class="container">
     <o:tabbedPane loadingMode="ajaxLazy" containerStyle="padding: 15px 15px 15px 15px;">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="First tab"/>
         </f:facet>
         <h:panelGroup>
           <f:verbatim><h2>Editor #1</h2></f:verbatim>
           <t:inputHtml value="#{EditorFaceBean1.text}" style="height: 200px; width: 200px;"/>
         </h:panelGroup>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Second tab"/>
         </f:facet>
         <h:panelGroup>
           <f:verbatim><h2>Editor #3</h2></f:verbatim>
           <t:inputHtml value="#{EditorFaceBean1.text}" style="height: 200px; width: 200px;"/>
         </h:panelGroup>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   </td>
 </tr>
@@ -266,18 +266,18 @@
 <tr>
   <td class="container">
     <o:tabbedPane loadingMode="ajaxLazy" containerStyle="padding: 15px 15px 15px 15px;">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="First tab"/>
         </f:facet>
         <t:htmlTag value="h2"><h:outputText value="Test h2 tag in tab1" /></t:htmlTag>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Second tab"/>
         </f:facet>
         <t:htmlTag value="h2"><h:outputText value="Test h2 tag in tab2" /></t:htmlTag>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   </td>
 </tr>
@@ -287,8 +287,8 @@
 <tr>
   <td class="container">
     <o:tabbedPane loadingMode="ajaxLazy" containerStyle="padding: 15px 15px 15px 15px;">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="First tab"/>
         </f:facet>
         <t:tree id="tree" value="#{TreeTable.treeModel}"
@@ -323,9 +323,9 @@
             <h:outputText value="Footer" />
           </f:facet>
         </t:tree>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Second tab"/>
         </f:facet>
         <t:tree id="tree1" value="#{TreeTable.treeModel}"
@@ -360,7 +360,7 @@
             <h:outputText value="Footer" />
           </f:facet>
         </t:tree>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   </td>
 </tr>

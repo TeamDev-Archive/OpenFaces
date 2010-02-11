@@ -24,8 +24,8 @@
           <o:tabbedPane id="tabbedPaneID"
                         loadingMode="#{LoadingModesBean.tabbedPaneCurrentLoadingMode}"
                         containerStyle="padding: 10px 10px 10px 10px;">
-            <o:tabbedPaneItem>
-              <f:facet name="tab">
+            <o:subPanel>
+              <f:facet name="caption">
                 <h:outputText value="First tab" id="firstTabID"/>
               </f:facet>
               <h:panelGroup>
@@ -40,9 +40,9 @@
                   <h:outputText value="this is popup layer on tab 1"/>
                 </o:popupLayer>
               </h:panelGroup>
-            </o:tabbedPaneItem>
-            <o:tabbedPaneItem>
-              <f:facet name="tab">
+            </o:subPanel>
+            <o:subPanel>
+              <f:facet name="caption">
                 <h:outputText value="Second tab" id="secondTabID"/>
               </f:facet>
               <h:panelGroup>
@@ -56,7 +56,7 @@
                   <h:outputText value="this is popup layer on tab 2"/>
                 </o:popupLayer>
               </h:panelGroup>
-            </o:tabbedPaneItem>
+            </o:subPanel>
           </o:tabbedPane>
         </td>
       </tr>

@@ -19,8 +19,8 @@
       <o:hintLabel id="hl3" value="Hint label" hint="Hint for hint label"/>
 
   <o:tabbedPane id="tp1" selectedIndex="#{sessionScope['pageIndex']}" style="width: 100%;" tabStyle="text-align: center" loadingMode="server">
-    <o:tabbedPaneItem>
-      <f:facet name="tab"><h:outputText value="Default view"/></f:facet>
+    <o:subPanel>
+      <f:facet name="caption"><h:outputText value="Default view"/></f:facet>
 
       <o:dayTable id="dt1" rolloverStyle="border: 1px solid blue;" events="#{TimeTableBean.events1}"
                   resources="#{TimeTableBean.resources}" style="height: 500px;"
@@ -69,10 +69,10 @@
 
       <h:commandButton value="Switch event set" onclick="document.getElementById('form:dt1').refreshEvents('TimeTableBean.switchEvents1'); return false;"/>
 
-    </o:tabbedPaneItem>
+    </o:subPanel>
 
-    <o:tabbedPaneItem>
-      <f:facet name="tab"><h:outputText value="Multiresource view"/></f:facet>
+    <o:subPanel>
+      <f:facet name="caption"><h:outputText value="Multiresource view"/></f:facet>
 
       <o:dayTable id="dt2" events="#{TimeTableBean.events2}" resources="#{TimeTableBean.resources}"
                   timetableChangeListener="#{TimeTableBean.processTimetableChanges2}"
@@ -142,10 +142,10 @@
       </o:dayTable>
       <o:confirmation for="dt2:customEventAction1" />
       <h:commandButton value="Switch event set" onclick="document.getElementById('form:dt2').refreshEvents('TimeTableBean.switchEvents2'); return false;"/>
-    </o:tabbedPaneItem>
+    </o:subPanel>
 
-    <o:tabbedPaneItem>
-      <f:facet name="tab"><h:outputText value="Without resource separation"/></f:facet>
+    <o:subPanel>
+      <f:facet name="caption"><h:outputText value="Without resource separation"/></f:facet>
 
       <o:dayTable id="dt3" events="#{TimeTableBean.simpleEvents}" style="height: 500px;" 
               timetableChangeListener="#{TimeTableBean.processSimpleTimetableChanges}"
@@ -205,10 +205,10 @@
         <h:commandButton id="okButton" value="OK"/>
         <h:commandButton id="cancelButton" value="Cancel"/>
       </o:popupLayer>
-    </o:tabbedPaneItem>
+    </o:subPanel>
 
-    <o:tabbedPaneItem>
-      <f:facet name="tab"><h:outputText value="Absolute positioning functions test"/> </f:facet>
+    <o:subPanel>
+      <f:facet name="caption"><h:outputText value="Absolute positioning functions test"/> </f:facet>
 
       <o:hintLabel value="Hint label" hint="Hint for hint label"/>
       <o:hintLabel value="Hint label" hint="Hint for hint label" style="margin: 5px;"/>
@@ -278,7 +278,7 @@
       <f:verbatim><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
       <f:verbatim><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></f:verbatim>
 
-    </o:tabbedPaneItem>
+    </o:subPanel>
   </o:tabbedPane>
 
       </td></tr></table>

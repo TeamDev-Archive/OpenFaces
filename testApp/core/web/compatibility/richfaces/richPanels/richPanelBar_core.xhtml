@@ -146,24 +146,24 @@
   <o:tabbedPane style="width: 300px; height: 80px; padding:2px" containerStyle="padding:2px"
                 tabStyle="white-space: nowrap; padding:2px"
                 loadingMode="#{A4jParametersBean.loadingMode}">
-    <o:tabbedPaneItem>
-      <f:facet name="tab">
+    <o:subPanel>
+      <f:facet name="caption">
         <h:outputText value="First tab"/>
       </f:facet>
       <h:outputText value="Some text on the first tab"/>
-    </o:tabbedPaneItem>
-    <o:tabbedPaneItem>
-      <f:facet name="tab">
+    </o:subPanel>
+    <o:subPanel>
+      <f:facet name="caption">
         <h:outputText value="Second tab"/>
       </f:facet>
       <h:outputText value="Some text on the second tab"/>
-    </o:tabbedPaneItem>
-    <o:tabbedPaneItem>
-      <f:facet name="tab">
+    </o:subPanel>
+    <o:subPanel>
+      <f:facet name="caption">
         <h:outputText value="Third tab"/>
       </f:facet>
       <h:outputText value="Some text on the third tab"/>
-    </o:tabbedPaneItem>
+    </o:subPanel>
   </o:tabbedPane>
 </rich:panelBarItem>
 <rich:panelBarItem label="TabSet">

@@ -20,22 +20,22 @@
 					  selectedTabClass="tab_active"
 					  rolloverTabClass="tab_rollover"
 					  containerClass="tab_container">
-			<o:tabbedPaneItem>
-				<f:facet name="tab">
+			<o:subPanel>
+				<f:facet name="caption">
 					<h:outputText value="New User" styleClass="tab_name" />
 				</f:facet>
 				<f:subview id="newUser">
 					<jsp:include page="./newUser.jsf" flush="true"/>
 				</f:subview>
-			</o:tabbedPaneItem>
-			<o:tabbedPaneItem>
-				<f:facet name="tab">
+			</o:subPanel>
+			<o:subPanel>
+				<f:facet name="caption">
 					<h:outputText value="Delete Users" styleClass="tab_name" />
 				</f:facet>
 				<f:subview id="deleteUser">
 					<jsp:include page="./deleteUser.jsf" flush="true"/>
 				</f:subview>
-			</o:tabbedPaneItem>
+			</o:subPanel>
 		</o:tabbedPane>
 	</a4j:outputPanel>
 

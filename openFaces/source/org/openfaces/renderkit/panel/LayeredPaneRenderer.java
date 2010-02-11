@@ -13,7 +13,7 @@ package org.openfaces.renderkit.panel;
 
 import org.openfaces.component.LoadingMode;
 import org.openfaces.component.panel.LayeredPane;
-import org.openfaces.component.panel.TabbedPaneItem;
+import org.openfaces.component.panel.SubPanel;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
@@ -46,7 +46,7 @@ public class LayeredPaneRenderer extends MultiPageContainerRenderer {
         if (LoadingMode.AJAX_LAZY.equals(loadingMode) || LoadingMode.AJAX_ALWAYS.equals(loadingMode))
             AjaxUtil.prepareComponentForAjax(context, component);
 
-        List<TabbedPaneItem> allItems = layeredPane.getTabbedPaneItems(true);
+        List<SubPanel> allItems = layeredPane.getSubPanels(true);
 
         writer.startElement("table", layeredPane);
         writer.writeAttribute("border", "0", null);
@@ -76,7 +76,7 @@ public class LayeredPaneRenderer extends MultiPageContainerRenderer {
             FacesContext context,
             LayeredPane layeredPane,
             String containerClass,
-            List<TabbedPaneItem> allItems
+            List<SubPanel> allItems
     ) throws IOException {
         LoadingMode loadingMode = layeredPane.getLoadingMode();
 

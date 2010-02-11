@@ -86,7 +86,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
                 "o_sidepanel_panel o_sidepanel_panel_" + sidePanel.getAlignment().toString(), sidePanel.getStyleClass()
         );
         writer.writeAttribute("class", panelDefaultClass, null);
-        if (sidePanel.getCaption() != null) {
+        if (sidePanel.getCaptionFacet() != null) {
             writer.startElement("div", sidePanel);
             writer.writeAttribute("id", clientId + CAPTION_SUFFIX, null);
             panelDefaultClass = StyleUtil.getCSSClass(context,
@@ -94,7 +94,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
                     "o_sidepanel_caption", sidePanel.getCaptionClass()
             );
             writer.writeAttribute("class", panelDefaultClass, null);
-            sidePanel.getCaption().encodeAll(context);
+            sidePanel.getCaptionFacet().encodeAll(context);
             writer.endElement("div");
         }
 

@@ -33,15 +33,15 @@
 
 
     <o:tabbedPane id="myTabbedPane">
-      <o:tabbedPaneItem>
-        <f:facet name="tab"><h:outputText value="Tab1"/></f:facet>
+      <o:subPanel>
+        <f:facet name="caption"><h:outputText value="Tab1"/></f:facet>
         <jsp:include page="Tab_1.jsp"/>
-      </o:tabbedPaneItem>
+      </o:subPanel>
 
-      <o:tabbedPaneItem>
-        <f:facet name="tab"><h:outputText value="Tab2"/></f:facet>
+      <o:subPanel>
+        <f:facet name="caption"><h:outputText value="Tab2"/></f:facet>
         <jsp:include page="Tab_2.jsp"/>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   </h:form>
 </f:view>

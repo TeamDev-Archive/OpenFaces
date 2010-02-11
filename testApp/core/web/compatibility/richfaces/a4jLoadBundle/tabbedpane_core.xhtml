@@ -19,17 +19,17 @@
 
   <o:tabbedPane id="tabbedPaneID"
                 containerStyle="padding: 10px 10px 10px 10px;">
-    <o:tabbedPaneItem>
-      <f:facet name="tab">
+    <o:subPanel>
+      <f:facet name="caption">
         <h:outputText value="#{bundle.today}" id="firstTabID"/>
       </f:facet>
       <h:outputText value="#{bundle['week']}"/>
-    </o:tabbedPaneItem>
-    <o:tabbedPaneItem>
-      <f:facet name="tab">
+    </o:subPanel>
+    <o:subPanel>
+      <f:facet name="caption">
         <h:outputText value="#{bundle['week']}" id="secondTabID"/>
       </f:facet>
       <h:outputText value="#{bundle.today}"/>
-    </o:tabbedPaneItem>
+    </o:subPanel>
   </o:tabbedPane>
 </div>

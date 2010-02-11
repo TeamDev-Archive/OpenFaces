@@ -17,8 +17,8 @@
                               backBorderStyle="1px solid #a4a9ab"
                               selectedTabStyle="font-weight: bold; text-align: center; vertical-align: middle; background: Lavender; height: 25px;"
                               containerStyle="border-bottom: 0px;background-color:#798996;" tabClass="tab">
-                  <o:tabbedPaneItem>
-                    <f:facet name="tab">
+                  <o:subPanel>
+                    <f:facet name="caption">
                       Calendar
                     </f:facet>
 
@@ -27,25 +27,25 @@
                                   backBorderStyle="1px solid #a4a9ab"
                                   selectedTabStyle="font-weight: bold; text-align: center; vertical-align: middle; background: Lavender; height: 19px;"
                                   containerStyle="border-bottom: 0px;background-color:#798996;" tabClass="innerTab">
-                      <o:tabbedPaneItem>
-                        <f:facet name="tab">
+                      <o:subPanel>
+                        <f:facet name="caption">
                           Monthly
                         </f:facet>
 
                         <jsp:include page="monthly.jsf"/>
-                      </o:tabbedPaneItem>
+                      </o:subPanel>
 
-                      <o:tabbedPaneItem>
-                        <f:facet name="tab">
+                      <o:subPanel>
+                        <f:facet name="caption">
                           Yearly
                         </f:facet>
 
-                      </o:tabbedPaneItem>
+                      </o:subPanel>
                     </o:tabbedPane>
-                  </o:tabbedPaneItem>
+                  </o:subPanel>
 
-                  <o:tabbedPaneItem>
-                    <f:facet name="tab">
+                  <o:subPanel>
+                    <f:facet name="caption">
                       Test 1
                     </f:facet>
 
@@ -54,10 +54,10 @@
                         <td><h1>Test1 TEST1 tesT1</h1></td>
                       </tr>
                     </table>
-                  </o:tabbedPaneItem>
+                  </o:subPanel>
 
-                  <o:tabbedPaneItem>
-                    <f:facet name="tab">
+                  <o:subPanel>
+                    <f:facet name="caption">
                       Test 2
                     </f:facet>
 
@@ -66,10 +66,10 @@
                         <td><h1>Test2 TEST2 tesT2</h1></td>
                       </tr>
                     </table>
-                  </o:tabbedPaneItem>
+                  </o:subPanel>
 
-                  <o:tabbedPaneItem>
-                    <f:facet name="tab">
+                  <o:subPanel>
+                    <f:facet name="caption">
                       Test 3
                     </f:facet>
 
@@ -78,7 +78,7 @@
                         <td><h1>Test3 TEST3 tesT3</h1></td>
                       </tr>
                     </table>
-                  </o:tabbedPaneItem>
+                  </o:subPanel>
                 </o:tabbedPane>
               </td>
             </tr>

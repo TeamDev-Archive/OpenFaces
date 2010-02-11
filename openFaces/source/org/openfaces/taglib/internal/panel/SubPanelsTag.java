@@ -11,19 +11,28 @@
  */
 package org.openfaces.taglib.internal.panel;
 
-import org.openfaces.component.panel.TabbedPaneItem;
+import org.openfaces.component.panel.SubPanels;
 import org.openfaces.taglib.internal.AbstractComponentTag;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 /**
  * @author Pavel Kaplin
  */
-public class TabbedPaneItemTag extends AbstractComponentTag {
+public class SubPanelsTag extends AbstractComponentTag {
 
     public String getComponentType() {
-        return TabbedPaneItem.COMPONENT_TYPE;
+        return SubPanels.COMPONENT_TYPE;
     }
 
     public String getRendererType() {
         return null;
+    }
+
+    @Override
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
+        setPropertyBinding(component, "value");
     }
 }

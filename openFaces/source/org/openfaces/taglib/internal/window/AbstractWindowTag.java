@@ -25,7 +25,7 @@ public class AbstractWindowTag extends PopupLayerTag {
 
         setBooleanProperty(component, "draggableByContent");
 
-        setStringProperty(component, "captionText");
+        setStringProperty(component, "caption");
         setStringProperty(component, "captionStyle");
         setStringProperty(component, "captionClass");
         setStringProperty(component, "contentStyle");

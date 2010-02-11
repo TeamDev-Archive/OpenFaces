@@ -14,7 +14,7 @@ package org.openfaces.testapp.support.QKS455;
 
 import org.openfaces.component.input.DateChooser;
 import org.openfaces.component.panel.TabbedPane;
-import org.openfaces.component.panel.TabbedPaneItem;
+import org.openfaces.component.panel.SubPanel;
 
 import javax.faces.application.Application;
 import javax.faces.component.html.HtmlForm;
@@ -29,51 +29,51 @@ import java.util.Collection;
  */
 public class QKS455 {
     private HtmlForm testForm;
-    private Collection<TabbedPaneItem> tabbedPaneItems;
+    private Collection<SubPanel> subPanels;
     private TabbedPane tabbedPane;
 
 
     public QKS455() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Application app = facesContext.getApplication();
-        if (tabbedPaneItems == null) {
-            tabbedPaneItems = new ArrayList<TabbedPaneItem>();
-            TabbedPaneItem item;
+        if (subPanels == null) {
+            subPanels = new ArrayList<SubPanel>();
+            SubPanel item;
             HtmlOutputText tabValue;
             HtmlOutputText containerValue;
 
-            item = new TabbedPaneItem();
+            item = new SubPanel();
             tabValue = new HtmlOutputText();
             tabValue.setValue("tab1");
-            item.getFacets().put("tab", tabValue);
+            item.getFacets().put("caption", tabValue);
             containerValue = new HtmlOutputText();
             containerValue.setValue("content 1");
             item.getChildren().add(containerValue);
-            tabbedPaneItems.add(item);
+            subPanels.add(item);
 
-            item = new TabbedPaneItem();
+            item = new SubPanel();
             tabValue = new HtmlOutputText();
             tabValue.setValue("tab2");
-            item.getFacets().put("tab", tabValue);
+            item.getFacets().put("caption", tabValue);
             containerValue = new HtmlOutputText();
             containerValue.setValue("content 2");
             item.getChildren().add(containerValue);
-            tabbedPaneItems.add(item);
+            subPanels.add(item);
 
-            item = new TabbedPaneItem();
+            item = new SubPanel();
             DateChooser dateChooser = (DateChooser) app.createComponent(DateChooser.COMPONENT_TYPE);
             dateChooser.setId("dch");
             tabValue = new HtmlOutputText();
             tabValue.setValue("tab3");
-            item.getFacets().put("tab", tabValue);
+            item.getFacets().put("caption", tabValue);
             item.getChildren().add(dateChooser);
-            tabbedPaneItems.add(item);
+            subPanels.add(item);
 
         }
 
         tabbedPane = (TabbedPane) app.createComponent(TabbedPane.COMPONENT_TYPE);
         tabbedPane.setId("tp");
-        tabbedPane.getChildren().addAll(tabbedPaneItems);
+        tabbedPane.getChildren().addAll(subPanels);
         tabbedPane.createSubComponents(facesContext);
 
     }

@@ -26,18 +26,18 @@
                     tabStyle="color: red;"
                     style="height: 300px; width: 200px;"
                     id="tabbePane1">
-        <o:tabbedPaneItem id="tpi1">
-          <f:facet name="tab">
+        <o:subPanel id="tpi1">
+          <f:facet name="caption">
             <h:outputText value="Tab1" id="ot1"/>
           </f:facet>
           <h:outputText value="Tab1 inner text" id="ot2"/>
-        </o:tabbedPaneItem>
-        <o:tabbedPaneItem id="tpi2">
-          <f:facet name="tab">
+        </o:subPanel>
+        <o:subPanel id="tpi2">
+          <f:facet name="caption">
             <h:outputText value="Tab2" id="ot3"/>
           </f:facet>
           <h:outputText value="Tab2 inner text" id="ot4"/>
-        </o:tabbedPaneItem>
+        </o:subPanel>
       </o:tabbedPane>
     </td>
     <td class="cells">
@@ -51,18 +51,18 @@
                     tabEmptySpaceStyle="background: LightBlue;"
                     tabStyle="color: red;"
                     style="height: 300px; width: 200px;"&gt;
-        &lt;o:tabbedPaneItem&gt;
-          &lt;f:facet name="tab"&gt;
+        &lt;o:subPanel&gt;
+          &lt;f:facet name="caption"&gt;
             &lt;h:outputText value="Tab1"/&gt;
           &lt;/f:facet&gt;
           &lt;h:outputText value="Tab1 inner text" /&gt;
-        &lt;/o:tabbedPaneItem&gt;
-        &lt;o:tabbedPaneItem&gt;
-          &lt;f:facet name="tab"&gt;
+        &lt;/o:subPanel&gt;
+        &lt;o:subPanel&gt;
+          &lt;f:facet name="caption"&gt;
             &lt;h:outputText value="Tab2"/&gt;
           &lt;/f:facet&gt;
           &lt;h:outputText value="Tab2 inner text" /&gt;
-        &lt;/o:tabbedPaneItem&gt;
+        &lt;/o:subPanel&gt;
       &lt;/o:tabbedPane&gt;
         </pre>
     </td>
@@ -79,18 +79,18 @@
                     tabClass="tab"
                     styleClass="tabbedPaneStyle"
                     id="tabbedPane2">
-        <o:tabbedPaneItem id="tbi3">
-          <f:facet name="tab">
+        <o:subPanel id="tbi3">
+          <f:facet name="caption">
             <h:outputText value="Tab1" id="ot5"/>
           </f:facet>
           <h:outputText value="Tab1 inner text" id="ot6"/>
-        </o:tabbedPaneItem>
-        <o:tabbedPaneItem id="tbi4">
-          <f:facet name="tab">
+        </o:subPanel>
+        <o:subPanel id="tbi4">
+          <f:facet name="caption">
             <h:outputText value="Tab2" id="ot7"/>
           </f:facet>
           <h:outputText value="Tab2 inner text" id="ot8"/>
-        </o:tabbedPaneItem>
+        </o:subPanel>
       </o:tabbedPane>
     </td>
     <td class="cells">
@@ -108,8 +108,8 @@
 <o:tabbedPane id="tabbedPane3"
               selectedIndex="1"
               onselectionchange="alert('tab changed');">
-  <o:tabbedPaneItem id="tbi5">
-    <f:facet name="tab">
+  <o:subPanel id="tbi5">
+    <f:facet name="caption">
       <h:outputText value="A1"/>
     </f:facet>
     <f:verbatim>
@@ -130,9 +130,9 @@
         </tr>
       </table>
     </f:verbatim>
-  </o:tabbedPaneItem>
-  <o:tabbedPaneItem rendered="false" id="tbi6">
-    <f:facet name="tab">
+  </o:subPanel>
+  <o:subPanel rendered="false" id="tbi6">
+    <f:facet name="caption">
       <h:outputText value="A2"/>
     </f:facet>
     <f:verbatim>
@@ -153,9 +153,9 @@
         </tr>
       </table>
     </f:verbatim>
-  </o:tabbedPaneItem>
-  <o:tabbedPaneItem id="tbi7">
-    <f:facet name="tab">
+  </o:subPanel>
+  <o:subPanel id="tbi7">
+    <f:facet name="caption">
       <h:outputText value="A3"/>
     </f:facet>
     <f:verbatim>
@@ -176,9 +176,9 @@
         </tr>
       </table>
     </f:verbatim>
-  </o:tabbedPaneItem>
-  <o:tabbedPaneItem id="tbi8">
-    <f:facet name="tab">
+  </o:subPanel>
+  <o:subPanel id="tbi8">
+    <f:facet name="caption">
       <h:outputText value="A4"/>
     </f:facet>
     <f:verbatim>
@@ -199,7 +199,7 @@
         </tr>
       </table>
     </f:verbatim>
-  </o:tabbedPaneItem>
+  </o:subPanel>
 </o:tabbedPane>
 
 <br/>
@@ -221,8 +221,8 @@
               tabGapWidth="0"
               id="tabbedPane4"
         >
-  <o:tabbedPaneItem id="tbi9">
-    <f:facet name="tab">
+  <o:subPanel id="tbi9">
+    <f:facet name="caption">
       <h:outputText value="1"/>
     </f:facet>
     <h:panelGroup id="panelGroup1">
@@ -231,9 +231,9 @@
       <h:selectBooleanCheckbox id="sbch1"></h:selectBooleanCheckbox>
       <h:selectBooleanCheckbox id="sbch2"></h:selectBooleanCheckbox>
     </h:panelGroup>
-  </o:tabbedPaneItem>
-  <o:tabbedPaneItem id="tbi10">
-    <f:facet name="tab">
+  </o:subPanel>
+  <o:subPanel id="tbi10">
+    <f:facet name="caption">
       <h:outputText value="2"/>
     </f:facet>
     <h:commandButton value="press me 1" id="commandButton1"/>
@@ -247,15 +247,15 @@
     <o:twoListSelection style="width: 500px" id="twoListSelection"/>
     <o:dataTable var="asd" id="dataTable"></o:dataTable>
     <o:dropDownField id="dropDownField"/>
-  </o:tabbedPaneItem>
-  <o:tabbedPaneItem id="tbi11">
-    <f:facet name="tab">
+  </o:subPanel>
+  <o:subPanel id="tbi11">
+    <f:facet name="caption">
       <h:outputText value="3"/>
     </f:facet>
     <h:inputTextarea id="inputTextArea1" style="width: 300px; height: 300px;"/>
-  </o:tabbedPaneItem>
-  <o:tabbedPaneItem id="tbi12">
-    <f:facet name="tab">
+  </o:subPanel>
+  <o:subPanel id="tbi12">
+    <f:facet name="caption">
       <h:outputText value="4"/>
     </f:facet>
     <h:commandLink value="link 1" id="commandLink1"/>
@@ -265,7 +265,7 @@
     <h:commandLink value="link 3" id="commandLink3"/>
     <f:verbatim><br/></f:verbatim>
     <h:commandLink value="link 4" id="commandLink4"/>
-  </o:tabbedPaneItem>
+  </o:subPanel>
 </o:tabbedPane>
 
 <br/>
@@ -277,59 +277,59 @@
     <td align="right" width="50%">
       <o:tabbedPane loadingMode="client" tabPlacement="left" style="width: 100%"
                     id="tabbedPane5">
-        <o:tabbedPaneItem id="tbi13">
-          <f:facet name="tab">
+        <o:subPanel id="tbi13">
+          <f:facet name="caption">
             <h:outputText value="A1" id="outputText18"/>
           </f:facet>
           <h:outputText value="01" id="outputText19"/>
-        </o:tabbedPaneItem>
-        <o:tabbedPaneItem id="tbi14">
-          <f:facet name="tab">
+        </o:subPanel>
+        <o:subPanel id="tbi14">
+          <f:facet name="caption">
             <h:outputText value="A2" id="outputText02"/>
           </f:facet>
           <h:outputText value="02" id="outputText21"/>
-        </o:tabbedPaneItem>
-        <o:tabbedPaneItem id="tbi15">
-          <f:facet name="tab">
+        </o:subPanel>
+        <o:subPanel id="tbi15">
+          <f:facet name="caption">
             <h:outputText value="A3" id="outputText22"/>
           </f:facet>
           <h:outputText value="03" id="outputText23"/>
-        </o:tabbedPaneItem>
-        <o:tabbedPaneItem id="tbi16">
-          <f:facet name="tab">
+        </o:subPanel>
+        <o:subPanel id="tbi16">
+          <f:facet name="caption">
             <h:outputText value="A4" id="outputText24"/>
           </f:facet>
           <h:outputText value="04" id="outputText25"/>
-        </o:tabbedPaneItem>
+        </o:subPanel>
       </o:tabbedPane>
     </td>
     <td align="left" width="50%">
       <o:tabbedPane loadingMode="client" tabPlacement="right" style="width: 100%"
                     id="tabbedPane6">
-        <o:tabbedPaneItem id="tbi17">
-          <f:facet name="tab">
+        <o:subPanel id="tbi17">
+          <f:facet name="caption">
             <h:outputText value="A1" id="outputText1"/>
           </f:facet>
           <h:outputText value="01" id="outputText2"/>
-        </o:tabbedPaneItem>
-        <o:tabbedPaneItem id="tbi18">
-          <f:facet name="tab">
+        </o:subPanel>
+        <o:subPanel id="tbi18">
+          <f:facet name="caption">
             <h:outputText value="A2" id="outputText3"/>
           </f:facet>
           <h:outputText value="02" id="outputText4"/>
-        </o:tabbedPaneItem>
-        <o:tabbedPaneItem id="tbi19">
-          <f:facet name="tab">
+        </o:subPanel>
+        <o:subPanel id="tbi19">
+          <f:facet name="caption">
             <h:outputText value="A3" id="outputText5"/>
           </f:facet>
           <h:outputText value="03" id="outputText6"/>
-        </o:tabbedPaneItem>
-        <o:tabbedPaneItem id="tbi20">
-          <f:facet name="tab">
+        </o:subPanel>
+        <o:subPanel id="tbi20">
+          <f:facet name="caption">
             <h:outputText value="A4" id="outputText7"/>
           </f:facet>
           <h:outputText value="04" id="outputText8"/>
-        </o:tabbedPaneItem>
+        </o:subPanel>
       </o:tabbedPane>
     </td>
   </tr>
@@ -339,39 +339,38 @@
 <br/>
 <br/>
 <br/>
-<h4 style="text-decoration: underline">TabbedPane with mixed TabbedPaneItems setting ways. It also has no width to see
+<h4 style="text-decoration: underline">TabbedPane with mixed SubPanels setting ways. It also has no width to see
   100% width issue under Opera (for testing goals)</h4>
 <o:tabbedPane loadingMode="ajaxLazy"
               tabPlacement="bottom"
               selectionChangeListener="#{TabSetBean.selectionChanged}"
-              id="tabbedPane7"
-        >
+              id="tabbedPane7">
   <o:selectionChangeListener type="org.openfaces.testapp.customEvents.MySelectionChangeListener"/>
-  <o:tabbedPaneItems value="#{TabSetBean.tabbedPaneItems}"/>
-  <o:tabbedPaneItem id="tbi21">
-    <f:facet name="tab">
+  <o:subPanels value="#{TabSetBean.subPanels}"/>
+  <o:subPanel id="tbi21">
+    <f:facet name="caption">
       <h:outputText value="A1" id="outputText9"/>
     </f:facet>
     <h:outputText value="01" id="outputText10"/>
-  </o:tabbedPaneItem>
-  <o:tabbedPaneItem id="tbi22">
-    <f:facet name="tab">
+  </o:subPanel>
+  <o:subPanel id="tbi22">
+    <f:facet name="caption">
       <h:outputText value="A2" id="outputText11"/>
     </f:facet>
     <h:outputText value="02" id="outputText12"/>
-  </o:tabbedPaneItem>
-  <o:tabbedPaneItem id="tbi23">
-    <f:facet name="tab">
+  </o:subPanel>
+  <o:subPanel id="tbi23">
+    <f:facet name="caption">
       <h:outputText value="A3" id="outputText13"/>
     </f:facet>
     <h:outputText value="03" id="outputText14"/>
-  </o:tabbedPaneItem>
-  <o:tabbedPaneItem id="tbi24">
-    <f:facet name="tab">
+  </o:subPanel>
+  <o:subPanel id="tbi24">
+    <f:facet name="caption">
       <h:outputText value="A4" id="outputText15"/>
     </f:facet>
     <h:outputText value="04" id="outputText16"/>
-  </o:tabbedPaneItem>
+  </o:subPanel>
 </o:tabbedPane>
 <br/>
 <br/>
@@ -379,24 +378,24 @@
 <h4 style="text-decoration: underline;">Focused tabbedPane</h4>
  <o:tabbedPane focusable="true" loadingMode="client"
                     id="tabbePane_focused7">
-        <o:tabbedPaneItem id="focused_tpi7">
-          <f:facet name="tab">
+        <o:subPanel id="focused_tpi7">
+          <f:facet name="caption">
             <h:outputText value="Tab1" />
           </f:facet>
           <h:inputText value="Tab1 inner text" />
-        </o:tabbedPaneItem>
-        <o:tabbedPaneItem id="focused_tpi8">
-          <f:facet name="tab">
+        </o:subPanel>
+        <o:subPanel id="focused_tpi8">
+          <f:facet name="caption">
             <h:outputText value="Tab2"/>
           </f:facet>
           <h:outputText value="Tab2 inner text" />
-        </o:tabbedPaneItem>
-        <o:tabbedPaneItem id="focused_tpi9">
-          <f:facet name="tab">
+        </o:subPanel>
+        <o:subPanel id="focused_tpi9">
+          <f:facet name="caption">
             <h:outputText value="Tab3"/>
           </f:facet>
           <h:outputText value="Tab3 inner text" />
-        </o:tabbedPaneItem>
+        </o:subPanel>
       </o:tabbedPane>
 <br/>
 <br/>
@@ -415,18 +414,18 @@
                     tabStyle="color: red;"  focusAreaStyle="border: 1px dashed blue;"
                     style="height: 300px; width: 200px;"
                     id="tabbePane_focused1" loadingMode="client">
-        <o:tabbedPaneItem id="focused_tpi1">
-          <f:facet name="tab">
+        <o:subPanel id="focused_tpi1">
+          <f:facet name="caption">
             <h:outputText value="Tab1" />
           </f:facet>
           <h:outputText value="Tab1 inner text" />
-        </o:tabbedPaneItem>
-        <o:tabbedPaneItem>
-          <f:facet name="tab">
+        </o:subPanel>
+        <o:subPanel>
+          <f:facet name="caption">
             <h:outputText value="Tab2"/>
           </f:facet>
           <h:outputText value="Tab2 inner text" />
-        </o:tabbedPaneItem>
+        </o:subPanel>
       </o:tabbedPane>
     </td>
     <td class="cells">
@@ -440,18 +439,18 @@
                     tabEmptySpaceStyle="background: LightBlue;"
                     tabStyle="color: red;" focusable="true"  focusAreaStyle="border: 1px dashed blue;"
                     style="height: 300px; width: 200px;"&gt;
-        &lt;o:tabbedPaneItem&gt;
-          &lt;f:facet name="tab"&gt;
+        &lt;o:subPanel&gt;
+          &lt;f:facet name="caption"&gt;
             &lt;h:outputText value="Tab1"/&gt;
           &lt;/f:facet&gt;
           &lt;h:outputText value="Tab1 inner text" /&gt;
-        &lt;/o:tabbedPaneItem&gt;
-        &lt;o:tabbedPaneItem&gt;
-          &lt;f:facet name="tab"&gt;
+        &lt;/o:subPanel&gt;
+        &lt;o:subPanel&gt;
+          &lt;f:facet name="caption"&gt;
             &lt;h:outputText value="Tab2"/&gt;
           &lt;/f:facet&gt;
           &lt;h:outputText value="Tab2 inner text" /&gt;
-        &lt;/o:tabbedPaneItem&gt;
+        &lt;/o:subPanel&gt;
       &lt;/o:tabbedPane&gt;
         </pre>
     </td>
@@ -469,18 +468,18 @@
                     tabClass="tab"
                     styleClass="tabbedPaneStyle"
                     id="tabbedPane_focused2">
-        <o:tabbedPaneItem id="focused_tbi3">
-          <f:facet name="tab">
+        <o:subPanel id="focused_tbi3">
+          <f:facet name="caption">
             <h:outputText value="Tab1" />
           </f:facet>
           <h:outputText value="Tab1 inner text" />
-        </o:tabbedPaneItem>
-        <o:tabbedPaneItem >
-          <f:facet name="tab">
+        </o:subPanel>
+        <o:subPanel >
+          <f:facet name="caption">
             <h:outputText value="Tab2" />
           </f:facet>
           <h:outputText value="Tab2 inner text" />
-        </o:tabbedPaneItem>
+        </o:subPanel>
       </o:tabbedPane>
     </td>
     <td class="cells">

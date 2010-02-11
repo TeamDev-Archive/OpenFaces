@@ -26,6 +26,8 @@ public abstract class AbstractPanelWithCaptionTag extends AbstractComponentTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        setStringProperty(component, "caption");
+
         setStringProperty(component, "captionStyle");
         setStringProperty(component, "captionClass");
         setStringProperty(component, "contentStyle");

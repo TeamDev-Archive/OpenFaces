@@ -24,8 +24,8 @@
           <o:tabbedPane id="tabbedPaneID"
                         loadingMode="#{LoadingModesBean.tabbedPaneCurrentLoadingMode}"
                         containerStyle="padding: 10px 10px 10px 10px;">
-            <o:tabbedPaneItem>
-              <f:facet name="tab">
+            <o:subPanel>
+              <f:facet name="caption">
                 <h:outputText value="First tab" id="firstHeader"/>
               </f:facet>
               <h:outputText value="test" />
@@ -44,9 +44,9 @@
                                       style="color: red; font-size: 20pt;"></o:chartNoDataMessage>
               </o:chart>
               <h:outputText value="test" />
-            </o:tabbedPaneItem>
-            <o:tabbedPaneItem>
-              <f:facet name="tab">
+            </o:subPanel>
+            <o:subPanel>
+              <f:facet name="caption">
                 <h:outputText value="Second tab" id="secondHeader"/>
               </f:facet>
               <h:outputText value="test" />
@@ -65,7 +65,7 @@
                                       style="color: red; font-size: 20pt;"></o:chartNoDataMessage>
               </o:chart>
               <h:outputText value="test" />
-            </o:tabbedPaneItem>
+            </o:subPanel>
           </o:tabbedPane>
         </td>
       </tr>

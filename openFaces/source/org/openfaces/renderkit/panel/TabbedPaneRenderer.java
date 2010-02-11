@@ -13,7 +13,7 @@ package org.openfaces.renderkit.panel;
 
 import org.openfaces.component.LoadingMode;
 import org.openfaces.component.panel.TabbedPane;
-import org.openfaces.component.panel.TabbedPaneItem;
+import org.openfaces.component.panel.SubPanel;
 import org.openfaces.component.select.TabPlacement;
 import org.openfaces.component.select.TabSet;
 import org.openfaces.component.select.TabSetItems;
@@ -57,7 +57,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
         if (LoadingMode.AJAX_LAZY.equals(loadingMode) || LoadingMode.AJAX_ALWAYS.equals(loadingMode))
             AjaxUtil.prepareComponentForAjax(context, component);
 
-        List<TabbedPaneItem> allItems = tabbedPane.getTabbedPaneItems(true);
+        List<SubPanel> allSubPanels = tabbedPane.getSubPanels(true);
 
         // imlementation note for one who is going to remove outer table rendering
         // need to check, that style="padding: 10px;" (10px for example) do not breaks border under IE
@@ -97,9 +97,9 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
                 tabbedPane, tabbedPane.getRolloverContainerStyle(), StyleGroup.regularStyleGroup(), tabbedPane.getRolloverContainerClass());
 
         if (paneFirst) {
-            encodePane(context, tabbedPane, allItems, containerClass);
+            encodePane(context, tabbedPane, allSubPanels, containerClass);
         } else {
-            encodeTabSet(context, tabbedPane, allItems);
+            encodeTabSet(context, tabbedPane, allSubPanels);
         }
         writer.endElement("td");
         if (!horizontalPlacement) {
@@ -108,9 +108,9 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
         }
         writer.startElement("td", tabbedPane);
         if (paneFirst) {
-            encodeTabSet(context, tabbedPane, allItems);
+            encodeTabSet(context, tabbedPane, allSubPanels);
         } else {
-            encodePane(context, tabbedPane, allItems, containerClass);
+            encodePane(context, tabbedPane, allSubPanels, containerClass);
         }
         writer.endElement("td");
         writer.endElement("tr");
@@ -171,7 +171,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
         StyleUtil.renderStyleClasses(context, tabbedPane);
     }
 
-    private void encodeTabSet(FacesContext context, TabbedPane tabbedPane, List<TabbedPaneItem> tabbedPaneItems) throws IOException {
+    private void encodeTabSet(FacesContext context, TabbedPane tabbedPane, List<SubPanel> subPanels) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         TabPlacement tabPlacement = tabbedPane.getTabPlacement();
         boolean verticalPlacement = TabPlacement.LEFT.equals(tabPlacement) || TabPlacement.RIGHT.equals(tabPlacement);
@@ -179,14 +179,14 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
             writeAttribute(writer, "height", "100%");
         }
         TabSet innerTabSet = tabbedPane.getTabSet();
-        initInnerTabSet(tabbedPane, innerTabSet, tabbedPaneItems);
+        initInnerTabSet(tabbedPane, innerTabSet, subPanels);
         innerTabSet.encodeAll(context);
     }
 
-    private void initInnerTabSet(TabbedPane tabbedPane, TabSet innerTabSet, List<TabbedPaneItem> tabbedPaneItems) {
+    private void initInnerTabSet(TabbedPane tabbedPane, TabSet innerTabSet, List<SubPanel> subPanels) {
         List<UIComponent> tabs = new ArrayList<UIComponent>();
-        for (TabbedPaneItem item : tabbedPaneItems) {
-            UIComponent tabContentComponent = item.getTab();
+        for (SubPanel item : subPanels) {
+            UIComponent tabContentComponent = item.getCaptionFacet();
             if (tabContentComponent != null) {
                 // Note that non-rendered tabs should still be added (though with the "non-rendered" flag) to the TabSet for
                 // correct tab indexing.
@@ -208,7 +208,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
         boolean verticalPlacement = TabPlacement.LEFT.equals(tabPlacement) || TabPlacement.RIGHT.equals(tabPlacement);
         innerTabSet.setStyle(verticalPlacement ? "height: 100%" : "width: 100%");
 
-        innerTabSet.setSelectedIndex(getSelectedIndex(tabbedPane, tabbedPaneItems));
+        innerTabSet.setSelectedIndex(getSelectedIndex(tabbedPane, subPanels));
         innerTabSet.setAlignment(tabbedPane.getTabAlignment());
         innerTabSet.setPlacement(tabPlacement);
         innerTabSet.setTabStyle(tabbedPane.getTabStyle());

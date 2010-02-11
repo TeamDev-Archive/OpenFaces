@@ -13,8 +13,8 @@
             tabAlignment="topOrLeft"
             tabPlacement="top"
             selectedTabClass="tab_active">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="Utilisateurs" styleClass="tab_name"/>
         </f:facet>
         <h:panelGroup id="pgWizard">
@@ -41,10 +41,10 @@
             </o:treeColumn>
           </o:treeTable>
         </h:panelGroup>
-      </o:tabbedPaneItem>
+      </o:subPanel>
 
-      <o:tabbedPaneItem id="tabMetier">
-        <f:facet name="tab">
+      <o:subPanel id="tabMetier">
+        <f:facet name="caption">
           <h:outputText value="M�tier" styleClass="tab_name"/>
         </f:facet>
 
@@ -69,7 +69,7 @@
             </h:outputText>
           </o:treeColumn>
         </o:treeTable>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   
 </div>

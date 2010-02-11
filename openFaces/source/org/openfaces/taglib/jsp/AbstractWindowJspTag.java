@@ -28,8 +28,8 @@ public class AbstractWindowJspTag extends PopupLayerJspTag {
         getDelegate().setPropertyValue("draggableByContent", value);
     }
 
-    public void setCaptionText(ValueExpression captionText) {
-        getDelegate().setPropertyValue("captionText", captionText);
+    public void setCaption(ValueExpression caption) {
+        getDelegate().setPropertyValue("caption", caption);
     }
 
     public void setCaptionStyle(ValueExpression captionStyle) {

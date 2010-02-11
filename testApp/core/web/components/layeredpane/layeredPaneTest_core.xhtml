@@ -12,12 +12,12 @@
   <o:commandButton type="button" onclick="O$('form:layeredPane1').setSelectedIndex(O$('form:pageIndex').value);">Select Page</o:commandButton>
 
   <o:layeredPane id="layeredPane1" style="border: 1px solid black">
-    <o:tabbedPaneItem>
+    <o:subPanel>
       <h:outputText value="Some text on the first page"/>
-    </o:tabbedPaneItem>
-    <o:tabbedPaneItem>
+    </o:subPanel>
+    <o:subPanel>
       <h:outputText value="Some text on the second page"/>
-    </o:tabbedPaneItem>
+    </o:subPanel>
   </o:layeredPane>
   
 

@@ -9,17 +9,20 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.jsp.panel;
+package org.openfaces.taglib.internal.panel;
 
-import org.openfaces.taglib.internal.panel.TabbedPaneItemTag;
-import org.openfaces.taglib.jsp.AbstractComponentJspTag;
+import org.openfaces.component.panel.SubPanel;
 
 /**
- * @author Andrew Palval
+ * @author Pavel Kaplin
  */
-public class TabbedPaneItemJspTag extends AbstractComponentJspTag {
+public class SubPanelTag extends AbstractPanelWithCaptionTag {
 
-    public TabbedPaneItemJspTag() {
-        super(new TabbedPaneItemTag());
+    public String getComponentType() {
+        return SubPanel.COMPONENT_TYPE;
+    }
+
+    public String getRendererType() {
+        return null;
     }
 }

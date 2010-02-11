@@ -13,7 +13,7 @@
 package org.openfaces.testapp.tabset;
 
 import org.openfaces.component.input.DateChooser;
-import org.openfaces.component.panel.TabbedPaneItem;
+import org.openfaces.component.panel.SubPanel;
 import org.openfaces.component.select.TabSetItem;
 import org.openfaces.event.SelectionChangeEvent;
 
@@ -100,7 +100,7 @@ public class TabSetBean implements Serializable {
     private static TestConverter TEST_CONVERTER = new TestConverter();
 
     private Collection<TabSetItem> items;
-    private Collection<TabbedPaneItem> tabbedPaneItems;
+    private Collection<SubPanel> subPanels;
     private Object selectedValue;
 
     private int selectedIndex;
@@ -210,53 +210,53 @@ public class TabSetBean implements Serializable {
         this.items = items;
     }
 
-    public Collection<TabbedPaneItem> getTabbedPaneItems() {
-        if (tabbedPaneItems == null) {
-            tabbedPaneItems = new ArrayList<TabbedPaneItem>();
-            TabbedPaneItem item;
+    public Collection<SubPanel> getSubPanels() {
+        if (subPanels == null) {
+            subPanels = new ArrayList<SubPanel>();
+            SubPanel item;
             HtmlOutputText tabValue;
             HtmlOutputText containerValue;
 
-            item = new TabbedPaneItem();
+            item = new SubPanel();
             tabValue = new HtmlOutputText();
             tabValue.setId("otext1");
             tabValue.setValue("tab1");
             item.setId("tabbbedPaneItem1");
-            item.getFacets().put("tab", tabValue);
+            item.getFacets().put("caption", tabValue);
             containerValue = new HtmlOutputText();
             containerValue.setId("otext2");
             containerValue.setValue("content 1");
             item.getChildren().add(containerValue);
-            tabbedPaneItems.add(item);
+            subPanels.add(item);
 
-            item = new TabbedPaneItem();
+            item = new SubPanel();
             tabValue = new HtmlOutputText();
             tabValue.setId("otext3");
             tabValue.setValue("tab2");
             item.setId("tabbbedPaneItem2");
-            item.getFacets().put("tab", tabValue);
+            item.getFacets().put("caption", tabValue);
             DateChooser dateChooser = new DateChooser();
             dateChooser.setId("dc");
             item.getChildren().add(dateChooser);
-            tabbedPaneItems.add(item);
+            subPanels.add(item);
 
-            item = new TabbedPaneItem();
+            item = new SubPanel();
             tabValue = new HtmlOutputText();
             tabValue.setId("otext4");
             tabValue.setValue("tab3");
             item.setId("tabbbedPaneItem3");
-            item.getFacets().put("tab", tabValue);
+            item.getFacets().put("caption", tabValue);
             containerValue = new HtmlOutputText();
             containerValue.setId("otext5");
             containerValue.setValue("content 3");
             item.getChildren().add(containerValue);
-            tabbedPaneItems.add(item);
+            subPanels.add(item);
         }
-        return tabbedPaneItems;
+        return subPanels;
     }
 
-    public void setTabbedPaneItems(Collection<TabbedPaneItem> tabbedPaneItems) {
-        this.tabbedPaneItems = tabbedPaneItems;
+    public void setSubPanels(Collection<SubPanel> subPanels) {
+        this.subPanels = subPanels;
     }
 
     public void valueChangedAttributeWithoutSubmitFunctTest(ValueChangeEvent event) {

@@ -20,30 +20,30 @@
     tabEmptySpaceStyle="background: url(images/back_inactivetab.gif);"
     containerClass="tabcontainer" tabEmptySpaceClass="tabspace"
 		frontBorderStyle="1px solid #99ACB7" backBorderStyle="1px solid #A4A9AB">
-				<o:tabbedPaneItem rendered="true">
-					<f:facet name="tab">
+				<o:subPanel rendered="true">
+					<f:facet name="caption">
 						<h:outputText value="Inhaltsdateien"/>
 					</f:facet>
 					<h:outputText value=" " />
 					<!--<ui:include src="/xhtml/datapackage/DataPackageFilter.xhtml" /> -->
 					<!--<ui:include src="/xhtml/tables/PackageContentItemTable.xhtml" />-->
-				</o:tabbedPaneItem>
-				<o:tabbedPaneItem>
-					<f:facet name="tab">
+				</o:subPanel>
+				<o:subPanel>
+					<f:facet name="caption">
 						<h:outputText value="Nachverarbeitung" />
 					</f:facet>
 					<h:panelGrid columns="1" styleClass="tabsubheadpanel">
 						<h:outputText value="Testview" />
 					</h:panelGrid>
-				</o:tabbedPaneItem>
-				<o:tabbedPaneItem>
-					<f:facet name="tab">
+				</o:subPanel>
+				<o:subPanel>
+					<f:facet name="caption">
 						<h:outputText value="Verlauf" />
 					</f:facet>
 					<h:outputText value=" " />
 						<!--<ui:include src="/xhtml/history/HistoryFilter.xhtml" /> -->
 						<!--<ui:include src="/xhtml/tables/HistoryTable.xhtml" />-->
-				</o:tabbedPaneItem>
+				</o:subPanel>
 			</o:tabbedPane>
 		<!--</h:form>-->
 

@@ -11,7 +11,7 @@
  */
 package org.openfaces.taglib.jsp.panel;
 
-import org.openfaces.taglib.internal.panel.TabbedPaneItemsTag;
+import org.openfaces.taglib.internal.panel.SubPanelsTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
 import javax.el.ValueExpression;
@@ -19,10 +19,10 @@ import javax.el.ValueExpression;
 /**
  * @author Andrew Palval
  */
-public class TabbedPaneItemsJspTag extends AbstractComponentJspTag {
+public class SubPanelsJspTag extends AbstractComponentJspTag {
 
-    public TabbedPaneItemsJspTag() {
-        super(new TabbedPaneItemsTag());
+    public SubPanelsJspTag() {
+        super(new SubPanelsTag());
     }
 
     public void setValue(ValueExpression value) {

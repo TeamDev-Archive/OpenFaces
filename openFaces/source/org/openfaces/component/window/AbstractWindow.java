@@ -23,35 +23,36 @@ import javax.faces.context.FacesContext;
 public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
     private static final String CAPTION_FACET_NAME = "caption";
 
+    private String caption;
+
     private String captionStyle;
     private String captionClass;
     private String contentStyle;
     private String contentClass;
 
-    private String captionText;
     private Boolean draggableByContent;
     private Boolean resizable;
     private String minWidth;
     private String minHeight;
 
-    public UIComponent getCaption() {
+    public String getCaption() {
+        return ValueBindings.get(this, "caption", caption);
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
+
+    public UIComponent getCaptionFacet() {
         return getFacet(CAPTION_FACET_NAME);
     }
 
-    public void setCaption(UIComponent component) {
+    public void setCaptionFacet(UIComponent component) {
         getFacets().put(CAPTION_FACET_NAME, component);
-    }
-
-    public String getCaptionText() {
-        return ValueBindings.get(this, "captionText", captionText, getDefaultCaptionText());
     }
 
     protected String getDefaultCaptionText() {
         return null;
-    }
-
-    public void setCaptionText(String captionText) {
-        this.captionText = captionText;
     }
 
     public String getCaptionStyle() {
@@ -150,7 +151,7 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
                 contentStyle,
                 contentClass,
                 draggableByContent,
-                captionText};
+                caption};
     }
 
     @Override
@@ -166,7 +167,7 @@ public class AbstractWindow extends PopupLayer implements ComponentWithCaption {
         contentStyle = (String) state[i++];
         contentClass = (String) state[i++];
         draggableByContent = (Boolean) state[i++];
-        captionText = (String) state[i++];
+        caption = (String) state[i++];
     }
 
 }

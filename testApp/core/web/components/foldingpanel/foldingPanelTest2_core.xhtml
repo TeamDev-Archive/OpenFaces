@@ -156,8 +156,8 @@
 </table>
 <span style="font-size:18px; border-bottom: 1px solid black;">FoldingPanel interaction with other components</span>
 <o:tabbedPane style="width: 250px; height: 250px;">
-  <o:tabbedPaneItem>
-    <f:facet name="tab">
+  <o:subPanel>
+    <f:facet name="caption">
       <h:outputText value="Item 1"/>
     </f:facet>
     <o:foldingPanel
@@ -172,9 +172,9 @@
       </o:captionArea>
       <o:calendar/>
     </o:foldingPanel>
-  </o:tabbedPaneItem>
-  <o:tabbedPaneItem>
-    <f:facet name="tab">
+  </o:subPanel>
+  <o:subPanel>
+    <f:facet name="caption">
       <h:outputText value="Item 2"/>
     </f:facet>
     <o:foldingPanel
@@ -189,9 +189,9 @@
       </o:captionArea>
       <o:calendar/>
     </o:foldingPanel>
-  </o:tabbedPaneItem>
-  <o:tabbedPaneItem>
-    <f:facet name="tab">
+  </o:subPanel>
+  <o:subPanel>
+    <f:facet name="caption">
       <h:outputText value="Item 3"/>
     </f:facet>
     <o:foldingPanel
@@ -206,7 +206,7 @@
       </o:captionArea>
       <o:calendar/>
     </o:foldingPanel>
-  </o:tabbedPaneItem>
+  </o:subPanel>
 </o:tabbedPane>
 <o:foldingPanel foldingDirection="up" contentStyle="padding: 15px 15px 15px 15px;" style="margin-top: 25px;">
   <f:facet name="caption">

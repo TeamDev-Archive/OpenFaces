@@ -48,8 +48,8 @@
                   tabGapWidth="3"
                   style="width: 260px; height: 290px;"
                   containerStyle="vertical-align: middle;">
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="a-h" styleClass="tab_name"/>
         </f:facet>
         <h:panelGrid columns="1" rowClasses=", name, tel, name, tel, name, tel"
@@ -63,9 +63,9 @@
           <h:outputText value="555-19-64"/>
           <h:column><f:verbatim escape="false">&#160;</f:verbatim></h:column>
         </h:panelGrid>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="i-p" styleClass="tab_name"/>
         </f:facet>
         <h:panelGrid columns="1" rowClasses=", name, tel, name, tel, name, tel"
@@ -79,9 +79,9 @@
           <h:outputText value="555-53-79"/>
           <h:column><f:verbatim escape="false">&#160;</f:verbatim></h:column>
         </h:panelGrid>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem>
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel>
+        <f:facet name="caption">
           <h:outputText value="q-z" styleClass="tab_name"/>
         </f:facet>
         <h:panelGrid columns="1" rowClasses=", name, tel, name, tel, name, tel"
@@ -95,7 +95,7 @@
           <h:outputText value="555-21-74"/>
           <h:column><f:verbatim escape="false">&#160;</f:verbatim></h:column>
         </h:panelGrid>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   </div>
 

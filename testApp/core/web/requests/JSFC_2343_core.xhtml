@@ -20,28 +20,28 @@
             selectedTabClass="tab_active"
             rolloverTabClass="tab_rollover"
             containerClass="tab_container">
-      <o:tabbedPaneItem rendered="#{!QKS371.loginSuccessful}">
-        <f:facet name="tab">
+      <o:subPanel rendered="#{!QKS371.loginSuccessful}">
+        <f:facet name="caption">
           <h:outputText value="Login" styleClass="tab_name"/>
         </f:facet>
         <f:subview id="login">
           <h:outputText value="login"/>
           <h:commandLink value="Login" action="#{QKS371.doLogin}" styleClass="logout"/>
         </f:subview>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem rendered="#{QKS371.loginSuccessful}">
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel rendered="#{QKS371.loginSuccessful}">
+        <f:facet name="caption">
           <h:outputText value="Vehicle Explorer" styleClass="tab_name"/>
         </f:facet>
         <f:subview id="vehicleExplorer">
           <h:outputText value="tree"/>
         </f:subview>
-      </o:tabbedPaneItem>
-      <o:tabbedPaneItem rendered="#{QKS371.loginSuccessful}">
-        <f:facet name="tab">
+      </o:subPanel>
+      <o:subPanel rendered="#{QKS371.loginSuccessful}">
+        <f:facet name="caption">
           <h:commandLink value="Logout" action="#{QKS371.doLogout}" styleClass="logout"/>
         </f:facet>
-      </o:tabbedPaneItem>
+      </o:subPanel>
     </o:tabbedPane>
   
 </div>

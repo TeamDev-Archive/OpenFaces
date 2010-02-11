@@ -67,7 +67,7 @@ public abstract class ComponentWithCaptionRenderer extends RendererBase {
         writer.startElement("div", uiComponent);
         writer.writeAttribute("id", uiComponent.getClientId(context) + CAPTION_CONTENT_SUFFIX, null);
         writeAdditionalCaptionCellContent(writer, component);
-        UIComponent captionContent = component.getCaption();
+        UIComponent captionContent = component.getCaptionFacet();
         renderCaptionContent(context, component, captionContent);
         writer.endElement("div");
         writer.endElement("td");
