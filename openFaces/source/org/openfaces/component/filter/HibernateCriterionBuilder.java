@@ -18,6 +18,7 @@ import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.openfaces.util.FacesUtil;
 
@@ -157,6 +158,10 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
      * @see @buildCriteria
      */
     public static void fillCriteria(Criteria criteria) {
+        fillCriteria(criteria, false);
+    }
+
+    private static void fillCriteria(Criteria criteria, boolean ignorePaginationParams) {
         CompositeFilterCriterion filterCriteria = FacesUtil.var("filterCriteria", CompositeFilterCriterion.class);
         boolean sortAscending = FacesUtil.var("sortAscending", Boolean.class);
         String sortColumnId = FacesUtil.var("sortColumnId", String.class);
@@ -167,12 +172,73 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
             Criterion criterion = build(filterCriteria);
             criteria.add(criterion);
         }
-        if (pageStart != null) {
+        if (!ignorePaginationParams && pageStart != null) {
             criteria.setFirstResult(pageStart);
             criteria.setMaxResults(pageSize);
         }
         if (sortColumnId != null)
             criteria.addOrder(sortAscending ? Order.asc(sortColumnId) : Order.desc(sortColumnId));
+    }
+
+    /**
+     * This method should be invoked from a method bound to the DataTable's "totalRowCount" attribute to implement the
+     * hibernate-based custom data providing mode.
+     *
+     * @return the total number of rows without the pagination parameters (which is required by DataTable to properly
+     * calculate the number of pages).
+     */
+    public static int getRowCount(Session session, String entityName) {
+        Criteria criteria = session.createCriteria(entityName);
+        return getRowCount(criteria);
+    }
+
+    /**
+     * This method should be invoked from a method bound to the DataTable's "totalRowCount" attribute to implement the
+     * hibernate-based custom data providing mode.
+     *
+     * @return the total number of rows without the pagination parameters (which is required by DataTable to properly
+     * calculate the number of pages).
+     */
+    public static int getRowCount(Session session, Class persistentClass) {
+        Criteria criteria = session.createCriteria(persistentClass);
+        return getRowCount(criteria);
+    }
+
+    /**
+     * This method should be invoked from a method bound to the DataTable's "totalRowCount" attribute to implement the
+     * hibernate-based custom data providing mode.
+     *
+     * @return the total number of rows without the pagination parameters (which is required by DataTable to properly
+     * calculate the number of pages).
+     */
+    public static int getRowCount(Session session, String entityName, String alias) {
+        Criteria criteria = session.createCriteria(entityName, alias);
+        return getRowCount(criteria);
+    }
+
+    /**
+     * This method should be invoked from a method bound to the DataTable's "totalRowCount" attribute to implement the
+     * hibernate-based custom data providing mode.
+     *
+     * @return the total number of rows without the pagination parameters (which is required by DataTable to properly
+     * calculate the number of pages).
+     */
+    public static int getRowCount(Session session, Class persistentClass, String alias) {
+        Criteria criteria = session.createCriteria(persistentClass, alias);
+        return getRowCount(criteria);
+    }
+
+    /**
+     * This method should be invoked from a method bound to the DataTable's "totalRowCount" attribute to implement the
+     * hibernate-based custom data providing mode.
+     *
+     * @return the total number of rows without the pagination parameters (which is required by DataTable to properly
+     * calculate the number of pages).
+     */
+    public static int getRowCount(Criteria criteria) {
+        fillCriteria(criteria, true);
+        criteria.setProjection(Projections.rowCount());
+        return (Integer) criteria.list().get(0);
     }
 
     public Object process(ExpressionFilterCriterion criterion) {
