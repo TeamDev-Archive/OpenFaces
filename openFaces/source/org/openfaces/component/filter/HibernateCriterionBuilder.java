@@ -12,10 +12,14 @@
 
 package org.openfaces.component.filter;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.openfaces.util.FacesUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -31,8 +35,144 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
         return instance;
     }
 
+    /**
+     * Returns hibernate Criterion instance that corresponds to the passed FilterCriterion instance.
+     */
     public static Criterion build(FilterCriterion filterCriterion) {
         return (Criterion) filterCriterion.process(getInstance());
+    }
+
+    /**
+     * You can invoke this function from the DataTable's data providing method (a method that is bound to the DataTable's
+     * "value" attribute) to implement the hibernate-based custom data providing mode.
+     * <p>
+     * This method creates the hibernate Criteria object with the current DataTable custom data providing parameters
+     * that are automatically retrieved from the request scope by this method. That is the returned Criteria will
+     * contain the current table's filtering, sorting and pagination parameters.
+     * <p>
+     * NOTE: the table should have the "id" attribute specified for all sortable columns. The id value should correspond
+     * to the appropriate property name by which sorting should be performed, or more formally, the value of the "id" 
+     * attribute will be passed to the Order.asc(String propertyName) and Order.desc(String propertyName) methods when
+     * populating the Criteria object.
+     * <p>
+     * You can use any of the buidCriteria() methods or the fillCriteria() method depending on the needs of your
+     * application.
+     *
+     * @see @fillCriteria
+     */
+    public static Criteria buildCriteria(Session session, Class persistentClass) {
+        Criteria criteria = session.createCriteria(persistentClass);
+        fillCriteria(criteria);
+        return criteria;
+    }
+
+    /**
+     * You can invoke this function from the DataTable's data providing method (a method that is bound to the DataTable's
+     * "value" attribute) to implement the hibernate-based custom data providing mode.
+     * <p>
+     * This method creates the hibernate Criteria object with the current DataTable custom data providing parameters
+     * that are automatically retrieved from the request scope by this method. That is the returned Criteria will
+     * contain the current table's filtering, sorting and pagination parameters.
+     * <p>
+     * NOTE: the table should have the "id" attribute specified for all sortable columns. The id value should correspond
+     * to the appropriate property name by which sorting should be performed, or more formally, the value of the "id"
+     * attribute will be passed to the Order.asc(String propertyName) and Order.desc(String propertyName) methods when
+     * populating the Criteria object.
+     * <p>
+     * You can use any of the buidCriteria() methods or the fillCriteria() method depending on the needs of your
+     * application.
+     *
+     * @see @fillCriteria
+     */
+    public static Criteria buildCriteria(Session session, String entityName) {
+        Criteria criteria = session.createCriteria(entityName);
+        fillCriteria(criteria);
+        return criteria;
+    }
+
+    /**
+     * You can invoke this function from the DataTable's data providing method (a method that is bound to the DataTable's
+     * "value" attribute) to implement the hibernate-based custom data providing mode.
+     * <p>
+     * This method creates the hibernate Criteria object with the current DataTable custom data providing parameters
+     * that are automatically retrieved from the request scope by this method. That is the returned Criteria will
+     * contain the current table's filtering, sorting and pagination parameters.
+     * <p>
+     * NOTE: the table should have the "id" attribute specified for all sortable columns. The id value should correspond
+     * to the appropriate property name by which sorting should be performed, or more formally, the value of the "id"
+     * attribute will be passed to the Order.asc(String propertyName) and Order.desc(String propertyName) methods when
+     * populating the Criteria object.
+     * <p>
+     * You can use any of the buidCriteria() methods or the fillCriteria() method depending on the needs of your
+     * application.
+     *
+     * @see @fillCriteria
+     */
+    public static Criteria buildCriteria(Session session, Class persistentClass, String alias) {
+        Criteria criteria = session.createCriteria(persistentClass, alias);
+        fillCriteria(criteria);
+        return criteria;
+    }
+
+    /**
+     * You can invoke this function from the DataTable's data providing method (a method that is bound to the DataTable's
+     * "value" attribute) to implement the hibernate-based custom data providing mode.
+     * <p>
+     * This method creates the hibernate Criteria object with the current DataTable custom data providing parameters
+     * that are automatically retrieved from the request scope by this method. That is the returned Criteria will
+     * contain the current table's filtering, sorting and pagination parameters.
+     * <p>
+     * NOTE: the table should have the "id" attribute specified for all sortable columns. The id value should correspond
+     * to the appropriate property name by which sorting should be performed, or more formally, the value of the "id"
+     * attribute will be passed to the Order.asc(String propertyName) and Order.desc(String propertyName) methods when
+     * populating the Criteria object.
+     * <p>
+     * You can use any of the buidCriteria() methods or the fillCriteria() method depending on the needs of your
+     * application.
+     *
+     * @see @fillCriteria
+     */
+    public static Criteria buildCriteria(Session session, String entityName, String alias) {
+        Criteria criteria = session.createCriteria(entityName, alias);
+        fillCriteria(criteria);
+        return criteria;
+    }
+
+    /**
+     * You can invoke this function from the DataTable's data providing method (a method that is bound to the DataTable's
+     * "value" attribute) to implement the hibernate-based custom data providing mode.
+     * <p>
+     * This method fills the passed hibernate Criteria object with the current DataTable custom data providing
+     * parameters that are automatically retrieved from the request scope by this method. That is the Criteria object
+     * will be configured with the current table's filtering, sorting and pagination parameters.
+     * <p>
+     * NOTE: the table should have the "id" attribute specified for all sortable columns. The id value should correspond
+     * to the appropriate property name by which sorting should be performed, or more formally, the value of the "id"
+     * attribute will be passed to the Order.asc(String propertyName) and Order.desc(String propertyName) methods when
+     * populating the Criteria object.
+     * <p>
+     * You can use any of the buidCriteria() methods or the fillCriteria() method depending on the needs of your
+     * application.
+     *
+     * @see @buildCriteria
+     */
+    public static void fillCriteria(Criteria criteria) {
+        CompositeFilterCriterion filterCriteria = FacesUtil.var("filterCriteria", CompositeFilterCriterion.class);
+        boolean sortAscending = FacesUtil.var("sortAscending", Boolean.class);
+        String sortColumnId = FacesUtil.var("sortColumnId", String.class);
+        Integer pageStart = FacesUtil.var("pageStart", Integer.class);
+        Integer pageSize = FacesUtil.var("pageSize", Integer.class);
+
+        if (filterCriteria != null) {
+            Criterion criterion = build(filterCriteria);
+            criteria.add(criterion);
+        }
+        if (pageStart != null) {
+            criteria.setFirstResult(pageStart);
+            criteria.setMaxResults(pageSize);
+        }
+        if (sortColumnId != null)
+            criteria.addOrder(sortAscending ? Order.asc(sortColumnId) : Order.desc(sortColumnId));
     }
 
     public Object process(ExpressionFilterCriterion criterion) {
