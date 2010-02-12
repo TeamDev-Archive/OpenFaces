@@ -1595,13 +1595,20 @@ O$.Tables = {
       if (column._explicitWidth == width)
         return;
       column._explicitWidth = width;
-      function calculateWidthCorrection(headerCell) {
-        if (headerCell._widthCorrection != undefined) return;
-        headerCell._widthCorrection = !headerCell ? 0 :
-                                  O$.getNumericElementStyle(headerCell, "padding-left", true) +
-                                  O$.getNumericElementStyle(headerCell, "padding-right", true) +
-                                  O$.getNumericElementStyle(headerCell, "border-left-width", true) +
-                                  O$.getNumericElementStyle(headerCell, "border-right-width", true);
+
+      var tableWidth = null;
+      function getTableWidth() {
+        if (tableWidth == null)
+          tableWidth = O$.getElementSize(table).width;
+        return tableWidth;
+      };
+      function calculateWidthCorrection(cell) {
+        if (cell._widthCorrection != undefined) return;
+        cell._widthCorrection = !cell ? 0 :
+                                  O$.getNumericElementStyle(cell, "padding-left", true, getTableWidth) +
+                                  O$.getNumericElementStyle(cell, "padding-right", true, getTableWidth) +
+                                  O$.getNumericElementStyle(cell, "border-left-width", true, getTableWidth) +
+                                  O$.getNumericElementStyle(cell, "border-right-width", true, getTableWidth);
       }
       var headerCell = (column.header && column.header._cell) || (column.subHeader && column.subHeader._cell);
       var bodyCell = column.body._cells[0];
@@ -1628,7 +1635,7 @@ O$.Tables = {
           if (col._section == tableSection)
             colTag = col;
         });
-        if (colTag) O$.setElementWidth(colTag, widthForCol);
+        if (colTag) O$.setElementWidth(colTag, widthForCol, getTableWidth);
       }
       setWidth(this._headerCellsClass.classObj, this._headerColClass.classObj, headerCell, table.header);
       setWidth(this._bodyCellsClass.classObj, this._bodyColClass.classObj, bodyCell, table.body);
@@ -2049,6 +2056,18 @@ O$.Tables = {
 
     var delayedInitFunctions = [];
     var mainScrollingArea = table.body._centerScrollingArea;
+
+    function useWidthAttribute() {
+      // .o_scrollable_table CSS class has width: 100%
+      var explicitWidth = table.getAttribute("width");
+      if (explicitWidth) {
+        var intValue = parseInt(explicitWidth);
+        if (!isNaN(intValue))
+          explicitWidth = intValue + "px";
+        table.style.width = explicitWidth;
+      }
+    }
+    useWidthAttribute();
 
     function alignColumnWidths() {
       var firstSection = table.header ? table.header : table.body;

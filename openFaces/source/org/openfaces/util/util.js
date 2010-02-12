@@ -3639,19 +3639,20 @@ if (!window.O$) {
       element.style.height = height + "px";
   };
 
-  O$._setElementWidthOrHeight = function(element, property, edge1Property, edge2Property, value, _paddingsHaveBeenReset) {
+  O$._setElementWidthOrHeight = function(element, property, edge1Property, edge2Property, value, hundredPercentValue, _paddingsHaveBeenReset) {
+    // hundredPercentValue is required to handle percent-based paddings in O$.getNumericElementStyle
     if (!_paddingsHaveBeenReset)
       O$.excludeClassNames(element, ["o_zeroPaddings"]);
     if (!O$.isExplorer() || O$.isStrictMode()) {
       if (value != null) {
-        value -= O$.getNumericElementStyle(element, "padding-" + edge1Property) + O$.getNumericElementStyle(element, "padding-" + edge2Property);
-        value -= O$.getNumericElementStyle(element, "border-" + edge1Property + "-width") + O$.getNumericElementStyle(element, "border-" + edge2Property + "-width");
+        value -= O$.getNumericElementStyle(element, "padding-" + edge1Property, false, hundredPercentValue) + O$.getNumericElementStyle(element, "padding-" + edge2Property, false, hundredPercentValue);
+        value -= O$.getNumericElementStyle(element, "border-" + edge1Property + "-width", false, hundredPercentValue) + O$.getNumericElementStyle(element, "border-" + edge2Property + "-width", false, hundredPercentValue);
       }
     }
     if (!_paddingsHaveBeenReset && (value < 0)) {
       // make it possible to specify element rectangle less than the size of element's paddings
       O$.appendClassNames(element, ["o_zeroPaddings"]);
-      O$._setElementWidthOrHeight(element, property, value, true);
+      O$._setElementWidthOrHeight(element, property, value, hundredPercentValue, true);
       return;
     }
     if (value < 0)
@@ -3660,12 +3661,12 @@ if (!window.O$) {
       element.style[property] = value + "px";
   };
 
-  O$.setElementWidth = function(element, value) {
-    O$._setElementWidthOrHeight(element, "width", "left", "right", value);
+  O$.setElementWidth = function(element, value, hundredPercentValue) {
+    O$._setElementWidthOrHeight(element, "width", "left", "right", value, hundredPercentValue);
   };
 
-  O$.setElementHeight = function(element, value) {
-    O$._setElementWidthOrHeight(element, "height", "top", "bottom", value);
+  O$.setElementHeight = function(element, value, hundredPercentValue) {
+    O$._setElementWidthOrHeight(element, "height", "top", "bottom", value, hundredPercentValue);
   };
 
 
@@ -3857,7 +3858,7 @@ if (!window.O$) {
     return rect.containsPoint(cursorPos.x, cursorPos.y);
   };
 
-  O$.getNumericElementStyle = function(element, propertyName, enableValueCaching) {
+  O$.getNumericElementStyle = function(element, propertyName, enableValueCaching, hundredPercentValue) {
     var capitalizedPropertyName = O$._capitalizeCssPropertyName(propertyName);
     if (O$.stringStartsWith(capitalizedPropertyName, "border") && O$.stringEndsWith(capitalizedPropertyName, "Width")) {
       var borderName = capitalizedPropertyName.substring(0, capitalizedPropertyName.length - "Width".length);
@@ -3873,7 +3874,7 @@ if (!window.O$) {
       }
     }
     var str = O$.getElementStyle(element, propertyName, enableValueCaching);
-    var result = O$.calculateNumericCSSValue(str);
+    var result = O$.calculateNumericCSSValue(str, hundredPercentValue);
     return result;
   };
 
@@ -3903,6 +3904,8 @@ if (!window.O$) {
       return 0; // todo: can't calculate "auto" (e.g. from margin property) on a simulated border -- consider simulating such "non-border" values on other properties
     if (value.indexOf("%") == value.length - 1) {
       var val = value.substring(0, value.length - 1);
+      if (typeof hundredPercentValue == "function")
+        hundredPercentValue = hundredPercentValue();
       return val / 100.0 * hundredPercentValue;
     }
 
