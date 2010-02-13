@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module relativePaths="true" type="JAVA_MODULE" version="4">
-  <component name="BuildJarSettings">
-    <containerInfo>
-      <containerElement type="module" name="TeamDevComponents">
-        <attribute name="method" value="1" />
-        <attribute name="URI" value="/" />
-      </containerElement>
-    </containerInfo>
-    <setting name="jarUrl" value="file://" />
-    <setting name="buildJar" value="true" />
-    <setting name="mainClass" value="" />
-  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/classes" />
     <exclude-output />
@@ -21,12 +10,12 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="servlet-api" level="project" />
-    <orderEntry type="library" name="jstl" level="project" />
-    <orderEntry type="library" name="Facelets" level="project" />
-    <orderEntry type="library" name="portlet-api-lib" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="jstl" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Facelets" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="portlet-api-lib" level="project" />
     <orderEntry type="library" exported="" name="OpenFaces Dependencies" level="project" />
-    <orderEntry type="library" name="trinidad-stub" level="project" />
-    <orderEntry type="module-library">
+    <orderEntry type="library" scope="PROVIDED" name="trinidad-stub" level="project" />
+    <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../lib/portals/exoportal-stub.jar!/" />
@@ -35,7 +24,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="adf-faces" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="adf-faces" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -45,7 +34,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../lib/mojarra/jsf-api-1.2_12-b01.jar!/" />
@@ -54,10 +43,10 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="RichFaces" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="RichFaces" level="project" />
     <orderEntry type="library" name="JEE" level="project" />
-    <orderEntry type="library" name="Jsf-portlet bridge 1.2" level="project" />
-    <orderEntry type="module-library">
+    <orderEntry type="library" scope="PROVIDED" name="Jsf-portlet bridge 1.2" level="project" />
+    <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../lib/myfaces/myfaces-impl-1.2.3.jar!/" />
@@ -66,10 +55,10 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/apache/commons-logging-1.1.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/apache/commons-logging-1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -6,144 +6,18 @@
         <webroots>
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
-        <building>
-          <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/../../target/exploded/TestAppCoreWeb" />
-          <setting name="EXPLODED_ENABLED" value="false" />
-          <setting name="JAR_URL" value="file://" />
-          <setting name="JAR_ENABLED" value="false" />
-          <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
-        </building>
-        <packaging>
-          <containerElement type="module" name="TestAppCore">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-          <containerElement type="library" name="Facelets" level="project">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="&lt;N/A&gt;" />
-          </containerElement>
-          <containerElement type="library" name="OpenFaces Dependencies" level="project">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="RichFaces" level="project">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="Tomcat 6 with EJB" level="application_server_libraries">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="&lt;N/A&gt;" />
-          </containerElement>
-          <containerElement type="library" name="adf-faces" level="project">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="jstl" level="project">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="&lt;N/A&gt;" />
-          </containerElement>
-          <containerElement type="library" name="portlet-api-lib" level="project">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="&lt;N/A&gt;" />
-          </containerElement>
-          <containerElement type="library" name="servlet-api" level="project">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="&lt;N/A&gt;" />
-          </containerElement>
-          <containerElement type="library" name="tomahawk12-1.1.8" level="project">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="trinidad-stub" level="project">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="&lt;N/A&gt;" />
-          </containerElement>
-          <containerElement type="library" level="module">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-            <url>jar://$MODULE_DIR$/../../lib/portals/exoportal-stub.jar!/</url>
-          </containerElement>
-          <containerElement type="library" level="module">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-            <url>jar://$MODULE_DIR$/../../lib/jsf-ri/jsf-api-1.2_12-b01.jar!/</url>
-          </containerElement>
-          <containerElement type="library" level="module">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="&lt;N/A&gt;" />
-            <url>jar://$MODULE_DIR$/../../lib/jsp-api-2.1.jar!/</url>
-          </containerElement>
-          <containerElement type="library" level="module">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="&lt;N/A&gt;" />
-            <url>jar://$MODULE_DIR$/../../lib/jsp-api.jar!/</url>
-          </containerElement>
-          <containerElement type="library" level="module">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-            <url>jar://$MODULE_DIR$/../../lib/exoportal-stub.jar!/</url>
-          </containerElement>
-          <containerElement type="module" name="OpenFaces">
-            <attribute name="method" value="5" />
-            <attribute name="URI" value="/WEB-INF/lib/openfaces.jar" />
-          </containerElement>
-          <containerElement type="library" name="hibernate" level="project">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="JSF Implementation - Mojarra 1.2" level="project">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="PrimeFaces" level="project">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-        </packaging>
+        <context-artifact name="TestAppJsp:TestAppJsp exploded" />
       </configuration>
     </facet>
     <facet type="ejb" name="EJB">
       <configuration>
         <descriptors>
-          <deploymentDescriptor name="ejb-jar.xml" url="file://$MODULE_DIR$/source/META-INF/ejb-jar.xml" optional="false" version="3.0" />
+          <deploymentDescriptor name="ejb-jar.xml" url="file://$MODULE_DIR$/source/META-INF/ejb-jar.xml" />
         </descriptors>
         <ejbRoots>
           <root url="file://$MODULE_DIR$/source" />
         </ejbRoots>
-        <building>
-          <setting name="EXPLODED_URL" value="file://" />
-          <setting name="EXPLODED_ENABLED" value="false" />
-          <setting name="JAR_URL" value="file://" />
-          <setting name="JAR_ENABLED" value="false" />
-          <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
-          <setting name="RUN_EJB_VALIDATION" value="true" />
-        </building>
-        <packaging>
-          <containerElement type="library" name="JBoss Seam 2.1" level="project">
-            <attribute name="method" value="2" />
-            <attribute name="URI" value="/" />
-          </containerElement>
-          <containerElement type="library" name="Tomcat 6" level="application_server_libraries">
-            <attribute name="method" value="2" />
-            <attribute name="URI" value="/" />
-          </containerElement>
-          <containerElement type="library" name="JEE" level="project">
-            <attribute name="method" value="2" />
-            <attribute name="URI" value="/" />
-          </containerElement>
-          <containerElement type="library" name="servlet-api" level="project">
-            <attribute name="method" value="2" />
-            <attribute name="URI" value="/" />
-          </containerElement>
-          <containerElement type="library" name="hibernate" level="project">
-            <attribute name="method" value="2" />
-            <attribute name="URI" value="/" />
-          </containerElement>
-          <containerElement type="library" name="PrimeFaces" level="project">
-            <attribute name="method" value="2" />
-            <attribute name="URI" value="/" />
-          </containerElement>
-        </packaging>
+        <context-artifact name="TestAppCore:EJB exploded" />
       </configuration>
     </facet>
     <facet type="Seam" name="Seam">
@@ -161,9 +35,9 @@
     <orderEntry type="library" name="Tomcat 6" level="application_server_libraries" />
     <orderEntry type="library" exported="" name="tomahawk12-1.1.8" level="project" />
     <orderEntry type="library" exported="" name="JSF Implementation - Mojarra 1.2" level="project" />
-    <orderEntry type="library" exported="" name="jbpm-jpdl" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="jbpm-jpdl" level="project" />
     <orderEntry type="library" exported="" name="RichFaces" level="project" />
-    <orderEntry type="library" exported="" name="JBoss Seam 2.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="JBoss Seam 2.1" level="project" />
     <orderEntry type="module" module-name="OpenFaces" exported="" />
     <orderEntry type="library" name="JEE" level="project" />
     <orderEntry type="library" name="servlet-api" level="project" />

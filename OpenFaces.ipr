@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project relativePaths="true" version="4">
+<project version="4">
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
     <buildFile url="file://$PROJECT_DIR$/build.xml">
@@ -30,8 +30,198 @@
       <properties />
     </buildFile>
   </component>
-  <component name="BuildJarProjectSettings">
-    <option name="BUILD_JARS_ON_MAKE" value="false" />
+  <component name="ArtifactManager">
+    <artifact name="OpenFaces:jar">
+      <root id="root">
+        <element id="archive" name="OpenFaces.jar" />
+      </root>
+    </artifact>
+    <artifact type="exploded-war" name="LiveDemoFacelets:LiveDemoFacelets exploded">
+      <output-path>$PROJECT_DIR$/out/exploded/LiveDemoFacelets</output-path>
+      <root id="root">
+        <element id="javaee-facet-resources" facet="LiveDemoFacelets/web/LiveDemoFacelets" />
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="LiveDemoCore" />
+            <element id="module-output" name="LiveDemoFacelets" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="Facelets (without el-api.jar -- for Tomcat 6.0)" />
+          </element>
+        </element>
+        <element id="artifact" artifact-name="LiveDemoCore:LiveDemoCore exploded" />
+      </root>
+    </artifact>
+    <artifact name="PortletsJetspeedMyFacesGenericPortlet:PortletsJetspeedMyFacesGenericPortlet exploded">
+      <root id="root">
+        <element id="javaee-facet-resources" facet="PortletsJetspeedMyFacesGenericPortlet/web/PortletsJetspeedMyFacesGenericPortlet" />
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="PortletsCommon" />
+            <element id="module-output" name="PortletsJetspeedMyFacesGenericPortlet" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="JSF Implementation - MyFaces 1.2" />
+          </element>
+        </element>
+        <element id="artifact" artifact-name="PortletsCommon:PortletsCommon exploded" />
+      </root>
+    </artifact>
+    <artifact name="LiveDemoCore:LiveDemoCore exploded">
+      <root id="root">
+        <element id="javaee-facet-resources" facet="LiveDemoCore/web/LiveDemoCore" />
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="LiveDemoCore" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
+            <element id="archive" name="openfaces.jar">
+              <element id="module-output" name="OpenFaces" />
+            </element>
+            <element id="library" level="project" name="OpenFaces Dependencies" />
+            <element id="library" level="project" name="commons-lang" />
+          </element>
+        </element>
+      </root>
+    </artifact>
+    <artifact type="exploded-war" name="TestAppJsp:TestAppJsp exploded">
+      <output-path>$PROJECT_DIR$/out/exploded/TestAppJsp</output-path>
+      <root id="root">
+        <element id="javaee-facet-resources" facet="TestAppJsp/web/TestAppJsp" />
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="TestAppCore" />
+            <element id="module-output" name="TestAppJsp" />
+          </element>
+        </element>
+        <element id="artifact" artifact-name="TestAppCore:TestAppCore exploded" />
+      </root>
+    </artifact>
+    <artifact name="PortletsJBossPortal:PortletsJBossPortal exploded">
+      <root id="root">
+        <element id="javaee-facet-resources" facet="PortletsJBossPortal/web/PortletsJBossPortal" />
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="lib">
+            <element id="archive" name="quipukit-portlets.jar">
+              <element id="module-output" name="PortletBridge" />
+            </element>
+            <element id="library" level="project" name="jboss portlet brige" />
+            <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
+          </element>
+          <element id="directory" name="classes">
+            <element id="module-output" name="PortletsCommon" />
+            <element id="module-output" name="PortletsJBossPortal" />
+          </element>
+        </element>
+        <element id="artifact" artifact-name="PortletsCommon:PortletsCommon exploded" />
+      </root>
+    </artifact>
+    <artifact type="exploded-ejb" name="TestAppCore:EJB exploded">
+      <root id="root">
+        <element id="javaee-facet-resources" facet="TestAppCore/ejb/EJB" />
+        <element id="module-output" name="TestAppCore" />
+      </root>
+    </artifact>
+    <artifact name="PortletsLiferay:PortletsLiferay exploded">
+      <root id="root">
+        <element id="javaee-facet-resources" facet="PortletsLiferay/web/PortletsLiferay" />
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="PortletsCommon" />
+            <element id="module-output" name="PortletsLiferay" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="Jsf-portlet bridge 1.2" />
+            <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
+            <element id="library" level="project" name="el" />
+          </element>
+        </element>
+        <element id="artifact" artifact-name="PortletsCommon:PortletsCommon exploded" />
+      </root>
+    </artifact>
+    <artifact type="exploded-war" name="TestAppFacelets:TestAppFacelets exploded">
+      <output-path>$PROJECT_DIR$/out/exploded/TestAppFacelets</output-path>
+      <root id="root">
+        <element id="javaee-facet-resources" facet="TestAppFacelets/web/TestAppFacelets" />
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="TestAppCore" />
+            <element id="module-output" name="TestAppFacelets" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="Facelets (without el-api.jar -- for Tomcat 6.0)" />
+          </element>
+        </element>
+        <element id="artifact" artifact-name="TestAppCore:TestAppCore exploded" />
+      </root>
+    </artifact>
+    <artifact type="exploded-war" name="LiveDemoJsp:LiveDemoJsp exploded">
+      <output-path>$PROJECT_DIR$/out/exploded/LiveDemoJsp</output-path>
+      <root id="root">
+        <element id="javaee-facet-resources" facet="LiveDemoJsp/web/LiveDemoJsp" />
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="LiveDemoCore" />
+            <element id="module-output" name="LiveDemoJsp" />
+          </element>
+        </element>
+        <element id="artifact" artifact-name="LiveDemoCore:LiveDemoCore exploded" />
+      </root>
+    </artifact>
+    <artifact name="PortletsCommon:PortletsCommon exploded">
+      <root id="root">
+        <element id="javaee-facet-resources" facet="PortletsCommon/web/PortletsCommon" />
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="PortletsCommon" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="OpenFaces Dependencies" />
+            <element id="archive" name="OpenFaces.jar">
+              <element id="module-output" name="OpenFaces" />
+            </element>
+          </element>
+        </element>
+      </root>
+    </artifact>
+    <artifact name="PortletsJetspeedRegular:PortletsJetspeedRegular exploded">
+      <root id="root">
+        <element id="javaee-facet-resources" facet="PortletsJetspeedRegular/web/PortletsJetspeedRegular" />
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="PortletsCommon" />
+            <element id="module-output" name="PortletsJetspeedRegular" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="portals-bridges-jsf-1.0" />
+            <element id="library" level="project" name="JSF Implementation - MyFaces 1.2" />
+          </element>
+        </element>
+        <element id="artifact" artifact-name="PortletsCommon:PortletsCommon exploded" />
+      </root>
+    </artifact>
+    <artifact name="TestAppCore:TestAppCore exploded">
+      <root id="root">
+        <element id="javaee-facet-resources" facet="TestAppCore/web/TestAppCore" />
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="TestAppCore" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="OpenFaces Dependencies" />
+            <element id="library" level="project" name="RichFaces" />
+            <element id="library" level="project" name="tomahawk12-1.1.8" />
+            <element id="archive" name="openfaces.jar">
+              <element id="module-output" name="OpenFaces" />
+            </element>
+            <element id="library" level="project" name="hibernate" />
+            <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
+            <element id="library" level="project" name="PrimeFaces" />
+          </element>
+        </element>
+      </root>
+    </artifact>
   </component>
   <component name="CodeStyleProjectProfileManger">
     <option name="PROJECT_PROFILE" />
@@ -53,7 +243,6 @@
         </option>
         <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="10" />
         <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="5" />
-        <option name="OPTIMIZE_IMPORTS_ON_THE_FLY" value="true" />
         <ADDITIONAL_INDENT_OPTIONS fileType="java">
           <option name="INDENT_SIZE" value="4" />
           <option name="CONTINUATION_INDENT_SIZE" value="8" />
@@ -99,13 +288,21 @@
           <option name="LABEL_INDENT_SIZE" value="0" />
           <option name="LABEL_INDENT_ABSOLUTE" value="false" />
         </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="yml">
+          <option name="INDENT_SIZE" value="2" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
       </value>
     </option>
     <option name="USE_PER_PROJECT_SETTINGS" value="true" />
   </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
-    <option name="DEPLOY_AFTER_MAKE" value="1" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -128,11 +325,13 @@
       <entry name="?*.sql" />
       <entry name="?*.dll" />
     </wildcardResourcePatterns>
+    <annotationProcessing enabled="false" useClasspath="true" />
   </component>
   <component name="CopyrightManager" default="OpenFaces">
     <copyright>
       <option name="notice" value="OpenFaces - JSF Component Library 2.0&#10;Copyright (C) 2007-&amp;#36;today.year, TeamDev Ltd.&#10;licensing@openfaces.org&#10;Unless agreed in writing the contents of this file are subject to &#10;the GNU Lesser General Public License Version 2.1 (the &quot;LGPL&quot; License).&#10;This library is distributed in the hope that it will be useful, but &#10;WITHOUT ANY WARRANTY; without even the implied warranty of &#10;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. &#10;Please visit http://openfaces.org/licensing/ for more details." />
       <option name="keyword" value="Copyright" />
+      <option name="allowReplaceKeyword" value="" />
       <option name="myName" value="OpenFaces" />
       <option name="myLocal" value="true" />
     </copyright>
@@ -327,9 +526,6 @@
   </component>
   <component name="IdProvider" IDEtalkID="7DCFFF1BB155249E86D4FC0C56321656" />
   <component name="InspectionProjectProfileManager">
-    <option name="PROJECT_PROFILE" value="Project Default" />
-    <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
-    <scopes />
     <profiles>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Project Default" />
@@ -339,191 +535,70 @@
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Standard Inspections" />
         <option name="myLocal" value="false" />
-        <inspection_tool class="SimplifiableIfStatement" level="WARNING" enabled="false" />
-        <inspection_tool class="InstanceofChain" level="WARNING" enabled="true" />
-        <inspection_tool class="ClassReferencesSubclass" level="WARNING" enabled="true" />
-        <inspection_tool class="DeclareCollectionAsInterface" level="WARNING" enabled="true">
+        <inspection_tool class="AbstractMethodCallInConstructor" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="AbstractMethodOverridesAbstractMethod" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="AbstractMethodOverridesConcreteMethod" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="AssignmentToCollectionFieldFromParameter" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignorePrivateMethods" value="true" />
+        </inspection_tool>
+        <inspection_tool class="AssignmentToDateFieldFromParameter" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignorePrivateMethods" value="true" />
+        </inspection_tool>
+        <inspection_tool class="AssignmentToMethodParameter" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreTransformationOfOriginalParameter" value="false" />
+        </inspection_tool>
+        <inspection_tool class="AssignmentToStaticFieldFromInstanceMethod" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="AssignmentUsedAsCondition" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="CStyleArrayDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="CallToStringConcatCanBeReplacedByOperator" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ChainedEquality" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ClassReferencesSubclass" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ClassUnconnectedToPackage" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ClassWithMultipleLoggers" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="loggerClassName" value="java.util.logging.Logger" />
+        </inspection_tool>
+        <inspection_tool class="ClassWithTooManyDependencies" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="limit" value="10" />
+        </inspection_tool>
+        <inspection_tool class="CloneCallsConstructors" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="CloneInNonCloneableClass" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="CloneableImplementsClone" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_ignoreCloneableDueToInheritance" value="false" />
+        </inspection_tool>
+        <inspection_tool class="CollectionContainsUrl" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="CollectionsFieldAccessReplaceableByMethodCall" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ConstantValueVariableUse" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="CyclicClassDependency" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="CyclicPackageDependency" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="DateToString" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="DeclareCollectionAsInterface" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreLocalVariables" value="false" />
           <option name="ignorePrivateMethodsAndFields" value="false" />
         </inspection_tool>
-        <inspection_tool class="InstanceofThis" level="WARNING" enabled="true" />
-        <inspection_tool class="OverlyStrongTypeCast" level="WARNING" enabled="true">
-          <option name="ignoreInMatchingInstanceof" value="false" />
-        </inspection_tool>
-        <inspection_tool class="MethodOnlyUsedFromInnerClass" level="WARNING" enabled="true">
-          <option name="ignoreMethodsAccessedFromAnonymousClass" value="true" />
-        </inspection_tool>
-        <inspection_tool class="EmptyClass" level="WARNING" enabled="true" />
-        <inspection_tool class="MissingOverrideAnnotation" level="WARNING" enabled="true" />
-        <inspection_tool class="MissingDeprecatedAnnotation" level="WARNING" enabled="true" />
-        <inspection_tool class="NoopMethodInAbstractClass" level="WARNING" enabled="true" />
-        <inspection_tool class="UtilityClassWithPublicConstructor" level="WARNING" enabled="true" />
-        <inspection_tool class="UtilityClassWithoutPrivateConstructor" level="WARNING" enabled="true">
-          <option name="ignoreClassesWithOnlyMain" value="false" />
-        </inspection_tool>
-        <inspection_tool class="CloneCallsConstructors" level="WARNING" enabled="true" />
-        <inspection_tool class="CloneInNonCloneableClass" level="WARNING" enabled="true" />
-        <inspection_tool class="CloneableImplementsClone" level="WARNING" enabled="true">
-          <option name="m_ignoreCloneableDueToInheritance" value="false" />
-        </inspection_tool>
-        <inspection_tool class="ThrowablePrintStackTrace" level="WARNING" enabled="true" />
-        <inspection_tool class="ObsoleteCollection" level="WARNING" enabled="true">
-          <option name="ignoreLibraryArguments" value="false" />
-        </inspection_tool>
-        <inspection_tool class="SystemOutErr" level="WARNING" enabled="true" />
-        <inspection_tool class="CStyleArrayDeclaration" level="WARNING" enabled="true" />
-        <inspection_tool class="CallToStringConcatCanBeReplacedByOperator" level="WARNING" enabled="true" />
-        <inspection_tool class="ChainedEquality" level="WARNING" enabled="true" />
-        <inspection_tool class="FieldMayBeFinal" level="WARNING" enabled="true" />
-        <inspection_tool class="ListIndexOfReplaceableByContains" level="WARNING" enabled="true" />
-        <inspection_tool class="MissortedModifiers" level="WARNING" enabled="true">
-          <option name="m_requireAnnotationsFirst" value="true" />
-        </inspection_tool>
-        <inspection_tool class="MultipleDeclaration" level="WARNING" enabled="true" />
-        <inspection_tool class="RedundantFieldInitialization" level="WARNING" enabled="true" />
-        <inspection_tool class="RedundantImplements" level="WARNING" enabled="true" />
-        <inspection_tool class="UnnecessaryConstructor" level="WARNING" enabled="true" />
-        <inspection_tool class="UnnecessaryCallToStringValueOf" level="WARNING" enabled="true" />
-        <inspection_tool class="UnnecessaryFullyQualifiedName" level="WARNING" enabled="true">
-          <option name="m_ignoreJavadoc" value="false" />
-        </inspection_tool>
-        <inspection_tool class="DoubleNegation" level="WARNING" enabled="true" />
-        <inspection_tool class="DuplicateCondition" level="WARNING" enabled="true">
+        <inspection_tool class="DisjointPackage" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="DoubleNegation" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="DuplicateCondition" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreMethodCalls" value="false" />
         </inspection_tool>
-        <inspection_tool class="EnumSwitchStatementWhichMissesCases" level="WARNING" enabled="true">
-          <option name="ignoreSwitchStatementsWithDefault" value="false" />
-        </inspection_tool>
-        <inspection_tool class="LabeledStatement" level="WARNING" enabled="true" />
-        <inspection_tool class="SwitchStatementWithConfusingDeclaration" level="WARNING" enabled="true" />
-        <inspection_tool class="NestedSwitchStatement" level="WARNING" enabled="true" />
-        <inspection_tool class="OverlyComplexBooleanExpression" level="WARNING" enabled="true">
-          <option name="m_limit" value="3" />
-          <option name="m_ignorePureConjunctionsDisjunctions" value="true" />
-        </inspection_tool>
-        <inspection_tool class="SwitchStatementWithTooFewBranches" level="WARNING" enabled="true">
-          <option name="m_limit" value="2" />
-        </inspection_tool>
-        <inspection_tool class="ReuseOfLocalVariable" level="WARNING" enabled="true" />
-        <inspection_tool class="TooBroadScope" level="WARNING" enabled="true">
-          <option name="m_allowConstructorAsInitializer" value="false" />
-          <option name="m_onlyLookAtBlocks" value="false" />
-        </inspection_tool>
-        <inspection_tool class="ConstantValueVariableUse" level="WARNING" enabled="true" />
-        <inspection_tool class="RedundantSuppression" level="WARNING" enabled="true" />
-        <inspection_tool class="RedundantThrowsDeclaration" level="WARNING" enabled="true" />
-        <inspection_tool class="UnusedLibrary" level="WARNING" enabled="true" />
-        <inspection_tool class="ClassWithTooManyDependencies" level="WARNING" enabled="true">
-          <option name="limit" value="10" />
-        </inspection_tool>
-        <inspection_tool class="CyclicClassDependency" level="WARNING" enabled="true" />
-        <inspection_tool class="CyclicPackageDependency" level="WARNING" enabled="true" />
-        <inspection_tool class="ProtectedInnerClass" level="WARNING" enabled="true" />
-        <inspection_tool class="PublicField" level="WARNING" enabled="true">
-          <option name="ignoreEnums" value="false" />
-        </inspection_tool>
-        <inspection_tool class="ReturnOfDateField" level="WARNING" enabled="true" />
-        <inspection_tool class="ReturnOfCollectionField" level="WARNING" enabled="true">
-          <option name="ignorePrivateMethods" value="true" />
-        </inspection_tool>
-        <inspection_tool class="InstanceofCatchParameter" level="WARNING" enabled="true" />
-        <inspection_tool class="NestedTryStatement" level="WARNING" enabled="true" />
-        <inspection_tool class="UnnecessaryLocalVariable" level="WARNING" enabled="false">
-          <option name="m_ignoreImmediatelyReturnedVariables" value="false" />
-          <option name="m_ignoreAnnotatedVariables" value="false" />
-        </inspection_tool>
-        <inspection_tool class="PublicStaticArrayField" level="WARNING" enabled="true" />
-        <inspection_tool class="PublicStaticCollectionField" level="WARNING" enabled="true" />
-        <inspection_tool class="StringBufferReplaceableByString" level="WARNING" enabled="true" />
-        <inspection_tool class="InnerClassMayBeStatic" level="WARNING" enabled="true" />
-        <inspection_tool class="KeySetIterationMayUseEntrySet" level="WARNING" enabled="true" />
-        <inspection_tool class="CollectionContainsUrl" level="WARNING" enabled="true" />
-        <inspection_tool class="MapReplaceableByEnumMap" level="WARNING" enabled="true" />
-        <inspection_tool class="SizeReplaceableByIsEmpty" level="WARNING" enabled="true">
-          <option name="ignoreNegations" value="false" />
-        </inspection_tool>
-        <inspection_tool class="StringEqualsEmptyString" level="WARNING" enabled="true" />
-        <inspection_tool class="StringBufferMustHaveInitialCapacity" level="WARNING" enabled="true" />
-        <inspection_tool class="StringBufferReplaceableByStringBuilder" level="WARNING" enabled="true" />
-        <inspection_tool class="TrivialStringConcatenation" level="WARNING" enabled="true" />
-        <inspection_tool class="EqualsHashCodeCalledOnUrl" level="WARNING" enabled="true" />
-        <inspection_tool class="ParametersPerConstructor" level="WARNING" enabled="true">
-          <option name="m_limit" value="5" />
-        </inspection_tool>
-        <inspection_tool class="MethodWithMultipleLoops" level="WARNING" enabled="true" />
-        <inspection_tool class="ThrownExceptionsPerMethod" level="WARNING" enabled="true">
-          <option name="m_limit" value="3" />
-        </inspection_tool>
-        <inspection_tool class="ParametersPerMethod" level="WARNING" enabled="true">
-          <option name="m_limit" value="5" />
-        </inspection_tool>
-        <inspection_tool class="NestingDepth" level="WARNING" enabled="true">
-          <option name="m_limit" value="5" />
-        </inspection_tool>
-        <inspection_tool class="SystemGC" level="WARNING" enabled="true" />
-        <inspection_tool class="ZeroLengthArrayInitialization" level="WARNING" enabled="true" />
-        <inspection_tool class="StaticCollection" level="WARNING" enabled="true">
-          <option name="m_ignoreWeakCollections" value="false" />
-        </inspection_tool>
-        <inspection_tool class="ClassWithMultipleLoggers" level="WARNING" enabled="true">
-          <option name="loggerClassName" value="java.util.logging.Logger" />
-        </inspection_tool>
-        <inspection_tool class="LoggerInitializedWithForeignClass" level="WARNING" enabled="true">
-          <option name="loggerClassName" value="org.apache.log4j.Logger" />
-          <option name="loggerFactoryMethodName" value="getLogger" />
-        </inspection_tool>
-        <inspection_tool class="LoggingConditionDisagreesWithLogStatement" level="WARNING" enabled="true" />
-        <inspection_tool class="NonStaticFinalLogger" level="WARNING" enabled="true">
-          <option name="loggerClassName" value="java.util.logging.Logger" />
-        </inspection_tool>
-        <inspection_tool class="SubstringZero" level="WARNING" enabled="true" />
-        <inspection_tool class="StringReplaceableByStringBuffer" level="WARNING" enabled="true">
-          <option name="onlyWarnOnLoop" value="true" />
-        </inspection_tool>
-        <inspection_tool class="SetReplaceableByEnumSet" level="WARNING" enabled="true" />
-        <inspection_tool class="LengthOneStringsInConcatenation" level="WARNING" enabled="true" />
-        <inspection_tool class="StringBufferToStringInConcatenation" level="WARNING" enabled="true" />
-        <inspection_tool class="ExtendsUtilityClass" level="WARNING" enabled="true" />
-        <inspection_tool class="AbstractMethodOverridesConcreteMethod" level="WARNING" enabled="true" />
-        <inspection_tool class="AbstractMethodOverridesAbstractMethod" level="WARNING" enabled="true" />
-        <inspection_tool class="RedundantMethodOverride" level="WARNING" enabled="true" />
-        <inspection_tool class="NonProtectedConstructorInAbstractClass" level="WARNING" enabled="true">
-          <option name="m_ignoreNonPublicClasses" value="false" />
-        </inspection_tool>
-        <inspection_tool class="StaticInheritance" level="WARNING" enabled="true" />
-        <inspection_tool class="AbstractMethodCallInConstructor" level="WARNING" enabled="true" />
-        <inspection_tool class="InstanceVariableUninitializedUse" level="WARNING" enabled="true">
-          <option name="m_ignorePrimitives" value="false" />
-        </inspection_tool>
-        <inspection_tool class="NonFinalStaticVariableUsedInClassInitialization" level="WARNING" enabled="true" />
-        <inspection_tool class="OverridableMethodCallDuringObjectConstruction" level="WARNING" enabled="true" />
-        <inspection_tool class="OverriddenMethodCallDuringObjectConstruction" level="WARNING" enabled="true" />
-        <inspection_tool class="StaticVariableInitialization" level="WARNING" enabled="true">
-          <option name="m_ignorePrimitives" value="false" />
-        </inspection_tool>
-        <inspection_tool class="StaticVariableUninitializedUse" level="WARNING" enabled="true">
-          <option name="m_ignorePrimitives" value="false" />
-        </inspection_tool>
-        <inspection_tool class="NonThreadSafeLazyInitialization" level="WARNING" enabled="true" />
-        <inspection_tool class="DateToString" level="WARNING" enabled="true" />
-        <inspection_tool class="StringCompareTo" level="WARNING" enabled="true" />
-        <inspection_tool class="TimeToString" level="WARNING" enabled="true" />
-        <inspection_tool class="NumericToString" level="WARNING" enabled="true" />
-        <inspection_tool class="StringEquals" level="WARNING" enabled="true" />
-        <inspection_tool class="StringEqualsIgnoreCase" level="WARNING" enabled="true" />
-        <inspection_tool class="StringToUpperWithoutLocale" level="WARNING" enabled="true" />
-        <inspection_tool class="DuplicatePropertyInspection" level="WARNING" enabled="true">
+        <inspection_tool class="DuplicatePropertyInspection" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="CURRENT_FILE" value="true" />
           <option name="MODULE_WITH_DEPENDENCIES" value="false" />
           <option name="CHECK_DUPLICATE_VALUES" value="true" />
           <option name="CHECK_DUPLICATE_KEYS" value="true" />
           <option name="CHECK_DUPLICATE_KEYS_WITH_DIFFERENT_VALUES" value="true" />
         </inspection_tool>
-        <inspection_tool class="DuplicateStringLiteralInspection" level="WARNING" enabled="true">
+        <inspection_tool class="DuplicateStringLiteralInspection" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="MIN_STRING_LENGTH" value="5" />
           <option name="IGNORE_PROPERTY_KEYS" value="false" />
         </inspection_tool>
-        <inspection_tool class="HardCodedStringLiteral" level="WARNING" enabled="false">
+        <inspection_tool class="EmptyClass" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="EnumSwitchStatementWhichMissesCases" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreSwitchStatementsWithDefault" value="false" />
+        </inspection_tool>
+        <inspection_tool class="EqualsHashCodeCalledOnUrl" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ExtendsUtilityClass" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="FieldMayBeFinal" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="HardCodedStringLiteral" enabled="false" level="WARNING" enabled_by_default="false">
           <option name="ignoreForAssertStatements" value="true" />
           <option name="ignoreForExceptionConstructors" value="true" />
           <option name="ignoreForSpecifiedExceptionConstructors" value="java.lang.RuntimeException,com.teamdev.pagediff.project.FormatException" />
@@ -535,46 +610,169 @@
           <option name="ignoreToString" value="true" />
           <option name="nonNlsCommentPattern" value="NON-NLS" />
         </inspection_tool>
-        <inspection_tool class="CollectionsFieldAccessReplaceableByMethodCall" level="WARNING" enabled="true" />
-        <inspection_tool class="IndexOfReplaceableByContains" level="WARNING" enabled="true" />
-        <inspection_tool class="RawUseOfParameterizedType" level="WARNING" enabled="true">
+        <inspection_tool class="IndexOfReplaceableByContains" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="InnerClassMayBeStatic" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="InstanceVariableUninitializedUse" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_ignorePrimitives" value="false" />
+        </inspection_tool>
+        <inspection_tool class="InstanceofCatchParameter" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="InstanceofChain" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="InstanceofThis" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="JavaLangImport" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="KeySetIterationMayUseEntrySet" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="LabeledStatement" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="LengthOneStringsInConcatenation" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ListIndexOfReplaceableByContains" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="LoggerInitializedWithForeignClass" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="loggerClassName" value="org.apache.log4j.Logger" />
+          <option name="loggerFactoryMethodName" value="getLogger" />
+        </inspection_tool>
+        <inspection_tool class="LoggingConditionDisagreesWithLogStatement" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="MapReplaceableByEnumMap" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="MethodOnlyUsedFromInnerClass" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreMethodsAccessedFromAnonymousClass" value="true" />
+        </inspection_tool>
+        <inspection_tool class="MethodWithMultipleLoops" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="MissingDeprecatedAnnotation" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="MissingOverrideAnnotation" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="MissortedModifiers" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_requireAnnotationsFirst" value="true" />
+        </inspection_tool>
+        <inspection_tool class="MultipleDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="NestedSwitchStatement" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="NestedTryStatement" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="NestingDepth" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_limit" value="5" />
+        </inspection_tool>
+        <inspection_tool class="NonFinalStaticVariableUsedInClassInitialization" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="NonProtectedConstructorInAbstractClass" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_ignoreNonPublicClasses" value="false" />
+        </inspection_tool>
+        <inspection_tool class="NonStaticFinalLogger" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="loggerClassName" value="java.util.logging.Logger" />
+        </inspection_tool>
+        <inspection_tool class="NonThreadSafeLazyInitialization" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="NoopMethodInAbstractClass" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="NumericToString" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ObsoleteCollection" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreLibraryArguments" value="false" />
+        </inspection_tool>
+        <inspection_tool class="OverlyComplexBooleanExpression" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_limit" value="3" />
+          <option name="m_ignorePureConjunctionsDisjunctions" value="true" />
+        </inspection_tool>
+        <inspection_tool class="OverlyStrongTypeCast" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreInMatchingInstanceof" value="false" />
+        </inspection_tool>
+        <inspection_tool class="OverridableMethodCallDuringObjectConstruction" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="OverriddenMethodCallDuringObjectConstruction" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="PackageWithTooFewClasses" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="limit" value="3" />
+        </inspection_tool>
+        <inspection_tool class="ParametersPerConstructor" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_limit" value="5" />
+        </inspection_tool>
+        <inspection_tool class="ParametersPerMethod" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_limit" value="5" />
+        </inspection_tool>
+        <inspection_tool class="ProtectedInnerClass" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreEnums" value="false" />
+        </inspection_tool>
+        <inspection_tool class="PublicField" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreEnums" value="false" />
+        </inspection_tool>
+        <inspection_tool class="PublicStaticArrayField" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="PublicStaticCollectionField" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="RawUseOfParameterizedType" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignoreObjectConstruction" value="true" />
           <option name="ignoreTypeCasts" value="false" />
         </inspection_tool>
-        <inspection_tool class="DisjointPackage" level="WARNING" enabled="true" />
-        <inspection_tool class="PackageWithTooFewClasses" level="WARNING" enabled="true">
-          <option name="limit" value="3" />
+        <inspection_tool class="RedundantFieldInitialization" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="RedundantImplements" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreSerializable" value="false" />
+          <option name="ignoreCloneable" value="false" />
         </inspection_tool>
-        <inspection_tool class="ClassUnconnectedToPackage" level="WARNING" enabled="true" />
-        <inspection_tool class="SamePackageImport" level="WARNING" enabled="true" />
-        <inspection_tool class="JavaLangImport" level="WARNING" enabled="true" />
-        <inspection_tool class="RedundantImport" level="WARNING" enabled="true" />
-        <inspection_tool class="AssignmentToCollectionFieldFromParameter" level="WARNING" enabled="true">
+        <inspection_tool class="RedundantImport" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="RedundantMethodOverride" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="RedundantSuppression" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="RedundantThrowsDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ReturnOfCollectionField" enabled="true" level="WARNING" enabled_by_default="true">
           <option name="ignorePrivateMethods" value="true" />
         </inspection_tool>
-        <inspection_tool class="AssignmentToDateFieldFromParameter" level="WARNING" enabled="true">
-          <option name="ignorePrivateMethods" value="true" />
+        <inspection_tool class="ReturnOfDateField" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ReuseOfLocalVariable" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="SamePackageImport" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="SetReplaceableByEnumSet" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="SimplifiableIfStatement" enabled="false" level="WARNING" enabled_by_default="false" />
+        <inspection_tool class="SizeReplaceableByIsEmpty" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreNegations" value="false" />
         </inspection_tool>
-        <inspection_tool class="AssignmentToMethodParameter" level="WARNING" enabled="true">
-          <option name="ignoreTransformationOfOriginalParameter" value="false" />
+        <inspection_tool class="StaticCollection" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_ignoreWeakCollections" value="false" />
         </inspection_tool>
-        <inspection_tool class="AssignmentToStaticFieldFromInstanceMethod" level="WARNING" enabled="true" />
-        <inspection_tool class="AssignmentUsedAsCondition" level="WARNING" enabled="true" />
+        <inspection_tool class="StaticInheritance" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="StaticVariableInitialization" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_ignorePrimitives" value="false" />
+        </inspection_tool>
+        <inspection_tool class="StaticVariableUninitializedUse" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_ignorePrimitives" value="false" />
+        </inspection_tool>
+        <inspection_tool class="StringBufferMustHaveInitialCapacity" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="StringBufferReplaceableByString" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="StringBufferReplaceableByStringBuilder" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="StringBufferToStringInConcatenation" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="StringCompareTo" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="StringEquals" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="StringEqualsEmptyString" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="StringEqualsIgnoreCase" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="StringReplaceableByStringBuffer" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="onlyWarnOnLoop" value="true" />
+        </inspection_tool>
+        <inspection_tool class="StringToUpperWithoutLocale" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="SubstringZero" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="SwitchStatementWithConfusingDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="SwitchStatementWithTooFewBranches" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_limit" value="2" />
+        </inspection_tool>
+        <inspection_tool class="SystemGC" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="SystemOutErr" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ThrowablePrintStackTrace" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="ThrownExceptionsPerMethod" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_limit" value="3" />
+        </inspection_tool>
+        <inspection_tool class="TimeToString" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="TooBroadScope" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_allowConstructorAsInitializer" value="false" />
+          <option name="m_onlyLookAtBlocks" value="false" />
+        </inspection_tool>
+        <inspection_tool class="TrivialStringConcatenation" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="UnnecessaryCallToStringValueOf" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="UnnecessaryConstructor" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="UnnecessaryFullyQualifiedName" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="m_ignoreJavadoc" value="false" />
+        </inspection_tool>
+        <inspection_tool class="UnnecessaryLocalVariable" enabled="false" level="WARNING" enabled_by_default="false">
+          <option name="m_ignoreImmediatelyReturnedVariables" value="false" />
+          <option name="m_ignoreAnnotatedVariables" value="false" />
+        </inspection_tool>
+        <inspection_tool class="UnusedLibrary" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="UtilityClassWithPublicConstructor" enabled="true" level="WARNING" enabled_by_default="true" />
+        <inspection_tool class="UtilityClassWithoutPrivateConstructor" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreClassesWithOnlyMain" value="false" />
+        </inspection_tool>
+        <inspection_tool class="ZeroLengthArrayInitialization" enabled="true" level="WARNING" enabled_by_default="true" />
       </profile>
     </profiles>
-    <list size="4">
+    <option name="PROJECT_PROFILE" value="Project Default" />
+    <option name="USE_PROJECT_PROFILE" value="true" />
+    <version value="1.0" />
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="SERVER PROBLEM" />
       <item index="1" class="java.lang.String" itemvalue="INFO" />
-      <item index="2" class="java.lang.String" itemvalue="WARNING" />
-      <item index="3" class="java.lang.String" itemvalue="ERROR" />
+      <item index="2" class="java.lang.String" itemvalue="TYPO" />
+      <item index="3" class="java.lang.String" itemvalue="WARNING" />
+      <item index="4" class="java.lang.String" itemvalue="ERROR" />
     </list>
-  </component>
-  <component name="JavacSettings">
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="DEPRECATION" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-    <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
@@ -731,7 +929,6 @@
   <component name="ProjectDetails">
     <option name="projectName" value="OpenFaces" />
   </component>
-  <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
     <option name="state" value="http://svn-new/TeamDev/OpenFaces/trunk/OpenFaces.ipr" />
   </component>
@@ -762,13 +959,6 @@
       </value>
     </option>
   </component>
-  <component name="RmicSettings">
-    <option name="IS_EANABLED" value="false" />
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="GENERATE_IIOP_STUBS" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-  </component>
   <component name="Scrappy">
     <scrapTab name="Scrap" />
     <imports />
@@ -779,51 +969,21 @@
         <entry key="$PROJECT_DIR$">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://svn-new.teamdev.local/TeamDev/QuipuKit/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="branchUrls">
                 <list>
                   <option value="http://svn-new.teamdev.local/TeamDev/QuipuKit/branches" />
                 </list>
               </option>
               <option name="trunkUrl" value="http://svn-new.teamdev.local/TeamDev/QuipuKit/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/tools/Replacer">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="http://svn-new/TeamDev/QuipuKit/branches" />
-                  <option value="http://svn-new/TeamDev/QuipuKit/tags" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="http://svn-new/TeamDev/QuipuKit/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/tools/replacer">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="http://svn-new/TeamDev/QuipuKit/branches" />
-                  <option value="http://svn-new/TeamDev/QuipuKit/tags" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="http://svn-new/TeamDev/QuipuKit/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/tools/tagLibraryDoc">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="http://svn-new/TeamDev/QuipuKit/branches" />
-                  <option value="http://svn-new/TeamDev/QuipuKit/tags" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="http://svn-new/TeamDev/QuipuKit/trunk" />
             </SvnBranchConfiguration>
           </value>
         </entry>
