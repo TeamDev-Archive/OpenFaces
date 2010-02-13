@@ -15,6 +15,7 @@ O$.TabSet = {
                           tabStylesParams, borderClassesParams, focusable, focusAreaClass, focusedClass,
                           onchange) {
     var tabSet = O$(tabSetId);
+
     O$.extend(tabSet, {
       _index: selectedIndex,
       _indexField: O$(tabSetId + "::selected"),
@@ -61,9 +62,6 @@ O$.TabSet = {
         if (index == tabSet._index)
           return;
 
-        O$.setStyleMappings(tabSet._tabs[tabSet._index], {
-          selected:  null
-        });
         O$.setStyleMappings(tabSet._tabs[tabSet._index], {
           mouseoverSelected: null
         });
@@ -125,15 +123,16 @@ O$.TabSet = {
           O$.setStyleMappings(tab, {
             main: tabSet._tabClass
           });
+          O$.setStyleMappings(tab, {
+            selected: tab._absoluteIndex == tabSet._index ? tabSet._selectTabClass : null
+          });
+
           if (tab._absoluteIndex < tabSet._index) {
             O$.setStyleMappings(tab, {
               border: tabSet.backBorderClass1
             });
             initTabStyles(tab, tabSet.backBorderClass1);
           } else if (tab._absoluteIndex == tabSet._index) {
-            O$.setStyleMappings(tab, {
-              selected: tabSet._selectTabClass
-            });
 
             O$.setStyleMappings(tab, {
               border: tabSet.frontBorderClass

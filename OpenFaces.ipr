@@ -54,15 +54,6 @@
         <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="10" />
         <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="5" />
         <option name="OPTIMIZE_IMPORTS_ON_THE_FLY" value="true" />
-        <ADDITIONAL_INDENT_OPTIONS fileType="">
-          <option name="INDENT_SIZE" value="2" />
-          <option name="CONTINUATION_INDENT_SIZE" value="8" />
-          <option name="TAB_SIZE" value="4" />
-          <option name="USE_TAB_CHARACTER" value="false" />
-          <option name="SMART_TABS" value="false" />
-          <option name="LABEL_INDENT_SIZE" value="0" />
-          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
-        </ADDITIONAL_INDENT_OPTIONS>
         <ADDITIONAL_INDENT_OPTIONS fileType="java">
           <option name="INDENT_SIZE" value="4" />
           <option name="CONTINUATION_INDENT_SIZE" value="8" />
@@ -982,6 +973,7 @@
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/sac.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jcommon-1.0.16.jar!/" />
         <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/jfreechart-1.0.13.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/openfaces-dependencies/commons-collections-3.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -1300,6 +1292,25 @@
       </CLASSES>
       <JAVADOC />
       <SOURCES />
+    </library>
+    <library name="JSF Implementation - Mojarra 2.0">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-2.0.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-2.0.2.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-2.0.2-source.zip!/jsf-api/src/main/java" />
+      </SOURCES>
+    </library>
+    <library name="PrimeFaces">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/primefaces/primefaces-1.0.0.RC.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libsrc/primefaces-1.0.0.RC-sources.jar!/" />
+      </SOURCES>
     </library>
   </component>
 </project>

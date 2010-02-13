@@ -1587,7 +1587,7 @@ if (!window.O$) {
   };
 
 
-  O$.createHiddenFocusElement = function(tabindex, componentId) {
+  O$.createHiddenFocusElement = function(tabIndex, componentId) {
     var createTextArea = true;
     var focusControl = document.createElement(createTextArea ? "textarea" : "input");
     if (!createTextArea)
@@ -1596,8 +1596,8 @@ if (!window.O$) {
     if (O$.isSafari()) {
       focusControl.style.border = "1px solid transparent !important";
     }
-    if (tabindex)
-      focusControl.tabIndex = tabindex;
+    if (tabIndex)
+      focusControl.tabIndex = tabIndex;
     if (componentId)
       focusControl.id = componentId + ":::focus";
     return focusControl;
@@ -2428,7 +2428,7 @@ if (!window.O$) {
 
   O$._tableBlurCounter = 0;
 
-  O$.isControlFocusable = function(control) {
+  O$.isControlFocusable = function(control, componentToIgnore) {
     if (!control)
       return false;
 
@@ -2446,10 +2446,17 @@ if (!window.O$) {
             tagName == "a" ||
             (tagName == "span" && O$.checkClassNameUsed(control, "rich-inplace-select")) ||
             (tagName == "div" && O$.checkClassNameUsed(control, "rich-inplace"));
-    return focusable && !control.disabled;
+    if (focusable && !control.disabled)
+      return true;
+    while (control) {
+      if (control == componentToIgnore) return false;
+      if (control._focusable) return true;
+      control = control.parentNode;
+    }
+    return false;
   };
 
-  O$.setupArtificialFocus = function(component, focusedClassName, tabindex) {
+  O$.setupArtificialFocus = function(component, focusedClassName, tabIndex) {
     var prevOnfocusHandler = component.onfocus;
     var prevOnblurHandler = component.onblur;
 
@@ -2507,7 +2514,7 @@ if (!window.O$) {
 
     });
 
-    var focusControl = O$.createHiddenFocusElement(tabindex, component.id);
+    var focusControl = O$.createHiddenFocusElement(tabIndex, component.id);
 
     function fireEvent(object, eventName, param) {
       var handler = object[eventName];
@@ -2579,7 +2586,7 @@ if (!window.O$) {
               : null;
       if (target.id && target.id == component.id)
         return;
-      if (O$.isControlFocusable(target))
+      if (O$.isControlFocusable(target, component))
         return;
       component._preventPageScrolling = true;
       component.focus();

@@ -8,7 +8,7 @@
         </webroots>
         <building>
           <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/../../target/exploded/TestAppCoreWeb" />
-          <setting name="EXPLODED_ENABLED" value="true" />
+          <setting name="EXPLODED_ENABLED" value="false" />
           <setting name="JAR_URL" value="file://" />
           <setting name="JAR_ENABLED" value="false" />
           <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
@@ -95,6 +95,10 @@
             <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
+          <containerElement type="library" name="PrimeFaces" level="project">
+            <attribute name="method" value="1" />
+            <attribute name="URI" value="/WEB-INF/lib" />
+          </containerElement>
         </packaging>
       </configuration>
     </facet>
@@ -135,6 +139,10 @@
             <attribute name="method" value="2" />
             <attribute name="URI" value="/" />
           </containerElement>
+          <containerElement type="library" name="PrimeFaces" level="project">
+            <attribute name="method" value="2" />
+            <attribute name="URI" value="/" />
+          </containerElement>
         </packaging>
       </configuration>
     </facet>
@@ -160,6 +168,7 @@
     <orderEntry type="library" name="JEE" level="project" />
     <orderEntry type="library" name="servlet-api" level="project" />
     <orderEntry type="library" name="hibernate" level="project" />
+    <orderEntry type="library" exported="" name="PrimeFaces" level="project" />
   </component>
 </module>
 

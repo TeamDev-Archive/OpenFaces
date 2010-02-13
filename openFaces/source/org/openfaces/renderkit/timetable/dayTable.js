@@ -1308,6 +1308,10 @@ O$._initDayTable = function(componentId,
       O$.setHiddenField(dayTable, dayTable.id + "::scrollPos", O$.formatTime(timeslot.timeAtPosition));
     });
   });
+  if (O$._documentLoaded) {
+    // update in case when DayTable was loaded with Ajax
+    setTimeout(function() {dayTable.updateLayout()}, 1);
+  }
 
   function updateHeightForFF() {
     // FireFox's scroller height includes the entire table without truncating it according to

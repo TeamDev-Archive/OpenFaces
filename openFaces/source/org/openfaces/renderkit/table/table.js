@@ -263,7 +263,7 @@ O$.Table = {
   // -------------------------- KEYBOARD NAVIGATION SUPPORT
 
   _initKeyboardNavigation: function(tableId, controlPaginationWithKeyboard, focusedClassName, canPageBack, canPageForth,
-                                    canSelectLastPage, tabindex) {
+                                    canSelectLastPage, tabIndex) {
     var table = O$.initComponent(tableId, null, {
       _performPagingAction: function(actionStr) {
         O$.setHiddenField(this, this.id + "::pagination", actionStr);
@@ -287,7 +287,7 @@ O$.Table = {
       }
     });
 
-    O$.setupArtificialFocus(table, focusedClassName, tabindex);
+    O$.setupArtificialFocus(table, focusedClassName, tabIndex);
 
     var pagingFld = O$(table.id + "::pagination");
     if (pagingFld)

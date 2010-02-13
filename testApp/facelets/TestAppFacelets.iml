@@ -13,7 +13,7 @@
           <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/../../target/exploded/TestAppFaceletsWeb" />
           <setting name="EXPLODED_ENABLED" value="true" />
           <setting name="JAR_URL" value="file://$MODULE_DIR$/../../out/TestAppFacelets.war" />
-          <setting name="JAR_ENABLED" value="true" />
+          <setting name="JAR_ENABLED" value="false" />
           <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
         </building>
         <packaging>
@@ -104,15 +104,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="TestAppCore" />
     <orderEntry type="library" name="Facelets (without el-api.jar -- for Tomcat 6.0)" level="project" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$APPLICATION_HOME_DIR$/lib/javaee.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
   </component>
 </module>
 
