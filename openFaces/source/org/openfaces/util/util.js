@@ -16,7 +16,7 @@ if (!window.O$) {
   };
 
   O$.extend = function(obj, withObj) {
-    for (propertyName in withObj) {
+    for (var propertyName in withObj) {
       if (propertyName != "prototype")
         obj[propertyName] = withObj[propertyName];
     }
@@ -1007,7 +1007,7 @@ if (!window.O$) {
       var childNodeName = child.nodeName;
       if (childNodeName)
         childNodeName = childNodeName.toLowerCase();
-      for (var j = 0, jcount = nodeNames.length; j < jcount; j++) {
+      for (var j = 0, jCount = nodeNames.length; j < jCount; j++) {
         var nodeName = nodeNames[j];
         nodeName = nodeName.toLowerCase();
         if (childNodeName == nodeName)
@@ -1017,15 +1017,15 @@ if (!window.O$) {
     return selectedChildren;
   };
 
-  O$.getElementsByTagNameRegex = function(parent, regex, optionalFilter) {
+  O$.getElementsByTagNameRegexp = function(parent, regexp, optionalFilter) {
     var elem_array = [];
     if (typeof parent.firstChild != "undefined") {
       var elem = parent.firstChild;
       while (elem != null) {
         if (typeof elem.firstChild != "undefined") {
-          elem_array = elem_array.concat(O$.getElementsByTagNameRegex(elem, regex, optionalFilter));
+          elem_array = elem_array.concat(O$.getElementsByTagNameRegexp(elem, regexp, optionalFilter));
         }
-        var reg = new RegExp(regex);
+        var reg = new RegExp(regexp);
         if (elem.nodeName.match(reg)) {
           if (!optionalFilter || optionalFilter(elem))
             elem_array.push(elem);
@@ -1541,14 +1541,14 @@ if (!window.O$) {
     if (!O$._onUnloadEvents) {
       O$._onUnloadEvents = [];
 
-      var oldonunload = window.onunload;
+      var oldOnunload = window.onunload;
       if (typeof window.onunload != "function") {
         window.onunload = function() {
           invokeOnUnloadHandlersFunction();
         };
       } else {
         window.onunload = function() {
-          oldonunload();
+          oldOnunload();
           invokeOnUnloadHandlersFunction();
         };
       }
@@ -1672,7 +1672,7 @@ if (!window.O$) {
     }
   };
 
-  O$.retoreScrollPositionIfNeeded = function() {
+  O$.restoreScrollPositionIfNeeded = function() {
     var isMozilla = O$.isMozillaFF() || O$.isSafari3AndLate() /*todo:check whether O$.isSafari3AndLate check is really needed (it was added by mistake)*/;
     var isScrollPositionTrackingEnabled = (document._of_scrollPositionField);
 
@@ -1937,7 +1937,7 @@ if (!window.O$) {
     // Invokes the specified function after the specified delay in milliseconds. If another invocation request comes for
     // the same function during the delay, then the invocation is postponed until that new invocation delay expires, etc.
     // thus making only one call in case of multiple frequent invocations.
-    // actionId parameter can obtionally be specified as a string that allows several "postponable" actions for the same
+    // actionId parameter can optionally be specified as a string that allows several "postponable" actions for the same
     // function, or several functions for the same action, that is actionId instead of function serves as a criteria for
     // canceling the previous action and scheduling the new one.
     var actionReference = func;
@@ -2767,7 +2767,7 @@ if (!window.O$) {
 
   /**
    * Searches for CSS rules with the specified selectors, and returns an array of CSSStyleRule (or CSSRule) objects
-   * in order of their occurence in DOM
+   * in order of their occurrence in DOM
    */
   O$.findCssRules = function(selectors) {
     if (!O$._cssRulesBySelectors) O$._cssRulesBySelectors = {};
@@ -2908,7 +2908,7 @@ if (!window.O$) {
       if (!clsToExclude)
         continue;
       var subClassesToExclude = clsToExclude.split(" ");
-      for (var j = 0, jcount = subClassesToExclude.length; j < jcount; j++) {
+      for (var j = 0, jCount = subClassesToExclude.length; j < jCount; j++) {
         var subClassToExclude = subClassesToExclude[j];
         newClassesToExclude.push(subClassToExclude);
       }
@@ -3086,7 +3086,7 @@ if (!window.O$) {
     }
     // using backgroundColor instead of just background is important here for cases when image is set as background
     // NOTE: setting the calculated border is an erroneous pattern because any further background changes through
-    // element's className will be overriden by this in-place style declaration. However it must be uesd for document.body
+    // element's className will be overridden by this in-place style declaration. However it must be used for document.body
     // because this element behaves differently when assigned old background - assigning a non-specified old background
     // makes the background white disregarding the appropriate stylesheets (JSFC-2346, JSFC-2275)
     var oldBackgroundColor = element != document.body
@@ -3433,12 +3433,12 @@ if (!window.O$) {
         var parentNodeName = parent.nodeName ? parent.nodeName.toLowerCase() : null;
         var parentIsAPage = parentNodeName == "html" || parentNodeName == "body";
         if (!parentIsAPage) {
-          var pscrollLeft = parent.scrollLeft;
-          if (pscrollLeft)
-            left -= pscrollLeft;
-          var pscrollTop = parent.scrollTop;
-          if (pscrollTop)
-            top -= pscrollTop;
+          var pScrollLeft = parent.scrollLeft;
+          if (pScrollLeft)
+            left -= pScrollLeft;
+          var pScrollTop = parent.scrollTop;
+          if (pScrollTop)
+            top -= pScrollTop;
         }
 
         if (!thisIsContainingBlock) {
@@ -3582,8 +3582,8 @@ if (!window.O$) {
     return {width: width, height: height};
   };
 
-  O$.getElementPaddingRectangle = function(element, relativeToContainngBlock, cachedDataContainer) {
-    var rect = O$.getElementBorderRectangle(element, relativeToContainngBlock, cachedDataContainer);
+  O$.getElementPaddingRectangle = function(element, relativeToContainingBlock, cachedDataContainer) {
+    var rect = O$.getElementBorderRectangle(element, relativeToContainingBlock, cachedDataContainer);
     var borderLeftWidth = O$.getNumericElementStyle(element, "border-left-width");
     var borderRightWidth = O$.getNumericElementStyle(element, "border-right-width");
     var borderTopWidth = O$.getNumericElementStyle(element, "border-top-width");
@@ -3595,8 +3595,8 @@ if (!window.O$) {
     return rect;
   };
 
-  O$.getElementClientRectangle = function(element, relativeToContainngBlock, cachedDataContainer) {
-    var rect = O$.getElementPaddingRectangle(element, relativeToContainngBlock, cachedDataContainer);
+  O$.getElementClientRectangle = function(element, relativeToContainingBlock, cachedDataContainer) {
+    var rect = O$.getElementPaddingRectangle(element, relativeToContainingBlock, cachedDataContainer);
     rect.width = element.clientWidth;
     rect.height = element.clientHeight;
     return rect;
@@ -3743,7 +3743,7 @@ if (!window.O$) {
   };
 
   O$.scrollElementIntoView = function(element, cachedDataContainer) {
-    var scrollingOccured = false;
+    var scrollingOccurred = false;
     var elements = element instanceof Array ? element : [element];
     var rect;
     elements.forEach(function(el) {
@@ -3784,10 +3784,10 @@ if (!window.O$) {
         else
           window.scrollBy(0, scrollTopAdjustment);
         rect.y -= scrollTopAdjustment;
-        scrollingOccured = true;
+        scrollingOccurred = true;
       }
     }
-    return scrollingOccured;
+    return scrollingOccurred;
   };
 
   O$.scrollRectIntoView = function(rect) {
@@ -3930,7 +3930,7 @@ if (!window.O$) {
   O$.calculateLineWidth = function(lineStyleStr) {
     if (!lineStyleStr)
       return 0;
-    if (!window._of_lineWidthMeasurements)
+    if (!window._of_lineWidthValueMeasurements)
       window._of_lineWidthValueMeasurements = [];
     var width = window._of_lineWidthValueMeasurements[lineStyleStr];
     if (width != undefined)
@@ -4102,9 +4102,9 @@ if (!window.O$) {
   };
 
   O$.isAlignmentInsideOfElement = function(horizAlignment, vertAlignment) {
-    var insideHorizontaly = horizAlignment == O$.LEFT || horizAlignment == O$.CENTER || horizAlignment == O$.RIGHT;
+    var insideHorizontally = horizAlignment == O$.LEFT || horizAlignment == O$.CENTER || horizAlignment == O$.RIGHT;
     var insideVertically = vertAlignment == O$.TOP || vertAlignment == O$.CENTER || vertAlignment == O$.BOTTOM;
-    return insideHorizontaly && insideVertically;
+    return insideHorizontally && insideVertically;
   };
 
   O$.fixInputsWidthStrict = function(container) {

@@ -530,7 +530,7 @@ O$.requestFinished = function(ajaxObject) {
 
   if (O$._ajaxRequestsInProgress == 0) {
     O$.hideAjaxProgressMessage();
-    O$.retoreScrollPositionIfNeeded();
+    O$.restoreScrollPositionIfNeeded();
   }
 
   setTimeout(function() {

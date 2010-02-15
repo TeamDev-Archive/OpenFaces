@@ -237,7 +237,7 @@ O$.RadioItem = {
 
           var reg = /\b(input|select|textarea|button|a|div|span)\b/i;
           var startRadioItem;
-          var focusableElements = O$.getElementsByTagNameRegex(bodyElement, reg, O$.isControlFocusable);
+          var focusableElements = O$.getElementsByTagNameRegexp(bodyElement, reg, O$.isControlFocusable);
           if (O$.isShiftPressed(e)) {
             startRadioItem = radioContainer._radioItems[0];
             focusableElements = focusableElements.reverse();

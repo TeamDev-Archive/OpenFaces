@@ -416,11 +416,8 @@
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="EclipseCompilerSettings">
-    <option name="DEBUGGING_INFO" value="true" />
     <option name="GENERATE_NO_WARNINGS" value="true" />
     <option name="DEPRECATION" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-    <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="EclipseEmbeddedCompilerSettings">
     <option name="DEBUGGING_INFO" value="true" />
@@ -791,14 +788,6 @@
     <option name="LOCALE" />
     <option name="OPEN_IN_BROWSER" value="true" />
   </component>
-  <component name="JikesSettings">
-    <option name="JIKES_PATH" value="" />
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="DEPRECATION" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="IS_EMACS_ERRORS_MODE" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-  </component>
   <component name="LogConsolePreferences">
     <option name="FILTER_ERRORS" value="false" />
     <option name="FILTER_WARNINGS" value="false" />
@@ -928,6 +917,58 @@
   </component>
   <component name="ProjectDetails">
     <option name="projectName" value="OpenFaces" />
+  </component>
+  <component name="ProjectDictionaryState">
+    <dictionary name="Dallas">
+      <words>
+        <w>agrs</w>
+        <w>ajaxend</w>
+        <w>ajaxstart</w>
+        <w>args</w>
+        <w>dashized</w>
+        <w>dblclick</w>
+        <w>dont</w>
+        <w>firefox</w>
+        <w>func</w>
+        <w>horiz</w>
+        <w>initated</w>
+        <w>invokation</w>
+        <w>lgpl</w>
+        <w>locator</w>
+        <w>ltrim</w>
+        <w>mozilla</w>
+        <w>onajaxend</w>
+        <w>onajaxstart</w>
+        <w>onclick</w>
+        <w>oncontextmenu</w>
+        <w>ondragend</w>
+        <w>ondragmove</w>
+        <w>onerror</w>
+        <w>onkeydown</w>
+        <w>onkeypress</w>
+        <w>onkeyup</w>
+        <w>onmousemove</w>
+        <w>onunload</w>
+        <w>paddings</w>
+        <w>paginator</w>
+        <w>param</w>
+        <w>params</w>
+        <w>popup</w>
+        <w>portlets</w>
+        <w>postponable</w>
+        <w>preload</w>
+        <w>prnt</w>
+        <w>profiler</w>
+        <w>rtrim</w>
+        <w>sessionexpired</w>
+        <w>skype</w>
+        <w>stylesheets</w>
+        <w>thisp</w>
+        <w>unescape</w>
+        <w>updatables</w>
+        <w>vert</w>
+      </words>
+    </dictionary>
   </component>
   <component name="ProjectKey">
     <option name="state" value="http://svn-new/TeamDev/OpenFaces/trunk/OpenFaces.ipr" />
