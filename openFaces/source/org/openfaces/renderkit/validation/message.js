@@ -21,7 +21,6 @@ O$._MessageRenderer = function(clientId, forClientId, title, tooltip, showSummar
   this.css = css;
   this.styles = styles;
   this.params = params;
-
 };
 
 O$.extend(O$._MessageRenderer.prototype, {
@@ -40,8 +39,8 @@ O$.extend(O$._MessageRenderer.prototype, {
         var summary = message.summary;
         var detail = message.detail;
 
-        var severetyStyle = this.getSeverityStyle(message.severity);
-        var severetyClass = this.getSeverityClass(message.severity);
+        var severityStyle = this.getSeverityStyle(message.severity);
+        var severityClass = this.getSeverityClass(message.severity);
 
         var title = this.title;
         var showSummaryAsTooltip = !title && this.tooltip;
@@ -71,22 +70,18 @@ O$.extend(O$._MessageRenderer.prototype, {
         if (spanElement.style.display == "none") {
           spanElement.style.display = "block";
         }
-        if (severetyStyle && severetyStyle.length > 0)
-        {
-          spanElement.setAttribute("style", severetyStyle);
+        if (severityStyle && severityStyle.length > 0) {
+          spanElement.setAttribute("style", severityStyle);
         }
-        if (severetyClass && severetyClass.length > 0) {
-          spanElement.className = severetyClass;
+        if (severityClass && severityClass.length > 0) {
+          spanElement.className = severityClass;
         }
-        if (this.params)
-        {
-          for (var attr in this.params)
-          {
+        if (this.params) {
+          for (var attr in this.params) {
             spanElement.setAttribute(attr, this.params[attr]);
           }
         }
-      }
-      else {
+      } else {
         if (spanElement.style.display == "block") {
           spanElement.style.display = "none";
         }
@@ -102,8 +97,7 @@ O$.extend(O$._MessageRenderer.prototype, {
 
     var s = severity + "Style";
 
-    for (var attr in this.styles)
-    {
+    for (var attr in this.styles) {
       if (attr.toLowerCase() == s.toLowerCase())
         return this.styles[attr];
     }
@@ -119,8 +113,7 @@ O$.extend(O$._MessageRenderer.prototype, {
 
     var s = severity + "Class";
 
-    for (var attr in this.styles)
-    {
+    for (var attr in this.styles) {
       if (attr.toLowerCase() == s.toLowerCase())
         return this.styles[attr];
     }

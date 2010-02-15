@@ -20,7 +20,7 @@ O$._FloatConverterValidator.prototype.validate = function(input) {
   var value = O$.trim(O$.getValue(input));
   if (O$.notEmpty(value)) {
     if (!O$.isFloat(value)) {
-      O$.addMessage(input, this.conversionSummary, this.conversionDetail);
+      O$.addMessage(input, this.conversionSummary, this.conversionDetail, null, this);
       return false;
     }
   }

@@ -20,7 +20,7 @@ O$._BigIntegerConverterValidator.prototype.validate = function(input) {
   var value = O$.trim(O$.getValue(input));
   if (O$.notEmpty(value)) {
     if (!O$.isBigInt(value)) {
-      O$.addMessage(input, this.conversionSummary, this.conversionDetail);
+      O$.addMessage(input, this.conversionSummary, this.conversionDetail, null, this);
       return false;
     }
   }

@@ -13,16 +13,16 @@
 O$._RequiredValidator = function(summary, detail) {
   this.requiredSummary = summary;
   this.requiredDetail = detail;
-}
+};
 
 O$._RequiredValidator.prototype.validate = function(input) {
   var value = O$.trim(O$.getValue(input));
 
   if (!O$.notEmpty(value)) {
 
-    O$.addMessage(input, this.requiredSummary, this.requiredDetail);
+    O$.addMessage(input, this.requiredSummary, this.requiredDetail, null, this);
     return false;
   }
   return true;
-}
+};
 

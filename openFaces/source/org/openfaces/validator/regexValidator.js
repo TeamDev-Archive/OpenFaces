@@ -33,9 +33,9 @@ O$._RegexValidator.prototype.validate = function(input) {
 
   if (O$.notEmpty(value)) {
     if (!O$.matchRegExp(value, this.regExp)) {
-      O$.addMessage(input, this.summary, this.detail);
+      O$.addMessage(input, this.summary, this.detail, null, this);
       return false;
     }
   }
   return true;
-}
+};

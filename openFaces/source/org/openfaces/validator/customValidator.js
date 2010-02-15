@@ -21,13 +21,13 @@ O$._CustomValidator.prototype.validate = function(input) {
   if (!value)
   {
     if (!this.validateFunction(input, value)) {
-      O$.addMessage(input, this.summary, this.detail);
+      O$.addMessage(input, this.summary, this.detail, null, this);
       return false;
     }
   } else
     if (O$.notEmpty(value)) {
       if (!this.validateFunction(input, value)) {
-        O$.addMessage(input, this.summary, this.detail);
+        O$.addMessage(input, this.summary, this.detail, null, this);
         return false;
       }
     }

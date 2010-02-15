@@ -29,8 +29,8 @@ O$._NumberConverterValidator.prototype.validate = function(input) {
 
       var result = requestHelper.call("?validator=numberConverter", param, [{name:'teamdev_ajax_VALIDATOR',value:'validator'}]);
 
-      if (result && result == 'false') {
-        O$.addMessage(input, this.conversionSummary, this.conversionDetail);
+      if (result && result == "false") {
+        O$.addMessage(input, this.conversionSummary, this.conversionDetail, null, this);
         return false;
       } else {
         return true;

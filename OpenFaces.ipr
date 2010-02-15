@@ -925,6 +925,7 @@
         <w>ajaxend</w>
         <w>ajaxstart</w>
         <w>args</w>
+        <w>attr</w>
         <w>dashized</w>
         <w>dblclick</w>
         <w>dont</w>
@@ -939,6 +940,7 @@
         <w>mozilla</w>
         <w>onajaxend</w>
         <w>onajaxstart</w>
+        <w>onchange</w>
         <w>onclick</w>
         <w>oncontextmenu</w>
         <w>ondragend</w>
@@ -959,11 +961,13 @@
         <w>preload</w>
         <w>prnt</w>
         <w>profiler</w>
+        <w>renderers</w>
         <w>rtrim</w>
         <w>sessionexpired</w>
         <w>skype</w>
         <w>stylesheets</w>
         <w>thisp</w>
+        <w>tooltip</w>
         <w>unescape</w>
         <w>updatables</w>
         <w>vert</w>

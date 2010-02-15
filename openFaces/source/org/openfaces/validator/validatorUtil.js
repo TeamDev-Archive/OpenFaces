@@ -12,10 +12,11 @@
 O$._clientValidationSupport = true;
 O$._validators = [];
 
-O$.Message = function(summary, detail, severity) {
+O$.Message = function(summary, detail, severity, validator) {
   this.summary = summary;
   this.detail = detail;
   this.severity = severity;
+  this.validator = validator;
 }
 
 O$.getValidators = function(input) {
@@ -82,13 +83,13 @@ O$.mainValidate = function(input) {
   input.valid = true;
   O$.getMessages(input).length = 0;
 
-  var convertors = O$.getConverters(input);
+  var converters = O$.getConverters(input);
   var validators = O$.getValidatorsOnly(input);
 
   var i;
-  if (convertors) {
-    for (i = 0; i < convertors.length; i++) {
-      var converter = convertors[i];
+  if (converters) {
+    for (i = 0; i < converters.length; i++) {
+      var converter = converters[i];
       if (!converter.validate(input))
         input.valid = false;
     }
@@ -260,7 +261,6 @@ O$.notEmpty = function(value) {
   return value && value.length > 0;
 }
 
-//TODO:resolve
 O$.getMessages = function(input) {
   if (!input._of_messages) {
     try {
@@ -311,11 +311,11 @@ O$.addMessageFromChild = function(messages, child) {
 }
 
 
-O$.addMessage = function(input, summary, detail, severity) {
+O$.addMessage = function(input, summary, detail, severity, validator) {
   var messages = O$.getMessages(input);
   if (!severity)
     severity = "error";
-  var message = new O$.Message(summary, detail, severity);
+  var message = new O$.Message(summary, detail, severity, validator);
   messages.push(message);
 
 }
@@ -332,10 +332,10 @@ O$.addGlobalMessage = function(summary, detail, severity) {
 }
 
 O$.getClientMessageRenderers = function() {
-  if (!document.td_clientMessageRenderers) {
-    document.td_clientMessageRenderers = {};
+  if (!document._of_clientMessageRenderers) {
+    document._of_clientMessageRenderers = {};
   }
-  return document.td_clientMessageRenderers;
+  return document._of_clientMessageRenderers;
 }
 
 O$.getClientMessageRenderersWithVisibleBubble = function() {
@@ -361,21 +361,25 @@ O$.addMessagesRenderer = function(messagesRenderer) {
   messagesRenderers.push(messagesRenderer);
 }
 
-O$.updateClientMessages = function() {
-  var messagesRenderers = O$.getMessagesRenderers();
-  for (var i = 0; i < messagesRenderers.length; i++) {
-    messagesRenderers[i].update();
+O$.updateClientMessages = function(forId) {
+  if (!forId) {
+    var messagesRenderers = O$.getMessagesRenderers();
+    for (var i = 0; i < messagesRenderers.length; i++) {
+      messagesRenderers[i].update();
+    }
   }
 
   var clientMessageRenderers = O$.getClientMessageRenderers();
-  for (key in clientMessageRenderers) {
-    clientMessageRenderers[key].update();
+  for (var key in clientMessageRenderers) {
+    var clientMessageRenderer = clientMessageRenderers[key];
+    if (!forId || clientMessageRenderer.forId == forId)
+      clientMessageRenderer.update();
   }
 }
 
 O$.updateClientMessagesPosition = function() {
   var clientFloatingIconMessageRenderers = O$.getClientMessageRenderersWithVisibleBubble();
-  for (key in clientFloatingIconMessageRenderers) {
+  for (var key in clientFloatingIconMessageRenderers) {
     clientFloatingIconMessageRenderers[key].position();
   }
 }

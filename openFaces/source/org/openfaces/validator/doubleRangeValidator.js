@@ -23,18 +23,18 @@ O$._DoubleRangeValidator.prototype.validate = function(input) {
   var value = O$.trim(O$.getValue(input));
   if (O$.notEmpty(value)) {
     if (!O$.isDouble(value)) {
-      O$.addMessage(input, this.typeSummary, this.typeDetail);
+      O$.addMessage(input, this.typeSummary, this.typeDetail, null, this);
       return false;
     }
     if (this.maximum) {
       if (value > this.maximum) {
-        O$.addMessage(input, this.rangeSummary, this.rangeDetail);
+        O$.addMessage(input, this.rangeSummary, this.rangeDetail, null, this);
         return false;
       }
     }
     if (this.minimum) {
       if (value < this.minimum) {
-        O$.addMessage(input, this.rangeSummary, this.rangeDetail);
+        O$.addMessage(input, this.rangeSummary, this.rangeDetail, null, this);
         return false;
       }
     }

@@ -25,7 +25,7 @@ O$._EqualValidator.prototype.validate = function(input) {
   if (O$.notEmpty(value) || O$.notEmpty(equalToValue)) {
     if (!(value == equalTo.value))
     {
-      O$.addMessage(input, this.summary, this.detail);
+      O$.addMessage(input, this.summary, this.detail, null, this);
       return false;
     }
 

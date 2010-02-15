@@ -25,13 +25,13 @@ O$._LengthValidator.prototype.validate = function(input) {
     var length = value.length;
     if (this.maximum) {
       if (length > this.maximum) {
-        O$.addMessage(input, this.maximumSummary, this.maximumDetail);
+        O$.addMessage(input, this.maximumSummary, this.maximumDetail, null, this);
         return false;
       }
     }
     if (this.minimum) {
       if (length < this.minimum) {
-        O$.addMessage(input, this.minimumSummary, this.minimumDetail);
+        O$.addMessage(input, this.minimumSummary, this.minimumDetail, null, this);
         return false;
       }
     }

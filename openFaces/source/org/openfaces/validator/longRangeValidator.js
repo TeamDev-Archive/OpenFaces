@@ -41,19 +41,19 @@ O$._LongRangeValidator.prototype.validate = function(input) {
   if (O$.notEmpty(value)) {
 
     if (!O$.isLong(value)) {
-      O$.addMessage(input, this.typeSummary, this.typeDetail);
+      O$.addMessage(input, this.typeSummary, this.typeDetail, null, this);
       return false;
     }
     if (this.testUpperBundle) {
       if (value > this.maximum) {
-        O$.addMessage(input, this.rangeSummary, this.rangeDetail);
+        O$.addMessage(input, this.rangeSummary, this.rangeDetail, null, this);
         return false;
       }
     }
 
     if (this.testLowerBundle) {
       if (value < this.minimum) {
-        O$.addMessage(input, this.rangeSummary, this.rangeDetail);
+        O$.addMessage(input, this.rangeSummary, this.rangeDetail, null, this);
         return false;
       }
     }

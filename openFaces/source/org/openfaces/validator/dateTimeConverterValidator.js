@@ -24,7 +24,7 @@ O$._DateTimeConverterValidator.prototype.validate = function(input) {
     if (this.pattern.length == 0)
       return new Array(true, null);
     if (!O$._isCorrectDate(value, this.pattern, this.locale)) {
-      O$.addMessage(input, this.conversionSummary, this.conversionDetail);
+      O$.addMessage(input, this.conversionSummary, this.conversionDetail, null, this);
       return false;
     }
     var date;
@@ -105,9 +105,9 @@ O$._getDateFromFormat = function(val, format, locale) {
   var hh = now.getHours();
   var mm = now.getMinutes();
   var ss = now.getSeconds();
-  var ampm = "";
+  var amPm = "";
   var dayNames = O$.DAY_NAMES;
-  ;
+
   var monthNames = O$.MONTH_NAMES;
   if (locale) {
     var dtf = O$.getDateTimeFormatObject(locale);
@@ -239,10 +239,10 @@ O$._getDateFromFormat = function(val, format, locale) {
                       }
                       else if (token == "a") {
                           if (val.substring(i_val, i_val + 2).toLowerCase() == "am") {
-                            ampm = "AM";
+                            amPm = "AM";
                           }
                           else if (val.substring(i_val, i_val + 2).toLowerCase() == "pm") {
-                            ampm = "PM";
+                            amPm = "PM";
                           }
                           else {
                             return 0;
@@ -283,10 +283,10 @@ O$._getDateFromFormat = function(val, format, locale) {
     }
   }
   // Correct hours value
-  if (hh < 12 && ampm == "PM") {
+  if (hh < 12 && amPm == "PM") {
     hh = hh - 0 + 12;
   }
-  else if (hh > 11 && ampm == "AM") {
+  else if (hh > 11 && amPm == "AM") {
     hh -= 12;
   }
   var newdate = new Date(year, month - 1, date, hh, mm, ss);

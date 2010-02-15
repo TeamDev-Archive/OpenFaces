@@ -65,10 +65,10 @@ O$.DateChooser = {
     dc._dateChangeListener = function(date) {
       if (dc._isSetDateFromInput) return;
       var popup = dc._popup;
-      if (self.O$.validateById != undefined) {
+      if (O$.validateById != undefined) {
         if (dc._of_messages) {
           dc._of_messages = undefined;
-          O$.updateClientMessages();
+          O$.updateClientMessages(dc.id);
           O$.updateClientMessagesPosition();
         }
       }
@@ -128,23 +128,30 @@ O$.DateChooser = {
 
     dc.validateInputAndUpdateCalendar = function() {
       var date;
-      if (self.O$.validateById != undefined) {
+      if (O$.validateById != undefined) {
         var converters = O$.getValidators(dc);
         for (var i = 0; i < converters.length; i ++) {
           var v = converters[i];
           if (v instanceof O$._DateTimeConverterValidator) {
             if (dc._of_messages) {
-              dc._of_messages = undefined;
+              var newMessages = [];
+              dc._of_messages.forEach(function (msg) {
+                if (!msg.validator || !(msg.validator instanceof O$._DateTimeConverterValidator))
+                  newMessages.push(msg);
+              });
+              dc._ofMessages = newMessages;
             }
-            //          dc._isManualValidation = true;
+
             var result = v.validate(dc);
-            //          dc._isManualValidation = false;
-            //          if (result[0] == "true" || result[0] == true) {
+
             if (result && result instanceof Date) {
               date = result;
             }
-            dc.valid = result;
-            O$.updateClientMessages();
+            if (!result) {
+              // show invalid format message, but prevent hiding other messages such as required that might already be visible
+              dc.valid = result;
+            }
+            O$.updateClientMessages(dc.id);
             O$.updateClientMessagesPosition();
             break;
           }
@@ -193,7 +200,7 @@ O$.DateChooser = {
       var sDate = dtf.parse(calendarDate, "dd/MM/yyyy");
       cal._valueHolder.value = sDate.getTime();
       O$.Calendar._updateCalendar(cal, sDate);
-    };
+    }
 
     dc.getSelectedDate = function () {
       return O$.DateChooser._getDate(dc.id);
