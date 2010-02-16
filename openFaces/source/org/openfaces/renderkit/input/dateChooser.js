@@ -139,7 +139,7 @@ O$.DateChooser = {
                 if (!msg.validator || !(msg.validator instanceof O$._DateTimeConverterValidator))
                   newMessages.push(msg);
               });
-              dc._ofMessages = newMessages;
+              dc._of_messages = newMessages;
             }
 
             var result = v.validate(dc);

@@ -151,8 +151,7 @@ O$._getDateFromFormat = function(val, format, locale) {
           year = 2000 + (year - 0);
         }
       }
-    }
-    else if (token == "MMM" || token == "NNN") {
+    } else if (token == "MMM" || token == "NNN") {
       month = 0;
       for (var monthNameIndex = 0; monthNameIndex < monthNames.length; monthNameIndex++) {
         var month_name = O$.unescapeHtml(monthNames[monthNameIndex]);

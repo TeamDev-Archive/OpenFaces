@@ -57,6 +57,7 @@ public class TimetableChangeEvent extends FacesEvent {
         return reloadAllEvents;
     }
 
+    @SuppressWarnings({"UnusedDeclaration"})
     public void setReloadAllEvents(boolean reloadAllEvents) {
         this.reloadAllEvents = reloadAllEvents;
     }

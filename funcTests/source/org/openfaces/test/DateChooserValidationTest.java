@@ -41,7 +41,7 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         assertEquals("DateChooser Valid", selenium.getTitle());
         assertConversionErrorOccured(false);
         dateChooser("testForm:dateChooserOnSubmit").field().type("wrong");
-        assertConversionErrorOccured(true);
+        assertConversionErrorOccured(false); // no global message is shown upon just typing, it'll be shown after submission attempt
         element("testForm:submitBtn").click();
         assertEquals("DateChooser Valid", selenium.getTitle());
         assertConversionErrorOccured(true);
@@ -54,7 +54,7 @@ public class DateChooserValidationTest extends OpenFacesTestCase {
         assertEquals("DateChooser Valid", selenium.getTitle());
         assertConversionErrorOccured(false);
         dateChooser("testForm:dateChooserDefault").field().type("wrong");
-        assertConversionErrorOccured(true);
+        assertConversionErrorOccured(false); // no global message is shown upon just typing, it'll be shown after submission attempt
         element("testForm:submitBtn").click();
         assertEquals("DateChooser Valid", selenium.getTitle());
         assertConversionErrorOccured(true);

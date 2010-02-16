@@ -22,28 +22,27 @@
                 secondaryRowSeparator="1px solid #eeeeee"
                 startTime="5:00"
                 endTime="23:30"
-                style="background-color:white; border:none;"
+                style="background-color: white; border: none;"
                 timePattern="HH:mm"
                 timeSuffixPattern=""
                 timeTextPosition="againstMark"
-                timeColumnStyle="color: black; background: transparent; font-size:10px"
+                timeColumnStyle="color: black; background: transparent; font-size: 10px"
                 timeColumnPrimaryRowSeparator="none"
                 timeColumnSecondaryRowSeparator="none"
                 showTimeForMinorIntervals="false"
 
                 timeColumnSeparator="none"
                 resourceColumnSeparator="none"
-                resourceHeadersRowStyle="font-size:10pt; border-top: 1px solid #7f7f7f; border-bottom: 1px solid #7f7f7f;"
+                resourceHeadersRowStyle="font-size: 10pt; border-top: 1px solid #7f7f7f; border-bottom: 1px solid #7f7f7f;"
                 rowStyle="height: 25px;"
                 reservedTimeEventStyle="border-left: none; border-right: none; margin: 0;"
 
                 headerStyle=""
-                locale="en"
-            >
+                locale="en">
 
       <o:timetableEvent styleClass="eventWithBackground" descriptionStyle="font-size:10pt" style="color:white;"
                         escapeDescription="false" escapeName="false"
-                        nameStyle="white-space:normal; width:auto; font-size:10pt; font-weight:normal;"
+                        nameStyle="white-space: normal; width: auto; font-size: 10pt; font-weight: normal;"
                         backgroundIntensity="1"
                         backgroundTransparency="0"
               />
@@ -53,11 +52,11 @@
       <f:facet name="resourceHeader">
         <h:outputText
                 value="#{resource.object.name}"
-                style="display:block; margin-left:6em; margin-right:6em; background-color:#{resource.object.color};  color:white;"/>
+                style="display:block; margin-left: 6em; margin-right: 6em; background-color: #{resource.object.color};  color: white;"/>
       </f:facet>
       <o:eventArea horizontalAlignment="right"
                    onmouseover="addBorder(this, #{event.color.red}, #{event.color.green},#{event.color.blue})"
-                   onmouseout="removeBorder(this)" style="padding:5px 5px 5px 5px;" verticalAlignment="top">
+                   onmouseout="removeBorder(this)" style="padding: 5px 5px 5px 5px;" verticalAlignment="top">
         <h:commandLink title="Remove" value=""
                        action="#{DayTableBean2.remove}">
           <h:graphicImage url="../images/daytable/close.png"/>

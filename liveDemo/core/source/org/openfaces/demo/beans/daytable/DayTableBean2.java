@@ -91,8 +91,12 @@ public class DayTableBean2 extends DayTableBean implements Serializable {
     public List<AbstractTimetableEvent> getEvents() {
         Date startTime = FacesUtil.var("startTime", Date.class);
         Date endTime = FacesUtil.var("endTime", Date.class);
-        if (startTime == null || endTime == null)
-            return events;
+
+        List<AbstractTimetableEvent> result = retrieveEventsForPeriod(startTime, endTime);
+        return result;
+    }
+
+    private List<AbstractTimetableEvent> retrieveEventsForPeriod(Date startTime, Date endTime) {
         List<AbstractTimetableEvent> result = new ArrayList<AbstractTimetableEvent>();
         for (AbstractTimetableEvent event : events) {
             if (event.getStart().before(endTime) && event.getEnd().after(startTime))

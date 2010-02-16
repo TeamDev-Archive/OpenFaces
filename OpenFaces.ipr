@@ -938,6 +938,7 @@
         <w>locator</w>
         <w>ltrim</w>
         <w>mozilla</w>
+        <w>multi</w>
         <w>onajaxend</w>
         <w>onajaxstart</w>
         <w>onchange</w>
@@ -959,6 +960,7 @@
         <w>portlets</w>
         <w>postponable</w>
         <w>preload</w>
+        <w>preloading</w>
         <w>prnt</w>
         <w>profiler</w>
         <w>renderers</w>
