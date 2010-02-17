@@ -34,7 +34,7 @@ public class IntegerConverterClientValidator extends AbstractClientValidator {
     }
 
     @Override
-    protected Object[] getJsValidatorParameteresAsString(FacesContext context, UIComponent component) {
+    protected Object[] getJsValidatorParametersAsString(FacesContext context, UIComponent component) {
         FacesMessage message = MessageUtil.getMessage(context, FacesMessage.SEVERITY_ERROR,
                 new String[]{CONVERSION_MESSAGE_ID, UIInput.CONVERSION_MESSAGE_ID}, new Object[]{component.getId()});
         return new String[]{

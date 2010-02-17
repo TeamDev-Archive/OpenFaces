@@ -59,6 +59,7 @@ O$.Spinner = {
 
     if (onchange) {
       spinner._onchange = function() {
+        var event = O$.createEvent("change");
         eval(onchange);
       };
     }
@@ -126,14 +127,16 @@ O$.Spinner = {
 
         var value = spinner.getValue();
         if (!value && value != 0) {
-          spinner.setValue(minValue, true);
-        } else if (value + step <= maxValue) {
+          spinner.setValue(minValue != null ? minValue : 0, true);
+        } else if (maxValue == null || value + step <= maxValue) {
           spinner.setValue(value + step, true);
         } else {
           if (cycled) {
-            spinner.setValue(minValue, true);
+            if (minValue != null)
+              spinner.setValue(minValue, true);
           } else {
-            spinner.setValue(maxValue, true);
+            if (maxValue != null)
+              spinner.setValue(maxValue, true);
           }
         }
         if (value != spinner.getValue()) {
@@ -150,14 +153,16 @@ O$.Spinner = {
 
         var value = spinner.getValue();
         if (!value && value != 0) {
-          spinner.setValue(minValue, true);
-        } else if (value - step >= minValue) {
+          spinner.setValue(minValue != null ? minValue : 0, true);
+        } else if (minValue == null || value - step >= minValue) {
           spinner.setValue(value - step, true);
         } else {
           if (cycled) {
-            spinner.setValue(maxValue, true);
+            if (maxValue != null)
+              spinner.setValue(maxValue, true);
           } else {
-            spinner.setValue(minValue, true);
+            if (minValue != null)
+              spinner.setValue(minValue, true);
           }
         }
         if (value != spinner.getValue()) {
@@ -233,16 +238,16 @@ O$.Spinner = {
 
     function notifyOfInputChanges(spinner) {
       if (spinner._onchange)
-        spinner._onchange();
+        spinner._onchange(O$.createEvent("change"));
     }
 
     function checkValueForBounds(spinner) {
       var value = spinner.getValue();
       if (value != null) {
-        if (value < minValue) {
+        if (minValue != null && value < minValue) {
           spinner.setValue(minValue);
         }
-        if (value > maxValue) {
+        if (maxValue != null && value > maxValue) {
           spinner.setValue(maxValue);
         }
         spinner.setValue(value, true);

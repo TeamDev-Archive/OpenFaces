@@ -34,7 +34,7 @@ public class RequiredClientValidator extends AbstractClientValidator {
 
 
     @Override
-    protected Object[] getJsValidatorParameteresAsString(FacesContext context, UIComponent component) {
+    protected Object[] getJsValidatorParametersAsString(FacesContext context, UIComponent component) {
         Object[] args = {component.getId()};
         FacesMessage message = MessageUtil.getMessage(context, FacesMessage.SEVERITY_ERROR,
                 UIInput.REQUIRED_MESSAGE_ID, args);

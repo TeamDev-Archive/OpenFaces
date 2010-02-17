@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.timetable;
 
+@SuppressWarnings({"UnusedDeclaration"})
 public enum TimeTextPosition {
     UNDER_MARK("underMark"),
     AGAINST_MARK("againstMark");

@@ -42,7 +42,7 @@ public class LengthClientValidator extends AbstractClientValidator {
 //  }
 
     @Override
-    protected Object[] getJsValidatorParameteresAsString(FacesContext context, UIComponent component) {
+    protected Object[] getJsValidatorParametersAsString(FacesContext context, UIComponent component) {
         int minimum = lengthValidator.getMinimum();
         int maximum = lengthValidator.getMaximum();
 

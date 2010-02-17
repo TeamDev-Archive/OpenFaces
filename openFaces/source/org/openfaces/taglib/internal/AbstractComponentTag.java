@@ -304,7 +304,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
         }
     }
 
-     protected void setNumberProperty(UIComponent component, String propertyName) {
+    protected void setNumberProperty(UIComponent component, String propertyName) {
         String value = getPropertyValue(propertyName);
         setNumberProperty(component, propertyName, value);
     }

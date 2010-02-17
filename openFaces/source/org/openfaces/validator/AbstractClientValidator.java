@@ -33,7 +33,7 @@ public abstract class AbstractClientValidator implements ClientValidator {
     }
 
     public Script getClientScript(FacesContext context, final UIComponent component) {
-        return new NewInstanceScript(getJsValidatorName(), getJsValidatorParameteresAsString(context, component));
+        return new NewInstanceScript(getJsValidatorName(), getJsValidatorParametersAsString(context, component));
     }
 
     public void addJavascriptLibrary(ValidationJavascriptLibrary library) {
@@ -64,7 +64,7 @@ public abstract class AbstractClientValidator implements ClientValidator {
 
     }
 
-    protected Object[] getJsValidatorParameteresAsString(FacesContext context, UIComponent component) {
+    protected Object[] getJsValidatorParametersAsString(FacesContext context, UIComponent component) {
         return EMPTY_ARRAY;
     }
 }

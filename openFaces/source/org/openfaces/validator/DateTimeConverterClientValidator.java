@@ -64,7 +64,7 @@ public class DateTimeConverterClientValidator extends AbstractClientValidator im
         return dateTimeConverter;
     }
 
-    protected Object[] getJsValidatorParameteresAsString(FacesContext context, UIComponent component) {
+    protected Object[] getJsValidatorParametersAsString(FacesContext context, UIComponent component) {
         Object[] args = {"specified value", component.getId()};
         FacesMessage message = MessageUtil.getMessage(context, FacesMessage.SEVERITY_ERROR,
                 new String[]{CONVERSION_MESSAGE_ID, UIInput.CONVERSION_MESSAGE_ID}, args);

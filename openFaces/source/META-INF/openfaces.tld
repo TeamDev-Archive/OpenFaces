@@ -24826,6 +24826,8 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
+      <description>Specifies name of the request-scope variable under which the current event object is available
+      when rendering event areas and processing server-side events from event area components.</description>
       <name>eventVar</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -27294,6 +27296,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @bindingType org.openfaces.component.timetable. EventAction -->
       <!-- @default null -->
       <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>Specifies the text that will be shown in a tool-tip when the mouse hovers over this action button.
+      </description>
+      <name>hint</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
     </attribute>
 
     <attribute>

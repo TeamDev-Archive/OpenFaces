@@ -71,7 +71,7 @@ public class Spinner extends DropDownComponent {
     }
 
     public Number getMaxValue() {
-        return ValueBindings.get(this, "maxValue", maxValue, 100, Number.class);
+        return ValueBindings.get(this, "maxValue", maxValue, null, Number.class);
     }
 
     public void setMaxValue(Number maxValue) {
@@ -87,7 +87,7 @@ public class Spinner extends DropDownComponent {
     }
 
     public Number getMinValue() {
-        return ValueBindings.get(this, "minValue", minValue, 0, Number.class);
+        return ValueBindings.get(this, "minValue", minValue, null, Number.class);
     }
 
     public void setMinValue(Number minValue) {

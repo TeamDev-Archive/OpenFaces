@@ -34,7 +34,7 @@ public class BigDecimalConverterClientValidator extends AbstractClientValidator 
     }
 
     @Override
-    protected Object[] getJsValidatorParameteresAsString(FacesContext context, UIComponent component) {
+    protected Object[] getJsValidatorParametersAsString(FacesContext context, UIComponent component) {
         Object[] args = {component.getId()};
         FacesMessage message = MessageUtil.getMessage(context, FacesMessage.SEVERITY_ERROR,
                 new String[]{CONVERSION_MESSAGE_ID, UIInput.CONVERSION_MESSAGE_ID}, args);
