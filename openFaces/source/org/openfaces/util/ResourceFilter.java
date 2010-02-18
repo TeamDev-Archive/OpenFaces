@@ -411,16 +411,6 @@ public class ResourceFilter implements Filter {
             writer.write("<head>");
         }
 
-        List<String> jsLibraries = (List<String>) servletRequest.getAttribute(ResourceUtil.HEADER_JS_LIBRARIES);
-
-        if (jsLibraries != null) {
-            for (String jsFileUrl : jsLibraries) {
-                writer.print("<script src=\"");
-                writer.print(jsFileUrl);
-                writer.println("\" type=\"text/javascript\"></script>");
-            }
-        }
-
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String resetCss = httpServletRequest.getSession().getServletContext().getInitParameter(RESET_CSS_CONTEXT_PARAM);
         if (resetCss != null) {
@@ -441,9 +431,20 @@ public class ResourceFilter implements Filter {
         }
 
         writer.print("<link type=\"text/css\" href=\"");
-        String defaultCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + "org/openfaces/renderkit/default" + "-" + ResourceUtil.getVersionString() + ".css";
+        String defaultCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + "org/openfaces/renderkit/default" + "-" + ResourceUtil.getVersionString() + ".css"; // render default.css
         writer.print(defaultCssUrl);
         writer.println("\" rel=\"stylesheet\"/>");
+
+        List<String> jsLibraries = (List<String>) servletRequest.getAttribute(ResourceUtil.HEADER_JS_LIBRARIES);
+
+        if (jsLibraries != null) {
+            for (String jsFileUrl : jsLibraries) {
+                writer.print("<script src=\"");
+                writer.print(jsFileUrl);
+                writer.println("\" type=\"text/javascript\"></script>");
+            }
+        }
+
 
         if (!hasHeaderTag) {
             writer.write("</head>");

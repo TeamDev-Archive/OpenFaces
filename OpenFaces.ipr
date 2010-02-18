@@ -527,6 +527,7 @@
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Project Default" />
         <option name="myLocal" value="false" />
+        <inspection_tool class="CssUnusedSymbolInspection" enabled="false" level="WARNING" enabled_by_default="false" />
         <inspection_tool class="JpaModelErrorInspection" level="WARNING" enabled="true" />
       </profile>
       <profile version="1.0" is_locked="false">
@@ -921,11 +922,13 @@
   <component name="ProjectDictionaryState">
     <dictionary name="Dallas">
       <words>
+        <w>accesskey</w>
         <w>agrs</w>
         <w>ajaxend</w>
         <w>ajaxstart</w>
         <w>args</w>
         <w>attr</w>
+        <w>autocomplete</w>
         <w>cellpadding</w>
         <w>cellspacing</w>
         <w>dashized</w>
@@ -959,13 +962,16 @@
         <w>onkeydown</w>
         <w>onkeypress</w>
         <w>onkeyup</w>
+        <w>online</w>
         <w>onmousedown</w>
         <w>onmousemove</w>
         <w>onmouseout</w>
         <w>onmouseover</w>
         <w>onmouseup</w>
+        <w>onselect</w>
         <w>onselectstart</w>
         <w>onunload</w>
+        <w>openfaces</w>
         <w>paddings</w>
         <w>paginator</w>
         <w>param</w>
@@ -978,11 +984,14 @@
         <w>prnt</w>
         <w>profiler</w>
         <w>renderers</w>
+        <w>richfaces</w>
         <w>rtrim</w>
         <w>sessionexpired</w>
         <w>skype</w>
         <w>stylesheets</w>
+        <w>tabindex</w>
         <w>tbody</w>
+        <w>teamdev</w>
         <w>thisp</w>
         <w>tooltip</w>
         <w>unescape</w>

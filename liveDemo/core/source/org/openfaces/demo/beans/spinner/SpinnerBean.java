@@ -22,7 +22,7 @@ import java.util.List;
 public class SpinnerBean {
     private List<Product> products = new ArrayList<Product>();
     private float totalCost;
-
+    private boolean pricesEditable;
 
     public SpinnerBean() {
         products.add(new Product("Ink Pen Black", 7.99f, 1, 80));
@@ -53,5 +53,13 @@ public class SpinnerBean {
 
     public void setTotalCost(float totalCost) {
         this.totalCost = totalCost;
+    }
+
+    public boolean isPricesEditable() {
+        return pricesEditable;
+    }
+
+    public void setPricesEditable(boolean pricesEditable) {
+        this.pricesEditable = pricesEditable;
     }
 }

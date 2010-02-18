@@ -104,7 +104,7 @@ public class ResourceUtil {
     /**
      * Get path to application resource according to contex and resource path
      *
-     * @param context      faces contex provided by application
+     * @param context      faces context provided by application
      * @param resourcePath path to resource - either absolute (starting with a slash) in the scope of application context,
      *                     or relative to the current page
      * @return full URL to resource ready for rendering as <code>src</code> or <code>href</code> attribute's value.
@@ -138,7 +138,7 @@ public class ResourceUtil {
      * @param prependContextPath true means that the resulting url should be prefixed with context root. This is the case
      *                           when the returned URL is rendered without any modifications. Passing false to this
      *                           parameter is required in cases when the returned URL is passed to some component which
-     *                           expects application URL, so the component will prepend the URL with context root tself.
+     *                           expects application URL, so the component will prepend the URL with context root itself.
      * @return The requested URL
      */
     public static String getInternalResourceURL(
@@ -336,7 +336,7 @@ public class ResourceUtil {
         try {
             richfacesContextClass = Class.forName("org.ajax4jsf.context.AjaxContext");
         } catch (ClassNotFoundException e) {
-            // Just checking for class presense. It's normal that a class can be absent.
+            // Just checking for class presence. It's normal that a class can be absent.
         }
 
         String ajax4jsfScriptParameter = (String) ReflectionUtil.getStaticFieldValue(richfacesContextClass, "SCRIPTS_PARAMETER");

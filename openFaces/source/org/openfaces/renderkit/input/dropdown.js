@@ -19,13 +19,13 @@ O$.DropDown = {
                        focusedClass,
                        promptText,
                        promptTextClass) {
-    var dropDown = O$(dropDownId);
+    var dropDown = O$.initComponent(dropDownId, null, {
+      _field: O$(dropDownId + "::field"),
+      _statePrompt: O$(dropDownId + "::field" + "::statePrompt"),
+      _initialText: initialText
+    });
 
-    dropDown._field = O$(dropDownId + "::field");
-    dropDown._statePrompt = O$(dropDownId + "::field" + "::statePrompt");
     dropDown._o_inputField = dropDown._field; // for O$._selectTextRange to be able to access the text field
-
-    dropDown._initialText = initialText;
 
     if (!dropDown._field) {
       // the case for SuggestionField
