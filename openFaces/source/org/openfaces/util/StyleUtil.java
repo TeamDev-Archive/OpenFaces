@@ -40,7 +40,7 @@ public class StyleUtil {
     private static final String REGISTERED_STYLE_CLASSES = StyleUtil.class.getName() + ".registeredStyleClasses";
     private static final String REGISTERED_CSS_CLASSES_PREFIX = StyleUtil.class.getName() + ".registeredCssClasses:";
     private static final String RENDERED_STYLE_ELEMENTS_IDS = StyleUtil.class.getName() + ".renderedStyleElementsIds";
-    private static final String STYLES_ID_POSTFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "styles";
+    private static final String STYLES_ID_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "styles";
 
     private static long styleIndexCounter = 0;
 
@@ -318,24 +318,26 @@ public class StyleUtil {
         requestDefaultCss(context);
         List<String> cssClasses = getAllStyleClassesForComponent(context, component);
         if (cssClasses != null && cssClasses.size() > 0) {
-            String stylesId = component.getClientId(context) + STYLES_ID_POSTFIX;
+            String stylesId = component.getClientId(context) + STYLES_ID_SUFFIX;
             Set<String> elementsIds = getRenderedStyleElementsIds(context);
             int suffix = 1;
             while (elementsIds.contains(stylesId)) {
-                stylesId = component.getClientId(context) + STYLES_ID_POSTFIX + suffix++;
+                stylesId = component.getClientId(context) + STYLES_ID_SUFFIX + suffix++;
 //        logWarning(context, "Style elements with id \"" + stylesId + "\" already rendered. Component: " + component);
 
                 // warning was removed because there are cases when renderStyleClasses should be invoked several times per component - see AbstractTableRenderer as an example
             }
             elementsIds.add(stylesId);
-            if (EnvironmentUtil.isMozillaXhtmlPlusXmlContentType(context)
+            if (EnvironmentUtil.isExplorer() || EnvironmentUtil.isMozillaXhtmlPlusXmlContentType(context)
                     || forcedStyleAsScript) {
                 // Case for fixing JSFC-2341. Style tags added to DOM using JavaScript are ignored by Mozilla with
                 // "application/xhtml+xml" content-type. So to fix this, the styles are added using stylesheet API.
                 // This way of adding styles works on all browsers except Safari 2, however adding styles in this way
                 // is slightly slower than just adding <style> tags to DOM, so that's why this approach is not used
-                // under IE and Opera
-                //todo: is rendering styles with scripts needed on non-ajax requests?
+                // under Chrome and Opera
+                //
+                // OF-28: IE limits the number of <style> tags (and stylesheets in general) to 31! So we're using
+                // programmatic script addition which uses the single stylesheet created dynamically to address this limitation
                 writeCssClassesAsScriptElement(context, cssClasses, forceStyleAsOnloadScript);
             } else {
                 writeCssClassesAsStyleElement(context, component, stylesId, cssClasses);

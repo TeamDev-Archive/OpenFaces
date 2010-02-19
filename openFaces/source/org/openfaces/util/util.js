@@ -2640,55 +2640,20 @@ if (!window.O$) {
   };
 
   O$.getLocalStyleSheet = function() {
-    var styleSheets = document.styleSheets;
-    if (!styleSheets)
-      return null;
-
-    if (document._of_localStyleSheet) {
-      if (styleSheets)
-        for (var i = 0, count = styleSheets.length; i < count; i++) {
-          var ss = styleSheets[i];
-          if (ss == document._of_localStyleSheet)
-            return ss;
-        }
-      // previously located local style sheet may have been removed if it resided inside of a component that was
-      // reloaded with Ajax, so we must relocate it
-      document._of_localStyleSheet = null;
-    }
+    if (document._of_localStyleSheet)
+      return document._of_localStyleSheet;
 
     if (document.createStyleSheet) {
       document._of_localStyleSheet = document.createStyleSheet();
-      if (document._of_localStyleSheet)
-        return document._of_localStyleSheet;
     } else {
       var styleElement = document.createElement("style");
       var headTags = document.getElementsByTagName("head");
       var styleParent = headTags.length > 0 ? headTags[0] : document.getElementsByTagName("body")[0];
       styleParent.appendChild(styleElement);
-      function locateLocalStyleSheet() {
-        var documentLocation = document.location;
-        for (var i = styleSheets.length - 1; i >= 0; i--) {
-          var styleSheet = styleSheets[i];
-          if (styleSheet.cssRules.length > 0) continue; // we're looking for a just-created empty style sheet
-          if (styleSheet.href == documentLocation || /* Mozilla Firefox */
-              !styleSheet.href /* other browsers */) {
-            document._of_localStyleSheet = styleSheet;
-            break;
-          }
-        }
-      }
-
-      locateLocalStyleSheet();
-    }
-    locateLocalStyleSheet();
-    if (!document._of_localStyleSheet) {
-      if (styleSheets.length > 0) {
-        O$.logWarning(document._of_localStyleSheet, "O$.getLocalStyleSheet: couldn't find or create local style-sheet in this document, using the first available one.");
-        document._of_localStyleSheet = styleSheets[0];
-        // relative url paths in background won't work in Mozilla in this case
-      } else {
-        O$.logWarning(document._of_localStyleSheet, "O$.getLocalStyleSheet: no style-sheets could be found or created in this document");
-      }
+      if (styleElement.styleSheet)
+        document._of_localStyleSheet = styleElement.styleSheet;
+      else
+        document._of_localStyleSheet = styleElement.sheet;
     }
     return document._of_localStyleSheet;
   };

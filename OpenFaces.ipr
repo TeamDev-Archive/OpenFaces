@@ -963,6 +963,7 @@
         <w>onkeypress</w>
         <w>onkeyup</w>
         <w>online</w>
+        <w>onload</w>
         <w>onmousedown</w>
         <w>onmousemove</w>
         <w>onmouseout</w>
@@ -977,6 +978,7 @@
         <w>param</w>
         <w>params</w>
         <w>popup</w>
+        <w>portlet</w>
         <w>portlets</w>
         <w>postponable</w>
         <w>preload</w>

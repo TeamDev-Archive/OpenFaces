@@ -54,7 +54,7 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
         }
 
         boolean isAjax4jsfRequest = AjaxUtil.isAjax4jsfRequest();
-        boolean isProtletRequest = AjaxUtil.isPortletRequest(context);
+        boolean isPortletRequest = AjaxUtil.isPortletRequest(context);
 
         if (requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED) || requestMap.containsKey(RENDERING)) {
             String ajaxMessageHTML = dpm.getAjaxMessageHTML();
@@ -63,8 +63,8 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
             if (dpm.getFillBackground()) {
                 backgroundLayerParams = new JSONObject();
                 RenderingUtil.addJsonParam(backgroundLayerParams, "className", new StyleParam(dpm, "background", "o_ajax_blockingLayer"));
-                RenderingUtil.addJsonParam(backgroundLayerParams, "transparency", (double) dpm.getBackgroundTransparency());
-                RenderingUtil.addJsonParam(backgroundLayerParams, "transparencyTransitionPeriod", (int) dpm.getBackgroundTransparencyTransitionPeriod());
+                RenderingUtil.addJsonParam(backgroundLayerParams, "transparency", /*don't remove (double) cast -- the other function will be invoked*/(double) dpm.getBackgroundTransparency());
+                RenderingUtil.addJsonParam(backgroundLayerParams, "transparencyTransitionPeriod", /*don't remove (int) cast -- the other function will be invoked*/(int) dpm.getBackgroundTransparencyTransitionPeriod());
             }
             StyleUtil.renderStyleClasses(context, dpm, true, true);
 
@@ -80,9 +80,9 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
                 setMessageScript.functionCall("O$.setAjaxCleanupRequired", true).semicolon();
             }
 
-            if (isAjax4jsfRequest || isProtletRequest) {
+            if (isAjax4jsfRequest || isPortletRequest) {
                 Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-                String uniqueRTLibraryName = isProtletRequest
+                String uniqueRTLibraryName = isPortletRequest
                         ? (String) sessionMap.get(AjaxUtil.ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME)
                         : ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
 
