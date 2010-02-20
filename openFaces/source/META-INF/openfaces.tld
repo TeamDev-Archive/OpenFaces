@@ -24827,7 +24827,8 @@ and it is automatically triggered on any form submission. -->
 
     <attribute>
       <description>Specifies name of the request-scope variable under which the current event object is available
-      when rendering event areas and processing server-side events from event area components.</description>
+        when rendering event areas and processing server-side events from event area components.
+      </description>
       <name>eventVar</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -32401,7 +32402,11 @@ and it is automatically triggered on any form submission. -->
 
   </tag>
   <tag>
-    <description>This component is under construction and cannot be used currently.</description>
+    <description>The LayeredPane component is a container which allows switching between different sets of displayed
+      components. Each set of components, called a page, is declared within the LayeredPane component and it's
+      possible to use both server-side and client-side API for selecting the currently displayed page. LayeredPane
+      provides different page loading modes to allow quick client-side switching or Ajax-based page switching.
+    </description>
     <name>layeredPane</name>
     <tag-class>org.openfaces.taglib.jsp.panel.LayeredPaneJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -32426,19 +32431,19 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A value-binding expression that associates the TabbedPane component with a backing bean property.
+      <description>A value-binding expression that associates the LayeredPane component with a backing bean property.
       </description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.panel.TabbedPane</type>
+        <type>org.openfaces.component.panel.LayeredPane</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.panel. TabbedPane -->
+      <!-- @bindingType org.openfaces.component.panel. LayeredPane -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
 
     <attribute>
-      <description>A style for the entire TabbedPane component.</description>
+      <description>A style for the entire LayeredPane component.</description>
       <name>style</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -32448,7 +32453,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the entire TabbedPane component.</description>
+      <description>A CSS class name for the entire LayeredPane component.</description>
       <name>styleClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -32458,7 +32463,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the TabbedPane component in the rollover state.</description>
+      <description>A style for the LayeredPane component in the rollover state.</description>
       <name>rolloverStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -32468,7 +32473,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the TabbedPane component in the rollover state.</description>
+      <description>A CSS class name for the LayeredPane component in the rollover state.</description>
       <name>rolloverClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -32479,16 +32484,15 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>The way the data in the TabbedPane component is loaded.</description>
+      <description>The way the data in the LayeredPane component is loaded.</description>
       <name>loadingMode</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.util. LoadingMode -->
       <!-- @default "ajaxLazy" -->
-      <!-- @value "client" The content of all pages is loaded to the client side
-                           on the first page load. So when a page is selected no content needs to be loaded from the
-                           server. -->
+      <!-- @value "client" The content of all pages is loaded to the client side on the first page load. So when a page 
+                  is selected no content needs to be loaded from the server. -->
       <!-- @value "ajaxLazy"  The page content is retrieved from the server with Ajax request upon
                   the first switch to the page. Once requested, the content is stored on the client and is shown without
                   additional server requests. -->
@@ -32522,31 +32526,23 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
-
     <attribute>
-      <description>A style for the TabbedPane pages.</description>
-      <name>containerStyle</name>
+      <description>A flag that indicates whether or not the selectionChangeListener
+        should be executed immediately (during the Apply Request Values phase of the
+        request processing lifecycle instead of Process Validations phase).
+      </description>
+      <name>immediate</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>boolean</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A CSS class name for the TabbedPane pages.</description>
-      <name>containerClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
       <!-- @el true -->
     </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
-        the left mouse button over the TabbedPane.
+        the left mouse button over the component.
       </description>
       <name>onclick</name>
       <deferred-value>
@@ -32558,7 +32554,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed on the client when the user double-clicks
-        the left mouse button over the TabbedPane.
+        the left mouse button over the component.
       </description>
       <name>ondblclick</name>
       <deferred-value>
@@ -32569,7 +32565,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user clicks the TabbedPane with either mouse button.
+      <description>JavaScript code that should be executed when the user clicks the component with either mouse button.
       </description>
       <name>onmousedown</name>
       <deferred-value>
@@ -32580,7 +32576,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the TabbedPane.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the component.
       </description>
       <name>onmouseover</name>
       <deferred-value>
@@ -32591,7 +32587,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer over the TabbedPane.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the component.
       </description>
       <name>onmousemove</name>
       <deferred-value>
@@ -32603,7 +32599,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed when the user moves the mouse pointer
-        away from the TabbedPane.
+        away from the component.
       </description>
       <name>onmouseout</name>
       <deferred-value>
@@ -32614,7 +32610,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases a mouse button over the TabbedPane.
+      <description>JavaScript code that should be executed when the user releases a mouse button over the component.
       </description>
       <name>onmouseup</name>
       <deferred-value>
@@ -32625,7 +32621,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user presses a key down over the TabbedPane.
+      <description>JavaScript code that should be executed when the user presses a key down over the component.
       </description>
       <name>onkeydown</name>
       <deferred-value>
@@ -32636,7 +32632,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases a key over the TabbedPane.
+      <description>JavaScript code that should be executed when the user releases a key over the component.
       </description>
       <name>onkeyup</name>
       <deferred-value>
@@ -32648,7 +32644,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed on the client when the user presses and releases a key
-        over the TabbedPane.
+        over the component.
       </description>
       <name>onkeypress</name>
       <deferred-value>
@@ -32659,7 +32655,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when onfocus event bubbles up from some of TabbedPane's child
+      <description>JavaScript code that should be executed when onfocus event bubbles up from some of component's child
         component.
       </description>
       <name>onfocus</name>
@@ -32671,7 +32667,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when onblur event bubbles up from some of TabbedPane's child
+      <description>JavaScript code that should be executed when onblur event bubbles up from some of component's child
         component.
       </description>
       <name>onblur</name>

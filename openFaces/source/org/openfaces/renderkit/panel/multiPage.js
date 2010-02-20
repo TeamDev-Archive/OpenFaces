@@ -27,6 +27,7 @@ O$.MultiPage = {
       },
 
       setSelectedIndex: function(index) {
+        if (selectedIndex == index) return;
         selectedIndex = index;
         tabbedPane.doSetSelectedIndex(index);
       },

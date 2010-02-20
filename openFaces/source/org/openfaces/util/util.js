@@ -1175,7 +1175,7 @@ if (!window.O$) {
       newParamField.name = fieldName;
       frm.appendChild(newParamField);
     }
-    if (!fieldValue)
+    if (fieldValue == null)
       fieldValue = "";
     newParamField.value = fieldValue;
     return newParamField;

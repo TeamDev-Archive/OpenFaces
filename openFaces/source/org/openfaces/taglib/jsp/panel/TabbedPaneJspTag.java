@@ -24,10 +24,6 @@ public class TabbedPaneJspTag extends MultiPageContainerJspTag {
         super(new TabbedPaneTag());
     }
 
-    public void setImmediate(ValueExpression immediate) {
-        getDelegate().setPropertyValue("immediate", immediate);
-    }
-
     public void setTabEmptySpaceStyle(ValueExpression tabEmptySpaceStyle) {
         getDelegate().setPropertyValue("tabEmptySpaceStyle", tabEmptySpaceStyle);
     }

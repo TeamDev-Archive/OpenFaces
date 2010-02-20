@@ -35,6 +35,7 @@ public abstract class MultiPageContainerTag extends AbstractComponentTag {
         setStringProperty(component, "containerStyle");
         setStringProperty(component, "containerClass");
 
+        setBooleanProperty(component, "immediate");
     }
 
 }

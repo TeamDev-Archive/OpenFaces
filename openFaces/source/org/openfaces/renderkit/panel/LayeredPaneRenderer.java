@@ -32,7 +32,7 @@ import java.util.List;
 public class LayeredPaneRenderer extends MultiPageContainerRenderer {
 
     protected String getSelectionHiddenFieldSuffix() {
-        return RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "index";
+        return RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "index";
     }
 
     @Override

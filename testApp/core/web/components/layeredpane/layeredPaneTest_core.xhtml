@@ -8,15 +8,26 @@
   <a href="../../main.jsf">Main page</a><br/>
   <a href="../../functional_testing.jsf">Component test pages</a><br/><br/>
 
-  <o:inputText id="pageIndex" value="0"/>
-  <o:commandButton type="button" onclick="O$('form:layeredPane1').setSelectedIndex(O$('form:pageIndex').value);">Select Page</o:commandButton>
+  <o:commandButton>Submit</o:commandButton>
+  <o:spinner value="0" minValue="0" maxValue="2" 
+             onchange="O$('form:layeredPane').setSelectedIndex(this.getValue());"/>
 
-  <o:layeredPane id="layeredPane1" style="border: 1px solid black">
+  <o:spinner value="#{requestScope['pageIndex']}" minValue="0" maxValue="2">
+    <o:ajax event="change" render="layeredPane"/>
+  </o:spinner>
+
+  <o:layeredPane id="layeredPane" style="border: 1px solid black; width: 200px; height: 200px" selectedIndex="#{requestScope['pageIndex']}" loadingMode="client">
     <o:subPanel>
-      <h:outputText value="Some text on the first page"/>
+      <div>Page 1 content.</div>
+      <h:outputText value="Hello!"/>
     </o:subPanel>
     <o:subPanel>
-      <h:outputText value="Some text on the second page"/>
+      <div>Page 2 content.</div>
+      <o:graphicText value="Hi!" direction="45" style="font-size: 27px;"/>
+    </o:subPanel>
+    <o:subPanel>
+      <div>Page 3 content.</div>
+      <h:inputTextarea/>
     </o:subPanel>
   </o:layeredPane>
   

@@ -60,7 +60,7 @@ public abstract class MultiPageContainerRenderer extends BaseTabSetRenderer impl
     ) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        // imlementation note
+        // implementation note
         // table tag is used as pane content wrapper
         // instead of div tag because there is Firefox bugs for height 100% in div (from time to time) JSFC-746.
         writer.startElement("table", container);

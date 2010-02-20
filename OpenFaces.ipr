@@ -973,6 +973,7 @@
         <w>onmouseover</w>
         <w>onmouseup</w>
         <w>onselect</w>
+        <w>onselectionchange</w>
         <w>onselectstart</w>
         <w>onunload</w>
         <w>openfaces</w>

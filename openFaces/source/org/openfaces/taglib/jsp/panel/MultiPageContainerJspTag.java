@@ -44,5 +44,9 @@ public class MultiPageContainerJspTag extends AbstractComponentJspTag {
     public void setContainerClass(ValueExpression containerClass) {
         getDelegate().setPropertyValue("containerClass", containerClass);
     }
+
+    public void setImmediate(ValueExpression immediate) {
+        getDelegate().setPropertyValue("immediate", immediate);
+    }
     
 }

@@ -69,6 +69,5 @@ public class TabbedPaneTag extends MultiPageContainerTag {
         String onselectionchange = getPropertyValue("onselectionchange");
         if (!setPropertyAsBinding(component, "onselectionchange", onselectionchange))
             tabbedPane.setOnchange(onselectionchange);
-        setBooleanProperty(component, "immediate");
     }
 }

@@ -44,6 +44,50 @@ O$.Spinner = {
         if (!silent && newValue != prevValue) {
           notifyOfInputChanges(spinner);
         }
+      },
+
+      increaseValue: function() {
+        var value = spinner.getValue();
+        if (!value && value != 0) {
+          spinner.setValue(minValue != null ? minValue : 0, true);
+        } else if ((maxValue == null || value + step <= maxValue) && (minValue == null || value + step >= minValue)) {
+          spinner.setValue(value + step, true);
+        } else {
+          if (cycled) {
+            if (minValue != null)
+              spinner.setValue(minValue, true);
+          } else {
+            if (maxValue != null && value > maxValue)
+              spinner.setValue(maxValue, true);
+            if (minValue != null && value < minValue)
+              spinner.setValue(minValue, true);
+          }
+        }
+        if (value != spinner.getValue()) {
+          notifyOfInputChanges(spinner);
+        }
+      },
+
+      decreaseValue: function() {
+        var value = spinner.getValue();
+        if (!value && value != 0) {
+          spinner.setValue(minValue != null ? minValue : 0, true);
+        } else if ((maxValue == null || value - step <= maxValue) && (minValue == null || value - step >= minValue)) {
+          spinner.setValue(value - step, true);
+        } else {
+          if (cycled) {
+            if (maxValue != null)
+              spinner.setValue(maxValue, true);
+          } else {
+            if (maxValue != null && value > maxValue)
+              spinner.setValue(maxValue, true);
+            if (minValue != null && value < minValue)
+              spinner.setValue(minValue, true);
+          }
+        }
+        if (value != spinner.getValue()) {
+          notifyOfInputChanges(spinner);
+        }
       }
 
     });
@@ -136,51 +180,18 @@ O$.Spinner = {
         });
       });
       increaseButton.onmousedown = function(e) {
-        setTimeout(function(){
+        setTimeout(function() {
           spinner._field.focus();
         }, 1);
-
-        var value = spinner.getValue();
-        if (!value && value != 0) {
-          spinner.setValue(minValue != null ? minValue : 0, true);
-        } else if (maxValue == null || value + step <= maxValue) {
-          spinner.setValue(value + step, true);
-        } else {
-          if (cycled) {
-            if (minValue != null)
-              spinner.setValue(minValue, true);
-          } else {
-            if (maxValue != null)
-              spinner.setValue(maxValue, true);
-          }
-        }
-        if (value != spinner.getValue()) {
-          notifyOfInputChanges(spinner);
-        }
+        spinner.increaseValue();
         O$.breakEvent(e);
       };
       decreaseButton.onmousedown = function(e) {
-        setTimeout(function(){
+        setTimeout(function() {
           spinner._field.focus();
         }, 1);
 
-        var value = spinner.getValue();
-        if (!value && value != 0) {
-          spinner.setValue(minValue != null ? minValue : 0, true);
-        } else if (minValue == null || value - step >= minValue) {
-          spinner.setValue(value - step, true);
-        } else {
-          if (cycled) {
-            if (maxValue != null)
-              spinner.setValue(maxValue, true);
-          } else {
-            if (minValue != null)
-              spinner.setValue(minValue, true);
-          }
-        }
-        if (value != spinner.getValue()) {
-          notifyOfInputChanges(spinner);
-        }
+        spinner.decreaseValue();
         O$.breakEvent(e);
       };
       field._oldInkeydown = field.onkeydown;
