@@ -29,10 +29,6 @@ public class SubPanel extends AbstractPanelWithCaption implements Serializable {
         setCaptionFacet(caption);
     }
 
-    public SubPanel(UIComponent... children) {
-        getChildren().addAll(Arrays.asList(children));
-    }
-
     public SubPanel(UIComponent caption, UIComponent... children) {
         setCaptionFacet(caption);
         getChildren().addAll(Arrays.asList(children));
