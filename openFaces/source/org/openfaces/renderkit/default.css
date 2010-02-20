@@ -505,8 +505,7 @@
 }
 
 .o_reservedTimeEvent {
-  background-image: url(timetable/reservedTimePattern.gif);
-  background-repeat: repeat;
+  background: url(timetable/reservedTimePattern.gif) repeat;
   margin: 4px;
 }
 
@@ -670,11 +669,6 @@
 }
 
 .o_spinner_button {
-  background-color: #cfcfcf;
-  margin: 0;
-  padding: 0;
-  border: 0 solid;
-  white-space: nowrap;
   line-height: 0;
   height: 50%;
 }
@@ -690,7 +684,6 @@
   padding: 2px 2px 0 2px;
   border: 0 solid;
   width: 100%;
-  height: 100%;
 }
 
 .o_dropdown_list {
@@ -707,12 +700,6 @@
 }
 
 .o_dropdown_button {
-  background-color: #cfcfcf;
-  margin: 0;
-  padding: 0;
-  border: 0 solid;
-  width: 15px;
-  white-space: nowrap;
   height: 100%;
 }
 
@@ -727,12 +714,25 @@
   text-align: left;
 }
 
+.o_combo_button {
+  background-color: #cfcfcf;
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+  white-space: nowrap;
+  width: 15px;
+}
+
+.o_combo_button_rollover {
+  background-color: #b8b8b8;
+}
+
 .o_combo_button_pressed {
-  background-color: #dfdfdf;
+  background-color: #989898;
 }
 
 .o_combo_button_disabled {
-  background: #cfcfcf;
+  background: #a0a0a0;
 }
 
 .o_combo_field_disabled {
@@ -1131,9 +1131,7 @@
 
 .o_sidepanel_caption {
   position: absolute;
-  border-top: 0;
-  border-left: 0;
-  border-right: 0;
+  border-width: 0;
   border-bottom: 1px solid gray;
   overflow-x: hidden;
   white-space: nowrap;

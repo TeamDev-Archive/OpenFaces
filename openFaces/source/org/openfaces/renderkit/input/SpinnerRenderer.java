@@ -39,11 +39,9 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
     private static final String DEFAULT_FIELD_CLASS = "o_dropdown_field o_spinner_field";
     private static final String DEFAULT_CLASS = "o_spinner";
 
-    protected static final String FIELD_SUFFIX = "::field";
-
     private static final String INCREASE_BUTTON_SUFFIX = "::increase_button";
     private static final String DECREASE_BUTTON_SUFFIX = "::decrease_button";
-    private static final String DEFAULT_BUTTON_CLASS = "o_spinner_button";
+    private static final String DEFAULT_BUTTON_CLASS = "o_spinner_button o_combo_button";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -72,7 +70,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         String buttonStyleClass = StyleUtil.getCSSClass(context, dropDown, buttonStyle, DEFAULT_BUTTON_CLASS, buttonClass);
         String rolloverButtonStyle = (String) dropDown.getAttributes().get("rolloverButtonStyle");
         String rolloverButtonClass = (String) dropDown.getAttributes().get("rolloverButtonClass");
-        String buttonRolloverStyleClass = StyleUtil.getCSSClass(context, dropDown, rolloverButtonStyle, StyleGroup.rolloverStyleGroup(), rolloverButtonClass);
+        String buttonRolloverStyleClass = StyleUtil.getCSSClass(context, dropDown, rolloverButtonStyle, StyleGroup.rolloverStyleGroup(), rolloverButtonClass, DEFAULT_BUTTON_ROLLOVER_CLASS);
         String pressedButtonStyle = (String) dropDown.getAttributes().get("pressedButtonStyle");
         String pressedButtonClass = (String) dropDown.getAttributes().get("pressedButtonClass");
         String buttonPressedStyleClass = StyleUtil.getCSSClass(context, dropDown, pressedButtonStyle, StyleGroup.rolloverStyleGroup(2), pressedButtonClass, DEFAULT_BUTTON_PRESSED_CLASS);
@@ -173,13 +171,13 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
 
     protected void encodeButton(FacesContext context, UIComponent component) throws IOException {
         FacesContext currentInstance = FacesContext.getCurrentInstance();
-        Spinner fieldComponent = (Spinner) component;
+        Spinner spinner = (Spinner) component;
         ResponseWriter writer = context.getResponseWriter();
 
-        String clientId = fieldComponent.getClientId(currentInstance);
+        String clientId = spinner.getClientId(currentInstance);
         String increaseButtonId = clientId + INCREASE_BUTTON_SUFFIX;
         String decreaseButtonId = clientId + DECREASE_BUTTON_SUFFIX;
-        encodeRootElementStart(writer, fieldComponent);
+        encodeRootElementStart(writer, spinner);
         writer.writeAttribute("nowrap", "nowrap", null);
         writer.writeAttribute("height", "100%", null);
         writer.writeAttribute("width", "100%", null);
@@ -197,23 +195,23 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
     protected void encodeButton(FacesContext context, UIComponent component, String buttonID, String disabledImageUrl,
                                 String disabledImage, String imageUrl, String image) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Spinner fieldComponent = (Spinner) component;
+        Spinner spinner = (Spinner) component;
 
-        writer.startElement("tr", fieldComponent);
-        writer.startElement("td", fieldComponent);
+        writer.startElement("tr", spinner);
+        writer.startElement("td", spinner);
 
         writer.writeAttribute("id", buttonID, null);
         writer.writeAttribute("align", "center", null);
         writer.writeAttribute("valign", "middle", null);
         String resultImageUrl;
-        if (fieldComponent.isDisabled()) {
-            String disabledButtonImageUrl = (String) fieldComponent.getAttributes().get(disabledImageUrl);
+        if (spinner.isDisabled()) {
+            String disabledButtonImageUrl = (String) spinner.getAttributes().get(disabledImageUrl);
             resultImageUrl = ResourceUtil.getResourceURL(context, disabledButtonImageUrl, SpinnerRenderer.class, disabledImage);
         } else {
-            String buttonImageUrl = (String) fieldComponent.getAttributes().get(imageUrl);
+            String buttonImageUrl = (String) spinner.getAttributes().get(imageUrl);
             resultImageUrl = ResourceUtil.getResourceURL(context, buttonImageUrl, SpinnerRenderer.class, image);
         }
-        writer.startElement("img", fieldComponent);
+        writer.startElement("img", spinner);
         writer.writeAttribute("src", resultImageUrl, null);
         writer.endElement("img");
         writer.endElement("td");

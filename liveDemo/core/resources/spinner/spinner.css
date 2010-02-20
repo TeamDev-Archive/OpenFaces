@@ -1,15 +1,11 @@
-.spinnerButton {
-  background: #dddddd; 
-}
-
 .spinnerDefault {
   border: 1px solid #dddddd;
 }
 
 .spinnerRollover {
-  border: 1px solid gray;
+  border: 1px solid #a0a0a0;
 }
 
 .spinnerFocused {
-  border: 1px solid black;
+  border: 1px solid gray;
 }

@@ -52,6 +52,22 @@ O$.Spinner = {
     var decreaseButton = O$(spinnerId + "::decrease_button");
     var field = spinner._field;
 
+    var buttonsTable = O$.getParentNode(increaseButton, "table");
+    if (O$.isExplorer() && O$.isStrictMode()) {
+      var buttonContainer = buttonsTable.parentNode;
+      buttonContainer.style.position = "relative";
+      buttonsTable.style.position = "absolute";
+      buttonsTable.style.top = "0";
+      buttonsTable.style.left = "0";
+      var buttonWidth = O$.calculateNumericCSSValue(O$.getStyleClassProperty(buttonClass, "width"));
+      buttonContainer.style.width = buttonWidth;
+      for (var i = 0, count = buttonContainer.parentNode.childNodes.length; i < count; i++) {
+        var node = buttonContainer.parentNode.childNodes[i];
+        if (node != buttonContainer && node.nodeName.toLowerCase() == "td")
+          node.style.width = "";
+      }
+    }
+
     if (increaseButton && decreaseButton) {
       increaseButton.className = buttonClass;
       decreaseButton.className = buttonClass;
@@ -87,18 +103,6 @@ O$.Spinner = {
         checkValueForBounds(spinner);
       };
 
-      increaseButton.onmouseup = function () {
-        O$.setStyleMappings(increaseButton, {
-          pressed: null
-        });
-      };
-
-      decreaseButton.onmouseup = function () {
-        O$.setStyleMappings(decreaseButton, {
-          pressed: null
-        });
-      };
-
       increaseButton.ondragstart = function(e) {
         O$.breakEvent(e);
       };
@@ -118,12 +122,23 @@ O$.Spinner = {
     increaseButton.ondblclick = O$.repeatClickOnDblclick;
 
     if (!disabled) {
-      increaseButton.onmousedown = function(e) {
-        spinner._field.focus();
 
+      O$.setupHoverAndPressStateFunction(increaseButton, function(mouseInside, pressed) {
         O$.setStyleMappings(increaseButton, {
-          pressed: pressedButtonClass
+          rollover: mouseInside ? rolloverButtonClass : null,
+          pressed: pressed ? pressedButtonClass : null
         });
+      });
+      O$.setupHoverAndPressStateFunction(decreaseButton, function(mouseInside, pressed) {
+        O$.setStyleMappings(decreaseButton, {
+          rollover: mouseInside ? rolloverButtonClass : null,
+          pressed: pressed ? pressedButtonClass : null
+        });
+      });
+      increaseButton.onmousedown = function(e) {
+        setTimeout(function(){
+          spinner._field.focus();
+        }, 1);
 
         var value = spinner.getValue();
         if (!value && value != 0) {
@@ -145,11 +160,9 @@ O$.Spinner = {
         O$.breakEvent(e);
       };
       decreaseButton.onmousedown = function(e) {
-        spinner._field.focus();
-
-        O$.setStyleMappings(decreaseButton, {
-          pressed: pressedButtonClass
-        });
+        setTimeout(function(){
+          spinner._field.focus();
+        }, 1);
 
         var value = spinner.getValue();
         if (!value && value != 0) {
@@ -185,53 +198,21 @@ O$.Spinner = {
           field._oldInkeydown(e);
       };
 
-      field._oldOnkeyup = field.onkeyup;
-      field.onkeyup = function(e) {
-        var evt = O$.getEvent(e);
-        if (!evt) return;
-        var keyCode = evt.keyCode;
-        if (keyCode == 38) { // Up key
-          increaseButton.onmouseup(e);
-        } else if (keyCode == 40) { // Down key
-          decreaseButton.onmouseup(e);
-        }
-        if (field._oldOnkeyup)
-          field._oldOnkeyup(e);
-      };
     }
 
-    if (rolloverButtonClass) {
+    if (spinner._containerClass != spinner._rolloverContainerClass) {
       O$.addMouseOverListener(spinner, function() {
-        if (spinner && spinner._containerClass != spinner._rolloverContainerClass)
+        if (spinner._containerClass != spinner._rolloverContainerClass)
           spinner.className = spinner._rolloverContainerClass;
-        if (spinner != field && spinner._fieldClass != spinner._rolloverFieldClass)
+        if (spinner._fieldClass != spinner._rolloverFieldClass)
           field.className = spinner._rolloverFieldClass;
-        if (increaseButton && decreaseButton) {
-          O$.setStyleMappings(increaseButton, {
-            mouseover: rolloverButtonClass
-          });
-
-          O$.setStyleMappings(decreaseButton, {
-            mouseover: rolloverButtonClass
-          });
-        }
         O$.repaintAreaForOpera(spinner, true);
       });
       O$.addMouseOutListener(spinner, function() {
-        if (spinner && spinner._containerClass != spinner._rolloverContainerClass)
+        if (spinner._containerClass != spinner._rolloverContainerClass)
           spinner.className = spinner._containerClass;
         if (spinner._fieldClass != spinner._rolloverFieldClass)
           field.className = spinner._fieldClass;
-        if (increaseButton && decreaseButton) {
-          O$.setStyleMappings(increaseButton, {
-            mouseover: null
-          });
-
-          O$.setStyleMappings(decreaseButton, {
-            mouseover: null
-          });
-        }
-
         O$.repaintAreaForOpera(spinner, true);
       });
     }

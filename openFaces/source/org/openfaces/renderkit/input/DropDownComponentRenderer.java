@@ -44,12 +44,13 @@ public abstract class DropDownComponentRenderer extends RendererBase {
     private static final String DEFAULT_FIELD_CLASS = "o_dropdown_field";
     private static final String DEFAULT_CLASS = "o_dropdown";
     private static final String DEFAULT_LIST_CLASS = "o_dropdown_list";
-    private static final String DEFAULT_BUTTON_CLASS = "o_dropdown_button";
+    private static final String DEFAULT_BUTTON_CLASS = "o_dropdown_button o_combo_button";
     protected static final String DEFAULT_PROMPT_CLASS = "o_dropdown_prompt";
 
     private static final String DEFAULT_DISABLED_CLASS = "o_dropdown_disabled";
     private static final String DEFAULT_DISABLED_FIELD_CLASS = "o_combo_field_disabled";
     protected static final String DEFAULT_DISABLED_BUTTON_CLASS = "o_combo_button_disabled";
+    protected static final String DEFAULT_BUTTON_ROLLOVER_CLASS = "o_combo_button_rollover";
     protected static final String DEFAULT_BUTTON_PRESSED_CLASS = "o_combo_button_pressed";
 
     @Override
@@ -108,13 +109,10 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         DropDownComponent fieldComponent = (DropDownComponent) component;
         ResponseWriter writer = context.getResponseWriter();
 
-        // get all ids (main, field))
         String fieldId = getFieldClientId(context, fieldComponent);
 
-        writer.writeAttribute("width", "100%", null);
-        writer.writeAttribute("height", "100%", null);
+        writer.writeAttribute("style", "width: 100%; height: 100%", null);
 
-        // Write field tag
         writer.startElement("input", fieldComponent);
         writer.writeAttribute("id", fieldId, null);
         writer.writeAttribute("name", fieldId, null);
@@ -157,13 +155,11 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         DropDownComponent fieldComponent = (DropDownComponent) component;
         ResponseWriter writer = context.getResponseWriter();
 
-        // get all ids (main, button, popup))
+        // get all ids (main, button, popup)
         String clientId = fieldComponent.getClientId(currentInstance);
         String buttonId = clientId + BUTTON_SUFFIX;
 
-
         writer.writeAttribute("nowrap", "nowrap", null);
-//    writer.writeAttribute("width", "1%", null);
 
         // Render drop down button
         writer.writeAttribute("id", buttonId, null);
@@ -228,7 +224,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         List<Object> params = new ArrayList<Object>();
         params.add(fieldText);
         params.addAll(rendererInputStyles(facesContext, dropDown));
-        params.addAll(renderButtonAndListStyles(facesContext, dropDown));
+        params.addAll(getButtonAndListStyles(facesContext, dropDown));
         params.add(dropDown.isDisabled());
         params.add(promptText);
         params.add(promptTextStyleClass);
@@ -304,15 +300,13 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         );
     }
 
-    private List<String> renderButtonAndListStyles(FacesContext context, DropDownComponent dropDown) throws IOException {
-        // Render main style declaration if it is exist
-
+    private List<String> getButtonAndListStyles(FacesContext context, DropDownComponent dropDown) throws IOException {
         String buttonStyle = (String) dropDown.getAttributes().get("buttonStyle");
         String buttonClass = (String) dropDown.getAttributes().get("buttonClass");
         String buttonStyleClass = StyleUtil.getCSSClass(context, dropDown, buttonStyle, StyleGroup.regularStyleGroup(), buttonClass, DEFAULT_BUTTON_CLASS);
         String rolloverButtonStyle = (String) dropDown.getAttributes().get("rolloverButtonStyle");
         String rolloverButtonClass = (String) dropDown.getAttributes().get("rolloverButtonClass");
-        String buttonRolloverStyleClass = StyleUtil.getCSSClass(context, dropDown, rolloverButtonStyle, StyleGroup.rolloverStyleGroup(), rolloverButtonClass);
+        String buttonRolloverStyleClass = StyleUtil.getCSSClass(context, dropDown, rolloverButtonStyle, StyleGroup.rolloverStyleGroup(), rolloverButtonClass, DEFAULT_BUTTON_ROLLOVER_CLASS);
         String pressedButtonStyle = (String) dropDown.getAttributes().get("pressedButtonStyle");
         String pressedButtonClass = (String) dropDown.getAttributes().get("pressedButtonClass");
         String buttonPressedStyleClass = StyleUtil.getCSSClass(context, dropDown, pressedButtonStyle, StyleGroup.rolloverStyleGroup(2), pressedButtonClass, DEFAULT_BUTTON_PRESSED_CLASS);

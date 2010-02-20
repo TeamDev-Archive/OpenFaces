@@ -227,7 +227,7 @@ O$.DropDown = {
         button._focusable = true;
         buttonImage._focusable = true;
 
-        button.onmousedown = function (e) {
+        button.onmousedown = function(e) {
           if (O$.isEventFromInsideOfElement(e, popup))
             return;
           button.className = dropDown._pressedButtonClass;
@@ -235,7 +235,7 @@ O$.DropDown = {
           O$.Popup._hideAllPopupsExceptOne(popup);
           O$.breakEvent(e);
         };
-        button.ondblclick = function (e) {
+        button.ondblclick = function(e) {
           if (O$.isEventFromInsideOfElement(e, popup))
             return;
           if (!O$.isExplorer())
@@ -243,26 +243,39 @@ O$.DropDown = {
           dropDown._showHidePopup();
           O$.breakEvent(e);
         };
-        button.onmousemove = function (e) {
+        button.onmousemove = function(e) {
           if (O$.isEventFromInsideOfElement(e, popup))
             return;
           O$.breakEvent(e);
         };
-        button.onmouseup = function (e) {
+        button.onmouseup = function(e) {
           if (O$.isEventFromInsideOfElement(e, popup))
             return;
           button.className = dropDown._rolloverButtonClass;
         };
+        button.onmouseover = function(e) {
+          if (O$.isEventFromInsideOfElement(e, popup))
+            return;
+          if (dropDown._buttonClass != dropDown._rolloverButtonClass)
+            button.className = dropDown._rolloverButtonClass;
+        };
+        button.onmouseout = function(e) {
+          if (O$.isEventFromInsideOfElement(e, popup))
+            return;
+
+          if (dropDown._buttonClass != dropDown._rolloverButtonClass)
+            button.className = dropDown._buttonClass;
+        };
         button.ondragstart = function(e) {
           O$.breakEvent(e);
         };
-        button.onselectstart = function (e) {
+        button.onselectstart = function(e) {
           O$.breakEvent(e);
         };
       }
     }
 
-    popup.onmousemove = function (e) {
+    popup.onmousemove = function(e) {
       O$.breakEvent(e);
     };
 
@@ -277,8 +290,6 @@ O$.DropDown = {
           dropDown.className = dropDown._rolloverContainerClass;
         if (dropDown != field && dropDown._fieldClass != dropDown._rolloverFieldClass)
           field.className = dropDown._rolloverFieldClass;
-        if (button && dropDown._buttonClass != dropDown._rolloverButtonClass)
-          button.className = dropDown._rolloverButtonClass;
         if (popup && dropDown._popupClass != dropDown._rolloverPopupClass)
           popup.className = dropDown._rolloverPopupClass;
         O$.repaintAreaForOpera(dropDown, true);
@@ -290,8 +301,6 @@ O$.DropDown = {
           dropDown.className = dropDown._containerClass;
         if (dropDown != field && dropDown._fieldClass != dropDown._rolloverFieldClass)
           field.className = dropDown._fieldClass;
-        if (button && dropDown._buttonClass != dropDown._rolloverButtonClass)
-          button.className = dropDown._buttonClass;
         if (popup && dropDown._popupClass != dropDown._rolloverPopupClass)
           popup.className = dropDown._popupClass;
         O$.repaintAreaForOpera(dropDown, true);
@@ -348,7 +357,7 @@ O$.DropDown = {
     var popup = dropDown._popup;
     var container = O$.getDefaultAbsolutePositionParent();
     if ((O$.isExplorer() && O$.isQuirksMode() && dropDown._popup.parentNode != container) ||
-            (O$.isMozillaFF2() && O$.isStrictMode())) {
+        (O$.isMozillaFF2() && O$.isStrictMode())) {
       // prevent clipping the drop-down with parent nodes with hidden overflow (possible only in IE+quirks)
       // (e.g. scrollable table header might prevent drop-down filter popup from displaying fully) 
       container.appendChild(dropDown._popup);

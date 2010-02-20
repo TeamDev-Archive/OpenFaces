@@ -934,6 +934,7 @@
         <w>dashized</w>
         <w>dblclick</w>
         <w>dont</w>
+        <w>dropdown</w>
         <w>firefox</w>
         <w>func</w>
         <w>horiz</w>
@@ -944,9 +945,11 @@
         <w>lgpl</w>
         <w>locator</w>
         <w>ltrim</w>
+        <w>maxlength</w>
         <w>mouseover</w>
         <w>mozilla</w>
         <w>multi</w>
+        <w>nowrap</w>
         <w>onajaxend</w>
         <w>onajaxstart</w>
         <w>onchange</w>
@@ -997,7 +1000,9 @@
         <w>thisp</w>
         <w>tooltip</w>
         <w>unescape</w>
+        <w>updatable</w>
         <w>updatables</w>
+        <w>valign</w>
         <w>vert</w>
       </words>
     </dictionary>
