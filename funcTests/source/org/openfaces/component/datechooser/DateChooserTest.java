@@ -420,7 +420,8 @@ public class DateChooserTest extends BaseCalendarTestCase {
         button.childNodes().get(0).assertAttributeStartsWith("src", "../dropdown/dropdown_arrow.gif");
 
         // rolloverButtonStyle="border: 2px solid darkgreen; background: green;"
-        dateChooser.mouseMove();
+        dateChooser.button().mouseOver();
+        dateChooser.button().mouseMove();
         button.assertStyle("border: 2px solid darkgreen; background: green");
 
         /* check calendar styles */
