@@ -1,0 +1,57 @@
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:o="http://openfaces.org/"
+        >
+
+  <div id="Demo">
+
+
+    <h:panelGroup>
+      Select loading mode:
+      <h:selectOneRadio value="#{LayeredPaneBean.loadingMode}" converter="#{LayeredPaneBean.loadingModeConverter}">
+        <f:selectItems value="#{LayeredPaneBean.loadingModeItems}"/>
+        <o:ajax render="layeredPane"/>
+      </h:selectOneRadio>
+    </h:panelGroup>
+
+    <style>.alignTop{vertical-align: top}</style>
+
+    <h:panelGrid columns="3" columnClasses="alignTop" cellspacing="7px">
+      <h:panelGroup>
+        <h:commandLink value="Select page 1" onclick="O$('form:layeredPane').setSelectedIndex(0); return false;"/>
+        <br/>
+        <h:commandLink value="Select page 2" onclick="O$('form:layeredPane').setSelectedIndex(1); return false;"/>
+        <br/>
+        <h:commandLink value="Select page 3" onclick="O$('form:layeredPane').setSelectedIndex(2); return false;"/>
+        <br/>
+      </h:panelGroup>
+
+      <o:layeredPane id="layeredPane" style="border: 1px solid gray;" loadingMode="#{LayeredPaneBean.loadingMode}">
+        <o:subPanel caption="Poppy">
+          <h:graphicImage url="../images/tabbedpane/bigFlower_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+        <o:subPanel caption="Tree stump">
+          <h:graphicImage url="../images/tabbedpane/bole_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+        <o:subPanel caption="Lane">
+          <h:graphicImage url="../images/tabbedpane/pathway_small.jpg" width="228" height="171"/>
+        </o:subPanel>
+      </o:layeredPane>
+    </h:panelGrid>
+
+
+  </div>
+
+  <div id="Description">
+    <h4>Demonstrated Features</h4>
+    <ul class="hang">
+      <li><strong>Using client-side API for page switching</strong> - Clicking any of the "Select page" links uses the
+        <span class="codeSnippet">setSelectedIndex</span> function to change the currently displayed page.
+      </li>
+      <li><strong>Customizable loading modes</strong> - Use the loading mode selection radio-buttons to change the way
+        that the content is loaded during page switching.
+      </li>
+    </ul>
+  </div>
+
+</div>

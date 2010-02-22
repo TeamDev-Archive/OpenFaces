@@ -25,7 +25,7 @@ import java.io.Serializable;
  *
  * @author Oleg Marshalenko
  */
-public class SelectItem extends UIComponentBase implements Serializable {
+public class _SelectItem extends UIComponentBase implements Serializable {
     private static final long serialVersionUID = 6188475522203035120L;
 
     public static final String COMPONENT_TYPE = "org.openfaces.SelectItem";
@@ -37,11 +37,11 @@ public class SelectItem extends UIComponentBase implements Serializable {
     private Object itemValue;
     private UIComponent value;
 
-    public SelectItem() {
+    public _SelectItem() {
     }
 
 
-    public SelectItem(Object itemValue) {
+    public _SelectItem(Object itemValue) {
         this.itemValue = itemValue;
     }
 

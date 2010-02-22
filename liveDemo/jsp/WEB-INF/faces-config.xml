@@ -154,6 +154,12 @@
   </managed-bean>
 
   <managed-bean>
+    <managed-bean-name>LayeredPaneBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.layeredpane.LayeredPaneBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
     <managed-bean-name>ChartView</managed-bean-name>
     <managed-bean-class>org.openfaces.demo.beans.chart.ChartView</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>

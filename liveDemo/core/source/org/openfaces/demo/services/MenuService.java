@@ -77,8 +77,8 @@ public class MenuService implements Serializable {
     }
 
     public MenuItem getSelectedMenu() {
-        FacesContext facesCotnext = FacesContext.getCurrentInstance();
-        Map requestMap = facesCotnext.getExternalContext().getRequestMap();
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Map requestMap = facesContext.getExternalContext().getRequestMap();
         String key = MenuService.class.getName() + ".selectedMenu";
         MenuItem selectedMenu = (MenuItem) requestMap.get(key);
         if (selectedMenu == null) {

@@ -36,7 +36,7 @@
       <feature>Controlling submitted data</feature>
       <feature>Avoiding frequent requests</feature>
       <feature>Programmatic usage</feature>
-      <feature>Ajax request lifecycle events</feature>
+      <feature>Ajax request life-cycle events</feature>
       <feature>Customizing Ajax progress message</feature>
       <feature>Session expiration handling</feature>
     </keyFeatures>
@@ -472,6 +472,25 @@
     </demos>
   </menuItem>
   <menuItem>
+    <name>Layered Pane</name>
+    <componentName>Layered Pane</componentName>
+    <url>/layeredpane/LayeredPane.jsf</url>
+    <shortPath>/layeredpane/</shortPath>
+    <image>LayeredPane</image>
+    <selectedImage>/images/components/titles/LayeredPane.png</selectedImage>
+    <keyFeatures>
+      <feature>Client side page switching with different loading modes</feature>
+      <feature>Declaring a static list of pages right within jsp/xhtml page</feature>
+      <feature>Support for a dynamic list of pages constructed programmatically</feature>
+    </keyFeatures>
+    <demos>
+      <demoItem>
+        <demoName>General</demoName>
+        <demoUrl>/layeredpane/LayeredPane.jsf</demoUrl>
+      </demoItem>
+    </demos>
+  </menuItem>
+  <menuItem>
     <name>Popup Layer</name>
     <componentName>Popup Layer</componentName>
     <url>/popuplayer/PopupLayer.jsf</url>
@@ -505,7 +524,7 @@
       <feature>Keyboard support</feature>
       <feature>Embedding JSF components</feature>
       <feature>Flexible attachment mechanism</feature>
-      <feature>Customizible appearance</feature>
+      <feature>Customizable appearance</feature>
     </keyFeatures>
     <demos>
       <demoItem>
