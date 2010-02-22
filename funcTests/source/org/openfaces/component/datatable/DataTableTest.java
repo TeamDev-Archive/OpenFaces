@@ -587,8 +587,12 @@ public class DataTableTest extends OpenFacesTestCase {
     }
 
     @Test
-    public void testFeaturesCombination() {
+    public void testFeaturesCombination_ajax() {
         featuresCombination(OpenFacesAjaxLoadingMode.getInstance());
+    }
+
+    @Test
+    public void testFeaturesCombination_server() {
         featuresCombination(ServerLoadingMode.getInstance());
     }
 
