@@ -13,6 +13,7 @@ package org.openfaces.renderkit;
 
 import org.openfaces.component.CaptionButton;
 import org.openfaces.component.ComponentWithCaption;
+import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
@@ -43,7 +44,9 @@ public class CaptionButtonRenderer extends RendererBase {
         writer.startElement("td", btn);
         RenderingUtil.writeComponentClassAttribute(writer, btn, getDefaultStyleClass(btn));
         writeIdAttribute(context, btn);
-        RenderingUtil.writeStandardEvents(writer, btn);
+        boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, btn);
+        if (ajaxJsRequired)
+            btn.getAttributes().put("_ajaxRequired", Boolean.TRUE);
 
         writer.startElement("img", btn);
         String hint = btn.getHint();
@@ -62,6 +65,8 @@ public class CaptionButtonRenderer extends RendererBase {
 
         writer.endElement("img");
 
+        if (component.getAttributes().remove("_ajaxRequired") != null)
+            AjaxUtil.renderJSLinks(context);
         writer.endElement("td");
     }
 
@@ -79,7 +84,9 @@ public class CaptionButtonRenderer extends RendererBase {
 
     protected List<Object> getInitParams(FacesContext context, CaptionButton btn) throws IOException {
         List<Object> params = new ArrayList<Object>();
-        boolean supportActionAttribute = btn.getActionExpression() != null;
+        boolean supportActionAttribute =
+                !btn.getAttributes().containsKey("_ajaxRequired") && 
+                btn.getActionExpression() != null;
         params.add(supportActionAttribute);
         addCaptionButtonInitParams(context, params, btn);
         return params;
