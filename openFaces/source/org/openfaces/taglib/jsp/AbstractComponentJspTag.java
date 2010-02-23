@@ -134,6 +134,10 @@ public abstract class AbstractComponentJspTag extends UIComponentELTag {
         getDelegate().setPropertyValue("onmouseup", onmouseup);
     }
 
+    public void setOncontextmenu(ValueExpression oncontextmenu) {
+        getDelegate().setPropertyValue("oncontextmenu", oncontextmenu);
+    }
+
     public void setOnkeydown(ValueExpression onkeydown) {
         getDelegate().setPropertyValue("onkeydown", onkeydown);
     }

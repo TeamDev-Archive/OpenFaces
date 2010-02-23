@@ -42,6 +42,7 @@ public class OUIInputBase extends UIInput implements OUIInput {
     private String onkeydown;
     private String onkeyup;
     private String onkeypress;
+    private String oncontextmenu;
     private String label;
 
     public String getStyle() {
@@ -115,6 +116,14 @@ public class OUIInputBase extends UIInput implements OUIInput {
 
     public void setOnkeypress(String onkeypress) {
         this.onkeypress = onkeypress;
+    }
+
+    public String getOncontextmenu() {
+        return ValueBindings.get(this, "oncontextmenu", oncontextmenu);
+    }
+
+    public void setOncontextmenu(String oncontextmenu) {
+        this.oncontextmenu = oncontextmenu;
     }
 
     public String getOnclick() {
@@ -239,7 +248,8 @@ public class OUIInputBase extends UIInput implements OUIInput {
                 onfocus,
                 onblur,
                 onkeydown,
-                onkeyup
+                onkeyup,
+                oncontextmenu,
         };
     }
 
@@ -270,5 +280,6 @@ public class OUIInputBase extends UIInput implements OUIInput {
         onblur = (String) values[i++];
         onkeydown = (String) values[i++];
         onkeyup = (String) values[i++];
+        oncontextmenu = (String) values[i++];
     }
 }

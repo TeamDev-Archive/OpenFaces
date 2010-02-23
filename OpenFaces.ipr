@@ -965,6 +965,7 @@
         <w>locator</w>
         <w>ltrim</w>
         <w>maxlength</w>
+        <w>monospace</w>
         <w>mouseover</w>
         <w>mozilla</w>
         <w>multi</w>
@@ -1023,6 +1024,7 @@
         <w>sessionexpired</w>
         <w>skype</w>
         <w>stylesheets</w>
+        <w>submenu</w>
         <w>suggestionfield</w>
         <w>tabbedpane</w>
         <w>tabindex</w>

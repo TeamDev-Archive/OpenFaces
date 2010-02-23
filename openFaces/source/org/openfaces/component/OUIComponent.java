@@ -63,4 +63,6 @@ public interface OUIComponent {
     String getOnkeypress();
     void setOnkeypress(String onkeypress);
 
+    String getOncontextmenu();
+    void setOncontextmenu(String oncontextmenu);
 }

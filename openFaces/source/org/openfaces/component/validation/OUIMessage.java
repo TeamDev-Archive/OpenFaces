@@ -219,4 +219,13 @@ public abstract class OUIMessage extends UIMessage implements OUIComponent {
     public void setOnkeypress(String onkeypress) {
         throw new UnsupportedOperationException();
     }
+
+    public String getOncontextmenu() {
+        return null;
+    }
+
+    public void setOncontextmenu(String oncontextmenu) {
+        throw new UnsupportedOperationException();
+    }
+
 }

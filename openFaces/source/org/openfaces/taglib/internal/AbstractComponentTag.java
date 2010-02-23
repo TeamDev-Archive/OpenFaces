@@ -83,6 +83,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
         setStringProperty(component, "onmousemove");
         setStringProperty(component, "onmouseout");
         setStringProperty(component, "onmouseup");
+        setStringProperty(component, "oncontextmenu");
 
         setStringProperty(component, "onkeydown");
         setStringProperty(component, "onkeyup");

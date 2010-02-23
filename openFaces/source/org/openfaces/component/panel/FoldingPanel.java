@@ -16,6 +16,7 @@ import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.EditableStateHolder;
 import org.openfaces.component.ExpansionToggleButton;
 import org.openfaces.component.LoadingMode;
+import org.openfaces.component.OUIClientAction;
 import org.openfaces.event.StateChangeListener;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.ComponentUtil;
@@ -27,6 +28,7 @@ import javax.faces.convert.Converter;
 import javax.faces.el.MethodBinding;
 import javax.faces.event.ValueChangeListener;
 import javax.faces.validator.Validator;
+import java.util.List;
 
 /**
  * The FoldingPanel component is a container for other components that can be expanded
@@ -207,6 +209,9 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
                 child.processDecodes(context);
             }
         }
+        for (UIComponent child : getChildren()) {
+            if (child instanceof OUIClientAction) child.processDecodes(context);
+        }
         try {
             decode(context);
         }
@@ -230,6 +235,9 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
                 child.processValidators(context);
             }
         }
+        for (UIComponent child : getChildren()) {
+            if (child instanceof OUIClientAction) child.processValidators(context);
+        }
     }
 
     @Override
@@ -246,6 +254,9 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
             for (UIComponent child : getChildren()) {
                 child.processUpdates(context);
             }
+        }
+        for (UIComponent child : getChildren()) {
+            if (child instanceof OUIClientAction) child.processUpdates(context);
         }
         if (expanded != null && ValueBindings.set(this, "expanded", expanded))
             expanded = null;

@@ -42,6 +42,7 @@ public class OUISelectMany extends UISelectMany implements OUIInput {
     private String onkeydown;
     private String onkeyup;
     private String onkeypress;
+    private String oncontextmenu;
 
     public String getStyle() {
         return ValueBindings.get(this, "style", style);
@@ -114,6 +115,14 @@ public class OUISelectMany extends UISelectMany implements OUIInput {
 
     public void setOnkeypress(String onkeypress) {
         this.onkeypress = onkeypress;
+    }
+
+    public String getOncontextmenu() {
+        return ValueBindings.get(this, "oncontextmenu", oncontextmenu);
+    }
+
+    public void setOncontextmenu(String oncontextmenu) {
+        this.oncontextmenu = oncontextmenu;
     }
 
     public String getOnclick() {
@@ -229,7 +238,8 @@ public class OUISelectMany extends UISelectMany implements OUIInput {
                 onfocus,
                 onblur,
                 onkeydown,
-                onkeyup
+                onkeyup,
+                oncontextmenu
         };
     }
 
@@ -259,6 +269,7 @@ public class OUISelectMany extends UISelectMany implements OUIInput {
         onblur = (String) values[i++];
         onkeydown = (String) values[i++];
         onkeyup = (String) values[i++];
+        oncontextmenu = (String) values[i++];
     }
 
 }

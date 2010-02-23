@@ -66,6 +66,7 @@ public class LayeredPaneRenderer extends MultiPageContainerRenderer {
         encodePane(context, layeredPane, allItems, containerClass);
 
         encodeScriptsAndStyles(context, layeredPane, containerClass, allItems);
+        RenderingUtil.encodeClientActions(context, layeredPane);
 
         writer.endElement("td");
         writer.endElement("tr");

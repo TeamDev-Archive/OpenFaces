@@ -41,6 +41,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
     private String onkeydown;
     private String onkeyup;
     private String onkeypress;
+    private String oncontextmenu;
 
     @Override
     public Object saveState(FacesContext context) {
@@ -49,7 +50,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
                 saveAttachedState(context, execute),
                 saveAttachedState(context, render),
                 style, styleClass, rolloverStyle, rolloverClass, onclick, ondblclick, onmousedown, onmouseover,
-                onmousemove, onmouseout, onmouseup, onfocus, onblur, onkeydown, onkeyup, onkeypress};
+                onmousemove, onmouseout, onmouseup, onfocus, onblur, onkeydown, onkeyup, onkeypress, oncontextmenu};
     }
 
     public abstract String getFamily();
@@ -77,6 +78,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
         onkeydown = (String) state[i++];
         onkeyup = (String) state[i++];
         onkeypress = (String) state[i++];
+        oncontextmenu = (String) state[i++];
     }
 
     public Iterable<String> getExecute() {
@@ -205,6 +207,14 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
 
     public void setOnkeypress(String onkeypress) {
         this.onkeypress = onkeypress;
+    }
+
+    public String getOncontextmenu() {
+        return ValueBindings.get(this, "oncontextmenu", oncontextmenu);
+    }
+
+    public void setOncontextmenu(String oncontextmenu) {
+        this.oncontextmenu = oncontextmenu;
     }
 
     public String getRolloverStyle() {

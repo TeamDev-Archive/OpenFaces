@@ -37,13 +37,14 @@ public abstract class OUIPanel extends UIPanel implements OUIComponent {
     private String onkeydown;
     private String onkeyup;
     private String onkeypress;
+    private String oncontextmenu;
 
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, style, styleClass, rolloverStyle, rolloverClass, onclick, ondblclick,
                 onmousedown, onmouseover, onmousemove, onmouseout, onmouseup, onfocus, onblur, onkeydown,
-                onkeyup, onkeypress};
+                onkeyup, onkeypress, oncontextmenu};
     }
 
     public abstract String getFamily();
@@ -69,6 +70,7 @@ public abstract class OUIPanel extends UIPanel implements OUIComponent {
         onkeydown = (String) values[i++];
         onkeyup = (String) values[i++];
         onkeypress = (String) values[i++];
+        oncontextmenu = (String) values[i++];
     }
 
 
@@ -182,6 +184,14 @@ public abstract class OUIPanel extends UIPanel implements OUIComponent {
 
     public void setOnkeypress(String onkeypress) {
         this.onkeypress = onkeypress;
+    }
+
+    public String getOncontextmenu() {
+        return ValueBindings.get(this, "oncontextmenu", oncontextmenu);
+    }
+
+    public void setOncontextmenu(String oncontextmenu) {
+        this.oncontextmenu = oncontextmenu;
     }
 
     public String getRolloverStyle() {

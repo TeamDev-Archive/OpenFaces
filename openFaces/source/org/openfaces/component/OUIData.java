@@ -1057,7 +1057,8 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
                 onfocus,
                 onblur,
                 onkeydown,
-                onkeyup
+                onkeyup,
+                oncontextmenu
         };
         // </MOD-7>
 
@@ -1094,6 +1095,7 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
         onblur = (String) addedFields[i++];
         onkeydown = (String) addedFields[i++];
         onkeyup = (String) addedFields[i++];
+        oncontextmenu = (String) addedFields[i++];
         // </MOD-7>
 
     }
@@ -1203,6 +1205,7 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
     private String onkeydown;
     private String onkeyup;
     private String onkeypress;
+    private String oncontextmenu;
 
     public String getStyle() {
         return ValueBindings.get(this, "style", style);
@@ -1242,6 +1245,14 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
 
     public void setOnkeypress(String onkeypress) {
         this.onkeypress = onkeypress;
+    }
+
+    public String getOncontextmenu() {
+        return ValueBindings.get(this, "oncontextmenu", oncontextmenu);
+    }
+
+    public void setOncontextmenu(String oncontextmenu) {
+        this.oncontextmenu = oncontextmenu;
     }
 
     public String getOnclick() {

@@ -177,7 +177,7 @@ public class MenuItemRenderer extends RendererBase {
     private void addSubmenuImage(FacesContext context, MenuItem menuItem, ResponseWriter writer, PopupMenu popupMenu, UIComponent popupMenuChild) throws IOException {
         writer.startElement("span", menuItem);
         writeAttribute(writer, "id", menuItem.getClientId(context) + ARROW_SPAN_SUFIX);
-        //todo
+
         String submenuIconAreaClass = StyleUtil.getCSSClass(context, menuItem, menuItem.getSubmenuIconAreaStyle(), StyleGroup.regularStyleGroup(),
                 menuItem.getSubmenuIconAreaClass(), StyleUtil.getCSSClass(context, popupMenu, popupMenu.getItemSubmenuIconStyle(), StyleGroup.regularStyleGroup(),
                         popupMenu.getItemSubmenuIconClass(), DEFAULT_ARROW_SPAN_CLASS));
@@ -241,7 +241,7 @@ public class MenuItemRenderer extends RendererBase {
     private void renderStartMenuItemSpan(FacesContext context, MenuItem menuItem, ResponseWriter writer) throws IOException {
         writer.startElement("span", menuItem);
         writeAttribute(writer, "id", menuItem.getClientId(context) + A_SUFIX);
-        if (!menuItem.isDisabled() && (menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0)) // todo: should adding actionListener turn on form submission indeed?
+        if (!menuItem.isDisabled() && (menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0))
             addMenuItemParameter(menuItem, "action", "O$.submitFormWithAdditionalParam(this, '" + menuItem.getClientId(context) + "::clicked', 'true');");
 
         if (!menuItem.isDisabled())

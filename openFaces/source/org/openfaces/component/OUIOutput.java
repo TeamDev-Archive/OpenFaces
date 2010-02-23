@@ -37,6 +37,7 @@ public class OUIOutput extends UIOutput implements OUIComponent {
     private String onkeydown;
     private String onkeyup;
     private String onkeypress;
+    private String oncontextmenu;
 
     public String getStyle() {
         return ValueBindings.get(this, "style", style);
@@ -76,6 +77,14 @@ public class OUIOutput extends UIOutput implements OUIComponent {
 
     public void setOnkeypress(String onkeypress) {
         this.onkeypress = onkeypress;
+    }
+
+    public String getOncontextmenu() {
+        return ValueBindings.get(this, "oncontextmenu", oncontextmenu);
+    }
+
+    public void setOncontextmenu(String oncontextmenu) {
+        this.oncontextmenu = oncontextmenu;
     }
 
     public String getOnclick() {
@@ -186,7 +195,8 @@ public class OUIOutput extends UIOutput implements OUIComponent {
                 onfocus,
                 onblur,
                 onkeydown,
-                onkeyup
+                onkeyup,
+                oncontextmenu
         };
     }
 
@@ -212,6 +222,7 @@ public class OUIOutput extends UIOutput implements OUIComponent {
         onblur = (String) values[i++];
         onkeydown = (String) values[i++];
         onkeyup = (String) values[i++];
+        oncontextmenu = (String) values[i++];
     }
 
 }

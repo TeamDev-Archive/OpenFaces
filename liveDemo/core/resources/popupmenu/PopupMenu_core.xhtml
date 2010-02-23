@@ -1,7 +1,6 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:o="http://openfaces.org/"
-        >
+     xmlns:o="http://openfaces.org/">
 
   <div id="Demo">
 
@@ -18,38 +17,67 @@
       .string {color: #008000; font-weight: bold;}
     </style>
 
-    <h:panelGroup id="container"
-                  style="display: block; font-family: courier, monospace; width: 400px; padding: 10px; border: 1px dashed;"
-                  styleClass="normal">
-      <h:outputText id="text"
-                    escape="false"
-                    title="Right-click here to see menu in action">
-        <span class="keyword">public class</span> InputTextareaBean {<br/>
-
-        &#160;&#160;<span class="keyword">private</span> String feedback;<br/>
-        <br/>
-        &#160;&#160;<span class="keyword">public</span> String getFeedback() {<br/>
-        &#160;&#160;&#160;&#160;return feedback;<br/>
-        &#160;&#160;}<br/>
-        <br/>
-        &#160;&#160;<span class="keyword">public</span> <span class="keyword">void</span> setFeedback(String feedback) {<br/>
-        &#160;&#160;&#160;&#160;this.feedback = feedback;<br/>
-        &#160;&#160;}<br/>
-        <br/>
-        &#160;&#160;<span class="keyword">public</span> String send() {<br/>
-        &#160;&#160;&#160;&#160;mailService.sendFeedback(feedback);<br/>
-        &#160;&#160;&#160;&#160;return <span class="string">"success";</span><br/>
-        &#160;&#160;}<br/>
-        }<br/>
-      </h:outputText>
+    <o:layeredPane id="container" selectedIndex="#{PopupMenuBean.sourcePageIndex}"
+                   style="display: block; font-family: courier, monospace; width: 400px; padding: 10px; border: 1px dashed;"
+                   styleClass="normal">
+      <o:subPanel>
+        <h:outputText escape="false"
+                      title="Right-click here to see menu in action">
+          <span class="keyword">public class</span> InputTextareaBean {<br/>
+          &#160;&#160;<span class="keyword">private</span> String feedback;<br/>
+          <br/>
+          &#160;&#160;<span class="keyword">public</span> String getFeedback() {<br/>
+          &#160;&#160;&#160;&#160;return feedback;<br/>
+          &#160;&#160;}<br/>
+          <br/>
+          &#160;&#160;<span class="keyword">public</span> <span class="keyword">void</span> setFeedback(String feedback)
+          {<br/>
+          &#160;&#160;&#160;&#160;this.feedback = feedback;<br/>
+          &#160;&#160;}<br/>
+          <br/>
+          &#160;&#160;<span class="keyword">public</span> String send() {<br/>
+          &#160;&#160;&#160;&#160;mailService.sendFeedback(feedback);<br/>
+          &#160;&#160;&#160;&#160;return <span class="string">"success";</span><br/>
+          &#160;&#160;}<br/>
+          }<br/>
+        </h:outputText>
+      </o:subPanel>
+      <o:subPanel>
+        <h:outputText escape="false"
+                      title="Right-click here to see menu in action">
+          <span class="keyword">public class</span> NewClass {<br/>
+          }<br/>
+        </h:outputText>
+      </o:subPanel>
+      <o:subPanel>
+        <h:outputText escape="false"
+                      title="Right-click here to see menu in action">
+          <span class="keyword">public interface</span> NewInterface {<br/>
+          }<br/>
+        </h:outputText>
+      </o:subPanel>
+      <o:subPanel>
+        <h:outputText escape="false"
+                      title="Right-click here to see menu in action">
+          <span class="keyword">public enum</span> NewEnumeration {<br/>
+          }<br/>
+        </h:outputText>
+      </o:subPanel>
+      <o:subPanel>
+        <h:outputText escape="false"
+                      title="Right-click here to see menu in action">
+          <span class="keyword">public @interface</span> NewAnnotation {<br/>
+          }<br/>
+        </h:outputText>
+      </o:subPanel>
 
       <o:popupMenu>
         <o:menuItem iconUrl="icons/new-16x16.png" value="New">
           <o:popupMenu>
-            <o:menuItem value="Class" onclick="showAlert('New class created.');"/>
-            <o:menuItem value="Interface" onclick="showAlert('New interface created.');"/>
-            <o:menuItem value="Enum" onclick="showAlert('New enum created.');"/>
-            <o:menuItem value="@Interface" onclick="showAlert('New annotation created.');"/>
+            <o:menuItem value="Class" action="#{PopupMenuBean.newClass}"/>
+            <o:menuItem value="Interface" action="#{PopupMenuBean.newInterface}"/>
+            <o:menuItem value="Enumeration" action="#{PopupMenuBean.newEnumeration}"/>
+            <o:menuItem value="Annotation" action="#{PopupMenuBean.newAnnotation}"/>
             <o:menuItem value="Package" onclick="showAlert('New package created.');"/>
             <o:menuSeparator/>
 
@@ -85,7 +113,7 @@
           </o:popupMenu>
         </o:menuItem>
       </o:popupMenu>
-    </h:panelGroup>
+    </o:layeredPane>
 
     <o:window id="alertWindow"
               modal="true"
@@ -98,11 +126,11 @@
         <o:closeWindowButton/>
       </o:captionArea>
       <h:outputText id="alertText" style="display: block; font-size: 130%; font-weight: bold; padding-bottom: 20px;"/>
-      <h:outputText value="Please note that this popup menu serves demonstrational purposes only."
-              style="display: block; padding-bottom: 20px;"/>
+      <h:outputText value="Please note that this popup menu serves demonstration purposes only."
+                    style="display: block; padding-bottom: 20px;"/>
       <h:panelGroup layout="block" style="text-align: center">
         <h:commandButton value="OK" onclick="O$('form:alertWindow').hide(); return false;"
-                style="width: 80px" />
+                         style="width: 80px"/>
       </h:panelGroup>
     </o:window>
 
@@ -110,8 +138,8 @@
 
   <div id="Description">
     <div>
-      <small>* Right click (except Opera browser) or Control + Left Click (in Opera browser) on Java code fragment to
-        see Popup Menu component in action.
+      <small>* Right click (except Opera browser) or Ctrl + Left Click (in Opera) on Java code fragment above to see
+        the Popup Menu component in action.
       </small>
       <br/><br/></div>
   </div>
@@ -123,10 +151,10 @@
         <strong>Menu icons</strong> - Popup Menu items may be supplied with icons.
       </li>
       <li>
-        <strong>Hierarchical menus</strong> - It is possible to build menu with submenus using Popup Menu component.
+        <strong>Hierarchical menus</strong> - It is possible to build menu with sub-menus using Popup Menu component.
       </li>
       <li>
-        <strong>Keyboard navigation</strong> - Use Up/Down/Left/Right keys to navigate between menu items and submenus,
+        <strong>Keyboard navigation</strong> - Use Up/Down/Left/Right keys to navigate between menu items and sub-menus,
         and Enter/Esc keys to select an item or close the menu respectively.
       </li>
     </ul>

@@ -1306,6 +1306,7 @@ public class RenderingUtil {
         writeAttribute(writer, "onmousemove", component.getOnmousemove());
         writeAttribute(writer, "onmouseout", component.getOnmouseout());
         writeAttribute(writer, "onmouseover", component.getOnmouseover());
+        writeAttribute(writer, "oncontextmenu", component.getOncontextmenu());
 
         writeAttribute(writer, "onfocus", component.getOnfocus());
         writeAttribute(writer, "onblur", component.getOnblur());

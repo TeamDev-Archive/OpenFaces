@@ -160,6 +160,7 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
 
         renderInitScript(context, component);
         StyleUtil.renderStyleClasses(context, component);
+        RenderingUtil.encodeClientActions(context, panel);
         writer.endElement("td");
         writer.endElement("tr");
         writer.endElement("table");

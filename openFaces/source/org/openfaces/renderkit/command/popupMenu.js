@@ -36,7 +36,7 @@ O$.PopupMenu = {
 
                   isRootMenu,
                   itemsProperties,
-                  submenuHorisontalOffset,
+                  submenuHorizontalOffset,
                   submenuShowDelay,
                   submenuHideDelay,
                   selectDisabledItems,
@@ -239,9 +239,13 @@ O$.PopupMenu = {
             }
             break;
           case 39: // right
-            menuItem = popupMenu._items[popupMenu._selectedIndex];
-            O$.PopupMenu._showSubmenu(popupMenu, menuItem._anchor, submenuHorisontalOffset);
-            O$.PopupMenu._showFirstMenuItemonChild(menuItem, selectDisabledItems);
+            if (popupMenu._selectedIndex == null) {
+              O$.PopupMenu._setSelectedMenuItem(popupMenu, 1, selectDisabledItems);
+            } else {
+              menuItem = popupMenu._items[popupMenu._selectedIndex];
+              O$.PopupMenu._showSubmenu(popupMenu, menuItem._anchor, submenuHorizontalOffset);
+              O$.PopupMenu._showFirstMenuItemonChild(menuItem, selectDisabledItems);
+            }
             break;
         }
         O$.cancelBubble(e);
@@ -256,9 +260,9 @@ O$.PopupMenu = {
           O$.PopupMenu.setMenuItemEnabled(menuItem.id, !menuItem._properties.disabled, selectDisabledItems);
 
           O$.PopupMenu._setAdditionalIEStylesForMenuItem(menuItem);
-          O$.PopupMenu._addMenuItemClickHandler(menuItem, submenuHorisontalOffset, selectDisabledItems);
+          O$.PopupMenu._addMenuItemClickHandler(menuItem, submenuHorizontalOffset, selectDisabledItems);
 
-          O$.PopupMenu._addMouseOverOutEvents(menuItem, selectDisabledItems, submenuHorisontalOffset, submenuShowDelay, submenuHideDelay);
+          O$.PopupMenu._addMouseOverOutEvents(menuItem, selectDisabledItems, submenuHorizontalOffset, submenuShowDelay, submenuHideDelay);
         }
       }
     }
@@ -921,12 +925,13 @@ O$.PopupMenu = {
         function itemClick(menuItemElement) {
           O$.addEventHandler(menuItemElement, "click", function() {
             eval(menuItemElement.parentNode._properties.action);
+            O$.PopupMenu._closeAllMenu(popupMenu);
+            O$.stopEvent(evt); //to prevent set focus for the popupMenu
           });
         }
 
         itemClick(menuItem._anchor);
-      }
-      else {
+      } else {
         function defaultItemClick(menuItemElement) {
           O$.addEventHandler(menuItemElement, "click", function(evt) {
             var menuItem = menuItemElement.parentNode;
@@ -941,8 +946,7 @@ O$.PopupMenu = {
               }
               O$.PopupMenu._showSubmenu(popupMenu, menuItem._anchor, submenuHorisontalOffset);
               O$.PopupMenu._showFirstMenuItemonChild(menuItem, selectDisabledItems);
-            }
-            else {
+            } else {
               O$.PopupMenu._closeAllMenu(popupMenu);
             }
             O$.stopEvent(evt); //to prevent set focus for the popupMenu

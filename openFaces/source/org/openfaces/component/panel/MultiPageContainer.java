@@ -12,6 +12,7 @@
 package org.openfaces.component.panel;
 
 import org.openfaces.component.LoadingMode;
+import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIPanel;
 import org.openfaces.event.SelectionChangeEvent;
 import org.openfaces.event.SelectionChangeListener;
@@ -166,11 +167,18 @@ public abstract class MultiPageContainer extends OUIPanel {
                     processor.processComponentPhase(context, tab);
             }
         }
+        List<UIComponent> children = getChildren();
+        for (UIComponent child : children) {
+            if (child instanceof OUIClientAction) {
+                processor.processComponentPhase(context, child);
+            }
+        }
     }
 
     @Override
     public void processDecodes(FacesContext context) {
         if (!isRendered()) return;
+        super.processDecodes(context);
         processPhaseForItems(context, new DecodesComponentPhaseProcessor());
         try {
             decode(context);
