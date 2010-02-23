@@ -11,8 +11,7 @@
  */
 package org.openfaces.taglib.internal.table;
 
-import org.openfaces.component.table.AbstractTableSelection;
-import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.taglib.internal.OUICommandTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -20,7 +19,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Pavel Kaplin
  */
-public abstract class AbstractTableSelectionTag extends AbstractComponentTag {
+public abstract class AbstractTableSelectionTag extends OUICommandTag {
     @Override
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
@@ -29,7 +28,6 @@ public abstract class AbstractTableSelectionTag extends AbstractComponentTag {
         setBooleanProperty(component, "enabled");
         setBooleanProperty(component, "mouseSupport");
         setBooleanProperty(component, "keyboardSupport");
-        setActionProperty(facesContext, (AbstractTableSelection) component);
         setStringProperty(component, "onchange");
     }
 }

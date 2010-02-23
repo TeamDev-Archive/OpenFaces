@@ -20,6 +20,7 @@
     <tag-name>singleRowSelection</tag-name>
     <component>
       <component-type>org.openfaces.SingleRowSelection</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.SingleRowSelectionTagHandler</handler-class>
     </component>
   </tag>
 
@@ -27,6 +28,7 @@
     <tag-name>multipleRowSelection</tag-name>
     <component>
       <component-type>org.openfaces.MultipleRowSelection</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.MultipleRowSelectionTagHandler</handler-class>
     </component>
   </tag>
 
@@ -230,6 +232,7 @@
     <tag-name>singleNodeSelection</tag-name>
     <component>
       <component-type>org.openfaces.SingleNodeSelection</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.SingleNodeSelectionTagHandler</handler-class>
     </component>
   </tag>
 
@@ -237,6 +240,7 @@
     <tag-name>multipleNodeSelection</tag-name>
     <component>
       <component-type>org.openfaces.MultipleNodeSelection</component-type>
+      <handler-class>org.openfaces.taglib.facelets.table.MultipleNodeSelectionTagHandler</handler-class>
     </component>
   </tag>
 

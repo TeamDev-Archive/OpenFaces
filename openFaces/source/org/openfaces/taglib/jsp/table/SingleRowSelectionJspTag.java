@@ -18,7 +18,7 @@ import javax.el.ValueExpression;
 /**
  * @author Dmitry Pikhulya
  */
-public class SingleRowSelectionJspTag extends SelectionJspTag {
+public class SingleRowSelectionJspTag extends AbstractTableSelectionJspTag {
 
     public SingleRowSelectionJspTag() {
         super(new SingleRowSelectionTag());

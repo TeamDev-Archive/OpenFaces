@@ -13,12 +13,12 @@
   <o:commandButton type="button" onclick="O$('form:win').show();">Show window</o:commandButton>
   <br/>
 
-  <o:foldingPanel caption="p:editor" expanded="false">
+  <o:foldingPanel caption="p:editor inside of h:foldingPanel" expanded="false">
     <p:editor value="#{PrimeFacesBean.htmlText}"/>
   </o:foldingPanel>
 
 
-  <o:window id="win" caption="p:editor" style="z-index: 1">
+  <o:window id="win" caption="p:menuBar and p:calendar inside of o:window" style="z-index: 1">
     <p:menubar>
       <p:submenu label="Barca" styleClass="barca">
         <p:menuitem label="Home" url="http://www.fcbarcelona.com"></p:menuitem>
@@ -56,7 +56,7 @@
   </o:window>
 
   <br/>
-  <p:panel header="o:twoListSelection" toggleable="true" toggleSpeed="500">
+  <p:panel header="o:tabbedPane inside of p:panel" toggleable="true" toggleSpeed="500">
     <o:tabbedPane style="background: white">
       <o:subPanel caption="tab 1">
         <o:dataTable id="users" var="user" value="#{UserPermissionsTableDemoBean.users}" rowKey="#{user.id}"

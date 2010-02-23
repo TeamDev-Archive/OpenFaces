@@ -939,6 +939,7 @@
         <w>compositefilter</w>
         <w>coords</w>
         <w>dashized</w>
+        <w>datas</w>
         <w>datasets</w>
         <w>datatable</w>
         <w>datechooser</w>

@@ -53,7 +53,7 @@
           style="padding: 2px 2px 2px 2px; font: 12pt Times; font-weight: normal; border-top: 1px solid gray; border-left: 1px solid gray; ">Master
     Table with Details Available on Selection</div></td></tr>
   <tr><td >
-    <o:dataTable var="msg" value="#{EmailTableDemoBean.messages}" rowKey="#{msg.id}" rowIndexVar="rowIndex"
+    <o:dataTable id="tbl1" var="msg" value="#{EmailTableDemoBean.messages}" rowKey="#{msg.id}" rowIndexVar="rowIndex"
                   style="border: 1px solid gray; width: 100%;"
                   styleClass="defaultTableStyle"
                   cellspacing="0"
@@ -67,9 +67,9 @@
         <!--<a4j:support event="ondblclick" reRender="detailPanel" />-->
       <!--</o:row>-->
 
-      <o:singleRowSelection rowData="#{EmailTableDemoBean.selectedMessage}">
+      <o:singleRowSelection rowData="#{EmailTableDemoBean.selectedMessage}" render="detailPanel">
         <!--<a4j:support event="onchange" reRender="detailPanel" />-->
-        <o:ajax event="change" render="detailPanel"/>
+        <!--<o:ajax event="change" render="detailPanel"/>-->
       </o:singleRowSelection>
 
       <o:column id="importance" sortingExpression="#{msg.important}" style="width: 20px; text-align: center">
@@ -199,7 +199,7 @@
 
 <h:panelGrid columns="3">
   <o:dataTable id="checkBoxColumnTable" var="user" value="#{UserPermissionsTableDemoBean.smallUserList}" rolloverStyle="border: 1px solid blue;" rolloverRowStyle="background: #c0d0d0;">
-    <o:singleRowSelection rowData="#{UserPermissionsTableDemoBean.selectedUser}" onchange="showCurrentIndex();"/>
+    <o:singleRowSelection rowData="#{UserPermissionsTableDemoBean.selectedUser}" onchange="showCurrentIndex(event);"/>
     <o:column>
       <f:facet name="header"><h:outputText value="User Name"/></f:facet>
       <h:outputText value="#{user.userName}"/>
@@ -210,7 +210,7 @@
   </o:dataTable>
   <h:panelGroup>
     <f:verbatim><input type="submit" value="Show Checked Users (via form submit) ->"/><br/></f:verbatim>
-    <f:verbatim><input type="button" value="Show Checked Users (via Ajax request) ->" onclick="showCurrentIndex();"/><br/></f:verbatim>
+    <f:verbatim><input type="button" value="Show Checked Users (via Ajax request) ->" onclick="showCurrentIndex(event);"/><br/></f:verbatim>
     <h:panelGroup>
       <h:outputLink onclick="var prevRowIndex = O$('form1:checkBoxColumnTable').getSelectedRowIndex(); if (prevRowIndex == -1) return false;if (prevRowIndex == 0) {alert('The first row is already selected');return false;} O$('form1:checkBoxColumnTable').setSelectedRowIndex(prevRowIndex - 1); return false;" ><h:outputText value="Move selection up"/></h:outputLink>
       <h:outputText value=" "/>

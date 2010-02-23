@@ -40,7 +40,7 @@
         document.getElementById("form1:markAsUnreadBtn").click();
     }
 
-    function showCurrentIndex() {
+    function showCurrentIndex(event) {
       var table = document.getElementById("form1:checkBoxColumnTable");
       var idx = table.getSelectedRowIndex();
       var rowIndex = document.getElementById("form1:rowIndex");

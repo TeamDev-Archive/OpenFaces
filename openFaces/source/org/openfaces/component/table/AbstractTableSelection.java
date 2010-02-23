@@ -12,18 +12,13 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.ComponentConfigurator;
+import org.openfaces.component.OUICommand;
+import org.openfaces.component.ajax.AjaxInitializer;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.DefaultStyles;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
-import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.util.ValueBindings;
+import org.openfaces.util.*;
 
-import javax.faces.component.UICommand;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -40,7 +35,7 @@ import java.util.Map;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class AbstractTableSelection extends UICommand implements ComponentConfigurator {
+public abstract class AbstractTableSelection extends OUICommand implements ComponentConfigurator {
     private static final String SESSION_KEY_SELECTION_EVENTS_PROCESSED = "OF:tableSelectionEventsProcessed";
 
     private TableDataModel model;
@@ -82,16 +77,16 @@ public abstract class AbstractTableSelection extends UICommand implements Compon
     }
 
     @Override
-    public void restoreState(FacesContext context, Object state) {
-        Object[] stateArray = (Object[]) state;
+    public void restoreState(FacesContext context, Object object) {
+        Object[] state = (Object[]) object;
         int i = 0;
-        super.restoreState(context, stateArray[i++]);
-        enabled = (Boolean) stateArray[i++];
-        mouseSupport = (Boolean) stateArray[i++];
-        keyboardSupport = (Boolean) stateArray[i++];
-        style = (String) stateArray[i++];
-        styleClass = (String) stateArray[i++];
-        onchange = (String) stateArray[i++];
+        super.restoreState(context, state[i++]);
+        enabled = (Boolean) state[i++];
+        mouseSupport = (Boolean) state[i++];
+        keyboardSupport = (Boolean) state[i++];
+        style = (String) state[i++];
+        styleClass = (String) state[i++];
+        onchange = (String) state[i++];
     }
 
     public String getOnchange() {
@@ -213,7 +208,26 @@ public abstract class AbstractTableSelection extends UICommand implements Compon
         ResponseWriter writer = context.getResponseWriter();
         RenderingUtil.renderHiddenField(writer, getSelectionFieldName(context, table), null);
 
-        boolean postEvent = getActionExpression() != null;
+        String onchange = getOnchange();
+        Script automaticChangeHandler = null;
+        Iterable<String> render = getRender();
+        Iterable<String> execute = getExecute();
+        boolean ajaxJsRequired = false;
+        if (render != null || (execute != null && execute.iterator().hasNext())) {
+            if (render == null)
+                throw new FacesException("'execute' attribute can't be specified without the 'render' attribute. Component id: " + getId());
+
+            AjaxInitializer initializer = new AjaxInitializer();
+            automaticChangeHandler = new ScriptBuilder().functionCall("O$._ajaxReload",
+                    initializer.getRenderArray(context, this, render),
+                    initializer.getAjaxParams(context, this)).semicolon().append("return false;");
+            ajaxJsRequired = true;
+        }
+        onchange = RenderingUtil.joinScripts(
+                onchange,
+                automaticChangeHandler != null ? automaticChangeHandler.toString() : null);
+
+        boolean submitOnChange = !ajaxJsRequired && getActionExpression() != null;
 
         ScriptBuilder buf = new ScriptBuilder().initScript(context, table, "O$.Table._initSelection",
                 isEnabled(),
@@ -221,8 +235,8 @@ public abstract class AbstractTableSelection extends UICommand implements Compon
                 isMultipleSelectionAllowed(),
                 encodeSelectionIntoIndexes(),
                 getAttributes().get("_selectionCls_"),
-                getOnchange(),
-                postEvent ? getSelectionEventsProcessed() + 1 : null,
+                onchange,
+                submitOnChange ? getSelectionEventsProcessed() + 1 : null,
                 getSelectionColumnIndexes(table),
                 isMouseSupport(),
                 isKeyboardSupport());
@@ -231,8 +245,10 @@ public abstract class AbstractTableSelection extends UICommand implements Compon
                 ResourceUtil.getUtilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
                 AbstractTableRenderer.getTableJsURL(context));
+        if (ajaxJsRequired)
+            AjaxUtil.renderJSLinks(context);
 
-        if (postEvent)
+        if (submitOnChange)
             RenderingUtil.renderHiddenField(writer, getSelectionEventFieldName(context, table), null);
     }
 

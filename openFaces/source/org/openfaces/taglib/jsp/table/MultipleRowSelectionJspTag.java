@@ -18,7 +18,7 @@ import javax.el.ValueExpression;
 /**
  * @author Dmitry Pikhulya
  */
-public class MultipleRowSelectionJspTag extends SelectionJspTag {
+public class MultipleRowSelectionJspTag extends AbstractTableSelectionJspTag {
 
     public MultipleRowSelectionJspTag() {
         super(new MultipleRowSelectionTag());

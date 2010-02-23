@@ -13,6 +13,7 @@ package org.openfaces.taglib.jsp.table;
 
 import org.openfaces.taglib.internal.table.AbstractTableSelectionTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
+import org.openfaces.taglib.jsp.OUICommandJspTag;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -20,9 +21,9 @@ import javax.el.ValueExpression;
 /**
  * @author Dmitry Pikhulya
  */
-public abstract class SelectionJspTag extends AbstractComponentJspTag {
+public abstract class AbstractTableSelectionJspTag extends OUICommandJspTag {
 
-    protected SelectionJspTag(AbstractTableSelectionTag delegate) {
+    protected AbstractTableSelectionJspTag(AbstractTableSelectionTag delegate) {
         super(delegate);
     }
 

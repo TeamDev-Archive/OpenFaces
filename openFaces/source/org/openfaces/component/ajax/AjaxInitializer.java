@@ -106,56 +106,58 @@ public class AjaxInitializer {
     }
 
 
-    public JSONObject getAjaxParams(FacesContext context, OUICommand ajax) {
+    public JSONObject getAjaxParams(FacesContext context, OUICommand command) {
         try {
             JSONObject result = new JSONObject();
-            Iterable<String> execute = ajax.getExecute();
-            boolean submitAjaxInvoker = ajax instanceof Ajax &&
-                            !((Ajax) ajax).isStandalone()
-                            && ((Ajax) ajax).getSubmitInvoker();
+            Iterable<String> execute = command.getExecute();
+            boolean submitAjaxInvoker =
+                    command instanceof ComponentConfigurator || // e.g. when using Ajax in table selection, submit table params automatically
+                    (command instanceof Ajax &&
+                            !((Ajax) command).isStandalone()
+                            && ((Ajax) command).getSubmitInvoker());
             if (execute.iterator().hasNext() || submitAjaxInvoker) {
-                result.put("execute", getExecuteParam(context, ajax, execute));
+                result.put("execute", getExecuteParam(context, command, execute));
             }
-            String onajaxstart = (String) ajax.getAttributes().get("onajaxstart");
+            String onajaxstart = (String) command.getAttributes().get("onajaxstart");
             if (onajaxstart != null && onajaxstart.length() != 0) {
                 result.put("onajaxstart", new AnonymousFunction(onajaxstart, "event"));
             }
-            String onajaxend = (String) ajax.getAttributes().get("onajaxend");
+            String onajaxend = (String) command.getAttributes().get("onajaxend");
             if (onajaxend != null && onajaxend.length() != 0) {
                 result.put("onajaxend", new AnonymousFunction(onajaxend, "event"));
             }
-            String onerror = (String) ajax.getAttributes().get("onerror");
+            String onerror = (String) command.getAttributes().get("onerror");
             if (onerror != null && onerror.length() != 0) {
                 result.put("onerror", new AnonymousFunction(onerror, "event"));
             }
-            Integer delayObj = (Integer) ajax.getAttributes().get("delay");
+            Integer delayObj = (Integer) command.getAttributes().get("delay");
             int delay = delayObj != null ? delayObj : 0;
             if (delay > 0) {
                 result.put("delay", delay);
-                result.put("delayId", getAjaxComponentParam(context, ajax));
+                result.put("delayId", getAjaxComponentParam(context, command));
             }
 
-            ValueExpression action = !(ajax instanceof Ajax) ? ajax.getValueExpression("action") : null;
+            ValueExpression action = !(command instanceof Ajax) ? command.getValueExpression("action") : null;
             if (action != null) {
                 String actionExpressionString = action.getExpressionString();
                 validateExpressionString(actionExpressionString);
                 result.put("_action", actionExpressionString.substring(
                         EXPRESSION_PREFIX.length(), actionExpressionString.length() - EXPRESSION_SUFFIX.length()));
-                result.put("actionComponent", ajax.getClientId(context));
+                result.put("actionComponent", command.getClientId(context));
             }
 
-            ValueExpression actionListener = ajax instanceof Ajax
-                    ? ajax.getValueExpression("listener")
-                    : ajax.getValueExpression("actionListener");
+            ValueExpression actionListener = command instanceof Ajax
+                    ? command.getValueExpression("listener")
+                    : command.getValueExpression("actionListener");
             if (actionListener != null) {
                 String actionListenerExpressionString = actionListener.getExpressionString();
                 validateExpressionString(actionListenerExpressionString);
                 result.put("listener", actionListenerExpressionString.substring(EXPRESSION_PREFIX.length(),
                         actionListenerExpressionString.length() - EXPRESSION_SUFFIX.length()));
-                result.put("actionComponent", getAjaxComponentParam(context, ajax));
+                result.put("actionComponent", getAjaxComponentParam(context, command));
             }
 
-            result.put("immediate", ajax.isImmediate());
+            result.put("immediate", command.isImmediate());
             return result;
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -173,8 +175,16 @@ public class AjaxInitializer {
                                      OUICommand command,
                                      Iterable<String> execute) {
         JSONArray renderArray = getRenderArray(context, command, execute);
-        if (!(command instanceof Ajax))
+        if (!(command instanceof Ajax)) {
+            if (command instanceof ComponentConfigurator) {
+                UIComponent configuredComponent = ((ComponentConfigurator) command).getConfiguredComponent();
+                if (configuredComponent != null) {
+                    String configuredId = configuredComponent.getClientId(context);
+                    renderArray.put(configuredId);
+                }
+            }
             return renderArray;
+        }
         Ajax ajax = (Ajax) command;
         if (!ajax.isStandalone() && ajax.getSubmitInvoker()) {
             String invokerId = OUIClientActionHelper.getClientActionInvoker(context, ajax);
