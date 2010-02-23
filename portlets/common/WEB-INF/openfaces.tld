@@ -1097,6 +1097,18 @@
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the DataTable receives focus.</description>
       <name>onfocus</name>
       <deferred-value>
@@ -1483,6 +1495,18 @@
       <description>JavaScript code that should be executed when the user releases the mouse button over the column.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -2136,6 +2160,18 @@
       <!-- @el only -->
     </attribute>
     <attribute>
+      <description>A converter for the filter value. Should be specified as a value-binding expression or converter
+        identifier.
+      </description>
+      <name>converter</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>The filtering condition that should be used for comparing the values specified in this filter
         component
         to the values specified in data records. It should have a format of "&lt;condition&gt;" or "not &lt;condition&gt;",
@@ -2781,6 +2817,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el only -->
     </attribute>
     <attribute>
+      <description>A converter for the filter value. Should be specified as a value-binding expression or converter
+        identifier.
+      </description>
+      <name>converter</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>The filtering condition that should be used for comparing the values specified in this filter
         component
         to the values specified in data records. It should have a format of "&lt;condition&gt;" or "not &lt;condition&gt;",
@@ -3349,6 +3397,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
@@ -3845,6 +3905,18 @@ entering a value and returns a list of suggestions from the server -->
         this group.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -4619,6 +4691,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the popup menu receives focus.</description>
       <name>onfocus</name>
       <deferred-value>
@@ -5005,6 +5089,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the popup menu receives focus.</description>
       <name>onfocus</name>
       <deferred-value>
@@ -5197,6 +5293,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the user presses a key over the row.</description>
       <name>onkeydown</name>
       <deferred-value>
@@ -5378,6 +5486,18 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when the user releases a mouse button over the cell.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -5959,6 +6079,18 @@ entering a value and returns a list of suggestions from the server -->
         over the selection column.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -6561,6 +6693,18 @@ entering a value and returns a list of suggestions from the server -->
         over the checkbox column.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -8304,6 +8448,18 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the TreeTable receives focus.</description>
       <name>onfocus</name>
       <deferred-value>
@@ -8759,6 +8915,18 @@ means that only root nodes and their immediate children are preloaded -->
         over the tree column.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -10299,6 +10467,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the DropDownField receives focus.</description>
       <name>onfocus</name>
       <deferred-value>
@@ -11221,6 +11401,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the SuggestionField receives focus.</description>
       <name>onfocus</name>
       <deferred-value>
@@ -11614,6 +11806,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the user presses a key over the PopupLayer.
       </description>
       <name>onkeydown</name>
@@ -11884,6 +12088,19 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default "80px" -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>The text that should be displayed in the caption. This is a convenient alternative for using
+        the "caption" facet. If both "caption" facet and "caption" attribute is specified, the content specified in the
+        facet is used.
+      </description>
+      <name>caption</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>A style for the entire Window component.</description>
@@ -12066,6 +12283,18 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when the user releases the mouse button over the Window.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -12265,6 +12494,18 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when the user releases the mouse button over the CaptionArea.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -12505,6 +12746,18 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when the user releases a mouse button over the CaptionButton.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -12764,6 +13017,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 
@@ -12974,6 +13239,18 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when the user releases a mouse button over the button.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -13236,6 +13513,18 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 
@@ -13483,6 +13772,18 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when the user releases a mouse button over the button.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -14414,10 +14715,11 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
 
     <attribute>
-      <description>A flag that indicates whether or not the Confirmation component has the title bar.
-        In this attribute, you should specify the text that is displayed in the title bar.
+      <description>The text that should be displayed in the caption. This is a convenient alternative for using
+        the "caption" facet. If both "caption" facet and "caption" attribute is specified, the content specified in the
+        facet is used.
       </description>
-      <name>captionText</name>
+      <name>caption</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -14562,6 +14864,18 @@ entering a value and returns a list of suggestions from the server -->
         over the Confirmation.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -14838,6 +15152,18 @@ entering a value and returns a list of suggestions from the server -->
         over the HintLabel.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -15298,6 +15624,18 @@ entering a value and returns a list of suggestions from the server -->
       <description>JavaScript code that should be executed when the user releases the mouse button over the TabSet.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -15852,6 +16190,18 @@ on every switch to the tab.-->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the user presses a key down over the TabbedPane.
       </description>
       <name>onkeydown</name>
@@ -15912,9 +16262,9 @@ on every switch to the tab.-->
   </tag>
 
   <tag>
-    <description>The SubPanel tag is used to create a fixed set of tabs right on a JSF page. To specify the object
-      to be displayed in the tab, use the "tab" facet. The components that define the page content should be added as
-      children of the SubPanel tag. This tag should be specified only in the {@link tabbedPane} tag.
+    <description>The SubPanel tag is used to specify a page in multi-page components such as TabbedPane. You can specify
+      the content to be displayed in the panel's caption (e.g. the appropriate tab in TabbedPane) using the "caption"
+      facet. The components that define the page content should be added as children of the SubPanel tag.
     </description>
     <name>subPanel</name>
     <tag-class>org.openfaces.taglib.jsp.panel.SubPanelJspTag</tag-class>
@@ -15950,6 +16300,21 @@ on every switch to the tab.-->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
+
+    <attribute>
+      <description>The text that should be displayed in the caption. This is a convenient alternative for using
+        the "caption" facet. If both "caption" facet and "caption" attribute is specified, the content specified in the
+        facet is used.
+      </description>
+      <name>caption</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
   </tag>
 
   <tag>
@@ -16033,6 +16398,19 @@ on every switch to the tab.-->
       </deferred-value>
       <!-- @bindingType java.lang.Boolean -->
       <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The text that should be displayed in the caption. This is a convenient alternative for using
+        the "caption" facet. If both "caption" facet and "caption" attribute is specified, the content specified in the
+        facet is used.
+      </description>
+      <name>caption</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -16279,6 +16657,18 @@ on every switch to the tab.-->
       <description>JavaScript code that should be executed when the user releases a mouse button over the FoldingPanel.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -16678,6 +17068,18 @@ on every switch to the tab.-->
         over the TwoListSelection.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -17573,6 +17975,18 @@ and it is automatically triggered on any form submission. -->
         over the icon.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -19178,6 +19592,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the user presses a key down over the DynamicImage.
       </description>
       <name>onkeydown</name>
@@ -19890,6 +20316,18 @@ and it is automatically triggered on any form submission. -->
       <description>JavaScript code that should be executed when the user releases a mouse button over the Calendar.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -21134,6 +21572,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the DateChooser receives focus.</description>
       <name>onfocus</name>
       <deferred-value>
@@ -21337,7 +21787,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Id's of components, which will be rerendered after succcesfull ajax request.
+      <description>Id's of components, which will be rerendered after successful Ajax request.
         Evaluates to Iterable. If a literal is specified
         can be a single id or a comma-separated list if id's.
       </description>
@@ -21455,6 +21905,18 @@ and it is automatically triggered on any form submission. -->
         component.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -21745,7 +22207,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Id's of components, which will be rerendered after succcesfull ajax request.
+      <description>Id's of components, which will be rerendered after successful Ajax request.
         Evaluates to Iterable. If a literal is specified
         can be a single id or a comma-separated list if id's.
       </description>
@@ -21851,6 +22313,18 @@ and it is automatically triggered on any form submission. -->
         component.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -22668,6 +23142,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed when the user clicks over
@@ -23216,6 +23702,18 @@ and it is automatically triggered on any form submission. -->
         InputTextarea.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -23822,6 +24320,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the PopupMenu receives focus.</description>
       <name>onfocus</name>
       <deferred-value>
@@ -23933,6 +24443,34 @@ and it is automatically triggered on any form submission. -->
       </deferred-method>
       <!-- @bindingType javax.el.MethodExpression -->
       <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+
+    <attribute>
+      <description>Id's of components, which will be rerendered after successful Ajax request.
+        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+      </description>
+      <name>render</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Object -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Id's of components whose data should be submitted and processed on the server in addition to the
+        reloaded components. The difference with render is that components listed in execute will
+        just process the submitted data, but won't be rerendered. This can often be needed when the reloaded data
+        depends on some other component on a page.
+        Evaluates to Iterable. If a literal is specified can be a single id or a comma-separated list if id's.
+      </description>
+      <name>execute</name>
+      <required>false</required>
+      <deferred-value>
+        <type>java.util.List</type>
+      </deferred-value>
+      <!-- @bindingType java.util.Object -->
       <!-- @el true -->
     </attribute>
 
@@ -24202,6 +24740,18 @@ and it is automatically triggered on any form submission. -->
       <description>JavaScript code that should be executed when the user releases a mouse button over the MenuItem.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -24517,6 +25067,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <!-- Ajax tag declaration -->
@@ -24608,7 +25170,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Id's of components, which will be rerendered after succcesfull ajax request.
+      <description>Id's of components, which will be rerendered after successful Ajax request.
         Evaluates to Iterable. If a literal is specified
         can be a single id or a comma-separated list if id's.
       </description>
@@ -24760,6 +25322,9 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
+      <description>Specifies name of the request-scope variable under which the current event object is available
+        when rendering event areas and processing server-side events from event area components.
+      </description>
       <name>eventVar</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -25058,6 +25623,18 @@ and it is automatically triggered on any form submission. -->
       <description>JavaScript code that should be executed when the user releases a mouse button over the DayTable.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -26008,6 +26585,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed after each event element is created on client-side. This
         callback allows introducing additional customization of event elements based on application requirements.
       </description>
@@ -26566,6 +27155,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the user presses a key over the EventEditorDialog.
       </description>
       <name>onkeydown</name>
@@ -26813,6 +27414,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the user presses a key over the EventActionBar.
       </description>
       <name>onkeydown</name>
@@ -26987,6 +27600,18 @@ and it is automatically triggered on any form submission. -->
       <description>JavaScript code that should be executed when the user releases the mouse button over the EventArea.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -27228,6 +27853,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @bindingType org.openfaces.component.timetable. EventAction -->
       <!-- @default null -->
       <!-- @el only -->
+    </attribute>
+
+    <attribute>
+      <description>Specifies the text that will be shown in a tool-tip when the mouse hovers over this action button.
+      </description>
+      <name>hint</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
     </attribute>
 
     <attribute>
@@ -27826,6 +28463,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the user presses a key over the BorderLayoutPanel.
       </description>
       <name>onkeydown</name>
@@ -27948,6 +28597,19 @@ and it is automatically triggered on any form submission. -->
       <!-- @value "top" -->
       <!-- @value "bottom" -->
       <!-- @default "left" -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The text that should be displayed in the caption. This is a convenient alternative for using
+        the "caption" facet. If both "caption" facet and "caption" attribute is specified, the content specified in the
+        facet is used.
+      </description>
+      <name>caption</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -28214,6 +28876,18 @@ and it is automatically triggered on any form submission. -->
         over the SidePanel.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -28861,6 +29535,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the Spinner receives focus.</description>
       <name>onfocus</name>
       <deferred-value>
@@ -29133,6 +29819,18 @@ and it is automatically triggered on any form submission. -->
         over the ForEach component.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -29458,6 +30156,18 @@ and it is automatically triggered on any form submission. -->
         SelectBooleanCheckbox.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -30205,6 +30915,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code executed when the SelectOneRadio receives focus.</description>
       <name>onfocus</name>
       <deferred-value>
@@ -30882,6 +31604,18 @@ and it is automatically triggered on any form submission. -->
       <description>JavaScript code executed when the user releases the mouse button over the SelectManyCheckbox.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -31700,6 +32434,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the menu item receives focus.</description>
       <name>onfocus</name>
       <deferred-value>
@@ -31974,6 +32720,18 @@ and it is automatically triggered on any form submission. -->
       <description>JavaScript code that should be executed when the user releases a mouse button over the menu item.
       </description>
       <name>onmouseup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -32265,6 +33023,18 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
       <description>JavaScript code that should be executed when the menu item receives focus.</description>
       <name>onfocus</name>
       <deferred-value>
@@ -32308,7 +33078,11 @@ and it is automatically triggered on any form submission. -->
 
   </tag>
   <tag>
-    <description>This component is under construction and cannot be used currently.</description>
+    <description>The LayeredPane component is a container which allows switching between different sets of displayed
+      components. Each set of components, called a page, is declared within the LayeredPane component and it's
+      possible to use both server-side and client-side API for selecting the currently displayed page. LayeredPane
+      provides different page loading modes to allow quick client-side switching or Ajax-based page switching.
+    </description>
     <name>layeredPane</name>
     <tag-class>org.openfaces.taglib.jsp.panel.LayeredPaneJspTag</tag-class>
     <body-content>JSP</body-content>
@@ -32333,19 +33107,19 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A value-binding expression that associates the TabbedPane component with a backing bean property.
+      <description>A value-binding expression that associates the LayeredPane component with a backing bean property.
       </description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.panel.TabbedPane</type>
+        <type>org.openfaces.component.panel.LayeredPane</type>
       </deferred-value>
-      <!-- @bindingType org.openfaces.component.panel. TabbedPane -->
+      <!-- @bindingType org.openfaces.component.panel. LayeredPane -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
 
     <attribute>
-      <description>A style for the entire TabbedPane component.</description>
+      <description>A style for the entire LayeredPane component.</description>
       <name>style</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -32355,7 +33129,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the entire TabbedPane component.</description>
+      <description>A CSS class name for the entire LayeredPane component.</description>
       <name>styleClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -32365,7 +33139,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A style for the TabbedPane component in the rollover state.</description>
+      <description>A style for the LayeredPane component in the rollover state.</description>
       <name>rolloverStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -32375,7 +33149,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A CSS class name for the TabbedPane component in the rollover state.</description>
+      <description>A CSS class name for the LayeredPane component in the rollover state.</description>
       <name>rolloverClass</name>
       <deferred-value>
         <type>java.lang.String</type>
@@ -32386,16 +33160,15 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>The way the data in the TabbedPane component is loaded.</description>
+      <description>The way the data in the LayeredPane component is loaded.</description>
       <name>loadingMode</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.util. LoadingMode -->
       <!-- @default "ajaxLazy" -->
-      <!-- @value "client" The content of all pages is loaded to the client side
-                           on the first page load. So when a page is selected no content needs to be loaded from the
-                           server. -->
+      <!-- @value "client" The content of all pages is loaded to the client side on the first page load. So when a page
+                  is selected no content needs to be loaded from the server. -->
       <!-- @value "ajaxLazy"  The page content is retrieved from the server with Ajax request upon
                   the first switch to the page. Once requested, the content is stored on the client and is shown without
                   additional server requests. -->
@@ -32429,31 +33202,23 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
-
     <attribute>
-      <description>A style for the TabbedPane pages.</description>
-      <name>containerStyle</name>
+      <description>A flag that indicates whether or not the selectionChangeListener
+        should be executed immediately (during the Apply Request Values phase of the
+        request processing lifecycle instead of Process Validations phase).
+      </description>
+      <name>immediate</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>boolean</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <description>A CSS class name for the TabbedPane pages.</description>
-      <name>containerClass</name>
-      <deferred-value>
-        <type>java.lang.String</type>
-      </deferred-value>
-      <!-- @bindingType java.lang.String -->
-      <!-- @default null -->
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
       <!-- @el true -->
     </attribute>
 
     <attribute>
       <description>JavaScript code that should be executed on the client when the user clicks
-        the left mouse button over the TabbedPane.
+        the left mouse button over the component.
       </description>
       <name>onclick</name>
       <deferred-value>
@@ -32465,7 +33230,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed on the client when the user double-clicks
-        the left mouse button over the TabbedPane.
+        the left mouse button over the component.
       </description>
       <name>ondblclick</name>
       <deferred-value>
@@ -32476,7 +33241,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user clicks the TabbedPane with either mouse button.
+      <description>JavaScript code that should be executed when the user clicks the component with either mouse button.
       </description>
       <name>onmousedown</name>
       <deferred-value>
@@ -32487,7 +33252,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the TabbedPane.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer onto the component.
       </description>
       <name>onmouseover</name>
       <deferred-value>
@@ -32498,7 +33263,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user moves the mouse pointer over the TabbedPane.
+      <description>JavaScript code that should be executed when the user moves the mouse pointer over the component.
       </description>
       <name>onmousemove</name>
       <deferred-value>
@@ -32510,7 +33275,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed when the user moves the mouse pointer
-        away from the TabbedPane.
+        away from the component.
       </description>
       <name>onmouseout</name>
       <deferred-value>
@@ -32521,7 +33286,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases a mouse button over the TabbedPane.
+      <description>JavaScript code that should be executed when the user releases a mouse button over the component.
       </description>
       <name>onmouseup</name>
       <deferred-value>
@@ -32532,7 +33297,19 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user presses a key down over the TabbedPane.
+      <description>JavaScript code that should be executed when the user presses right mouse button over the component
+        (or performs the other context menu invocation action depending on the platform).
+      </description>
+      <name>oncontextmenu</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>JavaScript code that should be executed when the user presses a key down over the component.
       </description>
       <name>onkeydown</name>
       <deferred-value>
@@ -32543,7 +33320,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when the user releases a key over the TabbedPane.
+      <description>JavaScript code that should be executed when the user releases a key over the component.
       </description>
       <name>onkeyup</name>
       <deferred-value>
@@ -32555,7 +33332,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
     <attribute>
       <description>JavaScript code that should be executed on the client when the user presses and releases a key
-        over the TabbedPane.
+        over the component.
       </description>
       <name>onkeypress</name>
       <deferred-value>
@@ -32566,7 +33343,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when onfocus event bubbles up from some of TabbedPane's child
+      <description>JavaScript code that should be executed when onfocus event bubbles up from some of component's child
         component.
       </description>
       <name>onfocus</name>
@@ -32578,7 +33355,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>JavaScript code that should be executed when onblur event bubbles up from some of TabbedPane's child
+      <description>JavaScript code that should be executed when onblur event bubbles up from some of component's child
         component.
       </description>
       <name>onblur</name>

@@ -521,9 +521,10 @@
     <image>PopupMenu</image>
     <selectedImage>/images/components/titles/PopupMenu.png</selectedImage>
     <keyFeatures>
+      <feature>Flexible attachment mechanism</feature>
+      <feature>Client-side and Ajax event handlers</feature>
       <feature>Keyboard support</feature>
       <feature>Embedding JSF components</feature>
-      <feature>Flexible attachment mechanism</feature>
       <feature>Customizable appearance</feature>
     </keyFeatures>
     <demos>

@@ -186,7 +186,6 @@ O$.PopupLayer = {
         if (popup.anchorElement != undefined) {
           O$.PopupLayer._moveToAnchor(popup);
         }
-        //    O$.hideControlsUnderPopup(this);
 
         popup._visibleField.value = "true";
         if (popup.onshow) {
@@ -227,7 +226,6 @@ O$.PopupLayer = {
           }
         }
 
-        //    O$.unhideControlsUnderPopup(this);
         popup.style.display = "none";
         if (popup.onhide) {
           popup.onhide();

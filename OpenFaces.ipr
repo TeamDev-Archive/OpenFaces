@@ -937,6 +937,7 @@
         <w>commandbutton</w>
         <w>commandlink</w>
         <w>compositefilter</w>
+        <w>coords</w>
         <w>dashized</w>
         <w>datasets</w>
         <w>datatable</w>
@@ -953,6 +954,9 @@
         <w>graphictext</w>
         <w>hintlabel</w>
         <w>horiz</w>
+        <w>hreflang</w>
+        <w>https</w>
+        <w>iframe</w>
         <w>initated</w>
         <w>inputtext</w>
         <w>inputtextarea</w>
@@ -1015,6 +1019,7 @@
         <w>profiler</w>
         <w>programmatically</w>
         <w>renderers</w>
+        <w>rerendered</w>
         <w>resizable</w>
         <w>richfaces</w>
         <w>rtrim</w>

@@ -13,7 +13,7 @@ package org.openfaces.taglib.internal.command;
 
 
 import org.openfaces.component.command.MenuItem;
-import org.openfaces.taglib.internal.AbstractComponentTag;
+import org.openfaces.taglib.internal.OUICommandTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 /**
  * @author Vladimir Kurganov
  */
-public class MenuItemTag extends AbstractComponentTag {
+public class MenuItemTag extends OUICommandTag {
     public String getComponentType() {
         return MenuItem.COMPONENT_TYPE;
     }
@@ -36,9 +36,6 @@ public class MenuItemTag extends AbstractComponentTag {
         super.setComponentProperties(facesContext, uiComponent);
 
         setObjectProperty(uiComponent, "value");
-        MenuItem menuItem = (MenuItem) uiComponent;
-        setActionProperty(facesContext, menuItem);
-        setActionListener(facesContext, menuItem);
 
         setStringProperty(uiComponent, "iconUrl");
         setStringProperty(uiComponent, "disabledIconUrl");

@@ -15,6 +15,7 @@ import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.PopupMenu;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RenderingUtil;
 import org.openfaces.util.ResourceUtil;
 import org.openfaces.util.StyleGroup;
@@ -241,11 +242,15 @@ public class MenuItemRenderer extends RendererBase {
     private void renderStartMenuItemSpan(FacesContext context, MenuItem menuItem, ResponseWriter writer) throws IOException {
         writer.startElement("span", menuItem);
         writeAttribute(writer, "id", menuItem.getClientId(context) + A_SUFIX);
-        if (!menuItem.isDisabled() && (menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0))
-            addMenuItemParameter(menuItem, "action", "O$.submitFormWithAdditionalParam(this, '" + menuItem.getClientId(context) + "::clicked', 'true');");
-
-        if (!menuItem.isDisabled())
-            RenderingUtil.writeStandardEvents(writer, menuItem);
+        if (!menuItem.isDisabled()) {
+            boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, menuItem);
+            if (ajaxJsRequired)
+                menuItem.getAttributes().put("_ajaxRequired", Boolean.TRUE);
+            else {
+                if ((menuItem.getActionExpression() != null || menuItem.getActionListeners().length > 0))
+                    addMenuItemParameter(menuItem, "action", "O$.submitFormWithAdditionalParam(this, '" + menuItem.getClientId(context) + "::clicked', 'true');");
+            }
+        }
     }
 
     private void addSelectedStyleClass(FacesContext context, MenuItem menuItem) {
@@ -273,6 +278,8 @@ public class MenuItemRenderer extends RendererBase {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        if (component.getAttributes().remove("_ajaxRequired") != null)
+            AjaxUtil.renderJSLinks(context);
         writer.endElement("li");
     }
 

@@ -53,7 +53,7 @@ public class RendererBase extends Renderer {
 
     protected boolean writeEventsWithAjaxSupport(FacesContext context, ResponseWriter writer, OUICommand command, boolean submitIfNoAjax) throws IOException {
         String userClickHandler = command.getOnclick();
-        Script buttonClickHandler = null;
+        Script componentClickHandler = null;
         Iterable<String> render = command.getRender();
         Iterable<String> execute = command.getExecute();
         boolean ajaxJsRequired = false;
@@ -62,18 +62,18 @@ public class RendererBase extends Renderer {
                 throw new FacesException("'execute' attribute can't be specified without the 'render' attribute. Component id: " + command.getId());
 
             AjaxInitializer initializer = new AjaxInitializer();
-            buttonClickHandler = new ScriptBuilder().functionCall("O$._ajaxReload",
+            componentClickHandler = new ScriptBuilder().functionCall("O$._ajaxReload",
                     initializer.getRenderArray(context, command, render),
                     initializer.getAjaxParams(context, command)).semicolon().append("return false;");
             ajaxJsRequired = true;
         } else {
             if (submitIfNoAjax) {
-                buttonClickHandler = new FunctionCallScript("O$.submitWithParam", command, command, true);
+                componentClickHandler = new FunctionCallScript("O$.submitWithParam", command, command, true);
             }
         }
         String clickHandler = RenderingUtil.joinScripts(
                 userClickHandler,
-                buttonClickHandler != null ? buttonClickHandler.toString() : null);
+                componentClickHandler != null ? componentClickHandler.toString() : null);
         if (!RenderingUtil.isNullOrEmpty(clickHandler))
             writer.writeAttribute("onclick", clickHandler, null);
         RenderingUtil.writeStandardEvents(writer, command, true);

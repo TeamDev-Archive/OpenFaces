@@ -15,6 +15,7 @@ package org.openfaces.taglib.jsp.command;
 import org.openfaces.taglib.internal.command.MenuItemTag;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
+import org.openfaces.taglib.jsp.OUICommandJspTag;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -22,7 +23,7 @@ import javax.el.ValueExpression;
 /**
  * @author Vladimir Kurganov
  */
-public class MenuItemJspTag extends AbstractComponentJspTag {
+public class MenuItemJspTag extends OUICommandJspTag {
 
     public MenuItemJspTag() {
         super(new MenuItemTag());
@@ -34,14 +35,6 @@ public class MenuItemJspTag extends AbstractComponentJspTag {
 
     public void setValue(ValueExpression value) {
         getDelegate().setPropertyValue("value", value);
-    }
-
-    public void setAction(MethodExpression action) {
-        getDelegate().setPropertyValue("action", action);
-    }
-
-    public void setActionListener(MethodExpression action) {
-        getDelegate().setPropertyValue("actionListener", action);
     }
 
     public void setIconUrl(ValueExpression iconUrl) {
@@ -124,7 +117,7 @@ public class MenuItemJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("selectedDisabledStyle", selectedDisabledStyle);
     }
 
-    public void setselectedDisabledClass(ValueExpression selectedDisabledClass) {
+    public void setSelectedDisabledClass(ValueExpression selectedDisabledClass) {
         getDelegate().setPropertyValue("selectedDisabledClass", selectedDisabledClass);
     }
 

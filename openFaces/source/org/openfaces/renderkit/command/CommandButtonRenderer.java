@@ -62,10 +62,11 @@ public class CommandButtonRenderer extends RendererBase {
                 "dir");
         RenderingUtil.writeStyleAndClassAttributes(writer, btn);
 
-
-        boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, btn);
-        if (ajaxJsRequired)
-            btn.getAttributes().put("_ajaxRequired", Boolean.TRUE);
+        if (!btn.isDisabled()) {
+            boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, btn);
+            if (ajaxJsRequired)
+                btn.getAttributes().put("_ajaxRequired", Boolean.TRUE);
+        }
     }
 
     @Override

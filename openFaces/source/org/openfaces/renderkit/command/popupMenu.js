@@ -224,6 +224,7 @@ O$.PopupMenu = {
               menuItem = popupMenu._items[popupMenu._selectedIndex];
               O$.sendEvent(menuItem._anchor, "click");
               O$.PopupMenu._closeAllMenu(popupMenu);
+              O$.breakEvent(evt);
             }
             break;
           case 38: // up
@@ -284,7 +285,7 @@ O$.PopupMenu = {
 
     menuItem._disabled = !enabled;
 
-    /* Update icons and styles if user chaged enabling of the MenuItem */
+    /* Update icons and styles if enabled flag has been changed */
     if (enabled) {
       O$.setStyleMappings(menuItem._anchor, {
         disabled: null
@@ -483,11 +484,10 @@ O$.PopupMenu = {
     }
     else {
       O$.PopupMenu._setHighlightMenuItem(popupMenu, popupMenu._items[nextIndex]._anchor, selectDisabledItems);
-      //popupMenu._selectedItem = this._menuItem;
     }
   },
 
-  _showSubmenu: function(popupMenu, itemAnchor, submenuHorisontalOffset) {
+  _showSubmenu: function(popupMenu, itemAnchor, submenuHorizontalOffset) {
     var menuItem = itemAnchor.parentNode;
     if (popupMenu._closeAllTask) {
       clearTimeout(popupMenu._closeAllTask);
@@ -512,7 +512,7 @@ O$.PopupMenu = {
       var popup_menu_border_top = O$.getNumericElementStyle(popupMenu, "border-top-width");
       var childPopupMenu_border_left = (!O$.isOpera()) ? O$.getNumericElementStyle(popupMenu, "border-left-width") : 0;
       var item_border_left = O$.getNumericElementStyle(itemAnchor, "border-left-width");
-      var x = popupMenuRect.width - O$.getElementPos(itemAnchor, true).x - childPopupMenu_border_left - item_border_left + submenuHorisontalOffset;
+      var x = popupMenuRect.width - O$.getElementPos(itemAnchor, true).x - childPopupMenu_border_left - item_border_left + submenuHorizontalOffset;
       var y = -popup_menu_border_top - popupMenu.clientTop - O$.getNumericElementStyle(itemAnchor, "border-top-width");
       childPopupMenu.showAtXY(x, y);
       var visibleRect = O$.getVisibleAreaRectangle();
@@ -918,47 +918,50 @@ O$.PopupMenu = {
     }
   },
 
-  _addMenuItemClickHandler: function(menuItem, submenuHorisontalOffset, selectDisabledItems) {
+  _addMenuItemClickHandler: function(menuItem, submenuHorizontalOffset, selectDisabledItems) {
     var popupMenu = menuItem._popupMenu;
     if (!menuItem._properties.disabled) {
-      if (menuItem._properties.action) {
-        function itemClick(menuItemElement) {
-          O$.addEventHandler(menuItemElement, "click", function() {
-            eval(menuItemElement.parentNode._properties.action);
-            O$.PopupMenu._closeAllMenu(popupMenu);
-            O$.stopEvent(evt); //to prevent set focus for the popupMenu
-          });
-        }
-
-        itemClick(menuItem._anchor);
-      } else {
-        function defaultItemClick(menuItemElement) {
-          O$.addEventHandler(menuItemElement, "click", function(evt) {
-            var menuItem = menuItemElement.parentNode;
-            if (menuItem._menuId) {
-              if (menuItem._openSubmenuTask) {
-                clearTimeout(menuItem._openSubmenuTask);
-                menuItem._openSubmenuTask = null;
-              }
-              if (popupMenu._parentPopupMenu && popupMenu._parentPopupMenu._closeAllTask) {
-                clearTimeout(popupMenu._parentPopupMenu._closeAllTask);
-                popupMenu._parentPopupMenu._closeAllTask = null;
-              }
-              O$.PopupMenu._showSubmenu(popupMenu, menuItem._anchor, submenuHorisontalOffset);
-              O$.PopupMenu._showFirstMenuItemonChild(menuItem, selectDisabledItems);
-            } else {
-              O$.PopupMenu._closeAllMenu(popupMenu);
+      menuItem._click = function(evt) {
+        if (menuItem._properties.action) {
+          var handler;
+          eval("handler = function(event){" + menuItem._properties.action + "}");
+          handler.call(menuItem, evt);
+          O$.PopupMenu._closeAllMenu(popupMenu);
+        } else {
+          if (menuItem._menuId) {
+            if (menuItem._openSubmenuTask) {
+              clearTimeout(menuItem._openSubmenuTask);
+              menuItem._openSubmenuTask = null;
             }
-            O$.stopEvent(evt); //to prevent set focus for the popupMenu
-          });
+            if (popupMenu._parentPopupMenu && popupMenu._parentPopupMenu._closeAllTask) {
+              clearTimeout(popupMenu._parentPopupMenu._closeAllTask);
+              popupMenu._parentPopupMenu._closeAllTask = null;
+            }
+            O$.PopupMenu._showSubmenu(popupMenu, menuItem._anchor, submenuHorizontalOffset);
+            O$.PopupMenu._showFirstMenuItemonChild(menuItem, selectDisabledItems);
+          } else {
+            O$.PopupMenu._closeAllMenu(popupMenu);
+          }
+          O$.stopEvent(evt); //to prevent set focus for the popupMenu
         }
 
-        defaultItemClick(menuItem._anchor);
+      };
+      O$.addEventHandler(menuItem._anchor, "click", function(evt) {
+        menuItem._click(evt);
+      });
+      var clickHandler = menuItem._anchor.onclick;
+      if (clickHandler) {
+        menuItem._anchor.onclick = function(evt) {
+          // ensure hiding the menu _before_ invoking possible Ajax menu reload to avoid menu's visible flag to be
+          // saved to the server and thus menu reloading in the visible state in this case
+          O$.PopupMenu._closeAllMenu(popupMenu);
+          clickHandler.call(menuItem._anchor, evt);
+        }
       }
     }
   },
 
-  _addMouseOverOutEvents: function(menuItem, selectDisabledItems, submenuHorisontalOffset, submenuShowDelay, submenuHideDelay) {
+  _addMouseOverOutEvents: function(menuItem, selectDisabledItems, submenuHorizontalOffset, submenuShowDelay, submenuHideDelay) {
     var popupMenu = menuItem._popupMenu;
     var menuItemElement = menuItem._anchor;
 
@@ -980,7 +983,7 @@ O$.PopupMenu = {
       if (submenuShowDelay >= 0)
         menuItem._openSubmenuTask = setTimeout(function() {
           if (menuItemElement._focused)
-            O$.PopupMenu._showSubmenu(popupMenu, menuItemElement, submenuHorisontalOffset);
+            O$.PopupMenu._showSubmenu(popupMenu, menuItemElement, submenuHorizontalOffset);
         }, submenuShowDelay);
 
     });

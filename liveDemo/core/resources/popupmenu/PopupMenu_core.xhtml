@@ -74,10 +74,10 @@
       <o:popupMenu>
         <o:menuItem iconUrl="icons/new-16x16.png" value="New">
           <o:popupMenu>
-            <o:menuItem value="Class" action="#{PopupMenuBean.newClass}"/>
-            <o:menuItem value="Interface" action="#{PopupMenuBean.newInterface}"/>
-            <o:menuItem value="Enumeration" action="#{PopupMenuBean.newEnumeration}"/>
-            <o:menuItem value="Annotation" action="#{PopupMenuBean.newAnnotation}"/>
+            <o:menuItem value="Class" action="#{PopupMenuBean.newClass}" render="container"/>
+            <o:menuItem value="Interface" action="#{PopupMenuBean.newInterface}" render="container"/>
+            <o:menuItem value="Enumeration" action="#{PopupMenuBean.newEnumeration}" render="container"/>
+            <o:menuItem value="Annotation" action="#{PopupMenuBean.newAnnotation}" render="container"/>
             <o:menuItem value="Package" onclick="showAlert('New package created.');"/>
             <o:menuSeparator/>
 
@@ -148,10 +148,17 @@
     <h4>Demonstrated Features</h4>
     <ul class="hang">
       <li>
-        <strong>Menu icons</strong> - Popup Menu items may be supplied with icons.
+        <strong>Hierarchical menus</strong> - It is possible to build menu with sub-menus using Popup Menu component.
       </li>
       <li>
-        <strong>Hierarchical menus</strong> - It is possible to build menu with sub-menus using Popup Menu component.
+        <strong>Client-side event handlers</strong> - Clicking items on root menu items shows a window with JavaScript.
+      </li>
+      <li>
+        <strong>Server-side Ajax-based event handlers</strong> - Clicking items in the "New" menu issues Ajax calls
+        for server-side action execution and content reloading.
+      </li>
+      <li>
+        <strong>Menu icons</strong> - Popup Menu items may be supplied with icons.
       </li>
       <li>
         <strong>Keyboard navigation</strong> - Use Up/Down/Left/Right keys to navigate between menu items and sub-menus,

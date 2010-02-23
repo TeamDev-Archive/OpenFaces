@@ -4130,51 +4130,6 @@ if (!window.O$) {
     }
   };
 
-  O$.hideControlsUnderPopup = function(popup) {
-    if (O$.isExplorer() && O$._controlsToHide && O$._controlsToHide.length > 0) {
-      var runFunction = function(control) {
-        var controlData = {};
-        controlData.id = popup.id;
-        controlData.visibility = control.style.visibility;
-        O$._controlsHiddenControlsMap[control.id] = controlData;
-        control.style.visibility = "hidden";
-      };
-
-      var rectangle = new O$.Rectangle(popup.offsetLeft, popup.offsetTop, popup.offsetWidth, popup.offsetHeight);
-      popup._coveredControls = [];
-      var frm = O$.getParentNode(popup, "FORM");
-      var controls = frm.elements;
-      var index = 0;
-      for (var i = 0; i < controls.length; i++) {
-        var control = controls[i];
-        if (control.type && O$.arrayContainsValue(O$._controlsToHide, control.type)) {
-          if (! O$.isChild(popup, control)) {
-            var examRectangle = O$.getElementBorderRectangle(control);
-            if (rectangle.intersects(examRectangle)) {
-              popup._coveredControls[index++] = control;
-            }
-          }
-        }
-      }
-
-
-      O$.walkControlsToHide(popup, runFunction);
-    }
-  };
-
-  O$.unhideControlsUnderPopup = function(popup) {
-    if (O$.isExplorer() && O$._controlsToHide && O$._controlsToHide.length > 0) {
-      var runFunction = function(control) {
-        var controlData = O$._controlsHiddenControlsMap[control.id];
-        if (controlData && (controlData.id == popup.id)) {
-          control.style.visibility = controlData.visibility;
-        }
-      };
-      O$.walkControlsToHide(popup, runFunction);
-      popup._coveredControls = null;
-    }
-  };
-
   O$.initIETransparencyWorkaround = function(popup) {
     if (!O$.isExplorer6())
       return;
@@ -4184,7 +4139,7 @@ if (!window.O$) {
 
     var iframe = document.createElement("iframe");
     iframe.src = "javascript:'';";
-    // to overcome the "nonsecure items" message on HTTPS pages
+    // to overcome the "non-secure items" message on HTTPS pages
     iframe.id = popup.id + "::ieTransparencyControl";
     iframe.scrolling = "No";
     iframe.frameBorder = "0";
