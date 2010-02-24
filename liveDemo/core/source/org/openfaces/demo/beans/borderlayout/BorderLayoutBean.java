@@ -14,7 +14,7 @@ package org.openfaces.demo.beans.borderlayout;
 
 import org.openfaces.component.table.AllNodesExpanded;
 import org.openfaces.component.table.ExpansionState;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import javax.faces.event.ActionEvent;
 import java.util.ArrayList;
@@ -123,7 +123,7 @@ public class BorderLayoutBean {
 	}
 
 	private Object getTreeNode() {
-		return FacesUtil.var(TREE_NODE_VAR);
+		return Faces.var(TREE_NODE_VAR);
 	}
 
 	public boolean isNodeHasChildren() {

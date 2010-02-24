@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.chart;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.chart.ChartModel;
 import org.openfaces.component.chart.PieSectorInfo;
 import org.openfaces.component.chart.PlainModel;
@@ -49,7 +49,7 @@ public class PopulationBean {
     }
 
     public String getTooltip() {
-        PieSectorInfo sector = FacesUtil.var("sector", PieSectorInfo.class);
+        PieSectorInfo sector = Faces.var("sector", PieSectorInfo.class);
         DecimalFormat format = new DecimalFormat("#,###");
         return sector.getKey() + " - " + format.format(sector.getValue());
     }

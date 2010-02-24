@@ -16,7 +16,7 @@ package org.openfaces.testapp.support.QKS646;
  * @author Tatyana Matveyeva
  */
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import javax.faces.event.ActionEvent;
 import java.io.Serializable;
@@ -59,7 +59,7 @@ public class QKS646 implements Serializable {
     }
 
     public List getChildren() {
-        Object node = FacesUtil.var("node");
+        Object node = Faces.var("node");
 
 
         if (node == null)

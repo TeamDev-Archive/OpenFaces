@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.support.QKS112;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.table.ExpansionState;
 import org.openfaces.component.table.SeveralLevelsExpanded;
 import org.openfaces.testapp.screenshot.ForumMessage;
@@ -104,7 +104,7 @@ public class SupportTreeTableBean {
     }
 
     public List getNodeChildren() {
-        ForumMessage message = (ForumMessage) FacesUtil.var("message");
+        ForumMessage message = (ForumMessage) Faces.var("message");
         if (message == null) {
             return getRootMessages();
         } else {
@@ -114,7 +114,7 @@ public class SupportTreeTableBean {
 
 
     public String getDateCategory() {
-        ForumMessage message = (ForumMessage) FacesUtil.var("message");
+        ForumMessage message = (ForumMessage) Faces.var("message");
         Date date = message.getDate();
 
         return formatDate(date);
@@ -144,7 +144,7 @@ public class SupportTreeTableBean {
     }
 
     public boolean isNodeHasChildren() {
-        ForumMessage message = (ForumMessage) FacesUtil.var("message");
+        ForumMessage message = (ForumMessage) Faces.var("message");
         return message.hasReplies();
     }
 

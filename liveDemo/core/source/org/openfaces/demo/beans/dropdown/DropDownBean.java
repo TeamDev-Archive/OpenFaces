@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.dropdown;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -87,7 +87,7 @@ public class DropDownBean implements Serializable {
 
     public List<Color> getColors() {
         List<Color> allColors = colors.getColors();
-        String searchString = FacesUtil.var("searchString", String.class);
+        String searchString = Faces.var("searchString", String.class);
         if (searchString == null)
             return allColors;
         List<Color> result = new ArrayList<Color>();

@@ -15,7 +15,7 @@ import org.openfaces.component.timetable.AbstractTimetableEvent;
 import org.openfaces.component.timetable.TimetableChangeEvent;
 import org.openfaces.component.timetable.TimetableEvent;
 import org.openfaces.component.timetable.EventActionEvent;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.richfaces.model.CalendarDataModel;
 import org.richfaces.model.CalendarDataModelItem;
 
@@ -188,7 +188,7 @@ public class DayTableBean implements CalendarDataModel, Serializable {
     }
 
     private TimetableEvent getEvent() {
-        return (TimetableEvent) FacesUtil.var("event");
+        return (TimetableEvent) Faces.var("event");
     }
 
     private Date date = new Date();
@@ -449,7 +449,7 @@ public class DayTableBean implements CalendarDataModel, Serializable {
     }
 
     private Task fetchTaskVariable() {
-        return (Task) FacesUtil.var("task");
+        return (Task) Faces.var("task");
     }
 
     public void editTask(ActionEvent event) {

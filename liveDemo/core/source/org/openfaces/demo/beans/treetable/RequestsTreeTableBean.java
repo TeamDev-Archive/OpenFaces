@@ -14,7 +14,7 @@ package org.openfaces.demo.beans.treetable;
 
 import org.openfaces.component.table.AllNodesExpanded;
 import org.openfaces.component.table.ExpansionState;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -321,7 +321,7 @@ public class RequestsTreeTableBean implements Serializable {
     }
 
     private Request fetchRequestVariable() {
-        return FacesUtil.var("rq", Request.class);
+        return Faces.var("rq", Request.class);
     }
 
     public boolean isRequestEditingButtonsEnabled() {

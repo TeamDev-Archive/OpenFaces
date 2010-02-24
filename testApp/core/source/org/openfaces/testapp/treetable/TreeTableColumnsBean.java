@@ -14,7 +14,7 @@ package org.openfaces.testapp.treetable;
 
 import org.openfaces.component.table.FilterKind;
 import org.openfaces.component.table.TreePath;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
@@ -69,7 +69,7 @@ public class TreeTableColumnsBean {
     }
 
     private TreeTableItem getNode() {
-        return (TreeTableItem) FacesUtil.var("node");
+        return (TreeTableItem) Faces.var("node");
     }
 
     public boolean isColumnRendered() {
@@ -89,7 +89,7 @@ public class TreeTableColumnsBean {
     }
 
     private String getCurrentColumn() {
-        return (String) FacesUtil.var("col");
+        return (String) Faces.var("col");
     }
 
     public FilterKind getFilterKind() {
@@ -193,7 +193,7 @@ public class TreeTableColumnsBean {
     }
 
     public boolean isHighlightedByNodePath() {
-        TreePath path = (TreePath) FacesUtil.var("nodePath");
+        TreePath path = (TreePath) Faces.var("nodePath");
         TreePath pathToCompare = new TreePath(treeTableItem, new TreePath(treeTableItemChild, new TreePath(treeTableItemRoot, null)));
         return path.equals(pathToCompare);
     }

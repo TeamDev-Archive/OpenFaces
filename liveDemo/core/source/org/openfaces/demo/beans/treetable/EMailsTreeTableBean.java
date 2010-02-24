@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.treetable;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -509,7 +509,7 @@ public class EMailsTreeTableBean {
     }
 
     private Object getEmailVar() {
-        return FacesUtil.var("email");
+        return Faces.var("email");
     }
 
     public Date getSortByDateExpression() {

@@ -11,7 +11,7 @@
  */
 package org.openfaces.testapp.treetable;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.table.AllNodesCollapsed;
 import org.openfaces.component.table.AllNodesExpanded;
 import org.openfaces.component.table.ExpansionState;
@@ -107,7 +107,7 @@ public class TreeTableTestBean {
     }
 
     private ForumMessage getMessage() {
-        return (ForumMessage) FacesUtil.var("message");
+        return (ForumMessage) Faces.var("message");
     }
 
     private String newMessageSubject;
@@ -138,12 +138,12 @@ public class TreeTableTestBean {
     }
 
     public String getPageNameFromPageInfo() {
-        String pageInfo = (String) FacesUtil.var("pageInfo");
+        String pageInfo = (String) Faces.var("pageInfo");
         return (String) new StringTokenizer(pageInfo, "|", false).nextElement();
     }
 
     public String getPageUrlFromPageInfo() {
-        String pageInfo = (String) FacesUtil.var("pageInfo");
+        String pageInfo = (String) Faces.var("pageInfo");
         StringTokenizer stringTokenizer = new StringTokenizer(pageInfo, "|", false);
         stringTokenizer.nextElement();
         return (String) stringTokenizer.nextElement();
@@ -241,7 +241,7 @@ public class TreeTableTestBean {
     }
 
     public String getDynamicRowStyle() {
-        int level = (Integer) FacesUtil.var("level");
+        int level = (Integer) Faces.var("level");
         if (level > 10)
             level = 10;
         double color = 1.0 - (1.0 / 20) * level;

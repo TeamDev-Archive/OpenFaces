@@ -18,7 +18,7 @@ import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.table.AllNodesCollapsed;
 import org.openfaces.component.table.AllNodesExpanded;
 import org.openfaces.component.table.ExpansionState;
@@ -62,7 +62,7 @@ public class SeamTreeTableBean implements Serializable, SeamTreeTable {
     private ExpressionFilterCriterion filterValue = new ExpressionFilterCriterion("2006");
 
     public List getNodeChildren() {
-        TreeTableItem item = FacesUtil.var("item", TreeTableItem.class);
+        TreeTableItem item = Faces.var("item", TreeTableItem.class);
         return item != null ? item.getItems() :
                 em.createQuery("select item from TreeTableItem item where item.parent is null").getResultList();
     }
@@ -93,7 +93,7 @@ public class SeamTreeTableBean implements Serializable, SeamTreeTable {
     }
 
     public String getDateCategory() {
-        TreeTableItem item = FacesUtil.var("item", TreeTableItem.class);
+        TreeTableItem item = Faces.var("item", TreeTableItem.class);
         Date date = item.getDate();
         return formatDate(date);
     }

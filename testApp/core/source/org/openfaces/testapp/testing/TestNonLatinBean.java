@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.testing;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +105,7 @@ public class TestNonLatinBean {
 
     public List getSuggestedValues() {
         List<String> suggestedValues = new ArrayList<String>();
-        String typedValue = (String) FacesUtil.var("searchString");
+        String typedValue = (String) Faces.var("searchString");
         if (typedValue != null) {
             for (String value : dropDownValues) {
                 String valueForComparison = value.toLowerCase();

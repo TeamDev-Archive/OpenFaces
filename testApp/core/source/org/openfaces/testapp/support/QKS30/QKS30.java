@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.support.QKS30;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.table.DataTable;
 import org.openfaces.component.table.TreeTable;
 import org.openfaces.testapp.datatable.User;
@@ -139,7 +139,7 @@ public class QKS30 {
     }
 
     public List getNodeChildren() {
-        ForumMessage message = (ForumMessage) FacesUtil.var("treetest");
+        ForumMessage message = (ForumMessage) Faces.var("treetest");
         return message != null ? message.getReplies() : rootMessages;
     }
 

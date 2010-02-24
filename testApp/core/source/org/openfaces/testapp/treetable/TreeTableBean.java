@@ -11,7 +11,7 @@
  */
 package org.openfaces.testapp.treetable;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.table.AllNodesCollapsed;
 import org.openfaces.component.table.ExpansionState;
 import org.openfaces.component.table.TreePath;
@@ -190,7 +190,7 @@ public class TreeTableBean {
     }
 
     public String getAdvancedUserFilter() {
-        TestTreeTableUser user = (TestTreeTableUser) FacesUtil.var("user");
+        TestTreeTableUser user = (TestTreeTableUser) Faces.var("user");
         if (smallUserList.contains(user)) {
             return "Advanced Users";
         } else {
@@ -233,7 +233,7 @@ public class TreeTableBean {
     }
 
     public List<Serializable> getUsersTreeChildren() {
-        Object node = FacesUtil.var("node");
+        Object node = Faces.var("node");
         if (node == null)
             return testTreeTablePermissions;
         if (node instanceof TestTreeTablePermission) {
@@ -244,7 +244,7 @@ public class TreeTableBean {
     }
 
     public Object getUsersTreeNodeKey() {
-        Object node = FacesUtil.var("node");
+        Object node = Faces.var("node");
         String id = (node instanceof TestTreeTablePermission) ? ((TestTreeTablePermission) node).getId() : ((TestTreeTableUser) node).getId();
         return Arrays.asList(new Object[]{node.getClass(), id});
     }

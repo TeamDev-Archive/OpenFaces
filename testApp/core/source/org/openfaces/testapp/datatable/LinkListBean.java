@@ -11,7 +11,7 @@
  */
 package org.openfaces.testapp.datatable;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.table.DataTable;
 
 import java.util.ArrayList;
@@ -147,7 +147,7 @@ public class LinkListBean {
     }
 
     public String removeLink() {
-        editedLinks.remove(FacesUtil.var("link"));
+        editedLinks.remove(Faces.var("link"));
         return "";
     }
 
@@ -167,7 +167,7 @@ public class LinkListBean {
     }
 
     private Link getCurrentLink() {
-        Link linkData = (Link) FacesUtil.var("link");
+        Link linkData = (Link) Faces.var("link");
         if (linkData == null)
             return null;
         return linkData;

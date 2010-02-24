@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.chart;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.chart.ChartModel;
 import org.openfaces.component.chart.PieChartView;
 import org.openfaces.component.chart.PieSectorEvent;
@@ -79,7 +79,7 @@ public class ChartView implements Serializable {
     }
 
     private PieSectorInfo getSector() {
-        return FacesUtil.var("sector", PieSectorInfo.class);
+        return Faces.var("sector", PieSectorInfo.class);
     }
 
     public void quarterClickListener(ActionEvent event) {

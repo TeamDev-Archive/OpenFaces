@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.suggestionfield;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -260,7 +260,7 @@ public class SuggestionFieldBean implements Serializable {
 
     public List<String> getSuggestedCountries() {
         List<String> suggestedCountries = new ArrayList<String>();
-        String typedValue = FacesUtil.var("searchString", String.class);
+        String typedValue = Faces.var("searchString", String.class);
         if (typedValue != null) {
             for (String country : countries) {
                 String countryForComparison = country.toLowerCase();

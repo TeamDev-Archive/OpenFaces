@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.richfaces;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.chart.BarChartView;
 import org.openfaces.component.chart.LineChartView;
 import org.openfaces.component.chart.PieChartView;
@@ -116,7 +116,7 @@ public class RichTestBean {
     }
 
     private TreeItem getNode() {
-        return FacesUtil.var("node", TreeItem.class);
+        return Faces.var("node", TreeItem.class);
     }
 
     public RenderedImage getTestImage() {

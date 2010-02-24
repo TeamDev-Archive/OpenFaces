@@ -16,7 +16,7 @@ import org.openfaces.component.filter.CompositeFilterCriterion;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.filter.FilterCriterion;
 import org.openfaces.demo.beans.util.City;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
@@ -55,11 +55,11 @@ public class CitiesList implements Serializable {
     }
 
     public List<City> getCitiesList() {
-        CompositeFilterCriterion filterCriteria = FacesUtil.var("filterCriteria", CompositeFilterCriterion.class);
-        boolean sortAscending = FacesUtil.var("sortAscending", Boolean.class);
-        String sortColumnId = FacesUtil.var("sortColumnId", String.class);
-        int pageStart = FacesUtil.var("pageStart", Integer.class);
-        int pageSize = FacesUtil.var("pageSize", Integer.class);
+        CompositeFilterCriterion filterCriteria = Faces.var("filterCriteria", CompositeFilterCriterion.class);
+        boolean sortAscending = Faces.var("sortAscending", Boolean.class);
+        String sortColumnId = Faces.var("sortColumnId", String.class);
+        int pageStart = Faces.var("pageStart", Integer.class);
+        int pageSize = Faces.var("pageSize", Integer.class);
         CitiesDB.CitySelectionCriteria filterConditions = calculateFilterConditions(filterCriteria);
         return citiesDB.getCitiesByParameters(filterConditions, sortColumnId, sortAscending, pageStart, pageSize);
     }
@@ -114,13 +114,13 @@ public class CitiesList implements Serializable {
     }
 
     public int getRowCount() {
-        CompositeFilterCriterion filterCriteria = FacesUtil.var("filterCriteria", CompositeFilterCriterion.class);
+        CompositeFilterCriterion filterCriteria = Faces.var("filterCriteria", CompositeFilterCriterion.class);
         CitiesDB.CitySelectionCriteria filterConditions = calculateFilterConditions(filterCriteria);
         return citiesDB.getRecordCount(filterConditions);
     }
 
     public City getRowByKey() {
-        Integer key = FacesUtil.var("rowKey", Integer.class);
+        Integer key = Faces.var("rowKey", Integer.class);
         return citiesDB.getCityById(key);
     }
 

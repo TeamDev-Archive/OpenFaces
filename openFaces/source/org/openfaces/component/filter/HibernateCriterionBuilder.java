@@ -20,7 +20,7 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import java.util.Date;
 import java.util.List;
@@ -162,11 +162,11 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
     }
 
     private static void fillCriteria(Criteria criteria, boolean ignorePaginationParams) {
-        CompositeFilterCriterion filterCriteria = FacesUtil.var("filterCriteria", CompositeFilterCriterion.class);
-        boolean sortAscending = FacesUtil.var("sortAscending", Boolean.class);
-        String sortColumnId = FacesUtil.var("sortColumnId", String.class);
-        Integer pageStart = FacesUtil.var("pageStart", Integer.class);
-        Integer pageSize = FacesUtil.var("pageSize", Integer.class);
+        CompositeFilterCriterion filterCriteria = Faces.var("filterCriteria", CompositeFilterCriterion.class);
+        boolean sortAscending = Faces.var("sortAscending", Boolean.class);
+        String sortColumnId = Faces.var("sortColumnId", String.class);
+        Integer pageStart = Faces.var("pageStart", Integer.class);
+        Integer pageSize = Faces.var("pageSize", Integer.class);
 
         if (filterCriteria != null) {
             Criterion criterion = build(filterCriteria);

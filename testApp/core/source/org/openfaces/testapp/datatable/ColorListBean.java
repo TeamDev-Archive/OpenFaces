@@ -13,7 +13,7 @@
 package org.openfaces.testapp.datatable;
 
 import org.openfaces.component.filter.CompositeFilterCriterion;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,21 +36,21 @@ public class ColorListBean {
     }
 
     public int getRowCount() {
-        CompositeFilterCriterion filterCriteria = FacesUtil.var("filterCriteria", CompositeFilterCriterion.class);
+        CompositeFilterCriterion filterCriteria = Faces.var("filterCriteria", CompositeFilterCriterion.class);
         return colorDB.getFilteredColorCount(filterCriteria);
     }
 
     public List getColorList() {
-        CompositeFilterCriterion filterCriteria = FacesUtil.var("filterCriteria", CompositeFilterCriterion.class);
-        boolean sortAscending = FacesUtil.var("sortAscending", Boolean.class);
-        String sortColumnId = FacesUtil.var("sortColumnId", String.class);
-        int pageStart = FacesUtil.var("pageStart", Integer.class);
-        int pageSize = FacesUtil.var("pageSize", Integer.class);
+        CompositeFilterCriterion filterCriteria = Faces.var("filterCriteria", CompositeFilterCriterion.class);
+        boolean sortAscending = Faces.var("sortAscending", Boolean.class);
+        String sortColumnId = Faces.var("sortColumnId", String.class);
+        int pageStart = Faces.var("pageStart", Integer.class);
+        int pageSize = Faces.var("pageSize", Integer.class);
         return colorDB.findColorsForPage(filterCriteria, sortColumnId, sortAscending, pageStart, pageSize);
     }
 
     public Color getColorByKey() {
-        Integer key = FacesUtil.var("rowKey", Integer.class);
+        Integer key = Faces.var("rowKey", Integer.class);
         return colorDB.getColorByKey(key);
     }
 

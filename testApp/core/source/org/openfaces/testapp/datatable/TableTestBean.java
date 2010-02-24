@@ -16,7 +16,7 @@ import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.CompositeFilterCriterion;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.table.FilterKind;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ActionEvent;
@@ -191,8 +191,8 @@ public class TableTestBean {
     }
 
     public Collection getCollection1Paged() {
-        Integer pageStart = FacesUtil.var("pageStart", Integer.class);
-        Integer pageSize = FacesUtil.var("pageSize", Integer.class);
+        Integer pageStart = Faces.var("pageStart", Integer.class);
+        Integer pageSize = Faces.var("pageSize", Integer.class);
         List filteredList = requestSortedAndFilteredCollection();
         boolean paginationUsed = pageStart != null && pageSize != null;
         if (!paginationUsed)
@@ -201,9 +201,9 @@ public class TableTestBean {
     }
 
     private List requestSortedAndFilteredCollection() {
-        CompositeFilterCriterion filterCriteria = FacesUtil.var("filterCriteria", CompositeFilterCriterion.class);
-        String sortColumnId = FacesUtil.var("sortColumnId", String.class);
-        final boolean sortAscending = FacesUtil.var("sortAscending", Boolean.class);
+        CompositeFilterCriterion filterCriteria = Faces.var("filterCriteria", CompositeFilterCriterion.class);
+        String sortColumnId = Faces.var("sortColumnId", String.class);
+        final boolean sortAscending = Faces.var("sortAscending", Boolean.class);
 
         List<TestBean> sortedList = new ArrayList<TestBean>(collection1);
         if ("col1".equals(sortColumnId))
@@ -283,7 +283,7 @@ public class TableTestBean {
     }
 
     public Object getObjectByKey() {
-        Object key = FacesUtil.var("rowKey");
+        Object key = Faces.var("rowKey");
         return TestBean.findById((String) key);
     }
 
@@ -298,7 +298,7 @@ public class TableTestBean {
     }
 
     public String getField2Range() {
-        TestBean row = FacesUtil.var("row", TestBean.class);
+        TestBean row = Faces.var("row", TestBean.class);
         int field2 = row.getField2();
         if (field2 < 10) {
             return "< 10";
@@ -403,19 +403,19 @@ public class TableTestBean {
     }
 
     public boolean isColumnRendered() {
-        String colData = FacesUtil.var("col", String.class);
+        String colData = Faces.var("col", String.class);
         int colIndex = Integer.parseInt(colData);
         return colIndex != 3;
     }
 
     public boolean isSortingEnabled() {
-        String colData = FacesUtil.var("col", String.class);
+        String colData = Faces.var("col", String.class);
         int colIndex = Integer.parseInt(colData);
         return colIndex % 2 == 0;
     }
 
     public FilterKind getFilterKind() {
-        String colData = FacesUtil.var("col", String.class);
+        String colData = Faces.var("col", String.class);
         int colIndex = Integer.parseInt(colData);
         if (colIndex == 4) {
             return null;
@@ -439,7 +439,7 @@ public class TableTestBean {
     }
 
     public List<String> getFilterValues() {
-        String colData = FacesUtil.var("col", String.class);
+        String colData = Faces.var("col", String.class);
         if (colData.equals("5")) {
             return Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
         } else {
@@ -452,7 +452,7 @@ public class TableTestBean {
     }
 
     public boolean getSpecificRowsCondition() {
-        TestBean row = FacesUtil.var("row", TestBean.class);
+        TestBean row = Faces.var("row", TestBean.class);
         if (row == null) {
             return false;
         }
@@ -464,12 +464,12 @@ public class TableTestBean {
     }
 
     public boolean getHighlightedColCondition1() {
-        String colId = FacesUtil.var("colId", String.class);
+        String colId = Faces.var("colId", String.class);
         return colId.startsWith("customCol");
     }
 
     public boolean getOddColumnsCondition() {
-        Integer columnIndex = FacesUtil.var("colIndex", Integer.class);
+        Integer columnIndex = Faces.var("colIndex", Integer.class);
         return columnIndex % 2 == 0;
     }
 

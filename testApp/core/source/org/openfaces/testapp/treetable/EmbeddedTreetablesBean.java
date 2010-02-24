@@ -11,7 +11,7 @@
  */
 package org.openfaces.testapp.treetable;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,7 @@ public class EmbeddedTreetablesBean {
         }
 
         public List<TreeTableItem> getChildNodes() {
-            TreeTableItem parent = (TreeTableItem) FacesUtil.var("node");
+            TreeTableItem parent = (TreeTableItem) Faces.var("node");
             if(parent == null)
                 return rootNodes;
             else
@@ -87,7 +87,7 @@ public class EmbeddedTreetablesBean {
     }
 
     public void testAction () {
-        TreeTableItem node = (TreeTableItem) FacesUtil.var("node");
+        TreeTableItem node = (TreeTableItem) Faces.var("node");
         System.out.println("Node name: " + node.getName());
     }
 

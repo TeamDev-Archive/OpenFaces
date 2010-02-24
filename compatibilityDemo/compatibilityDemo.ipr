@@ -1,18 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project relativePaths="false" version="4">
+<project version="4">
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
+  </component>
+  <component name="ArtifactManager">
+    <artifact type="exploded-war" name="compatibilityDemo:Web exploded">
+      <output-path>$PROJECT_DIR$/exploded</output-path>
+      <root id="root">
+        <element id="javaee-facet-resources" facet="compatibilityDemo/web/Web" />
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="compatibilityDemo" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="commons-lang" />
+            <element id="library" level="project" name="OpenFaces" />
+            <element id="library" level="project" name="JSF Implementation - Mojarra 1.2_12" />
+            <element id="library" level="project" name="OpenFaces Dependencies" />
+            <element id="library" level="project" name="RichFaces" />
+          </element>
+        </element>
+      </root>
+    </artifact>
+    <artifact type="war" name="compatibilityDemo:war">
+      <output-path>$PROJECT_DIR$/target</output-path>
+      <root id="archive" name="compatibilitydemo.war">
+        <element id="artifact" artifact-name="compatibilityDemo:war exploded" />
+      </root>
+    </artifact>
+    <artifact type="exploded-war" name="compatibilityDemo:war exploded">
+      <output-path>$PROJECT_DIR$/WebContent</output-path>
+      <root id="root">
+        <element id="javaee-facet-resources" facet="compatibilityDemo/web/Web" />
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="compatibilityDemo" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.6" />
+            <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.0.4" />
+            <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.1" />
+            <element id="library" level="project" name="Maven: commons-digester:commons-digester:1.8" />
+            <element id="library" level="project" name="Maven: commons-el:commons-el:1.0" />
+            <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.1" />
+            <element id="library" level="project" name="Maven: jfree:jcommon:1.0.16" />
+            <element id="library" level="project" name="Maven: jdom:jdom:1.0" />
+            <element id="library" level="project" name="Maven: jfree:jfreechart:1.0.13" />
+            <element id="library" level="project" name="Maven: javax.faces:jsf-api:1.2_12" />
+            <element id="library" level="project" name="Maven: javax.faces:jsf-impl:1.2_12" />
+            <element id="library" level="project" name="Maven: javax.servlet:jstl:1.1.0" />
+            <element id="library" level="project" name="Maven: org.openfaces:openfaces:2.0.EAP2" />
+            <element id="library" level="project" name="Maven: org.richfaces.framework:richfaces-impl:3.3.1.GA" />
+            <element id="library" level="project" name="Maven: org.richfaces.framework:richfaces-api:3.3.1.GA" />
+            <element id="library" level="project" name="Maven: com.uwyn:jhighlight:1.0" />
+            <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.3" />
+            <element id="library" level="project" name="Maven: org.richfaces.ui:richfaces-ui:3.3.1.GA" />
+            <element id="library" level="project" name="Maven: taglibs:standard:1.1.2" />
+          </element>
+        </element>
+      </root>
+    </artifact>
   </component>
   <component name="BuildJarProjectSettings">
     <option name="BUILD_JARS_ON_MAKE" value="false" />
   </component>
-  <component name="CodeStyleSettingsManager">
-    <option name="PER_PROJECT_SETTINGS" />
-    <option name="USE_PER_PROJECT_SETTINGS" value="false" />
-  </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
-    <option name="DEPLOY_AFTER_MAKE" value="0" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -29,6 +82,7 @@
       <entry name="?*.tld" />
       <entry name="?*.ftl" />
     </wildcardResourcePatterns>
+    <annotationProcessing enabled="false" useClasspath="true" />
   </component>
   <component name="CopyrightManager" default="">
     <module2copyright />
@@ -37,32 +91,38 @@
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="FacetAutodetectingManager">
+    <autodetection-disabled>
+      <facet-type id="web">
+        <modules>
+          <module name="compatibilityDemo" />
+        </modules>
+      </facet-type>
+    </autodetection-disabled>
+  </component>
   <component name="IdProvider" IDEtalkID="26A9CDA118EB7E6ABC3A02EDD75FED63" />
   <component name="InspectionProjectProfileManager">
-    <option name="PROJECT_PROFILE" value="Project Default" />
-    <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
-    <scopes />
     <profiles>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="Project Default" />
         <option name="myLocal" value="false" />
-        <inspection_tool class="JavadocReference" level="ERROR" enabled="false" />
-        <inspection_tool class="FacesModelInspection" level="ERROR" enabled="false" />
+        <inspection_tool class="FacesModelInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+        <inspection_tool class="JavadocReference" enabled="false" level="ERROR" enabled_by_default="false" />
       </profile>
     </profiles>
-    <list size="4">
+    <option name="PROJECT_PROFILE" value="Project Default" />
+    <option name="USE_PROJECT_PROFILE" value="true" />
+    <version value="1.0" />
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="SERVER PROBLEM" />
       <item index="1" class="java.lang.String" itemvalue="INFO" />
-      <item index="2" class="java.lang.String" itemvalue="WARNING" />
-      <item index="3" class="java.lang.String" itemvalue="ERROR" />
+      <item index="2" class="java.lang.String" itemvalue="TYPO" />
+      <item index="3" class="java.lang.String" itemvalue="WARNING" />
+      <item index="4" class="java.lang.String" itemvalue="ERROR" />
     </list>
   </component>
   <component name="JavacSettings">
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="DEPRECATION" value="true" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-    <option name="MAXIMUM_HEAP_SIZE" value="128" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.5" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
@@ -212,7 +272,6 @@
   <component name="ProjectDetails">
     <option name="projectName" value="compatibilityDemo" />
   </component>
-  <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
     <option name="state" value="project://D:\repository\OpenFaces\trunk\compatibilityDemo\compatibilityDemo.ipr" />
   </component>
@@ -231,33 +290,57 @@
       </value>
     </option>
   </component>
-  <component name="RmicSettings">
-    <option name="IS_EANABLED" value="false" />
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="GENERATE_IIOP_STUBS" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-  </component>
   <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="http://svn-new/TeamDev/OpenFaces/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="http://svn-new/TeamDev/OpenFaces/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://svn-new/TeamDev/OpenFaces/branches" />
+                  <option value="http://svn-new/TeamDev/OpenFaces/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://svn-new/TeamDev/OpenFaces/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="" />
+    <mapping directory="" vcs="svn" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="libraryTable">
     <library name="commons-lang">
       <CLASSES>
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/apache/commons-lang-2.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/apache/commons-lang-2.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="OpenFaces Dependencies">
       <CLASSES>
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/openfaces-dependencies/jfreechart-1.0.13.jar!/" />
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/openfaces-dependencies/jcommon-1.0.16.jar!/" />
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/openfaces-dependencies/jdom-1.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/openfaces-dependencies/jfreechart-1.0.13.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/openfaces-dependencies/jcommon-1.0.16.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/openfaces-dependencies/jdom-1.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
@@ -268,32 +351,241 @@
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="file://C:/Projects/TeamDev/OpenFaces/trunk/openFaces/source" />
+        <root url="file://$PROJECT_DIR$/../openFaces/source" />
       </SOURCES>
     </library>
     <library name="JSF Implementation - Mojarra 1.2_12">
       <CLASSES>
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/mojarra/jsf-api-1.2_12-b01.jar!/" />
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/mojarra/jsf-impl-1.2_12-b01.jar!/" />
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/apache/commons-digester-1.8.jar!/" />
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/apache/commons-logging-1.0.4.jar!/" />
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/apache/commons-beanutils-1.6.jar!/" />
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/apache/commons-el-1.0.jar!/" />
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/apache/commons-collections-3.1.jar!/" />
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/apache/standard-1.1.2.jar!/" />
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/jstl-1.1.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/mojarra/jsf-api-1.2_12-b01.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/mojarra/jsf-impl-1.2_12-b01.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/apache/commons-digester-1.8.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/apache/commons-logging-1.0.4.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/apache/commons-beanutils-1.6.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/apache/commons-el-1.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/apache/commons-collections-3.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/apache/standard-1.1.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/jstl-1.1.0.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
     </library>
     <library name="RichFaces">
       <CLASSES>
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/richfaces/richfaces-api-3.3.2.SR1.jar!/" />
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/richfaces/richfaces-ui-3.3.2.SR1.jar!/" />
-        <root url="jar://C:/Projects/TeamDev/OpenFaces/trunk/lib/richfaces/richfaces-impl-3.3.2.SR1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/richfaces/richfaces-api-3.3.2.SR1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/richfaces/richfaces-ui-3.3.2.SR1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../lib/richfaces/richfaces-impl-3.3.2.SR1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
+    </library>
+    <library name="Maven: commons-beanutils:commons-beanutils:1.6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.6/commons-beanutils-1.6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.6/commons-beanutils-1.6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.6/commons-beanutils-1.6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: commons-logging:commons-logging:1.0.4">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: commons-collections:commons-collections:3.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-collections/commons-collections/3.1/commons-collections-3.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-collections/commons-collections/3.1/commons-collections-3.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-collections/commons-collections/3.1/commons-collections-3.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: commons-digester:commons-digester:1.8">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-digester/commons-digester/1.8/commons-digester-1.8.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-digester/commons-digester/1.8/commons-digester-1.8-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-digester/commons-digester/1.8/commons-digester-1.8-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: commons-el:commons-el:1.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-el/commons-el/1.0/commons-el-1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-el/commons-el/1.0/commons-el-1.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-el/commons-el/1.0/commons-el-1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: commons-lang:commons-lang:2.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.1/commons-lang-2.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.1/commons-lang-2.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.1/commons-lang-2.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jfree:jcommon:1.0.16">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jfree/jcommon/1.0.16/jcommon-1.0.16.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jfree/jcommon/1.0.16/jcommon-1.0.16-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jfree/jcommon/1.0.16/jcommon-1.0.16-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jdom:jdom:1.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jdom/jdom/1.0/jdom-1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jdom/jdom/1.0/jdom-1.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jdom/jdom/1.0/jdom-1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: jfree:jfreechart:1.0.13">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/jfree/jfreechart/1.0.13/jfreechart-1.0.13.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/jfree/jfreechart/1.0.13/jfreechart-1.0.13-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/jfree/jfreechart/1.0.13/jfreechart-1.0.13-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.faces:jsf-api:1.2_12">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/faces/jsf-api/1.2_12/jsf-api-1.2_12.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/faces/jsf-api/1.2_12/jsf-api-1.2_12-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/faces/jsf-api/1.2_12/jsf-api-1.2_12-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.faces:jsf-impl:1.2_12">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/faces/jsf-impl/1.2_12/jsf-impl-1.2_12.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/faces/jsf-impl/1.2_12/jsf-impl-1.2_12-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/faces/jsf-impl/1.2_12/jsf-impl-1.2_12-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.servlet:jstl:1.1.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/jstl/1.1.0/jstl-1.1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/jstl/1.1.0/jstl-1.1.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/jstl/1.1.0/jstl-1.1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.openfaces:openfaces:2.0.EAP2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/openfaces/openfaces/2.0.EAP2/openfaces-2.0.EAP2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/openfaces/openfaces/2.0.EAP2/openfaces-2.0.EAP2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/openfaces/openfaces/2.0.EAP2/openfaces-2.0.EAP2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.richfaces.framework:richfaces-impl:3.3.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/richfaces/framework/richfaces-impl/3.3.1.GA/richfaces-impl-3.3.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/richfaces/framework/richfaces-impl/3.3.1.GA/richfaces-impl-3.3.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/richfaces/framework/richfaces-impl/3.3.1.GA/richfaces-impl-3.3.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.richfaces.framework:richfaces-api:3.3.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/richfaces/framework/richfaces-api/3.3.1.GA/richfaces-api-3.3.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/richfaces/framework/richfaces-api/3.3.1.GA/richfaces-api-3.3.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/richfaces/framework/richfaces-api/3.3.1.GA/richfaces-api-3.3.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.uwyn:jhighlight:1.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/uwyn/jhighlight/1.0/jhighlight-1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/uwyn/jhighlight/1.0/jhighlight-1.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/uwyn/jhighlight/1.0/jhighlight-1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: javax.servlet:servlet-api:2.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/servlet-api/2.3/servlet-api-2.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/servlet-api/2.3/servlet-api-2.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/servlet-api/2.3/servlet-api-2.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.richfaces.ui:richfaces-ui:3.3.1.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/richfaces/ui/richfaces-ui/3.3.1.GA/richfaces-ui-3.3.1.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/richfaces/ui/richfaces-ui/3.3.1.GA/richfaces-ui-3.3.1.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/richfaces/ui/richfaces-ui/3.3.1.GA/richfaces-ui-3.3.1.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: taglibs:standard:1.1.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/taglibs/standard/1.1.2/standard-1.1.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/taglibs/standard/1.1.2/standard-1.1.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/taglibs/standard/1.1.2/standard-1.1.2-sources.jar!/" />
+      </SOURCES>
     </library>
   </component>
 </project>

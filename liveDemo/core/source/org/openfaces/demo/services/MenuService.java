@@ -13,7 +13,7 @@
 package org.openfaces.demo.services;
 
 import org.apache.commons.digester.Digester;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.util.Log;
 import org.openfaces.util.Resources;
 import org.xml.sax.SAXException;
@@ -90,7 +90,7 @@ public class MenuService implements Serializable {
 
     public void selectionChanged(ActionEvent e) {
         MenuItem selectedMenu = getSelectedMenu();
-        int newIndex = FacesUtil.requestParam("menuItemIndex", Integer.class);
+        int newIndex = Faces.requestParam("menuItemIndex", Integer.class);
         DemoItem di = selectedMenu.getDemos().get(newIndex);
         selectedMenu.setSelectedDemo(di);
         selectedMenu.setSelectedTabIndex(newIndex);

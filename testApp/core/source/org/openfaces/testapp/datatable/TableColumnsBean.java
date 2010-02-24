@@ -13,7 +13,7 @@
 package org.openfaces.testapp.datatable;
 
 import org.openfaces.component.table.FilterKind;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
@@ -51,12 +51,12 @@ public class TableColumnsBean {
     }
 
     public boolean isColumnRendered() {
-        String colData = FacesUtil.var("col", String.class);
+        String colData = Faces.var("col", String.class);
         return renderedColumns.contains(colData);
     }
 
     public boolean isSortingEnabled() {
-        String colData = FacesUtil.var("col", String.class);
+        String colData = Faces.var("col", String.class);
         try {
             int colIndex = Integer.parseInt(colData);
             return colIndex % 2 == 0;
@@ -67,7 +67,7 @@ public class TableColumnsBean {
     }
 
     public FilterKind getFilterKind() {
-        String col = FacesUtil.var("col", String.class);
+        String col = Faces.var("col", String.class);
         try {
             int colIndex = Integer.parseInt(col);
             if (colIndex < 4) {
@@ -108,7 +108,7 @@ public class TableColumnsBean {
     }
 
     public String getColumnStyle() {
-        String col = FacesUtil.var("col", String.class);
+        String col = Faces.var("col", String.class);
         String defaultStyle = "width: 150px; text-align: left;";
         String columnStyle;
         try {
@@ -125,7 +125,7 @@ public class TableColumnsBean {
     }
 
     public List getFilterValues() {
-        String col = FacesUtil.var("col", String.class);
+        String col = Faces.var("col", String.class);
         List<String> filterValues = new ArrayList<String>();
         for (int i = 0; i < 9; i++) {
             filterValues.add(String.valueOf(i));

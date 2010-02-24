@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.support.QKS1599;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +62,7 @@ public class QKS1599 {
 
     public List<String> getItems1() {
         List<String> items = new ArrayList<String>();
-        String typedValue = (String) FacesUtil.var("searchString");
+        String typedValue = (String) Faces.var("searchString");
         if (typedValue != null) {
             for (String item : values1) {
                 String itemForComparison = item.toLowerCase();
@@ -76,7 +76,7 @@ public class QKS1599 {
 
     public List<String> getItems2() {
         List<String> items = new ArrayList<String>();
-        String typedValue = (String) FacesUtil.var("searchString");
+        String typedValue = (String) Faces.var("searchString");
         if (typedValue != null) {
             for (String aMyValues2 : values2) {
                 if (aMyValues2.toLowerCase().startsWith(value1.toLowerCase())) {

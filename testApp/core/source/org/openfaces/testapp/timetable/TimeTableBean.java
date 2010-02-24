@@ -11,7 +11,7 @@
  */
 package org.openfaces.testapp.timetable;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.timetable.AbstractTimetableEvent;
 import org.openfaces.component.timetable.EventActionEvent;
 import org.openfaces.component.timetable.ReservedTimeEvent;
@@ -128,8 +128,8 @@ public class TimeTableBean {
     }
 
     public List<AbstractTimetableEvent> getEvents() {
-        Date startTime = (Date) FacesUtil.var("startTime");
-        Date endTime = (Date) FacesUtil.var("endTime");
+        Date startTime = (Date) Faces.var("startTime");
+        Date endTime = (Date) Faces.var("endTime");
         if (startTime == null || endTime == null)
             return events;
         List<AbstractTimetableEvent> result = new ArrayList<AbstractTimetableEvent>();
@@ -149,15 +149,15 @@ public class TimeTableBean {
     }
 
     public String editEvent() {
-        String mode = FacesUtil.requestParam("mode");
+        String mode = Faces.requestParam("mode");
         TimetableEvent editedEvent;
         if (mode.equals("create")) {
-            Date eventStart = FacesUtil.requestParam("eventStart", Date.class);
-            Date eventEnd = FacesUtil.requestParam("eventEnd", Date.class);
-            String resourceId = FacesUtil.requestParam("resourceId");
+            Date eventStart = Faces.requestParam("eventStart", Date.class);
+            Date eventEnd = Faces.requestParam("eventEnd", Date.class);
+            String resourceId = Faces.requestParam("resourceId");
             editedEvent = new TimetableEvent(null, eventStart, eventEnd, "", "", null, resourceId);
         } else {
-            String eventId = FacesUtil.requestParam("eventId");
+            String eventId = Faces.requestParam("eventId");
             editedEvent = (TimetableEvent) eventById(events, eventId).clone();
         }
 
@@ -357,7 +357,7 @@ public class TimeTableBean {
     }
 
     private TimetableEvent getEvent() {
-        return (TimetableEvent) FacesUtil.var("event");
+        return (TimetableEvent) Faces.var("event");
     }
 
     public void moveEvent1() {

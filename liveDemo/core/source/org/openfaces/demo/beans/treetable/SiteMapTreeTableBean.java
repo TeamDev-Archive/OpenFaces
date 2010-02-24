@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.treetable;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import java.io.Serializable;
 import java.util.StringTokenizer;
@@ -23,12 +23,12 @@ public class SiteMapTreeTableBean implements Serializable {
     }
 
     public String getPageNameFromPageInfo() {
-        String pageInfo = FacesUtil.var("pageInfo", String.class);
+        String pageInfo = Faces.var("pageInfo", String.class);
         return (String) new StringTokenizer(pageInfo, "|", false).nextElement();
     }
 
     public String getPageUrlFromPageInfo() {
-        String pageInfo = FacesUtil.var("pageInfo", String.class);
+        String pageInfo = Faces.var("pageInfo", String.class);
         StringTokenizer stringTokenizer = new StringTokenizer(pageInfo, "|", false);
         stringTokenizer.nextElement();
         stringTokenizer.nextElement();
@@ -38,7 +38,7 @@ public class SiteMapTreeTableBean implements Serializable {
     }
 
     public String getImageFileFromPageInfo() {
-        String pageInfo = FacesUtil.var("pageInfo", String.class);
+        String pageInfo = Faces.var("pageInfo", String.class);
         StringTokenizer stringTokenizer = new StringTokenizer(pageInfo, "|", false);
         stringTokenizer.nextElement();
         if (!stringTokenizer.hasMoreElements())

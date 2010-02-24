@@ -13,7 +13,7 @@ package org.openfaces.component.table;
 
 import org.openfaces.util.ValueBindings;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.filter.Filter;
 
 import javax.el.ValueExpression;
@@ -315,7 +315,7 @@ public class DataTable extends AbstractTable {
     }
 
     protected boolean isRowInColumnSelected(BaseColumn column, Map<String, Object> requestMap, String var) {
-        Object rowData = FacesUtil.var(getVar());
+        Object rowData = Faces.var(getVar());
         Object rowKey = getModel().requestRowKeyByRowData(FacesContext.getCurrentInstance(), requestMap, var, rowData, -1, -1);
         List selectedRowKeys = getSelectedRowKeys(column);
         return selectedRowKeys.contains(rowKey);

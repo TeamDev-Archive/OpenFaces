@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.datatable;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -77,7 +77,7 @@ public class StylingBean implements Serializable {
     }
 
     private String calculatePayment(int deptIndex) {
-        PaymentItem paymentItem = FacesUtil.var("payments", PaymentItem.class);
+        PaymentItem paymentItem = Faces.var("payments", PaymentItem.class);
         float payment = 0;
         if (deptIndex == 1) {
             payment = paymentItem.getDept1();

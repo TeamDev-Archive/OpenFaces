@@ -13,7 +13,7 @@ package org.openfaces.portlets;
 
 import org.openfaces.component.table.ExpansionState;
 import org.openfaces.component.table.SeveralLevelsExpanded;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -93,12 +93,12 @@ public class ForumTreeTableBean implements Serializable {
   }
 
   public List getNodeChildren() {
-    ForumMessage message = FacesUtil.var("message", ForumMessage.class);
+    ForumMessage message = Faces.var("message", ForumMessage.class);
     return message != null ? message.getReplies() : ForumTreeTableBean.ourRootMessages;
   }
 
   public String getDateCategory() {
-    ForumMessage message = FacesUtil.var("message", ForumMessage.class);
+    ForumMessage message = Faces.var("message", ForumMessage.class);
     Date date = message.getDate();
     return formatDate(date);
   }

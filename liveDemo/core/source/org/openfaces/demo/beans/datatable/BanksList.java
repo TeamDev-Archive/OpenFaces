@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.datatable;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.demo.beans.util.FacesUtils;
 
 import javax.faces.event.ActionEvent;
@@ -159,7 +159,7 @@ public class BanksList implements Serializable {
     }
 
     public String getAverageAssetsRange() {
-        Bank bank = FacesUtil.var("bank", Bank.class);
+        Bank bank = Faces.var("bank", Bank.class);
         int averageAsset = bank.getAverageAssets();
         if (averageAsset <= 50000)
             return "< 50,000";

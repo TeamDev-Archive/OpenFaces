@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.screenshot;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.table.ExpansionState;
 
 import java.text.SimpleDateFormat;
@@ -98,7 +98,7 @@ public class TreeTableBean {
     }
 
     public List getNodeChildren() {
-        ForumMessage message = (ForumMessage) FacesUtil.var("message");
+        ForumMessage message = (ForumMessage) Faces.var("message");
         return message != null
                 ? message.getReplies()
                 : rootMessages;
@@ -106,7 +106,7 @@ public class TreeTableBean {
 
 
     public String getDateCategory() {
-        ForumMessage message = (ForumMessage) FacesUtil.var("message");
+        ForumMessage message = (ForumMessage) Faces.var("message");
         Date date = message.getDate();
 
         return formatDate(date);

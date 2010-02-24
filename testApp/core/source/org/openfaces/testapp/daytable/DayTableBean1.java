@@ -16,7 +16,7 @@ import org.openfaces.component.timetable.EventActionEvent;
 import org.openfaces.component.timetable.ReservedTimeEvent;
 import org.openfaces.component.timetable.TimetableChangeEvent;
 import org.openfaces.component.timetable.TimetableEvent;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import javax.faces.event.ActionEvent;
 import java.awt.*;
@@ -167,6 +167,6 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
     }
 
     private TimetableEvent getEvent() {
-        return FacesUtil.var("event", TimetableEvent.class);
+        return Faces.var("event", TimetableEvent.class);
     }
 }

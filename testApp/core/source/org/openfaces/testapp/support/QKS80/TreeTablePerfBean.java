@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.support.QKS80;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.table.AllNodesCollapsed;
 import org.openfaces.component.table.ExpansionState;
 import org.openfaces.testapp.screenshot.ForumMessage;
@@ -43,8 +43,8 @@ public class TreeTablePerfBean {
     }
 
     public List<ForumMessage> getNodeChildren() {
-        ForumMessage message = (ForumMessage) FacesUtil.var("message");
-        int level = (Integer) FacesUtil.var("level");
+        ForumMessage message = (ForumMessage) Faces.var("message");
+        int level = (Integer) Faces.var("level");
         int count;
         switch (level) {
             case -1:
@@ -72,7 +72,7 @@ public class TreeTablePerfBean {
     }
 
     public boolean isNodeHasChildren() {
-        int level = (Integer) FacesUtil.var("level");
+        int level = (Integer) Faces.var("level");
         switch (level) {
             case -1:
                 return true;
@@ -87,7 +87,7 @@ public class TreeTablePerfBean {
 
 
     public String getDateCategory() {
-        ForumMessage message = (ForumMessage) FacesUtil.var("message");
+        ForumMessage message = (ForumMessage) Faces.var("message");
         Date date = message.getDate();
 
         return formatDate(date);

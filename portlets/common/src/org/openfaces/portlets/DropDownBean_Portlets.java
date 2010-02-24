@@ -11,7 +11,7 @@
  */
 package org.openfaces.portlets;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -193,7 +193,7 @@ public class DropDownBean_Portlets {
 
   public List getColors() {
     List allColors = getAllColors();
-    String searchString = FacesUtil.var("searchString", String.class);
+    String searchString = Faces.var("searchString", String.class);
     if (searchString == null)
       return allColors;
     List result = new ArrayList();
@@ -280,7 +280,7 @@ public class DropDownBean_Portlets {
 
   public List getSuggestedPlants() {
     List suggestedPlants = new ArrayList();
-    String typedValue = FacesUtil.var("searchString", String.class);
+    String typedValue = Faces.var("searchString", String.class);
     if (typedValue != null) {
       for (int i = 0; i < myPlants.size(); i++) {
         String plant = (String) myPlants.get(i);

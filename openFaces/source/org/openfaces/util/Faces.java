@@ -24,10 +24,10 @@ import java.util.Map;
  *
  * @author Dmitry Pikhulya
  */
-public class FacesUtil {
+public class Faces {
     private static final SimpleDateFormat DATE_PARAMS_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-    private FacesUtil() {
+    private Faces() {
     }
 
     /**

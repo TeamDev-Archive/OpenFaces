@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.daytable;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.timetable.AbstractTimetableEvent;
 import org.openfaces.component.timetable.TimetableChangeEvent;
 import org.openfaces.component.timetable.TimetableEvent;
@@ -89,8 +89,8 @@ public class DayTableBean2 extends DayTableBean implements Serializable {
     }
 
     public List<AbstractTimetableEvent> getEvents() {
-        Date startTime = FacesUtil.var("startTime", Date.class);
-        Date endTime = FacesUtil.var("endTime", Date.class);
+        Date startTime = Faces.var("startTime", Date.class);
+        Date endTime = Faces.var("endTime", Date.class);
 
         List<AbstractTimetableEvent> result = retrieveEventsForPeriod(startTime, endTime);
         return result;
@@ -155,7 +155,7 @@ public class DayTableBean2 extends DayTableBean implements Serializable {
     }
 
     private TimetableEvent getEvent() {
-        return FacesUtil.var("event", TimetableEvent.class);
+        return Faces.var("event", TimetableEvent.class);
     }
 
 }

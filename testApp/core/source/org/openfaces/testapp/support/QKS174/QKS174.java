@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.support.QKS174;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.table.AllNodesCollapsed;
 import org.openfaces.component.table.DynamicNodeExpansionState;
 import org.openfaces.component.table.ExpansionState;
@@ -90,7 +90,7 @@ public class QKS174 {
     }
 
     public List getNodeChildren() {
-        org.openfaces.testapp.screenshot.ForumMessage message = (ForumMessage) FacesUtil.var("message");
+        org.openfaces.testapp.screenshot.ForumMessage message = (ForumMessage) Faces.var("message");
         return message != null ? message.getReplies() : rootMessages;
     }
 }

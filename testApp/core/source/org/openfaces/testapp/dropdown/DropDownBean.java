@@ -11,7 +11,7 @@
  */
 package org.openfaces.testapp.dropdown;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.testapp.datatable.Color;
 import org.openfaces.testapp.datatable.ColorDB;
 import org.openfaces.testapp.datatable.User;
@@ -151,7 +151,7 @@ public class DropDownBean {
 
     public List<String> getSuggestedPlants() {
         List<String> suggestedPlants = new ArrayList<String>();
-        String typedValue = FacesUtil.var("searchString", String.class);
+        String typedValue = Faces.var("searchString", String.class);
         if (typedValue != null) {
             for (Object myPlant : plants) {
                 String plant = (String) myPlant;
@@ -238,7 +238,7 @@ public class DropDownBean {
 
     public List<Color> getColors() {
         List<Color> allColors = colors.getColors();
-        String searchString = FacesUtil.var("searchString", String.class);
+        String searchString = Faces.var("searchString", String.class);
         if (searchString == null) {
             return allColors;
         }

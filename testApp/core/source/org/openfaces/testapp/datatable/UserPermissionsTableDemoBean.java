@@ -11,7 +11,7 @@
  */
 package org.openfaces.testapp.datatable;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.table.TreePath;
 
 import javax.faces.model.SelectItem;
@@ -170,7 +170,7 @@ public class UserPermissionsTableDemoBean {
     }
 
     public String getAdvancedUserFilter() {
-        User user = FacesUtil.var("user", User.class);
+        User user = Faces.var("user", User.class);
         if (smallUserList.contains(user)) {
             return "Advanced Users";
         } else {
@@ -217,7 +217,7 @@ public class UserPermissionsTableDemoBean {
     }
 
     public List<Serializable> getUsersTreeChildren() {
-        Object node = FacesUtil.var("node");
+        Object node = Faces.var("node");
         if (node == null) {
             return permissions;
         }
@@ -229,7 +229,7 @@ public class UserPermissionsTableDemoBean {
     }
 
     public Object getUsersTreeNodeKey() {
-        Object node = FacesUtil.var("node");
+        Object node = Faces.var("node");
         String id = (node instanceof Permission) ? ((Permission) node).getId() : ((User) node).getId();
         return Arrays.asList(new Object[]{node.getClass(), id});
     }

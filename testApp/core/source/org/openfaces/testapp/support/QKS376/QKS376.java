@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.support.QKS376;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.table.ExpansionState;
 import org.openfaces.component.table.SeveralLevelsExpanded;
 
@@ -52,12 +52,12 @@ public class QKS376 {
     }
 
     public List getNodeChildren() {
-        TreeTableItems tree = (TreeTableItems) FacesUtil.var("tree");
+        TreeTableItems tree = (TreeTableItems) Faces.var("tree");
         return tree != null ? tree.getReplies() : root;
     }
 
     public String updateTreeTable() {
-        TreeTableItems tree = (TreeTableItems) FacesUtil.var("tree");
+        TreeTableItems tree = (TreeTableItems) Faces.var("tree");
         boolean checked = tree.isChecked();
         if (tree.getReplies() != null) {
             recursiveUpdate(tree, checked);

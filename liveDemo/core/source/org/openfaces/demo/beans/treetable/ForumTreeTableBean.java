@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.treetable;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.component.table.ExpansionState;
 import org.openfaces.component.table.SeveralLevelsExpanded;
 
@@ -114,7 +114,7 @@ public class ForumTreeTableBean implements Serializable {
     }
 
     private ForumMessage getMessage() {
-        return FacesUtil.var("message", ForumMessage.class);
+        return Faces.var("message", ForumMessage.class);
     }
 
 

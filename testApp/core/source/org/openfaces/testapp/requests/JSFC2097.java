@@ -12,7 +12,7 @@
 
 package org.openfaces.testapp.requests;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 import org.openfaces.testapp.screenshot.ForumMessage;
 
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public class JSFC2097 {
 
 
     public List getNodeChildren() {
-        ForumMessage message = FacesUtil.var("treetest", ForumMessage.class);
+        ForumMessage message = Faces.var("treetest", ForumMessage.class);
         return message != null ? message.getReplies() : rootMessages;
     }
 

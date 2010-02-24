@@ -12,7 +12,7 @@
 package org.openfaces.testapp.timetable;
 
 import org.openfaces.component.timetable.TimetableEvent;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import javax.faces.context.FacesContext;
 import java.text.ParseException;
@@ -35,17 +35,17 @@ public class EventEditorBean {
 
 
         if (editedEvent == null) {
-            String mode = FacesUtil.requestParam("mode");
+            String mode = Faces.requestParam("mode");
             FacesContext context = FacesContext.getCurrentInstance();
             if (mode == null)
                 return (TimetableEvent) context.getExternalContext().getSessionMap().get("editedEvent");
             if (mode.equals("create")) {
-                Date eventStart = FacesUtil.requestParam("eventStart", Date.class);
-                Date eventEnd = FacesUtil.requestParam("eventEnd", Date.class);
-                String resourceId = FacesUtil.requestParam("resourceId");
+                Date eventStart = Faces.requestParam("eventStart", Date.class);
+                Date eventEnd = Faces.requestParam("eventEnd", Date.class);
+                String resourceId = Faces.requestParam("resourceId");
                 editedEvent = new TimetableEvent(null, eventStart, eventEnd, "", "", null, resourceId);
             } else {
-                String eventId = FacesUtil.requestParam("eventId");
+                String eventId = Faces.requestParam("eventId");
                 TimeTableBean timetableBean = getTimeTableBean();
                 editedEvent = (TimetableEvent) timetableBean.eventById(timetableBean.getEvents(), eventId).clone();
             }

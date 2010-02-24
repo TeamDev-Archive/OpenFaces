@@ -21,7 +21,7 @@ import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.datamodel.DataModelSelection;
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
@@ -52,12 +52,12 @@ public class MessageManagerBean implements Serializable, MessageManager {
     }
 
     public void select() {
-        Message currentMessage = FacesUtil.var("msg", Message.class);
+        Message currentMessage = Faces.var("msg", Message.class);
         if (currentMessage != null) currentMessage.setRead(true);
     }
 
     public void delete() {
-        Message currentMessage = FacesUtil.var("msg", Message.class);
+        Message currentMessage = Faces.var("msg", Message.class);
         if (currentMessage != null) {
             messageList.remove(currentMessage);
             em.refresh(currentMessage);

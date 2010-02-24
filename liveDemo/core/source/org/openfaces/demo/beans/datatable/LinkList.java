@@ -12,7 +12,7 @@
 
 package org.openfaces.demo.beans.datatable;
 
-import org.openfaces.util.FacesUtil;
+import org.openfaces.util.Faces;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -101,7 +101,7 @@ public class LinkList implements Serializable {
     }
 
     public String removeLink() {
-        editedLinks.remove(FacesUtil.var("link", Link.class));
+        editedLinks.remove(Faces.var("link", Link.class));
         return "";
     }
 
@@ -121,7 +121,7 @@ public class LinkList implements Serializable {
     }
 
     private Link getCurrentLink() {
-        return FacesUtil.var("link", Link.class);
+        return Faces.var("link", Link.class);
     }
 
     public String addLink() {
