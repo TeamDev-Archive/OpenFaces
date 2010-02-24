@@ -592,6 +592,7 @@ public class DataTableTest extends OpenFacesTestCase {
     }
 
     @Test
+    @Ignore
     public void testFeaturesCombination_server() {
         featuresCombination(ServerLoadingMode.getInstance());
     }
