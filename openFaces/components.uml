@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClassDiagramm>
+  <classes>
+    <class fqn="org.openfaces.component.panel.SubPanel" x="2188.4185784313736" y="308.0" />
+    <class fqn="org.openfaces.component.filter.ComboBoxFilter" x="1223.4185784313736" y="596.0" />
+    <class fqn="org.openfaces.component.ComponentWithCaption" x="1854.78125" y="96.0" />
+    <class fqn="org.openfaces.component.input.SuggestionField" x="2952.2935784313736" y="596.0" />
+    <class fqn="org.openfaces.component.panel.LayeredPane" x="2167.9185784313736" y="510.0" />
+    <class fqn="org.openfaces.component.command.MenuItem" x="546.0" y="510.0" />
+    <class fqn="org.openfaces.component.OUIInput" x="3030.67955882353" y="96.0" />
+    <class fqn="org.openfaces.component.CaptionButton" x="399.0" y="510.0" />
+    <class fqn="org.openfaces.component.ajax.Ajax" x="307.0" y="510.0" />
+    <class fqn="org.openfaces.component.select.SelectBooleanCheckbox" x="3552.209852941177" y="308.0" />
+    <class fqn="org.openfaces.component.OUIInputBase" x="3305.1685784313736" y="202.0" />
+    <class fqn="org.openfaces.component.panel.FoldingPanel" x="1930.4185784313736" y="308.0" />
+    <class fqn="org.openfaces.component.input.InputTextarea" x="2907.959852941177" y="384.0" />
+    <class fqn="org.openfaces.component.window.Confirmation" x="1719.1685784313736" y="384.0" />
+    <class fqn="org.openfaces.component.select.TwoListSelection" x="2477.4185784313736" y="308.0" />
+    <class fqn="org.openfaces.component.util.ForEach" x="1457.6685784313736" y="510.0" />
+    <class fqn="org.openfaces.component.select.SelectManyCheckbox" x="3400.959852941177" y="384.0" />
+    <class fqn="org.openfaces.component.filter.CompositeFilter" x="1068.4185784313736" y="596.0" />
+    <class fqn="org.openfaces.component.command.CommandLink" x="0.0" y="510.0" />
+    <class fqn="org.openfaces.component.OUIObjectIterator" x="1571.7935784313736" y="96.0" />
+    <class fqn="org.openfaces.component.OUICommand" x="319.3827696078438" y="384.0" />
+    <class fqn="org.openfaces.component.output.GraphicText" x="3590.1685784313736" y="202.0" />
+    <class fqn="org.openfaces.component.filter.TextSearchFilter" x="1378.4185784313736" y="596.0" />
+    <class fqn="org.openfaces.component.input.DropDownField" x="2802.2935784313736" y="596.0" />
+    <class fqn="org.openfaces.component.OUIPanel" x="2168.7702696078436" y="96.0" />
+    <class fqn="org.openfaces.component.input.InputText" x="2691.9185784313736" y="384.0" />
+    <class fqn="org.openfaces.component.ToggleCaptionButton" x="380.0" y="596.0" />
+    <class fqn="org.openfaces.component.panel.MultiPageContainer" x="2188.6685784313736" y="384.0" />
+    <class fqn="org.openfaces.component.command.CommandButton" x="146.0" y="510.0" />
+    <class fqn="org.openfaces.component.input.DropDownFieldBase" x="2886.126519607844" y="510.0" />
+    <class fqn="org.openfaces.component.input.Spinner" x="3065.6685784313736" y="510.0" />
+    <class fqn="org.openfaces.component.validation.OUIMessage" x="3168.67955882353" y="96.0" />
+    <class fqn="org.openfaces.component.window.Window" x="1858.1685784313736" y="384.0" />
+    <class fqn="org.openfaces.component.OUIData" x="1400.0435784313736" y="384.0" />
+    <class fqn="org.openfaces.component.OUIInputText" x="2914.80455882353" y="308.0" />
+    <class fqn="org.openfaces.component.output.HintLabel" x="3451.1685784313736" y="202.0" />
+    <class fqn="org.openfaces.component.select.OUISelectManyInputBase" x="3341.209852941177" y="308.0" />
+    <class fqn="org.openfaces.component.output.DynamicImage" x="757.0733088235297" y="384.0" />
+    <class fqn="org.openfaces.component.OUIOutput" x="3521.1685784313736" y="96.0" />
+    <class fqn="org.openfaces.component.panel.BorderLayoutPanel" x="2307.4185784313736" y="202.0" />
+    <class fqn="org.openfaces.component.panel.TabbedPane" x="2594.4185784313736" y="510.0" />
+    <class fqn="org.openfaces.component.filter.ExpressionFilter" x="1301.6685784313736" y="510.0" />
+    <class fqn="org.openfaces.component.filter.Filter" x="1026.0733088235297" y="384.0" />
+    <class fqn="org.openfaces.component.panel.SidePanel" x="2067.4185784313736" y="308.0" />
+    <class fqn="org.openfaces.component.table.AbstractTable" x="996.2935784313735" y="510.0" />
+    <class fqn="org.openfaces.component.input.DateChooser" x="3174.6685784313736" y="510.0" />
+    <class fqn="org.openfaces.component.panel.AbstractPanelWithCaption" x="2020.4185784313736" y="202.0" />
+    <class fqn="org.openfaces.component.timetable.DayTable" x="1642.6685784313736" y="510.0" />
+    <class fqn="org.openfaces.component.OUIComponentBase" x="859.1060784313736" y="308.0" />
+    <class fqn="org.openfaces.component.calendar.Calendar" x="3753.209852941177" y="308.0" />
+    <class fqn="org.openfaces.component.window.PopupLayer" x="1817.9185784313736" y="202.0" />
+    <class fqn="org.openfaces.component.window.AbstractWindow" x="1771.4185784313736" y="308.0" />
+    <class fqn="org.openfaces.component.util.Debug" x="1862.1685784313736" y="510.0" />
+    <class fqn="org.openfaces.component.filter.DropDownFieldFilter" x="2748.0435784313736" y="672.0" />
+    <class fqn="org.openfaces.component.chart.Chart" x="909.0733088235297" y="384.0" />
+    <class fqn="org.openfaces.component.table.TreeTable" x="788.9914950980401" y="596.0" />
+    <class fqn="org.openfaces.component.filter.InputTextFilter" x="2007.78125" y="672.0" />
+    <class fqn="org.openfaces.component.OUIComponent" x="1871.6685784313736" y="0.0" />
+    <class fqn="org.openfaces.component.OUISelectMany" x="2481.4185784313736" y="202.0" />
+    <class fqn="org.openfaces.component.command.PopupMenu" x="540.75" y="384.0" />
+    <class fqn="org.openfaces.component.input.DropDownComponent" x="3056.959852941177" y="384.0" />
+    <class fqn="org.openfaces.component.select.SelectOneRadio" x="3245.959852941177" y="384.0" />
+    <class fqn="org.openfaces.component.OUIObjectIteratorBase" x="1514.0435784313736" y="384.0" />
+    <class fqn="org.openfaces.component.table.DataTable" x="911.9914950980402" y="596.0" />
+    <class fqn="org.openfaces.component.select.TabSet" x="2638.4185784313736" y="308.0" />
+  </classes>
+  <packages />
+  <edges>
+    <edge source="org.openfaces.component.command.CommandLink" target="org.openfaces.component.OUICommand" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="63.0" y="470.0" />
+      <point x="331.7827696078439" y="470.0" />
+      <point x="-49.59999999999991" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.table.TreeTable" target="org.openfaces.component.table.AbstractTable" relationship="GENERALIZATION">
+      <point x="34.333333333333485" y="-13.0" />
+      <point x="874.8248284313736" y="566.0" />
+      <point x="1017.2935784313735" y="566.0" />
+      <point x="-42.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.filter.TextSearchFilter" target="org.openfaces.component.filter.ExpressionFilter" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="1448.4185784313736" y="576.0" />
+      <point x="1403.6685784313736" y="576.0" />
+      <point x="34.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.filter.CompositeFilter" target="org.openfaces.component.table.AbstractTable" relationship="DEPENDENCY">
+      <point x="-33.75" y="-13.0" />
+      <point x="42.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.table.TreeTable" target="org.openfaces.component.filter.Filter" relationship="TO_MANY">
+      <point x="0.0" y="-13.0" />
+      <point x="840.4914950980401" y="576.0" />
+      <point x="828.8248284313736" y="576.0" />
+      <point x="828.8248284313736" y="460.0" />
+      <point x="1049.5108088235297" y="460.0" />
+      <point x="-14.0625" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.util.Debug" target="org.openfaces.component.window.Window" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.command.CommandButton" target="org.openfaces.component.OUICommand" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="216.5" y="480.0" />
+      <point x="356.58276960784383" y="480.0" />
+      <point x="-24.799999999999955" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.OUIInput" target="org.openfaces.component.OUIComponent" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="3079.67955882353" y="66.0" />
+      <point x="1967.0019117647066" y="66.0" />
+      <point x="29.333333333333258" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.OUIOutput" target="org.openfaces.component.OUIComponent" relationship="REALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="3574.1685784313736" y="46.0" />
+      <point x="1996.33524509804" y="46.0" />
+      <point x="58.666666666666515" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.select.TwoListSelection" target="org.openfaces.component.OUISelectMany" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.command.PopupMenu" target="org.openfaces.component.OUIComponentBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="596.75" y="354.0" />
+      <point x="875.0060784313737" y="354.0" />
+      <point x="-63.60000000000002" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.filter.ComboBoxFilter" target="org.openfaces.component.filter.ExpressionFilter" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="1290.9185784313736" y="576.0" />
+      <point x="1335.6685784313736" y="576.0" />
+      <point x="-34.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.filter.InputTextFilter" target="org.openfaces.component.filter.TextSearchFilter" relationship="GENERALIZATION">
+      <point x="-33.0" y="-13.0" />
+      <point x="2040.78125" y="652.0" />
+      <point x="1413.4185784313736" y="652.0" />
+      <point x="-35.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.OUISelectMany" target="org.openfaces.component.OUIInput" relationship="REALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="2547.9185784313736" y="182.0" />
+      <point x="3055.17955882353" y="182.0" />
+      <point x="-24.5" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.panel.MultiPageContainer" target="org.openfaces.component.OUIPanel" relationship="GENERALIZATION">
+      <point x="39.25" y="-13.0" />
+      <point x="2306.4185784313736" y="364.0" />
+      <point x="2296.9185784313736" y="364.0" />
+      <point x="2296.9185784313736" y="182.0" />
+      <point x="2230.0202696078436" y="182.0" />
+      <point x="12.25" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.panel.MultiPageContainer" target="org.openfaces.component.panel.SubPanel" relationship="DEPENDENCY">
+      <point x="-39.25" y="-13.0" />
+      <point x="2227.9185784313736" y="364.0" />
+      <point x="2237.4185784313736" y="364.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.ToggleCaptionButton" target="org.openfaces.component.CaptionButton" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.output.GraphicText" target="org.openfaces.component.output.GraphicText" relationship="DEPENDENCY">
+      <point x="0.0" y="13.0" />
+      <point x="3647.6685784313736" y="248.0" />
+      <point x="3570.1685784313736" y="248.0" />
+      <point x="3570.1685784313736" y="215.0" />
+      <point x="-57.5" y="-0.0" />
+    </edge>
+    <edge source="org.openfaces.component.table.DataTable" target="org.openfaces.component.table.AbstractTable" relationship="GENERALIZATION">
+      <point x="26.0" y="-13.0" />
+      <point x="989.9914950980402" y="576.0" />
+      <point x="1059.2935784313736" y="576.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.panel.BorderLayoutPanel" target="org.openfaces.component.OUIPanel" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="2384.4185784313736" y="172.0" />
+      <point x="2254.5202696078436" y="172.0" />
+      <point x="36.75" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.input.DropDownComponent" target="org.openfaces.component.OUIInputText" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="3141.459852941177" y="364.0" />
+      <point x="3018.137892156863" y="364.0" />
+      <point x="41.33333333333303" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.calendar.Calendar" target="org.openfaces.component.OUIInputBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="3801.209852941177" y="268.0" />
+      <point x="3417.6685784313736" y="268.0" />
+      <point x="50.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.OUIObjectIterator" target="org.openfaces.component.OUIComponent" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="1646.7935784313736" y="76.0" />
+      <point x="1923.0019117647066" y="76.0" />
+      <point x="-14.666666666666742" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.ComponentWithCaption" target="org.openfaces.component.OUIComponent" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="1944.78125" y="76.0" />
+      <point x="1937.6685784313736" y="76.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.input.InputTextarea" target="org.openfaces.component.OUIInputText" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="2972.459852941177" y="364.0" />
+      <point x="2976.80455882353" y="364.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.filter.Filter" target="org.openfaces.component.OUIComponentBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="1063.5733088235297" y="364.0" />
+      <point x="970.4060784313735" y="364.0" />
+      <point x="31.799999999999955" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.util.ForEach" target="org.openfaces.component.OUIData" relationship="DEPENDENCY">
+      <point x="-22.5" y="-13.0" />
+      <point x="1480.1685784313736" y="490.0" />
+      <point x="1447.0435784313736" y="490.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.filter.DropDownFieldFilter" target="org.openfaces.component.input.DropDownField" relationship="DEPENDENCY">
+      <point x="39.75" y="-13.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.OUIObjectIteratorBase" target="org.openfaces.component.OUIObjectIterator" relationship="REALIZATION">
+      <point x="44.25" y="-13.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.command.PopupMenu" target="org.openfaces.component.command.PopupMenu" relationship="DEPENDENCY">
+      <point x="-28.0" y="13.0" />
+      <point x="568.75" y="430.0" />
+      <point x="520.75" y="430.0" />
+      <point x="520.75" y="397.0" />
+      <point x="-56.0" y="-0.0" />
+    </edge>
+    <edge source="org.openfaces.component.chart.Chart" target="org.openfaces.component.OUIComponentBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="947.5733088235297" y="364.0" />
+      <point x="938.6060784313736" y="364.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.panel.TabbedPane" target="org.openfaces.component.panel.MultiPageContainer" relationship="GENERALIZATION">
+      <point x="-29.0" y="-13.0" />
+      <point x="2623.4185784313736" y="490.0" />
+      <point x="2306.4185784313736" y="490.0" />
+      <point x="39.25" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.util.ForEach" target="org.openfaces.component.OUIObjectIteratorBase" relationship="GENERALIZATION">
+      <point x="22.5" y="-13.0" />
+      <point x="1525.1685784313736" y="490.0" />
+      <point x="1558.2935784313736" y="490.0" />
+      <point x="-44.25" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.filter.ExpressionFilter" target="org.openfaces.component.filter.Filter" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="1369.6685784313736" y="470.0" />
+      <point x="1096.3858088235297" y="470.0" />
+      <point x="32.8125" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.input.DropDownFieldBase" target="org.openfaces.component.input.DropDownComponent" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="2964.626519607844" y="490.0" />
+      <point x="3085.126519607844" y="490.0" />
+      <point x="-56.33333333333303" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.window.Window" target="org.openfaces.component.window.AbstractWindow" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="1903.1685784313736" y="364.0" />
+      <point x="1875.6685784313736" y="364.0" />
+      <point x="34.75" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.panel.AbstractPanelWithCaption" target="org.openfaces.component.ComponentWithCaption" relationship="REALIZATION">
+      <point x="-48.75" y="-13.0" />
+      <point x="2069.1685784313736" y="162.0" />
+      <point x="1989.78125" y="162.0" />
+      <point x="45.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.output.HintLabel" target="org.openfaces.component.OUIOutput" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="3500.6685784313736" y="182.0" />
+      <point x="3547.6685784313736" y="182.0" />
+      <point x="-26.5" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.OUIPanel" target="org.openfaces.component.OUIComponent" relationship="REALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="2217.7702696078436" y="76.0" />
+      <point x="1952.33524509804" y="76.0" />
+      <point x="14.666666666666742" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.input.InputText" target="org.openfaces.component.OUIInputText" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="2743.4185784313736" y="364.0" />
+      <point x="2935.471225490197" y="364.0" />
+      <point x="-41.33333333333303" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.output.GraphicText" target="org.openfaces.component.OUIOutput" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="3647.6685784313736" y="182.0" />
+      <point x="3600.6685784313736" y="182.0" />
+      <point x="26.5" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.input.SuggestionField" target="org.openfaces.component.input.DropDownFieldBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="3019.7935784313736" y="576.0" />
+      <point x="3003.876519607844" y="576.0" />
+      <point x="39.25" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.timetable.DayTable" target="org.openfaces.component.window.Confirmation" relationship="DEPENDENCY">
+      <point x="33.0" y="-13.0" />
+      <point x="1725.1685784313736" y="490.0" />
+      <point x="1778.6685784313736" y="490.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.panel.AbstractPanelWithCaption" target="org.openfaces.component.OUIPanel" relationship="GENERALIZATION">
+      <point x="48.75" y="-13.0" />
+      <point x="2166.6685784313736" y="182.0" />
+      <point x="2205.5202696078436" y="182.0" />
+      <point x="-12.25" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.ajax.Ajax" target="org.openfaces.component.OUICommand" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="343.0" y="490.0" />
+      <point x="381.3827696078438" y="490.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.OUIComponentBase" target="org.openfaces.component.OUIComponent" relationship="REALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="938.6060784313735" y="56.0" />
+      <point x="1893.6685784313736" y="56.0" />
+      <point x="-44.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.filter.DropDownFieldFilter" target="org.openfaces.component.filter.TextSearchFilter" relationship="GENERALIZATION">
+      <point x="-39.75" y="-13.0" />
+      <point x="2787.7935784313736" y="642.0" />
+      <point x="1483.4185784313736" y="642.0" />
+      <point x="35.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.timetable.DayTable" target="org.openfaces.component.OUIObjectIteratorBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="1692.1685784313736" y="470.0" />
+      <point x="1646.7935784313736" y="470.0" />
+      <point x="44.25" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.select.SelectBooleanCheckbox" target="org.openfaces.component.OUIInputBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="3642.709852941177" y="278.0" />
+      <point x="3392.6685784313736" y="278.0" />
+      <point x="25.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.table.DataTable" target="org.openfaces.component.filter.Filter" relationship="DEPENDENCY">
+      <point x="-26.0" y="-13.0" />
+      <point x="937.9914950980402" y="556.0" />
+      <point x="927.2414950980402" y="556.0" />
+      <point x="927.2414950980402" y="470.0" />
+      <point x="1058.8858088235297" y="470.0" />
+      <point x="-4.6875" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.panel.LayeredPane" target="org.openfaces.component.panel.MultiPageContainer" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="-39.25" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.select.OUISelectManyInputBase" target="org.openfaces.component.OUIInputBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="3436.709852941177" y="288.0" />
+      <point x="3367.6685784313736" y="288.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.OUIInputBase" target="org.openfaces.component.OUIInput" relationship="REALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="3367.6685784313736" y="182.0" />
+      <point x="3104.17955882353" y="182.0" />
+      <point x="24.5" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.select.SelectManyCheckbox" target="org.openfaces.component.select.OUISelectManyInputBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="47.75" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.window.Confirmation" target="org.openfaces.component.window.AbstractWindow" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="1778.6685784313736" y="364.0" />
+      <point x="1806.1685784313736" y="364.0" />
+      <point x="-34.75" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.command.MenuItem" target="org.openfaces.component.OUICommand" relationship="GENERALIZATION">
+      <point x="-26.25" y="-13.0" />
+      <point x="572.25" y="480.0" />
+      <point x="430.9827696078437" y="480.0" />
+      <point x="49.59999999999991" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.OUIObjectIteratorBase" target="org.openfaces.component.OUIComponentBase" relationship="GENERALIZATION">
+      <point x="-44.25" y="-13.0" />
+      <point x="1558.2935784313736" y="354.0" />
+      <point x="1002.2060784313736" y="354.0" />
+      <point x="63.60000000000002" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.validation.OUIMessage" target="org.openfaces.component.validation.OUIMessage" relationship="DEPENDENCY">
+      <point x="0.0" y="13.0" />
+      <point x="3227.17955882353" y="142.0" />
+      <point x="3148.67955882353" y="142.0" />
+      <point x="3148.67955882353" y="109.0" />
+      <point x="-58.5" y="-0.0" />
+    </edge>
+    <edge source="org.openfaces.component.panel.FoldingPanel" target="org.openfaces.component.panel.AbstractPanelWithCaption" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="1988.9185784313736" y="288.0" />
+      <point x="2052.9185784313736" y="288.0" />
+      <point x="-65.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.input.Spinner" target="org.openfaces.component.input.DropDownComponent" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="3110.1685784313736" y="490.0" />
+      <point x="3141.459852941177" y="490.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.table.AbstractTable" target="org.openfaces.component.filter.Filter" relationship="DEPENDENCY">
+      <point x="0.0" y="-13.0" />
+      <point x="1059.2935784313736" y="480.0" />
+      <point x="1068.2608088235297" y="480.0" />
+      <point x="4.6875" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.window.AbstractWindow" target="org.openfaces.component.ComponentWithCaption" relationship="REALIZATION">
+      <point x="-34.75" y="-13.0" />
+      <point x="1806.1685784313736" y="288.0" />
+      <point x="1807.4185784313736" y="288.0" />
+      <point x="1807.4185784313736" y="162.0" />
+      <point x="1899.78125" y="162.0" />
+      <point x="-45.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.CaptionButton" target="org.openfaces.component.OUICommand" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="462.5" y="490.0" />
+      <point x="406.18276960784374" y="490.0" />
+      <point x="24.799999999999955" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.select.TabSet" target="org.openfaces.component.OUIInputBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="2681.4185784313736" y="278.0" />
+      <point x="3317.6685784313736" y="278.0" />
+      <point x="-50.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.input.DropDownField" target="org.openfaces.component.input.DropDownFieldBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="2867.2935784313736" y="576.0" />
+      <point x="2925.376519607844" y="576.0" />
+      <point x="-39.25" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.panel.SidePanel" target="org.openfaces.component.panel.AbstractPanelWithCaption" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.panel.TabbedPane" target="org.openfaces.component.select.TabSet" relationship="DEPENDENCY">
+      <point x="29.0" y="-13.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.validation.OUIMessage" target="org.openfaces.component.OUIComponent" relationship="REALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="3227.17955882353" y="56.0" />
+      <point x="1981.6685784313736" y="56.0" />
+      <point x="44.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.OUIData" target="org.openfaces.component.OUIComponent" relationship="REALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="1447.0435784313736" y="66.0" />
+      <point x="1908.33524509804" y="66.0" />
+      <point x="-29.333333333333258" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.OUICommand" target="org.openfaces.component.OUIComponent" relationship="REALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="381.3827696078438" y="46.0" />
+      <point x="1879.0019117647066" y="46.0" />
+      <point x="-58.66666666666674" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.input.DateChooser" target="org.openfaces.component.input.DropDownComponent" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="3234.1685784313736" y="490.0" />
+      <point x="3197.79318627451" y="490.0" />
+      <point x="56.33333333333303" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.command.MenuItem" target="org.openfaces.component.command.PopupMenu" relationship="DEPENDENCY">
+      <point x="26.25" y="-13.0" />
+      <point x="28.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.select.SelectOneRadio" target="org.openfaces.component.select.OUISelectManyInputBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="3313.459852941177" y="364.0" />
+      <point x="3388.959852941177" y="364.0" />
+      <point x="-47.75" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.window.AbstractWindow" target="org.openfaces.component.window.PopupLayer" relationship="GENERALIZATION">
+      <point x="34.75" y="-13.0" />
+      <point x="1875.6685784313736" y="288.0" />
+      <point x="1874.4185784313736" y="288.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.filter.CompositeFilter" target="org.openfaces.component.filter.Filter" relationship="GENERALIZATION">
+      <point x="33.75" y="-13.0" />
+      <point x="1169.6685784313736" y="480.0" />
+      <point x="1087.0108088235297" y="480.0" />
+      <point x="23.4375" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.OUIInputText" target="org.openfaces.component.OUIInputBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="2976.80455882353" y="288.0" />
+      <point x="3342.6685784313736" y="288.0" />
+      <point x="-25.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.timetable.DayTable" target="org.openfaces.component.OUIData" relationship="DEPENDENCY">
+      <point x="-33.0" y="-13.0" />
+      <point x="1659.1685784313736" y="480.0" />
+      <point x="1478.3769117647066" y="480.0" />
+      <point x="31.333333333333258" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.filter.Filter" target="org.openfaces.component.filter.Filter" relationship="DEPENDENCY">
+      <point x="-32.8125" y="13.0" />
+      <point x="1030.7608088235297" y="430.0" />
+      <point x="1006.0733088235297" y="430.0" />
+      <point x="1006.0733088235297" y="397.0" />
+      <point x="-37.5" y="-0.0" />
+    </edge>
+    <edge source="org.openfaces.component.panel.SubPanel" target="org.openfaces.component.panel.AbstractPanelWithCaption" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="2237.4185784313736" y="288.0" />
+      <point x="2182.9185784313736" y="288.0" />
+      <point x="65.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.output.DynamicImage" target="org.openfaces.component.OUIComponentBase" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="823.0733088235297" y="364.0" />
+      <point x="906.8060784313736" y="364.0" />
+      <point x="-31.799999999999955" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.filter.InputTextFilter" target="org.openfaces.component.input.InputText" relationship="DEPENDENCY">
+      <point x="33.0" y="-13.0" />
+      <point x="2106.78125" y="652.0" />
+      <point x="2743.4185784313736" y="652.0" />
+      <point x="0.0" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.window.PopupLayer" target="org.openfaces.component.OUIPanel" relationship="GENERALIZATION">
+      <point x="0.0" y="-13.0" />
+      <point x="1874.4185784313736" y="172.0" />
+      <point x="2181.0202696078436" y="172.0" />
+      <point x="-36.75" y="13.0" />
+    </edge>
+    <edge source="org.openfaces.component.table.AbstractTable" target="org.openfaces.component.OUIData" relationship="GENERALIZATION">
+      <point x="42.0" y="-13.0" />
+      <point x="1101.2935784313736" y="490.0" />
+      <point x="1415.71024509804" y="490.0" />
+      <point x="-31.333333333333258" y="13.0" />
+    </edge>
+  </edges>
+  <settings isCamel="false" isColorManagerEnabled="true" isFieldsVisible="false" isConstructorsVisible="false" isMethodsVisible="false" isShowDependencies="true" isShowInnerClasses="false" isVcsFilterEnabled="false" defaultVisibility="all" layout="Hierarchic Group" isPropertiesVisible="false" zoom="0.5797139141742522" x="824.9329295648273" y="483.69672498878424" />
+  <SelectedNodes>
+    <node fqn="org.openfaces.component.OUIInputBase" />
+  </SelectedNodes>
+</ClassDiagramm>
+

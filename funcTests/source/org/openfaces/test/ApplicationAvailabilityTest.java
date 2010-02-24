@@ -78,35 +78,7 @@ public class ApplicationAvailabilityTest extends OpenFacesTestCase {
         assertTestPageAvailable("/components/validator/validatorTest.jsf", "Validator Test");
         assertTestPageAvailable("/error.jsf", "Error page");
         assertTestPageAvailable("/testPageIndex.jsf", "Components Test");
-        //todo: uncomment it if JSFC-2084 fixed
-//    testAppPage("/support/QKS110/QKS110.jsf");
-//    assertEquals("QKS110", selenium.getTitle());
-        assertTestPageAvailable("/support/QKS112/QKS112.jsf", "QKS112 TreeTableTest");
-        assertTestPageAvailable("/support/QKS139/QKS139.jsf", "Floating Icon Message and SelectManyListbox (QKS-139)");
-        assertTestPageAvailable("/support/QKS144/QKS144.jsf", "TwoListSelection client-side API (QKS-144)");
-        assertTestPageAvailable("/support/QKS145/QKS145.jsf", "PopupLayer in the h:DataTable");
-        assertTestPageAvailable("/support/QKS174/QKS174.jsf", "Expanding only one specific node on page load (QKS-174)");
-        assertTestPageAvailable("/support/QKS177/QKS177.jsf", "FoldingPanel binding problem (QKS-177, QKS-176)");
-        assertTestPageAvailable("/support/QKS186/QKS186.jsf", "QKS186");
-        assertTestPageAvailable("/support/QKS193/QKS193.jsf", "TreeTable in TabbedPane (QKS-193)");
-        assertTestPageAvailable("/support/QKS236/QKS236.jsf", "sortColumnId and sortAscending attributes do not accept any expressions. (QKS-236)");
-        assertTestPageAvailable("/support/QKS273/QKS273.jsf", "Floating Icon bleeds through to other panes when using the Tabbed Pane (QKS-273)");
-        assertTestPageAvailable("/support/QKS30/QKS30.jsf", "getTotalRowCount() of the DataTable component (QKS30)");
-        assertTestPageAvailable("/support/QKS301/QKS301.jsf", "a4j button with confirmation (QKS-301)");
-        assertTestPageAvailable("/support/QKS315/QKS315.jsf", "DataTable q_refreshTable function");
-        assertTestPageAvailable("/support/QKS317/QKS317.jsf", "Using dataTable with a4j:support tag (QKS-317)");
-        assertTestPageAvailable("/support/QKS36/HintLabel.jsf", "Label with Hint(QKS36)");
-        //todo: uncomment if QKS67 test pages can be run in both Facelets And JSP environment
-//    assertTestPageAvailable("/support/QKS67/PageWithTabbedPane.jsf", "QKS67");
-        assertTestPageAvailable("/support/QKS72/DraggablePopupLayer.jsf", "QKS72");
-        assertTestPageAvailable("/support/QKS78/QKS-78.jsf", "QKS78");
-        assertTestPageAvailable("/support/QKS79/QKS-79.jsf", "QKS79");
-        assertTestPageAvailable("/support/QKS80/QKS-80.jsf", "QKS80");
-        assertTestPageAvailable("/SupportPages.jsf", "Support pages");
         assertTestPageAvailable("/components/treetable/treeTableAjax.jsf", "TreeTable with Ajax");
-        assertTestPageAvailable("/requests/JSFC_2097.jsf", "JSFC-2097 - Add informative message instead of JS error if cannot load nodes with Ajax because of incorrect backing bean scope");
-        assertTestPageAvailable("/support/QKS30/QKS30.jsf", "getTotalRowCount() of the DataTable component (QKS30)");
-        assertTestPageAvailable("/requests/JSFC_2110.jsf", "Convertion error in Calendar");
         assertTestPageAvailable("/compatibility/richfaces/QKValidation/Validators_custom.jsf", "Custom Validators");
         assertTestPageAvailable("/compatibility/richfaces/QKValidation/Validators_standard.jsf", "Standard Validators");
         assertTestPageAvailable("/compatibility/richfaces/QKValidation/ValidatorsInOneFormStandart.jsf", "Validators in one form (standard)");
@@ -130,7 +102,6 @@ public class ApplicationAvailabilityTest extends OpenFacesTestCase {
         assertTestPageAvailable("/components/window/window.jsf", "Window Basics");
         assertTestPageAvailable("/components/graphictext/graphicText.jsf", "GraphicText Test");
         assertTestPageAvailable("/components/graphictext/graphicTextStyles.jsf", "Styled GraphicTexts");
-
     }
 
     private void assertTestPageAvailable(String pageUrl, String expectedPageTitle) {

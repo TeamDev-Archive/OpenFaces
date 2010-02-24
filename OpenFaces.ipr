@@ -1027,6 +1027,7 @@
         <w>resizable</w>
         <w>richfaces</w>
         <w>rtrim</w>
+        <w>screenshot</w>
         <w>selectbooleancheckbox</w>
         <w>selectmanycheckbox</w>
         <w>selectoneradio</w>
