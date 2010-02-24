@@ -31,7 +31,7 @@ public class InputTextFilterInspector extends AbstractFilterInspector {
 
     searchComponent.type(filterValue);
     searchComponent.setCursorPosition(0);
-    sleep(100);
+    sleep(1000);
     searchComponent.keyDown(13);
 
     getLoadingMode().waitForLoad();
