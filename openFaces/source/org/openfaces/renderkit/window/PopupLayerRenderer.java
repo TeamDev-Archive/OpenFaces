@@ -15,7 +15,7 @@ import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.DefaultStyles;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
@@ -145,7 +145,7 @@ public class PopupLayerRenderer extends RendererBase {
                 popup.getHidingTimeout(),
                 popup.getDraggable(),
                 popup.getHideOnEsc(),
-                EnvironmentUtil.isAjax4jsfRequest());
+                Environment.isAjax4jsfRequest());
 
         String onShow = popup.getOnshow();
         if (onShow != null) {

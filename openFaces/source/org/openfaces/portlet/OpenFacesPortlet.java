@@ -11,7 +11,7 @@
  */
 package org.openfaces.portlet;
 
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -28,15 +28,15 @@ import java.io.IOException;
  */
 public class OpenFacesPortlet extends GenericPortlet {
     private static OpenFacesJSFPortlet myFacesDelegate;
-    private static OpenFacesMyFacesGenerictPortlet myMyFacesDelegate;
+    private static OpenFacesMyFacesGenericPortlet myMyFacesDelegate;
     private static boolean myIsRI;
 
     public OpenFacesPortlet() {
-        myIsRI = EnvironmentUtil.isRI();
+        myIsRI = Environment.isRI();
         if (myIsRI) {
             myFacesDelegate = new OpenFacesJSFPortlet();
         } else {
-            myMyFacesDelegate = new OpenFacesMyFacesGenerictPortlet();
+            myMyFacesDelegate = new OpenFacesMyFacesGenericPortlet();
         }
     }
 

@@ -25,7 +25,7 @@ import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.Styles;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.StyleGroup;
 
 import javax.el.ELContext;
@@ -258,7 +258,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
             writer.writeAttribute("onmouseup", "O$.cancelBubble(event);", null);
             writer.writeAttribute("onclick", "O$.cancelBubble(event);", null);
         }
-        if (EnvironmentUtil.isMozilla()) { // the div is actually needed only for Mozilla running on Mac, to solve the width problem (JSFC-2713)
+        if (Environment.isMozilla()) { // the div is actually needed only for Mozilla running on Mac, to solve the width problem (JSFC-2713)
             writer.startElement("div", tabSet);
             writer.writeAttribute("class", "o_tabset_moz_empty_space", null);
             writer.endElement("div");

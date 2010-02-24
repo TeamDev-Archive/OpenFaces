@@ -24,11 +24,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-// TODO [sanders] (Apr 1, 2009, 8:36 AM): rename to Environment
 /**
  * @author Eugene Goncharov
  */
-public class EnvironmentUtil {
+public class Environment {
     public static final String PARAM_ENVIRONMENT_TRINIDAD_SUPPORT = "org.openfaces.environment.trinidadSupport";
 
     private static final String KEY_UNDEFINED_BROWSER = "undefined_browser";
@@ -41,7 +40,7 @@ public class EnvironmentUtil {
 
     private static final String PARAM_FACELETS = "org.openfaces.facelets";
 
-    private EnvironmentUtil() {
+    private Environment() {
     }
 
 
@@ -122,8 +121,7 @@ public class EnvironmentUtil {
     }
 
     private static boolean isFaceletsViewHandlerInUse(Object handler, Class faceletsViewHandlerClass) {
-        boolean faceletsViewHandler = false;
-        faceletsViewHandler = isFaceletsViewHandler(handler, faceletsViewHandlerClass);
+        boolean faceletsViewHandler = isFaceletsViewHandler(handler, faceletsViewHandlerClass);
         // If actual handler is not a Facelets view handler than we should try to check can we access it's delegates 
         if (!faceletsViewHandler) {
             Object resultHandler = getWrappedHandler(handler);
@@ -258,7 +256,7 @@ public class EnvironmentUtil {
     public static boolean isExplorer() {
         Boolean isExplorer = (Boolean) getSessionMap().get(KEY_EXPLORER_BROWSER);
         if (isExplorer == null) {
-            isExplorer = checkBrowser("msie") && !isOpera();
+            isExplorer = isBrowser("msie") && !isOpera();
             getSessionMap().put(KEY_EXPLORER_BROWSER, isExplorer);
         }
         return isExplorer;
@@ -267,7 +265,7 @@ public class EnvironmentUtil {
     public static boolean isMozilla() {
         Boolean isMozilla = (Boolean) getSessionMap().get(KEY_MOZILLA_BROWSER);
         if (isMozilla == null) {
-            isMozilla = checkBrowser("mozilla") && !isExplorer() && !isSafari() && !isOpera();
+            isMozilla = isBrowser("mozilla") && !isExplorer() && !isSafari() && !isOpera();
             getSessionMap().put(KEY_MOZILLA_BROWSER, isMozilla);
         }
         return isMozilla;
@@ -280,7 +278,7 @@ public class EnvironmentUtil {
     public static boolean isOpera() {
         Boolean isOpera = (Boolean) getSessionMap().get(KEY_OPERA_BROWSER);
         if (isOpera == null) {
-            isOpera = checkBrowser("opera");
+            isOpera = isBrowser("opera");
             getSessionMap().put(KEY_OPERA_BROWSER, isOpera);
         }
         return isOpera;
@@ -289,7 +287,7 @@ public class EnvironmentUtil {
     public static boolean isSafari() {
         Boolean isSafari = (Boolean) getSessionMap().get(KEY_SAFARI_BROWSER);
         if (isSafari == null) {
-            isSafari = checkBrowser("safari");
+            isSafari = isBrowser("safari");
             getSessionMap().put(KEY_SAFARI_BROWSER, isSafari);
         }
         return isSafari;
@@ -298,7 +296,7 @@ public class EnvironmentUtil {
     public static boolean isChrome() {
         Boolean isSafari = (Boolean) getSessionMap().get(KEY_SAFARI_BROWSER);
         if (isSafari == null) {
-            isSafari = checkBrowser("chrome");
+            isSafari = isBrowser("chrome");
             getSessionMap().put(KEY_SAFARI_BROWSER, isSafari);
         }
         return isSafari;
@@ -331,14 +329,13 @@ public class EnvironmentUtil {
     public static boolean isUndefinedBrowser() {
         Boolean isUndefined = (Boolean) getSessionMap().get(KEY_SAFARI_BROWSER);
         if (isUndefined == null) {
-            isUndefined = checkBrowser(KEY_UNDEFINED_BROWSER);
+            isUndefined = isBrowser(KEY_UNDEFINED_BROWSER);
             getSessionMap().put(KEY_SAFARI_BROWSER, isUndefined);
         }
         return isUndefined;
     }
 
-    // TODO [sanders] (Apr 1, 2009, 8:48 AM): consider renaming to isBrowser
-    public static boolean checkBrowser(String browserName) {
+    public static boolean isBrowser(String browserName) {
         FacesContext context = FacesContext.getCurrentInstance();
         String userAgent = getUserAgent(context);
         if (userAgent == null)
@@ -347,7 +344,7 @@ public class EnvironmentUtil {
         return userAgent.toLowerCase().contains(browserName.toLowerCase());
     }
 
-    public static boolean isMozillaFF2(FacesContext context) {//todo review this method
+    public static boolean isMozillaFF2(FacesContext context) {
         String userAgent = getUserAgent(context);
         if (userAgent == null)
             userAgent = " ";

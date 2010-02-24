@@ -818,7 +818,7 @@ public class Rendering {
             imageUrl = "";
         }
 
-        if (EnvironmentUtil.isExplorer() && component instanceof GraphicText) {
+        if (Environment.isExplorer() && component instanceof GraphicText) {
             writeAttribute(writer, "src", getClearGif(context));
             writeAttribute(writer, "style", "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + imageUrl + "', sizingMethod='scale');");
             if (size != null) {

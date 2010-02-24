@@ -13,7 +13,7 @@ package org.openfaces.renderkit.panel;
 
 import org.openfaces.component.panel.SidePanel;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
@@ -151,7 +151,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         events.putOpt("onmaximize", sidePanel.getOnmaximize());
 
         ScriptBuilder initScript = new ScriptBuilder();
-        if (EnvironmentUtil.isMozillaFF2(context)) { //fix bug with FF2 and Faceletes 1.2 context  //todo add isFacelets() filter
+        if (Environment.isMozillaFF2(context)) { //fix bug with FF2 and Faceletes 1.2 context  //todo add isFacelets() filter
             initScript.append("O$('").append(clientId).append("').style.visibility = 'hidden';\n");
             initScript.append("O$.addLoadEvent( function() {\n");
         }
@@ -168,7 +168,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
                 getSplitterRolloverClass(context, sidePanel),
                 new RawScript(events.toString()));
 
-        if (EnvironmentUtil.isMozillaFF2(context)) { //fix bug with FF2 and Faceletes 1.2 context  //todo add isFacelets() filter
+        if (Environment.isMozillaFF2(context)) { //fix bug with FF2 and Faceletes 1.2 context  //todo add isFacelets() filter
             initScript.append("O$('").append(clientId).append("').style.visibility = 'visible';\n");
             initScript.append("});\n");
         }

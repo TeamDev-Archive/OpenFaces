@@ -23,7 +23,7 @@ import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.CompoundComponentRenderer;
 import org.openfaces.renderkit.window.WindowRenderer;
 import org.openfaces.util.Components;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
@@ -89,7 +89,7 @@ public class DebugRenderer extends WindowRenderer implements CompoundComponentRe
         Scrolling scrolling = new Scrolling();
         logTable.getChildren().add(scrolling);
         logTable.getChildren().add(new ColumnResizing());
-        if (EnvironmentUtil.isExplorer())
+        if (Environment.isExplorer())
             logTable.setStyle("width: 100%");
         else
             logTable.setStyle("width: 100%; height: 100%;");

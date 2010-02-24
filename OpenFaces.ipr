@@ -968,12 +968,14 @@
         <w>keyup</w>
         <w>layeredpane</w>
         <w>lgpl</w>
+        <w>liferay</w>
         <w>locator</w>
         <w>ltrim</w>
         <w>maxlength</w>
         <w>monospace</w>
         <w>mouseover</w>
         <w>mozilla</w>
+        <w>msie</w>
         <w>multi</w>
         <w>nowrap</w>
         <w>onajaxend</w>
@@ -1048,6 +1050,7 @@
         <w>updatables</w>
         <w>valign</w>
         <w>vert</w>
+        <w>xhtml</w>
       </words>
     </dictionary>
   </component>

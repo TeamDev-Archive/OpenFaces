@@ -14,7 +14,7 @@ package org.openfaces.renderkit.output;
 import org.openfaces.component.output.HintLabel;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.DefaultStyles;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
@@ -52,7 +52,7 @@ public class HintLabelRenderer extends RendererBase {
         writer.startElement("div", hintLabel);
         writeIdAttribute(context, hintLabel);
 
-        String defaultLabelClass = EnvironmentUtil.isExplorer() || EnvironmentUtil.isSafari() || EnvironmentUtil.isUndefinedBrowser()
+        String defaultLabelClass = Environment.isExplorer() || Environment.isSafari() || Environment.isUndefinedBrowser()
                 ? "o_hintlabel_label_ie" : "o_hintlabel_label";
         writer.writeAttribute("class", Styles.getCSSClass(context,
                 hintLabel, hintLabel.getStyle(), defaultLabelClass, hintLabel.getStyleClass()), null);

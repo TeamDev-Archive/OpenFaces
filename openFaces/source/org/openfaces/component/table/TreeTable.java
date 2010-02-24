@@ -14,7 +14,7 @@ package org.openfaces.component.table;
 import org.openfaces.component.filter.Filter;
 import org.openfaces.renderkit.table.TreeTableRenderer;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
@@ -673,7 +673,7 @@ public class TreeTable extends AbstractTable {
     private boolean isReloadingThisComponentWithA4j() {
         // needed for JSFC-2526. It doesn't seem possible to know the a4j rerendered components on the decoding stage,
         // so we suppose that this component is rerendered if it is an A4j request.
-        return EnvironmentUtil.isAjax4jsfRequest();
+        return Environment.isAjax4jsfRequest();
     }
 
     public int getMaxLevel() {

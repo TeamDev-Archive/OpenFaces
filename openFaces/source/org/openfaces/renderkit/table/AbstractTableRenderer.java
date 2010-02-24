@@ -29,7 +29,7 @@ import org.openfaces.renderkit.CaptionButtonRenderer;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
@@ -252,7 +252,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     private void preregisterNoFilterDataRowStyleForOpera(FacesContext context, AbstractTable table) {
-        if (EnvironmentUtil.isOpera() || EnvironmentUtil.isUndefinedBrowser())
+        if (Environment.isOpera() || Environment.isUndefinedBrowser())
             TableStructure.getNoDataRowClassName(context, table);
     }
 

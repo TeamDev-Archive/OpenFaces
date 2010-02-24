@@ -14,10 +14,10 @@ package org.openfaces.component.validation;
 import org.apache.myfaces.trinidad.render.DialogRenderKitService;
 import org.apache.myfaces.trinidad.render.ExtendedRenderKitService;
 import org.apache.myfaces.trinidad.util.Service;
+import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
 import org.openfaces.renderkit.validation.HtmlMessageRenderer;
 import org.openfaces.renderkit.validation.HtmlMessagesRenderer;
-import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.Log;
 
 import javax.faces.FactoryFinder;
@@ -166,9 +166,9 @@ public class RenderKitReplacerPhaseListener implements PhaseListener {
         if (proxy != null) {
             factory.addRenderKit(renderKitId, proxy);
             Map applicationMap = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
-            Boolean trinidadSupport = (Boolean) applicationMap.get(EnvironmentUtil.PARAM_ENVIRONMENT_TRINIDAD_SUPPORT);
+            Boolean trinidadSupport = (Boolean) applicationMap.get(Environment.PARAM_ENVIRONMENT_TRINIDAD_SUPPORT);
             if (trinidadSupport == null) {
-                applicationMap.put(EnvironmentUtil.PARAM_ENVIRONMENT_TRINIDAD_SUPPORT, Boolean.TRUE);
+                applicationMap.put(Environment.PARAM_ENVIRONMENT_TRINIDAD_SUPPORT, Boolean.TRUE);
             }
         } else {
             Rendering.logWarning(FacesContext.getCurrentInstance(), "Trinidad support for renderkit was disabled.");

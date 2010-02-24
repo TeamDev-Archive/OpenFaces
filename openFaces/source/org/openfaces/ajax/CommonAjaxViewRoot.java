@@ -615,7 +615,7 @@ public abstract class CommonAjaxViewRoot {
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
             if (AjaxUtil.isPortletRequest(context) && externalContext.getRequest() instanceof RenderRequest) {
                 try {
-                    if (!EnvironmentUtil.isRI()) {
+                    if (!Environment.isRI()) {
                         finishProccessErrorUnderPortletsDuringAjax(context, exception);
                     } else if (sessionMap.containsKey(AjaxViewHandler.ERROR_OCCURED_UNDER_PORTLETS)) {
                         finishProccessErrorUnderPortletsDuringAjax(context, exception);
@@ -801,7 +801,7 @@ public abstract class CommonAjaxViewRoot {
             throw new IllegalStateException("This method should be only invoked for portlet Ajax requests");
         }
 
-        Integer sequenceId = (EnvironmentUtil.isLiferay(context.getExternalContext().getRequestMap()))
+        Integer sequenceId = (Environment.isLiferay(context.getExternalContext().getRequestMap()))
                 ? getSequenceIdForMyFaces(context)
                 : null;
 
@@ -1204,9 +1204,9 @@ public abstract class CommonAjaxViewRoot {
         } else {
             StateManager.SerializedView view = stateManager.saveSerializedView(context);
 
-            boolean myFaces = EnvironmentUtil.isMyFaces();
-            boolean richFaces = EnvironmentUtil.isRichFacesStateManager(stateManager);
-            boolean facelets = EnvironmentUtil.isFacelets(context);
+            boolean myFaces = Environment.isMyFaces();
+            boolean richFaces = Environment.isRichFacesStateManager(stateManager);
+            boolean facelets = Environment.isFacelets(context);
 
             if (myFaces && !richFaces && !facelets) {
                 obtainViewStateSequenceForMyFaces(context, request, sequence, savedStateStructure);
@@ -1252,7 +1252,7 @@ public abstract class CommonAjaxViewRoot {
         StringWriter stringWriter = new StringWriter();
         ResponseWriter originalWriter = substituteResponseWriter(context, request, stringWriter);
 
-        if (!EnvironmentUtil.isFacelets(context)) {
+        if (!Environment.isFacelets(context)) {
             context.getApplication().getViewHandler().writeState(context);
         } else {
             ResponseStateManager responseStateManager = context.getRenderKit().getResponseStateManager();

@@ -18,7 +18,7 @@ import org.openfaces.component.table.TreeColumn;
 import org.openfaces.component.table.TreeTable;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Components;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Styles;
 
@@ -74,11 +74,11 @@ public class TreeColumnRenderer extends RendererBase {
         writer.startElement("td", component);
         for (int i = 0; i < level; i++) {
             writer.writeAttribute("class", indentClass, null);
-            if (EnvironmentUtil.isOpera() && indentStyle != null)
+            if (Environment.isOpera() && indentStyle != null)
                 writer.writeAttribute("style", indentStyle, null);
             writer.startElement("div", component);
             writer.writeAttribute("class", indentClass, null);
-            if ((EnvironmentUtil.isOpera() || EnvironmentUtil.isMozilla()) && indentStyle != null)
+            if ((Environment.isOpera() || Environment.isMozilla()) && indentStyle != null)
                 writer.writeAttribute("style", indentStyle, null);
             writer.endElement("div");
 
@@ -86,7 +86,7 @@ public class TreeColumnRenderer extends RendererBase {
             writer.startElement("td", component);
         }
 
-        if (EnvironmentUtil.isOpera() && indentStyle != null)
+        if (Environment.isOpera() && indentStyle != null)
             writer.writeAttribute("style", indentStyle, null);
 
         boolean nodeHasChildren = treeTable.getNodeHasChildren();
@@ -100,7 +100,7 @@ public class TreeColumnRenderer extends RendererBase {
             writer.writeAttribute("class", indentClass, null);
 
         writer.startElement("div", component);
-        if ((EnvironmentUtil.isOpera() || EnvironmentUtil.isMozilla()) && indentStyle != null)
+        if ((Environment.isOpera() || Environment.isMozilla()) && indentStyle != null)
             writer.writeAttribute("style", indentStyle, null);
 
         if (nodeHasChildren) {

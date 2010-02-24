@@ -14,7 +14,7 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.DynamicCol;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 
@@ -109,7 +109,7 @@ class HeaderCell extends TableElement {
         }
 
         if (renderNonBreakable) {
-            if (EnvironmentUtil.isExplorer())
+            if (Environment.isExplorer())
                 writer.startElement("span", table);
             writer.writeAttribute("class", "o_noWrapHeaderCell", null);
         }
@@ -139,7 +139,7 @@ class HeaderCell extends TableElement {
         if (renderSortingToggle && column != null && table instanceof AbstractTable)
             renderColumnSortingDirection(facesContext, (AbstractTable) table, column);
         if (renderNonBreakable) {
-            if (EnvironmentUtil.isExplorer())
+            if (Environment.isExplorer())
                 writer.endElement("span");
         }
 

@@ -39,7 +39,7 @@ import java.io.IOException;
 /**
  * @author Eugene Goncharov
  */
-public class OpenFacesMyFacesGenerictPortlet extends GenericPortlet {
+public class OpenFacesMyFacesGenericPortlet extends GenericPortlet {
     private static final Log log = LogFactory.getLog(MyFacesGenericPortlet.class);
 
     // PortletRequest parameter
@@ -70,7 +70,7 @@ public class OpenFacesMyFacesGenerictPortlet extends GenericPortlet {
     /**
      * Creates a new instance of MyFacesPortlet
      */
-    public OpenFacesMyFacesGenerictPortlet() {
+    public OpenFacesMyFacesGenericPortlet() {
     }
 
     /**

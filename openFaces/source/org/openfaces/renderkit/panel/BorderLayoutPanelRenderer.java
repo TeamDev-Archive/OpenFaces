@@ -14,7 +14,7 @@ package org.openfaces.renderkit.panel;
 import org.openfaces.component.panel.BorderLayoutPanel;
 import org.openfaces.component.panel.SidePanel;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
@@ -81,7 +81,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
     private void encodeScriptsAndStyles(FacesContext context, BorderLayoutPanel borderLayoutPanel) throws IOException {
         ScriptBuilder initScript = new ScriptBuilder();
 
-        if (EnvironmentUtil.isMozillaFF2(context)) { // fix bug with FF2 + Faceletes + JSF 1.2 context  // todo add isFacelets() filter
+        if (Environment.isMozillaFF2(context)) { // fix bug with FF2 + Faceletes + JSF 1.2 context  // todo add isFacelets() filter
             initScript.append("O$('").append(borderLayoutPanel.getId()).append("').style.visibility = 'hidden';\n");
             initScript.append("O$.addLoadEvent(function() {\n");
         }
@@ -91,7 +91,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
                 "O$._initBorderLayoutPanel",
                 borderLayoutPanel.getId());
 
-        if (EnvironmentUtil.isMozillaFF2(context)) { // fix bug with FF2 + Faceletes + JSF 1.2 context  // todo add isFacelets() filter
+        if (Environment.isMozillaFF2(context)) { // fix bug with FF2 + Faceletes + JSF 1.2 context  // todo add isFacelets() filter
             initScript.append("});\n");
         }
 
@@ -104,7 +104,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
     private void encodeScriptsAndStyles_content(FacesContext context, BorderLayoutPanel borderLayoutPanel, String clientId) throws IOException {
         ScriptBuilder initScript = new ScriptBuilder();
 
-        if (EnvironmentUtil.isMozillaFF2(context)) { // fix bug with FF2 + Faceletes + JSF 1.2 context  // todo add isFacelets() filter
+        if (Environment.isMozillaFF2(context)) { // fix bug with FF2 + Faceletes + JSF 1.2 context  // todo add isFacelets() filter
             initScript.append("O$.addLoadEvent( function() {\n");
         }
 
@@ -113,7 +113,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
                 new RawScript(JSEventsObject.JSEventObject("oncontentresize", borderLayoutPanel.getOncontentresize()))
         );
 
-        if (EnvironmentUtil.isMozillaFF2(context)) { // fix bug with FF2 + Faceletes + JSF 1.2 context  // todo add isFacelets() filter
+        if (Environment.isMozillaFF2(context)) { // fix bug with FF2 + Faceletes + JSF 1.2 context  // todo add isFacelets() filter
             initScript.append("O$('").append(clientId).append("').style.visibility = 'visible';\n"); // todo: why isn't this built-in into O$._initBorderLayoutPanel_content function iteself?
             initScript.append("});\n");
         }

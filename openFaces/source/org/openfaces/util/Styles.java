@@ -316,7 +316,7 @@ public class Styles {
                 // warning was removed because there are cases when renderStyleClasses should be invoked several times per component - see AbstractTableRenderer as an example
             }
             elementsIds.add(stylesId);
-            if (EnvironmentUtil.isExplorer() || EnvironmentUtil.isMozillaXhtmlPlusXmlContentType(context)
+            if (Environment.isExplorer() || Environment.isMozillaXhtmlPlusXmlContentType(context)
                     || forcedStyleAsScript) {
                 // Case for fixing JSFC-2341. Style tags added to DOM using JavaScript are ignored by Mozilla with
                 // "application/xhtml+xml" content-type. So to fix this, the styles are added using stylesheet API.

@@ -14,7 +14,7 @@ package org.openfaces.renderkit.select;
 import org.openfaces.component.select.TwoListSelection;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.HTML;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
@@ -222,7 +222,7 @@ public class TwoListSelectionRenderer extends RendererBase {
         if (items == null)
             return;
 
-        boolean customDisabledItemStyle = EnvironmentUtil.isExplorer() || EnvironmentUtil.isUndefinedBrowser();
+        boolean customDisabledItemStyle = Environment.isExplorer() || Environment.isUndefinedBrowser();
         for (SelectItem item : items) {
             writer.startElement("option", tls);
             //Here is converter processing

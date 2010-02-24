@@ -19,7 +19,7 @@ import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.AbstractResponseFacade;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.HTML;
 import org.openfaces.util.Rendering;
 
@@ -109,7 +109,7 @@ class AjaxResponse {
         } catch (IllegalArgumentException e) { // JBoss and JetSpeed throw IllegalArgumentException when trying to set text/xml content type
             if (!AjaxUtil.isPortletRequest(context)
                     && !requestMap.containsKey(AjaxViewHandler.ERROR_OCCURED)
-                    && !EnvironmentUtil.isRI()) {
+                    && !Environment.isRI()) {
                 response.setContentType("text/html;charset=UTF-8");
             }
             writeAsText(response);
@@ -132,7 +132,7 @@ class AjaxResponse {
         if (stateIdxHolder.getViewStateIdentifier() != null) {
             script = "O$.updateViewId('" + stateIdxHolder.getViewStateIdentifier() + "');";
         } else {
-            if (EnvironmentUtil.isRI()) {
+            if (Environment.isRI()) {
                 script = "O$.updateViewId('" + viewStructureId + "');";
             } else {
                 script = "";
@@ -473,7 +473,7 @@ class AjaxResponse {
 
         private static String replaceNamedEntitiesIfNeeded(String text) { // fix for JSFC-2976, fix for "NO_MODIFICATION_ALLOWED_ERR: Dom Exception 7" under Safari/Chrome
             FacesContext context = FacesContext.getCurrentInstance();
-            if (!EnvironmentUtil.isMozillaXhtmlPlusXmlContentType(context) && !(EnvironmentUtil.isSafari() || EnvironmentUtil.isChrome()))
+            if (!Environment.isMozillaXhtmlPlusXmlContentType(context) && !(Environment.isSafari() || Environment.isChrome()))
                 return text;
             if (!text.contains("&"))
                 return text;

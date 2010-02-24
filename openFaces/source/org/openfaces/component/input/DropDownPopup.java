@@ -14,6 +14,7 @@ package org.openfaces.component.input;
 import org.openfaces.component.AbstractPopup;
 import org.openfaces.component.ajax.Ajax;
 import org.openfaces.component.table.BaseColumn;
+import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.input.DropDownFieldRenderer;
@@ -21,7 +22,6 @@ import org.openfaces.renderkit.input.DropDownFieldTableStyles;
 import org.openfaces.renderkit.table.TableFooter;
 import org.openfaces.renderkit.table.TableHeader;
 import org.openfaces.renderkit.table.TableStructure;
-import org.openfaces.util.EnvironmentUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -233,7 +233,7 @@ public class DropDownPopup extends AbstractPopup {
 
     @Override
     protected boolean getUseDisplayNoneByDefault() {
-        return EnvironmentUtil.isExplorer() || EnvironmentUtil.isMozilla();
+        return Environment.isExplorer() || Environment.isMozilla();
     }
 
 }

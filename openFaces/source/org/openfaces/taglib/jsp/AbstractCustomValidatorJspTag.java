@@ -12,7 +12,7 @@
 package org.openfaces.taglib.jsp;
 
 import org.openfaces.taglib.internal.validation.AbstractCustomValidatorTag;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.ReflectionUtil;
 import org.openfaces.validator.AbstractCustomValidator;
 
@@ -51,7 +51,7 @@ public abstract class AbstractCustomValidatorJspTag extends ValidatorELTag {
     }
 
     public int doStartTag() throws JspException {
-        if (!EnvironmentUtil.isMyFaces())
+        if (!Environment.isMyFaces())
             return super.doStartTag();
 
         Object resultComponentTag = ReflectionUtil.invokeMethod("javax.faces.webapp.UIComponentELTag",

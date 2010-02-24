@@ -501,7 +501,7 @@ public class Resources {
             writer.writeAttribute("type", "text/javascript", null);
             // write white-space to avoid creating self-closing <script/> tags
             // under certain servers, which are not correctly interpreted by browsers (JSFC-2303)
-            if (EnvironmentUtil.isExoPortal())
+            if (Environment.isExoPortal())
                 writer.writeText(" ", null);
             writer.endElement("script");
         }

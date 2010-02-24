@@ -13,7 +13,7 @@ package org.openfaces.ajax;
 
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.Log;
 import org.openfaces.util.Resources;
 import org.openfaces.component.validation.ValidationSupportResponseWriter;
@@ -136,7 +136,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
             boolean isSessionExpirationTesting = context.getExternalContext().getRequestParameterMap().containsKey(SESSION_EXPIRATION_TESTING_PARAM);
             // This statement checks for session expiration. It works in both client and server state saving.
             if (isSessionExpirationTesting || null == httpSession || isNewSession(httpSession) || viewRoot == null) {
-                boolean isLiferay = EnvironmentUtil.isLiferay(requestMap);
+                boolean isLiferay = Environment.isLiferay(requestMap);
                 if (!isLiferay) {
                     if (AjaxUtil.isAjaxRequest(context)
                             && !requestMap.containsKey(SESSION_EXPIRATION_PROCESSING)) {
@@ -187,7 +187,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
             return ((HttpSession) httpSession).isNew();
         } else if (httpSession instanceof PortletSession) {
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-            if (EnvironmentUtil.isLiferay(externalContext.getRequestMap())) {
+            if (Environment.isLiferay(externalContext.getRequestMap())) {
                 Map<String, Object> sessionMap = externalContext.getSessionMap();
                 return sessionMap != null
                         && !sessionMap.containsKey(SESSION_SCOPED_PARAMETER);
@@ -280,7 +280,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
             // absence of the RichFaces library is a valid case
         }
 
-        if (EnvironmentUtil.isExoPortal())
+        if (Environment.isExoPortal())
             riRoot = createExoAjaxViewRoot(root);
         else
             riRoot = richFacesAjaxViewRootClass == null ? new AjaxViewRoot() : getA4jAjaxViewRoot(root);
@@ -346,12 +346,12 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
                 return;
             }
 
-            if (AjaxUtil.isPortletRequest(context) && EnvironmentUtil.isMyFaces()
+            if (AjaxUtil.isPortletRequest(context) && Environment.isMyFaces()
                     && isNewSession(externalContext.getSession(false))) {
                 processSessionExpirationUnderPortletsMyFaces(context, root, externalContext, session);
             }
 
-            if (AjaxUtil.isPortletRequest(context) && EnvironmentUtil.isRI()
+            if (AjaxUtil.isPortletRequest(context) && Environment.isRI()
                     && isNewSession(externalContext.getSession(false))) {
                 processSessionExpirationUnderPortletsRI(context, root, externalContext);
             }
@@ -381,7 +381,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
                     if (requestMap.containsKey(SESSION_EXPIRATION_PROCESSING)) {
                         super.renderView(context, root);
                         //This is done for MyFaces use-case, because MyFaces doesn't call rendering methods for ViewRoot
-                        if (!EnvironmentUtil.isRI()) {
+                        if (!Environment.isRI()) {
                             root.encodeChildren(context);
                         }
                         Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
@@ -391,7 +391,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
                         return;
                     }
 
-                    if (EnvironmentUtil.isFacelets(context)) {
+                    if (Environment.isFacelets(context)) {
                         super.renderView(context, root);
                     } else {
                         root.encodeBegin(context);
@@ -486,7 +486,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
             }
         }
 
-        if (EnvironmentUtil.isLiferay(context.getExternalContext().getRequestMap())) {
+        if (Environment.isLiferay(context.getExternalContext().getRequestMap())) {
             if (context.getExternalContext().getSessionMap().containsKey(AjaxViewHandler.SESSION_EXPIRATION_PROCESSING)) {
                 addAjaxRequestMarkerUnderPortlets(context, root);
                 addSessionExpirationFlagUnderPortlets(context, root);

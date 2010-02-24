@@ -13,7 +13,7 @@ package org.openfaces.application;
 
 import org.openfaces.ajax.AjaxViewHandler;
 import org.openfaces.ajax.AjaxViewRoot;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 
 import javax.el.ELContextListener;
 import javax.el.ELException;
@@ -165,7 +165,7 @@ public class OpenFacesApplication extends Application {
     @SuppressWarnings({"AssignmentToMethodParameter"})
     @Override
     public UIComponent createComponent(String componentType) throws FacesException {
-        if (EnvironmentUtil.isTrinidad() && componentType.equals(UIViewRoot.COMPONENT_TYPE)) {
+        if (Environment.isTrinidad() && componentType.equals(UIViewRoot.COMPONENT_TYPE)) {
             componentType = AjaxViewRoot.COMPONENT_TYPE;
         }
 

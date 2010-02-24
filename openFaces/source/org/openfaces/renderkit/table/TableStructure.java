@@ -26,7 +26,7 @@ import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.DefaultTableStyles;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.DefaultStyles;
-import org.openfaces.util.EnvironmentUtil;
+import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
@@ -235,7 +235,7 @@ public class TableStructure extends TableElement {
                 if (resizingState != null)
                     tableWidth = resizingState.getTableWidth();
                 if (columnResizing.isEnabled()) {
-                    if (tableWidth != null || EnvironmentUtil.isMozilla()) {
+                    if (tableWidth != null || Environment.isMozilla()) {
                         // "table-layout: fixed" style can't be set on client-side and should be rendered from the server, though
                         // it shouldn't be rendered under IE because all tables without explicit widths will occupy 100% width as a result
                         styleClass = Styles.mergeClassNames(styleClass, TABLE_LAYOUT_FIXED_STYLE_CLASS);
@@ -253,7 +253,7 @@ public class TableStructure extends TableElement {
             Rendering.writeStyleAndClassAttributes(writer, style, styleClass);
         } else {
             String cls = Styles.getCSSClass(context, component, style, styleClass);
-            if (!EnvironmentUtil.isOpera())
+            if (!Environment.isOpera())
                 cls = Styles.mergeClassNames(DefaultStyles.CLASS_INITIALLY_INVISIBLE, cls);
             if (!Rendering.isNullOrEmpty(cls))
                 writer.writeAttribute("class", cls, null);
@@ -373,8 +373,8 @@ public class TableStructure extends TableElement {
 
     private static boolean getForceUsingCellStyles(UIComponent styleOwnerComponent) {
         boolean requireCellStylesForCorrectColWidthBehavior =
-                EnvironmentUtil.isSafari() || /* doesn't handle column width in TreeTable if width is applied to <col> tags */
-                        EnvironmentUtil.isOpera(); /* DataTable, TreeTable are jerking when reloading them with OF Ajax if width is applied to <col> tags */
+                Environment.isSafari() || /* doesn't handle column width in TreeTable if width is applied to <col> tags */
+                        Environment.isOpera(); /* DataTable, TreeTable are jerking when reloading them with OF Ajax if width is applied to <col> tags */
         String forceUsingCellStylesAttr = (String) styleOwnerComponent.getAttributes().get("forceUsingCellStyles");
         boolean forceUsingCellStyles = requireCellStylesForCorrectColWidthBehavior ||
                 Boolean.valueOf(forceUsingCellStylesAttr);

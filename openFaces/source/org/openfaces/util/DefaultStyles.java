@@ -20,7 +20,7 @@ public class DefaultStyles {
     public static final String CLASS_DROP_DOWN_LIST = "o_dialogControlsFontFamily";
 
     public static String getSelectionBackgroundColor() {
-        if (EnvironmentUtil.isSafari() || EnvironmentUtil.isUndefinedBrowser()) {
+        if (Environment.isSafari() || Environment.isUndefinedBrowser()) {
             return "blue";
         } else {
             return "Highlight";
@@ -28,7 +28,7 @@ public class DefaultStyles {
     }
 
     public static String getSelectionTextColor() {
-        if (EnvironmentUtil.isSafari() || EnvironmentUtil.isUndefinedBrowser()) {
+        if (Environment.isSafari() || Environment.isUndefinedBrowser()) {
             return "white";
         } else {
             return "HighlightText";
@@ -36,7 +36,7 @@ public class DefaultStyles {
     }
 
     public static String getBackgroundColor() {
-        if (EnvironmentUtil.isSafari() || EnvironmentUtil.isUndefinedBrowser()) {
+        if (Environment.isSafari() || Environment.isUndefinedBrowser()) {
             return "white";
         } else {
             return "Window";
@@ -44,7 +44,7 @@ public class DefaultStyles {
     }
 
     public static String getBackgroundColorClass() {
-        if (EnvironmentUtil.isSafari() || EnvironmentUtil.isUndefinedBrowser()) {
+        if (Environment.isSafari() || Environment.isUndefinedBrowser()) {
             return "o_background_color_safari";
         } else {
             return "o_background_color";
@@ -52,7 +52,7 @@ public class DefaultStyles {
     }
 
     public static String getTextColorClass() {
-        if (EnvironmentUtil.isSafari() || EnvironmentUtil.isUndefinedBrowser()) {
+        if (Environment.isSafari() || Environment.isUndefinedBrowser()) {
             return "o_text_color_safari";
         } else {
             return "o_text_color";
