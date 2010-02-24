@@ -21,8 +21,8 @@ import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItems;
 import org.openfaces.component.input.SuggestionMode;
 import org.openfaces.renderkit.filter.param.ParametersEditor;
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.ValueExpressionImpl;
 
 import javax.el.ELContext;
@@ -81,7 +81,7 @@ public class FilterRow implements Serializable {
 
     public FilterRow(int index) {
         this.index = index;
-        rowIdSuffix = ROW_ID_SUFFIX + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + index;
+        rowIdSuffix = ROW_ID_SUFFIX + Rendering.SERVER_ID_SUFFIX_SEPARATOR + index;
     }
 
     public int getIndex() {
@@ -101,7 +101,7 @@ public class FilterRow implements Serializable {
     }
 
     private UIComponent createRowContainer(FacesContext context, CompositeFilter compositeFilter) {
-        HtmlPanelGroup rowContainer = (HtmlPanelGroup) ComponentUtil.createChildComponent(
+        HtmlPanelGroup rowContainer = (HtmlPanelGroup) Components.createChildComponent(
                 context, compositeFilter, HtmlPanelGroup.COMPONENT_TYPE, rowIdSuffix);
         rowContainer.setLayout("block");
         rowContainer.setStyleClass(DEFAULT_ROW_CLASS);
@@ -112,20 +112,20 @@ public class FilterRow implements Serializable {
     }
 
     private UIComponent getRowContainer(CompositeFilter compositeFilter) {
-        return ComponentUtil.getChildBySuffix(compositeFilter, rowIdSuffix);
+        return Components.getChildBySuffix(compositeFilter, rowIdSuffix);
     }
 
 
     private HtmlSelectBooleanCheckbox createInverseCheckBox(FacesContext context, UIComponent rowContainer) {
-        HtmlPanelGroup inverseCheckBoxContainer = (HtmlPanelGroup) ComponentUtil.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, INVERSE_CHECKBOX_CONTAINER_SUFFIX, 1);
+        HtmlPanelGroup inverseCheckBoxContainer = (HtmlPanelGroup) Components.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, INVERSE_CHECKBOX_CONTAINER_SUFFIX, 1);
 
         inverseCheckBoxContainer.setStyleClass(DEFAULT_ROW_ITEM_CHECKBOX_CLASS);
-        HtmlSelectBooleanCheckbox inverseCheckBox = (HtmlSelectBooleanCheckbox) ComponentUtil.createChildComponent(context, inverseCheckBoxContainer, HtmlSelectBooleanCheckbox.COMPONENT_TYPE, CHECKBOX_SUFFIX);
+        HtmlSelectBooleanCheckbox inverseCheckBox = (HtmlSelectBooleanCheckbox) Components.createChildComponent(context, inverseCheckBoxContainer, HtmlSelectBooleanCheckbox.COMPONENT_TYPE, CHECKBOX_SUFFIX);
         //TODO: add onclick that will send ajax request to update component state        
         inverseCheckBox.setStyleClass(DEFAULT_INVERSE_CHECKBOX_CLASS);
         inverseCheckBox.setTitle(INVERSE_LABEL);
 
-        HtmlOutputText inverseLabel = (HtmlOutputText) ComponentUtil.createChildComponent(context, inverseCheckBoxContainer, HtmlOutputText.COMPONENT_TYPE, LABEL_SUFFIX);
+        HtmlOutputText inverseLabel = (HtmlOutputText) Components.createChildComponent(context, inverseCheckBoxContainer, HtmlOutputText.COMPONENT_TYPE, LABEL_SUFFIX);
         inverseLabel.setStyleClass(DEFAULT_INVERSE_LABEL_CLASS);
         inverseLabel.setValue(INVERSE_LABEL);
         return inverseCheckBox;
@@ -136,11 +136,11 @@ public class FilterRow implements Serializable {
     }
 
     private HtmlSelectBooleanCheckbox getInverseCheckBox(HtmlPanelGroup inverseCheckBoxContainer) {
-        return (HtmlSelectBooleanCheckbox) ComponentUtil.getChildBySuffix(inverseCheckBoxContainer, CHECKBOX_SUFFIX);
+        return (HtmlSelectBooleanCheckbox) Components.getChildBySuffix(inverseCheckBoxContainer, CHECKBOX_SUFFIX);
     }
 
     private HtmlPanelGroup getInverseCheckBoxContainer(UIComponent rowContainer) {
-        return (HtmlPanelGroup) ComponentUtil.getChildBySuffix(rowContainer, INVERSE_CHECKBOX_CONTAINER_SUFFIX);
+        return (HtmlPanelGroup) Components.getChildBySuffix(rowContainer, INVERSE_CHECKBOX_CONTAINER_SUFFIX);
     }
 
     private HtmlSelectBooleanCheckbox findInverseCheckBox(FacesContext context, CompositeFilter compositeFilter) {
@@ -158,9 +158,9 @@ public class FilterRow implements Serializable {
 
 
     private CommandButton createAddButton(FacesContext context, UIComponent rowContainer, CompositeFilter compositeFilter) {
-        HtmlPanelGroup addButtonContainer = (HtmlPanelGroup) ComponentUtil.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, ADD_BUTTON_CONTAINER_SUFFIX);
+        HtmlPanelGroup addButtonContainer = (HtmlPanelGroup) Components.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, ADD_BUTTON_CONTAINER_SUFFIX);
         addButtonContainer.setStyleClass(DEFAULT_ROW_ITEM_CLASS);
-        CommandButton addButton = (CommandButton) ComponentUtil.createChildComponent(context, addButtonContainer, CommandButton.COMPONENT_TYPE, BUTTON_SUFFIX);
+        CommandButton addButton = (CommandButton) Components.createChildComponent(context, addButtonContainer, CommandButton.COMPONENT_TYPE, BUTTON_SUFFIX);
         addButton.setType("button");
         addButton.setValue("+");
         addButton.setOnclick("O$('" + compositeFilter.getClientId(context) + "').add(); return false;");
@@ -174,9 +174,9 @@ public class FilterRow implements Serializable {
     }
 
     private CommandButton createDeleteButton(FacesContext context, UIComponent rowContainer, CompositeFilter compositeFilter) {
-        HtmlPanelGroup deleteButtonContainer = (HtmlPanelGroup) ComponentUtil.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, DELETE_BUTTON_CONTAINER_SUFFIX);
+        HtmlPanelGroup deleteButtonContainer = (HtmlPanelGroup) Components.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, DELETE_BUTTON_CONTAINER_SUFFIX);
         deleteButtonContainer.setStyleClass(DEFAULT_ROW_ITEM_CLASS);
-        CommandButton deleteButton = (CommandButton) ComponentUtil.createChildComponent(context, deleteButtonContainer, CommandButton.COMPONENT_TYPE, BUTTON_SUFFIX);
+        CommandButton deleteButton = (CommandButton) Components.createChildComponent(context, deleteButtonContainer, CommandButton.COMPONENT_TYPE, BUTTON_SUFFIX);
         deleteButton.setType("button");
         deleteButton.setValue("-");
         deleteButton.setOnclick("O$('" + compositeFilter.getClientId(context) + "').remove(" + index + "); return false;");
@@ -187,18 +187,18 @@ public class FilterRow implements Serializable {
 
 
     private HtmlPanelGroup createPropertySelectorContainer(FacesContext context, UIComponent rowContainer) {
-        HtmlPanelGroup propertySelectorContainer = (HtmlPanelGroup) ComponentUtil.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, PROPERTY_SELECTOR_ID_SUFFIX, 0);
+        HtmlPanelGroup propertySelectorContainer = (HtmlPanelGroup) Components.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, PROPERTY_SELECTOR_ID_SUFFIX, 0);
         propertySelectorContainer.setStyleClass(DEFAULT_ROW_ITEM_INPUT_CLASS);
         return propertySelectorContainer;
     }
 
     private HtmlPanelGroup getPropertySelectorContainer(UIComponent rowContainer) {
-        return (HtmlPanelGroup) ComponentUtil.getChildBySuffix(rowContainer, PROPERTY_SELECTOR_ID_SUFFIX);
+        return (HtmlPanelGroup) Components.getChildBySuffix(rowContainer, PROPERTY_SELECTOR_ID_SUFFIX);
     }
 
     private DropDownField createPropertySelector(FacesContext context, HtmlPanelGroup propertySelectorContainer, CompositeFilter compositeFilter) {
-        DropDownField propertySelector = (DropDownField) ComponentUtil.createChildComponent(context, propertySelectorContainer, DropDownField.COMPONENT_TYPE, DROP_DOWN_ID_SUFFIX);
-        DropDownItems dropDownItems = (DropDownItems) ComponentUtil.createChildComponent(context, propertySelector, DropDownItems.COMPONENT_TYPE, DROP_DOWN_ITEMS_ID_SUFFIX);
+        DropDownField propertySelector = (DropDownField) Components.createChildComponent(context, propertySelectorContainer, DropDownField.COMPONENT_TYPE, DROP_DOWN_ID_SUFFIX);
+        DropDownItems dropDownItems = (DropDownItems) Components.createChildComponent(context, propertySelector, DropDownItems.COMPONENT_TYPE, DROP_DOWN_ITEMS_ID_SUFFIX);
         List<String> properties = compositeFilter.getFilterPropertiesTitles();
         dropDownItems.setValue(properties);
         propertySelector.setOnchange("O$('" + compositeFilter.getClientId(context) + "')._propertyChange(" + index + ");");
@@ -216,7 +216,7 @@ public class FilterRow implements Serializable {
     }
 
     private DropDownField getPropertySelector(HtmlPanelGroup propertySelectorContainer) {
-        return (DropDownField) ComponentUtil.getChildBySuffix(propertySelectorContainer, DROP_DOWN_ID_SUFFIX);
+        return (DropDownField) Components.getChildBySuffix(propertySelectorContainer, DROP_DOWN_ID_SUFFIX);
     }
 
     private DropDownField findPropertySelector(CompositeFilter compositeFilter) {
@@ -230,7 +230,7 @@ public class FilterRow implements Serializable {
 
 
     private HtmlPanelGroup createOperationSelectorContainer(FacesContext context, UIComponent rowContainer) {
-        HtmlPanelGroup operationSelectorContainer = (HtmlPanelGroup) ComponentUtil.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, OPERATION_SELECTOR_ID_SUFFIX, 2);
+        HtmlPanelGroup operationSelectorContainer = (HtmlPanelGroup) Components.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, OPERATION_SELECTOR_ID_SUFFIX, 2);
         operationSelectorContainer.setStyleClass(DEFAULT_ROW_ITEM_INPUT_CLASS);
         operationSelectorContainer.setValueExpression("rendered", new ValueExpressionImpl() {
             public Object getValue(ELContext elContext) {
@@ -241,12 +241,12 @@ public class FilterRow implements Serializable {
     }
 
     private HtmlPanelGroup getOperationSelectorContainer(UIComponent rowContainer) {
-        return (HtmlPanelGroup) ComponentUtil.getChildBySuffix(rowContainer, OPERATION_SELECTOR_ID_SUFFIX);
+        return (HtmlPanelGroup) Components.getChildBySuffix(rowContainer, OPERATION_SELECTOR_ID_SUFFIX);
     }
 
     private DropDownField createOperationSelector(FacesContext context, HtmlPanelGroup operationSelectorContainer, CompositeFilter compositeFilter) {
-        DropDownField operationSelector = (DropDownField) ComponentUtil.createChildComponent(context, operationSelectorContainer, DropDownField.COMPONENT_TYPE, DROP_DOWN_ID_SUFFIX);
-        ComponentUtil.createChildComponent(context, operationSelector, DropDownItems.COMPONENT_TYPE, DROP_DOWN_ITEMS_ID_SUFFIX);
+        DropDownField operationSelector = (DropDownField) Components.createChildComponent(context, operationSelectorContainer, DropDownField.COMPONENT_TYPE, DROP_DOWN_ID_SUFFIX);
+        Components.createChildComponent(context, operationSelector, DropDownItems.COMPONENT_TYPE, DROP_DOWN_ITEMS_ID_SUFFIX);
         operationSelector.setOnchange("O$('" + compositeFilter.getClientId(context) + "')._operationChange(" + index + ");");
         operationSelector.setConverter(compositeFilter.getConditionConverter());
         operationSelector.setStyleClass(DEFAULT_OPERATION_CLASS);
@@ -268,7 +268,7 @@ public class FilterRow implements Serializable {
 
 
     private DropDownField getOperationSelector(HtmlPanelGroup operationSelectorContainer) {
-        return (DropDownField) ComponentUtil.getChildBySuffix(operationSelectorContainer, DROP_DOWN_ID_SUFFIX);
+        return (DropDownField) Components.getChildBySuffix(operationSelectorContainer, DROP_DOWN_ID_SUFFIX);
     }
 
     private DropDownField findOperationSelector(CompositeFilter compositeFilter) {
@@ -282,12 +282,12 @@ public class FilterRow implements Serializable {
 
 
     private DropDownItems getOperationSelectorItems(DropDownField operationSelector) {
-        return (DropDownItems) ComponentUtil.getChildBySuffix(operationSelector, DROP_DOWN_ITEMS_ID_SUFFIX);
+        return (DropDownItems) Components.getChildBySuffix(operationSelector, DROP_DOWN_ITEMS_ID_SUFFIX);
     }
 
 
     private HtmlPanelGroup createParametersEditorContainer(FacesContext context, UIComponent rowContainer) {
-        HtmlPanelGroup parametersEditorContainer = (HtmlPanelGroup) ComponentUtil.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, PARAMETERS_EDITOR_ID_SUFFIX, 3);
+        HtmlPanelGroup parametersEditorContainer = (HtmlPanelGroup) Components.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, PARAMETERS_EDITOR_ID_SUFFIX, 3);
         parametersEditorContainer.setStyleClass(DEFAULT_ROW_ITEM_INPUT_CLASS);
         parametersEditorContainer.setValueExpression("rendered", new ValueExpressionImpl() {
             public Object getValue(ELContext elContext) {
@@ -299,7 +299,7 @@ public class FilterRow implements Serializable {
 
 
     private UIComponent getParametersEditorContainer(UIComponent rowContainer) {
-        return ComponentUtil.getChildBySuffix(rowContainer, PARAMETERS_EDITOR_ID_SUFFIX);
+        return Components.getChildBySuffix(rowContainer, PARAMETERS_EDITOR_ID_SUFFIX);
     }
 
 

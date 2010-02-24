@@ -25,11 +25,11 @@ import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.input.DateChooserRenderer;
 import org.openfaces.renderkit.input.DropDownComponentRenderer;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
@@ -67,7 +67,7 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
         String clientId = compositeFilter.getClientId(context);
         writer.startElement("div", compositeFilter);
         writer.writeAttribute("id", clientId, "id");        
-        String styleClass = StyleUtil.getCSSClass(context,
+        String styleClass = Styles.getCSSClass(context,
                 compositeFilter, compositeFilter.getStyle(), "clearfix", compositeFilter.getStyleClass());
         writer.writeAttribute("class", styleClass, null);
         writer.flush();
@@ -111,20 +111,20 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
 
 
     private void encodeNoFilterRow(FacesContext context, CompositeFilter compositeFilter) throws IOException {
-        HtmlPanelGroup rowContainer = (HtmlPanelGroup) ComponentUtil.getChildBySuffix(compositeFilter, NO_FILTER_ROW_SUFFIX);
+        HtmlPanelGroup rowContainer = (HtmlPanelGroup) Components.getChildBySuffix(compositeFilter, NO_FILTER_ROW_SUFFIX);
         if (rowContainer == null) {
-            rowContainer = (HtmlPanelGroup) ComponentUtil.createChildComponent(context, compositeFilter, HtmlPanelGroup.COMPONENT_TYPE, NO_FILTER_ROW_SUFFIX);
+            rowContainer = (HtmlPanelGroup) Components.createChildComponent(context, compositeFilter, HtmlPanelGroup.COMPONENT_TYPE, NO_FILTER_ROW_SUFFIX);
             rowContainer.setLayout("block");
             rowContainer.setStyleClass(FilterRow.DEFAULT_ROW_CLASS);
             //rowContainer.setValueExpression("rendered", compositeFilter.getNoFilterRowRendererExpression());
 
-            HtmlOutputText noFilterText = (HtmlOutputText) ComponentUtil.createChildComponent(context, rowContainer, HtmlOutputText.COMPONENT_TYPE, NO_FILTER_TEXT_SUFFIX);
+            HtmlOutputText noFilterText = (HtmlOutputText) Components.createChildComponent(context, rowContainer, HtmlOutputText.COMPONENT_TYPE, NO_FILTER_TEXT_SUFFIX);
             noFilterText.setStyleClass(DEFAULT_NO_FILTER_TEXT_CLASS);
             noFilterText.setValue(compositeFilter.getNoFilterMessage());
 
-            HtmlPanelGroup addButtonContainer = (HtmlPanelGroup) ComponentUtil.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, FilterRow.ADD_BUTTON_CONTAINER_SUFFIX);
+            HtmlPanelGroup addButtonContainer = (HtmlPanelGroup) Components.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, FilterRow.ADD_BUTTON_CONTAINER_SUFFIX);
             addButtonContainer.setStyleClass(FilterRow.DEFAULT_ROW_ITEM_CLASS);
-            HtmlCommandButton addButton = (HtmlCommandButton) ComponentUtil.createChildComponent(context, addButtonContainer, HtmlCommandButton.COMPONENT_TYPE, FilterRow.BUTTON_SUFFIX);
+            HtmlCommandButton addButton = (HtmlCommandButton) Components.createChildComponent(context, addButtonContainer, HtmlCommandButton.COMPONENT_TYPE, FilterRow.BUTTON_SUFFIX);
             addButton.setValue("+");            
             addButton.setOnclick("O$('"+compositeFilter.getClientId(context)+"').add(); return false;");
             addButton.setStyleClass(FilterRow.DEFAULT_ADD_BUTTON_CLASS);
@@ -136,19 +136,19 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
         ScriptBuilder sb = new ScriptBuilder().initScript(context, compositeFilter, "O$.CompositeFilter._init");
 
         String[] libs = getNecessaryJsLibs(context);
-        RenderingUtil.renderInitScript(context, sb, libs);
+        Rendering.renderInitScript(context, sb, libs);
     }
 
     public static String getFilterJsURL(FacesContext facesContext) {
-        return ResourceUtil.getInternalResourceURL(facesContext, CompositeFilterRenderer.class, "compositeFilter.js");
+        return Resources.getInternalURL(facesContext, CompositeFilterRenderer.class, "compositeFilter.js");
     }
 
     private String[] getNecessaryJsLibs(FacesContext context) {
         return new String[]{
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getJsonJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, DropDownComponentRenderer.class, "dropdown.js"),
-                ResourceUtil.getInternalResourceURL(context, DateChooserRenderer.class, "dateChooser.js"),
+                Resources.getUtilJsURL(context),
+                Resources.getJsonJsURL(context),
+                Resources.getInternalURL(context, DropDownComponentRenderer.class, "dropdown.js"),
+                Resources.getInternalURL(context, DateChooserRenderer.class, "dateChooser.js"),
                 getFilterJsURL(context)};
     }
 
@@ -164,13 +164,13 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
         
         String _for = compositeFilter.getFor();
         if (_for != null) {
-            UICommand applyButton = ComponentUtil.getOrCreateFacet(context, compositeFilter, HtmlCommandButton.COMPONENT_TYPE, "applyButton", "applyButton", UICommand.class);
+            UICommand applyButton = Components.getOrCreateFacet(context, compositeFilter, HtmlCommandButton.COMPONENT_TYPE, "applyButton", "applyButton", UICommand.class);
             if (applyButton.getValue() == null)
                 applyButton.setValue("Apply");
             applyButton.getAttributes().put("onclick", new ScriptBuilder().O$(compositeFilter).dot().functionCall("apply").append(";return false;").toString());
             applyButton.encodeAll(context);
 
-            String ajaxForApplyId = ComponentUtil.generateIdWithSuffix(compositeFilter, "ajaxForApply");
+            String ajaxForApplyId = Components.generateIdWithSuffix(compositeFilter, "ajaxForApply");
             Ajax ajaxForApply = (Ajax) compositeFilter.findComponent(ajaxForApplyId);
             if (ajaxForApply == null) {
                 ajaxForApply = new Ajax();

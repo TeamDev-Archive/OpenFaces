@@ -165,7 +165,7 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
 
 /*
   public String getRolloverSeparatorStyle() {
-    return ComponentUtil.getBoundPropertyValueAsString(this, "rolloverSeparatorStyle", rolloverSeparatorStyle);
+    return Components.getBoundPropertyValueAsString(this, "rolloverSeparatorStyle", rolloverSeparatorStyle);
   }
 
   public void setRolloverSeparatorStyle(String rolloverSeparatorStyle) {
@@ -173,7 +173,7 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
   }
 
   public String getRolloverSeparatorClass() {
-    return ComponentUtil.getBoundPropertyValueAsString(this, "rolloverSeparatorClass", rolloverSeparatorClass);
+    return Components.getBoundPropertyValueAsString(this, "rolloverSeparatorClass", rolloverSeparatorClass);
   }
 
   public void setRolloverSeparatorClass(String rolloverSeparatorClass) {
@@ -181,7 +181,7 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
   }
 
   public String getRolloverSeparatorHeaderStyle() {
-    return ComponentUtil.getBoundPropertyValueAsString(this, "rolloverSeparatorHeaderStyle", rolloverSeparatorHeaderStyle);
+    return Components.getBoundPropertyValueAsString(this, "rolloverSeparatorHeaderStyle", rolloverSeparatorHeaderStyle);
   }
 
   public void setRolloverSeparatorHeaderStyle(String rolloverSeparatorHeaderStyle) {
@@ -189,7 +189,7 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
   }
 
   public String getRolloverSeparatorHeaderClass() {
-    return ComponentUtil.getBoundPropertyValueAsString(this, "rolloverSeparatorHeaderClass", rolloverSeparatorHeaderClass);
+    return Components.getBoundPropertyValueAsString(this, "rolloverSeparatorHeaderClass", rolloverSeparatorHeaderClass);
   }
 
   public void setRolloverSeparatorHeaderClass(String rolloverSeparatorHeaderClass) {
@@ -197,7 +197,7 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
   }
 
   public String getDraggedSeparatorStyle() {
-    return ComponentUtil.getBoundPropertyValueAsString(this, "draggedSeparatorStyle", draggedSeparatorStyle);
+    return Components.getBoundPropertyValueAsString(this, "draggedSeparatorStyle", draggedSeparatorStyle);
   }
 
   public void setDraggedSeparatorStyle(String draggedSeparatorStyle) {
@@ -205,7 +205,7 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
   }
 
   public String getDraggedSeparatorClass() {
-    return ComponentUtil.getBoundPropertyValueAsString(this, "draggedSeparatorClass", draggedSeparatorClass);
+    return Components.getBoundPropertyValueAsString(this, "draggedSeparatorClass", draggedSeparatorClass);
   }
 
   public void setDraggedSeparatorClass(String draggedSeparatorClass) {
@@ -213,7 +213,7 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
   }
 
   public String getDraggedSeparatorHeaderStyle() {
-    return ComponentUtil.getBoundPropertyValueAsString(this, "draggedSeparatorHeaderStyle", draggedSeparatorHeaderStyle);
+    return Components.getBoundPropertyValueAsString(this, "draggedSeparatorHeaderStyle", draggedSeparatorHeaderStyle);
   }
 
   public void setDraggedSeparatorHeaderStyle(String draggedSeparatorHeaderStyle) {
@@ -221,7 +221,7 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
   }
 
   public String getDraggedSeparatorHeaderClass() {
-    return ComponentUtil.getBoundPropertyValueAsString(this, "draggedSeparatorHeaderClass", draggedSeparatorHeaderClass);
+    return Components.getBoundPropertyValueAsString(this, "draggedSeparatorHeaderClass", draggedSeparatorHeaderClass);
   }
 
   public void setDraggedSeparatorHeaderClass(String draggedSeparatorHeaderClass) {

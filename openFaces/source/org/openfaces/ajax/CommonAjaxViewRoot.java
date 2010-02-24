@@ -378,7 +378,7 @@ public abstract class CommonAjaxViewRoot {
 
     private String[] extractExecute(RequestFacade request) {
         String idsStr = request.getParameter(PARAM_EXECUTE);
-        String[] execute = !RenderingUtil.isNullOrEmpty(idsStr) ? idsStr.split(";") : null;
+        String[] execute = !Rendering.isNullOrEmpty(idsStr) ? idsStr.split(";") : null;
         return execute;
     }
 
@@ -821,7 +821,7 @@ public abstract class CommonAjaxViewRoot {
             assertChildren(viewRoot);
 
             // clear the style ids set just constructed on the "render" phase in order to avoid warning of repeated style rendering
-            StyleUtil.getRenderedStyleElementsIds(context).clear();
+            Styles.getRenderedStyleElementsIds(context).clear();
 
             loadBundles(context);
 
@@ -885,7 +885,7 @@ public abstract class CommonAjaxViewRoot {
             requestMap.put(AjaxUtil.KEY_RENDERING_PORTLETS_AJAX_RESPONSE, Boolean.TRUE);
             try {
                 // clear the style ids set just constructed on the "render" phase in order to avoid warning of repeated style rendering
-                StyleUtil.getRenderedStyleElementsIds(context).clear();
+                Styles.getRenderedStyleElementsIds(context).clear();
                 ajaxResponse = ajaxRenderResponse(request, context, components);
             } finally {
                 clearPortletSessionParams(context);
@@ -948,7 +948,7 @@ public abstract class CommonAjaxViewRoot {
             initScriptsStr = initScriptsStr.replaceAll("<!--", "").replaceAll("//-->", "");
             // create special node with runtime js library that contains all initialization scripts
             String uniqueRTLibraryName = ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
-            String initLibraryUrl = ResourceUtil.getApplicationResourceURL(context, uniqueRTLibraryName);
+            String initLibraryUrl = Resources.getApplicationURL(context, uniqueRTLibraryName);
             ajaxResponse.setInitLibraryName(initLibraryUrl);
 
             context.getExternalContext().getSessionMap().put(uniqueRTLibraryName, initScriptsStr);
@@ -1134,7 +1134,7 @@ public abstract class CommonAjaxViewRoot {
     }
 
     private void addJSLibraries(FacesContext context, AjaxResponse ajaxResponse) {
-        List<String> libraries = (List<String>) context.getExternalContext().getRequestMap().get(ResourceUtil.HEADER_JS_LIBRARIES);
+        List<String> libraries = (List<String>) context.getExternalContext().getRequestMap().get(Resources.HEADER_JS_LIBRARIES);
         if (libraries == null) return;
         for (String jsLibrary : libraries) {
             ajaxResponse.addJsLibrary(jsLibrary);
@@ -1153,9 +1153,9 @@ public abstract class CommonAjaxViewRoot {
 
     private void addStyles(FacesContext context, AjaxResponse ajaxResponse, UIComponent[] components) {
         for (UIComponent component : components) {
-            List<String> styleClasses = StyleUtil.getAllStyleClassesForComponent(context, component);
+            List<String> styleClasses = Styles.getAllStyleClassesForComponent(context, component);
             addStyleClasses(ajaxResponse, styleClasses);
-            StyleUtil.markStylesRenderedForComponent(context, component);
+            Styles.markStylesRenderedForComponent(context, component);
         }
     }
 
@@ -1431,7 +1431,7 @@ public abstract class CommonAjaxViewRoot {
         ResponseWriter writer = context.getResponseWriter();
         String stateStr = AjaxUtil.objectToString(state);
         String fieldName = AjaxUtil.getComponentStateFieldName(clientId);
-        RenderingUtil.renderHiddenField(writer, fieldName, stateStr);
+        Rendering.renderHiddenField(writer, fieldName, stateStr);
     }
 
     private ResponseWriter substituteResponseWriter(FacesContext context, RequestFacade request, Writer innerWriter) {

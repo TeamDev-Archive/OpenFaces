@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.timetable;
 
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UICommand;
@@ -180,7 +180,7 @@ public class EventAction extends UICommand {
         int thisIndex = getEventActionComponents(actionBar).indexOf(this);
         if (thisIndex == -1)
             throw new IllegalStateException("Can't find this action in the parent list");
-        String actionId = actionBar.getClientId(context) + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + thisIndex;
+        String actionId = actionBar.getClientId(context) + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + thisIndex;
 
         Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
         String eventId = requestParams.get(actionId);

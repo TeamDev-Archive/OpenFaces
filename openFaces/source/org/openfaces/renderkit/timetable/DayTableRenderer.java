@@ -21,14 +21,14 @@ import org.openfaces.renderkit.TableRenderer;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.DataUtil;
 import org.openfaces.util.Log;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -55,7 +55,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
             return;
 
         DayTable dayTable = (DayTable) component;
-        RenderingUtil.registerDateTimeFormatObject(dayTable.getLocale());
+        Rendering.registerDateTimeFormatObject(dayTable.getLocale());
         AjaxUtil.prepareComponentForAjax(context, dayTable);
 
         dayTable.setEvent(null);
@@ -66,9 +66,9 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         writer.writeAttribute("cellspacing", "0", null);
         writer.writeAttribute("cellpadding", "0", null);
         writer.writeAttribute("border", "0", null);
-        writer.writeAttribute("class", StyleUtil.getCSSClass(context,
+        writer.writeAttribute("class", Styles.getCSSClass(context,
                 dayTable, dayTable.getStyle(), "o_dayTable", dayTable.getStyleClass()), null);
-        RenderingUtil.writeStandardEvents(writer, dayTable);
+        Rendering.writeStandardEvents(writer, dayTable);
         writer.startElement("tbody", dayTable);
 
         renderHeader(context, dayTable, clientId);
@@ -92,7 +92,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         writer.endElement("tbody");
         writer.endElement("table");
 
-        StyleUtil.renderStyleClasses(context, dayTable);
+        Styles.renderStyleClasses(context, dayTable);
     }
 
     private void encodeActionBar(FacesContext context, DayTable dayTable) throws IOException {
@@ -112,7 +112,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
     private void encodeEventEditor(FacesContext context, DayTable dayTable, List<TimetableResource> resources) throws IOException {
         UIComponent eventEditor = dayTable.getEventEditor();
         if (eventEditor == null) {
-            eventEditor = ComponentUtil.getOrCreateFacet(context, dayTable,
+            eventEditor = Components.getOrCreateFacet(context, dayTable,
                     EventEditorDialog.COMPONENT_TYPE, "eventEditor", "_eventEditor", EventEditorDialog.class);
         }
         if (eventEditor instanceof EventEditorDialog)
@@ -129,7 +129,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
             writer.startElement("tr", header);
             writer.startElement("td", header);
             writer.startElement("table", header);
-            String headerClass = StyleUtil.getCSSClass(context,
+            String headerClass = Styles.getCSSClass(context,
                     dayTable, dayTable.getHeaderStyle(), "o_dayTable_header", dayTable.getHeaderClass());
             writer.writeAttribute("class", headerClass, null);
 
@@ -152,7 +152,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
             writer.startElement("tr", footer);
             writer.startElement("td", footer);
             writer.startElement("table", footer);
-            String footerClass = StyleUtil.getCSSClass(context,
+            String footerClass = Styles.getCSSClass(context,
                     dayTable, dayTable.getFooterStyle(), "o_dayTable_footer", dayTable.getFooterClass());
             writer.writeAttribute("class", footerClass, null);
 
@@ -178,7 +178,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
             final int colCount = 1 + (resources.size() > 0 ? resources.size() : 1);
             writer.startElement("tr", dayTable);
             writer.startElement("td", dayTable);
-            new TableRenderer(clientId + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "resourceHeaders", 0, 0, 0, "o_resourceHeadersTable") {
+            new TableRenderer(clientId + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "resourceHeaders", 0, 0, 0, "o_resourceHeadersTable") {
                 @Override
                 protected void encodeCellContents(FacesContext context, ResponseWriter writer, UIComponent component,
                                                   int rowIndex, int colIndex) throws IOException {
@@ -187,9 +187,9 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
                     TimetableResource resource = resources.get(colIndex - 1);
                     UIComponent resourceHeader = dayTable.getResourceHeader();
                     if (resourceHeader != null) {
-                        Object prevValue = ComponentUtil.setRequestMapValue("resource", resource);
+                        Object prevValue = Components.setRequestMapValue("resource", resource);
                         resourceHeader.encodeAll(context);
-                        ComponentUtil.setRequestMapValue("resource", prevValue);
+                        Components.setRequestMapValue("resource", prevValue);
                     } else {
                         writer.write(resource.getName());
                     }
@@ -232,14 +232,14 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
 
         JSONArray areaSettings = encodeEventAreas(context, dayTable, events);
 
-        List<UITimetableEvent> uiEvents = ComponentUtil.findChildrenWithClass(dayTable, UITimetableEvent.class);
+        List<UITimetableEvent> uiEvents = Components.findChildrenWithClass(dayTable, UITimetableEvent.class);
         if (uiEvents.size() > 1)
             throw new FacesException("There should be only one <o:timetableEvent> tag inside of <o:dayTable> tag. " +
                     "DayTable clientId = " + dayTable.getClientId(context));
         UITimetableEvent uiEvent = uiEvents.size() > 0 ? uiEvents.get(0) : null;
 
         try {
-            RenderingUtil.renderInitScript(context,
+            Rendering.renderInitScript(context,
                     new ScriptBuilder().initScript(context, dayTable, "O$._initDayTable",
                             DataUtil.formatDateTimeForJs(dayTable.getDay(), timeZone),
                             dayTable.getLocale(),
@@ -260,10 +260,10 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
                             dayTable.getMajorTimeInterval(),
                             dayTable.getMinorTimeInterval(),
                             dayTable.getShowTimeForMinorIntervals()).semicolon(),
-                    ResourceUtil.getUtilJsURL(context),
-                    ResourceUtil.getJsonJsURL(context),
+                    Resources.getUtilJsURL(context),
+                    Resources.getJsonJsURL(context),
                     TableUtil.getTableUtilJsURL(context),
-                    ResourceUtil.getInternalResourceURL(context, DayTableRenderer.class, "dayTable.js")
+                    Resources.getInternalURL(context, DayTableRenderer.class, "dayTable.js")
             );
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -373,11 +373,11 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
     private JSONObject getEditingOptionsObj(DayTable dayTable) {
         JSONObject editingOptionsObj = new JSONObject();
         TimetableEditingOptions editingOptions = dayTable.getEditingOptions();
-        RenderingUtil.addJsonParam(editingOptionsObj, "autoSaveChanges", editingOptions.getAutoSaveChanges(), true);
-        RenderingUtil.addJsonParam(editingOptionsObj, "overlappedEventsAllowed", editingOptions.getOverlappedEventsAllowed(), true);
-        RenderingUtil.addJsonParam(editingOptionsObj, "eventResourceEditable", editingOptions.isEventResourceEditable(), true);
-        RenderingUtil.addJsonParam(editingOptionsObj, "eventDurationEditable", editingOptions.isEventDurationEditable(), true);
-        RenderingUtil.addJsonParam(editingOptionsObj, "defaultEventDuration", editingOptions.getDefaultEventDuration(), 30);
+        Rendering.addJsonParam(editingOptionsObj, "autoSaveChanges", editingOptions.getAutoSaveChanges(), true);
+        Rendering.addJsonParam(editingOptionsObj, "overlappedEventsAllowed", editingOptions.getOverlappedEventsAllowed(), true);
+        Rendering.addJsonParam(editingOptionsObj, "eventResourceEditable", editingOptions.isEventResourceEditable(), true);
+        Rendering.addJsonParam(editingOptionsObj, "eventDurationEditable", editingOptions.isEventDurationEditable(), true);
+        Rendering.addJsonParam(editingOptionsObj, "defaultEventDuration", editingOptions.getDefaultEventDuration(), 30);
         return editingOptionsObj;
     }
 
@@ -385,41 +385,41 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         JSONObject stylingParams = new JSONObject();
 
 
-        StyleUtil.addStyleJsonParam(context, dayTable, stylingParams, "rolloverClass",
+        Styles.addStyleJsonParam(context, dayTable, stylingParams, "rolloverClass",
                 dayTable.getRolloverStyle(), dayTable.getRolloverClass());
-        StyleUtil.addStyleJsonParam(context, dayTable, stylingParams, "resourceHeadersRowClass",
+        Styles.addStyleJsonParam(context, dayTable, stylingParams, "resourceHeadersRowClass",
                 dayTable.getResourceHeadersRowStyle(), dayTable.getResourceHeadersRowClass());
-        StyleUtil.addStyleJsonParam(context, dayTable, stylingParams, "rowClass",
+        Styles.addStyleJsonParam(context, dayTable, stylingParams, "rowClass",
                 dayTable.getRowStyle(), dayTable.getRowClass());
 
-        RenderingUtil.addJsonParam(stylingParams, "timeTextPosition",
+        Rendering.addJsonParam(stylingParams, "timeTextPosition",
                 dayTable.getTimeTextPosition(), TimeTextPosition.UNDER_MARK);
 
-        StyleUtil.addStyleJsonParam(context, dayTable, stylingParams, "timeColumnClass",
+        Styles.addStyleJsonParam(context, dayTable, stylingParams, "timeColumnClass",
                 dayTable.getTimeColumnStyle(), dayTable.getTimeColumnClass());
-        StyleUtil.addStyleJsonParam(context, dayTable, stylingParams, "majorTimeClass",
+        Styles.addStyleJsonParam(context, dayTable, stylingParams, "majorTimeClass",
                 dayTable.getMajorTimeStyle(), dayTable.getMajorTimeClass());
-        StyleUtil.addStyleJsonParam(context, dayTable, stylingParams, "minorTimeClass",
+        Styles.addStyleJsonParam(context, dayTable, stylingParams, "minorTimeClass",
                 dayTable.getMinorTimeStyle(), dayTable.getMinorTimeClass());
-        StyleUtil.addStyleJsonParam(context, dayTable, stylingParams, "timeSuffixClass",
+        Styles.addStyleJsonParam(context, dayTable, stylingParams, "timeSuffixClass",
                 dayTable.getTimeSuffixStyle(), dayTable.getTimeSuffixClass(), StyleGroup.regularStyleGroup(1));
 
-        RenderingUtil.addJsonParam(stylingParams, "defaultEventColor", dayTable.getDefaultEventColor());
-        RenderingUtil.addJsonParam(stylingParams, "reservedTimeEventColor", dayTable.getDefaultEventColor());
-        StyleUtil.addStyleJsonParam(context, dayTable, stylingParams, "reservedTimeEventClass",
+        Rendering.addJsonParam(stylingParams, "defaultEventColor", dayTable.getDefaultEventColor());
+        Rendering.addJsonParam(stylingParams, "reservedTimeEventColor", dayTable.getDefaultEventColor());
+        Styles.addStyleJsonParam(context, dayTable, stylingParams, "reservedTimeEventClass",
                 dayTable.getReservedTimeEventStyle(), dayTable.getReservedTimeEventClass());
-        RenderingUtil.addJsonParam(stylingParams, "dragAndDropTransitionPeriod", dayTable.getDragAndDropTransitionPeriod(), 70);
-        RenderingUtil.addJsonParam(stylingParams, "dragAndDropCancelingPeriod", dayTable.getDragAndDropCancelingPeriod(), 200);
-        RenderingUtil.addJsonParam(stylingParams, "undroppableStateTransitionPeriod", dayTable.getUndroppableStateTransitionPeriod(), 250);
-        RenderingUtil.addJsonParam(stylingParams, "undroppableEventTransparency", dayTable.getUndroppableEventTransparency(), 0.5);
+        Rendering.addJsonParam(stylingParams, "dragAndDropTransitionPeriod", dayTable.getDragAndDropTransitionPeriod(), 70);
+        Rendering.addJsonParam(stylingParams, "dragAndDropCancelingPeriod", dayTable.getDragAndDropCancelingPeriod(), 200);
+        Rendering.addJsonParam(stylingParams, "undroppableStateTransitionPeriod", dayTable.getUndroppableStateTransitionPeriod(), 250);
+        Rendering.addJsonParam(stylingParams, "undroppableEventTransparency", dayTable.getUndroppableEventTransparency(), 0.5);
 
-        RenderingUtil.addJsonParam(stylingParams, "resourceHeadersRowSeparator", dayTable.getResourceHeadersRowSeparator());
-        RenderingUtil.addJsonParam(stylingParams, "resourceColumnSeparator", dayTable.getResourceColumnSeparator());
-        RenderingUtil.addJsonParam(stylingParams, "timeColumnSeparator", dayTable.getTimeColumnSeparator());
-        RenderingUtil.addJsonParam(stylingParams, "primaryRowSeparator", dayTable.getPrimaryRowSeparator());
-        RenderingUtil.addJsonParam(stylingParams, "secondaryRowSeparator", dayTable.getSecondaryRowSeparator());
-        RenderingUtil.addJsonParam(stylingParams, "timeColumnPrimaryRowSeparator", dayTable.getTimeColumnPrimaryRowSeparator());
-        RenderingUtil.addJsonParam(stylingParams, "timeColumnSecondaryRowSeparator", dayTable.getTimeColumnSecondaryRowSeparator());
+        Rendering.addJsonParam(stylingParams, "resourceHeadersRowSeparator", dayTable.getResourceHeadersRowSeparator());
+        Rendering.addJsonParam(stylingParams, "resourceColumnSeparator", dayTable.getResourceColumnSeparator());
+        Rendering.addJsonParam(stylingParams, "timeColumnSeparator", dayTable.getTimeColumnSeparator());
+        Rendering.addJsonParam(stylingParams, "primaryRowSeparator", dayTable.getPrimaryRowSeparator());
+        Rendering.addJsonParam(stylingParams, "secondaryRowSeparator", dayTable.getSecondaryRowSeparator());
+        Rendering.addJsonParam(stylingParams, "timeColumnPrimaryRowSeparator", dayTable.getTimeColumnPrimaryRowSeparator());
+        Rendering.addJsonParam(stylingParams, "timeColumnSecondaryRowSeparator", dayTable.getTimeColumnSecondaryRowSeparator());
         return stylingParams;
     }
 
@@ -433,7 +433,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
         writer.writeAttribute("class", "o_dayTable_scroller", null);
 
         int colCount = 1 + (resources.size() > 0 ? resources.size() : 1);
-        new TableRenderer(clientId + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "table", 0, 0, 0, "o_dayTable_table") {
+        new TableRenderer(clientId + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "table", 0, 0, 0, "o_dayTable_table") {
 
             protected void encodeTFoot(ResponseWriter writer, UIComponent component) throws IOException {
                 writer.startElement("tfoot", component);
@@ -471,7 +471,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
 
         Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
         String clientId = dayTable.getClientId(context);
-        String dayStr = requestParams.get(clientId + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "day");
+        String dayStr = requestParams.get(clientId + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "day");
         if (dayStr != null) {
             TimeZone timeZone = (dayTable.getTimeZone() != null)
                     ? dayTable.getTimeZone()
@@ -479,7 +479,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
             Date day = DataUtil.parseDateFromJs(dayStr, timeZone);
             dayTable.setDay(day);
         }
-        String scrollTimeStr = requestParams.get(clientId + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "scrollPos");
+        String scrollTimeStr = requestParams.get(clientId + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "scrollPos");
         if (scrollTimeStr != null) {
             dayTable.setScrollTime(scrollTimeStr);
         }
@@ -490,7 +490,7 @@ public class DayTableRenderer extends RendererBase implements AjaxPortionRendere
     private void decodeTimetableChanges(FacesContext context, DayTable dayTable) {
         Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
 
-        String changesKey = dayTable.getClientId(context) + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "timetableChanges";
+        String changesKey = dayTable.getClientId(context) + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "timetableChanges";
         String timetableChangesStr = requestParams.get(changesKey);
         if (timetableChangesStr == null)
             return;

@@ -13,7 +13,7 @@ package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.renderkit.TableUtil;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -137,7 +137,7 @@ public class TableScrollingArea extends TableElement {
         writer.startElement("table", component);
         writer.writeAttribute("class", "o_scrolling_area_table", null);
         writer.writeAttribute("cellspacing", "0", null);
-        RenderingUtil.writeAttribute(writer, "cellpadding", getCellpadding());
+        Rendering.writeAttribute(writer, "cellpadding", getCellpadding());
         writer.writeAttribute("border", "0", null);
         TableUtil.writeColumnTags(context, component, columns);
         writer.startElement("tbody", component);

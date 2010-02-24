@@ -13,7 +13,7 @@ package org.openfaces.component.input;
 
 import org.openfaces.component.AbstractPopup;
 import org.openfaces.component.calendar.Calendar;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -55,7 +55,7 @@ public class DateChooserPopup extends AbstractPopup {
         children.add(calendar);
 
         calendar.setId(getId() + calendarIdSuffix);
-        RenderingUtil.renderChildren(context, this);
+        Rendering.renderChildren(context, this);
     }
 
     public void setCalendar(Calendar calendar) {

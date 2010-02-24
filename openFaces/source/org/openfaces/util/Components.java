@@ -30,11 +30,11 @@ import java.util.Map;
 /**
  * @author Dmitry Pikhulya
  */
-public class ComponentUtil {
+public class Components {
     private static final String AUTO_ID_PREFIX = "j_id";
     private static final String POSTPONED_ACTIONS_ATTR = "org.openfaces.postponedActions";
 
-    private ComponentUtil() {
+    private Components() {
     }
 
 
@@ -94,7 +94,7 @@ public class ComponentUtil {
             return component;
         try {
             component = childClass.newInstance();
-            component.setId(parent.getId() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + defaultIdSuffix);
+            component.setId(parent.getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + defaultIdSuffix);
         } catch (InstantiationException e) {
             throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
@@ -250,7 +250,7 @@ public class ComponentUtil {
      */
     public static String generateIdWithSuffix(UIComponent baseComponent, String idSuffix) {
         generateIdIfNotSpecified(baseComponent); // null id may have place when creating a component programmatically (especially in JSF RI 1.2, where id is not assigned in getClientId automatically)
-        String result = baseComponent.getId() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + idSuffix;
+        String result = baseComponent.getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + idSuffix;
         return result;
     }
 

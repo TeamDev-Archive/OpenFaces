@@ -12,9 +12,9 @@
 package org.openfaces.renderkit;
 
 import org.openfaces.component.CaptionArea;
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Styles;
 import org.openfaces.component.ComponentWithCaption;
 import org.openfaces.component.Side;
 
@@ -29,8 +29,8 @@ import java.util.List;
  * @author Dmitry Pikhulya
  */
 public abstract class ComponentWithCaptionRenderer extends RendererBase {
-    public static final String CAPTION_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "caption";
-    private static final String CAPTION_CONTENT_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "caption_content";
+    public static final String CAPTION_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "caption";
+    private static final String CAPTION_CONTENT_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "caption_content";
 
     public void renderCaption(FacesContext context, ComponentWithCaption component) throws IOException {
         UIComponent uiComponent = (UIComponent) component;
@@ -38,7 +38,7 @@ public abstract class ComponentWithCaptionRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("table", uiComponent);
         writer.writeAttribute("id", uiComponent.getClientId(context) + CAPTION_SUFFIX, null);
-        writeAttribute(writer, "class", StyleUtil.getCSSClass(
+        writeAttribute(writer, "class", Styles.getCSSClass(
                 context, uiComponent, component.getCaptionStyle(), getDefaultCaptionClass(component), component.getCaptionClass()
         ));
         writer.writeAttribute("cellpadding", "0", null);
@@ -98,7 +98,7 @@ public abstract class ComponentWithCaptionRenderer extends RendererBase {
     }
 
     protected List<CaptionArea> getCaptionAreas(ComponentWithCaption component) {
-        List<CaptionArea> captionAreas = ComponentUtil.findChildrenWithClass((UIComponent) component, CaptionArea.class);
+        List<CaptionArea> captionAreas = Components.findChildrenWithClass((UIComponent) component, CaptionArea.class);
         if (captionAreas == null || captionAreas.size() == 0)
             captionAreas = Collections.singletonList(getDefaultButtonsArea(component));
         return captionAreas;

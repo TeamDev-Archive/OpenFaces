@@ -17,8 +17,8 @@ import org.openfaces.component.select.SelectManyCheckbox;
 import org.openfaces.org.json.JSONObject;
 import static org.openfaces.renderkit.select.SelectManyInputImageManager.getCurrentImageUrl;
 import org.openfaces.util.AnonymousFunction;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 
@@ -167,7 +167,7 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) component;
-        return RenderingUtil.getConvertedUISelectManyValue(context, selectManyCheckbox, submittedValue);
+        return Rendering.getConvertedUISelectManyValue(context, selectManyCheckbox, submittedValue);
     }
 
 
@@ -185,9 +185,9 @@ public class SelectManyCheckboxRenderer extends SelectManyInputRenderer {
                 onchangeFunction
         );
 
-        RenderingUtil.renderInitScript(facesContext, initScript,
-                ResourceUtil.getUtilJsURL(facesContext),
-                ResourceUtil.getInternalResourceURL(facesContext, SelectOneRadioRenderer.class, "manycheckbox.js"));
+        Rendering.renderInitScript(facesContext, initScript,
+                Resources.getUtilJsURL(facesContext),
+                Resources.getInternalURL(facesContext, SelectOneRadioRenderer.class, "manycheckbox.js"));
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

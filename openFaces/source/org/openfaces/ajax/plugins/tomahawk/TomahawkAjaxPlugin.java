@@ -64,7 +64,7 @@ public class TomahawkAjaxPlugin extends AbstractAjaxPlugin {
             return result;
 
         } catch (ClassNotFoundException e) {
-            // absense of Tomahawk is a valid case
+            // absence of Tomahawk is a valid case
             return null;
         } catch (NoSuchMethodException e) {
             Log.log("", e);

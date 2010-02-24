@@ -17,7 +17,7 @@ import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.input.Spinner;
 import org.openfaces.renderkit.filter.FilterRow;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,12 +35,12 @@ public class SpinnerParametersEditor extends ParametersEditor implements Seriali
     }
 
     private Spinner getSpinner(UIComponent container) {
-        return (Spinner) ComponentUtil.getChildBySuffix(container, SPINNER_ID_SUFFIX);
+        return (Spinner) Components.getChildBySuffix(container, SPINNER_ID_SUFFIX);
     }
 
     private Spinner createSpinner(FacesContext context, UIComponent container) {
         clearContainer(container);
-        Spinner spinner = (Spinner) ComponentUtil.createChildComponent(context, container, Spinner.COMPONENT_TYPE, SPINNER_ID_SUFFIX);
+        Spinner spinner = (Spinner) Components.createChildComponent(context, container, Spinner.COMPONENT_TYPE, SPINNER_ID_SUFFIX);
         spinner.setStep(filterProperty.getStep());
         spinner.setMinValue(filterProperty.getMinValue());
         spinner.setMaxValue(filterProperty.getMaxValue());

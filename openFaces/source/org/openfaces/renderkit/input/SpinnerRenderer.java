@@ -16,13 +16,13 @@ import org.openfaces.component.input.DropDownComponent;
 import org.openfaces.component.input.Spinner;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.InitScript;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -46,7 +46,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         setUpConverter((Spinner) component);
-        ComponentUtil.generateIdIfNotSpecified(component);
+        Components.generateIdIfNotSpecified(component);
         super.encodeBegin(context, component);
     }
 
@@ -67,25 +67,25 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
 
         String buttonStyle = (String) dropDown.getAttributes().get("buttonStyle");
         String buttonClass = (String) dropDown.getAttributes().get("buttonClass");
-        String buttonStyleClass = StyleUtil.getCSSClass(context, dropDown, buttonStyle, DEFAULT_BUTTON_CLASS, buttonClass);
+        String buttonStyleClass = Styles.getCSSClass(context, dropDown, buttonStyle, DEFAULT_BUTTON_CLASS, buttonClass);
         String rolloverButtonStyle = (String) dropDown.getAttributes().get("rolloverButtonStyle");
         String rolloverButtonClass = (String) dropDown.getAttributes().get("rolloverButtonClass");
-        String buttonRolloverStyleClass = StyleUtil.getCSSClass(context, dropDown, rolloverButtonStyle, StyleGroup.rolloverStyleGroup(), rolloverButtonClass, DEFAULT_BUTTON_ROLLOVER_CLASS);
+        String buttonRolloverStyleClass = Styles.getCSSClass(context, dropDown, rolloverButtonStyle, StyleGroup.rolloverStyleGroup(), rolloverButtonClass, DEFAULT_BUTTON_ROLLOVER_CLASS);
         String pressedButtonStyle = (String) dropDown.getAttributes().get("pressedButtonStyle");
         String pressedButtonClass = (String) dropDown.getAttributes().get("pressedButtonClass");
-        String buttonPressedStyleClass = StyleUtil.getCSSClass(context, dropDown, pressedButtonStyle, StyleGroup.rolloverStyleGroup(2), pressedButtonClass, DEFAULT_BUTTON_PRESSED_CLASS);
+        String buttonPressedStyleClass = Styles.getCSSClass(context, dropDown, pressedButtonStyle, StyleGroup.rolloverStyleGroup(2), pressedButtonClass, DEFAULT_BUTTON_PRESSED_CLASS);
 
         if (dropDown.isDisabled()) {
             buttonRolloverStyleClass = "";
             String disabledButtonStyle = (String) dropDown.getAttributes().get("disabledButtonStyle");
             String disabledButtonClass = (String) dropDown.getAttributes().get("disabledButtonClass");
-            String disabledButtonStyleClass = StyleUtil.getCSSClass(context, dropDown, disabledButtonStyle,
+            String disabledButtonStyleClass = Styles.getCSSClass(context, dropDown, disabledButtonStyle,
                     StyleGroup.disabledStyleGroup(), disabledButtonClass, DEFAULT_DISABLED_BUTTON_CLASS);
 
-            if (RenderingUtil.isNullOrEmpty(disabledButtonStyle) && RenderingUtil.isNullOrEmpty(disabledButtonClass)) {
-                buttonStyleClass = StyleUtil.mergeClassNames(disabledButtonStyleClass, buttonStyleClass);
+            if (Rendering.isNullOrEmpty(disabledButtonStyle) && Rendering.isNullOrEmpty(disabledButtonClass)) {
+                buttonStyleClass = Styles.mergeClassNames(disabledButtonStyleClass, buttonStyleClass);
             } else {
-                buttonStyleClass = StyleUtil.mergeClassNames(disabledButtonStyleClass, StyleUtil.getCSSClass(context,
+                buttonStyleClass = Styles.mergeClassNames(disabledButtonStyleClass, Styles.getCSSClass(context,
                         dropDown, null, StyleGroup.regularStyleGroup(), null, DEFAULT_BUTTON_CLASS));
             }
         }
@@ -110,10 +110,10 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
                 options);
 
         return new InitScript(sb, new String[]{
-                ResourceUtil.getUtilJsURL(context),
+                Resources.getUtilJsURL(context),
                 getDropDownJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, SpinnerRenderer.class, "spinner.js"),
-                ResourceUtil.getInternalResourceURL(context, ResourceUtil.class, "dojo.js")
+                Resources.getInternalURL(context, SpinnerRenderer.class, "spinner.js"),
+                Resources.getInternalURL(context, Resources.class, "dojo.js")
         });
     }
 
@@ -136,7 +136,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         options.put("type", numberConverter.getType());
 
 
-        JSONObject customs = ResourceUtil.getNumberFormatSettings(numberConverter.getLocale());
+        JSONObject customs = Resources.getNumberFormatSettings(numberConverter.getLocale());
         options.put("customs", customs);
         return options;
     }   
@@ -151,7 +151,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
-        return RenderingUtil.convertFromString(context, component, (String) submittedValue);
+        return Rendering.convertFromString(context, component, (String) submittedValue);
     }
 
     @Override
@@ -206,10 +206,10 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         String resultImageUrl;
         if (spinner.isDisabled()) {
             String disabledButtonImageUrl = (String) spinner.getAttributes().get(disabledImageUrl);
-            resultImageUrl = ResourceUtil.getResourceURL(context, disabledButtonImageUrl, SpinnerRenderer.class, disabledImage);
+            resultImageUrl = Resources.getURL(context, disabledButtonImageUrl, SpinnerRenderer.class, disabledImage);
         } else {
             String buttonImageUrl = (String) spinner.getAttributes().get(imageUrl);
-            resultImageUrl = ResourceUtil.getResourceURL(context, buttonImageUrl, SpinnerRenderer.class, image);
+            resultImageUrl = Resources.getURL(context, buttonImageUrl, SpinnerRenderer.class, image);
         }
         writer.startElement("img", spinner);
         writer.writeAttribute("src", resultImageUrl, null);
@@ -228,7 +228,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
 
         renderEndTags(context, dropDown);
 
-        String promptTextStyleClass = StyleUtil.getCSSClass(context,
+        String promptTextStyleClass = Styles.getCSSClass(context,
                 dropDown, dropDown.getPromptTextStyle(), StyleGroup.regularStyleGroup(1), dropDown.getPromptTextClass(),
                 DEFAULT_PROMPT_CLASS);
 
@@ -242,15 +242,15 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         ScriptBuilder buf = new ScriptBuilder().initScript(context, dropDown, "O$.DropDown._initInput", params.toArray());
 
         InitScript commonInitScript = new InitScript(buf, new String[]{
-                ResourceUtil.getUtilJsURL(context),
+                Resources.getUtilJsURL(context),
                 getDropDownJsURL(context)
         });
 
         InitScript componentSpecificInitScript = renderInitScript(context, dropDown);
-        RenderingUtil.renderInitScripts(context, commonInitScript, componentSpecificInitScript);
+        Rendering.renderInitScripts(context, commonInitScript, componentSpecificInitScript);
 
         if (isAutomaticStyleRenderingNeeded())
-            StyleUtil.renderStyleClasses(context, dropDown);
+            Styles.renderStyleClasses(context, dropDown);
     }
 
     @Override
@@ -271,7 +271,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         super.encodeChildren(context, component);
-        RenderingUtil.encodeClientActions(context, component);
+        Rendering.encodeClientActions(context, component);
     }
 
 }

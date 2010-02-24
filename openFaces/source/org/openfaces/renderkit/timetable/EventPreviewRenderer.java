@@ -15,12 +15,12 @@ import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.EventPreview;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -40,32 +40,32 @@ public class EventPreviewRenderer extends RendererBase {
         writer.startElement("div", eventPreview);
         writer.writeAttribute("id", clientId, null);
 
-        PopupLayer popupLayer = ComponentUtil.getOrCreateFacet(
+        PopupLayer popupLayer = Components.getOrCreateFacet(
                 context, component, PopupLayer.COMPONENT_TYPE, "_popupLayer", PopupLayer.class);
-        popupLayer.setId(eventPreview.getId() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "popupLayer");
+        popupLayer.setId(eventPreview.getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "popupLayer");
         popupLayer.setStyle(eventPreview.getStyle());
         popupLayer.setStyleClass(eventPreview.getStyleClass());
         popupLayer.setHideOnOuterClick(true);
         popupLayer.encodeAll(context);
 
         DayTable dayTable = (DayTable) eventPreview.getParent();
-        RenderingUtil.renderInitScript(context,
+        Rendering.renderInitScript(context,
                 new ScriptBuilder().initScript(context, eventPreview, "O$._initEventPreview",
                         dayTable,
                         eventPreview.getShowingDelay(),
-                        StyleUtil.getCSSClass(context, eventPreview, eventPreview.getStyle(), StyleGroup.regularStyleGroup(), eventPreview.getStyleClass(), "o_eventPreview"),
-                        StyleUtil.getCSSClass(context, eventPreview, eventPreview.getEventNameStyle(), StyleGroup.regularStyleGroup(), eventPreview.getEventNameClass()),
-                        StyleUtil.getCSSClass(context, eventPreview, eventPreview.getEventDescriptionStyle(), eventPreview.getEventDescriptionClass()),
+                        Styles.getCSSClass(context, eventPreview, eventPreview.getStyle(), StyleGroup.regularStyleGroup(), eventPreview.getStyleClass(), "o_eventPreview"),
+                        Styles.getCSSClass(context, eventPreview, eventPreview.getEventNameStyle(), StyleGroup.regularStyleGroup(), eventPreview.getEventNameClass()),
+                        Styles.getCSSClass(context, eventPreview, eventPreview.getEventDescriptionStyle(), eventPreview.getEventDescriptionClass()),
                         eventPreview.getHorizontalAlignment(),
                         eventPreview.getVerticalAlignment(),
                         eventPreview.getHorizontalDistance(),
                         eventPreview.getVerticalDistance()),
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, DayTableRenderer.class, "dayTable.js"));
+                Resources.getUtilJsURL(context),
+                Resources.getInternalURL(context, DayTableRenderer.class, "dayTable.js"));
 
         writer.endElement("div");
 
-        StyleUtil.renderStyleClasses(context, component);
+        Styles.renderStyleClasses(context, component);
     }
 
     @Override

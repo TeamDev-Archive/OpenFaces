@@ -21,10 +21,10 @@ import org.openfaces.component.window.MinimizeWindowButton;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.ComponentWithCaptionRenderer;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -38,10 +38,10 @@ import java.util.List;
 public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
     private static final String DEFAULT_CAPTION_CLASS = "o_window_caption";
     private static final String DEFAULT_CAPTION_WIDTH_CLASS = "o_default_caption_width";
-    public static final String MIDDLE_AREA_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "content";
+    public static final String MIDDLE_AREA_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "content";
 
     public static String getWindowJs(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, AbstractWindowRenderer.class, "window.js");
+        return Resources.getInternalURL(context, AbstractWindowRenderer.class, "window.js");
     }
 
     private ComponentWithCaptionRenderer componentWithCaptionRenderer = new ComponentWithCaptionRenderer() {
@@ -56,7 +56,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
             area.setAlignment(Side.RIGHT);
             AbstractWindow win = (AbstractWindow) component;
             CloseWindowButton closeButton = new CloseWindowButton();
-            closeButton.setId(win.getId() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "closeButton");
+            closeButton.setId(win.getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "closeButton");
             List<UIComponent> areaChildren = area.getChildren();
             if (isMinimizeAllowed())
                 areaChildren.add(new MinimizeWindowButton());
@@ -162,8 +162,8 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
                 win.isDraggableByContent(),
                 win.getMinWidth(),
                 win.getMinHeight());
-        RenderingUtil.renderInitScript(context, sb,
-                ResourceUtil.getInternalResourceURL(context, WindowRenderer.class, "window.js"));
+        Rendering.renderInitScript(context, sb,
+                Resources.getInternalURL(context, WindowRenderer.class, "window.js"));
 
     }
 
@@ -186,7 +186,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
 
     @Override
     protected String getDefaultClassName() {
-        return StyleUtil.mergeClassNames(super.getDefaultClassName(), "o_window");
+        return Styles.mergeClassNames(super.getDefaultClassName(), "o_window");
     }
 
     @Override

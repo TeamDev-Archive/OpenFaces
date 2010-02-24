@@ -13,7 +13,7 @@ package org.openfaces.taglib.internal;
 
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.util.CalendarUtil;
-import org.openfaces.util.EnumerationUtil;
+import org.openfaces.util.Enumerations;
 
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -632,7 +632,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
         if (!setPropertyAsBinding(component, propertyName, attributeValue)) {
             component.getAttributes().put(
                     propertyName,
-                    EnumerationUtil.valueByString(enumerationClass, attributeValue, propertyName));
+                    Enumerations.valueByString(enumerationClass, attributeValue, propertyName));
         }
     }
 

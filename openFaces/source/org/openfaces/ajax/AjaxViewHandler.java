@@ -12,10 +12,10 @@
 package org.openfaces.ajax;
 
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.Log;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 import org.openfaces.component.validation.ValidationSupportResponseWriter;
 
 import javax.faces.FacesException;
@@ -267,7 +267,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
         try {
             ajax4jsfViewRootClass = Class.forName("org.ajax4jsf.framework.ajax.AjaxViewRoot");
         } catch (ClassNotFoundException e) {
-            // absense of the Ajax4jsf library is a valid case
+            // absence of the Ajax4jsf library is a valid case
         }
         boolean isAjax4jsf = (ajax4jsfViewRootClass != null);
         if (isAjax4jsf)
@@ -277,7 +277,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
         try {
             richFacesAjaxViewRootClass = Class.forName("org.ajax4jsf.component.AjaxViewRoot");
         } catch (ClassNotFoundException e) {
-            // absense of the RichFaces library is a valid case
+            // absence of the RichFaces library is a valid case
         }
 
         if (EnvironmentUtil.isExoPortal())
@@ -334,7 +334,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
     @Override
     public void renderView(FacesContext context, UIViewRoot root)
             throws IOException, FacesException {
-        ComponentUtil.runScheduledActions();
+        Components.runScheduledActions();
         if (!context.getResponseComplete()) {
 
             ExternalContext externalContext = context.getExternalContext();
@@ -418,7 +418,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
                 }
 
                 if (AjaxUtil.isAjax4jsfRequest()) {
-                    ResourceUtil.processHeadResources(context);
+                    Resources.processHeadResources(context);
                 }
 
             }

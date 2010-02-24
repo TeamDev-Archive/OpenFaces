@@ -11,7 +11,7 @@
  */
 package org.openfaces.renderkit.table;
 
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -59,7 +59,7 @@ public class HeaderRow extends AbstractRow {
             cell.render(context, i == count - 1 ? lastCellContentAppender : null);
         }
         writer.endElement("tr");
-        RenderingUtil.writeNewLine(context.getResponseWriter());
+        Rendering.writeNewLine(context.getResponseWriter());
     }
 
     public List<HeaderRow> getRowsForSpans() {

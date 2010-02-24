@@ -14,7 +14,7 @@ package org.openfaces.validator;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.NewInstanceScript;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 import org.openfaces.util.MessageUtil;
 
 import javax.faces.application.FacesMessage;
@@ -36,7 +36,7 @@ public class NumberConverterClientValidator extends AbstractClientValidator impl
     public NumberConverterClientValidator() {
         addJavascriptLibrary(new ValidationJavascriptLibrary("numberConverterValidator.js", this.getClass()));
         addJavascriptLibrary(new ValidationJavascriptLibrary("requestHelper.js", this.getClass()));
-        addJavascriptLibrary(new ValidationJavascriptLibrary(ResourceUtil.JSON_JS_LIB_NAME, ResourceUtil.class));
+        addJavascriptLibrary(new ValidationJavascriptLibrary(Resources.JSON_JS_LIB_NAME, Resources.class));
     }
 
     public String getJsValidatorName() {

@@ -20,7 +20,7 @@ import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItems;
 import org.openfaces.renderkit.filter.FilterRow;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -39,17 +39,17 @@ public class DropDownParametersEditor extends ParametersEditor implements Serial
     }
 
     private DropDownField getDropDown(UIComponent container) {
-        return (DropDownField) ComponentUtil.getChildBySuffix(container, DROP_SOWN_ID_SUFFIX);
+        return (DropDownField) Components.getChildBySuffix(container, DROP_SOWN_ID_SUFFIX);
     }
 
 
     private DropDownItems getDropDownItems(DropDownField dropDown) {
-        return (DropDownItems) ComponentUtil.getChildBySuffix(dropDown, DROP_DOWN_ITEMS_ID_SUFFIX);
+        return (DropDownItems) Components.getChildBySuffix(dropDown, DROP_DOWN_ITEMS_ID_SUFFIX);
     }
 
     private DropDownField createDropDown(FacesContext context, UIComponent container) {
         clearContainer(container);
-        DropDownField dropDown = (DropDownField) ComponentUtil.createChildComponent(context, container, DropDownField.COMPONENT_TYPE, DROP_SOWN_ID_SUFFIX);
+        DropDownField dropDown = (DropDownField) Components.createChildComponent(context, container, DropDownField.COMPONENT_TYPE, DROP_SOWN_ID_SUFFIX);
         dropDown.setStyleClass(FilterRow.DEFAULT_PARAMETER_CLASS);
         dropDown.setStyle("width: 145px;");
         dropDown.setMaxlength(250);
@@ -57,7 +57,7 @@ public class DropDownParametersEditor extends ParametersEditor implements Serial
         if (filterProperty.getType() == FilterType.SELECT) {
             dropDown.setCustomValueAllowed(false);
         }
-        DropDownItems dropDownItems = (DropDownItems) ComponentUtil.createChildComponent(context, dropDown, DropDownItems.COMPONENT_TYPE, DROP_DOWN_ITEMS_ID_SUFFIX);
+        DropDownItems dropDownItems = (DropDownItems) Components.createChildComponent(context, dropDown, DropDownItems.COMPONENT_TYPE, DROP_DOWN_ITEMS_ID_SUFFIX);
         return dropDown;
     }
 

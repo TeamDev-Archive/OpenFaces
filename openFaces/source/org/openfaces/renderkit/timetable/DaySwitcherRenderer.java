@@ -17,11 +17,11 @@ import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.CalendarUtil;
 import org.openfaces.util.DataUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -46,7 +46,7 @@ public class DaySwitcherRenderer extends RendererBase {
         DaySwitcher daySwitcher = (DaySwitcher) component;
 
         Locale locale = daySwitcher.getLocale();
-        RenderingUtil.registerDateTimeFormatObject(locale);
+        Rendering.registerDateTimeFormatObject(locale);
 
         DayTable dayTable = daySwitcher.getDayTable();
         TimeZone timeZone = daySwitcher.getTimeZone();
@@ -76,7 +76,7 @@ public class DaySwitcherRenderer extends RendererBase {
         writer.writeAttribute("cellspacing", "0", null);
         writer.writeAttribute("cellpadding", "0", null);
         writer.writeAttribute("border", "0", null);
-        String styleClass = StyleUtil.getCSSClass(context,
+        String styleClass = Styles.getCSSClass(context,
                 daySwitcher, daySwitcher.getStyle(), "o_daySwitcher", daySwitcher.getStyleClass());
         writer.writeAttribute("class", styleClass, null);
         writer.startElement("tbody", daySwitcher);
@@ -86,10 +86,10 @@ public class DaySwitcherRenderer extends RendererBase {
         if (enabled) {
             writer.startElement("td", daySwitcher);
             writer.writeAttribute("id", clientId + "::previous_button", null);
-            writer.writeAttribute("class", StyleUtil.getCSSClass(context, daySwitcher,
+            writer.writeAttribute("class", Styles.getCSSClass(context, daySwitcher,
                     daySwitcher.getPreviousButtonStyle(), "o_daySwitcher_previous_button",
                     daySwitcher.getPreviousButtonClass()), null);
-            String previousButtonImageUrl = ResourceUtil.getResourceURL(context, daySwitcher.getPreviousButtonImageUrl(),
+            String previousButtonImageUrl = Resources.getURL(context, daySwitcher.getPreviousButtonImageUrl(),
                     DaySwitcherRenderer.class, "previousButton.gif");
             writer.startElement("img", daySwitcher);
             writer.writeAttribute("src", previousButtonImageUrl, null);
@@ -102,7 +102,7 @@ public class DaySwitcherRenderer extends RendererBase {
             //upper text
             writer.startElement("p", daySwitcher);
             writer.writeAttribute("id", clientId + "::upper_text", null);
-            String upperTextClass = StyleUtil.getCSSClass(context,
+            String upperTextClass = Styles.getCSSClass(context,
                     daySwitcher, daySwitcher.getUpperTextStyle(), "o_daySwitcher_upper_text", daySwitcher.getUpperTextClass());
             writer.writeAttribute("class", upperTextClass, null);
 
@@ -117,7 +117,7 @@ public class DaySwitcherRenderer extends RendererBase {
             //text
             writer.startElement("p", daySwitcher);
             writer.writeAttribute("id", clientId + "::text", null);
-            String textClass = StyleUtil.getCSSClass(context,
+            String textClass = Styles.getCSSClass(context,
                     daySwitcher, daySwitcher.getTextStyle(), "o_daySwitcher_text", daySwitcher.getTextClass());
             writer.writeAttribute("class", textClass, null);
 
@@ -130,9 +130,9 @@ public class DaySwitcherRenderer extends RendererBase {
         if (enabled) {
             writer.startElement("td", daySwitcher);
             writer.writeAttribute("id", clientId + "::next_button", null);
-            writer.writeAttribute("class", StyleUtil.getCSSClass(context,
+            writer.writeAttribute("class", Styles.getCSSClass(context,
                     daySwitcher, daySwitcher.getNextButtonStyle(), "o_daySwitcher_next_button", daySwitcher.getNextButtonClass()), null);
-            String nextButtonImageUrl = ResourceUtil.getResourceURL(context, daySwitcher.getNextButtonImageUrl(), DaySwitcherRenderer.class, "nextButton.gif");
+            String nextButtonImageUrl = Resources.getURL(context, daySwitcher.getNextButtonImageUrl(), DaySwitcherRenderer.class, "nextButton.gif");
             writer.startElement("img", daySwitcher);
             writer.writeAttribute("src", nextButtonImageUrl, null);
             writer.endElement("img");
@@ -145,7 +145,7 @@ public class DaySwitcherRenderer extends RendererBase {
         writer.endElement("table");
 
         JSONObject stylingParams = getStylingParamsObj(context, daySwitcher);
-        StyleUtil.renderStyleClasses(context, daySwitcher);
+        Styles.renderStyleClasses(context, daySwitcher);
 
         ScriptBuilder script = new ScriptBuilder().initScript(context, daySwitcher, "O$.DaySwitcher._init",
                 dayTable.getClientId(context),
@@ -156,28 +156,28 @@ public class DaySwitcherRenderer extends RendererBase {
                 stylingParams,
                 enabled);
 
-        RenderingUtil.renderInitScript(context, script,
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getJsonJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, DaySwitcherRenderer.class, "daySwitcher.js"));
+        Rendering.renderInitScript(context, script,
+                Resources.getUtilJsURL(context),
+                Resources.getJsonJsURL(context),
+                Resources.getInternalURL(context, DaySwitcherRenderer.class, "daySwitcher.js"));
 
     }
 
     private JSONObject getStylingParamsObj(FacesContext context, DaySwitcher daySwitcher) {
         JSONObject stylingParams = new JSONObject();
-        StyleUtil.addStyleJsonParam(context, daySwitcher, stylingParams, "rolloverClass",
+        Styles.addStyleJsonParam(context, daySwitcher, stylingParams, "rolloverClass",
                 daySwitcher.getRolloverStyle(), daySwitcher.getRolloverClass());
-        StyleUtil.addStyleJsonParam(context, daySwitcher, stylingParams, "previousButtonRolloverClass",
+        Styles.addStyleJsonParam(context, daySwitcher, stylingParams, "previousButtonRolloverClass",
                 daySwitcher.getPreviousButtonRolloverStyle(), daySwitcher.getPreviousButtonRolloverClass());
-        StyleUtil.addStyleJsonParam(context, daySwitcher, stylingParams, "previousButtonPressedClass",
+        Styles.addStyleJsonParam(context, daySwitcher, stylingParams, "previousButtonPressedClass",
                 daySwitcher.getPreviousButtonPressedStyle(), daySwitcher.getPreviousButtonPressedClass(), StyleGroup.rolloverStyleGroup());
-        StyleUtil.addStyleJsonParam(context, daySwitcher, stylingParams, "nextButtonRolloverClass",
+        Styles.addStyleJsonParam(context, daySwitcher, stylingParams, "nextButtonRolloverClass",
                 daySwitcher.getNextButtonRolloverStyle(), daySwitcher.getNextButtonRolloverClass(), StyleGroup.rolloverStyleGroup());
-        StyleUtil.addStyleJsonParam(context, daySwitcher, stylingParams, "nextButtonPressedClass",
+        Styles.addStyleJsonParam(context, daySwitcher, stylingParams, "nextButtonPressedClass",
                 daySwitcher.getNextButtonPressedStyle(), daySwitcher.getNextButtonPressedClass(), StyleGroup.rolloverStyleGroup());
-        StyleUtil.addStyleJsonParam(context, daySwitcher, stylingParams, "labelRolloverClass",
+        Styles.addStyleJsonParam(context, daySwitcher, stylingParams, "labelRolloverClass",
                 daySwitcher.getTextRolloverStyle(), daySwitcher.getTextRolloverClass(), StyleGroup.rolloverStyleGroup());
-        StyleUtil.addStyleJsonParam(context, daySwitcher, stylingParams, "supLabelRolloverClass",
+        Styles.addStyleJsonParam(context, daySwitcher, stylingParams, "supLabelRolloverClass",
                 daySwitcher.getUpperTextRolloverStyle(), daySwitcher.getUpperTextRolloverClass(), StyleGroup.rolloverStyleGroup());
 
         return stylingParams;

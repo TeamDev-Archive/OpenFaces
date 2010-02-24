@@ -12,7 +12,7 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.Row;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import javax.faces.component.UIComponent;
 import java.io.Serializable;
@@ -49,7 +49,7 @@ public class CustomRowRenderingInfo implements Serializable {
         List<UIComponent> result = new ArrayList<UIComponent>();
         for (Integer index : a4jEnabledRowDeclarationIndexes) {
             Row tableRow = (Row) customRows.get(index);
-            UIComponent a4jSupport = RenderingUtil.getA4jSupportForComponent(tableRow);
+            UIComponent a4jSupport = Rendering.getA4jSupportForComponent(tableRow);
             result.add(a4jSupport);
         }
 

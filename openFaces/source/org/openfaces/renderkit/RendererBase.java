@@ -14,7 +14,7 @@ package org.openfaces.renderkit;
 import org.openfaces.component.OUICommand;
 import org.openfaces.component.ajax.AjaxInitializer;
 import org.openfaces.util.FunctionCallScript;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 
@@ -32,19 +32,19 @@ import java.io.IOException;
 public class RendererBase extends Renderer {
 
     protected void writeAttribute(ResponseWriter writer, String name, String value) throws IOException {
-        RenderingUtil.writeAttribute(writer, name, value);
+        Rendering.writeAttribute(writer, name, value);
     }
 
     protected String writeIdAttribute(FacesContext facesContext, UIComponent component) throws IOException {
-        return RenderingUtil.writeIdAttribute(facesContext, component);
+        return Rendering.writeIdAttribute(facesContext, component);
     }
 
     protected void writeNameAttribute(FacesContext facesContext, UIComponent component) throws IOException {
-        RenderingUtil.writeNameAttribute(facesContext, component);
+        Rendering.writeNameAttribute(facesContext, component);
     }
 
     protected void writeAttribute(ResponseWriter writer, String name, int value, int emptyValue) throws IOException {
-        RenderingUtil.writeAttribute(writer, name, value, emptyValue);
+        Rendering.writeAttribute(writer, name, value, emptyValue);
     }
 
     protected boolean writeEventsWithAjaxSupport(FacesContext context, ResponseWriter writer, OUICommand command) throws IOException {
@@ -71,12 +71,12 @@ public class RendererBase extends Renderer {
                 componentClickHandler = new FunctionCallScript("O$.submitWithParam", command, command, true);
             }
         }
-        String clickHandler = RenderingUtil.joinScripts(
+        String clickHandler = Rendering.joinScripts(
                 userClickHandler,
                 componentClickHandler != null ? componentClickHandler.toString() : null);
-        if (!RenderingUtil.isNullOrEmpty(clickHandler))
+        if (!Rendering.isNullOrEmpty(clickHandler))
             writer.writeAttribute("onclick", clickHandler, null);
-        RenderingUtil.writeStandardEvents(writer, command, true);
+        Rendering.writeStandardEvents(writer, command, true);
         return ajaxJsRequired;
     }
 }

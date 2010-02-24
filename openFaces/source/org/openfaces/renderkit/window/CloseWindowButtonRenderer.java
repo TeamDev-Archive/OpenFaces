@@ -14,7 +14,7 @@ package org.openfaces.renderkit.window;
 import org.openfaces.component.ComponentWithCaption;
 import org.openfaces.component.window.AbstractWindow;
 import org.openfaces.renderkit.CaptionButtonRenderer;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -27,7 +27,7 @@ public class CloseWindowButtonRenderer extends CaptionButtonRenderer {
 
     @Override
     protected String getDefaultImageUrl(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, AbstractWindowRenderer.class, "close.gif");
+        return Resources.getInternalURL(context, AbstractWindowRenderer.class, "close.gif");
     }
 
     @Override

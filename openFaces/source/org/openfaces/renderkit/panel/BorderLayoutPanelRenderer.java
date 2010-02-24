@@ -16,10 +16,10 @@ import org.openfaces.component.panel.SidePanel;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.RawScript;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class BorderLayoutPanelRenderer extends RendererBase {
 
-    public static final String CONTENT_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "content";
+    public static final String CONTENT_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "content";
 
     private static final String JS_SCRIPT_URL = "borderLayoutPanel.js";
     private static final String JS_MY_UTIL_SCRIPT_URL = "sidePanelUtil.js";
@@ -48,19 +48,19 @@ public class BorderLayoutPanelRenderer extends RendererBase {
         writer.startElement("div", borderLayoutPanel);
         writer.writeAttribute("id", clientId, null);
         writeAttribute(writer, "style", borderLayoutPanel.getStyle());
-        String classStr = StyleUtil.getCSSClass(context,
+        String classStr = Styles.getCSSClass(context,
                 borderLayoutPanel, borderLayoutPanel.getStyle(),
                 "o_borderlayoutpanel_container", borderLayoutPanel.getStyleClass()
         );
         writer.writeAttribute("class", classStr, null);
 
-        RenderingUtil.writeStandardEvents(writer, borderLayoutPanel);
+        Rendering.writeStandardEvents(writer, borderLayoutPanel);
         encodeScriptsAndStyles(context, borderLayoutPanel);
         encodeSidePanels(context, borderLayoutPanel);
 
         writer.startElement("div", borderLayoutPanel);
         writer.writeAttribute("id", clientId + "::content", null);
-        classStr = StyleUtil.getCSSClass(context,
+        classStr = Styles.getCSSClass(context,
                 borderLayoutPanel, borderLayoutPanel.getContentStyle(),
                 "o_borderlayoutpanel_content", borderLayoutPanel.getContentClass()
         );
@@ -74,7 +74,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
         if (!component.isRendered()) return;
         ResponseWriter writer = context.getResponseWriter();
         writer.endElement("div");
-        StyleUtil.renderStyleClasses(context, component);
+        Styles.renderStyleClasses(context, component);
         writer.endElement("div");
     }
 
@@ -95,10 +95,10 @@ public class BorderLayoutPanelRenderer extends RendererBase {
             initScript.append("});\n");
         }
 
-        RenderingUtil.renderInitScript(context, initScript,
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, BorderLayoutPanelRenderer.class, JS_SCRIPT_URL),
-                ResourceUtil.getInternalResourceURL(context, BorderLayoutPanelRenderer.class, JS_MY_UTIL_SCRIPT_URL));
+        Rendering.renderInitScript(context, initScript,
+                Resources.getUtilJsURL(context),
+                Resources.getInternalURL(context, BorderLayoutPanelRenderer.class, JS_SCRIPT_URL),
+                Resources.getInternalURL(context, BorderLayoutPanelRenderer.class, JS_MY_UTIL_SCRIPT_URL));
     }
 
     private void encodeScriptsAndStyles_content(FacesContext context, BorderLayoutPanel borderLayoutPanel, String clientId) throws IOException {
@@ -109,7 +109,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
         }
 
         initScript.initScript(context, borderLayoutPanel, "O$._initBorderLayoutPanel_content",
-                RenderingUtil.getRolloverClass(context, borderLayoutPanel),
+                Rendering.getRolloverClass(context, borderLayoutPanel),
                 new RawScript(JSEventsObject.JSEventObject("oncontentresize", borderLayoutPanel.getOncontentresize()))
         );
 
@@ -118,7 +118,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
             initScript.append("});\n");
         }
 
-        RenderingUtil.renderInitScript(context, initScript);
+        Rendering.renderInitScript(context, initScript);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
                 contentElements.add(child);
             }
         }
-        RenderingUtil.renderComponents(context, contentElements);
+        Rendering.renderComponents(context, contentElements);
     }
 
     private void encodeSidePanels(FacesContext context, BorderLayoutPanel borderLayoutPanel) throws IOException {
@@ -143,7 +143,7 @@ public class BorderLayoutPanelRenderer extends RendererBase {
                 sidePanels.add(child);
             }
         }
-        RenderingUtil.renderComponents(context, sidePanels);
+        Rendering.renderComponents(context, sidePanels);
     }
 
     @Override

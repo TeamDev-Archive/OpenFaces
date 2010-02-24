@@ -97,7 +97,7 @@ public class CalendarUtil {
 //    FacesContext context = FacesContext.getCurrentInstance();
 //    Locale defaultLocale = context.getViewRoot().getLocale();
 //    Object locale = component.getBoundPropertyValue(component, "locale", locale, defaultLocale);
-//    ComponentUtil.
+//    Components.
 //    return ;
 //  }
 }

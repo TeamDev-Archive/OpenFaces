@@ -15,9 +15,9 @@ import org.openfaces.component.filter.ExpressionFilter;
 import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.filter.TextSearchFilter;
 import org.openfaces.util.RawScript;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -41,8 +41,8 @@ public abstract class TextSearchFilterRenderer extends ExpressionFilterRenderer 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
-        ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getUtilJsURL(context));
-        ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getFiltersJsURL(context));
+        Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
+        Resources.renderJSLinkIfNeeded(context, Resources.getFiltersJsURL(context));
         TextSearchFilter filter = (TextSearchFilter) component;
 
         UIInput inputComponent = (UIInput) filter.getSearchComponent();
@@ -54,7 +54,7 @@ public abstract class TextSearchFilterRenderer extends ExpressionFilterRenderer 
 
         inputComponent.encodeAll(context);
 
-        StyleUtil.renderStyleClasses(context, component);
+        Styles.renderStyleClasses(context, component);
     }
 
     protected abstract void configureInputComponent(FacesContext context, ExpressionFilter filter, UIInput inputComponent);

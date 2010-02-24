@@ -17,10 +17,10 @@ import org.openfaces.component.table.ColumnGroup;
 import org.openfaces.component.table.TreeColumn;
 import org.openfaces.component.table.TreeTable;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.EnvironmentUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -47,9 +47,9 @@ public class TreeColumnRenderer extends RendererBase {
         Cell customCell = (Cell) treeColumn.getAttributes().get(ATTR_CUSTOM_CELL);
         if (!treeColumn.getShowAsTree()) {
             if (customCell != null)
-                RenderingUtil.renderChildren(context, customCell);
+                Rendering.renderChildren(context, customCell);
             else
-                RenderingUtil.renderChildren(context, component);
+                Rendering.renderChildren(context, component);
             return;
         }
 
@@ -61,10 +61,10 @@ public class TreeColumnRenderer extends RendererBase {
 
         String indentStyle = null;
         String levelIndent = treeColumn.getLevelIndent();
-        if (!RenderingUtil.isNullOrEmpty(levelIndent)) {
+        if (!Rendering.isNullOrEmpty(levelIndent)) {
             indentStyle = "width: " + levelIndent;
         }
-        String indentClass = StyleUtil.getCSSClass(context, treeTable, indentStyle, DEFAULT_INDENT_CLASS);
+        String indentClass = Styles.getCSSClass(context, treeTable, indentStyle, DEFAULT_INDENT_CLASS);
 
         writer.startElement("table", component);
         writer.writeAttribute("cellspacing", "0", null);
@@ -91,11 +91,11 @@ public class TreeColumnRenderer extends RendererBase {
 
         boolean nodeHasChildren = treeTable.getNodeHasChildren();
         if (nodeHasChildren) {
-            String expansionToggleCellClass = StyleUtil.getCSSClass(
+            String expansionToggleCellClass = Styles.getCSSClass(
                     context, treeTable, treeColumn.getExpansionToggleCellStyle(),
                     DEFAULT_EXPANSION_TOGGLE_CELL_CLASS, treeColumn.getExpansionToggleCellClass());
-            expansionToggleCellClass = StyleUtil.mergeClassNames(expansionToggleCellClass, indentClass);
-            writer.writeAttribute("class", StyleUtil.mergeClassNames(expansionToggleCellClass, indentClass), null);
+            expansionToggleCellClass = Styles.mergeClassNames(expansionToggleCellClass, indentClass);
+            writer.writeAttribute("class", Styles.mergeClassNames(expansionToggleCellClass, indentClass), null);
         } else
             writer.writeAttribute("class", indentClass, null);
 
@@ -104,7 +104,7 @@ public class TreeColumnRenderer extends RendererBase {
             writer.writeAttribute("style", indentStyle, null);
 
         if (nodeHasChildren) {
-            ComponentUtil.generateIdIfNotSpecified(component);
+            Components.generateIdIfNotSpecified(component);
             ExpansionToggle expansionToggle = treeColumn.getExpansionToggle();
             expansionToggle.encodeAll(context);
         } else
@@ -115,9 +115,9 @@ public class TreeColumnRenderer extends RendererBase {
         writer.startElement("td", component);
 
         if (customCell != null)
-            RenderingUtil.renderChildren(context, customCell);
+            Rendering.renderChildren(context, customCell);
         else
-            RenderingUtil.renderChildren(context, component);
+            Rendering.renderChildren(context, component);
         writer.endElement("td");
         writer.endElement("tr");
         writer.endElement("table");

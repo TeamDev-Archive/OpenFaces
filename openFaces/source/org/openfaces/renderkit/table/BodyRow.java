@@ -12,7 +12,7 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.table.Row;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -44,7 +44,7 @@ public class BodyRow extends AbstractRow {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("tr", null);
         if (style != null || styleClass != null)
-            RenderingUtil.writeStyleAndClassAttributes(writer, style, styleClass);
+            Rendering.writeStyleAndClassAttributes(writer, style, styleClass);
         writeCustomRowOrCellEvents(writer, events);
         if (attributes != null)
             for (String[] attribute : attributes) {
@@ -75,7 +75,7 @@ public class BodyRow extends AbstractRow {
             String compoundEventHandler = null;
             for (UIComponent customRowOrCell : customRowsOrCells) {
                 String eventHandler = (String) customRowOrCell.getAttributes().get(eventName);
-                compoundEventHandler = RenderingUtil.joinScripts(compoundEventHandler, eventHandler);
+                compoundEventHandler = Rendering.joinScripts(compoundEventHandler, eventHandler);
             }
             if (compoundEventHandler != null && compoundEventHandler.length() > 0) {
                 if (events == null) events = new HashMap<String, String>();

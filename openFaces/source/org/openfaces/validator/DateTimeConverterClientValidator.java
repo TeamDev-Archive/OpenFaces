@@ -13,7 +13,7 @@ package org.openfaces.validator;
 
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 import org.openfaces.util.MessageUtil;
 
 import javax.faces.application.FacesMessage;
@@ -53,7 +53,7 @@ public class DateTimeConverterClientValidator extends AbstractClientValidator im
     public DateTimeConverterClientValidator() {
         addJavascriptLibrary(new ValidationJavascriptLibrary("dateTimeConverterValidator.js", DateTimeConverterClientValidator.class));
         addJavascriptLibrary(new ValidationJavascriptLibrary("requestHelper.js", DateTimeConverterClientValidator.class));
-        addJavascriptLibrary(new ValidationJavascriptLibrary(ResourceUtil.JSON_JS_LIB_NAME, ResourceUtil.class));
+        addJavascriptLibrary(new ValidationJavascriptLibrary(Resources.JSON_JS_LIB_NAME, Resources.class));
     }
 
     public void setDateTimeConverter(DateTimeConverter dateTimeConverter) {
@@ -72,7 +72,7 @@ public class DateTimeConverterClientValidator extends AbstractClientValidator im
 //    TimeZone timeZone = dateTimeConverter.getTimeZone();
 //    String timeZoneId = "";
 //    if (timeZone != null) {
-//      timeZoneId = RenderingUtil.escapeStringForJS(dateTimeConverter.getTimeZone().getID());
+//      timeZoneId = Rendering.escapeStringForJS(dateTimeConverter.getTimeZone().getID());
 //    }
 
         Locale locale = dateTimeConverter.getLocale();
@@ -94,12 +94,12 @@ public class DateTimeConverterClientValidator extends AbstractClientValidator im
                 slocale
 //                            + "new O$.DateTimeConverter(" +
 //                            "'" + slocale + "'," +
-//                            "'" + RenderingUtil.escapeStringForJS(dateTimeConverter.getPattern()) + "'," +
-//                            "'" + RenderingUtil.escapeStringForJS(dateTimeConverter.getDayStyle()) + "'," +
-//                            "'" + RenderingUtil.escapeStringForJS(dateTimeConverter.getType()) + "'," +
+//                            "'" + Rendering.escapeStringForJS(dateTimeConverter.getPattern()) + "'," +
+//                            "'" + Rendering.escapeStringForJS(dateTimeConverter.getDayStyle()) + "'," +
+//                            "'" + Rendering.escapeStringForJS(dateTimeConverter.getType()) + "'," +
 //                            "'" + timeZoneId + "'," +
-//                            "'" + RenderingUtil.escapeStringForJS(dateTimeConverter.getTimeStyle()) + "'," +
-//                            "'" + RenderingUtil.escapeStringForJS(this.getClass().getName()) + "'" +
+//                            "'" + Rendering.escapeStringForJS(dateTimeConverter.getTimeStyle()) + "'," +
+//                            "'" + Rendering.escapeStringForJS(this.getClass().getName()) + "'" +
 //                            ")"
         };
     }

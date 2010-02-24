@@ -19,8 +19,8 @@ import org.openfaces.component.table.ColumnVisibilityMenu;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.command.PopupMenuRenderer;
 import org.openfaces.renderkit.select.SelectBooleanCheckboxImageManager;
-import org.openfaces.util.ResourceUtil;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Resources;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.FacesException;
@@ -44,7 +44,7 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
             MenuItem menuItem = new MenuItem();
             menuItem.setValue(TableUtil.getColumnHeader(column));
             boolean columnVisible = visibleColumns.contains(column);
-            menuItem.setIconUrl(ResourceUtil.getInternalResourceURL(context,
+            menuItem.setIconUrl(Resources.getInternalURL(context,
                     SelectBooleanCheckboxImageManager.class,
                     columnVisible
                             ? SelectBooleanCheckboxImageManager.DEFAULT_SELECTED_IMAGE
@@ -71,7 +71,7 @@ public class ColumnVisibilityMenuRenderer extends PopupMenuRenderer {
         super.encodeEnd(context, component);
         ColumnVisibilityMenu cvm = (ColumnVisibilityMenu) component;
         AbstractTable table = getTable(cvm);
-        RenderingUtil.renderInitScript(context, new ScriptBuilder().initScript(context,
+        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context,
                 component, "O$.ColumnMenu._initColumnVisibilityMenu", table),  
                 AbstractTableRenderer.getTableJsURL(context));
 

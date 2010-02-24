@@ -13,7 +13,7 @@ package org.openfaces.renderkit;
 
 import org.openfaces.component.ComponentWithCaption;
 import org.openfaces.component.panel.FoldingPanel;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -30,32 +30,32 @@ public class ExpansionToggleButtonRenderer extends ToggleCaptionButtonRenderer {
 
     @Override
     protected String getDefaultImageUrl(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, ExpansionToggleButtonRenderer.class, "plus_h.gif");
+        return Resources.getInternalURL(context, ExpansionToggleButtonRenderer.class, "plus_h.gif");
     }
 
     @Override
     protected String getDefaultRolloverImageUrl(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, ExpansionToggleButtonRenderer.class, "plus_u.gif");
+        return Resources.getInternalURL(context, ExpansionToggleButtonRenderer.class, "plus_u.gif");
     }
 
     @Override
     protected String getDefaultPressedImageUrl(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, ExpansionToggleButtonRenderer.class, "plus_d.gif");
+        return Resources.getInternalURL(context, ExpansionToggleButtonRenderer.class, "plus_d.gif");
     }
 
     @Override
     protected String getDefaultToggleImageUrl(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, ExpansionToggleButtonRenderer.class, "minus_h.gif");
+        return Resources.getInternalURL(context, ExpansionToggleButtonRenderer.class, "minus_h.gif");
     }
 
     @Override
     protected String getDefaultToggledImageRolloverUrl(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, ExpansionToggleButtonRenderer.class, "minus_u.gif");
+        return Resources.getInternalURL(context, ExpansionToggleButtonRenderer.class, "minus_u.gif");
     }
 
     @Override
     protected String getDefaultToggledImagePressedUrl(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, ExpansionToggleButtonRenderer.class, "minus_d.gif");
+        return Resources.getInternalURL(context, ExpansionToggleButtonRenderer.class, "minus_d.gif");
     }
 
     @Override

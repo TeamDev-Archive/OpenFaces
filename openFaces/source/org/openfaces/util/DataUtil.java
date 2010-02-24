@@ -61,7 +61,7 @@ public class DataUtil {
         else if (object instanceof Collection)
             dataModel = new ListDataModel(new ArrayList((Collection) object));
         else if (object.getClass().isArray())
-            dataModel = new ArrayDataModel(ComponentUtil.anyArrayToObjectArray(object));
+            dataModel = new ArrayDataModel(Components.anyArrayToObjectArray(object));
         else if (object instanceof ResultSet)
             dataModel = new ResultSetDataModel((ResultSet) object);
         else {
@@ -70,7 +70,7 @@ public class DataUtil {
                     dataModel = new ResultDataModel((Result) object);
                 }
             } catch (NoClassDefFoundError e) {
-                // absense of javax.servlet.jsp.jstl.sql.Result class is an allowed configuration --
+                // absence of javax.servlet.jsp.jstl.sql.Result class is an allowed configuration --
                 // we treat wrappedData as not an instance of Result class in this case
             }
 

@@ -16,7 +16,7 @@ import com.sun.facelets.tag.Metadata;
 import com.sun.facelets.tag.TagAttribute;
 import com.sun.facelets.tag.TagAttributeException;
 import org.openfaces.component.chart.ChartDomain;
-import org.openfaces.util.EnumerationUtil;
+import org.openfaces.util.Enumerations;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -29,7 +29,7 @@ public class ChartDomainPropertyMetadata extends Metadata {// todo: use common i
     private final TagAttribute attribute;
 
     public void applyMetadata(FaceletContext ctx, Object instance) {
-        ChartDomain d = EnumerationUtil.valueByString(
+        ChartDomain d = Enumerations.valueByString(
                 ChartDomain.class, attribute.getValue(), ChartDomain.BOTH, "domain");
         try {
             method.invoke(instance, d);

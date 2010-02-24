@@ -23,10 +23,10 @@ import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.DefaultTableStyles;
 import org.openfaces.util.InitScript;
 import org.openfaces.util.NewInstanceScript;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.TableStructure;
 import org.openfaces.util.AjaxUtil;
@@ -70,7 +70,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
-        return RenderingUtil.convertFromString(context, component, (String) submittedValue);
+        return Rendering.convertFromString(context, component, (String) submittedValue);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         String text = requestMap.get(fieldId);
         String value = requestMap.get(valueFieldId);
         if (text == null || value == null)
-            RenderingUtil.ensureComponentInsideForm(component);
+            Rendering.ensureComponentInsideForm(component);
 
         String submittedValue;
         if (value == null)
@@ -156,11 +156,11 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         DropDownPopup popup = dropDownField.getPopup();
         popup.setDropDownList(items);
         popup.encodeAll(context);
-        RenderingUtil.encodeClientActions(context, uiComponent);
+        Rendering.encodeClientActions(context, uiComponent);
     }
 
     private List<String[]> prepareItemValues(FacesContext context, DropDownFieldBase dropDownField, Collection<DropDownItem> items) {
-        String currentValueConverted = RenderingUtil.getStringValue(context, dropDownField);
+        String currentValueConverted = Rendering.getStringValue(context, dropDownField);
         String currentValueText = null;
 
         List<String[]> itemValues = null;
@@ -171,7 +171,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 String convertedItemValue = itemValue instanceof String
                         ? (String) itemValue
                         : itemValue == null ? "" 
-                        : RenderingUtil.convertToString(context, dropDownField, itemValue);
+                        : Rendering.convertToString(context, dropDownField, itemValue);
 
                 Map<String, Object> itemAttributes = item.getAttributes();
                 if (itemValue != null)
@@ -252,9 +252,9 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         super.renderEndTags(context, dropDown);
         ResponseWriter responseWriter = context.getResponseWriter();
         String value = dropDown.getValue() != null
-                ? "[" + RenderingUtil.getStringValue(context, dropDown) + "]"
+                ? "[" + Rendering.getStringValue(context, dropDown) + "]"
                 : "";
-        RenderingUtil.renderHiddenField(responseWriter, getValueFieldId(context, dropDown), value);
+        Rendering.renderHiddenField(responseWriter, getValueFieldId(context, dropDown), value);
     }
 
     private String getValueFieldId(FacesContext context, DropDownComponent dropDown) {
@@ -273,7 +273,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 dropDownField.getTimeout(),
                 dropDownField.getListAlignment(),
 
-                StyleUtil.getStyleClassesStr(context, dropDownField, dropDownField.getRolloverListItemStyle(),
+                Styles.getStyleClassesStr(context, dropDownField, dropDownField.getRolloverListItemStyle(),
                         dropDownField.getRolloverListItemClass(), DefaultStyles.getDefaultSelectionStyle(), StyleGroup.rolloverStyleGroup()),
 
                 getItemValuesArray(getItemValues(dropDown)),
@@ -322,10 +322,10 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 buf.append("});");
             }
         }
-        StyleUtil.renderStyleClasses(context, dropDownField); // encoding styles before scripts is important for tableUtil.js to be able to compute row and column styles correctly
+        Styles.renderStyleClasses(context, dropDownField); // encoding styles before scripts is important for tableUtil.js to be able to compute row and column styles correctly
         return new InitScript(buf.toString(), new String[]{
                 TableUtil.getTableUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context,
+                Resources.getInternalURL(context,
                         DropDownFieldRenderer.class, DropDownFieldRenderer.JS_SCRIPT_URL)
         });
     }
@@ -421,7 +421,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
                 new NewInstanceScript("Array", null, null, getItemValuesArray(itemValues))
         );
 
-        RenderingUtil.renderInitScript(context, sb);
+        Rendering.renderInitScript(context, sb);
         responseWriter.write(stringWriter.toString());
         return null;
     }

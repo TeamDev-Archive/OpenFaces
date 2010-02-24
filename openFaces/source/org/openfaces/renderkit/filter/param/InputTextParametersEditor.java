@@ -16,7 +16,7 @@ import org.openfaces.component.filter.CompositeFilter;
 import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.renderkit.filter.FilterRow;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlInputText;
@@ -35,11 +35,11 @@ public class InputTextParametersEditor extends ParametersEditor implements Seria
     }
 
     private HtmlInputText getInputText(UIComponent container) {
-        return (HtmlInputText) ComponentUtil.getChildBySuffix(container, INPUT_TEXT_ID_SUFFIX);
+        return (HtmlInputText) Components.getChildBySuffix(container, INPUT_TEXT_ID_SUFFIX);
     }
 
     private HtmlInputText createInputText(FacesContext context, UIComponent container) {
-        HtmlInputText inputText = (HtmlInputText) ComponentUtil.createChildComponent(context, container, HtmlInputText.COMPONENT_TYPE, INPUT_TEXT_ID_SUFFIX);
+        HtmlInputText inputText = (HtmlInputText) Components.createChildComponent(context, container, HtmlInputText.COMPONENT_TYPE, INPUT_TEXT_ID_SUFFIX);
         inputText.setStyleClass(FilterRow.DEFAULT_PARAMETER_CLASS);
         inputText.setStyle("width: 145px;");
         inputText.setMaxlength(250);

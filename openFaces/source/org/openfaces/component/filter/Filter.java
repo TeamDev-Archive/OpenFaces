@@ -13,7 +13,7 @@ package org.openfaces.component.filter;
 
 import org.openfaces.component.FilterableComponent;
 import org.openfaces.component.OUIComponentBase;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.SelfScheduledAction;
 
 import javax.faces.FacesException;
@@ -69,7 +69,7 @@ public abstract class Filter extends OUIComponentBase {
         if (filteredComponent == null) {
             String aFor = getFor();
             if (aFor != null) {
-                UIComponent referredComponent = ComponentUtil.referenceIdToComponent(this, aFor);
+                UIComponent referredComponent = Components.referenceIdToComponent(this, aFor);
                 if (referredComponent != null && !(referredComponent instanceof FilterableComponent))
                     throw new FacesException("Filter's \"for\" attribute must refer to a filterable component (DataTable or TreeTable)");
                 filteredComponent = (FilterableComponent) referredComponent;
@@ -86,7 +86,7 @@ public abstract class Filter extends OUIComponentBase {
     public void setParent(UIComponent parent) {
         super.setParent(parent);
 
-        ComponentUtil.runWhenReady(new SelfScheduledAction() {
+        Components.runWhenReady(new SelfScheduledAction() {
             public boolean executeIfReady() {
                 FilterableComponent filteredComponent = getFilteredComponent();
                 if (filteredComponent == null)

@@ -15,7 +15,7 @@ import org.openfaces.component.OUIData;
 import org.openfaces.component.OUIObjectIteratorBase;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.util.DataUtil;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -468,7 +468,7 @@ public class ForEach extends OUIObjectIteratorBase {
 
     public java.lang.String getWrapperTagName() {
         String defaultWrapperTagName = null;
-        boolean idSpecified = ComponentUtil.isComponentIdSpecified(this);
+        boolean idSpecified = Components.isComponentIdSpecified(this);
         if (idSpecified || (getStyle() != null) || (getStyleClass() != null))
             defaultWrapperTagName = DEFAULT_WRAPPER_TAG_NAME;
         return ValueBindings.get(this, "wrapperTagName", wrapperTagName, defaultWrapperTagName);

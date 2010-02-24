@@ -15,12 +15,12 @@ import org.openfaces.component.ajax.DefaultProgressMessage;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RawScript;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.ResourceFilter;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleParam;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
@@ -48,8 +48,8 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
 
         if (!requestMap.containsKey(PROGRESS_MESSAGE) && !requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED)) {
             requestMap.put(PROGRESS_MESSAGE, dpm);
-            ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getUtilJsURL(context));
-            ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getAjaxUtilJsURL(context));
+            Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
+            Resources.renderJSLinkIfNeeded(context, Resources.getAjaxUtilJsURL(context));
             return;
         }
 
@@ -62,11 +62,11 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
             JSONObject backgroundLayerParams = null;
             if (dpm.getFillBackground()) {
                 backgroundLayerParams = new JSONObject();
-                RenderingUtil.addJsonParam(backgroundLayerParams, "className", new StyleParam(dpm, "background", "o_ajax_blockingLayer"));
-                RenderingUtil.addJsonParam(backgroundLayerParams, "transparency", /*don't remove (double) cast -- the other function will be invoked*/(double) dpm.getBackgroundTransparency());
-                RenderingUtil.addJsonParam(backgroundLayerParams, "transparencyTransitionPeriod", /*don't remove (int) cast -- the other function will be invoked*/(int) dpm.getBackgroundTransparencyTransitionPeriod());
+                Rendering.addJsonParam(backgroundLayerParams, "className", new StyleParam(dpm, "background", "o_ajax_blockingLayer"));
+                Rendering.addJsonParam(backgroundLayerParams, "transparency", /*don't remove (double) cast -- the other function will be invoked*/(double) dpm.getBackgroundTransparency());
+                Rendering.addJsonParam(backgroundLayerParams, "transparencyTransitionPeriod", /*don't remove (int) cast -- the other function will be invoked*/(int) dpm.getBackgroundTransparencyTransitionPeriod());
             }
-            StyleUtil.renderStyleClasses(context, dpm, true, true);
+            Styles.renderStyleClasses(context, dpm, true, true);
 
             ScriptBuilder setMessageScript = new ScriptBuilder().functionCall("O$.setAjaxMessageHTML",
                     ajaxMessageHTML,
@@ -86,19 +86,19 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
                         ? (String) sessionMap.get(AjaxUtil.ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME)
                         : ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
 
-                String initLibraryUrl = ResourceUtil.getApplicationResourceURL(context, uniqueRTLibraryName);
+                String initLibraryUrl = Resources.getApplicationURL(context, uniqueRTLibraryName);
 
                 if (isAjax4jsfRequest) {
-                    ResourceUtil.renderJSLinkIfNeeded(context, initLibraryUrl);
+                    Resources.renderJSLinkIfNeeded(context, initLibraryUrl);
                 }
 
                 if (sessionMap != null && uniqueRTLibraryName != null) {
                     sessionMap.put(uniqueRTLibraryName, setMessageScript.toString());
                 }
             } else {
-                RenderingUtil.appendOnLoadScript(context, setMessageScript);
+                Rendering.appendOnLoadScript(context, setMessageScript);
                 if (isAjaxCleanupRequired()) {
-                    RenderingUtil.appendOnLoadScript(context, new RawScript("O$.setAjaxCleanupRequired(true);"));
+                    Rendering.appendOnLoadScript(context, new RawScript("O$.setAjaxCleanupRequired(true);"));
                 }
             }
         }

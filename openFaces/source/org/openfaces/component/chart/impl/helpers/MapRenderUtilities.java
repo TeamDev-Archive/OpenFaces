@@ -31,7 +31,7 @@ import org.openfaces.component.chart.GridPointInfo;
 import org.openfaces.component.chart.PieChartView;
 import org.openfaces.component.chart.PieSectorInfo;
 import org.openfaces.component.chart.impl.plots.DynamicPropertiesUtils;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import javax.faces.context.FacesContext;
 
@@ -39,7 +39,7 @@ import javax.faces.context.FacesContext;
  * @author Ekaterina Shliakhovetskaya
  */
 public class MapRenderUtilities {
-    public static final String ACTION_FIELD_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "af";
+    public static final String ACTION_FIELD_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "af";
 
     public static String getImageMapExt(
             Chart chart,

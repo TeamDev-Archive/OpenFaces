@@ -21,7 +21,7 @@ import org.openfaces.util.AbstractResponseFacade;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.HTML;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -319,7 +319,7 @@ class AjaxResponse {
             String str = strings.get(i);
             if (i > 0)
                 buf.append(',');
-            String escapedStr = RenderingUtil.wrapTextIntoJsString(str);
+            String escapedStr = Rendering.wrapTextIntoJsString(str);
             buf.append("{value:").append(escapedStr).append("}");
         }
         buf.append("]");

@@ -14,10 +14,10 @@ package org.openfaces.renderkit;
 import org.openfaces.component.CaptionButton;
 import org.openfaces.component.ComponentWithCaption;
 import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.Resources;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Styles;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.component.UIComponent;
@@ -42,7 +42,7 @@ public class CaptionButtonRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("td", btn);
-        RenderingUtil.writeComponentClassAttribute(writer, btn, getDefaultStyleClass(btn));
+        Rendering.writeComponentClassAttribute(writer, btn, getDefaultStyleClass(btn));
         writeIdAttribute(context, btn);
         boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, btn);
         if (ajaxJsRequired)
@@ -59,9 +59,9 @@ public class CaptionButtonRenderer extends RendererBase {
         ScriptBuilder script = new ScriptBuilder();
         script.initScript(context, btn, getInitFunctionName(), params.toArray());
         List<String> jsLibraries = getJsLibraries(context);
-        RenderingUtil.renderInitScript(context, script, jsLibraries.toArray(new String[jsLibraries.size()]));
+        Rendering.renderInitScript(context, script, jsLibraries.toArray(new String[jsLibraries.size()]));
 
-        StyleUtil.renderStyleClasses(context, component);
+        Styles.renderStyleClasses(context, component);
 
         writer.endElement("img");
 
@@ -77,8 +77,8 @@ public class CaptionButtonRenderer extends RendererBase {
 
     protected List<String> getJsLibraries(FacesContext context) {
         List<String> jsLibraries = new ArrayList<String>();
-        jsLibraries.add(ResourceUtil.getUtilJsURL(context));
-        jsLibraries.add(ResourceUtil.getInternalResourceURL(context, CaptionButtonRenderer.class, "captionButton.js"));
+        jsLibraries.add(Resources.getUtilJsURL(context));
+        jsLibraries.add(Resources.getInternalURL(context, CaptionButtonRenderer.class, "captionButton.js"));
         return jsLibraries;
     }
 
@@ -105,8 +105,8 @@ public class CaptionButtonRenderer extends RendererBase {
             componentWithCaption = componentWithCaption.getParent();
         checkContainerType((ComponentWithCaption) componentWithCaption);
         params.add(componentWithCaption);
-        params.add(StyleUtil.getCSSClass(context, btn, btn.getRolloverStyle(), StyleGroup.rolloverStyleGroup(), btn.getRolloverClass(), getDefaultRolloverClass()));
-        params.add(StyleUtil.getCSSClass(context, btn, btn.getPressedStyle(), StyleGroup.selectedStyleGroup(), btn.getPressedClass(), getDefaultPressedClass()));
+        params.add(Styles.getCSSClass(context, btn, btn.getRolloverStyle(), StyleGroup.rolloverStyleGroup(), btn.getRolloverClass(), getDefaultRolloverClass()));
+        params.add(Styles.getCSSClass(context, btn, btn.getPressedStyle(), StyleGroup.selectedStyleGroup(), btn.getPressedClass(), getDefaultPressedClass()));
         params.add(getImageUrl(context, btn));
         params.add(getRolloverImageUrl(context, btn));
         params.add(getPressedImageUrl(context, btn));
@@ -120,7 +120,7 @@ public class CaptionButtonRenderer extends RendererBase {
         if (imageUrl == null)
             return getDefaultImageUrl(context);
         else
-            return ResourceUtil.getApplicationResourceURL(context, imageUrl);
+            return Resources.getApplicationURL(context, imageUrl);
     }
 
     protected String getRolloverImageUrl(FacesContext context, CaptionButton btn) {
@@ -128,7 +128,7 @@ public class CaptionButtonRenderer extends RendererBase {
         if (imageUrl == null)
             return getDefaultRolloverImageUrl(context);
         else
-            return ResourceUtil.getApplicationResourceURL(context, imageUrl);
+            return Resources.getApplicationURL(context, imageUrl);
     }
 
     protected String getPressedImageUrl(FacesContext context, CaptionButton btn) {
@@ -136,7 +136,7 @@ public class CaptionButtonRenderer extends RendererBase {
         if (imageUrl == null)
             return getDefaultPressedImageUrl(context);
         else
-            return ResourceUtil.getApplicationResourceURL(context, imageUrl);
+            return Resources.getApplicationURL(context, imageUrl);
     }
 
     protected String getDefaultImageUrl(FacesContext context) {

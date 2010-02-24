@@ -933,6 +933,7 @@
         <w>cellpadding</w>
         <w>cellspacing</w>
         <w>checkboxes</w>
+        <w>cldr</w>
         <w>combobox</w>
         <w>commandbutton</w>
         <w>commandlink</w>

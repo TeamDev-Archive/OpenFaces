@@ -18,7 +18,7 @@ import org.openfaces.component.ajax.Ajax;
 import org.openfaces.component.ajax.AjaxInitializer;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.renderkit.OUIClientActionRendererHelper;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.component.UIComponent;
@@ -51,7 +51,7 @@ public class AjaxRendererHelper extends OUIClientActionRendererHelper {
     private static boolean isDisableDefaultRequired(Ajax ajax) {
         String _for = ajax.getFor();
         if (_for != null) {
-            UIComponent referredComponent = ComponentUtil.referenceIdToComponent(ajax, _for);
+            UIComponent referredComponent = Components.referenceIdToComponent(ajax, _for);
             return isCommandComponent(referredComponent);
         }
         if (!ajax.isStandalone()) {

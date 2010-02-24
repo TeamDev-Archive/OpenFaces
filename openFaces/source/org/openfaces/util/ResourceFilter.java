@@ -150,7 +150,7 @@ public class ResourceFilter implements Filter {
             if (responseString.length() == 0)
                 return;
 
-            if (ResourceUtil.isHeaderIncludesRegistered(servletRequest)) {
+            if (Resources.isHeaderIncludesRegistered(servletRequest)) {
                 renderResponseWithHeader(servletRequest, servletResponse, responseString);
                 return;
             }
@@ -183,7 +183,7 @@ public class ResourceFilter implements Filter {
         int packageStartIndex = uri.indexOf(INTERNAL_RESOURCE_PATH) + INTERNAL_RESOURCE_PATH.length() - 1;
         String resourcePathWithVersion = uri.substring(packageStartIndex);
         String resourcePath;
-        boolean isDynamicImageResource = RenderingUtil.isDynamicResource(uri);
+        boolean isDynamicImageResource = Rendering.isDynamicResource(uri);
         if (!isDynamicImageResource) {
             int versionPrefixIdx = resourcePathWithVersion.lastIndexOf("-");
             if (versionPrefixIdx != -1)
@@ -209,7 +209,7 @@ public class ResourceFilter implements Filter {
                 return;
             }
 
-            URL resourceURL = RenderingUtil.class.getResource(resourcePath);
+            URL resourceURL = Rendering.class.getResource(resourcePath);
             if (resourceURL == null) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -304,7 +304,7 @@ public class ResourceFilter implements Filter {
                 ? ((byte[]) cache.get(resourcePath))
                 : null;
         if (resource == null) {
-            InputStream inputStream = RenderingUtil.class.getResourceAsStream(resourcePath);
+            InputStream inputStream = Rendering.class.getResourceAsStream(resourcePath);
             try {
                 resource = getStreamAsByteArray(inputStream);
                 cache.put(resourcePath, resource);
@@ -418,7 +418,7 @@ public class ResourceFilter implements Filter {
             String resetCssUrl;
 
             if (resetCss.equals(RESET_CSS_CONTEXT_PARAM_DEFAULT_VALUE)) {
-                resetCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + "org/openfaces/renderkit/reset" + "-" + ResourceUtil.getVersionString() + ".css";
+                resetCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + "org/openfaces/renderkit/reset" + "-" + Resources.getVersionString() + ".css";
             } else if (!resetCss.startsWith("/") && !resetCss.startsWith("http://")) {
                 resetCssUrl = httpServletRequest.getContextPath() + "/" + resetCss;
             } else {
@@ -431,11 +431,11 @@ public class ResourceFilter implements Filter {
         }
 
         writer.print("<link type=\"text/css\" href=\"");
-        String defaultCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + "org/openfaces/renderkit/default" + "-" + ResourceUtil.getVersionString() + ".css"; // render default.css
+        String defaultCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + "org/openfaces/renderkit/default" + "-" + Resources.getVersionString() + ".css"; // render default.css
         writer.print(defaultCssUrl);
         writer.println("\" rel=\"stylesheet\"/>");
 
-        List<String> jsLibraries = (List<String>) servletRequest.getAttribute(ResourceUtil.HEADER_JS_LIBRARIES);
+        List<String> jsLibraries = (List<String>) servletRequest.getAttribute(Resources.HEADER_JS_LIBRARIES);
 
         if (jsLibraries != null) {
             for (String jsFileUrl : jsLibraries) {
@@ -456,7 +456,7 @@ public class ResourceFilter implements Filter {
         else
             restOfResponse = responseStringInspector.substring(headerInsertionPos);
 
-        StringBuilder onLoadScripts = (StringBuilder) servletRequest.getAttribute(RenderingUtil.ON_LOAD_SCRIPTS_KEY);
+        StringBuilder onLoadScripts = (StringBuilder) servletRequest.getAttribute(Rendering.ON_LOAD_SCRIPTS_KEY);
         if (onLoadScripts == null)
             onLoadScripts = new StringBuilder();
         else {

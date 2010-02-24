@@ -20,11 +20,11 @@ import org.openfaces.component.table.Columns;
 import org.openfaces.component.table.DynamicCol;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.ReflectionUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
+import org.openfaces.util.Styles;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -50,7 +50,7 @@ public class TableUtil {
     }
 
     public static String getTableUtilJsURL(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, TableUtil.class, "tableUtil.js");
+        return Resources.getInternalURL(context, TableUtil.class, "tableUtil.js");
     }
 
     public static void writeColumnTags(FacesContext context, UIComponent component, List columns) throws IOException {
@@ -77,9 +77,9 @@ public class TableUtil {
             String align,
             String valign) throws IOException {
         writer.startElement("col", component);
-        RenderingUtil.writeAttribute(writer, "width", colWidth);
-        RenderingUtil.writeAttribute(writer, "align", align);
-        RenderingUtil.writeAttribute(writer, "valign", valign);
+        Rendering.writeAttribute(writer, "width", colWidth);
+        Rendering.writeAttribute(writer, "align", align);
+        Rendering.writeAttribute(writer, "valign", valign);
         writer.endElement("col");
     }
 
@@ -102,7 +102,7 @@ public class TableUtil {
     public static String getClassWithDefaultStyleClass(boolean applyDefaultStyle, String defaultStyleClass, String styleClass) {
         if (!applyDefaultStyle || defaultStyleClass == null)
             return styleClass;
-        return StyleUtil.mergeClassNames(defaultStyleClass, styleClass);
+        return Styles.mergeClassNames(defaultStyleClass, styleClass);
     }
 
 
@@ -110,7 +110,7 @@ public class TableUtil {
         List<BaseColumn> columns = new ArrayList<BaseColumn>();
         for (UIComponent child : children) {
             if (child instanceof BaseColumn && !(child instanceof ColumnGroup)) {
-                ComponentUtil.generateIdIfNotSpecified(child);
+                Components.generateIdIfNotSpecified(child);
                 columns.add((BaseColumn) child);
             } else if (child instanceof Columns) {
                 Columns tableColumns = (Columns) child;
@@ -287,9 +287,9 @@ public class TableUtil {
             table.setRowIndex(0);
             valueType = expression.getType(context.getELContext());
             if (columnOutput != null)
-                valueConverter = RenderingUtil.getConverter(context, columnOutput);
+                valueConverter = Rendering.getConverter(context, columnOutput);
             else
-                valueConverter = RenderingUtil.getConverterForType(context, valueType);
+                valueConverter = Rendering.getConverterForType(context, valueType);
             table.setRowIndex(index);
         } catch (Exception e) {
             // means that there's no row data and row with index == 0
@@ -326,7 +326,7 @@ public class TableUtil {
             }
         }
         if (valueConverter == null)
-            valueConverter = RenderingUtil.getConverterForType(context, valueType);
+            valueConverter = Rendering.getConverterForType(context, valueType);
         ColumnExpressionData result = new ColumnExpressionData(expression, valueType, valueConverter);
         column.getAttributes().put(cachedDataVar, result);
         return result;

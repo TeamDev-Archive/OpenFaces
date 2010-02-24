@@ -12,7 +12,7 @@
 package org.seleniuminspector.openfaces;
 
 import org.openfaces.component.filter.TextSearchFilter;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.seleniuminspector.LoadingMode;
 
 /**
@@ -27,7 +27,7 @@ public class DropDownFieldFilterInspector extends AbstractFilterInspector {
     @Deprecated
     public DropDownFieldInspector searchComponentOld() {
         return new DropDownFieldInspector(getLocator()
-                + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR
+                + Rendering.SERVER_ID_SUFFIX_SEPARATOR
                 + TextSearchFilter.SEARCH_COMPONENT_SUFFIX);
     }
 

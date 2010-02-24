@@ -17,8 +17,8 @@ import org.openfaces.component.validation.ClientValidationMode;
 import org.openfaces.component.validation.UIValidation;
 import org.openfaces.component.validation.ValidationProcessor;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.RawScript;
 import org.openfaces.validation.CoreValidator;
 import org.openfaces.validation.core.CoreValidatorImpl;
@@ -71,7 +71,7 @@ public class AnnotationValidationRenderer extends RendererBase {
             validateAll.setValidatorsAdded(true);
         }
 
-        RenderingUtil.renderChildren(context, component);
+        Rendering.renderChildren(context, component);
     }
 
     private boolean isValueRequired(FacesContext context, Object child) {
@@ -144,7 +144,7 @@ public class AnnotationValidationRenderer extends RendererBase {
     }
 
     private void renderClientValidatorsIfNeeded(UIComponent component, List<UIComponent> children, FacesContext context) throws IOException {
-        UIForm parentForm = ComponentUtil.getEnclosingForm(component);
+        UIForm parentForm = Components.getEnclosingForm(component);
         ValidationProcessor processor = ValidationProcessor.getInstance(context);
         ClientValidationMode validationMode = processor.getClientValidationRuleForForm(parentForm);
         if (!validationMode.equals(ClientValidationMode.OFF)) {
@@ -207,16 +207,16 @@ public class AnnotationValidationRenderer extends RendererBase {
                         }
                     }
                     String[] javascriptLibrariesArray = javascriptLibraries.toArray(new String[javascriptLibraries.size()]);
-                    RenderingUtil.renderInitScript(context, new RawScript(commonScript.toString()), javascriptLibrariesArray);
+                    Rendering.renderInitScript(context, new RawScript(commonScript.toString()), javascriptLibrariesArray);
 
                     if (validationMode.equals(ClientValidationMode.ON_SUBMIT)) {
                         String formClientId = parentForm.getClientId(context);
-                        RenderingUtil.renderInitScript(context,
+                        Rendering.renderInitScript(context,
                                 new RawScript("O$.addOnSubmitEvent(O$._autoValidateForm,'" + formClientId + "');\n"),
                                 ValidatorUtil.getValidatorUtilJsUrl(context));
 
                     } else if (validationMode.equals(ClientValidationMode.ON_DEMAND)) {
-                        RenderingUtil.renderInitScript(context,
+                        Rendering.renderInitScript(context,
                                 new RawScript("O$.addNotValidatedInput('" + child.getClientId(context) + "');"),
                                 ValidatorUtil.getValidatorUtilJsUrl(context));
                     }

@@ -14,12 +14,12 @@ package org.openfaces.renderkit.input;
 
 import org.openfaces.component.OUIInputText;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -42,7 +42,7 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
 
         renderInputComponent(facesContext, inputText);
 
-        StyleUtil.renderStyleClasses(facesContext, inputText);
+        Styles.renderStyleClasses(facesContext, inputText);
     }
 
     @Override
@@ -62,15 +62,15 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        return RenderingUtil.convertFromString(context, component, (String) submittedValue);
+        return Rendering.convertFromString(context, component, (String) submittedValue);
     }
 
     protected String getConvertedValue(FacesContext context, UIInput inputText) {
-        return RenderingUtil.convertToString(context, inputText, inputText.getValue());
+        return Rendering.convertToString(context, inputText, inputText.getValue());
     }
 
     protected void renderInputComponent(FacesContext facesContext, OUIInputText inputText) throws IOException {
-        String styleClass = StyleUtil.getCSSClass(facesContext, inputText, inputText.getStyle(), StyleGroup.regularStyleGroup(), inputText.getStyleClass(), null);
+        String styleClass = Styles.getCSSClass(facesContext, inputText, inputText.getStyle(), StyleGroup.regularStyleGroup(), inputText.getStyleClass(), null);
 
         ResponseWriter writer = facesContext.getResponseWriter();
 
@@ -87,7 +87,7 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
         writeAttribute(writer, "onchange", inputText.getOnchange());
         writeAttribute(writer, "accesskey", inputText.getAccesskey());
         writeAttribute(writer, "tabindex", inputText.getTabindex());
-        RenderingUtil.writeStandardEvents(writer, inputText);
+        Rendering.writeStandardEvents(writer, inputText);
 
         writeCustomAttributes(facesContext, inputText);
 
@@ -102,9 +102,9 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
 
     protected void encodeInitScript(FacesContext facesContext, OUIInputText inputText) throws IOException {
         String promptText = inputText.getPromptText();
-        String promptTextStyleClass = StyleUtil.getCSSClass(facesContext, inputText, inputText.getPromptTextStyle(), StyleGroup.regularStyleGroup(1), inputText.getPromptTextClass(), DEFAULT_PROMPT_CLASS);
-        String rolloverStyleClass = StyleUtil.getCSSClass(facesContext, inputText, inputText.getRolloverStyle(), StyleGroup.regularStyleGroup(2), inputText.getRolloverClass(), null);
-        String focusedStyleClass = StyleUtil.getCSSClass(facesContext, inputText, inputText.getFocusedStyle(), StyleGroup.regularStyleGroup(3), inputText.getFocusedClass(), null);
+        String promptTextStyleClass = Styles.getCSSClass(facesContext, inputText, inputText.getPromptTextStyle(), StyleGroup.regularStyleGroup(1), inputText.getPromptTextClass(), DEFAULT_PROMPT_CLASS);
+        String rolloverStyleClass = Styles.getCSSClass(facesContext, inputText, inputText.getRolloverStyle(), StyleGroup.regularStyleGroup(2), inputText.getRolloverClass(), null);
+        String focusedStyleClass = Styles.getCSSClass(facesContext, inputText, inputText.getFocusedStyle(), StyleGroup.regularStyleGroup(3), inputText.getFocusedClass(), null);
         Script initScript = new ScriptBuilder().initScript(facesContext, inputText, "O$.InputText._init",
                 promptText,
                 promptTextStyleClass,
@@ -112,10 +112,10 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
                 focusedStyleClass,
                 inputText.isDisabled());
 
-        StyleUtil.renderStyleClasses(facesContext, inputText);
-        RenderingUtil.renderInitScript(facesContext, initScript,
-                ResourceUtil.getUtilJsURL(facesContext),
-                ResourceUtil.getInternalResourceURL(facesContext, InputTextRenderer.class, "inputText.js")
+        Styles.renderStyleClasses(facesContext, inputText);
+        Rendering.renderInitScript(facesContext, initScript,
+                Resources.getUtilJsURL(facesContext),
+                Resources.getInternalURL(facesContext, InputTextRenderer.class, "inputText.js")
         );
     }
 
@@ -133,7 +133,7 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
         writeAttribute(writer, "type", "hidden");
         writeAttribute(writer, "id", clientId + STATE_PROMPT_SUFFIX);
         writeAttribute(writer, "name", clientId + STATE_PROMPT_SUFFIX);
-        String value = RenderingUtil.convertToString(context, inputText, inputText.getValue());
+        String value = Rendering.convertToString(context, inputText, inputText.getValue());
         boolean valueExists = value != null && value.length() > 0;
         writeAttribute(writer, "value", String.valueOf(!valueExists));
         writer.endElement("input");

@@ -15,10 +15,10 @@ import org.openfaces.component.filter.ExpressionFilter;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItem;
 import org.openfaces.component.input.DropDownItems;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -85,10 +85,10 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
         field.setOnchange(getFilterSubmissionScript(filter));
         field.setOnkeypress(getFilterKeyPressScript(filter));
         field.setStyle(filter.getStyle());
-        field.setStyleClass(StyleUtil.mergeClassNames(filter.getStyleClass(), "o_fullWidth"));
+        field.setStyleClass(Styles.mergeClassNames(filter.getStyleClass(), "o_fullWidth"));
         field.setListStyle("font-weight: normal;");
 
-        String rolloverItemClass = StyleUtil.getCSSClass(context,
+        String rolloverItemClass = Styles.getCSSClass(context,
                 filter, "background: " + DefaultStyles.getSelectionBackgroundColor() +
                         " !important; color: " + DefaultStyles.getSelectionTextColor() + " !important;", StyleGroup.selectedStyleGroup(), null);
         field.setRolloverListItemClass(rolloverItemClass);
@@ -120,7 +120,7 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
         }
         DropDownItem allRecordsItem = createDropDownItem(context, null);
         String allRecordsCriterionName = filter.getAllRecordsText();
-        HtmlOutputText outputText = ComponentUtil.createOutputText(context, allRecordsCriterionName);
+        HtmlOutputText outputText = Components.createOutputText(context, allRecordsCriterionName);
         String predefinedCriterionsClass = getPredefinedCriterionClass(context, filter);
         outputText.setStyleClass(predefinedCriterionsClass);
         allRecordsItem.getChildren().add(outputText);

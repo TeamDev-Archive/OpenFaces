@@ -63,14 +63,14 @@ import java.util.Set;
  *
  * @author Dmitry Pikhulya
  */
-public class RenderingUtil {
+public class Rendering {
     public static final String CLIENT_ID_SUFFIX_SEPARATOR = "::";
     public static final String SERVER_ID_SUFFIX_SEPARATOR = "--";
 
     public static final String DEFAULT_FOCUSED_STYLE = "border: 1px dotted black;";
     public static final String ON_LOAD_SCRIPTS_KEY = UtilPhaseListener.class.getName() + ".loadScripts";
 
-    private RenderingUtil() {
+    private Rendering() {
     }
 
     /**
@@ -125,7 +125,7 @@ public class RenderingUtil {
      */
     public static void renderHTMLAttribute(ResponseWriter writer, String componentProperty, String attrName,
                                            Object value) throws IOException {
-        if (!RenderingUtil.isDefaultAttributeValue(value)) {
+        if (!Rendering.isDefaultAttributeValue(value)) {
             // render JSF "styleClass" attribute as "class"
             String htmlAttrName = attrName.equals("styleClass") ? "class" : attrName;
             writer.writeAttribute(htmlAttrName, value, componentProperty);
@@ -211,8 +211,8 @@ public class RenderingUtil {
 
         FacesContext context = FacesContext.getCurrentInstance();
         renderInitScript(context, sb,
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, DateChooserRenderer.class, "DateTimeFormat.js"));
+                Resources.getUtilJsURL(context),
+                Resources.getInternalURL(context, DateChooserRenderer.class, "DateTimeFormat.js"));
     }
 
     /**
@@ -605,7 +605,7 @@ public class RenderingUtil {
         if (jsFiles != null)
             for (String jsFile : jsFiles) {
                 if (jsFile != null)
-                    ResourceUtil.renderJSLinkIfNeeded(context, jsFile);
+                    Resources.renderJSLinkIfNeeded(context, jsFile);
             }
 
         ResponseWriter writer = context.getResponseWriter();
@@ -655,14 +655,14 @@ public class RenderingUtil {
         List<String> preparedImageUrls = new ArrayList<String>();
         for (String imageUrl : imageUrls) {
             String preparedUrl = prependContextPath
-                    ? ResourceUtil.getApplicationResourceURL(context, imageUrl)
+                    ? Resources.getApplicationURL(context, imageUrl)
                     : imageUrl;
             preparedImageUrls.add(preparedUrl);
         }
 
-        RenderingUtil.renderInitScript(context,
+        Rendering.renderInitScript(context,
                 new ScriptBuilder().functionCall("O$.preloadImages", preparedImageUrls).semicolon(),
-                ResourceUtil.getUtilJsURL(context));
+                Resources.getUtilJsURL(context));
     }
 
     /**
@@ -671,7 +671,7 @@ public class RenderingUtil {
      * @param component The component to check
      */
     public static void ensureComponentInsideForm(UIComponent component) {
-        UIForm form = ComponentUtil.findForm(component);
+        UIForm form = Components.findForm(component);
         if (form == null) {
             FacesContext context = FacesContext.getCurrentInstance();
             throw new FacesException("The following component has been detected to be located outside of the form. " +
@@ -726,9 +726,9 @@ public class RenderingUtil {
      * @throws IOException if an input/output error occurs
      */
     public static void writeStyleAndClassAttributes(ResponseWriter writer, String style, String styleClass) throws IOException {
-        if (!RenderingUtil.isNullOrEmpty(style))
+        if (!Rendering.isNullOrEmpty(style))
             writer.writeAttribute("style", style, null);
-        if (!RenderingUtil.isNullOrEmpty(styleClass))
+        if (!Rendering.isNullOrEmpty(styleClass))
             writer.writeAttribute("class", styleClass, null);
     }
 
@@ -747,7 +747,7 @@ public class RenderingUtil {
      * @see #writeStyleAndClassAttributes(javax.faces.context.ResponseWriter, String, String)
      */
     public static void writeStyleAndClassAttributes(ResponseWriter writer, String style, String styleClass, String defaultStyleClass) throws IOException {
-        String resultStyleClass = StyleUtil.mergeClassNames(styleClass, defaultStyleClass);
+        String resultStyleClass = Styles.mergeClassNames(styleClass, defaultStyleClass);
         writeStyleAndClassAttributes(writer, style, resultStyleClass);
     }
 
@@ -771,7 +771,7 @@ public class RenderingUtil {
      * @throws IOException if an input/output error occurs
      */
     public static void writeComponentClassAttribute(ResponseWriter writer, OUIComponent component, String defaultClass) throws IOException {
-        String cssClass = StyleUtil.getCSSClass(FacesContext.getCurrentInstance(),
+        String cssClass = Styles.getCSSClass(FacesContext.getCurrentInstance(),
                 (UIComponent) component, component.getStyle(), defaultClass, component.getStyleClass());
         if (cssClass != null)
             writer.writeAttribute("class", cssClass, null);
@@ -784,7 +784,7 @@ public class RenderingUtil {
      * @return true, if uri represent dynamic image, false otherwise
      */
     public static boolean isDynamicResource(String uri) {
-        // todo: extract this as a generic mechanism of dynamic resources (see also todo in RenderingUtil.)
+        // todo: extract this as a generic mechanism of dynamic resources (see also todo in Rendering.)
         return (uri.indexOf("dynamicimage") != -1);
     }
 
@@ -802,7 +802,7 @@ public class RenderingUtil {
     public static void startWriteIMG(ResponseWriter writer, FacesContext context,
                                      UIComponent component, String extension,
                                      ImageDataModel model, int[] size) throws IOException {
-        ComponentUtil.generateIdIfNotSpecified(component);
+        Components.generateIdIfNotSpecified(component);
         writeNewLine(writer);
         writer.startElement("img", component);
 
@@ -813,7 +813,7 @@ public class RenderingUtil {
             writer.writeAttribute("id", component.getClientId(context), null);
 
             String imagePath = ResourceFilter.INTERNAL_RESOURCE_PATH + "dynamicimage." + extension + "?id=" + id; // todo: extract this as a generic mechanism of dynamic resources (this also involves the isDynamicResource method)
-            imageUrl = ResourceUtil.getApplicationResourceURL(context, imagePath);
+            imageUrl = Resources.getApplicationURL(context, imagePath);
         } else {
             imageUrl = "";
         }
@@ -837,7 +837,7 @@ public class RenderingUtil {
      * @return URL to clear.gif image
      */
     private static String getClearGif(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, null, "org/openfaces/renderkit/clear.gif");
+        return Resources.getInternalURL(context, null, "org/openfaces/renderkit/clear.gif");
     }
 
     /**
@@ -1147,7 +1147,7 @@ public class RenderingUtil {
             FacesContext context,
             OUIComponent component,
             boolean skipIfNotNeeded) throws IOException {
-        String rolloverClass = StyleUtil.getCSSClass(context,
+        String rolloverClass = Styles.getCSSClass(context,
                 (UIComponent) component,
                 component.getRolloverStyle(), StyleGroup.rolloverStyleGroup(), component.getRolloverClass());
         if (rolloverClass == null && skipIfNotNeeded)
@@ -1162,8 +1162,8 @@ public class RenderingUtil {
             }
         ScriptBuilder buf = new ScriptBuilder().initScript(context, uiComponent,
                 "O$.initComponent", styleParams).semicolon();
-        renderInitScript(context, buf, ResourceUtil.getUtilJsURL(context));
-        StyleUtil.renderStyleClasses(context, uiComponent);
+        renderInitScript(context, buf, Resources.getUtilJsURL(context));
+        Styles.renderStyleClasses(context, uiComponent);
     }
 
     /**
@@ -1174,7 +1174,7 @@ public class RenderingUtil {
      * @return rollover css class for component
      */
     public static String getRolloverClass(FacesContext context, OUIComponent component) {
-        return StyleUtil.getCSSClass(context, (UIComponent) component,
+        return Styles.getCSSClass(context, (UIComponent) component,
                 component.getRolloverStyle(), StyleGroup.rolloverStyleGroup(), component.getRolloverClass()
         );
     }
@@ -1187,8 +1187,8 @@ public class RenderingUtil {
      * @return focused css class for component
      */
     public static String getFocusedClass(FacesContext context, OUIInput component) {
-        String defaultClass = StyleUtil.getCSSClass(context, (UIComponent) component, DEFAULT_FOCUSED_STYLE, StyleGroup.selectedStyleGroup(0));
-        String cssClass = StyleUtil.getCSSClass(context,
+        String defaultClass = Styles.getCSSClass(context, (UIComponent) component, DEFAULT_FOCUSED_STYLE, StyleGroup.selectedStyleGroup(0));
+        String cssClass = Styles.getCSSClass(context,
                 (UIComponent) component,
                 component.getFocusedStyle(), StyleGroup.selectedStyleGroup(1), component.getFocusedClass(), defaultClass
         );
@@ -1223,7 +1223,7 @@ public class RenderingUtil {
         JSONObject events = new JSONObject();
         for (String eventName : eventNames) {
             String eventHandlerScript = (String) component.getAttributes().get(eventName);
-            if (RenderingUtil.isNullOrEmpty(eventHandlerScript))
+            if (Rendering.isNullOrEmpty(eventHandlerScript))
                 continue;
             try {
                 events.put(eventName, eventHandlerScript);

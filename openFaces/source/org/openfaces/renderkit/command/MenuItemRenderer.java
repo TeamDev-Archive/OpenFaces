@@ -16,10 +16,10 @@ import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.PopupMenu;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -75,8 +75,8 @@ public class MenuItemRenderer extends RendererBase {
         writer.startElement("span", menuItem);
         writeAttribute(writer, "id", menuItem.getClientId(context) + SPAN_SUFIX);
 
-        String contentClass = StyleUtil.getCSSClass(context, menuItem, menuItem.getContentAreaStyle(), StyleGroup.regularStyleGroup(),
-                menuItem.getContentAreaClass(), StyleUtil.getCSSClass(context, popupMenu, popupMenu.getItemContentStyle(), StyleGroup.regularStyleGroup(),
+        String contentClass = Styles.getCSSClass(context, menuItem, menuItem.getContentAreaStyle(), StyleGroup.regularStyleGroup(),
+                menuItem.getContentAreaClass(), Styles.getCSSClass(context, popupMenu, popupMenu.getItemContentStyle(), StyleGroup.regularStyleGroup(),
                         popupMenu.getItemContentClass(), DEFAULT_CONTENT_CLASS));
 
         writeAttribute(writer, "class", contentClass);
@@ -90,7 +90,7 @@ public class MenuItemRenderer extends RendererBase {
 
         UIComponent popupMenuChild = getChildPopupMenu(menuItem);
 
-        StyleUtil.renderStyleClasses(context, menuItem);
+        Styles.renderStyleClasses(context, menuItem);
 
 
         addSubmenuImage(context, menuItem, writer, popupMenu, popupMenuChild);
@@ -98,7 +98,7 @@ public class MenuItemRenderer extends RendererBase {
             popupMenuChild.encodeAll(context);
         }
 
-        StyleUtil.renderStyleClasses(context, menuItem);
+        Styles.renderStyleClasses(context, menuItem);
 
         writer.endElement("span");
 
@@ -128,7 +128,7 @@ public class MenuItemRenderer extends RendererBase {
                     addMenuItemParameter(menuItem, "menuId", child.getClientId(context));
                 } else {
                     child.encodeAll(context);
-                    if (!(child instanceof OUIClientAction) && !RenderingUtil.isA4jSupportComponent(child))
+                    if (!(child instanceof OUIClientAction) && !Rendering.isA4jSupportComponent(child))
                         renderValueAsContent = false;
                 }
             }
@@ -145,8 +145,8 @@ public class MenuItemRenderer extends RendererBase {
             writer.startElement("span", menuItem);
             writeAttribute(writer, "id", menuItem.getClientId(context) + IMG_SPAN_SUFIX);
 
-            String indentAreaClass = StyleUtil.getCSSClass(context, menuItem, menuItem.getIndentAreaStyle(), StyleGroup.regularStyleGroup(),
-                    menuItem.getIndentAreaClass(), StyleUtil.getCSSClass(context, popupMenu, popupMenu.getItemIndentStyle(), StyleGroup.regularStyleGroup(),
+            String indentAreaClass = Styles.getCSSClass(context, menuItem, menuItem.getIndentAreaStyle(), StyleGroup.regularStyleGroup(),
+                    menuItem.getIndentAreaClass(), Styles.getCSSClass(context, popupMenu, popupMenu.getItemIndentStyle(), StyleGroup.regularStyleGroup(),
                             popupMenu.getItemIndentClass(), DEFAULT_INDENT_CLASS));
             writeAttribute(writer, "class", indentAreaClass);
 
@@ -163,14 +163,14 @@ public class MenuItemRenderer extends RendererBase {
             writer.startElement("img", menuItem);
             writeAttribute(writer, "id", menuItem.getClientId(context) + IMG_SUFIX);
             if (imgSrc != null)
-                writeAttribute(writer, "src", ResourceUtil.getApplicationResourceURL(context, imgSrc));
+                writeAttribute(writer, "src", Resources.getApplicationURL(context, imgSrc));
             writeAttribute(writer, "class", DEFAULT_IMG_CLASS);
             writer.endElement("img");
 
-            addMenuItemParameter(menuItem, "imgSelectedSrc", ResourceUtil.getApplicationResourceURL(context, imgSelectedSrc));
-            addMenuItemParameter(menuItem, "imgSrc", ResourceUtil.getApplicationResourceURL(context, imgSrc));
-            addMenuItemParameter(menuItem, "disabledImgSelectedSrc", ResourceUtil.getApplicationResourceURL(context, disabledSelectedIconUrl));
-            addMenuItemParameter(menuItem, "disabledImgSrc", ResourceUtil.getApplicationResourceURL(context, disabledIconUrl));
+            addMenuItemParameter(menuItem, "imgSelectedSrc", Resources.getApplicationURL(context, imgSelectedSrc));
+            addMenuItemParameter(menuItem, "imgSrc", Resources.getApplicationURL(context, imgSrc));
+            addMenuItemParameter(menuItem, "disabledImgSelectedSrc", Resources.getApplicationURL(context, disabledSelectedIconUrl));
+            addMenuItemParameter(menuItem, "disabledImgSrc", Resources.getApplicationURL(context, disabledIconUrl));
             writer.endElement("span");
         }
     }
@@ -179,8 +179,8 @@ public class MenuItemRenderer extends RendererBase {
         writer.startElement("span", menuItem);
         writeAttribute(writer, "id", menuItem.getClientId(context) + ARROW_SPAN_SUFIX);
 
-        String submenuIconAreaClass = StyleUtil.getCSSClass(context, menuItem, menuItem.getSubmenuIconAreaStyle(), StyleGroup.regularStyleGroup(),
-                menuItem.getSubmenuIconAreaClass(), StyleUtil.getCSSClass(context, popupMenu, popupMenu.getItemSubmenuIconStyle(), StyleGroup.regularStyleGroup(),
+        String submenuIconAreaClass = Styles.getCSSClass(context, menuItem, menuItem.getSubmenuIconAreaStyle(), StyleGroup.regularStyleGroup(),
+                menuItem.getSubmenuIconAreaClass(), Styles.getCSSClass(context, popupMenu, popupMenu.getItemSubmenuIconStyle(), StyleGroup.regularStyleGroup(),
                         popupMenu.getItemSubmenuIconClass(), DEFAULT_ARROW_SPAN_CLASS));
         writeAttribute(writer, "class", submenuIconAreaClass);
         if (popupMenuChild != null) {
@@ -193,28 +193,28 @@ public class MenuItemRenderer extends RendererBase {
             writer.startElement("img", menuItem);
             writeAttribute(writer, "id", menuItem.getClientId(context) + ARROW_SUFIX);
             if (submenuImageUrl != null)
-                writeAttribute(writer, "src", ResourceUtil.getApplicationResourceURL(context, submenuImageUrl));
+                writeAttribute(writer, "src", Resources.getApplicationURL(context, submenuImageUrl));
             writeAttribute(writer, "class", DEFAULT_IMG_CLASS);
             writer.endElement("img");
 
             String disabledSubmenuImageUrl = menuItem.getDisabledSubmenuImageUrl();
             if (disabledSubmenuImageUrl != null) {
                 addMenuItemParameter(menuItem, "disabledSubmenuImageUrl",
-                        ResourceUtil.getResourceURL(context, disabledSubmenuImageUrl,
+                        Resources.getURL(context, disabledSubmenuImageUrl,
                                 MenuItemRenderer.class, ""));
             }
 
             String selectedDisabledSubmenuImageUrl = menuItem.getSelectedDisabledSubmenuImageUrl();
             if (selectedDisabledSubmenuImageUrl != null) {
                 addMenuItemParameter(menuItem, "selectedDisabledSubmenuImageUrl",
-                        ResourceUtil.getResourceURL(context, selectedDisabledSubmenuImageUrl,
+                        Resources.getURL(context, selectedDisabledSubmenuImageUrl,
                                 MenuItemRenderer.class, ""));
             }
 
 
             if (submenuImageUrl != null) {
                 addMenuItemParameter(menuItem, "submenuImageUrl",
-                        ResourceUtil.getResourceURL(context, submenuImageUrl,
+                        Resources.getURL(context, submenuImageUrl,
                                 MenuItemRenderer.class, ""));
             }
 
@@ -222,7 +222,7 @@ public class MenuItemRenderer extends RendererBase {
             String selectedSubmenuImageUrl = menuItem.getSelectedSubmenuImageUrl();
             if (selectedSubmenuImageUrl != null) {
                 addMenuItemParameter(menuItem, "selectedSubmenuImageUrl",
-                        ResourceUtil.getResourceURL(context, selectedSubmenuImageUrl,
+                        Resources.getURL(context, selectedSubmenuImageUrl,
                                 MenuItemRenderer.class, ""));
             }
         }
@@ -254,22 +254,22 @@ public class MenuItemRenderer extends RendererBase {
     }
 
     private void addSelectedStyleClass(FacesContext context, MenuItem menuItem) {
-        String styleClass = StyleUtil.getCSSClass(context, menuItem, menuItem.getSelectedStyle(), StyleGroup.selectedStyleGroup(2),
+        String styleClass = Styles.getCSSClass(context, menuItem, menuItem.getSelectedStyle(), StyleGroup.selectedStyleGroup(2),
                 menuItem.getSelectedClass(), null);
         addMenuItemParameter(menuItem, "selectedClass", styleClass);
     }
 
 
     private void renderContentStyleClass(FacesContext context, MenuItem menuItem, ResponseWriter writer) throws IOException {
-        String styleClass = StyleUtil.getCSSClass(context, menuItem, menuItem.getContentAreaStyle(), StyleGroup.regularStyleGroup(2),
+        String styleClass = Styles.getCSSClass(context, menuItem, menuItem.getContentAreaStyle(), StyleGroup.regularStyleGroup(2),
                 menuItem.getContentAreaClass(), null);
         writeAttribute(writer, "class", styleClass);
     }
 
     private void renderStyleClass(FacesContext context, MenuItem menuItem, ResponseWriter writer) throws IOException {
-        String styleClass = StyleUtil.getCSSClass(context, menuItem, menuItem.getStyle(), StyleGroup.regularStyleGroup(2),
+        String styleClass = Styles.getCSSClass(context, menuItem, menuItem.getStyle(), StyleGroup.regularStyleGroup(2),
                 menuItem.getStyleClass(), null);
-        String disabledStyleClass = StyleUtil.getCSSClass(context, menuItem, menuItem.getDisabledStyle(), StyleGroup.disabledStyleGroup(2), menuItem.getDisabledClass(), null);
+        String disabledStyleClass = Styles.getCSSClass(context, menuItem, menuItem.getDisabledStyle(), StyleGroup.disabledStyleGroup(2), menuItem.getDisabledClass(), null);
         addMenuItemParameter(menuItem, "disabledClass", disabledStyleClass);
 
         writeAttribute(writer, "class", styleClass);

@@ -13,7 +13,7 @@ package org.openfaces.component.ajax;
 
 import org.openfaces.component.HorizontalAlignment;
 import org.openfaces.component.VerticalAlignment;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.ExternalContext;
@@ -147,9 +147,9 @@ public class DefaultProgressMessage extends ProgressMessage {
         ExternalContext externalContext = context.getExternalContext();
 
         if (imageUrl == null) {
-            imageUrl = ResourceUtil.getInternalResourceURL(context, DefaultProgressMessage.class, "loading.gif");
+            imageUrl = Resources.getInternalURL(context, DefaultProgressMessage.class, "loading.gif");
         } else {
-            imageUrl = ResourceUtil.getApplicationResourceURL(context, imageUrl);
+            imageUrl = Resources.getApplicationURL(context, imageUrl);
         }
 
         if (ajaxMessage == null) {

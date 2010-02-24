@@ -11,7 +11,7 @@
  */
 package org.openfaces.renderkit.table;
 
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -43,7 +43,7 @@ public class BodyCell extends TableElement {
         if (span > 1)
             writer.writeAttribute("colspan", String.valueOf(span), null);
         if (style != null || styleClass != null)
-            RenderingUtil.writeStyleAndClassAttributes(writer, style, styleClass);
+            Rendering.writeStyleAndClassAttributes(writer, style, styleClass);
         BodyRow.writeCustomRowOrCellEvents(writer, events);
 
         if (content != null) {

@@ -16,8 +16,8 @@ import org.openfaces.component.OUIObjectIteratorBase;
 import org.openfaces.component.window.Confirmation;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.CalendarUtil;
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ELContext;
@@ -755,15 +755,15 @@ public class DayTable extends OUIObjectIteratorBase {
     }
 
     public EventActionBar getEventActionBar() {
-        return ComponentUtil.getChildWithClass(this, EventActionBar.class, "eventActionBar");
+        return Components.getChildWithClass(this, EventActionBar.class, "eventActionBar");
     }
 
     public TimetableEditingOptions getEditingOptions() {
-        return ComponentUtil.getChildWithClass(this, TimetableEditingOptions.class, "editingOptions");
+        return Components.getChildWithClass(this, TimetableEditingOptions.class, "editingOptions");
     }
 
     public EventPreview getEventPreview() {
-        return ComponentUtil.findChildWithClass(this, EventPreview.class);
+        return Components.findChildWithClass(this, EventPreview.class);
     }
 
 
@@ -775,8 +775,8 @@ public class DayTable extends OUIObjectIteratorBase {
         FacesContext context = FacesContext.getCurrentInstance();
         Confirmation confirmation = getDeleteEventConfirmation();
         if (confirmation == null) {
-            confirmation = (Confirmation) ComponentUtil.createComponent(context,
-                    getId() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "deleteEventConfirmation",
+            confirmation = (Confirmation) Components.createComponent(context,
+                    getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "deleteEventConfirmation",
                     Confirmation.COMPONENT_TYPE);
             confirmation.setMessage("Delete the event?");
             confirmation.setDetails("Click OK to delete the event");
@@ -787,7 +787,7 @@ public class DayTable extends OUIObjectIteratorBase {
     }
 
     public List<EventArea> getEventAreas() {
-        return ComponentUtil.findChildrenWithClass(this, EventArea.class);
+        return Components.findChildrenWithClass(this, EventArea.class);
     }
 
     public AbstractTimetableEvent getEvent() {

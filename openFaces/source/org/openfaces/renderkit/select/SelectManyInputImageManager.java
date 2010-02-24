@@ -13,7 +13,7 @@
 package org.openfaces.renderkit.select;
 
 import org.openfaces.component.select.OUISelectManyInputBase;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -55,12 +55,12 @@ public class SelectManyInputImageManager {
 
     public static String getSelectedImageUrl(FacesContext context, OUISelectManyInputBase selectManyInputBase) {
         String imageUrl = selectManyInputBase.getSelectedImageUrl();
-        return ResourceUtil.getResourceURL(context, imageUrl, SelectManyInputImageManager.class, null);
+        return Resources.getURL(context, imageUrl, SelectManyInputImageManager.class, null);
     }
 
     public static String getUnselectedImageUrl(FacesContext context, OUISelectManyInputBase selectManyInputBase) {
         String imageUrl = selectManyInputBase.getUnselectedImageUrl();
-        return ResourceUtil.getResourceURL(context, imageUrl, SelectManyInputImageManager.class, null);
+        return Resources.getURL(context, imageUrl, SelectManyInputImageManager.class, null);
     }
 
     public static String getRolloverSelectedImageUrl(FacesContext context, OUISelectManyInputBase selectManyInputBase) {
@@ -68,7 +68,7 @@ public class SelectManyInputImageManager {
                 selectManyInputBase.getRolloverSelectedImageUrl(),
                 selectManyInputBase.getSelectedImageUrl());
 
-        return ResourceUtil.getResourceURL(context, imageUrl, SelectManyInputImageManager.class, null);
+        return Resources.getURL(context, imageUrl, SelectManyInputImageManager.class, null);
     }
 
     public static String getRolloverUnselectedImageUrl(FacesContext context, OUISelectManyInputBase selectManyInputBase) {
@@ -76,7 +76,7 @@ public class SelectManyInputImageManager {
                 selectManyInputBase.getRolloverUnselectedImageUrl(),
                 selectManyInputBase.getUnselectedImageUrl());
 
-        return ResourceUtil.getResourceURL(context, imageUrl, SelectManyInputImageManager.class, null);
+        return Resources.getURL(context, imageUrl, SelectManyInputImageManager.class, null);
     }
 
     public static String getPressedSelectedImageUrl(FacesContext context, OUISelectManyInputBase selectManyInputBase) {
@@ -85,7 +85,7 @@ public class SelectManyInputImageManager {
                 selectManyInputBase.getRolloverSelectedImageUrl(),
                 selectManyInputBase.getSelectedImageUrl());
 
-        return ResourceUtil.getResourceURL(context, imageUrl, SelectManyInputImageManager.class, null);
+        return Resources.getURL(context, imageUrl, SelectManyInputImageManager.class, null);
     }
 
     public static String getPressedUnselectedImageUrl(FacesContext context, OUISelectManyInputBase selectManyInputBase) {
@@ -94,17 +94,17 @@ public class SelectManyInputImageManager {
                 selectManyInputBase.getRolloverUnselectedImageUrl(),
                 selectManyInputBase.getUnselectedImageUrl());
 
-        return ResourceUtil.getResourceURL(context, imageUrl, SelectManyInputImageManager.class, null);
+        return Resources.getURL(context, imageUrl, SelectManyInputImageManager.class, null);
     }
 
     public static String getDisabledSelectedImageUrl(FacesContext context, OUISelectManyInputBase selectManyInputBase) {
         String imageUrl = selectManyInputBase.getDisabledSelectedImageUrl();
-        return ResourceUtil.getResourceURL(context, imageUrl, SelectManyInputImageManager.class, null);
+        return Resources.getURL(context, imageUrl, SelectManyInputImageManager.class, null);
     }
 
     public static String getDisabledUnselectedImageUrl(FacesContext context, OUISelectManyInputBase selectManyInputBase) {
         String imageUrl = selectManyInputBase.getDisabledUnselectedImageUrl();
-        return ResourceUtil.getResourceURL(context, imageUrl, SelectManyInputImageManager.class, null);
+        return Resources.getURL(context, imageUrl, SelectManyInputImageManager.class, null);
     }
 
     private static String firstSpecified(String... strings) {

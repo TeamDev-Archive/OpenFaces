@@ -19,11 +19,11 @@ import org.openfaces.component.filter.PropertyLocator;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StringConverter;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
@@ -40,14 +40,14 @@ public abstract class ExpressionFilterRenderer extends RendererBase {
 
     protected String getFilterSubmissionScript(ExpressionFilter filter) {
         UIComponent component = (UIComponent) filter.getFilteredComponent();
-        ExpressionFilter submittedFilter = ComponentUtil.isChildComponent(filter, component) ? null : filter;
+        ExpressionFilter submittedFilter = Components.isChildComponent(filter, component) ? null : filter;
         return new ScriptBuilder().functionCall("O$.Filters._filterComponent", component, submittedFilter, new RawScript("this")).
                 semicolon().toString();
     }
 
     protected String getPredefinedCriterionClass(FacesContext context, ExpressionFilter filter) {
         String predefinedCriterionStyle = filter.getPredefinedCriterionStyle();
-        return StyleUtil.getCSSClass(context, filter, predefinedCriterionStyle, DEFAULT_PREDEFINED_CRITERION_CLASS, filter.getPredefinedCriterionClass());
+        return Styles.getCSSClass(context, filter, predefinedCriterionStyle, DEFAULT_PREDEFINED_CRITERION_CLASS, filter.getPredefinedCriterionClass());
     }
 
     protected void setDecodedCriterion(ExpressionFilter filter, ExpressionFilterCriterion newCriterion) {

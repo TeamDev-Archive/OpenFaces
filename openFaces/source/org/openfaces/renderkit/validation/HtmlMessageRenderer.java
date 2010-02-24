@@ -13,13 +13,13 @@ package org.openfaces.renderkit.validation;
 
 import org.openfaces.component.validation.ClientValidationMode;
 import org.openfaces.component.validation.ValidationProcessor;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.NewInstanceScript;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -48,17 +48,17 @@ public class HtmlMessageRenderer extends BaseHtmlMessageRenderer {
             boolean clientValidation = !cv.equals(ClientValidationMode.OFF);
             if (clientValidation) {
                 if (forComponentClientId == null) {
-                    RenderingUtil.logWarning(context, "Cannot render floatingIconMessage bacause can't calculate " +
+                    Rendering.logWarning(context, "Cannot render floatingIconMessage bacause can't calculate " +
                             "target component client ID. It may be caused by 'for' attribute absence");
                     return;
                 }
-                UIForm form = ComponentUtil.getEnclosingForm(component);
+                UIForm form = Components.getEnclosingForm(component);
                 if (validationProcessor.isUseDefaultClientValidationPresentationForForm(form)) {
                     ValidatorUtil.renderPresentationExistsForComponent(forComponentClientId, context);
                 }
                 Script clientScript = getClientScript(component.getClientId(context), forComponentClientId, component);
-                RenderingUtil.renderInitScript(context, clientScript, getJavascriptLibraryUrls(context, clientValidation));
-                StyleUtil.renderStyleClasses(context, component);
+                Rendering.renderInitScript(context, clientScript, getJavascriptLibraryUrls(context, clientValidation));
+                Styles.renderStyleClasses(context, component);
             }
         }
     }
@@ -87,12 +87,12 @@ public class HtmlMessageRenderer extends BaseHtmlMessageRenderer {
     private String[] getJavascriptLibraryUrls(FacesContext context, boolean clientValidation) {
         if (clientValidation)
             return new String[]{
-                    ResourceUtil.getUtilJsURL(context),
-                    ResourceUtil.getInternalResourceURL(context, getClass(), "message.js"),
+                    Resources.getUtilJsURL(context),
+                    Resources.getInternalURL(context, getClass(), "message.js"),
                     ValidatorUtil.getValidatorUtilJsUrl(context)};
         else
             return new String[]{
-                    ResourceUtil.getUtilJsURL(context),
+                    Resources.getUtilJsURL(context),
                     ValidatorUtil.getValidatorUtilJsUrl(context)};
     }
 

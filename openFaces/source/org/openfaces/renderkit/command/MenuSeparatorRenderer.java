@@ -15,7 +15,7 @@ package org.openfaces.renderkit.command;
 import org.openfaces.component.command.MenuSeparator;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -42,11 +42,11 @@ public class MenuSeparatorRenderer extends RendererBase {
         writer.startElement("span", menuSeparator);
         writeAttribute(writer, "id", menuSeparator.getClientId(context) + DIV_PREFIX);
 
-        String styleClass = StyleUtil.getCSSClass(context, menuSeparator, menuSeparator.getStyle(), StyleGroup.regularStyleGroup(),
+        String styleClass = Styles.getCSSClass(context, menuSeparator, menuSeparator.getStyle(), StyleGroup.regularStyleGroup(),
                 menuSeparator.getStyleClass(), DEFAULT_MENU_SEPARATOR_CLASS);
         writeAttribute(writer, "class", styleClass);
 
-        StyleUtil.renderStyleClasses(context, menuSeparator);
+        Styles.renderStyleClasses(context, menuSeparator);
 
         writer.endElement("span");
         writer.endElement("li");

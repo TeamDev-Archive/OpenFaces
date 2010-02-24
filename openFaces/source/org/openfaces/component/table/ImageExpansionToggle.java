@@ -13,7 +13,7 @@ package org.openfaces.component.table;
 
 import org.openfaces.util.ValueBindings;
 import org.openfaces.org.json.JSONArray;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 import org.openfaces.renderkit.table.TreeColumnRenderer;
 
 import javax.faces.context.FacesContext;
@@ -72,7 +72,7 @@ public class ImageExpansionToggle extends ExpansionToggle {
     public String getToggleImageUrl(FacesContext context, boolean nodeExpanded) {
         String userUrl = nodeExpanded ? getExpandedImageUrl() : getCollapsedImageUrl();
         String defaultImagePath = nodeExpanded ? EXPANDED_NODE_IMAGE : COLLAPSED_NODE_IMAGE;
-        String url = ResourceUtil.getResourceURL(context, userUrl, TreeColumnRenderer.class, defaultImagePath);
+        String url = Resources.getURL(context, userUrl, TreeColumnRenderer.class, defaultImagePath);
         return url;
     }
 

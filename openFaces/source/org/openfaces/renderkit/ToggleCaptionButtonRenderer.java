@@ -13,8 +13,8 @@ package org.openfaces.renderkit;
 
 import org.openfaces.component.CaptionButton;
 import org.openfaces.component.ToggleCaptionButton;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -46,7 +46,7 @@ public class ToggleCaptionButtonRenderer extends CaptionButtonRenderer {
     protected void renderAdditionalContent(FacesContext context, CaptionButton btn) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ToggleCaptionButton tbtn = (ToggleCaptionButton) btn;
-        RenderingUtil.renderHiddenField(writer,
+        Rendering.renderHiddenField(writer,
                 getStateFieldName(context, tbtn),
                 String.valueOf(tbtn.isToggled()));
     }
@@ -73,7 +73,7 @@ public class ToggleCaptionButtonRenderer extends CaptionButtonRenderer {
         if (imageUrl == null)
             return getDefaultToggleImageUrl(context);
         else
-            return ResourceUtil.getApplicationResourceURL(context, imageUrl);
+            return Resources.getApplicationURL(context, imageUrl);
     }
 
     private String getToggleImageRolloverUrl(FacesContext context, ToggleCaptionButton tbtn) {
@@ -81,7 +81,7 @@ public class ToggleCaptionButtonRenderer extends CaptionButtonRenderer {
         if (imageUrl == null)
             return getDefaultToggledImageRolloverUrl(context);
         else
-            return ResourceUtil.getApplicationResourceURL(context, imageUrl);
+            return Resources.getApplicationURL(context, imageUrl);
     }
 
     private String getToggleImagePressedUrl(FacesContext context, ToggleCaptionButton tbtn) {
@@ -89,7 +89,7 @@ public class ToggleCaptionButtonRenderer extends CaptionButtonRenderer {
         if (imageUrl == null)
             return getDefaultToggledImagePressedUrl(context);
         else
-            return ResourceUtil.getApplicationResourceURL(context, imageUrl);
+            return Resources.getApplicationURL(context, imageUrl);
     }
 
     protected String getDefaultToggleImageUrl(FacesContext context) {
@@ -105,6 +105,6 @@ public class ToggleCaptionButtonRenderer extends CaptionButtonRenderer {
     }
 
     private String getStateFieldName(FacesContext context, ToggleCaptionButton btn) {
-        return btn.getClientId(context) + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "toggleState";
+        return btn.getClientId(context) + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "toggleState";
     }
 }

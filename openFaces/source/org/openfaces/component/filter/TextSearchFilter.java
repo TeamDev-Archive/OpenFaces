@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.filter;
 
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
@@ -34,7 +34,7 @@ public abstract class TextSearchFilter extends ExpressionFilter {
     @Override
     public void createSubComponents(FacesContext context) {
         super.createSubComponents(context);
-        ComponentUtil.createChildComponent(context, this, getInputComponentType(), SEARCH_COMPONENT_SUFFIX);
+        Components.createChildComponent(context, this, getInputComponentType(), SEARCH_COMPONENT_SUFFIX);
     }
 
     protected abstract String getInputComponentType();

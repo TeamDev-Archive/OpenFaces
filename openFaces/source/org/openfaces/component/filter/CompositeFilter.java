@@ -18,7 +18,7 @@ import org.openfaces.component.table.BaseColumn;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.util.ValueExpressionImpl;
 
@@ -188,7 +188,7 @@ public class CompositeFilter extends Filter {
                 }
             }
             if (filterProperties == null) {
-                filterProperties = ComponentUtil.findChildrenWithClass(this, FilterProperty.class, true);
+                filterProperties = Components.findChildrenWithClass(this, FilterProperty.class, true);
             }
         }
         return filterProperties;

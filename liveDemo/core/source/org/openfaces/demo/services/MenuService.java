@@ -15,7 +15,7 @@ package org.openfaces.demo.services;
 import org.apache.commons.digester.Digester;
 import org.openfaces.util.FacesUtil;
 import org.openfaces.util.Log;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 import org.xml.sax.SAXException;
 
 import javax.faces.context.ExternalContext;
@@ -144,9 +144,9 @@ public class MenuService implements Serializable {
     }
 
     public String getOpenFacesVersion() {
-        // note: ResourceUtil.getVersionString() is an internal OpenFaces function
+        // note: Resources.getVersionString() is an internal OpenFaces function
         // and it shouldn't be used explicitly in any application's code 
-        String str = ResourceUtil.getVersionString();
+        String str = Resources.getVersionString();
         if (str == null || str.length() == 0 || !Character.isDigit(str.charAt(0)))
             return "";
 

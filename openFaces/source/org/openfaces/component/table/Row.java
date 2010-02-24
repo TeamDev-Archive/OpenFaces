@@ -13,7 +13,7 @@ package org.openfaces.component.table;
 
 import org.openfaces.renderkit.table.TableBody;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponentBase;
@@ -196,7 +196,7 @@ public class Row extends UIComponentBase {
         boolean applicable = getCondition();
         Integer customRowIndex = (Integer) getAttributes().get(TableBody.CUSTOM_ROW_INDEX_ATTRIBUTE);
         String result = applicable
-                ? StyleUtil.getCSSClass(context, table, getStyle(), StyleGroup.regularStyleGroup(1 + customRowIndex), getStyleClass())
+                ? Styles.getCSSClass(context, table, getStyle(), StyleGroup.regularStyleGroup(1 + customRowIndex), getStyleClass())
                 : null;
 
         return result;

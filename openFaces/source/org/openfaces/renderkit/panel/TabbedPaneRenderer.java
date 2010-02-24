@@ -20,12 +20,12 @@ import org.openfaces.component.select.TabSetItems;
 import org.openfaces.renderkit.select.TabSetRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.AnonymousFunction;
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -44,7 +44,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
     private static final String DEFAULT_BORDER_CLASS_PREFIX = "o_tabbedpane_border_";
 
     protected String getSelectionHiddenFieldSuffix() {
-        return RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + TAB_SET_SUFFIX + SELECTED_INDEX_SUFFIX;
+        return Rendering.SERVER_ID_SUFFIX_SEPARATOR + TAB_SET_SUFFIX + SELECTED_INDEX_SUFFIX;
     }
 
     @Override
@@ -69,9 +69,9 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
         writer.writeAttribute("cellpadding", "0", null);
         writer.writeAttribute("id", tabbedPane.getClientId(context), "id");
 
-        RenderingUtil.writeComponentClassAttribute(writer, tabbedPane);
+        Rendering.writeComponentClassAttribute(writer, tabbedPane);
 
-        RenderingUtil.writeStandardEvents(writer, tabbedPane);
+        Rendering.writeStandardEvents(writer, tabbedPane);
 
         TabPlacement tabPlacement = tabbedPane.getTabPlacement();
         if (tabPlacement == null)
@@ -94,7 +94,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
         writer.startElement("td", tabbedPane);
 
         String containerClass = getContainerClass(context, tabbedPane);
-        String rolloverContainerClass = StyleUtil.getCSSClass(context,
+        String rolloverContainerClass = Styles.getCSSClass(context,
                 tabbedPane, tabbedPane.getRolloverContainerStyle(), StyleGroup.regularStyleGroup(), tabbedPane.getRolloverContainerClass());
 
         if (paneFirst) {
@@ -118,7 +118,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
         writer.endElement("table");
 
         encodeScriptsAndStyles(context, tabbedPane, tabPlacement, containerClass, rolloverContainerClass);
-        RenderingUtil.encodeClientActions(context, tabbedPane);
+        Rendering.encodeClientActions(context, tabbedPane);
 
         writer.endElement("td");
         writer.endElement("tr");
@@ -146,17 +146,17 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
         }
 
         String defaultBorderClass = DEFAULT_BORDER_CLASS_PREFIX + tabPlacement;
-        String borderClass = StyleUtil.getCSSClass(context, tabbedPane, fullBorderStyle, defaultBorderClass);
+        String borderClass = Styles.getCSSClass(context, tabbedPane, fullBorderStyle, defaultBorderClass);
 
         LoadingMode loadingMode = tabbedPane.getLoadingMode();
 
-        String focusedClass = StyleUtil.getCSSClass(context, tabbedPane,
+        String focusedClass = Styles.getCSSClass(context, tabbedPane,
                 tabbedPane.getFocusedStyle(), StyleGroup.selectedStyleGroup(1), tabbedPane.getFocusedClass(), null);
 
         ScriptBuilder sb = new ScriptBuilder();
         String onselectionchange = tabbedPane.getOnselectionchange();
         sb.initScript(context, tabbedPane, "O$.TabbedPane._init",
-                RenderingUtil.getRolloverClass(context, tabbedPane),
+                Rendering.getRolloverClass(context, tabbedPane),
                 containerClass,
                 rolloverContainerClass,
                 borderClass,
@@ -165,12 +165,12 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
                 focusedClass,
                 onselectionchange != null ? new AnonymousFunction(onselectionchange, "event") : null);
 
-        RenderingUtil.renderInitScript(context, sb,
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, TabbedPaneRenderer.class, "multiPage.js"),
-                ResourceUtil.getInternalResourceURL(context, TabbedPaneRenderer.class, "tabbedPane.js"));
+        Rendering.renderInitScript(context, sb,
+                Resources.getUtilJsURL(context),
+                Resources.getInternalURL(context, TabbedPaneRenderer.class, "multiPage.js"),
+                Resources.getInternalURL(context, TabbedPaneRenderer.class, "tabbedPane.js"));
 
-        StyleUtil.renderStyleClasses(context, tabbedPane);
+        Styles.renderStyleClasses(context, tabbedPane);
     }
 
     private void encodeTabSet(FacesContext context, TabbedPane tabbedPane, List<SubPanel> subPanels) throws IOException {
@@ -192,7 +192,7 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
             String caption = item.getCaption();
             if (captionComponent != null || caption != null) {
                 if (captionComponent == null) {
-                    captionComponent = ComponentUtil.createOutputText(FacesContext.getCurrentInstance(), caption);
+                    captionComponent = Components.createOutputText(FacesContext.getCurrentInstance(), caption);
                 }
 
                 // Note that non-rendered tabs should still be added (though with the "non-rendered" flag) to the TabSet

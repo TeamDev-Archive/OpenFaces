@@ -24,12 +24,12 @@ import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.ComponentWithCaptionRenderer;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -41,8 +41,8 @@ import java.util.List;
  * @author Kharchenko
  */
 public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implements AjaxPortionRenderer {
-    public static final String CONTENT_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "content";
-    private static final String STATE_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "state";
+    public static final String CONTENT_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "content";
+    private static final String STATE_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "state";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -58,16 +58,16 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
         writer.startElement("table", foldingPanel);
 
         writeIdAttribute(context, foldingPanel);
-        RenderingUtil.writeComponentClassAttribute(writer, foldingPanel, "o_folding_panel");
+        Rendering.writeComponentClassAttribute(writer, foldingPanel, "o_folding_panel");
         writer.writeAttribute("cellpadding", "0", null);
         writer.writeAttribute("border", "0", null);
         writer.writeAttribute("cellspacing", "0", null);
-        RenderingUtil.writeStandardEvents(writer, foldingPanel);
+        Rendering.writeStandardEvents(writer, foldingPanel);
         writer.startElement("tr", foldingPanel);
         writer.startElement("td", foldingPanel);
         List<CaptionArea> captionAreas = getCaptionAreas(foldingPanel);
         for (CaptionArea captionArea : captionAreas) {
-            List<ExpansionToggleButton> expansionToggleButtons = ComponentUtil.findChildrenWithClass(captionArea, ExpansionToggleButton.class);
+            List<ExpansionToggleButton> expansionToggleButtons = Components.findChildrenWithClass(captionArea, ExpansionToggleButton.class);
             for (ExpansionToggleButton expansionToggleButton : expansionToggleButtons) {
                 prepareToggleButton(foldingPanel, expansionToggleButton);
             }
@@ -109,11 +109,11 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", foldingPanel);
         writer.writeAttribute("id", foldingPanel.getClientId(context) + CONTENT_SUFFIX, null);
-        String styleClass = StyleUtil.mergeClassNames("o_folding_panel_content", foldingPanel.getContentClass());
+        String styleClass = Styles.mergeClassNames("o_folding_panel_content", foldingPanel.getContentClass());
         String style = foldingPanel.getContentStyle() != null
                 ? foldingPanel.getContentStyle() + (foldingPanel.isExpanded() ? "" : "; display: none;")
                 : foldingPanel.isExpanded() ? "" : "display: none;";
-        RenderingUtil.writeStyleAndClassAttributes(writer, style, styleClass);
+        Rendering.writeStyleAndClassAttributes(writer, style, styleClass);
 
         boolean clientLoadingMode = foldingPanel.getLoadingMode().equals(LoadingMode.CLIENT);
         boolean preloadContent = clientLoadingMode || foldingPanel.isExpanded();
@@ -159,8 +159,8 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
         renderStateField(context, component);
 
         renderInitScript(context, component);
-        StyleUtil.renderStyleClasses(context, component);
-        RenderingUtil.encodeClientActions(context, panel);
+        Styles.renderStyleClasses(context, component);
+        Rendering.encodeClientActions(context, panel);
         writer.endElement("td");
         writer.endElement("tr");
         writer.endElement("table");
@@ -171,36 +171,36 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
         ResponseWriter writer = context.getResponseWriter();
         FoldingPanel foldingPanel = (FoldingPanel) component;
         String value = String.valueOf(foldingPanel.isExpanded());
-        RenderingUtil.renderHiddenField(writer, component.getClientId(context) + STATE_SUFFIX, value);
+        Rendering.renderHiddenField(writer, component.getClientId(context) + STATE_SUFFIX, value);
     }
 
     private void renderInitScript(FacesContext context, UIComponent component) throws IOException {
         FoldingPanel foldingPanel = (FoldingPanel) component;
 
         LoadingMode loadingMode = foldingPanel.getLoadingMode();
-        String defaultClass = StyleUtil.getCSSClass(context, foldingPanel, RenderingUtil.DEFAULT_FOCUSED_STYLE, StyleGroup.selectedStyleGroup(0));
-        String focusedClass = StyleUtil.getCSSClass(context,
+        String defaultClass = Styles.getCSSClass(context, foldingPanel, Rendering.DEFAULT_FOCUSED_STYLE, StyleGroup.selectedStyleGroup(0));
+        String focusedClass = Styles.getCSSClass(context,
                 foldingPanel,
                 foldingPanel.getFocusedStyle(), StyleGroup.selectedStyleGroup(1), foldingPanel.getFocusedClass(), defaultClass);
-        String focusedContentClass = StyleUtil.getCSSClass(context, foldingPanel,
+        String focusedContentClass = Styles.getCSSClass(context, foldingPanel,
                 foldingPanel.getFocusedContentStyle(), StyleGroup.selectedStyleGroup(0), foldingPanel.getFocusedContentClass(), null);
 
-        String focusedCaptionClass = StyleUtil.getCSSClass(context, foldingPanel,
+        String focusedCaptionClass = Styles.getCSSClass(context, foldingPanel,
                 foldingPanel.getFocusedCaptionStyle(), StyleGroup.selectedStyleGroup(0), foldingPanel.getFocusedCaptionClass(), null);
 
         ScriptBuilder sb = new ScriptBuilder();
         sb.initScript(context, foldingPanel, "O$.FoldingPanel._init",
                 foldingPanel.isExpanded(),
                 foldingPanel.getFoldingDirection(),
-                RenderingUtil.getRolloverClass(context, foldingPanel),
+                Rendering.getRolloverClass(context, foldingPanel),
                 loadingMode,
                 foldingPanel.isFocusable(),
                 focusedClass,
                 focusedContentClass,
                 focusedCaptionClass);
 
-        RenderingUtil.renderInitScript(context, sb,
-                ResourceUtil.getInternalResourceURL(context, FoldingPanelRenderer.class, "foldingPanel.js"));
+        Rendering.renderInitScript(context, sb,
+                Resources.getInternalURL(context, FoldingPanelRenderer.class, "foldingPanel.js"));
     }
 
     @Override

@@ -12,7 +12,7 @@
 
 package org.seleniuminspector.openfaces;
 
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.seleniuminspector.ElementByReferenceInspector;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.ElementByLocatorInspector;
@@ -40,7 +40,7 @@ public class ForEachInspector extends ElementByReferenceInspector {
 
         try {
             Constructor<T> elementConstructor = itemClass.getConstructor(String.class);
-            item = elementConstructor.newInstance(id() + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + index + ":" + embeddedItemId);
+            item = elementConstructor.newInstance(id() + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + index + ":" + embeddedItemId);
         } catch (Exception ex) {
             throw new RuntimeException("Creating element failure", ex);
         }

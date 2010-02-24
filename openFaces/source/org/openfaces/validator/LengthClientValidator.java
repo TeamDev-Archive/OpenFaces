@@ -38,7 +38,7 @@ public class LengthClientValidator extends AbstractClientValidator {
     }
 
 //  public void registerJavascriptLibrary(FacesContext context) throws IOException {
-//    RenderingUtil.registerJavascriptLibrary(context, getClass(), "lengthValidator.js");
+//    Rendering.registerJavascriptLibrary(context, getClass(), "lengthValidator.js");
 //  }
 
     @Override

@@ -65,21 +65,21 @@ public class CalendarRenderer extends RendererBase {
     private static final String DEFAULT_DATE_RANGE_CLASS = "";
     private static final String DEFAULT_ROLLOVER_DATE_RANGE_CLASS = "";
 
-    public static final String MONTH_DECREASE_SELECTOR_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "month_decrease";
-    public static final String MONTH_INCREASE_SELECTOR_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "month_increase";
-    public static final String MONTH_SELECTOR_SUFFIX = RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "month";
-    public static final String DROP_SUFFIX = RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "drop";
-    public static final String YEAR_DECREASE_SELECTOR_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "year_decrease";
-    public static final String YEAR_INCREASE_SELECTOR_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "year_increase";
-    public static final String YEAR_SELECTOR_SUFFIX = RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "year";
-    public static final String WEEK_NUMBER_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "week_num";
-    public static final String TODAY_SELECTOR_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "today";
-    public static final String NONE_SELECTOR_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "none";
-    public static final String VALUE_HOLDER_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "long_date_holder";
-    public static final String VALUE_DATE_HOLDER_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "date_holder";
+    public static final String MONTH_DECREASE_SELECTOR_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "month_decrease";
+    public static final String MONTH_INCREASE_SELECTOR_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "month_increase";
+    public static final String MONTH_SELECTOR_SUFFIX = Rendering.SERVER_ID_SUFFIX_SEPARATOR + "month";
+    public static final String DROP_SUFFIX = Rendering.SERVER_ID_SUFFIX_SEPARATOR + "drop";
+    public static final String YEAR_DECREASE_SELECTOR_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "year_decrease";
+    public static final String YEAR_INCREASE_SELECTOR_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "year_increase";
+    public static final String YEAR_SELECTOR_SUFFIX = Rendering.SERVER_ID_SUFFIX_SEPARATOR + "year";
+    public static final String WEEK_NUMBER_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "week_num";
+    public static final String TODAY_SELECTOR_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "today";
+    public static final String NONE_SELECTOR_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "none";
+    public static final String VALUE_HOLDER_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "long_date_holder";
+    public static final String VALUE_DATE_HOLDER_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "date_holder";
     private static final String RIGHT_ARROW_ENTITY = "&#x25c4;";
     private static final String LEFT_ARROW_ENTITY = "&#x25ba;";
-    public static final String BODY_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "body";
+    public static final String BODY_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "body";
 
     public static final String HIDE_DEFAULT_FOCUS_KEY = "hideDefaultFocusStyle";
 
@@ -98,40 +98,40 @@ public class CalendarRenderer extends RendererBase {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
 
-        ComponentUtil.generateIdIfNotSpecified(component);
+        Components.generateIdIfNotSpecified(component);
 
         Calendar calendar = (Calendar) component;
-        RenderingUtil.registerDateTimeFormatObject(calendar.getLocale());
+        Rendering.registerDateTimeFormatObject(calendar.getLocale());
 
         String clientId = component.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("table", calendar);
         context.getResponseWriter().writeAttribute("id", clientId, null);
-        RenderingUtil.writeStandardEvents(writer, calendar);
+        Rendering.writeStandardEvents(writer, calendar);
 
         writeAttribute(writer, "cellpadding", "0");
         writeAttribute(writer, "cellspacing", "0");
         writeAttribute(writer, "border", "0");
 
-        String calendarStyleClass = StyleUtil.getCSSClass(context, calendar, calendar.getStyle(), StyleGroup.regularStyleGroup(), calendar.getStyleClass(),
+        String calendarStyleClass = Styles.getCSSClass(context, calendar, calendar.getStyle(), StyleGroup.regularStyleGroup(), calendar.getStyleClass(),
                 getDefaultClass());
 
         if (calendar.isDisabled()) {
-            String disabledCalendarStyleClass = StyleUtil.getCSSClass(context, calendar, calendar.getDisabledStyle(),
+            String disabledCalendarStyleClass = Styles.getCSSClass(context, calendar, calendar.getDisabledStyle(),
                     StyleGroup.disabledStyleGroup(), calendar.getDisabledClass(), null);
 
-            if (RenderingUtil.isNullOrEmpty(calendar.getDisabledStyle()) && RenderingUtil.isNullOrEmpty(calendar.getDisabledClass())) {
-                calendarStyleClass = StyleUtil.mergeClassNames(disabledCalendarStyleClass, calendarStyleClass);
+            if (Rendering.isNullOrEmpty(calendar.getDisabledStyle()) && Rendering.isNullOrEmpty(calendar.getDisabledClass())) {
+                calendarStyleClass = Styles.mergeClassNames(disabledCalendarStyleClass, calendarStyleClass);
             } else {
-                calendarStyleClass = StyleUtil.mergeClassNames(disabledCalendarStyleClass, StyleUtil.getCSSClass(context, calendar, null
+                calendarStyleClass = Styles.mergeClassNames(disabledCalendarStyleClass, Styles.getCSSClass(context, calendar, null
                         , StyleGroup.regularStyleGroup(), null, getDefaultClass()));
             }
         }
-        calendarStyleClass = StyleUtil.mergeClassNames(DefaultStyles.CLASS_INITIALLY_INVISIBLE, calendarStyleClass);
+        calendarStyleClass = Styles.mergeClassNames(DefaultStyles.CLASS_INITIALLY_INVISIBLE, calendarStyleClass);
         writeAttribute(writer, "class", calendarStyleClass);
 
         writer.startElement("col", calendar);
-        writer.writeAttribute("id", clientId + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "col", null);
+        writer.writeAttribute("id", clientId + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "col", null);
         writer.writeAttribute("span", "7", null);
         writer.writeAttribute("class", "o_calendarCol", null);
         writer.endElement("col");
@@ -152,7 +152,7 @@ public class CalendarRenderer extends RendererBase {
         writeAttribute(writer, "name", clientId + VALUE_HOLDER_SUFFIX);
         writeAttribute(writer, "type", "hidden");
         Object value = calendar.getValue();
-        writeAttribute(writer, "value", RenderingUtil.convertToString(context, calendar, value));
+        writeAttribute(writer, "value", Rendering.convertToString(context, calendar, value));
         writer.endElement("input");
         writer.startElement("input", calendar);
         writeAttribute(writer, "id", clientId + VALUE_DATE_HOLDER_SUFFIX);
@@ -168,7 +168,7 @@ public class CalendarRenderer extends RendererBase {
     }
 
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        RenderingUtil.encodeClientActions(context, component);
+        Rendering.encodeClientActions(context, component);
     }
 
     private DateRanges findDateRanges(Calendar calendar) {
@@ -219,23 +219,23 @@ public class CalendarRenderer extends RendererBase {
 
         String focusedClassStr;
         if (calendar.getAttributes().get(HIDE_DEFAULT_FOCUS_KEY) == null)
-            focusedClassStr = RenderingUtil.getFocusedClass(context, calendar);
+            focusedClassStr = Rendering.getFocusedClass(context, calendar);
         else
-            focusedClassStr = StyleUtil.getCSSClass(context, calendar, calendar.getFocusedStyle(), StyleGroup.selectedStyleGroup(), calendar.getFocusedClass(), getDefaultClass());
+            focusedClassStr = Styles.getCSSClass(context, calendar, calendar.getFocusedStyle(), StyleGroup.selectedStyleGroup(), calendar.getFocusedClass(), getDefaultClass());
 
         Script rangesArray = getJSDateRangesArray(context, calendar);
 
         sb.initScript(context, calendar, "O$.Calendar._init",
                 selectedDateParam,
                 todayDateStr,
-                RenderingUtil.getRolloverClass(context, calendar),
+                Rendering.getRolloverClass(context, calendar),
                 calendar.isFocusable(),
                 focusedClassStr,
                 getStyleClassesWithFont(context, calendar.getDayStyle(), calendar.getDayClass(), DEFAULT_DAY_CLASS, calendar),
                 new StyleParam(calendar, "rolloverDay", DEFAULT_ROLLOVER_DAY_CLASS, StyleGroup.rolloverStyleGroup()),
                 new StyleParam(calendar, "inactiveMonthDay", DEFAULT_INACTIVE_MONTH_DAY_CLASS, StyleGroup.regularStyleGroup(3)),
                 new StyleParam(calendar, "rolloverInactiveMonthDay", DEFAULT_ROLLOVER_INACTIVE_MONTH_DAY_CLASS, StyleGroup.rolloverStyleGroup(3)),
-                StyleUtil.getCSSClass_dontCascade(context, component, calendar.getSelectedDayStyle(), StyleGroup.selectedStyleGroup(), calendar.getSelectedDayClass(), DefaultStyles.getDefaultSelectionStyle()),
+                Styles.getCSSClass_dontCascade(context, component, calendar.getSelectedDayStyle(), StyleGroup.selectedStyleGroup(), calendar.getSelectedDayClass(), DefaultStyles.getDefaultSelectionStyle()),
                 new StyleParam(calendar, "rolloverSelectedDay", DEFAULT_ROLLOVER_SELECTED_DAY_CLASS, StyleGroup.selectedStyleGroup(1)),
                 new StyleParam(calendar, "today", DEFAULT_TODAY_CLASS, StyleGroup.regularStyleGroup(5)),
                 new StyleParam(calendar, "rolloverToday", DEFAULT_ROLLOVER_TODAY_CLASS, StyleGroup.rolloverStyleGroup(5)),
@@ -253,11 +253,11 @@ public class CalendarRenderer extends RendererBase {
                 calendar.isRequired(),
                 calendar.isDisabled());
 
-        StyleUtil.renderStyleClasses(context, calendar);
-        RenderingUtil.renderInitScript(context, sb,
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, CalendarRenderer.class, "calendar.js"),
-                ResourceUtil.getInternalResourceURL(context, CalendarRenderer.class, "dateRange.js")
+        Styles.renderStyleClasses(context, calendar);
+        Rendering.renderInitScript(context, sb,
+                Resources.getUtilJsURL(context),
+                Resources.getInternalURL(context, CalendarRenderer.class, "calendar.js"),
+                Resources.getInternalURL(context, CalendarRenderer.class, "dateRange.js")
         );
     }
 
@@ -267,8 +267,8 @@ public class CalendarRenderer extends RendererBase {
     }
 
     private String getStyleClassesWithFont(FacesContext context, String style, String cls, String defaultClass, UIComponent component) {
-        String resultCls = StyleUtil.getCSSClass(context, component, style, defaultClass, cls);
-        resultCls = StyleUtil.mergeClassNames(resultCls, DefaultStyles.CLASS_CALENDAR_FONT_FAMILY);
+        String resultCls = Styles.getCSSClass(context, component, style, defaultClass, cls);
+        resultCls = Styles.mergeClassNames(resultCls, DefaultStyles.CLASS_CALENDAR_FONT_FAMILY);
         return resultCls;
     }
 
@@ -599,13 +599,13 @@ public class CalendarRenderer extends RendererBase {
         throw new FacesException("At least one date range should be declared inside " +
                 "'dateRanges' component or value binding to 'value' property specified.");
 */
-            dateRangesStyleClassName = StyleUtil.getCSSClass(context, calendar, dateRanges.getDayStyle(),
+            dateRangesStyleClassName = Styles.getCSSClass(context, calendar, dateRanges.getDayStyle(),
                     StyleGroup.regularStyleGroup(4), dateRanges.getDayClass(), DEFAULT_DATE_RANGES_CLASS);
-            dateRangesRolloverStyleClassName = StyleUtil.getCSSClass(context, calendar, dateRanges.getRolloverDayStyle(),
+            dateRangesRolloverStyleClassName = Styles.getCSSClass(context, calendar, dateRanges.getRolloverDayStyle(),
                     StyleGroup.rolloverStyleGroup(4), dateRanges.getRolloverDayClass(), DEFAULT_ROLLOVER_DATE_RANGES_CLASS);
-            selectedDayClassName = StyleUtil.getCSSClass(context, calendar, dateRanges.getSelectedDayStyle(),
+            selectedDayClassName = Styles.getCSSClass(context, calendar, dateRanges.getSelectedDayStyle(),
                     StyleGroup.selectedStyleGroup(2), dateRanges.getSelectedDayClass());
-            rolloverSelectedClassName = StyleUtil.getCSSClass(context, calendar, dateRanges.getRolloverSelectedDayStyle(),
+            rolloverSelectedClassName = Styles.getCSSClass(context, calendar, dateRanges.getRolloverSelectedDayStyle(),
                     StyleGroup.selectedStyleGroup(3), dateRanges.getRolloverSelectedDayClass());
             disableExcluded = dateRanges.isDisableExcludes();
             disableIncluded = dateRanges.isDisableIncludes();
@@ -613,13 +613,13 @@ public class CalendarRenderer extends RendererBase {
             for (Object dateRangeObj : allRanges) {
                 AbstractDateRange dateRange = (AbstractDateRange) dateRangeObj;
                 if (dateRange instanceof SimpleDateRange) {
-                    String styleClassName = StyleUtil.getCSSClass(context, calendar, dateRange.getDayStyle(),
+                    String styleClassName = Styles.getCSSClass(context, calendar, dateRange.getDayStyle(),
                             StyleGroup.regularStyleGroup(5), dateRange.getDayClass(), DEFAULT_DATE_RANGE_CLASS);
-                    String rolloverStyleClassName = StyleUtil.getCSSClass(context, calendar, dateRange.getRolloverDayStyle(),
+                    String rolloverStyleClassName = Styles.getCSSClass(context, calendar, dateRange.getRolloverDayStyle(),
                             StyleGroup.rolloverStyleGroup(5), dateRange.getRolloverDayClass(), DEFAULT_ROLLOVER_DATE_RANGE_CLASS);
-                    String selectedDayClassNameDR = StyleUtil.getCSSClass(context, calendar, dateRange.getSelectedDayStyle(),
+                    String selectedDayClassNameDR = Styles.getCSSClass(context, calendar, dateRange.getSelectedDayStyle(),
                             StyleGroup.selectedStyleGroup(4), dateRanges.getSelectedDayClass());
-                    String rolloverSelectedDayClassNameDR = StyleUtil.getCSSClass(context,
+                    String rolloverSelectedDayClassNameDR = Styles.getCSSClass(context,
                             calendar, dateRange.getRolloverSelectedDayStyle(), StyleGroup.selectedStyleGroup(5), dateRange.getRolloverSelectedDayClass()
                     );
                     dateRangesList.add(new Object[]{dateRange, styleClassName, rolloverStyleClassName, selectedDayClassNameDR,
@@ -633,11 +633,11 @@ public class CalendarRenderer extends RendererBase {
                 for (Object dateRangeObj : rangesCollection) {
                     AbstractDateRange dateRange = (AbstractDateRange) dateRangeObj;
                     if (dateRange instanceof SimpleDateRange) {
-                        String styleClassName = StyleUtil.getCSSClass(context, calendar, dateRange.getDayStyle(), StyleGroup.regularStyleGroup(5), null);
-                        String rolloverStyleClassName = StyleUtil.getCSSClass(context, calendar, dateRange.getRolloverDayStyle(), StyleGroup.rolloverStyleGroup(5), null);
-                        String selectedDayClassNameDR = StyleUtil.getCSSClass(context, calendar, dateRange.getSelectedDayStyle(),
+                        String styleClassName = Styles.getCSSClass(context, calendar, dateRange.getDayStyle(), StyleGroup.regularStyleGroup(5), null);
+                        String rolloverStyleClassName = Styles.getCSSClass(context, calendar, dateRange.getRolloverDayStyle(), StyleGroup.rolloverStyleGroup(5), null);
+                        String selectedDayClassNameDR = Styles.getCSSClass(context, calendar, dateRange.getSelectedDayStyle(),
                                 StyleGroup.selectedStyleGroup(4), dateRange.getSelectedDayClass());
-                        String rolloverSelectedDayClassNameDR = StyleUtil.getCSSClass(context,
+                        String rolloverSelectedDayClassNameDR = Styles.getCSSClass(context,
                                 calendar, dateRange.getRolloverSelectedDayStyle(), StyleGroup.selectedStyleGroup(5), dateRange.getRolloverSelectedDayClass()
                         );
                         dateRangesList.add(new Object[]{dateRange, styleClassName, rolloverStyleClassName,
@@ -688,7 +688,7 @@ public class CalendarRenderer extends RendererBase {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        Date convertedValue = (Date) RenderingUtil.convertFromString(context, component, (String) submittedValue);
+        Date convertedValue = (Date) Rendering.convertFromString(context, component, (String) submittedValue);
         Calendar calendar = (Calendar) component;
         boolean keepTime = calendar.isKeepTime();
         if (!keepTime) {

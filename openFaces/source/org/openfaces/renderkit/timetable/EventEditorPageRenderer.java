@@ -14,7 +14,7 @@ package org.openfaces.renderkit.timetable;
 import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.EventEditorPage;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.component.UIComponent;
@@ -40,7 +40,7 @@ public class EventEditorPageRenderer extends RendererBase {
 
         EventEditorPage eventEditorPage = (EventEditorPage) component;
         DayTable dayTable = (DayTable) eventEditorPage.getParent();
-        RenderingUtil.renderInitScript(context, new ScriptBuilder().initScript(context, dayTable, "O$._initEventEditorPage",
+        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, dayTable, "O$._initEventEditorPage",
                 eventEditorPage,
                 eventEditorPage.getActionExpression() != null,
                 eventEditorPage.getUrl(),
@@ -60,7 +60,7 @@ public class EventEditorPageRenderer extends RendererBase {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Map requestParameterMap = context.getExternalContext().getRequestParameterMap();
-        String clientId = component.getClientId(context) + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "action";
+        String clientId = component.getClientId(context) + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "action";
         if (!requestParameterMap.containsKey(clientId))
             return;
         EventEditorPage eventEditorPage = (EventEditorPage) component;

@@ -17,7 +17,7 @@ import org.openfaces.component.select.TabPlacement;
 import org.openfaces.component.select.TabSelectionHolder;
 import org.openfaces.component.select.TabSet;
 import org.openfaces.component.select.TabSetItems;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
@@ -357,13 +357,13 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
     }
 
     public void createSubComponents(FacesContext context) {
-        UIComponent tabSet = ComponentUtil.createChildComponent(context, this, TabSet.COMPONENT_TYPE, TAB_SET_SUFFIX);
+        UIComponent tabSet = Components.createChildComponent(context, this, TabSet.COMPONENT_TYPE, TAB_SET_SUFFIX);
         TabSetItems items = new TabSetItems();
         tabSet.getChildren().add(items);
     }
 
     public TabSet getTabSet() {
-        return (TabSet) ComponentUtil.getChildBySuffix(this, TAB_SET_SUFFIX);
+        return (TabSet) Components.getChildBySuffix(this, TAB_SET_SUFFIX);
     }
 
 }

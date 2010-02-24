@@ -139,7 +139,7 @@ public class DataTablePaginator extends UIComponentBase {
     }
 
 //  public String getActiveLinkStyle() {
-//    return ComponentUtil.getBoundPropertyValueAsString(this, "activeLinkStyle", activeLinkStyle);
+//    return Components.getBoundPropertyValueAsString(this, "activeLinkStyle", activeLinkStyle);
 //  }
 //
 //  public void setActiveLinkStyle(String activeLinkStyle) {
@@ -147,7 +147,7 @@ public class DataTablePaginator extends UIComponentBase {
 //  }
 //
 //  public String getActiveLinkClass() {
-//    return ComponentUtil.getBoundPropertyValueAsString(this, "activeLinkClass", activeLinkClass);
+//    return Components.getBoundPropertyValueAsString(this, "activeLinkClass", activeLinkClass);
 //  }
 //
 //  public void setActiveLinkClass(String activeLinkClass) {
@@ -155,7 +155,7 @@ public class DataTablePaginator extends UIComponentBase {
 //  }
 //
 //  public String getInactiveLinkStyle() {
-//    return ComponentUtil.getBoundPropertyValueAsString(this, "inactiveLinkStyle", inactiveLinkStyle);
+//    return Components.getBoundPropertyValueAsString(this, "inactiveLinkStyle", inactiveLinkStyle);
 //  }
 //
 //  public void setInactiveLinkStyle(String inactiveLinkStyle) {
@@ -163,7 +163,7 @@ public class DataTablePaginator extends UIComponentBase {
 //  }
 //
 //  public String getInactiveLinkClass() {
-//    return ComponentUtil.getBoundPropertyValueAsString(this, "inactiveLinkClass", inactiveLinkClass);
+//    return Components.getBoundPropertyValueAsString(this, "inactiveLinkClass", inactiveLinkClass);
 //  }
 //
 //  public void setInactiveLinkClass(String inactiveLinkClass) {
@@ -275,7 +275,7 @@ public class DataTablePaginator extends UIComponentBase {
     }
 
 //  public String getCurrentPageLinkStyle() {
-//    return ComponentUtil.getBoundPropertyValueAsString(this, "currentPageLinkStyle", currentPageLinkStyle);
+//    return Components.getBoundPropertyValueAsString(this, "currentPageLinkStyle", currentPageLinkStyle);
 //  }
 //
 //  public void setCurrentPageLinkStyle(String currentPageLinkStyle) {
@@ -283,7 +283,7 @@ public class DataTablePaginator extends UIComponentBase {
 //  }
 //
 //  public String getCurrentPageLinkClass() {
-//    return ComponentUtil.getBoundPropertyValueAsString(this, "currentPageLinkClass", currentPageLinkClass);
+//    return Components.getBoundPropertyValueAsString(this, "currentPageLinkClass", currentPageLinkClass);
 //  }
 //
 //  public void setCurrentPageLinkClass(String currentPageLinkClass) {

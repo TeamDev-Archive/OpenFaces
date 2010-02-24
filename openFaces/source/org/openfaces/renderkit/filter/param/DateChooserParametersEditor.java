@@ -17,7 +17,7 @@ import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.input.DateChooser;
 import org.openfaces.renderkit.filter.FilterRow;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,12 +35,12 @@ public class DateChooserParametersEditor extends ParametersEditor implements Ser
     }
 
     private DateChooser getDateChooser(UIComponent container) {
-        return (DateChooser) ComponentUtil.getChildBySuffix(container, DATE_CHOOSER_ID_SUFFIX);
+        return (DateChooser) Components.getChildBySuffix(container, DATE_CHOOSER_ID_SUFFIX);
     }
 
     private DateChooser createDateChooser(FacesContext context, UIComponent container) {
         clearContainer(container);
-        DateChooser dateChooser = (DateChooser) ComponentUtil.createChildComponent(context, container, DateChooser.COMPONENT_TYPE, DATE_CHOOSER_ID_SUFFIX);
+        DateChooser dateChooser = (DateChooser) Components.createChildComponent(context, container, DateChooser.COMPONENT_TYPE, DATE_CHOOSER_ID_SUFFIX);
         dateChooser.setStyleClass(FilterRow.DEFAULT_PARAMETER_CLASS);
         dateChooser.setStyle("width: 90px !important;");
         return dateChooser;

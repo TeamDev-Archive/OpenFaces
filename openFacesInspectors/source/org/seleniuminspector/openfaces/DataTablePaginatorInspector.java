@@ -11,7 +11,7 @@
  */
 package org.seleniuminspector.openfaces;
 
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.renderkit.table.DataTablePaginatorRenderer;
 import org.seleniuminspector.ElementByLocatorInspector;
 import org.seleniuminspector.ElementByReferenceInspector;
@@ -32,22 +32,22 @@ public class DataTablePaginatorInspector extends ElementByReferenceInspector {
     }
 
     public ElementInspector nextPage() {
-        return new ElementByLocatorInspector(id() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR
+        return new ElementByLocatorInspector(id() + Rendering.SERVER_ID_SUFFIX_SEPARATOR
                 + DataTablePaginatorRenderer.NEXT_PAGE_COMPONENT);
     }
 
     public ElementInspector previousPage() {
-        return new ElementByLocatorInspector(id() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR
+        return new ElementByLocatorInspector(id() + Rendering.SERVER_ID_SUFFIX_SEPARATOR
                 + DataTablePaginatorRenderer.PREV_PAGE_COMPONENT);
     }
 
     public ElementInspector firstPage() {
-        return new ElementByLocatorInspector(id() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR
+        return new ElementByLocatorInspector(id() + Rendering.SERVER_ID_SUFFIX_SEPARATOR
                 + DataTablePaginatorRenderer.FIRST_PAGE_COMPONENT);
     }
 
     public ElementInspector lastPage() {
-        return new ElementByLocatorInspector(id() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR
+        return new ElementByLocatorInspector(id() + Rendering.SERVER_ID_SUFFIX_SEPARATOR
                 + DataTablePaginatorRenderer.LAST_PAGE_COMPONENT);
     }
 

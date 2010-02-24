@@ -22,9 +22,9 @@ import org.openfaces.component.table.TreeColumn;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableUtil;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -69,17 +69,17 @@ public class TableBody extends TableSection {
         TableStyles table = tableStructure.getTableStyles();
         FacesContext context = FacesContext.getCurrentInstance();
         UIComponent component = tableStructure.getComponent();
-        String bodyClass = StyleUtil.getCSSClass(context,
+        String bodyClass = Styles.getCSSClass(context,
                 component, table.getBodySectionStyle(), table.getBodySectionClass());
         result.put("className", bodyClass);
-        RenderingUtil.addJsonParam(result, "rowClassName", StyleUtil.getCSSClass(context, component, table.getBodyRowStyle(),
+        Rendering.addJsonParam(result, "rowClassName", Styles.getCSSClass(context, component, table.getBodyRowStyle(),
                 StyleGroup.regularStyleGroup(), table.getBodyRowClass(),
                 defaultStyles != null ? defaultStyles.getBodyRowClass() : null));
-        RenderingUtil.addJsonParam(result, "oddRowClassName", StyleUtil.getCSSClass(context, component, table.getBodyOddRowStyle(),
+        Rendering.addJsonParam(result, "oddRowClassName", Styles.getCSSClass(context, component, table.getBodyOddRowStyle(),
                 getBodyOddRowClass(table, defaultStyles)));
         if (table instanceof AbstractTable) {
             AbstractTable at = (AbstractTable) table;
-            RenderingUtil.addJsonParam(result, "rolloverRowClassName", StyleUtil.getCSSClass(context, component, at.getRolloverRowStyle(),
+            Rendering.addJsonParam(result, "rolloverRowClassName", Styles.getCSSClass(context, component, at.getRolloverRowStyle(),
                     StyleGroup.rolloverStyleGroup(), at.getRolloverRowClass()));
         }
 
@@ -261,8 +261,8 @@ public class TableBody extends TableSection {
             String rowStyleClass = (rowStyles != null && rowStyles.size() > 0) ? classNamesToClass(rowStyles) : null;
             String additionalClass = tableStructure.getAdditionalRowClass(context, table, rowData, bodyRowIndex);
             if (additionalClass != null)
-                rowStyleClass = StyleUtil.mergeClassNames(rowStyleClass, additionalClass);
-            if (!RenderingUtil.isNullOrEmpty(rowStyleClass)) {
+                rowStyleClass = Styles.mergeClassNames(rowStyleClass, additionalClass);
+            if (!Rendering.isNullOrEmpty(rowStyleClass)) {
                 Map<Object, String> rowStylesMap = tableStructure.getRowStylesMap();
                 rowStylesMap.put(bodyRowIndex, rowStyleClass);
             }
@@ -272,7 +272,7 @@ public class TableBody extends TableSection {
             CustomRowRenderingInfo customRowRenderingInfo = null;
             List<Integer> applicableRowDeclarationIndexes = new ArrayList<Integer>();
             for (Row tableRow : applicableCustomRows) {
-                if (RenderingUtil.isComponentWithA4jSupport(tableRow)) {
+                if (Rendering.isComponentWithA4jSupport(tableRow)) {
                     if (customRowRenderingInfo == null)
                         customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
                     Integer rowDeclarationIndex = (Integer) tableRow.getAttributes().get(CUSTOM_ROW_INDEX_ATTRIBUTE);
@@ -350,7 +350,7 @@ public class TableBody extends TableSection {
                     for (int i = 0; i < customCellCount; i++) {
                         Cell cell = (Cell) customCells.get(i);
                         boolean cellWithCustomContent = cell.getChildCount() > 0;
-                        if (cellWithCustomContent || RenderingUtil.isComponentWithA4jSupport(cell)) {
+                        if (cellWithCustomContent || Rendering.isComponentWithA4jSupport(cell)) {
                             if (customRowRenderingInfo == null)
                                 customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
                             if (cellWithCustomContent)
@@ -359,7 +359,7 @@ public class TableBody extends TableSection {
                                     (CustomContentCellRenderingInfo) cell.getAttributes().get(CUSTOM_CELL_RENDERING_INFO_ATTRIBUTE);
                             customRowRenderingInfo.setCustomCellRenderingInfo(colIndex, customCellRenderingInfo);
                         }
-                        customCellStyle = StyleUtil.mergeClassNames(customCellStyle, cell.getStyleClassForCell(context, table, colIndex, columnId));
+                        customCellStyle = Styles.mergeClassNames(customCellStyle, cell.getStyleClassForCell(context, table, colIndex, columnId));
                     }
                     for (int i = colIndex + (remainingPortionOfBrokenSpannedCell ? 0 : 1), upperBound = colIndex + span;
                          i < upperBound; i++) {
@@ -375,7 +375,7 @@ public class TableBody extends TableSection {
 
                 if (!cellStyles.isEmpty()) {
                     String styleClass = classNamesToClass(cellStyles);
-                    if (!RenderingUtil.isNullOrEmpty(styleClass)) {
+                    if (!Rendering.isNullOrEmpty(styleClass)) {
                         Map<Object, String> cellStylesMap = tableStructure.getCellStylesMap();
                         cellStylesMap.put(bodyRowIndex + "x" + colIndex, styleClass);
                     }
@@ -408,7 +408,7 @@ public class TableBody extends TableSection {
                     writeNonBreakableSpaceForEmptyCell(writer, table, cellContentsContainer);
                 } else {
                     if (tableStructure.isEmptyCellsTreatmentRequired())
-                        RenderingUtil.writeNonBreakableSpace(writer);
+                        Rendering.writeNonBreakableSpace(writer);
                 }
                 int endIdx = buf.length();
                 String content = buf.substring(startIdx, endIdx);
@@ -487,7 +487,7 @@ public class TableBody extends TableSection {
                 }
             }
             if (childrenEmpty && tableStructure.isEmptyCellsTreatmentRequired())
-                RenderingUtil.writeNonBreakableSpace(writer);
+                Rendering.writeNonBreakableSpace(writer);
         }
     }
 

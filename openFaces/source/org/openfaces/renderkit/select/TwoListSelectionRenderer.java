@@ -16,11 +16,11 @@ import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.HTML;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
@@ -47,25 +47,25 @@ import java.util.Set;
  * @author Kharchenko
  */
 public class TwoListSelectionRenderer extends RendererBase {
-    public static final String LEFT_LIST_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "left";
-    public static final String RIGHT_LIST_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "right";
+    public static final String LEFT_LIST_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "left";
+    public static final String RIGHT_LIST_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "right";
 
-    private static final String LEFT_LISTBOX_SELECTION_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "left_listBox_selection";
-    private static final String RIGHT_LISTBOX_SELECTION_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "right_listBox_selection";
-    private static final String SELECTED_ITEMS_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "selected_items";
+    private static final String LEFT_LISTBOX_SELECTION_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "left_listBox_selection";
+    private static final String RIGHT_LISTBOX_SELECTION_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "right_listBox_selection";
+    private static final String SELECTED_ITEMS_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "selected_items";
 
-    public static final String ADD_ALL_BUTTON_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "select_all";
-    public static final String ADD_BUTTON_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "select";
-    public static final String REMOVE_ALL_BUTTON_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "remove_all";
-    public static final String REMOVE_BUTTON_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "remove";
-    public static final String MOVE_UP_BUTTON_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "up";
-    public static final String MOVE_DOWN_BUTTON_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "down";
+    public static final String ADD_ALL_BUTTON_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "select_all";
+    public static final String ADD_BUTTON_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "select";
+    public static final String REMOVE_ALL_BUTTON_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "remove_all";
+    public static final String REMOVE_BUTTON_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "remove";
+    public static final String MOVE_UP_BUTTON_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "up";
+    public static final String MOVE_DOWN_BUTTON_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "down";
 
-    public static final String LEFT_LIST_HEADER_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "left_caption";
-    public static final String RIGHT_LIST_HEADER_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "right_caption";
+    public static final String LEFT_LIST_HEADER_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "left_caption";
+    public static final String RIGHT_LIST_HEADER_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "right_caption";
 
-    private static final String SORT_ASC_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "sort_asc";
-    private static final String SORT_DESC_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "sort_desc";
+    private static final String SORT_ASC_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "sort_asc";
+    private static final String SORT_DESC_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "sort_desc";
 
     private static final String CAPTION_CLASS = "o_tls_caption";
     private static final String LIST_CLASS = "o_tls_list";
@@ -86,20 +86,20 @@ public class TwoListSelectionRenderer extends RendererBase {
         writer.writeAttribute("cellpadding", "0", null);
         String clientId = tls.getClientId(context);
         writer.writeAttribute("id", clientId, null);
-        String styleClass = StyleUtil.getCSSClass(context, tls, tls.getStyle(), DEFAULT_CLASS, tls.getStyleClass());
+        String styleClass = Styles.getCSSClass(context, tls, tls.getStyle(), DEFAULT_CLASS, tls.getStyleClass());
         if (tls.isDisabled()) {
-            String disabledTwoListSelectionStyleClass = StyleUtil.getCSSClass(context, tls, tls.getDisabledStyle(),
+            String disabledTwoListSelectionStyleClass = Styles.getCSSClass(context, tls, tls.getDisabledStyle(),
                     StyleGroup.disabledStyleGroup(), tls.getDisabledClass(), null);
 
-            if (RenderingUtil.isNullOrEmpty(tls.getDisabledStyle()) && RenderingUtil.isNullOrEmpty(tls.getDisabledClass())) {
-                styleClass = StyleUtil.mergeClassNames(disabledTwoListSelectionStyleClass, styleClass);
+            if (Rendering.isNullOrEmpty(tls.getDisabledStyle()) && Rendering.isNullOrEmpty(tls.getDisabledClass())) {
+                styleClass = Styles.mergeClassNames(disabledTwoListSelectionStyleClass, styleClass);
             } else {
-                styleClass = StyleUtil.mergeClassNames(disabledTwoListSelectionStyleClass, StyleUtil.getCSSClass(context, tls, null
+                styleClass = Styles.mergeClassNames(disabledTwoListSelectionStyleClass, Styles.getCSSClass(context, tls, null
                         , StyleGroup.regularStyleGroup(), null, DEFAULT_CLASS));
             }
         }
         writer.writeAttribute("class", styleClass, null);
-        RenderingUtil.writeStandardEvents(writer, tls);
+        Rendering.writeStandardEvents(writer, tls);
 
         writer.startElement("col", tls);
         writer.writeAttribute("style", "width: 50%;", null);
@@ -172,15 +172,15 @@ public class TwoListSelectionRenderer extends RendererBase {
     }
 
     private String getCaptionStyleClass(FacesContext context, TwoListSelection tls) {
-        String captionStyleClass = StyleUtil.getCSSClass(context, tls, tls.getHeaderStyle(), CAPTION_CLASS, tls.getHeaderClass());
+        String captionStyleClass = Styles.getCSSClass(context, tls, tls.getHeaderStyle(), CAPTION_CLASS, tls.getHeaderClass());
         if (tls.isDisabled()) {
-            String disabledHeaderStyleClass = StyleUtil.getCSSClass(context, tls, tls.getDisabledHeaderStyle(),
+            String disabledHeaderStyleClass = Styles.getCSSClass(context, tls, tls.getDisabledHeaderStyle(),
                     StyleGroup.disabledStyleGroup(), tls.getDisabledHeaderClass(), null);
 
-            if (RenderingUtil.isNullOrEmpty(tls.getDisabledHeaderStyle()) && RenderingUtil.isNullOrEmpty(tls.getDisabledHeaderClass())) {
-                captionStyleClass = StyleUtil.mergeClassNames(disabledHeaderStyleClass, captionStyleClass);
+            if (Rendering.isNullOrEmpty(tls.getDisabledHeaderStyle()) && Rendering.isNullOrEmpty(tls.getDisabledHeaderClass())) {
+                captionStyleClass = Styles.mergeClassNames(disabledHeaderStyleClass, captionStyleClass);
             } else {
-                captionStyleClass = StyleUtil.mergeClassNames(disabledHeaderStyleClass, StyleUtil.getCSSClass(context, tls, null
+                captionStyleClass = Styles.mergeClassNames(disabledHeaderStyleClass, Styles.getCSSClass(context, tls, null
                         , StyleGroup.regularStyleGroup(), null, CAPTION_CLASS));
             }
         }
@@ -189,7 +189,7 @@ public class TwoListSelectionRenderer extends RendererBase {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        return RenderingUtil.getConvertedUISelectManyValue(context, (UISelectMany) component, submittedValue);
+        return Rendering.getConvertedUISelectManyValue(context, (UISelectMany) component, submittedValue);
     }
 
     private void renderRightList(TwoListSelection tls, FacesContext context) throws IOException {
@@ -316,15 +316,15 @@ public class TwoListSelectionRenderer extends RendererBase {
     }
 
     private String getListStyleClass(FacesContext context, TwoListSelection tls) {
-        String listStyleClass = StyleUtil.getCSSClass(context, tls, tls.getListStyle(), LIST_CLASS, tls.getListClass());
+        String listStyleClass = Styles.getCSSClass(context, tls, tls.getListStyle(), LIST_CLASS, tls.getListClass());
         if (tls.isDisabled()) {
-            String disabledListStyleClass = StyleUtil.getCSSClass(context, tls, tls.getDisabledListStyle(),
+            String disabledListStyleClass = Styles.getCSSClass(context, tls, tls.getDisabledListStyle(),
                     StyleGroup.disabledStyleGroup(), tls.getDisabledListClass(), null);
 
-            if (RenderingUtil.isNullOrEmpty(tls.getDisabledListStyle()) && RenderingUtil.isNullOrEmpty(tls.getDisabledListClass())) {
-                listStyleClass = StyleUtil.mergeClassNames(disabledListStyleClass, listStyleClass);
+            if (Rendering.isNullOrEmpty(tls.getDisabledListStyle()) && Rendering.isNullOrEmpty(tls.getDisabledListClass())) {
+                listStyleClass = Styles.mergeClassNames(disabledListStyleClass, listStyleClass);
             } else {
-                listStyleClass = StyleUtil.mergeClassNames(disabledListStyleClass, StyleUtil.getCSSClass(context, tls, null
+                listStyleClass = Styles.mergeClassNames(disabledListStyleClass, Styles.getCSSClass(context, tls, null
                         , StyleGroup.regularStyleGroup(), null, LIST_CLASS));
             }
         }
@@ -332,7 +332,7 @@ public class TwoListSelectionRenderer extends RendererBase {
     }
 
     private boolean isHeaderRowNeeded(TwoListSelection tls) {
-        return !RenderingUtil.isNullOrEmpty(tls.getLeftListboxHeader()) || !RenderingUtil.isNullOrEmpty(tls.getLeftListboxHeader()) || tls.isSortingAllowed();
+        return !Rendering.isNullOrEmpty(tls.getLeftListboxHeader()) || !Rendering.isNullOrEmpty(tls.getLeftListboxHeader()) || tls.isSortingAllowed();
     }
 
     private void renderRightCaption(TwoListSelection tls, FacesContext context) throws IOException {
@@ -351,7 +351,7 @@ public class TwoListSelectionRenderer extends RendererBase {
         writer.startElement("td", tls);
 
         String caption = tls.getRightListboxHeader();
-        if (!RenderingUtil.isNullOrEmpty(caption)) {
+        if (!Rendering.isNullOrEmpty(caption)) {
             writer.write(caption);
         }
 
@@ -361,14 +361,14 @@ public class TwoListSelectionRenderer extends RendererBase {
         if (allowSorting) {
             writer.startElement("img", tls);
             writer.writeAttribute("id", clientId + SORT_ASC_SUFFIX, null);
-            String ascImage = ResourceUtil.getInternalResourceURL(context, TwoListSelectionRenderer.class, "ascending.gif");
+            String ascImage = Resources.getInternalURL(context, TwoListSelectionRenderer.class, "ascending.gif");
             writer.writeAttribute("src", ascImage, null);
             writer.writeAttribute("style", "display: none;", null);
             writer.endElement("img");
 
             writer.startElement("img", tls);
             writer.writeAttribute("id", clientId + SORT_DESC_SUFFIX, null);
-            String desImage = ResourceUtil.getInternalResourceURL(context, TwoListSelectionRenderer.class, "descending.gif");
+            String desImage = Resources.getInternalURL(context, TwoListSelectionRenderer.class, "descending.gif");
             writer.writeAttribute("src", desImage, null);
             writer.writeAttribute("style", "display: none;", null);
             writer.endElement("img");
@@ -380,7 +380,7 @@ public class TwoListSelectionRenderer extends RendererBase {
 
     private void renderLeftCaption(FacesContext context, String caption) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        if (!RenderingUtil.isNullOrEmpty(caption)) {
+        if (!Rendering.isNullOrEmpty(caption)) {
             writer.write(caption);
         }
     }
@@ -439,7 +439,7 @@ public class TwoListSelectionRenderer extends RendererBase {
 
         renderInitScript(context, tls);
 
-        StyleUtil.renderStyleClasses(context, tls);
+        Styles.renderStyleClasses(context, tls);
 
         writer.endElement("td");
         writer.endElement("tr");
@@ -468,16 +468,16 @@ public class TwoListSelectionRenderer extends RendererBase {
 
         ScriptBuilder sb = new ScriptBuilder();
         sb.initScript(context, tls, "O$.TwoListSelection._init",
-                RenderingUtil.getEventsParam(tls, "onadd", "onremove", "onchange"),
+                Rendering.getEventsParam(tls, "onadd", "onremove", "onchange"),
                 tls.isAllowAddRemoveAll(),
                 tls.getReorderingAllowed(),
                 tls.isDisabled(),
-                RenderingUtil.getRolloverClass(context, tls));
+                Rendering.getRolloverClass(context, tls));
 
-        RenderingUtil.renderInitScript(context, sb,
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, TwoListSelectionRenderer.class, "twoListSelection.js"));
-        RenderingUtil.encodeClientActions(context, component);
+        Rendering.renderInitScript(context, sb,
+                Resources.getUtilJsURL(context),
+                Resources.getInternalURL(context, TwoListSelectionRenderer.class, "twoListSelection.js"));
+        Rendering.encodeClientActions(context, component);
     }
 
     @Override
@@ -653,15 +653,15 @@ public class TwoListSelectionRenderer extends RendererBase {
         responseWriter.writeAttribute("value", text, null);
         responseWriter.writeAttribute("disabled", Boolean.toString(disabled), null);
 
-        String buttonStyleClass = StyleUtil.getCSSClass(context, tls, tls.getButtonStyle(), StyleGroup.regularStyleGroup(), tls.getButtonClass(),
+        String buttonStyleClass = Styles.getCSSClass(context, tls, tls.getButtonStyle(), StyleGroup.regularStyleGroup(), tls.getButtonClass(),
                 null);
 
         if (tls.isDisabled()) {
-            String disabledCalendarStyleClass = StyleUtil.getCSSClass(context, tls, tls.getDisabledButtonStyle(),
+            String disabledCalendarStyleClass = Styles.getCSSClass(context, tls, tls.getDisabledButtonStyle(),
                     StyleGroup.disabledStyleGroup(), tls.getDisabledButtonClass(), null);
 
-            if (RenderingUtil.isNullOrEmpty(tls.getDisabledButtonStyle()) && RenderingUtil.isNullOrEmpty(tls.getDisabledButtonClass())) {
-                buttonStyleClass = StyleUtil.mergeClassNames(disabledCalendarStyleClass, buttonStyleClass);
+            if (Rendering.isNullOrEmpty(tls.getDisabledButtonStyle()) && Rendering.isNullOrEmpty(tls.getDisabledButtonClass())) {
+                buttonStyleClass = Styles.mergeClassNames(disabledCalendarStyleClass, buttonStyleClass);
             } else {
                 buttonStyleClass = disabledCalendarStyleClass;
             }

@@ -13,8 +13,8 @@ package org.openfaces.renderkit.ajax;
 
 import org.openfaces.component.ajax.Ajax;
 import org.openfaces.component.ajax.AjaxInitializer;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.component.UIComponent;
@@ -53,9 +53,9 @@ public class AjaxRenderer extends AbstractSettingsRenderer {
 
         helper.appendMissingParameters(context, ajax, initScript);
 
-        RenderingUtil.renderInitScript(context, initScript,
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getAjaxUtilJsURL(context));
+        Rendering.renderInitScript(context, initScript,
+                Resources.getUtilJsURL(context),
+                Resources.getAjaxUtilJsURL(context));
 
         writer.endElement("span");
     }

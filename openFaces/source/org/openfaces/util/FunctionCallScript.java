@@ -73,7 +73,7 @@ public class FunctionCallScript extends Script {
         if (str == null)
             return "null";
         else
-            return '\'' + RenderingUtil.escapeStringForJS(str) + '\'';
+            return '\'' + Rendering.escapeStringForJS(str) + '\'';
     }
 
 

@@ -20,10 +20,10 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -42,25 +42,25 @@ public class EventActionBarRenderer extends RendererBase {
         writer.startElement("div", actionBar);
         String clientId = actionBar.getClientId(context);
         writer.writeAttribute("id", clientId, null);
-        RenderingUtil.writeStandardEvents(writer, actionBar);
+        Rendering.writeStandardEvents(writer, actionBar);
 
         writer.writeText(actionBar.getNoteText(), null);
         writer.endElement("div");
 
         DayTable dayTable = (DayTable) actionBar.getParent();
 
-        String userSpecifiedStyle = StyleUtil.getCSSClass(context, actionBar, actionBar.getStyle(), actionBar.getStyleClass());
+        String userSpecifiedStyle = Styles.getCSSClass(context, actionBar, actionBar.getStyle(), actionBar.getStyleClass());
         JSONArray eventActions = getEventActions(context, actionBar);
         double actionRolloverBackgroundIntensity = actionBar.getActionRolloverBackgroundIntensity();
         double actionPressedBackgroundIntensity = actionBar.getActionPressedBackgroundIntensity();
-        RenderingUtil.renderInitScript(context, new ScriptBuilder().initScript(context, actionBar, "O$._initEventActionBar",
+        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, actionBar, "O$._initEventActionBar",
                 dayTable,
                 actionBar.getBackgroundIntensity(),
                 userSpecifiedStyle,
                 eventActions,
                 actionRolloverBackgroundIntensity,
                 actionPressedBackgroundIntensity));
-        StyleUtil.renderStyleClasses(context, actionBar);
+        Styles.renderStyleClasses(context, actionBar);
         Confirmation confirmation = dayTable.getDeletionConfirmation();
         if (confirmation.isRendered())
             confirmation.encodeAll(context);
@@ -121,12 +121,12 @@ public class EventActionBarRenderer extends RendererBase {
             params.put("id", action.getClientId(context));
         params.put("image", new JSONArray(Arrays.asList(
                 getActionImageUrl(context, action),
-                ResourceUtil.getApplicationResourceURL(context, action.getRolloverImageUrl()),
-                ResourceUtil.getApplicationResourceURL(context, action.getPressedImageUrl()))));
+                Resources.getApplicationURL(context, action.getRolloverImageUrl()),
+                Resources.getApplicationURL(context, action.getPressedImageUrl()))));
         params.put("style", new JSONArray(Arrays.asList(
-                StyleUtil.getCSSClass(context, actionBar, action.getStyle(), "o_eventActionButton", action.getStyleClass()),
-                StyleUtil.getCSSClass(context, actionBar, action.getRolloverStyle(), action.getRolloverClass()),
-                StyleUtil.getCSSClass(context, actionBar, action.getPressedStyle(), action.getPressedClass()))));
+                Styles.getCSSClass(context, actionBar, action.getStyle(), "o_eventActionButton", action.getStyleClass()),
+                Styles.getCSSClass(context, actionBar, action.getRolloverStyle(), action.getRolloverClass()),
+                Styles.getCSSClass(context, actionBar, action.getPressedStyle(), action.getPressedClass()))));
         params.put("onclick", action.getOnclick());
         params.put("hint", action.getHint());
         return params;
@@ -134,10 +134,10 @@ public class EventActionBarRenderer extends RendererBase {
 
     private String getActionImageUrl(FacesContext context, EventAction action) {
         if (action instanceof DeleteEventAction && action.getImageUrl() == null) {
-            return ResourceUtil.getInternalResourceURL(
+            return Resources.getInternalURL(
                     FacesContext.getCurrentInstance(), EventActionBarRenderer.class, "deleteEvent.gif");
         }
-        return ResourceUtil.getApplicationResourceURL(context, action.getImageUrl());
+        return Resources.getApplicationURL(context, action.getImageUrl());
     }
 
     @Override

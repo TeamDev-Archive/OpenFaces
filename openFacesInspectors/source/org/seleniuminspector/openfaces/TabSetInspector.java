@@ -12,7 +12,7 @@
 package org.seleniuminspector.openfaces;
 
 import junit.framework.Assert;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.seleniuminspector.ElementByReferenceInspector;
 import org.seleniuminspector.ElementByLocatorInspector;
 import org.seleniuminspector.ElementInspector;
@@ -42,7 +42,7 @@ public class TabSetInspector extends ElementByReferenceInspector {
             }
 
             public ElementInspector get(int index) {
-                return new ElementByLocatorInspector(id() + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + index);
+                return new ElementByLocatorInspector(id() + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + index);
             }
         };
     }

@@ -16,7 +16,7 @@ import org.junit.Assert;
 import org.seleniuminspector.LoadingMode;
 import org.seleniuminspector.html.TableColumnInspector;
 import org.openfaces.component.filter.TextSearchFilter;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import java.lang.reflect.Constructor;
 
@@ -47,7 +47,7 @@ public class DataTableColumnInspector extends TableColumnInspector {
         T filter;
 
         if (!ComboBoxFilterInspector.class.isAssignableFrom(filterTypeClass))
-            filterId += RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + TextSearchFilter.SEARCH_COMPONENT_SUFFIX;
+            filterId += Rendering.SERVER_ID_SUFFIX_SEPARATOR + TextSearchFilter.SEARCH_COMPONENT_SUFFIX;
         try {
             Constructor<T> filterConstructor = filterTypeClass.getConstructor(String.class, LoadingMode.class);
             filter = filterConstructor.newInstance(filterId, loadingMode);

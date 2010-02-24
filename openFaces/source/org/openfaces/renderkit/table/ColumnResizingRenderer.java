@@ -19,7 +19,7 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.component.UIComponent;
@@ -70,11 +70,11 @@ public class ColumnResizingRenderer extends RendererBase {
                 columnResizing.getResizeHandleWidth(),
                 columnParams);
 
-        RenderingUtil.renderInitScript(context, buf);
+        Rendering.renderInitScript(context, buf);
     }
 
     private String getColumnWidthsFieldName(FacesContext context, AbstractTable table) {
-        return table.getClientId(context) + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "colWidths";
+        return table.getClientId(context) + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "colWidths";
     }
 
     @Override

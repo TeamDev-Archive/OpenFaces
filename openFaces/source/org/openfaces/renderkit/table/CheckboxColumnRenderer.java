@@ -11,7 +11,7 @@
  */
 package org.openfaces.renderkit.table;
 
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,7 +35,7 @@ public class CheckboxColumnRenderer extends BaseColumnRenderer {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("input", component);
         writer.writeAttribute("type", "checkbox", null);
-        StyleUtil.renderStyleClasses(context, component);
+        Styles.renderStyleClasses(context, component);
         writer.endElement("input");
     }
 

@@ -16,7 +16,7 @@ import com.sun.facelets.tag.Metadata;
 import com.sun.facelets.tag.TagAttribute;
 import com.sun.facelets.tag.TagAttributeException;
 import org.openfaces.component.chart.CategoryAxisLabelPosition;
-import org.openfaces.util.EnumerationUtil;
+import org.openfaces.util.Enumerations;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -30,7 +30,7 @@ public class CategoryPositionMetadata extends Metadata { // todo: use common int
 
     public void applyMetadata(FaceletContext ctx, Object instance) {
 
-        CategoryAxisLabelPosition position = EnumerationUtil.valueByString(
+        CategoryAxisLabelPosition position = Enumerations.valueByString(
                 CategoryAxisLabelPosition.class, attribute.getValue(), CategoryAxisLabelPosition.STANDARD, "position");
         try {
             method.invoke(instance, new Object[]{position});

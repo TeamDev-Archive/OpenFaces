@@ -18,12 +18,12 @@ import org.openfaces.component.input.DateChooserPopup;
 import org.openfaces.component.input.DropDownComponent;
 import org.openfaces.renderkit.calendar.CalendarRenderer;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.DataUtil;
 import org.openfaces.util.InitScript;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.RequestFacade;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.validator.ClientValidatorUtil;
 
@@ -45,7 +45,7 @@ import java.util.TimeZone;
  * @author Pavel Kaplin
  */
 public class DateChooserRenderer extends DropDownComponentRenderer {
-    public static final String CALENDAR_SUFFIX = RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "calendar";
+    public static final String CALENDAR_SUFFIX = Rendering.SERVER_ID_SUFFIX_SEPARATOR + "calendar";
 
     @Override
     protected void registerJS(FacesContext context, UIComponent component) throws IOException {
@@ -55,7 +55,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         if (locale == null) {
             locale = RequestFacade.getInstance(context.getExternalContext().getRequest()).getLocale();
         }
-        RenderingUtil.registerDateTimeFormatObject(locale);
+        Rendering.registerDateTimeFormatObject(locale);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
-        Date convertedValue = (Date) RenderingUtil.convertFromString(context, component, (String) submittedValue);
+        Date convertedValue = (Date) Rendering.convertFromString(context, component, (String) submittedValue);
         DateChooser dataChooser = (DateChooser) component;
         boolean keepTime = dataChooser.isKeepTime();
         if (!keepTime) {
@@ -88,7 +88,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         setUpConverter((DateChooser) component);
-        ComponentUtil.generateIdIfNotSpecified(component);
+        Components.generateIdIfNotSpecified(component);
         super.encodeBegin(context, component);
     }
 
@@ -194,7 +194,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         popup.setCalendarIdSuffix(CALENDAR_SUFFIX);
 
         popup.encodeAll(context);
-        RenderingUtil.encodeClientActions(context, component);
+        Rendering.encodeClientActions(context, component);
     }
 
     protected InitScript renderInitScript(FacesContext context, DropDownComponent dropDown) throws IOException {
@@ -228,11 +228,11 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
                 dc.getOnchange());
 
         return new InitScript(sb, new String[]{
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getJsonJsURL(context),
+                Resources.getUtilJsURL(context),
+                Resources.getJsonJsURL(context),
                 getDropDownJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, ClientValidatorUtil.class, "requestHelper.js"),
-                ResourceUtil.getInternalResourceURL(context, DateChooserRenderer.class, "dateChooser.js")
+                Resources.getInternalURL(context, ClientValidatorUtil.class, "requestHelper.js"),
+                Resources.getInternalURL(context, DateChooserRenderer.class, "dateChooser.js")
         });
     }
 

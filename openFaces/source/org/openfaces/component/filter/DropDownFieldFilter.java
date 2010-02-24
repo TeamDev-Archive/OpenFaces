@@ -14,7 +14,7 @@ package org.openfaces.component.filter;
 import org.openfaces.component.Side;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItems;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
@@ -66,7 +66,7 @@ public class DropDownFieldFilter extends AutoCompleteFilter {
     @Override
     public void createSubComponents(FacesContext context) {
         super.createSubComponents(context);
-        ComponentUtil.createChildComponent(context, getSearchComponent(), DropDownItems.COMPONENT_TYPE, "dropdownItems");
+        Components.createChildComponent(context, getSearchComponent(), DropDownItems.COMPONENT_TYPE, "dropdownItems");
     }
 
     protected String getListClass() {

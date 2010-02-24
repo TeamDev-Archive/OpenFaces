@@ -11,7 +11,7 @@
  */
 package org.openfaces.validator;
 
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 
 import javax.faces.context.FacesContext;
 
@@ -44,6 +44,6 @@ public class ValidationJavascriptLibrary {
     }
 
     public String getUrl(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, ownerClass, name);
+        return Resources.getInternalURL(context, ownerClass, name);
     }
 }

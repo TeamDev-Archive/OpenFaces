@@ -13,8 +13,8 @@ package org.openfaces.component.table;
 
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.ValueBindings;
 
@@ -278,8 +278,8 @@ public class CheckboxColumn extends BaseColumn {
             List<Integer> selectedRowIndexes = selectedRows.encodeSelectionIntoIndexes();
             ScriptBuilder buf = new ScriptBuilder().functionCall("O$.Table._setCheckboxColIndexes",
                     this, selectedRowIndexes).semicolon();
-            RenderingUtil.renderInitScript(context, buf,
-                    ResourceUtil.getUtilJsURL(context),
+            Rendering.renderInitScript(context, buf,
+                    Resources.getUtilJsURL(context),
                     TableUtil.getTableUtilJsURL(context),
                     AbstractTableRenderer.getTableJsURL(context)
             );

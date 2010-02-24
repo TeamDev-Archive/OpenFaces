@@ -13,12 +13,12 @@ package org.openfaces.component.validation;
 
 import org.openfaces.renderkit.validation.BaseMessageRenderer;
 import org.openfaces.renderkit.validation.ValidatorUtil;
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.ConverterUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Converters;
 import org.openfaces.util.Log;
 import org.openfaces.util.RawScript;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.validator.ClientValidatorUtil;
 
 import javax.faces.application.FacesMessage;
@@ -246,7 +246,7 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
         VerifiableComponent[] verifiableComponents = processor.getVerifiableComponents(context);
         VerifiableComponent vc = VerifiableComponent.getVerifiableComponent(
                 verifiableComponents, editableValueHolder, component.getClientId(context));
-        UIForm parentForm = ComponentUtil.getEnclosingForm(component);
+        UIForm parentForm = Components.getEnclosingForm(component);
         if (parentForm == null) {
             String componentClass = component.getClass().getName();
             if (componentClass.equals("org.richfaces.component.html.HtmlModalPanel")) {
@@ -262,7 +262,7 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
             vc.setParentForm(parentForm);
             vc.addValidators(editableValueHolder.getValidators());
             vc.setRequired(editableValueHolder.isRequired());
-            vc.setConverter(ConverterUtil.getConverter(component, context));
+            vc.setConverter(Converters.getConverter(component, context));
             vc.addMessageFromContext(context);
             vc.updateClientValidatorsScriptsAndLibraries(context, processor);
             processor.addVerifiableComponent(vc);
@@ -273,11 +273,11 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
     private void processGlobalMessages(FacesContext context, ValidationProcessor processor) throws IOException {
         Iterator<FacesMessage> globalMessages = context.getMessages(null);
         if (globalMessages.hasNext()) {
-            ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getUtilJsURL(context));
-            ResourceUtil.renderJSLinkIfNeeded(context, ValidatorUtil.getValidatorUtilJsUrl(context));
+            Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
+            Resources.renderJSLinkIfNeeded(context, ValidatorUtil.getValidatorUtilJsUrl(context));
             while (globalMessages.hasNext()) {
                 FacesMessage message = globalMessages.next();
-                RenderingUtil.renderInitScript(context, ClientValidatorUtil.getScriptAddGlobalMessage(message));
+                Rendering.renderInitScript(context, ClientValidatorUtil.getScriptAddGlobalMessage(message));
             }
         }
         processor.confirmGlobalMessagesProcessing();
@@ -299,19 +299,19 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
         if (!vp.getClientValidationRuleForComponent(vc).equals(ClientValidationMode.OFF)) {
             List<String> javascriptLibraries = vc.getJavascriptLibrariesUrls();
             String[] javascriptLibrariesArray = javascriptLibraries.toArray(new String[javascriptLibraries.size()]);
-            RenderingUtil.renderInitScript(context, new RawScript(commonScript.toString()), javascriptLibrariesArray);
+            Rendering.renderInitScript(context, new RawScript(commonScript.toString()), javascriptLibrariesArray);
         }
 
         if (clientValidationRuleForComponent.equals(ClientValidationMode.ON_SUBMIT)) {
             String formClientId = parentForm.getClientId(context);
             if (!formsHaveOnSubmitRendered.contains(formClientId)) {
-                RenderingUtil.renderInitScript(context,
+                Rendering.renderInitScript(context,
                         new RawScript("O$.addOnSubmitEvent(O$._autoValidateForm,'" + formClientId + "');\n"),
                         ValidatorUtil.getValidatorUtilJsUrl(context));
                 formsHaveOnSubmitRendered.add(formClientId);
             }
         } else if (clientValidationRuleForComponent.equals(ClientValidationMode.ON_DEMAND)) {
-            RenderingUtil.renderInitScript(context,
+            Rendering.renderInitScript(context,
                     new RawScript("O$.addNotValidatedInput('" + vc.getClientId() + "');"),
                     ValidatorUtil.getValidatorUtilJsUrl(context));
         }
@@ -395,22 +395,22 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
             validationScripts = new ArrayList<String>();
         }
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        List<String> renderedJsLinks = (List<String>) requestMap.get(ResourceUtil.RENDERED_JS_LINKS);
+        List<String> renderedJsLinks = (List<String>) requestMap.get(Resources.RENDERED_JS_LINKS);
         if (renderedJsLinks != null) {
             for (String js : renderedJsLinks) {
                 if (!validationScripts.contains(js))
                     validationScripts.add(js);
             }
         }
-        requestMap.put(ResourceUtil.RENDERED_JS_LINKS, validationScripts);
-        requestMap.put(ResourceUtil.POSTPONE_JS_LINK_RENDERING, Boolean.TRUE);
+        requestMap.put(Resources.RENDERED_JS_LINKS, validationScripts);
+        requestMap.put(Resources.POSTPONE_JS_LINK_RENDERING, Boolean.TRUE);
         return renderedJsLinks;
     }
 
     private void restoreRenderedJsLinks(FacesContext context, List<String> prevRenderedJsLinks) {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-        requestMap.put(ResourceUtil.RENDERED_JS_LINKS, prevRenderedJsLinks);
-        requestMap.put(ResourceUtil.POSTPONE_JS_LINK_RENDERING, Boolean.FALSE);
+        requestMap.put(Resources.RENDERED_JS_LINKS, prevRenderedJsLinks);
+        requestMap.put(Resources.POSTPONE_JS_LINK_RENDERING, Boolean.FALSE);
     }
 
     private void putNewJSLinksInRenderedJsLinks() throws IOException {
@@ -423,10 +423,10 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
             // call on this ValidationSupportResponseWriter
             context.setResponseWriter(writer);
 
-            List<String> renderedJsLinks = ResourceUtil.getRenderedJsLinks(context);
+            List<String> renderedJsLinks = Resources.getRenderedJsLinks(context);
             for (String js : validationScripts) {
                 if (!renderedJsLinks.contains(js))
-                    ResourceUtil.renderJSLinkIfNeeded(context, js);
+                    Resources.renderJSLinkIfNeeded(context, js);
             }
         } finally {
             context.setResponseWriter(prevWriter);

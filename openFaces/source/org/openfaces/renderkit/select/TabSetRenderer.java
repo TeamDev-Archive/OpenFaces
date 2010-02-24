@@ -20,10 +20,10 @@ import org.openfaces.event.SelectionChangeEvent;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.HTML;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.StyleGroup;
@@ -89,7 +89,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
         writeAttribute(writer, "style", tabSet.getStyle());
         writeAttribute(writer, "class", tabSet.getStyleClass());
 
-        RenderingUtil.writeStandardEvents(writer, tabSet);
+        Rendering.writeStandardEvents(writer, tabSet);
     }
 
     @Override
@@ -126,7 +126,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
             insertVerticalSpacer(context, tabSet, emptySpaceClasses);
         }
 
-        String idPrefix = tabSet.getClientId(context) + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR;
+        String idPrefix = tabSet.getClientId(context) + Rendering.CLIENT_ID_SUFFIX_SEPARATOR;
         int gapWidth = tabSet.getGapWidth();
 
         int allTabCount = tabItems.size();
@@ -169,7 +169,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
 
             if (tabSet.isFocusable()) {
                 writer.startElement("div", tabSet);
-                String defaultFocusedClass = StyleUtil.getCSSClass(context, component, "border: 1px solid transparent;", StyleGroup.selectedStyleGroup(1));
+                String defaultFocusedClass = Styles.getCSSClass(context, component, "border: 1px solid transparent;", StyleGroup.selectedStyleGroup(1));
                 writer.writeAttribute("class", defaultFocusedClass, null);
             }
 
@@ -297,7 +297,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
             style += " border-" + placement.getOppositeValue() + ": " + borderStyle + ";";
         }
         String defaultClass = DEFAULT_EMPTY_SPACE_CLASS_PREFIX + placement;
-        return StyleUtil.getCSSClass(context, tabSet, style, defaultClass, tabSet.getEmptySpaceClass());
+        return Styles.getCSSClass(context, tabSet, style, defaultClass, tabSet.getEmptySpaceClass());
     }
 
     private TabPlacement getTabPlacement(TabSet tabSet) {
@@ -325,7 +325,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
         List<Object> tabs = getTabItems(tabSet);
         int selectedIndex = getSelectedIndex(context, tabSet, tabs);
 
-        RenderingUtil.renderHiddenField(writer,
+        Rendering.renderHiddenField(writer,
                 component.getClientId(context) + SELECTED_INDEX_SUFFIX,
                 String.valueOf(selectedIndex));
 
@@ -362,34 +362,34 @@ public class TabSetRenderer extends BaseTabSetRenderer {
         boolean frontBorderDefined = frontBorderStyle != null && frontBorderStyle.length() > 0;
         if (frontBorderDefined) {
             String frontBorder = formatBorderClassString(borderMask, borderSideNames, frontBorderStyle, "0px");
-            frontBorderClass = StyleUtil.getCSSClass(context, tabSet, frontBorder, frontBorderClass);
+            frontBorderClass = Styles.getCSSClass(context, tabSet, frontBorder, frontBorderClass);
         }
 
         String backBorderStyle = tabSet.getBackBorderStyle();
         boolean backBorderDefined = backBorderStyle != null && backBorderStyle.length() > 0;
         if (backBorderDefined || frontBorderDefined) {
             String backBorderPre = formatBorderClassString(borderMaskPre, borderSideNames, backBorderStyle, frontBorderStyle);
-            backBorderClassPre = StyleUtil.getCSSClass(context, tabSet, backBorderPre, backBorderClassPre);
+            backBorderClassPre = Styles.getCSSClass(context, tabSet, backBorderPre, backBorderClassPre);
 
             String backBorderPost = formatBorderClassString(borderMaskPost, borderSideNames, backBorderStyle, frontBorderStyle);
-            backBorderClassPost = StyleUtil.getCSSClass(context, component, backBorderPost);
+            backBorderClassPost = Styles.getCSSClass(context, component, backBorderPost);
         }
 
         String defaultClass = DEFAULT_CLASS_PREFIX + placement;
-        String tabClass = StyleUtil.getCSSClass(context, component, tabSet.getTabStyle(), defaultClass, tabSet.getTabClass());
+        String tabClass = Styles.getCSSClass(context, component, tabSet.getTabStyle(), defaultClass, tabSet.getTabClass());
         String defaultRolloverClass = DEFAULT_ROLLOVER_CLASS_PREFIX + placement;
-        String rolloverClass = StyleUtil.getCSSClass(context, component, tabSet.getRolloverTabStyle(), StyleGroup.rolloverStyleGroup(), tabSet.getRolloverTabClass(), defaultRolloverClass);
+        String rolloverClass = Styles.getCSSClass(context, component, tabSet.getRolloverTabStyle(), StyleGroup.rolloverStyleGroup(), tabSet.getRolloverTabClass(), defaultRolloverClass);
         String defaultSelectedClass = DEFAULT_SELECTED_STYLE.format(new Object[]{placement});
-        String selectedClass = StyleUtil.getStyleClassesStr(context, component, tabSet.getSelectedTabStyle(), tabSet.getSelectedTabClass(), defaultSelectedClass, StyleGroup.selectedStyleGroup());
+        String selectedClass = Styles.getStyleClassesStr(context, component, tabSet.getSelectedTabStyle(), tabSet.getSelectedTabClass(), defaultSelectedClass, StyleGroup.selectedStyleGroup());
         String defaultSelectedRolloverClass = DEFAULT_SELECTED_ROLLOVER_CLASS_PREFIX + placement.toString();
-        String selectedRolloverClass = StyleUtil.getCSSClass(context, component, tabSet.getRolloverSelectedTabStyle(), StyleGroup.selectedStyleGroup(1), tabSet.getRolloverSelectedTabClass(), defaultSelectedRolloverClass);
-        String focusedTabClass = StyleUtil.getStyleClassesStr(context, component, tabSet.getFocusedTabStyle(), tabSet.getFocusedTabClass(), null, StyleGroup.selectedStyleGroup(2));
+        String selectedRolloverClass = Styles.getCSSClass(context, component, tabSet.getRolloverSelectedTabStyle(), StyleGroup.selectedStyleGroup(1), tabSet.getRolloverSelectedTabClass(), defaultSelectedRolloverClass);
+        String focusedTabClass = Styles.getStyleClassesStr(context, component, tabSet.getFocusedTabStyle(), tabSet.getFocusedTabClass(), null, StyleGroup.selectedStyleGroup(2));
         /// focus area style
-        String defaultFocusedClass = StyleUtil.getCSSClass(context, component, RenderingUtil.DEFAULT_FOCUSED_STYLE, StyleGroup.selectedStyleGroup(1));
-        String focusAreaClass = StyleUtil.getCSSClass(context, component, tabSet.getFocusAreaStyle(),
+        String defaultFocusedClass = Styles.getCSSClass(context, component, Rendering.DEFAULT_FOCUSED_STYLE, StyleGroup.selectedStyleGroup(1));
+        String focusAreaClass = Styles.getCSSClass(context, component, tabSet.getFocusAreaStyle(),
                 StyleGroup.selectedStyleGroup(2), tabSet.getFocusAreaClass(), defaultFocusedClass);
 
-        String focusedClass = StyleUtil.getCSSClass(context, tabSet,
+        String focusedClass = Styles.getCSSClass(context, tabSet,
                 tabSet.getFocusedStyle(), StyleGroup.selectedStyleGroup(1), tabSet.getFocusedClass(), null);
 
         String onchange = tabSet.getOnchange();
@@ -416,13 +416,13 @@ public class TabSetRenderer extends BaseTabSetRenderer {
                 focusedClass,
                 onchange != null ? new AnonymousFunction(onchange, "event") : null);
 
-        RenderingUtil.renderInitScript(context, sb,
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, TabSetRenderer.class, JS_SCRIPT_URL));
+        Rendering.renderInitScript(context, sb,
+                Resources.getUtilJsURL(context),
+                Resources.getInternalURL(context, TabSetRenderer.class, JS_SCRIPT_URL));
 
-        RenderingUtil.encodeClientActions(context, component);
+        Rendering.encodeClientActions(context, component);
 
-        StyleUtil.renderStyleClasses(context, tabSet);
+        Styles.renderStyleClasses(context, tabSet);
     }
 
     private int getSelectedIndex(FacesContext context, TabSet tabSet, List<Object> allTabItems) {
@@ -485,9 +485,9 @@ public class TabSetRenderer extends BaseTabSetRenderer {
             List<Object> borderSideNames,
             String backBorderStyle,
             String frontBorderStyle) {
-        if (RenderingUtil.isNullOrEmpty(backBorderStyle))
+        if (Rendering.isNullOrEmpty(backBorderStyle))
             backBorderStyle = "none";
-        if (RenderingUtil.isNullOrEmpty(frontBorderStyle))
+        if (Rendering.isNullOrEmpty(frontBorderStyle))
             frontBorderStyle = "none";
         String result = MessageFormat.format(borderMaskPre, borderSideNames.get(0),
                 borderSideNames.get(1),
@@ -525,7 +525,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
             if (!isItemRendered(tabObj))
                 continue;
 
-            result.put(clientId + RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + tabIndex);
+            result.put(clientId + Rendering.CLIENT_ID_SUFFIX_SEPARATOR + tabIndex);
         }
         return result;
     }

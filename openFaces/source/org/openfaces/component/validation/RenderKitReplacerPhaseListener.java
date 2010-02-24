@@ -14,7 +14,7 @@ package org.openfaces.component.validation;
 import org.apache.myfaces.trinidad.render.DialogRenderKitService;
 import org.apache.myfaces.trinidad.render.ExtendedRenderKitService;
 import org.apache.myfaces.trinidad.util.Service;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.renderkit.validation.HtmlMessageRenderer;
 import org.openfaces.renderkit.validation.HtmlMessagesRenderer;
 import org.openfaces.util.EnvironmentUtil;
@@ -159,7 +159,7 @@ public class RenderKitReplacerPhaseListener implements PhaseListener {
                         getConstructor(RenderKit.class).newInstance(renderKit);
             }
         } catch (Throwable e) {
-            RenderingUtil.logWarning(FacesContext.getCurrentInstance(), "Exception was thrown during processing renderkit for" +
+            Rendering.logWarning(FacesContext.getCurrentInstance(), "Exception was thrown during processing renderkit for" +
                     "Trinidad support.");
         }
 
@@ -171,7 +171,7 @@ public class RenderKitReplacerPhaseListener implements PhaseListener {
                 applicationMap.put(EnvironmentUtil.PARAM_ENVIRONMENT_TRINIDAD_SUPPORT, Boolean.TRUE);
             }
         } else {
-            RenderingUtil.logWarning(FacesContext.getCurrentInstance(), "Trinidad support for renderkit was disabled.");
+            Rendering.logWarning(FacesContext.getCurrentInstance(), "Trinidad support for renderkit was disabled.");
             factory.addRenderKit(renderKitId, new ValidationSupportRenderKit(renderKit));
         }
     }
@@ -182,13 +182,13 @@ public class RenderKitReplacerPhaseListener implements PhaseListener {
             proxy = (RenderKit) Class.forName("org.openfaces.component.validation.RenderKitADFFacesProxy").
                     getConstructor(RenderKit.class).newInstance(renderKit);
         } catch (Throwable e) {
-            RenderingUtil.logWarning(FacesContext.getCurrentInstance(), "Exception was thrown during processing renderkit for" +
+            Rendering.logWarning(FacesContext.getCurrentInstance(), "Exception was thrown during processing renderkit for" +
                     "ADF Faces support.");
         }
         if (proxy != null) {
             factory.addRenderKit(renderKitId, proxy);
         } else {
-            RenderingUtil.logWarning(FacesContext.getCurrentInstance(), "ADF Faces support for renderkit was disabled.");
+            Rendering.logWarning(FacesContext.getCurrentInstance(), "ADF Faces support for renderkit was disabled.");
             factory.addRenderKit(renderKitId, new ValidationSupportRenderKit(renderKit));
         }
     }

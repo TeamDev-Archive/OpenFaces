@@ -27,9 +27,9 @@ import org.openfaces.renderkit.DefaultTableStyles;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.EnvironmentUtil;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlOutputText;
@@ -161,29 +161,29 @@ public class TableStructure extends TableElement {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("table", table);
-        RenderingUtil.writeIdAttribute(context, table);
-        RenderingUtil.writeStandardEvents(writer, table);
+        Rendering.writeIdAttribute(context, table);
+        Rendering.writeStandardEvents(writer, table);
         writeStyleAndClass(context, table, writer);
-        RenderingUtil.writeAttribute(writer, "dir", table.getDir());
-        RenderingUtil.writeAttribute(writer, "width", table.getWidth());
-        RenderingUtil.writeAttribute(writer, "align", table.getAlign());
-        RenderingUtil.writeAttribute(writer, "bgcolor", table.getBgcolor());
-        RenderingUtil.writeAttribute(writer, "rules", table.getRules());
-        RenderingUtil.writeAttribute(writer, "border", table.getBorder(), Integer.MIN_VALUE);
+        Rendering.writeAttribute(writer, "dir", table.getDir());
+        Rendering.writeAttribute(writer, "width", table.getWidth());
+        Rendering.writeAttribute(writer, "align", table.getAlign());
+        Rendering.writeAttribute(writer, "bgcolor", table.getBgcolor());
+        Rendering.writeAttribute(writer, "rules", table.getRules());
+        Rendering.writeAttribute(writer, "border", table.getBorder(), Integer.MIN_VALUE);
 
         Scrolling scrolling = getScrolling();
         if (scrolling == null) {
             String cellspacing = table.getCellspacing();
             if (areGridLinesRequested(table, TableStructure.getDefaultStyles(table)))
                 cellspacing = "0";
-            RenderingUtil.writeAttribute(writer, "cellspacing", cellspacing);
-            RenderingUtil.writeAttribute(writer, "cellpadding", getTableCellPadding());
+            Rendering.writeAttribute(writer, "cellspacing", cellspacing);
+            Rendering.writeAttribute(writer, "cellpadding", getTableCellPadding());
 
             List<BaseColumn> columns1 = table.getRenderedColumns();
             TableUtil.writeColumnTags(context, table, columns1);
         } else {
-            RenderingUtil.writeAttribute(writer, "cellspacing", "0");
-            RenderingUtil.writeAttribute(writer, "cellpadding", "0");
+            Rendering.writeAttribute(writer, "cellspacing", "0");
+            Rendering.writeAttribute(writer, "cellpadding", "0");
             writer.startElement("tr", table);
             writer.startElement("td", table);
             writer.writeAttribute("style", "vertical-align: top", null);
@@ -210,7 +210,7 @@ public class TableStructure extends TableElement {
         }
 
         writer.endElement("table");
-        RenderingUtil.writeNewLine(writer);
+        Rendering.writeNewLine(writer);
         UIComponent belowFacet = table.getFacet("below");
         if (belowFacet != null)
             belowFacet.encodeAll(context);
@@ -221,11 +221,11 @@ public class TableStructure extends TableElement {
 
         String style = table.getStyle();
         String textStyle = getTextStyle(table);
-        style = StyleUtil.mergeStyles(style, textStyle);
+        style = Styles.mergeStyles(style, textStyle);
         boolean applyDefaultStyle = table.getApplyDefaultStyle();
         String styleClass = TableUtil.getClassWithDefaultStyleClass(applyDefaultStyle, DEFAULT_STYLE_CLASS, table.getStyleClass());
         if (scrolling != null)
-            styleClass = StyleUtil.mergeClassNames(styleClass, DEFAULT_SCROLLABLE_STYLE_CLASS);
+            styleClass = Styles.mergeClassNames(styleClass, DEFAULT_SCROLLABLE_STYLE_CLASS);
         String tableWidth = table.getWidth();
         if (scrolling == null) {
             // scrollable tables shouldn't have "table-layout: fixed" declaration, since it's declared in sub-tables.
@@ -238,24 +238,24 @@ public class TableStructure extends TableElement {
                     if (tableWidth != null || EnvironmentUtil.isMozilla()) {
                         // "table-layout: fixed" style can't be set on client-side and should be rendered from the server, though
                         // it shouldn't be rendered under IE because all tables without explicit widths will occupy 100% width as a result
-                        styleClass = StyleUtil.mergeClassNames(styleClass, TABLE_LAYOUT_FIXED_STYLE_CLASS);
+                        styleClass = Styles.mergeClassNames(styleClass, TABLE_LAYOUT_FIXED_STYLE_CLASS);
                     }
                 }
             }
         } else {
-            styleClass = StyleUtil.mergeClassNames(styleClass, TABLE_LAYOUT_FIXED_STYLE_CLASS);
+            styleClass = Styles.mergeClassNames(styleClass, TABLE_LAYOUT_FIXED_STYLE_CLASS);
         }
         String textClass = getTextClass(table);
-        styleClass = StyleUtil.mergeClassNames(styleClass, textClass);
+        styleClass = Styles.mergeClassNames(styleClass, textClass);
         String rolloverStyle = table.getRolloverStyle();
-        if (RenderingUtil.isNullOrEmpty(rolloverStyle)) {
-            styleClass = StyleUtil.mergeClassNames(DefaultStyles.CLASS_INITIALLY_INVISIBLE, styleClass);
-            RenderingUtil.writeStyleAndClassAttributes(writer, style, styleClass);
+        if (Rendering.isNullOrEmpty(rolloverStyle)) {
+            styleClass = Styles.mergeClassNames(DefaultStyles.CLASS_INITIALLY_INVISIBLE, styleClass);
+            Rendering.writeStyleAndClassAttributes(writer, style, styleClass);
         } else {
-            String cls = StyleUtil.getCSSClass(context, component, style, styleClass);
+            String cls = Styles.getCSSClass(context, component, style, styleClass);
             if (!EnvironmentUtil.isOpera())
-                cls = StyleUtil.mergeClassNames(DefaultStyles.CLASS_INITIALLY_INVISIBLE, cls);
-            if (!RenderingUtil.isNullOrEmpty(cls))
+                cls = Styles.mergeClassNames(DefaultStyles.CLASS_INITIALLY_INVISIBLE, cls);
+            if (!Rendering.isNullOrEmpty(cls))
                 writer.writeAttribute("class", cls, null);
         }
     }
@@ -315,7 +315,7 @@ public class TableStructure extends TableElement {
     }
 
     static String getNoDataRowClassName(FacesContext facesContext, AbstractTable table) {
-        return StyleUtil.getCSSClass(facesContext, table,
+        return Styles.getCSSClass(facesContext, table,
                 table.getNoDataRowStyle(),
                 table.getApplyDefaultStyle() ? DEFAULT_NO_DATA_ROW_CLASS : null,
                 table.getNoDataRowClass()
@@ -332,21 +332,21 @@ public class TableStructure extends TableElement {
         Map<Object, String> cellStylesMap = getCellStylesMap();
 
         JSONObject result = new JSONObject();
-        RenderingUtil.addJsonParam(result, "header", getHeader().getInitParam(defaultStyles));
-        RenderingUtil.addJsonParam(result, "body", getBody().getInitParam(defaultStyles));
-        RenderingUtil.addJsonParam(result, "footer", getFooter().getInitParam(defaultStyles));
-        RenderingUtil.addJsonParam(result, "columns", getColumnHierarchyParam(facesContext, columns));
-        RenderingUtil.addJsonParam(result, "gridLines", getGridLineParams(tableStyles, defaultStyles));
+        Rendering.addJsonParam(result, "header", getHeader().getInitParam(defaultStyles));
+        Rendering.addJsonParam(result, "body", getBody().getInitParam(defaultStyles));
+        Rendering.addJsonParam(result, "footer", getFooter().getInitParam(defaultStyles));
+        Rendering.addJsonParam(result, "columns", getColumnHierarchyParam(facesContext, columns));
+        Rendering.addJsonParam(result, "gridLines", getGridLineParams(tableStyles, defaultStyles));
 
-        RenderingUtil.addJsonParam(result, "scrolling", getScrollingParam());
+        Rendering.addJsonParam(result, "scrolling", getScrollingParam());
 
-        RenderingUtil.addJsonParam(result, "rowStylesMap", TableUtil.getStylesMapAsJSONObject(rowStylesMap));
-        RenderingUtil.addJsonParam(result, "cellStylesMap", TableUtil.getStylesMapAsJSONObject(cellStylesMap));
-        RenderingUtil.addJsonParam(result, "forceUsingCellStyles", forceUsingCellStyles, false);
+        Rendering.addJsonParam(result, "rowStylesMap", TableUtil.getStylesMapAsJSONObject(rowStylesMap));
+        Rendering.addJsonParam(result, "cellStylesMap", TableUtil.getStylesMapAsJSONObject(cellStylesMap));
+        Rendering.addJsonParam(result, "forceUsingCellStyles", forceUsingCellStyles, false);
         if (tableStyles instanceof TreeTable)
-            RenderingUtil.addJsonParam(result, "additionalCellWrapperStyle", StyleUtil.getCSSClass(facesContext, (UIComponent) tableStyles, ADDITIONAL_CELL_WRAPPER_STYLE,
+            Rendering.addJsonParam(result, "additionalCellWrapperStyle", Styles.getCSSClass(facesContext, (UIComponent) tableStyles, ADDITIONAL_CELL_WRAPPER_STYLE,
                     StyleGroup.disabledStyleGroup(10), null));
-        RenderingUtil.addJsonParam(result, "invisibleRowsAllowed", tableStyles instanceof TreeTable, false);
+        Rendering.addJsonParam(result, "invisibleRowsAllowed", tableStyles instanceof TreeTable, false);
 
         return result;
     }
@@ -363,10 +363,10 @@ public class TableStructure extends TableElement {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        RenderingUtil.addJsonParam(result, "horizontal", scrolling.isHorizontal(), false);
-        RenderingUtil.addJsonParam(result, "vertical", scrolling.isVertical(), false);
+        Rendering.addJsonParam(result, "horizontal", scrolling.isHorizontal(), false);
+        Rendering.addJsonParam(result, "vertical", scrolling.isVertical(), false);
         Point pos = scrolling.getPosition();
-        RenderingUtil.addJsonParam(result, "position", new Object[]{pos.x, pos.y});
+        Rendering.addJsonParam(result, "position", new Object[]{pos.x, pos.y});
 
         return result;
     }
@@ -436,7 +436,7 @@ public class TableStructure extends TableElement {
         boolean ordinaryColumn = !(columnOrGroup instanceof ColumnGroup);
 
         String defaultColumnStyleClass = getColumnDefaultClass(columnOrGroup);
-        String colClassName = StyleUtil.getCSSClass(context,
+        String colClassName = Styles.getCSSClass(context,
                 styleOwnerComponent, columnOrGroup.getStyle(), StyleGroup.regularStyleGroup(level), columnOrGroup.getStyleClass(), defaultColumnStyleClass
         );
 
@@ -447,13 +447,13 @@ public class TableStructure extends TableElement {
             ColumnResizingState columnResizingState = columnResizing != null ? columnResizing.getResizingState() : null;
             String resizingWidth = columnResizingState != null ? columnResizingState.getColumnWidth(columnOrGroup.getId()) : null;
             if (resizingWidth != null) {
-                resizingWidthClass = StyleUtil.getCSSClass(context, table, "width: " + resizingWidth, StyleGroup.selectedStyleGroup(), null
+                resizingWidthClass = Styles.getCSSClass(context, table, "width: " + resizingWidth, StyleGroup.selectedStyleGroup(), null
                 );
             } else
                 resizingWidthClass = null;
         }
 
-        columnObj.put("className", StyleUtil.mergeClassNames(colClassName, resizingWidthClass));
+        columnObj.put("className", Styles.mergeClassNames(colClassName, resizingWidthClass));
 
         appendColumnEventsArray(columnObj,
                 columnOrGroup.getOnclick(),
@@ -473,7 +473,7 @@ public class TableStructure extends TableElement {
             JSONObject header = new JSONObject();
             columnObj.put("header", header);
             header.put("pos", headerCellCoordinates.asJSONObject());
-            header.put("className", StyleUtil.getCSSClass(context, styleOwnerComponent, columnOrGroup.getHeaderStyle(), columnOrGroup.getHeaderClass()));
+            header.put("className", Styles.getCSSClass(context, styleOwnerComponent, columnOrGroup.getHeaderStyle(), columnOrGroup.getHeaderClass()));
             appendColumnEventsArray(header,
                     columnOrGroup.getHeaderOnclick(),
                     columnOrGroup.getHeaderOndblclick(),
@@ -489,13 +489,13 @@ public class TableStructure extends TableElement {
                 JSONObject subHeader = new JSONObject();
                 columnObj.put("subHeader", subHeader);
                 subHeader.put("pos", subHeaderCellCoordinates.asJSONObject());
-                subHeader.put("className", StyleUtil.getCSSClass(context, styleOwnerComponent, columnOrGroup.getSubHeaderStyle(), columnOrGroup.getSubHeaderClass()));
+                subHeader.put("className", Styles.getCSSClass(context, styleOwnerComponent, columnOrGroup.getSubHeaderStyle(), columnOrGroup.getSubHeaderClass()));
             }
         }
         if (!noDataRows) {
             JSONObject body = new JSONObject();
             columnObj.put("body", body);
-            body.put("className", StyleUtil.getCSSClass(context,
+            body.put("className", Styles.getCSSClass(context,
                     styleOwnerComponent, getColumnBodyStyle(columnOrGroup), StyleGroup.regularStyleGroup(level), getColumnBodyClass(columnOrGroup), null
             ));
             appendColumnEventsArray(body,
@@ -513,7 +513,7 @@ public class TableStructure extends TableElement {
             JSONObject footer = new JSONObject();
             columnObj.put("footer", footer);
             footer.put("pos", footerCellCoordinates.asJSONObject());
-            footer.put("className", StyleUtil.getCSSClass(context, styleOwnerComponent, columnOrGroup.getFooterStyle(), columnOrGroup.getFooterClass()));
+            footer.put("className", Styles.getCSSClass(context, styleOwnerComponent, columnOrGroup.getFooterStyle(), columnOrGroup.getFooterClass()));
             appendColumnEventsArray(footer,
                     columnOrGroup.getFooterOnclick(),
                     columnOrGroup.getFooterOndblclick(),
@@ -561,7 +561,7 @@ public class TableStructure extends TableElement {
                 columnParent = columnParent.getParent();
             TreeTable treeTable = (TreeTable) columnParent;
             String textStyle = treeTable.getTextStyle();
-            style = StyleUtil.mergeStyles(style, textStyle);
+            style = Styles.mergeStyles(style, textStyle);
         }
         return style;
     }
@@ -574,7 +574,7 @@ public class TableStructure extends TableElement {
                 columnParent = columnParent.getParent();
             TreeTable treeTable = (TreeTable) columnParent;
             String textClass = treeTable.getTextClass();
-            cls = StyleUtil.mergeClassNames(cls, textClass);
+            cls = Styles.mergeClassNames(cls, textClass);
         }
         return cls;
     }

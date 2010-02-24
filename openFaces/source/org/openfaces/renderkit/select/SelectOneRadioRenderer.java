@@ -17,8 +17,8 @@ import org.openfaces.component.select.SelectOneRadio;
 import org.openfaces.org.json.JSONObject;
 import static org.openfaces.renderkit.select.SelectManyInputImageManager.getCurrentImageUrl;
 import org.openfaces.util.AnonymousFunction;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 
@@ -166,9 +166,9 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
                 onchangeFunction
         );
 
-        RenderingUtil.renderInitScript(facesContext, initScript,
-                ResourceUtil.getUtilJsURL(facesContext),
-                ResourceUtil.getInternalResourceURL(facesContext, SelectOneRadioRenderer.class, "radio.js"));
+        Rendering.renderInitScript(facesContext, initScript,
+                Resources.getUtilJsURL(facesContext),
+                Resources.getInternalURL(facesContext, SelectOneRadioRenderer.class, "radio.js"));
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -180,7 +180,7 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-        return RenderingUtil.convertFromString(context, component, (String) submittedValue);
+        return Rendering.convertFromString(context, component, (String) submittedValue);
     }
 
 }

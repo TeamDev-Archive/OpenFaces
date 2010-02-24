@@ -22,12 +22,12 @@ import org.openfaces.component.util.Debug;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.CompoundComponentRenderer;
 import org.openfaces.renderkit.window.WindowRenderer;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.EnvironmentUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlCommandButton;
@@ -42,23 +42,23 @@ import java.io.IOException;
 public class DebugRenderer extends WindowRenderer implements CompoundComponentRenderer {
     @Override
     protected String getDefaultClassName() {
-        return StyleUtil.mergeClassNames(super.getDefaultClassName(), "o_debug");
+        return Styles.mergeClassNames(super.getDefaultClassName(), "o_debug");
     }
 
     public void createSubComponents(FacesContext context, UIComponent component) {
         Debug debug = (Debug) component;
-        TabbedPane tabbedPane = (TabbedPane) ComponentUtil.createChildComponent(context, debug, TabbedPane.COMPONENT_TYPE, "pages");
+        TabbedPane tabbedPane = (TabbedPane) Components.createChildComponent(context, debug, TabbedPane.COMPONENT_TYPE, "pages");
         tabbedPane.setLoadingMode(LoadingMode.CLIENT);
         tabbedPane.setStyle("width: 100%; height: 100%;");
 
         tabbedPane.getChildren().add(new SubPanel(
-                ComponentUtil.createOutputText(context, "Console"),
+                Components.createOutputText(context, "Console"),
                 createLogPageContent(context, debug)
         ));
-        DataTable elementProperties = (DataTable) ComponentUtil.createChildComponent(
+        DataTable elementProperties = (DataTable) Components.createChildComponent(
                 context, debug, DataTable.COMPONENT_TYPE, "elementProperties");
         tabbedPane.getChildren().add(new SubPanel(
-                ComponentUtil.createOutputText(context, "Element Inspector"),
+                Components.createOutputText(context, "Element Inspector"),
                 elementProperties
         ));
         elementProperties.setStyle("width: 100%; height: 100%;");
@@ -67,24 +67,24 @@ public class DebugRenderer extends WindowRenderer implements CompoundComponentRe
         elementProperties.setVerticalGridLines("1px solid gray");
         Column col1 = new Column();
         col1.setStyle("width: 150px");
-        col1.setHeader(ComponentUtil.createOutputText(context, "Property"));
+        col1.setHeader(Components.createOutputText(context, "Property"));
         elementProperties.getChildren().add(col1);
         Column col2 = new Column();
-        col2.setHeader(ComponentUtil.createOutputText(context, "Value"));
+        col2.setHeader(Components.createOutputText(context, "Value"));
         elementProperties.getChildren().add(col2);
     }
 
     private UIComponent createLogPageContent(FacesContext context, Debug debug) {
-        HtmlPanelGrid panelGrid = (HtmlPanelGrid) ComponentUtil.createChildComponent(context, debug, HtmlPanelGrid.COMPONENT_TYPE, "consoleContainer");
+        HtmlPanelGrid panelGrid = (HtmlPanelGrid) Components.createChildComponent(context, debug, HtmlPanelGrid.COMPONENT_TYPE, "consoleContainer");
         panelGrid.setStyle("width: 100%; height: 100%;");
         panelGrid.setColumns(1);
         panelGrid.setRowClasses("o_debugRow1, o_debugRow2");
-        HtmlPanelGroup toolbar = (HtmlPanelGroup) ComponentUtil.createChildComponent(context, panelGrid, HtmlPanelGroup.COMPONENT_TYPE, "consoleToolbar");
+        HtmlPanelGroup toolbar = (HtmlPanelGroup) Components.createChildComponent(context, panelGrid, HtmlPanelGroup.COMPONENT_TYPE, "consoleToolbar");
         addButton(context, toolbar, "clearLog", "Clear");
         addButton(context, toolbar, "pauseLog", "Pause");
 
 
-        DataTable logTable = (DataTable) ComponentUtil.createChildComponent(
+        DataTable logTable = (DataTable) Components.createChildComponent(
                 context, panelGrid, DataTable.COMPONENT_TYPE, "log");
         Scrolling scrolling = new Scrolling();
         logTable.getChildren().add(scrolling);
@@ -96,17 +96,17 @@ public class DebugRenderer extends WindowRenderer implements CompoundComponentRe
         logTable.setVerticalGridLines("1px solid gray");
         Column col1 = new Column();
         col1.setStyle("width: 150px");
-        col1.setHeader(ComponentUtil.createOutputText(context, "Time"));
+        col1.setHeader(Components.createOutputText(context, "Time"));
         logTable.getChildren().add(col1);
         Column col2 = new Column();
-        col2.setHeader(ComponentUtil.createOutputText(context, "Message"));
+        col2.setHeader(Components.createOutputText(context, "Message"));
         logTable.getChildren().add(col2);
 
         return panelGrid;
     }
 
     private HtmlCommandButton addButton(FacesContext context, UIComponent parent, String id, String text) {
-        HtmlCommandButton btn = (HtmlCommandButton) ComponentUtil.createChildComponent(context, parent, HtmlCommandButton.COMPONENT_TYPE, id);
+        HtmlCommandButton btn = (HtmlCommandButton) Components.createChildComponent(context, parent, HtmlCommandButton.COMPONENT_TYPE, id);
         btn.setValue(text);
         return btn;
     }
@@ -114,9 +114,9 @@ public class DebugRenderer extends WindowRenderer implements CompoundComponentRe
     @Override
     protected void encodeScriptsAndStyles(FacesContext context, PopupLayer component) throws IOException {
         super.encodeScriptsAndStyles(context, component);
-        RenderingUtil.renderInitScript(context,
+        Rendering.renderInitScript(context,
                 new ScriptBuilder().initScript(context, component, "O$.Debug._init"),
-                ResourceUtil.getInternalResourceURL(context, DebugRenderer.class, "debug.js"));
+                Resources.getInternalURL(context, DebugRenderer.class, "debug.js"));
 
     }
 }

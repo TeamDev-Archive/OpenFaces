@@ -13,9 +13,9 @@ package org.openfaces.component.input;
 
 import org.openfaces.component.CompoundComponent;
 import org.openfaces.component.Side;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.ComponentUtil;
 
 import javax.faces.context.FacesContext;
 
@@ -397,7 +397,7 @@ public abstract class DropDownFieldBase extends DropDownComponent implements Com
     }
 
     public void createSubComponents(FacesContext context) {
-        ComponentUtil.getOrCreateFacet(context, this, DropDownPopup.COMPONENT_TYPE, "popup", DropDownPopup.class);
+        Components.getOrCreateFacet(context, this, DropDownPopup.COMPONENT_TYPE, "popup", DropDownPopup.class);
     }
 
     /**

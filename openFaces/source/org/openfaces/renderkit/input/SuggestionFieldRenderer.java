@@ -14,7 +14,7 @@ package org.openfaces.renderkit.input;
 import org.openfaces.component.input.DropDownComponent;
 import org.openfaces.component.input.DropDownFieldBase;
 import org.openfaces.component.input.SuggestionField;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -50,7 +50,7 @@ public class SuggestionFieldRenderer extends DropDownFieldRenderer {
         ResponseWriter writer = context.getResponseWriter();
         writer.endElement("input");
 
-        String value = RenderingUtil.convertToString(context, dropDownComponent, dropDownComponent.getValue());
+        String value = Rendering.convertToString(context, dropDownComponent, dropDownComponent.getValue());
 
         writer.startElement("input", dropDownComponent);
         writeAttribute(writer, "type", "hidden");

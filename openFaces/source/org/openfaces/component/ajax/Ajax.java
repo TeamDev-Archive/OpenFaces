@@ -14,7 +14,7 @@ package org.openfaces.component.ajax;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUICommand;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
@@ -146,7 +146,7 @@ public class Ajax extends OUICommand implements OUIClientAction {
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         AjaxUtil.renderJSLinks(context);
-        StyleUtil.requestDefaultCss(FacesContext.getCurrentInstance());
+        Styles.requestDefaultCss(FacesContext.getCurrentInstance());
 
         return new Object[]{superState,
                 event,

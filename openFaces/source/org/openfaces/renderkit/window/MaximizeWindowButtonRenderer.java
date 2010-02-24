@@ -13,7 +13,7 @@ package org.openfaces.renderkit.window;
 
 import org.openfaces.component.ComponentWithCaption;
 import org.openfaces.component.window.AbstractWindow;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 import org.openfaces.renderkit.ToggleCaptionButtonRenderer;
 
 import javax.faces.FacesException;
@@ -32,12 +32,12 @@ public class MaximizeWindowButtonRenderer extends ToggleCaptionButtonRenderer {
 
     @Override
     protected String getDefaultImageUrl(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, AbstractWindowRenderer.class, "maximize.gif");
+        return Resources.getInternalURL(context, AbstractWindowRenderer.class, "maximize.gif");
     }
 
     @Override
     protected String getDefaultToggleImageUrl(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, AbstractWindowRenderer.class, "restore.gif");
+        return Resources.getInternalURL(context, AbstractWindowRenderer.class, "restore.gif");
     }
 
     @Override

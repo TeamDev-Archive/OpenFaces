@@ -13,7 +13,7 @@ package org.openfaces.renderkit.filter;
 
 import org.openfaces.component.filter.ExpressionFilter;
 import org.openfaces.component.input.InputText;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -46,7 +46,7 @@ public class InputTextFilterRenderer extends TextSearchFilterRenderer {
         input.setOnkeydown(getFilterKeyPressScript(filter) + "O$.cancelBubble(event);");
         input.setOnchange(getFilterSubmissionScript(filter));
         input.setStyle(filter.getStyle());
-        input.setStyleClass(StyleUtil.mergeClassNames(filter.getStyleClass(), "o_fullWidth"));
+        input.setStyleClass(Styles.mergeClassNames(filter.getStyleClass(), "o_fullWidth"));
     }
 
     protected String[] getCopiedFilterAttributes() {

@@ -18,7 +18,7 @@ import org.openfaces.component.filter.Filter;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.TableStructure;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.ReflectionUtil;
 import org.openfaces.util.ValueBindings;
 
@@ -845,15 +845,15 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     }
 
     public ColumnResizing getColumnResizing() {
-        return ComponentUtil.findChildWithClass(this, ColumnResizing.class, "<o:columnResizing>");
+        return Components.findChildWithClass(this, ColumnResizing.class, "<o:columnResizing>");
     }
 
     public ColumnReordering getColumnReordering() {
-        return ComponentUtil.findChildWithClass(this, ColumnReordering.class, "<o:columnReordering>");
+        return Components.findChildWithClass(this, ColumnReordering.class, "<o:columnReordering>");
     }
 
     public Scrolling getScrolling() {
-        return ComponentUtil.findChildWithClass(this, Scrolling.class, "<o:scrolling>");
+        return Components.findChildWithClass(this, Scrolling.class, "<o:scrolling>");
     }
 
     public void setSelection(AbstractTableSelection newSelection) {
@@ -992,7 +992,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     protected void beforeRenderResponse(FacesContext context) {
         cachedAllColumns = null;
         cachedRenderedColumns = null;
-        List<Columns> columnsComponents = ComponentUtil.findChildrenWithClass(this, Columns.class);
+        List<Columns> columnsComponents = Components.findChildrenWithClass(this, Columns.class);
         for (Columns columns : columnsComponents) {
             columns.resetCachedColumnList();
         }
@@ -1338,7 +1338,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     public void setParent(UIComponent parent) {
         super.setParent(parent);
         // register filters if not registered yet
-        ComponentUtil.runScheduledActions();
+        Components.runScheduledActions();
     }
 
     public List<Filter> getFilters() {

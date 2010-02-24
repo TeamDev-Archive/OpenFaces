@@ -15,8 +15,8 @@ import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.command.CommandLink;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -32,9 +32,9 @@ public class CommandLinkRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
         CommandLink link = (CommandLink) component;
         writer.startElement(getTagName(link), link);
-        RenderingUtil.writeIdAttribute(context, component);
+        Rendering.writeIdAttribute(context, component);
         writer.writeAttribute("href", "#", null);
-        RenderingUtil.writeAttributes(writer, link,
+        Rendering.writeAttributes(writer, link,
                 "accesskey",
                 "tabindex",
                 "lang",
@@ -49,7 +49,7 @@ public class CommandLinkRenderer extends RendererBase {
                 "target",
                 "type");
 
-        RenderingUtil.writeStyleAndClassAttributes(writer, link);
+        Rendering.writeStyleAndClassAttributes(writer, link);
 
         if (!link.isDisabled()) {
             boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, link);
@@ -62,7 +62,7 @@ public class CommandLinkRenderer extends RendererBase {
             boolean hasExplicitContent = false;
             List<UIComponent> children = link.getChildren();
             for (UIComponent child : children) {
-                if (!(child instanceof OUIClientAction) && !RenderingUtil.isA4jSupportComponent(child)) {
+                if (!(child instanceof OUIClientAction) && !Rendering.isA4jSupportComponent(child)) {
                     hasExplicitContent = true;
                     break;
                 }
@@ -84,7 +84,7 @@ public class CommandLinkRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
         CommandLink link = (CommandLink) component;
         writer.endElement(getTagName(link));
-        ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getUtilJsURL(context));
+        Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
         if (link.getAttributes().remove("_ajaxRequired") != null)
             AjaxUtil.renderJSLinks(context);
     }

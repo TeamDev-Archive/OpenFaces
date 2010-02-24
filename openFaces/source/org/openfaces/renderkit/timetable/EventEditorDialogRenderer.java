@@ -22,12 +22,12 @@ import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.CompoundComponentRenderer;
 import org.openfaces.renderkit.TableRenderer;
 import org.openfaces.renderkit.window.WindowRenderer;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.FunctionCallScript;
 import org.openfaces.util.HTML;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
@@ -50,17 +50,17 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
 
     @Override
     protected String getDefaultClassName() {
-        return StyleUtil.mergeClassNames(super.getDefaultClassName(), "o_eventEditorDialog");
+        return Styles.mergeClassNames(super.getDefaultClassName(), "o_eventEditorDialog");
     }
 
     @Override
     protected String getDefaultModalLayerClass() {
-        return StyleUtil.mergeClassNames(super.getDefaultModalLayerClass(), "o_eventEditor_modalLayer");
+        return Styles.mergeClassNames(super.getDefaultModalLayerClass(), "o_eventEditor_modalLayer");
     }
 
     @Override
     protected String getDefaultContentClass() {
-        return StyleUtil.mergeClassNames(super.getDefaultContentClass(), "o_eventEditorDialogContent");
+        return Styles.mergeClassNames(super.getDefaultContentClass(), "o_eventEditorDialogContent");
     }
 
     @Override
@@ -141,23 +141,23 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
                     writer.startElement("div", component);
                     writer.writeAttribute("class", "o_eventEditor_buttonsArea", null);
 
-                    HtmlCommandButton deleteButton = ComponentUtil.createButtonFacet(context, dialog, "deleteButton", dialog.getDeleteButtonText());
-                    deleteButton.setStyle(StyleUtil.mergeStyles("float: left", dialog.getDeleteButtonStyle()));
+                    HtmlCommandButton deleteButton = Components.createButtonFacet(context, dialog, "deleteButton", dialog.getDeleteButtonText());
+                    deleteButton.setStyle(Styles.mergeStyles("float: left", dialog.getDeleteButtonStyle()));
                     deleteButton.setStyleClass(dialog.getDeleteButtonClass());
                     deleteButton.encodeAll(context);
 
-                    HtmlCommandButton okButton = ComponentUtil.createButtonFacet(context, dialog, "okButton", dialog.getOkButtonText());
+                    HtmlCommandButton okButton = Components.createButtonFacet(context, dialog, "okButton", dialog.getOkButtonText());
                     okButton.setStyle(dialog.getOkButtonStyle());
                     okButton.setStyleClass(dialog.getOkButtonClass());
                     okButton.encodeAll(context);
-                    HtmlCommandButton cancelButton = ComponentUtil.createButtonFacet(context, dialog, "cancelButton", dialog.getCancelButtonText());
+                    HtmlCommandButton cancelButton = Components.createButtonFacet(context, dialog, "cancelButton", dialog.getCancelButtonText());
                     writer.write(HTML.NBSP_ENTITY);
                     cancelButton.setStyle(dialog.getCancelButtonStyle());
                     cancelButton.setStyleClass(dialog.getCancelButtonClass());
                     cancelButton.encodeAll(context);
                     writer.endElement("div");
 
-                    RenderingUtil.renderInitScript(context, new ScriptBuilder().functionCall("O$._initEventEditorDialog",
+                    Rendering.renderInitScript(context, new ScriptBuilder().functionCall("O$._initEventEditorDialog",
                             dayTable,
                             dialog,
                             dialog.getCreateEventCaption(),
@@ -170,7 +170,7 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
     }
 
     private HtmlOutputText createLabelComponent(FacesContext context, EventEditorDialog dialog, String id, String text) {
-        HtmlOutputText outputText = ComponentUtil.composeHtmlOutputText(context, dialog, id, text);
+        HtmlOutputText outputText = Components.composeHtmlOutputText(context, dialog, id, text);
         outputText.setStyle(dialog.getLabelStyle());
         outputText.setStyleClass(dialog.getLabelClass());
         return outputText;
@@ -179,13 +179,13 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
     @Override
     protected void encodeScriptsAndStyles(FacesContext context, PopupLayer component) throws IOException {
         super.encodeScriptsAndStyles(context, component);
-        RenderingUtil.renderInitScript(context, new ScriptBuilder().functionCall("O$.fixInputsWidthStrict",
+        Rendering.renderInitScript(context, new ScriptBuilder().functionCall("O$.fixInputsWidthStrict",
                 new FunctionCallScript("O$", component)));
 
     }
 
     private UIComponent getDescriptionField(FacesContext context, EventEditorDialog dialog) {
-        UIInput descriptionField = ComponentUtil.getOrCreateFacet(context, dialog,
+        UIInput descriptionField = Components.getOrCreateFacet(context, dialog,
                 HtmlInputTextarea.COMPONENT_TYPE, "descriptionArea", UIInput.class);
         descriptionField.getAttributes().put("styleClass", "o_fullWidthAndHeight");
         descriptionField.getAttributes().put("style", "resize: none");
@@ -193,17 +193,17 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
     }
 
     private UIComponent getNameField(FacesContext context, EventEditorDialog dialog) {
-        UIInput nameField = ComponentUtil.getOrCreateFacet(context, dialog, HtmlInputText.COMPONENT_TYPE, "nameField", UIInput.class);
+        UIInput nameField = Components.getOrCreateFacet(context, dialog, HtmlInputText.COMPONENT_TYPE, "nameField", UIInput.class);
         nameField.getAttributes().put("styleClass", "o_fullWidth");
         return nameField;
     }
 
     private UIComponent createDateTimeFields(FacesContext context, final EventEditorDialog dialog, final String idPrefix) {
 
-        DateChooser dateField = ComponentUtil.getOrCreateFacet(context, dialog, DateChooser.COMPONENT_TYPE, idPrefix + "DateField", DateChooser.class);
-        HtmlOutputText nbsp = ComponentUtil.createOutputText(context, HTML.NBSP_ENTITY, false);
-        UIInput timeField = ComponentUtil.getOrCreateFacet(context, dialog, HtmlInputText.COMPONENT_TYPE, idPrefix + "TimeField", UIInput.class);
-        String timeCls = StyleUtil.mergeClassNames((String) timeField.getAttributes().get("styleClass"), "o_eventEditor_timeField");
+        DateChooser dateField = Components.getOrCreateFacet(context, dialog, DateChooser.COMPONENT_TYPE, idPrefix + "DateField", DateChooser.class);
+        HtmlOutputText nbsp = Components.createOutputText(context, HTML.NBSP_ENTITY, false);
+        UIInput timeField = Components.getOrCreateFacet(context, dialog, HtmlInputText.COMPONENT_TYPE, idPrefix + "TimeField", UIInput.class);
+        String timeCls = Styles.mergeClassNames((String) timeField.getAttributes().get("styleClass"), "o_eventEditor_timeField");
         timeField.getAttributes().put("styleClass", timeCls);
 
         final UIComponent[][] components = new UIComponent[][]{{dateField, nbsp, timeField}};
@@ -223,7 +223,7 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
     }
 
     private UIComponent getResourceField(FacesContext context, EventEditorDialog dialog) {
-        DropDownField field = ComponentUtil.getOrCreateFacet(context, dialog, DropDownField.COMPONENT_TYPE,
+        DropDownField field = Components.getOrCreateFacet(context, dialog, DropDownField.COMPONENT_TYPE,
                 "resourceField", DropDownField.class);
 
         List<TimetableResource> resources = (List<TimetableResource>) dialog.getAttributes().get(

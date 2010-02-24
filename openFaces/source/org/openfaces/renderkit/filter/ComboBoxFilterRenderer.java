@@ -17,10 +17,10 @@ import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.ExpressionFilter;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.table.AbstractTableRenderer;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -64,7 +64,7 @@ public class ComboBoxFilterRenderer extends ExpressionFilterRenderer {
         String clientId = writeIdAttribute(context, component);
         writeNameAttribute(context, component);
         writer.writeAttribute("size", "1", null);
-        RenderingUtil.writeStyleAndClassAttributes(writer, filter.getStyle(), filter.getStyleClass(), "o_fullWidth");
+        Rendering.writeStyleAndClassAttributes(writer, filter.getStyle(), filter.getStyleClass(), "o_fullWidth");
         String submitScript = getFilterSubmissionScript(filter);
         writer.writeAttribute("onchange", submitScript, null);
         writer.writeAttribute("onclick", "event.cancelBubble = true;", null);
@@ -128,15 +128,15 @@ public class ComboBoxFilterRenderer extends ExpressionFilterRenderer {
 
         UIComponent filteredComponent = (UIComponent) filter.getFilteredComponent();
 
-        RenderingUtil.renderInitScript(context,
+        Rendering.renderInitScript(context,
                 new ScriptBuilder().functionCall("O$.Filters._showFilter",
                         filteredComponent, clientId).semicolon(),
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getFiltersJsURL(context),
+                Resources.getUtilJsURL(context),
+                Resources.getFiltersJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
                 AbstractTableRenderer.getTableJsURL(context));
 
-        StyleUtil.renderStyleClasses(context, component);
+        Styles.renderStyleClasses(context, component);
         writer.endElement("select");
     }
 

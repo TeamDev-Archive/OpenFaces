@@ -21,11 +21,11 @@ import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -72,7 +72,7 @@ public class TreeTableRenderer extends AbstractTableRenderer {
     }
 
     private String getFilterSubsidiaryRowClass(FacesContext context, TreeTable treeTable) {
-        return StyleUtil.getCSSClass(context,
+        return Styles.getCSSClass(context,
                 treeTable, treeTable.getFilterSubsidiaryRowStyle(),
                 StyleGroup.rolloverStyleGroup(), treeTable.getFilterSubsidiaryRowClass(),
                 DEFAULT_AUXILARY_NODE_CLASS
@@ -80,7 +80,7 @@ public class TreeTableRenderer extends AbstractTableRenderer {
     }
 
     private String getFilterAcceptedRowClass(FacesContext context, TreeTable treeTable) {
-        return StyleUtil.getCSSClass(context,
+        return Styles.getCSSClass(context,
                 treeTable, treeTable.getFilterAcceptedRowStyle(),
                 StyleGroup.rolloverStyleGroup(), treeTable.getFilterAcceptedRowClass()
         );
@@ -101,7 +101,7 @@ public class TreeTableRenderer extends AbstractTableRenderer {
 
     private void encodeFoldingSupport(FacesContext context, TreeTable treeTable, ScriptBuilder buf) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        RenderingUtil.renderHiddenField(writer, getExpandedNodesFieldName(context, treeTable), null);
+        Rendering.renderHiddenField(writer, getExpandedNodesFieldName(context, treeTable), null);
 
         buf.initScript(context, treeTable, "O$.TreeTable._initFolding",
                 DEFAULT_FOLDING_CLASS,
@@ -191,7 +191,7 @@ public class TreeTableRenderer extends AbstractTableRenderer {
     protected String[] getNecessaryJsLibs(FacesContext context) {
         String[] parentLibs = super.getNecessaryJsLibs(context);
         String[] libs = new String[]{
-                ResourceUtil.getInternalResourceURL(context, TreeTableRenderer.class, "treeTable.js")
+                Resources.getInternalURL(context, TreeTableRenderer.class, "treeTable.js")
         };
         String[] resultLibs = new String[parentLibs.length + libs.length];
         System.arraycopy(parentLibs, 0, resultLibs, 0, parentLibs.length);
@@ -245,7 +245,7 @@ public class TreeTableRenderer extends AbstractTableRenderer {
 
     protected void fillDynamicRowsInitInfo(FacesContext context, AbstractTable table, int rowIndex, int addedRowCount, TableStructure tableStructure, JSONObject newNodesInitInfo) {
         super.fillDynamicRowsInitInfo(context, table, rowIndex, addedRowCount, tableStructure, newNodesInitInfo);
-        RenderingUtil.addJsonParam(newNodesInitInfo, "structureMap", formatNodeParams((TreeTable) table, context, rowIndex, addedRowCount));
+        Rendering.addJsonParam(newNodesInitInfo, "structureMap", formatNodeParams((TreeTable) table, context, rowIndex, addedRowCount));
     }
 
     private JSONObject formatNodeParams(TreeTable treeTable, FacesContext context, int fromRowIndex, int rowCount) {

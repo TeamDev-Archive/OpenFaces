@@ -88,7 +88,7 @@ public class AjaxUtil {
             try {
                 richFacesContextClazz = Class.forName("org.ajax4jsf.context.AjaxContext");
             } catch (ClassNotFoundException e) {
-                // absense of RichFaces is a valid case
+                // absence of RichFaces is a valid case
             }
 
             if (richFacesContextClazz != null) {
@@ -238,13 +238,13 @@ public class AjaxUtil {
         Map<String, Object> requestMap = externalContext.getRequestMap();
         if (requestMap.put(AJAX_SUPPORT_RENDERED, Boolean.TRUE) == null) {
             try {
-                ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getUtilJsURL(context));
-                ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getAjaxUtilJsURL(context));
+                Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
+                Resources.renderJSLinkIfNeeded(context, Resources.getAjaxUtilJsURL(context));
                 if (isPortletRequest(context)) {
                     String uniqueRTLibraryName = ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + generateUniqueInitLibraryName();
                     context.getExternalContext().getSessionMap().put(ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME, uniqueRTLibraryName);
-                    String initLibraryUrl = ResourceUtil.getApplicationResourceURL(context, uniqueRTLibraryName);
-                    ResourceUtil.renderJSLinkIfNeeded(context, initLibraryUrl);
+                    String initLibraryUrl = Resources.getApplicationURL(context, uniqueRTLibraryName);
+                    Resources.renderJSLinkIfNeeded(context, initLibraryUrl);
                 }
 
             } catch (IOException e) {
@@ -313,7 +313,7 @@ public class AjaxUtil {
             component.setTransient(false);
             if (component.isTransient()) {
                 if (!component.getClass().getName().equalsIgnoreCase("com.sun.facelets.compiler.UIInstructions")) {
-                    RenderingUtil.logWarning(context, "Couldn't reset 'transient' flag of component to false for Ajax request to maintain component state correctly. " +
+                    Rendering.logWarning(context, "Couldn't reset 'transient' flag of component to false for Ajax request to maintain component state correctly. " +
                             "Component's clientId = " + component.getClientId(context) + "; component class: " + component.getClass());
                 }
             }

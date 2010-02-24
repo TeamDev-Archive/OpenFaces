@@ -15,7 +15,7 @@ import org.openfaces.component.ajax.AjaxSettings;
 import org.openfaces.component.ajax.SessionExpiration;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 import org.openfaces.renderkit.window.ConfirmationRenderer;
 import org.openfaces.util.AjaxUtil;
 
@@ -33,8 +33,8 @@ public class AjaxSettingsRenderer extends AbstractSettingsRenderer implements Aj
         AjaxSettings ajaxSettings = (AjaxSettings) component;
         if (!(AjaxUtil.isAjaxRequest(context))) {
             processOnsessionexpired(context, ajaxSettings);
-            ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getUtilJsURL(context));
-            ResourceUtil.renderJSLinkIfNeeded(context, ResourceUtil.getInternalResourceURL(context,
+            Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
+            Resources.renderJSLinkIfNeeded(context, Resources.getInternalURL(context,
                     ConfirmationRenderer.class, ConfirmationRenderer.JS_SCRIPT_URL));
         }
 

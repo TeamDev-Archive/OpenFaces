@@ -14,7 +14,7 @@ package org.openfaces.renderkit.window;
 import org.openfaces.component.window.AbstractWindow;
 import org.openfaces.component.window.Window;
 import org.openfaces.renderkit.ComponentWithCaptionRenderer;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -31,7 +31,7 @@ public class WindowRenderer extends AbstractWindowRenderer {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", win);
         writer.writeAttribute("id", clientId + MIDDLE_AREA_SUFFIX, null);
-        RenderingUtil.writeStyleAndClassAttributes(writer, win.getContentStyle(), win.getContentClass(), getDefaultContentClass());
+        Rendering.writeStyleAndClassAttributes(writer, win.getContentStyle(), win.getContentClass(), getDefaultContentClass());
         ComponentWithCaptionRenderer.renderChildren(context, abstractWindow);
         encodeCustomContent(context, abstractWindow);
         writer.endElement("div");

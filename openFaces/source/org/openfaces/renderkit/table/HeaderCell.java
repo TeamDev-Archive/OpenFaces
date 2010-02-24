@@ -15,8 +15,8 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.DynamicCol;
 import org.openfaces.util.EnvironmentUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -121,7 +121,7 @@ class HeaderCell extends TableElement {
                     UIComponent uiComponent = (UIComponent) content;
                     uiComponent.encodeAll(facesContext);
                     if (TableStructure.isComponentEmpty(uiComponent) && tableStructure.isEmptyCellsTreatmentRequired())
-                        RenderingUtil.writeNonBreakableSpace(writer);
+                        Rendering.writeNonBreakableSpace(writer);
                 } else if (content instanceof TableElement)
                     ((TableElement) content).render(facesContext, null);
                 else {
@@ -131,7 +131,7 @@ class HeaderCell extends TableElement {
                         writer.write(content.toString());
                 }
             } else if (tableStructure.isEmptyCellsTreatmentRequired())
-                RenderingUtil.writeNonBreakableSpace(writer);
+                Rendering.writeNonBreakableSpace(writer);
         } finally {
             if (dynamicCol != null) dynamicCol.undeclareContextVariables();
         }
@@ -170,12 +170,12 @@ class HeaderCell extends TableElement {
 
     public static String getSortedAscendingImageUrl(FacesContext facesContext, AbstractTable table) {
         String imageUrl = table.getSortedAscendingImageUrl();
-        return ResourceUtil.getResourceURL(facesContext, imageUrl, AbstractTableRenderer.class, "ascending.gif");
+        return Resources.getURL(facesContext, imageUrl, AbstractTableRenderer.class, "ascending.gif");
     }
 
     public static String getSortedDescendingImageUrl(FacesContext facesContext, AbstractTable table) {
         String imageUrl = table.getSortedDescendingImageUrl();
-        return ResourceUtil.getResourceURL(facesContext, imageUrl, AbstractTableRenderer.class, "descending.gif");
+        return Resources.getURL(facesContext, imageUrl, AbstractTableRenderer.class, "descending.gif");
     }
 
 }

@@ -18,10 +18,10 @@ import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
 import static org.openfaces.renderkit.select.SelectManyInputImageManager.*;
 import org.openfaces.util.AnonymousFunction;
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
@@ -74,7 +74,7 @@ public abstract class SelectManyInputRenderer extends RendererBase {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         OUISelectManyInputBase selectManyInputBase = (OUISelectManyInputBase) component;
-        ComponentUtil.generateIdIfNotSpecified(component);
+        Components.generateIdIfNotSpecified(component);
         super.encodeBegin(context, component);
         if (!component.isRendered()) return;
         renderSelectManyInputComponent(context, selectManyInputBase);
@@ -282,7 +282,7 @@ public abstract class SelectManyInputRenderer extends RendererBase {
         writeAttribute(writer, "tabindex", selectManyInputBase.getTabindex());
 
         if (!selectManyInputBase.isDisabled() && !selectManyInputBase.isReadonly() && !selectItem.isDisabled()) {
-            RenderingUtil.writeStandardEvents(writer, selectManyInputBase);
+            Rendering.writeStandardEvents(writer, selectManyInputBase);
         }
     }
 
@@ -291,18 +291,18 @@ public abstract class SelectManyInputRenderer extends RendererBase {
     }
 
     private void addStyleClassesAndJS(FacesContext facesContext, OUISelectManyInputBase selectManyInputBase, List<SelectItem> selectItems, JSONObject imagesObj) throws IOException {
-        String styleClass = StyleUtil.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getStyle(), StyleGroup.regularStyleGroup(), selectManyInputBase.getStyleClass(), null);
-        String enabledStyleClass = StyleUtil.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getEnabledStyle(), StyleGroup.regularStyleGroup(1), selectManyInputBase.getEnabledClass(), null);
-        String disabledStyleClass = StyleUtil.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getDisabledStyle(), StyleGroup.regularStyleGroup(2), selectManyInputBase.getDisabledClass(), null);
-        String focusedStyleClass = StyleUtil.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getFocusedStyle(), StyleGroup.regularStyleGroup(3), selectManyInputBase.getFocusedClass(), null);
-        String rolloverStyleClass = StyleUtil.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getRolloverStyle(), StyleGroup.regularStyleGroup(4), selectManyInputBase.getRolloverClass(), null);
+        String styleClass = Styles.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getStyle(), StyleGroup.regularStyleGroup(), selectManyInputBase.getStyleClass(), null);
+        String enabledStyleClass = Styles.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getEnabledStyle(), StyleGroup.regularStyleGroup(1), selectManyInputBase.getEnabledClass(), null);
+        String disabledStyleClass = Styles.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getDisabledStyle(), StyleGroup.regularStyleGroup(2), selectManyInputBase.getDisabledClass(), null);
+        String focusedStyleClass = Styles.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getFocusedStyle(), StyleGroup.regularStyleGroup(3), selectManyInputBase.getFocusedClass(), null);
+        String rolloverStyleClass = Styles.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getRolloverStyle(), StyleGroup.regularStyleGroup(4), selectManyInputBase.getRolloverClass(), null);
 
-        String selectedItemStyleClass = StyleUtil.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getSelectedItemStyle(), StyleGroup.regularStyleGroup(5), selectManyInputBase.getSelectedItemClass(), null);
-        String focusedItemStyleClass = StyleUtil.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getFocusedItemStyle(), StyleGroup.regularStyleGroup(6), selectManyInputBase.getFocusedItemClass(), null);
-        String rolloverItemStyleClass = StyleUtil.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getRolloverItemStyle(), StyleGroup.regularStyleGroup(7), selectManyInputBase.getRolloverItemClass(), null);
-        String pressedItemStyleClass = StyleUtil.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getPressedItemStyle(), StyleGroup.regularStyleGroup(8), selectManyInputBase.getPressedItemClass(), null);
+        String selectedItemStyleClass = Styles.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getSelectedItemStyle(), StyleGroup.regularStyleGroup(5), selectManyInputBase.getSelectedItemClass(), null);
+        String focusedItemStyleClass = Styles.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getFocusedItemStyle(), StyleGroup.regularStyleGroup(6), selectManyInputBase.getFocusedItemClass(), null);
+        String rolloverItemStyleClass = Styles.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getRolloverItemStyle(), StyleGroup.regularStyleGroup(7), selectManyInputBase.getRolloverItemClass(), null);
+        String pressedItemStyleClass = Styles.getCSSClass(facesContext, selectManyInputBase, selectManyInputBase.getPressedItemStyle(), StyleGroup.regularStyleGroup(8), selectManyInputBase.getPressedItemClass(), null);
 
-        StyleUtil.renderStyleClasses(facesContext, selectManyInputBase);
+        Styles.renderStyleClasses(facesContext, selectManyInputBase);
 
         JSONObject stylesObj = new JSONObject();
         try {

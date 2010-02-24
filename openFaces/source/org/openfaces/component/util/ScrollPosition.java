@@ -11,9 +11,9 @@
  */
 package org.openfaces.component.util;
 
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.ValueBindings;
 
@@ -82,16 +82,16 @@ public class ScrollPosition extends UIComponentBase {
         ResponseWriter writer = context.getResponseWriter();
 
         String clientId = getClientId(context);
-        RenderingUtil.renderHiddenField(writer, clientId, scrollPosStr);
+        Rendering.renderHiddenField(writer, clientId, scrollPosStr);
 
-        String scrollableComponentId = ComponentUtil.referenceIdToClientId(context, this, getFor());
+        String scrollableComponentId = Components.referenceIdToClientId(context, this, getFor());
 
         ScriptBuilder buf = new ScriptBuilder();
         buf.initScript(context, this, "O$.initScrollPosition",
                 getAutoSaveScrollPos(),
                 scrollableComponentId);
 
-        RenderingUtil.renderInitScript(context, buf, ResourceUtil.getUtilJsURL(context));
+        Rendering.renderInitScript(context, buf, Resources.getUtilJsURL(context));
     }
 
     private String formatPoint(int scrollX, int scrollY) {

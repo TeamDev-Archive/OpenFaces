@@ -20,9 +20,9 @@ import org.openfaces.component.table.Scrolling;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.TableUtil;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -323,7 +323,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
         TableStyles tableStyles = tableStructure.getTableStyles();
         FacesContext context = FacesContext.getCurrentInstance();
         UIComponent component = tableStructure.getComponent();
-        String sectionClass = StyleUtil.getCSSClass(context, component,
+        String sectionClass = Styles.getCSSClass(context, component,
                 isHeader ? tableStyles.getHeaderSectionStyle() : tableStyles.getFooterSectionStyle(),
                 isHeader ? tableStyles.getHeaderSectionClass() : tableStyles.getFooterSectionClass());
         sectionClass = TableUtil.getClassWithDefaultStyleClass(
@@ -331,7 +331,7 @@ public abstract class TableHeaderOrFooter extends TableSection {
                 isHeader ? TableUtil.DEFAULT_HEADER_SECTION_CLASS : TableUtil.DEFAULT_FOOTER_SECTION_CLASS,
                 sectionClass);
 
-        if (!RenderingUtil.isNullOrEmpty(sectionClass))
+        if (!Rendering.isNullOrEmpty(sectionClass))
             initObject.put("className", sectionClass);
         if (tableStructure.getScrolling() != null)
             initObject.put("rowCount", allRows.size());
@@ -340,10 +340,10 @@ public abstract class TableHeaderOrFooter extends TableSection {
         if (hasSubHeader)
             initObject.put("subHeader", getSubHeaderParam(tableStructure));
 
-        String headerClassName = StyleUtil.getCSSClass(context, component,
+        String headerClassName = Styles.getCSSClass(context, component,
                 isHeader ? tableStyles.getHeaderRowStyle() : tableStyles.getFooterRowStyle(),
                 isHeader ? tableStyles.getHeaderRowClass() : tableStyles.getFooterRowClass());
-        if (!RenderingUtil.isNullOrEmpty(headerClassName))
+        if (!Rendering.isNullOrEmpty(headerClassName))
             initObject.put("headingsClassName", headerClassName);
     }
 
@@ -351,10 +351,10 @@ public abstract class TableHeaderOrFooter extends TableSection {
         JSONObject result = new JSONObject();
         FacesContext context = FacesContext.getCurrentInstance();
         AbstractTable table = ((AbstractTable) tableStructure.getComponent());
-        String commonHeaderClass = StyleUtil.getCSSClass(context, tableStructure.getComponent(),
+        String commonHeaderClass = Styles.getCSSClass(context, tableStructure.getComponent(),
                 isHeader ? table.getCommonHeaderRowStyle() : table.getCommonFooterRowStyle(),
                 isHeader ? table.getCommonHeaderRowClass() : table.getCommonFooterRowClass());
-        if (!RenderingUtil.isNullOrEmpty(commonHeaderClass))
+        if (!Rendering.isNullOrEmpty(commonHeaderClass))
             result.put("className", commonHeaderClass);
         return result;
     }
@@ -363,9 +363,9 @@ public abstract class TableHeaderOrFooter extends TableSection {
         JSONObject result = new JSONObject();
         FacesContext context = FacesContext.getCurrentInstance();
         AbstractTable table = ((AbstractTable) tableStructure.getComponent());
-        String className = StyleUtil.getCSSClass(context, table, getSubHeaderRowStyle(table),
+        String className = Styles.getCSSClass(context, table, getSubHeaderRowStyle(table),
                 StyleGroup.regularStyleGroup(), getSubHeaderRowClass(table), DEFAULT_SUBHEADER_ROW_CELLS_CLASS);
-        if (!RenderingUtil.isNullOrEmpty(className))
+        if (!Rendering.isNullOrEmpty(className))
             result.put("className", className);
 
         return result;

@@ -37,7 +37,7 @@ public class StyleParam extends RawScript {
 
     public StyleParam(UIComponent component, String style, String defaultStyleClass, String styleClass, StyleGroup styleGroup) {
         super(FunctionCallScript.escapeStringForJSAndQuote(
-                StyleUtil.getCSSClass(
+                Styles.getCSSClass(
                         FacesContext.getCurrentInstance(), component,
                         style, styleGroup, styleClass, defaultStyleClass)
         ));

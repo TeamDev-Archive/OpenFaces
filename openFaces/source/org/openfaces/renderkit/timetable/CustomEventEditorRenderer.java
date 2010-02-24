@@ -15,7 +15,7 @@ import org.openfaces.component.timetable.CustomEventEditor;
 import org.openfaces.component.timetable.DayTable;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AnonymousFunction;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.component.UIComponent;
@@ -36,7 +36,7 @@ public class CustomEventEditorRenderer extends RendererBase {
 
         CustomEventEditor editor = (CustomEventEditor) component;
         DayTable dayTable = (DayTable) editor.getParent();
-        RenderingUtil.renderInitScript(context, new ScriptBuilder().initScript(context, dayTable, "O$._initCustomEventEditor",
+        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, dayTable, "O$._initCustomEventEditor",
                 editor,
                 new AnonymousFunction(editor.getOncreate(), "timetable", "timetableEvent"),
                 new AnonymousFunction(editor.getOnedit(), "timetable", "timetableEvent")).semicolon());

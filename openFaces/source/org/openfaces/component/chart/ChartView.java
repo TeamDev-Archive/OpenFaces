@@ -16,12 +16,12 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.imagemap.StandardToolTipTagFragmentGenerator;
 import org.jfree.chart.imagemap.StandardURLTagFragmentGenerator;
 import org.jfree.chart.plot.Plot;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.ValueBindings;
 import org.openfaces.component.chart.impl.JfcRenderHints;
 import org.openfaces.component.chart.impl.ModelInfo;
 import org.openfaces.component.chart.impl.helpers.JFreeChartAdapter;
 import org.openfaces.component.chart.impl.helpers.MapRenderUtilities;
-import org.openfaces.util.RenderingUtil;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
 import org.openfaces.renderkit.cssparser.StyledComponent;
@@ -280,7 +280,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
         int width = chart.getWidth();
         int height = chart.getHeight();
         BufferedImage image = jFreeChart.createBufferedImage(width, height, chartRenderingInfo);
-        byte[] imageAsByteArray = RenderingUtil.encodeAsPNG(image);
+        byte[] imageAsByteArray = Rendering.encodeAsPNG(image);
 
         String mapId = renderHints.getMapId(chart);
         if (mapId != null) {

@@ -11,7 +11,7 @@
  */
 package org.openfaces.test;
 
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 
 /**
  * @author Dmitry Pikhulya
@@ -20,14 +20,14 @@ public class VersionStringTest extends ComponentTestCase {
     private static final String EAP_STRING = "EAP";
 
     /**
-     * This test checks the correctness of the value returned by ResourceUtil.getVersionString(). This is needed to ensure
+     * This test checks the correctness of the value returned by Resources.getVersionString(). This is needed to ensure
      * that the correct string is appended at the end of internal resource file names (see JSFC-3722).
      * <p/>
      * This test may need to be corrected if another version naming scheme is to be chosen.
      */
     public void testOFVersionString() {
 
-        String versionString = ResourceUtil.getVersionString();
+        String versionString = Resources.getVersionString();
         assertNotNull("OpenFaces version string shouldn't be null", versionString);
         assertTrue("OpenFaces version string shouldn't be empty", versionString.trim().length() > 0);
         assertTrue("OpenFaces version string should be trimmed", versionString.trim().equals(versionString));

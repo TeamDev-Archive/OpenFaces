@@ -18,9 +18,9 @@ import org.openfaces.component.chart.impl.helpers.MapRenderUtilities;
 import org.openfaces.component.output.DynamicImage;
 import org.openfaces.component.output.ImageType;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
+import org.openfaces.util.Components;
 import org.openfaces.renderkit.output.DynamicImageRenderer;
 
 import javax.el.ELContext;
@@ -38,7 +38,7 @@ public class ChartRenderer extends RendererBase {
 
     @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-        ComponentUtil.generateIdIfNotSpecified(component);
+        Components.generateIdIfNotSpecified(component);
         ResponseWriter writer = facesContext.getResponseWriter();
         Chart chart = (Chart) component;
 
@@ -48,12 +48,12 @@ public class ChartRenderer extends RendererBase {
 
         writer.startElement("div", chart);
         writeIdAttribute(facesContext, chart);
-        RenderingUtil.writeComponentClassAttribute(writer, chart);
+        Rendering.writeComponentClassAttribute(writer, chart);
 
         String actionFiledId = chart.getClientId(facesContext) + MapRenderUtilities.ACTION_FIELD_SUFFIX;
-        RenderingUtil.writeNewLine(writer);
-        RenderingUtil.renderHiddenField(writer, actionFiledId, null);
-        RenderingUtil.writeNewLine(writer);
+        Rendering.writeNewLine(writer);
+        Rendering.renderHiddenField(writer, actionFiledId, null);
+        Rendering.writeNewLine(writer);
 
         final byte[] imageAsByteArray = view.renderAsImageFile();
 
@@ -100,7 +100,7 @@ public class ChartRenderer extends RendererBase {
             }
         };
         dynamicImage.setValueExpression("data", ve);
-        dynamicImage.setId(chart.getId() + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "img");
+        dynamicImage.setId(chart.getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "img");
 
         JfcRenderHints jfcRenderHints = chart.getRenderHints();
         dynamicImage.setMapId(jfcRenderHints.getMapId(chart));
@@ -116,7 +116,7 @@ public class ChartRenderer extends RendererBase {
         dynamicImage.encodeBegin(facesContext);
         dynamicImage.encodeEnd(facesContext);
         if (map != null)
-            ResourceUtil.renderJSLinkIfNeeded(facesContext, ResourceUtil.getUtilJsURL(facesContext));
+            Resources.renderJSLinkIfNeeded(facesContext, Resources.getUtilJsURL(facesContext));
         writer.endElement("div");
     }
 

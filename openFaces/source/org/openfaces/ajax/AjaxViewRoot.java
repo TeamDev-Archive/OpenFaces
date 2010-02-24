@@ -12,7 +12,7 @@
 package org.openfaces.ajax;
 
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
@@ -99,7 +99,7 @@ public class AjaxViewRoot extends UIViewRoot implements WrappedAjaxRoot {
 
     @Override
     public void processDecodes(FacesContext context) {
-        ComponentUtil.runScheduledActions();
+        Components.runScheduledActions();
         commonAjaxViewRoot.processDecodes(context, false);
     }
 
@@ -120,7 +120,7 @@ public class AjaxViewRoot extends UIViewRoot implements WrappedAjaxRoot {
 
     @Override
     public void encodeAll(FacesContext context) throws IOException {
-        ComponentUtil.runScheduledActions();
+        Components.runScheduledActions();
         super.encodeAll(context);
     }
 

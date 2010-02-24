@@ -21,13 +21,13 @@ import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.RendererBase;
 import static org.openfaces.renderkit.select.SelectBooleanCheckboxImageManager.*;
 import org.openfaces.util.AnonymousFunction;
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -62,11 +62,11 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         SelectBooleanCheckbox checkbox = (SelectBooleanCheckbox) component;
-        ComponentUtil.generateIdIfNotSpecified(component);
+        Components.generateIdIfNotSpecified(component);
         super.encodeBegin(context, component);
         if (!component.isRendered()) return;
         renderInputComponent(context, checkbox);
-        StyleUtil.renderStyleClasses(context, checkbox);
+        Styles.renderStyleClasses(context, checkbox);
     }
 
     protected void renderInputComponent(FacesContext facesContext, SelectBooleanCheckbox checkbox) throws IOException {
@@ -79,11 +79,11 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
     }
 
     protected void renderWithHtmlCheckbox(FacesContext facesContext, SelectBooleanCheckbox checkbox, boolean triStateAllowed) throws IOException {
-        String styleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getStyle(), StyleGroup.regularStyleGroup(), checkbox.getStyleClass(), null);
-        String rolloverStyleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getRolloverStyle(), StyleGroup.regularStyleGroup(1), checkbox.getRolloverClass(), null);
-        String focusedStyleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getFocusedStyle(), StyleGroup.regularStyleGroup(2), checkbox.getFocusedClass(), null);
-        String selectedStyleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getSelectedStyle(), StyleGroup.regularStyleGroup(3), checkbox.getSelectedClass(), null);
-        String unselectedStyleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getUnselectedStyle(), StyleGroup.regularStyleGroup(4), checkbox.getUnselectedClass(), null);
+        String styleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getStyle(), StyleGroup.regularStyleGroup(), checkbox.getStyleClass(), null);
+        String rolloverStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getRolloverStyle(), StyleGroup.regularStyleGroup(1), checkbox.getRolloverClass(), null);
+        String focusedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getFocusedStyle(), StyleGroup.regularStyleGroup(2), checkbox.getFocusedClass(), null);
+        String selectedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getSelectedStyle(), StyleGroup.regularStyleGroup(3), checkbox.getSelectedClass(), null);
+        String unselectedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getUnselectedStyle(), StyleGroup.regularStyleGroup(4), checkbox.getUnselectedClass(), null);
 
         ResponseWriter writer = facesContext.getResponseWriter();
 
@@ -108,7 +108,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
 
         writer.endElement(TAG_NAME);
 
-        StyleUtil.renderStyleClasses(facesContext, checkbox);
+        Styles.renderStyleClasses(facesContext, checkbox);
 
         JSONObject stylesObj = new JSONObject();
         try {
@@ -126,14 +126,14 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
 
 
     protected void renderWithImage(FacesContext facesContext, SelectBooleanCheckbox checkbox, boolean triStateAllowed) throws IOException {
-        String styleClass = StyleUtil.mergeClassNames(
-                StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getStyle(), StyleGroup.regularStyleGroup(), checkbox.getStyleClass(), null),
+        String styleClass = Styles.mergeClassNames(
+                Styles.getCSSClass(facesContext, checkbox, checkbox.getStyle(), StyleGroup.regularStyleGroup(), checkbox.getStyleClass(), null),
                 "o_checkbox_image");
-        String rolloverStyleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getRolloverStyle(), StyleGroup.regularStyleGroup(1), checkbox.getRolloverClass(), null);
-        String focusedStyleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getFocusedStyle(), StyleGroup.regularStyleGroup(2), checkbox.getFocusedClass(), null);
-        String selectedStyleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getSelectedStyle(), StyleGroup.regularStyleGroup(3), checkbox.getSelectedClass(), null);
-        String unselectedStyleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getUnselectedStyle(), StyleGroup.regularStyleGroup(4), checkbox.getUnselectedClass(), null);
-        String undefinedStyleClass = StyleUtil.getCSSClass(facesContext, checkbox, checkbox.getUndefinedStyle(), StyleGroup.regularStyleGroup(5), checkbox.getUndefinedClass(), null);
+        String rolloverStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getRolloverStyle(), StyleGroup.regularStyleGroup(1), checkbox.getRolloverClass(), null);
+        String focusedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getFocusedStyle(), StyleGroup.regularStyleGroup(2), checkbox.getFocusedClass(), null);
+        String selectedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getSelectedStyle(), StyleGroup.regularStyleGroup(3), checkbox.getSelectedClass(), null);
+        String unselectedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getUnselectedStyle(), StyleGroup.regularStyleGroup(4), checkbox.getUnselectedClass(), null);
+        String undefinedStyleClass = Styles.getCSSClass(facesContext, checkbox, checkbox.getUndefinedStyle(), StyleGroup.regularStyleGroup(5), checkbox.getUndefinedClass(), null);
 
         ResponseWriter writer = facesContext.getResponseWriter();
 
@@ -164,7 +164,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
 
         writer.endElement(TAG_NAME);
 
-        StyleUtil.renderStyleClasses(facesContext, checkbox);
+        Styles.renderStyleClasses(facesContext, checkbox);
 
         JSONObject imagesObj = new JSONObject();
 
@@ -296,7 +296,7 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
         writeAttribute(writer, "lang", checkbox.getLang());
         writeAttribute(writer, "onselect", checkbox.getOnselect());
         writeAttribute(writer, "tabindex", checkbox.getTabindex());
-        RenderingUtil.writeStandardEvents(writer, checkbox);
+        Rendering.writeStandardEvents(writer, checkbox);
     }
 
     protected void renderInitScript(FacesContext facesContext, SelectBooleanCheckbox checkbox,
@@ -314,9 +314,9 @@ public class SelectBooleanCheckboxRenderer extends RendererBase {
                 onchangeFunction
         );
 
-        RenderingUtil.renderInitScript(facesContext, initScript,
-                ResourceUtil.getUtilJsURL(facesContext),
-                ResourceUtil.getInternalResourceURL(facesContext, SelectBooleanCheckboxRenderer.class, "checkbox.js"));
+        Rendering.renderInitScript(facesContext, initScript,
+                Resources.getUtilJsURL(facesContext),
+                Resources.getInternalURL(facesContext, SelectBooleanCheckboxRenderer.class, "checkbox.js"));
     }
 
 }

@@ -17,7 +17,7 @@ import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.input.DateChooser;
 import org.openfaces.renderkit.filter.FilterRow;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -36,12 +36,12 @@ public class TwoDateChooserParametersEditor extends ParametersEditor implements 
     }
 
     private DateChooser getDateChooserBefore(UIComponent container) {
-        return (DateChooser) ComponentUtil.getChildBySuffix(container, DATE_CHOOSER_BEFORE_ID_SUFFIX);
+        return (DateChooser) Components.getChildBySuffix(container, DATE_CHOOSER_BEFORE_ID_SUFFIX);
     }
 
     private DateChooser createDateChooserBefore(FacesContext context, UIComponent container) {
         clearContainer(container);
-        DateChooser dateChooser = (DateChooser) ComponentUtil.createChildComponent(context, container, DateChooser.COMPONENT_TYPE, DATE_CHOOSER_BEFORE_ID_SUFFIX);
+        DateChooser dateChooser = (DateChooser) Components.createChildComponent(context, container, DateChooser.COMPONENT_TYPE, DATE_CHOOSER_BEFORE_ID_SUFFIX);
         dateChooser.setStyleClass(FilterRow.DEFAULT_PARAMETER_CLASS);
         dateChooser.setStyle("width: 90px !important;");
         return dateChooser;
@@ -52,11 +52,11 @@ public class TwoDateChooserParametersEditor extends ParametersEditor implements 
     }
 
     private DateChooser getDateChooserAfter(UIComponent container) {
-        return (DateChooser) ComponentUtil.getChildBySuffix(container, DATE_CHOOSER_AFTER_ID_SUFFIX);
+        return (DateChooser) Components.getChildBySuffix(container, DATE_CHOOSER_AFTER_ID_SUFFIX);
     }
 
     private DateChooser createDateChooserAfter(FacesContext context, UIComponent container) {
-        DateChooser dateChooser = (DateChooser) ComponentUtil.createChildComponent(context, container, DateChooser.COMPONENT_TYPE, DATE_CHOOSER_AFTER_ID_SUFFIX);
+        DateChooser dateChooser = (DateChooser) Components.createChildComponent(context, container, DateChooser.COMPONENT_TYPE, DATE_CHOOSER_AFTER_ID_SUFFIX);
         dateChooser.setStyleClass(FilterRow.DEFAULT_PARAMETER_CLASS);
         dateChooser.setStyle("width: 90px !important;");
         return dateChooser;

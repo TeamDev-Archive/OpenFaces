@@ -14,13 +14,13 @@ package org.openfaces.renderkit.window;
 import org.openfaces.component.window.AbstractWindow;
 import org.openfaces.component.window.Confirmation;
 import org.openfaces.component.window.PopupLayer;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.HTML;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -37,12 +37,12 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
     private static final String MESSAGE_FACET_NAME = "message";
     private static final String DETAILS_FACET_NAME = "details";
 
-    public static final String ICON_AREA_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + ICON_FACET_NAME;
-    public static final String MESSAGE_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "headerText";
-    public static final String DETAILS_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "detailsText";
-    public static final String OK_BUTTON_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "yes_button";
-    public static final String CANCEL_BUTTON_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "no_button";
-    public static final String BUTTON_AREA_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "buttonArea";
+    public static final String ICON_AREA_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + ICON_FACET_NAME;
+    public static final String MESSAGE_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "headerText";
+    public static final String DETAILS_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "detailsText";
+    public static final String OK_BUTTON_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "yes_button";
+    public static final String CANCEL_BUTTON_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "no_button";
+    public static final String BUTTON_AREA_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "buttonArea";
 
     private static final String DEFAULT_ICON_BACKPLANE_CLASS = "o_confirmation_icon_backplane";
     private static final String DEFAULT_TEXT_BACKPLANE_CLASS = "o_confirmation_text_backplane";
@@ -160,7 +160,7 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
                 iconFacet.encodeAll(FacesContext.getCurrentInstance());
             } else {
                 String iconPath = confirmation.getMessageIconUrl();
-                String iconUrl = ResourceUtil.getResourceURL(context, iconPath, ConfirmationRenderer.class, "warnIcon.gif");
+                String iconUrl = Resources.getURL(context, iconPath, ConfirmationRenderer.class, "warnIcon.gif");
 
                 writer.writeAttribute("width", "1%", null);
                 writer.writeAttribute("id", clientId + ICON_AREA_SUFFIX, null);
@@ -211,7 +211,7 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
 
     @Override
     protected String getDefaultClassName() {
-        return StyleUtil.mergeClassNames(super.getDefaultClassName(), "o_confirmation");
+        return Styles.mergeClassNames(super.getDefaultClassName(), "o_confirmation");
     }
 
     protected boolean isResizableByDefault() {
@@ -227,47 +227,47 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
         String invokerId;
         String aFor = confirmation.getFor();
         if (aFor != null)
-            invokerId = ComponentUtil.referenceIdToClientId(context, confirmation, aFor);
+            invokerId = Components.referenceIdToClientId(context, confirmation, aFor);
         else if (!confirmation.isStandalone())
             invokerId = confirmation.getParent().getClientId(context);
         else
             invokerId = null;
 
-        String iconAreaStyle = StyleUtil.getCSSClass(context, component, confirmation.getIconAreaStyle(),
+        String iconAreaStyle = Styles.getCSSClass(context, component, confirmation.getIconAreaStyle(),
                 DEFAULT_ICON_BACKPLANE_CLASS, confirmation.getIconAreaClass());
-        String rolloverIconAreaStyle = StyleUtil.getCSSClass(context, component, confirmation.getRolloverIconAreaStyle(),
+        String rolloverIconAreaStyle = Styles.getCSSClass(context, component, confirmation.getRolloverIconAreaStyle(),
                 StyleGroup.rolloverStyleGroup(), confirmation.getRolloverIconAreaClass());
-        rolloverIconAreaStyle = StyleUtil.mergeClassNames(iconAreaStyle, rolloverIconAreaStyle);
+        rolloverIconAreaStyle = Styles.mergeClassNames(iconAreaStyle, rolloverIconAreaStyle);
 
-        String textAreaStyle = StyleUtil.getCSSClass(context, component, confirmation.getContentStyle(), DEFAULT_TEXT_BACKPLANE_CLASS, confirmation.getContentClass());
-        String rolloverTextAreaStyle = StyleUtil.getCSSClass(context, component, confirmation.getRolloverContentStyle(), StyleGroup.rolloverStyleGroup(), confirmation.getRolloverContentClass());
-        rolloverTextAreaStyle = StyleUtil.mergeClassNames(textAreaStyle, rolloverTextAreaStyle);
+        String textAreaStyle = Styles.getCSSClass(context, component, confirmation.getContentStyle(), DEFAULT_TEXT_BACKPLANE_CLASS, confirmation.getContentClass());
+        String rolloverTextAreaStyle = Styles.getCSSClass(context, component, confirmation.getRolloverContentStyle(), StyleGroup.rolloverStyleGroup(), confirmation.getRolloverContentClass());
+        rolloverTextAreaStyle = Styles.mergeClassNames(textAreaStyle, rolloverTextAreaStyle);
 
-        String headerTextStyle = StyleUtil.getCSSClass(context, component, confirmation.getMessageStyle(), DEFAULT_HEADER_TEXT_CLASS, confirmation.getMessageClass());
-        String rolloverHeaderTextStyle = StyleUtil.getCSSClass(context, component, confirmation.getRolloverMessageStyle(), StyleGroup.rolloverStyleGroup(), confirmation.getRolloverMessageClass());
-        rolloverHeaderTextStyle = StyleUtil.mergeClassNames(headerTextStyle, rolloverHeaderTextStyle);
+        String headerTextStyle = Styles.getCSSClass(context, component, confirmation.getMessageStyle(), DEFAULT_HEADER_TEXT_CLASS, confirmation.getMessageClass());
+        String rolloverHeaderTextStyle = Styles.getCSSClass(context, component, confirmation.getRolloverMessageStyle(), StyleGroup.rolloverStyleGroup(), confirmation.getRolloverMessageClass());
+        rolloverHeaderTextStyle = Styles.mergeClassNames(headerTextStyle, rolloverHeaderTextStyle);
 
         String messageHeaderText = confirmation.getMessage();
         boolean hasMessage = messageHeaderText != null && messageHeaderText.length() > 0;
         String defaultDetailsTextClass = hasMessage ? DEFAULT_DETAILS_TEXT_MESSAGE_CLASS : DEFAULT_DETAILS_TEXT_CLASS;
-        String detailsTextStyle = StyleUtil.getCSSClass(context, component, confirmation.getDetailsStyle(), defaultDetailsTextClass, confirmation.getDetailsClass());
-        String rolloverDetailsTextStyle = StyleUtil.getCSSClass(context, component, confirmation.getRolloverDetailsStyle(), StyleGroup.rolloverStyleGroup(), confirmation.getRolloverDetailsClass());
-        rolloverDetailsTextStyle = StyleUtil.mergeClassNames(detailsTextStyle, rolloverDetailsTextStyle);
+        String detailsTextStyle = Styles.getCSSClass(context, component, confirmation.getDetailsStyle(), defaultDetailsTextClass, confirmation.getDetailsClass());
+        String rolloverDetailsTextStyle = Styles.getCSSClass(context, component, confirmation.getRolloverDetailsStyle(), StyleGroup.rolloverStyleGroup(), confirmation.getRolloverDetailsClass());
+        rolloverDetailsTextStyle = Styles.mergeClassNames(detailsTextStyle, rolloverDetailsTextStyle);
 
-        String buttonAreaStyle = StyleUtil.getCSSClass(context, component, confirmation.getButtonAreaStyle(), DEFAULT_BUTTON_BACKPLANE_CLASS, confirmation.getButtonAreaClass());
-        String rolloverButtonAreaStyle = StyleUtil.getCSSClass(context, component, confirmation.getRolloverButtonAreaStyle(), StyleGroup.rolloverStyleGroup(), confirmation.getRolloverButtonAreaClass());
-        rolloverButtonAreaStyle = StyleUtil.mergeClassNames(buttonAreaStyle, rolloverButtonAreaStyle);
+        String buttonAreaStyle = Styles.getCSSClass(context, component, confirmation.getButtonAreaStyle(), DEFAULT_BUTTON_BACKPLANE_CLASS, confirmation.getButtonAreaClass());
+        String rolloverButtonAreaStyle = Styles.getCSSClass(context, component, confirmation.getRolloverButtonAreaStyle(), StyleGroup.rolloverStyleGroup(), confirmation.getRolloverButtonAreaClass());
+        rolloverButtonAreaStyle = Styles.mergeClassNames(buttonAreaStyle, rolloverButtonAreaStyle);
 
-        String okButtonStyle = StyleUtil.getCSSClass(context, component, confirmation.getOkButtonStyle(), DEFAULT_YES_BUTTON_CLASS, confirmation.getOkButtonClass());
-        String rolloverOkButtonStyle = StyleUtil.getCSSClass(context, component, confirmation.getRolloverOkButtonStyle(), StyleGroup.rolloverStyleGroup(), confirmation.getRolloverOkButtonClass(), DEFAULT_ROLLOVER_BUTTON_CLASS);
-        rolloverOkButtonStyle = StyleUtil.mergeClassNames(okButtonStyle, rolloverOkButtonStyle);
+        String okButtonStyle = Styles.getCSSClass(context, component, confirmation.getOkButtonStyle(), DEFAULT_YES_BUTTON_CLASS, confirmation.getOkButtonClass());
+        String rolloverOkButtonStyle = Styles.getCSSClass(context, component, confirmation.getRolloverOkButtonStyle(), StyleGroup.rolloverStyleGroup(), confirmation.getRolloverOkButtonClass(), DEFAULT_ROLLOVER_BUTTON_CLASS);
+        rolloverOkButtonStyle = Styles.mergeClassNames(okButtonStyle, rolloverOkButtonStyle);
 
-        String cancelButtonStyle = StyleUtil.getCSSClass(context, component, confirmation.getCancelButtonStyle(), DEFAULT_NO_BUTTON_CLASS, confirmation.getCancelButtonClass());
-        String rolloverCancelButtonStyle = StyleUtil.getCSSClass(context, component, confirmation.getRolloverCancelButtonStyle(), StyleGroup.rolloverStyleGroup(), confirmation.getRolloverCancelButtonClass(), DEFAULT_ROLLOVER_BUTTON_CLASS);
-        rolloverCancelButtonStyle = StyleUtil.mergeClassNames(cancelButtonStyle, rolloverCancelButtonStyle);
+        String cancelButtonStyle = Styles.getCSSClass(context, component, confirmation.getCancelButtonStyle(), DEFAULT_NO_BUTTON_CLASS, confirmation.getCancelButtonClass());
+        String rolloverCancelButtonStyle = Styles.getCSSClass(context, component, confirmation.getRolloverCancelButtonStyle(), StyleGroup.rolloverStyleGroup(), confirmation.getRolloverCancelButtonClass(), DEFAULT_ROLLOVER_BUTTON_CLASS);
+        rolloverCancelButtonStyle = Styles.mergeClassNames(cancelButtonStyle, rolloverCancelButtonStyle);
 
         ScriptBuilder sb = new ScriptBuilder();
-        String event = RenderingUtil.getEventWithOnPrefix(context, confirmation, "o:confirmation");
+        String event = Rendering.getEventWithOnPrefix(context, confirmation, "o:confirmation");
 
         sb.initScript(context, confirmation, "O$.Confirmation._init",
                 invokerId,
@@ -291,8 +291,8 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
                         rolloverCancelButtonStyle}
         );
 
-        RenderingUtil.renderInitScript(context, sb,
-                ResourceUtil.getInternalResourceURL(context, ConfirmationRenderer.class, ConfirmationRenderer.JS_SCRIPT_URL));
+        Rendering.renderInitScript(context, sb,
+                Resources.getInternalURL(context, ConfirmationRenderer.class, ConfirmationRenderer.JS_SCRIPT_URL));
     }
 
     @Override

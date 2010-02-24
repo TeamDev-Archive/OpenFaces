@@ -15,8 +15,8 @@ import org.openfaces.component.OUIPanel;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.ConvertibleToJSON;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Styles;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.FacesException;
@@ -158,33 +158,33 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
     public JSONObject toJSONObject(Map params) throws JSONException {
         FacesContext context = getFacesContext();
         JSONObject obj = new JSONObject();
-        StyleUtil.addStyleJsonParam(context, this, obj, "style", getStyle(), getStyleClass());
-        StyleUtil.addStyleJsonParam(context, this, obj, "rolloverStyle", getRolloverStyle(), getRolloverClass());
+        Styles.addStyleJsonParam(context, this, obj, "style", getStyle(), getStyleClass());
+        Styles.addStyleJsonParam(context, this, obj, "rolloverStyle", getRolloverStyle(), getRolloverClass());
 
-        StyleUtil.addStyleJsonParam(context, this, obj, "nameStyle", getNameStyle(), getNameClass());
-        StyleUtil.addStyleJsonParam(context, this, obj, "descriptionStyle", getDescriptionStyle(), getDescriptionClass());
-        RenderingUtil.addJsonParam(obj, "escapeName", getEscapeName(), true);
-        RenderingUtil.addJsonParam(obj, "escapeDescription", getEscapeDescription(), true);
+        Styles.addStyleJsonParam(context, this, obj, "nameStyle", getNameStyle(), getNameClass());
+        Styles.addStyleJsonParam(context, this, obj, "descriptionStyle", getDescriptionStyle(), getDescriptionClass());
+        Rendering.addJsonParam(obj, "escapeName", getEscapeName(), true);
+        Rendering.addJsonParam(obj, "escapeDescription", getEscapeDescription(), true);
 
-        RenderingUtil.addJsonParam(obj, "backgroundTransparency", getBackgroundTransparency(), 0.2);
-        RenderingUtil.addJsonParam(obj, "backgroundIntensity", getBackgroundIntensity(), 0.25);
+        Rendering.addJsonParam(obj, "backgroundTransparency", getBackgroundTransparency(), 0.2);
+        Rendering.addJsonParam(obj, "backgroundIntensity", getBackgroundIntensity(), 0.25);
 
-        RenderingUtil.addJsonParam(obj, "onclick", getOnclick());
-        RenderingUtil.addJsonParam(obj, "ondblclick", getOndblclick());
-        RenderingUtil.addJsonParam(obj, "onmousedown", getOnmousedown());
-        RenderingUtil.addJsonParam(obj, "onmouseup", getOnmouseup());
-        RenderingUtil.addJsonParam(obj, "onmousemove", getOnmousemove());
-        RenderingUtil.addJsonParam(obj, "onmouseover", getOnmouseover());
-        RenderingUtil.addJsonParam(obj, "onmouseout", getOnmouseout());
+        Rendering.addJsonParam(obj, "onclick", getOnclick());
+        Rendering.addJsonParam(obj, "ondblclick", getOndblclick());
+        Rendering.addJsonParam(obj, "onmousedown", getOnmousedown());
+        Rendering.addJsonParam(obj, "onmouseup", getOnmouseup());
+        Rendering.addJsonParam(obj, "onmousemove", getOnmousemove());
+        Rendering.addJsonParam(obj, "onmouseover", getOnmouseover());
+        Rendering.addJsonParam(obj, "onmouseout", getOnmouseout());
 
-        RenderingUtil.addJsonParam(obj, "onkeydown", getOnkeydown());
-        RenderingUtil.addJsonParam(obj, "onkeyup", getOnkeyup());
-        RenderingUtil.addJsonParam(obj, "onkeypress", getOnkeypress());
+        Rendering.addJsonParam(obj, "onkeydown", getOnkeydown());
+        Rendering.addJsonParam(obj, "onkeyup", getOnkeyup());
+        Rendering.addJsonParam(obj, "onkeypress", getOnkeypress());
 
-        RenderingUtil.addJsonParam(obj, "oncreate", getOncreate());
+        Rendering.addJsonParam(obj, "oncreate", getOncreate());
 
         try {
-            StyleUtil.renderStyleClasses(context, this);
+            Styles.renderStyleClasses(context, this);
         } catch (IOException e) {
             throw new FacesException(e);
         }

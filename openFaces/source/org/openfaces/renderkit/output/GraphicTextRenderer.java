@@ -14,7 +14,7 @@ package org.openfaces.renderkit.output;
 import org.openfaces.component.output.GraphicText;
 import org.openfaces.renderkit.ImageDataModel;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 import org.openfaces.renderkit.cssparser.StyleFontModel;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
 
@@ -44,7 +44,7 @@ public class GraphicTextRenderer extends RendererBase {
         int fontSize = font.getSize();
         int fontStyle = font.getStyle();
 
-        String text = RenderingUtil.convertToString(context, graphicText, graphicText.getValue());
+        String text = Rendering.convertToString(context, graphicText, graphicText.getValue());
 
         int direction = graphicText.getDirection();
 
@@ -92,24 +92,24 @@ public class GraphicTextRenderer extends RendererBase {
         BufferedImage croppedImage = image.getSubimage(absciss - 1, ordinate - 1, (int) textWidth + 2, (int) textHeight + 2);
         graphics.dispose();
 
-        ImageDataModel model = RenderingUtil.getDataModel(croppedImage);
+        ImageDataModel model = Rendering.getDataModel(croppedImage);
 
         ResponseWriter writer = context.getResponseWriter();
 
         int imageWidth = croppedImage.getWidth();
         int imageHeight = croppedImage.getHeight();
 
-        RenderingUtil.startWriteIMG(writer, context, graphicText, "png",
+        Rendering.startWriteIMG(writer, context, graphicText, "png",
                 model, new int[]{imageWidth, imageHeight});
 
-        RenderingUtil.writeComponentClassAttribute(writer, graphicText);
-        RenderingUtil.writeStandardEvents(writer, graphicText);
+        Rendering.writeComponentClassAttribute(writer, graphicText);
+        Rendering.writeStandardEvents(writer, graphicText);
         writeAttribute(writer, "title ", graphicText.getTitle());
         writeAttribute(writer, "lang ", graphicText.getLang());
         writeAttribute(writer, "height", String.valueOf(imageHeight));
         writeAttribute(writer, "width", String.valueOf(imageWidth));
 
-        RenderingUtil.encodeInitComponentCall(context, graphicText, true);
+        Rendering.encodeInitComponentCall(context, graphicText, true);
 
         writer.endElement("img");
     }

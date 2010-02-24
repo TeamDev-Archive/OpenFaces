@@ -16,10 +16,10 @@ import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.EnvironmentUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -49,10 +49,10 @@ public class PopupLayerRenderer extends RendererBase {
             writer.startElement("div", popup);
             writer.writeAttribute("id", clientId + BLOCKING_LAYER_SUFFIX, null);
             writer.writeAttribute("name", clientId + BLOCKING_LAYER_SUFFIX, null);
-            String modalDivClass = StyleUtil.getCSSClass(context,
+            String modalDivClass = Styles.getCSSClass(context,
                     component, popup.getModalLayerStyle(),
                     popup.getModalLayerClass());
-            modalDivClass = StyleUtil.mergeClassNames(getDefaultModalLayerClass(), modalDivClass);
+            modalDivClass = Styles.mergeClassNames(getDefaultModalLayerClass(), modalDivClass);
             writer.writeAttribute("class", modalDivClass, null);
             writer.writeAttribute("style", "position: absolute; display: none;", null);
             writer.endElement("div");
@@ -66,11 +66,11 @@ public class PopupLayerRenderer extends RendererBase {
         if (popup.isModal())
             defaultClass += " o_popuplayer_modal";
 
-        String styleNames = StyleUtil.getCSSClass(context,
+        String styleNames = Styles.getCSSClass(context,
                 component, popup.getStyle(), defaultClass, popup.getStyleClass());
         writeAttribute(writer, "class", styleNames);
 
-        RenderingUtil.writeStandardEvents(writer, popup);
+        Rendering.writeStandardEvents(writer, popup);
     }
 
     protected String getDefaultModalLayerClass() {
@@ -87,7 +87,7 @@ public class PopupLayerRenderer extends RendererBase {
             return;
 
         PopupLayer popup = (PopupLayer) component;
-        RenderingUtil.renderChildren(context, popup);
+        Rendering.renderChildren(context, popup);
         encodeCustomContent(context, popup);
     }
 
@@ -104,7 +104,7 @@ public class PopupLayerRenderer extends RendererBase {
             return;
 
         encodeScriptsAndStyles(context, (PopupLayer) component);
-        StyleUtil.renderStyleClasses(context, component);
+        Styles.renderStyleClasses(context, component);
 
         ResponseWriter writer = context.getResponseWriter();
         writer.endElement("div");
@@ -122,17 +122,17 @@ public class PopupLayerRenderer extends RendererBase {
         }
 
         String clientId = popup.getClientId(context);
-        RenderingUtil.renderHiddenField(writer, clientId + VISIBLE_HIDDEN_FIELD_SUFFIX, Boolean.toString(popup.isVisible()));
-        RenderingUtil.renderHiddenField(writer, clientId + LEFT_HIDDEN_FIELD_SUFFIX, popup.getLeft());
-        RenderingUtil.renderHiddenField(writer, clientId + TOP_HIDDEN_FIELD_SUFFIX, popup.getTop());
-//    RenderingUtil.renderHiddenField(writer, clientId + ANCHOR_HIDDEN_FIELD_SUFFIX, popupInvokerId);
+        Rendering.renderHiddenField(writer, clientId + VISIBLE_HIDDEN_FIELD_SUFFIX, Boolean.toString(popup.isVisible()));
+        Rendering.renderHiddenField(writer, clientId + LEFT_HIDDEN_FIELD_SUFFIX, popup.getLeft());
+        Rendering.renderHiddenField(writer, clientId + TOP_HIDDEN_FIELD_SUFFIX, popup.getTop());
+//    Rendering.renderHiddenField(writer, clientId + ANCHOR_HIDDEN_FIELD_SUFFIX, popupInvokerId);
 
         if (popup.getHideOnOuterClick()) {
             ScriptBuilder buf = new ScriptBuilder();
             buf.functionCall("O$.Popup._init", clientId).semicolon();
-            RenderingUtil.renderInitScript(context, buf,
-                    ResourceUtil.getUtilJsURL(context),
-                    ResourceUtil.getInternalResourceURL(context, RendererBase.class, "popup.js"));
+            Rendering.renderInitScript(context, buf,
+                    Resources.getUtilJsURL(context),
+                    Resources.getInternalURL(context, RendererBase.class, "popup.js"));
         }
 
         ScriptBuilder sb = new ScriptBuilder();
@@ -141,7 +141,7 @@ public class PopupLayerRenderer extends RendererBase {
                 popup.getTop(),
                 popup.getWidth(),
                 popup.getHeight(),
-                RenderingUtil.getRolloverClass(context, popup),
+                Rendering.getRolloverClass(context, popup),
                 popup.getHidingTimeout(),
                 popup.getDraggable(),
                 popup.getHideOnEsc(),
@@ -185,9 +185,9 @@ public class PopupLayerRenderer extends RendererBase {
             sb.append(");");
         }
 
-        RenderingUtil.renderInitScript(context, sb, new String[]{
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, PopupLayerRenderer.class, "popupLayer.js")
+        Rendering.renderInitScript(context, sb, new String[]{
+                Resources.getUtilJsURL(context),
+                Resources.getInternalURL(context, PopupLayerRenderer.class, "popupLayer.js")
         });
 
     }

@@ -13,7 +13,7 @@ package org.openfaces.renderkit.select;
 
 import org.openfaces.component.select.TabPlacement;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -26,7 +26,7 @@ import java.util.List;
  * @author Andrew Palval
  */
 public abstract class BaseTabSetRenderer extends RendererBase {
-    protected static final String SELECTED_INDEX_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "selected";
+    protected static final String SELECTED_INDEX_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "selected";
 
     protected static final CircularList borderNames = new CircularList(new Object[]{
             TabPlacement.LEFT,

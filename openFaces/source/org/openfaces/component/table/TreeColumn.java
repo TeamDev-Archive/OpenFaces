@@ -13,7 +13,7 @@ package org.openfaces.component.table;
 
 import org.openfaces.component.CompoundComponent;
 import org.openfaces.util.ValueBindings;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
@@ -57,7 +57,7 @@ public class TreeColumn extends Column implements CompoundComponent {
 
 
     public void createSubComponents(FacesContext context) {
-        ComponentUtil.getOrCreateFacet(context, this, ImageExpansionToggle.COMPONENT_TYPE, "expansionToggle", ImageExpansionToggle.class);
+        Components.getOrCreateFacet(context, this, ImageExpansionToggle.COMPONENT_TYPE, "expansionToggle", ImageExpansionToggle.class);
     }
 
     public Object encodeExpansionDataAsJsObject(FacesContext context) {

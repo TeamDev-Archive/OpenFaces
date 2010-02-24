@@ -15,13 +15,13 @@ import org.openfaces.component.validation.ClientValidationMode;
 import org.openfaces.component.validation.FloatingIconMessage;
 import org.openfaces.component.validation.ValidationProcessor;
 import org.openfaces.org.json.JSONObject;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.NewInstanceScript;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 import org.openfaces.validator.ClientValidatorUtil;
 
 import javax.faces.application.FacesMessage;
@@ -53,24 +53,24 @@ public class FloatingIconMessageRenderer extends BaseMessageRenderer {
 
 
         ClientValidationMode cv = validationProcessor.getClientValidationRule(fim, forComponent);
-        UIForm form = ComponentUtil.getEnclosingForm(fim);
+        UIForm form = Components.getEnclosingForm(fim);
         boolean clientValidation = !cv.equals(ClientValidationMode.OFF);
         boolean useDCVP = validationProcessor.isUseDefaultClientValidationPresentationForForm(form);
         boolean useDSVP = validationProcessor.isUseDefaultServerValidationPresentationForForm(form);
 
         String forComponentClientId = getForComponentClientId(context, fim);
         if (forComponentClientId == null) {
-            RenderingUtil.logWarning(context, "Cannot render floatingIconMessage bacause can't calculate " +
+            Rendering.logWarning(context, "Cannot render floatingIconMessage bacause can't calculate " +
                     "target component client ID. It may be caused by 'for' attribute absence");
             return;
         }
         Script clientScript = getClientScript(context, fim, forComponentClientId,
                 clientValidation, pageDefinedMessage, useDCVP, useDSVP);
-        RenderingUtil.renderInitScript(context, clientScript, getJavascriptLibraryUrls(context));
+        Rendering.renderInitScript(context, clientScript, getJavascriptLibraryUrls(context));
         if (clientScript.toString().length() > 0) {
             if (!isDefaultPresentation(fim))
                 ValidatorUtil.renderPresentationExistsForComponent(forComponentClientId, context);
-            StyleUtil.renderStyleClasses(context, fim, true, false);
+            Styles.renderStyleClasses(context, fim, true, false);
         }
     }
 
@@ -92,10 +92,10 @@ public class FloatingIconMessageRenderer extends BaseMessageRenderer {
             message = (FacesMessage) messages.next();
         }
 
-        String css = StyleUtil.getCSSClass(context, fim,
+        String css = Styles.getCSSClass(context, fim,
                 !fim.isNoStyle() ? fim.getStyle() : null, DEFAULT_CLASS,
                 !fim.isNoStyle() ? fim.getStyleClass() : null);
-        JSONObject events = RenderingUtil.getEventsParam(fim, "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove", "onmouseout", "onmouseup");
+        JSONObject events = Rendering.getEventsParam(fim, "onclick", "ondblclick", "onmousedown", "onmouseover", "onmousemove", "onmouseout", "onmouseup");
 
         ScriptBuilder clientValidationScript = new ScriptBuilder().functionCall("O$.addClientMessageRenderer",
                 new NewInstanceScript("O$._FloatingIconMessageRenderer",
@@ -156,8 +156,8 @@ public class FloatingIconMessageRenderer extends BaseMessageRenderer {
 
     private String[] getJavascriptLibraryUrls(FacesContext context) {
         return new String[]{
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, this.getClass(), "floatingIconMessage.js"),
+                Resources.getUtilJsURL(context),
+                Resources.getInternalURL(context, this.getClass(), "floatingIconMessage.js"),
                 ValidatorUtil.getValidatorUtilJsUrl(context)
         };
     }

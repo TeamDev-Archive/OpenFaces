@@ -13,7 +13,7 @@ package org.openfaces.component.timetable;
 
 import org.openfaces.component.OUIComponentBase;
 import org.openfaces.util.CalendarUtil;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.FacesException;
@@ -83,7 +83,7 @@ public class DaySwitcher extends OUIComponentBase {
         if (dayTable == null) {
             String _for = getFor();
             if (_for != null) {
-                UIComponent referredComponent = ComponentUtil.referenceIdToComponent(this, _for);
+                UIComponent referredComponent = Components.referenceIdToComponent(this, _for);
                 if (referredComponent != null && !(referredComponent instanceof DayTable))
                     throw new FacesException("DaySwitcher's \"for\" attribute must refer to a DayTable component.");
                 dayTable = (DayTable) referredComponent;

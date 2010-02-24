@@ -47,13 +47,13 @@ public class UtilPhaseListener extends PhaseListenerBase {
         FacesContext context = event.getFacesContext();
         PhaseId phaseId = event.getPhaseId();
         if (phaseId.equals(PhaseId.RENDER_RESPONSE)) {
-            List<String> renderedJsLinks = ResourceUtil.getRenderedJsLinks(context);
-            String utilJs = ResourceUtil.getUtilJsURL(context);
+            List<String> renderedJsLinks = Resources.getRenderedJsLinks(context);
+            String utilJs = Resources.getUtilJsURL(context);
             if (!renderedJsLinks.contains(utilJs))
-                ResourceUtil.registerJavascriptLibrary(context, utilJs);
-            RenderingUtil.appendOnLoadScript(context, encodeFocusTracking(context));
-            RenderingUtil.appendOnLoadScript(context, encodeScrollPosTracking(context));
-            RenderingUtil.appendOnLoadScript(context, encodeDisabledContextMenu(context));
+                Resources.registerJavascriptLibrary(context, utilJs);
+            Rendering.appendOnLoadScript(context, encodeFocusTracking(context));
+            Rendering.appendOnLoadScript(context, encodeScrollPosTracking(context));
+            Rendering.appendOnLoadScript(context, encodeDisabledContextMenu(context));
             encodeAjaxProgressMessage(context);
         } else if (phaseId.equals(PhaseId.APPLY_REQUEST_VALUES)) {
             decodeFocusTracking(context);

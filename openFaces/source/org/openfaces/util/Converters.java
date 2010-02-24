@@ -24,7 +24,7 @@ import javax.faces.validator.Validator;
 /**
  * @author Vladimir Korenev
  */
-public class ConverterUtil {
+public class Converters {
     public static Converter getConverter(UIComponent component, FacesContext context) {
         try {
             if (component instanceof EditableValueHolder) {

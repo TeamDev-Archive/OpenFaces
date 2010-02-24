@@ -15,11 +15,11 @@ import org.openfaces.component.output.HintLabel;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.EnvironmentUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -31,7 +31,7 @@ import java.io.IOException;
  */
 public class HintLabelRenderer extends RendererBase {
 
-    public static final String HINT_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "hint";
+    public static final String HINT_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "hint";
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -40,12 +40,12 @@ public class HintLabelRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
         HintLabel hintLabel = (HintLabel) component;
 
-        String value = RenderingUtil.getStringValue(context, hintLabel);
+        String value = Rendering.getStringValue(context, hintLabel);
         String hint = hintLabel.getHint();
 
         String defaultHintClass = "o_hintlabel_hint" + ' ' +
                 DefaultStyles.getBackgroundColorClass() + ' ' + DefaultStyles.getTextColorClass();
-        String hintClass = StyleUtil.getCSSClass(context,
+        String hintClass = Styles.getCSSClass(context,
                 hintLabel, hintLabel.getHintStyle(), StyleGroup.rolloverStyleGroup(), hintLabel.getHintClass(), defaultHintClass
         );
 
@@ -54,10 +54,10 @@ public class HintLabelRenderer extends RendererBase {
 
         String defaultLabelClass = EnvironmentUtil.isExplorer() || EnvironmentUtil.isSafari() || EnvironmentUtil.isUndefinedBrowser()
                 ? "o_hintlabel_label_ie" : "o_hintlabel_label";
-        writer.writeAttribute("class", StyleUtil.getCSSClass(context,
+        writer.writeAttribute("class", Styles.getCSSClass(context,
                 hintLabel, hintLabel.getStyle(), defaultLabelClass, hintLabel.getStyleClass()), null);
 
-        RenderingUtil.writeStandardEvents(writer, hintLabel);
+        Rendering.writeStandardEvents(writer, hintLabel);
 
         encodeText(writer, hintLabel, value);
         if (hint != null && !hint.equals(value))
@@ -70,12 +70,12 @@ public class HintLabelRenderer extends RendererBase {
         sb.initScript(context, hintLabel, "O$.HintLabel._init",
                 hintLabel.getHintTimeout(),
                 hintClass,
-                RenderingUtil.getRolloverClass(context, hintLabel));
+                Rendering.getRolloverClass(context, hintLabel));
 
-        RenderingUtil.renderInitScript(context, sb,
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, HintLabelRenderer.class, "hintLabel.js"));
-        StyleUtil.renderStyleClasses(context, hintLabel);
+        Rendering.renderInitScript(context, sb,
+                Resources.getUtilJsURL(context),
+                Resources.getInternalURL(context, HintLabelRenderer.class, "hintLabel.js"));
+        Styles.renderStyleClasses(context, hintLabel);
         writer.endElement("div");
         writer.endElement("div");
     }

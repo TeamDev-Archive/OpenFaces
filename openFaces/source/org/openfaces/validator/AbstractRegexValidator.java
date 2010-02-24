@@ -12,8 +12,8 @@
 package org.openfaces.validator;
 
 import org.openfaces.util.NewInstanceScript;
+import org.openfaces.util.Rendering;
 import org.openfaces.util.Script;
-import org.openfaces.util.RenderingUtil;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -34,7 +34,7 @@ public abstract class AbstractRegexValidator extends AbstractCustomValidator {
     }
 
     public boolean customServerValidate(FacesContext context, UIComponent component, Object value, Object[] args) {
-        String strValue = RenderingUtil.convertToString(context, component, value);
+        String strValue = Rendering.convertToString(context, component, value);
         if (isTrimNeeded()) {
             strValue = strValue.trim();
         }

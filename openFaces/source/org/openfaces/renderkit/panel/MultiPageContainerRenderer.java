@@ -18,8 +18,8 @@ import org.openfaces.event.SelectionChangeEvent;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.select.BaseTabSetRenderer;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -35,7 +35,7 @@ public abstract class MultiPageContainerRenderer extends BaseTabSetRenderer impl
     // todo: TabbedPaneRenderer/MultiPageContainerRenderer shouldn't extend BaseTabSetRenderer.
     // todo: TabbedPane can only aggregate TabSet but not extend it or know of any of TabSet's innards.
 
-    public static final String PANE_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "pane";
+    public static final String PANE_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "pane";
     private static final String PAGE_PORTION_NAME_PREFIX = "page:";
 
     public JSONObject encodeAjaxPortion(FacesContext context, UIComponent component, String portionName, JSONObject jsonParam) throws IOException {
@@ -176,9 +176,9 @@ public abstract class MultiPageContainerRenderer extends BaseTabSetRenderer impl
     }
 
     protected String getContainerClass(FacesContext context, MultiPageContainer container) {
-        String containerClass = StyleUtil.getCSSClass(context,
+        String containerClass = Styles.getCSSClass(context,
                 container, container.getContainerStyle(), container.getContainerClass());
-        containerClass = StyleUtil.mergeClassNames(containerClass, "o_tabbedpane_container");
+        containerClass = Styles.mergeClassNames(containerClass, "o_tabbedpane_container");
         return containerClass;
     }
 }

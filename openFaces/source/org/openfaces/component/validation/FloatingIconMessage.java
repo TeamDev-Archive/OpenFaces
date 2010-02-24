@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.validation;
 
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
@@ -86,7 +86,7 @@ public class FloatingIconMessage extends OUIMessage {
 
     public String getImageUrl() {
         return ValueBindings.get(this, "imageUrl", imageUrl,
-                ResourceUtil.getInternalResourceURL(getFacesContext(), this.getClass(), DEFAULT_IMAGE_URL));
+                Resources.getInternalURL(getFacesContext(), this.getClass(), DEFAULT_IMAGE_URL));
     }
 
     public void setImageUrl(String imageUrl) {

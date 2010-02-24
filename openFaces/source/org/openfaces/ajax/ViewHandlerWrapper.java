@@ -11,7 +11,7 @@
  */
 package org.openfaces.ajax;
 
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 
 import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
@@ -67,7 +67,7 @@ public class ViewHandlerWrapper extends ViewHandler {
     @Override
     public UIViewRoot restoreView(FacesContext context, String viewId) {
         UIViewRoot result = delegate.restoreView(context, viewId);
-        ComponentUtil.runScheduledActions();
+        Components.runScheduledActions();
         return result;
     }
 

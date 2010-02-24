@@ -16,7 +16,7 @@ import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.EventArea;
 import org.openfaces.component.timetable.TimetableEvent;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -39,13 +39,13 @@ public class EventAreaRenderer extends RendererBase {
         writer.startElement("div", eventArea);
         String clientId = eventArea.getClientId(context);
         writer.writeAttribute("id", clientId, null);
-        RenderingUtil.writeStandardEvents(writer, eventArea);
-        RenderingUtil.writeStyleAndClassAttributes(writer,
+        Rendering.writeStandardEvents(writer, eventArea);
+        Rendering.writeStyleAndClassAttributes(writer,
                 eventArea.getStyle(),
                 eventArea.getStyleClass(),
                 "o_timetableEventArea");
 
-        RenderingUtil.renderChildren(context, eventArea);
+        Rendering.renderChildren(context, eventArea);
 
         writer.endElement("div");
     }

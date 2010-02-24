@@ -14,8 +14,8 @@ package org.openfaces.renderkit.output;
 import org.openfaces.component.output.DynamicImage;
 import org.openfaces.renderkit.ImageDataModel;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Styles;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -45,33 +45,33 @@ public class DynamicImageRenderer extends RendererBase {
         if (data == null)
             return;
 
-        ImageDataModel model = RenderingUtil.getDataModel(data);
+        ImageDataModel model = Rendering.getDataModel(data);
 
         String extension = DIMG_EXTENSION;
         if (dynamicImage.getImageType() != null)
             extension = dynamicImage.getImageType().getExtension();
 
         ResponseWriter writer = facesContext.getResponseWriter();
-        RenderingUtil.startWriteIMG(writer, facesContext, dynamicImage, extension, model, null);
+        Rendering.startWriteIMG(writer, facesContext, dynamicImage, extension, model, null);
 
         writeAttribute(writer, "style", dynamicImage.getStyle());
-        writeAttribute(writer, "class", StyleUtil.mergeClassNames(dynamicImage.getStyleClass(), (String) dynamicImage.getAttributes().get(DEFAULT_STYLE_ATTR)));
+        writeAttribute(writer, "class", Styles.mergeClassNames(dynamicImage.getStyleClass(), (String) dynamicImage.getAttributes().get(DEFAULT_STYLE_ATTR)));
         writeAttribute(writer, "width", dynamicImage.getWidth(), -1);
         writeAttribute(writer, "height", dynamicImage.getHeight(), -1);
         writeAttribute(writer, "alt", dynamicImage.getAlt());
 
-        RenderingUtil.writeStandardEvents(writer, dynamicImage);
+        Rendering.writeStandardEvents(writer, dynamicImage);
 
         String mapId = dynamicImage.getMapId();
         if (mapId != null)
             writer.writeAttribute("usemap", "#" + mapId, null);
 
-        RenderingUtil.encodeInitComponentCall(facesContext, dynamicImage, true);
+        Rendering.encodeInitComponentCall(facesContext, dynamicImage, true);
 
         writer.endElement("img");
 
         if (dynamicImage.getMap() != null) {
-            RenderingUtil.writeNewLine(writer);
+            Rendering.writeNewLine(writer);
             writer.write(dynamicImage.getMap());
         }
     }

@@ -14,7 +14,7 @@ package org.openfaces.renderkit.util;
 
 import org.openfaces.component.util.ForEach;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -39,11 +39,11 @@ public class ForEachRenderer extends RendererBase {
         String clientId = forEach.getClientId(context);
         writer.startElement(wrapperTagName, forEach);
         writer.writeAttribute("id", clientId, null);
-        String classStr = StyleUtil.getCSSClass(context, forEach, forEach.getStyle(), forEach.getStyleClass());
+        String classStr = Styles.getCSSClass(context, forEach, forEach.getStyle(), forEach.getStyleClass());
         if (classStr != null) {
             writer.writeAttribute("class", classStr, null);
         }
-        StyleUtil.renderStyleClasses(context, forEach);
+        Styles.renderStyleClasses(context, forEach);
     }
 
     @Override

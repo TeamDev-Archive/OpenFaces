@@ -17,7 +17,7 @@ import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.Column;
 import org.openfaces.component.table.Scrolling;
 import org.openfaces.renderkit.TableUtil;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -231,6 +231,6 @@ public class DropDownFieldTableStyles implements TableStyles {
     }
 
     public Scrolling getScrolling() {
-        return ComponentUtil.findChildWithClass(dropDownField, Scrolling.class, "<o:scrolling>");
+        return Components.findChildWithClass(dropDownField, Scrolling.class, "<o:scrolling>");
     }
 }

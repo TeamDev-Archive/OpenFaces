@@ -23,11 +23,11 @@ public class RendererRequestPhaseListener implements PhaseListener {
 
     public void afterPhase(PhaseEvent event) {
         FacesContext context = event.getFacesContext();
-        Map styleClassesMap = StyleUtil.getRegisteredStyleClassesMap(context);
+        Map styleClassesMap = Styles.getRegisteredStyleClassesMap(context);
         Set<UIComponent> components = styleClassesMap.keySet();
         for (UIComponent component : components) {
             if (component.isRendered()) {
-                RenderingUtil.logWarning(context, "Styles were not rendered for " + component);
+                Rendering.logWarning(context, "Styles were not rendered for " + component);
             }
         }
     }

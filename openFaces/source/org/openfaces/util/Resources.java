@@ -46,10 +46,10 @@ import java.util.Set;
 /**
  * @author Dmitry Pikhulya
  */
-public class ResourceUtil {
+public class Resources {
     public static final String HEADER_JS_LIBRARIES = "OF:js_file_included";
-    public static final String RENDERED_JS_LINKS = "org.openfaces.util.RenderingUtil.renderedJsLinks";
-    public static final String POSTPONE_JS_LINK_RENDERING = "org.openfaces.util.ResourceUtil.postponeJsLinkRendering";
+    public static final String RENDERED_JS_LINKS = "org.openfaces.util.Rendering.renderedJsLinks";
+    public static final String POSTPONE_JS_LINK_RENDERING = "org.openfaces.util.Resources.postponeJsLinkRendering";
     public static final String JSON_JS_LIB_NAME = "json2.js";
 
     private static final String OPENFACES_VERSION_TXT = "/META-INF/openFacesVersion.txt";
@@ -63,7 +63,7 @@ public class ResourceUtil {
     private static final String CLDR = "cldr";
     private static final String NUMBER_LOCALE_SETTINGS = "number.js";
 
-    private ResourceUtil() {
+    private Resources() {
     }
 
     /**
@@ -75,9 +75,9 @@ public class ResourceUtil {
      * @param defaultResourceBaseClassName the class relatively to which defaultResourceFileName is specified
      * @return
      */
-    public static String getResourceURL(FacesContext context, String userSpecifiedUrl,
+    public static String getURL(FacesContext context, String userSpecifiedUrl,
                                         Class defaultResourceBaseClassName, String defaultResourceFileName) {
-        return getResourceURL(context, userSpecifiedUrl, defaultResourceBaseClassName, defaultResourceFileName, true);
+        return getURL(context, userSpecifiedUrl, defaultResourceBaseClassName, defaultResourceFileName, true);
     }
 
     /**
@@ -88,7 +88,7 @@ public class ResourceUtil {
      * @param defaultResourceBaseClassName the class relatively to which defaultResourceFileName is specified
      * @param prependContextPath           use true here if you render the attribute yourself, and false if you use pass this URL to HtmlGraphicImage or similar component
      */
-    public static String getResourceURL(
+    public static String getURL(
             FacesContext context,
             String userSpecifiedUrl,
             Class defaultResourceBaseClassName,
@@ -96,8 +96,8 @@ public class ResourceUtil {
             boolean prependContextPath) {
         boolean returnDefaultResource = userSpecifiedUrl == null || userSpecifiedUrl.length() == 0;
         String result = returnDefaultResource
-                ? getInternalResourceURL(context, defaultResourceBaseClassName, defaultResourceFileName, prependContextPath)
-                : (prependContextPath ? getApplicationResourceURL(context, userSpecifiedUrl) : userSpecifiedUrl);
+                ? getInternalURL(context, defaultResourceBaseClassName, defaultResourceFileName, prependContextPath)
+                : (prependContextPath ? getApplicationURL(context, userSpecifiedUrl) : userSpecifiedUrl);
         return result;
     }
 
@@ -109,7 +109,7 @@ public class ResourceUtil {
      *                     or relative to the current page
      * @return full URL to resource ready for rendering as <code>src</code> or <code>href</code> attribute's value.
      */
-    public static String getApplicationResourceURL(FacesContext context, String resourcePath) {
+    public static String getApplicationURL(FacesContext context, String resourcePath) {
         if (resourcePath == null || resourcePath.length() == 0)
             return "";
         ViewHandler viewHandler = context.getApplication().getViewHandler();
@@ -118,8 +118,8 @@ public class ResourceUtil {
         return encodedResourceUrl;
     }
 
-    public static String getInternalResourceURL(FacesContext context, Class componentClass, String resourceName) {
-        return getInternalResourceURL(context, componentClass, resourceName, true);
+    public static String getInternalURL(FacesContext context, Class componentClass, String resourceName) {
+        return getInternalURL(context, componentClass, resourceName, true);
     }
 
     private static String getPackagePath(Class componentClass) {
@@ -141,7 +141,7 @@ public class ResourceUtil {
      *                           expects application URL, so the component will prepend the URL with context root itself.
      * @return The requested URL
      */
-    public static String getInternalResourceURL(
+    public static String getInternalURL(
             FacesContext context,
             Class componentClass,
             String resourcePath,
@@ -159,7 +159,7 @@ public class ResourceUtil {
         if (!prependContextPath)
             return urlRelativeToContextRoot;
 
-        return getApplicationResourceURL(context, urlRelativeToContextRoot);
+        return getApplicationURL(context, urlRelativeToContextRoot);
     }
 
     private static String versionString;
@@ -200,7 +200,7 @@ public class ResourceUtil {
     }
 
     private static String readBuildInfo() {
-        InputStream versionStream = ResourceUtil.class.getResourceAsStream(OPENFACES_VERSION_TXT);
+        InputStream versionStream = Resources.class.getResourceAsStream(OPENFACES_VERSION_TXT);
         if (versionStream == null)
             throw new IllegalStateException("Couldn't find resource file: " + OPENFACES_VERSION_TXT);
 
@@ -222,14 +222,14 @@ public class ResourceUtil {
 
 
     public static JSONObject getNumberFormatSettings(Locale locale) throws IOException, JSONException {
-        String cldrPath = "/" + getPackagePath(ResourceUtil.class) + CLDR;
+        String cldrPath = "/" + getPackagePath(Resources.class) + CLDR;
 
         InputStream numberStream = null;
         if (locale != null) {
-            numberStream = ResourceUtil.class.getResourceAsStream(cldrPath + "/" + locale.toString() + "/" + NUMBER_LOCALE_SETTINGS);
+            numberStream = Resources.class.getResourceAsStream(cldrPath + "/" + locale.toString() + "/" + NUMBER_LOCALE_SETTINGS);
         }
         if (numberStream == null) {
-            numberStream = ResourceUtil.class.getResourceAsStream(cldrPath + "/" + NUMBER_LOCALE_SETTINGS);
+            numberStream = Resources.class.getResourceAsStream(cldrPath + "/" + NUMBER_LOCALE_SETTINGS);
         }
         BufferedReader bufferedReader = null;
         try {
@@ -254,11 +254,11 @@ public class ResourceUtil {
      * @return requested URL of util.js file
      */
     public static String getUtilJsURL(FacesContext context) {
-        return getInternalResourceURL(context, ResourceUtil.class, "util.js");
+        return getInternalURL(context, Resources.class, "util.js");
     }
 
     public static String getFiltersJsURL(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, ExpressionFilterRenderer.class, "filters.js");
+        return Resources.getInternalURL(context, ExpressionFilterRenderer.class, "filters.js");
     }
 
     /**
@@ -269,7 +269,7 @@ public class ResourceUtil {
      * @return requested URL of ajaxUtil.js file
      */
     public static String getAjaxUtilJsURL(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, ResourceUtil.class, "ajaxUtil.js");
+        return Resources.getInternalURL(context, Resources.class, "ajaxUtil.js");
     }
 
     /**
@@ -279,7 +279,7 @@ public class ResourceUtil {
      * @return requested URL of json javascript file
      */
     public static String getJsonJsURL(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, ResourceUtil.class, JSON_JS_LIB_NAME);
+        return Resources.getInternalURL(context, Resources.class, JSON_JS_LIB_NAME);
     }
 
     /**
@@ -306,7 +306,7 @@ public class ResourceUtil {
      * @param relativeJsPath Path to the javascript file
      */
     public static void registerJavascriptLibrary(FacesContext context, Class baseClass, String relativeJsPath) {
-        String jsFileUrl = getInternalResourceURL(context, baseClass, relativeJsPath);
+        String jsFileUrl = getInternalURL(context, baseClass, relativeJsPath);
         registerJavascriptLibrary(context, jsFileUrl);
     }
 
@@ -459,55 +459,19 @@ public class ResourceUtil {
         }
     }
 
-
-    /**
-     * Register OpenFaces javascript library util.js to future adding to response
-     *
-     * @param context {@link FacesContext} for the current request
-     */
-    public static void registerUtilJs(FacesContext context) {
-        registerJavascriptLibrary(context, RenderingUtil.class, "util.js");
-    }
-
     public static boolean isHeaderIncludesRegistered(ServletRequest servletRequest) {
         if (AjaxUtil.isAjaxRequest(RequestFacade.getInstance(servletRequest))) return false;
-        for (Iterator<String> iterator = StyleUtil.getClassKeyIterator(); iterator.hasNext();) {
+        for (Iterator<String> iterator = Styles.getClassKeyIterator(); iterator.hasNext();) {
             String key = iterator.next();
             if (servletRequest.getAttribute(key) != null) {
                 return true;
             }
         }
 
-        return servletRequest.getAttribute(RenderingUtil.ON_LOAD_SCRIPTS_KEY) != null ||
+        return servletRequest.getAttribute(Rendering.ON_LOAD_SCRIPTS_KEY) != null ||
                 servletRequest.getAttribute(HEADER_JS_LIBRARIES) != null ||
-                servletRequest.getAttribute(StyleUtil.DEFAULT_CSS_REQUESTED) != null;
+                servletRequest.getAttribute(Styles.DEFAULT_CSS_REQUESTED) != null;
     }
-
-    //  public static void registerJavascriptLibrary(RequestFacade servletRequest, String relativeJsPath) {
-//
-//    List libraries = (List) servletRequest.getAttribute(ResourceFilter.HEADER_JS_LIBRARIES);
-//    if (libraries == null) {
-//      libraries = new ArrayList();
-//      libraries.add(relativeJsPath);
-//    }
-
-/*
-    if (AjaxUtil.isAjax4jsfRequest((HttpServletRequest) facesContext.getExternalContext().getRequest())) {
-      ResponseWriter writer = facesContext.getResponseWriter();
-      try {
-        writer.startElement("script", null);
-        writer.writeAttribute("type", "text/javascript", null);
-        writer.writeAttribute("src", jsFileUrl, null);
-        writer.endElement("script");
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    } else {
-*/
-//    if (libraries.contains(relativeJsPath)) return;
-//    libraries.add(relativeJsPath);
-//
-//  }
 
     /**
      * Render javascript file link, if not rendered early

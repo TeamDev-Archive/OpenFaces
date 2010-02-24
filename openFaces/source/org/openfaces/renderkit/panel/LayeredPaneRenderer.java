@@ -15,10 +15,10 @@ import org.openfaces.component.LoadingMode;
 import org.openfaces.component.panel.LayeredPane;
 import org.openfaces.component.panel.SubPanel;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -32,7 +32,7 @@ import java.util.List;
 public class LayeredPaneRenderer extends MultiPageContainerRenderer {
 
     protected String getSelectionHiddenFieldSuffix() {
-        return RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "index";
+        return Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "index";
     }
 
     @Override
@@ -54,9 +54,9 @@ public class LayeredPaneRenderer extends MultiPageContainerRenderer {
         writer.writeAttribute("cellpadding", "0", null);
         writer.writeAttribute("id", layeredPane.getClientId(context), "id");
 
-        RenderingUtil.writeComponentClassAttribute(writer, layeredPane);
+        Rendering.writeComponentClassAttribute(writer, layeredPane);
 
-        RenderingUtil.writeStandardEvents(writer, layeredPane);
+        Rendering.writeStandardEvents(writer, layeredPane);
 
         writer.startElement("tr", layeredPane);
         writer.startElement("td", layeredPane);
@@ -66,7 +66,7 @@ public class LayeredPaneRenderer extends MultiPageContainerRenderer {
         encodePane(context, layeredPane, allItems, containerClass);
 
         encodeScriptsAndStyles(context, layeredPane, containerClass, allItems);
-        RenderingUtil.encodeClientActions(context, layeredPane);
+        Rendering.encodeClientActions(context, layeredPane);
 
         writer.endElement("td");
         writer.endElement("tr");
@@ -83,18 +83,18 @@ public class LayeredPaneRenderer extends MultiPageContainerRenderer {
 
         ScriptBuilder sb = new ScriptBuilder();
         sb.initScript(context, layeredPane, "O$.LayeredPane._init",
-                RenderingUtil.getRolloverClass(context, layeredPane),
+                Rendering.getRolloverClass(context, layeredPane),
                 containerClass,
                 loadingMode,
                 allItems.size(),
                 layeredPane.getSelectedIndex());
 
-        RenderingUtil.renderInitScript(context, sb,
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, TabbedPaneRenderer.class, "multiPage.js"),
-                ResourceUtil.getInternalResourceURL(context, TabbedPaneRenderer.class, "layeredPane.js"));
+        Rendering.renderInitScript(context, sb,
+                Resources.getUtilJsURL(context),
+                Resources.getInternalURL(context, TabbedPaneRenderer.class, "multiPage.js"),
+                Resources.getInternalURL(context, TabbedPaneRenderer.class, "layeredPane.js"));
 
-        StyleUtil.renderStyleClasses(context, layeredPane);
+        Styles.renderStyleClasses(context, layeredPane);
     }
 
 

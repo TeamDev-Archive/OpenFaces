@@ -14,8 +14,8 @@ package org.openfaces.util;
 /**
  * @author Dmitry Pikhulya
  */
-public class EnumerationUtil {
-    private EnumerationUtil() {
+public class Enumerations {
+    private Enumerations() {
     }
 
     public static <T extends Enum> T valueByString(Class<T> enumClass, String str, String attributeName) {

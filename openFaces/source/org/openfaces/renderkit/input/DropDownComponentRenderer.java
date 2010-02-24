@@ -15,10 +15,10 @@ import org.openfaces.component.Side;
 import org.openfaces.component.input.DropDownComponent;
 import org.openfaces.util.InitScript;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
@@ -35,7 +35,7 @@ import java.util.List;
  * @author Andrew Palval
  */
 public abstract class DropDownComponentRenderer extends RendererBase {
-    public static final String POPUP_SUFFIX = RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR + "popup";
+    public static final String POPUP_SUFFIX = Rendering.SERVER_ID_SUFFIX_SEPARATOR + "popup";
     public static final String FIELD_SUFFIX = "::field";
     protected static final String STATE_PROMPT_SUFFIX = "::statePrompt";
 
@@ -70,7 +70,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         encodeRootElementStart(writer, dropDownComponent);
         writer.writeAttribute("id", clientId, "id");
 
-        RenderingUtil.writeStandardEvents(writer, dropDownComponent);
+        Rendering.writeStandardEvents(writer, dropDownComponent);
 
         encodeFieldContentsStart(context, dropDownComponent);
     }
@@ -126,7 +126,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         writeFieldAttributes(writer, fieldComponent);
         writer.endElement("input");
 
-        String value = RenderingUtil.convertToString(context, fieldComponent, fieldComponent.getValue());
+        String value = Rendering.convertToString(context, fieldComponent, fieldComponent.getValue());
 
         writer.startElement("input", fieldComponent);
         writeAttribute(writer, "type", "hidden");
@@ -169,10 +169,10 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         String imageUrl;
         if (fieldComponent.isDisabled()) {
             String disabledButtonImageUrl = (String) fieldComponent.getAttributes().get("disabledButtonImageUrl");
-            imageUrl = ResourceUtil.getResourceURL(context, disabledButtonImageUrl, DropDownFieldRenderer.class, "disabledDropButton.gif");
+            imageUrl = Resources.getURL(context, disabledButtonImageUrl, DropDownFieldRenderer.class, "disabledDropButton.gif");
         } else {
             String buttonImageUrl = (String) fieldComponent.getAttributes().get("buttonImageUrl");
-            imageUrl = ResourceUtil.getResourceURL(context, buttonImageUrl, DropDownFieldRenderer.class, "dropButton.gif");
+            imageUrl = Resources.getURL(context, buttonImageUrl, DropDownFieldRenderer.class, "dropButton.gif");
         }
         writer.startElement("img", fieldComponent);
         writer.writeAttribute("src", imageUrl, null);
@@ -215,7 +215,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
 
         renderEndTags(facesContext, dropDown);
 
-        String promptTextStyleClass = StyleUtil.getCSSClass(facesContext,
+        String promptTextStyleClass = Styles.getCSSClass(facesContext,
                 dropDown, dropDown.getPromptTextStyle(), StyleGroup.regularStyleGroup(1), dropDown.getPromptTextClass(),
                 DEFAULT_PROMPT_CLASS);
 
@@ -232,19 +232,19 @@ public abstract class DropDownComponentRenderer extends RendererBase {
                 params.toArray());
 
         InitScript commonInitScript = new InitScript(buf, new String[]{
-                ResourceUtil.getUtilJsURL(facesContext),
+                Resources.getUtilJsURL(facesContext),
                 getDropDownJsURL(facesContext)
         });
 
         InitScript componentSpecificInitScript = renderInitScript(facesContext, dropDown);
-        RenderingUtil.renderInitScripts(facesContext, commonInitScript, componentSpecificInitScript);
+        Rendering.renderInitScripts(facesContext, commonInitScript, componentSpecificInitScript);
 
         if (isAutomaticStyleRenderingNeeded())
-            StyleUtil.renderStyleClasses(facesContext, dropDown);
+            Styles.renderStyleClasses(facesContext, dropDown);
     }
 
     protected String getDropDownJsURL(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, DropDownComponentRenderer.class, "dropdown.js");
+        return Resources.getInternalURL(context, DropDownComponentRenderer.class, "dropdown.js");
     }
 
     protected boolean isAutomaticStyleRenderingNeeded() {
@@ -252,41 +252,41 @@ public abstract class DropDownComponentRenderer extends RendererBase {
     }
 
     protected String getFieldText(FacesContext facesContext, DropDownComponent dropDown) {
-        return RenderingUtil.getStringValue(facesContext, dropDown);
+        return Rendering.getStringValue(facesContext, dropDown);
     }
 
     protected List<String> rendererInputStyles(FacesContext context, DropDownComponent dropDown) throws IOException {
         // Render main style declaration if it is exist
         String styleClass = getInitialStyleClass(context, dropDown);
-        String rolloverStyleClass = StyleUtil.getCSSClass(context, dropDown, dropDown.getRolloverStyle(), StyleGroup.rolloverStyleGroup(), dropDown.getRolloverClass());
-        String focusedStyleClass = StyleUtil.getCSSClass(context, dropDown, dropDown.getFocusedStyle(), StyleGroup.selectedStyleGroup(), dropDown.getFocusedClass(), null);
+        String rolloverStyleClass = Styles.getCSSClass(context, dropDown, dropDown.getRolloverStyle(), StyleGroup.rolloverStyleGroup(), dropDown.getRolloverClass());
+        String focusedStyleClass = Styles.getCSSClass(context, dropDown, dropDown.getFocusedStyle(), StyleGroup.selectedStyleGroup(), dropDown.getFocusedClass(), null);
 
 
         String fieldStyle = (String) dropDown.getAttributes().get("fieldStyle");
         String fieldClass = (String) dropDown.getAttributes().get("fieldClass");
-        String fieldStyleClass = StyleUtil.getCSSClass(context, dropDown, fieldStyle, StyleGroup.regularStyleGroup(), fieldClass, getDefaultFieldClass());
+        String fieldStyleClass = Styles.getCSSClass(context, dropDown, fieldStyle, StyleGroup.regularStyleGroup(), fieldClass, getDefaultFieldClass());
         String rolloverFieldStyle = (String) dropDown.getAttributes().get("rolloverFieldStyle");
         String rolloverFieldClass = (String) dropDown.getAttributes().get("rolloverFieldClass");
-        String fieldRolloverStyleClass = StyleUtil.getCSSClass(context, dropDown, rolloverFieldStyle, StyleGroup.rolloverStyleGroup(), rolloverFieldClass);
+        String fieldRolloverStyleClass = Styles.getCSSClass(context, dropDown, rolloverFieldStyle, StyleGroup.rolloverStyleGroup(), rolloverFieldClass);
 
         if (dropDown.isDisabled()) {
             rolloverStyleClass = fieldRolloverStyleClass = "";
-            String disabledStyleClass = StyleUtil.getCSSClass(context, dropDown, dropDown.getDisabledStyle(),
+            String disabledStyleClass = Styles.getCSSClass(context, dropDown, dropDown.getDisabledStyle(),
                     StyleGroup.disabledStyleGroup(), dropDown.getDisabledClass(), getDefaultDisabledClass());
-            String disabledFieldStyleClass = StyleUtil.getCSSClass(context, dropDown, dropDown.getDisabledFieldStyle(),
+            String disabledFieldStyleClass = Styles.getCSSClass(context, dropDown, dropDown.getDisabledFieldStyle(),
                     StyleGroup.disabledStyleGroup(), dropDown.getDisabledFieldClass(), getDefaultDisabledFieldClass());
 
-            if (RenderingUtil.isNullOrEmpty(dropDown.getDisabledStyle()) && RenderingUtil.isNullOrEmpty(dropDown.getDisabledClass())) {
-                styleClass = StyleUtil.mergeClassNames(disabledStyleClass, styleClass);
+            if (Rendering.isNullOrEmpty(dropDown.getDisabledStyle()) && Rendering.isNullOrEmpty(dropDown.getDisabledClass())) {
+                styleClass = Styles.mergeClassNames(disabledStyleClass, styleClass);
             } else {
-                styleClass = StyleUtil.mergeClassNames(disabledStyleClass, StyleUtil.getCSSClass(context, dropDown, null
+                styleClass = Styles.mergeClassNames(disabledStyleClass, Styles.getCSSClass(context, dropDown, null
                         , StyleGroup.regularStyleGroup(), null, getDefaultDropDownClass()));
             }
 
-            if (RenderingUtil.isNullOrEmpty(dropDown.getDisabledFieldStyle()) && RenderingUtil.isNullOrEmpty(dropDown.getDisabledFieldClass())) {
-                fieldStyleClass = StyleUtil.mergeClassNames(disabledFieldStyleClass, fieldStyleClass);
+            if (Rendering.isNullOrEmpty(dropDown.getDisabledFieldStyle()) && Rendering.isNullOrEmpty(dropDown.getDisabledFieldClass())) {
+                fieldStyleClass = Styles.mergeClassNames(disabledFieldStyleClass, fieldStyleClass);
             } else {
-                fieldStyleClass = StyleUtil.mergeClassNames(disabledFieldStyleClass, StyleUtil.getCSSClass(context, dropDown, null,
+                fieldStyleClass = Styles.mergeClassNames(disabledFieldStyleClass, Styles.getCSSClass(context, dropDown, null,
                         StyleGroup.regularStyleGroup(), null, getDefaultFieldClass()));
             }
         }
@@ -303,34 +303,34 @@ public abstract class DropDownComponentRenderer extends RendererBase {
     private List<String> getButtonAndListStyles(FacesContext context, DropDownComponent dropDown) throws IOException {
         String buttonStyle = (String) dropDown.getAttributes().get("buttonStyle");
         String buttonClass = (String) dropDown.getAttributes().get("buttonClass");
-        String buttonStyleClass = StyleUtil.getCSSClass(context, dropDown, buttonStyle, StyleGroup.regularStyleGroup(), buttonClass, DEFAULT_BUTTON_CLASS);
+        String buttonStyleClass = Styles.getCSSClass(context, dropDown, buttonStyle, StyleGroup.regularStyleGroup(), buttonClass, DEFAULT_BUTTON_CLASS);
         String rolloverButtonStyle = (String) dropDown.getAttributes().get("rolloverButtonStyle");
         String rolloverButtonClass = (String) dropDown.getAttributes().get("rolloverButtonClass");
-        String buttonRolloverStyleClass = StyleUtil.getCSSClass(context, dropDown, rolloverButtonStyle, StyleGroup.rolloverStyleGroup(), rolloverButtonClass, DEFAULT_BUTTON_ROLLOVER_CLASS);
+        String buttonRolloverStyleClass = Styles.getCSSClass(context, dropDown, rolloverButtonStyle, StyleGroup.rolloverStyleGroup(), rolloverButtonClass, DEFAULT_BUTTON_ROLLOVER_CLASS);
         String pressedButtonStyle = (String) dropDown.getAttributes().get("pressedButtonStyle");
         String pressedButtonClass = (String) dropDown.getAttributes().get("pressedButtonClass");
-        String buttonPressedStyleClass = StyleUtil.getCSSClass(context, dropDown, pressedButtonStyle, StyleGroup.rolloverStyleGroup(2), pressedButtonClass, DEFAULT_BUTTON_PRESSED_CLASS);
+        String buttonPressedStyleClass = Styles.getCSSClass(context, dropDown, pressedButtonStyle, StyleGroup.rolloverStyleGroup(2), pressedButtonClass, DEFAULT_BUTTON_PRESSED_CLASS);
 
         String listClass = (String) dropDown.getAttributes().get("listClass");
         String listStyle = (String) dropDown.getAttributes().get("listStyle");
-        String listStyleClass = StyleUtil.getCSSClass(context, dropDown, listStyle, DEFAULT_LIST_CLASS, listClass);
-        listStyleClass = StyleUtil.mergeClassNames(listStyleClass, DefaultStyles.CLASS_DROP_DOWN_LIST);
+        String listStyleClass = Styles.getCSSClass(context, dropDown, listStyle, DEFAULT_LIST_CLASS, listClass);
+        listStyleClass = Styles.mergeClassNames(listStyleClass, DefaultStyles.CLASS_DROP_DOWN_LIST);
 
         String rolloverListClass = (String) dropDown.getAttributes().get("rolloverListClass");
         String rolloverListStyle = (String) dropDown.getAttributes().get("rolloverListStyle");
-        String popupRolloverStyleClass = StyleUtil.getCSSClass(context, dropDown, rolloverListStyle, StyleGroup.rolloverStyleGroup(), rolloverListClass);
+        String popupRolloverStyleClass = Styles.getCSSClass(context, dropDown, rolloverListStyle, StyleGroup.rolloverStyleGroup(), rolloverListClass);
 
         if (dropDown.isDisabled()) {
             buttonRolloverStyleClass = popupRolloverStyleClass = "";
             String disabledButtonStyle = (String) dropDown.getAttributes().get("disabledButtonStyle");
             String disabledButtonClass = (String) dropDown.getAttributes().get("disabledButtonClass");
-            String disabledButtonStyleClass = StyleUtil.getCSSClass(context, dropDown, disabledButtonStyle,
+            String disabledButtonStyleClass = Styles.getCSSClass(context, dropDown, disabledButtonStyle,
                     StyleGroup.disabledStyleGroup(), disabledButtonClass, DEFAULT_DISABLED_BUTTON_CLASS);
 
-            if (RenderingUtil.isNullOrEmpty(disabledButtonStyle) && RenderingUtil.isNullOrEmpty(disabledButtonClass)) {
-                buttonStyleClass = StyleUtil.mergeClassNames(disabledButtonStyleClass, buttonStyleClass);
+            if (Rendering.isNullOrEmpty(disabledButtonStyle) && Rendering.isNullOrEmpty(disabledButtonClass)) {
+                buttonStyleClass = Styles.mergeClassNames(disabledButtonStyleClass, buttonStyleClass);
             } else {
-                buttonStyleClass = StyleUtil.mergeClassNames(disabledButtonStyleClass, StyleUtil.getCSSClass(context,
+                buttonStyleClass = Styles.mergeClassNames(disabledButtonStyleClass, Styles.getCSSClass(context,
                         dropDown, null, StyleGroup.regularStyleGroup(), null, DEFAULT_BUTTON_CLASS));
             }
         }
@@ -344,7 +344,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
     }
 
     protected String getInitialStyleClass(FacesContext context, DropDownComponent dropDown) {
-        return StyleUtil.getCSSClass(context, dropDown, dropDown.getStyle(), StyleGroup.regularStyleGroup(), dropDown.getStyleClass(), getDefaultDropDownClass());
+        return Styles.getCSSClass(context, dropDown, dropDown.getStyle(), StyleGroup.regularStyleGroup(), dropDown.getStyleClass(), getDefaultDropDownClass());
     }
 
     protected String getDefaultDisabledFieldClass() {

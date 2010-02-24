@@ -14,7 +14,7 @@ package org.openfaces.renderkit.table;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.AbstractTableSelection;
 import org.openfaces.component.table.BaseColumn;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -52,7 +52,7 @@ public class SelectionColumnRenderer extends BaseColumnRenderer {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("input", component);
         writer.writeAttribute("type", multipleRowSelection ? "checkbox" : "radio", null);
-        StyleUtil.renderStyleClasses(context, component);
+        Styles.renderStyleClasses(context, component);
         writer.endElement("input");
     }
 

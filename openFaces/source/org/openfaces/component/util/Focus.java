@@ -11,9 +11,9 @@
  */
 package org.openfaces.component.util;
 
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.ValueBindings;
 
@@ -62,16 +62,16 @@ public class Focus extends UIComponentBase {
 
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
-        String componentId = ComponentUtil.referenceIdToClientId(context, this, getFocusedComponentId());
+        String componentId = Components.referenceIdToClientId(context, this, getFocusedComponentId());
 
         ResponseWriter writer = context.getResponseWriter();
 
         String clientId = getClientId(context);
-        RenderingUtil.renderHiddenField(writer, clientId, componentId);
+        Rendering.renderHiddenField(writer, clientId, componentId);
 
-        RenderingUtil.renderInitScript(context,
+        Rendering.renderInitScript(context,
                 new ScriptBuilder().initScript(context, this, "O$.initFocus", getAutoSaveFocus()).semicolon(),
-                ResourceUtil.getUtilJsURL(context));
+                Resources.getUtilJsURL(context));
     }
 
     @Override

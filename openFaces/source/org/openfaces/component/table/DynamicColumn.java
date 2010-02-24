@@ -11,7 +11,7 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -105,7 +105,7 @@ public class DynamicColumn extends Column implements DynamicCol {
 
     @Override
     public void encodeChildren(FacesContext context) throws IOException {
-        RenderingUtil.renderChildren(context, columns);
+        Rendering.renderChildren(context, columns);
     }
 
     @Override

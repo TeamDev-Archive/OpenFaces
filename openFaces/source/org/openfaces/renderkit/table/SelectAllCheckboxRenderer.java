@@ -17,10 +17,10 @@ import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.CheckboxColumn;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -69,13 +69,13 @@ public class SelectAllCheckboxRenderer extends RendererBase {
             buf.initScript(context, component, "O$.Table._initSelectionHeader", table).semicolon();
         }
 
-        RenderingUtil.renderInitScript(context, buf,
-                ResourceUtil.getUtilJsURL(context),
+        Rendering.renderInitScript(context, buf,
+                Resources.getUtilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
                 AbstractTableRenderer.getTableJsURL(context)
         );
 
-        StyleUtil.renderStyleClasses(context, component);
+        Styles.renderStyleClasses(context, component);
         writer.endElement("input");
     }
 

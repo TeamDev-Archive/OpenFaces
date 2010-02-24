@@ -11,7 +11,6 @@
  */
 package org.openfaces.util;
 
-import org.openfaces.component.OUIComponent;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 
@@ -32,19 +31,19 @@ import java.util.SortedSet;
 /**
  * @author Dmitry Pikhulya
  */
-public class StyleUtil {
-    public static final String DEFAULT_CSS_REQUESTED = StyleUtil.class.getName() + ".defaultCssRequested";
+public class Styles {
+    public static final String DEFAULT_CSS_REQUESTED = Styles.class.getName() + ".defaultCssRequested";
 
     private static final String GENERATED_CLASS_NAME_PREFIX = "o_class_";
-    private static final String REGISTERED_STYLE_PREFIX = StyleUtil.class.getName() + ".registeredStyle:";
-    private static final String REGISTERED_STYLE_CLASSES = StyleUtil.class.getName() + ".registeredStyleClasses";
-    private static final String REGISTERED_CSS_CLASSES_PREFIX = StyleUtil.class.getName() + ".registeredCssClasses:";
-    private static final String RENDERED_STYLE_ELEMENTS_IDS = StyleUtil.class.getName() + ".renderedStyleElementsIds";
-    private static final String STYLES_ID_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "styles";
+    private static final String REGISTERED_STYLE_PREFIX = Styles.class.getName() + ".registeredStyle:";
+    private static final String REGISTERED_STYLE_CLASSES = Styles.class.getName() + ".registeredStyleClasses";
+    private static final String REGISTERED_CSS_CLASSES_PREFIX = Styles.class.getName() + ".registeredCssClasses:";
+    private static final String RENDERED_STYLE_ELEMENTS_IDS = Styles.class.getName() + ".renderedStyleElementsIds";
+    private static final String STYLES_ID_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "styles";
 
     private static long styleIndexCounter = 0;
 
-    private StyleUtil() {
+    private Styles() {
     }
 
     /**
@@ -52,11 +51,11 @@ public class StyleUtil {
      *
      * @param class1 - first css class to merge
      * @param class2 - second
-     * @return merged classname
+     * @return merged class name
      */
     public static String mergeClassNames(String class1, String class2) {
-        boolean class1Empty = RenderingUtil.isNullOrEmpty(class1);
-        boolean class2Empty = RenderingUtil.isNullOrEmpty(class2);
+        boolean class1Empty = Rendering.isNullOrEmpty(class1);
+        boolean class2Empty = Rendering.isNullOrEmpty(class2);
         if (class1Empty && class2Empty) {
             return null;
         }
@@ -74,19 +73,6 @@ public class StyleUtil {
         }
 
         return buf.toString();
-    }
-
-    /**
-     * Return component css class, merged with default for regular {@link StyleGroup}
-     *
-     * @param context      {@link FacesContext} for the current request
-     * @param component    The component
-     * @param defaultClass The default css class for merge
-     * @return component css class
-     * @see #getCSSClass(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String, StyleGroup, String, String)
-     */
-    public static String getComponentCSSClass(FacesContext context, OUIComponent component, String defaultClass) {
-        return getCSSClass(context, (UIComponent) component, component.getStyle(), StyleGroup.regularStyleGroup(), component.getStyleClass(), defaultClass);
     }
 
     /**
@@ -161,6 +147,7 @@ public class StyleUtil {
     }
 
     // todo: having so much getCSSClass method overrides can be confusing, minimize to a convenient common set
+
     /**
      * Return component css class for given component and given {@link StyleGroup} merged with given css style and css style class
      *
@@ -187,14 +174,14 @@ public class StyleUtil {
     }
 
     /**
-     * Renders default style inplace unless user has defined style or styleClass attributes
+     * Renders default style in-place unless user has defined style or styleClass attributes
      */
     public static String getCSSClass_dontCascade(
             FacesContext context, UIComponent component,
             String style, StyleGroup styleGroup,
             String styleClass,
             String defaultStyle) {
-        if (RenderingUtil.isNullOrEmpty(style) && RenderingUtil.isNullOrEmpty(styleClass)) {
+        if (Rendering.isNullOrEmpty(style) && Rendering.isNullOrEmpty(styleClass)) {
             return getCSSClass(context, component, defaultStyle, styleGroup, null);
         } else {
             return getCSSClass(context, component, style, styleGroup, styleClass);
@@ -202,11 +189,12 @@ public class StyleUtil {
     }
 
     //todo: review the need for this method. Main points:
-    //  - there's already a family of methods with similar functionalty (getCSSClass). The only difference is: there's default _style_ in getStyleClassesStr, while  getCSSClass have default _style class_
+    //  - there's already a family of methods with similar functionality (getCSSClass). The only difference is: there's default _style_ in getStyleClassesStr, while  getCSSClass have default _style class_
     //  - default style is not included in the cascade when user's style is specified
+
     public static String getStyleClassesStr(FacesContext context, UIComponent component, String style, String styleClass,
                                             String defaultStyle, StyleGroup styleGroup) {
-        if (RenderingUtil.isNullOrEmpty(style) && RenderingUtil.isNullOrEmpty(styleClass)) {
+        if (Rendering.isNullOrEmpty(style) && Rendering.isNullOrEmpty(styleClass)) {
             return getCSSClass(context, component, defaultStyle, styleGroup, null);
         } else {
             return getCSSClass(context, component, style, styleGroup, styleClass);
@@ -356,9 +344,9 @@ public class StyleUtil {
     public static void writeCssClassesAsScriptElement(FacesContext context, List<String> cssRules, boolean asOnloadScript) throws IOException {
         ScriptBuilder styleRegistrationScript = new ScriptBuilder().functionCall("O$.addCssRules", cssRules).semicolon();
         if (asOnloadScript)
-            RenderingUtil.appendOnLoadScript(context, styleRegistrationScript);
+            Rendering.appendOnLoadScript(context, styleRegistrationScript);
         else
-            RenderingUtil.renderInitScript(context, styleRegistrationScript, ResourceUtil.getUtilJsURL(context));
+            Rendering.renderInitScript(context, styleRegistrationScript, Resources.getUtilJsURL(context));
     }
 
     /**
@@ -481,9 +469,9 @@ public class StyleUtil {
      * @return merged css style declaration
      */
     public static String mergeStyles(String style1, String style2) {
-        if (RenderingUtil.isNullOrEmpty(style1))
+        if (Rendering.isNullOrEmpty(style1))
             return style2;
-        if (RenderingUtil.isNullOrEmpty(style2))
+        if (Rendering.isNullOrEmpty(style2))
             return style1;
         style1 = style1.trim();
         style2 = style2.trim();
@@ -522,7 +510,7 @@ public class StyleUtil {
      */
     public static void addStyleJsonParam(FacesContext context, UIComponent component, JSONObject paramsObject,
                                          String jsonFieldName, String style, String styleClass, StyleGroup styleGroup) {
-        String clsName = StyleUtil.getCSSClass(context, component, style, styleGroup, styleClass);
+        String clsName = Styles.getCSSClass(context, component, style, styleGroup, styleClass);
         if (clsName == null)
             return;
         try {

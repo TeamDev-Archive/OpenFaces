@@ -195,7 +195,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
      */
     public void registerSelectionStyle(FacesContext context) {
         AbstractTable table = getTable();
-        String selectionCls = StyleUtil.getCSSClass_dontCascade(
+        String selectionCls = Styles.getCSSClass_dontCascade(
                 context, table, getStyle(), StyleGroup.selectedStyleGroup(), getStyleClass(), DefaultStyles.getDefaultSelectionStyle());
         getAttributes().put("_selectionCls_", selectionCls);
     }
@@ -206,7 +206,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
 
         AbstractTable table = getTable();
         ResponseWriter writer = context.getResponseWriter();
-        RenderingUtil.renderHiddenField(writer, getSelectionFieldName(context, table), null);
+        Rendering.renderHiddenField(writer, getSelectionFieldName(context, table), null);
 
         String onchange = getOnchange();
         Script automaticChangeHandler = null;
@@ -223,7 +223,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
                     initializer.getAjaxParams(context, this)).semicolon().append("return false;");
             ajaxJsRequired = true;
         }
-        onchange = RenderingUtil.joinScripts(
+        onchange = Rendering.joinScripts(
                 onchange,
                 automaticChangeHandler != null ? automaticChangeHandler.toString() : null);
 
@@ -241,15 +241,15 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
                 isMouseSupport(),
                 isKeyboardSupport());
 
-        RenderingUtil.renderInitScript(context, buf,
-                ResourceUtil.getUtilJsURL(context),
+        Rendering.renderInitScript(context, buf,
+                Resources.getUtilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
                 AbstractTableRenderer.getTableJsURL(context));
         if (ajaxJsRequired)
             AjaxUtil.renderJSLinks(context);
 
         if (submitOnChange)
-            RenderingUtil.renderHiddenField(writer, getSelectionEventFieldName(context, table), null);
+            Rendering.renderHiddenField(writer, getSelectionEventFieldName(context, table), null);
     }
 
     private List<Integer> getSelectionColumnIndexes(AbstractTable table) {
@@ -331,7 +331,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
             return new ArrayList<Object>((Collection) value);
         Class valueClass = value.getClass();
         if (valueClass.isArray()) {
-            Object[] array = ComponentUtil.anyArrayToObjectArray(value);
+            Object[] array = Components.anyArrayToObjectArray(value);
             return Arrays.asList(array);
         }
         throw new RuntimeException("Value of invalid type was provided by the '" + attributeName + "' attribute binding: " + valueClass + "; expected either a collection or an array");

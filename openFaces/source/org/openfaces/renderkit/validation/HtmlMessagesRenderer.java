@@ -13,11 +13,11 @@ package org.openfaces.renderkit.validation;
 
 import org.openfaces.component.validation.ValidationProcessor;
 import org.openfaces.util.NewInstanceScript;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.Script;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -45,10 +45,10 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
         ValidationProcessor processor = ValidationProcessor.getInstance(context);
         HtmlMessages htmlMessages = (HtmlMessages) component;
         if (processor != null) {
-            String styleClassName = StyleUtil.getCSSClass(context, component, htmlMessages.getStyle(), htmlMessages.getStyleClass());
+            String styleClassName = Styles.getCSSClass(context, component, htmlMessages.getStyle(), htmlMessages.getStyleClass());
 
             Script clientScript = getClientScript(context, component, styleClassName);
-            RenderingUtil.renderInitScript(context, clientScript, getJavascriptLibraryUrls(context));
+            Rendering.renderInitScript(context, clientScript, getJavascriptLibraryUrls(context));
             boolean globalOnly = ((UIMessages) component).isGlobalOnly();
             if (!globalOnly) {
                 ValidatorUtil.renderPresentationExistsForAllInputComponents(context);
@@ -65,7 +65,7 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
         writer.writeAttribute("id", messageClientId, null);
         renderMessages(context, messageComponent);
         writer.endElement("span");
-        StyleUtil.renderStyleClasses(context, messageComponent);
+        Styles.renderStyleClasses(context, messageComponent);
     }
 
     private Script getClientScript(FacesContext context, UIComponent messageComponent, String css) {
@@ -86,8 +86,8 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
 
     private String[] getJavascriptLibraryUrls(FacesContext context) {
         return new String[]{
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, this.getClass(), "messages.js"),
+                Resources.getUtilJsURL(context),
+                Resources.getInternalURL(context, this.getClass(), "messages.js"),
                 ValidatorUtil.getValidatorUtilJsUrl(context)};
     }
 
@@ -116,7 +116,7 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
 
         writer.startElement("ul", messages);
-        RenderingUtil.writeIdIfNecessary(writer, messages, facesContext);
+        Rendering.writeIdIfNecessary(writer, messages, facesContext);
 
         while (messagesIterator.hasNext()) {
             writer.startElement("li", messages);
@@ -137,7 +137,7 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
 
         writer.startElement("table", messages);
-        RenderingUtil.writeIdIfNecessary(writer, messages, facesContext);
+        Rendering.writeIdIfNecessary(writer, messages, facesContext);
 
         while (messagesIterator.hasNext()) {
             writer.startElement("tr", messages);
@@ -181,7 +181,7 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
                 styleClass = ((HtmlMessages) messages).getStyleClass();
             }
 
-            StyleUtil.checkCSSStyleForSemicolumn(style);
+            Styles.checkCSSStyleForSemicolumn(style);
         }
 
         return new String[]{style, styleClass};

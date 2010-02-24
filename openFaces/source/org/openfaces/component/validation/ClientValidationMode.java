@@ -15,7 +15,7 @@
  */
 package org.openfaces.component.validation;
 
-import org.openfaces.util.EnumerationUtil;
+import org.openfaces.util.Enumerations;
 
 public enum ClientValidationMode {
     OFF("off"),
@@ -34,6 +34,6 @@ public enum ClientValidationMode {
     }
 
     public static ClientValidationMode fromString(String value) {
-        return EnumerationUtil.valueByString(ClientValidationMode.class, value, null, "clientValidation");
+        return Enumerations.valueByString(ClientValidationMode.class, value, null, "clientValidation");
     }
 }

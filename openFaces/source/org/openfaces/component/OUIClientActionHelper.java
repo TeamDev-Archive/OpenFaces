@@ -12,9 +12,9 @@
 package org.openfaces.component;
 
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.ComponentUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Components;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlCommandButton;
@@ -30,7 +30,7 @@ public abstract class OUIClientActionHelper {
     public static void ensureComponentIdSpecified(UIComponent component) {
         if (component == null)
             return;
-        if (!ComponentUtil.isComponentIdSpecified(component))
+        if (!Components.isComponentIdSpecified(component))
             component.setId(OUIClientActionHelper.generateComponentId());
     }
 
@@ -49,7 +49,7 @@ public abstract class OUIClientActionHelper {
         String aFor = clientAction.getFor();
         UIComponent actionComponent = (UIComponent) clientAction;
         if (aFor != null) {
-            return ComponentUtil.referenceIdToClientId(context, actionComponent, aFor);
+            return Components.referenceIdToClientId(context, actionComponent, aFor);
         } else if (!clientAction.isStandalone()) {
             UIComponent associatedComponent = actionComponent.getParent();
             if (associatedComponent instanceof ComponentConfigurator)
@@ -78,7 +78,7 @@ public abstract class OUIClientActionHelper {
                 parent instanceof HtmlCommandButton || parent instanceof HtmlCommandLink) {
             if (context.getResponseWriter() != null) {
                 AjaxUtil.renderJSLinks(context);
-                StyleUtil.requestDefaultCss(context);
+                Styles.requestDefaultCss(context);
             }
             return;
         }
@@ -86,10 +86,10 @@ public abstract class OUIClientActionHelper {
         String script = getClientActionScript(context, action);
         if (context.getResponseWriter() != null) {
             AjaxUtil.renderJSLinks(context);
-            StyleUtil.requestDefaultCss(context);
+            Styles.requestDefaultCss(context);
         }
 
-        String event = RenderingUtil.getEventWithOnPrefix(context, action, null);
+        String event = Rendering.getEventWithOnPrefix(context, action, null);
         parent.getAttributes().put(event, script);
     }
 

@@ -15,11 +15,11 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.ColumnReordering;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleParam;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -39,21 +39,21 @@ public class ColumnReorderingRenderer extends RendererBase {
         StyleParam draggedCellStyle = new StyleParam(cr, "draggedCell", "o_table_draggedColumn");
         StyleParam autoScrollAreaStyle = new StyleParam(cr, "autoScrollArea", "o_headerAutoScrollArea");
         StyleParam dropTargetStyle = new StyleParam(cr, "dropTarget", "o_table_columnDropTarget");
-        StyleUtil.renderStyleClasses(context, cr);
+        Styles.renderStyleClasses(context, cr);
         // important: style rendering is made earlier than init function deliberately to allow script to
         // inspect styles dynamically
-        RenderingUtil.renderInitScript(context,
+        Rendering.renderInitScript(context,
                 new ScriptBuilder().initScript(context, table,
                         "O$.Table._initColumnReordering",
                         draggedCellStyle,
                         cr.getDraggedCellTransparency(),
                         autoScrollAreaStyle,
                         cr.getAutoScrollAreaTransparency(),
-                        ResourceUtil.getResourceURL(context, cr.getAutoScrollLeftImageUrl(), ColumnReorderingRenderer.class, "autoScrollLeft.gif"),
-                        ResourceUtil.getResourceURL(context, cr.getAutoScrollRightImageUrl(), ColumnReorderingRenderer.class, "autoScrollRight.gif"),
+                        Resources.getURL(context, cr.getAutoScrollLeftImageUrl(), ColumnReorderingRenderer.class, "autoScrollLeft.gif"),
+                        Resources.getURL(context, cr.getAutoScrollRightImageUrl(), ColumnReorderingRenderer.class, "autoScrollRight.gif"),
                         dropTargetStyle,
-                        ResourceUtil.getResourceURL(context, cr.getDropTargetTopImageUrl(), ColumnReorderingRenderer.class, "dropTargetTop.gif"),
-                        ResourceUtil.getResourceURL(context, cr.getDropTargetBottomImageUrl(), ColumnReorderingRenderer.class, "dropTargetBottom.gif")
+                        Resources.getURL(context, cr.getDropTargetTopImageUrl(), ColumnReorderingRenderer.class, "dropTargetTop.gif"),
+                        Resources.getURL(context, cr.getDropTargetBottomImageUrl(), ColumnReorderingRenderer.class, "dropTargetBottom.gif")
                 ),
                 AbstractTableRenderer.getTableJsURL(context)
         );

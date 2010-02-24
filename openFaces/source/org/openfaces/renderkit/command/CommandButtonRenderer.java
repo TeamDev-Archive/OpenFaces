@@ -15,8 +15,8 @@ import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.command.CommandButton;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -37,8 +37,8 @@ public class CommandButtonRenderer extends RendererBase {
         CommandButton btn = (CommandButton) component;
         String tagName = getTagName(btn);
         writer.startElement(tagName, btn);
-        RenderingUtil.writeIdAttribute(context, component);
-        RenderingUtil.writeNameAttribute(context, component);
+        Rendering.writeIdAttribute(context, component);
+        Rendering.writeNameAttribute(context, component);
         String type = btn.getType();
         if (!("submit".equals(type) || "reset".equals(type) || "button".equals(type)))
             type = "submit";
@@ -46,13 +46,13 @@ public class CommandButtonRenderer extends RendererBase {
             String image = btn.getImage();
             if (image != null)
                 type = "image";
-            writer.writeAttribute("src", ResourceUtil.getApplicationResourceURL(context, image), "image");
+            writer.writeAttribute("src", Resources.getApplicationURL(context, image), "image");
         }
         writer.writeAttribute("type", type, "type");
         if (btn.isDisabled())
             writer.writeAttribute("disabled", "disabled", "");
         
-        RenderingUtil.writeAttributes(writer, btn,
+        Rendering.writeAttributes(writer, btn,
                 "value",
                 "accesskey",
                 "tabindex",
@@ -60,7 +60,7 @@ public class CommandButtonRenderer extends RendererBase {
                 "title",
                 "alt",
                 "dir");
-        RenderingUtil.writeStyleAndClassAttributes(writer, btn);
+        Rendering.writeStyleAndClassAttributes(writer, btn);
 
         if (!btn.isDisabled()) {
             boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, btn);
@@ -86,7 +86,7 @@ public class CommandButtonRenderer extends RendererBase {
     private boolean isButtonTagMode(CommandButton button) {
         List<UIComponent> children = button.getChildren();
         for (UIComponent child : children) {
-            if (!(child instanceof OUIClientAction) && !RenderingUtil.isA4jSupportComponent(child))
+            if (!(child instanceof OUIClientAction) && !Rendering.isA4jSupportComponent(child))
                 return true;
         }
         return false;

@@ -70,7 +70,7 @@ public class Tomahawk113AjaxPlugin extends AbstractAjaxPlugin {
             ByteArrayOutputStream byteArrayOutputStream = response.getByteArrayOutputStream();
             return byteArrayOutputStream.toString(response.getCharacterEncoding());
         } catch (ClassNotFoundException e) {
-            // absense of Tomahawk is a valid case
+            // absence of Tomahawk is a valid case
             return null;
         } catch (NoSuchMethodException e) {
             Log.log("", e);

@@ -11,7 +11,7 @@
  */
 package org.openfaces.renderkit.validation;
 
-import org.openfaces.util.RenderingUtil;
+import org.openfaces.util.Rendering;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIMessage;
@@ -50,7 +50,7 @@ public class BaseMessageRenderer extends Renderer {
     protected String getForComponentClientId(FacesContext context, UIComponent uiComponent) {
         String forAttr = getFor(uiComponent);
         if (forAttr == null) {
-            RenderingUtil.logWarning(context, "'for' attribute is not specified for component " + uiComponent.getClientId(context));
+            Rendering.logWarning(context, "'for' attribute is not specified for component " + uiComponent.getClientId(context));
             return null;
         }
         UIComponent forComponent = uiComponent.findComponent(forAttr);

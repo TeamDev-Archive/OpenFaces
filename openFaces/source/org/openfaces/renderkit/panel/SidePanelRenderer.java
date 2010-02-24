@@ -15,11 +15,11 @@ import org.openfaces.component.panel.SidePanel;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.EnvironmentUtil;
 import org.openfaces.util.RawScript;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
@@ -33,10 +33,10 @@ import java.util.List;
  */
 public class SidePanelRenderer extends RendererBase implements NamingContainer {
 
-    public static final String SPLITTER_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "splitter";
-    public static final String PANEL_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "panel";
-    public static final String CAPTION_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "caption";
-    public static final String CONTENT_SUFFIX = RenderingUtil.CLIENT_ID_SUFFIX_SEPARATOR + "content";
+    public static final String SPLITTER_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "splitter";
+    public static final String PANEL_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "panel";
+    public static final String CAPTION_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "caption";
+    public static final String CONTENT_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "content";
 
     private static final String JS_SCRIPT_URL = "sidePanel.js";
     private static final String JS_MY_UTIL_SCRIPT_URL = "sidePanelUtil.js";
@@ -70,7 +70,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         //splitter
         writer.startElement("div", sidePanel);
         writer.writeAttribute("id", clientId + SPLITTER_SUFFIX, null);
-        String splitterDefaultClass = StyleUtil.getCSSClass(context,
+        String splitterDefaultClass = Styles.getCSSClass(context,
                 sidePanel, sidePanel.getSplitterStyle(),
                 "o_sidepanel_splitter o_sidepanel_splitter_" + sidePanel.getAlignment().toString(), sidePanel.getSplitterClass()
         );
@@ -80,8 +80,8 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         //panel
         writer.startElement("div", sidePanel);
         writer.writeAttribute("id", clientId + PANEL_SUFFIX, null);
-        RenderingUtil.writeStandardEvents(writer, sidePanel);
-        String panelDefaultClass = StyleUtil.getCSSClass(context,
+        Rendering.writeStandardEvents(writer, sidePanel);
+        String panelDefaultClass = Styles.getCSSClass(context,
                 sidePanel, sidePanel.getStyle(),
                 "o_sidepanel_panel o_sidepanel_panel_" + sidePanel.getAlignment().toString(), sidePanel.getStyleClass()
         );
@@ -91,7 +91,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         if (captionFacet != null || caption != null) {
             writer.startElement("div", sidePanel);
             writer.writeAttribute("id", clientId + CAPTION_SUFFIX, null);
-            panelDefaultClass = StyleUtil.getCSSClass(context,
+            panelDefaultClass = Styles.getCSSClass(context,
                     sidePanel, sidePanel.getCaptionStyle(),
                     "o_sidepanel_caption", sidePanel.getCaptionClass()
             );
@@ -106,7 +106,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         //content
         writer.startElement("div", sidePanel);
         writer.writeAttribute("id", clientId + CONTENT_SUFFIX, "id");
-        String contentDefaultClass = StyleUtil.getCSSClass(context,
+        String contentDefaultClass = Styles.getCSSClass(context,
                 sidePanel, sidePanel.getContentStyle(),
                 "o_sidepanel_content", sidePanel.getContentClass()
         );
@@ -120,7 +120,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         if (!component.isRendered()) return;
         ResponseWriter writer = context.getResponseWriter();
 
-        StyleUtil.renderStyleClasses(context, component);
+        Styles.renderStyleClasses(context, component);
 
         writer.endElement("div");
         writer.endElement("div");
@@ -136,7 +136,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
             sidePanel.getFacet("content").encodeAll(context);
         } else {
             List<UIComponent> children = component.getChildren();
-            RenderingUtil.renderComponents(context, children);
+            Rendering.renderComponents(context, children);
         }
     }
 
@@ -172,20 +172,20 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
             initScript.append("O$('").append(clientId).append("').style.visibility = 'visible';\n");
             initScript.append("});\n");
         }
-        RenderingUtil.renderInitScript(context, initScript,
-                ResourceUtil.getUtilJsURL(context),
-                ResourceUtil.getInternalResourceURL(context, SidePanelRenderer.class, JS_SCRIPT_URL),
-                ResourceUtil.getInternalResourceURL(context, SidePanelRenderer.class, JS_MY_UTIL_SCRIPT_URL));
+        Rendering.renderInitScript(context, initScript,
+                Resources.getUtilJsURL(context),
+                Resources.getInternalURL(context, SidePanelRenderer.class, JS_SCRIPT_URL),
+                Resources.getInternalURL(context, SidePanelRenderer.class, JS_MY_UTIL_SCRIPT_URL));
     }
 
     private String getRolloverClass(FacesContext context, SidePanel sidePanel) {
-        return StyleUtil.getCSSClass(context,
+        return Styles.getCSSClass(context,
                 sidePanel, sidePanel.getRolloverStyle(), StyleGroup.rolloverStyleGroup(),
                 sidePanel.getRolloverClass());
     }
 
     private String getSplitterRolloverClass(FacesContext context, SidePanel sidePanel) {
-        return StyleUtil.getCSSClass(context,
+        return Styles.getCSSClass(context,
                 sidePanel, sidePanel.getSplitterRolloverStyle(), StyleGroup.rolloverStyleGroup(),
                 sidePanel.getSplitterRolloverClass()
         );

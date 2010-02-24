@@ -19,7 +19,7 @@ import org.openfaces.component.LoadingMode;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.event.StateChangeListener;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.ComponentUtil;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
@@ -28,7 +28,6 @@ import javax.faces.convert.Converter;
 import javax.faces.el.MethodBinding;
 import javax.faces.event.ValueChangeListener;
 import javax.faces.validator.Validator;
-import java.util.List;
 
 /**
  * The FoldingPanel component is a container for other components that can be expanded
@@ -201,7 +200,7 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
         for (UIComponent facet : getFacets().values()) {
             facet.processDecodes(context);
         }
-        for (CaptionArea captionArea : ComponentUtil.findChildrenWithClass(this, CaptionArea.class)) {
+        for (CaptionArea captionArea : Components.findChildrenWithClass(this, CaptionArea.class)) {
             captionArea.processDecodes(context);
         }
         if (isContentPreloaded()) {
@@ -227,7 +226,7 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
         for (UIComponent facet : getFacets().values()) {
             facet.processValidators(context);
         }
-        for (CaptionArea captionArea : ComponentUtil.findChildrenWithClass(this, CaptionArea.class)) {
+        for (CaptionArea captionArea : Components.findChildrenWithClass(this, CaptionArea.class)) {
             captionArea.processValidators(context);
         }
         if (isContentPreloaded()) {
@@ -247,7 +246,7 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
             UIComponent facet = (UIComponent) o;
             facet.processUpdates(context);
         }
-        for (CaptionArea captionArea : ComponentUtil.findChildrenWithClass(this, CaptionArea.class)) {
+        for (CaptionArea captionArea : Components.findChildrenWithClass(this, CaptionArea.class)) {
             captionArea.processUpdates(context);
         }
         if (isContentPreloaded()) {
@@ -267,9 +266,9 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
     }
 
     public void createSubComponents(FacesContext context) {
-        CaptionArea captionArea = ComponentUtil.getOrCreateFacet(
+        CaptionArea captionArea = Components.getOrCreateFacet(
                 context, this, CaptionArea.COMPONENT_TYPE, "_defaultButtonsArea", CaptionArea.class);
-        ComponentUtil.createChildComponent(context, captionArea, ExpansionToggleButton.COMPONENT_TYPE, "toggle");
+        Components.createChildComponent(context, captionArea, ExpansionToggleButton.COMPONENT_TYPE, "toggle");
     }
 
     public Object getSubmittedValue() {

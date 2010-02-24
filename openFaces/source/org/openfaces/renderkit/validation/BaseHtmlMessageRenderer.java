@@ -13,8 +13,8 @@ package org.openfaces.renderkit.validation;
 
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Styles;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -102,14 +102,14 @@ public abstract class BaseHtmlMessageRenderer extends BaseMessageRenderer {
             renderSingleFacesMessage(facesContext, messageComponent, facesMessage, clientId);
         } else {
             String[] styleAndClass = getStyleAndStyleClass(messageComponent, FacesMessage.SEVERITY_ERROR);
-            String style = StyleUtil.mergeStyles(styleAndClass[0], DISPLAY_NONE_CSS);
+            String style = Styles.mergeStyles(styleAndClass[0], DISPLAY_NONE_CSS);
             String styleClass = styleAndClass[1];
             ResponseWriter writer = facesContext.getResponseWriter();
-            if (!RenderingUtil.isDefaultAttributeValue(style)) {
-                RenderingUtil.renderHTMLAttribute(writer, "style", "style", style);
+            if (!Rendering.isDefaultAttributeValue(style)) {
+                Rendering.renderHTMLAttribute(writer, "style", "style", style);
             }
-            if (!RenderingUtil.isDefaultAttributeValue(styleClass)) {
-                RenderingUtil.renderHTMLAttribute(writer, "styleClass", "styleClass", styleClass);
+            if (!Rendering.isDefaultAttributeValue(styleClass)) {
+                Rendering.renderHTMLAttribute(writer, "styleClass", "styleClass", styleClass);
             }
         }
 
@@ -139,14 +139,14 @@ public abstract class BaseHtmlMessageRenderer extends BaseMessageRenderer {
 
         ResponseWriter writer = facesContext.getResponseWriter();
 
-        if (!RenderingUtil.isDefaultAttributeValue(title)) {
-            RenderingUtil.renderHTMLAttribute(writer, "title", "title", title);
+        if (!Rendering.isDefaultAttributeValue(title)) {
+            Rendering.renderHTMLAttribute(writer, "title", "title", title);
         }
-        if (!RenderingUtil.isDefaultAttributeValue(style)) {
-            RenderingUtil.renderHTMLAttribute(writer, "style", "style", style);
+        if (!Rendering.isDefaultAttributeValue(style)) {
+            Rendering.renderHTMLAttribute(writer, "style", "style", style);
         }
-        if (!RenderingUtil.isDefaultAttributeValue(styleClass)) {
-            RenderingUtil.renderHTMLAttribute(writer, "styleClass", "styleClass", styleClass);
+        if (!Rendering.isDefaultAttributeValue(styleClass)) {
+            Rendering.renderHTMLAttribute(writer, "styleClass", "styleClass", styleClass);
         }
 
 
@@ -177,7 +177,7 @@ public abstract class BaseHtmlMessageRenderer extends BaseMessageRenderer {
 
         for (String attrName : MESSAGE_PASSTHROUGH_ATTRIBUTES_WITHOUT_TITLE_STYLE_AND_STYLE_CLASS) {
             Object value = messageComponent.getAttributes().get(attrName);
-            RenderingUtil.renderHTMLAttribute(writer, attrName, attrName, value);
+            Rendering.renderHTMLAttribute(writer, attrName, attrName, value);
         }
     }
 
@@ -207,7 +207,7 @@ public abstract class BaseHtmlMessageRenderer extends BaseMessageRenderer {
             styleClass = getStyleClass(message);
         }
 
-        StyleUtil.checkCSSStyleForSemicolumn(style);
+        Styles.checkCSSStyleForSemicolumn(style);
 
         return new String[]{style, styleClass};
     }
@@ -304,7 +304,7 @@ public abstract class BaseHtmlMessageRenderer extends BaseMessageRenderer {
         if (component instanceof HtmlMessage) {
             return ((HtmlMessage) component).isTooltip();
         } else {
-            return RenderingUtil.getBooleanAttribute(component, "tooltip", false);
+            return Rendering.getBooleanAttribute(component, "tooltip", false);
         }
     }
 
@@ -312,7 +312,7 @@ public abstract class BaseHtmlMessageRenderer extends BaseMessageRenderer {
         if (component instanceof UIMessage) {
             return ((UIMessage) component).isShowSummary();
         } else {
-            return RenderingUtil.getBooleanAttribute(component, "showSummary", false);
+            return Rendering.getBooleanAttribute(component, "showSummary", false);
         }
     }
 
@@ -320,7 +320,7 @@ public abstract class BaseHtmlMessageRenderer extends BaseMessageRenderer {
         if (component instanceof UIMessage) {
             return ((UIMessage) component).isShowDetail();
         } else {
-            return RenderingUtil.getBooleanAttribute(component, "showDetail", false);
+            return Rendering.getBooleanAttribute(component, "showDetail", false);
         }
     }
 

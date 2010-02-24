@@ -30,11 +30,11 @@ import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.EnvironmentUtil;
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.StyleGroup;
-import org.openfaces.util.StyleUtil;
+import org.openfaces.util.Styles;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -67,7 +67,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     private static final String FACET_COLUMN_MENU_BUTTON = "columnMenuButton";
 
     public static String getTableJsURL(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, AbstractTableRenderer.class, "table.js");
+        return Resources.getInternalURL(context, AbstractTableRenderer.class, "table.js");
     }
 
     @Override
@@ -120,7 +120,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     private void encodeJsLinks(FacesContext context) throws IOException {
         String[] libs = getNecessaryJsLibs(context);
         for (String lib : libs) {
-            ResourceUtil.renderJSLinkIfNeeded(context, lib);
+            Resources.renderJSLinkIfNeeded(context, lib);
         }
     }
 
@@ -156,7 +156,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
     protected void encodeScriptsAndStyles(FacesContext context, AbstractTable table) throws IOException {
         encodeAdditionalFeatureSupport(context, table);
-        StyleUtil.renderStyleClasses(context, table);
+        Styles.renderStyleClasses(context, table);
     }
 
     protected void encodeAdditionalFeatureSupport(FacesContext context, AbstractTable table) throws IOException {
@@ -168,10 +168,10 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (selection != null)
             selection.registerSelectionStyle(context);
 
-        StyleUtil.renderStyleClasses(context, table); // encoding styles before scripts is important for tableUtil.js to be able to compute row and column styles correctly
+        Styles.renderStyleClasses(context, table); // encoding styles before scripts is important for tableUtil.js to be able to compute row and column styles correctly
 
         String[] libs = getNecessaryJsLibs(context);
-        RenderingUtil.renderInitScript(context, buf, libs);
+        Rendering.renderInitScript(context, buf, libs);
 
         if (selection != null)
             selection.encodeAll(context);
@@ -242,13 +242,13 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
     private CaptionButton createDefaultColumnMenuButton(FacesContext context) {
         CaptionButton captionButton = new CaptionButton();
-        captionButton.setId("_columnMenuButton" + RenderingUtil.SERVER_ID_SUFFIX_SEPARATOR);
+        captionButton.setId("_columnMenuButton" + Rendering.SERVER_ID_SUFFIX_SEPARATOR);
         captionButton.setImageUrl(getDefaultColumnMenuBtnImage(context));
         return captionButton;
     }
 
     private String getDefaultColumnMenuBtnImage(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, AbstractTableRenderer.class, "columnMenuDrop.gif", false);
+        return Resources.getInternalURL(context, AbstractTableRenderer.class, "columnMenuDrop.gif", false);
     }
 
     private void preregisterNoFilterDataRowStyleForOpera(FacesContext context, AbstractTable table) {
@@ -266,7 +266,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         buf.initScript(context, table, "O$.Table._init",
                 tableStructure.getInitParam(context, defaultStyles),
                 table.getUseAjax(),
-                StyleUtil.getCSSClass(context, table, table.getRolloverStyle(),
+                Styles.getCSSClass(context, table, table.getRolloverStyle(),
                         StyleGroup.rolloverStyleGroup(), table.getRolloverClass()),
                 getInitJsAPIFunctionName());
     }
@@ -277,7 +277,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
     protected String[] getNecessaryJsLibs(FacesContext context) {
         return new String[]{
-                ResourceUtil.getUtilJsURL(context),
+                Resources.getUtilJsURL(context),
                 TableUtil.getTableUtilJsURL(context),
                 getTableJsURL(context)};
     }
@@ -291,10 +291,10 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         ResponseWriter writer = context.getResponseWriter();
         String focusFieldName = getFocusFieldName(context, table);
         String focused = String.valueOf(focusedAttr != null && focusedAttr);
-        RenderingUtil.renderHiddenField(writer, focusFieldName, focused);
+        Rendering.renderHiddenField(writer, focusFieldName, focused);
         boolean tableIsPaginated = getUseKeyboardForPagination(table);
         boolean applyDefaultStyle = table.getApplyDefaultStyle();
-        String focusedClass = StyleUtil.getCSSClass_dontCascade(
+        String focusedClass = Styles.getCSSClass_dontCascade(
                 context, table, table.getFocusedStyle(), StyleGroup.selectedStyleGroup(), table.getFocusedClass(),
                 applyDefaultStyle ? DEFAULT_FOCUSED_STYLE : null);
 
@@ -357,7 +357,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         getSortedColumnHeaderClass(table);
 
         ResponseWriter writer = context.getResponseWriter();
-        RenderingUtil.renderHiddenField(writer, getSortingFieldName(context, table), null);
+        Rendering.renderHiddenField(writer, getSortingFieldName(context, table), null);
 
         String oppositeSortingDirectionImageUrl = table.isSortAscending()
                 ? HeaderCell.getSortedDescendingImageUrl(context, table)
@@ -374,12 +374,12 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         buf.initScript(context, table, "O$.Table._initSorting",
                 columnSortableFlags,
                 table.getSortColumnIndex(),
-                StyleUtil.getCSSClass(context, table, table.getSortableHeaderStyle(), StyleGroup.regularStyleGroup(), getSortableHeaderClass(table)),
-                StyleUtil.getCSSClass(context, table, table.getSortableHeaderRolloverStyle(), StyleGroup.regularStyleGroup(), getSortableHeaderRolloverClass(table)),
-                StyleUtil.getCSSClass(context, table, table.getSortedColumnStyle(), StyleGroup.regularStyleGroup(), getSortedColumnClass(table)),
-                StyleUtil.getCSSClass(context, table, table.getSortedColumnHeaderStyle(), StyleGroup.regularStyleGroup(), getSortedColumnHeaderClass(table)),
-                StyleUtil.getCSSClass(context, table, table.getSortedColumnBodyStyle(), StyleGroup.regularStyleGroup(), getSortedColumnBodyClass(table)),
-                StyleUtil.getCSSClass(context, table, table.getSortedColumnFooterStyle(), StyleGroup.regularStyleGroup(), getSortedColumnFooterClass(table)),
+                Styles.getCSSClass(context, table, table.getSortableHeaderStyle(), StyleGroup.regularStyleGroup(), getSortableHeaderClass(table)),
+                Styles.getCSSClass(context, table, table.getSortableHeaderRolloverStyle(), StyleGroup.regularStyleGroup(), getSortableHeaderRolloverClass(table)),
+                Styles.getCSSClass(context, table, table.getSortedColumnStyle(), StyleGroup.regularStyleGroup(), getSortedColumnClass(table)),
+                Styles.getCSSClass(context, table, table.getSortedColumnHeaderStyle(), StyleGroup.regularStyleGroup(), getSortedColumnHeaderClass(table)),
+                Styles.getCSSClass(context, table, table.getSortedColumnBodyStyle(), StyleGroup.regularStyleGroup(), getSortedColumnBodyClass(table)),
+                Styles.getCSSClass(context, table, table.getSortedColumnFooterStyle(), StyleGroup.regularStyleGroup(), getSortedColumnFooterClass(table)),
                 preloadedImageUrls);
     }
 
@@ -567,7 +567,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         ResponseWriter writer = context.getResponseWriter();
         for (int i = 0; i < checkBoxColCount; i++) {
             CheckboxColumn col = checkboxColumns.get(i);
-            RenderingUtil.renderHiddenField(writer, col.getClientId(context), "");
+            Rendering.renderHiddenField(writer, col.getClientId(context), "");
         }
 
         for (int checkBoxColIndex = 0; checkBoxColIndex < checkBoxColCount; checkBoxColIndex++) {
@@ -690,7 +690,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                                            JSONObject rowsInitInfo) {
         Map<Object, String> rowStylesMap = tableStructure.getRowStylesMap();
         Map<Object, String> cellStylesMap = tableStructure.getCellStylesMap();
-        RenderingUtil.addJsonParam(rowsInitInfo, "rowStylesMap", TableUtil.getStylesMapAsJSONObject(rowStylesMap));
-        RenderingUtil.addJsonParam(rowsInitInfo, "cellStylesMap", TableUtil.getStylesMapAsJSONObject(cellStylesMap));
+        Rendering.addJsonParam(rowsInitInfo, "rowStylesMap", TableUtil.getStylesMapAsJSONObject(rowStylesMap));
+        Rendering.addJsonParam(rowsInitInfo, "cellStylesMap", TableUtil.getStylesMapAsJSONObject(cellStylesMap));
     }
 }

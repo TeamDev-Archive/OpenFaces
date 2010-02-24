@@ -11,8 +11,8 @@
  */
 package org.openfaces.renderkit.validation;
 
-import org.openfaces.util.RenderingUtil;
-import org.openfaces.util.ResourceUtil;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.RawScript;
 import org.openfaces.validator.AbstractClientValidator;
@@ -25,19 +25,19 @@ public class ValidatorUtil {
     }
 
     public static void renderPresentationExistsForAllInputComponents(FacesContext context) throws IOException {
-        RenderingUtil.renderInitScript(context, new RawScript("O$._presentationExistsForAllComponents();"), 
-                ResourceUtil.getUtilJsURL(context),
+        Rendering.renderInitScript(context, new RawScript("O$._presentationExistsForAllComponents();"),
+                Resources.getUtilJsURL(context),
                 getValidatorUtilJsUrl(context));
     }
 
     public static void renderPresentationExistsForComponent(String componentClientId, FacesContext context) throws IOException {
-        RenderingUtil.renderInitScript(context,
+        Rendering.renderInitScript(context,
                 new ScriptBuilder().functionCall("O$._presentationExistsForComponent", componentClientId).semicolon(),
-                ResourceUtil.getUtilJsURL(context),
+                Resources.getUtilJsURL(context),
                 getValidatorUtilJsUrl(context));
     }
 
     public static String getValidatorUtilJsUrl(FacesContext context) {
-        return ResourceUtil.getInternalResourceURL(context, AbstractClientValidator.class, "validatorUtil.js");
+        return Resources.getInternalURL(context, AbstractClientValidator.class, "validatorUtil.js");
     }
 }
