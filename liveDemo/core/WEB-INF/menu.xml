@@ -462,6 +462,7 @@
     <keyFeatures>
       <feature>All features of the standard &lt;h:inputTextarea&gt; component</feature>
       <feature>Prompt text support</feature>
+      <feature>Automatic growing depending on the entered text</feature>
       <feature>Focused and rollover style support</feature>
     </keyFeatures>
     <demos>

@@ -1,33 +1,35 @@
 <div xmlns:h="http://java.sun.com/jsf/html"
      xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:o="http://openfaces.org/"
-        >
+     xmlns:o="http://openfaces.org/">
 
   <div id="Demo">
 
     <h3>Tell us what you think</h3>
 
-    <h:panelGroup id="tellusGroup">
+    <h:panelGroup id="tellUsGroup">
       <h:panelGrid rendered="#{!InputTextareaBean.successfullySent}" columns="1">
 
-        <o:inputTextarea id="tellusText"
-                         value="#{InputTextareaBean.feedback}"
+        <o:inputTextarea value="#{InputTextareaBean.feedback}"
                          promptTextClass="empty"
                          promptTextStyle="overflow: auto; color: #d0d9e0; font-style: italic;"
-                         style="overflow: auto; margin-top: 2px; width: 450px; height: 150px; background: url('../images/inputtextarea/textarea_back.jpg') no-repeat 0 0; color: #fff; font-size: 1.5em;"
-                         promptText="If you want to get a feedback, please leave your email with the message."/>
+                         rows="2"
+                         style="margin-top: 2px; width: 450px; font-size: 1.5em; border: 1px solid silver;"
+                         rolloverStyle="border: 1px solid gray"
+                         focusedStyle="border: 1px solid gray; background: beige"
+                         promptText="Type several lines to see the automatic growing feature"
+                         autoGrowing="true"/>
 
         <h:panelGroup style="padding-top:3px; text-align: right; display: block;">
           <o:commandButton value="Send Us Your Opinion"
                            actionListener="#{InputTextareaBean.send}"
-                           render=":form:tellusGroup"/>
+                           render=":form:tellUsGroup"/>
         </h:panelGroup>
       </h:panelGrid>
 
-      <h:panelGrid id="tellusSuccess" rendered="#{InputTextareaBean.successfullySent}">
+      <h:panelGrid rendered="#{InputTextareaBean.successfullySent}">
         <h:outputText value="Following feedback was accepted:"/>
         <h:panelGroup
-                style="display: block; overflow: auto; margin-top: 2px; width: 450px; height: 150px; font-size: 1.5em;">
+                style="display: block; margin-top: 2px; width: 450px; font-size: 1.5em;">
           <h:outputText value="#{InputTextareaBean.feedback}"/>
         </h:panelGroup>
         <h:outputText value="Thank you. Your opinion is very important to us."/>
@@ -46,12 +48,14 @@
     <ul class="hang">
       <li><strong>Displaying prompt text</strong> - You can use the
         <i>promptText</i> attribute if you'd like to display helper text when text field's value is empty.
-        See demo promt text in the feedback form above.
+        See demo prompt text in the feedback form above.
+      </li>
+      <li><strong>Automatic growing depending on the entered text</strong> - Type several lines into the area and see it
+        automatically increase its size to fit the entered content.
       </li>
       <li>
         <strong>Extended styling</strong> - You can apply styles for the Input Textarea component when it's in a normal,
-        focused or rollover state.
-        Demo component's background color is changed to beige.
+        rollover and focused state.
       </li>
     </ul>
   </div>
