@@ -468,7 +468,7 @@ public class Calendar extends OUIInputBase {
 
 
     /**
-     * Indicates whether keep time of binded date value or not.
+     * Indicates whether or not to keep time portion of the bound date value.
      *
      * @return <code>true</code> if time is kept; <code>false</code> if time is set to 00:00:00. Default value is <code>false</code>.
      */
@@ -477,7 +477,7 @@ public class Calendar extends OUIInputBase {
     }
 
     /**
-     * Sets whether keep time of binded date value or not.
+     * Sets whether or not to keep time of the bound date value.
      *
      * @param keepTime
      */

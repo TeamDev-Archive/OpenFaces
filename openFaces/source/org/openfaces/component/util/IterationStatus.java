@@ -31,8 +31,8 @@ public class IterationStatus {
     /**
      * see constructor call sequence into setVarStatus() method of org.openfaces.component.foreach.ForEach class.
      *
-     * @param current is current iterated object in the value-binded collection of data. If no value-binded collection is exist <code>current</code> must be a <code>null</code>.
-     * @param index   is index of current iteration. If value-binded data collection is specified it also the index of currend data object into collection.
+     * @param current is current iterated object in the value-bound collection of data. If no value-bound collection is exist <code>current</code> must be a <code>null</code>.
+     * @param index   is index of current iteration. If value-bound data collection is specified it also the index of currend data object into collection.
      * @param count   is count of current iteration.
      * @param first   is equal <code>true</code> if current index is first into iteration sequence and it is equal <code>false</code> otherwise.
      * @param last    is equal <code>true</code> if current index is last into iteration sequence and it is equal <code>false</code> otherwise.
@@ -60,18 +60,18 @@ public class IterationStatus {
     }
 
     /**
-     * Retrieves the current item in the value-binded collection of data.
+     * Retrieves the current item in the value-bound collection of data.
      *
-     * @return current item as an <code>java.lang.Object</code> or <code>null</code> if no value-binded data collection is specified.
+     * @return current item as an <code>java.lang.Object</code> or <code>null</code> if no value-bound data collection is specified.
      */
-    public java.lang.Object getCurrent() {
+    public Object getCurrent() {
         return current;
     }
 
     /**
-     * <p>Retrieves the index of the current round of the iteration. If <code>firstIndex</code> tag attribute is specified <code>index</code> start from it's value. If value-binded data collection is specified it also the index of currend data object into collection.</p>
+     * <p>Retrieves the index of the current round of the iteration. If <code>firstIndex</code> tag attribute is specified <code>index</code> start from it's value. If value-bound data collection is specified it also the index of currend data object into collection.</p>
      * <p/>
-     * <p>As an example, an iteration with firstIndex = 10, lastIndex = 5, and step = -1 produces the indexes 10, 9, 8, 7, 6 and 5 in that order (of course if value-binded collection allow this indexes, or if it is not specified completely).</p>
+     * <p>As an example, an iteration with firstIndex = 10, lastIndex = 5, and step = -1 produces the indexes 10, 9, 8, 7, 6 and 5 in that order (of course if value-bound collection allow this indexes, or if it is not specified completely).</p>
      *
      * @return current index of the iteration
      */
@@ -113,7 +113,7 @@ public class IterationStatus {
      *
      * @return the <code>'begin'</code> value for the associated <code>&lt;o:forEach&gt;</code> tag, or null if no <code>'begin'</code> attribute was specified.
      */
-    public java.lang.Integer getBegin() {
+    public Integer getBegin() {
         return begin;
     }
 
@@ -122,7 +122,7 @@ public class IterationStatus {
      *
      * @return the <code>'end'</code> value for the associated <code>&lt;o:forEach&gt;</code> tag, or null if no <code>'end'</code> attribute was specified.
      */
-    public java.lang.Integer getEnd() {
+    public Integer getEnd() {
         return end;
     }
 
@@ -131,7 +131,7 @@ public class IterationStatus {
      *
      * @return the <code>'step'</code> value for the associated <code>&lt;o:forEach&gt;</code> tag, or null if no <code>'step'</code> attribute was specified.
      */
-    public java.lang.Integer getStep() {
+    public Integer getStep() {
         return step;
     }
 }

@@ -42,9 +42,9 @@
 
     <h5>Undone Tasks</h5>
     <h:panelGroup id="taskList" styleClass="tasks">
-      <o:forEach items="#{TaskBean.tasks}" id="undoneTasks" var="task" varStatus="taskListStatus">
-        <h:panelGrid id="taskListItem" onmouseover="this.className='rollover';"
-                     onmouseout="this.className='';" columns="3" cellspacing="0" cellpadding="0">
+      <o:forEach id="undoneTasks" items="#{TaskBean.tasks}" var="task" varStatus="status">
+        <h:panelGrid id="taskListItem" columns="3" cellspacing="0" cellpadding="0"
+                     onmouseover="this.className='rollover';" onmouseout="this.className='';">
           <o:selectBooleanCheckbox value="#{task.completed}"
                                    onclick="O$('form:updateTasks').run();"
                                    styleClass="styledCheckbox"
@@ -90,9 +90,9 @@
       </h:panelGroup>
     </h5>
     <h:panelGroup id="doneList" styleClass="tasks">
-      <o:forEach items="#{TaskBean.doneTasks}" var="task" id="doneTasks" varStatus="taskListStatus">
-        <h:panelGrid onmouseover="this.className='rollover';"
-                     onmouseout="this.className='';" columns="3" cellspacing="0" cellpadding="0">
+      <o:forEach items="#{TaskBean.doneTasks}" var="task" id="doneTasks">
+        <h:panelGrid columns="3" cellspacing="0" cellpadding="0"
+                     onmouseover="this.className='rollover';" onmouseout="this.className='';">
           <o:selectBooleanCheckbox value="#{task.completed}"
                                    onclick="O$('form:updateTasks').run();"
                                    styleClass="left styledCheckbox"

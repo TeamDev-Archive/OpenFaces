@@ -28,7 +28,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ForEach is iterator that support any adaptible to UIData collection types. You can iterate along collection specified at "items" attribute or cdn iterate
+ * The ForEach component is an iterator component that renders the specified set of components multiple times based on
+ * its parameters.
  *
  * @author Alexey Tarasyuk
  */
@@ -36,10 +37,8 @@ import java.util.Map;
 public class ForEach extends OUIObjectIteratorBase {
     public static final String COMPONENT_TYPE = "org.openfaces.ForEach";
     public static final String COMPONENT_FAMILY = "org.openfaces.ForEach";
-    public static final int DEFAULT_BEGIN = 0;
-    public static final int DEFAULT_END = Integer.MAX_VALUE;
-    public static final int DEFAULT_STEP = 1;
-    public static final String DEFAULT_WRAPPER_TAG_NAME = "span";
+
+    private static final String DEFAULT_WRAPPER_TAG_NAME = "span";
 
     // todo: add support for rolloverStyle attribute and event attributes inherited from OUIObjectIteratorBase
 
@@ -66,7 +65,7 @@ public class ForEach extends OUIObjectIteratorBase {
      * @return <code>"org.openfaces.ForEach"</code>
      * @see javax.faces.component.UIComponent
      */
-    public java.lang.String getFamily() {
+    public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
@@ -84,12 +83,12 @@ public class ForEach extends OUIObjectIteratorBase {
             if (hasNextIndicator < 0)
                 return false;
         } else if (data == null) {
-            return false; //todo may be need to trow exception instead ?
+            return false;
         }
         if (data != null) {
             data.setRowIndex(nextIndex);
             if (!data.isRowAvailable())
-                return false; //todo may be need to throw exception if nextIndex == firstIndex ???
+                return false;
         }
         return true;
     }
@@ -97,9 +96,9 @@ public class ForEach extends OUIObjectIteratorBase {
     /**
      * Perform one step of iteration.
      *
-     * @return current item of value-binded collection as an <code>java.lang.Object</code> or <code>null</code> if no value-bound data collection is specified.
+     * @return current item of value-bound collection as an <code>java.lang.Object</code> or <code>null</code> if no value-bound data collection is specified.
      */
-    public java.lang.Object next() {
+    public Object next() {
         if (!hasNext())
             throw new FacesException("Further iteration not allowed");
         setIndex(getNextIndex());
@@ -112,10 +111,7 @@ public class ForEach extends OUIObjectIteratorBase {
     private int getFirstIndex() {
         Integer beginAttr = getBegin();
         if (beginAttr == null)
-            if (getData() != null)
-                return 0;
-            else
-                return DEFAULT_BEGIN;
+            return 0;
         else
             return beginAttr;
     }
@@ -126,7 +122,7 @@ public class ForEach extends OUIObjectIteratorBase {
     private int getIndexStep() {
         Integer indexStep = getStep();
         if (indexStep == null)
-            return DEFAULT_STEP;
+            return 1;
         return indexStep;
     }
 
@@ -210,12 +206,10 @@ public class ForEach extends OUIObjectIteratorBase {
             int index = getIndex();
             int first = getFirstIndex();
             int step = getIndexStep();
-            int count = (index - first) / step;
+            int count = 1 + (index - first) / step;
             status = new IterationStatus(currentItem, index, count, index == first, !hasNext(), getBegin(), getEnd(), getStep());
         }
     }
-
-//-----------  OUIObjectIterator implementation  ----------
 
     public void setObjectId(String objectId) {
         if (objectId != null)
@@ -231,10 +225,8 @@ public class ForEach extends OUIObjectIteratorBase {
             return null;
     }
 
-//--------------  process the JSF lifecircle -------------
-
     /**
-     * Save state of children into local variable. Both with <code>restoreChildrenState()</code> need to perform correct children JSF lifecircle processing.
+     * Save state of children into local variable. Both with <code>restoreChildrenState()</code> need to perform correct children JSF life-cycle processing.
      */
     private void saveChildrenState() {
         if (this.getChildCount() > 0) {
@@ -247,7 +239,7 @@ public class ForEach extends OUIObjectIteratorBase {
     }
 
     /**
-     * Restore state of children from local variable. Both with <code>saveChildrenState()</code> need to perform correct children JSF lifecircle processing.
+     * Restore state of children from local variable. Both with <code>saveChildrenState()</code> need to perform correct children JSF life-cycle processing.
      */
     private void restoreChildrenState() {
         if (this.getChildCount() > 0) {
@@ -276,10 +268,10 @@ public class ForEach extends OUIObjectIteratorBase {
     }
 
     /**
-     * Process specified JSF lifecircle phase.
+     * Process specified JSF life-cycle phase.
      *
      * @param context faces context.
-     * @param phase   current JSF lifecircle phase identifier.
+     * @param phase   current JSF life-cycle phase identifier.
      */
     private void process(FacesContext context, PhaseId phase) {
         if (!this.isRendered())
@@ -317,7 +309,7 @@ public class ForEach extends OUIObjectIteratorBase {
     }
 
     @Override
-    public java.lang.Object saveState(FacesContext context) {
+    public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
                 items,
@@ -416,9 +408,7 @@ public class ForEach extends OUIObjectIteratorBase {
         }
     }
 
-//------------  tag attributes getters/setters -----------
-
-    public java.lang.Object getItems() {
+    public Object getItems() {
         return ValueBindings.get(this, "items", items, Object.class);
     }
 
@@ -450,23 +440,23 @@ public class ForEach extends OUIObjectIteratorBase {
         this.step = step;
     }
 
-    public java.lang.String getVar() {
+    public String getVar() {
         return ValueBindings.get(this, "var", var);
     }
 
-    public void setVar(java.lang.String var) {
+    public void setVar(String var) {
         this.var = var;
     }
 
-    public java.lang.String getVarStatus() {
+    public String getVarStatus() {
         return ValueBindings.get(this, "varStatus", varStatus);
     }
 
-    public void setVarStatus(java.lang.String varStatus) {
+    public void setVarStatus(String varStatus) {
         this.varStatus = varStatus;
     }
 
-    public java.lang.String getWrapperTagName() {
+    public String getWrapperTagName() {
         String defaultWrapperTagName = null;
         boolean idSpecified = Components.isComponentIdSpecified(this);
         if (idSpecified || (getStyle() != null) || (getStyleClass() != null))
@@ -474,7 +464,7 @@ public class ForEach extends OUIObjectIteratorBase {
         return ValueBindings.get(this, "wrapperTagName", wrapperTagName, defaultWrapperTagName);
     }
 
-    public void setWrapperTagName(java.lang.String wrapperTagName) {
+    public void setWrapperTagName(String wrapperTagName) {
         this.wrapperTagName = wrapperTagName;
     }
 }

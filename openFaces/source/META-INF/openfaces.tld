@@ -20545,7 +20545,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>A flag that indicates whether or not to keep time of binded date value.</description>
+      <description>A flag that indicates whether or not to keep time portion of the bound date value.</description>
       <name>keepTime</name>
       <deferred-value>
         <type>boolean</type>
@@ -21783,7 +21783,7 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
     <attribute>
-      <description>A flag that indicates whether or not to keep time of binded date value.</description>
+      <description>A flag that indicates whether or not to keep time portion of the bound date value.</description>
       <name>keepTime</name>
       <deferred-value>
         <type>boolean</type>
