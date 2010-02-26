@@ -100,7 +100,7 @@ class AjaxResponse {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         try {
             if (!AjaxUtil.isPortletRequest(context)
-                    && !requestMap.containsKey(AjaxViewHandler.ERROR_OCCURED)) {
+                    && !requestMap.containsKey(AjaxViewHandler.ERROR_OCCURRED)) {
                 response.setContentType(CONTENT_TYPE);
             } else if (AjaxUtil.isPortletRequest(context)) {
                 response.setContentType(CONTENT_TYPE);
@@ -108,7 +108,7 @@ class AjaxResponse {
             writeAsXML(response);
         } catch (IllegalArgumentException e) { // JBoss and JetSpeed throw IllegalArgumentException when trying to set text/xml content type
             if (!AjaxUtil.isPortletRequest(context)
-                    && !requestMap.containsKey(AjaxViewHandler.ERROR_OCCURED)
+                    && !requestMap.containsKey(AjaxViewHandler.ERROR_OCCURRED)
                     && !Environment.isRI()) {
                 response.setContentType("text/html;charset=UTF-8");
             }

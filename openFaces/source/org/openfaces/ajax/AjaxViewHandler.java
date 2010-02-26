@@ -11,12 +11,12 @@
  */
 package org.openfaces.ajax;
 
+import org.openfaces.component.validation.ValidationSupportResponseWriter;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Environment;
 import org.openfaces.util.Log;
 import org.openfaces.util.Resources;
-import org.openfaces.component.validation.ValidationSupportResponseWriter;
 
 import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
@@ -35,13 +35,12 @@ import java.util.Map;
 /**
  * This class is provides our own mechanisms of handling of the activities
  * in the <em>Render Response</em> and <em>Restore View</em>
- * phases of the request processing lifecycle.
+ * phases of the request processing life-cycle.
  *
  * @author Eugene Goncharov
  */
 public class AjaxViewHandler extends ViewHandlerWrapper {
     public static final String AJAX_EXPIRED_HEADER = "Ajax-Expired";
-    public static final String AJAX_VIEW_ROOT_RENDERING = "AJAX_VIEW_ROOT_RENDERING";
 
     public static final String SESSION_EXPIRATION_PROCESSING = "Ajax-Expiration-Processing";
     public static final String AJAX_ERROR_PROCESSING = "Ajax-Error-Processing";
@@ -49,8 +48,8 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
     public static final String LOCATION_HEADER = "Location";
     public static final String ERROR_MESSAGE_HEADER = "Error-Message";
     public static final String ERROR_CAUSE_MESSAGE_HEADER = "Error-Detailed-Message";
-    public static final String ERROR_OCCURED = "Error-Occured";
-    public static final String ERROR_OCCURED_UNDER_PORTLETS = "Error-Occured-Under-Portlets";
+    public static final String ERROR_OCCURRED = "Error-Occured";
+    public static final String ERROR_OCCURRED_UNDER_PORTLETS = "Error-Occured-Under-Portlets";
     public static final String ERROR_OBJECT_UNDER_PORTLETS = "Error-Object-Under-Portlets";
     public static final String SESSION_EXPIRED_RESPONSE = "Session-Expired-Response";
     public static final String SESSION_SYNCHRONIZATION = "OF_REQUEST_SESSION_SYNC";
@@ -341,7 +340,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
             Object session = externalContext.getSession(false);
             Map<String, Object> requestMap = externalContext.getRequestMap();
 
-            if (externalContext.getSessionMap().containsKey(ERROR_OCCURED_UNDER_PORTLETS)) {
+            if (externalContext.getSessionMap().containsKey(ERROR_OCCURRED_UNDER_PORTLETS)) {
                 processExceptionUnderPortlets(context);
                 return;
             }
@@ -501,7 +500,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
         Throwable exception = (Throwable) sessionMan.get(ERROR_OBJECT_UNDER_PORTLETS);
         CommonAjaxViewRoot.processExceptionDuringAjax(context, exception);
         sessionMan.remove(ERROR_OBJECT_UNDER_PORTLETS);
-        sessionMan.remove(ERROR_OCCURED_UNDER_PORTLETS);
+        sessionMan.remove(ERROR_OCCURRED_UNDER_PORTLETS);
     }
 
     private void addAjaxRequestMarkerUnderPortlets(FacesContext context, UIViewRoot root) {

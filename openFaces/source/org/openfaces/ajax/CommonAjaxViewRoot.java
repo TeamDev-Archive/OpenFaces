@@ -617,20 +617,20 @@ public abstract class CommonAjaxViewRoot {
                 try {
                     if (!Environment.isRI()) {
                         finishProccessErrorUnderPortletsDuringAjax(context, exception);
-                    } else if (sessionMap.containsKey(AjaxViewHandler.ERROR_OCCURED_UNDER_PORTLETS)) {
+                    } else if (sessionMap.containsKey(AjaxViewHandler.ERROR_OCCURRED_UNDER_PORTLETS)) {
                         finishProccessErrorUnderPortletsDuringAjax(context, exception);
                     }
                 } catch (IOException e) {
                     Log.log(context, "An attempt to process exception during ajax failed.IOException was thrown during processing.");
                 }
-            } else if (!(sessionMap.containsKey(AjaxViewHandler.ERROR_OCCURED_UNDER_PORTLETS))
+            } else if (!(sessionMap.containsKey(AjaxViewHandler.ERROR_OCCURRED_UNDER_PORTLETS))
                     && AjaxUtil.isPortletRequest(context)
                     && externalContext.getRequest() instanceof ActionRequest) {
-                sessionMap.put(AjaxViewHandler.ERROR_OCCURED_UNDER_PORTLETS, Boolean.TRUE);
+                sessionMap.put(AjaxViewHandler.ERROR_OCCURRED_UNDER_PORTLETS, Boolean.TRUE);
                 sessionMap.put(AjaxViewHandler.ERROR_OBJECT_UNDER_PORTLETS, exception);
             }
-            if (!requestMap.containsKey(AjaxViewHandler.ERROR_OCCURED)) {
-                requestMap.put(AjaxViewHandler.ERROR_OCCURED, Boolean.TRUE.toString());
+            if (!requestMap.containsKey(AjaxViewHandler.ERROR_OCCURRED)) {
+                requestMap.put(AjaxViewHandler.ERROR_OCCURRED, Boolean.TRUE.toString());
                 requestMap.put(AjaxViewHandler.ERROR_MESSAGE_HEADER, exception.getClass().getName() + ": " + exception.getMessage());
                 requestMap.put(AjaxViewHandler.ERROR_CAUSE_MESSAGE_HEADER, exception.getCause());
             }

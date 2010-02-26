@@ -134,7 +134,7 @@ public class ResourceFilter implements Filter {
             // todo (optimize): seems that servletResponse.getContentType() can be used to skip trying to process header includes for text/html pages
             String responseString = responseWrapper.getOutputAsString();
 
-            String errorOccured = (String) servletRequest.getAttribute(AjaxViewHandler.ERROR_OCCURED);
+            String errorOccured = (String) servletRequest.getAttribute(AjaxViewHandler.ERROR_OCCURRED);
             if (errorOccured != null) {
                 String errorMessage = (String) servletRequest.getAttribute(AjaxViewHandler.ERROR_MESSAGE_HEADER);
                 response.setHeader(AjaxViewHandler.ERROR_MESSAGE_HEADER, errorMessage);
