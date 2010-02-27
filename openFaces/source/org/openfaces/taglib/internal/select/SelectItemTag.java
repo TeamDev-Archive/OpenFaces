@@ -38,6 +38,6 @@ public class SelectItemTag extends AbstractComponentTag {
         setStringProperty(component, "itemLabel");
         setBooleanProperty(component, "itemDisabled");
         setObjectProperty(component, "itemValue");
-        setPropertyBinding(component, "itemValue", getPropertyValue("value"));
+        setPropertyBinding(component, "value");
     }
 }

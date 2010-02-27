@@ -14,28 +14,29 @@ package org.openfaces.renderkit.input;
 import org.openfaces.component.TableStyles;
 import org.openfaces.component.input.DropDownComponent;
 import org.openfaces.component.input.DropDownFieldBase;
-import org.openfaces.component.input.DropDownItem;
-import org.openfaces.component.input.DropDownItems;
 import org.openfaces.component.input.DropDownPopup;
 import org.openfaces.component.input.SuggestionMode;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.DefaultTableStyles;
+import org.openfaces.renderkit.TableUtil;
+import org.openfaces.renderkit.table.TableStructure;
+import org.openfaces.util.AjaxUtil;
+import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.InitScript;
 import org.openfaces.util.NewInstanceScript;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.Styles;
-import org.openfaces.renderkit.TableUtil;
-import org.openfaces.renderkit.table.TableStructure;
-import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
+import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UISelectItem;
+import javax.faces.component.UISelectItems;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.model.SelectItem;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -145,7 +146,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         } else {
             throw new IllegalStateException("Unknown SuggestionMode enumeration value: " + suggestionMode);
         }
-        Collection<DropDownItem> items = needRootItemsPreloading ? collectDropDownItems(dropDownField) : null;
+        Collection<UISelectItem> items = needRootItemsPreloading ? collectSelectItems(dropDownField) : null;
         List<String[]> itemValues = prepareItemValues(context, dropDownField, items);
         if (itemValues != null) {
             dropDownField.getAttributes().put(ITEM_VALUES_ATTR_NAME, itemValues);
@@ -159,18 +160,18 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         Rendering.encodeClientActions(context, uiComponent);
     }
 
-    private List<String[]> prepareItemValues(FacesContext context, DropDownFieldBase dropDownField, Collection<DropDownItem> items) {
+    private List<String[]> prepareItemValues(FacesContext context, DropDownFieldBase dropDownField, Collection<UISelectItem> items) {
         String currentValueConverted = Rendering.getStringValue(context, dropDownField);
         String currentValueText = null;
 
         List<String[]> itemValues = null;
         if (items != null) {
             itemValues = new ArrayList<String[]>(items.size());
-            for (DropDownItem item : items) {
-                Object itemValue = item.getValue();
+            for (UISelectItem item : items) {
+                Object itemValue = item.getItemValue();
                 String convertedItemValue = itemValue instanceof String
                         ? (String) itemValue
-                        : itemValue == null ? "" 
+                        : itemValue == null ? ""
                         : Rendering.convertToString(context, dropDownField, itemValue);
 
                 Map<String, Object> itemAttributes = item.getAttributes();
@@ -206,40 +207,64 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         return result;
     }
 
-    private Collection<DropDownItem> getItemsFromComponent(UIComponent component) {
-        if (component instanceof DropDownItem) {
-            return Collections.singletonList((DropDownItem) component);
+    private Collection<UISelectItem> getItemsFromComponent(UIComponent component) {
+        if (component instanceof UISelectItem) {
+            UISelectItem uiSelectItem = (UISelectItem) component;
+            Object value = uiSelectItem.getValue();
+            if (value != null) {
+                fillUISelectItemFromValue(uiSelectItem, value);
+            }
+            return Collections.singletonList(uiSelectItem);
         }
 
-        if (!(component instanceof DropDownItems))
+        if (!(component instanceof UISelectItems))
             return null;
 
-        Object itemsValue = ((DropDownItems) component).getValue();
+        Object itemsValue = ((UISelectItems) component).getValue();
         if (itemsValue == null)
             return null;
 
         if (itemsValue.getClass().isArray())
             itemsValue = Arrays.asList((Object[]) itemsValue);
         if (!(itemsValue instanceof Collection))
-            throw new IllegalArgumentException("The 'value' attribute of <o:dropDownItems> tag should contain either " +
+            throw new IllegalArgumentException("The 'value' attribute of <f:selectItems> or <o:selectItems> tag should contain either " +
                     "an array or a Collection, but the following type was encountered: " + itemsValue.getClass().getName());
 
         Collection itemCollection = (Collection) itemsValue;
-        Collection<DropDownItem> items = new ArrayList<DropDownItem>(itemCollection.size());
+        Collection<UISelectItem> items = new ArrayList<UISelectItem>(itemCollection.size());
         for (Object collectionItem : itemCollection) {
-            if (collectionItem instanceof DropDownItem)
-                items.add((DropDownItem) collectionItem);
-            else
-                items.add(new DropDownItem(collectionItem));
+            if (collectionItem instanceof SelectItem) {
+                UISelectItem selectItem = new UISelectItem();
+                fillUISelectItemFromValue(selectItem, collectionItem);
+                items.add(selectItem);
+            } else {
+                UISelectItem selectItem = new UISelectItem();
+                selectItem.setItemValue(collectionItem);
+                items.add(selectItem);
+            }
         }
         return items;
     }
 
-    private List<DropDownItem> collectDropDownItems(DropDownFieldBase dropDownField) {
+    private UISelectItem fillUISelectItemFromValue(UISelectItem uiSelectItem, Object value) {
+        if (! (value instanceof SelectItem)) {
+            uiSelectItem.setItemValue(value);
+            return uiSelectItem;
+        }
+        SelectItem selectItem = (SelectItem) value;
+        uiSelectItem.setItemValue(selectItem.getValue());
+        uiSelectItem.setItemLabel(selectItem.getLabel());
+        uiSelectItem.setItemDescription(selectItem.getDescription());
+        uiSelectItem.setItemDisabled(selectItem.isDisabled());
+        uiSelectItem.setItemEscaped(selectItem.isEscape());
+        return uiSelectItem;
+    }
+
+    private List<UISelectItem> collectSelectItems(DropDownFieldBase dropDownField) {
         Collection<UIComponent> children = dropDownField.getChildren();
-        List<DropDownItem> items = new ArrayList<DropDownItem>();
+        List<UISelectItem> items = new ArrayList<UISelectItem>();
         for (UIComponent child : children) {
-            Collection<DropDownItem> tmpCollection = getItemsFromComponent(child);
+            Collection<UISelectItem> tmpCollection = getItemsFromComponent(child);
             if (tmpCollection != null) {
                 items.addAll(tmpCollection);
             }
@@ -396,10 +421,10 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
             String var = "searchString";
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
-            Collection<DropDownItem> items;
+            Collection<UISelectItem> items;
             Object oldVarValue = requestMap.put(var, criterion);
             try {
-                items = collectDropDownItems(dropDownField);
+                items = collectSelectItems(dropDownField);
                 itemValues = prepareItemValues(context, dropDownField, items);
             } finally {
                 requestMap.put(var, oldVarValue);

@@ -358,6 +358,14 @@
     </component>
   </tag>
 
+  <!--<tag>-->
+    <!--<tag-name>selectItem</tag-name>-->
+    <!--<component>-->
+      <!--<component-type>org.openfaces.SelectItem</component-type>-->
+      <!--<handler-class>org.openfaces.taglib.facelets.select.SelectItemTagHandler</handler-class>-->
+    <!--</component>-->
+  <!--</tag>-->
+
   <tag>
     <tag-name>suggestionField</tag-name>
     <component>

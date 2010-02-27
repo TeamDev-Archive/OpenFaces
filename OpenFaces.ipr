@@ -931,15 +931,19 @@
         <w>attribute's</w>
         <w>autocomplete</w>
         <w>borderlayoutpanel</w>
+        <w>brvbar</w>
+        <w>cedil</w>
         <w>cellpadding</w>
         <w>cellspacing</w>
         <w>checkboxes</w>
         <w>cldr</w>
+        <w>colspan</w>
         <w>combobox</w>
         <w>commandbutton</w>
         <w>commandlink</w>
         <w>compositefilter</w>
         <w>coords</w>
+        <w>curren</w>
         <w>dashized</w>
         <w>datas</w>
         <w>datasets</w>
@@ -959,6 +963,7 @@
         <w>horiz</w>
         <w>hreflang</w>
         <w>https</w>
+        <w>iexcl</w>
         <w>iframe</w>
         <w>initated</w>
         <w>inputtext</w>
@@ -968,17 +973,21 @@
         <w>iterable</w>
         <w>javascript</w>
         <w>keyup</w>
+        <w>laquo</w>
         <w>layeredpane</w>
         <w>lgpl</w>
         <w>liferay</w>
         <w>locator</w>
         <w>ltrim</w>
+        <w>macr</w>
         <w>maxlength</w>
+        <w>middot</w>
         <w>monospace</w>
         <w>mouseover</w>
         <w>mozilla</w>
         <w>msie</w>
         <w>multi</w>
+        <w>nbsp</w>
         <w>nowrap</w>
         <w>onajaxend</w>
         <w>onajaxstart</w>
@@ -1009,10 +1018,12 @@
         <w>onshow</w>
         <w>onunload</w>
         <w>openfaces</w>
+        <w>ordf</w>
         <w>paddings</w>
         <w>paginator</w>
         <w>param</w>
         <w>params</w>
+        <w>plusmn</w>
         <w>popup</w>
         <w>popuplayer</w>
         <w>popupmenu</w>
@@ -1024,6 +1035,7 @@
         <w>prnt</w>
         <w>profiler</w>
         <w>programmatically</w>
+        <w>raquo</w>
         <w>renderers</w>
         <w>rerendered</w>
         <w>resizable</w>
@@ -1037,10 +1049,12 @@
         <w>skype</w>
         <w>stylesheets</w>
         <w>submenu</w>
+        <w>substring</w>
         <w>suggestionfield</w>
         <w>tabbedpane</w>
         <w>tabindex</w>
         <w>tabset</w>
+        <w>tahoma</w>
         <w>tbody</w>
         <w>teamdev</w>
         <w>textarea</w>

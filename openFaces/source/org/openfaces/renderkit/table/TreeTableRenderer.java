@@ -41,7 +41,7 @@ import java.util.Set;
  * @author Dmitry Pikhulya
  */
 public class TreeTableRenderer extends AbstractTableRenderer {
-    private static final String DEFAULT_AUXILARY_NODE_CLASS = "o_treetable_auxilary_node";
+    private static final String DEFAULT_AUXILIARY_NODE_CLASS = "o_treetable_auxiliary_node";
     private static final String SUB_ROWS_PORTION = "subRows:";
     private static final String DEFAULT_FOLDING_CLASS = "o_treetable_folding";
     private static final String HIDDEN_ROW_CLASS = "o_hiddenRow";
@@ -75,7 +75,7 @@ public class TreeTableRenderer extends AbstractTableRenderer {
         return Styles.getCSSClass(context,
                 treeTable, treeTable.getFilterSubsidiaryRowStyle(),
                 StyleGroup.rolloverStyleGroup(), treeTable.getFilterSubsidiaryRowClass(),
-                DEFAULT_AUXILARY_NODE_CLASS
+                DEFAULT_AUXILIARY_NODE_CLASS
         );
     }
 

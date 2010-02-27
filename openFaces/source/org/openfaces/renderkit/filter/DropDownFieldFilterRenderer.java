@@ -137,7 +137,7 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
 
     private DropDownItem createDropDownItem(FacesContext context, Object value) {
         DropDownItem item = (DropDownItem) context.getApplication().createComponent(DropDownItem.COMPONENT_TYPE);
-        item.setValue(value);
+        item.setItemValue(value);
         return item;
     }
 

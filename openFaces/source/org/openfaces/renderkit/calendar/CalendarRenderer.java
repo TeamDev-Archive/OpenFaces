@@ -144,7 +144,7 @@ public class CalendarRenderer extends RendererBase {
         writer.endElement("table");
     }
 
-    private void encodeAuxilaryTags(FacesContext context, Calendar calendar) throws IOException {
+    private void encodeAuxiliaryTags(FacesContext context, Calendar calendar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = calendar.getClientId(context);
         writer.startElement("input", calendar);
@@ -486,8 +486,8 @@ public class CalendarRenderer extends RendererBase {
                 writer.startElement("td", calendar);
                 writer.startElement("div", calendar);
                 writer.endElement("div");
-                if (col == 6 && row == 5 && !isAuxilaryTagsRenderedInFooter(calendar))
-                    encodeAuxilaryTags(context, calendar);
+                if (col == 6 && row == 5 && !isAuxiliaryTagsRenderedInFooter(calendar))
+                    encodeAuxiliaryTags(context, calendar);
                 writer.endElement("td");
             }
             writer.endElement("tr");
@@ -496,7 +496,7 @@ public class CalendarRenderer extends RendererBase {
         writer.endElement("tbody");
     }
 
-    private boolean isAuxilaryTagsRenderedInFooter(Calendar calendar) {
+    private boolean isAuxiliaryTagsRenderedInFooter(Calendar calendar) {
         return calendar.isShowFooter();
     }
 
@@ -567,7 +567,7 @@ public class CalendarRenderer extends RendererBase {
         }
         writer.write(calendar.getNoneText());
         writer.endElement("span");
-        encodeAuxilaryTags(context, calendar);
+        encodeAuxiliaryTags(context, calendar);
 
         writer.endElement("td");
         writer.endElement("tr");

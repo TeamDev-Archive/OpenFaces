@@ -24,6 +24,7 @@ import org.openfaces.renderkit.table.TableHeader;
 import org.openfaces.renderkit.table.TableStructure;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UISelectItem;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -44,7 +45,7 @@ public class DropDownPopup extends AbstractPopup {
     public static final String INNER_TABLE_SUFFIX = "::innerTable";
     public static final String ITEM_PREFIX = "::popupItem";
 
-    private Collection<DropDownItem> dropDownList;
+    private Collection<UISelectItem> dropDownList;
     private ChildData childData;
 
     public DropDownPopup() {
@@ -62,7 +63,7 @@ public class DropDownPopup extends AbstractPopup {
         List<UIComponent> dropDownChildren = dropDownField.getChildren();
         List<UIComponent> childComponents = new ArrayList<UIComponent>(dropDownChildren.size());
         for (UIComponent component : dropDownChildren) {
-            if (!isDropDownAuxilaryComponent(component) && !(component instanceof BaseColumn) && !(component instanceof Ajax))
+            if (!isDropDownAuxiliaryComponent(component) && !(component instanceof BaseColumn) && !(component instanceof Ajax))
                 childComponents.add(component);
         }
 
@@ -137,7 +138,7 @@ public class DropDownPopup extends AbstractPopup {
             FacesContext context,
             DropDownFieldBase dropDownField,
             ChildData childData,
-            Collection<DropDownItem> dropDownItems) throws IOException {
+            Collection<UISelectItem> dropDownItems) throws IOException {
         List<BaseColumn> columns = childData.getColumns();
         List<UIComponent> childComponents = childData.getChildComponents();
         int colCount = columns.size();
@@ -148,7 +149,7 @@ public class DropDownPopup extends AbstractPopup {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String itemIdPrefix = getClientId(context) + ITEM_PREFIX;
         int index = 0;
-        for (DropDownItem item : dropDownItems) {
+        for (UISelectItem item : dropDownItems) {
             Object originalValue = item.getAttributes().get(DropDownFieldRenderer.ORIGINAL_VALUE_ATTR);
             String convertedValue = (String) item.getAttributes().get(DropDownFieldRenderer.DISPLAYED_VALUE_ATTR);
 
@@ -200,11 +201,11 @@ public class DropDownPopup extends AbstractPopup {
         }
     }
 
-    private boolean isDropDownAuxilaryComponent(UIComponent component) {
+    private boolean isDropDownAuxiliaryComponent(UIComponent component) {
         return (component instanceof DropDownItem || component instanceof DropDownItems);
     }
 
-    public void setDropDownList(Collection<DropDownItem> dropDownList) {
+    public void setDropDownList(Collection<UISelectItem> dropDownList) {
         this.dropDownList = dropDownList;
     }
 

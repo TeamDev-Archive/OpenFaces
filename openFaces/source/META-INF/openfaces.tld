@@ -10632,6 +10632,95 @@ entering a value and returns a list of suggestions from the server -->
   </tag>
 
   <tag>
+    <description>An extended version of &lt;f:selectItem> tag that allows using child components. 
+    </description>
+    <name>selectItem</name>
+    <tag-class>org.openfaces.taglib.jsp.select.SelectItemJspTag</tag-class>
+    <body-content>JSP</body-content>
+
+    <attribute>
+      <description>Flag indicating whether or not this component should be rendered (during Render Response Phase),
+        or processed on any subsequent form submit. The default value for this property is true.
+      </description>
+      <name>rendered</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A value-binding expression that associates a list item with a backing bean property.
+      </description>
+      <name>binding</name>
+      <deferred-value>
+        <type>org.openfaces.component.select.OUISelectItem</type>
+      </deferred-value>
+      <!-- @bindingType org.openfaces.component.input. DropDownItem -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+    <attribute>
+      <description>The value for a list item. This value is converted to String and
+        shown in the text field when this item is selected.
+      </description>
+      <name>itemValue</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The label of a list item.</description>
+      <name>itemLabel</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>The text description of a list item.</description>
+      <name>itemDescription</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Flag indicating whether the option created by this component is disabled.
+        Expressions must evaluate to a boolean. Default value is false.
+      </description>
+      <name>itemDisabled</name>
+      <deferred-value>
+        <type>java.lang.Boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A replacement for the itemValue, itemLabel, itemDescription and itemDisabled attributes. You can
+        this attribute as a value binding that refers to the javax.faces.model.SelectItem instance holding all of the
+        item's parameters.
+      </description>
+      <name>value</name>
+      <deferred-value>
+        <type>javax.faces.model.SelectItem</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el only -->
+    </attribute>
+  </tag>
+
+  <tag>
     <description>A child tag of the {@link dropDownField} or {@link suggestionField} tags
       that is used to specify a separate list item. It is also possible to add child
       components to the o:dropDownItem tag.

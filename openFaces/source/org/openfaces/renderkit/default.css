@@ -64,7 +64,7 @@
 /* GRAYED_TEXT_COLOR */
 .o_table_no_data_row,
   .o_table_filter_predefined_criterion,
-  .o_treetable_auxilary_node,
+  .o_treetable_auxiliary_node,
   .o_confirmation_details,
   .o_confirmation_details_message,
   .o_tls_disabled_option {
@@ -676,7 +676,7 @@
 .o_spinner_field {
   text-align: right;
 }
-
+                         
 .o_dropdown_field {
   background: url(clear.gif) repeat center center;
 
@@ -684,6 +684,7 @@
   padding: 2px 2px 0 2px;
   border: 0 solid;
   width: 100%;
+  outline: none;
 }
 
 .o_dropdown_list {

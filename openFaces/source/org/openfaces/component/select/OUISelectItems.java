@@ -9,21 +9,22 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.input;
 
-import org.openfaces.component.select.OUISelectItems;
+package org.openfaces.component.select;
 
-import java.io.Serializable;
+import javax.faces.component.UISelectItems;
 
 /**
- * @author Andrew Palval
+ * This is an internal class and it shouldn't be used directly by application developers.
  */
-public class DropDownItems extends OUISelectItems implements Serializable {
-    public static final String COMPONENT_TYPE = "org.openfaces.DropDownItems";
-    public static final String COMPONENT_FAMILY = "org.openfaces.DropDownItems";
+public class OUISelectItems extends UISelectItems {
+    public static final String COMPONENT_TYPE = "org.openfaces.SelectItems";
+    public static final String COMPONENT_FAMILY = "org.openfaces.SelectItems";
+
+    public OUISelectItems() {
+    }
 
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
-
 }
