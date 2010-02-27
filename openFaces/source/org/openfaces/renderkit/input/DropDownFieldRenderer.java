@@ -233,7 +233,9 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         Collection itemCollection = (Collection) itemsValue;
         Collection<UISelectItem> items = new ArrayList<UISelectItem>(itemCollection.size());
         for (Object collectionItem : itemCollection) {
-            if (collectionItem instanceof SelectItem) {
+            if (collectionItem instanceof UISelectItem) {
+                items.add((UISelectItem) collectionItem);
+            } else if (collectionItem instanceof SelectItem) {
                 UISelectItem selectItem = new UISelectItem();
                 fillUISelectItemFromValue(selectItem, collectionItem);
                 items.add(selectItem);
@@ -247,7 +249,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
     }
 
     private UISelectItem fillUISelectItemFromValue(UISelectItem uiSelectItem, Object value) {
-        if (! (value instanceof SelectItem)) {
+        if (!(value instanceof SelectItem)) {
             uiSelectItem.setItemValue(value);
             return uiSelectItem;
         }

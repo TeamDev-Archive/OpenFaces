@@ -703,7 +703,7 @@ public abstract class CommonAjaxViewRoot {
      * Recursive helper for {@link #loadBundles(FacesContext)}
      */
     private void loadBundles(FacesContext context, UIComponent component) {
-        // Iterate over cildrens
+        // Iterate over children
         for (UIComponent child : component.getChildren()) {
             loadChildBundles(context, child);
         }
