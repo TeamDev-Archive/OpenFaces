@@ -117,8 +117,8 @@ public abstract class CommonAjaxViewRoot {
             // The try-catch block is required to handle errors and exceptions
             // during the processing of the ajax request.
             //
-            // The handling of errors and exceptions is done on each phase of JSF request lifecycle
-            // If the exception is catched here, the appropriate message is sent back to the client
+            // The handling of errors and exceptions is done on each phase of JSF request life-cycle
+            // If the exception is caught here, the appropriate message is sent back to the client
             // in ajax response
             doProcessDecodes(context, this);
             broadcastEvents(context, PhaseId.APPLY_REQUEST_VALUES);
@@ -148,8 +148,8 @@ public abstract class CommonAjaxViewRoot {
             // The try-catch block is required to handle errors and exceptions
             // during the processing of the ajax request.
             //
-            // The handling of errors and exceptions is done on each phase of JSF request lifecycle
-            // If the exception is catched here, the appropriate message is sent back to the client
+            // The handling of errors and exceptions is done on each phase of JSF request life-cycle
+            // If the exception is caught here, the appropriate message is sent back to the client
             // in ajax response
             doProcessValidators(context);
             broadcastEvents(context, PhaseId.PROCESS_VALIDATIONS);
@@ -179,8 +179,8 @@ public abstract class CommonAjaxViewRoot {
             // The try-catch block is required to handle errors and exceptions
             // during the processing of the ajax request.
             //
-            // The handling of errors and exceptions is done on each phase of JSF request lifecycle
-            // If the exception is catched here, the appropriate message is sent back to the client
+            // The handling of errors and exceptions is done on each phase of JSF request life-cycle
+            // If the exception is caught here, the appropriate message is sent back to the client
             // in ajax response
             doProcessUpdates(context);
             broadcastEvents(context, PhaseId.UPDATE_MODEL_VALUES);
@@ -210,8 +210,8 @@ public abstract class CommonAjaxViewRoot {
             // The try-catch block is required to handle errors and exceptions
             // during the processing of the ajax request.
             //
-            // The handling of errors and exceptions is done on each phase of JSF request lifecycle
-            // If the exception is catched here, the appropriate message is sent back to the client
+            // The handling of errors and exceptions is done on each phase of JSF request life-cycle
+            // If the exception is caught here, the appropriate message is sent back to the client
             // in ajax response
             doProcessApplication(context);
             broadcastEvents(context, PhaseId.INVOKE_APPLICATION);
@@ -239,8 +239,8 @@ public abstract class CommonAjaxViewRoot {
             // The try-catch block is required to handle errors and exceptions
             // during the processing of the ajax request.
             //
-            // The handling of errors and exceptions is done on each phase of JSF request lifecycle
-            // If the exception is catched here, the appropriate message is sent back to the client
+            // The handling of errors and exceptions is done on each phase of JSF request life-cycle
+            // If the exception is caught here, the appropriate message is sent back to the client
             // in ajax response
             doEncodeChildren(context);
         } catch (RuntimeException e) {
@@ -1457,10 +1457,10 @@ public abstract class CommonAjaxViewRoot {
         if (events == null) return;
 
         for (FacesEvent event : new ArrayList<FacesEvent>(events)) {
-            events.remove(event);
             PhaseId eventPhaseId = event.getPhaseId();
             if (eventPhaseId.compareTo(PhaseId.ANY_PHASE) != 0 && eventPhaseId.compareTo(phaseId) != 0)
                 continue;
+            events.remove(event);
             UIComponent source = event.getComponent();
             try {
                 source.broadcast(event);
