@@ -20,6 +20,7 @@ import org.openfaces.testapp.datatable.EmailTableDemoBean;
 import org.openfaces.testapp.datatable.User;
 
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +46,7 @@ public class TreeTableTestBean {
     private List selectedNodeIds1;
     private List selectedNodeDatas2;
 
-    private List rootMessages = new ArrayList();
+    private List<ForumMessage> rootMessages = new ArrayList<ForumMessage>();
     private User anonymousUser;
 
     private ExpansionState forumTreeTableExpansionState;
@@ -296,6 +297,11 @@ public class TreeTableTestBean {
 
     public void test() {
         logger.info("test");
+    }
+
+    public void linkClicked(ActionEvent event) {
+        ForumMessage message = Faces.var("message", ForumMessage.class);
+        message.setSubject("-changed-");
     }
 
 }

@@ -107,8 +107,11 @@ O$.CompositeFilter = {
             // don't auto-focus add/remove buttons
             return !(el.nodeName.toLowerCase() == "input" && el.type == "button");
           });
-          if (fc)
-            fc.focus();
+          if (fc) {
+            setTimeout(function() {
+              fc.focus();
+            }, 1);
+          }
         }
 
         var index, rowContainer;

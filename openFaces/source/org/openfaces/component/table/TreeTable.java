@@ -131,48 +131,42 @@ public class TreeTable extends AbstractTable {
         nodeInfoForRows = newNodeInfoForRows;
     }
 
-    private UIComponent editableValueHolder(UIComponent component) {
-        boolean thisComponentRequiresDecoding = component instanceof EditableValueHolder;
-        if (thisComponentRequiresDecoding)
-            return component;
-        List<UIComponent> children = component.getChildren();
-        for (UIComponent subComponent : children) {
-            UIComponent decodable = editableValueHolder(subComponent);
-            if (decodable != null)
-                return decodable;
+    @Override
+    protected String getRowClientSuffixByIndex(int index) {
+        if (nodeInfoForRows == null) {
+            // can be the case when pre-rendering TreeTable inspections are made by CompositeFilter
+            return null;
         }
-        return null;
+
+        NodeInfoForRow nodeInfoForRow = nodeInfoForRows.get(index);
+        if (nodeInfoForRow == null)
+            return null;
+        TreePath indexPath = nodeInfoForRow.getNodeIndexPath();
+        return indexPathToStr(indexPath);
     }
 
 
-    private UIComponent findAnyDecodableComponent() {
-        List<BaseColumn> columns = getColumnsForProcessing();
-        for (BaseColumn column : columns) {
-            List<UIComponent> columnChildren = column.getChildren();
-            for (UIComponent columnChild : columnChildren) {
-                UIComponent decodable = editableValueHolder(columnChild);
-                if (decodable != null)
-                    return decodable;
-            }
+    @Override
+    public int getRowIndexByClientSuffix(String id) {
+        for (int i = 0, count = nodeInfoForRows.size(); i < count; i++) {
+            NodeInfoForRow nodeInfoForRow = nodeInfoForRows.get(i);
+            TreePath nodeIndexPath = nodeInfoForRow.getNodeIndexPath();
+            String indexPathStr = indexPathToStr(nodeIndexPath);
+            if (id.equals(indexPathStr))
+                return i;
         }
-
-        List<Row> customRows = getCustomRows();
-        for (Row customRow : customRows) {
-            List<UIComponent> rowChildren = customRow.getChildren();
-            for (UIComponent rowChild : rowChildren) {
-                if (!(rowChild instanceof Cell))
-                    continue;
-                List<UIComponent> cellChildren = rowChild.getChildren();
-                for (UIComponent cellChild : cellChildren) {
-                    UIComponent decodable = editableValueHolder(cellChild);
-                    if (decodable != null)
-                        return decodable;
-                }
-            }
-        }
-
-        return null;
+        return -1;
     }
+
+    private String indexPathToStr(TreePath indexPath) {
+        StringBuilder sb = new StringBuilder();
+        for (TreePath path = indexPath; path != null; path = path.getParentPath()) {
+            if (sb.length() > 0) sb.insert(0, "_");
+            sb.insert(0, path.getValue());
+        }
+        return sb.toString();
+    }
+
 
     public ExpansionState getExpansionState() {
         return expansionState;
@@ -308,7 +302,6 @@ public class TreeTable extends AbstractTable {
     public void encodeBegin(FacesContext context) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
-        checkConfiguration();
 
         beforeRenderResponse(context);
 
@@ -323,28 +316,6 @@ public class TreeTable extends AbstractTable {
 
         super.encodeBegin(context);
     }
-
-    private void checkConfiguration() {
-        String configurationCheckedAttr = "_configurationCheckPerformed";
-        if (getAttributes().get(configurationCheckedAttr) == null) {
-            getAttributes().put(configurationCheckedAttr, Boolean.TRUE);
-            UIComponent decodable = findAnyDecodableComponent();
-            if (decodable != null) {
-                PreloadedNodes preloadedNodes = getPreloadedNodes();
-                if (isFoldingEnabled() && getUseAjax() && (preloadedNodes == null || !(preloadedNodes instanceof AllNodesPreloaded))) {
-                    String noDecodableCheckStr = (String) getAttributes().get("_noDecodableCheck");
-                    boolean skipException = noDecodableCheckStr != null && Boolean.valueOf(noDecodableCheckStr);
-                    if (!skipException)
-                        throw new FacesException("<o:treeTable id=\"" + getId() + "\"> configuration error: there's currently a " +
-                                "limitation that TreeTable with editable components within its cells cannot be used " +
-                                "if it is configured to expand its nodes with Ajax. The workaround is either to set " +
-                                "preloadedNodes=\"all\" or useAjax=\"false\" for your <o:treeTable>. Component: " +
-                                decodable.getClass().getName() + ", id=\"" + decodable.getId() + "\"");
-                }
-            }
-        }
-    }
-
 
     @Override
     public void encodeChildren(FacesContext context) throws IOException {
@@ -373,6 +344,7 @@ public class TreeTable extends AbstractTable {
         TreeStructure treeStructure = findTreeStructureChild();
         TreePath nodeKeyPath = nodeInfo.getNodeKeyPath();
         TreePath nodePath = nodeInfo.getNodePath();
+        TreePath nodeIndexPath = nodeInfo.getNodeIndexPath();
         if (!locateNodeChildrenByKeyPath(treeStructure, nodeKeyPath))
             return 0; // the node has probably been removed (can be the case here in server-side state saving)
 
@@ -382,7 +354,7 @@ public class TreeTable extends AbstractTable {
         List<Filter> filters = getActiveFilters();
         deepestLevel = 0;
         int childNodeCount = collectTreeNodeDatas(treeStructure, filters, nodeInfoForRows, null, nodeInfoForRows_unfiltered,
-                nodeKeyPath.getLevel() + 1, sortLevel, nodePath, nodeKeyPath, true);
+                nodeKeyPath.getLevel() + 1, sortLevel, nodePath, nodeKeyPath, nodeIndexPath, true);
         nodeInfo.setChildNodeCount(childNodeCount);
         nodeInfo.setChildrenPreloaded(true);
         this.nodeInfoForRows.addAll(rowIndex + 1, nodeInfoForRows);
@@ -459,7 +431,7 @@ public class TreeTable extends AbstractTable {
         deepestLevel = 0;
         rowValuesForFilteringNeeded = null;
         int rootNodeCount = proceedWithReadingData
-                ? collectTreeNodeDatas(treeStructure, filters, nodeInfoForRows, null, nodeInfoForRows_unfiltered, 0, sortLevel, null, null, true)
+                ? collectTreeNodeDatas(treeStructure, filters, nodeInfoForRows, null, nodeInfoForRows_unfiltered, 0, sortLevel, null, null, null, true)
                 : 0;
 
         this.nodeInfoForRows = nodeInfoForRows;
@@ -476,7 +448,7 @@ public class TreeTable extends AbstractTable {
 
         Map<Object, NodeInfoForRow> rowIndexToExpansionData = new HashMap<Object, NodeInfoForRow>();
         if (rootNodeCount != -1) {
-            NodeInfoForRow nodeInfoForRow = new NodeInfoForRow(null, null, -1, true, false);
+            NodeInfoForRow nodeInfoForRow = new NodeInfoForRow(null, null, null, -1, true, false);
             nodeInfoForRow.setNodeHasChildren(rootNodeCount > 0);
             nodeInfoForRow.setChildrenPreloaded(true);
             nodeInfoForRow.setChildNodeCount(rootNodeCount);
@@ -509,8 +481,11 @@ public class TreeTable extends AbstractTable {
                                      List<NodeInfoForRow> nodeInfosForRendering,
                                      List<NodeInfoForRow> nodeInfosAllFiltered,
                                      List<NodeInfoForRow> nodeInfos_unfiltered,
-                                     int level, int sortLevel, TreePath parentNodePath,
-                                     TreePath parentNodeKeyPath, boolean thisLevelInitiallyVisible) {
+                                     int level, int sortLevel,
+                                     TreePath parentNodePath,
+                                     TreePath parentNodeKeyPath,
+                                     TreePath parentNodeIndexPath,
+                                     boolean thisLevelInitiallyVisible) {
         if (level > deepestLevel)
             deepestLevel = level;
 
@@ -525,8 +500,9 @@ public class TreeTable extends AbstractTable {
             boolean nodeHasChildren = treeStructure.getNodeHasChildren();
             TreePath nodePath = new TreePath(nodeData, parentNodePath);
             TreePath nodeKeyPath = new TreePath(nodeKey, parentNodeKeyPath);
+            TreePath nodeIndexPath = new TreePath(nodeIndex, parentNodeIndexPath);
             boolean nodeExpanded = isNodeExpanded(nodeKeyPath);
-            NodeInfoForRow nodeInfo = new NodeInfoForRow(nodePath, nodeKeyPath, level, nodeExpanded, thisLevelInitiallyVisible);
+            NodeInfoForRow nodeInfo = new NodeInfoForRow(nodePath, nodeKeyPath, nodeIndexPath, level, nodeExpanded, thisLevelInitiallyVisible);
             boolean preloadChildren = nodeHasChildren && (
                     nodeExpanded || (preloadedNodes != null && preloadedNodes.getPreloadChildren(nodeKeyPath))
             );
@@ -536,7 +512,7 @@ public class TreeTable extends AbstractTable {
             thisNodeParams.setRowAccepted(rowAccepted);
             thisNodeParams.setFilteringFlags(flagsArray);
 
-            boolean lookForFilteredSubrows = activeFilters.size() > 0 && !rowAccepted; // JSFC-1910 -- when some filters are active we shouldn't extract invisible nodes if parent node satisfies filtering criterias
+            boolean lookForFilteredSubrows = activeFilters.size() > 0 && !rowAccepted; // JSFC-1910 -- when some filters are active we shouldn't extract invisible nodes if parent node satisfies filtering criteria
 
             if (isRowValuesForFilteringNeeded() || lookForFilteredSubrows || preloadChildren) {
                 treeStructure.goToChildLevel();
@@ -545,7 +521,7 @@ public class TreeTable extends AbstractTable {
                 List<NodeInfoForRow> subtreeNodeInfos_unfiltered = new ArrayList<NodeInfoForRow>();
                 int filteredChildCount = collectTreeNodeDatas(
                         treeStructure, activeFilters, subtreeNodeInfosForRendering, subtreeNodeInfosAllFiltered, subtreeNodeInfos_unfiltered,
-                        level + 1, sortLevel, nodePath, nodeKeyPath, thisLevelInitiallyVisible && nodeExpanded);
+                        level + 1, sortLevel, nodePath, nodeKeyPath, nodeIndexPath, thisLevelInitiallyVisible && nodeExpanded);
                 nodeInfo.setNodeHasChildren(filteredChildCount > 0);
                 nodeInfo.setChildrenPreloaded(preloadChildren);
                 nodeInfo.setChildNodeCount(filteredChildCount);

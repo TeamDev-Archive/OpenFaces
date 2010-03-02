@@ -33,7 +33,7 @@
       <f:facet name="subHeader">
         <o:inputTextFilter expression="#{node}"/>
       </f:facet>
-      <h:outputText value="#{node}" style="background: #f0f0f0; border: 1px solid gray; display: block; width: 100%; height: 40px;"/>
+      <h:inputTextarea value="#{node}" style="background: #f0f0f0; border: 1px solid gray; display: block; width: 100%; height: 40px;"/>
     </o:treeColumn>
     <o:column>
       <f:facet name="header">
@@ -45,19 +45,20 @@
 
   <div>Dynamic Structure</div>
 
-  <o:tabbedPane loadingMode="server" style="width: 750px;">
+  <o:tabbedPane loadingMode="server" style="width: 1000px;">
     <o:subPanel>
       <f:facet name="caption">
         <h:outputText value="Manage Category"/>
       </f:facet>
 
       <o:treeTable id="treeTable2" var="message" rolloverRowStyle="background: silver;"
-                   preloadedNodes="all"
+                   preloadedNodes="none"
                    rolloverRowClass="cls1"
                    nodeLevelVar="level"
                    filterSubsidiaryRowStyle="color: blue"
                    filterAcceptedRowStyle="color: green"
                    width="100%" >
+        <o:columnResizing/>
         <o:row ondblclick="alert('Author: #{message.author.userName};\nSubject: #{message.subject}');"/>
         <o:multipleNodeSelection nodeDatas="#{TreeTableTestBean.selectedNodeDatas2}" />
         <o:dynamicTreeStructure nodeChildren="#{TreeTableTestBean.nodeChildren}"/>
@@ -108,6 +109,9 @@
         <o:selectionColumn>
           <f:facet name="header"><o:selectAllCheckbox/></f:facet>
         </o:selectionColumn>
+        <o:column width="100px">
+          <o:commandButton actionListener="#{TreeTableTestBean.linkClicked}" render="treeTable2"/>
+        </o:column>
       </o:treeTable>
 
 

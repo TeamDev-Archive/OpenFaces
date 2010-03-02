@@ -951,6 +951,7 @@
         <w>datechooser</w>
         <w>daytable</w>
         <w>dblclick</w>
+        <w>decodable</w>
         <w>dont</w>
         <w>dropdown</w>
         <w>dropdownfield</w>
@@ -1053,6 +1054,7 @@
         <w>submenu</w>
         <w>subrows</w>
         <w>substring</w>
+        <w>subtree</w>
         <w>suggestionfield</w>
         <w>tabbedpane</w>
         <w>tabindex</w>
@@ -1070,6 +1072,7 @@
         <w>updatables</w>
         <w>valign</w>
         <w>vert</w>
+        <w>wikipedia</w>
         <w>xhtml</w>
       </words>
     </dictionary>

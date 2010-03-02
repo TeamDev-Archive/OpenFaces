@@ -199,15 +199,16 @@
 
 <div id="Description">
   OpenFaces library has a range of Ajax-powered features built-in in components themselves, and facilities for
-  introducing inter-component Ajax-based interaction using OpenFaces Ajax component. This is a non-visual
-  component that can be attached to any other JSF component to reload other components when some particular event
-  occurs. Actually Ajax component has a wider purpose than just reloading components which makes it possible to
-  perform dynamic page updates to meet a wide range of scenarios that require Ajax page updates.
+  introducing inter-component Ajax-based interaction using the appropriate attributes in various command components
+  (such as CommandButton, CommandLink, PopupMenu's items, etc.), and with a generic non-visual "Ajax" component that can
+  be attached to any other JSF component to reload other components when some particular event occurs. Actually, the
+  Ajax component has a wider purpose than just reloading components which makes it possible to perform dynamic page
+  updates to meet a wide range of scenarios that require Ajax page updates.
 
   Here are the major features of the Ajax component:
   <ul class="hang">
     <li><strong>Reloading components</strong> - The main purpose of this component is to reload one or
-      more components with Ajax without reloading the whole page. Just specify the comma-separated list of component
+      more components with Ajax without reloading the whole page. Just specify the space-separated list of component
       ids in the "render" attribute.
     </li>
     <li><strong>Two ways of attaching to components</strong> - You can either embed
@@ -216,15 +217,14 @@
     </li>
     <li><strong>Standalone mode for programmatic usage</strong> - Declare standalone="true" attribute,
       and it becomes possible to run Ajax component reload programmatically. This is especially useful for complex
-      scenarios
-      with conditional reloads, or when the same Ajax component should be reused in different places.
+      scenarios with conditional reloads, or when the same Ajax component should be reused in different places.
     </li>
-    <li><strong>Submitting additional components</strong> - Specifying a comma-separated component ids in
+    <li><strong>Submitting additional components</strong> - Specifying a space-separated component ids in
       the "execute" attribute includes data from other components into the reload procedure.
       This is useful when the reloaded data or server action depends on data in various page's components.
     </li>
-    <li><strong>Executing server action</strong> - Specifying the "action" attribute allows executing
-      a server action before reloading the components. coma
+    <li><strong>Executing server action</strong> - Specifying the "listener" attribute allows executing
+      a server action before reloading the components.
     </li>
     <li><strong>Avoiding frequent requests</strong> - Sends only one request in case of several events
       during the short period of time specified with the "delay" attribute.

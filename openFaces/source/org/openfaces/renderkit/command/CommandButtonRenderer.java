@@ -53,13 +53,16 @@ public class CommandButtonRenderer extends RendererBase {
             writer.writeAttribute("disabled", "disabled", "");
         
         Rendering.writeAttributes(writer, btn,
-                "value",
                 "accesskey",
                 "tabindex",
                 "lang",
                 "title",
                 "alt",
                 "dir");
+        Object value = btn.getValue();
+        if (value == null) value = "";
+        writer.writeAttribute("value", value, "value");
+
         Rendering.writeStyleAndClassAttributes(writer, btn);
 
         if (!btn.isDisabled()) {

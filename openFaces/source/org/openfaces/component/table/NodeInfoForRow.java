@@ -17,6 +17,7 @@ package org.openfaces.component.table;
 public class NodeInfoForRow {
     private TreePath nodePath;
     private TreePath nodeKeyPath;
+    private TreePath nodeIndexPath;
     private int nodeLevel;
     private int childNodeCount;
     private boolean expanded;
@@ -26,9 +27,10 @@ public class NodeInfoForRow {
     private boolean nodeHasChildren;
     private boolean childrenPreloaded;
 
-    public NodeInfoForRow(TreePath nodePath, TreePath nodeKeyPath, int nodeLevel, boolean expanded, boolean nodeInitiallyVisible) {
+    public NodeInfoForRow(TreePath nodePath, TreePath nodeKeyPath, TreePath nodeIndexPath, int nodeLevel, boolean expanded, boolean nodeInitiallyVisible) {
         this.nodeLevel = nodeLevel;
         this.nodePath = nodePath;
+        this.nodeIndexPath = nodeIndexPath;
         this.nodeKeyPath = nodeKeyPath;
         this.expanded = expanded;
         this.nodeInitiallyVisible = nodeInitiallyVisible;
@@ -44,6 +46,10 @@ public class NodeInfoForRow {
 
     public Object getNodeData() {
         return nodePath.getValue();
+    }
+
+    public TreePath getNodeIndexPath() {
+        return nodeIndexPath;
     }
 
     public int getNodeLevel() {

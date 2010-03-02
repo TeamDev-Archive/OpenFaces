@@ -1349,24 +1349,24 @@ public abstract class CommonAjaxViewRoot {
 
     private UIComponent componentById(UIComponent parent, String id, boolean isLastComponentInPath,
                                       boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables) {
-        if (isIntegerNumber(id) && parent instanceof AbstractTable) {
+        if (id.length() > 0 && (isIntegerNumber(id) || id.startsWith(":")) && parent instanceof AbstractTable) {
             AbstractTable table = ((AbstractTable) parent);
             if (!isLastComponentInPath) {
                 if (preProcessDecodesOnTables)
                     table.invokeBeforeProcessDecodes(FacesContext.getCurrentInstance());
                 if (preRenderResponseOnTables) {
                     table.invokeBeforeRenderResponse(FacesContext.getCurrentInstance());
-                    table.setRowIndex(-1); // make the succeding setRowIndex call provide the just-read actual row data through request-scope variables
+                    table.setRowIndex(-1); // make the succeeding setRowIndex call provide the just-read actual row data through request-scope variables
                 }
 
-                int rowIndex = Integer.parseInt(id);
+                int rowIndex = table.getRowIndexByClientSuffix(id);
                 if (table.getRowIndex() == rowIndex) {
                     // ensure row index setting will be run anew to ensure proper request-scope variable values
                     table.setRowIndex(-1);
                 }
                 table.setRowIndex(rowIndex);
             } else {
-                int rowIndex = Integer.parseInt(id);
+                int rowIndex = table.getRowIndexByClientSuffix(id);
                 if (table.getRowIndex() == rowIndex) {
                     // ensure row index setting will be run anew to ensure proper request-scope variable values
                     table.setRowIndex(-1);

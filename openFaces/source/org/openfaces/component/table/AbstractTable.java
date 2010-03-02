@@ -1542,6 +1542,10 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         return null;
     }
 
+    public int getRowIndexByClientSuffix(String id) {
+        return Integer.parseInt(id);
+    }
+
     protected class RowComparator implements Comparator<Object> {
         private final FacesContext facesContext;
         private final ValueExpression sortingExpressionBinding;
@@ -1603,11 +1607,16 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     @Override
     public String getClientId(FacesContext context) {
         String clientId = getStandardClientId(context);
-        int rowIndex = getRowIndex();
-        if (rowIndex == -1)
+        int index = getRowIndex();
+        String suffix = index != -1 ? getRowClientSuffixByIndex(index) : null;
+        if (suffix == null)
             return clientId;
         else
-            return clientId + NamingContainer.SEPARATOR_CHAR + rowIndex;
+            return clientId + NamingContainer.SEPARATOR_CHAR + suffix;
+    }
+
+    protected String getRowClientSuffixByIndex(int index) {
+        return String.valueOf(index);
     }
 
     @Override
