@@ -958,6 +958,7 @@
         <w>firefox</w>
         <w>foldingpanel</w>
         <w>func</w>
+        <w>google</w>
         <w>graphictext</w>
         <w>hintlabel</w>
         <w>horiz</w>
@@ -965,6 +966,7 @@
         <w>https</w>
         <w>iexcl</w>
         <w>iframe</w>
+        <w>infos</w>
         <w>initated</w>
         <w>inputtext</w>
         <w>inputtextarea</w>
@@ -1049,6 +1051,7 @@
         <w>skype</w>
         <w>stylesheets</w>
         <w>submenu</w>
+        <w>subrows</w>
         <w>substring</w>
         <w>suggestionfield</w>
         <w>tabbedpane</w>

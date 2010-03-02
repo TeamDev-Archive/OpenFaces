@@ -331,10 +331,12 @@ div.centered table {
   font-family: Courier New, monospace;
   text-decoration: none;
   color: navy;
+  font-size: 110%;
 }
 
 .codeSnippet {
   font-family: Courier New, monospace;
+  font-size: 110%;
 }
 
 

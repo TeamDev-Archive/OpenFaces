@@ -52,7 +52,7 @@ public class CommandLinkRenderer extends RendererBase {
         Rendering.writeStyleAndClassAttributes(writer, link);
 
         if (!link.isDisabled()) {
-            boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, link);
+            boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, link, true);
             if (ajaxJsRequired)
                 link.getAttributes().put("_ajaxRequired", Boolean.TRUE);
         }

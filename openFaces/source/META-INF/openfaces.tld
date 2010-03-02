@@ -30769,9 +30769,9 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>Flag that indicates whether or not valueChangeListener
         should be executed immediately (during the Apply Request Values phase of the
-        request processing lifecycle instead of Process Validations phase) and the
+        request processing life-cycle instead of Process Validations phase) and the
         component's input should be converted and validated immediately (during
-        the Apply Request Values phase of the request processing lifecycle
+        the Apply Request Values phase of the request processing life-cycle
         instead of the Process Validations phase).
       </description>
       <name>immediate</name>
@@ -31463,9 +31463,9 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>Flag that indicates whether or not valueChangeListener
         should be executed immediately (during the Apply Request Values phase of the
-        request processing lifecycle instead of Process Validations phase) and the
+        request processing life-cycle instead of Process Validations phase) and the
         component's input should be converted and validated immediately (during
-        the Apply Request Values phase of the request processing lifecycle
+        the Apply Request Values phase of the request processing life-cycle
         instead of the Process Validations phase).
       </description>
       <name>immediate</name>
@@ -33429,7 +33429,7 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>A flag that indicates whether or not the selectionChangeListener
         should be executed immediately (during the Apply Request Values phase of the
-        request processing lifecycle instead of Process Validations phase).
+        request processing life-cycle instead of Process Validations phase).
       </description>
       <name>immediate</name>
       <deferred-value>

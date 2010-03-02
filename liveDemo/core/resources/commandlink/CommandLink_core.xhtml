@@ -3,14 +3,18 @@
      xmlns:o="http://openfaces.org/"
         >
 
+  <style>
+    .largeFont {font-size: 16pt}
+  </style>
+
   <div id="Demo">
-    <h:panelGrid id="input" columns="2" style="margin-bottom: 5px;">
-      <o:inputText value="#{requestScope['firstName']}" promptText="First name"/>
-      <o:inputText value="#{requestScope['lastName']}" promptText="Last name"/>
+    <h:panelGrid id="input" columns="2" style="margin-bottom: 7px;">
+      <o:inputText value="#{requestScope['firstName']}" promptText="First name" styleClass="largeFont"/>
+      <o:inputText value="#{requestScope['lastName']}" promptText="Last name"  styleClass="largeFont"/>
     </h:panelGrid>
-    <o:commandLink value="Standard Submit"/> &#160;&#160; 
-    <o:commandLink value="Ajax Submit" execute="input" render="output"/>
-    <div style="margin-top: 5px; padding-left: 5px;">
+    <o:commandLink value="Standard Submit" styleClass="largeFont"/> &#160;&#160;&#160;
+    <o:commandLink value="Ajax Submit" execute="input" render="output" styleClass="largeFont"/>
+    <div style="margin-top: 9px; padding-left: 5px;" class="largeFont">
       <h:outputText id="output" value="Full name: #{requestScope['firstName']} #{requestScope['lastName']}"/>
     </div>
 
@@ -19,7 +23,7 @@
       <h4>Demonstrated Features</h4>
       <ul class="hang">
         <li>
-          <strong>Standard link mode</strong> - The &lt;o:commandLink> component is API compatible with the standard
+          <strong>Standard link mode</strong> - The <span class="codeSnippet">&lt;o:commandLink></span> component is API compatible with the standard
           &lt;h:commandLink> tag and behaves in the same way if no additional settings are specified.
         </li>
         <li>
