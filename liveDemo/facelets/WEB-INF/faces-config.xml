@@ -285,7 +285,7 @@
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
 
-   <managed-bean>
+  <managed-bean>
     <managed-bean-name>PermissionSchema</managed-bean-name>
     <managed-bean-class>org.openfaces.demo.beans.selectbooleancheckbox.PermissionSchema</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
@@ -315,4 +315,9 @@
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
 
+  <managed-bean>
+    <managed-bean-name>CommandLinkBean</managed-bean-name>
+    <managed-bean-class>org.openfaces.demo.beans.commandink.CommandLinkBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
 </faces-config>

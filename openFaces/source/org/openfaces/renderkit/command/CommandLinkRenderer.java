@@ -52,7 +52,8 @@ public class CommandLinkRenderer extends RendererBase {
         Rendering.writeStyleAndClassAttributes(writer, link);
 
         if (!link.isDisabled()) {
-            boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, link, true);
+            boolean ajaxJsRequired = writeEventsWithAjaxSupport(context, writer, link,
+                    getClickedRequestKey(context, component));
             if (ajaxJsRequired)
                 link.getAttributes().put("_ajaxRequired", Boolean.TRUE);
         }
@@ -92,9 +93,13 @@ public class CommandLinkRenderer extends RendererBase {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Map<String, String> requestParameters = context.getExternalContext().getRequestParameterMap();
-        String key = component.getClientId(context);
+        String key = getClickedRequestKey(context, component);
         if (requestParameters.containsKey(key)) {
             component.queueEvent(new ActionEvent(component));
         }
+    }
+
+    private String getClickedRequestKey(FacesContext context, UIComponent component) {
+        return component.getClientId(context) + "::clicked";
     }
 }

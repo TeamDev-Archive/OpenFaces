@@ -48,10 +48,10 @@ public class RendererBase extends Renderer {
     }
 
     protected boolean writeEventsWithAjaxSupport(FacesContext context, ResponseWriter writer, OUICommand command) throws IOException {
-        return writeEventsWithAjaxSupport(context, writer, command, false);
+        return writeEventsWithAjaxSupport(context, writer, command, null);
     }
 
-    protected boolean writeEventsWithAjaxSupport(FacesContext context, ResponseWriter writer, OUICommand command, boolean submitIfNoAjax) throws IOException {
+    protected boolean writeEventsWithAjaxSupport(FacesContext context, ResponseWriter writer, OUICommand command, String submitIfNoAjax) throws IOException {
         String userClickHandler = command.getOnclick();
         Script componentClickHandler = null;
         Iterable<String> render = command.getRender();
@@ -67,8 +67,8 @@ public class RendererBase extends Renderer {
                     initializer.getAjaxParams(context, command)).semicolon().append("return false;");
             ajaxJsRequired = true;
         } else {
-            if (submitIfNoAjax) {
-                componentClickHandler = new FunctionCallScript("O$.submitWithParam", command, command, true);
+            if (submitIfNoAjax != null) {
+                componentClickHandler = new FunctionCallScript("O$.submitWithParam", command, submitIfNoAjax, true);
             }
         }
         String clickHandler = Rendering.joinScripts(
