@@ -107,10 +107,10 @@ public class TreeTableTest extends OpenFacesTestCase {
         //check mouse selection for the same TreeTable
         element("formID:singleSelectionTreeTableID:1:categoryID").click();
         emptyElement.assertText("3");
-        element("formID:singleSelectionTreeTableID:22:nameID").click();
+        element("formID:singleSelectionTreeTableID:4_1:nameID").click();
         emptyElement.assertText("22");
 
-        /*Check TreeTable wit defined 'nodePath' and 'nodeData' attributes*/
+        /*Check TreeTable with defined 'nodePath' and 'nodeData' attributes*/
         element("formID:singleNodePathSelectionTreeTableID:3:categoryID").click();
         ElementInspector selectionNodePath = element("selectionNodePathID");
         String indexBeforeSubmitNodePathTreeTable = selectionNodePath.text();                                               
@@ -376,35 +376,35 @@ public class TreeTableTest extends OpenFacesTestCase {
         element("formID:dynamicTreeStructureID:5:categoryID").assertText("Network Access");
 
         window().document().getElementsByTagName("img").get(0).clickAndWait(loadingMode);
-        element("formID:dynamicTreeStructureID:1:nameID").assertText("Manager");
-        element("formID:dynamicTreeStructureID:2:nameID").assertText("Administrator");
+        element("formID:dynamicTreeStructureID:0_0:nameID").assertText("Manager");
+        element("formID:dynamicTreeStructureID:0_1:nameID").assertText("Administrator");
 
         window().document().getElementsByTagName("img").get(1).clickAndWait(loadingMode);
-        element("formID:dynamicTreeStructureID:4:nameID").assertText("Guest");
-        element("formID:dynamicTreeStructureID:5:nameID").assertText("Regular User 1");
-        element("formID:dynamicTreeStructureID:6:nameID").assertText("Regular User 2");
-        element("formID:dynamicTreeStructureID:7:nameID").assertText("Regular User 3");
-        element("formID:dynamicTreeStructureID:8:nameID").assertText("Regular User 4");
-        element("formID:dynamicTreeStructureID:9:nameID").assertText("Regular User 5");
-        element("formID:dynamicTreeStructureID:10:nameID").assertText("Regular User 6");
-        element("formID:dynamicTreeStructureID:11:nameID").assertText("Regular User 7");
-        element("formID:dynamicTreeStructureID:12:nameID").assertText("Regular User 8");
-        element("formID:dynamicTreeStructureID:13:nameID").assertText("Regular User 9");
-        element("formID:dynamicTreeStructureID:14:nameID").assertText("Regular User 10");
+        element("formID:dynamicTreeStructureID:1_0:nameID").assertText("Guest");
+        element("formID:dynamicTreeStructureID:1_1:nameID").assertText("Regular User 1");
+        element("formID:dynamicTreeStructureID:1_2:nameID").assertText("Regular User 2");
+        element("formID:dynamicTreeStructureID:1_3:nameID").assertText("Regular User 3");
+        element("formID:dynamicTreeStructureID:1_4:nameID").assertText("Regular User 4");
+        element("formID:dynamicTreeStructureID:1_5:nameID").assertText("Regular User 5");
+        element("formID:dynamicTreeStructureID:1_6:nameID").assertText("Regular User 6");
+        element("formID:dynamicTreeStructureID:1_7:nameID").assertText("Regular User 7");
+        element("formID:dynamicTreeStructureID:1_8:nameID").assertText("Regular User 8");
+        element("formID:dynamicTreeStructureID:1_9:nameID").assertText("Regular User 9");
+        element("formID:dynamicTreeStructureID:1_10:nameID").assertText("Regular User 10");
 
         window().document().getElementsByTagName("img").get(2).clickAndWait(loadingMode);
-        element("formID:dynamicTreeStructureID:16:nameID").assertText("Administrator");
-        element("formID:dynamicTreeStructureID:17:nameID").assertText("Ivan Ivanych");
+        element("formID:dynamicTreeStructureID:2_0:nameID").assertText("Administrator");
+        element("formID:dynamicTreeStructureID:2_1:nameID").assertText("Ivan Ivanych");
 
         window().document().getElementsByTagName("img").get(3).clickAndWait(loadingMode);
-        element("formID:dynamicTreeStructureID:19:nameID").assertText("Ivan Ivanych");
+        element("formID:dynamicTreeStructureID:3_0:nameID").assertText("Ivan Ivanych");
 
         window().document().getElementsByTagName("img").get(4).clickAndWait(loadingMode);
-        element("formID:dynamicTreeStructureID:21:nameID").assertText("Semen Semenych");
-        element("formID:dynamicTreeStructureID:22:nameID").assertText("Ivan Ivanych");
+        element("formID:dynamicTreeStructureID:4_0:nameID").assertText("Semen Semenych");
+        element("formID:dynamicTreeStructureID:4_1:nameID").assertText("Ivan Ivanych");
 
         window().document().getElementsByTagName("img").get(5).clickAndWait(loadingMode);
-        element("formID:dynamicTreeStructureID:24:nameID").assertText("Ivan Ivanych");
+        element("formID:dynamicTreeStructureID:5_0:nameID").assertText("Ivan Ivanych");
 
         if (loadingMode instanceof ServerLoadingMode) {
             // reset page index for further test to run correctly

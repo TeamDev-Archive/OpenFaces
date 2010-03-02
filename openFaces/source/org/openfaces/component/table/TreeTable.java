@@ -133,8 +133,8 @@ public class TreeTable extends AbstractTable {
 
     @Override
     protected String getRowClientSuffixByIndex(int index) {
-        if (nodeInfoForRows == null) {
-            // can be the case when pre-rendering TreeTable inspections are made by CompositeFilter
+        if (nodeInfoForRows == null || index >= nodeInfoForRows.size()) {
+            // can be the case when pre-rendering TreeTable inspections are made by the filters
             return null;
         }
 

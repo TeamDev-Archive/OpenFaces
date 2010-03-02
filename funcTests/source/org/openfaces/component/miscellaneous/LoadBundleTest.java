@@ -300,8 +300,8 @@ public class LoadBundleTest extends OpenFacesTestCase {
         // check 'ar' locale
         element(treeTableId + ":0:categoryID").assertText(TODAY_AR);
         window().document().getElementsByTagName("img").get(0).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
-        element(treeTableId + ":1:nameID").assertText(WEEK_AR);
-        element(treeTableId + ":2:nameID").assertText(WEEK_AR);
+        element(treeTableId + ":0_0:nameID").assertText(WEEK_AR);
+        element(treeTableId + ":0_1:nameID").assertText(WEEK_AR);
 
         TabSetInspector localeChanger = tabSet("formID:localeChanger");
 
@@ -309,19 +309,19 @@ public class LoadBundleTest extends OpenFacesTestCase {
         element("formID:collapseNodesBtn").clickAndWait();
         localeChanger.tabs().get(1).clickAndWait();
         testAppFunctionalPage("/components/loadbundle/withTreeTable.jsf"); // issue a GET request for view to update locale in JSP
-        element(treeTableId + ":3:categoryID").assertText(TODAY_ES);
+        element(treeTableId + ":2:categoryID").assertText(TODAY_ES);
         window().document().getElementsByTagName("img").get(1).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
-        element(treeTableId + ":2:nameID").assertText(WEEK_ES);
-        element(treeTableId + ":4:nameID").assertText(WEEK_ES);
+        element(treeTableId + ":1_0:nameID").assertText(WEEK_ES);
+        element(treeTableId + ":1_1:nameID").assertText(WEEK_ES);
 
         // check 'ja' locale
         element("formID:collapseNodesBtn").clickAndWait();
         localeChanger.tabs().get(2).clickAndWait();
         testAppFunctionalPage("/components/loadbundle/withTreeTable.jsf"); // issue a GET request for view to update locale in JSP
-        element(treeTableId + ":5:categoryID").assertText(TODAY_JA);
+        element(treeTableId + ":3:categoryID").assertText(TODAY_JA);
         window().document().getElementsByTagName("img").get(2).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
-        element(treeTableId + ":3:nameID").assertText(WEEK_JA);
-        element(treeTableId + ":4:nameID").assertText(WEEK_JA);
+        element(treeTableId + ":2_0:nameID").assertText(WEEK_JA);
+        element(treeTableId + ":2_1:nameID").assertText(WEEK_JA);
 
         // check 'ru' locale
         element("formID:collapseNodesBtn").clickAndWait();
@@ -329,7 +329,7 @@ public class LoadBundleTest extends OpenFacesTestCase {
         testAppFunctionalPage("/components/loadbundle/withTreeTable.jsf"); // issue a GET request for view to update locale in JSP
         element(treeTableId + ":4:categoryID").assertText(TODAY_RU);
         window().document().getElementsByTagName("img").get(3).clickAndWait(OpenFacesAjaxLoadingMode.getInstance());
-        element(treeTableId + ":4:nameID").assertText(WEEK_RU);
+        element(treeTableId + ":3_0:nameID").assertText(WEEK_RU);
 
         // reset tab index for further running tests
         localeChanger.tabs().get(0).clickAndWait();
