@@ -23,7 +23,7 @@ public class LayeredPaneTag extends MultiPageContainerTag {
     }
 
     public String getRendererType() {
-        return "org.openfaces.TabbedPaneRenderer";
+        return "org.openfaces.LayeredPaneRenderer";
     }
 
     @Override

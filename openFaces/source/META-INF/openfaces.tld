@@ -4248,7 +4248,7 @@ entering a value and returns a list of suggestions from the server -->
         different visits of an appropriate page.
       </description>
       <name>resizingState</name>
-      <!-- bindingType org.openfaces.component.table.ColumnResizingState -->
+      <!-- @bindingType org.openfaces.component.table.ColumnResizingState -->
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
