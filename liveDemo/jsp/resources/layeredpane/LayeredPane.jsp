@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="../design/css/menu.css" type="text/css" media="screen,projection"/>
   <link rel="stylesheet" href="../design/css/print.css" type="text/css" media="print"/>
   <link rel="stylesheet" href="../design/css/handheld.css" type="text/css" media="handheld"/>
+  <link rel="stylesheet" href="../design/css/tabButton.css" type="text/css" media="screen,projection"/>
   <!--[if lt IE 7]>
       <link rel="stylesheet" type="text/css" media="all" href="../design/css/style_ie6.css">
       <script src="/js/stylefix.js" type="text/javascript"></script>

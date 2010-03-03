@@ -6,23 +6,45 @@
   <div id="Demo">
 
 
+    <style>
+      .lnk {
+        font-size: 13pt;
+      }
+      .alignTop {
+        vertical-align: top;
+      }
+    </style>
+
+
     <h:panelGroup>
       Select loading mode:
-      <h:selectOneRadio value="#{LayeredPaneBean.loadingMode}" converter="#{LayeredPaneBean.loadingModeConverter}">
-        <f:selectItems value="#{LayeredPaneBean.loadingModeItems}"/>
-        <o:ajax render="layeredPane"/>
-      </h:selectOneRadio>
+      <o:tabSet id="localeSelector"
+                selectedIndex="#{LayeredPaneBean.loadingModeIndex}"
+                placement="top"
+                gapWidth="0"
+                frontBorderStyle="0px"
+                backBorderStyle="0px"
+                tabClass="tabButton"
+                selectedTabClass="tabButton_active"
+                style="margin-top: 5px; margin-bottom: 15px">
+        <o:tabSetItems value="#{LayeredPaneBean.loadingModes}"/>
+
+        <o:ajax event="change" render="layeredPane"/>
+      </o:tabSet>
+
     </h:panelGroup>
 
-    <style>.alignTop{vertical-align: top}</style>
 
-    <h:panelGrid columns="3" columnClasses="alignTop" cellspacing="7px">
-      <h:panelGroup>
-        <h:commandLink value="Select page 1" onclick="O$('form:layeredPane').setSelectedIndex(0); return false;"/>
+    <h:panelGrid columns="3" columnClasses="alignTop" cellspacing="0" cellpadding="0">
+      <h:panelGroup layout="block" style="margin-right: 10px">
+        <h:commandLink value="Select page 1" onclick="O$('form:layeredPane').setSelectedIndex(0); return false;"
+                       styleClass="lnk"/>
         <br/>
-        <h:commandLink value="Select page 2" onclick="O$('form:layeredPane').setSelectedIndex(1); return false;"/>
+        <h:commandLink value="Select page 2" onclick="O$('form:layeredPane').setSelectedIndex(1); return false;"
+                       styleClass="lnk"/>
         <br/>
-        <h:commandLink value="Select page 3" onclick="O$('form:layeredPane').setSelectedIndex(2); return false;"/>
+        <h:commandLink value="Select page 3" onclick="O$('form:layeredPane').setSelectedIndex(2); return false;"
+                       styleClass="lnk"/>
         <br/>
       </h:panelGroup>
 

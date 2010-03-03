@@ -14,62 +14,38 @@ package org.openfaces.demo.beans.layeredpane;
 import org.openfaces.component.LoadingMode;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.model.SelectItem;
 
 /**
  * @author Dmitry Pikhulya
  */
 public class LayeredPaneBean implements Serializable {
-    private LoadingMode loadingMode = LoadingMode.CLIENT;
 
-    private Converter loadingModeConverter = new Converter() {
-        public Object getAsObject(FacesContext context, UIComponent component, String value) {
-            for (LoadingMode lm : LoadingMode.values()) {
-                String valueAsString = lm.toString();
-                if (valueAsString.equals(value))
-                    return lm;
-            }
-            throw new IllegalArgumentException(value);
-        }
-
-        public String getAsString(FacesContext context, UIComponent component, Object value) {
-            return value.toString();
-        }
-    };
-
-
-    private List<SelectItem> loadingModeItems = new ArrayList<SelectItem>();
+    private int loadingModeIndex = 0;
 
     public LayeredPaneBean() {
-        for (LoadingMode mode : Arrays.asList(
-                    LoadingMode.CLIENT,
-                    LoadingMode.AJAX_LAZY,
-                    LoadingMode.AJAX_ALWAYS,
-                    LoadingMode.SERVER
-            )) {
-            loadingModeItems.add(new SelectItem(mode, mode.toString()));
-        }
+    }
+
+    public List<LoadingMode> getLoadingModes() {
+        return Arrays.asList(
+                LoadingMode.CLIENT,
+                LoadingMode.AJAX_LAZY,
+                LoadingMode.AJAX_ALWAYS,
+                LoadingMode.SERVER
+        );
     }
 
     public LoadingMode getLoadingMode() {
-        return loadingMode;
+        return getLoadingModes().get(getLoadingModeIndex());
     }
 
-    public void setLoadingMode(LoadingMode loadingMode) {
-        this.loadingMode = loadingMode;
+
+    public int getLoadingModeIndex() {
+        return loadingModeIndex;
     }
 
-    public List<SelectItem> getLoadingModeItems() {
-        return loadingModeItems;
-    }
-
-    public Converter getLoadingModeConverter() {
-        return loadingModeConverter;
+    public void setLoadingModeIndex(int loadingModeIndex) {
+        this.loadingModeIndex = loadingModeIndex;
     }
 }

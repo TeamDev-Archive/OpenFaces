@@ -16,12 +16,8 @@ package org.openfaces.component.select;
  * @author Oleg Marshalenko
  */
 public class SelectOneRadio extends OUISelectManyInputBase {
-
     public static final String COMPONENT_TYPE = "org.openfaces.SelectOneRadio";
     public static final String COMPONENT_FAMILY = "org.openfaces.SelectOneRadio";
-
-    public static final String LAYOUT_PAGE_DIRECTION = "pageDirection";
-    public static final String LAYOUT_LINE_DIRECTION = "lineDirection";
 
     public SelectOneRadio() {
         setRendererType("org.openfaces.SelectOneRadioRenderer");

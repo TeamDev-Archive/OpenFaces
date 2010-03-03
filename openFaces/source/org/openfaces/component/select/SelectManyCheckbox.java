@@ -23,12 +23,8 @@ import java.util.List;
  * @author Oleg Marshalenko
  */
 public class SelectManyCheckbox extends OUISelectManyInputBase {
-
     public static final String COMPONENT_TYPE = "org.openfaces.SelectManyCheckbox";
     public static final String COMPONENT_FAMILY = "org.openfaces.SelectManyCheckbox";
-
-    public static final String LAYOUT_PAGE_DIRECTION = "pageDirection";
-    public static final String LAYOUT_LINE_DIRECTION = "lineDirection";
 
     public SelectManyCheckbox() {
         setRendererType("org.openfaces.SelectManyCheckboxRenderer");
