@@ -26,7 +26,7 @@ public class DropDownItem extends OUISelectItem implements Serializable {
     }
 
     public DropDownItem(Object value) {
-        setValue(value);
+        setItemValue(value);
     }
 
     public String getFamily() {
