@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.popuplayer;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
 import org.seleniuminspector.ElementInspector;
@@ -82,6 +83,7 @@ public class PopupLayerTest extends OpenFacesTestCase {
 
     // showPopupLayer, hidePopupLayer
     @Test
+    @Ignore
     public void testShowHideJSFunctions() {
         testAppFunctionalPage("/components/popuplayer/popupLayerJSFunctions.jsf");
 

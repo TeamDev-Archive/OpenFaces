@@ -7,6 +7,11 @@
   <display-name>OpenFaces Demo Application</display-name>
   <description>OpenFaces Demo Application</description>
 
+    <context-param>
+        <param-name>facelets.REFRESH_PERIOD</param-name>
+        <param-value>2</param-value>
+    </context-param>
+
   <context-param>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
     <param-value>server</param-value>
