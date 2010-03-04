@@ -24,6 +24,7 @@ import java.awt.*;
 /**
  * @author Darya Shumilina
  */
+@Ignore
 public class PopupLayerTest extends OpenFacesTestCase {
     @Test
     public void testReRenderThroughA4J() {
