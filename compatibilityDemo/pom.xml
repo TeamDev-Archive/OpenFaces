@@ -9,7 +9,7 @@
   <name>RichFaces-OpenFaces War</name>
   <url>http://maven.apache.org</url>
   <properties>
-    <openfaces-version>2.0.EAP2</openfaces-version>
+    <openfaces-version>2.0</openfaces-version>
     <groupId>org.openfaces</groupId>
     <artifactId>compatibilitydemo</artifactId>
     <commons-beanutils-version>1.6</commons-beanutils-version>

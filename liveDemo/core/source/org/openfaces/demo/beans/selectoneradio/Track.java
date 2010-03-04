@@ -95,9 +95,7 @@ public class Track {
 
     @Override
     public String toString() {
-        /*return new StringBuilder().append(getWriter()).append(" � ")
-                .append(getTitle()).append(" (").append(getLength()).append(")").toString();*/
-        return new StringBuilder().append(getTitle()).append(" � ")
+        return new StringBuilder().append(getTitle()).append(" -- ")
                 .append(getArtist()).append(" (").append(getAlbumName()).append(")").toString();
     }
 }

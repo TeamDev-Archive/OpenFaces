@@ -14,7 +14,7 @@ package org.openfaces.demo.beans.selectbooleancheckbox;
 
 public class SelectedViewBean {
     private static final int ORIGINAL_VIEW_INDEX = 0;
-    private static final int BEHIND_THE_SCHENE_INDEX = 1;
+    private static final int BEHIND_THE_SCENES_INDEX = 1;
 
     private int selectedViewIndex = 0;
 
@@ -30,7 +30,7 @@ public class SelectedViewBean {
         return selectedViewIndex == ORIGINAL_VIEW_INDEX;
     }
 
-    public boolean isBefindSceneView() {
-        return selectedViewIndex == BEHIND_THE_SCHENE_INDEX;
+    public boolean isBehindSceneView() {
+        return selectedViewIndex == BEHIND_THE_SCENES_INDEX;
     }
 }
