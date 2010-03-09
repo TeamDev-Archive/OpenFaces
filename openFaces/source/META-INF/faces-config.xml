@@ -215,7 +215,7 @@
   </component>
 
 
-  <!-- RELOADCOMPONENTS COMPONENT DECLARATION -->
+  <!-- AJAX COMPONENT DECLARATION -->
   <component>
     <component-type>org.openfaces.Ajax</component-type>
     <component-class>org.openfaces.component.ajax.Ajax</component-class>
@@ -973,7 +973,7 @@
       <renderer-class>org.openfaces.renderkit.timetable.EventPreviewRenderer</renderer-class>
     </renderer>
 
-    <!-- RELOADCOMPONENTS COMPONENT DECLARATION -->
+    <!-- AJAX COMPONENT DECLARATION -->
     <renderer>
       <component-family>org.openfaces.Ajax</component-family>
       <renderer-type>org.openfaces.AjaxRenderer</renderer-type>

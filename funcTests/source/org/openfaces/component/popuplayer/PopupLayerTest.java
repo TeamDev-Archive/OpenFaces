@@ -11,13 +11,12 @@
  */
 package org.openfaces.component.popuplayer;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openfaces.test.OpenFacesTestCase;
+import org.openfaces.test.RichFacesAjaxLoadingMode;
 import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.html.InputInspector;
 import org.seleniuminspector.openfaces.PopupLayerInspector;
-import org.openfaces.test.RichFacesAjaxLoadingMode;
 
 import java.awt.*;
 
