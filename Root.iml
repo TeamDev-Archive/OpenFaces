@@ -8,6 +8,8 @@
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/compatibilityDemo/out" />
+      <excludeFolder url="file://$MODULE_DIR$/compatibilityDemo/target" />
       <excludeFolder url="file://$MODULE_DIR$/openFaces" />
       <excludeFolder url="file://$MODULE_DIR$/out" />
     </content>
