@@ -998,6 +998,7 @@
         <w>layeredpane</w>
         <w>lgpl</w>
         <w>liferay</w>
+        <w>listbox</w>
         <w>locator</w>
         <w>ltrim</w>
         <w>macr</w>
@@ -1010,16 +1011,19 @@
         <w>multi</w>
         <w>nbsp</w>
         <w>nowrap</w>
+        <w>onadd</w>
         <w>onajaxend</w>
         <w>onajaxstart</w>
         <w>onchange</w>
         <w>onclick</w>
+        <w>oncloseup</w>
         <w>oncontextmenu</w>
         <w>oncreate</w>
         <w>ondblclick</w>
         <w>ondragend</w>
         <w>ondragmove</w>
         <w>ondragstart</w>
+        <w>ondropdown</w>
         <w>onerror</w>
         <w>onevent</w>
         <w>onhide</w>
@@ -1033,6 +1037,7 @@
         <w>onmouseout</w>
         <w>onmouseover</w>
         <w>onmouseup</w>
+        <w>onremove</w>
         <w>onselect</w>
         <w>onselectionchange</w>
         <w>onselectstart</w>
@@ -1065,6 +1070,7 @@
         <w>screenshot</w>
         <w>selectbooleancheckbox</w>
         <w>selectmanycheckbox</w>
+        <w>selectonemenu</w>
         <w>selectoneradio</w>
         <w>sessionexpired</w>
         <w>skype</w>

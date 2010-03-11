@@ -1019,5 +1019,13 @@
       <handler-class>org.openfaces.taglib.facelets.panel.LayeredPaneTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>selectOneMenu</tag-name>
+    <component>
+      <component-type>org.openfaces.SelectOneMenu</component-type>
+      <renderer-type>org.openfaces.SelectOneMenuRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.select.SelectOneMenuTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

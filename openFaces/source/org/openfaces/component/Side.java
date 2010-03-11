@@ -11,7 +11,6 @@
  */
 package org.openfaces.component;
 
-//todo: there's one more "HorizontalAlignment" class in org.openfaces.component.timetable package. Review this: rename one/both of them, consider merging etc.
 /**
  * @author Andrew Palval
  */

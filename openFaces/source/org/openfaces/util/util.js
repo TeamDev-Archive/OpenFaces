@@ -1220,7 +1220,7 @@ if (!window.O$) {
   //  }
   //}
   //
-  O$._isFormSubmissionJustStated = function() {
+  O$._isFormSubmissionJustStarted = function() {
     return O$._formSubmissionJustStarted;
   };
 

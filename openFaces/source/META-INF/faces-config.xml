@@ -664,6 +664,11 @@
     <component-type>org.openfaces.LayeredPane</component-type>
     <component-class>org.openfaces.component.panel.LayeredPane</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.SelectOneMenu</component-type>
+    <component-class>org.openfaces.component.select.SelectOneMenu</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -1113,6 +1118,11 @@
       <component-family>org.openfaces.CommandLink</component-family>
       <renderer-type>org.openfaces.CommandLinkRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.command.CommandLinkRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.SelectOneMenu</component-family>
+      <renderer-type>org.openfaces.SelectOneMenuRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.select.SelectOneMenuRenderer</renderer-class>
     </renderer>
 
   </render-kit>

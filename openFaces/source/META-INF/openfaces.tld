@@ -33592,5 +33592,11 @@ and it is automatically triggered on any form submission. -->
     </attribute>
 
   </tag>
+  <tag>
+    <description>An extended version of the standard &amp;lt;selectOneMenu&gt; component.</description>
+    <name>selectOneMenu</name>
+    <tag-class>org.openfaces.taglib.jsp.select.SelectOneMenuJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
 
 </taglib>

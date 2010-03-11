@@ -89,8 +89,9 @@
 #Components ul li a.PopupMenu em {background-image:url(../../images/components/icons/PopupMenu.png);}
 #Components ul li a.Spinner em {background-image:url(../../images/components/icons/Spinner.png);}
 #Components ul li a.SelectBooleanCheckbox em {background-image:url(../../images/components/icons/SelectBooleanCheckbox.png);}
-#Components ul li a.SelectOneRadio em {background-image:url(../../images/components/icons/SelectOneRadio.png);}
 #Components ul li a.SelectManyCheckbox em {background-image:url(../../images/components/icons/SelectManyCheckbox.png);}
+#Components ul li a.SelectOneMenu em {background-image:url(../../images/components/icons/SelectOneMenu.png);}
+#Components ul li a.SelectOneRadio em {background-image:url(../../images/components/icons/SelectOneRadio.png);}
 #Components ul li a.SuggestionField em {background-image:url(../../images/components/icons/SuggestionField.png);}
 #Components ul li a.TabSet em {background-image:url(../../images/components/icons/TabSet.png);}
 #Components ul li a.TabbedPane em {background-image:url(../../images/components/icons/TabbedPane.png);}
