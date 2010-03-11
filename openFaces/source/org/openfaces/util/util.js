@@ -4194,6 +4194,11 @@ if (!window.O$) {
     popup._ieTransparencyControl = undefined;
   };
 
+  O$.isVisible = function(element) {
+    return element && O$.getElementStyle(element, "display") != "none" && O$.getElementStyle(element, "visibility") != "hidden";
+    // todo: check floatingIconMessage behavior in different browsers before reusing this function for O$.isInvisible implementation
+  };
+
   O$.isInvisible = function(element) {
     if (!element.style) {
       return false;

@@ -1570,7 +1570,13 @@ O$.Table = {
               if (col._parentColumn.header && col._parentColumn.header._cell)
                 parentColumn = col._parentColumn;
             }
-            var bottomCell = this._column.subHeader ? this._column.subHeader._cell : this._column.header._cell;
+            function isCellVisible(cell) {
+              if (!cell || !O$.isVisible(cell)) return false;
+              var row = cell.parentNode;
+              return O$.isVisible(row);
+            }
+            var bottomCell = this._column.subHeader && isCellVisible(this._column.subHeader._cell)
+                    ? this._column.subHeader._cell : this._column.header._cell;
             var bottomCellPos = O$.getElementBorderRectangle(bottomCell, this);
 
             var topCellPos = parentColumn
