@@ -59,16 +59,19 @@ public class MapRenderUtilities {
         EntityCollection entities = info.getEntityCollection();
         if (entities != null) {
             int count = entities.getEntityCount();
+            ChartView view = chart.getChartView();
             for (int i = count - 1; i >= 0; i--) {
                 ChartEntity entity = entities.getEntity(i);
-                if (entity.getToolTipText() == null && entity.getURLText() == null && getOnClick(chart, chart.getChartView(), entity) == null)
+                if (entity.getToolTipText() == null &&
+                        entity.getURLText() == null &&
+                        getOnClick(chart, chart.getChartView(), entity) == null &&
+                        !viewHasAction(view))
                     continue;
 
                 String area;
                 if (i == 0) {
                     area = getTitleImageMapAreaTag(chart, new StandardToolTipTagFragmentGenerator(), new StandardURLTagFragmentGenerator(), entity);
                 } else {
-                    ChartView view = chart.getChartView();
                     if (entity instanceof PieSectionEntity) {
                         area = getImageMapAreaTag(chart, view, toolTipTagFragmentGenerator, urlTagFragmentGenerator, entity, i);
                     } else if (entity instanceof CategoryItemEntity) {
@@ -140,7 +143,7 @@ public class MapRenderUtilities {
             int entityIndex) {
         StringBuilder tag = new StringBuilder();
         boolean hasURL = entity.getURLText() != null && !entity.getURLText().equals("");
-        boolean hasAction = view.getActionExpression() != null || view.getActionListeners().length > 0;
+        boolean hasAction = viewHasAction(view);
         boolean hasToolTip = entity.getToolTipText() != null && !entity.getToolTipText().equals("");
 
         String onClick = getOnClick(chart, view, entity);
@@ -185,6 +188,10 @@ public class MapRenderUtilities {
             tag.append("/>");
         }
         return tag.toString();
+    }
+
+    private static boolean viewHasAction(ChartView view) {
+        return view.getActionExpression() != null || view.getActionListeners().length > 0;
     }
 
     private static String getOnClick(Chart chart, ChartView view, ChartEntity entity) {
