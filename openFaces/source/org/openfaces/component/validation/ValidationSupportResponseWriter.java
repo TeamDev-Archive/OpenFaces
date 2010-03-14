@@ -249,8 +249,9 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
         UIForm parentForm = Components.getEnclosingForm(component);
         if (parentForm == null) {
             String componentClass = component.getClass().getName();
-            if (componentClass.equals("org.richfaces.component.html.HtmlModalPanel")) {
-                // RichFaces ModalPanel is an EditableValueHolder though it can normally be out of form
+            if (componentClass.equals("org.richfaces.component.html.HtmlModalPanel") ||
+                componentClass.equals("org.richfaces.component.html.HtmlTabPanel")) {
+                // RichFaces TabPanel and ModalPanel implement EditableValueHolder though it can normally be out of form
                 return;
             }
             Log.log(context, "Warn: enclosing form cannot be found for component " + component.getClientId(context) + ". Client-side validation will not be available for it.");
