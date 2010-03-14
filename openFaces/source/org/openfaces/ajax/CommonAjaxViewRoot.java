@@ -19,6 +19,7 @@ import org.openfaces.component.ajax.DefaultSessionExpiration;
 import org.openfaces.component.ajax.SilentSessionExpiration;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.util.AjaxLoadBundleComponent;
+import org.openfaces.event.AjaxActionEvent;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
@@ -26,6 +27,7 @@ import org.openfaces.util.*;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
+import javax.el.MethodNotFoundException;
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
 import javax.faces.application.StateManager;
@@ -396,7 +398,6 @@ public abstract class CommonAjaxViewRoot {
         UIViewRoot viewRoot = context.getViewRoot();
         assertChildren(viewRoot);
 
-
         String listener = request.getParameter(PARAM_ACTION_LISTENER);
         String action = request.getParameter(PARAM_ACTION);
         String actionComponentId = request.getParameter(PARAM_ACTION_COMPONENT);
@@ -409,18 +410,31 @@ public abstract class CommonAjaxViewRoot {
             if (component == null)
                 component = viewRoot;
 
+            Object result = null;
             if (action != null) {
                 MethodExpression methodBinding = context.getApplication().getExpressionFactory().createMethodExpression(
                         elContext, "#{" + action + "}", String.class, new Class[]{});
-                methodBinding.invoke(elContext, null);
+                result = methodBinding.invoke(elContext, null);
             }
             if (listener != null) {
-                ActionEvent event = new ActionEvent(component);
+                AjaxActionEvent event = new AjaxActionEvent(component);
                 event.setPhaseId(Boolean.valueOf(request.getParameter(PARAM_IMMEDIATE)) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION);
                 MethodExpression methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
                         elContext, "#{" + listener + "}", void.class, new Class[]{ActionEvent.class});
+                try {
+                    methodExpression.getMethodInfo(elContext);
+                } catch (MethodNotFoundException e) {
+                    // both actionEvent and AjaxActionEvent parameter declarations are allowed
+                    methodExpression = context.getApplication().getExpressionFactory().createMethodExpression(
+                        elContext, "#{" + listener + "}", void.class, new Class[]{AjaxActionEvent.class});
+                }
                 methodExpression.invoke(elContext, new Object[]{event});
+                Object listenerResult = event.getAjaxResult();
+                if (listenerResult != null)
+                    result = listenerResult;
             }
+            if (result != null)
+                AjaxRequest.getInstance().setAjaxResult(result);
         }
         // invoke application should be after notification listeners
         Log.log(context, "invoke listener finished");
@@ -428,7 +442,7 @@ public abstract class CommonAjaxViewRoot {
         if (actionComponentId != null) {
             // todo: if component is an iterator its rowIndex should be reset so that the following id check succeed (JSFC-1974)
             // [DPikhulya Oct-15] it's possible that after moving ajax from AjaxRequestsPhaseListener there are no additional
-            // actions are required for this check to succeed, because of the added findComponetByPath above.
+            // actions are required for this check to succeed, because of the added findComponentByPath above.
         }
         for (int i = 0; i < components.length; i++) {
             UIComponent component = components[i];
@@ -899,8 +913,8 @@ public abstract class CommonAjaxViewRoot {
         AbstractResponseFacade responseFacade = new ResponseAdapter(response);
         ajaxResponse.setStateIdxHolder(new AjaxSavedStateIdxHolder());
         if (!nonPortletAjaxRequest) {
-            ajaxResponse.setSessoinExpired(Boolean.TRUE.toString());
-            ajaxResponse.setSessoinExpiredLocation((String) context.getExternalContext().getRequestMap().get(AjaxViewHandler.LOCATION_HEADER));
+            ajaxResponse.setSessionExpired(Boolean.TRUE.toString());
+            ajaxResponse.setSessionExpiredLocation((String) context.getExternalContext().getRequestMap().get(AjaxViewHandler.LOCATION_HEADER));
             ajaxResponse.write(response);
         } else {
             ajaxResponse.write(responseFacade);
@@ -987,6 +1001,8 @@ public abstract class CommonAjaxViewRoot {
             UIComponent component = findComponentById(viewRoot, componentId, false, true);
             renderSimpleUpdate(request, context, component, ajaxResponse, initializationScripts);
         }
+        Object ajaxResult = ajaxRequest.getAjaxResult();
+        ajaxResponse.setAjaxResult(ajaxResult);
 
         AjaxPluginIncludes availableIncludes = PluginsLoader.getAvailableIncludes(context);
         List<String> foreignHeadScripts = availableIncludes.getScripts();

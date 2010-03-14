@@ -6,7 +6,7 @@
 <%@ taglib uri="http://richfaces.org/rich" prefix="rich"%> 
 <html>
 <head>
-  <title>OpenFaces componets in the a4j:repeat</title>
+  <title>OpenFaces components in the a4j:repeat</title>
 </head>
 
 <body>

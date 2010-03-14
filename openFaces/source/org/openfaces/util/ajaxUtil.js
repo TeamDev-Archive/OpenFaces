@@ -112,6 +112,7 @@ O$.TAG_AJAX_SESSION_EXPIRED_LOCATION = "session_expired_location";
 O$.TAG_AJAX_EXCEPTION = "ajax_exception";
 O$.TAG_AJAX_EXCEPTION_MESSAGE = "ajax_exception_message";
 O$.TAG_AJAX_STYLE = "style";
+O$.TAG_AJAX_RESULT = "ajaxResult";
 
 O$.UPDATE_TYPE_SIMPLE = "simple";
 O$.UPDATE_TYPE_PORTION = "portion";
@@ -481,7 +482,7 @@ O$.requestFinished = function(ajaxObject) {
     var ajaxSettingsForComponent = OpenFaces.Ajax.Components[targetId];
     if (ajaxSettingsForComponent && ajaxSettingsForComponent.onajaxend) {
       var ajaxendEvent = O$.createEvent("ajaxend");
-
+      ajaxendEvent.ajaxResult = ajaxObject._ajaxResult;
       try {
         ajaxSettingsForComponent.onajaxend(ajaxendEvent);
       } catch(ex) {
@@ -496,6 +497,7 @@ O$.requestFinished = function(ajaxObject) {
 
   if (OpenFaces.Ajax.Page.onajaxend) {
     var ajaxendEvent = O$.createEvent("ajaxend");
+    ajaxendEvent.ajaxResult = ajaxObject._ajaxResult;
 
     try {
       OpenFaces.Ajax.Page.onajaxend(ajaxendEvent);
@@ -766,6 +768,7 @@ O$.AjaxObject = function(render) {
         this._jsIncludes = responseXML.getElementsByTagName(O$.TAG_AJAX_SCRIPT);
         this._updatables = responseXML.getElementsByTagName(O$.TAG_AJAX_UPDATABLE);
         this._styles = responseXML.getElementsByTagName(O$.TAG_AJAX_STYLE);
+        this._ajaxResult = responseXML.getElementsByTagName(O$.TAG_AJAX_RESULT);
         this._cssFiles = responseXML.getElementsByTagName(O$.TAG_AJAX_CSS);
       }
       if (!this._updatables || this._updatables.length == 0) {
@@ -792,12 +795,23 @@ O$.AjaxObject = function(render) {
         this._jsIncludes = responseObj[O$.TAG_AJAX_SCRIPT];
         this._updatables = responseObj[O$.TAG_AJAX_UPDATABLE];
         this._styles = responseObj[O$.TAG_AJAX_STYLE];
+        this._ajaxResult = responseObj[O$.TAG_AJAX_RESULT];
         this._cssFiles = responseObj[O$.TAG_AJAX_CSS];
         this._sessionExpired = responseObj[O$.TAG_AJAX_SESSION_EXPIRED];
         this._sessionExpiredLocation = responseObj[O$.TAG_AJAX_SESSION_EXPIRED_LOCATION];
         this._exception = responseObj[O$.TAG_AJAX_EXCEPTION];
         this._exceptionMessage = responseObj[O$.TAG_AJAX_EXCEPTION_MESSAGE];
       }
+      this._ajaxResult = this._ajaxResult[0];
+      var ajaxResultStr = this._ajaxResult.tagName ? this._ajaxResult.getAttribute("value") : this._ajaxResult.value;
+      try {
+        var ajaxResult;
+        eval("ajaxResult = " + ajaxResultStr);
+        this._ajaxResult = ajaxResult;
+      } catch (e) {
+        this._ajaxResult = ajaxResultStr;
+      }
+
 
       var serverException = this._exception ? this._exception[0].value : undefined;
       if (serverException) {
@@ -943,10 +957,12 @@ O$.AjaxObject = function(render) {
       O$.processJSInclude(rtLibrary);
     }
 
+    var ajaxendEvent = O$.createEvent("ajaxend");
+    ajaxendEvent.ajaxResult = this._ajaxResult;
     if (this._completionCallback)
-      this._completionCallback(this._requestedRender);
+      this._completionCallback(ajaxendEvent);
     if (O$.Ajax.onajaxend)
-      O$.Ajax.onajaxend();
+      O$.Ajax.onajaxend(ajaxendEvent);
   };
 
   this._processUpdateOnExpirationOrError = function (updId, updHTML, updScripts, updateStateHTML) {

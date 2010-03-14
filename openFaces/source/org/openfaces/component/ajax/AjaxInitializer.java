@@ -118,15 +118,15 @@ public class AjaxInitializer {
             if (execute.iterator().hasNext() || submitAjaxInvoker) {
                 result.put("execute", getExecuteParam(context, command, execute));
             }
-            String onajaxstart = (String) command.getAttributes().get("onajaxstart");
+            String onajaxstart = command.getOnajaxstart();
             if (onajaxstart != null && onajaxstart.length() != 0) {
                 result.put("onajaxstart", new AnonymousFunction(onajaxstart, "event"));
             }
-            String onajaxend = (String) command.getAttributes().get("onajaxend");
+            String onajaxend = command.getOnajaxend();
             if (onajaxend != null && onajaxend.length() != 0) {
                 result.put("onajaxend", new AnonymousFunction(onajaxend, "event"));
             }
-            String onerror = (String) command.getAttributes().get("onerror");
+            String onerror = command.getOnerror();
             if (onerror != null && onerror.length() != 0) {
                 result.put("onerror", new AnonymousFunction(onerror, "event"));
             }

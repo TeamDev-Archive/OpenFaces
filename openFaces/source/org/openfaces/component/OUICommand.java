@@ -42,6 +42,9 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
     private String onkeyup;
     private String onkeypress;
     private String oncontextmenu;
+    private String onajaxstart;
+    private String onajaxend;
+    private String onerror;
 
     @Override
     public Object saveState(FacesContext context) {
@@ -50,7 +53,8 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
                 saveAttachedState(context, execute),
                 saveAttachedState(context, render),
                 style, styleClass, rolloverStyle, rolloverClass, onclick, ondblclick, onmousedown, onmouseover,
-                onmousemove, onmouseout, onmouseup, onfocus, onblur, onkeydown, onkeyup, onkeypress, oncontextmenu};
+                onmousemove, onmouseout, onmouseup, onfocus, onblur, onkeydown, onkeyup, onkeypress, oncontextmenu,
+                onajaxstart, onajaxend, onerror};
     }
 
     public abstract String getFamily();
@@ -79,6 +83,9 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
         onkeyup = (String) state[i++];
         onkeypress = (String) state[i++];
         oncontextmenu = (String) state[i++];
+        onajaxstart = (String) state[i++];
+        onajaxend = (String) state[i++];
+        onerror = (String) state[i++];
     }
 
     public Iterable<String> getExecute() {
@@ -233,4 +240,27 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
         this.rolloverClass = rolloverClass;
     }
 
+    public String getOnajaxstart() {
+        return ValueBindings.get(this, "onajaxstart", onajaxstart);
+    }
+
+    public void setOnajaxstart(String onajaxstart) {
+        this.onajaxstart = onajaxstart;
+    }
+
+    public String getOnajaxend() {
+        return ValueBindings.get(this, "onajaxend", onajaxend);
+    }
+
+    public void setOnajaxend(String onajaxend) {
+        this.onajaxend = onajaxend;
+    }
+
+    public String getOnerror() {
+        return ValueBindings.get(this, "onerror", onerror);
+    }
+
+    public void setOnerror(String onerror) {
+        this.onerror = onerror;
+    }
 }

@@ -5673,6 +5673,36 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component starts.</description>
+      <name>onajaxstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component finishes.</description>
+      <name>onajaxend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
+      <name>onerror</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>
@@ -5800,6 +5830,36 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <description>JavaScript code that should be executed every time the user changes selection.</description>
       <name>onchange</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component starts.</description>
+      <name>onajaxstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component finishes.</description>
+      <name>onajaxend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
+      <name>onerror</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -9475,6 +9535,36 @@ means that only root nodes and their immediate children are preloaded -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component starts.</description>
+      <name>onajaxstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component finishes.</description>
+      <name>onajaxend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
+      <name>onerror</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>
@@ -9606,6 +9696,36 @@ means that only root nodes and their immediate children are preloaded -->
     <attribute>
       <description>JavaScript code that should be executed every time the user changes selection.</description>
       <name>onchange</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component starts.</description>
+      <name>onajaxstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component finishes.</description>
+      <name>onajaxend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
+      <name>onerror</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -12990,6 +13110,36 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
 
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component starts.</description>
+      <name>onajaxstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component finishes.</description>
+      <name>onajaxend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
+      <name>onerror</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>
@@ -22344,6 +22494,36 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component starts.</description>
+      <name>onajaxstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component finishes.</description>
+      <name>onajaxend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
+      <name>onerror</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 
@@ -22807,6 +22987,36 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>The content type of the resource designated by this hyperlink.</description>
       <name>type</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component starts.</description>
+      <name>onajaxstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component finishes.</description>
+      <name>onajaxend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
+      <name>onerror</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -25016,6 +25226,36 @@ and it is automatically triggered on any form submission. -->
     <attribute>
       <description>JavaScript code that should be executed when the user releases a key over the MenuItem.</description>
       <name>onkeyup</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component starts.</description>
+      <name>onajaxstart</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when the Ajax request initiated with this component finishes.</description>
+      <name>onajaxend</name>
+      <deferred-value>
+        <type>java.lang.String</type>
+      </deferred-value>
+      <!-- @bindingType java.lang.String -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Invoked when an error occurs during the Ajax request initiated with this component.</description>
+      <name>onerror</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>

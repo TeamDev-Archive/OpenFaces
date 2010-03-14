@@ -17,6 +17,7 @@ import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
+import org.openfaces.org.json.JSONString;
 import org.openfaces.util.AbstractResponseFacade;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Environment;
@@ -28,9 +29,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This class is only for internal usage from within the OpenFaces library. It shouldn't be used explicitly
@@ -45,6 +48,7 @@ class AjaxResponse {
     private static final String TAG_AJAX_UPDATABLE = "updatable";
     private static final String TAG_AJAX_SCRIPT = "script";
     private static final String TAG_AJAX_STYLE = "style";
+    private static final String TAG_AJAX_RESULT = "ajaxResult";
     private static final String TAG_AJAX_CSS = "css";
     private static final String TAG_AJAX_SESSION_EXPIRED = "session_expired";
     private static final String TAG_AJAX_SESSION_EXPIRED_LOCATION = "session_expired_location";
@@ -66,6 +70,7 @@ class AjaxResponse {
     private String sessionExpired;
     private String sessionExpiredLocation;
     private Throwable exception;
+    private Object ajaxResult;
 
     private AjaxSavedStateIdxHolder stateIdxHolder;
 
@@ -210,6 +215,9 @@ class AjaxResponse {
             }
         }
 
+        //noinspection RedundantCast
+        root.addContent(/*don't remove the cast - needed for jdk1.5 compatibility*/(Content) Elements.createAjaxResult(ajaxResult));
+
         if (componentStates != null) {
             for (AjaxPortionData stateData : componentStates) {
                 stateData.addToElement(root, TYPE_UPDATE_STATE);
@@ -281,6 +289,9 @@ class AjaxResponse {
             addStringsToBuf(buf, TAG_AJAX_STYLE, styles);
         }
 
+        appendCommaIfNeeded(buf, buf.length() > 1);
+        addResultValueToBuf(buf, ajaxResult);
+
         if (sessionExpired.length() > 0) {
             appendCommaIfNeeded(buf, buf.length() > 1);
             List<String> sessionExpiredParams = new ArrayList<String>();
@@ -311,6 +322,12 @@ class AjaxResponse {
         Writer writer = response.getWriter();
         writer.write(buf.toString());
 
+    }
+
+    private static void addResultValueToBuf(StringBuilder buf, Object resultValue) {
+        String value = resultValueToJsValue(resultValue);
+        String escapedStr = Rendering.wrapTextIntoJsString(value);
+        buf.append(TAG_AJAX_RESULT).append(" : [{value:").append(escapedStr).append("}]");
     }
 
     private void addStringsToBuf(StringBuilder buf, String collectionName, List<String> strings) {
@@ -359,22 +376,68 @@ class AjaxResponse {
         styles.add(style);
     }
 
+    public Object getAjaxResult() {
+        return ajaxResult;
+    }
+
+    public void setAjaxResult(Object ajaxResult) {
+        this.ajaxResult = ajaxResult;
+    }
+
     public void addComponentState(String clientId, String stateString) {
         if (componentStates == null) componentStates = new ArrayList<AjaxPortionData>();
         componentStates.add(new AjaxPortionData(clientId, stateString, null, null));
     }
 
-    public void setSessoinExpired(String sessionExpired) {
+    public void setSessionExpired(String sessionExpired) {
         this.sessionExpired = sessionExpired == null ? "" : sessionExpired;
     }
 
-    public void setSessoinExpiredLocation(String sessionExpiredLocation) {
+    public void setSessionExpiredLocation(String sessionExpiredLocation) {
         this.sessionExpiredLocation = sessionExpiredLocation == null ? "" : sessionExpiredLocation;
     }
 
     public void setException(Throwable exception) {
         this.exception = exception;
     }
+
+    private static String resultValueToJsValue(Object resultValue) {
+        if (resultValue != null && resultValue.getClass().isArray()) {
+            List resultAsList = new ArrayList();
+            for (int i = 0, count = Array.getLength(resultValue); i < count; i++) {
+                resultAsList.add(Array.get(resultValue, i));
+            }
+            resultValue = resultAsList;
+        }
+        String value;
+        if (resultValue == null)
+            value = "null";
+        else if (resultValue instanceof String)
+            value = "\"" + resultValue + "\"";
+        else if (resultValue instanceof JSONString)
+            value = ((JSONString) resultValue).toJSONString();
+        else if (resultValue instanceof Iterable) {
+            StringBuilder sb = new StringBuilder("[");
+            for (Object entry : (Iterable) resultValue) {
+                if (sb.length() > 1) sb.append(",");
+                sb.append(resultValueToJsValue(entry));
+            }
+            sb.append("]");
+            value = sb.toString();
+        } else if (resultValue instanceof Map) {
+            StringBuilder sb = new StringBuilder("{");
+            Set<Map.Entry> entries = ((Map) resultValue).entrySet();
+            for (Map.Entry entry : entries) {
+                if (sb.length() > 1) sb.append(",");
+                sb.append("\"").append(entry.getKey()).append("\":").append(resultValueToJsValue(entry.getValue()));
+            }
+            sb.append("}");
+            value = sb.toString();
+        } else
+            value = resultValue.toString();
+        return value;
+    }
+
 
     private static class Elements {
 
@@ -404,6 +467,13 @@ class AjaxResponse {
 
         private static Element createStyle(String value) {
             Element elem = new Element(TAG_AJAX_STYLE);
+            elem.setAttribute("value", value);
+            return elem;
+        }
+
+        private static Element createAjaxResult(Object ajaxResult) {
+            Element elem = new Element(TAG_AJAX_RESULT);
+            String value = resultValueToJsValue(ajaxResult);
             elem.setAttribute("value", value);
             return elem;
         }

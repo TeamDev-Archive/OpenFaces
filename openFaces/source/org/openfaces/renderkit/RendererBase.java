@@ -51,7 +51,12 @@ public class RendererBase extends Renderer {
         return writeEventsWithAjaxSupport(context, writer, command, null);
     }
 
-    protected boolean writeEventsWithAjaxSupport(FacesContext context, ResponseWriter writer, OUICommand command, String submitIfNoAjax) throws IOException {
+    protected boolean writeEventsWithAjaxSupport(
+            FacesContext context,
+            ResponseWriter writer,
+            OUICommand command,
+            String submitIfNoAjax
+    ) throws IOException {
         String userClickHandler = command.getOnclick();
         Script componentClickHandler = null;
         Iterable<String> render = command.getRender();

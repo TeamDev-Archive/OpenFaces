@@ -27,7 +27,7 @@ public interface AjaxPortionRenderer {
      * which HTML appearance inner component should have. For example some components may have additional
      * initialization javascript along with their HTML representations.
      *
-     * @param context     instnace of {@link javax.faces.context.FacesContext}
+     * @param context     instance of {@link javax.faces.context.FacesContext}
      * @param component   parent component for which inner controls should be rendered
      * @param portionName actually a server-side id for the inner component to be rendered. In further, there
      *                    may be an extension for this method to support not only inner components rendering, but data
@@ -37,7 +37,7 @@ public interface AjaxPortionRenderer {
      * @throws IOException   propagates any IO exceptions that might occur inside of this method
      * @throws JSONException in case of any JSON manipulation failure. It is declared as a checked exception here just
      *                       to free the implementations of this method from having to catch them. Invoker of this method
-     *                       will just rethrow this exception as RuntimeException.
+     *                       will just re-throw this exception as RuntimeException.
      */
     public JSONObject encodeAjaxPortion(
             FacesContext context,

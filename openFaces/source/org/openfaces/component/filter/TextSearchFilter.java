@@ -46,7 +46,7 @@ public abstract class TextSearchFilter extends ExpressionFilter {
                     "the search component. children.size = " + children.size();
             if (children.size() == 0)
                 message += " ; If you're creating the filter component programmatically, make sure to invoke its " +
-                        "createSubComponents() method (see the Creating Componetns Dynamically section in the " +
+                        "createSubComponents() method (see the Creating Components Dynamically section in the " +
                         "documentation: http://openfaces.org/documentation/developersGuide/index.html.";
             throw new IllegalStateException(message);
         }

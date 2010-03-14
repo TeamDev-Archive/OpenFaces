@@ -26,6 +26,7 @@ public class AjaxRequest {
 
     private Set<String> reloadedComponentIds = new HashSet<String>();
     private FacesContext context;
+    private Object ajaxResult;
 
     private AjaxRequest(FacesContext context) {
         this.context = context;
@@ -59,5 +60,24 @@ public class AjaxRequest {
 
     public Set<String> getReloadedComponentIds() {
         return reloadedComponentIds;
+    }
+
+    /**
+     * @return the Ajax request result value as described in the <code>setAjaxResult</code> method.
+     */
+    public Object getAjaxResult() {
+        return ajaxResult;
+    }
+
+    /**
+     * Specifies the value that can optionally be sent to the client-side by the server action processing code. This
+     * feature can be utilized for implementing the application-specific logic which requires some data to be sent along
+     * with the Ajax response. The value specified with this method will be available through the <code>ajaxResult</code>
+     * field of the event object passed to the client-side <code>onajaxend</code> event.
+     *
+     * @param ajaxResult any primitive type, String, any Iterable instance or a Map<String, Object>.
+     */
+    public void setAjaxResult(Object ajaxResult) {
+        this.ajaxResult = ajaxResult;
     }
 }
