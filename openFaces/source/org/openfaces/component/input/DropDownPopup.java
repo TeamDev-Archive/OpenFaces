@@ -14,17 +14,18 @@ package org.openfaces.component.input;
 import org.openfaces.component.AbstractPopup;
 import org.openfaces.component.ajax.Ajax;
 import org.openfaces.component.table.BaseColumn;
-import org.openfaces.util.Environment;
-import org.openfaces.util.Rendering;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.renderkit.input.DropDownFieldRenderer;
 import org.openfaces.renderkit.input.DropDownFieldTableStyles;
 import org.openfaces.renderkit.table.TableFooter;
 import org.openfaces.renderkit.table.TableHeader;
 import org.openfaces.renderkit.table.TableStructure;
+import org.openfaces.util.Environment;
+import org.openfaces.util.Rendering;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItem;
+import javax.faces.component.UISelectItems;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
@@ -138,7 +139,7 @@ public class DropDownPopup extends AbstractPopup {
             FacesContext context,
             DropDownFieldBase dropDownField,
             ChildData childData,
-            Collection<UISelectItem> dropDownItems) throws IOException {
+            Collection<UISelectItem> items) throws IOException {
         List<BaseColumn> columns = childData.getColumns();
         List<UIComponent> childComponents = childData.getChildComponents();
         int colCount = columns.size();
@@ -149,7 +150,7 @@ public class DropDownPopup extends AbstractPopup {
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String itemIdPrefix = getClientId(context) + ITEM_PREFIX;
         int index = 0;
-        for (UISelectItem item : dropDownItems) {
+        for (UISelectItem item : items) {
             Object originalValue = item.getAttributes().get(DropDownFieldRenderer.ORIGINAL_VALUE_ATTR);
             String convertedValue = (String) item.getAttributes().get(DropDownFieldRenderer.DISPLAYED_VALUE_ATTR);
 
@@ -202,7 +203,7 @@ public class DropDownPopup extends AbstractPopup {
     }
 
     private boolean isDropDownAuxiliaryComponent(UIComponent component) {
-        return (component instanceof DropDownItem || component instanceof DropDownItems);
+        return (component instanceof UISelectItem || component instanceof UISelectItems);
     }
 
     public void setDropDownList(Collection<UISelectItem> dropDownList) {
