@@ -623,10 +623,13 @@
     <image>Spinner</image>
     <selectedImage>/images/components/titles/Spinner.png</selectedImage>
     <keyFeatures>
+      <feature>Support for integer and floating-point numbers</feature>
+      <feature>Specifying number conversion settings and pattern</feature>
       <feature>Specifying allowed number range</feature>
       <feature>Number selection customization: cycling, step size</feature>
       <feature>Focused and rollover style support</feature>
       <feature>Appearance customization</feature>
+      <feature>Keyboard support</feature>
     </keyFeatures>
     <demos>
       <demoItem>

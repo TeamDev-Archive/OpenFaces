@@ -30,12 +30,6 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
 
     private static HibernateCriterionBuilder instance;
 
-    public static HibernateCriterionBuilder getInstance() {
-        if (instance == null)
-            instance = new HibernateCriterionBuilder();
-        return instance;
-    }
-
     /**
      * Returns hibernate Criterion instance that corresponds to the passed FilterCriterion instance.
      */
@@ -241,10 +235,28 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
         return (Integer) criteria.list().get(0);
     }
 
+    /**
+     * Returns an instance of the HibernateCriterionBuilder class, which is used by the <code>build</code> method
+     * internally. This method shouldn't normally be invoked by application developers.
+     */
+    public static HibernateCriterionBuilder getInstance() {
+        if (instance == null)
+            instance = new HibernateCriterionBuilder();
+        return instance;
+    }
+
+    /**
+     * Used by the <code>build</code> method internally. This method shouldn't normally be invoked by application
+     * developers.
+     */
     public Object process(ExpressionFilterCriterion criterion) {
         return convertToHibernateCriteria(criterion);
     }
 
+    /**
+     * Used by the <code>build</code> method internally. This method shouldn't normally be invoked by application
+     * developers.
+     */
     public Object process(AndFilterCriterion criterion) {
         List<FilterCriterion> criteria = criterion.getCriteria();
         Conjunction conjunction = Restrictions.conjunction();
@@ -255,6 +267,10 @@ public class HibernateCriterionBuilder extends FilterCriterionProcessor {
         return conjunction;
     }
 
+    /**
+     * Used by the <code>build</code> method internally. This method shouldn't normally be invoked by application
+     * developers.
+     */
     public Object process(OrFilterCriterion criterion) {
         List<FilterCriterion> criteria = criterion.getCriteria();
 

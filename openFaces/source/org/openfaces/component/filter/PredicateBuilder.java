@@ -40,20 +40,36 @@ public class PredicateBuilder extends FilterCriterionProcessor {
 
     private static PredicateBuilder instance;
 
+    /**
+     * Converts the specified <code>FilterCriterion</code> object into the Commons Collections Predicate object, which
+     * can in turn be used for manual filtering of objects against the specified criterion.
+     */
+    public static Predicate build(FilterCriterion criterion) {
+        return (Predicate) criterion.process(getInstance());
+    }
+
+    /**
+     * Returns an instance of the PredicateBuilder class, which is used by the <code>build</code> method
+     * internally. This method shouldn't normally be invoked by application developers.
+     */
     public static PredicateBuilder getInstance() {
         if (instance == null)
             instance = new PredicateBuilder();
         return instance;
     }
 
-    public static Predicate build(FilterCriterion criterion) {
-        return (Predicate) criterion.process(getInstance());
-    }
-
+    /**
+     * Used by the <code>build</code> method internally. This method shouldn't normally be invoked by application
+     * developers.
+     */
     public Object process(ExpressionFilterCriterion criterion) {
         return convertToPredicate(criterion);
     }
 
+    /**
+     * Used by the <code>build</code> method internally. This method shouldn't normally be invoked by application
+     * developers.
+     */
     public Object process(AndFilterCriterion criterion) {
         List<FilterCriterion> criteria = criterion.getCriteria();
         Predicate[] predicates = new Predicate[criteria.size()];
@@ -64,6 +80,10 @@ public class PredicateBuilder extends FilterCriterionProcessor {
         return new AllPredicate(predicates);
     }
 
+    /**
+     * Used by the <code>build</code> method internally. This method shouldn't normally be invoked by application
+     * developers.
+     */
     public Object process(OrFilterCriterion criterion) {
         List<FilterCriterion> criteria = criterion.getCriteria();
         Predicate[] predicates = new Predicate[criteria.size()];
