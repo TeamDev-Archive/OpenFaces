@@ -11,7 +11,10 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.util.ValueBindings;
+
 import javax.faces.component.UIComponentBase;
+import javax.faces.context.FacesContext;
 
 /**
  * @author Dmitry Pikhulya
@@ -19,6 +22,7 @@ import javax.faces.component.UIComponentBase;
 public class SelectAllCheckbox extends UIComponentBase {
     public static final String COMPONENT_TYPE = "org.openfaces.SelectAllCheckbox";
     public static final String COMPONENT_FAMILY = "org.openfaces.SelectAllCheckbox";
+    private Boolean disabled;
 
     public SelectAllCheckbox() {
         setRendererType("org.openfaces.SelectAllCheckboxRenderer");
@@ -26,6 +30,29 @@ public class SelectAllCheckbox extends UIComponentBase {
 
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+    public boolean isDisabled() {
+        return ValueBindings.get(this, "disabled", disabled, false);
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        Object superState = super.saveState(context);
+        return new Object[]{
+                superState,
+                disabled};
+    }
+
+    @Override
+    public void restoreState(FacesContext context, Object stateObj) {
+        Object[] state = (Object[]) stateObj;
+        super.restoreState(context, state[0]);
+        disabled = (Boolean) state[1];
     }
 
 }

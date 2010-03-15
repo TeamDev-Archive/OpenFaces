@@ -40,6 +40,7 @@ public class CheckboxColumn extends BaseColumn {
     private Boolean sortable;
     private AbstractTableSelection selectedRows;
     private Map<String, ValueExpression> deferredValueExpressions;
+    private Boolean disabled;
 
     public CheckboxColumn() {
         setRendererType("org.openfaces.CheckboxColumnRenderer");
@@ -58,7 +59,8 @@ public class CheckboxColumn extends BaseColumn {
                 superState,
                 saveAttachedState(context, selectedRows),
                 saveExpressionMap(context, deferredValueExpressions),
-                sortable};
+                sortable,
+                disabled};
     }
 
     @Override
@@ -68,6 +70,7 @@ public class CheckboxColumn extends BaseColumn {
         selectedRows = (AbstractTableSelection) restoreAttachedState(context, state[1]);
         deferredValueExpressions = restoreExpressionMap(context, state[2]);
         sortable = (Boolean) state[3];
+        disabled = (Boolean) state[4];
         assignDataModel();
     }
 
@@ -296,5 +299,13 @@ public class CheckboxColumn extends BaseColumn {
             return ((MultipleNodeSelection) selectedRows).getSelectedNodeKeyPaths();
         else
             throw new IllegalStateException("selectedRows is " + (selectedRows != null ? selectedRows.getClass().getName() : "null"));
+    }
+
+    public boolean isDisabled() {
+        return ValueBindings.get(this, "disabled", disabled, false);
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 }

@@ -14,6 +14,8 @@ package org.openfaces.taglib.jsp.table;
 import org.openfaces.taglib.internal.table.SelectAllCheckboxTag;
 import org.openfaces.taglib.jsp.AbstractComponentJspTag;
 
+import javax.el.ValueExpression;
+
 /**
  * @author Dmitry Pikhulya
  */
@@ -21,5 +23,9 @@ public class SelectAllCheckboxJspTag extends AbstractComponentJspTag {
 
     public SelectAllCheckboxJspTag() {
         super(new SelectAllCheckboxTag());
+    }
+
+    public void setDisabled(ValueExpression disabled) {
+        getDelegate().setPropertyValue("disabled", disabled);
     }
 }

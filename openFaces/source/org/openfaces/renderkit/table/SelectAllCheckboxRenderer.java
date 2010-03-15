@@ -15,6 +15,7 @@ import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.AbstractTableSelection;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.CheckboxColumn;
+import org.openfaces.component.table.SelectAllCheckbox;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.renderkit.TableUtil;
 import org.openfaces.util.Rendering;
@@ -36,7 +37,7 @@ public class SelectAllCheckboxRenderer extends RendererBase {
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered())
             return;
-
+        SelectAllCheckbox selectAllCheckbox = (SelectAllCheckbox) component;
         AbstractTable table = getTable(component);
         if (table == null)
             throw new IllegalStateException("SelectionColumn must be nested inside a table");
@@ -56,7 +57,9 @@ public class SelectAllCheckboxRenderer extends RendererBase {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("input", component);
         writeIdAttribute(context, component);
-        if (!checkBoxColHeader) {
+        if (selectAllCheckbox.isDisabled()){
+            writer.writeAttribute("disabled", "disabled", null);
+        }else if (!checkBoxColHeader) {
             if (!selection.isEnabled())
                 writer.writeAttribute("disabled", "disabled", null);
         }

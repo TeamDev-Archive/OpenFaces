@@ -40,4 +40,7 @@ public class CheckboxColumnJspTag extends BaseColumnJspTag {
         getDelegate().setPropertyValue("sortable", sortable);
     }
 
+    public void setDisabled(ValueExpression disabled) {
+        getDelegate().setPropertyValue("disabled", disabled);
+    }
 }

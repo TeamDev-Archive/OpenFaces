@@ -7106,6 +7106,16 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>A flag that enables or disables the component.</description>
+      <name>disabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 
@@ -7147,6 +7157,16 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>A flag that enables or disables the component.</description>
+      <name>disabled</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
       <!-- @el true -->
     </attribute>
   </tag>

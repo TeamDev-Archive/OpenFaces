@@ -11,6 +11,8 @@
  */
 package org.openfaces.renderkit.table;
 
+import org.openfaces.component.table.CheckboxColumn;
+import org.openfaces.component.table.SelectAllCheckbox;
 import org.openfaces.util.Styles;
 
 import javax.faces.component.UIComponent;
@@ -32,9 +34,13 @@ public class CheckboxColumnRenderer extends BaseColumnRenderer {
         if (!component.isRendered())
             return;
 
+        CheckboxColumn checkboxColumn = (CheckboxColumn) component;
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("input", component);
         writer.writeAttribute("type", "checkbox", null);
+        if (checkboxColumn.isDisabled()){
+            writer.writeAttribute("disabled", "disabled", null);
+        }
         Styles.renderStyleClasses(context, component);
         writer.endElement("input");
     }
