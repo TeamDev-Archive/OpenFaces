@@ -262,9 +262,7 @@ O$.sendAjaxRequestIfNoFormSubmission = function() {
   }
   setTimeout(function() {
     O$._ajaxRequestScheduled = false;
-    if (O$._isFormSubmissionJustStarted()) {
-      alert("Couldn't start Ajax request for component(s) \"" + ajaxArgs[0].join(",") + "\" because ordinary form " +
-            "submission has also been started simultaneously.");
+    if (O$.isAjaxInLockedState()) {
       return;
     }
 

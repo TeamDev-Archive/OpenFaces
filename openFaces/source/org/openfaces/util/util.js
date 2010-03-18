@@ -1107,6 +1107,19 @@ if (!window.O$) {
     return container;
   };
 
+// ----------------- AJAX RELATED UTILITY FUNCTIONS -----------------------------------------------------
+  O$.lockAjax = function(){
+    O$._ajaxTemporaryLocked = true;
+  };
+
+  O$.isAjaxInLockedState = function(){
+    return O$._ajaxTemporaryLocked;
+  };
+
+  O$.resetAjaxState = function(){
+    O$._ajaxTemporaryLocked = false;
+  }
+
   // ----------------- FORM, FORM ELEMENTS MANIPULATION ---------------------------------------------------
 
   O$.submitEnclosingForm = function(element) {
@@ -1220,10 +1233,6 @@ if (!window.O$) {
   //  }
   //}
   //
-  O$._isFormSubmissionJustStarted = function() {
-    return O$._formSubmissionJustStarted;
-  };
-
   O$._selectTextRange = function(field, beginIdx, endIdx) {
     if (field._o_inputField) field = field._o_inputField;
     if (field.setSelectionRange) {
@@ -1236,6 +1245,22 @@ if (!window.O$) {
       range.moveEnd("character", endIdx);
       range.select();
     }
+  };
+
+  O$.markNextFormSubmissionAsDownloadAction = function() {
+    O$._formSubmissionAsDownloadAction = true;
+  };
+
+  O$.isFormSubmission_A_DownloadAction = function() {
+    return O$._formSubmissionAsDownloadAction;
+  };
+
+  O$.setSubmissionAjaxInactivityTimeout = function(timeout) {
+    O$._submissionAjaxInactivityTimeout = timeout;
+  };
+
+  O$.getSubmissionAjaxInactivityTimeout = function() {
+    return O$._submissionAjaxInactivityTimeout;
   };
 
   // ----------------- EVENT UTILITIES ---------------------------------------------------
@@ -1828,26 +1853,31 @@ if (!window.O$) {
   };
 
   O$.addLoadEvent(function() {
+    var predefinedTimeout = O$.getSubmissionAjaxInactivityTimeout();
+    var timeoutToUnlockAjaxRequests = (O$.isFormSubmission_A_DownloadAction()) ? 100 : predefinedTimeout;
+
     for (var i = 0, count = document.forms.length; i < count; i++) {
       var frm = document.forms[i];
       O$.addEventHandler(frm, "submit", function() {
         if (!this.target || this.target != "_blank") {
-          O$._formSubmissionJustStarted = true;
+          O$.lockAjax();
           // _formSubmissionJustStarted should be reset so as not to block further ajax actions if this is not actually
           // a normal form submission, but file download (JSFC-2940)
           setTimeout(function() {
-            O$._formSubmissionJustStarted = false;
-          }, 100);
+            O$.resetAjaxState();
+          }, timeoutToUnlockAjaxRequests);
         }
       });
       if (frm._of_prevSubmit) continue;
       frm._of_prevSubmit = frm.submit;
       frm.submit = function() {
         if (!this.target || this.target != "_blank") {
-          O$._formSubmissionJustStarted = true;
+           O$.lockAjax();
+          // _formSubmissionJustStarted should be reset so as not to block further ajax actions if this is not actually
+          // a normal form submission, but file download (JSFC-2940)
           setTimeout(function() {
-            O$._formSubmissionJustStarted = false;
-          }, 100);
+            O$.resetAjaxState();
+          }, timeoutToUnlockAjaxRequests);
         }
         this._of_prevSubmit();
       };

@@ -35,6 +35,8 @@ public class UtilPhaseListener extends PhaseListenerBase {
     private static final String SCROLL_POS_KEY = UtilPhaseListener.class.getName() + ".pageScrollPos";
     private static final String SCROLL_POS_TRACKER_FIELD_ID = "o::defaultScrollPosition";
     private static final String AUTO_SCROLL_POS_TRACKING_CONTEXT_PARAM = "org.openfaces.autoSaveScrollPos";
+    private static final String SUBMISSION_AJAX_INACTIVITY_TIMEOUT_CONTEXT_PARAM = "org.openfaces.submissionAjaxInactivityTimeout";
+    private static final long DEFAULT_SUBMISSION_AJAX_INACTIVITY_TIMEOUT = 5000;
 
 
     public void beforePhase(PhaseEvent event) {
@@ -54,6 +56,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
             Rendering.appendOnLoadScript(context, encodeFocusTracking(context));
             Rendering.appendOnLoadScript(context, encodeScrollPosTracking(context));
             Rendering.appendOnLoadScript(context, encodeDisabledContextMenu(context));
+            encodeFormSubmissionAjaxInactivityTimeout(context);
             encodeAjaxProgressMessage(context);
         } else if (phaseId.equals(PhaseId.APPLY_REQUEST_VALUES)) {
             decodeFocusTracking(context);
@@ -128,7 +131,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
         String focusedComponentId = (String) requestMap.get(FOCUSED_COMPONENT_ID_KEY);
         return new ScriptBuilder().functionCall("O$.initDefaultFocus",
                 FOCUS_TRACKER_FIELD_ID,
-                focusedComponentId != null ? focusedComponentId: null).semicolon();
+                focusedComponentId != null ? focusedComponentId : null).semicolon();
     }
 
     private Script encodeScrollPosTracking(FacesContext facesContext) {
@@ -146,6 +149,45 @@ public class UtilPhaseListener extends PhaseListenerBase {
         if (!isDisabledContextMenuEnabled(facesContext))
             return null;
         return new RawScript("O$.disabledContextMenuFor(document);");
+    }
+
+    private void encodeFormSubmissionAjaxInactivityTimeout(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        String paramStr = externalContext.getInitParameter(SUBMISSION_AJAX_INACTIVITY_TIMEOUT_CONTEXT_PARAM);
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+
+        long inactivityTimeout = DEFAULT_SUBMISSION_AJAX_INACTIVITY_TIMEOUT;
+        if (paramStr != null) {
+            try {
+                final long parameterValue = Long.parseLong(paramStr);
+                inactivityTimeout = Math.abs(parameterValue);
+            } catch (NumberFormatException e) {
+                externalContext.log("Invalid value specified for context parameter named " + SUBMISSION_AJAX_INACTIVITY_TIMEOUT_CONTEXT_PARAM
+                        + ": it must be a number");
+            }
+        }
+
+        final RawScript script = new RawScript("q__setSubmissionAjaxInactivityTimeout(" + inactivityTimeout + ");");
+        boolean isAjax4jsfRequest = AjaxUtil.isAjax4jsfRequest();
+        boolean isPortletRequest = AjaxUtil.isPortletRequest(context);
+        String uniqueRTLibraryName = isPortletRequest
+                ? (String) sessionMap.get(AjaxUtil.ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME)
+                : ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
+        String initLibraryUrl = Resources.getApplicationURL(context, uniqueRTLibraryName);
+
+        try {
+            if (isAjax4jsfRequest || isPortletRequest) {
+                if (isAjax4jsfRequest) {
+                    Resources.renderJSLinkIfNeeded(context, initLibraryUrl);
+                }
+
+                sessionMap.put(uniqueRTLibraryName, script.toString());
+            } else {
+                Rendering.appendOnLoadScript(context, script);
+            }
+        } catch (IOException e) {
+            externalContext.log("Exception was thrown during rendering of ajax inactivity timeout scripts.", e);
+        }
     }
 
     private void decodeFocusTracking(FacesContext facesContext) {

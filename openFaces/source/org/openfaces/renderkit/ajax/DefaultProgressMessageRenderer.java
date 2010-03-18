@@ -93,6 +93,11 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
                 }
 
                 if (sessionMap != null && uniqueRTLibraryName != null) {
+                    String scripts = (String) context.getExternalContext().getSessionMap().get(uniqueRTLibraryName);
+                    if (scripts != null) {
+                        setMessageScript.append(scripts);
+                    }
+
                     sessionMap.put(uniqueRTLibraryName, setMessageScript.toString());
                 }
             } else {
