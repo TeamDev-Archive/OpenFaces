@@ -9,21 +9,17 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
+
 package org.openfaces.component.chart.impl.renderers;
 
-import org.jfree.chart.renderer.category.LineAndShapeRenderer;
-import org.jfree.data.category.CategoryDataset;
-import org.openfaces.component.chart.LineChartView;
+import org.jfree.chart.renderer.category.BarRenderer3D;
+import org.openfaces.component.chart.BarChartView;
 
 /**
- * @author Ekaterina Shliakhovetskaya
+ * @author Dmitry Pikhulya
  */
-public class LineRendererAdapter extends LineAndShapeRenderer {
-    public LineRendererAdapter(LineChartView chartView, CategoryDataset dataset) {
+public class BarRenderer3DAdapter extends BarRenderer3D {
+    public BarRenderer3DAdapter(BarChartView chartView) {
         ChartRendererUtil.setupSeriesColors(chartView, this);
-        setShapesVisible(chartView.isShapesVisible());
-
-        ChartRendererUtil.processLineAndShapeRendererProperties(this, dataset, chartView);
     }
-
 }

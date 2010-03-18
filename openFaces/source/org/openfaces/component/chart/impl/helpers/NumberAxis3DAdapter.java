@@ -9,9 +9,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
+
 package org.openfaces.component.chart.impl.helpers;
 
-import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberAxis3D;
 import org.openfaces.component.chart.ChartAxis;
 import org.openfaces.component.chart.ChartNumberAxis;
 import org.openfaces.component.chart.GridChartView;
@@ -19,11 +20,10 @@ import org.openfaces.component.chart.Series;
 import org.openfaces.component.chart.Tuple;
 
 /**
- * @author Ekaterina Shliakhovetskaya
+ * @author Dmitry Pikhulya
  */
-public class NumberAxisAdapter extends NumberAxis {
-
-    public NumberAxisAdapter(String label, boolean visible, ChartNumberAxis chartNumberAxis, ChartAxis chartBaseAxis, GridChartView view) {
+public class NumberAxis3DAdapter extends NumberAxis3D {
+    public NumberAxis3DAdapter(String label, boolean visible, ChartNumberAxis chartNumberAxis, ChartAxis chartBaseAxis, GridChartView view) {
         if (!visible) {
             setVisible(false);
             return;

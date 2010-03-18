@@ -27,6 +27,7 @@ import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.impl.PropertiesConverter;
 import org.openfaces.component.chart.impl.generators.DynamicXYGenerator;
 import org.openfaces.component.chart.impl.helpers.DateAxisAdapter;
+import org.openfaces.component.chart.impl.helpers.NumberAxis3DAdapter;
 import org.openfaces.component.chart.impl.helpers.NumberAxisAdapter;
 
 /**
@@ -55,7 +56,9 @@ public class GridDatePlotAdapter extends XYPlot {
             valueAxis = null;
 
         DateAxis dateAxis = new DateAxisAdapter(chartView.getKeyAxisLabel(), keyAxisVisible, (ChartDateAxis) keyAxis, baseAxis, chartView);
-        NumberAxis numberAxis = new NumberAxisAdapter(chartView.getValueAxisLabel(), valueAxisVisible, (ChartNumberAxis) valueAxis, baseAxis, chartView);
+        NumberAxis numberAxis = chartView.isEnable3D()
+                ? new NumberAxis3DAdapter(chartView.getValueAxisLabel(), valueAxisVisible, (ChartNumberAxis) valueAxis, baseAxis, chartView)
+                : new NumberAxisAdapter(chartView.getValueAxisLabel(), valueAxisVisible, (ChartNumberAxis) valueAxis, baseAxis, chartView);
 
         setDomainAxis(dateAxis);
         setRangeAxis(numberAxis);

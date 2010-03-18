@@ -9,9 +9,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
+
 package org.openfaces.component.chart.impl.helpers;
 
-import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryAxis3D;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.openfaces.component.chart.ChartAxis;
 import org.openfaces.component.chart.ChartCategoryAxis;
@@ -19,15 +20,15 @@ import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.impl.PropertiesConverter;
 
 /**
- * @author Ekaterina Shliakhovetskaya
+ * @author Dmitry Pikhulya
  */
-public class CategoryAxisAdapter extends CategoryAxis {
+public class CategoryAxis3DAdapter extends CategoryAxis3D {
 
-    public CategoryAxisAdapter(String label,
-                               boolean visible,
-                               ChartCategoryAxis chartCategoryAxis,
-                               ChartAxis chartBaseAxis,
-                               GridChartView view) {
+    public CategoryAxis3DAdapter(String label,
+                                 boolean visible,
+                                 ChartCategoryAxis chartCategoryAxis,
+                                 ChartAxis chartBaseAxis,
+                                 GridChartView view) {
         if (!visible) {
             setVisible(false);
             return;

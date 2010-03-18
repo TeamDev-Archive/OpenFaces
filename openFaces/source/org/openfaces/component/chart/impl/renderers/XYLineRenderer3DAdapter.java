@@ -9,21 +9,22 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
+
 package org.openfaces.component.chart.impl.renderers;
 
-import org.jfree.chart.renderer.category.LineAndShapeRenderer;
-import org.jfree.data.category.CategoryDataset;
+import org.jfree.chart.renderer.xy.XYLine3DRenderer;
+import org.jfree.data.xy.XYDataset;
 import org.openfaces.component.chart.LineChartView;
 
 /**
- * @author Ekaterina Shliakhovetskaya
+ * @author Dmitry Pikhulya
  */
-public class LineRendererAdapter extends LineAndShapeRenderer {
-    public LineRendererAdapter(LineChartView chartView, CategoryDataset dataset) {
+public class XYLineRenderer3DAdapter extends XYLine3DRenderer {
+    public XYLineRenderer3DAdapter(LineChartView chartView, XYDataset dataset) {
         ChartRendererUtil.setupSeriesColors(chartView, this);
-        setShapesVisible(chartView.isShapesVisible());
+//        setShapesVisible(chartView.isShapesVisible());
 
-        ChartRendererUtil.processLineAndShapeRendererProperties(this, dataset, chartView);
+        ChartRendererUtil.processXYLineAndShapeRendererProperties(this, dataset, chartView);
     }
 
 }

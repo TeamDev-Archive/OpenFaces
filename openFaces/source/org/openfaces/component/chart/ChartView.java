@@ -16,8 +16,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.imagemap.StandardToolTipTagFragmentGenerator;
 import org.jfree.chart.imagemap.StandardURLTagFragmentGenerator;
 import org.jfree.chart.plot.Plot;
-import org.openfaces.util.Rendering;
-import org.openfaces.util.ValueBindings;
 import org.openfaces.component.chart.impl.JfcRenderHints;
 import org.openfaces.component.chart.impl.ModelInfo;
 import org.openfaces.component.chart.impl.helpers.JFreeChartAdapter;
@@ -25,6 +23,8 @@ import org.openfaces.component.chart.impl.helpers.MapRenderUtilities;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
 import org.openfaces.renderkit.cssparser.StyledComponent;
+import org.openfaces.util.Rendering;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UICommand;
@@ -35,6 +35,7 @@ import java.awt.image.BufferedImage;
  * @author Ekaterina Shliakhovetskaya
  */
 public abstract class ChartView extends UICommand implements StyledComponent, HasLabels {
+    private Boolean enable3D;
     private String style;
     private String url;
     private String tooltip;
@@ -44,6 +45,14 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     private String onmouseover;
     private String onmouseout;
     private String onclick;
+
+    public boolean isEnable3D() {
+        return ValueBindings.get(this, "enable3D", enable3D, false);
+    }
+
+    public void setEnable3D(boolean enable3D) {
+        this.enable3D = enable3D;
+    }
 
     public String getOnmouseover() {
         return onmouseover;
@@ -246,7 +255,8 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
                 foregroundAlpha,
                 onmouseout,
                 onmouseover,
-                onclick
+                onclick,
+                enable3D
         };
     }
 
@@ -263,6 +273,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
         onmouseout = (String) state[i++];
         onmouseover = (String) state[i++];
         onclick = (String) state[i++];
+        enable3D = (Boolean) state[i++];
     }
 
     public byte[] renderAsImageFile() {

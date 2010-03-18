@@ -24,6 +24,7 @@ import org.openfaces.component.chart.ChartNumberAxis;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.impl.PropertiesConverter;
 import org.openfaces.component.chart.impl.generators.DynamicXYGenerator;
+import org.openfaces.component.chart.impl.helpers.NumberAxis3DAdapter;
 import org.openfaces.component.chart.impl.helpers.NumberAxisAdapter;
 
 /**
@@ -51,8 +52,12 @@ public class GridXYPlotAdapter extends XYPlot {
         if (!(valueAxis instanceof ChartNumberAxis))
             valueAxis = null;
 
-        NumberAxis numberKeyAxis = new NumberAxisAdapter(chartView.getKeyAxisLabel(), keyAxisVisible, (ChartNumberAxis) keyAxis, baseAxis, chartView);
-        NumberAxis numberValueAxis = new NumberAxisAdapter(chartView.getValueAxisLabel(), valueAxisVisible, (ChartNumberAxis) valueAxis, baseAxis, chartView);
+        NumberAxis numberKeyAxis = chartView.isEnable3D()
+                ? new NumberAxis3DAdapter(chartView.getKeyAxisLabel(), keyAxisVisible, (ChartNumberAxis) keyAxis, baseAxis, chartView)
+                : new NumberAxisAdapter(chartView.getKeyAxisLabel(), keyAxisVisible, (ChartNumberAxis) keyAxis, baseAxis, chartView);
+        NumberAxis numberValueAxis = chartView.isEnable3D()
+                ? new NumberAxis3DAdapter(chartView.getValueAxisLabel(), valueAxisVisible, (ChartNumberAxis) valueAxis, baseAxis, chartView)
+                : new NumberAxisAdapter(chartView.getValueAxisLabel(), valueAxisVisible, (ChartNumberAxis) valueAxis, baseAxis, chartView);
 
         if (ds == null) {
             numberKeyAxis.setVisible(false);

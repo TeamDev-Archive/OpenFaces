@@ -25,6 +25,10 @@ public abstract class AbstractChartViewJspTag extends AbstractStyledComponentJsp
         super(delegate);
     }
 
+    public void setEnable3D(ValueExpression enable3D) {
+        getDelegate().setPropertyValue("enable3D", enable3D);
+    }
+
     public void setActionListener(MethodExpression actionListener) {
         getDelegate().setPropertyValue("actionListener", actionListener);
     }

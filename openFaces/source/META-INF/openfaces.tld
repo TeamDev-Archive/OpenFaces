@@ -18927,6 +18927,16 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <!--<attribute>-->
+      <!--<description>Specifies whether the chart should be displayed in 3D.</description>-->
+      <!--<name>enable3D</name>-->
+      <!--<deferred-value>-->
+        <!--<type>boolean</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
+      <!--&lt;!&ndash; @default false &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
 
   </tag>
 
@@ -19120,6 +19130,16 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType java.lang.String -->
       <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>Specifies whether the chart should be displayed in 3D.</description>
+      <name>enable3D</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
       <!-- @el true -->
     </attribute>
 

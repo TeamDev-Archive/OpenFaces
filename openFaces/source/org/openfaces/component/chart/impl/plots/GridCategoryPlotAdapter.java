@@ -27,7 +27,9 @@ import org.openfaces.component.chart.ChartNumberAxis;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.impl.PropertiesConverter;
 import org.openfaces.component.chart.impl.generators.DynamicCategoryGenerator;
+import org.openfaces.component.chart.impl.helpers.CategoryAxis3DAdapter;
 import org.openfaces.component.chart.impl.helpers.CategoryAxisAdapter;
+import org.openfaces.component.chart.impl.helpers.NumberAxis3DAdapter;
 import org.openfaces.component.chart.impl.helpers.NumberAxisAdapter;
 
 /**
@@ -55,8 +57,12 @@ public class GridCategoryPlotAdapter extends CategoryPlot {
         if (!(valueAxis instanceof ChartNumberAxis))
             valueAxis = null;
 
-        CategoryAxis categoryAxis = new CategoryAxisAdapter(chartView.getKeyAxisLabel(), keyAxisVisible, (ChartCategoryAxis) keyAxis, baseAxis, chartView);
-        NumberAxis numberAxis = new NumberAxisAdapter(chartView.getValueAxisLabel(), valueAxisVisible, (ChartNumberAxis) valueAxis, baseAxis, chartView);
+        CategoryAxis categoryAxis = chartView.isEnable3D()
+                ? new CategoryAxis3DAdapter(chartView.getKeyAxisLabel(), keyAxisVisible, (ChartCategoryAxis) keyAxis, baseAxis, chartView)
+                : new CategoryAxisAdapter(chartView.getKeyAxisLabel(), keyAxisVisible, (ChartCategoryAxis) keyAxis, baseAxis, chartView);
+        NumberAxis numberAxis = chartView.isEnable3D()
+                ? new NumberAxis3DAdapter(chartView.getValueAxisLabel(), valueAxisVisible, (ChartNumberAxis) valueAxis, baseAxis, chartView) 
+                : new NumberAxisAdapter(chartView.getValueAxisLabel(), valueAxisVisible, (ChartNumberAxis) valueAxis, baseAxis, chartView);
 
         if (ds == null) {
             categoryAxis.setVisible(false);

@@ -11,6 +11,9 @@
  */
 package org.openfaces.taglib.internal.chart;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
 /**
  * @author Pavel Kaplin
  */
@@ -23,5 +26,11 @@ public class BarChartViewTag extends GridChartViewTag {
     @Override
     public String getRendererType() {
         return null;
+    }
+
+    @Override
+    public void setComponentProperties(FacesContext facesContext, UIComponent component) {
+        super.setComponentProperties(facesContext, component);
+
     }
 }

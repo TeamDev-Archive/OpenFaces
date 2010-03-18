@@ -12,6 +12,7 @@
 package org.openfaces.component.chart;
 
 import org.jfree.chart.plot.Plot;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -22,7 +23,9 @@ import org.openfaces.component.chart.impl.ModelType;
 import org.openfaces.component.chart.impl.plots.GridCategoryPlotAdapter;
 import org.openfaces.component.chart.impl.plots.GridDatePlotAdapter;
 import org.openfaces.component.chart.impl.plots.GridXYPlotAdapter;
+import org.openfaces.component.chart.impl.renderers.LineRenderer3DAdapter;
 import org.openfaces.component.chart.impl.renderers.LineRendererAdapter;
+import org.openfaces.component.chart.impl.renderers.XYLineRenderer3DAdapter;
 import org.openfaces.component.chart.impl.renderers.XYLineRendererAdapter;
 
 import javax.faces.context.FacesContext;
@@ -91,15 +94,22 @@ public class LineChartView extends GridChartView {
     protected Plot createPlot(Chart chart, ChartModel model, ModelInfo info) {
         if (info.getModelType().equals(ModelType.Number)) {
             XYDataset ds = ModelConverter.toXYSeriesCollection(info);
-            return new GridXYPlotAdapter(ds, new XYLineRendererAdapter(this, ds), chart, this);
+            XYLineAndShapeRenderer renderer = isEnable3D()
+                    ? new XYLineRenderer3DAdapter(this, ds)
+                    : new XYLineRendererAdapter(this, ds);
+            return new GridXYPlotAdapter(ds, renderer, chart, this);
         }
         if (info.getModelType().equals(ModelType.Date)) {
             TimeSeriesCollection ds = ModelConverter.toTimeSeriesCollection(info);
-            XYLineAndShapeRenderer renderer = new XYLineRendererAdapter(this, ds);
+            XYLineAndShapeRenderer renderer = isEnable3D()
+                    ? new XYLineRenderer3DAdapter(this, ds)
+                    : new XYLineRendererAdapter(this, ds);
             return new GridDatePlotAdapter(ds, renderer, chart, this);
         }
         CategoryDataset ds = ModelConverter.toCategoryDataset(info);
-        LineRendererAdapter renderer = new LineRendererAdapter(this, ds);
+        LineAndShapeRenderer renderer = isEnable3D()
+                ? new LineRenderer3DAdapter(this, ds)
+                : new LineRendererAdapter(this, ds);
         return new GridCategoryPlotAdapter(ds, renderer, chart, this);
     }
 
