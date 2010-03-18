@@ -122,6 +122,10 @@ public class Components {
         return childrenWithClass.get(0);
     }
 
+    public static <T extends UIComponent> List<T> findChildrenWithClass(UIComponent parent, Class<T> childClass) {
+        return findChildrenWithClass(parent, childClass, false, false);
+    }
+
     public static <T extends UIComponent> List<T> findChildrenWithClass(UIComponent parent, Class<T> childClass,
                                                                         boolean recursive) {
         return findChildrenWithClass(parent, childClass, false,recursive);
