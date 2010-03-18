@@ -167,7 +167,7 @@ public class UtilPhaseListener extends PhaseListenerBase {
             }
         }
 
-        final RawScript script = new RawScript("q__setSubmissionAjaxInactivityTimeout(" + inactivityTimeout + ");");
+        final RawScript script = new RawScript("O$.setSubmissionAjaxInactivityTimeout(" + inactivityTimeout + ");");
         boolean isAjax4jsfRequest = AjaxUtil.isAjax4jsfRequest();
         boolean isPortletRequest = AjaxUtil.isPortletRequest(context);
         String uniqueRTLibraryName = isPortletRequest
