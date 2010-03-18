@@ -11,6 +11,10 @@
  */
 package org.openfaces.ajax;
 
+import javax.faces.component.UIForm;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Eugene Goncharov
  */
@@ -22,6 +26,12 @@ public class AjaxSavedStateIdxHolder {
     //javax.faces.ViewState  - sequence string for MyFaces
     // This case is for MyFaces viewState sequence updating on client-side
     private String viewStateIdentifier;
+
+    private List<UIForm> forms;
+
+    public AjaxSavedStateIdxHolder() {
+        forms = new ArrayList<UIForm>();
+    }
 
     public Object getViewStructureId() {
         return viewStructureId;
@@ -39,4 +49,11 @@ public class AjaxSavedStateIdxHolder {
         this.viewStateIdentifier = viewStateIdentifier;
     }
 
+    public List<UIForm> getForms() {
+        return forms;
+    }
+
+    public void setForms(List<UIForm> forms) {
+        this.forms = forms;
+    }
 }

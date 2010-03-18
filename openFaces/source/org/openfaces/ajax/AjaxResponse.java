@@ -23,7 +23,9 @@ import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Environment;
 import org.openfaces.util.HTML;
 import org.openfaces.util.Rendering;
+import org.openfaces.util.ScriptBuilder;
 
+import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -132,28 +134,52 @@ class AjaxResponse {
             return;
         }
 
-        String script;
-
-        if (stateIdxHolder.getViewStateIdentifier() != null) {
-            script = "O$.updateViewId('" + stateIdxHolder.getViewStateIdentifier() + "');";
+        ScriptBuilder scriptBuilder = new ScriptBuilder();
+        final List<UIForm> uiForms = stateIdxHolder.getForms();
+        if (!uiForms.isEmpty()) {
+            scriptBuilder.append(writeViewStateScripts(viewStructureId, ""));
         } else {
-            if (Environment.isRI()) {
-                script = "O$.updateViewId('" + viewStructureId + "');";
-            } else {
-                script = "";
+            for (UIForm form : uiForms) {
+                String formId = form.getId();
+                scriptBuilder.append(writeViewStateScripts(viewStructureId, formId));
             }
         }
 
         if (simpleUpdate != null) {
             List<AjaxPortionData> tempList = new ArrayList<AjaxPortionData>();
             for (AjaxPortionData portionData : simpleUpdate) {
-                tempList.add(formatJs(script, portionData));
+                tempList.add(formatJs(scriptBuilder.toString(), portionData));
             }
             simpleUpdate = tempList;
         } else if (portions != null && !portions.isEmpty()) {
             AjaxPortionData portionData = portions.get(0);
-            portions.set(0, formatJs(script, portionData));
+            portions.set(0, formatJs(scriptBuilder.toString(), portionData));
         }
+    }
+
+    private ScriptBuilder writeViewStateScripts(Object viewStructureId, String formId) {
+        ScriptBuilder scriptBuilder = new ScriptBuilder();
+        final boolean isNotEmptyForm = formId != null && formId.length() > 0;
+
+        if (stateIdxHolder.getViewStateIdentifier() != null) {
+            scriptBuilder.append("O$.updateViewId('").append(stateIdxHolder.getViewStateIdentifier()).append("'");
+            if (isNotEmptyForm) {
+                scriptBuilder.append(",'").append(formId).append("'");
+            }
+            scriptBuilder.append(");");
+        } else {
+            if (Environment.isRI()) {
+                scriptBuilder.append("O$.updateViewId('").append(viewStructureId).append("'");
+                if (isNotEmptyForm) {
+                    scriptBuilder.append(",'").append(formId).append("'");
+                }
+                scriptBuilder.append(");");
+            } else {
+                scriptBuilder.append("");
+            }
+        }
+
+        return scriptBuilder;
     }
 
     private AjaxPortionData formatJs(String script, AjaxPortionData portionData) {

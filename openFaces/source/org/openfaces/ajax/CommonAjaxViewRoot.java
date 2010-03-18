@@ -1020,6 +1020,16 @@ public abstract class CommonAjaxViewRoot {
         if (cssFiles != null) {
             addForeignCSSFiles(ajaxResponse, cssFiles);
         }
+        
+        if (AjaxUtil.isPortletRequest(context)) {
+            final List<UIForm> uiForms = Components.findChildrenWithClass(viewRoot, UIForm.class, false, true);
+
+            for (UIForm form : uiForms) {
+                if (!ajaxResponse.getStateIdxHolder().getForms().contains(form)) {
+                    ajaxResponse.getStateIdxHolder().getForms().add(form);
+                }
+            }
+        }
         return ajaxResponse;
     }
 

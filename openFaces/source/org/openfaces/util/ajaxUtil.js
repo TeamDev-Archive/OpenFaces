@@ -1477,11 +1477,27 @@ O$.restoreDocumentWrite = function(placeHolderId) {
   document._tempAjaxStr = undefined;
 }
 
-O$.updateViewId = function(viewId) {
-  if (document.getElementsByName('javax.faces.ViewState')) {
-    for (var facesViewStateFieldIndex = 0; facesViewStateFieldIndex < document.getElementsByName('javax.faces.ViewState').length; facesViewStateFieldIndex++) {
+O$.updateViewId = function(viewId, formId) {
+  var viewStateElementName = 'javax.faces.ViewState';
+  var viewStateElements = document.getElementsByName(viewStateElementName);
+  if (viewStateElements) {
+    for (var facesViewStateFieldIndex = 0; facesViewStateFieldIndex < viewStateElements; facesViewStateFieldIndex++) {
       if (document.getElementsByName('javax.faces.ViewState')[facesViewStateFieldIndex]) {
-        document.getElementsByName('javax.faces.ViewState')[facesViewStateFieldIndex].value = viewId;
+        O$.updateViewStateFields(viewStateElementName, facesViewStateFieldIndex, viewId, formId);
+      }
+    }
+  }
+}
+
+O$.updateViewStateFields = function(viewStateElementName, viewStateElementIndex, viewId, formId) {
+  var viewStateElement = document.getElementsByName(viewStateElementName)[viewStateElementIndex];
+  if (viewStateElement) {
+    if (!formId) {
+      viewStateElement.value = viewId;
+    } else {
+      var frm = O$.findParentNode(viewStateElement, "FORM");
+      if (frm && frm.id == formId) {
+        viewStateElement.value = viewId;
       }
     }
   }

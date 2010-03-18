@@ -47,6 +47,14 @@
       rowIndex.innerHTML = "table.getSelectedRowIndex() returns: " + idx;
       O$.ajax.request(this, event, {render: 'form1:checkedUsers', execute: 'form1:checkBoxColumnTable'});
     }
+
+    A4J.AJAX.onExpired = function(loc, expiredMsg) {
+      if (window.confirm("Custom onExpired handler " + expiredMsg + " for a location: " + loc)) {
+        return loc;
+      } else {
+        return false;
+      }
+    }
   </script>
 </head>
 
