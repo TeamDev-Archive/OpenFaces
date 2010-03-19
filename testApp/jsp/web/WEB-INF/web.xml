@@ -85,11 +85,6 @@
     <param-value>/WEB-INF/navigation-rules.xml</param-value>
   </context-param>
 
-  <context-param>
-    <param-name>org.ajax4jsf.handleViewExpiredOnClient</param-name>
-    <param-value>true</param-value>
-  </context-param>
-
   <!--JBOSS SEAM 2.0 RESOURCE SERVLET AND RESOURCE FILTER-->
 <!--    <servlet>
       <servlet-name>Seam Resource Servlet</servlet-name>
@@ -189,10 +184,6 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
-
-  <session-config>
-    <session-timeout>2</session-timeout>
-  </session-config>
 
 </web-app>
 
