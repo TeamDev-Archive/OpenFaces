@@ -1481,8 +1481,8 @@ O$.updateViewId = function(viewId, formId) {
   var viewStateElementName = 'javax.faces.ViewState';
   var viewStateElements = document.getElementsByName(viewStateElementName);
   if (viewStateElements) {
-    for (var facesViewStateFieldIndex = 0; facesViewStateFieldIndex < viewStateElements; facesViewStateFieldIndex++) {
-      if (document.getElementsByName('javax.faces.ViewState')[facesViewStateFieldIndex]) {
+    for (var facesViewStateFieldIndex = 0; facesViewStateFieldIndex < viewStateElements.length; facesViewStateFieldIndex++) {
+      if (viewStateElements[facesViewStateFieldIndex]) {
         O$.updateViewStateFields(viewStateElementName, facesViewStateFieldIndex, viewId, formId);
       }
     }
