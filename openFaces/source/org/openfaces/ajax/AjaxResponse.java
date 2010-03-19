@@ -136,7 +136,7 @@ class AjaxResponse {
 
         ScriptBuilder scriptBuilder = new ScriptBuilder();
         final List<UIForm> uiForms = stateIdxHolder.getForms();
-        if (!uiForms.isEmpty()) {
+        if (uiForms.isEmpty()) {
             scriptBuilder.append(writeViewStateScripts(viewStructureId, ""));
         } else {
             for (UIForm form : uiForms) {
