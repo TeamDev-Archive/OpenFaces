@@ -106,14 +106,14 @@ public class Components {
     }
 
     public static <T extends UIComponent> T findChildWithClass(UIComponent parent, Class<T> childClass) {
-        List<T> childrenWithClass = findChildrenWithClass(parent, childClass,false, false);
+        List<T> childrenWithClass = findChildrenWithClass(parent, childClass, false, false);
         if (childrenWithClass.size() == 0)
             return null;
         return childrenWithClass.get(0);
     }
-    
+
     public static <T extends UIComponent> T findChildWithClass(UIComponent parent, Class<T> childClass, String childTagName) {
-        List<T> childrenWithClass = findChildrenWithClass(parent, childClass,false, false);
+        List<T> childrenWithClass = findChildrenWithClass(parent, childClass, false, false);
         int size = childrenWithClass.size();
         if (size == 0)
             return null;
@@ -131,11 +131,12 @@ public class Components {
         List<T> result = new ArrayList<T>();
         List<UIComponent> children = parent.getChildren();
         for (UIComponent child : children) {
-            if (childClass.isAssignableFrom(child.getClass()) && (!onlyRendered || child.isRendered()))
+            if (childClass.isAssignableFrom(child.getClass()) && (!onlyRendered || child.isRendered())) {
                 result.add((T) child);
 
-            if(recursive){
-                result.addAll(findChildrenWithClass(child,childClass,onlyRendered,recursive));
+                if (recursive) {
+                    result.addAll(findChildrenWithClass(child, childClass, onlyRendered, recursive));
+                }
             }
         }
         return result;
@@ -158,13 +159,12 @@ public class Components {
     }
 
     /**
-     *
      * This method create new output text component and add it as facet to parent component
      *
-     * @param context {@link javax.faces.context.FacesContext} for the current request
-     * @param parent Method will search fo facet in this component or create it, if needed
+     * @param context  {@link javax.faces.context.FacesContext} for the current request
+     * @param parent   Method will search fo facet in this component or create it, if needed
      * @param idSuffix The suffix identifying the {@link javax.faces.component.html.HtmlOutputText} to be returned
-     * @param text The text in output text field
+     * @param text     The text in output text field
      * @return created or existed output text component
      */
     public static HtmlOutputText composeHtmlOutputText(FacesContext context, UIComponent parent, String idSuffix, String text) {
@@ -175,13 +175,12 @@ public class Components {
     }
 
     /**
-     *
      * This method add child to parent component
      *
-     * @param context {@link javax.faces.context.FacesContext} for the current request
-     * @param parent Method will create child for this component
+     * @param context       {@link javax.faces.context.FacesContext} for the current request
+     * @param parent        Method will create child for this component
      * @param componentType The class for child creation
-     * @param idSuffix The suffix identifying the child {@link javax.faces.component.UIComponent} to be returned
+     * @param idSuffix      The suffix identifying the child {@link javax.faces.component.UIComponent} to be returned
      * @return created child
      */
     public static UIComponent createChildComponent(
@@ -193,30 +192,28 @@ public class Components {
     }
 
     /**
-     *
      * This method add child to parent component at the specified position
      *
-     * @param context {@link javax.faces.context.FacesContext} for the current request
-     * @param parent Method will create child for this component
+     * @param context       {@link javax.faces.context.FacesContext} for the current request
+     * @param parent        Method will create child for this component
      * @param componentType The class for child creation
-     * @param idSuffix The suffix identifying the child {@link javax.faces.component.UIComponent} to be returned
-     * @param i index at which the specified child is to be inserted to paranet's child list
+     * @param idSuffix      The suffix identifying the child {@link javax.faces.component.UIComponent} to be returned
+     * @param i             index at which the specified child is to be inserted to paranet's child list
      * @return created child
      */
     public static UIComponent createChildComponent(
             FacesContext context, UIComponent parent, String componentType, String idSuffix, int i) {
         String childId = generateIdWithSuffix(parent, idSuffix);
         UIComponent component = createComponent(context, childId, componentType);
-        parent.getChildren().add(i,component);
+        parent.getChildren().add(i, component);
         return component;
     }
 
     /**
-     *
      * This method create components with given name and class and create, if needed, its subcomponents
      *
-     * @param context {@link javax.faces.context.FacesContext} for the current request
-     * @param id The id identifying the {@link javax.faces.component.UIComponent} to be returned
+     * @param context       {@link javax.faces.context.FacesContext} for the current request
+     * @param id            The id identifying the {@link javax.faces.component.UIComponent} to be returned
      * @param componentType The component type for which to create and return a new {@link javax.faces.component.UIComponent} instance
      * @return
      */
@@ -230,13 +227,12 @@ public class Components {
     }
 
     /**
-     *
      * This method create new command button component and add it as facet to parent component
      *
-     * @param context {@link javax.faces.context.FacesContext} for the current request
-     * @param parent Method will search fo facet in this component or create it, if needed
+     * @param context  {@link javax.faces.context.FacesContext} for the current request
+     * @param parent   Method will search fo facet in this component or create it, if needed
      * @param idSuffix The suffix identifying the {@link javax.faces.component.html.HtmlCommandButton} to be returned
-     * @param text The text on command button
+     * @param text     The text on command button
      * @return created or existed command button component
      */
     public static HtmlCommandButton createButtonFacet(FacesContext context, UIComponent parent, String idSuffix, String text) {
@@ -250,7 +246,7 @@ public class Components {
      * Generate id on base of component id.
      *
      * @param baseComponent The component, which id will be used for generating
-     * @param idSuffix The suffix, which will be added to component id
+     * @param idSuffix      The suffix, which will be added to component id
      * @return generated id
      */
     public static String generateIdWithSuffix(UIComponent baseComponent, String idSuffix) {
@@ -263,8 +259,8 @@ public class Components {
      * Create {@link javax.faces.component.html.HtmlOutputText} component with given text
      *
      * @param context {@link javax.faces.context.FacesContext} for the current request
-     * @param text The text to be set in output text
-     * @param escape Flag indicating that characters that are sensitive in HTML and XML markup must be escaped.
+     * @param text    The text to be set in output text
+     * @param escape  Flag indicating that characters that are sensitive in HTML and XML markup must be escaped.
      * @return the created {@link javax.faces.component.html.HtmlOutputText}
      */
     public static HtmlOutputText createOutputText(FacesContext context, String text, boolean escape) {
@@ -275,11 +271,10 @@ public class Components {
     }
 
     /**
-     *
      * Create {@link javax.faces.component.html.HtmlOutputText} component with given text
      *
      * @param context {@link javax.faces.context.FacesContext} for the current request
-     * @param text The text to be set in output text
+     * @param text    The text to be set in output text
      * @return the created {@link javax.faces.component.html.HtmlOutputText}
      */
     public static HtmlOutputText createOutputText(FacesContext context, String text) {
@@ -287,7 +282,6 @@ public class Components {
     }
 
     /**
-     *
      * Return the closest form for component
      *
      * @param component The component, which form we obtain
@@ -314,7 +308,6 @@ public class Components {
     }
 
     /**
-     *
      * Check component id and generate it, if nessesary
      *
      * @param component The component for id generation
@@ -330,10 +323,10 @@ public class Components {
     /**
      * Find child component by its suffix
      *
-     * @see #generateIdWithSuffix
      * @param component The parent component to search in
-     * @param idSuffix The suffix identifying the {@link javax.faces.component.UIComponent} to be returned
+     * @param idSuffix  The suffix identifying the {@link javax.faces.component.UIComponent} to be returned
      * @return the found {@link javax.faces.component.UIComponent}, or <code>null</code> if the component was not found.
+     * @see #generateIdWithSuffix
      */
     public static UIComponent getChildBySuffix(UIComponent component, String idSuffix) {
         String childId = generateIdWithSuffix(component, idSuffix);
