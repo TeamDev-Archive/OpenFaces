@@ -188,7 +188,7 @@ public class CompositeFilter extends Filter {
                 }
             }
             if (filterProperties == null) {
-                filterProperties = Components.findChildrenWithClass(this, FilterProperty.class, true);
+                filterProperties = Components.findChildrenWithClass(this, FilterProperty.class, true, false);
             }
         }
         return filterProperties;

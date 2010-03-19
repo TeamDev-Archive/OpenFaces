@@ -106,14 +106,14 @@ public class Components {
     }
 
     public static <T extends UIComponent> T findChildWithClass(UIComponent parent, Class<T> childClass) {
-        List<T> childrenWithClass = findChildrenWithClass(parent, childClass,false);
+        List<T> childrenWithClass = findChildrenWithClass(parent, childClass,false, false);
         if (childrenWithClass.size() == 0)
             return null;
         return childrenWithClass.get(0);
     }
     
     public static <T extends UIComponent> T findChildWithClass(UIComponent parent, Class<T> childClass, String childTagName) {
-        List<T> childrenWithClass = findChildrenWithClass(parent, childClass,false);
+        List<T> childrenWithClass = findChildrenWithClass(parent, childClass,false, false);
         int size = childrenWithClass.size();
         if (size == 0)
             return null;
@@ -126,13 +126,8 @@ public class Components {
         return findChildrenWithClass(parent, childClass, false, false);
     }
 
-    public static <T extends UIComponent> List<T> findChildrenWithClass(UIComponent parent, Class<T> childClass,
-                                                                        boolean recursive) {
-        return findChildrenWithClass(parent, childClass, false,recursive);
-    }
-
     public static <T> List<T> findChildrenWithClass(UIComponent parent, Class<? extends T> childClass,
-                                                    boolean onlyRendered,boolean recursive) {
+                                                    boolean onlyRendered, boolean recursive) {
         List<T> result = new ArrayList<T>();
         List<UIComponent> children = parent.getChildren();
         for (UIComponent child : children) {
