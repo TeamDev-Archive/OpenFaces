@@ -48,8 +48,7 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
 
         if (!requestMap.containsKey(PROGRESS_MESSAGE) && !requestMap.containsKey(AjaxUtil.AJAX_SUPPORT_RENDERED)) {
             requestMap.put(PROGRESS_MESSAGE, dpm);
-            Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
-            Resources.renderJSLinkIfNeeded(context, Resources.getAjaxUtilJsURL(context));
+            AjaxUtil.renderAjaxSupport(context);
             return;
         }
 

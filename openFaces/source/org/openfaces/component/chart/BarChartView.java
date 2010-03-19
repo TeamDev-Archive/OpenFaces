@@ -19,8 +19,6 @@ import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.ui.GradientPaintTransformType;
-import org.jfree.ui.StandardGradientPaintTransformer;
 import org.openfaces.component.chart.impl.ModelConverter;
 import org.openfaces.component.chart.impl.ModelInfo;
 import org.openfaces.component.chart.impl.ModelType;
@@ -69,21 +67,20 @@ public class BarChartView extends GridChartView {
     }
 
     private void configureRendererPresentation(BarRenderer renderer) {
-        double g1WhitePosition = 0;
-        double g2FullIntensityPosition = 0;
-        double g3LightIntensityPosition = 0.9;
+        double g1WhitePosition = 0.1;
+        double g2FullIntensityPosition = 0.2;
+        double g3LightIntensityPosition = 0.8;
         boolean shadowVisible = true;
         int shadowXOffset = 4;
         int shadowYOffset = 4;
-        boolean outlineVisible = true;
-        Color outlineColor = Color.BLUE;
+        boolean outlineVisible = false;
+        Color outlineColor = Color.GRAY;
 
         renderer.setBarPainter(new GradientBarPainter(g1WhitePosition, g2FullIntensityPosition, g3LightIntensityPosition));
         renderer.setShadowVisible(shadowVisible);
         renderer.setShadowXOffset(shadowXOffset);
         renderer.setShadowYOffset(shadowYOffset);
         renderer.setShadowPaint(Color.LIGHT_GRAY);
-        renderer.setGradientPaintTransformer(new StandardGradientPaintTransformer(GradientPaintTransformType.CENTER_VERTICAL));
         renderer.setDrawBarOutline(outlineVisible);
         renderer.setBaseOutlinePaint(outlineColor);
     }

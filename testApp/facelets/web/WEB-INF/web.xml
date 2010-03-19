@@ -88,6 +88,11 @@ and for destroying session and application contexts.-->
   </context-param>
 
   <context-param>
+    <param-name>org.openfaces.forceIncludingUtilJs</param-name>
+    <param-value>false</param-value>
+  </context-param>
+
+  <context-param>
     <param-name>org.openfaces.autoSaveFocus</param-name>
     <param-value>true</param-value>
   </context-param>

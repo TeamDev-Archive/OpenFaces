@@ -20,8 +20,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import java.io.IOException;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dmitry Pikhulya
@@ -29,6 +29,7 @@ import java.util.List;
 public class UtilPhaseListener extends PhaseListenerBase {
     private static final String FOCUSED_COMPONENT_ID_KEY = UtilPhaseListener.class.getName() + ".focusedComponentId";
     private static final String FOCUS_TRACKER_FIELD_ID = "o::defaultFocus";
+    private static final String FORCE_UTIL_JS_CONTEXT_PARAM = "org.openfaces.forceIncludingUtilJs";
     private static final String AUTO_FOCUS_TRACKING_CONTEXT_PARAM = "org.openfaces.autoSaveFocus";
     private static final String DISABLED_CONTEXT_MENU_CONTEXT_PARAM = "org.openfaces.disabledContextMenu";
 
@@ -51,12 +52,24 @@ public class UtilPhaseListener extends PhaseListenerBase {
         if (phaseId.equals(PhaseId.RENDER_RESPONSE)) {
             List<String> renderedJsLinks = Resources.getRenderedJsLinks(context);
             String utilJs = Resources.getUtilJsURL(context);
-            if (!renderedJsLinks.contains(utilJs))
-                Resources.registerJavascriptLibrary(context, utilJs);
-            Rendering.appendOnLoadScript(context, encodeFocusTracking(context));
-            Rendering.appendOnLoadScript(context, encodeScrollPosTracking(context));
-            Rendering.appendOnLoadScript(context, encodeDisabledContextMenu(context));
-            encodeFormSubmissionAjaxInactivityTimeout(context);
+            boolean renderFocusScript = isAutoFocusTrackingEnabled(context);
+            boolean renderScrollingScript = isAutoScrollPosTrackingEnabled(context);
+            boolean renderContextMenuScript = isDisabledContextMenuEnabled(context);
+            if (!renderedJsLinks.contains(utilJs)) {
+                if (renderFocusScript ||
+                        renderScrollingScript ||
+                        renderContextMenuScript ||
+                        getForceIncludingUtilJs(context)) {
+                    Resources.registerJavascriptLibrary(context, utilJs);
+                }
+            }
+            if (renderFocusScript)
+                Rendering.appendOnLoadScript(context, encodeFocusTracking(context));
+            if (renderScrollingScript)
+                Rendering.appendOnLoadScript(context, encodeScrollPosTracking(context));
+
+            if (renderContextMenuScript)
+                Rendering.appendOnLoadScript(context, encodeDisabledContextMenu(context));
             encodeAjaxProgressMessage(context);
         } else if (phaseId.equals(PhaseId.APPLY_REQUEST_VALUES)) {
             decodeFocusTracking(context);
@@ -83,6 +96,10 @@ public class UtilPhaseListener extends PhaseListenerBase {
         } catch (IOException e) {
             throw new FacesException(e);
         }
+    }
+
+    private boolean getForceIncludingUtilJs(FacesContext context) {
+        return getBooleanContextParam(context, FORCE_UTIL_JS_CONTEXT_PARAM);
     }
 
     private boolean isAutoFocusTrackingEnabled(FacesContext context) {
@@ -124,8 +141,6 @@ public class UtilPhaseListener extends PhaseListenerBase {
     }
 
     private Script encodeFocusTracking(FacesContext facesContext) {
-        if (!isAutoFocusTrackingEnabled(facesContext))
-            return null;
         ExternalContext externalContext = facesContext.getExternalContext();
         Map requestMap = externalContext.getRequestMap();
         String focusedComponentId = (String) requestMap.get(FOCUSED_COMPONENT_ID_KEY);
@@ -135,8 +150,6 @@ public class UtilPhaseListener extends PhaseListenerBase {
     }
 
     private Script encodeScrollPosTracking(FacesContext facesContext) {
-        if (!isAutoScrollPosTrackingEnabled(facesContext))
-            return null;
         ExternalContext externalContext = facesContext.getExternalContext();
         Map requestMap = externalContext.getRequestMap();
         String scrollPos = (String) requestMap.get(SCROLL_POS_KEY);
@@ -146,12 +159,10 @@ public class UtilPhaseListener extends PhaseListenerBase {
     }
 
     private Script encodeDisabledContextMenu(FacesContext facesContext) {
-        if (!isDisabledContextMenuEnabled(facesContext))
-            return null;
         return new RawScript("O$.disabledContextMenuFor(document);");
     }
 
-    private void encodeFormSubmissionAjaxInactivityTimeout(FacesContext context) {
+    public static void encodeFormSubmissionAjaxInactivityTimeout(FacesContext context) {
         ExternalContext externalContext = context.getExternalContext();
         String paramStr = externalContext.getInitParameter(SUBMISSION_AJAX_INACTIVITY_TIMEOUT_CONTEXT_PARAM);
 

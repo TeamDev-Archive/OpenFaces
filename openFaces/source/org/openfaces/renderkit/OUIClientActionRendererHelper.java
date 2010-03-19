@@ -13,8 +13,8 @@ package org.openfaces.renderkit;
 
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIClientActionHelper;
+import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Rendering;
-import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.context.FacesContext;
@@ -33,11 +33,8 @@ public abstract class OUIClientActionRendererHelper {
             javaScript.anonymousFunction(getClientActionScript(context, clientAction), "event").semicolon();
         }
         encodeAdditionalScript(context, javaScript, clientAction);
-        Rendering.renderInitScript(context,
-                new ScriptBuilder().onLoadScript(javaScript).semicolon(),
-                Resources.getUtilJsURL(context),
-                Resources.getAjaxUtilJsURL(context)
-        );
+        AjaxUtil.renderAjaxSupport(context);
+        Rendering.renderInitScript(context, new ScriptBuilder().onLoadScript(javaScript).semicolon());
     }
 
     protected void encodeAdditionalScript(FacesContext context, ScriptBuilder javaScript, OUIClientAction clientAction) {

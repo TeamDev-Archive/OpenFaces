@@ -288,11 +288,11 @@ public class ResourceFilter implements Filter {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         BufferedInputStream bStream = new BufferedInputStream(stream);
         byte[] array = new byte[1024];
-        int readed = 0;
-        while (readed != -1) {
-            readed = bStream.read(array);
-            if (readed != -1) {
-                byteStream.write(array, 0, readed);
+        int bytesRead = 0;
+        while (bytesRead != -1) {
+            bytesRead = bStream.read(array);
+            if (bytesRead != -1) {
+                byteStream.write(array, 0, bytesRead);
             }
         }
         return byteStream.toByteArray();

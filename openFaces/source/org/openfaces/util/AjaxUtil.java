@@ -61,9 +61,9 @@ public class AjaxUtil {
 
     /**
      * Runtime javascript library unique name generator. Runtime library is required for third-party JSF components
-     * support in OpenFaces Ajaxed components in case when third-party components uses own javascripts for initialization
+     * support in OpenFaces Ajaxed components in case when third-party components uses own JavaScript for initialization
      * and these scripts contains global variables declarations. In such situation simple javascript eval() function does
-     * not work correct under IE (menas that global variables declared in script that is executes by eval() under IE would
+     * not work correctly under IE (meaning that global variables declared in script executed by eval() under IE would
      * not be declared).
      *
      * @return string with unique name for runtime library
@@ -238,8 +238,7 @@ public class AjaxUtil {
         Map<String, Object> requestMap = externalContext.getRequestMap();
         if (requestMap.put(AJAX_SUPPORT_RENDERED, Boolean.TRUE) == null) {
             try {
-                Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
-                Resources.renderJSLinkIfNeeded(context, Resources.getAjaxUtilJsURL(context));
+                renderAjaxSupport(context);
                 if (isPortletRequest(context)) {
                     String uniqueRTLibraryName = ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + generateUniqueInitLibraryName();
                     context.getExternalContext().getSessionMap().put(ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME, uniqueRTLibraryName);
@@ -251,6 +250,12 @@ public class AjaxUtil {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public static void renderAjaxSupport(FacesContext context) throws IOException {
+        Resources.renderJSLinkIfNeeded(context, Resources.getUtilJsURL(context));
+        Resources.renderJSLinkIfNeeded(context, Resources.getAjaxUtilJsURL(context));
+        UtilPhaseListener.encodeFormSubmissionAjaxInactivityTimeout(context);
     }
 
     public static Object retrieveAjaxStateObject(FacesContext context, UIComponent component) {

@@ -16,7 +16,6 @@ import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.RawScript;
 import org.openfaces.util.Rendering;
-import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
 
 import javax.faces.component.UIComponent;
@@ -39,10 +38,8 @@ public abstract class AbstractSettingsRenderer extends RendererBase {
     }
 
     protected void renderInitScript(FacesContext context, String javaScript) throws IOException {
-        Rendering.renderInitScript(context,
-                new ScriptBuilder().onLoadScript(new RawScript(javaScript)),
-                Resources.getUtilJsURL(context),
-                Resources.getAjaxUtilJsURL(context));
+        AjaxUtil.renderAjaxSupport(context);
+        Rendering.renderInitScript(context, new ScriptBuilder().onLoadScript(new RawScript(javaScript)));
     }
 
     protected String getEventScript(String eventName, String eventFunction, UIComponent component) {

@@ -262,7 +262,7 @@ public class Resources {
     }
 
     /**
-     * Return URL of util.js file. Keep in mind, that  ajaxUtil.js depends on util.js.
+     * Return URL of ajaxUtil.js file. Keep in mind that ajaxUtil.js depends on util.js.
      * Don't forget to include util.js as well before including this URL.
      *
      * @param context {@link FacesContext} for the current request
