@@ -588,6 +588,38 @@ public class Rendering {
         buf.append(scriptStr);
     }
 
+    public static void appendUniqueRTLibraryScripts(FacesContext context,
+                                                    ScriptBuilder setMessageScript) {
+        boolean isAjax4jsfRequest = AjaxUtil.isAjax4jsfRequest();
+        boolean isPortletRequest = AjaxUtil.isPortletRequest(context);
+
+        Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+        String uniqueRTLibraryName = isPortletRequest
+                ? (String) sessionMap.get(AjaxUtil.ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME)
+                : ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
+
+        String initLibraryUrl = Resources.getApplicationURL(context, uniqueRTLibraryName);
+
+        try {
+            if (isAjax4jsfRequest) {
+                Resources.renderJSLinkIfNeeded(context, initLibraryUrl);
+            }
+
+            if (sessionMap != null && uniqueRTLibraryName != null) {
+                String scripts = (String) context.getExternalContext().getSessionMap().get(uniqueRTLibraryName);
+                if (scripts != null) {
+                    setMessageScript.append(scripts);
+                }
+
+                sessionMap.put(uniqueRTLibraryName, setMessageScript.toString());
+            }
+        } catch (IOException e) {
+            context.getExternalContext()
+                    .log("Exception was thrown during appending of unique runtime library scripts for library name - "
+                            + uniqueRTLibraryName, e);
+        }
+    }
+
     /**
      * Renders the specified JavaScript code into the response and ensures including the specified JavaScript files to
      * the rendered page prior to the rendered script.

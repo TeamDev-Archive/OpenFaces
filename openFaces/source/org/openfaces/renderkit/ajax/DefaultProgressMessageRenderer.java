@@ -81,25 +81,7 @@ public class DefaultProgressMessageRenderer extends AbstractSettingsRenderer {
             }
 
             if (isAjax4jsfRequest || isPortletRequest) {
-                Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-                String uniqueRTLibraryName = isPortletRequest
-                        ? (String) sessionMap.get(AjaxUtil.ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME)
-                        : ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
-
-                String initLibraryUrl = Resources.getApplicationURL(context, uniqueRTLibraryName);
-
-                if (isAjax4jsfRequest) {
-                    Resources.renderJSLinkIfNeeded(context, initLibraryUrl);
-                }
-
-                if (sessionMap != null && uniqueRTLibraryName != null) {
-                    String scripts = (String) context.getExternalContext().getSessionMap().get(uniqueRTLibraryName);
-                    if (scripts != null) {
-                        setMessageScript.append(scripts);
-                    }
-
-                    sessionMap.put(uniqueRTLibraryName, setMessageScript.toString());
-                }
+                Rendering.appendUniqueRTLibraryScripts(context, setMessageScript);
             } else {
                 Rendering.appendOnLoadScript(context, setMessageScript);
                 if (isAjaxCleanupRequired()) {

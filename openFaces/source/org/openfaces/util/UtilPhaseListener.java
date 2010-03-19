@@ -154,7 +154,6 @@ public class UtilPhaseListener extends PhaseListenerBase {
     private void encodeFormSubmissionAjaxInactivityTimeout(FacesContext context) {
         ExternalContext externalContext = context.getExternalContext();
         String paramStr = externalContext.getInitParameter(SUBMISSION_AJAX_INACTIVITY_TIMEOUT_CONTEXT_PARAM);
-        Map<String, Object> sessionMap = externalContext.getSessionMap();
 
         long inactivityTimeout = DEFAULT_SUBMISSION_AJAX_INACTIVITY_TIMEOUT;
         if (paramStr != null) {
@@ -167,27 +166,16 @@ public class UtilPhaseListener extends PhaseListenerBase {
             }
         }
 
-        final RawScript script = new RawScript("O$.setSubmissionAjaxInactivityTimeout(" + inactivityTimeout + ");");
+        final ScriptBuilder script = new ScriptBuilder("O$.setSubmissionAjaxInactivityTimeout(" + inactivityTimeout + ");");
         boolean isAjax4jsfRequest = AjaxUtil.isAjax4jsfRequest();
         boolean isPortletRequest = AjaxUtil.isPortletRequest(context);
-        String uniqueRTLibraryName = isPortletRequest
-                ? (String) sessionMap.get(AjaxUtil.ATTR_PORTLET_UNIQUE_RTLIBRARY_NAME)
-                : ResourceFilter.RUNTIME_INIT_LIBRARY_PATH + AjaxUtil.generateUniqueInitLibraryName();
-        String initLibraryUrl = Resources.getApplicationURL(context, uniqueRTLibraryName);
 
-        try {
-            if (isAjax4jsfRequest || isPortletRequest) {
-                if (isAjax4jsfRequest) {
-                    Resources.renderJSLinkIfNeeded(context, initLibraryUrl);
-                }
-
-                sessionMap.put(uniqueRTLibraryName, script.toString());
-            } else {
-                Rendering.appendOnLoadScript(context, script);
-            }
-        } catch (IOException e) {
-            externalContext.log("Exception was thrown during rendering of ajax inactivity timeout scripts.", e);
+        if (isAjax4jsfRequest || isPortletRequest) {
+            Rendering.appendUniqueRTLibraryScripts(context, script);
+        } else {
+            Rendering.appendOnLoadScript(context, script);
         }
+
     }
 
     private void decodeFocusTracking(FacesContext facesContext) {
