@@ -181,7 +181,7 @@ O$.Table = {
         this._setSelectedItems(rowIndexes);
       },
       __getRowCount: function() {
-        if (this._params.noDataRows)
+        if (this._params.body.noDataRows)
           return 0;
         var bodyRows = this.body._getRows();
         return bodyRows.length;
@@ -648,7 +648,7 @@ O$.Table = {
     O$.extend(table, {
       _selectionInitialized: true,
 
-      _selectionEnabled: !table._params.noDataRows && enabled,
+      _selectionEnabled: !table._params.body.noDataRows && enabled,
       _selectableItems: selectableItems,
       _multipleSelectionAllowed: multipleSelectionAllowed,
       _selectionClass: selectionClass,
@@ -772,7 +772,7 @@ O$.Table = {
       _selectAllItems: function() {
         O$.assert(this._multipleSelectionAllowed, "table._selectAllItems: multiple selection is not allowed for table: " + this.id);
 
-        if (this._params.noDataRows)
+        if (this._params.body.noDataRows)
           return;
         if (this._selectableItems == "rows") {
           var rows = this.body._getRows();
