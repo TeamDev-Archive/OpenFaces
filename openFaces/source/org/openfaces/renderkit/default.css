@@ -281,8 +281,14 @@
   display: none !important;
 }
 
-.o_hiddenRow * {
-/* IE doesn't hide absolutely-positioned elements of "display: none" parents, so it should be done explicitly */
+.o_hiddenRow .ieNonStaticPositionFix {
+  /* IE doesn't hide absolute and relative positioned elements of "display:none" parents, so it should be done
+  explicitly with this style declaration.
+
+  The application developers should assign "ieNonStaticPositionFix" CSS class to any non-statically positioned elements
+  in TreeTable cells. This assignment is intentionally not done automatically since it would considerably degrade
+  performance for this quite rare case
+  */
   display: none !important;
 }
 
