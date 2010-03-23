@@ -284,7 +284,11 @@ public abstract class DropDownFieldBase extends DropDownComponent implements Com
     }
 
     public int getSuggestionDelay() {
-        return ValueBindings.get(this, "suggestionDelay", suggestionDelay, 350);
+        return ValueBindings.get(this, "suggestionDelay", suggestionDelay, getDefaultSuggestionDelay());
+    }
+
+    protected int getDefaultSuggestionDelay() {
+        return 350;
     }
 
     public void setSuggestionDelay(int suggestionDelay) {

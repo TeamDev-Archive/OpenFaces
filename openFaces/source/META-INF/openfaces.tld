@@ -34064,7 +34064,7 @@ and it is automatically triggered on any form submission. -->
         <type>java.lang.Object</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.input. SuggestionMode -->
-      <!-- @default "none" -->
+      <!-- @default "all" -->
       <!-- @value "stringStart" works on the client side. Shows suggestions that begin with the entered value -->
       <!-- @value "substring" works on the client side. Shows suggestions that contain the entered value -->
       <!-- @value "stringEnd" works on the client side. Shows suggestions that end with the entered value -->
@@ -34087,7 +34087,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>int</type>
       </deferred-value>
       <!-- @bindingType int -->
-      <!-- @default 350 -->
+      <!-- @default 0 -->
       <!-- @el true -->
     </attribute>
 

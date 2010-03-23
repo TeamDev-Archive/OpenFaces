@@ -152,7 +152,7 @@ public class DropDownPopup extends AbstractPopup {
         int index = 0;
         for (UISelectItem item : items) {
             Object originalValue = item.getAttributes().get(DropDownFieldRenderer.ORIGINAL_VALUE_ATTR);
-            String convertedValue = (String) item.getAttributes().get(DropDownFieldRenderer.DISPLAYED_VALUE_ATTR);
+            String displayedItemText = (String) item.getAttributes().get(DropDownFieldRenderer.DISPLAYED_VALUE_ATTR);
 
             writer.startElement("tr", this);
             writer.writeAttribute("id", itemIdPrefix + index++, null);
@@ -189,7 +189,7 @@ public class DropDownPopup extends AbstractPopup {
                         writer.startElement("td", this);
                         if (colCount > 1)
                             writer.writeAttribute("colspan", String.valueOf(colCount), null);
-                        writer.writeText(convertedValue, null);
+                        writer.writeText(displayedItemText, null);
                         writer.endElement("td");
                     }
                 }

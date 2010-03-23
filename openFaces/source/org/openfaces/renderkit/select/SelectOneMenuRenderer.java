@@ -14,6 +14,7 @@ package org.openfaces.renderkit.select;
 import org.openfaces.renderkit.input.DropDownFieldRenderer;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UISelectItem;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
@@ -22,6 +23,15 @@ public class SelectOneMenuRenderer extends DropDownFieldRenderer {
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         super.encodeBegin(context, component);
 
+    }
+
+    protected String getClientItemLabel(UISelectItem item, String convertedItemValue) {
+        String itemLabel = item.getItemLabel();
+        return itemLabel != null ? itemLabel : convertedItemValue;
+    }
+
+    protected String getDefaultDropDownClass() {
+        return "o_dropdown o_selectonemenu";
     }
 
 }

@@ -667,6 +667,10 @@
   table-layout: fixed;
 }
 
+.o_selectonemenu {
+  width: 175px;
+}
+
 .o_spinner {
   background: white;
   width: 60px;

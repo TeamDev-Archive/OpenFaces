@@ -113,8 +113,9 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         }
 
         if (submittedValue == null) {
-            // from UIInput documentation: If the component wishes to indicate that no particular value was submitted, it can either do nothing, or set the submitted value to null.
-            // so we're setting the value as empty string because we the empty submitted value shouldn't be skipped
+            // from UIInput documentation: If the component wishes to indicate that no particular value was submitted,
+            // it can either do nothing, or set the submitted value to null. So we're setting the value as empty string
+            // because we the empty submitted value shouldn't be skipped
             submittedValue = "";
         }
 
@@ -168,24 +169,15 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         if (items != null) {
             itemValues = new ArrayList<String[]>(items.size());
             for (UISelectItem item : items) {
-                Object itemValue = item.getItemValue();
-                String convertedItemValue = itemValue instanceof String
-                        ? (String) itemValue
-                        : itemValue == null ? ""
-                        : Rendering.convertToString(context, dropDownField, itemValue);
+                String[] arr = getClientItemData(context, dropDownField, item);
+                itemValues.add(arr);
 
-                Map<String, Object> itemAttributes = item.getAttributes();
-                if (itemValue != null)
-                    itemAttributes.put(ORIGINAL_VALUE_ATTR, itemValue);
-                else
-                    itemAttributes.remove(ORIGINAL_VALUE_ATTR);
-                itemAttributes.put(DISPLAYED_VALUE_ATTR, convertedItemValue);
-                itemValues.add(new String[]{convertedItemValue, convertedItemValue});
-
+                String clientItemValue = arr[0];
+                String clientItemLabel = arr[1];
                 if (currentValueText == null) {
-                    if ((convertedItemValue != null && convertedItemValue.equals(currentValueConverted)) ||
-                            (convertedItemValue == null && currentValueConverted == null))
-                        currentValueText = convertedItemValue;
+                    if ((clientItemValue != null && clientItemValue.equals(currentValueConverted)) ||
+                            (clientItemValue == null && currentValueConverted == null))
+                        currentValueText = clientItemLabel;
                 }
             }
         }
@@ -199,6 +191,29 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
         dropDownField.getAttributes().put(CURRENT_FIELD_VALUE_ATTR, currentValueText);
         return itemValues;
+    }
+
+    protected String[] getClientItemData(FacesContext context, DropDownFieldBase dropDownField, UISelectItem item) {
+        Object itemValue = item.getItemValue();
+        String convertedItemValue = itemValue instanceof String
+                ? (String) itemValue
+                : itemValue == null ? ""
+                : Rendering.convertToString(context, dropDownField, itemValue);
+
+        Map<String, Object> itemAttributes = item.getAttributes();
+        if (itemValue != null)
+            itemAttributes.put(ORIGINAL_VALUE_ATTR, itemValue);
+        else
+            itemAttributes.remove(ORIGINAL_VALUE_ATTR);
+        String clientItemValue = convertedItemValue;
+        String clientItemLabel = getClientItemLabel(item, convertedItemValue);
+        itemAttributes.put(DISPLAYED_VALUE_ATTR, clientItemLabel);
+        String[] arr = {clientItemValue, clientItemLabel};
+        return arr;
+    }
+
+    protected String getClientItemLabel(UISelectItem item, String convertedItemValue) {
+        return convertedItemValue;
     }
 
     @Override

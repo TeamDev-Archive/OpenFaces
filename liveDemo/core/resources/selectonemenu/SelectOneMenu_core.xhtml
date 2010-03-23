@@ -10,28 +10,9 @@
       <o:ajax event="change" render="selectedItem"/>
     </h:selectOneMenu>
 
-    <o:selectOneMenu id="textAlign"
-                     value="#{DropDownBean.selectedTextAlign}"
-                     customValueAllowed="false"
-                     required="true"
-                     suggestionMode="all"
-                     autoComplete="true"
-                     suggestionDelay="0"
-                     listItemStyle="padding-top: 7px; padding-bottom: 7px;"
-                     style="width: 90px;">
-      <f:selectItem itemValue="Left">
-        <h:graphicImage url="../images/dropdownfield/left.gif" style="vertical-align: middle;"/>
-        <h:outputText value="Left!" style="padding-left: 10px;"/>
-      </f:selectItem>
-      <f:selectItem itemValue="Center">
-        <h:graphicImage url="../images/dropdownfield/center.gif" style="vertical-align: middle;"/>
-        <h:outputText value="Center" style="padding-left: 10px;"/>
-      </f:selectItem>
-      <f:selectItem itemValue="Right">
-        <h:graphicImage url="../images/dropdownfield/right.gif" style="vertical-align: middle;"/>
-        <h:outputText value="Right" style="padding-left: 10px;"/>
-      </f:selectItem>
+    <o:selectOneMenu id="comboBox2" value="#{SelectOneMenuBean.selectedCity}" converter="#{SelectOneMenuBean.cityConverter}">
       <f:selectItems value="#{SelectOneMenuBean.cityItems}"/>
+      <o:ajax event="change" render="selectedItem"/>
     </o:selectOneMenu>
     <br/>
 

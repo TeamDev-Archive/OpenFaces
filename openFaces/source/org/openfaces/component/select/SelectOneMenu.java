@@ -13,6 +13,7 @@ package org.openfaces.component.select;
 
 import org.openfaces.component.Side;
 import org.openfaces.component.input.DropDownFieldBase;
+import org.openfaces.component.input.SuggestionMode;
 
 import javax.faces.context.FacesContext;
 
@@ -235,6 +236,24 @@ public class SelectOneMenu extends DropDownFieldBase {
     @Override
     public void setDisabledButtonImageUrl(String disabledButtonImageUrl) {
         super.setDisabledButtonImageUrl(disabledButtonImageUrl);
+    }
+
+    @Override
+    public boolean getCustomValueAllowed() {
+        return false;
+    }
+
+    protected SuggestionMode getDefaultSuggestionMode() {
+        return SuggestionMode.ALL;
+    }
+
+    @Override
+    protected int getDefaultSuggestionDelay() {
+        return 0;
+    }
+
+    protected boolean getDefaultAutoComplete() {
+        return true;
     }
 
 }
