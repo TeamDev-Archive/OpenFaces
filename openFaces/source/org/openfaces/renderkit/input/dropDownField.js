@@ -24,13 +24,497 @@ O$.DropDownField = {
                   manualListOpeningAllowed,
                   autoCompleteOn,
                   popupTableStructureAndStyleParams) {
-    var dropDown = O$(dropDownId);
+    var dropDown = O$.initComponent(dropDownId, null, {
+      _listAlignment: listAlignment,
+      _customValueAllowed: customValueAllowed,
+      _required: required,
+      _manualListOpeningAllowed: manualListOpeningAllowed,
+      _keyNavigationStarted: false,
+      _popupTimeout: popupTimeout,
+      _highlightedItemIndex: -1,
 
-    dropDown._listAlignment = listAlignment;
-    dropDown._customValueAllowed = customValueAllowed;
-    dropDown._required = required;
+      _initListStyles: function() {
+        var oldCursor = document.body.style.cursor;
+        document.body.style.cursor = "progress";
+        O$.Tables._init(innerTable, popupTableStructureAndStyleParams);
+        document.body.style.cursor = oldCursor;
+        O$.repaintWindowForSafari(true);
+      },
 
-    dropDown._manualListOpeningAllowed = manualListOpeningAllowed;
+      _getFirstVisibleItemIndex: function() {
+        return O$.DropDownField._getNeighboringVisibleItem(dropDown, -1, false);
+      },
+
+      _getLastVisibleItemIndex: function() {
+        return O$.DropDownField._getNeighboringVisibleItem(dropDown, dropDown._items.length, true);
+      },
+
+      _getItemVerticalBounds: function(itemIndex) {
+        var firstItemIndex = dropDown._getFirstVisibleItemIndex();
+        if (firstItemIndex == -1)
+          return {top : 0, bottom : 0};
+        var firstItem = dropDown._items[firstItemIndex];
+        var item = dropDown._items[itemIndex];
+        if (!item && firstItem) {
+          item = firstItem;
+        }
+        var itemTop = O$.getElementPos(item).y - O$.getElementPos(innerTable).y;
+        var itemBottom = itemTop + item.offsetHeight;
+        return {top : itemTop, bottom : itemBottom};
+      },
+
+      _getItemIndexAtY: function(y, searchFromIndex, searchUpwards) {
+        for (var i = searchFromIndex, count = dropDown._items.length; i < count && i >= 0; searchUpwards ? i-- : i++) {
+          if (!dropDown._items[i]._isVisible())
+            continue;
+          var bounds = dropDown._getItemVerticalBounds(i);
+          if (y >= bounds.top && y < bounds.bottom)
+            return i;
+        }
+        return -1;
+      },
+
+      _scrollToHighlightedItem: function() {
+        if (dropDown._highlightedItemIndex == -1) {
+          popup.scrollTop = 0;
+          return;
+        }
+
+        var item = dropDown._items[dropDown._highlightedItemIndex];
+        if (!item._isVisible())
+          return;
+        if (O$.isSafari2()) {
+          function scrollPopupProportionally() {
+            if (innerTable.offsetHeight > popup.clientHeight) {
+              var scrollPos = dropDown._highlightedItemIndex / (dropDown._items.length - 1);
+              popup.scrollTop = (innerTable.offsetHeight - popup.clientHeight) * scrollPos;
+            }
+          }
+
+          scrollPopupProportionally();
+        } else {
+          var bounds = dropDown._getItemVerticalBounds(dropDown._highlightedItemIndex);
+          if (!bounds) {
+            popup.scrollTop = 0;
+            return;
+          }
+          if (bounds.top < popup.scrollTop)
+            popup.scrollTop = bounds.top;
+          else if (bounds.bottom > popup.scrollTop + popup.clientHeight)
+            popup.scrollTop = bounds.bottom - popup.clientHeight;
+        }
+      },
+
+      _addCachedSuggestions: function(
+              filterCriterionText,
+              newRows, newRowsToStylesMap, newRowCellsToStylesMap, itemValues) {
+        var cacheMapKey = filterCriterionText ? filterCriterionText.toLowerCase() : "";
+        if (!dropDown._cachedSuggestionLists)
+          dropDown._cachedSuggestionLists = [];
+        dropDown._cachedSuggestionLists[cacheMapKey] = {
+          rows: newRows,
+          rowsToStylesMap: newRowsToStylesMap,
+          cellsToStylesMap: newRowCellsToStylesMap,
+          values: itemValues};
+      },
+
+      _filterCriterion: null,
+      _getFilterCriterion: function() {
+        return dropDown._filterCriterion;
+      },
+
+      _setFilterCriterion: function(text, autoCompletionAllowedForThisKey) {
+        if (dropDown._filterCriterion == text)
+          return;
+        dropDown._filterCriterion = text;
+        if (suggestionMode == "custom") {
+          if (!dropDown._showCachedSuggestions(text, autoCompletionAllowedForThisKey))
+            O$.requestComponentPortions(dropDownId,
+                    ["filterCriterion:" + ((text != null) ? "[" + text + "]" : "null")],
+                    null,
+                    O$.DropDownField._filteredItemsLoaded);
+        } else {
+          dropDown._filterItems();
+          dropDown._completeShowingSuggestions(text, autoCompletionAllowedForThisKey);
+        }
+      },
+
+      _showCachedSuggestions: function (text, autoCompletionAllowedForThisKey) {
+        var cacheMapKey = text ? text.toLowerCase() : "";
+        var cachedSuggestions = dropDown._cachedSuggestionLists ? dropDown._cachedSuggestionLists[cacheMapKey] : null;
+        if (!cachedSuggestions)
+          return false;
+
+        var innerTable = O$(dropDown._popup.id + "::innerTable");
+        dropDown._setHighlightedItemIndex(-1);
+        innerTable.body._removeAllRows();
+        innerTable._insertRowsAfter(-1, cachedSuggestions.rows, cachedSuggestions.rowsToStylesMap, cachedSuggestions.cellsToStylesMap);
+
+        // Safari 3 painting fix (JSFC-3270)
+        O$.repaintWindowForSafari(true);
+        dropDown._setHighlightedItemIndex(-1);
+        dropDown._items = O$.DropDownField._prepareListElements(dropDown);
+        dropDown._initItems(cachedSuggestions.values);
+
+        dropDown._completeShowingSuggestions(text, autoCompletionAllowedForThisKey);
+        return true;
+      },
+
+      _completeShowingSuggestions: function(text, autoCompletionAllowedForThisKey) {
+        if (dropDown.isOpened())
+          O$.DropDown._initPopup(dropDown);
+
+        if (!dropDown.isOpened()) {
+          if (text) {
+            dropDown.dropDown();
+            dropDown.focus();
+
+          }
+        }
+
+        var continuationLength = 0;
+        var textLength;
+        if (text != null) {
+          var itemValue = undefined;
+          if (autoCompleteOn && (autoCompletionAllowedForThisKey || autoCompletionAllowedForThisKey == undefined)) {
+            for (var i = 0, count = dropDown._items.length; i < count; i++) {
+              var item = dropDown._items[i];
+              if (!item._isVisible())
+                continue;
+              var itemText = item._itemLabel;
+              if (O$.stringStartsWith(itemText.toUpperCase(), text.toUpperCase())) {
+                continuationLength = itemText.length - text.length;
+                text = itemText;
+                itemValue = item._itemValue;
+                break;
+              }
+            }
+          }
+          dropDown._setValue(text, itemValue, true);
+          if (continuationLength) {
+            textLength = text.length;
+            O$._selectTextRange(field, textLength - continuationLength, textLength);
+          }
+        } else {
+          textLength = field.value.length;
+          O$._selectTextRange(field, textLength, textLength);
+        }
+
+        var highlightedItemIndex = dropDown._getHighlightedItemIndex();
+        if (highlightedItemIndex != -1 && (highlightedItemIndex >= dropDown._items.length || !dropDown._items[highlightedItemIndex]._isVisible())) {
+          highlightedItemIndex = -1;
+          dropDown._setHighlightedItemIndex(highlightedItemIndex);
+        }
+        if (highlightedItemIndex == -1 && !customValueAllowed) {
+          var firstVisibleItem = dropDown._getFirstVisibleItemIndex();
+          dropDown._setHighlightedItemIndex(firstVisibleItem);
+        }
+        dropDown._scrollToHighlightedItem();
+      },
+
+      _filterItems: function() {
+        function shouldItemBeIncluded(item, filterText) {
+          if (suggestionMode == "none" || suggestionMode == "all" || !filterText)
+            return true;
+          var caseSensitive = false;
+          var itemLabel = item._itemLabel;
+          if (!caseSensitive) {
+            filterText = filterText.toLowerCase();
+            itemLabel = itemLabel.toLowerCase();
+          }
+          if (suggestionMode == "stringStart") {
+            return O$.stringStartsWith(itemLabel, filterText);
+          } else if (suggestionMode == "substring") {
+            var idx = itemLabel.indexOf(filterText);
+            return idx != -1;
+          } else {
+            if (suggestionMode != "stringEnd")
+              throw "O$._initDropDownField: Unknown suggestionMode: " + suggestionMode;
+            return O$.stringEndsWith(itemLabel, filterText);
+          }
+        }
+
+        var filterText = dropDown._filterCriterion;
+        for (var i = 0, count = dropDown._items.length; i < count; i++) {
+          var item = dropDown._items[i];
+          var showItem = shouldItemBeIncluded(item, filterText);
+          item._setVisible(showItem);
+        }
+        // Safari 3 painting fix (JSFC-3270)
+        O$.repaintWindowForSafari(true);
+
+      },
+      _setHighlightedItemIndex: function(index) {
+        function setItemSelected(itemIndex, selected) {
+          var item = dropDown._items[itemIndex];
+          O$.assert(item, "setItemSelected: couldn't find item at index: " + itemIndex);
+          item._selected = selected;
+          if (!item._updateStyle) {
+            // can be the case in case of O$.destroyAllFunctions functioning during Ajax when
+            // org.openfaces.ajaxCleanupRequired init parameter is set to true
+            return;
+          }
+          item._updateStyle();
+        }
+
+        if (dropDown._highlightedItemIndex == index)
+          return;
+        if (dropDown._highlightedItemIndex != -1) {
+          setItemSelected(dropDown._highlightedItemIndex, false);
+        }
+        dropDown._highlightedItemIndex = index;
+        if (dropDown._highlightedItemIndex != -1) {
+          setItemSelected(dropDown._highlightedItemIndex, true);
+        }
+      },
+
+      _getHighlightedItemIndex: function() {
+        return dropDown._highlightedItemIndex;
+      },
+      _initItems: function(itemValues) {
+        for (var i = 0, count = dropDown._items.length; i < count; i++) {
+          var item = dropDown._items[i];
+          item.onmouseover = function() {
+            dropDown._setHighlightedItemIndex(this._index);
+          };
+          item.onmousemove = function() {
+            dropDown._setHighlightedItemIndex(this._index);
+          };
+          item.onclick = function() {
+            O$.DropDownField._itemClicked(dropDown, this);
+          };
+          item.onmouseup = function() {
+            O$.DropDownField._itemClicked(dropDown, this);
+          };
+
+          var itemData = itemValues[i];
+          item._itemValue = itemData[0];
+          item._itemLabel = itemData.length == 2 ? itemData[1] : item._itemValue;
+          item._select = function() {
+            var text = this._itemLabel;
+            var itemValue = this._itemValue;
+            dropDown._setValue(text, itemValue);
+            setTimeout(function() {
+              dropDown._setFilterCriterion(null);
+            }, 1);
+          };
+        }
+      },
+
+      _selectCurrentValue: function(e) {
+        dropDown._checkFieldValueAgainstList(true);
+        if (field.value != dropDown.value)
+          dropDown._setValue(field.value, undefined, false, e); // the case for clipboard-pasted text
+        else
+          dropDown._setValue(dropDown.value, dropDown._selectedItemValue, false, e);
+      },
+
+      _fireOnChangeIfChanged: function() {
+        if (dropDown._lastOnchangeItemLabel != dropDown.value/* ||
+         dropDown._lastOnchangeItemValue != dropDown._selectedItemValue*/) {
+          clearSuggestionTimer();
+          if (dropDown._ddf_focused)
+            O$._selectTextRange(field, field.value.length, field.value.length);
+
+          dropDown._lastOnchangeItemLabel = dropDown.value;
+          dropDown._lastOnchangeItemValue = dropDown._selectedItemValue;
+
+          if (dropDown._promptText) {
+            if ((dropDown._field.value == dropDown._promptText) && (dropDown._statePrompt.value == "true")) {
+              if (dropDown._promptTextClass)
+                O$.excludeClassNames(dropDown._field, [dropDown._promptTextClass]);
+              dropDown._statePrompt.value = false;
+            }
+          }
+
+          if (dropDown.client_onchange) {
+            var event = O$.createEvent("change");
+            var returnedValue = dropDown.client_onchange(event);
+            if (returnedValue == undefined)
+              returnedValue = event.returnValue;
+            return returnedValue;
+          }
+        }
+      },
+
+      _checkFieldValueAgainstList: function(allowAsynchronousFilterSetting) {
+        if (dropDown._customValueAllowed)
+          return;
+        var preferredText = dropDown.value;
+        if (field.value != preferredText) {
+          field.value = preferredText;
+          if (allowAsynchronousFilterSetting)
+            setTimeout(function() {
+              dropDown._setFilterCriterion(null);
+            }, 1);
+          else
+            dropDown._setFilterCriterion(null);
+          clearSuggestionTimer();
+        }
+      },
+
+      getValue: function () {
+        return dropDown.value;
+      },
+
+      setValue: function (text) {
+        dropDown._setValue(text);
+      },
+
+      _setValue: function (text, itemValue, onChangeDisabled, initiatingEvent) {
+        if (text) { // retain only the first line because user can't enter new-line anyway
+          var idx = text.indexOf("\n");
+          if (idx != -1)
+            text = text.substring(0, idx);
+        }
+        if (!text)
+          text = "";
+
+        var existingListItemRequired = !dropDown._customValueAllowed;
+        if (!required) {
+          if (!text) {
+            itemValue = null;
+            existingListItemRequired = false;
+          }
+        }
+        if (existingListItemRequired) {
+          if (itemValue == undefined) {
+            var item = dropDown._findItemByLabel(text);
+            if (!item)
+              return; // retain old value when setting a value not from the list
+            itemValue = item._itemValue;
+            text = item._itemLabel;
+            // to account for case-insensitive text search in _findItemByLabel
+          }
+        }
+
+        if (dropDown.value != text) {
+          dropDown.value = text;
+        }
+        var newItemValue = itemValue != undefined
+                ? (itemValue != null ? "[" + itemValue + "]" : "null")
+                : "";
+        if (dropDown._valueField.value != newItemValue) {
+          dropDown._valueField.value = newItemValue;
+        }
+        dropDown._selectedItemValue = itemValue;
+        if (dropDown.isOpened()) {
+          dropDown._highlightSelectedItem();
+          dropDown._scrollToHighlightedItem();
+        }
+        if (field.value != text)
+          field.value = text;
+        if (!onChangeDisabled) {
+          if (dropDown._fireOnChangeIfChanged() === false) {
+            var evt = O$.getEvent(initiatingEvent);
+            if (evt) {
+              if (evt.preventDefault)
+                evt.preventDefault();
+              evt.returnValue = false;
+            }
+          }
+        }
+      },
+
+      dropDown: function () {
+        if (dropDown.isOpened())
+          return false;
+        popup._prepareForRearrangementBeforeShowing();
+        O$.DropDown._initPopup(dropDown);
+        O$.correctElementZIndex(popup, dropDown);
+        popup.show();
+        dropDown._keyNavigationStarted = false;
+        return true;
+      },
+
+      closeUp: function () {
+        if (!dropDown.isOpened())
+          return false;
+        popup.hide();
+        dropDown._keyNavigationStarted = false;
+        return true;
+      },
+
+      isOpened: function () {
+        return popup.isVisible();
+      },
+
+      _getSelectedItem: function() {
+        var selectedItem = null;
+        var currentValue = dropDown._selectedItemValue;
+        if (currentValue != undefined) {
+          for (var i = 0, count = dropDown._items.length; i < count; i++) {
+            var item = dropDown._items[i];
+            if (item._itemValue == currentValue) {
+              selectedItem = item;
+              break;
+            }
+          }
+        }
+        return selectedItem;
+      },
+
+      _highlightSelectedItem: function() {
+        var itemToHighlight = dropDown._getSelectedItem();
+        dropDown._setHighlightedItemIndex(itemToHighlight ? itemToHighlight._index : -1);
+      },
+
+      _findItemByLabel: function (text) {
+        function itemByLabel(text, caseSensitive) {
+          for (var i = 0, count = dropDown._items.length; i < count; i++) {
+            var item = dropDown._items[i];
+            var itemFound = caseSensitive ? item._itemLabel == text : O$.stringsEqualIgnoreCase(item._itemLabel, text);
+            if (itemFound)
+              return item;
+          }
+          return null;
+        }
+
+        var item = itemByLabel(text, true);
+        if (!item)
+          item = itemByLabel(text, false);
+        return item;
+      },
+
+      _showHidePopup: function () {
+        if (dropDown.isOpened())
+          dropDown.closeUp();
+        else
+          dropDown.dropDown();
+
+        // reacquire focus when pressing the dropper button
+        if (!dropDown._ddf_focused) {
+          if (dropDown._field.value != dropDown._promptText) {
+            dropDown.focus();
+          }
+          // focus is already lost on Mozilla and Opera
+        } else {
+          dropDown._reacquireFocus = true;
+          // field is still in focus under IE
+        }
+      },
+
+      _visibilityChangeListener: function() {
+        if (popup.isVisible()) {
+          if (dropDown.ondropdown)
+            dropDown.ondropdown();
+          O$.repaintAreaForOpera(popup, true);
+          dropDown._highlightSelectedItem();
+          dropDown._scrollToHighlightedItem();
+          if (O$.isExplorer()) {
+            // the second _scrollToHighlightedItem is added for IE, where the first invokation doesn't always manage to
+            // scroll correctly (probably because of appearing of higher multi-line items as a result of popup sizing)
+            dropDown._scrollToHighlightedItem();
+          }
+        } else {
+          if (dropDown.oncloseup)
+            dropDown.oncloseup();
+          O$.repaintAreaForOpera(document.body, true);
+        }
+      }
+      
+    });
+
     if (suggestionMinChars < 0)
       suggestionMinChars = 0;
     if (!suggestionMode)
@@ -41,253 +525,9 @@ O$.DropDownField = {
 
     dropDown.value = field.value;
 
-    dropDown._keyNavigationStarted = false;
-    dropDown._popupTimeout = popupTimeout;
-    dropDown._highlightedItemIndex = -1;
-
     var innerTable = O$(popup.id + "::innerTable");
     innerTable._selectionClass = rolloverPopupItemClass;
     popupTableStructureAndStyleParams.body.rolloverRowClassName = null;
-    dropDown._initListStyles = function() {
-      var oldCursor = document.body.style.cursor;
-      document.body.style.cursor = "progress";
-      O$.Tables._init(innerTable, popupTableStructureAndStyleParams);
-      document.body.style.cursor = oldCursor;
-      O$.repaintWindowForSafari(true);
-    };
-
-    function scrollPopupProportionally() {
-      if (innerTable.offsetHeight > popup.clientHeight) {
-        var scrollPos = dropDown._highlightedItemIndex / (dropDown._items.length - 1);
-        popup.scrollTop = (innerTable.offsetHeight - popup.clientHeight) * scrollPos;
-      }
-    }
-
-    dropDown._getFirstVisibleItemIndex = function() {
-      return O$.DropDownField._getNeighboringVisibleItem(dropDown, -1, false);
-    };
-
-    dropDown._getLastVisibleItemIndex = function() {
-      return O$.DropDownField._getNeighboringVisibleItem(dropDown, dropDown._items.length, true);
-    };
-
-    dropDown._getItemVerticalBounds = function(itemIndex) {
-      var firstItemIndex = dropDown._getFirstVisibleItemIndex();
-      if (firstItemIndex == -1)
-        return {top : 0, bottom : 0};
-      var firstItem = dropDown._items[firstItemIndex];
-      var item = dropDown._items[itemIndex];
-      if (!item && firstItem) {
-        item = firstItem;
-      }
-      var itemTop = O$.getElementPos(item).y - O$.getElementPos(innerTable).y;
-      var itemBottom = itemTop + item.offsetHeight;
-      return {top : itemTop, bottom : itemBottom};
-    };
-
-    dropDown._getItemIndexAtY = function(y, searchFromIndex, searchUpwards) {
-      for (var i = searchFromIndex, count = dropDown._items.length; i < count && i >= 0; searchUpwards ? i-- : i++) {
-        if (!dropDown._items[i]._isVisible())
-          continue;
-        var bounds = dropDown._getItemVerticalBounds(i);
-        if (y >= bounds.top && y < bounds.bottom)
-          return i;
-      }
-      return -1;
-    };
-
-    dropDown._scrollToHighlightedItem = function() {
-      if (dropDown._highlightedItemIndex == -1) {
-        popup.scrollTop = 0;
-        return;
-      }
-
-      var item = dropDown._items[dropDown._highlightedItemIndex];
-      if (!item._isVisible())
-        return;
-      if (O$.isSafari2()) {
-        scrollPopupProportionally();
-      } else {
-        var bounds = dropDown._getItemVerticalBounds(dropDown._highlightedItemIndex);
-        if (!bounds) {
-          popup.scrollTop = 0;
-          return;
-        }
-        if (bounds.top < popup.scrollTop)
-          popup.scrollTop = bounds.top;
-        else if (bounds.bottom > popup.scrollTop + popup.clientHeight)
-          popup.scrollTop = bounds.bottom - popup.clientHeight;
-      }
-    };
-
-    dropDown._addCachedSuggestions = function(
-            filterCriterionText,
-            newRows, newRowsToStylesMap, newRowCellsToStylesMap, itemValues) {
-      var cacheMapKey = filterCriterionText ? filterCriterionText.toLowerCase() : "";
-      if (!dropDown._cachedSuggestionLists)
-        dropDown._cachedSuggestionLists = [];
-      dropDown._cachedSuggestionLists[cacheMapKey] = {
-        rows: newRows,
-        rowsToStylesMap: newRowsToStylesMap,
-        cellsToStylesMap: newRowCellsToStylesMap,
-        values: itemValues};
-    };
-
-    dropDown._filterCriterion = null;
-    dropDown._getFilterCriterion = function() {
-      return dropDown._filterCriterion;
-    };
-
-    function completeShowingSuggestions(text, autoCompletionAllowedForThisKey) {
-      if (dropDown.isOpened())
-        O$.DropDown._initPopup(dropDown);
-
-      if (!dropDown.isOpened()) {
-        if (text) {
-          dropDown.dropDown();
-          dropDown.focus();
-
-        }
-      }
-
-      var continuationLength = 0;
-      var textLength;
-      if (text != null) {
-        var itemValue = undefined;
-        if (autoCompleteOn && (autoCompletionAllowedForThisKey || autoCompletionAllowedForThisKey == undefined)) {
-          for (var i = 0, count = dropDown._items.length; i < count; i++) {
-            var item = dropDown._items[i];
-            if (!item._isVisible())
-              continue;
-            var itemText = item._itemLabel;
-            if (O$.stringStartsWith(itemText.toUpperCase(), text.toUpperCase())) {
-              continuationLength = itemText.length - text.length;
-              text = itemText;
-              itemValue = item._itemValue;
-              break;
-            }
-          }
-        }
-        dropDown._setValue(text, itemValue, true);
-        if (continuationLength) {
-          textLength = text.length;
-          O$._selectTextRange(field, textLength - continuationLength, textLength);
-        }
-      } else {
-        textLength = field.value.length;
-        O$._selectTextRange(field, textLength, textLength);
-      }
-
-      var highlightedItemIndex = dropDown._getHighlightedItemIndex();
-      if (highlightedItemIndex != -1 && (highlightedItemIndex >= dropDown._items.length || !dropDown._items[highlightedItemIndex]._isVisible())) {
-        highlightedItemIndex = -1;
-        dropDown._setHighlightedItemIndex(highlightedItemIndex);
-      }
-      if (highlightedItemIndex == -1 && !customValueAllowed) {
-        var firstVisibleItem = dropDown._getFirstVisibleItemIndex();
-        dropDown._setHighlightedItemIndex(firstVisibleItem);
-      }
-      dropDown._scrollToHighlightedItem();
-    }
-
-    dropDown._setFilterCriterion = function(text, autoCompletionAllowedForThisKey) {
-      if (dropDown._filterCriterion == text)
-        return;
-      dropDown._filterCriterion = text;
-      if (suggestionMode == "custom") {
-        if (!dropDown._showCachedSuggestions(text, autoCompletionAllowedForThisKey))
-          O$.requestComponentPortions(dropDownId,
-                  ["filterCriterion:" + ((text != null) ? "[" + text + "]" : "null")],
-                  null,
-                  O$.DropDownField._filteredItemsLoaded);
-      } else {
-        dropDown._filterItems();
-        completeShowingSuggestions(text, autoCompletionAllowedForThisKey);
-      }
-    };
-
-    dropDown._showCachedSuggestions = function (text, autoCompletionAllowedForThisKey) {
-      var cacheMapKey = text ? text.toLowerCase() : "";
-      var cachedSuggestions = dropDown._cachedSuggestionLists ? dropDown._cachedSuggestionLists[cacheMapKey] : null;
-      if (!cachedSuggestions)
-        return false;
-
-      var innerTable = O$(dropDown._popup.id + "::innerTable");
-      dropDown._setHighlightedItemIndex(-1);
-      innerTable.body._removeAllRows();
-      innerTable._insertRowsAfter(-1, cachedSuggestions.rows, cachedSuggestions.rowsToStylesMap, cachedSuggestions.cellsToStylesMap);
-
-      // Safari 3 painting fix (JSFC-3270)
-      O$.repaintWindowForSafari(true);
-      dropDown._setHighlightedItemIndex(-1);
-      dropDown._items = O$.DropDownField._prepareListElements(dropDown);
-      dropDown._initItems(cachedSuggestions.values);
-
-      completeShowingSuggestions(text, autoCompletionAllowedForThisKey);
-      return true;
-    };
-
-
-    dropDown._filterItems = function() {
-      function shouldItemBeIncluded(item, filterText) {
-        if (suggestionMode == "none" || suggestionMode == "all" || !filterText)
-          return true;
-        var caseSensitive = false;
-        var itemLabel = item._itemLabel;
-        if (!caseSensitive) {
-          filterText = filterText.toLowerCase();
-          itemLabel = itemLabel.toLowerCase();
-        }
-        if (suggestionMode == "stringStart") {
-          return O$.stringStartsWith(itemLabel, filterText);
-        } else if (suggestionMode == "substring") {
-          var idx = itemLabel.indexOf(filterText);
-          return idx != -1;
-        } else {
-          if (suggestionMode != "stringEnd")
-            throw "O$._initDropDownField: Unknown suggestionMode: " + suggestionMode;
-          return O$.stringEndsWith(itemLabel, filterText);
-        }
-      }
-
-      var filterText = dropDown._filterCriterion;
-      for (var i = 0, count = dropDown._items.length; i < count; i++) {
-        var item = dropDown._items[i];
-        var showItem = shouldItemBeIncluded(item, filterText);
-        item._setVisible(showItem);
-      }
-      // Safari 3 painting fix (JSFC-3270)
-      O$.repaintWindowForSafari(true);
-
-    };
-
-    function setItemSelected(itemIndex, selected) {
-      var item = dropDown._items[itemIndex];
-      O$.assert(item, "setItemSelected: couldn't find item at index: " + itemIndex);
-      item._selected = selected;
-      if (!item._updateStyle) {
-        // can be the case in case of O$.destroyAllFunctions functioning during Ajax when
-        // org.openfaces.ajaxCleanupRequired init parameter is set to true
-        return;
-      }
-      item._updateStyle();
-    }
-
-    dropDown._setHighlightedItemIndex = function(index) {
-      if (dropDown._highlightedItemIndex == index)
-        return;
-      if (dropDown._highlightedItemIndex != -1) {
-        setItemSelected(dropDown._highlightedItemIndex, false);
-      }
-      dropDown._highlightedItemIndex = index;
-      if (dropDown._highlightedItemIndex != -1) {
-        setItemSelected(dropDown._highlightedItemIndex, true);
-      }
-    };
-
-    dropDown._getHighlightedItemIndex = function() {
-      return dropDown._highlightedItemIndex;
-    };
 
     if (!O$.isSafari()) { // safari can't scroll popup with focus reacquiring functionality
       if (O$.isMozillaFF() || O$.isExplorer()) {
@@ -302,35 +542,7 @@ O$.DropDownField = {
     }
 
     dropDown._items = O$.DropDownField._prepareListElements(dropDown);
-    dropDown._initItems = function(itemValues) {
-      for (var i = 0, count = dropDown._items.length; i < count; i++) {
-        var item = dropDown._items[i];
-        item.onmouseover = function() {
-          dropDown._setHighlightedItemIndex(this._index);
-        };
-        item.onmousemove = function() {
-          dropDown._setHighlightedItemIndex(this._index);
-        };
-        item.onclick = function() {
-          O$.DropDownField._itemClicked(dropDown, this);
-        };
-        item.onmouseup = function() {
-          O$.DropDownField._itemClicked(dropDown, this);
-        };
 
-        var itemData = itemValues[i];
-        item._itemValue = itemData[0];
-        item._itemLabel = itemData.length == 2 ? itemData[1] : item._itemValue;
-        item._select = function() {
-          var text = this._itemLabel;
-          var itemValue = this._itemValue;
-          dropDown._setValue(text, itemValue);
-          setTimeout(function() {
-            dropDown._setFilterCriterion(null);
-          }, 1);
-        };
-      }
-    };
     if (itemValues) {
       dropDown._initItems(itemValues);
       dropDown._addCachedSuggestions(null, dropDown._items,
@@ -361,14 +573,6 @@ O$.DropDownField = {
       }
     }
 
-    dropDown._selectCurrentValue = function(e) {
-      dropDown._checkFieldValueAgainstList(true);
-      if (field.value != dropDown.value)
-        dropDown._setValue(field.value, undefined, false, e); // the case for clipboard-pasted text
-      else
-        dropDown._setValue(dropDown.value, dropDown._selectedItemValue, false, e);
-    };
-
     function handleFieldChange(e) {
       dropDown._selectCurrentValue(e);
       if (field._onchangeFlag != undefined)
@@ -397,50 +601,6 @@ O$.DropDownField = {
       else {
         dropDown._reacquireFocus = undefined;
         dropDown.focus();
-      }
-    };
-
-    dropDown._fireOnChangeIfChanged = function() {
-      if (dropDown._lastOnchangeItemLabel != dropDown.value/* ||
-       dropDown._lastOnchangeItemValue != dropDown._selectedItemValue*/) {
-        clearSuggestionTimer();
-        if (dropDown._ddf_focused)
-          O$._selectTextRange(field, field.value.length, field.value.length);
-
-        dropDown._lastOnchangeItemLabel = dropDown.value;
-        dropDown._lastOnchangeItemValue = dropDown._selectedItemValue;
-
-        if (dropDown._promptText) {
-          if ((dropDown._field.value == dropDown._promptText) && (dropDown._statePrompt.value == "true")) {
-            if (dropDown._promptTextClass)
-              O$.excludeClassNames(dropDown._field, [dropDown._promptTextClass]);
-            dropDown._statePrompt.value = false;
-          }
-        }
-
-        if (dropDown.client_onchange) {
-          var event = O$.createEvent("change");
-          var returnedValue = dropDown.client_onchange(event);
-          if (returnedValue == undefined)
-            returnedValue = event.returnValue;
-          return returnedValue;
-        }
-      }
-    };
-
-    dropDown._checkFieldValueAgainstList = function(allowAsynchronousFilterSetting) {
-      if (dropDown._customValueAllowed)
-        return;
-      var preferredText = dropDown.value;
-      if (field.value != preferredText) {
-        field.value = preferredText;
-        if (allowAsynchronousFilterSetting)
-          setTimeout(function() {
-            dropDown._setFilterCriterion(null);
-          }, 1);
-        else
-          dropDown._setFilterCriterion(null);
-        clearSuggestionTimer();
       }
     };
 
@@ -544,164 +704,6 @@ O$.DropDownField = {
       return result;
     };
 
-    dropDown.getValue = function () {
-      return dropDown.value;
-    };
-
-    dropDown.setValue = function (text) {
-      dropDown._setValue(text);
-    };
-
-    dropDown._setValue = function (text, itemValue, onChangeDisabled, initiatingEvent) {
-      if (text) { // retain only the first line because user can't enter new-line anyway
-        var idx = text.indexOf("\n");
-        if (idx != -1)
-          text = text.substring(0, idx);
-      }
-      if (!text)
-        text = "";
-
-      var existingListItemRequired = !dropDown._customValueAllowed;
-      if (!required) {
-        if (!text) {
-          itemValue = null;
-          existingListItemRequired = false;
-        }
-      }
-      if (existingListItemRequired) {
-        if (itemValue == undefined) {
-          var item = dropDown._findItemByLabel(text);
-          if (!item)
-            return; // retain old value when setting a value not from the list
-          itemValue = item._itemValue;
-          text = item._itemLabel;
-          // to account for case-insensitive text search in _findItemByLabel
-        }
-      }
-
-      if (dropDown.value != text) {
-        dropDown.value = text;
-      }
-      var newItemValue = itemValue != undefined
-              ? (itemValue != null ? "[" + itemValue + "]" : "null")
-              : "";
-      if (dropDown._valueField.value != newItemValue) {
-        dropDown._valueField.value = newItemValue;
-      }
-      dropDown._selectedItemValue = itemValue;
-      if (dropDown.isOpened()) {
-        dropDown._highlightSelectedItem();
-        dropDown._scrollToHighlightedItem();
-      }
-      if (field.value != text)
-        field.value = text;
-      if (!onChangeDisabled) {
-        if (dropDown._fireOnChangeIfChanged() === false) {
-          var evt = O$.getEvent(initiatingEvent);
-          if (evt) {
-            if (evt.preventDefault)
-              evt.preventDefault();
-            evt.returnValue = false;
-          }
-        }
-      }
-    };
-
-    dropDown.dropDown = function () {
-      if (dropDown.isOpened())
-        return false;
-      popup._prepareForRearrangementBeforeShowing();
-      O$.DropDown._initPopup(dropDown);
-      O$.correctElementZIndex(popup, dropDown);
-      popup.show();
-      dropDown._keyNavigationStarted = false;
-      return true;
-    };
-
-    dropDown.closeUp = function () {
-      if (!dropDown.isOpened())
-        return false;
-      popup.hide();
-      dropDown._keyNavigationStarted = false;
-      return true;
-    };
-
-    dropDown.isOpened = function () {
-      return popup.isVisible();
-    };
-
-    dropDown._getSelectedItem = function() {
-      var selectedItem = null;
-      var currentValue = dropDown._selectedItemValue;
-      if (currentValue != undefined) {
-        for (var i = 0, count = dropDown._items.length; i < count; i++) {
-          var item = dropDown._items[i];
-          if (item._itemValue == currentValue) {
-            selectedItem = item;
-            break;
-          }
-        }
-      }
-      return selectedItem;
-    };
-
-    dropDown._highlightSelectedItem = function() {
-      var itemToHighlight = dropDown._getSelectedItem();
-      dropDown._setHighlightedItemIndex(itemToHighlight ? itemToHighlight._index : -1);
-    };
-    dropDown._findItemByLabel = function (text) {
-      function itemByLabel(text, caseSensitive) {
-        for (var i = 0, count = dropDown._items.length; i < count; i++) {
-          var item = dropDown._items[i];
-          var itemFound = caseSensitive ? item._itemLabel == text : O$.stringsEqualIgnoreCase(item._itemLabel, text);
-          if (itemFound)
-            return item;
-        }
-        return null;
-      }
-
-      var item = itemByLabel(text, true);
-      if (!item)
-        item = itemByLabel(text, false);
-      return item;
-    };
-
-    dropDown._showHidePopup = function () {
-      if (dropDown.isOpened())
-        dropDown.closeUp();
-      else
-        dropDown.dropDown();
-
-      // reacquire focus when pressing the dropper button
-      if (!dropDown._ddf_focused) {
-        if (dropDown._field.value != dropDown._promptText) {
-          dropDown.focus();
-        }
-        // focus is already lost on Mozilla and Opera
-      } else {
-        dropDown._reacquireFocus = true;
-        // field is still in focus under IE
-      }
-    };
-
-    dropDown._visibilityChangeListener = function() {
-      if (popup.isVisible()) {
-        if (dropDown.ondropdown)
-          dropDown.ondropdown();
-        O$.repaintAreaForOpera(popup, true);
-        dropDown._highlightSelectedItem();
-        dropDown._scrollToHighlightedItem();
-        if (O$.isExplorer()) {
-          // the second _scrollToHighlightedItem is added for IE, where the first invokation doesn't always manage to
-          // scroll correctly (probably because of appearing of higher multi-line items as a result of popup sizing)
-          dropDown._scrollToHighlightedItem();
-        }
-      } else {
-        if (dropDown.oncloseup)
-          dropDown.oncloseup();
-        O$.repaintAreaForOpera(document.body, true);
-      }
-    };
     popup._addVisibilityChangeListener(dropDown._visibilityChangeListener);
     dropDown._clientValueFunctionExists = true;
     dropDown._clientValueFunction = function() {
