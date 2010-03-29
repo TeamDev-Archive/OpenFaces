@@ -67,7 +67,7 @@ public abstract class ExpressionFilterTag extends FilterTag {
         String possibleConditionsStr = "";
         for (FilterCondition c : FilterCondition.values()) {
             if (c == FilterCondition.EMPTY || c == FilterCondition.BETWEEN)
-                continue; // these are not applicable for one-property filters (which are ancesotrs of ExpressionFilter)
+                continue; // these are not applicable for one-property filters (which are ancestors of ExpressionFilter)
             if (possibleConditionsStr.length() > 0)
                 possibleConditionsStr += ", ";
             String n = c.getName();

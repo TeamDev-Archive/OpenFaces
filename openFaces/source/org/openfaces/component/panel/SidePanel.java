@@ -189,7 +189,8 @@ public class SidePanel extends AbstractPanelWithCaption {
 
                 onsplitterdrag,
                 oncollapse,
-                onrestore
+                onrestore,
+                onmaximize
         };
     }
 
@@ -214,5 +215,6 @@ public class SidePanel extends AbstractPanelWithCaption {
         onsplitterdrag = (String) values[i++];
         oncollapse = (String) values[i++];
         onrestore = (String) values[i];
+        onmaximize = (String) values[i];
     }
 }
