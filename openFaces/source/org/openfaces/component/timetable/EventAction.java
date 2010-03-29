@@ -186,12 +186,12 @@ public class EventAction extends UICommand {
         String eventId = requestParams.get(actionId);
         if (eventId == null)
             return;
-        DayTable dayTable = (DayTable) actionBar.getParent();
-        FacesEvent event = createEvent(dayTable, actionBar, eventId);
+        TimetableView timetableView = (TimetableView) actionBar.getParent();
+        FacesEvent event = createEvent(timetableView, actionBar, eventId);
         queueEvent(event);
     }
 
-    protected FacesEvent createEvent(DayTable dayTable, EventActionBar actionBar, String eventId) {
+    protected FacesEvent createEvent(TimetableView timetableView, EventActionBar actionBar, String eventId) {
         return new EventActionEvent(this, eventId);
     }
 

@@ -11,10 +11,12 @@
  */
 package org.openfaces.renderkit.timetable;
 
-import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.DeleteEventAction;
 import org.openfaces.component.timetable.EventAction;
 import org.openfaces.component.timetable.EventActionBar;
+import org.openfaces.component.timetable.MonthTable;
+import org.openfaces.component.timetable.TimeScaleTable;
+import org.openfaces.component.timetable.TimetableView;
 import org.openfaces.component.window.Confirmation;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
@@ -44,25 +46,28 @@ public class EventActionBarRenderer extends RendererBase {
         writer.writeAttribute("id", clientId, null);
         Rendering.writeStandardEvents(writer, actionBar);
 
-        writer.writeText(actionBar.getNoteText(), null);
+        TimetableView timeTable = (TimetableView) actionBar.getParent();
+        if (! (timeTable instanceof MonthTable)) {
+            writer.writeText(actionBar.getNoteText(), null);
+        }
         writer.endElement("div");
-
-        DayTable dayTable = (DayTable) actionBar.getParent();
 
         String userSpecifiedStyle = Styles.getCSSClass(context, actionBar, actionBar.getStyle(), actionBar.getStyleClass());
         JSONArray eventActions = getEventActions(context, actionBar);
         double actionRolloverBackgroundIntensity = actionBar.getActionRolloverBackgroundIntensity();
         double actionPressedBackgroundIntensity = actionBar.getActionPressedBackgroundIntensity();
-        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, actionBar, "O$._initEventActionBar",
-                dayTable,
+        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, actionBar, "O$.Timetable._initEventActionBar",
+                timeTable,
                 actionBar.getBackgroundIntensity(),
                 userSpecifiedStyle,
                 eventActions,
                 actionRolloverBackgroundIntensity,
                 actionPressedBackgroundIntensity));
         Styles.renderStyleClasses(context, actionBar);
-        Confirmation confirmation = dayTable.getDeletionConfirmation();
-        if (confirmation.isRendered())
+
+        Confirmation confirmation = timeTable.getDeletionConfirmation();
+
+        if (confirmation != null && confirmation.isRendered())
             confirmation.encodeAll(context);
     }
 
@@ -78,24 +83,27 @@ public class EventActionBarRenderer extends RendererBase {
             if (component instanceof DeleteEventAction)
                 deleteEventAction = (DeleteEventAction) component;
         }
-        DayTable dayTable = (DayTable) actionBar.getParent();
-        boolean tableEditable = dayTable.isEditable();
+        TimetableView timeTable = (TimetableView) actionBar.getParent();
+        boolean tableEditable = timeTable.isEditable();
         if (tableEditable) {
             if (deleteEventAction == null) {
                 deleteEventAction = new DeleteEventAction();
                 result.add(deleteEventAction);
                 actionBar.getChildren().add(deleteEventAction);
             }
-            deleteEventAction.setOnclick("O$._deleteCurrentTimetableEvent(event)");
-            Confirmation confirmation = dayTable.getDeletionConfirmation();
-            if (deleteEventAction.isRendered() && deleteEventAction.getShowConfirmation()) {
-                confirmation.setRendered(true);
-                if (deleteEventAction.getId() == null)
-                    deleteEventAction.setId(context.getViewRoot().createUniqueId());
-                confirmation.setFor(deleteEventAction.getId());
-                confirmation.setEvent("click");
-            } else
-                confirmation.setRendered(false);
+            deleteEventAction.setOnclick("O$.Timetable._deleteCurrentTimetableEvent(event)");
+            Confirmation confirmation = timeTable.getDeletionConfirmation();
+
+            if (confirmation != null) {
+                if (deleteEventAction.isRendered() && deleteEventAction.getShowConfirmation()) {
+                    confirmation.setRendered(true);
+                    if (deleteEventAction.getId() == null)
+                        deleteEventAction.setId(context.getViewRoot().createUniqueId());
+                    confirmation.setFor(deleteEventAction.getId());
+                    confirmation.setEvent("click");
+                } else
+                    confirmation.setRendered(false);
+            }
         }
 
         return result;

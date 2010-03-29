@@ -81,6 +81,19 @@ public class DayTableBean1 extends DayTableBean implements Serializable {
                 "Instructor: Melany Scott <br/>Fee: $45", red2));
         events.add(new TimetableEvent(generateEventId(), DayTableBean.tomorrowAt(20, 30), DayTableBean.tomorrowAt(22, 0), "Gentle Yoga and Meditation",
                 "Instructor: Matt Hunt <br/>Fee: $55", blue));
+
+        //next week
+        events.add(new TimetableEvent(generateEventId(), DayTableBean.weekLaterAt(10, 10), DayTableBean.weekLaterAt(20, 20), "Something",
+                "DIY (free)", green));
+
+        //next month
+        events.add(new TimetableEvent(generateEventId(), DayTableBean.monthLaterAt(12, 30), DayTableBean.monthLaterAt(23, 45), "Something Else",
+                "Priceless", green));
+
+        //7 weeks later
+        events.add(new TimetableEvent(generateEventId(), DayTableBean.nWeeksLaterAt(7, 14, 00), DayTableBean.nWeeksLaterAt(7, 16, 00), "Even More",
+                "No comments", green));
+
     }
 
     public void postponeEventActionListener(EventActionEvent event) {

@@ -11,7 +11,6 @@
  */
 package org.openfaces.renderkit.timetable;
 
-import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.EventEditorPage;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Rendering;
@@ -39,8 +38,8 @@ public class EventEditorPageRenderer extends RendererBase {
         writer.writeAttribute("style", "display: none", null);
 
         EventEditorPage eventEditorPage = (EventEditorPage) component;
-        DayTable dayTable = (DayTable) eventEditorPage.getParent();
-        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, dayTable, "O$._initEventEditorPage",
+        UIComponent timetableView = eventEditorPage.getParent();
+        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, timetableView, "O$.Timetable._initEventEditorPage",
                 eventEditorPage,
                 eventEditorPage.getActionExpression() != null,
                 eventEditorPage.getUrl(),

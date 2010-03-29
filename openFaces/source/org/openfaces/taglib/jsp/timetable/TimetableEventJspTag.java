@@ -37,6 +37,10 @@ public class TimetableEventJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("escapeDescription", value);
     }
 
+    public void setEscapeResource(ValueExpression value) {
+        getDelegate().setPropertyValue("escapeResource", value);
+    }
+
     public void setNameStyle(ValueExpression value) {
         getDelegate().setPropertyValue("nameStyle", value);
     }
@@ -51,6 +55,22 @@ public class TimetableEventJspTag extends AbstractComponentJspTag {
 
     public void setDescriptionClass(ValueExpression value) {
         getDelegate().setPropertyValue("descriptionClass", value);
+    }
+
+    public void setResourceStyle(ValueExpression value) {
+        getDelegate().setPropertyValue("resourceStyle", value);
+    }
+
+    public void setResourceClass(ValueExpression value) {
+        getDelegate().setPropertyValue("resourceClass", value);
+    }
+
+    public void setTimeStyle(ValueExpression value) {
+        getDelegate().setPropertyValue("timeStyle", value);
+    }
+
+    public void setTimeClass(ValueExpression value) {
+        getDelegate().setPropertyValue("timeClass", value);
     }
 
     public void setBackgroundTransparency(ValueExpression value) {

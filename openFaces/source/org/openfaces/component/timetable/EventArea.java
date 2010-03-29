@@ -11,11 +11,12 @@
  */
 package org.openfaces.component.timetable;
 
-import org.openfaces.component.OUIPanel;
 import org.openfaces.component.HorizontalAlignment;
+import org.openfaces.component.OUIPanel;
 import org.openfaces.component.VerticalAlignment;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 /**
@@ -73,12 +74,12 @@ public class EventArea extends OUIPanel {
         verticalAlignment = (VerticalAlignment) state[i++];
     }
 
-    private DayTable getDayTable() {
-        return (DayTable) getParent();
-    }
-
     private AbstractTimetableEvent getEvent() {
-        return getDayTable().getEvent();
+        UIComponent parent = getParent();
+        if (parent instanceof TimetableView) {
+            return ((TimetableView)parent).getEvent();
+        }
+        throw new IllegalStateException("EventArea parent is not a TimetableView");
     }
 
     @Override

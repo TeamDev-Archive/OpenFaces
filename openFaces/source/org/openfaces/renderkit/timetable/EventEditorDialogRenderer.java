@@ -11,13 +11,16 @@
  */
 package org.openfaces.renderkit.timetable;
 
+import org.openfaces.component.OUIComponentBase;
 import org.openfaces.component.input.DateChooser;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItem;
-import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.EventEditorDialog;
+import org.openfaces.component.timetable.MonthTable;
+import org.openfaces.component.timetable.TimeScaleTable;
 import org.openfaces.component.timetable.TimetableEditingOptions;
 import org.openfaces.component.timetable.TimetableResource;
+import org.openfaces.component.timetable.TimetableView;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.CompoundComponentRenderer;
 import org.openfaces.renderkit.TableRenderer;
@@ -66,10 +69,10 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
     @Override
     protected void encodeCustomContent(FacesContext context, PopupLayer popupLayer) throws IOException {
         final EventEditorDialog dialog = (EventEditorDialog) popupLayer;
-        final DayTable dayTable = (DayTable) dialog.getParent();
-        TimetableEditingOptions editingOptions = dayTable.getEditingOptions();
-        final boolean useResourceSeparationMode = (Boolean) dayTable.getAttributes().
-                get(DayTableRenderer.USE_RESOURCE_SEPARATION_MODE_ATTR) && (editingOptions != null && editingOptions.isEventResourceEditable());
+        final TimetableView timetableView = (TimetableView) dialog.getParent();
+        TimetableEditingOptions editingOptions = timetableView.getEditingOptions();
+        final boolean useResourceSeparationMode = (Boolean) timetableView.getAttributes().
+                get(TimeScaleTableRenderer.USE_RESOURCE_SEPARATION_MODE_ATTR) && (editingOptions != null && editingOptions.isEventResourceEditable());
         final boolean eventDurationEditable = (editingOptions != null && editingOptions.isEventDurationEditable());
         final UIComponent[][] components = new UIComponent[][]{
                 {
@@ -157,8 +160,8 @@ public class EventEditorDialogRenderer extends WindowRenderer implements Compoun
                     cancelButton.encodeAll(context);
                     writer.endElement("div");
 
-                    Rendering.renderInitScript(context, new ScriptBuilder().functionCall("O$._initEventEditorDialog",
-                            dayTable,
+                    Rendering.renderInitScript(context, new ScriptBuilder().functionCall("O$.Timetable._initEventEditorDialog",
+                            timetableView,
                             dialog,
                             dialog.getCreateEventCaption(),
                             dialog.getEditEventCaption(),

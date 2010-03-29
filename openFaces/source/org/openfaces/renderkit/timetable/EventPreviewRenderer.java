@@ -11,8 +11,10 @@
  */
 package org.openfaces.renderkit.timetable;
 
-import org.openfaces.component.timetable.DayTable;
+import org.openfaces.component.OUIComponent;
 import org.openfaces.component.timetable.EventPreview;
+import org.openfaces.component.timetable.MonthTable;
+import org.openfaces.component.timetable.WeekTable;
 import org.openfaces.component.window.PopupLayer;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Components;
@@ -48,10 +50,20 @@ public class EventPreviewRenderer extends RendererBase {
         popupLayer.setHideOnOuterClick(true);
         popupLayer.encodeAll(context);
 
-        DayTable dayTable = (DayTable) eventPreview.getParent();
+        OUIComponent timetableView = (OUIComponent) eventPreview.getParent();
+
+        String componentJs;
+        if (timetableView instanceof MonthTable) {
+            componentJs = "monthTable.js";
+        } else if (timetableView instanceof WeekTable) {
+            componentJs = "weekTable.js";
+        } else {
+            componentJs = "dayTable.js";
+        }
+
         Rendering.renderInitScript(context,
-                new ScriptBuilder().initScript(context, eventPreview, "O$._initEventPreview",
-                        dayTable,
+                new ScriptBuilder().initScript(context, eventPreview, "O$.Timetable._initEventPreview",
+                        timetableView,
                         eventPreview.getShowingDelay(),
                         Styles.getCSSClass(context, eventPreview, eventPreview.getStyle(), StyleGroup.regularStyleGroup(), eventPreview.getStyleClass(), "o_eventPreview"),
                         Styles.getCSSClass(context, eventPreview, eventPreview.getEventNameStyle(), StyleGroup.regularStyleGroup(), eventPreview.getEventNameClass()),
@@ -61,7 +73,9 @@ public class EventPreviewRenderer extends RendererBase {
                         eventPreview.getHorizontalDistance(),
                         eventPreview.getVerticalDistance()),
                 Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, DayTableRenderer.class, "dayTable.js"));
+                Resources.getInternalURL(context, TimeScaleTableRenderer.class, "rangeMap.js"),
+                Resources.getInternalURL(context, TimeScaleTableRenderer.class, "timetable.js"),
+                Resources.getInternalURL(context, TimeScaleTableRenderer.class, componentJs));
 
         writer.endElement("div");
 

@@ -16,9 +16,13 @@
 
 // ========== implementation
 
-O$.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT = 1;
+O$.DayTable = {};
 
-O$._initDayTable = function(componentId,
+O$.DayTable.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT = 1;
+
+O$.DayTable.DEFAULT_EVENT_CONTENT = [ { type : "name"}, { type : "description" } ];
+
+O$.DayTable._init = function(componentId,
                             day, locale, dateFormat, startTimeStr, endTimeStr, scrollTimeStr,
                             preloadedEventParams, resources, eventAreaSettings,
                             editable, onchange, editingOptions,
@@ -37,7 +41,7 @@ O$._initDayTable = function(componentId,
       var initArgs = arguments;
       // postpone initialization to avoid IE failure during page loading
       O$.addInternalLoadEvent(function() {
-        O$._initDayTable.apply(null, initArgs);
+        O$.DayTable._init.apply(null, initArgs);
       });
       return;
     }
@@ -45,7 +49,7 @@ O$._initDayTable = function(componentId,
 
   O$.initComponent(componentId, {rollover: stylingParams.rolloverClass});
 
-  var eventProvider = new O$._LazyLoadedTimetableEvents(
+  var eventProvider = new O$.DayTable._LazyLoadedTimetableEvents(
           preloadedEventParams.events,
           preloadedEventParams.from,
           preloadedEventParams.to);
@@ -84,7 +88,7 @@ O$._initDayTable = function(componentId,
   var showTimeAgainstMark = stylingParams.timeTextPosition && stylingParams.timeTextPosition == "againstMark";
 
   var resourceHeadersRowClass = O$.combineClassNames(["o_resourceHeadersRow", stylingParams.resourceHeadersRowClass]);
-  var dayTableRowClass = O$.combineClassNames(["o_dayTableRowClass", stylingParams.rowClass]);
+  var dayTableRowClass = O$.combineClassNames(["o_timetableViewRowClass", stylingParams.rowClass]);
 
   var timeColumnClass = O$.combineClassNames(["o_timeColumn", stylingParams.timeColumnClass]);
   var majorTimeStyle = O$.combineClassNames(["o_majorTimeText", stylingParams.majorTimeClass]);
@@ -93,8 +97,17 @@ O$._initDayTable = function(componentId,
 
   var eventStyleClass = O$.combineClassNames(["o_timetableEvent", uiEvent.style]);
   var rolloverEventClass = O$.combineClassNames(["o_rolloverTimetableEvent", uiEvent.rolloverStyle]);
+
   var eventNameClass = O$.combineClassNames(["o_timetableEventName", uiEvent.nameStyle]);
   var eventDescriptionClass = O$.combineClassNames(["o_timetableEventDescription", uiEvent.descriptionStyle]);
+  var eventResourceClass = O$.combineClassNames(["o_timetableEventResource", uiEvent.resourceStyle]);
+  var eventTimeClass = O$.combineClassNames(["o_timetableEventTime", uiEvent.timeStyle]);
+  var eventContentClasses = {
+    name : eventNameClass,
+    description : eventDescriptionClass,
+    resource : eventResourceClass,
+    time: eventTimeClass
+  };
 
   var eventBackgroundStyleClassName = "o_timetableEventBackground";
   var defaultEventColor = stylingParams.defaultEventColor ? stylingParams.defaultEventColor : "#006ebb";
@@ -102,6 +115,9 @@ O$._initDayTable = function(componentId,
   dayTable._escapeEventNames = escapeEventNames;
   var escapeEventDescriptions = uiEvent.escapeDescription !== undefined ? uiEvent.escapeDescription : true;
   dayTable._escapeEventDescriptions = escapeEventDescriptions;
+  var escapeEventResources = uiEvent.escapeResource !== undefined ? uiEvent.escapeResource : true;
+  dayTable._escapeEventResources = escapeEventResources;
+  var eventContent = uiEvent.content ? uiEvent.content : O$.DayTable.DEFAULT_EVENT_CONTENT;
 
   var eventBackgroundIntensity = uiEvent.backgroundIntensity !== undefined ? uiEvent.backgroundIntensity : 0.25;
   var eventBackgroundTransparency = uiEvent.backgroundTransparency !== undefined ? uiEvent.backgroundTransparency : 0.2;
@@ -182,6 +198,7 @@ O$._initDayTable = function(componentId,
     O$.Tables._init(resourceHeadersTable, {
       columns: headerColumns,
       gridLines: [primaryRowSeparator, resourceColumnSeparator, null, null, null, null, null, null, null, null, null],
+      body: {rowClassName: resourceHeadersRowClass},
       rowStyles: {bodyRowClass: resourceHeadersRowClass},
       forceUsingCellStyles: forceUsingCellStyles
     });
@@ -502,13 +519,7 @@ O$._initDayTable = function(componentId,
     event.mainElement = eventElement;
     eventElement._dayTable = dayTable;
 
-    var nameElement = document.createElement("span");
-    nameElement.className = eventNameClass;
-    eventElement.appendChild(nameElement);
-
-    var descriptionElement = document.createElement("span");
-    descriptionElement.className = eventDescriptionClass;
-    eventElement.appendChild(descriptionElement);
+    O$.Timetable._createEventContentElements(eventElement, eventContent, eventContentClasses);
 
     eventElement._attachAreas = function() {
       eventElement._areas = [];
@@ -793,7 +804,7 @@ O$._initDayTable = function(componentId,
 
         function setResizerHoverState(mouseInside, resizer) {
           resizer._mouseInside = mouseInside;
-          O$.invokeFunctionAfterDelay(event._updateRolloverState, O$.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT);
+          O$.invokeFunctionAfterDelay(event._updateRolloverState, O$.DayTable.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT);
         }
 
         O$.setupHoverStateFunction(topResizeHandle, setResizerHoverState);
@@ -828,8 +839,7 @@ O$._initDayTable = function(componentId,
     eventElement._update = function(transitionPeriod) {
       this._updatePos(false, transitionPeriod);
       if (event.type != "reserved") {
-        O$.setInnerText(nameElement, event.name, escapeEventNames);
-        O$.setInnerText(descriptionElement, event.description, escapeEventDescriptions);
+        O$.Timetable._updateEventContentElements(eventElement, event, dayTable);
       }
 
       var calculatedEventColor = event.color ? event.color : defaultEventColor;
@@ -976,7 +986,7 @@ O$._initDayTable = function(componentId,
       if (event._creationInProgress)
         return;
       eventElement._mouseInside = mouseInside;
-      O$.invokeFunctionAfterDelay(event._updateRolloverState, O$.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT);
+      O$.invokeFunctionAfterDelay(event._updateRolloverState, O$.DayTable.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT);
     });
 
     if (editable) {
@@ -1260,7 +1270,7 @@ O$._initDayTable = function(componentId,
       color: null,
       description: ""
     };
-    O$._initEvent(event);
+    O$.Timetable._initEvent(event);
     addEventElement(event);
     event._creationInProgress = true;
     dayTable._getEventEditor().run(event, "create");
@@ -1434,7 +1444,7 @@ O$._initDayTable = function(componentId,
   O$.assignEvents(dayTable, {onchange: onchange}, true);
 };
 
-O$._findEventById = function(events, id) {
+O$.DayTable._findEventById = function(events, id) {
   if (events._cachedEventsByIds) {
     return events._cachedEventsByIds[id];
   }
@@ -1448,8 +1458,8 @@ O$._findEventById = function(events, id) {
   return null;
 };
 
-O$._LazyLoadedTimetableEvents = function(preloadedEvents, preloadedStartTime, preloadedEndTime) {
-  O$._PreloadedTimetableEvents.call(this, []);
+O$.DayTable._LazyLoadedTimetableEvents = function(preloadedEvents, preloadedStartTime, preloadedEndTime) {
+  O$.DayTable._PreloadedTimetableEvents.call(this, []);
 
   this._setEvents = this.setEvents;
   this.setEvents = function(events, preloadedStartTime, preloadedEndTime) {
@@ -1488,7 +1498,7 @@ O$._LazyLoadedTimetableEvents = function(preloadedEvents, preloadedStartTime, pr
               thisProvider._events._cachedEventsByIds = null;
               for (var i = 0, count = newEvents.length; i < count; i++) {
                 var newEvent = newEvents[i];
-                var existingEvent = O$._findEventById(thisProvider._events, newEvent.id);
+                var existingEvent = O$.DayTable._findEventById(thisProvider._events, newEvent.id);
                 if (existingEvent)
                   existingEvent._copyFrom(newEvent);
                 else
@@ -1506,7 +1516,7 @@ O$._LazyLoadedTimetableEvents = function(preloadedEvents, preloadedStartTime, pr
   };
 };
 
-O$._PreloadedTimetableEvents = function(events) {
+O$.DayTable._PreloadedTimetableEvents = function(events) {
 
   this._getEventsForPeriod = function(start, end) {
     var result = [];
@@ -1528,7 +1538,7 @@ O$._PreloadedTimetableEvents = function(events) {
     this._events = newEvents;
     for (var eventIndex = 0, eventCount = newEvents.length; eventIndex < eventCount; eventIndex++) {
       var event = newEvents[eventIndex];
-      O$._initEvent(event);
+      O$.Timetable._initEvent(event);
     }
     this._events._cachedEventsByIds = null;
   };
@@ -1545,7 +1555,7 @@ O$._PreloadedTimetableEvents = function(events) {
   this.addEvent = function(event) {
     if (this._events._cachedEventsByIds && event.id)
       this._events._cachedEventsByIds[event.id] = event;
-    O$._initEvent(event);
+    O$.Timetable._initEvent(event);
     this._events.push(event);
   };
   this.deleteEvent = function(event) {
@@ -1559,532 +1569,3 @@ O$._PreloadedTimetableEvents = function(events) {
   this.setEvents(events);
 };
 
-O$._initEventEditorDialog = function(dayTableId, dialogId, createEventCaption, editEventCaption, centered) {
-  var dayTable = O$(dayTableId);
-  var dialog = O$(dialogId);
-  dayTable._eventEditor = dialog;
-  dialog._dayTable = dayTable;
-
-  dialog._nameField = O$.byIdOrName(dialog.id + "--nameField");
-  dialog._resourceField = O$.byIdOrName(dialog.id + "--resourceField");
-  dialog._startDateField = O$.byIdOrName(dialog.id + "--startDateField");
-  dialog._endDateField = O$.byIdOrName(dialog.id + "--endDateField");
-  dialog._startTimeField = O$.byIdOrName(dialog.id + "--startTimeField");
-  dialog._endTimeField = O$.byIdOrName(dialog.id + "--endTimeField");
-  dialog._colorField = O$.byIdOrName(dialog.id + "--colorField");
-  dialog._color = "";
-  dialog._descriptionArea = O$.byIdOrName(dialog.id + "--descriptionArea");
-  dialog._okButton = O$.byIdOrName(dialog.id + "--okButton");
-  dialog._cancelButton = O$.byIdOrName(dialog.id + "--cancelButton");
-  dialog._deleteButton = O$.byIdOrName(dialog.id + "--deleteButton");
-
-  var fixedDurationMode = !dialog._endDateField;
-
-  function okByEnter(fld) {
-    if (!fld)
-      return;
-    if (fld instanceof Array) {
-      for (var i in fld) {
-        var entry = fld[i];
-        okByEnter(entry);
-      }
-      return;
-    }
-    fld.onkeydown = function(e) {
-      var evt = O$.getEvent(e);
-      if (evt.keyCode != 13)
-        return;
-      if (this.nodeName.toLowerCase() == "textarea") {
-        if (!evt.ctrlKey)
-          return;
-      }
-      dialog._okButton.onclick(e);
-    };
-  }
-
-  okByEnter([dialog._nameField, dialog._resourceField, dialog._startDateField, dialog._endDateField,
-    dialog._startTimeField, dialog._endTimeField, dialog._colorField, dialog._descriptionArea]);
-
-  function getFieldText(field) {
-    if (field.getValue)
-      return field.getValue();
-    return field.value;
-  }
-
-  function setFieldText(field, text) {
-    if (field.setValue)
-      field.setValue(text);
-    else
-      field.value = text;
-  }
-
-  dialog.run = function(event, mode) {
-    this._event = event;
-    setFieldText(this._nameField, event.name);
-    var resource = dayTable._getResourceForEvent(event);
-    if (dialog._resourceField)
-      dialog._resourceField.setValue(resource ? resource.name : "");
-    this._startDateField.setSelectedDate(event.start);
-    if (this._endDateField)
-      this._endDateField.setSelectedDate(event.end);
-    var duration = event.end.getTime() - event.start.getTime();
-    setFieldText(this._startTimeField, O$.formatTime(event.start));
-    if (this._endTimeField)
-      setFieldText(this._endTimeField, O$.formatTime(event.end));
-    this._color = event.color;
-    setFieldText(this._descriptionArea, event.description);
-    this._deleteButton.style.visibility = mode == "update" ? "visible" : "hidden";
-    O$.removeAllChildNodes(this._captionContent);
-    this._captionContent.appendChild(document.createTextNode(mode == "update"
-            ? editEventCaption
-            : createEventCaption));
-
-    this._okPressed = false;
-    this._okButton.onclick = function(e) {
-      this._okProcessed = true;
-      O$.breakEvent(e);
-      event.name = getFieldText(dialog._nameField);
-      var startDate = dialog._startDateField.getSelectedDate();
-      if (!startDate) {
-        dialog._startDateField.focus();
-        return;
-      }
-      O$.parseTime(getFieldText(dialog._startTimeField), startDate);
-      var endDate = dialog._endDateField ? dialog._endDateField.getSelectedDate() : null;
-      if (dialog._endTimeField) {
-        if (!endDate) {
-          dialog._endDateField.focus();
-          return;
-        }
-        O$.parseTime(getFieldText(dialog._endTimeField), endDate);
-      }
-      if (!startDate || isNaN(startDate)) {
-        dialog._startTimeField.focus();
-        return;
-      }
-      if (!fixedDurationMode && (!endDate || isNaN(endDate))) {
-        dialog._endTimeField.focus();
-        return;
-      }
-      event.setStart(startDate);
-      if (fixedDurationMode) {
-        // fixed duration mode
-        endDate = new Date();
-        endDate.setTime(startDate.getTime() + duration);
-      }
-      event.setEnd(endDate);
-      if (dialog._resourceField)
-        event.resourceId = dayTable._idsByResourceNames[dialog._resourceField.getValue()];
-      event.color = dialog._color ? dialog._color : "";
-      event.description = getFieldText(dialog._descriptionArea);
-      dialog.hide();
-      if (mode == "create")
-        dayTable.addEvent(event);
-      else
-        dayTable.updateEvent(event);
-    };
-
-    this._cancelButton.onclick = function(e) {
-      O$.breakEvent(e);
-      dialog.hide();
-      if (mode == "create")
-        dayTable.cancelEventCreation(event);
-    };
-
-    this._deleteButton.onclick = function(e) {
-      O$.breakEvent(e);
-      dialog.hide();
-      if (mode == "update")
-        dayTable.deleteEvent(event);
-    };
-
-    this.onhide = function() {
-      if (!this._okProcessed && mode == "create")
-        dayTable.cancelEventCreation(event);
-      if (dialog._textareaHeightUpdateInterval)
-        clearInterval(dialog._textareaHeightUpdateInterval);
-    };
-
-    if (event.mainElement)
-      O$.correctElementZIndex(this, event.mainElement, 5);
-    if (centered)
-      this.showCentered();
-    else
-      this.show();
-
-    function adjustTextareaHeight() {
-      var size = O$.getElementSize(dialog._descriptionArea.parentNode);
-      O$.setElementSize(dialog._descriptionArea, size);
-    }
-
-    if (O$.isExplorer() || O$.isOpera()) {
-      if (dialog._descriptionArea.style.position != "absolute") {
-        dialog._descriptionArea.style.position = "absolute";
-        var div = document.createElement("div");
-        div.style.height = "100%";
-        dialog._descriptionArea.parentNode.appendChild(div);
-      }
-      adjustTextareaHeight();
-      dialog._textareaHeightUpdateInterval = setInterval(adjustTextareaHeight, 50);
-    } else
-      dialog._textareaHeightUpdateInterval = null;
-
-  };
-
-};
-
-O$._initEventEditorPage = function(dayTableId, thisComponentId, actionDeclared, url, modeParamName,
-                                   eventIdParamName, eventStartParamName, eventEndParamName, resourceIdParamName) {
-  var dayTable = O$(dayTableId);
-  var thisComponent = O$(thisComponentId);
-  dayTable._eventEditor = thisComponent;
-  thisComponent.run = function(event, mode) {
-    if (actionDeclared) {
-      var params = (mode == "create") ?
-                   [
-                     [thisComponentId + "::action", "action"],
-                     [modeParamName, mode],
-                     [eventStartParamName, event.startStr],
-                     [eventEndParamName, event.endStr],
-                     [resourceIdParamName, event.resourceId]
-                   ] :
-                   [
-                     [thisComponentId + "::action", "action"],
-                     [modeParamName, mode],
-                     [eventIdParamName, event.id]
-                   ];
-      O$.submitFormWithAdditionalParams(dayTable, params);
-      return;
-    }
-    var newPageUrl = url + "?" + modeParamName + "=" + mode + "&";
-    if (mode == "create") {
-      newPageUrl += eventStartParamName + "=" + encodeURIComponent(event.startStr) + "&";
-      newPageUrl += eventEndParamName + "=" + encodeURIComponent(event.endStr) + "&";
-      newPageUrl += resourceIdParamName + "=" + encodeURIComponent(event.resourceId);
-    } else if (mode == "update") {
-      newPageUrl += eventIdParamName + "=" + encodeURIComponent(event.id);
-    }
-    window.location = newPageUrl;
-  };
-};
-
-O$._initCustomEventEditor = function(dayTableId, thisComponentId, oncreate, onedit) {
-  var dayTable = O$(dayTableId);
-  var thisComponent = O$(thisComponentId);
-  dayTable._eventEditor = thisComponent;
-  thisComponent.run = function(event, mode) {
-    if (mode == "create")
-      oncreate(dayTable, event);
-    else
-      onedit(dayTable, event);
-  };
-
-};
-
-O$._initEvent = function(event) {
-  event.setStart = function(asDate, asString) {
-    if (asDate) {
-      event.start = asDate;
-      event.startStr = O$.formatDateTime(asDate);
-    } else
-      if (asString) {
-        event.startStr = asString;
-        event.start = O$.parseDateTime(asString);
-      } else
-        throw "event.setStart: either asDate parameter, or asTime parameter should be specified";
-  };
-  event.setEnd = function(asDate, asString) {
-    if (asDate) {
-      event.end = asDate;
-      event.endStr = O$.formatDateTime(asDate);
-    } else
-      if (asString) {
-        event.endStr = asString;
-        event.end = O$.parseDateTime(asString);
-      } else
-        throw "event.setEnd: either asDate parameter, or asTime parameter should be specified";
-  };
-  event._copyFrom = function(otherEvent) {
-    this.id = otherEvent.id;
-    this.setStart(otherEvent.start, otherEvent.startStr);
-    this.setEnd(otherEvent.end, otherEvent.endStr);
-    this.name = otherEvent.name;
-    this.description = otherEvent.description;
-    this.resourceId = otherEvent.resourceId;
-    this.color = otherEvent.color;
-  };
-  event.updatePresentation = function(transitionPeriod) {
-    if (event.mainElement) {
-      event.mainElement._update(transitionPeriod);
-      event.mainElement._updateAreaPositions(true);
-    }
-  };
-  event._scrollIntoView = function() {
-    /*    return; //todo: finish auto-scrolling functionality
-     var dayTable = event.mainElement._dayTable;
-     var scrollingOccured = O$.scrollElementIntoView(event.mainElement, dayTable._getScrollingCache());
-     if (scrollingOccured)
-     dayTable._resetScrollingCache();*/
-  };
-  if (event.start || event.startStr)
-    event.setStart(event.start, event.startStr);
-  if (event.end || event.endStr)
-    event.setEnd(event.end, event.endStr);
-};
-
-O$._initEventPreview = function(eventPreviewId, dayTableId, showingDelay, popupClass,
-                                eventNameClass, eventDescriptionClass,
-                                horizontalAlignment, verticalAlignment, horizontalDistance, verticalDistance) {
-  var eventPreview = O$(eventPreviewId);
-  var popupLayer = O$(eventPreviewId + "--popupLayer");
-  O$.appendClassNames(popupLayer, [popupClass]);
-
-  eventNameClass = O$.combineClassNames(["o_timetableEventName", eventNameClass]);
-  eventDescriptionClass = O$.combineClassNames(["o_timetableEventDescription", eventDescriptionClass]);
-
-  eventPreview._showingDelay = showingDelay;
-
-  eventPreview.showForEvent = function(event) {
-    var dayTable = O$(dayTableId);
-    var popupParent = O$.getDefaultAbsolutePositionParent();
-    if (popupLayer.parentNode != popupParent) {
-      popupParent.appendChild(popupLayer);
-    }
-    O$.correctElementZIndex(popupLayer, dayTable);
-
-    var oldSpans;
-    while ((oldSpans = popupLayer.getElementsByTagName("span")).length > 0) {
-      var span = oldSpans[0];
-      span.parentNode.removeChild(span);
-    }
-
-    var nameElement = document.createElement("span");
-    nameElement.className = eventNameClass;
-    popupLayer.appendChild(nameElement);
-
-    var descriptionElement = document.createElement("span");
-    descriptionElement.className = eventDescriptionClass;
-    popupLayer.appendChild(descriptionElement);
-
-    O$.setInnerText(nameElement, event.name, dayTable._escapeEventNames);
-    O$.setInnerText(descriptionElement, event.description, dayTable._escapeEventDescriptions);
-
-    if (!event.mainElement)
-      popupLayer.showCentered();
-    else
-      popupLayer.showByElement(event.mainElement,
-              horizontalAlignment, verticalAlignment, horizontalDistance, verticalDistance);
-  };
-
-  eventPreview.hide = function() {
-    popupLayer.hide();
-  };
-};
-
-
-O$._initEventActionBar = function(actionBarId, dayTableId, backgroundIntensity, userSpecifiedClass, actions,
-                                  actionRolloverIntensity, actionPressedIntensity) {
-  var actionBar = O$(actionBarId);
-  if (!actionBar) {
-    var initArgs = arguments;
-    // postpone initialization to avoid FF2 failure of finding actionBar element in some cases
-    setTimeout(function() {
-      O$._initEventActionBar.apply(null, initArgs);
-    }, 100);
-    return;
-  }
-
-  actionBar._backgroundIntensity = backgroundIntensity;
-  actionBar._userSpecifiedClass = userSpecifiedClass;
-  actionBar.className = O$.combineClassNames(["o_eventActionBar", userSpecifiedClass]);
-
-  var actionsTable = document.createElement("table");
-  actionsTable.cellSpacing = "0";
-  actionsTable.cellPadding = "0";
-  actionsTable.border = "0";
-  actionsTable.style.fontSize = "0";
-  var tbody = document.createElement("tbody");
-  actionsTable.appendChild(tbody);
-  var tr = document.createElement("tr");
-  tbody.appendChild(tr);
-  for (var i = 0, count = actions.length; i < count; i++) {
-    var action = actions[i];
-    var cell = document.createElement("td");
-    action._cell = cell;
-    cell._index = i;
-    cell._action = action;
-    cell._image = image;
-
-    tr.appendChild(cell);
-    cell.vAlign = "middle";
-    cell.align = "center";
-    cell.id = action.id;
-    cell.className = action.style[0];
-    var image = document.createElement("img");
-    image.src = action.image[0];
-    if (action.hint)
-      image.title = action.hint;
-    cell.appendChild(image);
-    O$.assignEvents(cell, action, true);
-    O$.preloadImage(action.image[0]);
-    O$.preloadImage(action.image[1]);
-    O$.preloadImage(action.image[2]);
-    cell._userClickHandler = cell.onclick;
-    cell.onmousedown = function() {
-      this._timetableEvent = actionBar._event ? actionBar._event : actionBar._lastEditedEvent;
-      this._dayTable = O$(dayTableId);
-      this._timetableEvent.mainElement._bringToFront();
-    };
-    cell.onclick = function(e) {
-      e = O$.getEvent(e);
-      e._timetableEvent = this._timetableEvent;
-      e._dayTable = this._dayTable;
-      if (this._userClickHandler) {
-        if (this._userClickHandler(e) === false || e.returnValue === false)
-          return;
-      }
-
-      var eventId = this._timetableEvent.id;
-      O$.setHiddenField(this._dayTable, actionBarId + "::" + this._index, eventId);
-      O$.submitEnclosingForm(this._dayTable);
-    };
-    function setupStateHighlighting(cell) {
-      cell._mouseState = O$.setupHoverAndPressStateFunction(cell, function(mouseInside, pressed) {
-        cell._mouseInside = mouseInside;
-        cell._pressed = pressed;
-        cell._update();
-      });
-    }
-
-    setupStateHighlighting(cell);
-    cell._update = function() {
-      var mouseInside = this._mouseInside;
-      var pressed = this._pressed;
-      O$.setStyleMappings(this, {
-        _rolloverStyle: mouseInside ? this._action.style[1] : null,
-        _pressedStyle: pressed ? this._action.style[2] : null});
-      var userSpecifiedBackground = O$.getStyleClassProperty(this.className, "background-color");
-      if (!userSpecifiedBackground) {
-        var event = actionBar._event ? actionBar._event : actionBar._lastEditedEvent;
-        var intensity = pressed ? actionPressedIntensity : mouseInside ? actionRolloverIntensity : backgroundIntensity;
-        this.style.backgroundColor = O$.blendColors(event.mainElement._color, "#ffffff", 1 - intensity);
-      } else
-        this.style.backgroundColor = "";
-
-      var imageUrl = action.image[0];
-      if (pressed) {
-        if (action.image[2])
-          imageUrl = action.image[2];
-      } else if (mouseInside) {
-        if (action.image[1])
-          imageUrl = action.image[1];
-      }
-      this._image = imageUrl;
-    };
-  }
-  actionsTable.onclick = function(e) {
-    O$.breakEvent(e); // avoid passing event to the absoluteElementsParentNode
-  };
-  actionBar._actionsArea = actionsTable;
-  actionBar._actionsArea.style.position = "absolute";
-  actionBar._actionsArea.style.visibility = "hidden";
-  actionsTable._getHeight = function() {
-    if (!this._height) {
-      this._height = O$.getElementSize(this).height;
-    }
-    return this._height;
-  };
-  actionBar.appendChild(actionsTable);
-
-  actionBar._update = function() {
-    actionBar._actionsArea._updatePos();
-    for (var i = 0, count = actions.length; i < count; i++) {
-      var action = actions[i];
-      var cell = action._cell;
-      cell._update();
-    }
-  };
-
-  O$.setupHoverStateFunction(actionBar._actionsArea, function(mouseInside) {
-    actionBar._actionsArea._mouseInside = mouseInside;
-    if (actionBar._event)
-      O$.invokeFunctionAfterDelay(actionBar._event._updateRolloverState, O$.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT);
-  });
-
-
-  actionBar._actionsArea._updatePos = function() {
-    var dayTable = O$(dayTableId);
-    var actionBarSize = O$.getElementSize(actionBar);
-    var actionsAreaSize = O$.getElementSize(this);
-    this.style.top = "0px";
-    this.style.left = actionBarSize.width - actionsAreaSize.width + "px";
-    this.style.height = actionBarSize.height + "px";
-
-    O$.correctElementZIndex(this, dayTable);
-  };
-};
-
-/*
- This function is invoked from the "delete event" action button. Don't invoke this function directly.
- */
-O$._deleteCurrentTimetableEvent = function(event) {
-  var e = O$.getEvent(event);
-  var timetableEvent = e._timetableEvent;
-  e._dayTable.deleteEvent(timetableEvent);
-  e.returnValue = false;
-};
-
-O$._RangeMap = function() {
-  this._disjointRanges = [];
-};
-O$._RangeMap.prototype._rangesIntersect = function(range1, range2) {
-  // Returns true if the ranges intersect. End-point intersection is also not considered as an intersection.
-  return range2.end >= range1.start && range2.start <= range1.end;
-};
-O$._RangeMap.prototype._rangeContainsRange = function(range1, range2) {
-  // Returns true if range2 is entirely in range1. Equal ranges result in returning true as well.
-  return range2.start >= range1.start && range2.end <= range1.end;
-};
-O$._RangeMap.prototype._mergeRanges = function(range1, range2) {
-  if (!this._rangesIntersect(range1, range2))
-    throw "An attempt to merge non-intersecting ranges";
-  return {
-    start: Math.min(range1.start, range2.start),
-    end: Math.max(range1.end, range2.end)
-  };
-};
-O$._RangeMap.prototype.addRange = function(start, end) {
-  if (!start && !end) {
-    this._infiniteRange = true;
-    return;
-  }
-  if (start == end)
-    return;
-  if (start > end)
-    throw "O$._RangeMap.prototype.addRange: start (" + start + ") can't be greater than end(" + end + ")";
-  var addedRange = {start: start, end: end};
-  var extendedRange = addedRange;
-  for (var i = 0; i < this._disjointRanges.length;) {
-    var range = this._disjointRanges[i];
-    if (!this._rangesIntersect(range, addedRange)) {
-      i++;
-      continue;
-    }
-    if (!this._rangeContainsRange(addedRange, range)) {
-      extendedRange = this._mergeRanges(extendedRange, range);
-    }
-    this._disjointRanges.splice(i, 1);
-  }
-  this._disjointRanges.push(extendedRange);
-};
-O$._RangeMap.prototype.isRangeFullyInMap = function(start, end) {
-  if (this._infiniteRange)
-    return true;
-  var testedRange = {start: start, end: end};
-  for (var i = 0, count = this._disjointRanges.length; i < count; i++) {
-    var range = this._disjointRanges[i];
-    if (this._rangeContainsRange(range, testedRange))
-      return true;
-  }
-  return false;
-};

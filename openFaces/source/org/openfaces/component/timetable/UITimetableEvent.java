@@ -12,16 +12,21 @@
 package org.openfaces.component.timetable;
 
 import org.openfaces.component.OUIPanel;
+import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.util.ConvertibleToJSON;
+import org.openfaces.util.DataUtil;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Styles;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,10 +38,15 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
 
     private Boolean escapeName;
     private Boolean escapeDescription;
+    private Boolean escapeResource;
     private String nameStyle;
     private String nameClass;
     private String descriptionStyle;
     private String descriptionClass;
+    private String resourceStyle;
+    private String resourceClass;
+    private String timeStyle;
+    private String timeClass;
 
     private Double backgroundTransparency;
     private Double backgroundIntensity;
@@ -65,6 +75,14 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
 
     public void setEscapeDescription(boolean escapeDescription) {
         this.escapeDescription = escapeDescription;
+    }
+
+    public boolean getEscapeResource() {
+        return ValueBindings.get(this, "escapeResource", escapeResource, true);
+    }
+
+    public void setEscapeResource(boolean escapeResource) {
+        this.escapeResource = escapeResource;
     }
 
     public String getNameStyle() {
@@ -99,6 +117,37 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
         this.descriptionClass = descriptionClass;
     }
 
+    public String getResourceStyle() {
+        return ValueBindings.get(this, "resourceStyle", resourceStyle);
+    }
+
+    public void setResourceStyle(String resourceStyle) {
+        this.resourceStyle = resourceStyle;
+    }
+
+    public String getResourceClass() {
+        return ValueBindings.get(this, "resourceClass", resourceClass);
+    }
+
+    public void setResourceClass(String resourceClass) {
+        this.resourceClass = resourceClass;
+    }
+
+    public String getTimeStyle() {
+        return ValueBindings.get(this, "timeStyle", timeStyle);
+    }
+
+    public void setTimeStyle(String timeStyle) {
+        this.timeStyle = timeStyle;
+    }
+
+    public String getTimeClass() {
+        return ValueBindings.get(this, "timeClass", timeClass);
+    }
+
+    public void setTimeClass(String timeClass) {
+        this.timeClass = timeClass;
+    }
 
     public String getOncreate() {
         return ValueBindings.get(this, "oncreate", oncreate);
@@ -130,10 +179,15 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
                 super.saveState(context),
                 escapeName,
                 escapeDescription,
+                escapeResource,
                 nameStyle,
                 nameClass,
                 descriptionStyle,
                 descriptionClass,
+                resourceStyle,
+                resourceClass,
+                timeStyle,
+                timeClass,
                 backgroundTransparency,
                 backgroundIntensity,
                 oncreate};
@@ -146,10 +200,15 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
         super.restoreState(context, state[i++]);
         escapeName = (Boolean) state[i++];
         escapeDescription = (Boolean) state[i++];
+        escapeResource = (Boolean) state[i++];
         nameStyle = (String) state[i++];
         nameClass = (String) state[i++];
         descriptionStyle = (String) state[i++];
         descriptionClass = (String) state[i++];
+        resourceStyle = (String) state[i++];
+        resourceClass = (String) state[i++];
+        timeStyle = (String) state[i++];
+        timeClass = (String) state[i++];
         backgroundTransparency = (Double) state[i++];
         backgroundIntensity = (Double) state[i++];
         oncreate = (String) state[i++];
@@ -163,8 +222,11 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
 
         Styles.addStyleJsonParam(context, this, obj, "nameStyle", getNameStyle(), getNameClass());
         Styles.addStyleJsonParam(context, this, obj, "descriptionStyle", getDescriptionStyle(), getDescriptionClass());
+        Styles.addStyleJsonParam(context, this, obj, "resourceStyle", getResourceStyle(), getResourceClass());
+        Styles.addStyleJsonParam(context, this, obj, "timeStyle", getTimeStyle(), getTimeClass());
         Rendering.addJsonParam(obj, "escapeName", getEscapeName(), true);
         Rendering.addJsonParam(obj, "escapeDescription", getEscapeDescription(), true);
+        Rendering.addJsonParam(obj, "escapeResource", getEscapeResource(), true);
 
         Rendering.addJsonParam(obj, "backgroundTransparency", getBackgroundTransparency(), 0.2);
         Rendering.addJsonParam(obj, "backgroundIntensity", getBackgroundIntensity(), 0.25);
@@ -182,6 +244,21 @@ public class UITimetableEvent extends OUIPanel implements ConvertibleToJSON {
         Rendering.addJsonParam(obj, "onkeypress", getOnkeypress());
 
         Rendering.addJsonParam(obj, "oncreate", getOncreate());
+
+        List<AbstractUIEventContent> list = new ArrayList<AbstractUIEventContent>();
+
+        List<UIComponent> children = getChildren();
+
+        for (UIComponent child : children) {
+            if (child instanceof AbstractUIEventContent) {
+                list.add((AbstractUIEventContent) child);
+            }
+        }
+
+        if (! list.isEmpty()) {
+            JSONArray eventContent = DataUtil.listToJSONArray(list, null);
+            Rendering.addJsonParam(obj, "content", eventContent);
+        }
 
         try {
             Styles.renderStyleClasses(context, this);

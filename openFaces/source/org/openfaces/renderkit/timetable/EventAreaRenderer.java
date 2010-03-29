@@ -12,9 +12,11 @@
 package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.timetable.AbstractTimetableEvent;
-import org.openfaces.component.timetable.DayTable;
 import org.openfaces.component.timetable.EventArea;
+import org.openfaces.component.timetable.MonthTable;
+import org.openfaces.component.timetable.TimeScaleTable;
 import org.openfaces.component.timetable.TimetableEvent;
+import org.openfaces.component.timetable.TimetableView;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Rendering;
 
@@ -31,8 +33,10 @@ public class EventAreaRenderer extends RendererBase {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         EventArea eventArea = (EventArea) component;
-        DayTable dayTable = (DayTable) eventArea.getParent();
-        AbstractTimetableEvent event = dayTable.getEvent();
+        TimetableView parent = (TimetableView) eventArea.getParent();
+
+        AbstractTimetableEvent event = parent.getEvent();
+
         if (!(event instanceof TimetableEvent))
             return;
         ResponseWriter writer = context.getResponseWriter();

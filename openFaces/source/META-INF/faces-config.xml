@@ -159,6 +159,16 @@
   </component>
 
   <component>
+    <component-type>org.openfaces.WeekTable</component-type>
+    <component-class>org.openfaces.component.timetable.WeekTable</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.MonthTable</component-type>
+    <component-class>org.openfaces.component.timetable.MonthTable</component-class>
+  </component>
+
+  <component>
     <component-type>org.openfaces.DaySwitcher</component-type>
     <component-class>org.openfaces.component.timetable.DaySwitcher</component-class>
   </component>
@@ -166,6 +176,31 @@
   <component>
     <component-type>org.openfaces.TimetableEvent</component-type>
     <component-class>org.openfaces.component.timetable.UITimetableEvent</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.EventName</component-type>
+    <component-class>org.openfaces.component.timetable.UIEventName</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.EventDescription</component-type>
+    <component-class>org.openfaces.component.timetable.UIEventDescription</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.EventResource</component-type>
+    <component-class>org.openfaces.component.timetable.UIEventResource</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.EventTime</component-type>
+    <component-class>org.openfaces.component.timetable.UIEventTime</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.EventLineFeed</component-type>
+    <component-class>org.openfaces.component.timetable.UIEventLineFeed</component-class>
   </component>
 
   <component>
@@ -654,7 +689,6 @@
     <component-class>org.openfaces.component.validation.UIValidation</component-class>
   </component>
 
-
   <component>
     <component-type>org.openfaces.CommandLink</component-type>
     <component-class>org.openfaces.component.command.CommandLink</component-class>
@@ -934,6 +968,18 @@
       <component-family>org.openfaces.DayTable</component-family>
       <renderer-type>org.openfaces.DayTableRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.timetable.DayTableRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>org.openfaces.WeekTable</component-family>
+      <renderer-type>org.openfaces.WeekTableRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.timetable.WeekTableRenderer</renderer-class>
+    </renderer>
+
+    <renderer>
+      <component-family>org.openfaces.MonthTable</component-family>
+      <renderer-type>org.openfaces.MonthTableRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.timetable.MonthTableRenderer</renderer-class>
     </renderer>
 
     <renderer>

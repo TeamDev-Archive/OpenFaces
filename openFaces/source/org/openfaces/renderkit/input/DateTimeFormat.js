@@ -250,7 +250,7 @@ O$.extend(O$.DateTimeFormat.prototype, {
           }
           break;
         case "d":
-          if (date.toString().length == 1) {
+          if (match.length > 1 && date.toString().length == 1) {
             format = format.replace(toReplace, "0" + date);
           } else {
             format = format.replace(toReplace, date);

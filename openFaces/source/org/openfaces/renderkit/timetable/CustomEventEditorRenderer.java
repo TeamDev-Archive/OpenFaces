@@ -12,7 +12,7 @@
 package org.openfaces.renderkit.timetable;
 
 import org.openfaces.component.timetable.CustomEventEditor;
-import org.openfaces.component.timetable.DayTable;
+import org.openfaces.component.timetable.TimetableView;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AnonymousFunction;
 import org.openfaces.util.Rendering;
@@ -35,8 +35,9 @@ public class CustomEventEditorRenderer extends RendererBase {
         writer.writeAttribute("style", "display: none", null);
 
         CustomEventEditor editor = (CustomEventEditor) component;
-        DayTable dayTable = (DayTable) editor.getParent();
-        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, dayTable, "O$._initCustomEventEditor",
+        UIComponent timetableView = editor.getParent();
+
+        Rendering.renderInitScript(context, new ScriptBuilder().initScript(context, timetableView, "O$.Timetable._initCustomEventEditor",
                 editor,
                 new AnonymousFunction(editor.getOncreate(), "timetable", "timetableEvent"),
                 new AnonymousFunction(editor.getOnedit(), "timetable", "timetableEvent")).semicolon());

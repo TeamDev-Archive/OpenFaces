@@ -76,6 +76,30 @@ public class DayTableBean {
         return c1.getTime();
     }
 
+    protected static Date weekLaterAt(int hour, int minute) {
+        Calendar c1 = new GregorianCalendar();
+        c1.add(Calendar.WEEK_OF_YEAR, 1);
+        c1.set(Calendar.HOUR_OF_DAY, hour);
+        c1.set(Calendar.MINUTE, minute);
+        return c1.getTime();
+    }
+
+    protected static Date nWeeksLaterAt(int weeks, int hour, int minute) {
+        Calendar c1 = new GregorianCalendar();
+        c1.add(Calendar.WEEK_OF_YEAR, weeks);
+        c1.set(Calendar.HOUR_OF_DAY, hour);
+        c1.set(Calendar.MINUTE, minute);
+        return c1.getTime();
+    }
+
+    protected static Date monthLaterAt(int hour, int minute) {
+        Calendar c1 = new GregorianCalendar();
+        c1.add(Calendar.MONTH, 1);
+        c1.set(Calendar.HOUR_OF_DAY, hour);
+        c1.set(Calendar.MINUTE, minute);
+        return c1.getTime();
+    }
+
     protected AbstractTimetableEvent eventById(List<AbstractTimetableEvent> events, String eventId) {
         for (AbstractTimetableEvent event : events) {
             if (event.getId().equals(eventId))

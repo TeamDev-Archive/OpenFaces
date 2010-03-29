@@ -255,6 +255,24 @@
   </tag>
 
   <tag>
+    <tag-name>weekTable</tag-name>
+    <component>
+      <component-type>org.openfaces.WeekTable</component-type>
+      <renderer-type>org.openfaces.WeekTableRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.WeekTableTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>monthTable</tag-name>
+    <component>
+      <component-type>org.openfaces.MonthTable</component-type>
+      <renderer-type>org.openfaces.MonthTableRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.MonthTableTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
     <tag-name>daySwitcher</tag-name>
     <component>
       <component-type>org.openfaces.DaySwitcher</component-type>
@@ -268,6 +286,46 @@
     <component>
       <component-type>org.openfaces.TimetableEvent</component-type>
       <handler-class>org.openfaces.taglib.facelets.timetable.TimetableEventTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>eventName</tag-name>
+    <component>
+      <component-type>org.openfaces.EventName</component-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.EventNameTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>eventDescription</tag-name>
+    <component>
+      <component-type>org.openfaces.EventDescription</component-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.EventDescriptionTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>eventResource</tag-name>
+    <component>
+      <component-type>org.openfaces.EventResource</component-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.EventResourceTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>eventTime</tag-name>
+    <component>
+      <component-type>org.openfaces.EventTime</component-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.EventTimeTagHandler</handler-class>
+    </component>
+  </tag>
+
+  <tag>
+    <tag-name>eventLineFeed</tag-name>
+    <component>
+      <component-type>org.openfaces.EventLineFeed</component-type>
+      <handler-class>org.openfaces.taglib.facelets.timetable.EventLineFeedTagHandler</handler-class>
     </component>
   </tag>
 
