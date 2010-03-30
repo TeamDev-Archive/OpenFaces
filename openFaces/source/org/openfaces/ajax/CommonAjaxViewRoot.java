@@ -1375,7 +1375,7 @@ public abstract class CommonAjaxViewRoot {
 
     private UIComponent componentById(UIComponent parent, String id, boolean isLastComponentInPath,
                                       boolean preProcessDecodesOnTables, boolean preRenderResponseOnTables) {
-        if (id.length() > 0 && (isIntegerNumber(id) || id.startsWith(":")) && parent instanceof AbstractTable) {
+        if (id.length() > 0 && (isNumberBasedId(id) || id.startsWith(":")) && parent instanceof AbstractTable) {
             AbstractTable table = ((AbstractTable) parent);
             if (!isLastComponentInPath) {
                 if (preProcessDecodesOnTables)
@@ -1400,7 +1400,7 @@ public abstract class CommonAjaxViewRoot {
                 table.setRowIndex(rowIndex);
             }
             return table;
-        } else if (isIntegerNumber(id) && parent instanceof UIData) {
+        } else if (isNumberBasedId(id) && parent instanceof UIData) {
             UIData grid = ((UIData) parent);
             int rowIndex = Integer.parseInt(id);
             grid.setRowIndex(rowIndex);
@@ -1410,7 +1410,7 @@ public abstract class CommonAjaxViewRoot {
             OUIObjectIterator iterator = (OUIObjectIterator) parent;
             iterator.setObjectId(id);
             return (UIComponent) iterator;
-        } else if (isIntegerNumber(id)) {
+        } else if (isNumberBasedId(id)) {
             try {
                 Class clazz = Class.forName("com.sun.facelets.component.UIRepeat");
                 if (clazz.isInstance(parent)) {
@@ -1442,15 +1442,12 @@ public abstract class CommonAjaxViewRoot {
         return null;
     }
 
-    private boolean isIntegerNumber(String id) {
+    private boolean isNumberBasedId(String id) {
         if (id == null || id.length() == 0)
             return false;
-        for (int i = 0, length = id.length(); i < length; i++) {
-            char c = id.charAt(i);
-            if (!Character.isDigit(c))
-                return false;
-        }
-        return true;
+
+        char c = id.charAt(0);
+        return Character.isDigit(c);
     }
 
     private void writeState(FacesContext context, String clientId, Object state) throws IOException {
