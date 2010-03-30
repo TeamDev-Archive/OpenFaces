@@ -195,9 +195,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
 
     protected String[] getClientItemData(FacesContext context, DropDownFieldBase dropDownField, UISelectItem item) {
         Object itemValue = item.getItemValue();
-        String convertedItemValue = itemValue instanceof String
-                ? (String) itemValue
-                : itemValue == null ? ""
+        String convertedItemValue = itemValue == null ? ""
                 : Rendering.convertToString(context, dropDownField, itemValue);
 
         Map<String, Object> itemAttributes = item.getAttributes();

@@ -517,7 +517,7 @@ public class Rendering {
     }
 
     /**
-     * Converts string to object with assosiated converter
+     * Converts string to object with associated converter
      *
      * @param context   {@link FacesContext} for the current request
      * @param component The component, which converter will be used
@@ -549,7 +549,7 @@ public class Rendering {
     }
 
     /**
-     * Converts object to string with assosiated converter
+     * Converts object to string with associated converter
      *
      * @param context   {@link FacesContext} for the current request
      * @param component The component, which converter will be used
@@ -650,7 +650,7 @@ public class Rendering {
      * Combine javascript scripts into one script and links to javascript files and render them
      *
      * @param context     {@link FacesContext} for the current request
-     * @param initScripts The javascripts and javascript files to combine and render
+     * @param initScripts The javascript files to combine and render
      * @throws IOException if an input/output error occurs
      */
     public static void renderInitScripts(FacesContext context, InitScript... initScripts) throws IOException {
@@ -676,7 +676,7 @@ public class Rendering {
      * @param prependContextPath true means that the resulting url should be prefixed with context root. This is the case
      *                           when the returned URL is rendered without any modifications. Passing false to this
      *                           parameter is required in cases when the returned URL is passed to some component which
-     *                           expects application URL, so the component will prepend the URL with context root tself.
+     *                           expects application URL, so the component will prepend the URL with context root itself.
      * @throws IOException if an input/output error occurs
      */
     public static void renderPreloadImagesScript(
