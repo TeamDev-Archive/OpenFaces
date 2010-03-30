@@ -208,7 +208,7 @@ O$.getValue = function(input) {
       else
         value = "false";
     }
-    value = input.value;
+    value = input.getValue ? input.getValue() : input.value;
   } else if (input.tagName.toUpperCase() == "SELECT") {
     if (input.type.toLowerCase() == "select-one") {
       for (var i = 0; i < input.options.length; i++) {
