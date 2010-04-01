@@ -524,7 +524,7 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
                     try {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
-                        // prevoius ajax request completion should be waited for anyway...
+                        // previous ajax request completion should be waited for anyway...
                     }
             }
         } while (shouldWaitForPreviousAjaxCompletion);

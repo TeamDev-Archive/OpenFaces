@@ -53,7 +53,7 @@
       <!-- @el only -->
     </attribute>
     <attribute>
-      <description>A flag that indicates whether or not to use Ajax for sorting, filternig and pagination.</description>
+      <description>A flag that indicates whether or not to use Ajax for sorting, filtering and pagination.</description>
       <name>useAjax</name>
       <deferred-value>
         <type>boolean</type>
@@ -114,9 +114,9 @@
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default "ltr" -->
-      <!-- @value "ltr" from left to right -->
-      <!-- @value "rtl" from right to left -->
+      <!-- @default "LTR" -->
+      <!-- @value "LTR" from left to right -->
+      <!-- @value "RTL" from right to left -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -1980,9 +1980,9 @@
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default "ltr" -->
-      <!-- @value "ltr" left to right -->
-      <!-- @value "rtl" right to left -->
+      <!-- @default "LTR" -->
+      <!-- @value "LTR" left to right -->
+      <!-- @value "RTL" right to left -->
       <!-- @el true -->
     </attribute>
 
@@ -2299,8 +2299,6 @@
       <!-- @value "stringStart" works on the client side. Shows suggestions that begin with the entered value -->
       <!-- @value "substring" works on the client side. Shows suggestions that contain the entered value -->
       <!-- @value "stringEnd" works on the client side. Shows suggestions that end with the entered value -->
-      <!-- @value "custom" works on the server side using Ajax. Sends an Ajax request when
-entering a value and returns a list of suggestions from the server -->
       <!-- @value "all" works on the client side. Shows all drop-down items in the list of suggestions -->
       <!-- @value "none" suggestion mode is turned off -->
       <!-- @el true -->
@@ -2890,9 +2888,9 @@ entering a value and returns a list of suggestions from the server -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default "ltr" -->
-      <!-- @value "ltr" left to right -->
-      <!-- @value "rtl" right to left -->
+      <!-- @default "LTR" -->
+      <!-- @value "LTR" left to right -->
+      <!-- @value "RTL" right to left -->
       <!-- @el true -->
     </attribute>
 
@@ -7741,9 +7739,9 @@ means that only root nodes and their immediate children are preloaded -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default "ltr" -->
-      <!-- @value "ltr" left to right -->
-      <!-- @value "rtl" right to left -->
+      <!-- @default "LTR" -->
+      <!-- @value "LTR" left to right -->
+      <!-- @value "RTL" right to left -->
       <!-- @el true -->
     </attribute>
     <attribute>
@@ -10873,9 +10871,9 @@ entering a value and returns a list of suggestions from the server -->
       <description>A flag that indicates whether or not a list item is visible.</description>
       <name>rendered</name>
       <deferred-value>
-        <type>java.lang.String</type>
+        <type>boolean</type>
       </deferred-value>
-      <!-- @bindingType java.lang.String -->
+      <!-- @bindingType boolean -->
       <!-- @default false -->
       <!-- @el true -->
     </attribute>
@@ -23526,9 +23524,9 @@ and it is automatically triggered on any form submission. -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default "ltr" -->
-      <!-- @value "ltr" left to right -->
-      <!-- @value "rtl" right to left -->
+      <!-- @default "LTR" -->
+      <!-- @value "LTR" left to right -->
+      <!-- @value "RTL" right to left -->
       <!-- @el true -->
     </attribute>
 
@@ -24092,9 +24090,9 @@ and it is automatically triggered on any form submission. -->
         <type>java.lang.String</type>
       </deferred-value>
       <!-- @bindingType java.lang.String -->
-      <!-- @default "ltr" -->
-      <!-- @value "ltr" left to right -->
-      <!-- @value "rtl" right to left -->
+      <!-- @default "LTR" -->
+      <!-- @value "LTR" left to right -->
+      <!-- @value "RTL" right to left -->
       <!-- @el true -->
     </attribute>
 
@@ -32638,7 +32636,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <description>Property type (tetx, number, date or select)</description>
+      <description>Property type (text, number, date or select)</description>
       <name>type</name>
       <deferred-value>
         <type>java.lang.String</type>
