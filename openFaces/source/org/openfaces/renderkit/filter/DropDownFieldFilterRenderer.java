@@ -101,7 +101,7 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
         Object dropDownFieldItems = field.getChildren().get(0);
         if (!(dropDownFieldItems instanceof DropDownItems)) {
             throw new IllegalStateException("Search component of DropDownFieldFilter should have exactly one child component - " +
-                    "instace of DropDownItems component. But was  - " + dropDownFieldItems.toString());
+                    "instance of DropDownItems component. But was  - " + dropDownFieldItems.toString());
         }
         DropDownItems dropDownItems = (DropDownItems) dropDownFieldItems;
         Collection<Object> possibleValuesCollection = filter.calculateAllCriterionNames(context);
@@ -121,8 +121,8 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
         DropDownItem allRecordsItem = createDropDownItem(context, null);
         String allRecordsCriterionName = filter.getAllRecordsText();
         HtmlOutputText outputText = Components.createOutputText(context, allRecordsCriterionName);
-        String predefinedCriterionsClass = getPredefinedCriterionClass(context, filter);
-        outputText.setStyleClass(predefinedCriterionsClass);
+        String predefinedCriterionClass = getPredefinedCriterionClass(context, filter);
+        outputText.setStyleClass(predefinedCriterionClass);
         allRecordsItem.getChildren().add(outputText);
         itemList.add(0, allRecordsItem);
         dropDownItems.setValue(itemList);

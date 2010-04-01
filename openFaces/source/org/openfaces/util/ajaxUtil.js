@@ -318,10 +318,15 @@ O$.sendAjaxRequest = function(render, args) {
     }
   }
 
-  if (!render.length) {
-    O$.logError("O$.sendAjaxRequest: Array of components ids should be not empty");
-  }
-  var components = [];
+  var submittedComponent = null;
+  if (args.execute != null)
+    args.execute.forEach(function(submittedComponentId) {
+      var comp = O$(submittedComponentId);
+      if (!comp) return;
+      if (!submittedComponent)
+        submittedComponent = comp;
+    });
+
   var i;
   for (i = 0; i < render.length; i++) {
     var id = render[i];
@@ -330,7 +335,8 @@ O$.sendAjaxRequest = function(render, args) {
       O$.logError("O$.sendAjaxRequest: couldn't find component with the specified id: \"" + id + "\"");
       return;
     }
-    components.push(c);
+    if (!submittedComponent)
+      submittedComponent = c;
   }
 
   //we need to fire validation for enclosing form (if there are no client validation support - just skip client validation (there will be server side validation only)
@@ -340,20 +346,15 @@ O$.sendAjaxRequest = function(render, args) {
   //        return;
   //      }
   //    }
-  var form = O$.getParentNode(components[0], "FORM");
-  O$.assert(form, "O$.sendAjaxRequest: Enclosing form not found for element with id: " + components[0].id);
-  if (!components.every(function(element) {
-    return (form == O$.getParentNode(element, "FORM"));
-  })) {
-    O$.logError("O$.sendAjaxRequest: Enclosing forms differ for components");
-  }
+  var submittedForm = submittedComponent ? O$.getParentNode(submittedComponent, "FORM") : document.forms[0];
+  O$.assert(submittedForm, "O$.sendAjaxRequest: Enclosing form not found for element with id: " + submittedComponent.id);
 
   var ajaxObject = new O$.AjaxObject(render);
   ajaxObject._onajaxstart = args.onajaxstart;
   O$.requestStarted(ajaxObject);
 
   var paramsBuf = new O$.StringBuffer();
-  O$.prepareFormParams(form, paramsBuf);
+  O$.prepareFormParams(submittedForm, paramsBuf);
   paramsBuf.append("&");
   if (O$.prepareUpdates(paramsBuf, render, args.portionNames))
     paramsBuf.append("&");
@@ -414,7 +415,7 @@ O$.sendAjaxRequest = function(render, args) {
   ajaxObject._completionCallback = args.onajaxend;
   ajaxObject._requestedRender = render;
 
-  var url = form.action;
+  var url = submittedForm.action;
   ajaxObject._request.open("POST", url, true);
   ajaxObject._request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
   ajaxObject._request.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
@@ -769,7 +770,7 @@ O$.AjaxObject = function(render) {
         this._ajaxResult = responseXML.getElementsByTagName(O$.TAG_AJAX_RESULT);
         this._cssFiles = responseXML.getElementsByTagName(O$.TAG_AJAX_CSS);
       }
-      if (!this._updatables || this._updatables.length == 0) {
+      if ((!this._updatables || this._updatables.length == 0) && !this._ajaxResult) {
         var responseText = request.responseText;
         var startIndex = responseText.indexOf(O$.TEXT_RESPONSE_PREFIX);
         if (startIndex == -1) {
@@ -889,8 +890,6 @@ O$.AjaxObject = function(render) {
 
   this._processUpdates = function() {
     var updatables = this._updatables;
-    if (!updatables || updatables.length == 0)
-      return;
     var rtLibrary = undefined;
 
     // Cache state update part
@@ -914,11 +913,11 @@ O$.AjaxObject = function(render) {
     }
 
     var simpleUpdate = false;
-    for (var i = 0; i < updatables.length; i++) {
-      var upd = updatables[i];
-      var updType = upd.tagName ? upd.getAttribute("type") : upd.type;
-      var updId = upd.tagName ? upd.getAttribute("id") : upd.id;
-      var updHTML = upd.tagName ? upd.getAttribute("value") : upd.value;
+    for (i = 0; i < updatables.length; i++) {
+      upd = updatables[i];
+      updType = upd.tagName ? upd.getAttribute("type") : upd.type;
+      updId = upd.tagName ? upd.getAttribute("id") : upd.id;
+      updHTML = upd.tagName ? upd.getAttribute("value") : upd.value;
       var updScripts = upd.tagName ? upd.getAttribute("scripts") : upd.scripts;
       var updData = upd.tagName ? upd.getAttribute("data") : upd.data;
 

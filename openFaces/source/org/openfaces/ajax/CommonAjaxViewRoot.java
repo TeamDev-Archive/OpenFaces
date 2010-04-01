@@ -326,9 +326,6 @@ public abstract class CommonAjaxViewRoot {
         }
 
         String[] render = extractRender(request);
-        if (render == null) {
-            throw new IllegalStateException(AjaxUtil.PARAM_RENDER + " not found at request");
-        }
         String[] execute = extractExecute(request);
 
 
@@ -342,6 +339,7 @@ public abstract class CommonAjaxViewRoot {
     private UIComponent[] locateComponents(String[] render, UIViewRoot viewRoot,
                                            boolean preProcessDecodesOnTables,
                                            boolean preRenderResponseOnTables) {
+        if (render == null) return new UIComponent[0];
         UIComponent[] components = new UIComponent[render.length];
         for (int i = 0; i < render.length; i++) {
             String componentId = render[i];
@@ -372,9 +370,9 @@ public abstract class CommonAjaxViewRoot {
     }
 
     private String[] extractRender(RequestFacade request) {
-        String componentId = request.getParameter(AjaxUtil.PARAM_RENDER);
-        assertComponentId(componentId);
-        String[] render = componentId.split(";");
+        String componentIds = request.getParameter(AjaxUtil.PARAM_RENDER);
+        assertComponentId(componentIds);
+        String[] render = !Rendering.isNullOrEmpty(componentIds) ? componentIds.split(";") : null;
         return render;
     }
 
@@ -527,7 +525,7 @@ public abstract class CommonAjaxViewRoot {
 
         assertChildren(viewRoot);
 
-        UIComponent component = componentIds.length > 0 ? findComponentById(viewRoot, componentIds[0], false, false) : null;
+        UIComponent component = componentIds != null && componentIds.length > 0 ? findComponentById(viewRoot, componentIds[0], false, false) : null;
         if (component != null && component.getChildCount() > 0) {
             List<UIComponent> ajaxSubmittedComponentChildren = component.getChildren();
             ajaxSettings = findAjaxSettings(ajaxSubmittedComponentChildren);
@@ -741,12 +739,12 @@ public abstract class CommonAjaxViewRoot {
 
 
     private void ajaxApplyRequestValues(FacesContext context,
-                                        UIComponent[] components,
+                                        UIComponent[] render,
                                         UIViewRoot viewRoot,
                                         String[] execute)
             throws FacesException {
-        if (components != null) {
-            for (UIComponent component : components) {
+        if (render != null) {
+            for (UIComponent component : render) {
                 Log.log(context, "start ajaxApplyRequestValues for " + component);
                 component.processDecodes(context);
                 Log.log(context, "finish ajaxApplyRequestValues for " + component);
@@ -764,11 +762,11 @@ public abstract class CommonAjaxViewRoot {
     }
 
     private void ajaxProcessValidations(FacesContext context,
-                                        UIComponent[] components,
+                                        UIComponent[] render,
                                         UIViewRoot viewRoot,
                                         String[] execute) throws FacesException {
-        if (components != null) {
-            for (UIComponent component : components) {
+        if (render != null) {
+            for (UIComponent component : render) {
                 Log.log(context, "start ajaxProcessValidations for " + component);
                 component.processValidators(context);
                 Log.log(context, "finish ajaxProcessValidations for " + component);
@@ -785,12 +783,12 @@ public abstract class CommonAjaxViewRoot {
     }
 
     private void ajaxUpdateModelValues(FacesContext context,
-                                       UIComponent[] components,
+                                       UIComponent[] render,
                                        UIViewRoot viewRoot,
                                        String[] execute)
             throws FacesException {
-        if (components != null) {
-            for (UIComponent component : components) {
+        if (render != null) {
+            for (UIComponent component : render) {
                 Log.log(context, "start ajaxUpdateModelValues for " + component);
                 component.processUpdates(context);
                 Log.log(context, "finish ajaxUpdateModelValues for " + component);
