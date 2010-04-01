@@ -25679,7 +25679,7 @@ and it is automatically triggered on any form submission. -->
         can be a single id or a comma-separated list if id's.
       </description>
       <name>render</name>
-      <required>true</required>
+      <required>false</required>
       <deferred-value>
         <type>java.util.List</type>
       </deferred-value>
