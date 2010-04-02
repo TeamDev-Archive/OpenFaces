@@ -99,45 +99,19 @@ public class UtilPhaseListener extends PhaseListenerBase {
     }
 
     private boolean getForceIncludingUtilJs(FacesContext context) {
-        return getBooleanContextParam(context, FORCE_UTIL_JS_CONTEXT_PARAM);
+        return Rendering.getBooleanContextParam(context, FORCE_UTIL_JS_CONTEXT_PARAM);
     }
 
     private boolean isAutoFocusTrackingEnabled(FacesContext context) {
-        return getBooleanContextParam(context, AUTO_FOCUS_TRACKING_CONTEXT_PARAM);
+        return Rendering.getBooleanContextParam(context, AUTO_FOCUS_TRACKING_CONTEXT_PARAM);
     }
 
     private boolean isDisabledContextMenuEnabled(FacesContext context) {
-        return getBooleanContextParam(context, DISABLED_CONTEXT_MENU_CONTEXT_PARAM);
+        return Rendering.getBooleanContextParam(context, DISABLED_CONTEXT_MENU_CONTEXT_PARAM);
     }
 
     private boolean isAutoScrollPosTrackingEnabled(FacesContext context) {
-        return getBooleanContextParam(context, AUTO_SCROLL_POS_TRACKING_CONTEXT_PARAM);
-    }
-
-    private boolean getBooleanContextParam(FacesContext context, String webXmlContextParam) {
-        String applicationMapKey = "_openFaces_contextParam:" + webXmlContextParam;
-        Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
-
-        Boolean result = (Boolean) applicationMap.get(applicationMapKey);
-        if (result == null) {
-            ExternalContext externalContext = context.getExternalContext();
-            String paramStr = externalContext.getInitParameter(webXmlContextParam);
-            if (paramStr == null)
-                result = Boolean.FALSE;
-            else {
-                paramStr = paramStr.trim();
-                if (paramStr.equalsIgnoreCase("true"))
-                    result = Boolean.TRUE;
-                else if (paramStr.equalsIgnoreCase("false"))
-                    result = Boolean.FALSE;
-                else {
-                    externalContext.log("Unrecognized value specified for context parameter named " + webXmlContextParam + ": it must be either true or false");
-                    result = Boolean.FALSE;
-                }
-            }
-            applicationMap.put(applicationMapKey, result);
-        }
-        return result;
+        return Rendering.getBooleanContextParam(context, AUTO_SCROLL_POS_TRACKING_CONTEXT_PARAM);
     }
 
     private Script encodeFocusTracking(FacesContext facesContext) {

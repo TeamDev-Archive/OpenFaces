@@ -36,6 +36,7 @@ import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.ValueHolder;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
@@ -636,7 +637,10 @@ public class Rendering {
         }
         if (jsFiles != null)
             for (String jsFile : jsFiles) {
-                if (jsFile != null)
+                if (jsFile == null) continue;
+                if (jsFile.equals("jquery.js"))
+                    Resources.includeJQuery(context);
+                else
                     Resources.renderJSLinkIfNeeded(context, jsFile);
             }
 
@@ -1357,5 +1361,56 @@ public class Rendering {
             event = "on" + event;
         }
         return event;
+    }
+
+    public static boolean getBooleanContextParam(FacesContext context, String webXmlContextParam) {
+        return getBooleanContextParam(context, webXmlContextParam, false);
+    }
+
+    public static boolean getBooleanContextParam(FacesContext context, String webXmlContextParam, boolean defaultValue) {
+        String applicationMapKey = "org.openfaces.util.Rendering._contextParam:" + webXmlContextParam;
+        Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
+
+        Boolean result = (Boolean) applicationMap.get(applicationMapKey);
+        if (result == null) {
+            ExternalContext externalContext = context.getExternalContext();
+            String paramStr = externalContext.getInitParameter(webXmlContextParam);
+            if (paramStr == null)
+                result = defaultValue;
+            else {
+                paramStr = paramStr.trim();
+                if (paramStr.equalsIgnoreCase("true"))
+                    result = Boolean.TRUE;
+                else if (paramStr.equalsIgnoreCase("false"))
+                    result = Boolean.FALSE;
+                else {
+                    externalContext.log("Unrecognized value specified for context parameter named " + webXmlContextParam + ": it must be either true or false");
+                    result = Boolean.FALSE;
+                }
+            }
+            applicationMap.put(applicationMapKey, result);
+        }
+        return result;
+    }
+
+    public static String getContextParam(FacesContext context, String webXmlContextParam) {
+        return getContextParam(context, webXmlContextParam);
+    }
+
+    public static String getContextParam(FacesContext context, String webXmlContextParam, String defaultValue) {
+        String applicationMapKey = "org.openfaces.util.Rendering._contextParam:" + webXmlContextParam;
+        Map<String, Object> applicationMap = context.getExternalContext().getApplicationMap();
+
+        String result = (String) applicationMap.get(applicationMapKey);
+        if (result == null) {
+            ExternalContext externalContext = context.getExternalContext();
+            String paramStr = externalContext.getInitParameter(webXmlContextParam);
+            if (paramStr == null)
+                result = defaultValue;
+            else
+                result = paramStr;
+            applicationMap.put(applicationMapKey, result);
+        }
+        return result;
     }
 }

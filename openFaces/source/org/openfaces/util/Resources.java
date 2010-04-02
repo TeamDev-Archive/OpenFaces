@@ -62,6 +62,7 @@ public class Resources {
     private static String SRC_UC = SRC.toUpperCase(Locale.US);
     private static final String CLDR = "cldr";
     private static final String NUMBER_LOCALE_SETTINGS = "number.js";
+    private static final String PARAM_ORG_OPENFACES_JQUERY = "org.openfaces.jquery";
 
     private Resources() {
     }
@@ -521,5 +522,40 @@ public class Resources {
             requestMap.put(RENDERED_JS_LINKS, renderedJsLinks);
         }
         return renderedJsLinks;
+    }
+
+    public static void includeJQuery(FacesContext context) throws IOException {
+        String jQueryIncludedKey = "org.openfaces.util.Rendering.JQUERY_INCLUDED";
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        if (requestMap.containsKey(jQueryIncludedKey)) return;
+        requestMap.put(jQueryIncludedKey, true);
+        String jQueryMode = Rendering.getContextParam(context, PARAM_ORG_OPENFACES_JQUERY, "embedded");
+        if (jQueryMode.equals("none")) {
+            // the org.openfaces.jQuery=none parameter might be required to avoid conflicts when jQuery.js is
+            // already added to a page by application developer or another library
+            return;
+        }
+        if (jQueryMode.equals("embedded"))
+            renderJSLinkIfNeeded(context, getInternalURL(context, Resources.class, "jquery-1.4.2.min.js"));
+        /* below are the official jQuery CDNs as referenced here: http://docs.jquery.com/Downloading_jQuery */
+        else if (jQueryMode.equals("jquery"))
+            renderJSLinkIfNeeded(context, "http://code.jquery.com/jquery-1.4.2.min.js");
+        else if (jQueryMode.equals("google"))
+            renderJSLinkIfNeeded(context, "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js");
+        else if (jQueryMode.equals("microsoft"))
+            renderJSLinkIfNeeded(context, "http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js");
+        else {
+            if (!jQueryMode.startsWith("http"))
+                throw new FacesException("Invalid value for the " + PARAM_ORG_OPENFACES_JQUERY + " context parameter: \"" + jQueryMode + "\" ; It should either be one of the predefined values: none, embedded, jquery, google, microsoft, or be a URL string starting with \"http\". ");
+            renderJSLinkIfNeeded(context, jQueryMode);
+        }
+
+        String noConflictStr = Rendering.getContextParam(context, "org.openfaces.jQuery.noConflict");
+        if (noConflictStr != null && !noConflictStr.equalsIgnoreCase("false")) {
+            if (noConflictStr.equalsIgnoreCase("true"))
+                Rendering.renderInitScript(context, new RawScript("jQuery.noConflict()"));
+            else
+                Rendering.renderInitScript(context, new RawScript("var " + noConflictStr + " = jQuery.noConflict();"));
+        }
     }
 }
