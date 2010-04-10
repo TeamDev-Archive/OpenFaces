@@ -215,11 +215,8 @@ public class TreeTableRenderer extends AbstractTableRenderer {
             String portionName,
             JSONObject jsonParam
     ) throws IOException {
-        if (portionName.equals("rows")) {
-            return super.encodeAjaxPortion(context, component, portionName, jsonParam);
-        }
         if (!portionName.startsWith(SUB_ROWS_PORTION))
-            throw new IllegalArgumentException("Unknown portionName: " + portionName);
+            return super.encodeAjaxPortion(context, component, portionName, jsonParam);
         String portionNameSuffix = portionName.substring(SUB_ROWS_PORTION.length());
         int rowIndex = Integer.parseInt(portionNameSuffix);
         TreeTable treeTable = (TreeTable) component;

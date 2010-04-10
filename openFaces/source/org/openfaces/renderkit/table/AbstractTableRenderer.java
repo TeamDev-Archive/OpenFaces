@@ -655,7 +655,13 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             throw new FacesException("Unknown portion name: " + portionName);
 
         beforeReloadingAllRows(context, table);
-        return serveDynamicRowsRequest(context, table, 0, Integer.MAX_VALUE);
+        JSONObject result = serveDynamicRowsRequest(context, table, 0, Integer.MAX_VALUE);
+
+        ScriptBuilder sb = new ScriptBuilder();
+        encodeAdditionalFeaturesOnBodyReload(context, table, sb);
+        Rendering.renderInitScript(context, sb);
+
+        return result;
     }
 
     protected void beforeReloadingAllRows(FacesContext context, AbstractTable table) {
@@ -717,10 +723,6 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         JSONObject rowsInitInfo = new JSONObject();
         fillDynamicRowsInitInfo(context, table, rowIndex, rowCount, tableStructure, rowsInitInfo);
 
-        ScriptBuilder sb = new ScriptBuilder();
-        encodeAdditionalFeaturesOnBodyReload(context, table, sb);
-        Rendering.renderInitScript(context, sb);
-        
         return rowsInitInfo;
     }
 
