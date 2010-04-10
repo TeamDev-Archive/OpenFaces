@@ -642,9 +642,18 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     public JSONObject encodeAjaxPortion(FacesContext context, UIComponent component, String portionName, JSONObject jsonParam) throws IOException {
+        AbstractTable table = (AbstractTable) component;
+        if ("columnResizingState".equals(portionName)) {
+            ColumnResizing columnResizing = table.getColumnResizing();
+            // the execute phases are skipped for the "columnResizingState" Ajax request
+            columnResizing.processDecodes(context);
+            columnResizing.processValidators(context);
+            columnResizing.processUpdates(context);
+            return null;
+        }
         if (!"rows".equals(portionName))
             throw new FacesException("Unknown portion name: " + portionName);
-        AbstractTable table = (AbstractTable) component;
+
         beforeReloadingAllRows(context, table);
         return serveDynamicRowsRequest(context, table, 0, Integer.MAX_VALUE);
     }

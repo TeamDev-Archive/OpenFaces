@@ -22,6 +22,8 @@ import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.ScriptBuilder;
 
+import javax.el.ELContext;
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -64,11 +66,21 @@ public class ColumnResizingRenderer extends RendererBase {
             }
         }
 
+        boolean autoSaveState = columnResizing.getAutoSaveState();
+        if (autoSaveState) {
+            ValueExpression ve = columnResizing.getValueExpression("resizingState");
+            ELContext elContext = context.getELContext();
+            if (ve == null || ve.isReadOnly(elContext))
+                autoSaveState = false;
+        }
+
+
         ScriptBuilder buf = new ScriptBuilder().initScript(context, table, "O$.Table._initColumnResizing",
                 columnResizing.getRetainTableWidth(),
                 columnResizing.getMinColWidth(),
                 columnResizing.getResizeHandleWidth(),
-                columnParams);
+                columnParams,
+                autoSaveState);
 
         Rendering.renderInitScript(context, buf);
     }

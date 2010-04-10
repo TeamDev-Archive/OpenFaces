@@ -79,4 +79,7 @@ public class ColumnResizingJspTag extends AbstractComponentJspTag {
     }
 
 
+    public void setAutoSaveState(ValueExpression autoSaveState) {
+        getDelegate().setPropertyValue("autoSaveState", autoSaveState);
+    }
 }

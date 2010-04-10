@@ -40,6 +40,7 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
     private String draggedSeparatorClass;
     private String draggedSeparatorHeaderStyle;
     private String draggedSeparatorHeaderClass;
+    private Boolean autoSaveState;
 
     public ColumnResizing() {
         setRendererType("org.openfaces.ColumnResizingRenderer");
@@ -57,6 +58,7 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
                 minColWidth,
                 resizeHandleWidth,
                 resizingState,
+                autoSaveState,
 
                 rolloverSeparatorStyle,
                 rolloverSeparatorClass,
@@ -79,6 +81,7 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
         minColWidth = (String) state[i++];
         resizeHandleWidth = (String) state[i++];
         resizingState = (ColumnResizingState) state[i++];
+        autoSaveState = (Boolean) state[i++];
 
         rolloverSeparatorStyle = (String) state[i++];
         rolloverSeparatorClass = (String) state[i++];
@@ -232,5 +235,13 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
 
     public void encodeOnBodyReload(FacesContext context, ScriptBuilder sb) {
         
+    }
+
+    public boolean getAutoSaveState() {
+        return ValueBindings.get(this, "autoSaveState", autoSaveState, true);
+    }
+
+    public void setAutoSaveState(boolean autoSaveState) {
+        this.autoSaveState = autoSaveState;
     }
 }

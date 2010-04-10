@@ -234,14 +234,14 @@ O$._ajaxReload = function(render, args) {
   }
 }
 
-O$.requestComponentPortions = function(componentId, portionNames, customJsonParam, portionProcessor, onerror) {
+O$.requestComponentPortions = function(componentId, portionNames, customJsonParam, portionProcessor, onerror, skipExecute) {
   if (!componentId)
     throw "componentId should be specified";
   if (! (portionNames instanceof Array))
     throw "portionNames should be specified as an array, but specified as: " + portionNames;
   if (!portionProcessor)
     throw "O$.requestComponentPortions: portionProcessor should be specified";
-  var params = [];
+  var params = skipExecute ? [["_of_skipExecute", "true"]] : [];
   O$.sendAjaxRequestIfNoFormSubmission([componentId], {portionNames: portionNames, portionProcessor: portionProcessor,
     additionalParams: params, onerror: onerror, customJsonParam: customJsonParam});
 }

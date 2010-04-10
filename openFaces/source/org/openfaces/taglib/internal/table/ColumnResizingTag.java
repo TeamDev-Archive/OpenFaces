@@ -48,5 +48,6 @@ public class ColumnResizingTag extends AbstractComponentTag {
         setStringProperty(component, "draggedSeparatorClass");
         setStringProperty(component, "draggedSeparatorHeaderStyle");
         setStringProperty(component, "draggedSeparatorHeaderClass");
+        setBooleanProperty(component, "autoSaveState");
     }
 }

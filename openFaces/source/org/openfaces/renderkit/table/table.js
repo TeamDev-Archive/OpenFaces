@@ -52,7 +52,7 @@ O$.Table = {
       },
       _loadRows: function(completionCallback) {
         O$.requestComponentPortions(this.id, ["rows"], null, function(table, portionName, portionHTML, portionScripts, portionData) {
-          if(portionName != "rows") throw "Unknown portionName: " + portionName;
+          if (portionName != "rows") throw "Unknown portionName: " + portionName;
           table.body._removeAllRows();
           O$.Table._acceptLoadedRows(table, portionName, portionHTML, portionScripts, portionData);
           if (completionCallback)
@@ -1322,7 +1322,7 @@ O$.Table = {
 
   // -------------------------- COLUMN RESIZING SUPPORT
 
-  _initColumnResizing: function(tableId, retainTableWidth, minColWidth, resizeHandleWidth, columnParams) {
+  _initColumnResizing: function(tableId, retainTableWidth, minColWidth, resizeHandleWidth, columnParams, autoSaveState) {
     O$.addLoadEvent(function() {
       if (minColWidth == null)
         minColWidth = 10;
@@ -1572,6 +1572,11 @@ O$.Table = {
 
             colWidthsField.value = (O$.isOpera() ? table.style.width : totalWidth + "px") + ":" +
                                    "[" + colWidths.join(",") + "]";
+            if (autoSaveState) {
+              O$.requestComponentPortions(table.id, ["columnResizingState"], null, function() {
+                // no client-side updates are required -- the request was just for saving data
+              }, null, true);
+            }
             if (table._focusable) {
               if (!table._focused)
                 table.focus();
@@ -1592,6 +1597,7 @@ O$.Table = {
               var row = cell.parentNode;
               return O$.isVisible(row);
             }
+
             var bottomCell = this._column.subHeader && isCellVisible(this._column.subHeader._cell)
                     ? this._column.subHeader._cell : this._column.header._cell;
             var bottomCellPos = O$.getElementBorderRectangle(bottomCell, this);

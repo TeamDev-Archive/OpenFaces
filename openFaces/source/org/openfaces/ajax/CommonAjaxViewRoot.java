@@ -310,10 +310,32 @@ public abstract class CommonAjaxViewRoot {
 
 
         UIComponent[] components = locateComponents(render, viewRoot, true, false);
-        ajaxApplyRequestValues(context, components, viewRoot, execute);
+        if (!extractSkipExecute(request))
+            ajaxApplyRequestValues(context, components, viewRoot, execute);
         if (Boolean.valueOf(request.getParameter(PARAM_IMMEDIATE))) {
             doProcessApplication(context);
         }
+    }
+
+    private void doProcessValidators(FacesContext context) {
+        ExternalContext externalContext = context.getExternalContext();
+        RequestFacade request = RequestFacade.getInstance(externalContext.getRequest());
+
+
+        Map<String, Object> requestMap = externalContext.getRequestMap();
+        if (requestMap.containsKey(AjaxViewHandler.SESSION_EXPIRATION_PROCESSING)) {
+            return;
+        }
+
+        String[] render = extractRender(request);
+        String[] execute = extractExecute(request);
+
+        UIViewRoot viewRoot = context.getViewRoot();
+        assertChildren(viewRoot);
+
+        UIComponent[] components = locateComponents(render, viewRoot, false, false);
+        if (!extractSkipExecute(request))
+            ajaxProcessValidations(context, components, viewRoot, execute);
     }
 
     private void doProcessUpdates(FacesContext context) {
@@ -328,12 +350,12 @@ public abstract class CommonAjaxViewRoot {
         String[] render = extractRender(request);
         String[] execute = extractExecute(request);
 
-
         UIViewRoot viewRoot = context.getViewRoot();
         assertChildren(viewRoot);
 
         UIComponent[] components = locateComponents(render, viewRoot, false, false);
-        ajaxUpdateModelValues(context, components, viewRoot, execute);
+        if (!extractSkipExecute(request))
+            ajaxUpdateModelValues(context, components, viewRoot, execute);
     }
 
     private UIComponent[] locateComponents(String[] render, UIViewRoot viewRoot,
@@ -348,25 +370,15 @@ public abstract class CommonAjaxViewRoot {
         return components;
     }
 
-    private void doProcessValidators(FacesContext context) {
-        ExternalContext externalContext = context.getExternalContext();
-        RequestFacade request = RequestFacade.getInstance(externalContext.getRequest());
-
-
-        Map<String, Object> requestMap = externalContext.getRequestMap();
-        if (requestMap.containsKey(AjaxViewHandler.SESSION_EXPIRATION_PROCESSING)) {
-            return;
-        }
-
-
-        String[] render = extractRender(request);
-        String[] execute = extractExecute(request);
-
-        UIViewRoot viewRoot = context.getViewRoot();
-        assertChildren(viewRoot);
-
-        UIComponent[] components = locateComponents(render, viewRoot, false, false);
-        ajaxProcessValidations(context, components, viewRoot, execute);
+    /**
+     * The "skip execute" parameter (which commands to skip all "execute" phases) is used by some partial Ajax requests
+     * to ensure that no components are being saved to the backing bean and only the required data is saved (e.g. during
+     * the automatic column resizing state saving with Ajax, where nothing except the resizing state itself should be 
+     * saved during the Ajax request)
+     */
+    private boolean extractSkipExecute(RequestFacade request) {
+        String value = request.getParameter("_of_skipExecute");
+        return "true".equals(value);
     }
 
     private String[] extractRender(RequestFacade request) {

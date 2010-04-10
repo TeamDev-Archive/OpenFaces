@@ -4264,6 +4264,21 @@
       <!-- @default null -->
       <!-- @el only -->
     </attribute>
+    <attribute>
+      <description>Specifies whether the resizingState binding will automatically be updated with a background Ajax call
+        when the user resizes a column. By default, the value of this attribute is true, which means that the
+        auto-saving behavior is turned on. Setting the value to false will turn off on-the-fly column resizing state
+        saving, and this state will only be saved along with the nearest form submission (or upon DataTable/TreeTable
+        component submission with Ajax).
+      </description>
+      <name>autoSaveState</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default true -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>
