@@ -55,7 +55,7 @@ public class SelectOneMenuBean implements Serializable {
 
     public List<SelectItem> getCityItems() {
         if (cityItems == null) {
-            List<City> cities = citiesDB.getCitiesList();
+            List<City> cities = citiesDB.getCitiesByParameters(null, "name", true, 0, -1);
             cityItems = new ArrayList<SelectItem>();
             for (City city : cities) {
                 cityItems.add(new SelectItem(city, city.getName()));

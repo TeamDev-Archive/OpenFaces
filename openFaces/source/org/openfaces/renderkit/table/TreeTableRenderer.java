@@ -240,12 +240,12 @@ public class TreeTableRenderer extends AbstractTableRenderer {
             customRowRenderingInfos.put(i + addedRowCount, rowInfo);
         }
 
-        return serveDynamicRowsRequest(context, treeTable, rowIndex, addedRowCount);
+        return serveDynamicRowsRequest(context, treeTable, rowIndex + 1, addedRowCount);
     }
 
     protected void fillDynamicRowsInitInfo(FacesContext context, AbstractTable table, int rowIndex, int addedRowCount, TableStructure tableStructure, JSONObject newNodesInitInfo) {
         super.fillDynamicRowsInitInfo(context, table, rowIndex, addedRowCount, tableStructure, newNodesInitInfo);
-        Rendering.addJsonParam(newNodesInitInfo, "structureMap", formatNodeParams((TreeTable) table, context, rowIndex, addedRowCount));
+        Rendering.addJsonParam(newNodesInitInfo, "structureMap", formatNodeParams((TreeTable) table, context, rowIndex - 1, addedRowCount));
     }
 
     private JSONObject formatNodeParams(TreeTable treeTable, FacesContext context, int fromRowIndex, int rowCount) {

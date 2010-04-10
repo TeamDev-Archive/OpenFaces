@@ -623,6 +623,14 @@ public class Columns extends UIComponentBase implements NamingContainer {
         return getFacets().get("header");
     }
 
+    public void setSubHeader(UIComponent header) {
+        getFacets().put("subHeader", header);
+    }
+
+    public UIComponent getSubHeader() {
+        return getFacets().get("subHeader");
+    }
+
     public void setFooter(UIComponent footer) {
         getFacets().put("footer", footer);
     }

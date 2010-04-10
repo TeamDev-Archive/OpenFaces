@@ -311,4 +311,7 @@ public abstract class AbstractTableJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("autoFilterDelay", autoFilterDelay);
     }
 
+    public void setDeferBodyLoading(ValueExpression deferBodyLoading) {
+        getDelegate().setPropertyValue("deferBodyLoading", deferBodyLoading);
+    }
 }

@@ -155,8 +155,13 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     protected void encodeScriptsAndStyles(FacesContext context, AbstractTable table) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("span", table);
+        writer.writeAttribute("id", table.getClientId(context) + "::auxiliaryTags", null);
+        writer.writeAttribute("display", "none", null);
         encodeAdditionalFeatureSupport(context, table);
         Styles.renderStyleClasses(context, table);
+        writer.endElement("span");
     }
 
     protected void encodeAdditionalFeatureSupport(FacesContext context, AbstractTable table) throws IOException {
@@ -195,6 +200,29 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             preregisterNoFilterDataRowStyleForOpera(context, table);
 
         encodeCheckboxColumnSupport(context, table, buf);
+    }
+
+    protected void encodeAdditionalFeaturesOnBodyReload(FacesContext context, AbstractTable table, ScriptBuilder sb) throws IOException {
+        encodeSortingSupportOnBodyReload(context, table, sb);
+
+        AbstractTableSelection selection = table.getSelection();
+        if (selection != null)
+            selection.encodeOnBodyReload(context, sb);
+
+        ColumnResizing columnResizing = table.getColumnResizing();
+        if (columnResizing != null) {
+            columnResizing.encodeOnBodyReload(context, sb);
+        }
+
+        ColumnReordering columnReordering = table.getColumnReordering();
+        if (columnReordering != null) {
+            columnReordering.encodeOnBodyReload(context, sb);
+        }
+
+    }
+
+    protected void encodeSortingSupportOnBodyReload(FacesContext context, AbstractTable table, ScriptBuilder sb) {
+
     }
 
     private void encodeColumnMenuSupport(FacesContext context, AbstractTable table, ScriptBuilder buf) throws IOException {
@@ -268,7 +296,8 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                 table.getUseAjax(),
                 Styles.getCSSClass(context, table, table.getRolloverStyle(),
                         StyleGroup.rolloverStyleGroup(), table.getRolloverClass()),
-                getInitJsAPIFunctionName());
+                getInitJsAPIFunctionName(),
+                table.getDeferBodyLoading());
     }
 
     protected String getInitJsAPIFunctionName() {
@@ -616,7 +645,12 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         if (!"rows".equals(portionName))
             throw new FacesException("Unknown portion name: " + portionName);
         AbstractTable table = (AbstractTable) component;
+        beforeReloadingAllRows(context, table);
         return serveDynamicRowsRequest(context, table, 0, Integer.MAX_VALUE);
+    }
+
+    protected void beforeReloadingAllRows(FacesContext context, AbstractTable table) {
+
     }
 
     protected JSONObject serveDynamicRowsRequest(
@@ -633,7 +667,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
         try {
             if (rowCount > 0) {
                 List<BaseColumn> columns = table.getRenderedColumns();
-                List<BodyRow> rows = tableStructure.getBody().createRows(context, rowIndex + 1, rowCount, columns);
+                List<BodyRow> rows = tableStructure.getBody().createRows(context, rowIndex, rowCount, columns);
                 if (tableStructure.getScrolling() == null) {
                     for (int i = 0, count = rows.size(); i < count; i++) {
                         BodyRow row = rows.get(i);
@@ -673,6 +707,10 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
         JSONObject rowsInitInfo = new JSONObject();
         fillDynamicRowsInitInfo(context, table, rowIndex, rowCount, tableStructure, rowsInitInfo);
+
+        ScriptBuilder sb = new ScriptBuilder();
+        encodeAdditionalFeaturesOnBodyReload(context, table, sb);
+        Rendering.renderInitScript(context, sb);
         
         return rowsInitInfo;
     }

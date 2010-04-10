@@ -105,6 +105,9 @@ public class TableBody extends TableSection {
         int rows = (rowCount != -1) ? rowCount : Integer.MAX_VALUE;
         if (rows == 0)
             noDataRows = true;
+        if (table.getDeferBodyLoading()) {
+            rows = 0;
+        }
 
         List<BodyRow> bodyRows = createRows(context, first, rows, columns);
         TableFooter footer = tableStructure.getFooter();

@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.table;
 
+import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
@@ -188,5 +189,9 @@ public class ColumnReordering extends UIComponentBase {
 
     public void setDropTargetBottomImageUrl(String dropTargetBottomImageUrl) {
         this.dropTargetBottomImageUrl = dropTargetBottomImageUrl;
+    }
+
+    public void encodeOnBodyReload(FacesContext context, ScriptBuilder sb) {
+        
     }
 }

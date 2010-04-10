@@ -1161,6 +1161,20 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <!--<attribute>-->
+      <!--<description>Specifies whether table&apos;s body rows should be loaded as part of the page when loading a page-->
+        <!--(false), or should be requested with a separate Ajax request after the page is loaded (true). Assigning &quot;true&quot;-->
+        <!--turns on the deferred loading mode, which might be useful to save page loading time when the table has a lot of-->
+        <!--records.-->
+      <!--</description>-->
+      <!--<name>deferBodyLoading</name>-->
+      <!--<deferred-value>-->
+        <!--<type>boolean</type>-->
+      <!--</deferred-value>-->
+      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
+      <!--&lt;!&ndash; @default false &ndash;&gt;-->
+      <!--&lt;!&ndash; @el true &ndash;&gt;-->
+    <!--</attribute>-->
 
   </tag>
 

@@ -233,7 +233,7 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
                 isEnabled(),
                 "rows",
                 isMultipleSelectionAllowed(),
-                encodeSelectionIntoIndexes(),
+                table.getDeferBodyLoading() ? null : encodeSelectionIntoIndexes(),
                 getAttributes().get("_selectionCls_"),
                 onchange,
                 submitOnChange ? getSelectionEventsProcessed() + 1 : null,
@@ -338,5 +338,9 @@ public abstract class AbstractTableSelection extends OUICommand implements Compo
     }
 
     public void encodeOnAjaxNodeFolding(FacesContext context) throws IOException {
+    }
+
+    public void encodeOnBodyReload(FacesContext context, ScriptBuilder sb) {
+        sb.O$(getTable()).dot().functionCall("_setSelectedItems", encodeSelectionIntoIndexes()).semicolon();
     }
 }

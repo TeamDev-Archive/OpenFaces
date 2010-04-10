@@ -43,18 +43,20 @@ O$.Table = {
     });
   },
 
-  _init: function(tableId, initParams, useAjax, rolloverClass, apiInitializationFunctionName) {
+  _init: function(tableId, initParams, useAjax, rolloverClass, apiInitializationFunctionName, deferredBodyLoading) {
     var table = O$.initComponent(tableId, {rollover: rolloverClass}, {
       _useAjax: useAjax,
 
       getCurrentColumn: function() {
         return this._showingMenuForColumn ? this._showingMenuForColumn : null;
       },
-      _loadRows: function() {
+      _loadRows: function(completionCallback) {
         O$.requestComponentPortions(this.id, ["rows"], null, function(table, portionName, portionHTML, portionScripts, portionData) {
           if(portionName != "rows") throw "Unknown portionName: " + portionName;
           table.body._removeAllRows();
           O$.Table._acceptLoadedRows(table, portionName, portionHTML, portionScripts, portionData);
+          if (completionCallback)
+            completionCallback();
         });
       },
       _addLoadedRows: function(rowsData) {
@@ -109,9 +111,23 @@ O$.Table = {
         if (section) section._rows = [];
       });
     };
-//    O$.addInternalLoadEvent(function() {
-//      table._loadRows();
-//    });
+    if (deferredBodyLoading)
+      O$.addInternalLoadEvent(function() {
+        var auxiliaryTags = O$(table.id + "::auxiliaryTags");
+        table.parentNode.appendChild(auxiliaryTags);
+        table._loadRows(function() {
+          [table.footer, table.body, table.header].forEach(function (section) {
+            if (auxiliaryTags == null || !section || section._rows.length == 0) return;
+            var row = section._rows[section._rows.length - 1];
+            if (row._cells.length > 0) {
+              row._cells[row._cells.length - 1].appendChild(auxiliaryTags);
+              auxiliaryTags = null;
+            }
+          });
+          if (auxiliaryTags)
+            table.appendChild(auxiliaryTags);
+        });
+      });
   },
 
   _initApiFunctions: function(table) {
@@ -697,6 +713,7 @@ O$.Table = {
         selectionField.value = value;
       },
       _setSelectedItems: function(items, forceUpdate) {
+        if (items == null) items = [];
         var changesArray = [];
         var changesArrayIndexes = [];
         var oldSelectedItemsStr = "";
@@ -788,7 +805,7 @@ O$.Table = {
       },
 
       _isItemSelected: function(item) {
-        var result = selectedItems.indexOf(item) != -1;
+        var result = this._selectedItems.indexOf(item) != -1;
         return result;
       },
 

@@ -12,6 +12,7 @@
 package org.openfaces.component.table;
 
 import org.openfaces.component.ComponentConfigurator;
+import org.openfaces.util.ScriptBuilder;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
@@ -228,4 +229,8 @@ public class ColumnResizing extends UIComponentBase implements ComponentConfigur
     draggedSeparatorHeaderClass = draggedSeparatorHeaderClass;
   }
 */
+
+    public void encodeOnBodyReload(FacesContext context, ScriptBuilder sb) {
+        
+    }
 }

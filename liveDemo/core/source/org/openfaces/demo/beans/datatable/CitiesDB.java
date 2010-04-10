@@ -100,32 +100,34 @@ public class CitiesDB implements Serializable {
             sortableColumn.append(".");
         }
         StringBuffer filterValues = new StringBuffer();
-        String name = criteria.getCityNameSearchString();
-        String country = criteria.getCountry();
-        String range = criteria.getMinPopulation() + "-" + criteria.getMaxPopulation();
-        boolean isFilteredByName = (name != null) && (!name.equals(""));
-        boolean isFilteredByCountry = (country != null) && (!country.equals(""));
-        boolean isFilteredByRange = (!range.equals("")) && (!range.equals("0-0"));
-        if (isFilteredByRange || isFilteredByName || isFilteredByCountry) {
-            filterValues.append(" Filtering by ");
-            if (isFilteredByName) {
-                filterValues.append("City (");
-                filterValues.append(name);
-                filterValues.append(")");
+        if (criteria != null) {
+            String name = criteria.getCityNameSearchString();
+            String country = criteria.getCountry();
+            String range = criteria.getMinPopulation() + "-" + criteria.getMaxPopulation();
+            boolean isFilteredByName = (name != null) && (!name.equals(""));
+            boolean isFilteredByCountry = (country != null) && (!country.equals(""));
+            boolean isFilteredByRange = (!range.equals("")) && (!range.equals("0-0"));
+            if (isFilteredByRange || isFilteredByName || isFilteredByCountry) {
+                filterValues.append(" Filtering by ");
+                if (isFilteredByName) {
+                    filterValues.append("City (");
+                    filterValues.append(name);
+                    filterValues.append(")");
+                }
+                if (isFilteredByCountry) {
+                    if (isFilteredByName) filterValues.append(" and ");
+                    filterValues.append("Country (");
+                    filterValues.append(country);
+                    filterValues.append(")");
+                }
+                if (isFilteredByRange) {
+                    if (isFilteredByCountry || isFilteredByName) filterValues.append(" and ");
+                    filterValues.append("Population (");
+                    filterValues.append(range);
+                    filterValues.append(")");
+                }
+                filterValues.append(".");
             }
-            if (isFilteredByCountry) {
-                if (isFilteredByName) filterValues.append(" and ");
-                filterValues.append("Country (");
-                filterValues.append(country);
-                filterValues.append(")");
-            }
-            if (isFilteredByRange) {
-                if (isFilteredByCountry || isFilteredByName) filterValues.append(" and ");
-                filterValues.append("Population (");
-                filterValues.append(range);
-                filterValues.append(")");
-            }
-            filterValues.append(".");
         }
 
         fireQueryPerformed("\tFetching rows " + firstRecordNo + "-" + (firstRecordNo + recordCount) + "." +

@@ -116,5 +116,6 @@ public abstract class AbstractTableTag extends AbstractComponentTag {
         setLiteralCollectionProperty(component, "columnsOrder");
 
         setIntProperty(component, "autoFilterDelay");
+        setBooleanProperty(component, "deferBodyLoading");
     }
 }

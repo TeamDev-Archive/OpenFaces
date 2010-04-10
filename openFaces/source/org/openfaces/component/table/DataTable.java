@@ -229,7 +229,11 @@ public class DataTable extends AbstractTable {
         updateModel(true, true, true);
     }
 
-    private void updateModel(boolean updateSortingFromBindings, boolean updatePageIndex, boolean readActualData) {
+    /**
+     * This method is invoked during the normal DataTable operation, and application developers shouldn't invoke this 
+     * method explicitly.
+     */
+    public void updateModel(boolean updateSortingFromBindings, boolean updatePageIndex, boolean readActualData) {
         TableDataModel model = getModel();
         model.startUpdate();
         int incomingPageIndex = Integer.MIN_VALUE;

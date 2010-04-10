@@ -78,6 +78,16 @@ public class DynamicColumn extends Column implements DynamicCol {
         columns.setFooter(footer);
     }
 
+    @Override
+    public void setSubHeader(UIComponent component) {
+        columns.setSubHeader(component);
+    }
+
+    @Override
+    public UIComponent getSubHeader() {
+        return columns.getSubHeader();
+    }
+
     public void declareContextVariables() {
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
         String var = columns.getVar();

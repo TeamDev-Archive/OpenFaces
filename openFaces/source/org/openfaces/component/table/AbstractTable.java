@@ -138,6 +138,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     private String cachedClientId;
     private List<Filter> myFilters = new ArrayList<Filter>();
     private Integer autoFilterDelay;
+    private Boolean deferBodyLoading;
 
     public AbstractTable() {
         super.setUiDataValue(new TableDataModel(this));
@@ -175,7 +176,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
                 rolloverRowStyle, rolloverRowClass, noDataRowStyle, noDataRowClass,
                 noDataMessageAllowed, columnIndexVar, columnIdVar, saveAttachedState(context, columnsOrder),
                 sortedAscendingImageUrl, sortedDescendingImageUrl, cachedClientId,
-        autoFilterDelay};
+                autoFilterDelay, deferBodyLoading};
     }
 
     @Override
@@ -261,6 +262,7 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         sortedDescendingImageUrl = (String) state[i++];
         cachedClientId = (String) state[i++];
         autoFilterDelay = (Integer) state[i++];
+        deferBodyLoading = (Boolean) state[i++];
 
         beforeUpdateValuesPhase = true;
         toggleColumnSorting = -1;
@@ -1544,6 +1546,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
 
     public int getRowIndexByClientSuffix(String id) {
         return Integer.parseInt(id);
+    }
+
+    public boolean getDeferBodyLoading() {
+        return ValueBindings.get(this, "deferBodyLoading", deferBodyLoading, false);
+    }
+
+    public void setDeferBodyLoading(boolean deferBodyLoading) {
+        this.deferBodyLoading = deferBodyLoading;
     }
 
     protected class RowComparator implements Comparator<Object> {

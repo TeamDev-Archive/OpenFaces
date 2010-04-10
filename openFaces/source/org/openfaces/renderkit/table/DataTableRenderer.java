@@ -65,4 +65,8 @@ public class DataTableRenderer extends AbstractTableRenderer {
         return "O$.Table._initDataTableAPI";
     }
 
+    protected void beforeReloadingAllRows(FacesContext context, AbstractTable table) {
+        ((DataTable) table).updateModel(true, true, true);
+    }
+
 }
