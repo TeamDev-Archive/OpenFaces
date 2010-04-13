@@ -307,29 +307,33 @@ O$._bugFix_divNegativeSizeBug = function(element, useDoubleBuffering) {
 O$._subscribeToOnresizeEvent = function(element, func) {
   var widthIsNotFixed = true;
   var heightIsNotFixed = true;
-  var targetElement = element;
-  while (widthIsNotFixed || heightIsNotFixed) {
+  for(var targetElement = element; widthIsNotFixed || heightIsNotFixed; targetElement = targetElement.parentNode) {
     if (targetElement._isNotResizableElement) {
       break;
-    }
-    else if (targetElement._isResizableElement) {
+    } else if (targetElement._isResizableElement) {
       O$._subscribeToTargetOnresizeEvent(element, targetElement, func);
       return;
+    } else if (targetElement == document) {
+      O$._subscribeToTargetOnresizeEvent(element, window, func);
+      return;
     }
-    else if (targetElement == document) {
-        O$._subscribeToTargetOnresizeEvent(element, window, func);
-        return;
-      } else {
-        var width = O$.getElementStyle(targetElement, "width", false);
-        var height = O$.getElementStyle(targetElement, "height", false);
-        if (O$._isPixelValue(width)) {
-          widthIsNotFixed = false;
-        }
-        if (O$._isPixelValue(height)) {
-          heightIsNotFixed = false;
-        }
-        targetElement = targetElement.parentNode;
-      }
+    var nodeName = targetElement.nodeName.toLowerCase();
+    if (nodeName == "form" || nodeName == "body" || nodeName == "html")
+      continue;
+    var width, height;
+    if (targetElement._isBorderLayoutPanel) {
+      width = O$.getStyleClassProperty(targetElement.className, "width");
+      height = O$.getStyleClassProperty(targetElement.className, "height");
+    } else {
+      width = O$.getElementStyle(targetElement, "width", false);
+      height = O$.getElementStyle(targetElement, "height", false);
+    }
+    if (O$._isPixelValue(width)) {
+      widthIsNotFixed = false;
+    }
+    if (O$._isPixelValue(height)) {
+      heightIsNotFixed = false;
+    }
   }
   element._isNotResizableElement = true;
 

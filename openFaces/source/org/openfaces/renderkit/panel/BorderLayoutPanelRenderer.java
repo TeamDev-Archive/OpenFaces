@@ -60,11 +60,11 @@ public class BorderLayoutPanelRenderer extends RendererBase {
 
         writer.startElement("div", borderLayoutPanel);
         writer.writeAttribute("id", clientId + "::content", null);
-        classStr = Styles.getCSSClass(context,
+        String contentClassStr = Styles.getCSSClass(context,
                 borderLayoutPanel, borderLayoutPanel.getContentStyle(),
                 "o_borderlayoutpanel_content", borderLayoutPanel.getContentClass()
         );
-        writer.writeAttribute("class", classStr, null);
+        writer.writeAttribute("class", contentClassStr, null);
 
         encodeScriptsAndStyles_content(context, borderLayoutPanel, clientId);
     }
