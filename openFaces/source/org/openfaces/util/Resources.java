@@ -77,7 +77,7 @@ public class Resources {
      * @return
      */
     public static String getURL(FacesContext context, String userSpecifiedUrl,
-                                        Class defaultResourceBaseClassName, String defaultResourceFileName) {
+                                Class defaultResourceBaseClassName, String defaultResourceFileName) {
         return getURL(context, userSpecifiedUrl, defaultResourceBaseClassName, defaultResourceFileName, true);
     }
 
@@ -255,6 +255,9 @@ public class Resources {
      * @return requested URL of util.js file
      */
     public static String getUtilJsURL(FacesContext context) {
+        // To be sure that default.css is included to the web page,
+        // because it is also required in cases when util.js included into web page
+        Styles.requestDefaultCss(context);
         return getInternalURL(context, Resources.class, "util.js");
     }
 
@@ -537,7 +540,7 @@ public class Resources {
         }
         if (jQueryMode.equals("embedded"))
             renderJSLinkIfNeeded(context, getInternalURL(context, Resources.class, "jquery-1.4.2.min.js"));
-        /* below are the official jQuery CDNs as referenced here: http://docs.jquery.com/Downloading_jQuery */
+            /* below are the official jQuery CDNs as referenced here: http://docs.jquery.com/Downloading_jQuery */
         else if (jQueryMode.equals("jquery"))
             renderJSLinkIfNeeded(context, "http://code.jquery.com/jquery-1.4.2.min.js");
         else if (jQueryMode.equals("google"))
