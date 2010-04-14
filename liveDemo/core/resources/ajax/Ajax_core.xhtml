@@ -6,6 +6,7 @@
   <script type="text/javascript">
     function addTask(e) {
       var unicode = e.charCode ? e.charCode : e.keyCode;
+
       if (unicode == 13) {
         O$("form:addTask").click();
         return false;
