@@ -34,7 +34,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Tomcat 6" level="application_server_libraries" />
     <orderEntry type="library" exported="" name="tomahawk12-1.1.8" level="project" />
-    <orderEntry type="library" exported="" name="JSF Implementation - Mojarra 1.2" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="JSF Implementation - Mojarra 2.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="jbpm-jpdl" level="project" />
     <orderEntry type="library" exported="" name="RichFaces" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="JBoss Seam 2.1" level="project" />

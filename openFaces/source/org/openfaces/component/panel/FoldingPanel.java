@@ -358,4 +358,11 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
 
     public void setConverter(Converter converter) {
     }
+
+    public void resetValue() {
+        this.setValue(null);
+        this.setSubmittedValue(null);
+        this.setLocalValueSet(false);
+        this.setValid(true);
+    }
 }

@@ -37,7 +37,7 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/mojarra/jsf-api-1.2_12-b01.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/mojarra/jsf-api-2.0.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -47,6 +47,8 @@
           </element>
           <element id="directory" name="lib">
             <element id="library" level="project" name="Facelets (without el-api.jar -- for Tomcat 6.0)" />
+            <element id="library" level="project" name="JSF Implementation - Mojarra 2.0" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar" />
           </element>
         </element>
         <element id="artifact" artifact-name="LiveDemoCore:LiveDemoCore exploded" />
@@ -75,7 +77,6 @@
             <element id="module-output" name="LiveDemoCore" />
           </element>
           <element id="directory" name="lib">
-            <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
             <element id="archive" name="openfaces.jar">
               <element id="module-output" name="OpenFaces" />
             </element>
@@ -93,6 +94,9 @@
           <element id="directory" name="classes">
             <element id="module-output" name="TestAppCore" />
             <element id="module-output" name="TestAppJsp" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="JSF Implementation - Mojarra 2.0" />
           </element>
         </element>
         <element id="artifact" artifact-name="TestAppCore:TestAppCore exploded" />
@@ -151,6 +155,7 @@
           </element>
           <element id="directory" name="lib">
             <element id="library" level="project" name="Facelets (without el-api.jar -- for Tomcat 6.0)" />
+            <element id="library" level="project" name="JSF Implementation - Mojarra 2.0" />
           </element>
         </element>
         <element id="artifact" artifact-name="TestAppCore:TestAppCore exploded" />
@@ -164,6 +169,10 @@
           <element id="directory" name="classes">
             <element id="module-output" name="LiveDemoCore" />
             <element id="module-output" name="LiveDemoJsp" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="JSF Implementation - Mojarra 2.0" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar" />
           </element>
         </element>
         <element id="artifact" artifact-name="LiveDemoCore:LiveDemoCore exploded" />
@@ -222,6 +231,9 @@
         </element>
       </root>
     </artifact>
+  </component>
+  <component name="ClassInspector">
+    <option name="configString1" value="Test config string" />
   </component>
   <component name="CodeStyleProjectProfileManger">
     <option name="PROJECT_PROFILE" />
