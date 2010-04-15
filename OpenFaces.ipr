@@ -64,7 +64,7 @@
             <element id="module-output" name="PortletsJetspeedMyFacesGenericPortlet" />
           </element>
           <element id="directory" name="lib">
-            <element id="library" level="project" name="JSF Implementation - MyFaces 1.2" />
+            <element id="library" level="project" name="JSF Implementation - MyFaces 2.0" />
           </element>
         </element>
         <element id="artifact" artifact-name="PortletsCommon:PortletsCommon exploded" />
@@ -112,7 +112,7 @@
               <element id="module-output" name="PortletBridge" />
             </element>
             <element id="library" level="project" name="jboss portlet brige" />
-            <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
+            <element id="library" level="project" name="JSF Implementation - Mojarra 2.0" />
           </element>
           <element id="directory" name="classes">
             <element id="module-output" name="PortletsCommon" />
@@ -138,8 +138,8 @@
           </element>
           <element id="directory" name="lib">
             <element id="library" level="project" name="Jsf-portlet bridge 1.2" />
-            <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
             <element id="library" level="project" name="el" />
+            <element id="library" level="project" name="JSF Implementation - Mojarra 2.0" />
           </element>
         </element>
         <element id="artifact" artifact-name="PortletsCommon:PortletsCommon exploded" />
@@ -206,7 +206,7 @@
           </element>
           <element id="directory" name="lib">
             <element id="library" level="project" name="portals-bridges-jsf-1.0" />
-            <element id="library" level="project" name="JSF Implementation - MyFaces 1.2" />
+            <element id="library" level="project" name="JSF Implementation - MyFaces 2.0" />
           </element>
         </element>
         <element id="artifact" artifact-name="PortletsCommon:PortletsCommon exploded" />
@@ -1269,24 +1269,6 @@
       <JAVADOC />
       <SOURCES />
     </library>
-    <library name="JSF Implementation - Mojarra 1.2">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-collections-3.1.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/standard-1.1.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/jstl-1.1.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.6.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.0.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-el-1.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-impl-1.2_12-b01.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/mojarra/jsf-api-1.2_12-b01.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-1.2_12-source.zip!/mojarra-1.2_12-b01-FCS-sources/jsf-api/src" />
-        <root url="jar://$PROJECT_DIR$/libsrc/mojarra-1.2_12-source.zip!/mojarra-1.2_12-b01-FCS-sources/jsf-ri/src" />
-      </SOURCES>
-    </library>
     <library name="jsf-portlet bridge 1.1">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/lib/portals/jsf-portlet-1.1.jar!/" />
@@ -1330,24 +1312,6 @@
       </CLASSES>
       <JAVADOC />
       <SOURCES />
-    </library>
-    <library name="JSF Implementation - MyFaces 1.2">
-      <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-collections-3.2.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-el-1.0.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-discovery-0.4.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-codec-1.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-api-1.2.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-impl-1.2.3.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
-      </CLASSES>
-      <JAVADOC />
-      <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/myfaces-impl-1.2.3-sources.zip!/" />
-        <root url="jar://$PROJECT_DIR$/libsrc/myfaces-api-1.2.3-sources.zip!/" />
-      </SOURCES>
     </library>
     <library name="JBoss Seam 2.0">
       <CLASSES>

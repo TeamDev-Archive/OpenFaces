@@ -1339,7 +1339,7 @@ public abstract class CommonAjaxViewRoot {
             context.setResponseWriter(originalWriter);
     }
 
-    private void broadcastEvents(FacesContext context, PhaseId phaseId) {
+    public void broadcastEvents(FacesContext context, PhaseId phaseId) {
         if (events == null) return;
 
         for (FacesEvent event : new ArrayList<FacesEvent>(events)) {

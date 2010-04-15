@@ -18,6 +18,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -199,4 +200,14 @@ public class AjaxViewRoot extends UIViewRoot implements WrappedAjaxRoot {
         }
         super.queueEvent(event);
     }
+
+    @Override
+    public void broadcastEvents(FacesContext context, PhaseId phaseId) {
+        if (AjaxUtil.isAjaxRequest(getFacesContext())) {
+            commonAjaxViewRoot.broadcastEvents(context, phaseId);
+            return;
+        }
+        super.broadcastEvents(context, phaseId);
+    }
+
 }
