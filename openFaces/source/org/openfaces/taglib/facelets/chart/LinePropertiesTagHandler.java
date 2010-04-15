@@ -11,9 +11,10 @@
  */
 package org.openfaces.taglib.facelets.chart;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.chart.LinePropertiesTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 /**
  * @author Ekaterina Shliakhovetskaya

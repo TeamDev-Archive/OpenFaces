@@ -11,9 +11,10 @@
  */
 package org.openfaces.taglib.facelets.output;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.output.DynamicImageTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 /**
  * @author Ekaterina Shliakhovetskaya

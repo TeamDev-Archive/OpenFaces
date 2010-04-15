@@ -12,9 +12,10 @@
 
 package org.openfaces.taglib.facelets.filter;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.filter.CompositeFilterTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 /**
  * @author Natalia Zolochevska

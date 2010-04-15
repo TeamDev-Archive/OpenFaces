@@ -11,16 +11,7 @@
  */
 package org.openfaces.taglib.facelets.validation;
 
-import com.sun.facelets.FaceletContext;
-import com.sun.facelets.FaceletHandler;
-import com.sun.facelets.tag.CompositeFaceletHandler;
-import com.sun.facelets.tag.MetaRuleset;
-import com.sun.facelets.tag.MetaTagHandler;
-import com.sun.facelets.tag.TagAttribute;
-import com.sun.facelets.tag.TagConfig;
-import com.sun.facelets.tag.TagException;
-import com.sun.facelets.tag.jsf.ConverterConfig;
-import com.sun.facelets.tag.jsf.ValidatorConfig;
+import com.sun.faces.facelets.tag.MetaTagHandlerImpl;
 import org.openfaces.taglib.facelets.FaceletsExpressionCreator;
 import org.openfaces.taglib.facelets.PropertyHandlerMetaRule;
 import org.openfaces.taglib.internal.validation.AbstractCustomValidatorTag;
@@ -37,6 +28,7 @@ import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
+import javax.faces.view.facelets.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +36,7 @@ import java.util.List;
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class ValidateCustomTagHandler extends MetaTagHandler {
+public class ValidateCustomTagHandler extends MetaTagHandlerImpl {
     private PropertyHandlerMetaRule metaRule;
     private TagAttribute binding;
     private List<String> params;

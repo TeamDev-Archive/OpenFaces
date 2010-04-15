@@ -11,10 +11,11 @@
  */
 package org.openfaces.taglib.facelets.validation;
 
-import com.sun.facelets.tag.TagConfig;
-import com.sun.facelets.tag.jsf.ValidatorConfig;
 import org.openfaces.taglib.facelets.PropertyHandlerMetaRule;
 import org.openfaces.taglib.internal.validation.ValidateUrlTag;
+
+import javax.faces.view.facelets.TagConfig;
+import javax.faces.view.facelets.ValidatorConfig;
 
 /**
  * @author Ekaterina Shliakhovetskaya
@@ -25,6 +26,7 @@ public class ValidateUrlTagHandler extends ValidateCustomTagHandler {
         super(config);
         setMetaRule(new PropertyHandlerMetaRule(new ValidateUrlTag()));
     }
+
 
     public ValidateUrlTagHandler(ValidatorConfig config) {
         super(config);

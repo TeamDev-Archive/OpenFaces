@@ -33,16 +33,16 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Tomcat 6" level="application_server_libraries" />
-    <orderEntry type="library" exported="" name="tomahawk12-1.1.8" level="project" />
     <orderEntry type="library" exported="" scope="RUNTIME" name="JSF Implementation - Mojarra 2.0" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="jbpm-jpdl" level="project" />
-    <orderEntry type="library" exported="" name="RichFaces" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="JBoss Seam 2.1" level="project" />
-    <orderEntry type="module" module-name="OpenFaces" exported="" />
+    <orderEntry type="library" exported="" scope="TEST" name="jbpm-jpdl" level="project" />
     <orderEntry type="library" name="JEE" level="project" />
+    <orderEntry type="module" module-name="OpenFaces" exported="" />
+    <orderEntry type="library" exported="" name="tomahawk12-1.1.8" level="project" />
+    <orderEntry type="library" exported="" name="RichFaces" level="project" />
+    <orderEntry type="library" exported="" name="PrimeFaces" level="project" />
     <orderEntry type="library" name="servlet-api" level="project" />
     <orderEntry type="library" name="hibernate" level="project" />
-    <orderEntry type="library" exported="" name="PrimeFaces" level="project" />
   </component>
 </module>
 

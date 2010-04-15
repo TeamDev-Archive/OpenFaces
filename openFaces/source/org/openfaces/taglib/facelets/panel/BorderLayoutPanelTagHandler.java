@@ -11,9 +11,10 @@
  */
 package org.openfaces.taglib.facelets.panel;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.panel.BorderLayoutPanelTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 /**
  * @author Alexey Tarasyuk

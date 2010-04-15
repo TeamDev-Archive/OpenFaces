@@ -26,8 +26,8 @@
     <orderEntry type="module" module-name="PortletsCommon" />
     <orderEntry type="library" scope="PROVIDED" name="LifeRay" level="project" />
     <orderEntry type="library" name="Jsf-portlet bridge 1.2" level="project" />
-    <orderEntry type="library" name="JSF Implementation - Mojarra 1.2" level="project" />
     <orderEntry type="library" name="el" level="project" />
+    <orderEntry type="library" name="JSF Implementation - Mojarra 2.0" level="project" />
   </component>
 </module>
 

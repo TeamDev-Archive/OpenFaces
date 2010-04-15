@@ -63,7 +63,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
 
     @Override
     public void restoreState(FacesContext context, Object object) {
-        Object[] state = (Object[]) object;
+        Object[] state = (Object[]) object;                                 
         int i = 0;
         super.restoreState(context, state[i++]);
         execute = (Iterable<String>) restoreAttachedState(context, state[i++]);

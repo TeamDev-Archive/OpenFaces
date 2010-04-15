@@ -11,9 +11,10 @@
  */
 package org.openfaces.taglib.facelets.window;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.window.MinimizeWindowButtonTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 /**
  * @author Dmitry Pikhulya

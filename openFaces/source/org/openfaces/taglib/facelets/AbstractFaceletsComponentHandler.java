@@ -11,15 +11,13 @@
  */
 package org.openfaces.taglib.facelets;
 
-import com.sun.facelets.FaceletContext;
-import com.sun.facelets.tag.MetaRuleset;
-import com.sun.facelets.tag.TagAttribute;
-import com.sun.facelets.tag.jsf.ComponentHandler;
+import javax.faces.view.facelets.*;
 import org.openfaces.taglib.TagUtil;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.view.facelets.ComponentHandler;
 
 /**
  * @author Dmitry Pikhulya
@@ -27,7 +25,7 @@ import javax.faces.context.FacesContext;
 public abstract class AbstractFaceletsComponentHandler extends ComponentHandler {
     private PropertyHandlerMetaRule metaRule;
 
-    public AbstractFaceletsComponentHandler(com.sun.facelets.tag.jsf.ComponentConfig componentConfig, AbstractComponentTag tag) {
+    public AbstractFaceletsComponentHandler(ComponentConfig componentConfig, AbstractComponentTag tag) {
         super(componentConfig);
         metaRule = new PropertyHandlerMetaRule(tag);
     }
@@ -39,7 +37,7 @@ public abstract class AbstractFaceletsComponentHandler extends ComponentHandler 
     }
 
 
-    protected void setAttributes(FaceletContext faceletContext, Object object) {
+    public void setAttributes(FaceletContext faceletContext, Object object) {
         super.setAttributes(faceletContext, object);
         UIComponent component = (UIComponent) object;
         AbstractComponentTag tag = (AbstractComponentTag) metaRule.getTag();
@@ -57,7 +55,7 @@ public abstract class AbstractFaceletsComponentHandler extends ComponentHandler 
         }
     }
 
-    protected void onComponentCreated(FaceletContext faceletContext, UIComponent component, UIComponent parentComponent) {
+    public void onComponentCreated(FaceletContext faceletContext, UIComponent component, UIComponent parentComponent) {
         super.onComponentCreated(faceletContext, component, parentComponent);
         FacesContext facesContext = faceletContext.getFacesContext();
         TagUtil.initComponentChildren(facesContext, component);

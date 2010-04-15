@@ -11,12 +11,13 @@
  */
 package org.openfaces.taglib.facelets;
 
-import com.sun.facelets.FaceletContext;
-import com.sun.facelets.tag.MetaRule;
-import com.sun.facelets.tag.Metadata;
-import com.sun.facelets.tag.MetadataTarget;
-import com.sun.facelets.tag.TagAttribute;
 import org.openfaces.taglib.internal.AbstractTag;
+
+import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.MetaRule;
+import javax.faces.view.facelets.Metadata;
+import javax.faces.view.facelets.MetadataTarget;
+import javax.faces.view.facelets.TagAttribute;
 
 /**
  * @author Ekaterina Shliakhovetskaya

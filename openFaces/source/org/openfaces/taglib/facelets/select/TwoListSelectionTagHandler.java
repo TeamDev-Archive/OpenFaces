@@ -11,9 +11,10 @@
  */
 package org.openfaces.taglib.facelets.select;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.select.TwoListSelectionTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 public class TwoListSelectionTagHandler extends AbstractFaceletsComponentHandler {
     public TwoListSelectionTagHandler(ComponentConfig componentConfig) {

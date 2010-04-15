@@ -11,10 +11,11 @@
  */
 package org.openfaces.taglib.facelets.timetable;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.timetable.TimetableViewTag;
 import org.openfaces.taglib.internal.timetable.WeekTableTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 /**
  * @author Roman Porotnikov

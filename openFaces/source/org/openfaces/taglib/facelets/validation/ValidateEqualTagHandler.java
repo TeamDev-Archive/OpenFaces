@@ -11,10 +11,11 @@
  */
 package org.openfaces.taglib.facelets.validation;
 
-import com.sun.facelets.tag.TagConfig;
-import com.sun.facelets.tag.jsf.ValidatorConfig;
 import org.openfaces.taglib.facelets.PropertyHandlerMetaRule;
 import org.openfaces.taglib.internal.validation.ValidateEqualTag;
+
+import javax.faces.view.facelets.TagConfig;
+import javax.faces.view.facelets.ValidatorConfig;
 
 /**
  * @author Ekaterina Shliakhovetskaya

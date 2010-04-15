@@ -12,9 +12,10 @@
 
 package org.openfaces.taglib.facelets.input;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.input.SpinnerTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 /**
  * @author Alexander Golubev

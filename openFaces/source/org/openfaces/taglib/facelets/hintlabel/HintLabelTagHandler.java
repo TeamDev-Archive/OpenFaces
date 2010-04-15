@@ -12,9 +12,10 @@
 
 package org.openfaces.taglib.facelets.hintlabel;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.output.HintLabelTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 /**
  * @author Andrew Palval

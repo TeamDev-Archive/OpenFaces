@@ -23,7 +23,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="PortletsCommon" />
-    <orderEntry type="library" name="JSF Implementation - MyFaces 1.2" level="project" />
+    <orderEntry type="library" name="JSF Implementation - Mojarra 2.0" level="project" />
   </component>
 </module>
 

@@ -11,9 +11,10 @@
  */
 package org.openfaces.taglib.facelets.timetable;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.timetable.EventActionBarTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 public class EventActionBarTagHandler extends AbstractFaceletsComponentHandler {
     public EventActionBarTagHandler(ComponentConfig componentConfig) {

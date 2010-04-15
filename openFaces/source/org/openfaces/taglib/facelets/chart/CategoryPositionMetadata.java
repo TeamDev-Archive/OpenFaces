@@ -11,15 +11,16 @@
  */
 package org.openfaces.taglib.facelets.chart;
 
-import com.sun.facelets.FaceletContext;
-import com.sun.facelets.tag.Metadata;
-import com.sun.facelets.tag.TagAttribute;
-import com.sun.facelets.tag.TagAttributeException;
 import org.openfaces.component.chart.CategoryAxisLabelPosition;
 import org.openfaces.util.Enumerations;
 
+import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.Metadata;
+import javax.faces.view.facelets.TagAttribute;
+import javax.faces.view.facelets.TagAttributeException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
 
 /**
  * @author Ekaterina Shliakhovetskaya

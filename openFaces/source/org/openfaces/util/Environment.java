@@ -12,14 +12,14 @@
 package org.openfaces.util;
 
 import org.openfaces.ajax.AjaxViewHandler;
-import org.openfaces.ajax.ViewHandlerWrapper;
 
-import javax.faces.application.Application;
+import javax.faces.FactoryFinder;
 import javax.faces.application.StateManager;
-import javax.faces.application.ViewHandler;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import java.lang.reflect.Field;
+import javax.faces.view.ViewDeclarationLanguage;
+import javax.faces.view.ViewDeclarationLanguageFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -84,94 +84,17 @@ public class Environment {
     }
 
     private static boolean isFacelets_internal(FacesContext context) {
-        Class faceletsViewHandlerClass;
-        try {
-            faceletsViewHandlerClass = Class.forName("com.sun.facelets.FaceletViewHandler");
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-
         String faceletsParameter = context.getExternalContext().getInitParameter(PARAM_FACELETS);
         if (faceletsParameter != null && faceletsParameter.equalsIgnoreCase("true")) {
             return true;
         }
 
-        // the presence of the facelets.ui.Repeat class doesn't yet mean that this application really uses facelets
-        // e.g. JBoss Portal has facelets in classpath, which makes it possible to create the facelets repeat component
-        Application application = context.getApplication();
-        ViewHandler handler = application.getViewHandler();
-        while (true) {
-            if (handler instanceof ViewHandlerWrapper) {
-                handler = ((ViewHandlerWrapper) handler).getWrapped();
-                continue;
-            }
-            break;
-        }
-        Class handlerClass = handler.getClass();
-        String actualViewHandlerClassName = handlerClass.getName();
-        boolean faceletsViewHandler =
-                actualViewHandlerClassName.equals("com.sun.facelets.FaceletViewHandler") ||
-                        actualViewHandlerClassName.equals("org.jboss.seam.ui.facelet.SeamFaceletViewHandler");
-
-        if (!faceletsViewHandler) {
-            faceletsViewHandler = isFaceletsViewHandlerInUse(handler, faceletsViewHandlerClass);
-        }
-
-        return faceletsViewHandler;
-    }
-
-    private static boolean isFaceletsViewHandlerInUse(Object handler, Class faceletsViewHandlerClass) {
-        boolean faceletsViewHandler = isFaceletsViewHandler(handler, faceletsViewHandlerClass);
-        // If actual handler is not a Facelets view handler than we should try to check can we access it's delegates 
-        if (!faceletsViewHandler) {
-            Object resultHandler = getWrappedHandler(handler);
-
-            if (resultHandler != null) {
-                faceletsViewHandler = isFaceletsViewHandler(resultHandler, faceletsViewHandlerClass);
-
-                if (!faceletsViewHandler && resultHandler instanceof ViewHandlerWrapper) {
-                    resultHandler = ((ViewHandlerWrapper) resultHandler).getWrapped();
-                    faceletsViewHandler = isFaceletsViewHandler(resultHandler, faceletsViewHandlerClass);
-                    if (!faceletsViewHandler) {
-                        isFaceletsViewHandlerInUse(resultHandler, faceletsViewHandlerClass);
-                    }
-                }
-            }
-        }
-        return faceletsViewHandler;
-    }
-
-    private static boolean isFaceletsViewHandler(Object resultHandler, Class faceletsViewHandlerClass) {
-        return faceletsViewHandlerClass.isAssignableFrom(resultHandler.getClass());
-    }
-
-    private static Object getWrappedHandler(Object handler) {
-        if (handler.getClass().getName().equalsIgnoreCase("org.apache.portals.bridges.jsf.PortletViewHandlerImpl")) {
-            try {
-                Class portletHandlerClass = handler.getClass();
-                Field handlerField = portletHandlerClass.getDeclaredField("handler");
-                handlerField.setAccessible(true);
-                return handlerField.get(handler);
-
-            } catch (IllegalAccessException e) {
-                return null;
-            } catch (NoSuchFieldException e) {
-                return null;
-            }
-        }else if(handler.getClass().getName().equalsIgnoreCase("org.ajax4jsf.application.AjaxViewHandler")){
-              try {
-                Class handlerWrapperClass = handler.getClass().getSuperclass();
-                Field handlerField = handlerWrapperClass.getDeclaredField("_handler");
-                handlerField.setAccessible(true);
-                return handlerField.get(handler);
-
-            } catch (IllegalAccessException e) {
-                return null;
-            } catch (NoSuchFieldException e) {
-                return null;
-            }
-        }
-        return null;
+        ViewDeclarationLanguageFactory factory = (ViewDeclarationLanguageFactory) FactoryFinder.getFactory(
+                FactoryFinder.VIEW_DECLARATION_LANGUAGE_FACTORY);
+        UIViewRoot viewRoot = context.getViewRoot();
+        String viewId = viewRoot.getViewId();
+        ViewDeclarationLanguage viewDeclarationLanguage = factory.getViewDeclarationLanguage(viewId);
+        return viewDeclarationLanguage.getClass().getName().toLowerCase().startsWith("facelet");
     }
 
     public static boolean isMyFaces() {
@@ -235,6 +158,7 @@ public class Environment {
     }
 
     private static Boolean exoPortal;
+
     public static boolean isExoPortal() {
         if (exoPortal != null)
             return exoPortal;

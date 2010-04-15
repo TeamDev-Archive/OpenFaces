@@ -11,14 +11,13 @@
  */
 package org.openfaces.taglib.facelets.validation;
 
-import com.sun.facelets.FaceletContext;
-import com.sun.facelets.tag.TagConfig;
-import com.sun.facelets.tag.TagHandler;
-
 import javax.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.ValueHolder;
+import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.TagConfig;
+import javax.faces.view.facelets.TagHandler;
 import java.io.IOException;
 
 /**

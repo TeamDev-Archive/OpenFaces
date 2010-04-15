@@ -13,7 +13,8 @@ package org.openfaces.taglib.facelets.table;
 
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.filter.ComboBoxFilterTag;
-import com.sun.facelets.tag.jsf.ComponentConfig;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 /**
  * @author Dmitry Pikhulya

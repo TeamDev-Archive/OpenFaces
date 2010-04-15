@@ -11,9 +11,10 @@
  */
 package org.openfaces.taglib.facelets.command;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.command.PopupMenuTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 /**
  * @author Vladimir Kurganov

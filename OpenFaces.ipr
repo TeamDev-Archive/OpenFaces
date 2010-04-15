@@ -46,9 +46,10 @@
             <element id="module-output" name="LiveDemoFacelets" />
           </element>
           <element id="directory" name="lib">
-            <element id="library" level="project" name="Facelets (without el-api.jar -- for Tomcat 6.0)" />
             <element id="library" level="project" name="JSF Implementation - Mojarra 2.0" />
             <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-logging-1.1.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar" />
           </element>
         </element>
         <element id="artifact" artifact-name="LiveDemoCore:LiveDemoCore exploded" />
@@ -154,7 +155,6 @@
             <element id="module-output" name="TestAppFacelets" />
           </element>
           <element id="directory" name="lib">
-            <element id="library" level="project" name="Facelets (without el-api.jar -- for Tomcat 6.0)" />
             <element id="library" level="project" name="JSF Implementation - Mojarra 2.0" />
           </element>
         </element>
@@ -173,6 +173,8 @@
           <element id="directory" name="lib">
             <element id="library" level="project" name="JSF Implementation - Mojarra 2.0" />
             <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-logging-1.1.jar" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar" />
           </element>
         </element>
         <element id="artifact" artifact-name="LiveDemoCore:LiveDemoCore exploded" />
@@ -225,7 +227,6 @@
               <element id="module-output" name="OpenFaces" />
             </element>
             <element id="library" level="project" name="hibernate" />
-            <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
             <element id="library" level="project" name="PrimeFaces" />
           </element>
         </element>
@@ -488,40 +489,6 @@
           </module>
         </modules>
       </facet-type>
-      <facet-type id="web">
-        <modules>
-          <module name="Root" />
-          <module name="TestAppJsp">
-            <files>
-              <file url="file://$PROJECT_DIR$/TestApp/TestAppJsp/target/resources/WEB-INF/web.xml" />
-              <file url="file://$PROJECT_DIR$/testApp/jsp/web/WEB-INF/web.xml" />
-            </files>
-          </module>
-          <module name="TestAppFacelets" />
-          <module name="LiveDemoFacelets">
-            <files>
-              <file url="file://$PROJECT_DIR$/liveDemo/facelets/WEB-INF/web.xml" />
-            </files>
-          </module>
-          <module name="LiveDemoJsp">
-            <files>
-              <file url="file://$PROJECT_DIR$/liveDemo/jsp/WEB-INF/web.xml" />
-            </files>
-          </module>
-        </modules>
-      </facet-type>
-      <facet-type id="jpa">
-        <modules>
-          <module name="TestAppCore" />
-          <module name="TestAppJsp" />
-          <module name="Root" />
-          <module name="TestAppFacelets">
-            <files>
-              <file url="file://$PROJECT_DIR$/TestApp/TestAppFacelets/target/classes/META-INF/persistence.xml" />
-            </files>
-          </module>
-        </modules>
-      </facet-type>
       <facet-type id="Seam">
         <modules>
           <module name="TestAppJsp">
@@ -537,6 +504,34 @@
           <module name="TestAppCore">
             <files>
               <file url="file://$PROJECT_DIR$/testApp/core/web/WEB-INF/components.xml" />
+            </files>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="jpa">
+        <modules>
+          <module name="TestAppCore" />
+          <module name="TestAppJsp" />
+          <module name="Root" />
+        </modules>
+      </facet-type>
+      <facet-type id="web">
+        <modules>
+          <module name="Root" />
+          <module name="TestAppJsp">
+            <files>
+              <file url="file://$PROJECT_DIR$/testApp/jsp/web/WEB-INF/web.xml" />
+            </files>
+          </module>
+          <module name="TestAppFacelets" />
+          <module name="LiveDemoFacelets">
+            <files>
+              <file url="file://$PROJECT_DIR$/liveDemo/facelets/WEB-INF/web.xml" />
+            </files>
+          </module>
+          <module name="LiveDemoJsp">
+            <files>
+              <file url="file://$PROJECT_DIR$/liveDemo/jsp/WEB-INF/web.xml" />
             </files>
           </module>
         </modules>
@@ -819,9 +814,6 @@
     <option name="LOCALE" />
     <option name="OPEN_IN_BROWSER" value="true" />
   </component>
-  <component name="JsfProjectComponent">
-    <option name="faceletsSupport" value="ENABLED" />
-  </component>
   <component name="LogConsolePreferences">
     <option name="FILTER_ERRORS" value="false" />
     <option name="FILTER_WARNINGS" value="false" />
@@ -963,6 +955,8 @@
         <w>attr</w>
         <w>attribute's</w>
         <w>autocomplete</w>
+        <w>backbase</w>
+        <w>beanutils</w>
         <w>borderlayoutpanel</w>
         <w>brvbar</w>
         <w>cedil</w>
@@ -976,6 +970,7 @@
         <w>commandlink</w>
         <w>compositefilter</w>
         <w>coords</w>
+        <w>cssparser</w>
         <w>curren</w>
         <w>dashized</w>
         <w>datas</w>
@@ -985,10 +980,13 @@
         <w>daytable</w>
         <w>dblclick</w>
         <w>decodable</w>
+        <w>digester</w>
         <w>dont</w>
         <w>dropdown</w>
         <w>dropdownfield</w>
         <w>dynamicimage</w>
+        <w>facelet</w>
+        <w>fileupload</w>
         <w>firefox</w>
         <w>foldingpanel</w>
         <w>func</w>
@@ -1007,7 +1005,13 @@
         <w>instanceof</w>
         <w>invokation</w>
         <w>iterable</w>
+        <w>javaee</w>
         <w>javascript</w>
+        <w>javax</w>
+        <w>jcommon</w>
+        <w>jdom</w>
+        <w>jfreechart</w>
+        <w>jstl</w>
         <w>keyup</w>
         <w>laquo</w>
         <w>layeredpane</w>
@@ -1019,6 +1023,7 @@
         <w>macr</w>
         <w>maxlength</w>
         <w>middot</w>
+        <w>mojarra</w>
         <w>monospace</w>
         <w>mouseover</w>
         <w>mozilla</w>
@@ -1079,6 +1084,7 @@
         <w>programmatically</w>
         <w>raquo</w>
         <w>renderers</w>
+        <w>replacer</w>
         <w>rerendered</w>
         <w>resizable</w>
         <w>richfaces</w>
@@ -1112,6 +1118,7 @@
         <w>updatables</w>
         <w>valign</w>
         <w>vert</w>
+        <w>webapp</w>
         <w>wikipedia</w>
         <w>xhtml</w>
       </words>
@@ -1436,145 +1443,21 @@
     </library>
     <library name="RichFaces">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-impl-3.3.1.GA.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-api-3.3.1.GA.jar!/" />
-        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-ui-3.3.1.GA.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/core-ui-4.0.0.ALPHA1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-api-4.0.0.ALPHA1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/richfaces/richfaces-impl-4.0.0.ALPHA1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.5.8.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/slf4j-log4j12-1.5.8.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/log4j-1.2.14.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/message/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/spacer/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/gmap/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/layout/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/treeModel/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/dataTable/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/rex-resizable/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/inplaceInput/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/spacer/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/fileUpload/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/hotKey/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/listShuttle/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/impl/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/framework/impl/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/componentControl/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/colorPicker/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/inputnumber-slider/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/framework/jsf-test/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/panelbar/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/framework/test/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/suggestionbox/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/insert/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/jQuery/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/orderingList/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/simpleTogglePanel2/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/togglePanel/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/editor/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/componentControl/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/modal-panel/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/virtualEarth/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/panel/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/tabPanel/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/toolBar/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/simpleTogglePanel/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/simpleTogglePanel/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/editorOld/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/rex-button/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/rex-messageBox/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/inputnumber-spinner/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/menu-components/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/hotKey/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/togglePanel/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/pickList/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/treeTable/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/inplaceInput/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/core/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/paint2D/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/gmap/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/panelbar/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/message/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/dataFilterSlider/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/columns/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/state/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/api/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/editor/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/datascroller/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/suggestionbox/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/tooltip/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/panelmenu/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/rex-messageBox/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/progressBAR/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/framework/api/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/menu-components/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/sortableHeader/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/simpleTogglePanel2/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/samples/rex-demo/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/samples/rex-demo/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/virtualEarth/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/dropdown-menu/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/framework/api/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/effect/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/listShuttle/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/treeTable/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/extendedDataTable/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/calendar/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/treeModel/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/framework/impl/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/functions/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/panel2/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/columns/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/datascroller/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/drag-drop/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/tabPanel/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/progressBAR/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/inplaceSelect/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/combobox/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/dataTable/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/samples/fileUploadPOC/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/extendedDataTable/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/separator/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/dropdown-menu/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/editorOld/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/inputnumber-spinner/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/paint2D/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/jQuery/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/inplaceSelect/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/inputnumber-slider/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/scrollableDataTable/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/dialog-window/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/state/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/toolBar/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/effect/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/dataFilterSlider/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/samples/simpleTogglePanel2-sample/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/layout/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/separator/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/fileUpload/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/samples/fileUploadPOC/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/tree/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/insert/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/combobox/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/core/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/drag-drop/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/framework/jsf-test/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/pickList/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/samples/maven-rd-plugin-sample/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/panel2/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/orderingList/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/rex-button/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/modal-panel/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/contextMenu/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/tree/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/panelmenu/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/panel/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/beanValidator/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/scrollableDataTable/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/beanValidator/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/colorPicker/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/calendar/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/sandbox/ui/rex-resizable/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/contextMenu/src/test/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/functions/src/main/java" />
-        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-ui-3.3.1.GA-src.zip!/richfaces-ui-3.3.1.GA/ui/tooltip/src/main/java" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-impl-4.0.0.ALPHA1-sources.zip!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/core-ui-4.0.0.ALPHA1-sources.zip!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/richfaces-api-4.0.0.ALPHA1-sources.zip!/" />
       </SOURCES>
     </library>
     <library name="JBoss Seam 2.1">
@@ -1652,12 +1535,27 @@
     </library>
     <library name="PrimeFaces">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/lib/primefaces/primefaces-1.0.0.RC.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/primefaces/primefaces-2.0.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/libsrc/primefaces-1.0.0.RC-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libsrc/primefaces-2.0.1-sources.jar!/" />
       </SOURCES>
+    </library>
+    <library name="JSF Implementation - MyFaces 2.0">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-collections-3.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-digester-1.8.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-beanutils-1.7.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-el-1.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-discovery-0.4.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-codec-1.3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/apache/commons-logging-1.1.1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-api-2.0.0-beta-3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/myfaces/myfaces-impl-2.0.0-beta-3.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
     </library>
   </component>
 </project>

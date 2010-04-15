@@ -11,8 +11,9 @@
  */
 package org.openfaces.taglib.facelets;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.internal.CaptionButtonTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 /**
  * @author Dmitry Pikhulya

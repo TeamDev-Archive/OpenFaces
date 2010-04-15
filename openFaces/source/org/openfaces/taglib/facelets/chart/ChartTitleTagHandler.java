@@ -11,9 +11,10 @@
  */
 package org.openfaces.taglib.facelets.chart;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.chart.ChartTitleTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 public class ChartTitleTagHandler extends AbstractFaceletsComponentHandler {
 

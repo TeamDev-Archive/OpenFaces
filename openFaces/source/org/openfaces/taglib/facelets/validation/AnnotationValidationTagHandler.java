@@ -13,9 +13,10 @@
 package org.openfaces.taglib.facelets.validation;
 
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.validation.AnnotationValidationTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 /**
  * <p><strong>AnnotationValidationTagHandler</strong></p> is a Facelets tag handler for

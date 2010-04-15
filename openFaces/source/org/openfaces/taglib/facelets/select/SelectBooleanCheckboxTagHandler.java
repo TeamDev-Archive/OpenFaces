@@ -14,7 +14,7 @@ package org.openfaces.taglib.facelets.select;
 import org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler;
 import org.openfaces.taglib.internal.select.SelectBooleanCheckboxTag;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
+import javax.faces.view.facelets.ComponentConfig;
 
 /**
  * @author Roman Porotnikov

@@ -11,9 +11,9 @@
  */
 package org.openfaces.taglib.facelets.chart;
 
-import com.sun.facelets.tag.MetaRuleset;
-import com.sun.facelets.tag.jsf.ComponentConfig;
-import com.sun.facelets.tag.jsf.ComponentHandler;
+import javax.faces.view.facelets.ComponentConfig;
+import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.MetaRuleset;
 
 /**
  * @author Ekaterina Shliakhovetskaya
