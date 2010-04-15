@@ -55,18 +55,5 @@ public class BarChartViewJspTag extends GridChartViewJspTag {
     public void setShadowColor(ValueExpression shadowColor) {
         getDelegate().setPropertyValue("shadowColor", shadowColor);
     }
-
-    public void setShowOutline(ValueExpression showOutline) {
-        getDelegate().setPropertyValue("showOutline", showOutline);
-    }
-
-    public void setOutlineColor(ValueExpression outlineColor) {
-        getDelegate().setPropertyValue("outlineColor", outlineColor);
-    }
-
-    public void setOutlineWidth(ValueExpression outlineWidth) {
-        getDelegate().setPropertyValue("outlineWidth", outlineWidth);
-    }
-
 }
 

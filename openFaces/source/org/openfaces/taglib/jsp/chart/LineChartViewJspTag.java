@@ -28,4 +28,19 @@ public class LineChartViewJspTag extends GridChartViewJspTag {
         getDelegate().setPropertyValue("shapesVisible", shapesVisible);
     }
 
+    public void setDefaultFillColor(ValueExpression defaultFillColor) {
+        getDelegate().setPropertyValue("defaultFillColor", defaultFillColor);
+    }
+
+    public void setDefaultLineStyle(ValueExpression defaultLineStyle) {
+        getDelegate().setPropertyValue("defaultLineStyle", defaultLineStyle);
+    }
+
+    public void setStrokes(ValueExpression strokes) {
+        getDelegate().setPropertyValue("strokes", strokes);
+    }
+
+    public void setFillPaints(ValueExpression fillPaints) {
+        getDelegate().setPropertyValue("fillPaints", fillPaints);
+    }
 }

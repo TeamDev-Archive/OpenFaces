@@ -12,11 +12,12 @@
 package org.openfaces.component.chart;
 
 import org.jfree.chart.entity.ChartEntity;
-import org.openfaces.util.ValueBindings;
 import org.openfaces.component.chart.impl.helpers.ChartInfoUtil;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -28,6 +29,9 @@ public abstract class GridChartView extends ChartView {
     private ChartDomain showAxes;
 
     private List<ChartGridLines> gridLines = new ArrayList<ChartGridLines>();
+
+    private LineStyle defaultOutlineStyle;
+    private Collection outlines;
 
     private String keyAxisLabel;
     private String valueAxisLabel;
@@ -175,6 +179,22 @@ public abstract class GridChartView extends ChartView {
 
     public List<ChartGridLines> getGridLines() {
         return gridLines;
+    }
+
+    public LineStyle getDefaultOutlineStyle() {
+        return ValueBindings.get(this, "defaultOutlineStyle", defaultOutlineStyle, null);
+    }
+
+    public void setDefaultOutlineStyle(LineStyle defaultOutlineStyle) {
+        this.defaultOutlineStyle = defaultOutlineStyle;
+    }
+
+    public Collection getOutlines() {
+        return ValueBindings.get(this, "outlines", outlines, null);
+    }
+
+    public void setOutlines(Collection outlines) {
+        this.outlines = outlines;
     }
 
 

@@ -19054,6 +19054,60 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <name>defaultFillColor</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Paint -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>defaultLineStyle</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType LineStyle -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>defaultOutlineStyle</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType LineStyle -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>outlines</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Collection -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>strokes</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Collection -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>fillPaints</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Collection -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 
@@ -19332,31 +19386,22 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <attribute>
-      <name>showOutline</name>
-      <deferred-value>
-        <type>boolean</type>
-      </deferred-value>
-      <!-- @bindingType boolean -->
-      <!-- @default false -->
-      <!-- @el true -->
-    </attribute>
-    <attribute>
-      <name>outlineColor</name>
+     <attribute>
+      <name>defaultOutlineStyle</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType Color -->
+      <!-- @bindingType LineStyle -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <name>outlineWidth</name>
+      <name>outlines</name>
       <deferred-value>
-        <type>java.lang.Double</type>
+        <type>java.lang.Object</type>
       </deferred-value>
-      <!-- @bindingType double -->
-      <!-- @default 0.0 -->
+      <!-- @bindingType Collection -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
     <attribute>

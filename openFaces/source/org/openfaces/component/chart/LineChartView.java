@@ -27,9 +27,12 @@ import org.openfaces.component.chart.impl.renderers.LineRenderer3DAdapter;
 import org.openfaces.component.chart.impl.renderers.LineRendererAdapter;
 import org.openfaces.component.chart.impl.renderers.XYLineRenderer3DAdapter;
 import org.openfaces.component.chart.impl.renderers.XYLineRendererAdapter;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -38,6 +41,11 @@ import java.util.List;
 public class LineChartView extends GridChartView {
     private boolean shapesVisible = true;
     private List<LineProperties> linePropertiesList = new ArrayList<LineProperties>();
+
+    private Paint defaultFillColor;
+    private LineStyle defaultLineStyle;
+    private Collection strokes;
+    private Collection fillPaints;
 
     public boolean isShapesVisible() {
         return shapesVisible;
@@ -120,13 +128,125 @@ public class LineChartView extends GridChartView {
         if (isEnable3D()) {
             ((XYLineRenderer3DAdapter) renderer).setWallPaint(getWallColor());
         }
+        
+        final boolean fillPaintsSpecified = getFillPaints() != null && !getFillPaints().isEmpty();
+        final boolean strokesSpecified = getStrokes() != null && !getStrokes().isEmpty();
+        final boolean outlinesSpecified = getOutlines() != null && !getOutlines().isEmpty();
+
+        renderer.setBaseShapesVisible(true);
+
+        if (getDefaultFillColor() != null || fillPaintsSpecified) {
+            renderer.setUseFillPaint(true);
+        }
+
+        if (getDefaultFillColor() != null && !fillPaintsSpecified) {
+            renderer.setBaseFillPaint(getDefaultFillColor());
+        } else if (fillPaintsSpecified) {
+            renderer.setSeriesFillPaint(0, Color.RED);
+            renderer.setSeriesFillPaint(1, Color.GREEN);
+            renderer.setSeriesFillPaint(2, Color.BLUE);
+        }
+
+        if (getDefaultLineStyle() != null && !strokesSpecified) {
+            renderer.setBaseStroke(getDefaultLineStyle().getStroke());
+        } else if (strokesSpecified) {
+            renderer.setSeriesStroke(0, new BasicStroke(3F));
+            renderer.setSeriesStroke(1, new BasicStroke(2.0F, 1, 1, 1.0F, new float[]{
+                    6F, 6F
+            }, 0.0F));
+        }
+
+        if (getDefaultOutlineStyle() != null || outlinesSpecified) {
+            renderer.setDrawOutlines(true);
+        }
+
+        if (getDefaultOutlineStyle() != null && !outlinesSpecified) {
+            renderer.setBaseOutlinePaint(getDefaultOutlineStyle().getColor());
+            renderer.setBaseOutlineStroke(getDefaultOutlineStyle().getStroke());
+        } else if (outlinesSpecified) {
+            renderer.setSeriesOutlineStroke(0, new BasicStroke(2.0F));
+            renderer.setSeriesOutlineStroke(1, new BasicStroke(3.0F));
+            renderer.setSeriesOutlineStroke(2, new BasicStroke(6.0F));
+        }
     }
 
     private void configureRenderer(LineAndShapeRenderer renderer) {
         if (isEnable3D()) {
             ((LineRenderer3DAdapter) renderer).setWallPaint(getWallColor());
         }
+
+        final boolean fillPaintsSpecified = getFillPaints() != null && !getFillPaints().isEmpty();
+        final boolean strokesSpecified = getStrokes() != null && !getStrokes().isEmpty();
+        final boolean outlinesSpecified = getOutlines() != null && !getOutlines().isEmpty();
+
+        renderer.setBaseShapesVisible(true);
+
+        if (getDefaultFillColor() != null || fillPaintsSpecified) {
+            renderer.setUseFillPaint(true);
+        }
+
+        if (getDefaultFillColor() != null && !fillPaintsSpecified) {
+            renderer.setBaseFillPaint(getDefaultFillColor());
+        } else if (fillPaintsSpecified) {
+            renderer.setSeriesFillPaint(0, Color.RED);
+            renderer.setSeriesFillPaint(1, Color.GREEN);
+            renderer.setSeriesFillPaint(2, Color.BLUE);
+        }
+
+        if (getDefaultLineStyle() != null && !strokesSpecified) {
+            renderer.setBaseStroke(getDefaultLineStyle().getStroke());
+        } else if (strokesSpecified) {
+            renderer.setSeriesStroke(0, new BasicStroke(3F));
+            renderer.setSeriesStroke(1, new BasicStroke(2.0F, 1, 1, 1.0F, new float[]{
+                    6F, 6F
+            }, 0.0F));
+        }
+
+        if (getDefaultOutlineStyle() != null || outlinesSpecified) {
+            renderer.setDrawOutlines(true);
+        }
+
+        if (getDefaultOutlineStyle() != null && !outlinesSpecified) {
+            renderer.setBaseOutlinePaint(getDefaultOutlineStyle().getColor());
+            renderer.setBaseOutlineStroke(getDefaultOutlineStyle().getStroke());
+        } else if (outlinesSpecified) {
+            renderer.setSeriesOutlineStroke(0, new BasicStroke(2.0F));
+            renderer.setSeriesOutlineStroke(1, new BasicStroke(3.0F));
+            renderer.setSeriesOutlineStroke(2, new BasicStroke(6.0F));
+        }
     }
 
 
+    public Paint getDefaultFillColor() {
+        return ValueBindings.get(this, "defaultFillColor", defaultFillColor, null);
+    }
+
+    public void setDefaultFillColor(Paint defaultFillColor) {
+        this.defaultFillColor = defaultFillColor;
+    }
+
+    public LineStyle getDefaultLineStyle() {
+        return ValueBindings.get(this, "defaultLineStyle", defaultLineStyle, null);
+    }
+
+    public void setDefaultLineStyle(LineStyle defaultLineStyle) {
+        this.defaultLineStyle = defaultLineStyle;
+    }
+
+
+    public Collection getStrokes() {
+        return ValueBindings.get(this, "strokes", strokes, null);
+    }
+
+    public void setStrokes(Collection strokes) {
+        this.strokes = strokes;
+    }
+
+    public Collection getFillPaints() {
+        return ValueBindings.get(this, "fillPaints", fillPaints, null);
+    }
+
+    public void setFillPaints(Collection fillPaints) {
+        this.fillPaints = fillPaints;
+    }
 }

@@ -44,5 +44,11 @@ public abstract class GridChartViewJspTag extends AbstractChartViewJspTag {
         getDelegate().setPropertyValue("orientation", orientation);
     }
 
+     public void setDefaultOutlineStyle(ValueExpression defaultOutlineStyle) {
+        getDelegate().setPropertyValue("defaultOutlineStyle", defaultOutlineStyle);
+    }
 
+    public void setOutlines(ValueExpression outlines) {
+        getDelegate().setPropertyValue("outlines", outlines);
+    }
 }
