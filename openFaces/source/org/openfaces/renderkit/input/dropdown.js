@@ -317,7 +317,7 @@ O$.DropDown = {
     //add function to change popup position if window is resized and layout is changed
     O$.addEventHandler(window, "resize", function () {
       var dropDownPopup = dropDown._popup;
-      // drop-down can be removed from the page using Ajax, so we need to check its presense
+      // drop-down can be removed from the page using Ajax, so we need to check its presence
       if (dropDownPopup && dropDownPopup.isVisible()) {
         O$.DropDown._alignPopup(dropDown);
       }

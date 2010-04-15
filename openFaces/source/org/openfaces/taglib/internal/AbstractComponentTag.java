@@ -35,6 +35,7 @@ import javax.faces.validator.MethodExpressionValidator;
 import java.awt.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -391,7 +392,7 @@ public abstract class AbstractComponentTag extends AbstractTag {
             return;
         }
         if (!setPropertyAsBinding(component, propertyName, value)) {
-            Collection<String> collection = Arrays.asList(value.trim().split(" +"));
+            Collection<String> collection = new ArrayList<String>(Arrays.asList(value.trim().split(" +")));
             component.getAttributes().put(propertyName, collection);
         }
     }

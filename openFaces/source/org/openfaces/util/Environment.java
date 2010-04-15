@@ -96,7 +96,7 @@ public class Environment {
             return true;
         }
 
-        // the presense of the facelets.ui.Repeat class doesn't yet mean that this application really uses facelets
+        // the presence of the facelets.ui.Repeat class doesn't yet mean that this application really uses facelets
         // e.g. JBoss Portal has facelets in classpath, which makes it possible to create the facelets repeat component
         Application application = context.getApplication();
         ViewHandler handler = application.getViewHandler();
