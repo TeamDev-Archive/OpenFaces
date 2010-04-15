@@ -16,6 +16,7 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.CategoryToolTipGenerator;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.AbstractCategoryItemRenderer;
 import org.jfree.chart.urls.CategoryURLGenerator;
 import org.jfree.data.category.CategoryDataset;
@@ -31,6 +32,9 @@ import org.openfaces.component.chart.impl.helpers.CategoryAxis3DAdapter;
 import org.openfaces.component.chart.impl.helpers.CategoryAxisAdapter;
 import org.openfaces.component.chart.impl.helpers.NumberAxis3DAdapter;
 import org.openfaces.component.chart.impl.helpers.NumberAxisAdapter;
+
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 /**
  * @author Ekaterina Shliakhovetskaya
@@ -61,7 +65,7 @@ public class GridCategoryPlotAdapter extends CategoryPlot {
                 ? new CategoryAxis3DAdapter(chartView.getKeyAxisLabel(), keyAxisVisible, (ChartCategoryAxis) keyAxis, baseAxis, chartView)
                 : new CategoryAxisAdapter(chartView.getKeyAxisLabel(), keyAxisVisible, (ChartCategoryAxis) keyAxis, baseAxis, chartView);
         NumberAxis numberAxis = chartView.isEnable3D()
-                ? new NumberAxis3DAdapter(chartView.getValueAxisLabel(), valueAxisVisible, (ChartNumberAxis) valueAxis, baseAxis, chartView) 
+                ? new NumberAxis3DAdapter(chartView.getValueAxisLabel(), valueAxisVisible, (ChartNumberAxis) valueAxis, baseAxis, chartView)
                 : new NumberAxisAdapter(chartView.getValueAxisLabel(), valueAxisVisible, (ChartNumberAxis) valueAxis, baseAxis, chartView);
 
         if (ds == null) {

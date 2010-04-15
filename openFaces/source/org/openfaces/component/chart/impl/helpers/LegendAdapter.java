@@ -37,7 +37,12 @@ class LegendAdapter extends LegendTitle {
                 ? legend.getStyleObjectModel()
                 : chart.getStyleObjectModel();
 
-        setBackgroundPaint(cssLegendModel.getBackground());
+        final boolean chartBackgroundPaintDefined = chart.getChartView().getBackgroundPaint() != null;
+        if (chartBackgroundPaintDefined) {
+            setBackgroundPaint(chart.getChartView().getBackgroundPaint());
+        } else {
+            setBackgroundPaint(cssLegendModel.getBackground());
+        }
 
         StyleBorderModel border = cssLegendModel.getBorder();
 

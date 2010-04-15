@@ -20,9 +20,12 @@ import org.openfaces.component.chart.impl.ModelConverter;
 import org.openfaces.component.chart.impl.ModelInfo;
 import org.openfaces.component.chart.impl.helpers.ChartInfoUtil;
 import org.openfaces.component.chart.impl.plots.MultiplePiePlotAdapter;
+import org.openfaces.component.chart.impl.plots.PiePlot3DAdapter;
 import org.openfaces.component.chart.impl.plots.PiePlotAdapter;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +39,11 @@ public class PieChartView extends ChartView {
     private PieSectorInfo sector;
 
     private boolean labelsVisible;
+
+    private boolean showShadow;
+    private Double shadowXOffset = 4.0;
+    private Double shadowYOffset = 4.0;
+    private Color shadowColor = Color.GRAY;
 
     public PieSectorInfo getSelectedSector() {
         return selectedSector;
@@ -70,6 +78,38 @@ public class PieChartView extends ChartView {
         this.sector = sector;
     }
 
+     public Boolean isShowShadow() {
+        return ValueBindings.get(this, "showShadow", showShadow, false);
+    }
+
+    public void setShowShadow(Boolean showShadow) {
+        this.showShadow = showShadow;
+    }
+
+    public double getShadowXOffset() {
+        return ValueBindings.get(this, "shadowXOffset", shadowXOffset, 4.0);
+    }
+
+    public void setShadowXOffset(double shadowXOffset) {
+        this.shadowXOffset = shadowXOffset;
+    }
+
+    public double getShadowYOffset() {
+        return ValueBindings.get(this, "shadowYOffset", shadowYOffset, 4.0);
+    }
+
+    public void setShadowYOffset(double shadowYOffset) {
+        this.shadowYOffset = shadowYOffset;
+    }
+
+    public Color getShadowColor() {
+        return ValueBindings.get(this, "shadowColor", shadowColor, Color.class);
+    }
+
+    public void setShadowColor(Color shadowColor) {
+        this.shadowColor = shadowColor;
+    }
+
     public void decodeAction(String fieldValue) {
         renderAsImageFile();
 
@@ -89,7 +129,11 @@ public class PieChartView extends ChartView {
         return new Object[]{
                 superState,
                 labelsVisible,
-                saveAttachedState(context, sectors)
+                saveAttachedState(context, sectors),
+                showShadow,
+                shadowXOffset,
+                shadowYOffset,
+                saveAttachedState(context, shadowColor)
         };
     }
 
@@ -101,6 +145,10 @@ public class PieChartView extends ChartView {
         super.restoreState(facesContext, state[i++]);
         labelsVisible = (Boolean) state[i++];
         sectors = (List<PieSectorProperties>) restoreAttachedState(facesContext, state[i++]);
+        showShadow = (Boolean) state[i++];
+        shadowXOffset = (Double) state[i++];
+        shadowYOffset = (Double) state[i++];
+        shadowColor = (Color) restoreAttachedState(facesContext, state[i++]);
     }
 
     public String getHint() {
@@ -113,9 +161,13 @@ public class PieChartView extends ChartView {
         }
         if (info.getNonEmptySeriesList().length < 2) {
             PieDataset ds = ModelConverter.toPieDataset(model);
-            return new PiePlotAdapter(ds, chart, this);
+            final Plot adapter = (isEnable3D())
+                    ? new PiePlot3DAdapter(ds, chart, this)
+                    : new PiePlotAdapter(ds, chart, this);
+            return adapter;
         }
         CategoryDataset ds = ModelConverter.toCategoryDataset(info);
+
         return new MultiplePiePlotAdapter(ds, TableOrder.BY_ROW, chart, this);
     }
 

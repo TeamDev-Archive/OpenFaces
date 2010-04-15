@@ -53,5 +53,16 @@ public abstract class AbstractChartViewJspTag extends AbstractStyledComponentJsp
         getDelegate().setPropertyValue("tooltip", tooltip);
     }
 
+    public void setWallColor(ValueExpression wallColor) {
+        getDelegate().setPropertyValue("wallColor", wallColor);
+    }
+
+    public void setBackgroundPaint(ValueExpression backgroundPaint) {
+        getDelegate().setPropertyValue("backgroundPaint", backgroundPaint);
+    }
+
+    public void setTitlePaint(ValueExpression titlePaint) {
+        getDelegate().setPropertyValue("titlePaint", titlePaint);
+    }
 
 }

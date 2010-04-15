@@ -27,6 +27,7 @@ public class JFreeChartAdapter extends JFreeChart {
     public JFreeChartAdapter(Plot plot, Chart chart) {
         super(null, JFreeChart.DEFAULT_TITLE_FONT, plot, false);
 
+        final boolean chartBackgroundPaintDefined = chart.getChartView().getBackgroundPaint() != null;
         if (chart.isLegendVisible()) {
             addSubtitle(new LegendAdapter(plot, chart));
         }
@@ -35,11 +36,17 @@ public class JFreeChartAdapter extends JFreeChart {
             setTitle(new TextTitleAdapter(chart));
         }
 
+        if (chartBackgroundPaintDefined) {
+            setBackgroundPaint(chart.getChartView().getBackgroundPaint());
+        }
+
         //TODO: separate style properties
 
         StyleObjectModel cssChartModel = chart.getStyleObjectModel();
         if (cssChartModel != null) {
-            setBackgroundPaint(cssChartModel.getBackground());
+            if (!chartBackgroundPaintDefined) {
+                setBackgroundPaint(cssChartModel.getBackground());
+            }
 
             StyleBorderModel border = cssChartModel.getBorder();
             if (border != null && !border.isNone()) {

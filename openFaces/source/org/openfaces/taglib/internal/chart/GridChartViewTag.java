@@ -12,6 +12,7 @@
 package org.openfaces.taglib.internal.chart;
 
 import org.openfaces.component.chart.ChartDomain;
+import org.openfaces.component.chart.GradientType;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.Orientation;
 
@@ -51,5 +52,7 @@ public abstract class GridChartViewTag extends AbstractChartViewTag {
         view.setKeyAxisLabel(keyAxisLabel);
         String valueAxisLabel = getPropertyValue("valueAxisLabel");
         view.setValueAxisLabel(valueAxisLabel);
+
+        setColorProperty(component, "wallColor");
     }
 }

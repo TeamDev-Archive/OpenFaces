@@ -15,6 +15,7 @@ import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.title.TextTitle;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartTitle;
+import org.openfaces.component.chart.ChartViewType;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleBorderModel;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
@@ -40,7 +41,14 @@ class TextTitleAdapter extends TextTitle {
         if (styleModel != null) {
             setFont(CSSUtil.getFont(styleModel));
 
-            if (styleModel.getBackground() != null) {
+            final boolean chartTitlePaintDefined = chart.getChartView().getBackgroundPaint() != null;
+
+            if(chartTitlePaintDefined){
+                setExpandToFitSpace(true);
+                setBackgroundPaint(chart.getChartView().getTitlePaint());
+            }
+
+            if (styleModel.getBackground() != null && !chartTitlePaintDefined) {
                 setBackgroundPaint(styleModel.getBackground());
                 setBorder(new BlockBorder(styleModel.getBackground()));
             }

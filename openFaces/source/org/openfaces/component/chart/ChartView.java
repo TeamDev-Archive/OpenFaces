@@ -11,6 +11,7 @@
  */
 package org.openfaces.component.chart;
 
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.imagemap.StandardToolTipTagFragmentGenerator;
@@ -29,6 +30,7 @@ import org.openfaces.util.ValueBindings;
 import javax.el.ValueExpression;
 import javax.faces.component.UICommand;
 import javax.faces.context.FacesContext;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -36,6 +38,8 @@ import java.awt.image.BufferedImage;
  */
 public abstract class ChartView extends UICommand implements StyledComponent, HasLabels {
     private Boolean enable3D;
+    private Color wallColor = Color.GRAY;
+
     private String style;
     private String url;
     private String tooltip;
@@ -46,12 +50,23 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
     private String onmouseout;
     private String onclick;
 
+    private Paint backgroundPaint;
+    private Paint titlePaint;
+
     public boolean isEnable3D() {
         return ValueBindings.get(this, "enable3D", enable3D, false);
     }
 
     public void setEnable3D(boolean enable3D) {
         this.enable3D = enable3D;
+    }
+
+    public Color getWallColor() {
+        return ValueBindings.get(this, "wallColor", wallColor, Color.class);
+    }
+
+    public void setWallColor(Color wallColor) {
+        this.wallColor = wallColor;
     }
 
     public String getOnmouseover() {
@@ -233,6 +248,23 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
         return getTextStyle();
     }
 
+
+    public Paint getBackgroundPaint() {
+        return ValueBindings.get(this, "backgroundPaint", backgroundPaint, Paint.class);
+    }
+
+    public void setBackgroundPaint(Paint backgroundPaint) {
+        this.backgroundPaint = backgroundPaint;
+    }
+
+    public Paint getTitlePaint() {
+        return ValueBindings.get(this, "titlePaint", titlePaint, Paint.class);
+    }
+
+    public void setTitlePaint(Paint titlePaint) {
+        this.titlePaint = titlePaint;
+    }
+
     public StyleObjectModel getStyleObjectModel() {
         return CSSUtil.getStyleObjectModel(getComponentsChain());
     }
@@ -256,7 +288,8 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
                 onmouseout,
                 onmouseover,
                 onclick,
-                enable3D
+                enable3D,
+                saveAttachedState(context, wallColor)
         };
     }
 
@@ -274,6 +307,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
         onmouseover = (String) state[i++];
         onclick = (String) state[i++];
         enable3D = (Boolean) state[i++];
+        wallColor = (Color) restoreAttachedState(facesContext, state[i++]);
     }
 
     public byte[] renderAsImageFile() {
@@ -290,6 +324,7 @@ public abstract class ChartView extends UICommand implements StyledComponent, Ha
         JFreeChart jFreeChart = new JFreeChartAdapter(plot, chart);
         int width = chart.getWidth();
         int height = chart.getHeight();
+
         BufferedImage image = jFreeChart.createBufferedImage(width, height, chartRenderingInfo);
         byte[] imageAsByteArray = Rendering.encodeAsPNG(image);
 

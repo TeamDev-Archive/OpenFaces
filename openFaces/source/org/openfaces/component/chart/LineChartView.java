@@ -97,6 +97,7 @@ public class LineChartView extends GridChartView {
             XYLineAndShapeRenderer renderer = isEnable3D()
                     ? new XYLineRenderer3DAdapter(this, ds)
                     : new XYLineRendererAdapter(this, ds);
+            configureRenderer(renderer);
             return new GridXYPlotAdapter(ds, renderer, chart, this);
         }
         if (info.getModelType().equals(ModelType.Date)) {
@@ -104,13 +105,27 @@ public class LineChartView extends GridChartView {
             XYLineAndShapeRenderer renderer = isEnable3D()
                     ? new XYLineRenderer3DAdapter(this, ds)
                     : new XYLineRendererAdapter(this, ds);
+            configureRenderer(renderer);
             return new GridDatePlotAdapter(ds, renderer, chart, this);
         }
         CategoryDataset ds = ModelConverter.toCategoryDataset(info);
         LineAndShapeRenderer renderer = isEnable3D()
                 ? new LineRenderer3DAdapter(this, ds)
                 : new LineRendererAdapter(this, ds);
+        configureRenderer(renderer);
         return new GridCategoryPlotAdapter(ds, renderer, chart, this);
+    }
+
+    private void configureRenderer(XYLineAndShapeRenderer renderer) {
+        if (isEnable3D()) {
+            ((XYLineRenderer3DAdapter) renderer).setWallPaint(getWallColor());
+        }
+    }
+
+    private void configureRenderer(LineAndShapeRenderer renderer) {
+        if (isEnable3D()) {
+            ((LineRenderer3DAdapter) renderer).setWallPaint(getWallColor());
+        }
     }
 
 

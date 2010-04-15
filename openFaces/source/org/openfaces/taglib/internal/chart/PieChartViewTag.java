@@ -42,6 +42,12 @@ public class PieChartViewTag extends AbstractChartViewTag {
             Boolean labelVisible = Boolean.valueOf(labelsVisible);
             view.setLabelsVisible(labelVisible);
         }
+
+        setBooleanProperty(component, "showShadow");
+        setDoubleProperty(component, "shadowXOffset");
+        setDoubleProperty(component, "shadowYOffset");
+
+        setColorProperty(component, "shadowColor");
     }
 
 }

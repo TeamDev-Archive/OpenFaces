@@ -9,12 +9,14 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
+
 package org.openfaces.component.chart.impl.plots;
 
 import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.chart.labels.PieToolTipGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.urls.PieURLGenerator;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.CategoryToPieDataset;
@@ -33,20 +35,20 @@ import org.openfaces.renderkit.cssparser.StyleObjectModel;
 
 import java.awt.*;
 import java.text.AttributedString;
-import java.util.List;
 
 /**
- * @author Ekaterina Shliakhovetskaya
+ * @author Eugene Goncharov
  */
-public class PiePlotAdapter extends PiePlot {
+public class PiePlot3DAdapter extends PiePlot3D {
     private TableOrder order;
 
-    public PiePlotAdapter(PieDataset pieDataset, Chart chart, PieChartView chartView) {
+    public PiePlot3DAdapter(PieDataset pieDataset, Chart chart, PieChartView chartView) {
         setDataset(pieDataset);
         init(this, chart, chartView, pieDataset, null);
     }
 
-    PiePlotAdapter(PiePlot piePlot, CategoryDataset categoryDataset, TableOrder order, PieChartView chartView, Chart chart) { // todo: consider refactoring -- view the usage
+    PiePlot3DAdapter(PiePlot piePlot, CategoryDataset categoryDataset, TableOrder order, PieChartView chartView, Chart chart) {
+        // todo: consider refactoring -- view the usage
         this.order = order;
         PieDataset dataset = new CategoryToPieDataset(categoryDataset, order, 0);
         init(piePlot, chart, chartView, dataset, categoryDataset);
@@ -135,7 +137,7 @@ public class PiePlotAdapter extends PiePlot {
     }
 
     private void sectorProcessing(PiePlot plot, PieChartView chartView, PieDataset dataset, CategoryDataset categoryDataset) {
-        List<PieSectorProperties> sectors = chartView.getSectors();
+        java.util.List<PieSectorProperties> sectors = chartView.getSectors();
         if (sectors == null || sectors.size() == 0)
             return;
 
@@ -150,7 +152,7 @@ public class PiePlotAdapter extends PiePlot {
                 int count = getIterationCount(cds);
                 for (int q = 0; q < count; q++) {
                     CategoryToPieDataset currPieDataset = new CategoryToPieDataset(categoryDataset, order, q);
-                    List keys = currPieDataset.getKeys();
+                    java.util.List keys = currPieDataset.getKeys();
                     index = -1;
                     for (int j = 0; j < keys.size(); j++) {
                         index++;
@@ -191,7 +193,7 @@ public class PiePlotAdapter extends PiePlot {
                         continue;
 
                     if (sectorPulled != null && sectorPulled > 0) {
-                       plot.setExplodePercent(index, (double) sectorPulled);
+                        plot.setExplodePercent(index, (double) sectorPulled);
                     }
 
                     StyleObjectModel cssSectorModel = sector.getStyleObjectModel();
@@ -232,16 +234,13 @@ public class PiePlotAdapter extends PiePlot {
         setupLegendLabels(plot, chart, chartView);
         setupTooltipsAndUrls(plot, chartView);
         sectorProcessing(plot, chartView, dataset, categoryDataset);
-
         setupShadow(plot,chartView);
     }
 
     private void setupShadow(PiePlot plot, PieChartView chartView) {
-        plot.setShadowPaint(chartView.getShadowColor());
-        plot.setShadowXOffset(chartView.getShadowXOffset());
-        plot.setShadowYOffset(chartView.getShadowYOffset());
-    }
-
+           plot.setShadowPaint(chartView.getShadowColor());
+           plot.setShadowXOffset(chartView.getShadowXOffset());
+           plot.setShadowYOffset(chartView.getShadowYOffset());
+       }
 
 }
-

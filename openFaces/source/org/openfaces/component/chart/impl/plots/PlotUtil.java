@@ -48,7 +48,11 @@ class PlotUtil {
     public static void setupColorProperties(Chart chart, Plot plot) {
         StyleObjectModel cssChartViewModel = chart.getChartView().getStyleObjectModel();
 
-        plot.setBackgroundPaint(cssChartViewModel.getBackground());
+        if (chart.getChartView().getBackgroundPaint() != null) {
+            plot.setBackgroundPaint(null);
+        } else {
+            plot.setBackgroundPaint(cssChartViewModel.getBackground());
+        }
 
         StyleBorderModel border = cssChartViewModel.getBorder();
         plot.setOutlinePaint(border == null || border.isNone()

@@ -45,5 +45,8 @@ public abstract class AbstractChartViewTag extends AbstractStyledComponentTag {
 
         setActionProperty(facesContext, (ChartView) component);
         setActionListener(facesContext, view);
+
+        setObjectProperty(component, "backgroundPaint");
+        setObjectProperty(component, "titlePaint");
     }
 }

@@ -11,6 +11,9 @@
  */
 package org.openfaces.taglib.internal.chart;
 
+import org.openfaces.component.chart.GradientType;
+import org.openfaces.component.output.GraphicText;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -32,5 +35,18 @@ public class BarChartViewTag extends GridChartViewTag {
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
+        setBooleanProperty(component, "showGradient");
+        setDoubleProperty(component, "g1WhitePosition");
+        setDoubleProperty(component, "g2FullIntensityPosition");
+        setDoubleProperty(component, "g3LightIntensityPosition");
+        setBooleanProperty(component, "showShadow");
+        setDoubleProperty(component, "shadowXOffset");
+        setDoubleProperty(component, "shadowYOffset");
+
+        setColorProperty(component, "shadowColor");
+
+        setBooleanProperty(component, "showOutline");
+        setColorProperty(component, "outlineColor");
+        setDoubleProperty(component, "outlineWidth");
     }
 }

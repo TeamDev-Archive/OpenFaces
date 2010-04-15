@@ -39,7 +39,11 @@ public class MultiplePiePlotAdapter extends MultiplePiePlot {
         PiePlot piePlot = (PiePlot) getPieChart().getPlot();
         piePlot.setDataset(new CategoryToPieDataset(ds, order, 0));
         setDataExtractOrder(order);
-        new PiePlotAdapter(piePlot, ds, order, view, chart);
+        if (view.isEnable3D()) {
+            new PiePlot3DAdapter(piePlot, ds, order, view, chart);
+        }else{
+            new PiePlotAdapter(piePlot, ds, order, view, chart);
+        }
 
         PlotUtil.setupColorProperties(chart, this);
     }

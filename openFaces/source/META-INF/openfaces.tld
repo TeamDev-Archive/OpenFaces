@@ -18751,7 +18751,70 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-
+    <attribute>
+      <description>Specifies whether the chart should be displayed in 3D.</description>
+      <name>enable3D</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>showShadow</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>shadowXOffset</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 4.0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>shadowYOffset</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 4.0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>shadowColor</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+     <attribute>
+      <name>backgroundPaint</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType GradientPaint -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>titlePaint</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Paint -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>
@@ -18954,16 +19017,43 @@ and it is automatically triggered on any form submission. -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    <!--<attribute>-->
-      <!--<description>Specifies whether the chart should be displayed in 3D.</description>-->
-      <!--<name>enable3D</name>-->
-      <!--<deferred-value>-->
-        <!--<type>boolean</type>-->
-      <!--</deferred-value>-->
-      <!--&lt;!&ndash; @bindingType boolean &ndash;&gt;-->
-      <!--&lt;!&ndash; @default false &ndash;&gt;-->
-      <!--&lt;!&ndash; @el true &ndash;&gt;-->
-    <!--</attribute>-->
+    <attribute>
+      <description>Specifies whether the chart should be displayed in 3D.</description>
+      <name>enable3D</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>wallColor</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Color -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+     <attribute>
+      <name>backgroundPaint</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType GradientPaint -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>titlePaint</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Paint -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
 
   </tag>
 
@@ -19167,6 +19257,133 @@ and it is automatically triggered on any form submission. -->
       </deferred-value>
       <!-- @bindingType boolean -->
       <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <description>This attribute defines usage of gradient for displaying a bar chart</description>
+      <name>showGradient</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>g1WhitePosition</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.1 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>g2FullIntensityPosition</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.2 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>g3LightIntensityPosition</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.8 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>showShadow</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>shadowXOffset</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 4.0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>shadowYOffset</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 4.0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>shadowColor</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Object -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>showOutline</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>outlineColor</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Color -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>outlineWidth</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>wallColor</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Color -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>backgroundPaint</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType GradientPaint -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>titlePaint</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType Paint -->
+      <!-- @default null -->
       <!-- @el true -->
     </attribute>
 
@@ -35896,7 +36113,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
-    
+
     <attribute>
       <name>headerStyle</name>
       <deferred-value>
@@ -36360,7 +36577,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
   </tag>
-  
+
   <tag>
     <description>A description part of event content</description>
     <name>eventDescription</name>

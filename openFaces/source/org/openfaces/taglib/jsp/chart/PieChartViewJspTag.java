@@ -27,5 +27,21 @@ public class PieChartViewJspTag extends AbstractChartViewJspTag {
     public void setLabelsVisible(ValueExpression labelsVisible) {
         getDelegate().setPropertyValue("labelsVisible", labelsVisible);
     }
+
+     public void setShowShadow(ValueExpression shadow) {
+        getDelegate().setPropertyValue("showShadow", shadow);
+    }
+
+    public void setShadowXOffset(ValueExpression shadowXOffset) {
+        getDelegate().setPropertyValue("shadowXOffset", shadowXOffset);
+    }
+
+    public void setShadowYOffset(ValueExpression shadowYOffset) {
+        getDelegate().setPropertyValue("shadowYOffset", shadowYOffset);
+    }
+
+    public void setShadowColor(ValueExpression shadowColor) {
+        getDelegate().setPropertyValue("shadowColor", shadowColor);
+    }
 }
 
