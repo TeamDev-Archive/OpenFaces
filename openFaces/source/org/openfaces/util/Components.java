@@ -94,6 +94,8 @@ public class Components {
             return component;
         try {
             component = childClass.newInstance();
+            if (defaultIdSuffix.startsWith(Rendering.SERVER_ID_SUFFIX_SEPARATOR))
+                defaultIdSuffix = defaultIdSuffix.substring(Rendering.SERVER_ID_SUFFIX_SEPARATOR.length());
             component.setId(parent.getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + defaultIdSuffix);
         } catch (InstantiationException e) {
             throw new RuntimeException(e);

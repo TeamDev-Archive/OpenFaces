@@ -282,6 +282,7 @@ public class CalendarRenderer extends RendererBase {
         writer.startElement("table", calendar);
         writeHeaderStyleAndClassAttributes(context, calendar);
         writer.startElement("tr", calendar);
+        createSubComponents(calendar);
         renderMonthSelectorSection(context, calendar);
         renderYearSelectorSection(context, calendar);
         writer.endElement("tr");
@@ -290,6 +291,11 @@ public class CalendarRenderer extends RendererBase {
         writer.endElement("td");
         writer.endElement("tr");
         writer.endElement("tbody");
+    }
+
+    private void createSubComponents(Calendar calendar) {
+        Components.getChildWithClass(calendar, CalendarMonthPopup.class, MONTH_SELECTOR_SUFFIX + DROP_SUFFIX);
+        Components.getChildWithClass(calendar, CalendarYearPopup.class, YEAR_SELECTOR_SUFFIX + DROP_SUFFIX);
     }
 
     private void renderMonthSelectorSection(FacesContext context, Calendar calendar) throws IOException {
@@ -344,26 +350,13 @@ public class CalendarRenderer extends RendererBase {
         }
         writer.endElement("div");
 
-        CalendarMonthPopup popup =
-                (CalendarMonthPopup) context.getApplication().createComponent(CalendarMonthPopup.COMPONENT_TYPE);
-        List<UIComponent> children = calendar.getChildren();
-        for (UIComponent child : children) {
-            if (child instanceof CalendarMonthPopup
-                    && child.getClientId(context).indexOf(MONTH_SELECTOR_SUFFIX + DROP_SUFFIX) > -1) {
-                children.remove(child);
-                break;
-            }
-        }
-        children.add(popup);
-
-        popup.setId(calendar.getId() + MONTH_SELECTOR_SUFFIX + DROP_SUFFIX);
+        CalendarMonthPopup popup = Components.getChildWithClass(calendar, CalendarMonthPopup.class, MONTH_SELECTOR_SUFFIX + DROP_SUFFIX);
 
         popup.encodeBegin(context);
         popup.encodeChildren(context);
         popup.encodeEnd(context);
 
         writer.endElement("td");
-
     }
 
     private void renderYearSelectorSection(FacesContext context, Calendar calendar) throws IOException {
@@ -433,24 +426,10 @@ public class CalendarRenderer extends RendererBase {
         }
         writer.endElement("div");
 
-        CalendarYearPopup popup
-                = (CalendarYearPopup) context.getApplication().createComponent(CalendarYearPopup.COMPONENT_TYPE);
-        List<UIComponent> children = calendar.getChildren();
-        for (UIComponent child : children) {
-            if (child instanceof CalendarYearPopup
-                    && child.getClientId(context).indexOf(YEAR_SELECTOR_SUFFIX + DROP_SUFFIX) > -1) {
-                children.remove(child);
-                break;
-            }
-        }
-        children.add(popup);
-
-        popup.setId(calendar.getId() + YEAR_SELECTOR_SUFFIX + DROP_SUFFIX);
-
+        CalendarYearPopup popup = Components.getChildWithClass(calendar, CalendarYearPopup.class, YEAR_SELECTOR_SUFFIX + DROP_SUFFIX);
         popup.encodeBegin(context);
         popup.encodeChildren(context);
         popup.encodeEnd(context);
-
     }
 
     private void renderBody(FacesContext context, Calendar calendar) throws IOException {
