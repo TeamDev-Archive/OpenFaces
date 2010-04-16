@@ -11,43 +11,17 @@
  */
 package org.openfaces.component.chart;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.DateAxis;
-import org.jfree.chart.axis.DateTickMarkPosition;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.labels.StandardXYToolTipGenerator;
-import org.jfree.chart.labels.XYToolTipGenerator;
 import org.jfree.chart.plot.Plot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.AbstractRenderer;
 import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.renderer.category.BarRenderer3D;
 import org.jfree.chart.renderer.category.GradientBarPainter;
 import org.jfree.chart.renderer.category.StandardBarPainter;
-import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
-import org.jfree.chart.renderer.xy.GradientXYBarPainter;
-import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
-import org.jfree.chart.renderer.xy.XYLine3DRenderer;
-import org.jfree.chart.title.TextTitle;
-import org.jfree.chart.urls.StandardXYURLGenerator;
 import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
-import org.jfree.data.time.Year;
-import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.ui.GradientPaintTransformType;
-import org.jfree.ui.HorizontalAlignment;
-import org.jfree.ui.RectangleEdge;
-import org.jfree.ui.StandardGradientPaintTransformer;
 import org.openfaces.component.chart.impl.ModelConverter;
 import org.openfaces.component.chart.impl.ModelInfo;
 import org.openfaces.component.chart.impl.ModelType;
-import org.openfaces.component.chart.impl.PropertiesConverter;
 import org.openfaces.component.chart.impl.plots.GridCategoryPlotAdapter;
 import org.openfaces.component.chart.impl.plots.GridDatePlotAdapter;
 import org.openfaces.component.chart.impl.plots.GridXYPlotAdapter;
@@ -55,16 +29,12 @@ import org.openfaces.component.chart.impl.renderers.BarRenderer3DAdapter;
 import org.openfaces.component.chart.impl.renderers.BarRendererAdapter;
 import org.openfaces.component.chart.impl.renderers.GradientXYBarPainterAdapter;
 import org.openfaces.component.chart.impl.renderers.StandardXYBarPainterAdapter;
-import org.openfaces.component.chart.impl.renderers.XYBarRenderer3DAdapter;
 import org.openfaces.component.chart.impl.renderers.XYBarRendererAdapter;
-import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 import java.awt.*;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Iterator;
 
 /**
  * @author Ekaterina Shliakhovetskaya
@@ -79,11 +49,6 @@ public class BarChartView extends GridChartView {
     private Double shadowXOffset = 4.0;
     private Double shadowYOffset = 4.0;
     private Color shadowColor = Color.GRAY;
-
-    private boolean showOutline;
-    private Color outlineColor = Color.GRAY;
-    private Double outlineWidth;
-    
 
     @Override
     public String getFamily() {
@@ -106,14 +71,14 @@ public class BarChartView extends GridChartView {
         if (info.getModelType().equals(ModelType.Number)) {
             XYDataset ds = ModelConverter.toXYSeriesCollection(info);
             XYBarRenderer renderer = new XYBarRendererAdapter(this);
-            configureRendererPresentation((XYBarRendererAdapter) renderer);
+            configureRendererPresentation((XYBarRendererAdapter) renderer, ds.getSeriesCount());
 
             return new GridXYPlotAdapter(ds, renderer, chart, this);
         }
         if (info.getModelType().equals(ModelType.Date)) {
             TimeSeriesCollection ds = ModelConverter.toTimeSeriesCollection(info);
             XYBarRenderer renderer = new XYBarRendererAdapter(this);
-            configureRendererPresentation((XYBarRendererAdapter) renderer);
+            configureRendererPresentation((XYBarRendererAdapter) renderer, ds.getSeriesCount());
 
             return new GridDatePlotAdapter(ds, renderer, chart, this);
         }
@@ -122,11 +87,11 @@ public class BarChartView extends GridChartView {
         BarRenderer renderer = isEnable3D()
                 ? new BarRenderer3DAdapter(this)
                 : new BarRendererAdapter(this);
-        configureRendererPresentation(renderer);
+        configureRendererPresentation(renderer, ds.getRowCount());
         return new GridCategoryPlotAdapter(ds, renderer, chart, this);
     }
 
-    private void configureRendererPresentation(BarRenderer renderer) {
+    private void configureRendererPresentation(BarRenderer renderer, int seriesCount) {
         if (isShowGradient()) {
             renderer.setBarPainter(new GradientBarPainter(getG1WhitePosition(), getG2FullIntensityPosition(), getG3LightIntensityPosition()));
         } else {
@@ -139,11 +104,24 @@ public class BarChartView extends GridChartView {
 
         renderer.setShadowPaint(getShadowColor());
 
-        if (isShowOutline()) {
-            renderer.setDrawBarOutline(isShowOutline());
-            renderer.setBaseOutlinePaint(getOutlineColor());
+        final boolean outlinesSpecified = getOutlines() != null && !getOutlines().isEmpty();
 
-            renderer.setBaseOutlineStroke(new BasicStroke(getOutlineWidth().floatValue()), true);
+        if (getDefaultOutlineStyle() != null || outlinesSpecified) {
+            renderer.setDrawBarOutline(true);
+        }
+
+        if (getDefaultOutlineStyle() != null && !outlinesSpecified) {
+            renderer.setBaseOutlinePaint(getDefaultOutlineStyle().getColor());
+            renderer.setBaseOutlineStroke(getDefaultOutlineStyle().getStroke());
+        } else if (outlinesSpecified) {
+            final Iterator outlinesIterator = getOutlines().iterator();
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                if (outlinesIterator.hasNext()) {
+                    final LineStyle lineStyle = (LineStyle) outlinesIterator.next();
+                    renderer.setSeriesOutlinePaint(seriesIndex, lineStyle.getColor());
+                    renderer.setSeriesOutlineStroke(seriesIndex, lineStyle.getStroke());
+                }
+            }
         }
 
         if (isEnable3D()) {
@@ -151,7 +129,7 @@ public class BarChartView extends GridChartView {
         }
     }
 
-    private void configureRendererPresentation(XYBarRendererAdapter renderer) {
+    private void configureRendererPresentation(XYBarRendererAdapter renderer, int seriesCount) {
         if (isShowGradient()) {
             renderer.setBarPainter(new GradientXYBarPainterAdapter(getG1WhitePosition(), getG2FullIntensityPosition(), getG3LightIntensityPosition()));
         } else {
@@ -164,11 +142,24 @@ public class BarChartView extends GridChartView {
 
         renderer.setShadowPaint(getShadowColor());
 
-        if (isShowOutline()) {
-            renderer.setDrawBarOutline(isShowOutline());
-            renderer.setBaseOutlinePaint(getOutlineColor());
+        final boolean outlinesSpecified = getOutlines() != null && !getOutlines().isEmpty();
 
-            renderer.setBaseOutlineStroke(new BasicStroke(getOutlineWidth().floatValue()), true);
+        if (getDefaultOutlineStyle() != null || outlinesSpecified) {
+            renderer.setDrawBarOutline(true);
+        }
+
+        if (getDefaultOutlineStyle() != null && !outlinesSpecified) {
+            renderer.setBaseOutlinePaint(getDefaultOutlineStyle().getColor());
+            renderer.setBaseOutlineStroke(getDefaultOutlineStyle().getStroke());
+        } else if (outlinesSpecified) {
+            final Iterator outlinesIterator = getOutlines().iterator();
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                if (outlinesIterator.hasNext()) {
+                    final LineStyle lineStyle = (LineStyle) outlinesIterator.next();
+                    renderer.setSeriesOutlinePaint(seriesIndex, lineStyle.getColor());
+                    renderer.setSeriesOutlineStroke(seriesIndex, lineStyle.getStroke());
+                }
+            }
         }
     }
 
@@ -270,30 +261,6 @@ public class BarChartView extends GridChartView {
         this.shadowColor = shadowColor;
     }
 
-    public boolean isShowOutline() {
-        return ValueBindings.get(this, "showOutline", showOutline, false);
-    }
-
-    public void setShowOutline(boolean showOutline) {
-        this.showOutline = showOutline;
-    }
-
-    public Color getOutlineColor() {
-        return ValueBindings.get(this, "outlineColor", outlineColor, null);
-    }
-
-    public void setOutlineColor(Color outlineColor) {
-        this.outlineColor = outlineColor;
-    }
-
-    public Double getOutlineWidth() {
-        return ValueBindings.get(this, "outlineWidth", outlineWidth, 0);
-    }
-
-    public void setOutlineWidth(Double outlineWidth) {
-        this.outlineWidth = outlineWidth;
-    }
-
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
@@ -307,9 +274,6 @@ public class BarChartView extends GridChartView {
                 shadowXOffset,
                 shadowYOffset,
                 saveAttachedState(context, shadowColor),
-                showOutline,
-                saveAttachedState(context, outlineColor),
-                outlineWidth
         };
     }
 
@@ -327,9 +291,6 @@ public class BarChartView extends GridChartView {
         shadowXOffset = (Double) state[i++];
         shadowYOffset = (Double) state[i++];
         shadowColor = (Color) restoreAttachedState(facesContext, state[i++]);
-        showOutline = (Boolean) state[i++];
-        outlineColor = (Color) restoreAttachedState(facesContext, state[i++]);
-        outlineWidth = (Double) state[i++];
     }
 
 

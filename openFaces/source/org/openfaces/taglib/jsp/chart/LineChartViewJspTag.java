@@ -36,8 +36,8 @@ public class LineChartViewJspTag extends GridChartViewJspTag {
         getDelegate().setPropertyValue("defaultLineStyle", defaultLineStyle);
     }
 
-    public void setStrokes(ValueExpression strokes) {
-        getDelegate().setPropertyValue("strokes", strokes);
+    public void setLineStyles(ValueExpression strokes) {
+        getDelegate().setPropertyValue("lineStyles", strokes);
     }
 
     public void setFillPaints(ValueExpression fillPaints) {

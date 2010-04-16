@@ -29,6 +29,10 @@ public class LineStyle {
         this.stroke = stroke;
     }
 
+    public LineStyle(Stroke stroke) {
+        this.stroke = stroke;
+    }
+
     public Color getColor() {
         return color;
     }

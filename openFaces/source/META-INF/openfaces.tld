@@ -19091,7 +19091,7 @@ and it is automatically triggered on any form submission. -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <name>strokes</name>
+      <name>lineStyles</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>

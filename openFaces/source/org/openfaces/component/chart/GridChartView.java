@@ -182,7 +182,7 @@ public abstract class GridChartView extends ChartView {
     }
 
     public LineStyle getDefaultOutlineStyle() {
-        return ValueBindings.get(this, "defaultOutlineStyle", defaultOutlineStyle, null);
+        return ValueBindings.get(this, "defaultOutlineStyle", defaultOutlineStyle, LineStyle.class);
     }
 
     public void setDefaultOutlineStyle(LineStyle defaultOutlineStyle) {
@@ -190,7 +190,7 @@ public abstract class GridChartView extends ChartView {
     }
 
     public Collection getOutlines() {
-        return ValueBindings.get(this, "outlines", outlines, null);
+        return ValueBindings.get(this, "outlines", outlines, Collection.class);
     }
 
     public void setOutlines(Collection outlines) {
@@ -236,7 +236,9 @@ public abstract class GridChartView extends ChartView {
                 keyAxisLabel,
                 valueAxisLabel,
                 saveAttachedState(context, axes),
-                saveAttachedState(context, orientation)
+                saveAttachedState(context, orientation),
+                saveAttachedState(context, defaultOutlineStyle),
+                saveAttachedState(context, outlines)
         };
 
     }
@@ -254,6 +256,8 @@ public abstract class GridChartView extends ChartView {
         valueAxisLabel = (String) state[i++];
         axes = (ArrayList<ChartAxis>) restoreAttachedState(facesContext, state[i++]);
         orientation = (Orientation) restoreAttachedState(facesContext, state[i++]);
+        defaultOutlineStyle = (LineStyle) restoreAttachedState(facesContext, state[i++]);
+        outlines = (Collection<LineStyle>) restoreAttachedState(facesContext, state[i++]);
     }
 
     public void decodeAction(String fieldValue) {

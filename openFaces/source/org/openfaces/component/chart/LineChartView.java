@@ -33,6 +33,7 @@ import javax.faces.context.FacesContext;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -44,7 +45,7 @@ public class LineChartView extends GridChartView {
 
     private Paint defaultFillColor;
     private LineStyle defaultLineStyle;
-    private Collection strokes;
+    private Collection lineStyles;
     private Collection fillPaints;
 
     public boolean isShapesVisible() {
@@ -84,7 +85,11 @@ public class LineChartView extends GridChartView {
         return new Object[]{
                 superState,
                 shapesVisible,
-                saveAttachedState(context, linePropertiesList)
+                saveAttachedState(context, linePropertiesList),
+                saveAttachedState(context, defaultFillColor),
+                saveAttachedState(context, fillPaints),
+                saveAttachedState(context, defaultLineStyle),
+                saveAttachedState(context, lineStyles)
         };
 
     }
@@ -97,6 +102,10 @@ public class LineChartView extends GridChartView {
         super.restoreState(facesContext, state[i++]);
         shapesVisible = (Boolean) state[i++];
         linePropertiesList = (List<LineProperties>) restoreAttachedState(facesContext, state[i++]);
+        defaultFillColor = (Paint) restoreAttachedState(facesContext, state[i++]);
+        fillPaints = (Collection<Paint>) restoreAttachedState(facesContext, state[i++]);
+        defaultLineStyle = (LineStyle) restoreAttachedState(facesContext, state[i++]);
+        lineStyles = (Collection<LineStyle>) restoreAttachedState(facesContext, state[i++]);
     }
 
     protected Plot createPlot(Chart chart, ChartModel model, ModelInfo info) {
@@ -105,7 +114,7 @@ public class LineChartView extends GridChartView {
             XYLineAndShapeRenderer renderer = isEnable3D()
                     ? new XYLineRenderer3DAdapter(this, ds)
                     : new XYLineRendererAdapter(this, ds);
-            configureRenderer(renderer);
+            configureRenderer(renderer, ds.getSeriesCount());
             return new GridXYPlotAdapter(ds, renderer, chart, this);
         }
         if (info.getModelType().equals(ModelType.Date)) {
@@ -113,24 +122,24 @@ public class LineChartView extends GridChartView {
             XYLineAndShapeRenderer renderer = isEnable3D()
                     ? new XYLineRenderer3DAdapter(this, ds)
                     : new XYLineRendererAdapter(this, ds);
-            configureRenderer(renderer);
+            configureRenderer(renderer, ds.getSeriesCount());
             return new GridDatePlotAdapter(ds, renderer, chart, this);
         }
         CategoryDataset ds = ModelConverter.toCategoryDataset(info);
         LineAndShapeRenderer renderer = isEnable3D()
                 ? new LineRenderer3DAdapter(this, ds)
                 : new LineRendererAdapter(this, ds);
-        configureRenderer(renderer);
+        configureRenderer(renderer, ds.getRowCount());
         return new GridCategoryPlotAdapter(ds, renderer, chart, this);
     }
 
-    private void configureRenderer(XYLineAndShapeRenderer renderer) {
+    private void configureRenderer(XYLineAndShapeRenderer renderer, int seriesCount) {
         if (isEnable3D()) {
             ((XYLineRenderer3DAdapter) renderer).setWallPaint(getWallColor());
         }
-        
+
         final boolean fillPaintsSpecified = getFillPaints() != null && !getFillPaints().isEmpty();
-        final boolean strokesSpecified = getStrokes() != null && !getStrokes().isEmpty();
+        final boolean strokesSpecified = getLineStyles() != null && !getLineStyles().isEmpty();
         final boolean outlinesSpecified = getOutlines() != null && !getOutlines().isEmpty();
 
         renderer.setBaseShapesVisible(true);
@@ -142,18 +151,25 @@ public class LineChartView extends GridChartView {
         if (getDefaultFillColor() != null && !fillPaintsSpecified) {
             renderer.setBaseFillPaint(getDefaultFillColor());
         } else if (fillPaintsSpecified) {
-            renderer.setSeriesFillPaint(0, Color.RED);
-            renderer.setSeriesFillPaint(1, Color.GREEN);
-            renderer.setSeriesFillPaint(2, Color.BLUE);
+            final Iterator fillPaintsIterator = getFillPaints().iterator();
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                if (fillPaintsIterator.hasNext()) {
+                    final Paint paint = (Paint) fillPaintsIterator.next();
+                    renderer.setSeriesFillPaint(seriesIndex, paint);
+                }
+            }
         }
 
         if (getDefaultLineStyle() != null && !strokesSpecified) {
             renderer.setBaseStroke(getDefaultLineStyle().getStroke());
         } else if (strokesSpecified) {
-            renderer.setSeriesStroke(0, new BasicStroke(3F));
-            renderer.setSeriesStroke(1, new BasicStroke(2.0F, 1, 1, 1.0F, new float[]{
-                    6F, 6F
-            }, 0.0F));
+            final Iterator strokesIterator = getLineStyles().iterator();
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                if (strokesIterator.hasNext()) {
+                    final LineStyle lineStyle = (LineStyle) strokesIterator.next();
+                    renderer.setSeriesStroke(seriesIndex, lineStyle.getStroke());
+                }
+            }
         }
 
         if (getDefaultOutlineStyle() != null || outlinesSpecified) {
@@ -164,19 +180,25 @@ public class LineChartView extends GridChartView {
             renderer.setBaseOutlinePaint(getDefaultOutlineStyle().getColor());
             renderer.setBaseOutlineStroke(getDefaultOutlineStyle().getStroke());
         } else if (outlinesSpecified) {
-            renderer.setSeriesOutlineStroke(0, new BasicStroke(2.0F));
-            renderer.setSeriesOutlineStroke(1, new BasicStroke(3.0F));
-            renderer.setSeriesOutlineStroke(2, new BasicStroke(6.0F));
+            renderer.setUseOutlinePaint(true);
+            final Iterator outlinesIterator = getOutlines().iterator();
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                if (outlinesIterator.hasNext()) {
+                    final LineStyle lineStyle = (LineStyle) outlinesIterator.next();
+                    renderer.setSeriesOutlinePaint(seriesIndex, lineStyle.getColor());
+                    renderer.setSeriesOutlineStroke(seriesIndex, lineStyle.getStroke());
+                }
+            }
         }
     }
 
-    private void configureRenderer(LineAndShapeRenderer renderer) {
+    private void configureRenderer(LineAndShapeRenderer renderer, int seriesCount) {
         if (isEnable3D()) {
             ((LineRenderer3DAdapter) renderer).setWallPaint(getWallColor());
         }
 
         final boolean fillPaintsSpecified = getFillPaints() != null && !getFillPaints().isEmpty();
-        final boolean strokesSpecified = getStrokes() != null && !getStrokes().isEmpty();
+        final boolean lineStylesSpecified = getLineStyles() != null && !getLineStyles().isEmpty();
         final boolean outlinesSpecified = getOutlines() != null && !getOutlines().isEmpty();
 
         renderer.setBaseShapesVisible(true);
@@ -188,18 +210,26 @@ public class LineChartView extends GridChartView {
         if (getDefaultFillColor() != null && !fillPaintsSpecified) {
             renderer.setBaseFillPaint(getDefaultFillColor());
         } else if (fillPaintsSpecified) {
-            renderer.setSeriesFillPaint(0, Color.RED);
-            renderer.setSeriesFillPaint(1, Color.GREEN);
-            renderer.setSeriesFillPaint(2, Color.BLUE);
+            final Iterator fillPaintsIterator = getFillPaints().iterator();
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                if (fillPaintsIterator.hasNext()) {
+                    final Paint paint = (Paint) fillPaintsIterator.next();
+                    renderer.setSeriesFillPaint(seriesIndex, paint);
+                    renderer.setSeriesShapesFilled(seriesIndex,true);
+                }
+            }
         }
 
-        if (getDefaultLineStyle() != null && !strokesSpecified) {
+        if (getDefaultLineStyle() != null && !lineStylesSpecified) {
             renderer.setBaseStroke(getDefaultLineStyle().getStroke());
-        } else if (strokesSpecified) {
-            renderer.setSeriesStroke(0, new BasicStroke(3F));
-            renderer.setSeriesStroke(1, new BasicStroke(2.0F, 1, 1, 1.0F, new float[]{
-                    6F, 6F
-            }, 0.0F));
+        } else if (lineStylesSpecified) {
+            final Iterator strokesIterator = getLineStyles().iterator();
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                if (strokesIterator.hasNext()) {
+                    final LineStyle lineStyle = (LineStyle) strokesIterator.next();
+                    renderer.setSeriesStroke(seriesIndex, lineStyle.getStroke());
+                }
+            }
         }
 
         if (getDefaultOutlineStyle() != null || outlinesSpecified) {
@@ -210,15 +240,21 @@ public class LineChartView extends GridChartView {
             renderer.setBaseOutlinePaint(getDefaultOutlineStyle().getColor());
             renderer.setBaseOutlineStroke(getDefaultOutlineStyle().getStroke());
         } else if (outlinesSpecified) {
-            renderer.setSeriesOutlineStroke(0, new BasicStroke(2.0F));
-            renderer.setSeriesOutlineStroke(1, new BasicStroke(3.0F));
-            renderer.setSeriesOutlineStroke(2, new BasicStroke(6.0F));
+            renderer.setUseOutlinePaint(true);
+            final Iterator outlinesIterator = getOutlines().iterator();
+            for (int seriesIndex = 0; seriesIndex < seriesCount; seriesIndex++) {
+                if (outlinesIterator.hasNext()) {
+                    final LineStyle lineStyle = (LineStyle) outlinesIterator.next();
+                    renderer.setSeriesOutlinePaint(seriesIndex, lineStyle.getColor());
+                    renderer.setSeriesOutlineStroke(seriesIndex, lineStyle.getStroke());
+                }
+            }
         }
     }
 
 
     public Paint getDefaultFillColor() {
-        return ValueBindings.get(this, "defaultFillColor", defaultFillColor, null);
+        return ValueBindings.get(this, "defaultFillColor", defaultFillColor, Paint.class);
     }
 
     public void setDefaultFillColor(Paint defaultFillColor) {
@@ -226,7 +262,7 @@ public class LineChartView extends GridChartView {
     }
 
     public LineStyle getDefaultLineStyle() {
-        return ValueBindings.get(this, "defaultLineStyle", defaultLineStyle, null);
+        return ValueBindings.get(this, "defaultLineStyle", defaultLineStyle, LineStyle.class);
     }
 
     public void setDefaultLineStyle(LineStyle defaultLineStyle) {
@@ -234,16 +270,16 @@ public class LineChartView extends GridChartView {
     }
 
 
-    public Collection getStrokes() {
-        return ValueBindings.get(this, "strokes", strokes, null);
+    public Collection getLineStyles() {
+        return ValueBindings.get(this, "lineStyles", lineStyles, Collection.class);
     }
 
-    public void setStrokes(Collection strokes) {
-        this.strokes = strokes;
+    public void setLineStyles(Collection lineStyles) {
+        this.lineStyles = lineStyles;
     }
 
     public Collection getFillPaints() {
-        return ValueBindings.get(this, "fillPaints", fillPaints, null);
+        return ValueBindings.get(this, "fillPaints", fillPaints, Collection.class);
     }
 
     public void setFillPaints(Collection fillPaints) {
