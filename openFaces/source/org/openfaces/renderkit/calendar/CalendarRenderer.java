@@ -26,6 +26,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ComponentSystemEventListener;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -38,7 +43,8 @@ import java.util.TimeZone;
 /**
  * @author Kharchenko
  */
-public class CalendarRenderer extends RendererBase {
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
+public class CalendarRenderer extends RendererBase implements ComponentSystemEventListener {
     private static final String DEFAULT_CLASS = "o_calendar";
     private static final String DEFAULT_DAY_CLASS = "o_calendar_day";
     private static final String DEFAULT_ROLLOVER_DAY_CLASS = "o_calendar_rollover_day";
@@ -281,7 +287,6 @@ public class CalendarRenderer extends RendererBase {
         writer.startElement("table", calendar);
         writeHeaderStyleAndClassAttributes(context, calendar);
         writer.startElement("tr", calendar);
-        createSubComponents(calendar);
         renderMonthSelectorSection(context, calendar);
         renderYearSelectorSection(context, calendar);
         writer.endElement("tr");
@@ -290,6 +295,10 @@ public class CalendarRenderer extends RendererBase {
         writer.endElement("td");
         writer.endElement("tr");
         writer.endElement("tbody");
+    }
+
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        createSubComponents((Calendar) event.getComponent());
     }
 
     private void createSubComponents(Calendar calendar) {
