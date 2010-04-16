@@ -1890,11 +1890,11 @@ if (!window.O$) {
       return;
     O$._mouseListenerUtilsInitialized = true;
     O$._elementUnderMouse = null;
-    document._of_prevMouseMove = document.onmousemove;
+    var prevMouseMove = document.onmousemove;
     document.onmousemove = function(e) {
       var result = undefined;
-      if (document._of_prevMouseMove) {
-        result = document._of_prevMouseMove(e);
+      if (prevMouseMove) {
+        result = prevMouseMove(e);
       }
 
       var element;
