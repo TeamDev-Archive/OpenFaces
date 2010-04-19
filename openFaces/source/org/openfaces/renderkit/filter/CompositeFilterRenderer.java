@@ -41,6 +41,7 @@ import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -175,8 +176,8 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
             if (ajaxForApply == null) {
                 ajaxForApply = new Ajax();
                 ajaxForApply.setId(ajaxForApplyId);
-                ajaxForApply.setExecute(Arrays.asList(":" + compositeFilter.getClientId(context)));
-                ajaxForApply.setRender(Arrays.asList(_for));
+                ajaxForApply.setExecute(new ArrayList<String>(Collections.singletonList(":" + compositeFilter.getClientId(context))));
+                ajaxForApply.setRender(new ArrayList<String>(Collections.singletonList(_for)));
                 ajaxForApply.setStandalone(true);
                 compositeFilter.getChildren().add(ajaxForApply);
             }
