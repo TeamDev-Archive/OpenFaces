@@ -32,6 +32,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.DateTimeConverter;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ComponentSystemEventListener;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,7 +48,8 @@ import java.util.TimeZone;
 /**
  * @author Pavel Kaplin
  */
-public class DateChooserRenderer extends DropDownComponentRenderer {
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
+public class DateChooserRenderer extends DropDownComponentRenderer implements ComponentSystemEventListener {
 
     @Override
     protected void registerJS(FacesContext context, UIComponent component) throws IOException {
@@ -110,27 +116,29 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         dateChooser.setConverter(converter);
     }
 
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        DateChooser dateChooser = (DateChooser) event.getComponent();
+        Components.getChildWithClass(dateChooser, DateChooserPopup.class, POPUP_SUFFIX);
+    }
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (AjaxUtil.getSkipExtraRenderingOnPortletsAjax(context))
             return;
 
         DateChooser dateChooser = (DateChooser) component;
-        DateChooserPopup popup
-                = (DateChooserPopup) context.getApplication().createComponent(DateChooserPopup.COMPONENT_TYPE);
-        List<UIComponent> children = dateChooser.getChildren();
-        popup.setParent(dateChooser);
+        DateChooserPopup popup = Components.getChildWithClass(dateChooser, DateChooserPopup.class, POPUP_SUFFIX);
 
-        popup.setId(component.getId() + POPUP_SUFFIX);
-        Calendar c = (Calendar) context.getApplication().createComponent(Calendar.COMPONENT_TYPE);
+        List<UIComponent> children = dateChooser.getChildren();
+        Calendar c = popup.getCalendar();
 
         c.getAttributes().put(CalendarRenderer.HIDE_DEFAULT_FOCUS_KEY, Boolean.TRUE);
 
         if (dateChooser.isValid()) {
             c.setValue(dateChooser.getValue());
         }
-        c.setTimeZone(dateChooser.getTimeZone());
         c.setStyle(dateChooser.getCalendarStyle());
+        c.setTimeZone(dateChooser.getTimeZone());
         c.setDayStyle(dateChooser.getDayStyle());
         c.setRolloverDayStyle(dateChooser.getRolloverDayStyle());
         c.setInactiveMonthDayStyle(dateChooser.getInactiveMonthDayStyle());
@@ -187,8 +195,6 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
                 c.getChildren().add(child);
             }
         }
-
-        popup.setCalendar(c);
 
         popup.encodeAll(context);
         Rendering.encodeClientActions(context, component);
