@@ -30,8 +30,9 @@ import java.util.List;
 public class DateChooserPopup extends AbstractPopup {
     public static final String COMPONENT_TYPE = "org.openfaces.DateChooserPopup";
 
+    private static final String CALENDAR_SUFFIX = Rendering.SERVER_ID_SUFFIX_SEPARATOR + "calendar";
+
     private Calendar calendar;
-    private String calendarIdSuffix;
 
     public DateChooserPopup() {
     }
@@ -47,14 +48,14 @@ public class DateChooserPopup extends AbstractPopup {
     protected void encodeContent(FacesContext context) throws IOException {
         List<UIComponent> children = getChildren();
         for (UIComponent child : children) {
-            if (child instanceof Calendar && child.getClientId(context).indexOf(calendarIdSuffix) > -1) {
+            if (child instanceof Calendar && child.getClientId(context).indexOf(CALENDAR_SUFFIX) > -1) {
                 children.remove(child);
                 break;
             }
         }
         children.add(calendar);
 
-        calendar.setId(getId() + calendarIdSuffix);
+        calendar.setId(getId() + CALENDAR_SUFFIX);
         Rendering.renderChildren(context, this);
     }
 
@@ -62,13 +63,9 @@ public class DateChooserPopup extends AbstractPopup {
         this.calendar = calendar;
     }
 
-    public void setCalendarIdSuffix(String calendarIdSuffix) {
-        this.calendarIdSuffix = calendarIdSuffix;
-    }
-
     @Override
     public Object saveState(FacesContext context) {
-        return new Object[]{super.saveState(context), calendar, calendarIdSuffix};
+        return new Object[]{super.saveState(context), calendar};
     }
 
     @Override
@@ -77,6 +74,5 @@ public class DateChooserPopup extends AbstractPopup {
         int i = 0;
         super.restoreState(context, vals[i++]);
         calendar = (Calendar) vals[i++];
-        calendarIdSuffix = (String) vals[i++];
     }
 }

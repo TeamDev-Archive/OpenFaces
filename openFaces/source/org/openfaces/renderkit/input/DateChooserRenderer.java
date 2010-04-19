@@ -45,7 +45,7 @@ import java.util.TimeZone;
  * @author Pavel Kaplin
  */
 public class DateChooserRenderer extends DropDownComponentRenderer {
-    public static final String CALENDAR_SUFFIX = Rendering.SERVER_ID_SUFFIX_SEPARATOR + "calendar";
+    
 
     @Override
     protected void registerJS(FacesContext context, UIComponent component) throws IOException {
@@ -191,7 +191,6 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
         }
 
         popup.setCalendar(c);
-        popup.setCalendarIdSuffix(CALENDAR_SUFFIX);
 
         popup.encodeAll(context);
         Rendering.encodeClientActions(context, component);
