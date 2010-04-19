@@ -421,4 +421,12 @@ public class Components {
 
         return component;
     }
+
+    public static <E extends UIComponent> E getParentWithClass(UIComponent component, Class<E> parentClass) {
+        for (UIComponent parent = component.getParent(); parent != null; parent = parent.getParent())
+            if (parentClass.isAssignableFrom(parent.getClass()))
+                return (E) parent;
+        return null;
+    }
+
 }
