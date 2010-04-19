@@ -43,6 +43,7 @@ import java.util.TimeZone;
 /**
  * @author Kharchenko
  */
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public class CalendarRenderer extends RendererBase implements ComponentSystemEventListener {
     private static final String DEFAULT_CLASS = "o_calendar";
     private static final String DEFAULT_DAY_CLASS = "o_calendar_day";

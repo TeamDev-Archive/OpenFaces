@@ -12,7 +12,6 @@
 package org.openfaces.renderkit.input;
 
 import org.openfaces.component.calendar.Calendar;
-import org.openfaces.component.calendar.DateRanges;
 import org.openfaces.component.input.DateChooser;
 import org.openfaces.component.input.DateChooserPopup;
 import org.openfaces.component.input.DropDownComponent;
@@ -48,6 +47,7 @@ import java.util.TimeZone;
 /**
  * @author Pavel Kaplin
  */
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public class DateChooserRenderer extends DropDownComponentRenderer implements ComponentSystemEventListener {
 
     @Override

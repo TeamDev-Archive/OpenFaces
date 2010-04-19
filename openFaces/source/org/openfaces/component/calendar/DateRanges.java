@@ -28,6 +28,7 @@ import javax.faces.event.PostAddToViewEvent;
 /**
  * @author Kharchenko
  */
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public class DateRanges extends UIComponentBase {
     public static final String COMPONENT_TYPE = "org.openfaces.DateRanges";
     public static final String COMPONENT_FAMILY = "org.openfaces.DateRanges";

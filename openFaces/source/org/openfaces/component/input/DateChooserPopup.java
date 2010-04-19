@@ -30,6 +30,7 @@ import java.io.IOException;
  *
  * @author Kharchenko
  */
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public class DateChooserPopup extends AbstractPopup {
     public static final String COMPONENT_TYPE = "org.openfaces.DateChooserPopup";
 
