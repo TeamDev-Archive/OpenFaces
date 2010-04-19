@@ -20,10 +20,15 @@ import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 
 /**
  * @author Dmitry Pikhulya
  */
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public class EventEditorDialog extends Window implements CompoundComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.EventEditorDialog";
     public static final String COMPONENT_FAMILY = "org.openfaces.EventEditorDialog";
@@ -242,6 +247,14 @@ public class EventEditorDialog extends Window implements CompoundComponent {
 
     public void setDeleteButtonText(String value) {
         deleteButtonText = value;
+    }
+
+    @Override
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+        if (event instanceof PostAddToViewEvent) {
+            createSubComponents(getFacesContext());
+        }
     }
 
     public void createSubComponents(FacesContext context) {

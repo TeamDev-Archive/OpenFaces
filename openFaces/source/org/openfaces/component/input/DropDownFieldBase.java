@@ -18,7 +18,12 @@ import org.openfaces.util.ValueBindings;
 import org.openfaces.util.AjaxUtil;
 
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public abstract class DropDownFieldBase extends DropDownComponent implements CompoundComponent {
     private Boolean autoComplete;
     private Side listAlignment;
@@ -398,6 +403,14 @@ public abstract class DropDownFieldBase extends DropDownComponent implements Com
     public void processRestoreState(FacesContext context, Object state) {
         Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
         super.processRestoreState(context, ajaxState != null ? ajaxState : state);
+    }
+
+    @Override
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+        if (event instanceof PostAddToViewEvent) {
+            createSubComponents(getFacesContext());
+        }
     }
 
     public void createSubComponents(FacesContext context) {

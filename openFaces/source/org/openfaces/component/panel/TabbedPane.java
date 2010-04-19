@@ -22,6 +22,10 @@ import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 
 /**
  * The TabbedPane component is a container that consists of several sub-containers called
@@ -32,6 +36,7 @@ import javax.faces.context.FacesContext;
  *
  * @author Andrew Palval
  */
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public class TabbedPane extends MultiPageContainer implements TabSelectionHolder, CompoundComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.TabbedPane";
     public static final String COMPONENT_FAMILY = "org.openfaces.TabbedPane";
@@ -354,6 +359,14 @@ public class TabbedPane extends MultiPageContainer implements TabSelectionHolder
         focusable = (Boolean) values[i++];
         focusAreaStyle = (String) values[i++];
         focusAreaClass = (String) values[i++];
+    }
+
+    @Override
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+        if (event instanceof PostAddToViewEvent) {
+            createSubComponents(getFacesContext());
+        }
     }
 
     public void createSubComponents(FacesContext context) {

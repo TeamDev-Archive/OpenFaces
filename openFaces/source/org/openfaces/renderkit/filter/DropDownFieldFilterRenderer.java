@@ -20,7 +20,6 @@ import org.openfaces.util.DefaultStyles;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
 
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
@@ -126,9 +125,6 @@ public class DropDownFieldFilterRenderer extends TextSearchFilterRenderer {
         allRecordsItem.getChildren().add(outputText);
         itemList.add(0, allRecordsItem);
         dropDownItems.setValue(itemList);
-        List<UIComponent> children = field.getChildren();
-        children.clear();
-        children.add(dropDownItems);
     }
 
     protected String[] getCopiedFilterAttributes() {

@@ -26,6 +26,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.el.MethodBinding;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.ValueChangeListener;
 import javax.faces.validator.Validator;
 
@@ -37,6 +41,7 @@ import javax.faces.validator.Validator;
  *
  * @author Kharchenko
  */
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public class FoldingPanel extends AbstractPanelWithCaption implements CompoundComponent, EditableStateHolder {
     public static final String COMPONENT_TYPE = "org.openfaces.FoldingPanel";
     public static final String COMPONENT_FAMILY = "org.openfaces.FoldingPanel";
@@ -263,6 +268,14 @@ public class FoldingPanel extends AbstractPanelWithCaption implements CompoundCo
 
     private boolean isContentPreloaded() {
         return Boolean.TRUE.equals(getAttributes().get("_contentPreloaded_"));
+    }
+
+    @Override
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+        if (event instanceof PostAddToViewEvent) {
+            createSubComponents(getFacesContext());
+        }
     }
 
     public void createSubComponents(FacesContext context) {

@@ -16,6 +16,10 @@ import org.openfaces.component.window.Window;
 import org.openfaces.renderkit.CompoundComponentRenderer;
 
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 
 /**
  * This component is under construction. API is subject to change. Please avoid using this component in a production
@@ -23,6 +27,7 @@ import javax.faces.context.FacesContext;
  *
  * @author Dmitry Pikhulya
  */
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public class Debug extends Window implements CompoundComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.Debug";
     public static final String COMPONENT_FAMILY = "org.openfaces.Debug";
@@ -39,6 +44,14 @@ public class Debug extends Window implements CompoundComponent {
     @Override
     protected String getDefaultCaptionText() {
         return "Debug";
+    }
+
+    @Override
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+        if (event instanceof PostAddToViewEvent) {
+            createSubComponents(getFacesContext());
+        }
     }
 
     public void createSubComponents(FacesContext context) {

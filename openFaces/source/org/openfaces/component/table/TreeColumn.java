@@ -17,10 +17,15 @@ import org.openfaces.util.Components;
 
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 
 /**
  * @author Dmitry Pikhulya
  */
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public class TreeColumn extends Column implements CompoundComponent {
     public static final String COMPONENT_TYPE = "org.openfaces.TreeColumn";
     public static final String COMPONENT_FAMILY = "org.openfaces.TreeColumn";
@@ -55,6 +60,13 @@ public class TreeColumn extends Column implements CompoundComponent {
         showAsTree = (Boolean) state[4];
     }
 
+    @Override
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+        if (event instanceof PostAddToViewEvent) {
+            createSubComponents(getFacesContext());
+        }
+    }
 
     public void createSubComponents(FacesContext context) {
         Components.getOrCreateFacet(context, this, ImageExpansionToggle.COMPONENT_TYPE, "expansionToggle", ImageExpansionToggle.class);

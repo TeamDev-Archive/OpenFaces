@@ -223,8 +223,6 @@ public class Components {
         Application application = context.getApplication();
         UIComponent component = application.createComponent(componentType);
         component.setId(id);
-        if (component instanceof CompoundComponent)
-            ((CompoundComponent) component).createSubComponents(context);
         return component;
     }
 

@@ -23,6 +23,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -32,6 +36,7 @@ import java.util.TreeSet;
 /**
  * @author Dmitry Pikhulya
  */
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public abstract class ExpressionFilter extends Filter implements CompoundComponent, ValueHolder {
     private static final String DEFAULT_ALL_RECORDS_CRITERION_NAME = "<All>";
     private static final String DEFAULT_EMPTY_RECORDS_CRITERION_NAME = "<Empty>";
@@ -432,6 +437,14 @@ public abstract class ExpressionFilter extends Filter implements CompoundCompone
         if (criterionExpression != null) {
             criterionExpression.setValue(context.getELContext(), value);
             criterionModelUpdateRequired = false;
+        }
+    }
+
+    @Override
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+        if (event instanceof PostAddToViewEvent) {
+            createSubComponents(getFacesContext());
         }
     }
 

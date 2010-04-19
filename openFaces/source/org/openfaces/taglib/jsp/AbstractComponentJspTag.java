@@ -11,7 +11,6 @@
  */
 package org.openfaces.taglib.jsp;
 
-import org.openfaces.taglib.TagUtil;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 import org.openfaces.taglib.internal.AbstractTag;
 
@@ -73,7 +72,6 @@ public abstract class AbstractComponentJspTag extends UIComponentELTag {
         FacesContext facesContext = getFacesContext();
         getDelegate().setFacesContext(facesContext);
         setComponentProperties(facesContext, component);
-        TagUtil.initComponentChildren(facesContext, component);
     }
 
     @Override

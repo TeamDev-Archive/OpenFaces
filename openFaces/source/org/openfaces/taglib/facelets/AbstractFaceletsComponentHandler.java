@@ -11,13 +11,15 @@
  */
 package org.openfaces.taglib.facelets;
 
-import javax.faces.view.facelets.*;
-import org.openfaces.taglib.TagUtil;
 import org.openfaces.taglib.internal.AbstractComponentTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
+import javax.faces.view.facelets.FaceletContext;
+import javax.faces.view.facelets.MetaRuleset;
+import javax.faces.view.facelets.TagAttribute;
 
 /**
  * @author Dmitry Pikhulya
@@ -53,12 +55,6 @@ public abstract class AbstractFaceletsComponentHandler extends ComponentHandler 
         } finally {
             tag.setFacesContext(null);
         }
-    }
-
-    public void onComponentCreated(FaceletContext faceletContext, UIComponent component, UIComponent parentComponent) {
-        super.onComponentCreated(faceletContext, component, parentComponent);
-        FacesContext facesContext = faceletContext.getFacesContext();
-        TagUtil.initComponentChildren(facesContext, component);
     }
 
 }
