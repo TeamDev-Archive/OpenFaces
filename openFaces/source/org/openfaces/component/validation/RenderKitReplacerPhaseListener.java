@@ -21,10 +21,16 @@ import org.openfaces.renderkit.validation.HtmlMessagesRenderer;
 import org.openfaces.util.Log;
 
 import javax.faces.FactoryFinder;
+import javax.faces.application.Application;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import javax.faces.event.PostAddToViewEvent;
+import javax.faces.event.SystemEvent;
+import javax.faces.event.SystemEventListener;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
 import java.lang.reflect.InvocationTargetException;
@@ -35,7 +41,7 @@ import java.util.Map;
 /**
  * @author Pavel Kaplin
  */
-public class RenderKitReplacerPhaseListener implements PhaseListener {
+public class RenderKitReplacerPhaseListener implements PhaseListener, SystemEventListener {
 
     private static final String FLAG_VALIDATION_RENDERERS_CHANGED = "org.openfaces.validation.standardMessagesRendererChanged";
     private static final String HTML_BASIC = "HTML_BASIC";
@@ -54,8 +60,13 @@ public class RenderKitReplacerPhaseListener implements PhaseListener {
         if (validationRenderersChanged == null) {
             replaceRenderKit(context);
             applicationMap.put(FLAG_VALIDATION_RENDERERS_CHANGED, Boolean.TRUE);
+
+            Application application = context.getApplication();
+            application.subscribeToEvent(PostAddToViewEvent.class, EditableValueHolder.class, this);
         }
     }
+
+
 
     public PhaseId getPhaseId() {
         return PhaseId.ANY_PHASE;
@@ -191,5 +202,19 @@ public class RenderKitReplacerPhaseListener implements PhaseListener {
             Rendering.logWarning(FacesContext.getCurrentInstance(), "ADF Faces support for renderkit was disabled.");
             factory.addRenderKit(renderKitId, new ValidationSupportRenderKit(renderKit));
         }
+    }
+
+    public void processEvent(SystemEvent event) throws AbortProcessingException {
+        if (event instanceof PostAddToViewEvent) {
+            if (vp.isUseDefaultClientValidationPresentationForForm(parentForm) || vp.isUseDefaultServerValidationPresentationForForm(parentForm)) {
+                int bubbleIndex = nextBubbleIndex(context);
+                ValidationSupportResponseWriter.addPresentationComponent(vc, bubbleIndex, vp);
+            }
+
+        }
+    }
+
+    public boolean isListenerForSource(Object source) {
+        return source instanceof EditableValueHolder;
     }
 }
