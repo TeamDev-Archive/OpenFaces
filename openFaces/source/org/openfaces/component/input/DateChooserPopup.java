@@ -30,7 +30,7 @@ import java.util.List;
 public class DateChooserPopup extends AbstractPopup {
     public static final String COMPONENT_TYPE = "org.openfaces.DateChooserPopup";
 
-    private static final String CALENDAR_SUFFIX = Rendering.SERVER_ID_SUFFIX_SEPARATOR + "calendar";
+    public static final String CALENDAR_SUFFIX = Rendering.SERVER_ID_SUFFIX_SEPARATOR + "calendar";
 
     private Calendar calendar;
 

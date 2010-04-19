@@ -11,10 +11,10 @@
  */
 package org.seleniuminspector.openfaces;
 
-import org.openfaces.renderkit.input.DateChooserRenderer;
+import org.openfaces.component.input.DateChooserPopup;
 import org.openfaces.renderkit.input.DropDownComponentRenderer;
-import org.seleniuminspector.ElementInspector;
 import org.seleniuminspector.ElementByLocatorInspector;
+import org.seleniuminspector.ElementInspector;
 
 /**
  * @author Dmitry Pikhulya
@@ -33,7 +33,7 @@ public class DateChooserInspector extends DropDownComponentInspector {
 
     public CalendarInspector calendar() {
         if (calendar == null) {
-            calendar = new CalendarInspector(popup().id() + DateChooserRenderer.CALENDAR_SUFFIX) {
+            calendar = new CalendarInspector(popup().id() + DateChooserPopup.CALENDAR_SUFFIX) {
 
                 public void selectCalendarCell(int row, int col) {
                     body().subElement("tr[" + (row + 1) + "]/td[" + (col) + "]/div").mouseUp();
