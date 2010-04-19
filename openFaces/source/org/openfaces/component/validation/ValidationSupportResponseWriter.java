@@ -295,7 +295,7 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
         UIForm parentForm = vc.getParentForm();
         if (vp.isUseDefaultClientValidationPresentationForForm(parentForm) || vp.isUseDefaultServerValidationPresentationForForm(parentForm)) {
             int bubbleIndex = nextBubbleIndex(context);
-            addPresentationComponent(vc, bubbleIndex, vp);
+            addPresentationComponent(vc.getComponent(), vc.getParentForm(), bubbleIndex, vp);
         }
         if (!vp.getClientValidationRuleForComponent(vc).equals(ClientValidationMode.OFF)) {
             List<String> javascriptLibraries = vc.getJavascriptLibrariesUrls();
@@ -336,31 +336,30 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
         return ValidationSupportResponseWriter.class.getName() + ".bubbleIndex";
     }
 
-    private void addPresentationComponent(VerifiableComponent vc, int idx, ValidationProcessor vp) throws IOException {
-        UIForm parentForm = vc.getParentForm();
+    private static void addPresentationComponent(UIComponent component, UIForm parentForm, int idx, ValidationProcessor vp) throws IOException {
         ClientValidationSupport clientValidationSupport = vp.getClientValidationSupport(parentForm);
-        createPresentationComponent("dfm" + idx, vc, clientValidationSupport, vp);
+        createPresentationComponent("dfm" + idx, component, clientValidationSupport, vp);
     }
 
-    private void createPresentationComponent(String id, VerifiableComponent verifiableComponent, ClientValidationSupport support, ValidationProcessor vp) throws IOException {
+    private static void createPresentationComponent(String id, UIComponent component, ClientValidationSupport support, ValidationProcessor vp) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         UIMessage defaultMessage = vp.getDefaultPresentationInstance(context, support);
 
         if (defaultMessage instanceof FloatingIconMessage) {
-            createFloatingIconMessage(context, id, verifiableComponent, (FloatingIconMessage) defaultMessage);
+            createFloatingIconMessage(context, id, component, (FloatingIconMessage) defaultMessage);
         } else {
             throw new IllegalStateException("Illegal default presentation component type. Expected FloatingIconMessage, actual " + defaultMessage.getClass());
         }
     }
 
-    private FloatingIconMessage createFloatingIconMessage(FacesContext context,
+    private static FloatingIconMessage createFloatingIconMessage(FacesContext context,
                                                           String id,
-                                                          VerifiableComponent vc,
+                                                          UIComponent component,
                                                           FloatingIconMessage template) throws IOException {
         FloatingIconMessage message = new FloatingIconMessage(template, true);
         message.setId(id);
-        message.setParent(vc.getComponent().getParent());
-        message.setFor(vc.getComponent().getId());
+        message.setParent(component.getParent());
+        message.setFor(component.getId());
         message.getAttributes().put(BaseMessageRenderer.DEFAULT_PRESENTATION, Boolean.TRUE);
         message.encodeBegin(context);
         message.encodeChildren(context);
