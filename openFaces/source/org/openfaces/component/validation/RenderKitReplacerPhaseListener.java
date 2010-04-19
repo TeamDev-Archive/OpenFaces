@@ -14,6 +14,7 @@ package org.openfaces.component.validation;
 import org.apache.myfaces.trinidad.render.DialogRenderKitService;
 import org.apache.myfaces.trinidad.render.ExtendedRenderKitService;
 import org.apache.myfaces.trinidad.util.Service;
+import org.openfaces.util.Components;
 import org.openfaces.util.Environment;
 import org.openfaces.util.Rendering;
 import org.openfaces.renderkit.validation.HtmlMessageRenderer;
@@ -23,6 +24,8 @@ import org.openfaces.util.Log;
 import javax.faces.FactoryFinder;
 import javax.faces.application.Application;
 import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PhaseEvent;
@@ -206,8 +209,12 @@ public class RenderKitReplacerPhaseListener implements PhaseListener, SystemEven
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         if (event instanceof PostAddToViewEvent) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            UIComponent component = ((PostAddToViewEvent) event).getComponent();
+            UIForm parentForm = Components.getParentWithClass(component, UIForm.class);
+            ValidationProcessor vp = ValidationProcessor.getInstance(context);
             if (vp.isUseDefaultClientValidationPresentationForForm(parentForm) || vp.isUseDefaultServerValidationPresentationForForm(parentForm)) {
-                int bubbleIndex = nextBubbleIndex(context);
+                int bubbleIndex = ValidationSupportResponseWriter.nextBubbleIndex(context);
                 ValidationSupportResponseWriter.addPresentationComponent(vc, bubbleIndex, vp);
             }
 

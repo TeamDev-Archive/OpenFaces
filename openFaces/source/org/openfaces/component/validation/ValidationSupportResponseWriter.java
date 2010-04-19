@@ -316,7 +316,7 @@ public class ValidationSupportResponseWriter extends ResponseWriterWrapper {
         sessionMap.remove(getBubbleIndexKey());
     }
 
-    private static int nextBubbleIndex(FacesContext context) {
+    public static int nextBubbleIndex(FacesContext context) {
         Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
         String key = getBubbleIndexKey();
         Integer bubbleIndex = (Integer) sessionMap.get(key);
