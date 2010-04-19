@@ -40,7 +40,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -50,7 +49,7 @@ import java.util.List;
  */
 public class CompositeFilterRenderer extends RendererBase implements AjaxPortionRenderer {
 
-    private static final String NO_FILTER_ROW_SUFFIX = "no_filter";    
+    private static final String NO_FILTER_ROW_SUFFIX = "no_filter";
     private static final String NO_FILTER_TEXT_SUFFIX = "text";
     private static final String DEFAULT_NO_FILTER_TEXT_CLASS = "o_filter_row_item o_filter_no_text";
 
@@ -67,7 +66,7 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
         ResponseWriter writer = context.getResponseWriter();
         String clientId = compositeFilter.getClientId(context);
         writer.startElement("div", compositeFilter);
-        writer.writeAttribute("id", clientId, "id");        
+        writer.writeAttribute("id", clientId, "id");
         String styleClass = Styles.getCSSClass(context,
                 compositeFilter, compositeFilter.getStyle(), "clearfix", compositeFilter.getStyleClass());
         writer.writeAttribute("class", styleClass, null);
@@ -126,14 +125,14 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
             HtmlPanelGroup addButtonContainer = (HtmlPanelGroup) Components.createChildComponent(context, rowContainer, HtmlPanelGroup.COMPONENT_TYPE, FilterRow.ADD_BUTTON_CONTAINER_SUFFIX);
             addButtonContainer.setStyleClass(FilterRow.DEFAULT_ROW_ITEM_CLASS);
             HtmlCommandButton addButton = (HtmlCommandButton) Components.createChildComponent(context, addButtonContainer, HtmlCommandButton.COMPONENT_TYPE, FilterRow.BUTTON_SUFFIX);
-            addButton.setValue("+");            
-            addButton.setOnclick("O$('"+compositeFilter.getClientId(context)+"').add(); return false;");
+            addButton.setValue("+");
+            addButton.setOnclick("O$('" + compositeFilter.getClientId(context) + "').add(); return false;");
             addButton.setStyleClass(FilterRow.DEFAULT_ADD_BUTTON_CLASS);
         }
         rowContainer.encodeAll(context);
     }
 
-    private void renderInitScript( FacesContext context, CompositeFilter compositeFilter) throws IOException {
+    private void renderInitScript(FacesContext context, CompositeFilter compositeFilter) throws IOException {
         ScriptBuilder sb = new ScriptBuilder().initScript(context, compositeFilter, "O$.CompositeFilter._init");
 
         String[] libs = getNecessaryJsLibs(context);
@@ -162,7 +161,7 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
         ResponseWriter writer = context.getResponseWriter();
 
         writer.endElement("div");
-        
+
         String _for = compositeFilter.getFor();
         if (_for != null) {
             UICommand applyButton = Components.getOrCreateFacet(context, compositeFilter, HtmlCommandButton.COMPONENT_TYPE, "applyButton", "applyButton", UICommand.class);
@@ -193,7 +192,7 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
 
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         if (!component.isRendered()) return;
-        CompositeFilter compositeFilter = (CompositeFilter) component;        
+        CompositeFilter compositeFilter = (CompositeFilter) component;
         if (compositeFilter.isEmpty()) {
             encodeNoFilterRow(context, compositeFilter);
         } else {

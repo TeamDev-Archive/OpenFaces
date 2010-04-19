@@ -13,8 +13,8 @@
 package org.openfaces.renderkit.filter.param;
 
 import org.openfaces.component.filter.CompositeFilter;
-import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.FilterCondition;
+import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.input.Spinner;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.Components;
@@ -41,7 +41,7 @@ public class TwoSpinnerParametersEditor extends ParametersEditor implements Seri
     private Spinner createSpinnerBefore(FacesContext context, UIComponent container) {
         clearContainer(container);
         Spinner spinner = (Spinner) Components.createChildComponent(context, container, Spinner.COMPONENT_TYPE, SPINNER_BEFORE_ID_SUFFIX);
-        spinner.setStyleClass(FilterRow.DEFAULT_PARAMETER_CLASS);        
+        spinner.setStyleClass(FilterRow.DEFAULT_PARAMETER_CLASS);
         spinner.setStyle("width: 70px;");
         return spinner;
     }

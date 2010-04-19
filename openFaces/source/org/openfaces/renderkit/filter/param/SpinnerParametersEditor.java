@@ -13,8 +13,8 @@
 package org.openfaces.renderkit.filter.param;
 
 import org.openfaces.component.filter.CompositeFilter;
-import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.FilterCondition;
+import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.input.Spinner;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.Components;

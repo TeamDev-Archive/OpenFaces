@@ -13,10 +13,10 @@
 package org.openfaces.renderkit.filter.param;
 
 import org.openfaces.component.filter.CompositeFilter;
+import org.openfaces.component.filter.ExpressionFilterCriterion;
+import org.openfaces.component.filter.FilterCondition;
 import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.FilterType;
-import org.openfaces.component.filter.FilterCondition;
-import org.openfaces.component.filter.ExpressionFilterCriterion;
 import org.openfaces.component.input.DropDownField;
 import org.openfaces.component.input.DropDownItems;
 import org.openfaces.renderkit.filter.FilterRow;
@@ -29,7 +29,7 @@ import java.io.Serializable;
 public class DropDownParametersEditor extends ParametersEditor implements Serializable {
 
     private static final String DROP_SOWN_ID_SUFFIX = "dropDown";
-    private static final String DROP_DOWN_ITEMS_ID_SUFFIX = "items";    
+    private static final String DROP_DOWN_ITEMS_ID_SUFFIX = "items";
 
     public DropDownParametersEditor() {
     }
@@ -53,7 +53,7 @@ public class DropDownParametersEditor extends ParametersEditor implements Serial
         dropDown.setStyleClass(FilterRow.DEFAULT_PARAMETER_CLASS);
         dropDown.setStyle("width: 145px;");
         dropDown.setMaxlength(250);
-        
+
         if (filterProperty.getType() == FilterType.SELECT) {
             dropDown.setCustomValueAllowed(false);
         }
@@ -96,7 +96,7 @@ public class DropDownParametersEditor extends ParametersEditor implements Serial
     @Override
     public ExpressionFilterCriterion getCriterion() {
         if (filterProperty.getType() == FilterType.SELECT && criterion.getArg1() == null) {
-                return null;            
+            return null;
         }
         return super.getCriterion();
     }

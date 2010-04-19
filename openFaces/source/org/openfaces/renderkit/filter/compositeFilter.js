@@ -169,7 +169,7 @@ O$.CompositeFilter = {
           if (parametersEditorContainer) {
             rowContainer.removeChild(parametersEditorContainer);
           }
-          
+
           focusLastField(rowContainer);
 
         } else if (portionName.match("parameters")) {

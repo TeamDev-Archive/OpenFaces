@@ -13,8 +13,8 @@
 package org.openfaces.renderkit.filter.param;
 
 import org.openfaces.component.filter.CompositeFilter;
-import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.filter.FilterCondition;
+import org.openfaces.component.filter.FilterProperty;
 import org.openfaces.component.input.DateChooser;
 import org.openfaces.renderkit.filter.FilterRow;
 import org.openfaces.util.Components;
@@ -49,7 +49,7 @@ public class DateChooserParametersEditor extends ParametersEditor implements Ser
     private void initDateChooser(DateChooser dateChooser) {
         dateChooser.setValue(criterion.getArg1());
         dateChooser.setTimeZone(filterProperty.getTimeZone());
-        dateChooser.setPattern(filterProperty.getPattern());        
+        dateChooser.setPattern(filterProperty.getPattern());
     }
 
     public void prepare(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {

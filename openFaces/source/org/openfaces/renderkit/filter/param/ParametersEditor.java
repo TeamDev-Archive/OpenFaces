@@ -37,7 +37,7 @@ public abstract class ParametersEditor {
         criterion.setCondition(operation);
     }
 
-    public void prepare(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container){
+    public void prepare(FacesContext context, CompositeFilter compositeFilter, FilterRow filterRow, UIComponent container) {
         criterion.setInverse(filterRow.isInverse());
     }
 
