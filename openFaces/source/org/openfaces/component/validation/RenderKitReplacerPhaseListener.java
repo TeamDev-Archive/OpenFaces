@@ -14,26 +14,17 @@ package org.openfaces.component.validation;
 import org.apache.myfaces.trinidad.render.DialogRenderKitService;
 import org.apache.myfaces.trinidad.render.ExtendedRenderKitService;
 import org.apache.myfaces.trinidad.util.Service;
-import org.openfaces.util.Components;
-import org.openfaces.util.Environment;
-import org.openfaces.util.Rendering;
 import org.openfaces.renderkit.validation.HtmlMessageRenderer;
 import org.openfaces.renderkit.validation.HtmlMessagesRenderer;
+import org.openfaces.util.Environment;
 import org.openfaces.util.Log;
+import org.openfaces.util.Rendering;
 
 import javax.faces.FactoryFinder;
-import javax.faces.application.Application;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import javax.faces.event.PostAddToViewEvent;
-import javax.faces.event.SystemEvent;
-import javax.faces.event.SystemEventListener;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
 import java.lang.reflect.InvocationTargetException;
@@ -44,7 +35,7 @@ import java.util.Map;
 /**
  * @author Pavel Kaplin
  */
-public class RenderKitReplacerPhaseListener implements PhaseListener, SystemEventListener {
+public class RenderKitReplacerPhaseListener implements PhaseListener {
 
     private static final String FLAG_VALIDATION_RENDERERS_CHANGED = "org.openfaces.validation.standardMessagesRendererChanged";
     private static final String HTML_BASIC = "HTML_BASIC";
@@ -63,13 +54,8 @@ public class RenderKitReplacerPhaseListener implements PhaseListener, SystemEven
         if (validationRenderersChanged == null) {
             replaceRenderKit(context);
             applicationMap.put(FLAG_VALIDATION_RENDERERS_CHANGED, Boolean.TRUE);
-
-            Application application = context.getApplication();
-            application.subscribeToEvent(PostAddToViewEvent.class, EditableValueHolder.class, this);
         }
     }
-
-
 
     public PhaseId getPhaseId() {
         return PhaseId.ANY_PHASE;
@@ -207,21 +193,4 @@ public class RenderKitReplacerPhaseListener implements PhaseListener, SystemEven
         }
     }
 
-    public void processEvent(SystemEvent event) throws AbortProcessingException {
-        if (event instanceof PostAddToViewEvent) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            UIComponent component = ((PostAddToViewEvent) event).getComponent();
-            UIForm parentForm = Components.getParentWithClass(component, UIForm.class);
-            ValidationProcessor vp = ValidationProcessor.getInstance(context);
-            if (vp.isUseDefaultClientValidationPresentationForForm(parentForm) || vp.isUseDefaultServerValidationPresentationForForm(parentForm)) {
-                int bubbleIndex = ValidationSupportResponseWriter.nextBubbleIndex(context);
-                ValidationSupportResponseWriter.addPresentationComponent(vc, bubbleIndex, vp);
-            }
-
-        }
-    }
-
-    public boolean isListenerForSource(Object source) {
-        return source instanceof EditableValueHolder;
-    }
 }
