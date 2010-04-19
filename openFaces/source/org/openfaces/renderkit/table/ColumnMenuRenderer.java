@@ -20,14 +20,20 @@ import org.openfaces.component.table.SortAscendingMenuItem;
 import org.openfaces.component.table.SortDescendingMenuItem;
 import org.openfaces.renderkit.command.PopupMenuRenderer;
 
+import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ComponentSystemEventListener;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostAddToViewEvent;
 import java.util.List;
 
-public class ColumnMenuRenderer extends PopupMenuRenderer {
-    @Override
-    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+@ListenerFor(systemEventClass = PostAddToViewEvent.class)
+public class ColumnMenuRenderer extends PopupMenuRenderer implements ComponentSystemEventListener {
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        UIComponent component = event.getComponent();
         ColumnMenu menu = (ColumnMenu) component;
         if (menu.getChildren().size() == 0) {
             List<UIComponent> menuItems = menu.getChildren();
@@ -35,9 +41,9 @@ public class ColumnMenuRenderer extends PopupMenuRenderer {
             menuItems.add(new SortDescendingMenuItem());
             menuItems.add(new HideColumnMenuItem());
             menuItems.add(new MenuSeparator());
-            menuItems.add(new MenuItem("Columns", new ColumnVisibilityMenu()));
+            Application application = FacesContext.getCurrentInstance().getApplication();
+            ColumnVisibilityMenu columnVisibilityMenu = (ColumnVisibilityMenu) application.createComponent(ColumnVisibilityMenu.COMPONENT_TYPE);
+            menuItems.add(new MenuItem("Columns", columnVisibilityMenu));
         }
-
-        super.encodeBegin(context, component);
     }
 }
