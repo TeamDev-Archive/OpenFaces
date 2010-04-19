@@ -24,7 +24,7 @@ public class DateRanges extends UIComponentBase {
     public static final String COMPONENT_FAMILY = "org.openfaces.DateRanges";
 
     private static final boolean DEFAULT_DISABLE_EXCLUDES = true;
-    private static final boolean DEFUALT_DISABLE_INCLUDES = false;
+    private static final boolean DEFAULT_DISABLE_INCLUDES = false;
 
     private Boolean disableExcludes;
     private Boolean disableIncludes;
@@ -56,7 +56,7 @@ public class DateRanges extends UIComponentBase {
     }
 
     public boolean isDisableIncludes() {
-        return ValueBindings.get(this, "disableIncludes", disableIncludes, DEFUALT_DISABLE_INCLUDES);
+        return ValueBindings.get(this, "disableIncludes", disableIncludes, DEFAULT_DISABLE_INCLUDES);
     }
 
     public void setDisableIncludes(boolean disableIncludes) {
