@@ -48,7 +48,6 @@ import java.util.TimeZone;
 /**
  * @author Pavel Kaplin
  */
-@ListenerFor(systemEventClass = PostAddToViewEvent.class)
 public class DateChooserRenderer extends DropDownComponentRenderer implements ComponentSystemEventListener {
 
     @Override
@@ -189,12 +188,6 @@ public class DateChooserRenderer extends DropDownComponentRenderer implements Co
 
         c.setTodayText(dateChooser.getTodayText());
         c.setNoneText(dateChooser.getNoneText());
-
-        for (UIComponent child : children) {
-            if (child instanceof DateRanges) {
-                c.getChildren().add(child);
-            }
-        }
 
         popup.encodeAll(context);
         Rendering.encodeClientActions(context, component);
