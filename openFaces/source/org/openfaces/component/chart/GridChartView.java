@@ -28,7 +28,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -275,63 +274,89 @@ public abstract class GridChartView extends ChartView {
     }
 
     protected void initMarkers(CategoryPlot categoryPlot) {
-        final List<Marker> markers = collectMarkers(this);
+        final List<Marker> domainMarkers = collectMarkers(this, DomainMarkers.class);
+        final List<Marker> rangeMarkers = collectMarkers(this, RangeMarkers.class);
 
-        for (Marker marker : markers) {
-            processMarker(categoryPlot, marker);
+        for (Marker marker : domainMarkers) {
+            org.jfree.chart.plot.Marker domainMarker = initCategoryMarker(marker);
+
+            categoryPlot.addDomainMarker((CategoryMarker) domainMarker, getMarkerLayer(marker));
+        }
+
+        for (Marker marker : rangeMarkers) {
+            org.jfree.chart.plot.Marker rangeMarker = initMarker(marker);
+
+            categoryPlot.addRangeMarker(rangeMarker, getMarkerLayer(marker));
         }
     }
 
     protected void initMarkers(XYPlot xyPlot) {
-        final List<Marker> markers = collectMarkers(this);
+        final List<Marker> domainMarkers = collectMarkers(this, DomainMarkers.class);
+        final List<Marker> rangeMarkers = collectMarkers(this, RangeMarkers.class);
 
-        for (Marker marker : markers) {
-            processMarker(xyPlot, marker);
+        for (Marker marker : domainMarkers) {
+            org.jfree.chart.plot.Marker domainMarker = initMarker(marker);
+
+            xyPlot.addDomainMarker(domainMarker, getMarkerLayer(marker));
+        }
+
+        for (Marker marker : rangeMarkers) {
+            org.jfree.chart.plot.Marker rangeMarker = initMarker(marker);
+
+            xyPlot.addRangeMarker(rangeMarker, getMarkerLayer(marker));
         }
     }
 
-    private void processMarker(CategoryPlot categoryPlot, Marker marker) {
-        org.jfree.chart.plot.Marker domainMarker = new CategoryMarker(marker.getValue());
-        initializeDomainMarker(marker, domainMarker);
+    private org.jfree.chart.plot.Marker initCategoryMarker(Marker marker) {
+        if (marker.getValue() != null) {
+            org.jfree.chart.plot.Marker domainMarker = new CategoryMarker(marker.getValue());
+            initializeChartMarker(marker, domainMarker);
 
-        ((CategoryMarker) domainMarker).setDrawAsLine(marker.getDrawAsLine());
+            ((CategoryMarker) domainMarker).setDrawAsLine(marker.getDrawAsLine());
 
-        categoryPlot.addDomainMarker((CategoryMarker) domainMarker, getMarkerLayer(marker));
+            return domainMarker;
+        }
 
+        return null;
     }
 
-    private void processMarker(XYPlot xyPlot, Marker marker) {
+    private org.jfree.chart.plot.Marker initMarker(Marker marker) {
         if (marker.isIntervalMarker()) {
-            org.jfree.chart.plot.Marker domainMarker = new IntervalMarker(marker.getStartValue(), marker.getEndValue());
-            initializeDomainMarker(marker, domainMarker);
+            org.jfree.chart.plot.Marker chartMarker = new IntervalMarker(marker.getStartValue(), marker.getEndValue());
+            initializeChartMarker(marker, chartMarker);
 
-            xyPlot.addDomainMarker(domainMarker, getMarkerLayer(marker));
+            return chartMarker;
         } else if (marker.isValueMarker()) {
-            org.jfree.chart.plot.Marker domainMarker = new ValueMarker((Double) marker.getValue());
-            initializeDomainMarker(marker, domainMarker);
+            final Double value = (marker.getValue() instanceof Double)
+                    ? (Double) marker.getValue()
+                    : Double.parseDouble((String) marker.getValue());
+            org.jfree.chart.plot.Marker chartMarker = new ValueMarker(value);
+            initializeChartMarker(marker, chartMarker);
 
-            xyPlot.addDomainMarker(domainMarker, getMarkerLayer(marker));
+            return chartMarker;
         }
+
+        return null;
     }
 
-    private void initializeDomainMarker(Marker marker, org.jfree.chart.plot.Marker domainMarker) {
-        domainMarker.setLabel(marker.getLabel());
+    private void initializeChartMarker(Marker marker, org.jfree.chart.plot.Marker chartMarker) {
+        chartMarker.setLabel(marker.getLabel());
 
         if (marker.getLineStyle() != null) {
-            domainMarker.setPaint(marker.getLineStyle().getColor());
-            domainMarker.setStroke(marker.getLineStyle().getStroke());
+            chartMarker.setPaint(marker.getLineStyle().getColor());
+            chartMarker.setStroke(marker.getLineStyle().getStroke());
         }
 
-        domainMarker.setAlpha(marker.getAlpha());
+        chartMarker.setAlpha(marker.getAlpha());
 
         if (marker.getOutlineStyle() != null) {
-            domainMarker.setOutlinePaint(marker.getOutlineStyle().getColor());
-            domainMarker.setOutlineStroke(marker.getOutlineStyle().getStroke());
+            chartMarker.setOutlinePaint(marker.getOutlineStyle().getColor());
+            chartMarker.setOutlineStroke(marker.getOutlineStyle().getStroke());
         }
 
         StyleObjectModel markerStyleModel = marker.getStyleObjectModel();
-        domainMarker.setLabelPaint(markerStyleModel.getColor());
-        domainMarker.setLabelFont(CSSUtil.getFont(markerStyleModel));
+        chartMarker.setLabelPaint(markerStyleModel.getColor());
+        chartMarker.setLabelFont(CSSUtil.getFont(markerStyleModel));
 
         if (marker.getLabelOffset() != null) {
             final StyleObjectModel offsetStyleModel = CSSUtil.getChartMarkerLabelOffsetModel(marker.getLabelOffset());
@@ -343,12 +368,12 @@ public abstract class GridChartView extends ChartView {
 
             final RectangleInsets offsetInsets = new RectangleInsets(top, left, bottom, right);
 
-            domainMarker.setLabelOffset(offsetInsets);
+            chartMarker.setLabelOffset(offsetInsets);
         }
 
-        domainMarker.setLabelAnchor(marker.getLabelAnchor().getAnchor());
-        domainMarker.setLabelTextAnchor(marker.getLabelTextAnchor().getAnchor());
-        domainMarker.setLabelOffsetType(marker.getLabelOffsetType().getOffsetType());
+        chartMarker.setLabelAnchor(marker.getLabelAnchor().getAnchor());
+        chartMarker.setLabelTextAnchor(marker.getLabelTextAnchor().getAnchor());
+        chartMarker.setLabelOffsetType(marker.getLabelOffsetType().getOffsetType());
     }
 
     private Layer getMarkerLayer(Marker marker) {
@@ -359,11 +384,11 @@ public abstract class GridChartView extends ChartView {
         }
     }
 
-    private List<Marker> collectMarkers(GridChartView view) {
+    private List<Marker> collectMarkers(GridChartView view, Class markersTypeClass) {
         Collection<UIComponent> children = view.getChildren();
         List<Marker> items = new ArrayList<Marker>();
         for (UIComponent child : children) {
-            Collection<Marker> tmpCollection = getMarkersFromComponent(child);
+            Collection<Marker> tmpCollection = getMarkersFromComponent(child, markersTypeClass);
             if (tmpCollection != null) {
                 items.addAll(tmpCollection);
             }
@@ -371,12 +396,13 @@ public abstract class GridChartView extends ChartView {
         return items;
     }
 
-    private Collection<Marker> getMarkersFromComponent(UIComponent component) {
-        if (component instanceof Marker) {
-            return Collections.singletonList((Marker) component);
+    private Collection<Marker> getMarkersFromComponent(UIComponent component, Class markersTypeClass) {
+        if (component instanceof MarkersContainer
+                && component.getClass().isAssignableFrom(markersTypeClass)) {
+            return ((MarkersContainer) component).getMarkers();
         }
 
-        return new ArrayList<Marker>();
+        return null;
     }
 
     @Override

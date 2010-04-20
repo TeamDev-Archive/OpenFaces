@@ -708,6 +708,16 @@
     <component-type>org.openfaces.Marker</component-type>
     <component-class>org.openfaces.component.chart.Marker</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.DomainMarkers</component-type>
+    <component-class>org.openfaces.component.chart.DomainMarkers</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.RangeMarkers</component-type>
+    <component-class>org.openfaces.component.chart.RangeMarkers</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>

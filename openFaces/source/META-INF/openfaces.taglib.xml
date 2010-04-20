@@ -1092,5 +1092,19 @@
       <handler-class>org.openfaces.taglib.facelets.chart.MarkerTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>domainMarkers</tag-name>
+    <component>
+      <component-type>org.openfaces.DomainMarkers</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.DomainMarkersTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>rangeMarkers</tag-name>
+    <component>
+      <component-type>org.openfaces.RangeMarkers</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.RangeMarkersTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

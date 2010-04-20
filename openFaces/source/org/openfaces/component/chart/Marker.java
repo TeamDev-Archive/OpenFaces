@@ -50,7 +50,7 @@ public class Marker extends javax.faces.component.UIComponentBase implements Sty
     }
 
     public Double getStartValue() {
-        return ValueBindings.get(this, "startValue", startValue, 0.0, true, Double.class);
+        return ValueBindings.get(this, "startValue", startValue, Double.class);
     }
 
     public void setStartValue(Double startValue) {
@@ -58,7 +58,7 @@ public class Marker extends javax.faces.component.UIComponentBase implements Sty
     }
 
     public Double getEndValue() {
-        return ValueBindings.get(this, "endValue", endValue, 0.0, true, Double.class);
+        return ValueBindings.get(this, "endValue", endValue, Double.class);
     }
 
     public void setEndValue(Double endValue) {
@@ -137,11 +137,36 @@ public class Marker extends javax.faces.component.UIComponentBase implements Sty
     }
 
     public boolean isValueMarker() {
-        return this.getValue() != null && this.getValue() instanceof Double;
+        final Comparable value = this.getValue();
+
+        return isValidDouble(value);
     }
 
     public boolean isIntervalMarker() {
         return this.getStartValue() != null && this.getEndValue() != null;
+    }
+
+    private boolean isValidDouble(Comparable value) {
+        if (value == null) {
+            return false;
+        }
+
+        if (value instanceof Double) {
+            return true;
+        }
+
+        if (!(value instanceof String)) {
+            return false;
+        }
+
+        boolean valueIsValidDouble = true;
+        try {
+            Double.parseDouble((String) value);
+        } catch (NumberFormatException e) {
+            valueIsValidDouble = false;
+        }
+
+        return valueIsValidDouble;
     }
 
     @Override
