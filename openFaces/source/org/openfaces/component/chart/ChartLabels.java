@@ -104,10 +104,10 @@ public class ChartLabels extends UIOutput implements StyledComponent {
     public void setParent(UIComponent parent) {
         super.setParent(parent);
         if (this.getParent() instanceof HasLabels) {
-            HasLabels labeldComponent = (HasLabels) this.getParent();
-            labeldComponent.setLabels(this);
+            HasLabels labeledComponent = (HasLabels) this.getParent();
+            labeledComponent.setLabels(this);
         } else if (this.getParent() != null)
-            throw new IllegalStateException("Inccorect place for Label tag. Parent component must implement HasLabel interface. Currently defined component: " + getParent());
+            throw new IllegalStateException("Incorrect place for Label tag. Parent component must implement HasLabel interface. Currently defined component: " + getParent());
     }
 
     @Override

@@ -71,7 +71,7 @@ public class ChartView implements Serializable {
     }
 
     public PieChartView getPieView() {
-        return pieView;
+        return null;
     }
 
     public void setPieView(PieChartView pieView) {

@@ -80,7 +80,7 @@ public class ChartNoDataMessage extends UIOutput implements StyledComponent {
             Chart chart = (Chart) this.getParent();
             chart.setNoDataMessage(this);
         } else if (this.getParent() != null)
-            throw new IllegalStateException("Inccorect place for ChartNoDataMessage tag. Parent component must be Chart. Currently defined component: " + getParent());
+            throw new IllegalStateException("Incorrect place for ChartNoDataMessage tag. Parent component must be Chart. Currently defined component: " + getParent());
     }
 
     @Override
