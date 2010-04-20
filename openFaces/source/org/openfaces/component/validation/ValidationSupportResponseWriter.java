@@ -358,7 +358,7 @@ public class ValidationSupportResponseWriter extends ResponseWriter {
                                                           FloatingIconMessage template) throws IOException {
         FloatingIconMessage message = new FloatingIconMessage(template, true);
         message.setId(id);
-        message.setFor(component.getId());
+        message.setFor(":" + component.getClientId(context));
         message.getAttributes().put(BaseMessageRenderer.DEFAULT_PRESENTATION, Boolean.TRUE);
         message.encodeBegin(context);
         message.encodeChildren(context);
