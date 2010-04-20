@@ -115,7 +115,9 @@ public class LineChartView extends GridChartView {
                     ? new XYLineRenderer3DAdapter(this, ds)
                     : new XYLineRendererAdapter(this, ds);
             configureRenderer(renderer, ds.getSeriesCount());
-            return new GridXYPlotAdapter(ds, renderer, chart, this);
+            final GridXYPlotAdapter xyPlot = new GridXYPlotAdapter(ds, renderer, chart, this);
+            initMarkers(xyPlot);
+            return xyPlot;
         }
         if (info.getModelType().equals(ModelType.Date)) {
             TimeSeriesCollection ds = ModelConverter.toTimeSeriesCollection(info);
@@ -123,14 +125,19 @@ public class LineChartView extends GridChartView {
                     ? new XYLineRenderer3DAdapter(this, ds)
                     : new XYLineRendererAdapter(this, ds);
             configureRenderer(renderer, ds.getSeriesCount());
-            return new GridDatePlotAdapter(ds, renderer, chart, this);
+            final GridDatePlotAdapter xyPlot = new GridDatePlotAdapter(ds, renderer, chart, this);
+            initMarkers(xyPlot);
+            return xyPlot;
         }
         CategoryDataset ds = ModelConverter.toCategoryDataset(info);
         LineAndShapeRenderer renderer = isEnable3D()
                 ? new LineRenderer3DAdapter(this, ds)
                 : new LineRendererAdapter(this, ds);
         configureRenderer(renderer, ds.getRowCount());
-        return new GridCategoryPlotAdapter(ds, renderer, chart, this);
+
+        final GridCategoryPlotAdapter gridCategoryPlot = new GridCategoryPlotAdapter(ds, renderer, chart, this);
+        initMarkers(gridCategoryPlot);
+        return gridCategoryPlot;
     }
 
     private void configureRenderer(XYLineAndShapeRenderer renderer, int seriesCount) {

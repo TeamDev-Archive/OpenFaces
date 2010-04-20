@@ -73,14 +73,18 @@ public class BarChartView extends GridChartView {
             XYBarRenderer renderer = new XYBarRendererAdapter(this);
             configureRendererPresentation((XYBarRendererAdapter) renderer, ds.getSeriesCount());
 
-            return new GridXYPlotAdapter(ds, renderer, chart, this);
+            final GridXYPlotAdapter xyPlotAdapter = new GridXYPlotAdapter(ds, renderer, chart, this);
+            initMarkers(xyPlotAdapter);
+            return xyPlotAdapter;
         }
         if (info.getModelType().equals(ModelType.Date)) {
             TimeSeriesCollection ds = ModelConverter.toTimeSeriesCollection(info);
             XYBarRenderer renderer = new XYBarRendererAdapter(this);
             configureRendererPresentation((XYBarRendererAdapter) renderer, ds.getSeriesCount());
 
-            return new GridDatePlotAdapter(ds, renderer, chart, this);
+            final GridDatePlotAdapter datePlotAdapter = new GridDatePlotAdapter(ds, renderer, chart, this);
+            initMarkers(datePlotAdapter);
+            return datePlotAdapter;
         }
 
         CategoryDataset ds = ModelConverter.toCategoryDataset(info);
@@ -88,7 +92,9 @@ public class BarChartView extends GridChartView {
                 ? new BarRenderer3DAdapter(this)
                 : new BarRendererAdapter(this);
         configureRendererPresentation(renderer, ds.getRowCount());
-        return new GridCategoryPlotAdapter(ds, renderer, chart, this);
+        final GridCategoryPlotAdapter gridCategoryPlot = new GridCategoryPlotAdapter(ds, renderer, chart, this);
+        initMarkers(gridCategoryPlot);
+        return gridCategoryPlot;
     }
 
     private void configureRendererPresentation(BarRenderer renderer, int seriesCount) {
@@ -292,6 +298,5 @@ public class BarChartView extends GridChartView {
         shadowYOffset = (Double) state[i++];
         shadowColor = (Color) restoreAttachedState(facesContext, state[i++]);
     }
-
 
 }

@@ -703,6 +703,11 @@
     <component-type>org.openfaces.SelectOneMenu</component-type>
     <component-class>org.openfaces.component.select.SelectOneMenu</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.Marker</component-type>
+    <component-class>org.openfaces.component.chart.Marker</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>

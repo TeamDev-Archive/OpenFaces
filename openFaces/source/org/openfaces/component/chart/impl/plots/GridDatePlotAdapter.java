@@ -13,6 +13,7 @@ package org.openfaces.component.chart.impl.plots;
 
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.StandardXYItemLabelGenerator;
 import org.jfree.chart.labels.XYToolTipGenerator;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
@@ -64,6 +65,10 @@ public class GridDatePlotAdapter extends XYPlot {
         setRangeAxis(numberAxis);
 
         PlotUtil.initGridLabels(chartView, renderer);
+
+        if (chartView.getLabels() == null || chartView.getLabels().getText() == null) {
+            renderer.setBaseItemLabelGenerator(new StandardXYItemLabelGenerator());
+        }
 
         if (ds == null) {
             dateAxis.setVisible(false);

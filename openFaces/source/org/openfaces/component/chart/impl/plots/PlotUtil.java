@@ -11,19 +11,18 @@
  */
 package org.openfaces.component.chart.impl.plots;
 
-import org.jfree.chart.labels.ItemLabelAnchor;
 import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.labels.StandardXYItemLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.Plot;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.AbstractRenderer;
 import org.jfree.chart.renderer.category.AbstractCategoryItemRenderer;
 import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
 import org.jfree.data.general.Dataset;
 import org.jfree.ui.TextAnchor;
+import org.openfaces.component.chart.BarChartLabelPosition;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartDomain;
 import org.openfaces.component.chart.ChartGridLines;
@@ -160,14 +159,19 @@ class PlotUtil {
     public static void initGridLabels(GridChartView chartView, AbstractRenderer renderer) {
         boolean isLabelsVisible = chartView.isLabelsVisible();
         if (isLabelsVisible) {
-            renderer.setItemLabelsVisible(true);
+            renderer.setBaseItemLabelsVisible(true);
+
             setGenerator(renderer);
-            PlotOrientation orientation = PropertiesConverter.toPlotOrientation(chartView.getOrientation());
-            defaultInit(orientation, renderer);
+            defaultInit(chartView, renderer);
             colorInit(chartView, renderer);
+
         } else {
-            renderer.setItemLabelsVisible(false);
+            renderer.setBaseItemLabelsVisible(false);
         }
+    }
+
+    private static ItemLabelPosition createItemLabelPosition(BarChartLabelPosition labelPosition) {
+        return new ItemLabelPosition(labelPosition.getLabelAnchor(), TextAnchor.CENTER);
     }
 
     private static void setGenerator(AbstractRenderer renderer) {
@@ -186,37 +190,34 @@ class PlotUtil {
 
         if (labels != null) {
             StyleObjectModel cssLabelsModel = labels.getStyleObjectModel();
-            renderer.setItemLabelPaint(cssLabelsModel.getColor());
-            renderer.setItemLabelFont(CSSUtil.getFont(cssLabelsModel));
+            renderer.setBaseItemLabelPaint(cssLabelsModel.getColor());
+            renderer.setBaseItemLabelFont(CSSUtil.getFont(cssLabelsModel));
 
         } else {
-            renderer.setItemLabelPaint(cssViewModel.getColor());
-            renderer.setItemLabelFont(CSSUtil.getFont(cssViewModel));
+            renderer.setBaseItemLabelPaint(cssViewModel.getColor());
+            renderer.setBaseItemLabelFont(CSSUtil.getFont(cssViewModel));
         }
 
     }
 
-    private static void defaultInit(PlotOrientation orientation, AbstractRenderer renderer) {
-        if (orientation == PlotOrientation.HORIZONTAL) {
-            ItemLabelPosition position1 = new ItemLabelPosition(
-                    ItemLabelAnchor.OUTSIDE3, TextAnchor.CENTER_LEFT
-            );
-            renderer.setPositiveItemLabelPosition(position1);
-            ItemLabelPosition position2 = new ItemLabelPosition(
-                    ItemLabelAnchor.OUTSIDE9, TextAnchor.CENTER_RIGHT
-            );
-            renderer.setNegativeItemLabelPosition(position2);
-        } else if (orientation == PlotOrientation.VERTICAL) {
-            ItemLabelPosition position1 = new ItemLabelPosition(
-                    ItemLabelAnchor.OUTSIDE12, TextAnchor.BOTTOM_CENTER
-            );
-            renderer.setPositiveItemLabelPosition(position1);
-            ItemLabelPosition position2 = new ItemLabelPosition(
-                    ItemLabelAnchor.OUTSIDE6, TextAnchor.TOP_CENTER
-            );
-            renderer.setNegativeItemLabelPosition(position2);
+    private static void defaultInit(GridChartView chartView, AbstractRenderer renderer) {
+        final BarChartLabelPosition positiveLabelsPosition = chartView.getPositiveLabelsPosition();
+        final BarChartLabelPosition negativeLabelsPosition = chartView.getNegativeLabelsPosition();
+        final BarChartLabelPosition defaultLabelPosition = chartView.getDefaultLabelsPosition();
+
+        if (defaultLabelPosition != null && positiveLabelsPosition == null) {
+            renderer.setBasePositiveItemLabelPosition(createItemLabelPosition(defaultLabelPosition));
+        } else if (positiveLabelsPosition != null) {
+            renderer.setBasePositiveItemLabelPosition(createItemLabelPosition(positiveLabelsPosition));
         }
 
+        if (defaultLabelPosition != null && negativeLabelsPosition == null) {
+            renderer.setBaseNegativeItemLabelPosition(createItemLabelPosition(defaultLabelPosition));
+        } else if (negativeLabelsPosition != null) {
+            renderer.setBaseNegativeItemLabelPosition(createItemLabelPosition(negativeLabelsPosition));
+        }
+
+        renderer.setItemLabelAnchorOffset(chartView.getLabelsOffset());
     }
 
 }

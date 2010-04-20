@@ -1085,5 +1085,12 @@
       <handler-class>org.openfaces.taglib.facelets.select.SelectOneMenuTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>marker</tag-name>
+    <component>
+      <component-type>org.openfaces.Marker</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.MarkerTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

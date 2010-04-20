@@ -11,7 +11,10 @@
  */
 package org.openfaces.taglib.internal;
 
+import org.openfaces.component.chart.LineStyle;
+import org.openfaces.component.chart.impl.PropertiesConverter;
 import org.openfaces.renderkit.cssparser.CSSUtil;
+import org.openfaces.renderkit.cssparser.StyleObjectModel;
 import org.openfaces.util.CalendarUtil;
 import org.openfaces.util.Enumerations;
 
@@ -320,11 +323,11 @@ public abstract class AbstractComponentTag extends AbstractTag {
             component.setValueExpression(propertyName, ve);
         } else {
             Number iValue;
-            try{
+            try {
                 iValue = Long.parseLong(value);
-            }catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 iValue = Double.parseDouble(value);
-            }            
+            }
             component.getAttributes().put(propertyName, iValue);
         }
     }
@@ -419,8 +422,9 @@ public abstract class AbstractComponentTag extends AbstractTag {
             UIComponent component,
             String propertyName,
             String valueDeclaration) {
-      return setPropertyAsBinding(component, propertyName, valueDeclaration, propertyName);
+        return setPropertyAsBinding(component, propertyName, valueDeclaration, propertyName);
     }
+
     /**
      * @param component        component
      * @param propertyName     property name
@@ -472,8 +476,8 @@ public abstract class AbstractComponentTag extends AbstractTag {
         setActionListener(context, component, "actionListener");
     }
 
-    protected void setActionListener(FacesContext context,  ActionSource component, String actionListenerPropertyName) {
-        setActionListener(context,  component, actionListenerPropertyName, new Class[]{ActionEvent.class});
+    protected void setActionListener(FacesContext context, ActionSource component, String actionListenerPropertyName) {
+        setActionListener(context, component, actionListenerPropertyName, new Class[]{ActionEvent.class});
     }
 
     protected void setActionListener(FacesContext context, ActionSource component, Class[] paramTypes) {
@@ -614,6 +618,16 @@ public abstract class AbstractComponentTag extends AbstractTag {
 
         Color color = CSSUtil.parseColor(value);
         component.getAttributes().put(propertyName, color);
+    }
+
+    protected void setLineStyleObjectProperty(UIComponent component, String propertyName){
+        String value = getPropertyValue(propertyName);
+        if (setPropertyAsBinding(component, propertyName, value))
+            return;
+
+        final StyleObjectModel lineStyleCSSModel = CSSUtil.getLineStyleModel(value);
+        final LineStyle lineStyle = PropertiesConverter.toLineStyle(lineStyleCSSModel.getBorder());
+        component.getAttributes().put(propertyName, lineStyle);
     }
 
     protected void setConverterProperty(FacesContext facesContext, UIComponent component, String propertyName) {

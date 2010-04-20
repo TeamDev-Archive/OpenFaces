@@ -12,6 +12,7 @@
 package org.openfaces.component.chart.impl.plots;
 
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.StandardXYItemLabelGenerator;
 import org.jfree.chart.labels.XYToolTipGenerator;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
@@ -68,6 +69,10 @@ public class GridXYPlotAdapter extends XYPlot {
         setRangeAxis(numberValueAxis);
 
         PlotUtil.initGridLabels(chartView, renderer);
+
+        if (chartView.getLabels() == null || chartView.getLabels().getText() == null) {
+            renderer.setBaseItemLabelGenerator(new StandardXYItemLabelGenerator());
+        }
 
         PlotUtil.setupColorProperties(chart, this);
         setOrientation(PropertiesConverter.toPlotOrientation(chartView.getOrientation()));

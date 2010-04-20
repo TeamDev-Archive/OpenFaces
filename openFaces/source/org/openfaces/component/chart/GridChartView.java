@@ -12,12 +12,23 @@
 package org.openfaces.component.chart;
 
 import org.jfree.chart.entity.ChartEntity;
+import org.jfree.chart.plot.CategoryMarker;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.IntervalMarker;
+import org.jfree.chart.plot.ValueMarker;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.ui.Layer;
+import org.jfree.ui.RectangleInsets;
 import org.openfaces.component.chart.impl.helpers.ChartInfoUtil;
+import org.openfaces.renderkit.cssparser.CSSUtil;
+import org.openfaces.renderkit.cssparser.StyleObjectModel;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,11 +44,16 @@ public abstract class GridChartView extends ChartView {
     private LineStyle defaultOutlineStyle;
     private Collection outlines;
 
+    private BarChartLabelPosition defaultLabelsPosition;
+    private BarChartLabelPosition positiveLabelsPosition;
+    private BarChartLabelPosition negativeLabelsPosition;
+
     private String keyAxisLabel;
     private String valueAxisLabel;
     private List<ChartAxis> axes = new ArrayList<ChartAxis>();
 
     private boolean labelsVisible = false;
+    private Double labelsOffset;
 
     public GridPointInfo getPoint() {
         return point;
@@ -197,7 +213,6 @@ public abstract class GridChartView extends ChartView {
         this.outlines = outlines;
     }
 
-
     public ChartDomain getShowAxes() {
         return ValueBindings.get(this, "showAxes", showAxes, ChartDomain.class);
     }
@@ -227,6 +242,143 @@ public abstract class GridChartView extends ChartView {
         this.valueAxisLabel = valueAxisLabel;
     }
 
+    public BarChartLabelPosition getDefaultLabelsPosition() {
+        return ValueBindings.get(this, "defaultLabelsPosition", defaultLabelsPosition, BarChartLabelPosition.class);
+    }
+
+    public void setDefaultLabelsPosition(BarChartLabelPosition defaultLabelsPosition) {
+        this.defaultLabelsPosition = defaultLabelsPosition;
+    }
+
+    public BarChartLabelPosition getPositiveLabelsPosition() {
+        return ValueBindings.get(this, "positiveLabelsPosition", positiveLabelsPosition, BarChartLabelPosition.class);
+    }
+
+    public void setPositiveLabelsPosition(BarChartLabelPosition positiveLabelsPosition) {
+        this.positiveLabelsPosition = positiveLabelsPosition;
+    }
+
+    public BarChartLabelPosition getNegativeLabelsPosition() {
+        return ValueBindings.get(this, "negativeLabelsPosition", negativeLabelsPosition, BarChartLabelPosition.class);
+    }
+
+    public void setNegativeLabelsPosition(BarChartLabelPosition negativeLabelsPosition) {
+        this.negativeLabelsPosition = negativeLabelsPosition;
+    }
+
+    public double getLabelsOffset() {
+        return ValueBindings.get(this, "labelsOffset", labelsOffset, 10.0);
+    }
+
+    public void setLabelsOffset(double labelsOffset) {
+        this.labelsOffset = labelsOffset;
+    }
+
+    protected void initMarkers(CategoryPlot categoryPlot) {
+        final List<Marker> markers = collectMarkers(this);
+
+        for (Marker marker : markers) {
+            processMarker(categoryPlot, marker);
+        }
+    }
+
+    protected void initMarkers(XYPlot xyPlot) {
+        final List<Marker> markers = collectMarkers(this);
+
+        for (Marker marker : markers) {
+            processMarker(xyPlot, marker);
+        }
+    }
+
+    private void processMarker(CategoryPlot categoryPlot, Marker marker) {
+        org.jfree.chart.plot.Marker domainMarker = new CategoryMarker(marker.getValue());
+        initializeDomainMarker(marker, domainMarker);
+
+        ((CategoryMarker) domainMarker).setDrawAsLine(marker.getDrawAsLine());
+
+        categoryPlot.addDomainMarker((CategoryMarker) domainMarker, getMarkerLayer(marker));
+
+    }
+
+    private void processMarker(XYPlot xyPlot, Marker marker) {
+        if (marker.isIntervalMarker()) {
+            org.jfree.chart.plot.Marker domainMarker = new IntervalMarker(marker.getStartValue(), marker.getEndValue());
+            initializeDomainMarker(marker, domainMarker);
+
+            xyPlot.addDomainMarker(domainMarker, getMarkerLayer(marker));
+        } else if (marker.isValueMarker()) {
+            org.jfree.chart.plot.Marker domainMarker = new ValueMarker((Double) marker.getValue());
+            initializeDomainMarker(marker, domainMarker);
+
+            xyPlot.addDomainMarker(domainMarker, getMarkerLayer(marker));
+        }
+    }
+
+    private void initializeDomainMarker(Marker marker, org.jfree.chart.plot.Marker domainMarker) {
+        domainMarker.setLabel(marker.getLabel());
+
+        if (marker.getLineStyle() != null) {
+            domainMarker.setPaint(marker.getLineStyle().getColor());
+            domainMarker.setStroke(marker.getLineStyle().getStroke());
+        }
+
+        domainMarker.setAlpha(marker.getAlpha());
+
+        if (marker.getOutlineStyle() != null) {
+            domainMarker.setOutlinePaint(marker.getOutlineStyle().getColor());
+            domainMarker.setOutlineStroke(marker.getOutlineStyle().getStroke());
+        }
+
+        StyleObjectModel markerStyleModel = marker.getStyleObjectModel();
+        domainMarker.setLabelPaint(markerStyleModel.getColor());
+        domainMarker.setLabelFont(CSSUtil.getFont(markerStyleModel));
+
+        if (marker.getLabelOffset() != null) {
+            final StyleObjectModel offsetStyleModel = CSSUtil.getChartMarkerLabelOffsetModel(marker.getLabelOffset());
+
+            final int top = offsetStyleModel.getMargin(0);
+            final int left = offsetStyleModel.getMargin(1);
+            final int bottom = offsetStyleModel.getMargin(2);
+            final int right = offsetStyleModel.getMargin(3);
+
+            final RectangleInsets offsetInsets = new RectangleInsets(top, left, bottom, right);
+
+            domainMarker.setLabelOffset(offsetInsets);
+        }
+
+        domainMarker.setLabelAnchor(marker.getLabelAnchor().getAnchor());
+        domainMarker.setLabelTextAnchor(marker.getLabelTextAnchor().getAnchor());
+        domainMarker.setLabelOffsetType(marker.getLabelOffsetType().getOffsetType());
+    }
+
+    private Layer getMarkerLayer(Marker marker) {
+        if (marker.getLayer() != null && marker.getLayer().equals(MarkerLayer.FOREGROUND)) {
+            return Layer.FOREGROUND;
+        } else {
+            return Layer.BACKGROUND;
+        }
+    }
+
+    private List<Marker> collectMarkers(GridChartView view) {
+        Collection<UIComponent> children = view.getChildren();
+        List<Marker> items = new ArrayList<Marker>();
+        for (UIComponent child : children) {
+            Collection<Marker> tmpCollection = getMarkersFromComponent(child);
+            if (tmpCollection != null) {
+                items.addAll(tmpCollection);
+            }
+        }
+        return items;
+    }
+
+    private Collection<Marker> getMarkersFromComponent(UIComponent component) {
+        if (component instanceof Marker) {
+            return Collections.singletonList((Marker) component);
+        }
+
+        return new ArrayList<Marker>();
+    }
+
     @Override
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
@@ -238,9 +390,12 @@ public abstract class GridChartView extends ChartView {
                 saveAttachedState(context, axes),
                 saveAttachedState(context, orientation),
                 saveAttachedState(context, defaultOutlineStyle),
-                saveAttachedState(context, outlines)
+                saveAttachedState(context, outlines),
+                saveAttachedState(context, defaultLabelsPosition),
+                saveAttachedState(context, positiveLabelsPosition),
+                saveAttachedState(context, negativeLabelsPosition),
+                labelsOffset
         };
-
     }
 
     @Override
@@ -258,6 +413,10 @@ public abstract class GridChartView extends ChartView {
         orientation = (Orientation) restoreAttachedState(facesContext, state[i++]);
         defaultOutlineStyle = (LineStyle) restoreAttachedState(facesContext, state[i++]);
         outlines = (Collection<LineStyle>) restoreAttachedState(facesContext, state[i++]);
+        defaultLabelsPosition = (BarChartLabelPosition) restoreAttachedState(facesContext, state[i++]);
+        positiveLabelsPosition = (BarChartLabelPosition) restoreAttachedState(facesContext, state[i++]);
+        negativeLabelsPosition = (BarChartLabelPosition) restoreAttachedState(facesContext, state[i++]);
+        labelsOffset = (Double) state[i++];
     }
 
     public void decodeAction(String fieldValue) {

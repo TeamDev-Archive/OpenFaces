@@ -16,7 +16,6 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.CategoryToolTipGenerator;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.AbstractCategoryItemRenderer;
 import org.jfree.chart.urls.CategoryURLGenerator;
 import org.jfree.data.category.CategoryDataset;
@@ -32,9 +31,6 @@ import org.openfaces.component.chart.impl.helpers.CategoryAxis3DAdapter;
 import org.openfaces.component.chart.impl.helpers.CategoryAxisAdapter;
 import org.openfaces.component.chart.impl.helpers.NumberAxis3DAdapter;
 import org.openfaces.component.chart.impl.helpers.NumberAxisAdapter;
-
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 /**
  * @author Ekaterina Shliakhovetskaya
@@ -81,7 +77,7 @@ public class GridCategoryPlotAdapter extends CategoryPlot {
         if (chartView.getLabels() != null && chartView.getLabels().getText() != null) {
             //   renderer.setItemLabelGenerator(new LabelGenerator(myGridChartRenderer.getLabels().getTextDynamicProperty()));
         } else
-            renderer.setItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+            renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
 
         PlotUtil.setupColorProperties(chart, this);
         setOrientation(PropertiesConverter.toPlotOrientation(chartView.getOrientation()));

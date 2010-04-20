@@ -85,6 +85,24 @@ public class CSSUtil {
         return model;
     }
 
+    public static StyleObjectModel getChartMarkerLabelOffsetModel(String cssString) {
+        StringBuilder builder = new StringBuilder();
+        if (!cssString.startsWith("margin:")) {
+            builder.append("margin:");
+        }
+        builder.append(cssString.trim());
+        return getStyleObjectModel(builder.toString(), null);
+    }
+
+    public static StyleObjectModel getLineStyleModel(String cssString) {
+        StringBuilder builder = new StringBuilder();
+        if (!cssString.startsWith("border:")) {
+            builder.append("border:");
+        }
+        builder.append(cssString.trim());
+        return getStyleObjectModel(builder.toString(), null);
+    }
+
     private static StyleObjectModel getStyleObjectModel(String cssString, String hint) {
         if (cssString == null)
             return null;

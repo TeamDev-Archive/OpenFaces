@@ -14,6 +14,7 @@ package org.openfaces.component.chart.impl;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.plot.PlotOrientation;
 import org.openfaces.component.chart.CategoryAxisLabelPosition;
+import org.openfaces.component.chart.LineStyle;
 import org.openfaces.component.chart.Orientation;
 import org.openfaces.renderkit.cssparser.StyleBorderModel;
 
@@ -97,6 +98,10 @@ public class PropertiesConverter {
             }
         }
         return stroke;
+    }
+
+    public static LineStyle toLineStyle(StyleBorderModel border) {
+        return new LineStyle(border.getColor(), toStroke(border));
     }
 
 

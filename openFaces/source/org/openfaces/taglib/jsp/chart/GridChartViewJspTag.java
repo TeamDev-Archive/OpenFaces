@@ -44,11 +44,27 @@ public abstract class GridChartViewJspTag extends AbstractChartViewJspTag {
         getDelegate().setPropertyValue("orientation", orientation);
     }
 
-     public void setDefaultOutlineStyle(ValueExpression defaultOutlineStyle) {
+    public void setDefaultOutlineStyle(ValueExpression defaultOutlineStyle) {
         getDelegate().setPropertyValue("defaultOutlineStyle", defaultOutlineStyle);
     }
 
     public void setOutlines(ValueExpression outlines) {
         getDelegate().setPropertyValue("outlines", outlines);
+    }
+
+    public void setDefaultLabelsPosition(ValueExpression defaultLabelsPosition) {
+        getDelegate().setPropertyValue("defaultLabelsPosition", defaultLabelsPosition);
+    }
+
+    public void setPositiveLabelsPosition(ValueExpression positiveLabelsPosition) {
+        getDelegate().setPropertyValue("positiveLabelsPosition", positiveLabelsPosition);
+    }
+
+    public void setNegativeLabelsPosition(ValueExpression negativeLabelsPosition) {
+        getDelegate().setPropertyValue("negativeLabelsPosition", negativeLabelsPosition);
+    }
+
+    public void setLabelsOffset(ValueExpression labelsOffset) {
+        getDelegate().setPropertyValue("labelsOffset", labelsOffset);
     }
 }

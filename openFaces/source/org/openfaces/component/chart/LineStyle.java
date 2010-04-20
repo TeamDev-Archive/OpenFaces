@@ -21,9 +21,6 @@ public class LineStyle {
     private Color color;
     private Stroke stroke;
 
-    public LineStyle() {
-    }
-
     public LineStyle(Color color, Stroke stroke) {
         this.color = color;
         this.stroke = stroke;
