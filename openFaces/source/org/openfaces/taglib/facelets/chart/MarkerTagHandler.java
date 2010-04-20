@@ -11,8 +11,9 @@
  */
 package org.openfaces.taglib.facelets.chart;
 
-import com.sun.facelets.tag.jsf.ComponentConfig;
 import org.openfaces.taglib.internal.chart.MarkerTag;
+
+import javax.faces.view.facelets.ComponentConfig;
 
 public class MarkerTagHandler extends org.openfaces.taglib.facelets.AbstractFaceletsComponentHandler {
 
