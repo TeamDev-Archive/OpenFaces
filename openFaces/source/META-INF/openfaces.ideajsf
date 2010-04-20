@@ -337,7 +337,7 @@
   <tag name="chartNoDataMessage">
   </tag>
   <tag name="chartLegend">
-    <attr name= "position" converter="variants" />
+    <attr name= "position" converter="variants" userData="top,bottom,left,right"/>
   </tag>
   <tag name="chartGridLines">
     <attr name= "domain" converter="variants" userData="key,value,both" />
