@@ -60,7 +60,7 @@ public class FloatingIconMessageRenderer extends BaseMessageRenderer {
 
         String forComponentClientId = getForComponentClientId(context, fim);
         if (forComponentClientId == null) {
-            Rendering.logWarning(context, "Cannot render floatingIconMessage bacause can't calculate " +
+            Rendering.logWarning(context, "Cannot render floatingIconMessage because can't calculate " +
                     "target component client ID. It may be caused by 'for' attribute absence");
             return;
         }

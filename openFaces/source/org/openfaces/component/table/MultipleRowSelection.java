@@ -116,8 +116,8 @@ public class MultipleRowSelection extends DataTableSelection {
             return rowKeys;
         if (rowIndexes != null) {
             List<Object> result = new ArrayList<Object>(rowIndexes.size());
-            for (Object myRowIndexe : rowIndexes) {
-                int index = (Integer) myRowIndexe;
+            for (Object myRowIndexes : rowIndexes) {
+                int index = (Integer) myRowIndexes;
                 Object rowKey = getRowKeyByRowIndex(index);
                 if (rowKey != null)
                     result.add(rowKey);
@@ -141,8 +141,8 @@ public class MultipleRowSelection extends DataTableSelection {
             return rowDatas;
         if (rowIndexes != null) {
             List<Object> result = new ArrayList<Object>(rowIndexes.size());
-            for (Object myRowIndexe : rowIndexes) {
-                Integer index = (Integer) myRowIndexe;
+            for (Object myRowIndexes : rowIndexes) {
+                Integer index = (Integer) myRowIndexes;
                 Object rowData = getRowDataByRowIndex(index);
                 if (rowData != null)
                     result.add(rowData);
