@@ -30,6 +30,10 @@ import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.ListenerFor;
+import javax.faces.event.PostRestoreStateEvent;
 import javax.faces.render.Renderer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +45,7 @@ import java.util.HashMap;
 /**
  * @author Dmitry Pikhulya
  */
+@ListenerFor(systemEventClass = PostRestoreStateEvent.class)
 public abstract class AbstractTable extends OUIData implements TableStyles, FilterableComponent {
     /*
    Implementation notes:
@@ -271,6 +276,14 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
         toggleColumnSortingDirection = null;
     }
 
+    @Override
+    public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
+        super.processEvent(event);
+        if (event instanceof PostRestoreStateEvent) {
+            afterRestoreState(getFacesContext());
+        }
+    }
+
     protected void afterRestoreState(FacesContext context) {
         TableDataModel model = (TableDataModel) getUiDataValue();
         model.setTable(this);
@@ -301,7 +314,6 @@ public abstract class AbstractTable extends OUIData implements TableStyles, Filt
     public void processRestoreState(FacesContext context, Object state) {
         Object ajaxState = AjaxUtil.retrieveAjaxStateObject(context, this);
         super.processRestoreState(context, ajaxState != null ? ajaxState : state);
-        afterRestoreState(context);
     }
 
     protected TableDataModel getModel() {
