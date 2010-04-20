@@ -24,7 +24,7 @@ public class JSFC_2257Test extends OpenFacesTestCase {
     public void testTextAreaIsNotAffectedByOpenFacesValidation() throws Exception {
         testAppFunctionalPage("/requests/JSFC_2257.jsf");
 
-        ElementInspector dmf = element("fm:dfm0");
+        ElementInspector dmf = element("dfm0");
         dmf.assertElementExists(false);
         TextAreaInspector textArea = new TextAreaInspector("fm:ta");
         textArea.type("Some text");

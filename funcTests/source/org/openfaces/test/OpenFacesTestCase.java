@@ -27,9 +27,9 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
     private static BrowserType browserType = BrowserType.FIREFOX;
 
     /* Configuration */
-    protected static final boolean IS_FACELETS = getBooleansSystemProperty("test.app.is.facelets", true);
-    // SUN12 - Sun Reference Implemenetation 1.2
-    // SUN11 - Sun Reference Implemenetation 1.1
+    protected static final boolean IS_FACELETS = getBooleanSystemProperty("test.app.is.facelets", true);
+    // SUN12 - Sun Reference Implementation 1.2
+    // SUN11 - Sun Reference Implementation 1.1
     protected static final String IMPLEMENTATION = getSystemProperty("test.app.jsf.implementation", "SUN12");
 
     protected static final String TEST_APP_URL_PREFIX = getSystemProperty("test.app.context.path", IS_FACELETS ? "/TestAppFacelets" : "/TestAppJsp");
@@ -56,7 +56,7 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
         return (systemPropertyValue != null) ? systemPropertyValue : defaultValue;
     }
 
-    private static boolean getBooleansSystemProperty(String propertyName, boolean defaultValue) {
+    private static boolean getBooleanSystemProperty(String propertyName, boolean defaultValue) {
         String systemPropertyValue = System.getProperty(propertyName);
         if (systemPropertyValue != null) {
             return Boolean.parseBoolean(systemPropertyValue);
@@ -71,7 +71,10 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
 
     public static enum BrowserType {
         FIREFOX,
-        EXPLORER6;
+        EXPLORER,
+        CHROME,
+        SAFARI,
+        OPERA;
 
         public String getBrowserPath(Properties properties) {
             return properties.getProperty("org.openfaces.funcTests." + toString().toLowerCase() + ".path");
