@@ -45,12 +45,12 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/Libs/mojarra/jsf-api-1.2_12-b01.jar">
+	<classpathentry exported="true" kind="lib" path="/Libs/mojarra/jsf-api-2.0.2.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/Libs/mojarra/jsf-impl-1.2_12-b01.jar">
+	<classpathentry exported="true" kind="lib" path="/Libs/mojarra/jsf-impl-2.0.2.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>

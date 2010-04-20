@@ -6,7 +6,6 @@
 	<classpathentry kind="lib" path="/Libs/jstl-1.1.0.jar"/>
 	<classpathentry kind="lib" path="/Libs/el/el-api-1.5.0.jar"/>
 	<classpathentry kind="lib" path="/Libs/el/el-ri-1.5.0.jar"/>
-	<classpathentry kind="lib" path="/Libs/facelets/jsf-facelets-1.1.14.jar"/>
 	<classpathentry kind="lib" path="/Libs/jsp-api-2.1.jar"/>
 	<classpathentry kind="lib" path="/Libs/portals/portlet-api-lib.jar"/>
 	<classpathentry kind="lib" path="/Libs/openfaces-dependencies/jcommon-1.0.15.jar"/>
@@ -19,7 +18,7 @@
 	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-impl-3.3.0.GA.jar"/>
 	<classpathentry kind="lib" path="/Libs/richfaces/richfaces-ui-3.3.0.GA.jar"/>
 	<classpathentry kind="lib" path="/Libs/portals/Exo Portal/exo-portal.jsf.jsf-ri-1.1.4.jar"/>
-	<classpathentry kind="lib" path="/Libs/mojarra/jsf-api-1.2_12-b01.jar"/>
+	<classpathentry kind="lib" path="/Libs/mojarra/jsf-api-2.0.2.jar"/>
 	<classpathentry kind="lib" path="/Libs/trinidad/trinidad-stub.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="output" path="classes"/>

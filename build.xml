@@ -152,7 +152,7 @@
         <pathelement path="lib/seleniuminspector/patched-selenium-server.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-java-client-driver.jar"/>
         <pathelement path="lib/seleniuminspector/seleniuminspector.jar"/>
-        <pathelement path="lib/mojarra/jsf-api-1.2_12-b01.jar"/>
+        <pathelement path="lib/mojarra/jsf-api-2.0.2.jar"/>
         <pathelement location="${funcTests-target.dir}/classes"/>
         <pathelement path="${openfaces-inspectors-jar.file}"/>
         <pathelement path="testLib/junit.jar"/>

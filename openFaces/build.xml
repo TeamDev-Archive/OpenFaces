@@ -26,9 +26,6 @@
           <include name="servlet-api.jar"/>
           <include name="jstl-1.1.0.jar"/>
         </fileset>
-        <fileset dir="${facelets.lib.dir}">
-          <include name="jsf-facelets-1.1.14.jar"/>
-        </fileset>
         <fileset dir="${el.lib.dir}">
           <include name="el-api-1.5.0.jar"/>
           <include name="el-ri-1.5.0.jar"/>
@@ -40,7 +37,8 @@
           <include name="adf-faces-api-10.1.3.0.4.jar"/>
         </fileset>
         <fileset dir="${jsf.ri.lib.dir}">
-          <include name="jsf-api-1.2_12-b01.jar"/>
+          <include name="jsf-api-2.0.2.jar"/>
+          <include name="jsf-impl-2.0.2.jar"/>
         </fileset>
         <fileset dir="${myfaces.lib.dir}">
           <include name="myfaces-impl-1.2.3.jar"/>
@@ -88,7 +86,6 @@
 
   <target name="-build-if-lib-set" if="lib.dir"
           description="generate the distribution">
-    <property name="facelets.lib.dir" location="${lib.dir}/facelets"/>
     <property name="el.lib.dir" location="${lib.dir}/el"/>
     <property name="trinidad.lib.dir" location="${lib.dir}/trinidad"/>
     <property name="adffaces.lib.dir" location="${lib.dir}/adf-faces"/>
@@ -105,7 +102,6 @@
   <target name="-build-if-lib-not-set" unless="lib.dir"
           description="generate the distribution">
     <property name="lib.dir" location="lib"/>
-    <property name="facelets.lib.dir" location="${lib.dir}/facelets"/>
     <property name="el.lib.dir" location="${lib.dir}/el"/>
     <property name="trinidad.lib.dir" location="${lib.dir}/trinidad"/>
     <property name="adffaces.lib.dir" location="${lib.dir}/adf-faces"/>

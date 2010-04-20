@@ -7,7 +7,6 @@
   <property name="openfaces-dependencies.lib.dir" location="../../lib/openfaces-dependencies"/>
   <property name="el.lib.dir" location="../../lib/el"/>
   <property name="tomahawk.lib.dir" location="../../lib/tomahawk"/>
-  <property name="facelets.lib.dir" location="../../lib/facelets"/>
   <property name="richfaces.lib.dir" location="../../lib/richfaces"/>
   <property name="hibernate.lib.dir" location="../../lib/hibernate"/>
   <property name="jsf.lib.dir" location="../../lib/mojarra"/>
@@ -58,18 +57,14 @@
     <include name="richfaces-ui-3.3.1.GA.jar"/>
   </fileset>
 
-  <fileset id="mojarra-1.2" dir="${jsf.lib.dir}">
-    <include name="jsf-api-1.2_12-b01.jar"/>
-    <include name="jsf-impl-1.2_12-b01.jar"/>
+  <fileset id="mojarra-2.0" dir="${jsf.lib.dir}">
+    <include name="jsf-api-2.0.2.jar"/>
+    <include name="jsf-impl-2.0.2.jar"/>
   </fileset>
 
   <fileset id="hibernate-libs" dir="${hibernate.lib.dir}">
     <include name="hibernate3.jar"/>
     <include name="hibernate-annotations.jar"/>
-  </fileset>
-
-  <fileset id="facelets" dir="${facelets.lib.dir}">
-    <include name="jsf-facelets-1.1.14.jar"/>
   </fileset>
 
   <fileset id="el-ri" dir="${el.lib.dir}">
@@ -127,9 +122,8 @@
       <lib refid="openfaces-dependencies"/>
       <lib refid="tomahawk-libs"/>
       <lib refid="richfaces-libs"/>
-      <lib refid="mojarra-1.2"/>
+      <lib refid="mojarra-2.0"/>
       <lib refid="el-ri"/>
-      <lib refid="facelets"/>
       <lib refid="hibernate-libs"/>
       <classes dir="${classes.dir}"/>
     </war>
@@ -145,7 +139,7 @@
       <classpath>
         <fileset dir="${lib.dir}">
           <include name="jsp-api-2.1.jar"/>
-          <include name="mojarra/jsf-api-1.2_12-b01.jar"/>
+          <include name="mojarra/jsf-api-2.0.2.jar"/>
           <include name="servlet-api.jar"/>
           <include name="apache/commons-digester-1.6.jar"/>
           <include name="apache/commons-logging-1.0.4.jar"/>
@@ -156,7 +150,6 @@
           <include name="jstl-1.1.0.jar"/>
           <include name="openfaces-dependencies/cssparser-0.9.5.jar"/>
           <include name="openfaces-dependencies/sac.jar"/>
-          <include name="facelets/jsf-facelets-1.1.14.jar"/>
           <include name="richfaces/richfaces-api-3.3.1.GA.jar"/>
           <include name="el/el-api-1.5.0.jar"/>
           <include name="el/el-ri-1.5.0.jar"/>
