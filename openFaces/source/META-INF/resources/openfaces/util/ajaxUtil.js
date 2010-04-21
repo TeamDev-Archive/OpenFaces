@@ -780,7 +780,7 @@ O$.AjaxObject = function(render) {
         var startIndex = responseText.indexOf(O$.TEXT_RESPONSE_PREFIX);
         if (startIndex == -1) {
           O$.requestFinished(this);
-          var errorMessage = "Error occured on the server while processing Ajax request. Check server logs. (response length: " + responseText.length + ")";
+          var errorMessage = "Error occurred on the server while processing Ajax request. Check server logs. (response length: " + responseText.length + ")";
           //          O$.log("<b>" + errorMessage + "<br/>Original parameter list: " + this._params + "<br/>Original URL: " + this._url + "<br/>Response follows:><br/></b><xmp>" + responseText + "</xmp>");
 
           alert(errorMessage);
@@ -1553,7 +1553,7 @@ O$.updateViewStateFields = function(viewStateElementName, viewStateElementIndex,
 }
 
 O$.showDefaultAlertAfterException = function(errorMessage, ajaxObject) {
-  alert("An error occured on the server.\nError message:\n\"" + errorMessage + "\".\nPlease see server logs for the full stacktrace.");
+  alert("An error occurred on the server.\nError message:\n\"" + errorMessage + "\".\nPlease see server logs for the full stacktrace.");
   O$.requestFinished(ajaxObject);
 }
 

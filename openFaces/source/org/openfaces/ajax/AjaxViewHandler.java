@@ -48,8 +48,8 @@ public class AjaxViewHandler extends ViewHandlerWrapper {
     public static final String LOCATION_HEADER = "Location";
     public static final String ERROR_MESSAGE_HEADER = "Error-Message";
     public static final String ERROR_CAUSE_MESSAGE_HEADER = "Error-Detailed-Message";
-    public static final String ERROR_OCCURRED = "Error-Occured";
-    public static final String ERROR_OCCURRED_UNDER_PORTLETS = "Error-Occured-Under-Portlets";
+    public static final String ERROR_OCCURRED = "Error-Occurred";
+    public static final String ERROR_OCCURRED_UNDER_PORTLETS = "Error-Occurred-Under-Portlets";
     public static final String ERROR_OBJECT_UNDER_PORTLETS = "Error-Object-Under-Portlets";
     public static final String SESSION_EXPIRED_RESPONSE = "Session-Expired-Response";
     public static final String SESSION_SYNCHRONIZATION = "OF_REQUEST_SESSION_SYNC";
