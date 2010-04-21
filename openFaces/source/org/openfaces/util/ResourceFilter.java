@@ -150,7 +150,9 @@ public class ResourceFilter implements Filter {
             if (responseString.length() == 0)
                 return;
 
-            if (Resources.isHeaderIncludesRegistered(servletRequest)) {
+            String skipResourceFiltering = (String) servletRequest.getAttribute("org.openfaces.skipResourceFiltering");
+            if ((Rendering.isNullOrEmpty(skipResourceFiltering) || skipResourceFiltering.equalsIgnoreCase("false")) &&
+                    Resources.isHeaderIncludesRegistered(servletRequest)) {
                 renderResponseWithHeader(servletRequest, servletResponse, responseString);
                 return;
             }
