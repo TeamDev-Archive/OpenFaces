@@ -32,6 +32,7 @@ public abstract class OUICommandTag extends AbstractComponentTag {
         boolean ajax = false;
         ajax |= setLiteralCollectionProperty(component, "render");
         ajax |= setLiteralCollectionProperty(component, "execute");
+        setBooleanProperty(component, "executeRenderedComponents");
 
         if (ajax) {
             // todo: action/actionListener is set as value expression for Ajax-mode functions to be able to pass action

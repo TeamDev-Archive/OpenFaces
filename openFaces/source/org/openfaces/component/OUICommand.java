@@ -23,6 +23,7 @@ import java.util.Collections;
 public abstract class OUICommand extends UICommand implements OUIComponent {
     private Iterable<String> execute;
     private Iterable<String> render;
+    private Boolean executeRenderedComponents;
 
     private String style;
     private String styleClass;
@@ -52,6 +53,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
         return new Object[]{superState,
                 saveAttachedState(context, execute),
                 saveAttachedState(context, render),
+                executeRenderedComponents,
                 style, styleClass, rolloverStyle, rolloverClass, onclick, ondblclick, onmousedown, onmouseover,
                 onmousemove, onmouseout, onmouseup, onfocus, onblur, onkeydown, onkeyup, onkeypress, oncontextmenu,
                 onajaxstart, onajaxend, onerror};
@@ -66,6 +68,7 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
         super.restoreState(context, state[i++]);
         execute = (Iterable<String>) restoreAttachedState(context, state[i++]);
         render = (Iterable<String>) restoreAttachedState(context, state[i++]);
+        executeRenderedComponents = (Boolean) state[i++];
         style = (String) state[i++];
         styleClass = (String) state[i++];
         rolloverStyle = (String) state[i++];
@@ -262,5 +265,13 @@ public abstract class OUICommand extends UICommand implements OUIComponent {
 
     public void setOnerror(String onerror) {
         this.onerror = onerror;
+    }
+
+    public boolean getExecuteRenderedComponents() {
+        return ValueBindings.get(this, "executeRenderedComponents", executeRenderedComponents, true);
+    }
+
+    public void setExecuteRenderedComponents(boolean executeRenderedComponents) {
+        this.executeRenderedComponents = executeRenderedComponents;
     }
 }

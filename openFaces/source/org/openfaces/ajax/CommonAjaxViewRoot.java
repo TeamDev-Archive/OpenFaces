@@ -71,6 +71,7 @@ public abstract class CommonAjaxViewRoot {
     private static final String DEFAULT_SESSION_EXPIRATION_HANDLING = "default";
 
     private static final String PARAM_EXECUTE = "_of_execute";
+    public static final String PARAM_EXECUTE_RENDERED_COMPONENTS = "_of_executeRenderedComponents";
     private static final String PARAM_ACTION_COMPONENT = "_of_actionComponent";
     private static final String PARAM_ACTION_LISTENER = "_of_actionListener";
     private static final String PARAM_ACTION = "_of_action";
@@ -273,6 +274,7 @@ public abstract class CommonAjaxViewRoot {
         String componentId = request.getParameter(AjaxUtil.PARAM_RENDER);
         String[] render = extractRender(request);
         String[] execute = extractExecute(request);
+        boolean executeRenderedComponents = extractExecuteRenderedComponents(request);
 
         if (response instanceof ResponseFacade.ActionResponseFacade) {
             Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
@@ -311,7 +313,7 @@ public abstract class CommonAjaxViewRoot {
 
         UIComponent[] components = locateComponents(render, viewRoot, true, false);
         if (!extractSkipExecute(request))
-            ajaxApplyRequestValues(context, components, viewRoot, execute);
+            ajaxApplyRequestValues(context, components, viewRoot, execute, executeRenderedComponents);
         if (Boolean.valueOf(request.getParameter(PARAM_IMMEDIATE))) {
             doProcessApplication(context);
         }
@@ -329,13 +331,14 @@ public abstract class CommonAjaxViewRoot {
 
         String[] render = extractRender(request);
         String[] execute = extractExecute(request);
+        boolean executeRenderedComponents = extractExecuteRenderedComponents(request);
 
         UIViewRoot viewRoot = context.getViewRoot();
         assertChildren(viewRoot);
 
         UIComponent[] components = locateComponents(render, viewRoot, false, false);
         if (!extractSkipExecute(request))
-            ajaxProcessValidations(context, components, viewRoot, execute);
+            ajaxProcessValidations(context, components, viewRoot, execute, executeRenderedComponents);
     }
 
     private void doProcessUpdates(FacesContext context) {
@@ -349,13 +352,14 @@ public abstract class CommonAjaxViewRoot {
 
         String[] render = extractRender(request);
         String[] execute = extractExecute(request);
+        boolean executeRenderedComponents = extractExecuteRenderedComponents(request);
 
         UIViewRoot viewRoot = context.getViewRoot();
         assertChildren(viewRoot);
 
         UIComponent[] components = locateComponents(render, viewRoot, false, false);
         if (!extractSkipExecute(request))
-            ajaxUpdateModelValues(context, components, viewRoot, execute);
+            ajaxUpdateModelValues(context, components, viewRoot, execute, executeRenderedComponents);
     }
 
     private UIComponent[] locateComponents(String[] render, UIViewRoot viewRoot,
@@ -379,6 +383,11 @@ public abstract class CommonAjaxViewRoot {
     private boolean extractSkipExecute(RequestFacade request) {
         String value = request.getParameter("_of_skipExecute");
         return "true".equals(value);
+    }
+
+    private boolean extractExecuteRenderedComponents(RequestFacade request) {
+        String value = request.getParameter(PARAM_EXECUTE_RENDERED_COMPONENTS);
+        return Rendering.isNullOrEmpty(value) || value.equalsIgnoreCase("true");
     }
 
     private String[] extractRender(RequestFacade request) {
@@ -753,9 +762,10 @@ public abstract class CommonAjaxViewRoot {
     private void ajaxApplyRequestValues(FacesContext context,
                                         UIComponent[] render,
                                         UIViewRoot viewRoot,
-                                        String[] execute)
+                                        String[] execute,
+                                        boolean executeRenderedComponents)
             throws FacesException {
-        if (render != null) {
+        if (render != null && executeRenderedComponents) {
             for (UIComponent component : render) {
                 Log.log(context, "start ajaxApplyRequestValues for " + component);
                 component.processDecodes(context);
@@ -776,8 +786,9 @@ public abstract class CommonAjaxViewRoot {
     private void ajaxProcessValidations(FacesContext context,
                                         UIComponent[] render,
                                         UIViewRoot viewRoot,
-                                        String[] execute) throws FacesException {
-        if (render != null) {
+                                        String[] execute,
+                                        boolean executeRenderedComponents) throws FacesException {
+        if (render != null && executeRenderedComponents) {
             for (UIComponent component : render) {
                 Log.log(context, "start ajaxProcessValidations for " + component);
                 component.processValidators(context);
@@ -797,9 +808,10 @@ public abstract class CommonAjaxViewRoot {
     private void ajaxUpdateModelValues(FacesContext context,
                                        UIComponent[] render,
                                        UIViewRoot viewRoot,
-                                       String[] execute)
+                                       String[] execute,
+                                       boolean executeRenderedComponents)
             throws FacesException {
-        if (render != null) {
+        if (render != null && executeRenderedComponents) {
             for (UIComponent component : render) {
                 Log.log(context, "start ajaxUpdateModelValues for " + component);
                 component.processUpdates(context);

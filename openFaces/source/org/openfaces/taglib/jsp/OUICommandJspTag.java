@@ -57,4 +57,7 @@ public class OUICommandJspTag extends AbstractComponentJspTag {
         getDelegate().setPropertyValue("onerror", onerror);
     }
 
+    public void setExecuteRenderedComponents(ValueExpression executeRenderedComponents) {
+        getDelegate().setPropertyValue("executeRenderedComponents", executeRenderedComponents);
+    }
 }

@@ -118,6 +118,7 @@ public class AjaxInitializer {
             if (execute.iterator().hasNext() || submitAjaxInvoker) {
                 result.put("execute", getExecuteParam(context, command, execute));
             }
+            result.put("executeRenderedComponents", command.getExecuteRenderedComponents());
             String onajaxstart = command.getOnajaxstart();
             if (onajaxstart != null && onajaxstart.length() != 0) {
                 result.put("onajaxstart", new AnonymousFunction(onajaxstart, "event"));
