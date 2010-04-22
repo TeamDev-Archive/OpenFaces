@@ -9,16 +9,15 @@
 
 <html>
 <f:view>
-  <head>
+  <h:head>
     <title>Basic Prime Faces Testing</title>
-    <p:resources/>
-  </head>
+  </h:head>
 
-  <body>
+  <h:body>
 
   <h:form id="form">
     <%@ include file="basicPrimeFacesTesting_core.xhtml" %>
   </h:form>
-  </body>
+  </h:body>
 </f:view>
 </html>

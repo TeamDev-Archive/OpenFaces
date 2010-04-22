@@ -30,6 +30,7 @@ import javax.faces.component.NamingContainer;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
@@ -817,9 +818,9 @@ public class OUIData extends UIData implements NamingContainer, OUIComponent { /
 
             // <MOD-4>
             if (customRowRenderingInfo != null) {
-                List<UIComponent> a4jSupportComponents = customRowRenderingInfo.getA4jSupportComponentsForThisRow(customRows);
-                for (UIComponent a4jSupportComponent : a4jSupportComponents) {
-                    process(context, a4jSupportComponent, processAction);
+                List<ClientBehavior> a4jSupportBehaviors = customRowRenderingInfo.getA4jAjaxBehaviorsForThisRow(customRows);
+                for (ClientBehavior a4jAjax : a4jSupportBehaviors) {
+//                    process(context, a4jAjax, processAction); todo: resolve what should be done with a4jAjax behavior here
                 }
                 for (int i = 0, count = columnsForProcessing.size(); i < count; i++) {
                     CustomCellRenderingInfo customCellRenderingInfo = customRowRenderingInfo.getCustomCellRenderingInfo(i);

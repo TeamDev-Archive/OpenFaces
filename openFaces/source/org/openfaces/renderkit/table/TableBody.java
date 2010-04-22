@@ -15,6 +15,7 @@ import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.Cell;
+import org.openfaces.component.table.Column;
 import org.openfaces.component.table.Row;
 import org.openfaces.component.table.Scrolling;
 import org.openfaces.component.table.TreeColumn;
@@ -274,7 +275,7 @@ public class TableBody extends TableSection {
             CustomRowRenderingInfo customRowRenderingInfo = null;
             List<Integer> applicableRowDeclarationIndexes = new ArrayList<Integer>();
             for (Row tableRow : applicableCustomRows) {
-                if (Rendering.isComponentWithA4jSupport(tableRow)) {
+                if (Rendering.isComponentWithA4jAjax(tableRow)) {
                     if (customRowRenderingInfo == null)
                         customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
                     Integer rowDeclarationIndex = (Integer) tableRow.getAttributes().get(CUSTOM_ROW_INDEX_ATTRIBUTE);
@@ -352,7 +353,7 @@ public class TableBody extends TableSection {
                     for (int i = 0; i < customCellCount; i++) {
                         Cell cell = (Cell) customCells.get(i);
                         boolean cellWithCustomContent = cell.getChildCount() > 0;
-                        if (cellWithCustomContent || Rendering.isComponentWithA4jSupport(cell)) {
+                        if (cellWithCustomContent || Rendering.isComponentWithA4jAjax(cell)) {
                             if (customRowRenderingInfo == null)
                                 customRowRenderingInfo = new CustomRowRenderingInfo(columnCount);
                             if (cellWithCustomContent)

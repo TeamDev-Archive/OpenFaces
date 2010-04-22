@@ -11,7 +11,7 @@
  */
 package org.openfaces.util;
 
-import org.ajax4jsf.component.UIAjaxSupport;
+import org.ajax4jsf.component.behavior.AjaxBehavior;
 import org.openfaces.component.OUIClientAction;
 import org.openfaces.component.OUIComponent;
 import org.openfaces.component.OUIInput;
@@ -35,6 +35,8 @@ import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.ValueHolder;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -51,7 +53,7 @@ import java.lang.reflect.Array;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -1120,8 +1122,8 @@ public class Rendering {
      * @param component The component to check
      * @return true, if component has ajax4jsf support
      */
-    public static boolean isComponentWithA4jSupport(UIComponent component) {
-        return getA4jSupportForComponent(component) != null;
+    public static boolean isComponentWithA4jAjax(UIComponent component) {
+        return getA4jAjaxForComponent(component) != null;
     }
 
     /**
@@ -1130,32 +1132,19 @@ public class Rendering {
      * @param component The component to check
      * @return {@link UIComponent} of ajax support, if component has support, null, otherwise
      */
-    public static UIComponent getA4jSupportForComponent(UIComponent component) {
-        Iterator<UIComponent> kids = component.getFacetsAndChildren();
-        while (kids.hasNext()) {
-            UIComponent kid = kids.next();
-            if (kid.getClass().getName().equals("org.ajax4jsf.component.html.HtmlAjaxSupport"))
-                return kid;
+    public static ClientBehavior getA4jAjaxForComponent(UIComponent component) {
+        if (!(component instanceof ClientBehaviorHolder))
+            return null;
+        Collection<List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) component).getClientBehaviors().values();
+        for (List<ClientBehavior> behavior : behaviors) {
             try {
-                if (kid instanceof UIAjaxSupport)
-                    return kid;
+                if (behavior instanceof AjaxBehavior)
+                    return (ClientBehavior) behavior;
             } catch (Throwable e) {
-                return null; // the component can't have A4j support if UIAjaxSupport class can't be found
+                return null; // a component can't have A4j support if AjaxBehavior class can't be found
             }
         }
         return null;
-    }
-
-    public static boolean isA4jSupportComponent(UIComponent component) {
-        boolean result;
-        try {
-            result = component.getClass().getName().equals("org.ajax4jsf.component.html.HtmlAjaxSupport") ||
-                    component instanceof UIAjaxSupport;
-        } catch (Throwable e) {
-            return false; // failure to find a component means that it's not actually a4j:support component
-        }
-        return result;
-
     }
 
     /**

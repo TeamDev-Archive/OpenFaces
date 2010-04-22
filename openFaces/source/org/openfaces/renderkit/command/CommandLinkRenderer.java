@@ -63,7 +63,7 @@ public class CommandLinkRenderer extends RendererBase {
             boolean hasExplicitContent = false;
             List<UIComponent> children = link.getChildren();
             for (UIComponent child : children) {
-                if (!(child instanceof OUIClientAction) && !Rendering.isA4jSupportComponent(child)) {
+                if (!(child instanceof OUIClientAction)) {
                     hasExplicitContent = true;
                     break;
                 }

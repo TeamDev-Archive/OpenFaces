@@ -112,12 +112,6 @@
       <url-pattern>/*</url-pattern>
     </filter-mapping>-->
 
-  <!-- RICHFACES FILTER -->
-  <filter>
-    <display-name>RichFaces Filter</display-name>
-    <filter-name>richfaces</filter-name>
-    <filter-class>org.ajax4jsf.Filter</filter-class>
-  </filter>
 
   <!-- FILTER FOR PROCESSING INTERNAL OPENFACES RESOURCES -->
   <filter>
@@ -140,15 +134,6 @@
       <param-value>20m</param-value>
     </init-param>
   </filter>
-
-  <!-- RICHFACES FILTER MAPPING-->
-  <filter-mapping>
-    <filter-name>richfaces</filter-name>
-    <servlet-name>Faces Servlet</servlet-name>
-    <dispatcher>REQUEST</dispatcher>
-    <dispatcher>FORWARD</dispatcher>
-    <dispatcher>INCLUDE</dispatcher>
-  </filter-mapping>
 
   <!-- MAPPING FOR OPENFACES RESOURCE FILTER -->
   <filter-mapping>

@@ -227,7 +227,6 @@
               <element id="module-output" name="OpenFaces" />
             </element>
             <element id="library" level="project" name="hibernate" />
-            <element id="library" level="project" name="JSF Implementation - Mojarra 1.2" />
             <element id="library" level="project" name="PrimeFaces" />
           </element>
         </element>
@@ -814,9 +813,6 @@
     <option name="HEAP_SIZE" />
     <option name="LOCALE" />
     <option name="OPEN_IN_BROWSER" value="true" />
-  </component>
-  <component name="JsfProjectComponent">
-    <option name="faceletsSupport" value="ENABLED" />
   </component>
   <component name="LogConsolePreferences">
     <option name="FILTER_ERRORS" value="false" />

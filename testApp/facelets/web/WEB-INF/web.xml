@@ -54,11 +54,6 @@ and for destroying session and application contexts.-->
   </context-param>
 
   <context-param>
-    <param-name>org.ajax4jsf.VIEW_HANDLERS</param-name>
-    <param-value>com.sun.facelets.FaceletViewHandler</param-value>
-  </context-param>
-
-  <context-param>
     <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
     <param-value>.xhtml</param-value>
   </context-param>
@@ -134,13 +129,6 @@ and for destroying session and application contexts.-->
    <url-pattern>/*</url-pattern>
  </filter-mapping> -->
 
-  <!-- RICHFACES FILTER -->
-  <filter>
-    <display-name>RichFaces Filter</display-name>
-    <filter-name>richfaces</filter-name>
-    <filter-class>org.ajax4jsf.Filter</filter-class>
-  </filter>
-
   <!-- FILTER FOR PROCESSING INTERNAL OPENFACES RESOURCES -->
   <filter>
     <filter-name>ResourceFilter</filter-name>
@@ -162,15 +150,6 @@ and for destroying session and application contexts.-->
       <param-value>20m</param-value>
     </init-param>
   </filter>
-
-  <!-- RICHFACES FILTER MAPPING-->
-  <filter-mapping>
-    <filter-name>richfaces</filter-name>
-    <servlet-name>Faces Servlet</servlet-name>
-    <dispatcher>REQUEST</dispatcher>
-    <dispatcher>FORWARD</dispatcher>
-    <dispatcher>INCLUDE</dispatcher>
-  </filter-mapping>
 
   <!-- MAPPING FOR OPENFACES RESOURCE FILTER -->
   <filter-mapping>

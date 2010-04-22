@@ -16,7 +16,6 @@ import org.openfaces.component.command.MenuItem;
 import org.openfaces.component.command.PopupMenu;
 import org.openfaces.renderkit.RendererBase;
 import org.openfaces.util.AjaxUtil;
-import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.StyleGroup;
 import org.openfaces.util.Styles;
@@ -128,7 +127,7 @@ public class MenuItemRenderer extends RendererBase {
                     addMenuItemParameter(menuItem, "menuId", child.getClientId(context));
                 } else {
                     child.encodeAll(context);
-                    if (!(child instanceof OUIClientAction) && !Rendering.isA4jSupportComponent(child))
+                    if (!(child instanceof OUIClientAction))
                         renderValueAsContent = false;
                 }
             }

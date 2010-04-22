@@ -89,7 +89,7 @@ public class CommandButtonRenderer extends RendererBase {
     private boolean isButtonTagMode(CommandButton button) {
         List<UIComponent> children = button.getChildren();
         for (UIComponent child : children) {
-            if (!(child instanceof OUIClientAction) && !Rendering.isA4jSupportComponent(child))
+            if (!(child instanceof OUIClientAction))
                 return true;
         }
         return false;

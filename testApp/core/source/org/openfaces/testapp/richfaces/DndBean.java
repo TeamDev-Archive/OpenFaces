@@ -12,8 +12,6 @@
 
 package org.openfaces.testapp.richfaces;
 
-import org.richfaces.event.DropEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,10 +40,10 @@ public class DndBean {
         this.frameworks = frameworks;
     }
 
-    public void processDrop(DropEvent arg0) {
-        frameworks.remove(arg0.getDragValue());
-        containerPHP.add((Framework) arg0.getDragValue());
-    }
+//    public void processDrop(DropEvent arg0) {
+//        frameworks.remove(arg0.getDragValue());
+//        containerPHP.add((Framework) arg0.getDragValue());
+//    }
 
     public List<Framework> getContainerPHP() {
         return containerPHP;
