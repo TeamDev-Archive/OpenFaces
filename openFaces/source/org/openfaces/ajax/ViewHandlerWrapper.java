@@ -13,67 +13,30 @@ package org.openfaces.ajax;
 
 import org.openfaces.util.Components;
 
-import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.util.Locale;
 
 /**
  * @author Eugene Goncharov
  */
-public class ViewHandlerWrapper extends ViewHandler {
+public class ViewHandlerWrapper extends javax.faces.application.ViewHandlerWrapper {
     private ViewHandler delegate;
 
     public ViewHandlerWrapper(ViewHandler delegate) {
         this.delegate = delegate;
     }
 
-    public ViewHandler getDelegate() {
+    @Override
+    public ViewHandler getWrapped() {
         return delegate;
     }
 
     @Override
-    public Locale calculateLocale(FacesContext context) {
-        return delegate.calculateLocale(context);
-    }
-
-    @Override
-    public String calculateRenderKitId(FacesContext context) {
-        return delegate.calculateRenderKitId(context);
-    }
-
-    @Override
-    public UIViewRoot createView(FacesContext context, String viewId) {
-        return delegate.createView(context, viewId);
-    }
-
-    @Override
-    public String getActionURL(FacesContext context, String url) {
-        return delegate.getActionURL(context, url);
-    }
-
-    @Override
-    public String getResourceURL(FacesContext context, String url) {
-        return delegate.getResourceURL(context, url);
-    }
-
-    @Override
-    public void renderView(FacesContext context, UIViewRoot root) throws IOException, FacesException {
-        delegate.renderView(context, root);
-    }
-
-    @Override
     public UIViewRoot restoreView(FacesContext context, String viewId) {
-        UIViewRoot result = delegate.restoreView(context, viewId);
+        UIViewRoot result = super.restoreView(context, viewId);
         Components.runScheduledActions();
         return result;
-    }
-
-    @Override
-    public void writeState(FacesContext context) throws IOException {
-        delegate.writeState(context);
     }
 
 }

@@ -102,7 +102,7 @@ public class Environment {
         ViewHandler handler = application.getViewHandler();
         while (true) {
             if (handler instanceof ViewHandlerWrapper) {
-                handler = ((ViewHandlerWrapper) handler).getDelegate();
+                handler = ((ViewHandlerWrapper) handler).getWrapped();
                 continue;
             }
             break;
@@ -130,7 +130,7 @@ public class Environment {
                 faceletsViewHandler = isFaceletsViewHandler(resultHandler, faceletsViewHandlerClass);
 
                 if (!faceletsViewHandler && resultHandler instanceof ViewHandlerWrapper) {
-                    resultHandler = ((ViewHandlerWrapper) resultHandler).getDelegate();
+                    resultHandler = ((ViewHandlerWrapper) resultHandler).getWrapped();
                     faceletsViewHandler = isFaceletsViewHandler(resultHandler, faceletsViewHandlerClass);
                     if (!faceletsViewHandler) {
                         isFaceletsViewHandlerInUse(resultHandler, faceletsViewHandlerClass);
