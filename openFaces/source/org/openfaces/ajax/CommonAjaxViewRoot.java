@@ -11,8 +11,6 @@
  */
 package org.openfaces.ajax;
 
-import org.openfaces.ajax.plugins.AjaxPluginIncludes;
-import org.openfaces.ajax.plugins.PluginsLoader;
 import org.openfaces.component.OUIObjectIterator;
 import org.openfaces.component.ajax.AjaxSettings;
 import org.openfaces.component.ajax.DefaultSessionExpiration;
@@ -366,7 +364,7 @@ public abstract class CommonAjaxViewRoot {
     /**
      * The "skip execute" parameter (which commands to skip all "execute" phases) is used by some partial Ajax requests
      * to ensure that no components are being saved to the backing bean and only the required data is saved (e.g. during
-     * the automatic column resizing state saving with Ajax, where nothing except the resizing state itself should be 
+     * the automatic column resizing state saving with Ajax, where nothing except the resizing state itself should be
      * saved during the Ajax request)
      */
     private boolean extractSkipExecute(RequestFacade request) {
@@ -897,6 +895,7 @@ public abstract class CommonAjaxViewRoot {
     }
 
     // TODO [sanders] (Apr 1, 2009, 5:11 AM): Too long name
+
     private static void finishProccessErrorUnderPortletsDuringAjax(FacesContext context, Throwable e) throws IOException {
         AjaxResponse ajaxResponse = new AjaxResponse();
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
@@ -978,23 +977,10 @@ public abstract class CommonAjaxViewRoot {
         Object ajaxResult = ajaxRequest.getAjaxResult();
         ajaxResponse.setAjaxResult(ajaxResult);
 
-        AjaxPluginIncludes availableIncludes = PluginsLoader.getAvailableIncludes(context);
-        List<String> foreignHeadScripts = availableIncludes.getScripts();
-        ajaxPrepareInitializationScripts(context, ajaxResponse, foreignHeadScripts, initializationScripts);
-
-        //todo: find component with inheader styles declaration and add corresponding functionality to AjaxPlugin(s)
-
         addJSLibraries(context, ajaxResponse);
-        List<String> jsLibraries = availableIncludes.getJsIncludes();
-        if (jsLibraries != null)
-            addForeignJSLibraries(ajaxResponse, jsLibraries);
 
         addStyles(context, ajaxResponse, components);
-        List<String> cssFiles = availableIncludes.getCssIncludes();
-        if (cssFiles != null) {
-            addForeignCSSFiles(ajaxResponse, cssFiles);
-        }
-        
+
         if (AjaxUtil.isPortletRequest(context)) {
             final List<UIForm> uiForms = Components.findChildrenWithClass(viewRoot, UIForm.class, false, true);
 
