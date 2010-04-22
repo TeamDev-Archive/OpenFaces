@@ -43,8 +43,9 @@ O$.DropDown = {
     dropDown._promptTextClass = O$.DropDown._getClassName(promptTextClass);
 
     if (dropDown._promptText) {
-      if (dropDown._field.value.length == 0 ||
-          ((dropDown._field.value == dropDown._promptText) && dropDown._statePrompt.value == "true")) {   //needed for FireFox, when press F5 key
+      if ((initialText.length = 0 && dropDown._field.value.length == 0) ||
+          (initialText.length = 0 && dropDown._field.value == dropDown._promptText)) {
+        //needed for FireFox, when press F5 key
         dropDown._statePrompt.value = true;
       }
     } else
