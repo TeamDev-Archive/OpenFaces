@@ -136,6 +136,7 @@ and for destroying session and application contexts.-->
   </filter>
 
   <!--MYFACES EXTENSIONS FILTER-->
+  <!--
   <filter>
     <filter-name>ExtensionsFilter</filter-name>
     <filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>
@@ -150,7 +151,7 @@ and for destroying session and application contexts.-->
       <param-value>20m</param-value>
     </init-param>
   </filter>
-
+      -->
   <!-- MAPPING FOR OPENFACES RESOURCE FILTER -->
   <filter-mapping>
     <filter-name>ResourceFilter</filter-name>
@@ -159,18 +160,19 @@ and for destroying session and application contexts.-->
     <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
 
-  <!--MAPPING FOR MYFACES EXTENSIONS FILTER-->
-  <filter-mapping>
-    <filter-name>ExtensionsFilter</filter-name>
-    <!-- servlet-name must match the name of your javax.faces.webapp.FacesServlet entry -->
-    <servlet-name>Faces Servlet</servlet-name>
-  </filter-mapping>
+  <!--&lt;!&ndash;MAPPING FOR MYFACES EXTENSIONS FILTER&ndash;&gt;-->
+  <!---->
+  <!--<filter-mapping>-->
+    <!--<filter-name>ExtensionsFilter</filter-name>-->
+    <!--&lt;!&ndash; servlet-name must match the name of your javax.faces.webapp.FacesServlet entry &ndash;&gt;-->
+    <!--<servlet-name>Faces Servlet</servlet-name>-->
+  <!--</filter-mapping>-->
 
-  <!-- extension mapping for serving page-independent resources (javascript, stylesheets, images, etc.) -->
-  <filter-mapping>
-    <filter-name>ExtensionsFilter</filter-name>
-    <url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
-  </filter-mapping>
+  <!--&lt;!&ndash; extension mapping for serving page-independent resources (javascript, stylesheets, images, etc.) &ndash;&gt;-->
+  <!--<filter-mapping>-->
+    <!--<filter-name>ExtensionsFilter</filter-name>-->
+    <!--<url-pattern>/faces/myFacesExtensionResource/*</url-pattern>-->
+  <!--</filter-mapping>-->
 
   <filter-mapping>
     <filter-name>ResourceFilter</filter-name>

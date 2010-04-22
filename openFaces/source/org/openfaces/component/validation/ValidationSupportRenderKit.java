@@ -13,11 +13,13 @@ package org.openfaces.component.validation;
 
 import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
+import javax.faces.render.ClientBehaviorRenderer;
 import javax.faces.render.RenderKit;
 import javax.faces.render.Renderer;
 import javax.faces.render.ResponseStateManager;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.Iterator;
 
 public class ValidationSupportRenderKit extends RenderKit {
     protected RenderKit renderKit;
@@ -45,6 +47,26 @@ public class ValidationSupportRenderKit extends RenderKit {
 
     public ResponseStream createResponseStream(OutputStream out) {
         return renderKit.createResponseStream(out);
+    }
+
+    public Iterator<String> getComponentFamilies() {
+        return renderKit.getComponentFamilies();
+    }
+
+    public Iterator<String> getRendererTypes(String componentFamily) {
+        return renderKit.getRendererTypes(componentFamily);
+    }
+
+    public void addClientBehaviorRenderer(String type, ClientBehaviorRenderer renderer) {
+        renderKit.addClientBehaviorRenderer(type, renderer);
+    }
+
+    public ClientBehaviorRenderer getClientBehaviorRenderer(String type) {
+        return renderKit.getClientBehaviorRenderer(type);
+    }
+
+    public Iterator<String> getClientBehaviorRendererTypes() {
+        return renderKit.getClientBehaviorRendererTypes();
     }
 
 }
