@@ -27,6 +27,10 @@ public class ViewHandlerWrapper extends javax.faces.application.ViewHandlerWrapp
         this.delegate = delegate;
     }
 
+    public ViewHandler getDelegate() {
+        return getWrapped();
+    }
+
     @Override
     public ViewHandler getWrapped() {
         return delegate;
