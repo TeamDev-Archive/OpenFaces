@@ -103,35 +103,36 @@ public class MapRenderUtilities {
             ChartEntity entity) {
         StringBuilder tag = new StringBuilder();
         ChartTitle title = chart.getTitle();
+        if (title == null) return "";
         boolean hasURL = entity.getURLText() != null && !entity.getURLText().equals("");
         boolean hasAction = title.getActionExpression() != null || title.getActionListeners().length > 0;
         boolean hasToolTip = title.getTooltip() != null && !title.getTooltip().equals("");
 
-        if (hasURL || hasToolTip || hasAction) {
-            String fieldId = chart.getClientId(FacesContext.getCurrentInstance()) + ACTION_FIELD_SUFFIX;
+        if (!hasURL && !hasToolTip && !hasAction) return "";
 
-            tag.append("<area");
+        String fieldId = chart.getClientId(FacesContext.getCurrentInstance()) + ACTION_FIELD_SUFFIX;
 
-            if (hasAction)
-                tag.append(" onclick=\"O$.setValue('").append(fieldId).append("','title'); O$.submitById('").append(fieldId).append("');\"");
+        tag.append("<area");
 
-            tag.append(" shape=\"").append(entity.getShapeType()).append("\"" + " coords=\"").append(entity.getShapeCoords()).append("\"");
+        if (hasAction)
+            tag.append(" onclick=\"O$.setValue('").append(fieldId).append("','title'); O$.submitById('").append(fieldId).append("');\"");
 
-            if (hasToolTip) {
-                String toolTipText = entity.getToolTipText();
-                if (toolTipText != null)
-                    tag.append(toolTipTagFragmentGenerator.generateToolTipFragment(toolTipText));
-            }
+        tag.append(" shape=\"").append(entity.getShapeType()).append("\"" + " coords=\"").append(entity.getShapeCoords()).append("\"");
 
-            if (hasURL && !hasAction)
-                tag.append(urlTagFragmentGenerator.generateURLFragment(entity.getURLText()));
-
-
-            if (!hasToolTip)
-                tag.append(" alt=\"\"");
-
-            tag.append("/>");
+        if (hasToolTip) {
+            String toolTipText = entity.getToolTipText();
+            if (toolTipText != null)
+                tag.append(toolTipTagFragmentGenerator.generateToolTipFragment(toolTipText));
         }
+
+        if (hasURL && !hasAction)
+            tag.append(urlTagFragmentGenerator.generateURLFragment(entity.getURLText()));
+
+
+        if (!hasToolTip)
+            tag.append(" alt=\"\"");
+
+        tag.append("/>");
         return tag.toString();
     }
 
