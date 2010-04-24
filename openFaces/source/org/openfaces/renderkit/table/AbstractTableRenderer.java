@@ -61,8 +61,6 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     private static final String DEFAULT_SORTABLE_HEADER_ROLLOVER_CLASS = null;//"o_table_sortable_header_rollover";
     private static final String DEFAULT_FOCUSED_STYLE = "border: 1px dotted black;";
 
-    private static final String TABLE_STRUCTURE_ATTR = "_of_tableStructure";
-
     private static final String FACET_COLUMN_MENU = "columnMenu";
     private static final String FACET_COLUMN_MENU_BUTTON = "columnMenuButton";
 
@@ -81,7 +79,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             AjaxUtil.prepareComponentForAjax(context, component);
 
         TableStructure tableStructure = createTableStructure(table);
-        table.getAttributes().put(TABLE_STRUCTURE_ATTR, tableStructure);
+        table.getAttributes().put(TableStructure.TABLE_STRUCTURE_ATTR, tableStructure);
         try {
             // this hack is needed for working around strange IE issue
             // JSFC-2081 ExpressionFilter drop-downs in TreeTable have improper style on demo (regression) - IE only
@@ -93,7 +91,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
                 }
             });
         } finally {
-            table.getAttributes().remove(TABLE_STRUCTURE_ATTR);
+            table.getAttributes().remove(TableStructure.TABLE_STRUCTURE_ATTR);
         }
     }
 
@@ -148,10 +146,6 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
 
     @Override
     public void encodeChildren(FacesContext context, UIComponent uiComponent) throws IOException {
-    }
-
-    private TableStructure getTableStructure(AbstractTable table) {
-        return (TableStructure) table.getAttributes().get(TABLE_STRUCTURE_ATTR);
     }
 
     protected void encodeScriptsAndStyles(FacesContext context, AbstractTable table) throws IOException {
@@ -289,7 +283,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
             AbstractTable table,
             ScriptBuilder buf) throws IOException {
         TableStyles defaultStyles = TableStructure.getDefaultStyles(table);
-        TableStructure tableStructure = getTableStructure(table);
+        TableStructure tableStructure = TableStructure.getCurrentInstance(table);
 
         buf.initScript(context, table, "O$.Table._init",
                 tableStructure.getInitParam(context, defaultStyles),

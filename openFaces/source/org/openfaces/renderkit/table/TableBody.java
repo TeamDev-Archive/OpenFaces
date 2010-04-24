@@ -15,7 +15,6 @@ import org.openfaces.component.TableStyles;
 import org.openfaces.component.table.AbstractTable;
 import org.openfaces.component.table.BaseColumn;
 import org.openfaces.component.table.Cell;
-import org.openfaces.component.table.Column;
 import org.openfaces.component.table.Row;
 import org.openfaces.component.table.Scrolling;
 import org.openfaces.component.table.TreeColumn;
@@ -408,7 +407,8 @@ public class TableBody extends TableSection {
                     } else {
                         cellContentsContainer.encodeAll(context);
                     }
-                    writeNonBreakableSpaceForEmptyCell(writer, table, cellContentsContainer);
+                    if (!(column instanceof TreeColumn))
+                        TableStructure.writeNonBreakableSpaceForEmptyCell(writer, table, cellContentsContainer);
                 } else {
                     if (tableStructure.isEmptyCellsTreatmentRequired())
                         Rendering.writeNonBreakableSpace(writer);
@@ -476,22 +476,6 @@ public class TableBody extends TableSection {
             requestMap.put(columnIdVar, prevColumnIdVarValue);
 
         return (result == null) || result;
-    }
-
-    private void writeNonBreakableSpaceForEmptyCell(ResponseWriter writer, AbstractTable table, UIComponent cellComponentsContainer) throws IOException {
-        if (cellComponentsContainer instanceof Column || cellComponentsContainer instanceof Cell) {
-            List<UIComponent> children = cellComponentsContainer.getChildren();
-            boolean childrenEmpty = true;
-            for (int childIndex = 0, childCount = children.size(); childIndex < childCount; childIndex++) {
-                UIComponent child = children.get(childIndex);
-                if (!TableStructure.isComponentEmpty(child)) {
-                    childrenEmpty = false;
-                    break;
-                }
-            }
-            if (childrenEmpty && tableStructure.isEmptyCellsTreatmentRequired())
-                Rendering.writeNonBreakableSpace(writer);
-        }
     }
 
     private List<Row> getApplicableCustomRows(List<Row> customRows) {

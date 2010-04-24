@@ -97,8 +97,8 @@
     <attr name= "firstImageUrl,lastImageUrl,previousImageUrl,nextImageUrl,firstDisabledImageUrl,lastDisabledImageUrl,previousDisabledImageUrl,nextDisabledImageUrl" converter="path" />
   </tag>
   <tag name="treeTable">
-    <attr name= "expansionState" converter="variants" userData="allCollapsed,allExpanded,allCollapsed,levelsExpanded:0,levelsExpanded:1,levelsExpanded:2,levelsExpanded:..." />
-    <attr name= "preloadedNodes" converter="variants" userData="none,all,levelsPreloaded:0,levelsPreloaded:1,levelsPreloaded:2,levelsPreloaded:..." />
+    <attr name= "expansionState" converter="variants" userData="allCollapsed,allExpanded,allCollapsed,levelsExpanded:0,levelsExpanded:1,levelsExpanded:2" />
+    <attr name= "preloadedNodes" converter="variants" userData="none,all,levelsPreloaded:0,levelsPreloaded:1,levelsPreloaded:2" />
     <attr name= "dir" converter="variants" userData="LTR,RTL" />
     <attr name= "rules" converter="variants" userData="none,groups,rows,cols,all"/>
     <attr name= "rendered,sortAscending,foldingEnabled,useAjax,noDataMessageAllowed" converter="boolean" />

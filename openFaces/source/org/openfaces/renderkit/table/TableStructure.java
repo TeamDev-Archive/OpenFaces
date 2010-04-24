@@ -12,14 +12,7 @@
 package org.openfaces.renderkit.table;
 
 import org.openfaces.component.TableStyles;
-import org.openfaces.component.table.AbstractTable;
-import org.openfaces.component.table.BaseColumn;
-import org.openfaces.component.table.ColumnResizing;
-import org.openfaces.component.table.ColumnResizingState;
-import org.openfaces.component.table.Scrolling;
-import org.openfaces.component.table.ColumnGroup;
-import org.openfaces.component.table.TreeColumn;
-import org.openfaces.component.table.TreeTable;
+import org.openfaces.component.table.*;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
@@ -35,11 +28,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import java.awt.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.awt.*;
 
 /**
  * @author Dmitry Pikhulya
@@ -58,6 +51,8 @@ public class TableStructure extends TableElement {
     private static final String ADDITIONAL_CELL_WRAPPER_STYLE =
             "width: 100% !important; border: none !important; padding: 0 !important; margin: 0 !important; " +
                     "background-image: none !important; background-color: transparent !important; height: auto !important;";
+
+    static final String TABLE_STRUCTURE_ATTR = "_of_tableStructure";
 
     private final UIComponent component;
     private final TableStyles tableStyles;
@@ -98,6 +93,11 @@ public class TableStructure extends TableElement {
         header = new TableHeader(this);
         body = new TableBody(this);
         footer = new TableFooter(this);
+    }
+
+    public static TableStructure getCurrentInstance(AbstractTable table) {
+        return (TableStructure) table.getAttributes().get(TABLE_STRUCTURE_ATTR);
+
     }
 
     private boolean isFixedColumn(BaseColumn column) {
@@ -267,6 +267,27 @@ public class TableStructure extends TableElement {
             cellpadding = DEFAULT_CELL_PADDING;
         return cellpadding;
     }
+
+    static void writeNonBreakableSpaceForEmptyCell(
+            ResponseWriter writer,
+            AbstractTable table,
+            UIComponent cellComponentsContainer) throws IOException {
+        if (cellComponentsContainer instanceof Column || cellComponentsContainer instanceof Cell) {
+            List<UIComponent> children = cellComponentsContainer.getChildren();
+            boolean childrenEmpty = true;
+            for (int childIndex = 0, childCount = children.size(); childIndex < childCount; childIndex++) {
+                UIComponent child = children.get(childIndex);
+                if (!isComponentEmpty(child)) {
+                    childrenEmpty = false;
+                    break;
+                }
+            }
+            TableStructure tableStructure = getCurrentInstance(table);
+            if (childrenEmpty && tableStructure.isEmptyCellsTreatmentRequired())
+                Rendering.writeNonBreakableSpace(writer);
+        }
+    }
+
 
     boolean isEmptyCellsTreatmentRequired() {
         if (!(this.component instanceof AbstractTable))

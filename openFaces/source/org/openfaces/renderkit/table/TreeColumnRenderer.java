@@ -45,16 +45,15 @@ public class TreeColumnRenderer extends RendererBase {
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         TreeColumn treeColumn = ((TreeColumn) component);
         Cell customCell = (Cell) treeColumn.getAttributes().get(ATTR_CUSTOM_CELL);
+        ResponseWriter writer = context.getResponseWriter();
+        TreeTable treeTable = getTreeTable(component);
+        UIComponent cellContentsContainer = customCell != null ? customCell : component;
         if (!treeColumn.getShowAsTree()) {
-            if (customCell != null)
-                Rendering.renderChildren(context, customCell);
-            else
-                Rendering.renderChildren(context, component);
+            Rendering.renderChildren(context, cellContentsContainer);
+            TableStructure.writeNonBreakableSpaceForEmptyCell(writer, treeTable, cellContentsContainer);
             return;
         }
 
-        ResponseWriter writer = context.getResponseWriter();
-        TreeTable treeTable = getTreeTable(component);
         if (treeTable == null)
             throw new IllegalStateException("TreeColumn must be embedded into a TreeTable component");
         int level = treeTable.getNodeLevel();
@@ -114,10 +113,8 @@ public class TreeColumnRenderer extends RendererBase {
         writer.endElement("td");
         writer.startElement("td", component);
 
-        if (customCell != null)
-            Rendering.renderChildren(context, customCell);
-        else
-            Rendering.renderChildren(context, component);
+        Rendering.renderChildren(context, cellContentsContainer);
+        TableStructure.writeNonBreakableSpaceForEmptyCell(writer, treeTable, cellContentsContainer);
         writer.endElement("td");
         writer.endElement("tr");
         writer.endElement("table");
