@@ -417,8 +417,8 @@ public class AjaxUtil {
         StringBuilder buf = new StringBuilder();
         char[] chars = str.toCharArray();
         for (int i = 0; i < str.length();) {
-            char temp = chars[i];
-            if (temp == '\\' && i < str.length() - LENGTH_UNICODE) {
+            char c = chars[i];
+            if (c == '\\' && i < str.length() - LENGTH_UNICODE) {
                 if (chars[i + 1] == '\\') {
                     buf.append('\\');
                     i = i + 2;
@@ -429,7 +429,7 @@ public class AjaxUtil {
                     continue;
                 }
             }
-            buf.append(temp);
+            buf.append(c);
             i++;
         }
         return buf.toString();

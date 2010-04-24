@@ -1370,8 +1370,8 @@ O$.prepareUpdates = function(buf, componentId, portionName) {
 
   buf.append(O$.UPDATE_PORTIONS_SUFFIX).append("=");
   for (var i = 0, count = portionName.length; i < count; i++) {
-    var encodedPortionName = encodeURIComponent(portionName[i]);
-    buf.append(O$.escapeSymbol(encodedPortionName, [","]));
+    var encodedPortionName = encodeURIComponent(O$.escapeSymbol(portionName[i], ","));
+    buf.append(encodedPortionName);
     if (i < count - 1) {
       buf.append(",");
     }
@@ -1379,21 +1379,21 @@ O$.prepareUpdates = function(buf, componentId, portionName) {
   return true;
 }
 
-O$.escapeSymbol = function(portionName, param) {
+O$.escapeSymbol = function(portionName, escapedChars) {
   var res = new O$.StringBuffer();
   for (var i = 0, count = portionName.length; i < count; i++) {
-    var temp = portionName.charAt(i);
-    if (temp == "\\") {
+    var currChar = portionName.charAt(i);
+    if (currChar == "\\") {
       res.append("\\");
     } else {
-      var index = param.indexOf(temp);
+      var index = escapedChars.indexOf(currChar);
       if (index != -1) {
-        var fullCharCode = new String(param[index].charCodeAt() + 10000);
+        var fullCharCode = new String(escapedChars[index].charCodeAt() + 10000);
         res.append("\\" + fullCharCode.substr(1, fullCharCode.length));
         continue;
       }
     }
-    res.append(temp);
+    res.append(currChar);
   }
   return res.toString();
 }

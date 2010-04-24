@@ -1055,7 +1055,14 @@ public abstract class CommonAjaxViewRoot {
         return ajaxResponse;
     }
 
-    private void renderPortionUpdate(RequestFacade request, FacesContext context, UIComponent component, AjaxResponse ajaxResponse, StringBuilder initializationScripts, List<String> updatePortions) throws IOException {
+    private void renderPortionUpdate(
+            RequestFacade request,
+            FacesContext context,
+            UIComponent component,
+            AjaxResponse ajaxResponse,
+            StringBuilder initializationScripts,
+            List<String> updatePortions
+    ) throws IOException {
         RenderKitFactory factory = (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
         RenderKit renderKit = factory.getRenderKit(context, context.getViewRoot().getRenderKitId());
         Renderer renderer = renderKit.getRenderer(component.getFamily(), component.getRendererType());
