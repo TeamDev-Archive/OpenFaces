@@ -92,6 +92,19 @@ function loadUrl() {
   O$('browserContent').src = url;
 }
 
+function stopEvent(e) {
+  var evt = e ? e : event;
+
+  if (evt.preventDefault) {
+    evt.preventDefault();
+  }
+  evt.returnValue = false;
+
+  if (evt.stopPropagation)
+    evt.stopPropagation();
+  evt.cancelBubble = true;
+}
+
 <!--  *** Calculator javascript ****************************** -->
 var Calculator = {
   state : false,

@@ -12337,7 +12337,7 @@ entering a value and returns a list of suggestions from the server -->
         <type>boolean</type>
       </deferred-value>
       <!-- @bindingType boolean -->
-      <!-- @default false -->
+      <!-- @default true -->
       <!-- @el true -->
     </attribute>
     <attribute>
