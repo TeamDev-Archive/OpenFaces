@@ -25,15 +25,20 @@ import org.openfaces.util.ReflectionUtil;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.Styles;
+import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
+import java.io.Externalizable;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -236,15 +241,32 @@ public class TableUtil {
 
     }
 
-    public static class ColumnExpressionData implements Serializable {
+    public static class ColumnExpressionData implements Externalizable {
         private ValueExpression valueExpression;
         private Class valueType;
         private Converter valueConverter;
+
+        public ColumnExpressionData() {
+        }
 
         public ColumnExpressionData(ValueExpression valueExpression, Class valueType, Converter valueConverter) {
             this.valueExpression = valueExpression;
             this.valueType = valueType;
             this.valueConverter = valueConverter;
+        }
+
+        public void writeExternal(ObjectOutput out) throws IOException {
+            ValueBindings.writeValueExpression(out, valueExpression);
+            out.writeObject(valueType);
+            FacesContext context = FacesContext.getCurrentInstance();
+            out.writeObject(UIComponentBase.saveAttachedState(context, valueConverter));
+        }
+
+        public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+            valueExpression = ValueBindings.readValueExpression(in);
+            valueType = (Class) in.readObject();
+            FacesContext context = FacesContext.getCurrentInstance();
+            valueConverter = (Converter) UIComponentBase.restoreAttachedState(context, in.readObject());
         }
 
         public ValueExpression getValueExpression() {

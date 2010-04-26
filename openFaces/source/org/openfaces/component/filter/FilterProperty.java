@@ -65,7 +65,8 @@ public class FilterProperty extends OUIComponentBase implements ValueHolder, Ser
     public Object saveState(FacesContext context) {
         Object superState = super.saveState(context);
         return new Object[]{superState, value, name, type, dataProvider, maxValue, minValue, step,
-                pattern, timeZone, caseSensitive};
+                pattern, timeZone, caseSensitive,
+                saveAttachedState(context, converter)};
     }
 
     public void restoreState(FacesContext context, Object stateObj) {
@@ -82,6 +83,7 @@ public class FilterProperty extends OUIComponentBase implements ValueHolder, Ser
         pattern = (String) state[i++];
         timeZone = (TimeZone) state[i++];
         caseSensitive = (Boolean) state[i++];
+        converter = (Converter) restoreAttachedState(context, state[i++]);
     }
 
     public Object getValue() {

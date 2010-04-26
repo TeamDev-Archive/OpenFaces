@@ -12,9 +12,13 @@
 package org.openfaces.component.filter;
 
 import org.openfaces.component.FilterableComponent;
+import org.openfaces.component.OUIData;
 import org.openfaces.util.ReflectionUtil;
 
 import javax.el.ValueExpression;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import java.io.Serializable;
 
@@ -23,7 +27,8 @@ import java.io.Serializable;
  */
 public class PropertyLocator implements Serializable {
     protected Object expression;
-    protected FilterableComponent component;
+    protected transient FilterableComponent component;
+    protected String componentId;
 
     public PropertyLocator(Object expression) {
         this(expression, null);
@@ -39,9 +44,30 @@ public class PropertyLocator implements Serializable {
             throw new IllegalArgumentException("expression can be either ValueExpression or String, but it is: " + expression.getClass().getName());
         this.expression = expression;
         this.component = component;
+        Integer prevUiDataIndex = null;
+        if (component instanceof OUIData) {
+            UIData uiData = (UIData) component;
+            if (uiData.getRowIndex() != -1) {
+                prevUiDataIndex = uiData.getRowIndex();
+                uiData.setRowIndex(-1);
+            }
+        }
+        this.componentId = ((UIComponent) component).getClientId(FacesContext.getCurrentInstance());
+        if (prevUiDataIndex != null)
+            ((OUIData) component).setRowIndex(prevUiDataIndex);
+    }
+
+    private FilterableComponent getComponent() {
+        if (component != null) return component;
+        if (componentId == null) return null;
+        UIViewRoot viewRoot = FacesContext.getCurrentInstance().getViewRoot();
+        component = (FilterableComponent) viewRoot.findComponent(":" + componentId);
+        if (component == null) throw new IllegalStateException("Couldn't find filtered component by id: " + componentId);
+        return component;
     }
 
     public Object getPropertyValue(Object obj) {
+        FilterableComponent component = getComponent();
         if (component != null) {
             FacesContext context = FacesContext.getCurrentInstance();
             return component.getFilteredValueByData(context, obj, expression);
