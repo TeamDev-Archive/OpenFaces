@@ -180,7 +180,7 @@
     <fail if="junit_test_failed" message="FUNCTIONAL TEST(S) FAILED"/>
   </target>
 
-  <target name="run-func-tests-jsp-1.2" description="Run functional tests in JSP-based JSF 1.2 environment">
+  <target name="run-func-tests-jsp" description="Run functional tests in JSP-based JSF 1.2 environment">
     <property name="jsf.implementation" value="SUN12"/>
     <property name="is.facelets" value="false"/>
     <property name="context.path" value="/TestAppJsp_12"/>
@@ -188,7 +188,7 @@
     <antcall target="run-func-tests"/>
   </target>
 
-  <target name="run-func-tests-facelets-1.2" description="Run functional tests in Facelets-based JSF 1.2 environment">
+  <target name="run-func-tests-facelets" description="Run functional tests in Facelets-based JSF 1.2 environment">
     <property name="jsf.implementation" value="SUN12"/>
     <property name="is.facelets" value="true"/>
     <property name="context.path" value="/TestAppFacelets_12"/>
