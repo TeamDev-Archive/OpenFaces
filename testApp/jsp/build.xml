@@ -16,7 +16,7 @@
   <property name="resources-core.dir" location="../core/web"/>
   <property name="target.dir" location="target"/>
   <property name="resources.target.dir" location="${target.dir}/resources"/>
-  <property name="target-war-12.file" location="${target.dir}/test-app-jsp-12.war"/>
+  <property name="target-war.file" location="${target.dir}/test-app-jsp.war"/>
   <property name="classes.dir" location="${target.dir}/classes"/>
 
   <property name="components-jar.file" location="../../target/lib/openfaces.jar"/>
@@ -96,7 +96,7 @@
   </target>
 
   <target name="deploy" depends="build" description="deploy war" if="deploy.dir">
-    <copy file="${target-war-12.file}" todir="${deploy.dir}"/>
+    <copy file="${target-war.file}" todir="${deploy.dir}"/>
   </target>
 
   <target name="clean" description="clean up">
@@ -111,7 +111,7 @@
 
   <target name="-build-war-mojarra12" depends="compile,copy-resources,prepare-resources">
     <property name="webxml" value="web.xml"/>
-    <war destfile="${target-war-12.file}" basedir="${resources.target.dir}" webxml="${web-inf.dir}/${webxml}">
+    <war destfile="${target-war.file}" basedir="${resources.target.dir}" webxml="${web-inf.dir}/${webxml}">
       <lib file="${components-jar.file}"/>
       <lib refid="basic-libraries"/>
       <lib refid="apache"/>
