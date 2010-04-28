@@ -48,8 +48,8 @@ O$.LevelIndicator = {
           if (levelIndicator._orientation == "horizontal") {
             levelIndicator._width = defaultWidth;
             levelIndicator._height = defaultHeight;
-            jQuery(levelIndicator).css('width', defaultWidth);
-            jQuery(levelIndicator).css('height', defaultHeight);
+            levelIndicator.style.width = defaultWidth;
+            levelIndicator.style.height = defaultHeight;
           } else {
             if (O$.isExplorer() && O$.isQuirksMode()) {
               var indicatorPaddingTop = O$.getNumericElementStyle(levelIndicator, "padding-top", true);
@@ -57,8 +57,8 @@ O$.LevelIndicator = {
               defaultHeight = parseInt(defaultHeight) + parseInt(indicatorPaddingTop) + parseInt(indicatorPaddingBottom);
             }
 
-            jQuery(levelIndicator).css('width', defaultHeight);
-            jQuery(levelIndicator).css('height', defaultWidth);
+            levelIndicator.style.width = defaultHeight;
+            levelIndicator.style.height = defaultWidth;
             levelIndicator._width = defaultHeight;
             levelIndicator._height = defaultWidth;
           }
@@ -95,7 +95,7 @@ O$.LevelIndicator = {
 
         levelIndicator._totalSegmentsCount = levelIndicator._calculateRequiredSegmentsCount(levelIndicator._displayAreaSize);
         levelIndicator._transitionLevels.push(1.0);
-        
+
         levelIndicator._appendIndicatorSegments();
         levelIndicator._adjustIndicatorSize();
         levelIndicator._setupLabel();
