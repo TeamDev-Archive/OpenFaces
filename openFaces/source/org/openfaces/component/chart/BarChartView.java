@@ -204,7 +204,7 @@ public class BarChartView extends GridChartView {
     }
 
     public Boolean isShowGradient() {
-        return ValueBindings.get(this, "showGradient", showGradient, false);
+        return ValueBindings.get(this, "showGradient", showGradient, true);
     }
 
     public void setShowGradient(Boolean showGradient) {
