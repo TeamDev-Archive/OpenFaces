@@ -35,14 +35,14 @@ public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase
     protected static final String LABEL_SUFFIX = "::label";
     protected static final String SEGMENT_SUFFIX = "::segment";
 
-    private static final Collection<String> DEFAULT_COLORS = new ArrayList<String>(Arrays.asList("green", "yellow", "red"));
-    private static final Collection<Double> DEFAULT_TRANSITION_LEVELS = new ArrayList<Double>(Arrays.asList(0.3, 0.55, 0.75));
+    private static final Collection<String> DEFAULT_COLORS = new ArrayList<String>(Arrays.asList("#00C000", "#C0C000", "#C00000"));
+    private static final Collection<Double> DEFAULT_TRANSITION_LEVELS = new ArrayList<Double>(Arrays.asList(0.70, 0.90));
     private static final String DEFAULT_DISPLAY_AREA_CLASS = "o_levelIndicator_displayArea";
     private static final String DEFAULT_SEGMENT_CLASS = "o_levelIndicator_segment";
     private static final String DEFAULT_LABEL_CLASS = "o_levelIndicator_label";
     private static final String DEFAULT_CLASS = "o_levelIndicator";
-    private static final String DEFAULT_WIDTH = "150";
-    private static final String DEFAULT_HEIGHT = "30";
+    private static final String DEFAULT_WIDTH = "250";
+    private static final String DEFAULT_HEIGHT = "22";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {

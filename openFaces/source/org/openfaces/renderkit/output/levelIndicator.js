@@ -94,7 +94,8 @@ O$.LevelIndicator = {
         }
 
         levelIndicator._totalSegmentsCount = levelIndicator._calculateRequiredSegmentsCount(levelIndicator._displayAreaSize);
-
+        levelIndicator._transitionLevels.push(1.0);
+        
         levelIndicator._appendIndicatorSegments();
         levelIndicator._adjustIndicatorSize();
         levelIndicator._setupLabel();

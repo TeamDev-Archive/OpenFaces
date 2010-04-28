@@ -202,7 +202,7 @@ public class LevelIndicator extends OUIOutput {
     }
 
     public Double getInactiveSegmentIntensity() {
-        return ValueBindings.get(this, "inactiveSegmentIntensity", inactiveSegmentIntensity, 0.35);
+        return ValueBindings.get(this, "inactiveSegmentIntensity", inactiveSegmentIntensity, 0.2);
     }
 
     public void setInactiveSegmentIntensity(Double inactiveSegmentIntensity) {
