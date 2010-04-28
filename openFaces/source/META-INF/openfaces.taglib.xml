@@ -1106,5 +1106,13 @@
       <handler-class>org.openfaces.taglib.facelets.chart.RangeMarkersTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>levelIndicator</tag-name>
+    <component>
+      <component-type>org.openfaces.LevelIndicator</component-type>
+      <renderer-type>org.openfaces.LevelIndicatorRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.LevelIndicatorTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

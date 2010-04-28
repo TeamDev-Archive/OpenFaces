@@ -1394,7 +1394,7 @@ public class Rendering {
     }
 
     public static String getContextParam(FacesContext context, String webXmlContextParam) {
-        return getContextParam(context, webXmlContextParam);
+        return getContextParam(context, webXmlContextParam, null);
     }
 
     public static String getContextParam(FacesContext context, String webXmlContextParam, String defaultValue) {

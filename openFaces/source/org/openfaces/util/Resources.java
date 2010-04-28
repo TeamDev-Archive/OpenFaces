@@ -539,7 +539,7 @@ public class Resources {
             return;
         }
         if (jQueryMode.equals("embedded"))
-            renderJSLinkIfNeeded(context, getInternalURL(context, Resources.class, "jquery-1.4.2.min.js"));
+            registerJavascriptLibrary(context, getInternalURL(context, Resources.class, "jquery-1.4.2.min.js"));
             /* below are the official jQuery CDNs as referenced here: http://docs.jquery.com/Downloading_jQuery */
         else if (jQueryMode.equals("jquery"))
             renderJSLinkIfNeeded(context, "http://code.jquery.com/jquery-1.4.2.min.js");

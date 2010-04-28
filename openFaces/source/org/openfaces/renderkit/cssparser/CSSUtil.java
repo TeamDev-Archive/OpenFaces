@@ -103,6 +103,10 @@ public class CSSUtil {
         return getStyleObjectModel(builder.toString(), null);
     }
 
+    public static StyleObjectModel getCustomAttributeStyleModel(String cssString) {
+        return getStyleObjectModel(cssString, null);
+    }
+
     private static StyleObjectModel getStyleObjectModel(String cssString, String hint) {
         if (cssString == null)
             return null;

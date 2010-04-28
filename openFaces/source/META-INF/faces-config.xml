@@ -718,6 +718,11 @@
     <component-type>org.openfaces.RangeMarkers</component-type>
     <component-class>org.openfaces.component.chart.RangeMarkers</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.LevelIndicator</component-type>
+    <component-class>org.openfaces.component.chart.LevelIndicator</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -1184,6 +1189,11 @@
       <component-family>org.openfaces.SelectOneMenu</component-family>
       <renderer-type>org.openfaces.SelectOneMenuRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.select.SelectOneMenuRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.LevelIndicator</component-family>
+      <renderer-type>org.openfaces.LevelIndicatorRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.chart.LevelIndicatorRenderer</renderer-class>
     </renderer>
 
   </render-kit>
