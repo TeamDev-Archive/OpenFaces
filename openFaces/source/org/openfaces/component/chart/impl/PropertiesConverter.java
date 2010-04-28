@@ -89,10 +89,10 @@ public class PropertiesConverter {
 
             if (style.equalsIgnoreCase("DASHED")) {
                 float[] dash = {width * 4};
-                stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 0F, dash, 1F);
+                stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, width * 3, dash, 1F);
             } else if (style.equalsIgnoreCase("DOTTED")) {
                 float[] dash = {width};
-                stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 0F, dash, 1F);
+                stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, width * 3, dash, 1F);
             } else {
                 stroke = new BasicStroke(width);
             }
