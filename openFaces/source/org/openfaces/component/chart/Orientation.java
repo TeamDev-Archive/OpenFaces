@@ -14,7 +14,7 @@ package org.openfaces.component.chart;
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public enum Orientation {
+public enum Orientation { //todo: API revisions -- move to a more generic package
     HORIZONTAL("horizontal"),
     VERTICAL("vertical");
 

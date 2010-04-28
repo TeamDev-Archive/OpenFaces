@@ -15,6 +15,7 @@ package org.openfaces.component.select;
  * @author Andrew Palval
  */
 public enum TabAlignment {
+    //todo: API revisions -- rename/unify and try to combine with other existing enums. See FillDirection
     TOP_OR_LEFT("topOrLeft"),
     BOTTOM_OR_RIGHT("bottomOrRight");
 

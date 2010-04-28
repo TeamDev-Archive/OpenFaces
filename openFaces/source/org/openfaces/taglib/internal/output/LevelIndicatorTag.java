@@ -9,11 +9,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.internal.chart;
+package org.openfaces.taglib.internal.output;
 
-import org.openfaces.component.chart.FillDirection;
-import org.openfaces.component.chart.LevelIndicator;
+import org.openfaces.component.FillDirection;
 import org.openfaces.component.chart.Orientation;
+import org.openfaces.component.output.LevelIndicator;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 
 import javax.faces.component.UIComponent;
@@ -35,12 +35,12 @@ public class LevelIndicatorTag extends org.openfaces.taglib.internal.AbstractCom
     public void setComponentProperties(FacesContext facesContext, UIComponent component) {
         super.setComponentProperties(facesContext, component);
 
-        setObjectProperty(component, "value");
-        setStringProperty(component, "indicatorStyle");
-        setStringProperty(component, "indicatorClass");
+        setDoubleProperty(component, "value");
+        setStringProperty(component, "displayAreaStyle");
+        setStringProperty(component, "displayAreaClass");
         setStringProperty(component, "labelStyle");
         setStringProperty(component, "labelClass");
-        setIntProperty(component, "indicatorSegmentSize");
+        setIntProperty(component, "segmentSize");
 
         setEnumerationProperty(component, "orientation", Orientation.class);
         setEnumerationProperty(component, "fillDirection", FillDirection.class);
@@ -55,8 +55,6 @@ public class LevelIndicatorTag extends org.openfaces.taglib.internal.AbstractCom
             else {
                 validateAndSetColorsProperty(component, colors);
             }
-        } else {
-            validateAndSetColorsProperty(component, LevelIndicator.DEFAULT_COLORS);
         }
 
         String transitionLevels = getPropertyValue("transitionLevels");
@@ -66,11 +64,9 @@ public class LevelIndicatorTag extends org.openfaces.taglib.internal.AbstractCom
             else {
                 validateAndSetTransitionLevelsProperty(component, transitionLevels);
             }
-        } else {
-            validateAndSetTransitionLevelsProperty(component, LevelIndicator.DEFAULT_TRANSIENT_LEVELS);
         }
 
-        setDoubleProperty(component, "colorBlendIntensity");
+        setDoubleProperty(component, "inactiveSegmentIntensity");
     }
 
     private void validateAndSetColorsProperty(UIComponent component, String colorsPropertyValue) {

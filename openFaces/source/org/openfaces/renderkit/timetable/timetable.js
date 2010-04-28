@@ -347,7 +347,7 @@ O$.Timetable._initEventActionBar = function(actionBarId, dayTableId, backgroundI
     return;
   }
 
-  actionBar._backgroundIntensity = backgroundIntensity;
+  actionBar._inactiveSegmentIntensity = backgroundIntensity;
   actionBar._userSpecifiedClass = userSpecifiedClass;
   actionBar.className = O$.combineClassNames(["o_eventActionBar", userSpecifiedClass]);
 

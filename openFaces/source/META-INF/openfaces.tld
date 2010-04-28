@@ -37059,7 +37059,7 @@ entering a value and returns a list of suggestions from the server -->
   <tag>
     <description>LevelIndicator is a chart-like component that displays a meter with three customizable colors.</description>
     <name>levelIndicator</name>
-    <tag-class>org.openfaces.taglib.jsp.chart.LevelIndicatorJspTag</tag-class>
+    <tag-class>org.openfaces.taglib.jsp.output.LevelIndicatorJspTag</tag-class>
     <body-content>JSP</body-content>
 
     <attribute>
@@ -37087,7 +37087,7 @@ entering a value and returns a list of suggestions from the server -->
       </description>
       <name>binding</name>
       <deferred-value>
-        <type>org.openfaces.component.chart.LevelIndicator</type>
+        <type>org.openfaces.component.output.LevelIndicator</type>
       </deferred-value>
       <!-- @bindingType org.openfaces.component.chart.LevelIndicatoricator -->
       <!-- @default null -->
@@ -37229,9 +37229,9 @@ entering a value and returns a list of suggestions from the server -->
     <attribute>
       <name>value</name>
       <deferred-value>
-        <type>java.lang.Object</type>
+        <type>java.lang.Double</type>
       </deferred-value>
-      <!-- @bindingType Object -->
+      <!-- @bindingType java.lang.Double -->
       <!-- @default 0.5 -->
       <!-- @el true -->
     </attribute>
@@ -37247,7 +37247,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>A style for the indicator.</description>
-      <name>indicatorStyle</name>
+      <name>displayAreaStyle</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -37257,7 +37257,7 @@ entering a value and returns a list of suggestions from the server -->
     </attribute>
     <attribute>
       <description>CSS class name(s) for the indicator.</description>
-      <name>indicatorClass</name>
+      <name>displayAreaClass</name>
       <deferred-value>
         <type>java.lang.String</type>
       </deferred-value>
@@ -37286,7 +37286,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <name>indicatorSegmentSize</name>
+      <name>segmentSize</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>
@@ -37322,7 +37322,7 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
     <attribute>
-      <name>colorBlendIntensity</name>
+      <name>inactiveSegmentIntensity</name>
       <deferred-value>
         <type>java.lang.Object</type>
       </deferred-value>

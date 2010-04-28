@@ -10,12 +10,13 @@
  * Please visit http://openfaces.org/licensing/ for more details.
  */
 
-package org.openfaces.component.chart;
+package org.openfaces.component;
 
 /**
  * @author Eugene Goncharov
  */
 public enum FillDirection {
+    //todo: API revisions -- rename/unify and try to combine with other existing enums. See TabAlignment
     FROM_START("fromStart"),
     FROM_END("fromEnd");
 

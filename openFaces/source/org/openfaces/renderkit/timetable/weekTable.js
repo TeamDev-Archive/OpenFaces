@@ -1138,7 +1138,7 @@ O$.WeekTable._init = function(componentId,
     var userSpecifiedStyles = O$.getStyleClassProperties(actionBar._userSpecifiedClass, ["color", "background-color"]);
     actionBar.style.backgroundColor = userSpecifiedStyles.backgroundColor
             ? userSpecifiedStyles.backgroundColor
-            : O$.blendColors(eventElement._color, "#ffffff", 1 - actionBar._backgroundIntensity);
+            : O$.blendColors(eventElement._color, "#ffffff", 1 - actionBar._inactiveSegmentIntensity);
     eventElement.appendChild(actionBar);
     actionBar.style.height = "";
     actionBar.style.width = "";

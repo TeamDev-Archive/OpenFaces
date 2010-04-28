@@ -9,9 +9,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.chart;
+package org.openfaces.component.output;
 
+import org.openfaces.component.FillDirection;
 import org.openfaces.component.OUIOutput;
+import org.openfaces.component.chart.Orientation;
 import org.openfaces.util.ValueBindings;
 
 import javax.el.ValueExpression;
@@ -22,20 +24,16 @@ public class LevelIndicator extends OUIOutput {
     public static final String COMPONENT_TYPE = "org.openfaces.LevelIndicator";
     public static final String COMPONENT_FAMILY = "org.openfaces.LevelIndicator";
 
-    public static final String DEFAULT_COLORS = "green, yellow, red";
-    public static final String DEFAULT_TRANSIENT_LEVELS = "0.3, 0.55, 0.75";
-    
     private Orientation orientation;
-    private Object value;
-    private String indicatorStyle;
-    private String indicatorClass;
+    private String displayAreaStyle;
+    private String displayAreaClass;
     private String labelStyle;
     private String labelClass;
-    private Integer indicatorSegmentSize;
+    private Integer segmentSize;
     private FillDirection fillDirection;
     private Object colors;
     private Object transitionLevels;
-    private Double colorBlendIntensity;
+    private Double inactiveSegmentIntensity;
 
     public LevelIndicator() {
         setRendererType("org.openfaces.LevelIndicatorRenderer");
@@ -50,7 +48,16 @@ public class LevelIndicator extends OUIOutput {
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
-
+                saveAttachedState(context, orientation),
+                displayAreaStyle,
+                displayAreaClass,
+                labelStyle,
+                labelClass,
+                segmentSize,
+                saveAttachedState(context, fillDirection),
+                saveAttachedState(context, colors),
+                saveAttachedState(context, transitionLevels),
+                inactiveSegmentIntensity
         };
     }
 
@@ -60,6 +67,16 @@ public class LevelIndicator extends OUIOutput {
         int i = 0;
         super.restoreState(context, state[i++]);
 
+        orientation = (Orientation) restoreAttachedState(context, state[i++]);
+        displayAreaStyle = (String) state[i++];
+        displayAreaClass = (String) state[i++];
+        labelStyle = (String) state[i++];
+        labelClass = (String) state[i++];
+        segmentSize = (Integer) state[i++];
+        fillDirection = (FillDirection) restoreAttachedState(context, state[i++]);
+        colors = restoreAttachedState(context, state[i++]);
+        transitionLevels = restoreAttachedState(context, state[i++]);
+        inactiveSegmentIntensity = (Double) state[i++];
     }
 
     public Orientation getOrientation() {
@@ -69,7 +86,6 @@ public class LevelIndicator extends OUIOutput {
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
     }
-
 
     public Double getLevel() {
         Double value = (Double) getValue();
@@ -121,28 +137,20 @@ public class LevelIndicator extends OUIOutput {
         }
     }
 
-    public Object getValue() {
-        return ValueBindings.get(this, "value", value, 0.0d, Object.class);
+    public String getDisplayAreaStyle() {
+        return ValueBindings.get(this, "displayAreaStyle", displayAreaStyle);
     }
 
-    public void setValue(Object value) {
-        this.value = value;
+    public void setDisplayAreaStyle(String displayAreaStyle) {
+        this.displayAreaStyle = displayAreaStyle;
     }
 
-    public String getIndicatorStyle() {
-        return ValueBindings.get(this, "indicatorStyle", indicatorStyle);
+    public String getDisplayAreaClass() {
+        return ValueBindings.get(this, "displayAreaClass", displayAreaClass);
     }
 
-    public void setIndicatorStyle(String indicatorStyle) {
-        this.indicatorStyle = indicatorStyle;
-    }
-
-    public String getIndicatorClass() {
-        return ValueBindings.get(this, "indicatorClass", indicatorClass);
-    }
-
-    public void setIndicatorClass(String indicatorClass) {
-        this.indicatorClass = indicatorClass;
+    public void setDisplayAreaClass(String displayAreaClass) {
+        this.displayAreaClass = displayAreaClass;
     }
 
     public String getLabelStyle() {
@@ -161,12 +169,12 @@ public class LevelIndicator extends OUIOutput {
         this.labelClass = labelClass;
     }
 
-    public Integer getIndicatorSegmentSize() {
-        return ValueBindings.get(this, "indicatorSegmentSize", indicatorSegmentSize, 3);
+    public Integer getSegmentSize() {
+        return ValueBindings.get(this, "segmentSize", segmentSize, 3);
     }
 
-    public void setIndicatorSegmentSize(Integer indicatorSegmentSize) {
-        this.indicatorSegmentSize = indicatorSegmentSize;
+    public void setSegmentSize(Integer segmentSize) {
+        this.segmentSize = segmentSize;
     }
 
     public FillDirection getFillDirection() {
@@ -193,11 +201,11 @@ public class LevelIndicator extends OUIOutput {
         this.transitionLevels = transitionLevels;
     }
 
-    public Double getColorBlendIntensity() {
-        return ValueBindings.get(this, "colorBlendIntensity", colorBlendIntensity, 0.35);
+    public Double getInactiveSegmentIntensity() {
+        return ValueBindings.get(this, "inactiveSegmentIntensity", inactiveSegmentIntensity, 0.35);
     }
 
-    public void setColorBlendIntensity(Double colorBlendIntensity) {
-        this.colorBlendIntensity = colorBlendIntensity;
+    public void setInactiveSegmentIntensity(Double inactiveSegmentIntensity) {
+        this.inactiveSegmentIntensity = inactiveSegmentIntensity;
     }
 }

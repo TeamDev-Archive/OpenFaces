@@ -9,9 +9,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.renderkit.chart;
+package org.openfaces.renderkit.output;
 
-import org.openfaces.component.chart.LevelIndicator;
+import org.openfaces.component.output.LevelIndicator;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.util.InitScript;
 import org.openfaces.util.Rendering;
@@ -28,17 +28,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase {
-    protected static final String INDICATOR_SUFFIX = "::indicator";
+    protected static final String DISPLAY_AREA_SUFFIX = "::displayArea";
     protected static final String LABEL_SUFFIX = "::label";
-    protected static final String INDICATOR_SEGMENT_SUFFIX = "::indicatorSegment";
+    protected static final String SEGMENT_SUFFIX = "::segment";
 
-    private static final String DEFAULT_CLASS = "o_levelIndicator";
-    private static final String DEFAULT_INDICATOR_CLASS = "o_levelIndicator_indicator";
+    private static final Collection<String> DEFAULT_COLORS = new ArrayList<String>(Arrays.asList("green", "yellow", "red"));
+    private static final Collection<Double> DEFAULT_TRANSITION_LEVELS = new ArrayList<Double>(Arrays.asList(0.3, 0.55, 0.75));
+    private static final String DEFAULT_DISPLAY_AREA_CLASS = "o_levelIndicator_displayArea";
+    private static final String DEFAULT_SEGMENT_CLASS = "o_levelIndicator_segment";
     private static final String DEFAULT_LABEL_CLASS = "o_levelIndicator_label";
-    private static final String DEFAULT_INDICATOR_SEGMENT_CLASS = "o_levelIndicator_indicatorSegment";
-    private static final String DEFAULT_WIDTH = "100";
+    private static final String DEFAULT_CLASS = "o_levelIndicator";
+    private static final String DEFAULT_WIDTH = "150";
     private static final String DEFAULT_HEIGHT = "30";
 
     @Override
@@ -57,9 +60,9 @@ public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase
         Rendering.writeStandardEvents(writer, levelIndicator);
 
         writer.startElement("div", levelIndicator);
-        writer.writeAttribute("id", getComponentSubPartClientId(context, levelIndicator, INDICATOR_SUFFIX), "id");
+        writer.writeAttribute("id", getComponentSubPartClientId(context, levelIndicator, DISPLAY_AREA_SUFFIX), "id");
         writer.writeAttribute("class", Styles.getCSSClass(context,
-                levelIndicator, levelIndicator.getIndicatorStyle(), DEFAULT_INDICATOR_CLASS, levelIndicator.getIndicatorClass()), null);
+                levelIndicator, levelIndicator.getDisplayAreaStyle(), DEFAULT_DISPLAY_AREA_CLASS, levelIndicator.getDisplayAreaClass()), null);
         writer.endElement("div");
 
         writer.startElement("div", levelIndicator);
@@ -69,8 +72,8 @@ public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase
         writer.endElement("div");
 
         writer.startElement("div", levelIndicator);
-        writer.writeAttribute("id", getComponentSubPartClientId(context, levelIndicator, INDICATOR_SEGMENT_SUFFIX), "id");
-        writer.writeAttribute("class", DEFAULT_INDICATOR_SEGMENT_CLASS, "class");
+        writer.writeAttribute("id", getComponentSubPartClientId(context, levelIndicator, SEGMENT_SUFFIX), "id");
+        writer.writeAttribute("class", DEFAULT_SEGMENT_CLASS, "class");
         writer.writeAttribute("style", "display:none;", "style");
         writer.endElement("div");
 
@@ -89,16 +92,14 @@ public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase
         ScriptBuilder buf = new ScriptBuilder().initScript(context, levelIndicator,
                 "O$.LevelIndicator._init",
                 getValue(levelIndicator),
-                levelIndicator.getIndicatorSegmentSize(),
+                levelIndicator.getSegmentSize(),
                 levelIndicator.getOrientation().toString(),
                 levelIndicator.getFillDirection().toString(),
-                CSSUtil.getCustomAttributeStyleModel(levelIndicator.getStyle()).getWidth(),
-                CSSUtil.getCustomAttributeStyleModel(levelIndicator.getStyle()).getHeight(),
                 DEFAULT_WIDTH,
                 DEFAULT_HEIGHT,
                 getColors(levelIndicator),
                 getTransitionLevels(levelIndicator),
-                levelIndicator.getColorBlendIntensity(),
+                levelIndicator.getInactiveSegmentIntensity(),
                 styleClass,
                 rolloverStyleClass);
 
@@ -111,26 +112,17 @@ public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase
         Styles.renderStyleClasses(context, levelIndicator);
     }
 
-    private Double getValue(LevelIndicator levelIndicator) {
-        final boolean indicatorValueSpecified = levelIndicator.getValue() != null;
-        boolean isLevelIndicatorValueValidDouble = indicatorValueSpecified && (levelIndicator.getValue() instanceof Double);
-
-        if (indicatorValueSpecified && !isLevelIndicatorValueValidDouble
-                && levelIndicator.getValue() instanceof String) {
-            try {
-                return Double.parseDouble((String) levelIndicator.getValue());
-            } catch (NumberFormatException e) {
-                isLevelIndicatorValueValidDouble = false;
+    private double getValue(LevelIndicator levelIndicator) {
+        Double value = (Double) levelIndicator.getValue();
+        if (value != null) {
+            if (value < 0.0 || value > 1.0) {
+                throw new IllegalArgumentException("Value of LevelIndicator should be from 0.0 to 1.0");
             }
-        } else {
-            return (Double) levelIndicator.getValue();
+
+            return value;
         }
 
-        if (indicatorValueSpecified && !isLevelIndicatorValueValidDouble) {
-            throw new IllegalStateException("Level Indicator value is not valid. Value attribute should be defined as type java.lang.Double, but was " + levelIndicator.getValue().getClass().getName() + ":" + levelIndicator.getValue());
-        }
-
-        return 0d;
+        return 0;
     }
 
     private Collection getColors(LevelIndicator levelIndicator) {
@@ -153,25 +145,22 @@ public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase
             }
         }
 
+        if (resultColors.isEmpty()) {
+            List<String> defaultColors = new ArrayList<String>();
+
+            for (String colorValue : DEFAULT_COLORS) {
+                final String colorString = CSSUtil.normalizeCssColor(colorValue);
+                defaultColors.add(colorString);
+            }
+
+            resultColors = defaultColors;
+        }
+
         return resultColors;
     }
 
-    private Collection getColorsCollection(LevelIndicator levelIndicator) {
-        Collection<Object> colors;
-        Object colorsObject = levelIndicator.getColors();
-
-        if (colorsObject.getClass().isArray()) {
-            colors = Arrays.asList((Object[]) colorsObject);
-        } else if (colorsObject instanceof Collection)
-            colors = (Collection<Object>) colorsObject;
-        else
-            throw new IllegalArgumentException("'colors' attribute of <o:levelIndicator> tag should contain either an array or a collection of color representation strings, but a value of the following type encountered: " + colorsObject.getClass().getName());
-
-        return colors;
-    }
-
     private Collection getTransitionLevels(LevelIndicator levelIndicator) {
-        final Collection levelsCollection = getTransitionLevelsCollection(levelIndicator);
+        Collection levelsCollection = getTransitionLevelsCollection(levelIndicator);
         Double previousValue = 0.0d;
 
         for (Object level : levelsCollection) {
@@ -191,19 +180,35 @@ public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase
             }
         }
 
+        if (levelsCollection.isEmpty()) {
+            levelsCollection = DEFAULT_TRANSITION_LEVELS;
+        }
+
         return levelsCollection;
     }
 
+    private Collection getColorsCollection(LevelIndicator levelIndicator) {
+        Collection<Object> colors = new ArrayList<Object>();
+        Object colorsObject = levelIndicator.getColors();
+
+        if (colorsObject != null && colorsObject.getClass().isArray()) {
+            colors = Arrays.asList((Object[]) colorsObject);
+        } else if (colorsObject != null && colorsObject instanceof Collection) {
+            colors = (Collection<Object>) colorsObject;
+        }
+
+        return colors;
+    }
+
     private Collection getTransitionLevelsCollection(LevelIndicator levelIndicator) {
-        Collection<Object> transitionLevels;
+        Collection<Object> transitionLevels = new ArrayList<Object>();
         Object transitionLevelsObject = levelIndicator.getTransitionLevels();
 
-        if (transitionLevelsObject.getClass().isArray()) {
+        if (transitionLevelsObject != null && transitionLevelsObject.getClass().isArray()) {
             transitionLevels = Arrays.asList((Object[]) transitionLevelsObject);
-        } else if (transitionLevelsObject instanceof Collection)
+        } else if (transitionLevelsObject != null && transitionLevelsObject instanceof Collection) {
             transitionLevels = (Collection<Object>) transitionLevelsObject;
-        else
-            throw new IllegalArgumentException("'transitionLevels' attribute of <o:levelIndicator> tag should contain either an array or a collection of double values, but a value of the following type encountered: " + transitionLevelsObject.getClass().getName());
+        }
 
         return transitionLevels;
     }
@@ -221,7 +226,7 @@ public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase
     }
 
     protected String getDefaultProgressClass() {
-        return DEFAULT_INDICATOR_CLASS;
+        return DEFAULT_DISPLAY_AREA_CLASS;
     }
 
     protected String getDefaultLabelClass() {
@@ -229,7 +234,7 @@ public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase
     }
 
     protected String getDefaultLampClass() {
-        return DEFAULT_INDICATOR_SEGMENT_CLASS;
+        return DEFAULT_SEGMENT_CLASS;
     }
 
 

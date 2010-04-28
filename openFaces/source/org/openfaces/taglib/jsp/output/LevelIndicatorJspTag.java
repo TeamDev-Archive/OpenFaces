@@ -9,9 +9,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.taglib.jsp.chart;
+package org.openfaces.taglib.jsp.output;
 
-import org.openfaces.taglib.internal.chart.LevelIndicatorTag;
+import org.openfaces.taglib.internal.output.LevelIndicatorTag;
 
 import javax.el.ValueExpression;
 
@@ -33,12 +33,12 @@ public class LevelIndicatorJspTag extends org.openfaces.taglib.jsp.AbstractCompo
         getDelegate().setPropertyValue("value", level);
     }
 
-    public void setIndicatorStyle(ValueExpression indicatorStyle) {
-        getDelegate().setPropertyValue("indicatorStyle", indicatorStyle);
+    public void setDisplayAreaStyle(ValueExpression indicatorStyle) {
+        getDelegate().setPropertyValue("displayAreaStyle", indicatorStyle);
     }
 
-    public void setIndicatorClass(ValueExpression indicatorClass) {
-        getDelegate().setPropertyValue("indicatorClass", indicatorClass);
+    public void setDisplayAreaClass(ValueExpression indicatorClass) {
+        getDelegate().setPropertyValue("displayAreaClass", indicatorClass);
     }
 
     public void setLabelStyle(ValueExpression labelStyle) {
@@ -49,8 +49,8 @@ public class LevelIndicatorJspTag extends org.openfaces.taglib.jsp.AbstractCompo
         getDelegate().setPropertyValue("labelClass", labelClass);
     }
 
-    public void setIndicatorSegmentSize(ValueExpression indicatorSegmentSize) {
-        getDelegate().setPropertyValue("indicatorSegmentSize", indicatorSegmentSize);
+    public void setSegmentSize(ValueExpression indicatorSegmentSize) {
+        getDelegate().setPropertyValue("segmentSize", indicatorSegmentSize);
     }
 
     public void setFillDirection(ValueExpression fillDirection) {
@@ -65,7 +65,7 @@ public class LevelIndicatorJspTag extends org.openfaces.taglib.jsp.AbstractCompo
         getDelegate().setPropertyValue("transitionLevels", transitionLevels);
     }
 
-    public void setColorBlendIntensity(ValueExpression colorBlendIntensity) {
-        getDelegate().setPropertyValue("colorBlendIntensity", colorBlendIntensity);
+    public void setInactiveSegmentIntensity(ValueExpression colorBlendIntensity) {
+        getDelegate().setPropertyValue("inactiveSegmentIntensity", colorBlendIntensity);
     }
 }

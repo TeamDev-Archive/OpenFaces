@@ -1572,31 +1572,31 @@
   padding: 5px;
 }
 
-.o_levelIndicator_indicator {
+.o_levelIndicator_displayArea {
 	background:black;
 	overflow:hidden;
 	height:100%;
 	float:left;
 }
 
-.o_levelIndicator_indicatorSegment.h{
+.o_levelIndicator_segment.h{
 	float:left;
 	height:100%;
 	margin:0 2px 0 0;
 	font-size:0;
 }
 
-.o_levelIndicator_indicatorSegment.v{
+.o_levelIndicator_segment.v{
 	width:100%;
 	margin:0 0 2px 0;
 	float:left;
 }
 
-.o_levelIndicator_indicatorSegment.on{
+.o_levelIndicator_segment.on{
 	background:#0F0;
 }
 
-.o_levelIndicator_indicatorSegment.off{
+.o_levelIndicator_segment.off{
 	background:#060;
 }
 

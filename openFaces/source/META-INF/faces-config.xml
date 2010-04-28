@@ -721,7 +721,7 @@
 
   <component>
     <component-type>org.openfaces.LevelIndicator</component-type>
-    <component-class>org.openfaces.component.chart.LevelIndicator</component-class>
+    <component-class>org.openfaces.component.output.LevelIndicator</component-class>
   </component>
   <render-kit>
     <renderer>
@@ -1193,7 +1193,7 @@
     <renderer>
       <component-family>org.openfaces.LevelIndicator</component-family>
       <renderer-type>org.openfaces.LevelIndicatorRenderer</renderer-type>
-      <renderer-class>org.openfaces.renderkit.chart.LevelIndicatorRenderer</renderer-class>
+      <renderer-class>org.openfaces.renderkit.output.LevelIndicatorRenderer</renderer-class>
     </renderer>
 
   </render-kit>

@@ -19,35 +19,25 @@ O$.LevelIndicator = {
                   segmentSize,
                   orientation,
                   fillDirection,
-                  width,
-                  height,
                   defaultWidth,
                   defaultHeight,
                   colors,
                   transitionLevels,
-                  backgroundIntensity) {
+                  inactiveSegmentIntensity) {
     var levelIndicator = O$.initComponent(levelIndicatorId, null, {
-      _indicator: O$(levelIndicatorId + "::indicator"),
+      _displayArea: O$(levelIndicatorId + "::displayArea"),
       _label: O$(levelIndicatorId + "::label"),
-      _indicatorSegment: O$(levelIndicatorId + "::indicatorSegment"),
+      _segment: O$(levelIndicatorId + "::segment"),
       _segmentSize: segmentSize,
       _value: value,
       _orientation: orientation,
-      _width: width,
-      _height: height,
       _fillDirection: fillDirection,
       _colors: colors,
       _transitionLevels: transitionLevels,
-      _backgroundIntensity: backgroundIntensity,
-      _color_arr :[
-        [0.3,'#00cc00','#339933'],
-        [0.6,'#ffff00','#999933'],
-        [0.75,'#ff6600','#664488'],
-        [1,'#ff0000','#993333']
-      ],
-      _indicatorSize : 0,
-      _lamp_l_margin : 0,
-      _lamp_r_margin : 2,
+      _inactiveSegmentIntensity: inactiveSegmentIntensity,
+      _displayAreaSize : 0,
+      _segment_left_margin : 0,
+      _segment_right_margin : 2,
 
       _setupIndicator: function() {
         var clientSpecifiedWidth = O$.getStyleClassProperty(levelIndicator.className, "width");
@@ -62,8 +52,8 @@ O$.LevelIndicator = {
             jQuery(levelIndicator).css('height', defaultHeight);
           } else {
             if (O$.isExplorer() && O$.isQuirksMode()) {
-              var indicatorPaddingTop = parseInt(jQuery(levelIndicator).css('padding-top'));
-              var indicatorPaddingBottom = parseInt(jQuery(levelIndicator).css('padding-bottom'));
+              var indicatorPaddingTop = O$.getNumericElementStyle(levelIndicator, "padding-top", true);
+              var indicatorPaddingBottom = O$.getNumericElementStyle(levelIndicator, "padding-bottom", true);
               defaultHeight = parseInt(defaultHeight) + parseInt(indicatorPaddingTop) + parseInt(indicatorPaddingBottom);
             }
 
@@ -72,21 +62,38 @@ O$.LevelIndicator = {
             levelIndicator._width = defaultHeight;
             levelIndicator._height = defaultWidth;
           }
+        } else {
+          levelIndicator._width = O$.getNumericElementStyle(levelIndicator, "width", true);
+          levelIndicator._height = O$.getNumericElementStyle(levelIndicator, "height", true);
         }
 
         if (this._orientation == "horizontal") {
+          var labelPaddingLeft = O$.getNumericElementStyle(levelIndicator._label, "padding-left", true);
+          var labelPaddingRight = O$.getNumericElementStyle(levelIndicator._label, "padding-right", true);
+
           var labelContainerWidth = (O$.isExplorer() && O$.isQuirksMode())
-                  ? parseInt(levelIndicator._labelContainer.width()) + parseInt(levelIndicator._labelContainer.css('padding-left')) + parseInt(levelIndicator._labelContainer.css('padding-left'))
+                  ? parseInt(levelIndicator._labelContainer.width()) + parseInt(labelPaddingLeft) + parseInt(labelPaddingRight)
                   : parseInt(levelIndicator._labelContainer.width());
-          levelIndicator._indicatorSize = levelIndicator._width - labelContainerWidth - parseInt(jQuery(levelIndicator).css('padding-right'));
+
+          var levelIndicatorPaddingRight = O$.getNumericElementStyle(levelIndicator, "padding-right", true);
+          var levelIndicatorPaddingLeft = O$.getNumericElementStyle(levelIndicator, "padding-left", true);
+
+          levelIndicator._displayAreaSize = levelIndicator._width - labelContainerWidth - parseInt(levelIndicatorPaddingRight) - parseInt(levelIndicatorPaddingLeft);
         } else {
+          var labelPaddingTop = O$.getNumericElementStyle(levelIndicator._label, "padding-top", true);
+          var labelPaddingBottom = O$.getNumericElementStyle(levelIndicator._label, "padding-bottom", true);
+
           var labelContainerHeight = (O$.isExplorer() && O$.isQuirksMode())
-                  ? parseInt(levelIndicator._labelContainer.height()) + parseInt(levelIndicator._labelContainer.css('padding-top')) + parseInt(levelIndicator._labelContainer.css('padding-bottom'))
+                  ? parseInt(levelIndicator._labelContainer.height()) + parseInt(labelPaddingTop) + parseInt(labelPaddingBottom)
                   : parseInt(levelIndicator._labelContainer.height());
-          levelIndicator._indicatorSize = levelIndicator._height - labelContainerHeight - parseInt(jQuery(levelIndicator).css('padding-bottom'));
+
+          var levelIndicatorPaddingTop = O$.getNumericElementStyle(levelIndicator, "padding-top", true);
+          var levelIndicatorPaddingBottom = O$.getNumericElementStyle(levelIndicator, "padding-bottom", true);
+
+          levelIndicator._displayAreaSize = levelIndicator._height - labelContainerHeight - parseInt(levelIndicatorPaddingBottom) - parseInt(levelIndicatorPaddingTop);
         }
 
-        levelIndicator._totalSegmentsCount = levelIndicator._calculateRequiredSegmentsCount(levelIndicator._indicatorSize);
+        levelIndicator._totalSegmentsCount = levelIndicator._calculateRequiredSegmentsCount(levelIndicator._displayAreaSize);
 
         levelIndicator._appendIndicatorSegments();
         levelIndicator._adjustIndicatorSize();
@@ -121,7 +128,7 @@ O$.LevelIndicator = {
         for (var lampsCounter = 0; lampsCounter < levelIndicator._totalSegmentsCount; lampsCounter++) {
           var lampItem = jQuery(document.createElement('div'));
           var orientationClass = (levelIndicator._orientation == "horizontal") ? "h" : "v";
-          lampItem.addClass("o_levelIndicator_indicatorSegment");
+          lampItem.addClass("o_levelIndicator_segment");
           lampItem.addClass(orientationClass);
           lampItem.addClass("on");
 
@@ -135,7 +142,7 @@ O$.LevelIndicator = {
             lampItem.css('height', levelIndicator._segmentSize + 'px');
           }
 
-          levelIndicator._indicatorContainer.append(lampItem);
+          levelIndicator._displayAreaContainer.append(lampItem);
         }
       },
 
@@ -143,37 +150,38 @@ O$.LevelIndicator = {
         if (levelIndicator._orientation == "horizontal") {
           jQuery(levelIndicator).css('width', levelIndicator._width);
           jQuery(levelIndicator).css('height', levelIndicator._height);
-          levelIndicator._indicatorContainer.css('width', levelIndicator._indicatorSize);
+          levelIndicator._displayAreaContainer.css('width', levelIndicator._displayAreaSize);
 
           if (levelIndicator._height != 0) {
-            var paddingTop = levelIndicator._indicatorContainer.css('padding-top');
-            var progressContainerPaddingTop = (paddingTop) ? paddingTop.replace('px', '') : 0;
-            var paddingBottom = levelIndicator._indicatorContainer.css('padding-bottom');
-            var progressContainerPaddingBottom = (paddingBottom) ? paddingBottom.replace('px', '') : 0;
+            var displayAreaPaddingTop = O$.getNumericElementStyle(levelIndicator._displayArea, 'padding-top', true);
+            var displayAreaPaddingBottom = O$.getNumericElementStyle(levelIndicator._displayArea, 'padding-bottom', true);
 
-            var totalProgressHeight = levelIndicator._height - parseInt(progressContainerPaddingTop) - parseInt(progressContainerPaddingBottom);
-            levelIndicator._indicatorContainer.css('height', totalProgressHeight);
+            var totalProgressHeight = levelIndicator._height - parseInt(displayAreaPaddingTop) - parseInt(displayAreaPaddingBottom);
+            levelIndicator._displayAreaContainer.css('height', totalProgressHeight);
           } else {
-            levelIndicator._indicatorContainer.css('height', Math.round(levelIndicator._width * 0.1));
+            levelIndicator._displayAreaContainer.css('height', Math.round(levelIndicator._width * 0.1));
           }
 
         } else {
           jQuery(levelIndicator).css('width', levelIndicator._width);
           jQuery(levelIndicator).css('height', levelIndicator._height);
-          levelIndicator._indicatorContainer.css('height', levelIndicator._indicatorSize);
+          levelIndicator._displayAreaContainer.css('height', levelIndicator._displayAreaSize);
 
           if (O$.isExplorer() && O$.isQuirksMode()) {
-            levelIndicator._indicatorContainer.css('width', '100%');
+            levelIndicator._displayAreaContainer.css('width', '100%');
           } else {
             if (levelIndicator._width != 0) {
-              levelIndicator._indicatorContainer.css('width', levelIndicator._width - parseInt(levelIndicator._indicatorContainer.css('padding-left').replace('px', '')) - parseInt(levelIndicator._indicatorContainer.css('padding-right').replace('px', '')));
+              var displayAreaPaddingLeft = O$.getNumericElementStyle(levelIndicator._displayArea, 'padding-left', true);
+              var displayAreaPaddingRight = O$.getNumericElementStyle(levelIndicator._displayArea, 'padding-right', true);
+
+              levelIndicator._displayAreaContainer.css('width', levelIndicator._width - parseInt(displayAreaPaddingLeft) - parseInt(displayAreaPaddingRight));
             } else {
-              levelIndicator._indicatorContainer.css('width', Math.round(levelIndicator._width * 0.1));
+              levelIndicator._displayAreaContainer.css('width', Math.round(levelIndicator._width * 0.1));
             }
           }
         }
 
-        var segmentSize = levelIndicator._segmentSize + levelIndicator._lamp_l_margin + levelIndicator._lamp_r_margin;
+        var segmentSize = levelIndicator._segmentSize + levelIndicator._segment_left_margin + levelIndicator._segment_right_margin;
         var indicatorContainerSize = parseInt(levelIndicator._totalSegmentsCount * segmentSize);
 
 
@@ -186,8 +194,8 @@ O$.LevelIndicator = {
             levelIndicator._totalSegmentsCount -= 1;
           }
 
-          levelIndicator._indicatorContainer.css('width', indicatorContainerSize);
-          levelIndicator._indicatorContainer.css('padding', '1px 0 1px 2px');
+          levelIndicator._displayAreaContainer.css('width', indicatorContainerSize);
+          levelIndicator._displayAreaContainer.css('padding', '1px 0 1px 2px');
         } else {
           var padding = 1;
           var containerSizeAdjHeightDelta = (padding > segmentSize) ? padding : segmentSize - padding;
@@ -197,18 +205,18 @@ O$.LevelIndicator = {
             levelIndicator._totalSegmentsCount -= 1;
           }
 
-          levelIndicator._indicatorContainer.css('height', indicatorContainerSize);
-          levelIndicator._indicatorContainer.css('padding', '1px 1px 0 1px');
+          levelIndicator._displayAreaContainer.css('height', indicatorContainerSize);
+          levelIndicator._displayAreaContainer.css('padding', '1px 1px 0 1px');
         }
       },
 
       _calculateRequiredSegmentsCount: function(progress_width) {
-        var lamp_length = levelIndicator._segmentSize + levelIndicator._lamp_l_margin + levelIndicator._lamp_r_margin;
+        var lamp_length = levelIndicator._segmentSize + levelIndicator._segment_left_margin + levelIndicator._segment_right_margin;
         return  Math.floor(progress_width / lamp_length);
       } ,
 
       _updateSegmentsColors: function(enabledLampsCount, disabledLampsCount, totalLampsCount) {
-        var childSegments = jQuery(jQuery.correctId(levelIndicator.id + "::indicator")).children();
+        var childSegments = jQuery(jQuery.correctId(levelIndicator.id + "::displayArea")).children();
         childSegments.each(function (idx) {
           levelIndicator._updateSegmentColor(this, idx, enabledLampsCount, totalLampsCount);
         });
@@ -228,7 +236,7 @@ O$.LevelIndicator = {
                   ? levelIndicator._colors[currentColorIndex]
                   : levelIndicator._colors[levelIndicator._colors.length - 1];
 
-          var blendedColorH = O$.blendColors(enabledColorH, "#000000", 1 - levelIndicator._backgroundIntensity);
+          var blendedColorH = O$.blendColors(enabledColorH, "#000000", 1 - levelIndicator._inactiveSegmentIntensity);
 
           if (index < enabledLampsCount) {
             jQuery(lamp_item).css('background-color', enabledColorH);
@@ -245,7 +253,7 @@ O$.LevelIndicator = {
           var enabledColorV = (currentColorIndex < levelIndicator._colors.length - 1)
                   ? levelIndicator._colors[currentColorIndex]
                   : levelIndicator._colors[levelIndicator._colors.length - 1];
-          var blendedColorV = O$.blendColors(enabledColorV, "#000000", 1 - levelIndicator._backgroundIntensity);
+          var blendedColorV = O$.blendColors(enabledColorV, "#000000", 1 - levelIndicator._inactiveSegmentIntensity);
 
           if ((totalLampsCount - index) < enabledLampsCount) {
             jQuery(lamp_item).css('background-color', enabledColorV);
@@ -261,7 +269,15 @@ O$.LevelIndicator = {
       },
 
       setValue: function(value) {
-        levelIndicator._value = value;
+        if (value < 0) {
+          levelIndicator._value = 0;
+        }
+        else if (value > 1) {
+          levelIndicator._value = 1;
+        }
+        else {
+          levelIndicator._value = value;
+        }
 
         levelIndicator._update();
       },
@@ -276,10 +292,8 @@ O$.LevelIndicator = {
     jQuery(document).ready(function() {
       var levelIndicatorElement = O$(levelIndicatorId);
 
-      levelIndicatorElement._indicatorContainer = jQuery(O$(levelIndicatorId + "::indicator"));
+      levelIndicatorElement._displayAreaContainer = jQuery(O$(levelIndicatorId + "::displayArea"));
       levelIndicatorElement._labelContainer = jQuery(O$(levelIndicatorId + "::label"));
-      levelIndicatorElement.lamp_l_margin = parseInt(jQuery('.o_levelIndicator_indicatorSegment').css('margin-left').replace('px', ''));
-      levelIndicatorElement.lamp_r_margin = parseInt(jQuery('.o_levelIndicator_indicatorSegment').css('margin-right').replace('px', ''));
 
       levelIndicatorElement._setupIndicator();
     });
