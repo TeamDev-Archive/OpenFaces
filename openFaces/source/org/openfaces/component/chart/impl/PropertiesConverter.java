@@ -88,11 +88,11 @@ public class PropertiesConverter {
             String style = border.getStyle();
 
             if (style.equalsIgnoreCase("DASHED")) {
-                float[] dush = {15.0F};
-                stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0F, dush, 1F);
+                float[] dash = {width * 4};
+                stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 0F, dash, 1F);
             } else if (style.equalsIgnoreCase("DOTTED")) {
-                float[] dush = {4.0F};
-                stroke = new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0F, dush, 1F);
+                float[] dash = {width};
+                stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 0F, dash, 1F);
             } else {
                 stroke = new BasicStroke(width);
             }
