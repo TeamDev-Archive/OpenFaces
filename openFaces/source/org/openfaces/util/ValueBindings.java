@@ -137,9 +137,9 @@ public class ValueBindings {
             adaptedValue = null;
         else {
             Class expressionType = valueExpression.getType(elCotnext);
-            if (expressionType.isAssignableFrom(List.class))
+            if (List.class.isAssignableFrom(expressionType))
                 adaptedValue = propertyValueAsList;
-            else if (expressionType.isAssignableFrom(Set.class))
+            else if (Set.class.isAssignableFrom(expressionType))
                 adaptedValue = new HashSet(propertyValueAsList);
             else if (expressionType.isArray()) {
                 Class componentType = expressionType.getComponentType();
