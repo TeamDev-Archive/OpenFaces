@@ -59,34 +59,39 @@
                 <h:panelGroup id="operations">
                     <h:panelGroup id="saveChangesPanelId" rendered="#{DayTableBean.editingRequest}"
                                   styleClass="NavigationControls">
-                        <h:commandLink id="saveChangesLink"
+                        <o:commandLink id="saveChangesLink"
                                        styleClass="NavigationControls-tasks-save"
-                                       onclick="O$.ajax.request(this, event, {render: 'form:tasks form:operations', listener: 'DayTableBean.saveChanges'}); return false;">
+                                       render="form:tasks form:operations"
+                                       actionListener="#{DayTableBean.saveChanges}">
                             <h:outputText id="saveChanges" value="Save Changes"/>
-                        </h:commandLink>
-                        <h:commandLink id="cancelChangesLink"
+                        </o:commandLink>
+                        <o:commandLink id="cancelChangesLink"
                                        styleClass="CancelChanges"
-                                       onclick="O$.ajax.request(this, event, {render: 'form:tasks form:operations', listener: 'DayTableBean.cancelEditing'}); return false;">
+                                       render="form:tasks form:operations"
+                                       actionListener="#{DayTableBean.cancelEditing}">
                             <h:outputText id="cancelChanges" value="Cancel"/>
-                        </h:commandLink>
+                        </o:commandLink>
                     </h:panelGroup>
                     <h:panelGroup id="editingRequestPanelId" rendered="#{!DayTableBean.editingRequest}"
                                   styleClass="NavigationControls">
-                        <h:commandLink id="addTaskLink"
+                        <o:commandLink id="addTaskLink"
                                        styleClass="NavigationControls-tasks-new"
-                                       onclick="O$.ajax.request(this, event, {render: 'form:tasks form:operations', listener: 'DayTableBean.addNewTask'}); return false;">
+                                       render="form:tasks form:operations"
+                                       actionListener="#{DayTableBean.addNewTask}">
                             <h:outputText id="addTask" value="New Task"/>
-                        </h:commandLink>
-                        <h:commandLink id="editTaskLink"
+                        </o:commandLink>
+                        <o:commandLink id="editTaskLink"
                                        styleClass="NavigationControls-tasks-edit"
-                                       onclick="O$.ajax.request(this, event, {render: 'form:tasks form:operations', listener: 'DayTableBean.editTask'}); return false;">
+                                       render="form:tasks form:operations"
+                                       actionListener="#{DayTableBean.editTask}">
                             <h:outputText id="editTask" value="Edit Task"/>
-                        </h:commandLink>
-                        <h:commandLink id="deleteTaskLink"
+                        </o:commandLink>
+                        <o:commandLink id="deleteTaskLink"
                                        styleClass="NavigationControls-tasks-delete"
-                                       onclick="O$.ajax.request(this, event, {render: 'form:tasks', listener: 'DayTableBean.deleteTask'}); return false;">
+                                       render="form:tasks"
+                                       actionListener="#{DayTableBean.deleteTask}">
                             <h:outputText id="deleteTask" value="Delete Task"/>
-                        </h:commandLink>
+                        </o:commandLink>
                         <img src="images/icons/navigation-tasks-separator.png" alt="" style="float:left; margin:5px;"/>
                         <rich:dropDownMenu id="richMenu"
                                            value="Columns"
