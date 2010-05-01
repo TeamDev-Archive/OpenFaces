@@ -19,7 +19,7 @@
     <commons-lang-version>2.1</commons-lang-version>
     <commons-logging-version>1.0.4</commons-logging-version>
     <jdom-version>1.0</jdom-version>
-    <jsf-version>1.2_12</jsf-version>
+    <jsf-version>2.0.2</jsf-version>
     <jstl-version>1.1.0</jstl-version>
     <richfaces-version>4.0.0.ALPHA1</richfaces-version>
     <standard-version>1.1.2</standard-version>

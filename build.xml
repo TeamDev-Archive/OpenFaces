@@ -187,16 +187,16 @@
   <target name="run-func-tests-jsp" description="Run functional tests in JSP-based JSF 2.0 environment">
     <property name="jsf.implementation" value="SUN12"/>
     <property name="is.facelets" value="false"/>
-    <property name="context.path" value="/TestAppJsp_2x"/>
-    <property name="demoContext.path" value="/LiveDemoJsp_2x"/>
+    <property name="context.path" value="/TestAppJsp_3x"/>
+    <property name="demoContext.path" value="/LiveDemoJsp_3x"/>
     <antcall target="run-func-tests"/>
   </target>
 
   <target name="run-func-tests-facelets" description="Run functional tests in Facelets-based JSF 2.0 environment">
     <property name="jsf.implementation" value="SUN12"/>
     <property name="is.facelets" value="true"/>
-    <property name="context.path" value="/TestAppFacelets_2x"/>
-    <property name="demoContext.path" value="/LiveDemoFacelets_2x"/>
+    <property name="context.path" value="/TestAppFacelets_3x"/>
+    <property name="demoContext.path" value="/LiveDemoFacelets_3x"/>
     <antcall target="run-func-tests"/>
   </target>
 
