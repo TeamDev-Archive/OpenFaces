@@ -84,6 +84,8 @@
         <pathelement path="lib/seleniuminspector/selenium-java-client-driver.jar"/>
         <pathelement path="lib/seleniuminspector/selenium-server.jar"/>
         <pathelement path="lib/seleniuminspector/seleniuminspector.jar"/>
+        <pathelement path="lib/mojarra/jsf-api-2.0.2.jar"/>
+        <pathelement path="lib/mojarra/jsf-impl-2.0.2.jar"/>
         <pathelement path="testLib/junit.jar"/>
         <fileset file="${openfaces-jar.file}"/>
       </classpath>
@@ -182,7 +184,7 @@
     <fail if="junit_test_failed" message="FUNCTIONAL TEST(S) FAILED"/>
   </target>
 
-  <target name="run-func-tests-jsp" description="Run functional tests in JSP-based JSF 1.2 environment">
+  <target name="run-func-tests-jsp" description="Run functional tests in JSP-based JSF 2.0 environment">
     <property name="jsf.implementation" value="SUN12"/>
     <property name="is.facelets" value="false"/>
     <property name="context.path" value="/TestAppJsp_2x"/>
@@ -190,7 +192,7 @@
     <antcall target="run-func-tests"/>
   </target>
 
-  <target name="run-func-tests-facelets" description="Run functional tests in Facelets-based JSF 1.2 environment">
+  <target name="run-func-tests-facelets" description="Run functional tests in Facelets-based JSF 2.0 environment">
     <property name="jsf.implementation" value="SUN12"/>
     <property name="is.facelets" value="true"/>
     <property name="context.path" value="/TestAppFacelets_2x"/>
