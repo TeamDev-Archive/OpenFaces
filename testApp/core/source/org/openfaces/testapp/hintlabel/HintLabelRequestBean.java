@@ -19,7 +19,6 @@ import java.util.Random;
 public class HintLabelRequestBean {
 
     public HintLabelRequestBean() {
-
     }
 
     public String getTitle() {
