@@ -4222,6 +4222,18 @@
       <!-- @default null -->
       <!-- @el true -->
     </attribute>
+    <attribute>
+      <description>Assigning true turns on automatic scrollbar visibility control. When this option is turned on,
+        scrollbars are automatically hidden when the displayed data entirely fits in the visible area.
+      </description>
+      <name>autoScrollbars</name>
+      <deferred-value>
+        <type>boolean</type>
+      </deferred-value>
+      <!-- @bindingType boolean -->
+      <!-- @default false -->
+      <!-- @el true -->
+    </attribute>
   </tag>
   <tag>
     <description>

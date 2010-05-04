@@ -36,5 +36,6 @@ public class ScrollingTag extends AbstractComponentTag {
         setBooleanProperty(component, "vertical");
         setBooleanProperty(component, "horizontal");
         setPropertyBinding(component, "position");
+        setBooleanProperty(component, "autoScrollbars");
     }
 }

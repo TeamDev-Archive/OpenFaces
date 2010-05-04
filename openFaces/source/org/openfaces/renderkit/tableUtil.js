@@ -483,11 +483,11 @@ O$.Tables = {
                   if (scrollingKind == "none") {
                     // leave overflow as specified during rendering
                   } else if (scrollingKind == "x")
-                    area._scrollingDiv.style.overflowX = "scroll";
+                    area._scrollingDiv.style.overflowX = scrolling.autoScrollbars ? "auto" : "scroll";
                   else if (scrollingKind == "y")
-                      area._scrollingDiv.style.overflowY = "scroll";
+                      area._scrollingDiv.style.overflowY = scrolling.autoScrollbars ? "auto" : "scroll";
                   else if (scrollingKind == "both")
-                      area._scrollingDiv.style.overflow = "scroll";
+                      area._scrollingDiv.style.overflow = scrolling.autoScrollbars ? "auto" : "scroll";
                   else
                     throw "initTableSection/scrollingArea: unknown scrollingKind: " + scrollingKind;
                 }

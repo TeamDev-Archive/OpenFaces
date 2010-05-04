@@ -31,6 +31,7 @@ public class Scrolling extends UIComponentBase implements ComponentConfigurator 
     private Boolean vertical;
     private Boolean horizontal;
     private Point position;
+    private Boolean autoScrollbars;
 
     public Scrolling() {
     }
@@ -45,7 +46,8 @@ public class Scrolling extends UIComponentBase implements ComponentConfigurator 
                 super.saveState(context),
                 vertical,
                 horizontal,
-                position
+                position,
+                autoScrollbars
         };
     }
 
@@ -57,6 +59,7 @@ public class Scrolling extends UIComponentBase implements ComponentConfigurator 
         vertical = (Boolean) state[i++];
         horizontal = (Boolean) state[i++];
         position = (Point) state[i++];
+        autoScrollbars = (Boolean) state[i++];
     }
 
     public boolean isVertical() {
@@ -120,4 +123,11 @@ public class Scrolling extends UIComponentBase implements ComponentConfigurator 
     }
 
 
+    public boolean getAutoScrollbars() {
+        return ValueBindings.get(this, "autoScrollbars", autoScrollbars, false);
+    }
+
+    public void setAutoScrollbars(boolean autoScrollbars) {
+        this.autoScrollbars = autoScrollbars;
+    }
 }

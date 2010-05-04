@@ -386,6 +386,7 @@ public class TableStructure extends TableElement {
         }
         Rendering.addJsonParam(result, "horizontal", scrolling.isHorizontal(), false);
         Rendering.addJsonParam(result, "vertical", scrolling.isVertical(), false);
+        Rendering.addJsonParam(result, "autoScrollbars", scrolling.getAutoScrollbars(), false);
         Point pos = scrolling.getPosition();
         Rendering.addJsonParam(result, "position", new Object[]{pos.x, pos.y});
 

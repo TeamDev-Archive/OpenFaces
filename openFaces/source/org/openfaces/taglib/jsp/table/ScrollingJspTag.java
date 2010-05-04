@@ -37,4 +37,7 @@ public class ScrollingJspTag extends AbstractComponentJspTag {
     }
 
 
+    public void setAutoScrollbars(ValueExpression autoScrollbars) {
+        getDelegate().setPropertyValue("autoScrollbars", autoScrollbars);
+    }
 }
