@@ -29,7 +29,7 @@ public class TableScrollingArea extends TableElement {
     private List<BaseColumn> columns;
     private List<? extends AbstractRow> rows;
     private ScrollingType scrollingType;
-    private boolean indefiniteHight;
+    private boolean indefiniteHeight;
 
     public TableScrollingArea(
             TableElement parent,
@@ -42,12 +42,12 @@ public class TableScrollingArea extends TableElement {
         this.scrollingType = scrollingType;
     }
 
-    public boolean isIndefiniteHight() {
-        return indefiniteHight;
+    public boolean isIndefiniteHeight() {
+        return indefiniteHeight;
     }
 
-    public void setIndefiniteHight(boolean indefiniteHight) {
-        this.indefiniteHight = indefiniteHight;
+    public void setIndefiniteHeight(boolean indefiniteHeight) {
+        this.indefiniteHeight = indefiniteHeight;
     }
 
     public String getCellpadding() {
@@ -72,7 +72,7 @@ public class TableScrollingArea extends TableElement {
     ) throws IOException {
         UIComponent component = getParent(TableStructure.class).getComponent();
         ResponseWriter writer = context.getResponseWriter();
-        if (indefiniteHight) {
+        if (indefiniteHeight) {
             writer.startElement("div", component);
             writer.writeAttribute("class", "o_scrolling_area_container", null);
         }
@@ -80,9 +80,9 @@ public class TableScrollingArea extends TableElement {
             writer.startElement("div", component);
             writer.writeAttribute("class", scrollingType == ScrollingType.HORIZONTAL
                     ? "o_horizontal_scrolling_area" : "o_table_scrolling_area", null);
-            if (indefiniteHight)
+            if (indefiniteHeight)
                 writer.writeAttribute("style", "position: absolute; height: 0;", null);
-            // horizontal and vertical scrolling areas require a spacer at the end of the area to accomodate for scroller width
+            // horizontal and vertical scrolling areas require a spacer at the end of the area to accommodate for scroller width
             if (scrollingType == ScrollingType.HORIZONTAL) {
                 writer.startElement("table", component);
                 writer.writeAttribute("cellspacing", "0", null);
@@ -123,7 +123,7 @@ public class TableScrollingArea extends TableElement {
 
             writer.endElement("div");
         }
-        if (indefiniteHight)
+        if (indefiniteHeight)
             writer.endElement("div");
     }
 

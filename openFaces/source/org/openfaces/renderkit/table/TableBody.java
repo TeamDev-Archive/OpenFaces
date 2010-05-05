@@ -186,7 +186,7 @@ public class TableBody extends TableSection {
         BodyCell cell = new BodyCell();
         TableScrollingArea scrollingArea = new TableScrollingArea(cell, columns.subList(startCol, endCol), rows, scrolling);
         scrollingArea.setCellpadding(tableStructure.getTableCellPadding());
-        scrollingArea.setIndefiniteHight(true);
+        scrollingArea.setIndefiniteHeight(true);
         cell.setContent(scrollingArea);
         return cell;
     }
