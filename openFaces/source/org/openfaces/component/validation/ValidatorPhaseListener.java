@@ -85,8 +85,8 @@ public class ValidatorPhaseListener extends PhaseListenerBase {
         if (input != null) {
             InputStreamReader reader = new InputStreamReader(input);
             char[] target = new char[BUFFER_SIZE];
-            int readed = reader.read(target);
-            String params = new String(target, 0, readed);
+            int charsRead = reader.read(target);
+            String params = new String(target, 0, charsRead);
             try {
                 JSONObject jParams = new JSONObject(params);
                 JSONObject jValidatorTransportObject = jParams.getJSONObject("params");
