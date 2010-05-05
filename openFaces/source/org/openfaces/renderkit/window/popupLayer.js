@@ -203,6 +203,13 @@ O$.PopupLayer = {
         O$.repaintAreaForOpera(popup, true);
         if (popup._afterShow)
           popup._afterShow();
+        else {
+          // in case of window, let window populate the _afterShow method in a next call and then try again
+          setTimeout(function() {
+            if (popup._afterShow)
+              popup._afterShow();
+          }, 1);
+        }
       },
 
       hide: function () {
