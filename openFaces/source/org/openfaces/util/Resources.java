@@ -235,7 +235,10 @@ public class Resources {
         BufferedReader bufferedReader = null;
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(numberStream, "UTF-8"));
-            String text = bufferedReader.readLine();
+            String text;
+            do {
+                text = bufferedReader.readLine();
+            } while (text.startsWith("/*") || text.startsWith(" *") || text.trim().length() == 0);
             text = text.substring(1, text.length() - 1);
             JSONObject result = new JSONObject(new JSONTokener(text));
             return result;
