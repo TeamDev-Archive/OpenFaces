@@ -156,7 +156,7 @@ O$.PopupLayer = {
           };
           popup.appendChild(popup._lastInternalAnchor);
 
-
+          O$.initIETransparencyWorkaround(popup.blockingLayer);
           popup.blockingLayer.style.display = "";
 
           document._of_activeModalLayer = popup.blockingLayer;
@@ -171,6 +171,7 @@ O$.PopupLayer = {
             popup.blockingLayer.style.position = "fixed";
             window.addEventListener("resize", O$.PopupLayer._resizeModalLayer, true);
           }
+          O$.addIETransparencyControl(popup.blockingLayer);
 
           setTimeout(function() {
             var focusable = popup._getDefaultFocusComponent();
@@ -243,6 +244,7 @@ O$.PopupLayer = {
         popup._visibleField.value = "false";
 
         if (popup.blockingLayer) {
+          O$.removeIETransparencyControl(popup.blockingLayer);
           popup.blockingLayer.style.display = "none";
           if (O$._simulateFixedPosForBlockingLayer()) {
             O$.removeEventHandler(window, "scroll", O$.PopupLayer._alignModalLayer);
