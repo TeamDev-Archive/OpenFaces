@@ -2134,7 +2134,8 @@ if (!window.O$) {
     return false;
   };
 
-  O$.disabledContextMenuFor = function(element) {
+  O$.disableNativeContextMenuFor = function(element) {
+    if (element._isDisabledContextMenu) return;
     if (element) {
       element._oldoncontextmenu = element.oncontextmenu;
       element.oncontextmenu = function() {
@@ -2145,7 +2146,7 @@ if (!window.O$) {
     }
   };
 
-  O$.enabledContextMenuFor = function(element) {
+  O$.enableNativeContextMenuFor = function(element) {
     if (element) {
       if (element._oldoncontextmenu)
         element.oncontextmenu = element._oldoncontextmenu;

@@ -893,16 +893,16 @@ O$.PopupMenu = {
           }
         });
       } else {
-        O$.disabledContextMenuFor(forElement);
+        O$.disableNativeContextMenuFor(forElement);
         O$.addEventHandler(forElement, eventName, function(evt) {
           if (!O$.isChild(popupMenu, evt.target ? evt.target : evt.srcElement)) {
             if (!O$.isShiftPressed(evt)) {
               if (!forElement._isDisabledContextMenu)
-                O$.disabledContextMenuFor(forElement);
+                O$.disableNativeContextMenuFor(forElement);
               popupMenu.showForEvent(evt);
               popupMenu.focus();
             } else {
-              O$.enabledContextMenuFor(forElement);
+              O$.enableNativeContextMenuFor(forElement);
             }
           }
         });
