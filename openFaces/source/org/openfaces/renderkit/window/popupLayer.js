@@ -175,9 +175,12 @@ O$.PopupLayer = {
 
           setTimeout(function() {
             var focusable = popup._getDefaultFocusComponent();
-            if (focusable)
+            if (focusable) try {
               focusable.focus();
-          }, 1);
+            } catch (e) {
+              // control is not focusable for some reason
+            }
+          }, 20);
 
           if (!O$.PopupLayer._modalWindows)
             O$.PopupLayer._modalWindows = [];
