@@ -25,7 +25,7 @@ import javax.faces.context.FacesContext;
 public class RequiredClientValidator extends AbstractClientValidator {
 
     public RequiredClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("requiredValidator.js", this.getClass()));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("requiredValidator.js", null));
     }
 
     public String getJsValidatorName() {

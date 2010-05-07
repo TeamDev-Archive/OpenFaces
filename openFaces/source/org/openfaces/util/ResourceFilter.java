@@ -205,12 +205,15 @@ public class ResourceFilter implements Filter {
             inputStream = getDynamicImageAsInputStream(request, servletContext);
             response.setContentType(getImageContentType(uri));
         } else {
-            if (!resourcePath.startsWith("/org/openfaces")) {
+            String metaInfPrefix = "/META-INF";
+            if (!(resourcePath.startsWith("/org/openfaces") || resourcePath.startsWith(metaInfPrefix))) {
                 // SECURITY ISSUE: DO NOT LET TO ACCESS /openFacesResources/ HOME AS IT PROVIDES SERVER'S FILES
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
 
+            if (resourcePath.startsWith(metaInfPrefix))
+                resourcePath = metaInfPrefix + "/resources" + resourcePath.substring(metaInfPrefix.length());
             URL resourceURL = Rendering.class.getResource(resourcePath);
             if (resourceURL == null) {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);

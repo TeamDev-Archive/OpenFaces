@@ -151,6 +151,10 @@ public class Resources {
         if (resourcePath == null) throw new NullPointerException("resourcePath");
 
         String packagePath = getPackagePath(componentClass);
+        if (resourcePath.startsWith("/")) {
+            packagePath = "";
+            resourcePath = resourcePath.substring(1);
+        }
 
         String versionString = getVersionString();
         int extensionIndex = resourcePath.lastIndexOf(".");

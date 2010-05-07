@@ -44,6 +44,8 @@ public class ValidationJavascriptLibrary {
     }
 
     public String getUrl(FacesContext context) {
-        return Resources.getInternalURL(context, ownerClass, name);
+        if (ownerClass != null)
+            return Resources.getInternalURL(context, ownerClass, name);
+        return Resources.getInternalURL(context, getClass(), "/META-INF/openfaces/3_0/validation/" + name);
     }
 }
