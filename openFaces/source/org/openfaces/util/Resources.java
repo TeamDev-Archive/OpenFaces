@@ -22,6 +22,7 @@ import org.w3c.dom.NodeList;
 
 import javax.faces.FacesException;
 import javax.faces.application.Resource;
+import javax.faces.application.ResourceHandler;
 import javax.faces.application.ViewHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -108,6 +109,8 @@ public class Resources {
     public static String getApplicationURL(FacesContext context, String resourcePath) {
         if (resourcePath == null || resourcePath.length() == 0)
             return "";
+        if (resourcePath.contains(ResourceHandler.RESOURCE_IDENTIFIER))
+            return resourcePath;
         ViewHandler viewHandler = context.getApplication().getViewHandler();
         String resourceUrl = viewHandler.getResourceURL(context, resourcePath);
         String encodedResourceUrl = context.getExternalContext().encodeResourceURL(resourceUrl);
