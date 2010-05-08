@@ -33,7 +33,9 @@
   <component name="ArtifactManager">
     <artifact name="OpenFaces:jar">
       <root id="root">
-        <element id="archive" name="OpenFaces.jar" />
+        <element id="archive" name="OpenFaces.jar">
+          <element id="dir-copy" path="$PROJECT_DIR$/../../OpenFaces/trunk/openFaces/source/META-INF/resources" />
+        </element>
       </root>
     </artifact>
     <artifact type="exploded-war" name="LiveDemoFacelets:LiveDemoFacelets exploded">
