@@ -38,8 +38,6 @@ import java.util.Map;
  */
 public class PopupMenuRenderer extends RendererBase {
 
-    private static final String JS_SCRIPT_URL = "popupMenu.js";
-
     private static final String DEFAULT_CLASS = "o_popup_menu";
     private static final String DEFAULT_POPUPMENU_INDENTION_CLASS = "o_popup_menu_indent";
 
@@ -48,9 +46,9 @@ public class PopupMenuRenderer extends RendererBase {
     private static final String DEFAULT_CONTENT_ITEM_CLASS = "o_menu_list_item_content";
     private static final String DEFAULT_DISABLED_ITEM = "o_menu_list_item_disabled";
 
-    private static final String DEFAULT_SUBMENU_IMAGE = "submenuImage.gif";
-    private static final String DEFAULT_SELECTED_SUBMENU_IMAGE = "submenuImage.gif";//"selectedSubmenuImage.gif";
-    private static final String DEFAULT_DISABLED_SUBMENU_IMAGE = "disabledSubmenuImage.gif";
+    private static final String DEFAULT_SUBMENU_IMAGE = "command/submenuImage.gif";
+    private static final String DEFAULT_SELECTED_SUBMENU_IMAGE = "command/submenuImage.gif";//"command/selectedSubmenuImage.gif";
+    private static final String DEFAULT_DISABLED_SUBMENU_IMAGE = "command/disabledSubmenuImage.gif";
     public static final String ATTR_DEFAULT_INDENT_CLASS = "_defaultIndentClass";
 
     @Override
@@ -120,7 +118,7 @@ public class PopupMenuRenderer extends RendererBase {
                 DEFAULT_DISABLED_ITEM);
 
         String submenuImageUrl = Resources.getURL(context, popupMenu.getSubmenuImageUrl(), PopupMenuRenderer.class, DEFAULT_SUBMENU_IMAGE);
-        String disabledSubmenuImageUrl = Resources.getURL(context, popupMenu.getDisabledSubmenuImageUrl(), PopupMenuRenderer.class, DEFAULT_DISABLED_SUBMENU_IMAGE);
+        String disabledSubmenuImageUrl = Resources.getURL(context, popupMenu.getDisabledSubmenuImageUrl(), null, DEFAULT_DISABLED_SUBMENU_IMAGE);
         String selectedSubmenuImageUrl = Resources.getURL(context, popupMenu.getSelectedSubmenuImageUrl(), PopupMenuRenderer.class, DEFAULT_SELECTED_SUBMENU_IMAGE);
 
         JSONObject eventsObj = new JSONObject();
@@ -166,7 +164,7 @@ public class PopupMenuRenderer extends RendererBase {
 
         Rendering.renderInitScript(context, initScript,
                 Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, PopupMenuRenderer.class, JS_SCRIPT_URL),
+                Resources.getInternalURL(context, "command/popupMenu.js"),
                 Resources.getInternalURL(context, "popup.js"));
     }
 
