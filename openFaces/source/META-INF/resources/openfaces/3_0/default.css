@@ -593,7 +593,7 @@
 }
 
 .o_reservedTimeEvent {
-  background: url(../../../../org/openfaces/renderkit/timetable/reservedTimePattern.gif) repeat;
+  background: url(timetable/reservedTimePattern.gif) repeat;
   margin: 4px;
 }
 

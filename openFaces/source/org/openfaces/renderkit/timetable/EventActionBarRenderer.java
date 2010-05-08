@@ -15,7 +15,6 @@ import org.openfaces.component.timetable.DeleteEventAction;
 import org.openfaces.component.timetable.EventAction;
 import org.openfaces.component.timetable.EventActionBar;
 import org.openfaces.component.timetable.MonthTable;
-import org.openfaces.component.timetable.TimeScaleTable;
 import org.openfaces.component.timetable.TimetableView;
 import org.openfaces.component.window.Confirmation;
 import org.openfaces.org.json.JSONArray;
@@ -47,7 +46,7 @@ public class EventActionBarRenderer extends RendererBase {
         Rendering.writeStandardEvents(writer, actionBar);
 
         TimetableView timeTable = (TimetableView) actionBar.getParent();
-        if (! (timeTable instanceof MonthTable)) {
+        if (!(timeTable instanceof MonthTable)) {
             writer.writeText(actionBar.getNoteText(), null);
         }
         writer.endElement("div");
@@ -142,8 +141,7 @@ public class EventActionBarRenderer extends RendererBase {
 
     private String getActionImageUrl(FacesContext context, EventAction action) {
         if (action instanceof DeleteEventAction && action.getImageUrl() == null) {
-            return Resources.getInternalURL(
-                    FacesContext.getCurrentInstance(), EventActionBarRenderer.class, "deleteEvent.gif");
+            return Resources.getInternalURL(FacesContext.getCurrentInstance(), "timetable/deleteEvent.gif");
         }
         return Resources.getApplicationURL(context, action.getImageUrl());
     }

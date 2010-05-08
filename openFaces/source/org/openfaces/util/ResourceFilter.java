@@ -182,11 +182,16 @@ public class ResourceFilter implements Filter {
         String resourcePath;
         boolean isDynamicImageResource = Rendering.isDynamicResource(uri);
         if (!isDynamicImageResource) {
-            int versionPrefixIdx = resourcePathWithVersion.lastIndexOf("-");
-            if (versionPrefixIdx != -1)
+            boolean metaInfResource = resourcePathWithVersion.startsWith(Resources.META_INF_RESOURCES_ROOT);
+            int versionPrefixIdx = !metaInfResource
+                    ? resourcePathWithVersion.lastIndexOf("-")
+                    : resourcePathWithVersion.substring(Resources.META_INF_RESOURCES_ROOT.length()).lastIndexOf("-");
+
+            if (versionPrefixIdx != -1) {
+                if (metaInfResource) versionPrefixIdx += Resources.META_INF_RESOURCES_ROOT.length(); 
                 resourcePath = resourcePathWithVersion.substring(0, versionPrefixIdx) +
                         resourcePathWithVersion.substring(resourcePathWithVersion.lastIndexOf("."));
-            else {
+            } else {
                 // some rare internal resources are allowed to come without version,
                 // e.g. for images referred to from default.css (see clear.gif as an example)
                 resourcePath = resourcePathWithVersion;
