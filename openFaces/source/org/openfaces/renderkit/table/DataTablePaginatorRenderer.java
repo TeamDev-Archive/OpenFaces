@@ -87,7 +87,7 @@ public class DataTablePaginatorRenderer extends RendererBase {
 
     private String getFirstImageUrl(FacesContext context, DataTablePaginator pager, boolean active) {
         return active
-                ? Resources.getURL(context, pager.getFirstImageUrl(), DataTablePaginatorRenderer.class, "first.gif", false)
+                ? Resources.getURL(context, pager.getFirstImageUrl(), null, "table/first.gif", false)
                 : Resources.getURL(context, pager.getFirstDisabledImageUrl(), DataTablePaginatorRenderer.class, "firstDisabled.gif", false);
     }
 
@@ -121,8 +121,8 @@ public class DataTablePaginatorRenderer extends RendererBase {
             return;
         int pageSize = table.getPageSize();
         if (pageSize == 0)
-            throw new IllegalStateException("DataTablePaginator can't be placed into a non-pageable dataTable. Set " +
-                    "dataTable's pageSize to a non-zero value. dataTable's clientId is: " + table.getClientId(context));
+            throw new IllegalStateException("DataTablePaginator can't be placed into a dataTable whose pagination is " +
+                    "not activated. Set dataTable's pageSize to a non-zero value. dataTable's clientId is: " + table.getClientId(context));
 
         boolean firstLinkActive = canSelectFirstPage(table);
         boolean lastLinkActive = canSelectLastPage(table);
