@@ -592,7 +592,7 @@
     <demos>
       <demoItem>
         <demoName>General</demoName>
-        <demoUrl>/selectoneradio/SelectOneMenu.jsf</demoUrl>
+        <demoUrl>/selectonemenu/SelectOneMenu.jsf</demoUrl>
       </demoItem>
     </demos>
   </menuItem>
