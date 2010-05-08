@@ -46,9 +46,6 @@ public class PopupMenuRenderer extends RendererBase {
     private static final String DEFAULT_CONTENT_ITEM_CLASS = "o_menu_list_item_content";
     private static final String DEFAULT_DISABLED_ITEM = "o_menu_list_item_disabled";
 
-    private static final String DEFAULT_SUBMENU_IMAGE = "command/submenuImage.gif";
-    private static final String DEFAULT_SELECTED_SUBMENU_IMAGE = "command/submenuImage.gif";//"command/selectedSubmenuImage.gif";
-    private static final String DEFAULT_DISABLED_SUBMENU_IMAGE = "command/disabledSubmenuImage.gif";
     public static final String ATTR_DEFAULT_INDENT_CLASS = "_defaultIndentClass";
 
     @Override
@@ -117,9 +114,9 @@ public class PopupMenuRenderer extends RendererBase {
         String defaultDisabledClass = Styles.getCSSClass(context, popupMenu, popupMenu.getDisabledItemStyle(), StyleGroup.disabledStyleGroup(1), popupMenu.getDisabledItemClass(),
                 DEFAULT_DISABLED_ITEM);
 
-        String submenuImageUrl = Resources.getURL(context, popupMenu.getSubmenuImageUrl(), PopupMenuRenderer.class, DEFAULT_SUBMENU_IMAGE);
-        String disabledSubmenuImageUrl = Resources.getURL(context, popupMenu.getDisabledSubmenuImageUrl(), null, DEFAULT_DISABLED_SUBMENU_IMAGE);
-        String selectedSubmenuImageUrl = Resources.getURL(context, popupMenu.getSelectedSubmenuImageUrl(), PopupMenuRenderer.class, DEFAULT_SELECTED_SUBMENU_IMAGE);
+        String submenuImageUrl = Resources.getURL(context, popupMenu.getSubmenuImageUrl(), null, "command/submenuImage.gif");
+        String disabledSubmenuImageUrl = Resources.getURL(context, popupMenu.getDisabledSubmenuImageUrl(), null, "command/disabledSubmenuImage.gif");
+        String selectedSubmenuImageUrl = Resources.getURL(context, popupMenu.getSelectedSubmenuImageUrl(), null, "command/submenuImage.gif");
 
         JSONObject eventsObj = new JSONObject();
         Rendering.addJsonParam(eventsObj, "onhide", popupMenu.getOnhide());
