@@ -89,9 +89,10 @@ public class ResourceFilter implements Filter {
             // this (jsWasServed) check is needed for a case when the filter returns the 304 "Not Modified" Http result
             // without writing the output to the stream (was reproduced on WebLogic Portal for its own js-files).
             // we can't detect the http result so we check if anything was written to the outputStream
-            String libName = getDecodedResourcePath((HttpServletRequest) servletRequest);
-            ServletOutputStream outputStream = response.getOutputStream();
-            appendJavaScriptLoadingScript(libName, outputStream);
+
+//            String libName = getDecodedResourcePath((HttpServletRequest) servletRequest);
+//            ServletOutputStream outputStream = response.getOutputStream();
+//            appendJavaScriptLoadingScript(libName, outputStream);
 //            }
         } else {
             ResponseWrapper responseWrapper = new ResponseWrapper(response);
@@ -267,8 +268,8 @@ public class ResourceFilter implements Filter {
             while ((result = inputStream.read()) != -1) {
                 outputStream.write(result);
             }
-            if (uri.endsWith(".js"))
-                appendJavaScriptLoadingScript(getDecodedResourcePath(request), outputStream);
+//            if (uri.endsWith(".js"))
+//                appendJavaScriptLoadingScript(getDecodedResourcePath(request), outputStream);
             outputStream.close();
         } else {
             filterChain.doFilter(request, response);

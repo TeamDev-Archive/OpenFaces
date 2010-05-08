@@ -1304,12 +1304,26 @@ O$.processJSIncludes = function(jsIncludes) {
   }
 }
 
+O$.markLibraryLoaded = function(lib) {
+  var hostIndex = lib.indexOf("://");
+  if (hostIndex != -1) {
+    var startIdx = lib.indexOf("/", hostIndex + 3);
+    lib = lib.substring(startIdx);
+  }
+  window["_of_loadedLibrary:" + lib] = true;
+}
+
 O$.processJSInclude = function(jsInclude) {
   var found = O$.isLibraryLoaded(jsInclude);
   if (!found) {
     var newScript = document.createElement("script");
     newScript.type = "text/javascript";
     newScript.src = jsInclude;
+    newScript.onload = O$.markLibraryLoaded;
+    newScript.onreadystatechange = function() {
+      if (this.readyState == "complete")
+        O$.markLibraryLoaded();
+    };
     var head = document.getElementsByTagName("head")[0];
     head.appendChild(newScript);
   }
@@ -1436,7 +1450,19 @@ O$.areRequiredLibrariesLoaded = function(libs) {
   return true;
 }
 
+O$._markPreloadedLibraries = function() {
+  if (O$._preloadedLibrariesMarked) return;
+  O$._preloadedLibrariesMarked = true;
+  var scriptElements = document.getElementsByTagName("script");
+  for (var i = 0, count = scriptElements.length; i < count; i++) {
+    var scriptElement = scriptElements[i];
+    if (scriptElement.src)
+      O$.markLibraryLoaded(scriptElement.src);
+  }
+}
+
 O$.isLibraryLoaded = function(lib) {
+  O$._markPreloadedLibraries();
   var result = eval("window['_of_loadedLibrary:" + lib + "']");
   return result;
 }
