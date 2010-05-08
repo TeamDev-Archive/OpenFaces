@@ -88,25 +88,25 @@ public class DataTablePaginatorRenderer extends RendererBase {
     private String getFirstImageUrl(FacesContext context, DataTablePaginator pager, boolean active) {
         return active
                 ? Resources.getURL(context, pager.getFirstImageUrl(), null, "table/first.gif", false)
-                : Resources.getURL(context, pager.getFirstDisabledImageUrl(), DataTablePaginatorRenderer.class, "firstDisabled.gif", false);
+                : Resources.getURL(context, pager.getFirstDisabledImageUrl(), null, "table/firstDisabled.gif", false);
     }
 
     private String getLastImageUrl(FacesContext context, DataTablePaginator pager, boolean active) {
         return active
-                ? Resources.getURL(context, pager.getLastImageUrl(), DataTablePaginatorRenderer.class, "last.gif", false)
-                : Resources.getURL(context, pager.getLastDisabledImageUrl(), DataTablePaginatorRenderer.class, "lastDisabled.gif", false);
+                ? Resources.getURL(context, pager.getLastImageUrl(), null, "table/last.gif", false)
+                : Resources.getURL(context, pager.getLastDisabledImageUrl(), null, "table/lastDisabled.gif", false);
     }
 
     private String getPreviousImageUrl(FacesContext context, DataTablePaginator pager, boolean active) {
         return active
-                ? Resources.getURL(context, pager.getPreviousImageUrl(), DataTablePaginatorRenderer.class, "prev.gif", false)
-                : Resources.getURL(context, pager.getPreviousDisabledImageUrl(), DataTablePaginatorRenderer.class, "prevDisabled.gif", false);
+                ? Resources.getURL(context, pager.getPreviousImageUrl(), null, "table/prev.gif", false)
+                : Resources.getURL(context, pager.getPreviousDisabledImageUrl(), null, "table/prevDisabled.gif", false);
     }
 
     private String getNextImageUrl(FacesContext context, DataTablePaginator pager, boolean active) {
         return active
-                ? Resources.getURL(context, pager.getNextImageUrl(), DataTablePaginatorRenderer.class, "next.gif", false)
-                : Resources.getURL(context, pager.getNextDisabledImageUrl(), DataTablePaginatorRenderer.class, "nextDisabled.gif", false);
+                ? Resources.getURL(context, pager.getNextImageUrl(), null, "table/next.gif", false)
+                : Resources.getURL(context, pager.getNextDisabledImageUrl(), null, "table/nextDisabled.gif", false);
     }
 
     @Override
