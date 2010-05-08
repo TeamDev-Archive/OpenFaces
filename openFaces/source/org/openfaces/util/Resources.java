@@ -11,7 +11,6 @@
  */
 package org.openfaces.util;
 
-import org.ajax4jsf.renderkit.RendererUtils;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.org.json.JSONTokener;
@@ -55,11 +54,6 @@ public class Resources {
     private static final String OPENFACES_VERSION_TXT = "/META-INF/openFacesVersion.txt";
     private static final String VERSION_PLACEHOLDER_STR = "version";
 
-    private static String SCRIPT = RendererUtils.HTML.SCRIPT_ELEM;
-    private static String SCRIPT_UC = SCRIPT.toUpperCase(Locale.US);
-
-    private static String SRC = RendererUtils.HTML.src_ATTRIBUTE;
-    private static String SRC_UC = SRC.toUpperCase(Locale.US);
     private static final String CLDR = "cldr";
     private static final String NUMBER_LOCALE_SETTINGS = "number.js";
     private static final String PARAM_ORG_OPENFACES_JQUERY = "org.openfaces.jquery";
@@ -405,19 +399,19 @@ public class Resources {
     }
 
 
-    private static void mergeHeadResourceNode(List<Node> nodes, Set renderedScripts, Node node) {
+    private static void mergeHeadResourceNode(List<Node> nodes, Set<String> renderedScripts, Node node) {
         boolean shouldAdd = true;
 
         String nodeName = node.getNodeName();
-        if (SCRIPT.equals(nodeName) || SCRIPT_UC.equals(nodeName)) {
+        if ("script".equals(nodeName) || "SCRIPT".equals(nodeName)) {
             if (node.getFirstChild() == null) {
                 //no text content etc.
 
                 NamedNodeMap attributes = node.getAttributes();
                 if (attributes != null) {
-                    Node item = attributes.getNamedItem(SRC);
+                    Node item = attributes.getNamedItem("src");
                     if (item == null) {
-                        attributes.getNamedItem(SRC_UC);
+                        attributes.getNamedItem("SRC");
                     }
 
                     if (item != null) {
@@ -442,7 +436,7 @@ public class Resources {
     private static Node[] mergeHeadResourceNodes(Node[] headerJsNodes, Node[] richFacesHeaderNodes) {
         List<Node> result = new ArrayList<Node>();
 
-        Set scripts = new HashSet();
+        Set<String> scripts = new HashSet<String>();
 
         for (Node node : richFacesHeaderNodes) {
             mergeHeadResourceNode(result, scripts, node);
