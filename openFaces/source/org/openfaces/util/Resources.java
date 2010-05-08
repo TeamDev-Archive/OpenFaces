@@ -125,7 +125,7 @@ public class Resources {
      * different implementations in the appropriate OpenFaces branches.
      */
     public static String getInternalURL(FacesContext context, String resourceName) {
-        return getInternalURL(context, null, META_INF_RESOURCES_ROOT + resourceName, true);
+        return getInternalURL(context, null, resourceName, true);
     }
 
     public static String getInternalURL(FacesContext context, Class componentClass, String resourceName) {
@@ -159,6 +159,8 @@ public class Resources {
         if (context == null) throw new NullPointerException("context");
         if (resourcePath == null) throw new NullPointerException("resourcePath");
 
+        if (componentClass == null)
+            resourcePath = META_INF_RESOURCES_ROOT + resourcePath;
         String packagePath = getPackagePath(componentClass);
         if (resourcePath.startsWith("/")) {
             packagePath = "";

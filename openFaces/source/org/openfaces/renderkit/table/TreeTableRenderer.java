@@ -191,7 +191,7 @@ public class TreeTableRenderer extends AbstractTableRenderer {
     protected String[] getNecessaryJsLibs(FacesContext context) {
         String[] parentLibs = super.getNecessaryJsLibs(context);
         String[] libs = new String[]{
-                Resources.getInternalURL(context, TreeTableRenderer.class, "treeTable.js")
+                Resources.getInternalURL(context, "table/treeTable.js")
         };
         String[] resultLibs = new String[parentLibs.length + libs.length];
         System.arraycopy(parentLibs, 0, resultLibs, 0, parentLibs.length);

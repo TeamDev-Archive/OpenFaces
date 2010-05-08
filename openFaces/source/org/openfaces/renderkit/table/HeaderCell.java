@@ -170,12 +170,12 @@ class HeaderCell extends TableElement {
 
     public static String getSortedAscendingImageUrl(FacesContext facesContext, AbstractTable table) {
         String imageUrl = table.getSortedAscendingImageUrl();
-        return Resources.getURL(facesContext, imageUrl, AbstractTableRenderer.class, "ascending.gif");
+        return Resources.getURL(facesContext, imageUrl, null, "table/ascending.gif");
     }
 
     public static String getSortedDescendingImageUrl(FacesContext facesContext, AbstractTable table) {
         String imageUrl = table.getSortedDescendingImageUrl();
-        return Resources.getURL(facesContext, imageUrl, AbstractTableRenderer.class, "descending.gif");
+        return Resources.getURL(facesContext, imageUrl, null, "table/descending.gif");
     }
 
 }

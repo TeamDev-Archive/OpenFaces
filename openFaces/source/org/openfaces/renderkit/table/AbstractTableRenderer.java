@@ -65,7 +65,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     private static final String FACET_COLUMN_MENU_BUTTON = "columnMenuButton";
 
     public static String getTableJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, AbstractTableRenderer.class, "table.js");
+        return Resources.getInternalURL(context, "table/table.js");
     }
 
     @Override
