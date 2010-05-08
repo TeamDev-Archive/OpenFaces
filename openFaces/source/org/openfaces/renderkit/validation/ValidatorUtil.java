@@ -11,11 +11,10 @@
  */
 package org.openfaces.renderkit.validation;
 
+import org.openfaces.util.RawScript;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.util.RawScript;
-import org.openfaces.validator.AbstractClientValidator;
 
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -38,6 +37,6 @@ public class ValidatorUtil {
     }
 
     public static String getValidatorUtilJsUrl(FacesContext context) {
-        return Resources.getInternalURL(context, AbstractClientValidator.class, "validatorUtil.js");
+        return Resources.getInternalURL(context, "validation/validatorUtil.js");
     }
 }
