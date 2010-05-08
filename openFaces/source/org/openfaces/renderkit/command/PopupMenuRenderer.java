@@ -167,7 +167,7 @@ public class PopupMenuRenderer extends RendererBase {
         Rendering.renderInitScript(context, initScript,
                 Resources.getUtilJsURL(context),
                 Resources.getInternalURL(context, PopupMenuRenderer.class, JS_SCRIPT_URL),
-                Resources.getInternalURL(context, RendererBase.class, "popup.js"));
+                Resources.getInternalURL(context, "popup.js"));
     }
 
     private String getDefaultIndentClass(PopupMenu popupMenu) {

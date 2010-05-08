@@ -78,7 +78,7 @@ public class CaptionButtonRenderer extends RendererBase {
     protected List<String> getJsLibraries(FacesContext context) {
         List<String> jsLibraries = new ArrayList<String>();
         jsLibraries.add(Resources.getUtilJsURL(context));
-        jsLibraries.add(Resources.getInternalURL(context, CaptionButtonRenderer.class, "captionButton.js"));
+        jsLibraries.add(Resources.getInternalURL(context, "captionButton.js"));
         return jsLibraries;
     }
 

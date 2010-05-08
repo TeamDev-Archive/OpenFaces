@@ -30,32 +30,32 @@ public class ExpansionToggleButtonRenderer extends ToggleCaptionButtonRenderer {
 
     @Override
     protected String getDefaultImageUrl(FacesContext context) {
-        return Resources.getInternalURL(context, ExpansionToggleButtonRenderer.class, "plus_h.gif");
+        return Resources.getInternalURL(context, "plus_h.gif");
     }
 
     @Override
     protected String getDefaultRolloverImageUrl(FacesContext context) {
-        return Resources.getInternalURL(context, ExpansionToggleButtonRenderer.class, "plus_u.gif");
+        return Resources.getInternalURL(context, "plus_u.gif");
     }
 
     @Override
     protected String getDefaultPressedImageUrl(FacesContext context) {
-        return Resources.getInternalURL(context, ExpansionToggleButtonRenderer.class, "plus_d.gif");
+        return Resources.getInternalURL(context, "plus_d.gif");
     }
 
     @Override
     protected String getDefaultToggleImageUrl(FacesContext context) {
-        return Resources.getInternalURL(context, ExpansionToggleButtonRenderer.class, "minus_h.gif");
+        return Resources.getInternalURL(context, "minus_h.gif");
     }
 
     @Override
     protected String getDefaultToggledImageRolloverUrl(FacesContext context) {
-        return Resources.getInternalURL(context, ExpansionToggleButtonRenderer.class, "minus_u.gif");
+        return Resources.getInternalURL(context, "minus_u.gif");
     }
 
     @Override
     protected String getDefaultToggledImagePressedUrl(FacesContext context) {
-        return Resources.getInternalURL(context, ExpansionToggleButtonRenderer.class, "minus_d.gif");
+        return Resources.getInternalURL(context, "minus_d.gif");
     }
 
     @Override

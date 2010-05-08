@@ -94,7 +94,7 @@ public abstract class AbstractPopup extends UIPanel {
                 useDisplayNoneByDefault).semicolon();
         Rendering.renderInitScript(context, initScript,
                 Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, RendererBase.class, "popup.js"));
+                Resources.getInternalURL(context, "popup.js"));
     }
 
     protected boolean getUseDisplayNoneByDefault() {

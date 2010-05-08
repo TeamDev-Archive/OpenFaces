@@ -132,7 +132,7 @@ public class PopupLayerRenderer extends RendererBase {
             buf.functionCall("O$.Popup._init", clientId).semicolon();
             Rendering.renderInitScript(context, buf,
                     Resources.getUtilJsURL(context),
-                    Resources.getInternalURL(context, RendererBase.class, "popup.js"));
+                    Resources.getInternalURL(context, "popup.js"));
         }
 
         ScriptBuilder sb = new ScriptBuilder();
