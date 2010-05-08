@@ -11,6 +11,7 @@
  */
 package org.openfaces.util;
 
+import javax.faces.application.ProjectStage;
 import javax.faces.context.FacesContext;
 
 /**
@@ -18,7 +19,8 @@ import javax.faces.context.FacesContext;
  */
 public class Log {
     public static void log(FacesContext context, String message) {
-        context.getExternalContext().log(message);
+        if (context.getApplication().getProjectStage() != ProjectStage.Production)
+            context.getExternalContext().log(message);
     }
 
     public static void log(FacesContext context, String message, Throwable exception) {

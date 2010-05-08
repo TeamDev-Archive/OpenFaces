@@ -33,9 +33,7 @@
   <component name="ArtifactManager">
     <artifact name="OpenFaces:jar">
       <root id="root">
-        <element id="archive" name="OpenFaces.jar">
-          <element id="dir-copy" path="$PROJECT_DIR$/../../OpenFaces/trunk/openFaces/source/META-INF/resources" />
-        </element>
+        <element id="archive" name="OpenFaces.jar" />
       </root>
     </artifact>
     <artifact type="exploded-war" name="LiveDemoFacelets:LiveDemoFacelets exploded">
@@ -234,6 +232,9 @@
         </element>
       </root>
     </artifact>
+  </component>
+  <component name="ClassInspector">
+    <option name="configString1" value="Test config string" />
   </component>
   <component name="CodeStyleProjectProfileManger">
     <option name="PROJECT_PROFILE" />
