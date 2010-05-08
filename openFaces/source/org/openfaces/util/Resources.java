@@ -14,7 +14,6 @@ package org.openfaces.util;
 import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.org.json.JSONTokener;
-import org.openfaces.renderkit.filter.ExpressionFilterRenderer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -274,7 +273,7 @@ public class Resources {
     }
 
     public static String getFiltersJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, ExpressionFilterRenderer.class, "filters.js");
+        return Resources.getInternalURL(context, "filter/filters.js");
     }
 
     /**

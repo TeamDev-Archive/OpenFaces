@@ -22,8 +22,6 @@ import org.openfaces.org.json.JSONException;
 import org.openfaces.org.json.JSONObject;
 import org.openfaces.renderkit.AjaxPortionRenderer;
 import org.openfaces.renderkit.RendererBase;
-import org.openfaces.renderkit.input.DateChooserRenderer;
-import org.openfaces.renderkit.input.DropDownComponentRenderer;
 import org.openfaces.util.AjaxUtil;
 import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
@@ -140,7 +138,7 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
     }
 
     public static String getFilterJsURL(FacesContext facesContext) {
-        return Resources.getInternalURL(facesContext, CompositeFilterRenderer.class, "compositeFilter.js");
+        return Resources.getInternalURL(facesContext, "filter/compositeFilter.js");
     }
 
     private String[] getNecessaryJsLibs(FacesContext context) {
