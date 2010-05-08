@@ -218,7 +218,7 @@ public class LevelIndicatorRenderer extends org.openfaces.renderkit.RendererBase
     }
 
     protected String getLevelIndicatorJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, LevelIndicatorRenderer.class, "levelIndicator.js");
+        return Resources.getInternalURL(context, "output/levelIndicator.js");
     }
 
     protected String getDefaultLevelIndicatorClass() {
