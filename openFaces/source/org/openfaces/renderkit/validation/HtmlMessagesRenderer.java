@@ -87,7 +87,7 @@ public class HtmlMessagesRenderer extends BaseHtmlMessageRenderer {
     private String[] getJavascriptLibraryUrls(FacesContext context) {
         return new String[]{
                 Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, this.getClass(), "messages.js"),
+                Resources.getInternalURL(context, "validation/messages.js"),
                 ValidatorUtil.getValidatorUtilJsUrl(context)};
     }
 

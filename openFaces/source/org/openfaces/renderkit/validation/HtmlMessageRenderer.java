@@ -88,7 +88,7 @@ public class HtmlMessageRenderer extends BaseHtmlMessageRenderer {
         if (clientValidation)
             return new String[]{
                     Resources.getUtilJsURL(context),
-                    Resources.getInternalURL(context, getClass(), "message.js"),
+                    Resources.getInternalURL(context, "validation/message.js"),
                     ValidatorUtil.getValidatorUtilJsUrl(context)};
         else
             return new String[]{

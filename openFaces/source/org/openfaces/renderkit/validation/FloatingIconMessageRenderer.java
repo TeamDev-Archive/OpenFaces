@@ -157,7 +157,7 @@ public class FloatingIconMessageRenderer extends BaseMessageRenderer {
     private String[] getJavascriptLibraryUrls(FacesContext context) {
         return new String[]{
                 Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, this.getClass(), "floatingIconMessage.js"),
+                Resources.getInternalURL(context, "validation/floatingIconMessage.js"),
                 ValidatorUtil.getValidatorUtilJsUrl(context)
         };
     }
