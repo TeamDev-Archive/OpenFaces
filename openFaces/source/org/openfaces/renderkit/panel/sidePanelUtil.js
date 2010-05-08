@@ -555,7 +555,7 @@ O$._bugFix_IEPng = function(imageElement) {
   if (!O$.isExplorer())
     return;
   imageElement.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + imageElement.src + "')";
-  imageElement.src = "clear.gif";
+  imageElement.src = "../clear.gif";
 };
 
 O$._isExplorerQuirksMode = function() {

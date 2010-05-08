@@ -58,6 +58,7 @@ public class ColumnTag extends BaseColumnTag {
     }
 
     static class CaseInsensitiveComparatorBinding extends ValueExpression implements Serializable {
+        private static final long serialVersionUID = 1;
         private Comparator comparator = new CaseInsensitiveTextComparator();
 
         public Object getValue(ELContext facesContext) {

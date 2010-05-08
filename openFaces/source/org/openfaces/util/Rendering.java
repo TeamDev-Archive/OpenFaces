@@ -873,7 +873,7 @@ public class Rendering {
      * @return URL to clear.gif image
      */
     private static String getClearGif(FacesContext context) {
-        return Resources.getInternalURL(context, null, "org/openfaces/renderkit/clear.gif");
+        return Resources.getInternalURL(context, "clear.gif");
     }
 
     /**

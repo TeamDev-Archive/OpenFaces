@@ -200,7 +200,7 @@ public class ResourceFilter implements Filter {
             inputStream = getDynamicImageAsInputStream(request, servletContext);
             response.setContentType(getImageContentType(uri));
         } else {
-            if (!(resourcePath.startsWith("/org/openfaces") || resourcePath.startsWith("/META-INF/resources"))) {
+            if (!(resourcePath.startsWith("/org/openfaces") || resourcePath.startsWith(Resources.META_INF_RESOURCES_ROOT))) {
                 // SECURITY ISSUE: DO NOT LET TO ACCESS /openFacesResources/ HOME AS IT PROVIDES SERVER'S FILES
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -428,7 +428,8 @@ public class ResourceFilter implements Filter {
         }
 
         writer.print("<link type=\"text/css\" href=\"");
-        String defaultCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + "org/openfaces/renderkit/default" + "-" + Resources.getVersionString() + ".css"; // render default.css
+        String defaultCssUrl = httpServletRequest.getContextPath() + INTERNAL_RESOURCE_PATH + Resources.META_INF_RESOURCES_ROOT.substring(1) +
+                "default" + "-" + Resources.getVersionString() + ".css"; // render default.css
         writer.print(defaultCssUrl);
         writer.println("\" rel=\"stylesheet\"/>");
 

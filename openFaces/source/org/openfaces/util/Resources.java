@@ -63,6 +63,7 @@ public class Resources {
     private static final String CLDR = "cldr";
     private static final String NUMBER_LOCALE_SETTINGS = "number.js";
     private static final String PARAM_ORG_OPENFACES_JQUERY = "org.openfaces.jquery";
+    public static final String META_INF_RESOURCES_ROOT = "/META-INF/resources/openfaces/3_0/";
 
     private Resources() {
     }
@@ -124,7 +125,7 @@ public class Resources {
      * different implementations in the appropriate OpenFaces branches.
      */
     public static String getInternalURL(FacesContext context, String resourceName) {
-        return getInternalURL(context, null, "/META-INF/resources/openfaces/3_0/" + resourceName, true);
+        return getInternalURL(context, null, META_INF_RESOURCES_ROOT + resourceName, true);
     }
 
     public static String getInternalURL(FacesContext context, Class componentClass, String resourceName) {

@@ -87,8 +87,8 @@
   background: white;
 }
 
-/* Specifying transparent background explicitly is requird to avoid making absolutely-positioned elements in IE to
-  "leak" events to underlying elmenets */
+/* Specifying transparent background explicitly is required to avoid making absolutely-positioned elements in IE to
+  "leak" events to underlying elements */
 .o_explicitly_transparent_background,
   .o_popuplayer_modal_layer {
   background: url(clear.gif) repeat center center;
@@ -593,7 +593,7 @@
 }
 
 .o_reservedTimeEvent {
-  background: url(timetable/reservedTimePattern.gif) repeat;
+  background: url(../../../../org/openfaces/renderkit/timetable/reservedTimePattern.gif) repeat;
   margin: 4px;
 }
 

@@ -1327,10 +1327,12 @@ O$.processJSInclude = function(jsInclude) {
     var newScript = document.createElement("script");
     newScript.type = "text/javascript";
     newScript.src = jsInclude;
-    newScript.onload = O$.markLibraryLoaded;
+    newScript.onload = function() {
+      O$.markLibraryLoaded(jsInclude);
+    };
     newScript.onreadystatechange = function() {
       if (this.readyState == "complete")
-        O$.markLibraryLoaded();
+        O$.markLibraryLoaded(jsInclude);
     };
     var head = document.getElementsByTagName("head")[0];
     head.appendChild(newScript);
@@ -1473,8 +1475,6 @@ O$.isLibraryLoaded = function(lib) {
   O$._markPreloadedLibraries();
   lib = O$.canonifyLibraryName(lib);
   var result = eval("window['_of_loadedLibrary:" + lib + "']");
-  if (!result)
-    O$.log("waiting for : " + lib);
   return result;
 }
 
