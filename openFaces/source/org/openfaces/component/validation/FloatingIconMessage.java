@@ -23,7 +23,6 @@ public class FloatingIconMessage extends OUIMessage {
     public static final String COMPONENT_TYPE = "org.openfaces.FloatingIconMessage";
 
     private static final String DEFAULT_RENDERER_TYPE = "org.openfaces.FloatingIconMessage";
-    private static final String DEFAULT_IMAGE_URL = "error_icon.gif";
     private static final int DEFAULT_OFFSET_TOP = -4;
     private static final int DEFAULT_OFFSET_LEFT = -4;
 
@@ -86,7 +85,7 @@ public class FloatingIconMessage extends OUIMessage {
 
     public String getImageUrl() {
         return ValueBindings.get(this, "imageUrl", imageUrl,
-                Resources.getInternalURL(getFacesContext(), this.getClass(), DEFAULT_IMAGE_URL));
+                Resources.getInternalURL(getFacesContext(), "validation/error_icon.gif"));
     }
 
     public void setImageUrl(String imageUrl) {
