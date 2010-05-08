@@ -29,7 +29,7 @@ public class SortDescendingMenuItemRenderer extends ColumnMenuItemRenderer {
                 getTable("<o:sortDescendingMenuItem>", menuItem)).toString());
         if (menuItem.getIconUrl() == null)
             menuItem.setIconUrl(Resources.getInternalURL(
-                    context, SortDescendingMenuItemRenderer.class, "images/sortDescending.png", false));
+                    context, null, "table/sortDescending.png", false));
         super.encodeBegin(context, component);
     }
 }

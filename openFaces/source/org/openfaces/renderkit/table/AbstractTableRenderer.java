@@ -270,7 +270,7 @@ public abstract class AbstractTableRenderer extends RendererBase implements Ajax
     }
 
     private String getDefaultColumnMenuBtnImage(FacesContext context) {
-        return Resources.getInternalURL(context, AbstractTableRenderer.class, "columnMenuDrop.gif", false);
+        return Resources.getInternalURL(context, null, "table/columnMenuDrop.gif", false);
     }
 
     private void preregisterNoFilterDataRowStyleForOpera(FacesContext context, AbstractTable table) {

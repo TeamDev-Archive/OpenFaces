@@ -11,10 +11,9 @@
  */
 package org.openfaces.component.table;
 
-import org.openfaces.util.ValueBindings;
 import org.openfaces.org.json.JSONArray;
 import org.openfaces.util.Resources;
-import org.openfaces.renderkit.table.TreeColumnRenderer;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.context.FacesContext;
 
@@ -24,9 +23,6 @@ import javax.faces.context.FacesContext;
 public class ImageExpansionToggle extends ExpansionToggle {
     public static final String COMPONENT_TYPE = "org.openfaces.ImageExpansionToggle";
     public static final String COMPONENT_FAMILY = "org.openfaces.ImageExpansionToggle";
-
-    private static final String COLLAPSED_NODE_IMAGE = "plus.gif";
-    private static final String EXPANDED_NODE_IMAGE = "minus.gif";
 
     private String expandedImageUrl;
     private String collapsedImageUrl;
@@ -71,8 +67,8 @@ public class ImageExpansionToggle extends ExpansionToggle {
 
     public String getToggleImageUrl(FacesContext context, boolean nodeExpanded) {
         String userUrl = nodeExpanded ? getExpandedImageUrl() : getCollapsedImageUrl();
-        String defaultImagePath = nodeExpanded ? EXPANDED_NODE_IMAGE : COLLAPSED_NODE_IMAGE;
-        String url = Resources.getURL(context, userUrl, TreeColumnRenderer.class, defaultImagePath);
+        String defaultImagePath = nodeExpanded ? "table/minus.gif" : "table/plus.gif";
+        String url = Resources.getURL(context, userUrl, null, defaultImagePath);
         return url;
     }
 
