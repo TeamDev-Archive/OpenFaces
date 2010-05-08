@@ -148,7 +148,7 @@ public class CompositeFilterRenderer extends RendererBase implements AjaxPortion
                 Resources.getUtilJsURL(context),
                 Resources.getJsonJsURL(context),
                 Resources.getInternalURL(context, DropDownComponentRenderer.class, "dropdown.js"),
-                Resources.getInternalURL(context, DateChooserRenderer.class, "dateChooser.js"),
+                Resources.getInternalURL(context, "input/dateChooser.js"),
                 getFilterJsURL(context)};
     }
 

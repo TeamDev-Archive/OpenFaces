@@ -72,7 +72,6 @@ public class CalendarRenderer extends RendererBase {
     public static final String YEAR_DECREASE_SELECTOR_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "year_decrease";
     public static final String YEAR_INCREASE_SELECTOR_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "year_increase";
     public static final String YEAR_SELECTOR_SUFFIX = Rendering.SERVER_ID_SUFFIX_SEPARATOR + "year";
-    public static final String WEEK_NUMBER_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "week_num";
     public static final String TODAY_SELECTOR_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "today";
     public static final String NONE_SELECTOR_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "none";
     public static final String VALUE_HOLDER_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "long_date_holder";
@@ -256,8 +255,8 @@ public class CalendarRenderer extends RendererBase {
         Styles.renderStyleClasses(context, calendar);
         Rendering.renderInitScript(context, sb,
                 Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, CalendarRenderer.class, "calendar.js"),
-                Resources.getInternalURL(context, CalendarRenderer.class, "dateRange.js")
+                Resources.getInternalURL(context, "calendar/calendar.js"),
+                Resources.getInternalURL(context, "calendar/dateRange.js")
         );
     }
 

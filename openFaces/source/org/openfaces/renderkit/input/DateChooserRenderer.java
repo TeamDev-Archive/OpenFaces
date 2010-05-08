@@ -25,7 +25,6 @@ import org.openfaces.util.Rendering;
 import org.openfaces.util.RequestFacade;
 import org.openfaces.util.Resources;
 import org.openfaces.util.ScriptBuilder;
-import org.openfaces.validator.ClientValidatorUtil;
 
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
@@ -45,7 +44,6 @@ import java.util.TimeZone;
  * @author Pavel Kaplin
  */
 public class DateChooserRenderer extends DropDownComponentRenderer {
-    
 
     @Override
     protected void registerJS(FacesContext context, UIComponent component) throws IOException {
@@ -231,7 +229,7 @@ public class DateChooserRenderer extends DropDownComponentRenderer {
                 Resources.getJsonJsURL(context),
                 getDropDownJsURL(context),
                 Resources.getInternalURL(context, "validation/requestHelper.js"),
-                Resources.getInternalURL(context, DateChooserRenderer.class, "dateChooser.js")
+                Resources.getInternalURL(context, "input/dateChooser.js")
         });
     }
 
