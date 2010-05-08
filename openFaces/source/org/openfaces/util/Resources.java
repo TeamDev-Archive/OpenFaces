@@ -119,6 +119,10 @@ public class Resources {
         return encodedResourceUrl;
     }
 
+    public static String getInternalURL(FacesContext context, String resourceName) {
+        return getInternalURL(context, null, "/META-INF/resources/openfaces/3_0/" + resourceName, true);
+    }
+
     public static String getInternalURL(FacesContext context, Class componentClass, String resourceName) {
         return getInternalURL(context, componentClass, resourceName, true);
     }
