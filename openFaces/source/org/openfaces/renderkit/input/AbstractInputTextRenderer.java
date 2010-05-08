@@ -115,7 +115,7 @@ public abstract class AbstractInputTextRenderer extends RendererBase {
         Styles.renderStyleClasses(facesContext, inputText);
         Rendering.renderInitScript(facesContext, initScript,
                 Resources.getUtilJsURL(facesContext),
-                Resources.getInternalURL(facesContext, InputTextRenderer.class, "inputText.js")
+                Resources.getInternalURL(facesContext, "input/inputText.js")
         );
     }
 

@@ -26,8 +26,6 @@ import java.io.IOException;
  */
 public class InputTextareaRenderer extends AbstractInputTextRenderer {
 
-    private static final String JS_SCRIPT_URL = "inputTextarea.js";
-
     protected String getTagName() {
         return "textarea";
     }
@@ -51,7 +49,7 @@ public class InputTextareaRenderer extends AbstractInputTextRenderer {
             scriptBuilder.initScript(context, inputTextarea, "O$.InputTextarea._init", inputTextarea.getId());
             Rendering.renderInitScript(context, scriptBuilder,
                     Resources.getUtilJsURL(context),
-                    Resources.getInternalURL(context, InputTextareaRenderer.class, JS_SCRIPT_URL)
+                    Resources.getInternalURL(context, "input/inputTextarea.js")
             );
         }
     }

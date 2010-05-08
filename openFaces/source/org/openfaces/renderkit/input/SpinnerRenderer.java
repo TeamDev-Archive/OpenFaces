@@ -112,7 +112,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         return new InitScript(sb, new String[]{
                 Resources.getUtilJsURL(context),
                 getDropDownJsURL(context),
-                Resources.getInternalURL(context, SpinnerRenderer.class, "spinner.js"),
+                Resources.getInternalURL(context, "input/spinner.js"),
                 Resources.getInternalURL(context, "util/dojo.js")
         });
     }
@@ -183,17 +183,18 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         writer.writeAttribute("width", "100%", null);
 
         // Render increase button
-        encodeButton(context, component, increaseButtonId, "disabledIncreaseButtonImageUrl",
-                "disabledIncreaseButton.gif", "increaseButtonImageUrl", "increaseButton.gif");
+        encodeButton(context, component, increaseButtonId, "increaseButtonImageUrl", "input/increaseButton.gif",
+                "disabledIncreaseButtonImageUrl", "input/disabledIncreaseButton.gif");
         // Render decrease button
-        encodeButton(context, component, decreaseButtonId, "disabledDecreaseButtonImageUrl",
-                "disabledDecreaseButton.gif", "decreaseButtonImageUrl", "decreaseButton.gif");
+        encodeButton(context, component, decreaseButtonId, "decreaseButtonImageUrl", "input/decreaseButton.gif",
+                "disabledDecreaseButtonImageUrl", "input/disabledDecreaseButton.gif");
 
         encodeRootElementEnd(writer);
     }
 
-    protected void encodeButton(FacesContext context, UIComponent component, String buttonID, String disabledImageUrl,
-                                String disabledImage, String imageUrl, String image) throws IOException {
+    protected void encodeButton(FacesContext context, UIComponent component, String buttonID,
+                                String imageUrlAttr, String defaultImagePath,
+                                String disabledImageUrlAttr, String defaultDisabledImagePath) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Spinner spinner = (Spinner) component;
 
@@ -205,11 +206,11 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
         writer.writeAttribute("valign", "middle", null);
         String resultImageUrl;
         if (spinner.isDisabled()) {
-            String disabledButtonImageUrl = (String) spinner.getAttributes().get(disabledImageUrl);
-            resultImageUrl = Resources.getURL(context, disabledButtonImageUrl, SpinnerRenderer.class, disabledImage);
+            String disabledButtonImageUrl = (String) spinner.getAttributes().get(disabledImageUrlAttr);
+            resultImageUrl = Resources.getURL(context, disabledButtonImageUrl, null, defaultDisabledImagePath);
         } else {
-            String buttonImageUrl = (String) spinner.getAttributes().get(imageUrl);
-            resultImageUrl = Resources.getURL(context, buttonImageUrl, SpinnerRenderer.class, image);
+            String buttonImageUrl = (String) spinner.getAttributes().get(imageUrlAttr);
+            resultImageUrl = Resources.getURL(context, buttonImageUrl, null, defaultImagePath);
         }
         writer.startElement("img", spinner);
         writer.writeAttribute("src", resultImageUrl, null);
