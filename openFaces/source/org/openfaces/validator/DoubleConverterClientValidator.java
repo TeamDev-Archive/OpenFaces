@@ -26,7 +26,7 @@ public class DoubleConverterClientValidator extends AbstractClientValidator {
     private static final String CONVERSION_MESSAGE_ID = "javax.faces.convert.DoubleConverter.CONVERSION";
 
     public DoubleConverterClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("doubleConverterValidator.js", this.getClass()));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("doubleConverterValidator.js", null));
     }
 
     public String getJsValidatorName() {

@@ -26,7 +26,7 @@ public class FloatConverterClientValidator extends AbstractClientValidator {
     private static final String CONVERSION_MESSAGE_ID = "javax.faces.convert.FloatConverter.CONVERSION";
 
     public FloatConverterClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("floatConverterValidator.js", this.getClass()));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("floatConverterValidator.js", null));
     }
 
     public String getJsValidatorName() {

@@ -26,7 +26,7 @@ public class LengthClientValidator extends AbstractClientValidator {
     private LengthValidator lengthValidator;
 
     public LengthClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("lengthValidator.js", this.getClass()));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("lengthValidator.js", null));
     }
 
     public void setLengthValidator(LengthValidator lengthValidator) {
@@ -36,10 +36,6 @@ public class LengthClientValidator extends AbstractClientValidator {
     public String getJsValidatorName() {
         return "O$._LengthValidator";
     }
-
-//  public void registerJavascriptLibrary(FacesContext context) throws IOException {
-//    Rendering.registerJavascriptLibrary(context, getClass(), "lengthValidator.js");
-//  }
 
     @Override
     protected Object[] getJsValidatorParametersAsString(FacesContext context, UIComponent component) {

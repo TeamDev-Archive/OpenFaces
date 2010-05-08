@@ -26,7 +26,7 @@ public class IntegerConverterClientValidator extends AbstractClientValidator {
     private static final String CONVERSION_MESSAGE_ID = "javax.faces.convert.IntegerConverter.CONVERSION";
 
     public IntegerConverterClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("integerConverterValidator.js", this.getClass()));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("integerConverterValidator.js", null));
     }
 
     public String getJsValidatorName() {

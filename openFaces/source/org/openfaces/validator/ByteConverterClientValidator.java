@@ -30,7 +30,7 @@ public class ByteConverterClientValidator extends AbstractClientValidator {
     }
 
     public ByteConverterClientValidator() {
-        addJavascriptLibrary(new ValidationJavascriptLibrary("byteConverterValidator.js", this.getClass()));
+        addJavascriptLibrary(new ValidationJavascriptLibrary("byteConverterValidator.js", null));
     }
 
     @Override
