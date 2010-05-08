@@ -23,7 +23,6 @@ import org.openfaces.org.json.JSONString;
 import org.openfaces.renderkit.DefaultImageDataModel;
 import org.openfaces.renderkit.ImageDataModel;
 import org.openfaces.renderkit.cssparser.CSSUtil;
-import org.openfaces.renderkit.input.DateChooserRenderer;
 import org.openfaces.renderkit.output.DynamicImageRenderer;
 
 import javax.el.ELContext;
@@ -213,7 +212,7 @@ public class Rendering {
         FacesContext context = FacesContext.getCurrentInstance();
         renderInitScript(context, sb,
                 Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, DateChooserRenderer.class, "DateTimeFormat.js"));
+                Resources.getInternalURL(context, "input/DateTimeFormat.js"));
     }
 
     /**

@@ -169,10 +169,10 @@ public abstract class DropDownComponentRenderer extends RendererBase {
         String imageUrl;
         if (fieldComponent.isDisabled()) {
             String disabledButtonImageUrl = (String) fieldComponent.getAttributes().get("disabledButtonImageUrl");
-            imageUrl = Resources.getURL(context, disabledButtonImageUrl, DropDownFieldRenderer.class, "disabledDropButton.gif");
+            imageUrl = Resources.getURL(context, disabledButtonImageUrl, null, "input/disabledDropButton.gif");
         } else {
             String buttonImageUrl = (String) fieldComponent.getAttributes().get("buttonImageUrl");
-            imageUrl = Resources.getURL(context, buttonImageUrl, DropDownFieldRenderer.class, "dropButton.gif");
+            imageUrl = Resources.getURL(context, buttonImageUrl, null, "input/dropButton.gif");
         }
         writer.startElement("img", fieldComponent);
         writer.writeAttribute("src", imageUrl, null);
@@ -244,7 +244,7 @@ public abstract class DropDownComponentRenderer extends RendererBase {
     }
 
     protected String getDropDownJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, DropDownComponentRenderer.class, "dropdown.js");
+        return Resources.getInternalURL(context, "input/dropdown.js");
     }
 
     protected boolean isAutomaticStyleRenderingNeeded() {

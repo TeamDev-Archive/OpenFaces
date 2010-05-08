@@ -53,8 +53,6 @@ import java.util.Map;
 public class DropDownFieldRenderer extends DropDownComponentRenderer implements AjaxPortionRenderer {
     private static final String DEFAULT_LIST_ITEM_CLASS = "o_dropdown_list_item";
 
-    private static final String JS_SCRIPT_URL = "dropDownField.js";
-
     private static TableStyles POPUP_TABLE_DEFAULT_STYLES = new DefaultTableStyles();
 
     static {
@@ -365,8 +363,7 @@ public class DropDownFieldRenderer extends DropDownComponentRenderer implements 
         Styles.renderStyleClasses(context, dropDownField); // encoding styles before scripts is important for tableUtil.js to be able to compute row and column styles correctly
         return new InitScript(buf.toString(), new String[]{
                 TableUtil.getTableUtilJsURL(context),
-                Resources.getInternalURL(context,
-                        DropDownFieldRenderer.class, DropDownFieldRenderer.JS_SCRIPT_URL)
+                Resources.getInternalURL(context, "input/dropDownField.js")
         });
     }
 
