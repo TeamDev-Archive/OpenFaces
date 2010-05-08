@@ -21,6 +21,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.faces.FacesException;
+import javax.faces.application.Resource;
 import javax.faces.application.ViewHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -152,8 +153,12 @@ public class Resources {
         if (context == null) throw new NullPointerException("context");
         if (resourcePath == null) throw new NullPointerException("resourcePath");
 
-        if (componentClass == null)
-            resourcePath = META_INF_RESOURCES_ROOT + resourcePath;
+        if (componentClass == null) {
+            if (!prependContextPath) throw new UnsupportedOperationException();
+            Resource resource = context.getApplication().getResourceHandler().createResource(resourcePath, "openfaces/3_0");
+            resourcePath = resource.getRequestPath();
+            return resourcePath;
+        }
         String packagePath = getPackagePath(componentClass);
         if (resourcePath.startsWith("/")) {
             packagePath = "";
