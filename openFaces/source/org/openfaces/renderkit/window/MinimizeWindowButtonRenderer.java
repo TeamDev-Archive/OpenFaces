@@ -32,12 +32,12 @@ public class MinimizeWindowButtonRenderer extends ToggleCaptionButtonRenderer {
 
     @Override
     protected String getDefaultImageUrl(FacesContext context) {
-        return Resources.getInternalURL(context, AbstractWindowRenderer.class, "minimize.gif");
+        return Resources.getInternalURL(context, "window/minimize.gif");
     }
 
     @Override
     protected String getDefaultToggleImageUrl(FacesContext context) {
-        return Resources.getInternalURL(context, AbstractWindowRenderer.class, "restore.gif");
+        return Resources.getInternalURL(context, "window/restore.gif");
     }
 
     @Override

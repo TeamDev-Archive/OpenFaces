@@ -41,7 +41,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
     public static final String MIDDLE_AREA_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "content";
 
     public static String getWindowJs(FacesContext context) {
-        return Resources.getInternalURL(context, AbstractWindowRenderer.class, "window.js");
+        return Resources.getInternalURL(context, "window/window.js");
     }
 
     private ComponentWithCaptionRenderer componentWithCaptionRenderer = new ComponentWithCaptionRenderer() {
@@ -162,9 +162,7 @@ public abstract class AbstractWindowRenderer extends PopupLayerRenderer {
                 win.isDraggableByContent(),
                 win.getMinWidth(),
                 win.getMinHeight());
-        Rendering.renderInitScript(context, sb,
-                Resources.getInternalURL(context, WindowRenderer.class, "window.js"));
-
+        Rendering.renderInitScript(context, sb, getWindowJs(context));
     }
 
 

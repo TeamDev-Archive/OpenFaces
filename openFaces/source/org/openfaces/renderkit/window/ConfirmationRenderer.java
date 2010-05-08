@@ -31,7 +31,7 @@ import java.io.IOException;
  * @author Andrew Palval
  */
 public class ConfirmationRenderer extends AbstractWindowRenderer {
-    public static final String JS_SCRIPT_URL = "confirmation.js";
+    public static final String JS_SCRIPT_URL = "window/confirmation.js";
 
     private static final String ICON_FACET_NAME = "icon";
     private static final String MESSAGE_FACET_NAME = "message";
@@ -160,11 +160,10 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
                 iconFacet.encodeAll(FacesContext.getCurrentInstance());
             } else {
                 String iconPath = confirmation.getMessageIconUrl();
-                String iconUrl = Resources.getURL(context, iconPath, ConfirmationRenderer.class, "warnIcon.gif");
+                String iconUrl = Resources.getURL(context, iconPath, null, "window/warnIcon.gif");
 
                 writer.writeAttribute("width", "1%", null);
                 writer.writeAttribute("id", clientId + ICON_AREA_SUFFIX, null);
-//      writer.writeAttribute("rowspan", "2", null);
                 writer.startElement("img", confirmation);
                 writer.writeAttribute("src", iconUrl, null);
                 writer.endElement("img");
@@ -212,10 +211,6 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
     @Override
     protected String getDefaultClassName() {
         return Styles.mergeClassNames(super.getDefaultClassName(), "o_confirmation");
-    }
-
-    protected boolean isResizableByDefault() {
-        return false;
     }
 
     @Override
@@ -291,8 +286,7 @@ public class ConfirmationRenderer extends AbstractWindowRenderer {
                         rolloverCancelButtonStyle}
         );
 
-        Rendering.renderInitScript(context, sb,
-                Resources.getInternalURL(context, ConfirmationRenderer.class, ConfirmationRenderer.JS_SCRIPT_URL));
+        Rendering.renderInitScript(context, sb, Resources.getInternalURL(context, ConfirmationRenderer.JS_SCRIPT_URL));
     }
 
     @Override

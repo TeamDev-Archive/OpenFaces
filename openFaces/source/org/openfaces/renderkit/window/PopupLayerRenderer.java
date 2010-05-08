@@ -185,11 +185,9 @@ public class PopupLayerRenderer extends RendererBase {
             sb.append(");");
         }
 
-        Rendering.renderInitScript(context, sb, new String[]{
+        Rendering.renderInitScript(context, sb,
                 Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, PopupLayerRenderer.class, "popupLayer.js")
-        });
-
+                Resources.getInternalURL(context, "window/popupLayer.js"));
     }
 
     private static String nullOrJsString(String str) { // todo: replace using ScriptBuilder and remove this method
