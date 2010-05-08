@@ -119,6 +119,10 @@ public class Resources {
         return encodedResourceUrl;
     }
 
+    /**
+     * A method which is a facade for JSF 1.2 and JSF 2.0 implementations of resource name generation. It has
+     * different implementations in the appropriate OpenFaces branches.
+     */
     public static String getInternalURL(FacesContext context, String resourceName) {
         return getInternalURL(context, null, "/META-INF/resources/openfaces/3_0/" + resourceName, true);
     }
@@ -284,7 +288,7 @@ public class Resources {
      * @return requested URL of ajaxUtil.js file
      */
     public static String getAjaxUtilJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, Resources.class, "ajaxUtil.js");
+        return Resources.getInternalURL(context, "util/ajaxUtil.js");
     }
 
     /**
