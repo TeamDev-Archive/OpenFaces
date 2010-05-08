@@ -43,8 +43,6 @@ import java.util.List;
  * @author Andrew Palval
  */
 public class TabSetRenderer extends BaseTabSetRenderer {
-    private static final String JS_SCRIPT_URL = "tabset.js";
-
     private static final String DEFAULT_EMPTY_SPACE_CLASS_PREFIX = "o_tabset_empty_space_";
     private static final String DEFAULT_CLASS_PREFIX = "o_tabset_";
     private static final String DEFAULT_ROLLOVER_CLASS_PREFIX = "o_tabset_rollover_";
@@ -418,7 +416,7 @@ public class TabSetRenderer extends BaseTabSetRenderer {
 
         Rendering.renderInitScript(context, sb,
                 Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, TabSetRenderer.class, JS_SCRIPT_URL));
+                Resources.getInternalURL(context, "select/tabset.js"));
 
         Rendering.encodeClientActions(context, component);
 

@@ -168,7 +168,7 @@ public class SelectOneRadioRenderer extends SelectManyInputRenderer {
 
         Rendering.renderInitScript(facesContext, initScript,
                 Resources.getUtilJsURL(facesContext),
-                Resources.getInternalURL(facesContext, SelectOneRadioRenderer.class, "radio.js"));
+                Resources.getInternalURL(facesContext, "select/radio.js"));
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

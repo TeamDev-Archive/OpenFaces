@@ -361,14 +361,14 @@ public class TwoListSelectionRenderer extends RendererBase {
         if (allowSorting) {
             writer.startElement("img", tls);
             writer.writeAttribute("id", clientId + SORT_ASC_SUFFIX, null);
-            String ascImage = Resources.getInternalURL(context, TwoListSelectionRenderer.class, "ascending.gif");
+            String ascImage = Resources.getInternalURL(context, "select/ascending.gif");
             writer.writeAttribute("src", ascImage, null);
             writer.writeAttribute("style", "display: none;", null);
             writer.endElement("img");
 
             writer.startElement("img", tls);
             writer.writeAttribute("id", clientId + SORT_DESC_SUFFIX, null);
-            String desImage = Resources.getInternalURL(context, TwoListSelectionRenderer.class, "descending.gif");
+            String desImage = Resources.getInternalURL(context, "select/descending.gif");
             writer.writeAttribute("src", desImage, null);
             writer.writeAttribute("style", "display: none;", null);
             writer.endElement("img");
@@ -476,7 +476,7 @@ public class TwoListSelectionRenderer extends RendererBase {
 
         Rendering.renderInitScript(context, sb,
                 Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, TwoListSelectionRenderer.class, "twoListSelection.js"));
+                Resources.getInternalURL(context, "select/twoListSelection.js"));
         Rendering.encodeClientActions(context, component);
     }
 
