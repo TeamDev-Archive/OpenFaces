@@ -20,7 +20,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -173,11 +172,6 @@ public class ResourceFilter implements Filter {
     }
 
     public void destroy() {
-    }
-
-    private void appendJavaScriptLoadingScript(String jsLibName, OutputStream os) throws IOException {
-        String result = "\n\n//AUTO GENERATED CODE\n\nwindow['_of_loadedLibrary:" + jsLibName + "'] = true;";
-        os.write(result.getBytes("UTF-8"));
     }
 
     private void processInternalResource(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, ServletContext servletContext) throws IOException, ServletException {

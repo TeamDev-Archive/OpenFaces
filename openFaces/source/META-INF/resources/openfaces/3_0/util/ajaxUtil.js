@@ -1304,15 +1304,20 @@ O$.processJSIncludes = function(jsIncludes) {
   }
 }
 
-O$.markLibraryLoaded = function(lib) {
+O$.canonifyLibraryName = function(lib) {
   var hostIndex = lib.indexOf("://");
   if (hostIndex != -1) {
     var startIdx = lib.indexOf("/", hostIndex + 3);
     lib = lib.substring(startIdx);
   }
-  var jSessionIdIndex = lib.index(";jsessionid");
+  var jSessionIdIndex = lib.indexOf(";jsessionid");
   if (jSessionIdIndex != -1)
     lib = lib.substring(0, jSessionIdIndex);
+  return lib;
+}
+
+O$.markLibraryLoaded = function(lib) {
+  lib = O$.canonifyLibraryName(lib);
   window["_of_loadedLibrary:" + lib] = true;
 }
 
@@ -1466,6 +1471,7 @@ O$._markPreloadedLibraries = function() {
 
 O$.isLibraryLoaded = function(lib) {
   O$._markPreloadedLibraries();
+  lib = O$.canonifyLibraryName(lib);
   var result = eval("window['_of_loadedLibrary:" + lib + "']");
   if (!result)
     O$.log("waiting for : " + lib);
