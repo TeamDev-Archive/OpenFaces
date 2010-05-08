@@ -1310,6 +1310,9 @@ O$.markLibraryLoaded = function(lib) {
     var startIdx = lib.indexOf("/", hostIndex + 3);
     lib = lib.substring(startIdx);
   }
+  var jSessionIdIndex = lib.index(";jsessionid");
+  if (jSessionIdIndex != -1)
+    lib = lib.substring(0, jSessionIdIndex);
   window["_of_loadedLibrary:" + lib] = true;
 }
 
@@ -1464,6 +1467,8 @@ O$._markPreloadedLibraries = function() {
 O$.isLibraryLoaded = function(lib) {
   O$._markPreloadedLibraries();
   var result = eval("window['_of_loadedLibrary:" + lib + "']");
+  if (!result)
+    O$.log("waiting for : " + lib);
   return result;
 }
 
