@@ -235,9 +235,6 @@
       </root>
     </artifact>
   </component>
-  <component name="ClassInspector">
-    <option name="configString1" value="Test config string" />
-  </component>
   <component name="CodeStyleProjectProfileManger">
     <option name="PROJECT_PROFILE" />
     <option name="USE_PROJECT_LEVEL_SETTINGS" value="false" />
