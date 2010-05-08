@@ -50,7 +50,7 @@ public class Resources {
     public static final String HEADER_JS_LIBRARIES = "OF:js_file_included";
     public static final String RENDERED_JS_LINKS = "org.openfaces.util.Rendering.renderedJsLinks";
     public static final String POSTPONE_JS_LINK_RENDERING = "org.openfaces.util.Resources.postponeJsLinkRendering";
-    public static final String JSON_JS_LIB_NAME = "json2.js";
+    public static final String JSON_JS_LIB_NAME = "util/json2.js";
 
     private static final String OPENFACES_VERSION_TXT = "/META-INF/openFacesVersion.txt";
     private static final String VERSION_PLACEHOLDER_STR = "version";
@@ -298,7 +298,7 @@ public class Resources {
      * @return requested URL of json javascript file
      */
     public static String getJsonJsURL(FacesContext context) {
-        return Resources.getInternalURL(context, Resources.class, JSON_JS_LIB_NAME);
+        return Resources.getInternalURL(context, JSON_JS_LIB_NAME);
     }
 
     /**
@@ -554,7 +554,7 @@ public class Resources {
             return;
         }
         if (jQueryMode.equals("embedded"))
-            registerJavascriptLibrary(context, getInternalURL(context, Resources.class, "jquery-1.4.2.min.js"));
+            registerJavascriptLibrary(context, getInternalURL(context, "util/jquery-1.4.2.min.js"));
             /* below are the official jQuery CDNs as referenced here: http://docs.jquery.com/Downloading_jQuery */
         else if (jQueryMode.equals("jquery"))
             renderJSLinkIfNeeded(context, "http://code.jquery.com/jquery-1.4.2.min.js");

@@ -36,7 +36,7 @@ public class NumberConverterClientValidator extends AbstractClientValidator impl
     public NumberConverterClientValidator() {
         addJavascriptLibrary(new ValidationJavascriptLibrary("numberConverterValidator.js", this.getClass()));
         addJavascriptLibrary(new ValidationJavascriptLibrary("requestHelper.js", this.getClass()));
-        addJavascriptLibrary(new ValidationJavascriptLibrary(Resources.JSON_JS_LIB_NAME, Resources.class));
+        addJavascriptLibrary(new ValidationJavascriptLibrary(Resources.JSON_JS_LIB_NAME, null));
     }
 
     public String getJsValidatorName() {

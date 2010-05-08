@@ -113,7 +113,7 @@ public class SpinnerRenderer extends DropDownComponentRenderer {
                 Resources.getUtilJsURL(context),
                 getDropDownJsURL(context),
                 Resources.getInternalURL(context, SpinnerRenderer.class, "spinner.js"),
-                Resources.getInternalURL(context, Resources.class, "dojo.js")
+                Resources.getInternalURL(context, "util/dojo.js")
         });
     }
 
