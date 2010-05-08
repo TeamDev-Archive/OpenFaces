@@ -103,7 +103,7 @@ public class Resources {
     }
 
     /**
-     * Get path to application resource according to contex and resource path
+     * Get path to application resource according to context and resource path
      *
      * @param context      faces context provided by application
      * @param resourcePath path to resource - either absolute (starting with a slash) in the scope of application context,
@@ -269,7 +269,7 @@ public class Resources {
         // To be sure that default.css is included to the web page,
         // because it is also required in cases when util.js included into web page
         Styles.requestDefaultCss(context);
-        return getInternalURL(context, Resources.class, "util.js");
+        return getInternalURL(context, "util/util.js");
     }
 
     public static String getFiltersJsURL(FacesContext context) {
