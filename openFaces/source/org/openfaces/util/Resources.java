@@ -154,7 +154,6 @@ public class Resources {
         if (resourcePath == null) throw new NullPointerException("resourcePath");
 
         if (componentClass == null) {
-            if (!prependContextPath) throw new UnsupportedOperationException();
             Resource resource = context.getApplication().getResourceHandler().createResource(resourcePath, "openfaces/3_0");
             resourcePath = resource.getRequestPath();
             return resourcePath;
