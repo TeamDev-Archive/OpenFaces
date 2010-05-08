@@ -167,8 +167,8 @@ public class TabbedPaneRenderer extends MultiPageContainerRenderer {
 
         Rendering.renderInitScript(context, sb,
                 Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, TabbedPaneRenderer.class, "multiPage.js"),
-                Resources.getInternalURL(context, TabbedPaneRenderer.class, "tabbedPane.js"));
+                Resources.getInternalURL(context, "panel/multiPage.js"),
+                Resources.getInternalURL(context, "panel/tabbedPane.js"));
 
         Styles.renderStyleClasses(context, tabbedPane);
     }

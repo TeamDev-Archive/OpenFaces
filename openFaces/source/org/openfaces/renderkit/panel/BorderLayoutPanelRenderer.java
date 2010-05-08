@@ -32,11 +32,7 @@ import java.util.List;
  * @author Alexey Tarasyuk
  */
 public class BorderLayoutPanelRenderer extends RendererBase {
-
     public static final String CONTENT_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "content";
-
-    private static final String JS_SCRIPT_URL = "borderLayoutPanel.js";
-    private static final String JS_MY_UTIL_SCRIPT_URL = "sidePanelUtil.js";
 
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
@@ -97,8 +93,8 @@ public class BorderLayoutPanelRenderer extends RendererBase {
 
         Rendering.renderInitScript(context, initScript,
                 Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, BorderLayoutPanelRenderer.class, JS_SCRIPT_URL),
-                Resources.getInternalURL(context, BorderLayoutPanelRenderer.class, JS_MY_UTIL_SCRIPT_URL));
+                Resources.getInternalURL(context, "panel/borderLayoutPanel.js"),
+                Resources.getInternalURL(context, SidePanelRenderer.SIDE_PANEL_UTIL_JS));
     }
 
     private void encodeScriptsAndStyles_content(FacesContext context, BorderLayoutPanel borderLayoutPanel, String clientId) throws IOException {

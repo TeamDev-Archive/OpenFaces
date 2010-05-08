@@ -199,7 +199,7 @@ public class FoldingPanelRenderer extends ComponentWithCaptionRenderer implement
                 focusedCaptionClass);
 
         Rendering.renderInitScript(context, sb,
-                Resources.getInternalURL(context, FoldingPanelRenderer.class, "foldingPanel.js"));
+                Resources.getInternalURL(context, "panel/foldingPanel.js"));
     }
 
     @Override

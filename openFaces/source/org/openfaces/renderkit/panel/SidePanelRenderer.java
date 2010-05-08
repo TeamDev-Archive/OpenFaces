@@ -38,8 +38,7 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
     public static final String CAPTION_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "caption";
     public static final String CONTENT_SUFFIX = Rendering.CLIENT_ID_SUFFIX_SEPARATOR + "content";
 
-    private static final String JS_SCRIPT_URL = "sidePanel.js";
-    private static final String JS_MY_UTIL_SCRIPT_URL = "sidePanelUtil.js";
+    public static final String SIDE_PANEL_UTIL_JS = "panel/sidePanelUtil.js";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -174,8 +173,8 @@ public class SidePanelRenderer extends RendererBase implements NamingContainer {
         }
         Rendering.renderInitScript(context, initScript,
                 Resources.getUtilJsURL(context),
-                Resources.getInternalURL(context, SidePanelRenderer.class, JS_SCRIPT_URL),
-                Resources.getInternalURL(context, SidePanelRenderer.class, JS_MY_UTIL_SCRIPT_URL));
+                Resources.getInternalURL(context, "panel/sidePanel.js"),
+                Resources.getInternalURL(context, SIDE_PANEL_UTIL_JS));
     }
 
     private String getRolloverClass(FacesContext context, SidePanel sidePanel) {
