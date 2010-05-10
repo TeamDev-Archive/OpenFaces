@@ -129,7 +129,7 @@ public class ChartInfoUtil {
         ModelInfo modelInfo = new ModelInfo(model);
         if (!modelInfo.isDataEmpty()) {
             if (modelInfo.getModelType() == ModelType.Date) {
-                TimeSeriesCollection ds = ModelConverter.toTimeSeriesCollection(modelInfo);
+                TimeSeriesCollection ds = ModelConverter.toTimeSeriesCollection(chart, modelInfo);
                 Comparable seriesKey = ds.getSeriesKey(en.getSeriesIndex());
                 Number tupleKey = ds.getX(en.getSeriesIndex(), en.getItem());
                 if (tupleKey instanceof Long) {

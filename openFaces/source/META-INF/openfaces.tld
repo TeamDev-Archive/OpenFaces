@@ -18683,6 +18683,15 @@ and it is automatically triggered on any form submission. -->
       <!-- @default true -->
       <!-- @el false -->
     </attribute>
+    <attribute>
+      <name>timePeriodPrecision</name>
+      <deferred-value>
+        <type>java.lang.Object</type>
+      </deferred-value>
+      <!-- @bindingType TimePeriod -->
+      <!-- @default null -->
+      <!-- @el true -->
+    </attribute>
   </tag>
 
   <tag>
@@ -37340,6 +37349,43 @@ entering a value and returns a list of suggestions from the server -->
       </deferred-value>
       <!-- @bindingType Double -->
       <!-- @default 0.35 -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+  <tag>
+    <name>solidLineAreaFill</name>
+    <tag-class>org.openfaces.taglib.jsp.chart.SolidLineAreaFillJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <name>transparency</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 1.0 -->
+      <!-- @el true -->
+    </attribute>
+  </tag>
+  <tag>
+    <name>gradientLineAreaFill</name>
+    <tag-class>org.openfaces.taglib.jsp.chart.GradientLineAreaFillJspTag</tag-class>
+    <body-content>JSP</body-content>
+    <attribute>
+      <name>minValueTransparency</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.0 -->
+      <!-- @el true -->
+    </attribute>
+    <attribute>
+      <name>maxValueTransparency</name>
+      <deferred-value>
+        <type>java.lang.Double</type>
+      </deferred-value>
+      <!-- @bindingType double -->
+      <!-- @default 0.6 -->
       <!-- @el true -->
     </attribute>
   </tag>

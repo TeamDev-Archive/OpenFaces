@@ -1114,5 +1114,19 @@
       <handler-class>org.openfaces.taglib.facelets.output.LevelIndicatorTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>solidLineAreaFill</tag-name>
+    <component>
+      <component-type>org.openfaces.SolidLineAreaFill</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.SolidLineAreaFillTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>gradientLineAreaFill</tag-name>
+    <component>
+      <component-type>org.openfaces.GradientLineAreaFill</component-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.GradientLineAreaFillTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

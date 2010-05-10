@@ -15,19 +15,21 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
-import org.jfree.data.time.Day;
 import org.jfree.data.time.RegularTimePeriod;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.time.TimeSeriesDataItem;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartModel;
 import org.openfaces.component.chart.Series;
+import org.openfaces.component.chart.TimePeriod;
 import org.openfaces.component.chart.Tuple;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Utility class - a set of static methods to transfer data represented in ChartModel
@@ -113,7 +115,7 @@ public class ModelConverter {
         return xySeries;
     }
 
-    private static TimeSeries toTimeSeries(Series series) {
+    private static TimeSeries toTimeSeries(Series series, TimePeriod timePeriodPrecision) {
         if (series == null)
             return null;
 
@@ -129,9 +131,11 @@ public class ModelConverter {
             RegularTimePeriod period;
 
             if (key instanceof Date) {
-                period = new Day((Date) key);
+                final Date time = (Date) key;
+                period = RegularTimePeriod.createInstance(timePeriodPrecision.getTimePeriodClass(), time, TimeZone.getDefault());
             } else if (key instanceof Calendar) {
-                period = new Day(((Calendar) key).getTime());
+                final Date time = ((Calendar) key).getTime();
+                period = RegularTimePeriod.createInstance(timePeriodPrecision.getTimePeriodClass(), time, TimeZone.getDefault());
             } else
                 throw new DataConversionException("Incorrect Key type. Required: Date or Calendar. Currently defined: " + key.getClass());
 
@@ -163,7 +167,7 @@ public class ModelConverter {
         return xyResult;
     }
 
-    public static TimeSeriesCollection toTimeSeriesCollection(ModelInfo info) {
+    public static TimeSeriesCollection toTimeSeriesCollection(Chart chart, ModelInfo info) {
         if (info.isDataEmpty())
             return null;
 
@@ -171,7 +175,7 @@ public class ModelConverter {
 
         Series[] series = info.getNonEmptySeriesList();
         for (Series sery : series) {
-            TimeSeries tSeries = toTimeSeries(sery);
+            TimeSeries tSeries = toTimeSeries(sery, chart.getTimePeriodPrecision());
             if (tSeries != null)
                 xyResult.addSeries(tSeries);
         }

@@ -11,7 +11,6 @@
  */
 package org.openfaces.component.chart;
 
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.imagemap.StandardToolTipTagFragmentGenerator;

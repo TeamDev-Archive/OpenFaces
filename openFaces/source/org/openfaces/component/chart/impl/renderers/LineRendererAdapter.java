@@ -19,11 +19,10 @@ import org.openfaces.component.chart.LineChartView;
  * @author Ekaterina Shliakhovetskaya
  */
 public class LineRendererAdapter extends LineAndShapeRenderer {
-    public LineRendererAdapter(LineChartView chartView, CategoryDataset dataset) {
-        ChartRendererUtil.setupSeriesColors(chartView, this);
-        setShapesVisible(chartView.isShapesVisible());
+    public LineRendererAdapter(LineChartView chartView, CategoryDataset dataSet) {
+        ChartRendering.setupSeriesColors(chartView, this);
 
-        ChartRendererUtil.processLineAndShapeRendererProperties(this, dataset, chartView);
+        ChartRendering.processLineAndShapeRendererProperties(this, dataSet, chartView);
     }
 
 }

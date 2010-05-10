@@ -723,6 +723,16 @@
     <component-type>org.openfaces.LevelIndicator</component-type>
     <component-class>org.openfaces.component.output.LevelIndicator</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.SolidLineAreaFill</component-type>
+    <component-class>org.openfaces.component.chart.SolidLineAreaFill</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.GradientLineAreaFill</component-type>
+    <component-class>org.openfaces.component.chart.GradientLineAreaFill</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>

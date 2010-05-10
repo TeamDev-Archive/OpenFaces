@@ -78,7 +78,7 @@ public class BarChartView extends GridChartView {
             return xyPlotAdapter;
         }
         if (info.getModelType().equals(ModelType.Date)) {
-            TimeSeriesCollection ds = ModelConverter.toTimeSeriesCollection(info);
+            TimeSeriesCollection ds = ModelConverter.toTimeSeriesCollection(chart, info);
             XYBarRenderer renderer = new XYBarRendererAdapter(this);
             configureRendererPresentation((XYBarRendererAdapter) renderer, ds.getSeriesCount());
 

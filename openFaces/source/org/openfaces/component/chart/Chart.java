@@ -12,13 +12,13 @@
 package org.openfaces.component.chart;
 
 import org.openfaces.component.OUIComponentBase;
-import org.openfaces.util.ValueBindings;
 import org.openfaces.component.chart.impl.JfcRenderHints;
 import org.openfaces.renderkit.chart.ChartDefaultStyle;
 import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
 import org.openfaces.renderkit.cssparser.StyledComponent;
 import org.openfaces.taglib.internal.chart.ChartTag;
+import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -29,7 +29,7 @@ import java.util.List;
  * line, or bar charts. The component is based on the JFreeChart engine and exposes a friendly
  * API with JSF-specific features. Styles can be customized for every chart element (image,
  * legend, title, etc.).
- * 
+ *
  * @author Ekaterina Shliakhovetskaya
  */
 public class Chart extends OUIComponentBase implements StyledComponent {
@@ -51,6 +51,7 @@ public class Chart extends OUIComponentBase implements StyledComponent {
     private byte[] imageBytes;
 
     private ChartNoDataMessage noDataMessage;
+    private TimePeriod timePeriodPrecision;
 
     public Chart() {
         setRendererType(ChartTag.RENDERER_TYPE);
@@ -204,7 +205,8 @@ public class Chart extends OUIComponentBase implements StyledComponent {
                 legendVisible,
                 textStyle,
                 imageBytes,
-                saveAttachedState(facesContext, renderHints)
+                saveAttachedState(facesContext, renderHints),
+                saveAttachedState(facesContext, timePeriodPrecision)
         };
     }
 
@@ -221,6 +223,14 @@ public class Chart extends OUIComponentBase implements StyledComponent {
         textStyle = (String) state[i++];
         imageBytes = (byte[]) state[i++];
         renderHints = (JfcRenderHints) restoreAttachedState(facesContext, state[i++]);
+        timePeriodPrecision = (TimePeriod) restoreAttachedState(facesContext, state[i++]);
     }
 
+    public TimePeriod getTimePeriodPrecision() {
+        return ValueBindings.get(this, "timePeriodPrecision", timePeriodPrecision, TimePeriod.DAY, TimePeriod.class);
+    }
+
+    public void setTimePeriodPrecision(TimePeriod timePeriodPrecision) {
+        this.timePeriodPrecision = timePeriodPrecision;
+    }
 }

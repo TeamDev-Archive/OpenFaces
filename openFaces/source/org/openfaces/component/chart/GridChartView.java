@@ -213,7 +213,7 @@ public abstract class GridChartView extends ChartView {
     }
 
     public ChartDomain getShowAxes() {
-        return ValueBindings.get(this, "showAxes", showAxes, ChartDomain.class);
+        return ValueBindings.get(this, "showAxes", showAxes, ChartDomain.class); // TODO [Eugene Goncharov]: Investigate usages of this getter and it's default value
     }
 
     public void setShowAxes(ChartDomain showAxes) {

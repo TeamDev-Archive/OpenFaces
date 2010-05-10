@@ -16,6 +16,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.openfaces.component.chart.CategoryAxisLabelPosition;
 import org.openfaces.component.chart.LineStyle;
 import org.openfaces.component.chart.Orientation;
+import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleBorderModel;
 
 import java.awt.*;
@@ -61,7 +62,7 @@ public class PropertiesConverter {
         for (int i = 0; i < st_colors.length; i++) {
             String st_color = st_colors[i];
             try {
-                colors[i] = Color.decode(st_color.trim());
+                colors[i] = CSSUtil.parseColor(st_color);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Can't parse color string: " + st_color);
             }

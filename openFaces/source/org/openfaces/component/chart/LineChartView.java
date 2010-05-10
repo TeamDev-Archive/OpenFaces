@@ -13,7 +13,7 @@ package org.openfaces.component.chart;
 
 import org.jfree.chart.plot.Plot;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
@@ -23,12 +23,18 @@ import org.openfaces.component.chart.impl.ModelType;
 import org.openfaces.component.chart.impl.plots.GridCategoryPlotAdapter;
 import org.openfaces.component.chart.impl.plots.GridDatePlotAdapter;
 import org.openfaces.component.chart.impl.plots.GridXYPlotAdapter;
+import org.openfaces.component.chart.impl.renderers.AreaFillRenderer;
+import org.openfaces.component.chart.impl.renderers.Chart3DRendererAdapter;
+import org.openfaces.component.chart.impl.renderers.LineAreaFillRenderer;
 import org.openfaces.component.chart.impl.renderers.LineRenderer3DAdapter;
 import org.openfaces.component.chart.impl.renderers.LineRendererAdapter;
+import org.openfaces.component.chart.impl.renderers.XYLineAreaFillRenderer;
 import org.openfaces.component.chart.impl.renderers.XYLineRenderer3DAdapter;
 import org.openfaces.component.chart.impl.renderers.XYLineRendererAdapter;
+import org.openfaces.component.chart.impl.renderers.XYRendererAdapter;
 import org.openfaces.util.ValueBindings;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.awt.*;
 import java.util.ArrayList;
@@ -79,77 +85,81 @@ public class LineChartView extends GridChartView {
         return null;
     }
 
-    @Override
-    public Object saveState(FacesContext context) {
-        Object superState = super.saveState(context);
-        return new Object[]{
-                superState,
-                shapesVisible,
-                saveAttachedState(context, linePropertiesList),
-                saveAttachedState(context, defaultFillColor),
-                saveAttachedState(context, fillPaints),
-                saveAttachedState(context, defaultLineStyle),
-                saveAttachedState(context, lineStyles)
-        };
-
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void restoreState(FacesContext facesContext, Object object) {
-        Object[] state = (Object[]) object;
-        int i = 0;
-        super.restoreState(facesContext, state[i++]);
-        shapesVisible = (Boolean) state[i++];
-        linePropertiesList = (List<LineProperties>) restoreAttachedState(facesContext, state[i++]);
-        defaultFillColor = (Paint) restoreAttachedState(facesContext, state[i++]);
-        fillPaints = (Collection<Paint>) restoreAttachedState(facesContext, state[i++]);
-        defaultLineStyle = (LineStyle) restoreAttachedState(facesContext, state[i++]);
-        lineStyles = (Collection<LineStyle>) restoreAttachedState(facesContext, state[i++]);
-    }
-
     protected Plot createPlot(Chart chart, ChartModel model, ModelInfo info) {
         if (info.getModelType().equals(ModelType.Number)) {
             XYDataset ds = ModelConverter.toXYSeriesCollection(info);
-            XYLineAndShapeRenderer renderer = isEnable3D()
-                    ? new XYLineRenderer3DAdapter(this, ds)
-                    : new XYLineRendererAdapter(this, ds);
-            configureRenderer(renderer, ds.getSeriesCount());
+
+            AbstractXYItemRenderer renderer = createRenderer(ds);
+
             final GridXYPlotAdapter xyPlot = new GridXYPlotAdapter(ds, renderer, chart, this);
             initMarkers(xyPlot);
+
             return xyPlot;
         }
+
         if (info.getModelType().equals(ModelType.Date)) {
-            TimeSeriesCollection ds = ModelConverter.toTimeSeriesCollection(info);
-            XYLineAndShapeRenderer renderer = isEnable3D()
-                    ? new XYLineRenderer3DAdapter(this, ds)
-                    : new XYLineRendererAdapter(this, ds);
-            configureRenderer(renderer, ds.getSeriesCount());
+            TimeSeriesCollection ds = ModelConverter.toTimeSeriesCollection(chart, info);
+
+            AbstractXYItemRenderer renderer = createRenderer(ds);
+
             final GridDatePlotAdapter xyPlot = new GridDatePlotAdapter(ds, renderer, chart, this);
             initMarkers(xyPlot);
+
             return xyPlot;
         }
+
         CategoryDataset ds = ModelConverter.toCategoryDataset(info);
-        LineAndShapeRenderer renderer = isEnable3D()
-                ? new LineRenderer3DAdapter(this, ds)
-                : new LineRendererAdapter(this, ds);
+        LineAndShapeRenderer renderer;
+
+        if (getLineAreaFill() != null) {
+            renderer = new LineAreaFillRenderer(this, ds);
+
+
+        } else {
+            renderer = isEnable3D()
+                    ? new LineRenderer3DAdapter(this, ds)
+                    : new LineRendererAdapter(this, ds);
+        }
+
         configureRenderer(renderer, ds.getRowCount());
 
         final GridCategoryPlotAdapter gridCategoryPlot = new GridCategoryPlotAdapter(ds, renderer, chart, this);
         initMarkers(gridCategoryPlot);
+
         return gridCategoryPlot;
     }
 
-    private void configureRenderer(XYLineAndShapeRenderer renderer, int seriesCount) {
-        if (isEnable3D()) {
-            ((XYLineRenderer3DAdapter) renderer).setWallPaint(getWallColor());
+    private AbstractXYItemRenderer createRenderer(XYDataset ds) {
+        AbstractXYItemRenderer renderer;
+
+        if (getLineAreaFill() != null) {
+            renderer = new XYLineAreaFillRenderer(this, ds);
+        } else {
+            renderer = isEnable3D()
+                    ? new XYLineRenderer3DAdapter(this, ds)
+                    : new XYLineRendererAdapter(this, ds);
+        }
+
+        configureRenderer((XYRendererAdapter) renderer, ds.getSeriesCount());
+
+        return renderer;
+    }
+
+    private void configureRenderer(XYRendererAdapter renderer, int seriesCount) {
+        if (isEnable3D() && renderer instanceof Chart3DRendererAdapter) {
+            ((Chart3DRendererAdapter) renderer).setWallPaint(getWallColor());
+        }
+
+        if (renderer instanceof AreaFillRenderer) {
+            ((AreaFillRenderer) renderer).setBackgroundPaint(getBackgroundPaint());
+            ((AreaFillRenderer) renderer).setLineAreaFill(getLineAreaFill());
         }
 
         final boolean fillPaintsSpecified = getFillPaints() != null && !getFillPaints().isEmpty();
         final boolean strokesSpecified = getLineStyles() != null && !getLineStyles().isEmpty();
         final boolean outlinesSpecified = getOutlines() != null && !getOutlines().isEmpty();
 
-        renderer.setBaseShapesVisible(true);
+        renderer.setBaseShapesVisible(this.shapesVisible);
 
         if (getDefaultFillColor() != null || fillPaintsSpecified) {
             renderer.setUseFillPaint(true);
@@ -200,15 +210,20 @@ public class LineChartView extends GridChartView {
     }
 
     private void configureRenderer(LineAndShapeRenderer renderer, int seriesCount) {
-        if (isEnable3D()) {
-            ((LineRenderer3DAdapter) renderer).setWallPaint(getWallColor());
+        if (isEnable3D() && renderer instanceof Chart3DRendererAdapter) {
+            ((Chart3DRendererAdapter) renderer).setWallPaint(getWallColor());
+        }
+
+        if (renderer instanceof AreaFillRenderer) {
+            ((AreaFillRenderer) renderer).setBackgroundPaint(getBackgroundPaint());
+            ((AreaFillRenderer) renderer).setLineAreaFill(getLineAreaFill());
         }
 
         final boolean fillPaintsSpecified = getFillPaints() != null && !getFillPaints().isEmpty();
         final boolean lineStylesSpecified = getLineStyles() != null && !getLineStyles().isEmpty();
         final boolean outlinesSpecified = getOutlines() != null && !getOutlines().isEmpty();
 
-        renderer.setBaseShapesVisible(true);
+        renderer.setBaseShapesVisible(this.shapesVisible);
 
         if (getDefaultFillColor() != null || fillPaintsSpecified) {
             renderer.setUseFillPaint(true);
@@ -222,7 +237,7 @@ public class LineChartView extends GridChartView {
                 if (fillPaintsIterator.hasNext()) {
                     final Paint paint = (Paint) fillPaintsIterator.next();
                     renderer.setSeriesFillPaint(seriesIndex, paint);
-                    renderer.setSeriesShapesFilled(seriesIndex,true);
+                    renderer.setSeriesShapesFilled(seriesIndex, true);
                 }
             }
         }
@@ -259,7 +274,6 @@ public class LineChartView extends GridChartView {
         }
     }
 
-
     public Paint getDefaultFillColor() {
         return ValueBindings.get(this, "defaultFillColor", defaultFillColor, Paint.class);
     }
@@ -292,4 +306,48 @@ public class LineChartView extends GridChartView {
     public void setFillPaints(Collection fillPaints) {
         this.fillPaints = fillPaints;
     }
+
+    public LineAreaFill getLineAreaFill() {
+        List<UIComponent> children = getChildren();
+        LineAreaFill lineAreaFill = null;
+        for (UIComponent child : children) {
+            if (child instanceof LineAreaFill) {
+                if (lineAreaFill != null)
+                    throw new RuntimeException("There should be only one LineAreaFill child under this component: " + getId());
+                lineAreaFill = (LineAreaFill) child;
+            }
+        }
+
+        return lineAreaFill;
+    }
+
+    @Override
+    public Object saveState(FacesContext context) {
+        Object superState = super.saveState(context);
+        return new Object[]{
+                superState,
+                shapesVisible,
+                saveAttachedState(context, linePropertiesList),
+                saveAttachedState(context, defaultFillColor),
+                saveAttachedState(context, fillPaints),
+                saveAttachedState(context, defaultLineStyle),
+                saveAttachedState(context, lineStyles)
+        };
+
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void restoreState(FacesContext facesContext, Object object) {
+        Object[] state = (Object[]) object;
+        int i = 0;
+        super.restoreState(facesContext, state[i++]);
+        shapesVisible = (Boolean) state[i++];
+        linePropertiesList = (List<LineProperties>) restoreAttachedState(facesContext, state[i++]);
+        defaultFillColor = (Paint) restoreAttachedState(facesContext, state[i++]);
+        fillPaints = (Collection<Paint>) restoreAttachedState(facesContext, state[i++]);
+        defaultLineStyle = (LineStyle) restoreAttachedState(facesContext, state[i++]);
+        lineStyles = (Collection<LineStyle>) restoreAttachedState(facesContext, state[i++]);
+    }
+
 }

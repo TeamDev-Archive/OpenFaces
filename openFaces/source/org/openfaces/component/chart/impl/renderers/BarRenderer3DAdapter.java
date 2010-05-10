@@ -18,8 +18,8 @@ import org.openfaces.component.chart.BarChartView;
 /**
  * @author Dmitry Pikhulya
  */
-public class BarRenderer3DAdapter extends BarRenderer3D {
+public class BarRenderer3DAdapter extends BarRenderer3D implements Chart3DRendererAdapter {
     public BarRenderer3DAdapter(BarChartView chartView) {
-        ChartRendererUtil.setupSeriesColors(chartView, this);
+        ChartRendering.setupSeriesColors(chartView, this);
     }
 }

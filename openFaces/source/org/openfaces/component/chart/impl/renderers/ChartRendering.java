@@ -13,7 +13,6 @@ package org.openfaces.component.chart.impl.renderers;
 
 import org.jfree.chart.renderer.AbstractRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.xy.XYDataset;
 import org.openfaces.component.chart.ChartModel;
@@ -28,13 +27,12 @@ import org.openfaces.renderkit.cssparser.StyleBorderModel;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
 
 import java.awt.*;
-import java.util.*;
 
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-class ChartRendererUtil {
-    private ChartRendererUtil() {
+class ChartRendering {
+    private ChartRendering() {
     }
 
     public static void setupSeriesColors(ChartView view, AbstractRenderer renderer) {
@@ -52,7 +50,7 @@ class ChartRendererUtil {
 
     }
 
-    static void processXYLineAndShapeRendererProperties(XYLineAndShapeRenderer renderer, XYDataset dataset, LineChartView view) {
+    static void processXYLineAndShapeRendererProperties(XYRendererAdapter renderer, XYDataset dataSet, LineChartView view) {
         if (view.getLinePropertiesList() != null) {
             for (int i = 0; i < view.getLinePropertiesList().size(); i++) {
                 LineProperties lineProperties = view.getLinePropertiesList().get(i);
@@ -67,7 +65,7 @@ class ChartRendererUtil {
                     continue;
 
                 for (int j = 0; j < series.length; j++) {
-                    if (!dcg.generateCondition(dataset, j, 0))
+                    if (!dcg.generateCondition(dataSet, j, 0))
                         continue;
 
                     Boolean hideSeries = lineProperties.getHideSeries();
@@ -98,7 +96,7 @@ class ChartRendererUtil {
         }
     }
 
-    static void processLineAndShapeRendererProperties(LineAndShapeRenderer renderer, CategoryDataset dataset, LineChartView view) {
+    static void processLineAndShapeRendererProperties(LineAndShapeRenderer renderer, CategoryDataset dataSet, LineChartView view) {
         java.util.List<LineProperties> linePropertiesList = view.getLinePropertiesList();
         if (linePropertiesList == null)
             return;
@@ -115,7 +113,7 @@ class ChartRendererUtil {
                 continue;
 
             for (int j = 0; j < series.length; j++) {
-                if (!dcg.generateCondition(dataset, j, 0))
+                if (!dcg.generateCondition(dataSet, j, 0))
                     continue;
 
                 Boolean hideSeries = lineProperties.getHideSeries();

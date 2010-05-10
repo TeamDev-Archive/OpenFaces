@@ -9,18 +9,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * Please visit http://openfaces.org/licensing/ for more details.
  */
-package org.openfaces.component.chart.impl.renderers;
 
-import org.jfree.chart.renderer.category.BarRenderer;
-import org.openfaces.component.chart.BarChartView;
+package org.openfaces.component.chart;
 
 /**
- * @author Ekaterina Shliakhovetskaya
+ * @author Eugene Goncharov
  */
-public class BarRendererAdapter extends BarRenderer {
-    public BarRendererAdapter(BarChartView chartView) {
-        ChartRendering.setupSeriesColors(chartView, this);
-    }
-
+public interface LineAreaFill {
 }
-

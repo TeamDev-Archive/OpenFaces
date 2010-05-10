@@ -19,12 +19,11 @@ import org.openfaces.component.chart.LineChartView;
 /**
  * @author Dmitry Pikhulya
  */
-public class LineRenderer3DAdapter extends LineRenderer3D {
-    public LineRenderer3DAdapter(LineChartView chartView, CategoryDataset dataset) {
-        ChartRendererUtil.setupSeriesColors(chartView, this);
-        setShapesVisible(chartView.isShapesVisible());
+public class LineRenderer3DAdapter extends LineRenderer3D implements Chart3DRendererAdapter {
+    public LineRenderer3DAdapter(LineChartView chartView, CategoryDataset dataSet) {
+        ChartRendering.setupSeriesColors(chartView, this);
 
-        ChartRendererUtil.processLineAndShapeRendererProperties(this, dataset, chartView);
+        ChartRendering.processLineAndShapeRendererProperties(this, dataSet, chartView);
     }
 
 }

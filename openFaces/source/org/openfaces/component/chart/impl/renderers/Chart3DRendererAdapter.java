@@ -12,15 +12,29 @@
 
 package org.openfaces.component.chart.impl.renderers;
 
-import org.jfree.chart.renderer.xy.XYLine3DRenderer;
-import org.openfaces.component.chart.BarChartView;
+import org.jfree.chart.Effect3D;
+
+import java.awt.*;
 
 /**
  * @author Eugene Goncharov
  */
-public class XYBarRenderer3DAdapter extends XYLine3DRenderer {
+public interface Chart3DRendererAdapter extends Effect3D {
 
-    public XYBarRenderer3DAdapter(BarChartView chartView) {
-        ChartRendererUtil.setupSeriesColors(chartView, this);
-    }
+    /**
+     * Returns the paint used to highlight the left and bottom wall in the plot
+     * background.
+     *
+     * @return The paint.
+     */
+    public Paint getWallPaint();
+
+    /**
+     * Sets the paint used to hightlight the left and bottom walls in the plot
+     * background and sends a {@link org.jfree.chart.event.RendererChangeEvent} to all registered
+     * listeners.
+     *
+     * @param paint the paint.
+     */
+    public void setWallPaint(Paint paint);
 }

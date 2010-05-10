@@ -28,7 +28,7 @@ public class XYBarRendererAdapter extends XYBarRenderer {
 
 
     public XYBarRendererAdapter(BarChartView chartView) {
-        ChartRendererUtil.setupSeriesColors(chartView, this);
+        ChartRendering.setupSeriesColors(chartView, this);
     }
 
      /**

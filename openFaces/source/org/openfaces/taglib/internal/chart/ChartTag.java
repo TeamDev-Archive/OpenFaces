@@ -14,6 +14,7 @@ package org.openfaces.taglib.internal.chart;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartTitle;
 import org.openfaces.component.chart.ChartViewType;
+import org.openfaces.component.chart.TimePeriod;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -53,5 +54,7 @@ public class ChartTag extends AbstractStyledComponentTag {
         setIntProperty(chart, "height");
         setIntProperty(chart, "width");
         setBooleanProperty(chart, "legendVisible");
+
+        setEnumerationProperty(component, "timePeriodPrecision", TimePeriod.class);
     }
 }

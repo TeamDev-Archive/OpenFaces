@@ -51,4 +51,8 @@ public class ChartJspTag extends AbstractStyledComponentJspTag {
     public void setHeight(ValueExpression height) {
         getDelegate().setPropertyValue("height", height);
     }
+
+    public void setTimePeriodPrecision(ValueExpression timePeriodPrecision) {
+        getDelegate().setPropertyValue("timePeriodPrecision", timePeriodPrecision);
+    }
 }

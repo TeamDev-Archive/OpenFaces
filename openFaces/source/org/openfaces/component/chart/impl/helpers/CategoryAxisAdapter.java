@@ -13,10 +13,13 @@ package org.openfaces.component.chart.impl.helpers;
 
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.ui.RectangleEdge;
 import org.openfaces.component.chart.ChartAxis;
 import org.openfaces.component.chart.ChartCategoryAxis;
 import org.openfaces.component.chart.GridChartView;
 import org.openfaces.component.chart.impl.PropertiesConverter;
+
+import java.awt.geom.Rectangle2D;
 
 /**
  * @author Ekaterina Shliakhovetskaya
@@ -42,5 +45,8 @@ public class CategoryAxisAdapter extends CategoryAxis {
         AxisUtil.setupAxisPresentation(label, this, fakeStyle);
     }
 
-
+    @Override
+    public double calculateCategoryGapSize(int categoryCount, Rectangle2D area, RectangleEdge edge) {
+        return super.calculateCategoryGapSize(categoryCount, area, edge);
+    }
 }

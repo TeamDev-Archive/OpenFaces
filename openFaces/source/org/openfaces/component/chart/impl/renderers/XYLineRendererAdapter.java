@@ -18,12 +18,12 @@ import org.openfaces.component.chart.LineChartView;
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class XYLineRendererAdapter extends XYLineAndShapeRenderer {
-    public XYLineRendererAdapter(LineChartView chartView, XYDataset dataset) {
-        ChartRendererUtil.setupSeriesColors(chartView, this);
-        setShapesVisible(chartView.isShapesVisible());
+public class XYLineRendererAdapter extends XYLineAndShapeRenderer implements XYRendererAdapter {
 
-        ChartRendererUtil.processXYLineAndShapeRendererProperties(this, dataset, chartView);
+    public XYLineRendererAdapter(LineChartView chartView, XYDataset dataSet) {
+        ChartRendering.setupSeriesColors(chartView, this);
+
+        ChartRendering.processXYLineAndShapeRendererProperties(this, dataSet, chartView);
     }
 
 }

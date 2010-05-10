@@ -11,99 +11,48 @@
  */
 package org.openfaces.component.chart.impl.plots;
 
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.labels.StandardXYItemLabelGenerator;
-import org.jfree.chart.labels.XYToolTipGenerator;
-import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
-import org.jfree.chart.urls.XYURLGenerator;
 import org.jfree.data.xy.XYDataset;
 import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartAxis;
-import org.openfaces.component.chart.ChartDomain;
 import org.openfaces.component.chart.ChartNumberAxis;
 import org.openfaces.component.chart.GridChartView;
-import org.openfaces.component.chart.impl.PropertiesConverter;
-import org.openfaces.component.chart.impl.generators.DynamicXYGenerator;
 import org.openfaces.component.chart.impl.helpers.NumberAxis3DAdapter;
 import org.openfaces.component.chart.impl.helpers.NumberAxisAdapter;
 
 /**
  * @author Ekaterina Shliakhovetskaya
  */
-public class GridXYPlotAdapter extends XYPlot {
-    public GridXYPlotAdapter(XYDataset ds, AbstractXYItemRenderer renderer, Chart chart, GridChartView chartView) {
-        setDataset(ds);
-        setRenderer(renderer);
+public class GridXYPlotAdapter extends XYPlotAdapter {
 
-        ChartAxis baseAxis = chartView.getBaseAxis();
-        ChartAxis keyAxis = chartView.getKeyAxis();
-        ChartAxis valueAxis = chartView.getValueAxis();
-        ChartDomain showAxes = chartView.getShowAxes();
-        if (showAxes == null) {
-            showAxes = ChartDomain.BOTH;
-            chartView.setShowAxes(showAxes);
-        }
-        boolean keyAxisVisible = showAxes.equals(ChartDomain.BOTH) || showAxes.equals(ChartDomain.KEY);
-        boolean valueAxisVisible = showAxes.equals(ChartDomain.BOTH) || showAxes.equals(ChartDomain.VALUE);
-
-        if (!(keyAxis instanceof ChartNumberAxis))
-            keyAxis = null;
-
-        if (!(valueAxis instanceof ChartNumberAxis))
-            valueAxis = null;
-
-        NumberAxis numberKeyAxis = chartView.isEnable3D()
-                ? new NumberAxis3DAdapter(chartView.getKeyAxisLabel(), keyAxisVisible, (ChartNumberAxis) keyAxis, baseAxis, chartView)
-                : new NumberAxisAdapter(chartView.getKeyAxisLabel(), keyAxisVisible, (ChartNumberAxis) keyAxis, baseAxis, chartView);
-        NumberAxis numberValueAxis = chartView.isEnable3D()
-                ? new NumberAxis3DAdapter(chartView.getValueAxisLabel(), valueAxisVisible, (ChartNumberAxis) valueAxis, baseAxis, chartView)
-                : new NumberAxisAdapter(chartView.getValueAxisLabel(), valueAxisVisible, (ChartNumberAxis) valueAxis, baseAxis, chartView);
-
-        if (ds == null) {
-            numberKeyAxis.setVisible(false);
-            numberValueAxis.setVisible(false);
-        }
-
-        setDomainAxis(numberKeyAxis);
-        setRangeAxis(numberValueAxis);
-
-        PlotUtil.initGridLabels(chartView, renderer);
-
-        if (chartView.getLabels() == null || chartView.getLabels().getText() == null) {
-            renderer.setBaseItemLabelGenerator(new StandardXYItemLabelGenerator());
-        }
-
-        PlotUtil.setupColorProperties(chart, this);
-        setOrientation(PropertiesConverter.toPlotOrientation(chartView.getOrientation()));
-        PlotUtil.setupGridLinesProperties(chartView, this, ds);
-        setTooltips(chartView, renderer);
-        setUrls(chartView, renderer);
+    public GridXYPlotAdapter(XYDataset ds, AbstractXYItemRenderer renderer,
+                             Chart chart, GridChartView chartView) {
+        super(ds, renderer, chart, chartView);
     }
 
-    private void setTooltips(final GridChartView view, AbstractXYItemRenderer renderer) {
-        if (view.getTooltip() != null) {
-            renderer.setBaseToolTipGenerator(new XYToolTipGenerator() {
-                public String generateToolTip(XYDataset xyDataset, int i, int i1) {
-                    return view.getTooltip();
-                }
-            });
-        } else if (view.getDynamicTooltip() != null) {
-            renderer.setBaseToolTipGenerator(new DynamicXYGenerator(view, view.getDynamicTooltip()));
-        }
+    public ValueAxis getDomainAxisAdapter() {
+        final GridChartView view = getChartView();
+        ChartAxis baseAxis = view.getBaseAxis();
+        ChartNumberAxis keyAxis = (view.getKeyAxis() instanceof ChartNumberAxis)
+                ? (ChartNumberAxis) view.getKeyAxis()
+                : null;
+
+        return !view.isEnable3D()
+                ? new NumberAxisAdapter(view.getKeyAxisLabel(), isKeyAxisVisible(), keyAxis, baseAxis, view)
+                : new NumberAxis3DAdapter(getChartView().getKeyAxisLabel(), isKeyAxisVisible(), keyAxis, baseAxis, view);
     }
 
-    private void setUrls(final GridChartView view, AbstractXYItemRenderer renderer) {
-        if (view.getUrl() != null) {
-            renderer.setURLGenerator(new XYURLGenerator() {
-                public String generateURL(XYDataset xyDataset, int i, int i1) {
-                    return view.getUrl();
-                }
-            });
-        } else if (view.getDynamicUrl() != null) {
-            renderer.setURLGenerator(new DynamicXYGenerator(view, view.getDynamicUrl()));
-        }
-    }
+    public ValueAxis getRangeAxisAdapter() {
+        final GridChartView view = getChartView();
+        ChartAxis baseAxis = view.getBaseAxis();
+        ChartNumberAxis valueAxis = (view.getValueAxis() instanceof ChartNumberAxis)
+                ? (ChartNumberAxis) view.getValueAxis()
+                : null;
 
+        return !view.isEnable3D()
+                ? new NumberAxisAdapter(view.getValueAxisLabel(), isValueAxisVisible(), valueAxis, baseAxis, view)
+                : new NumberAxis3DAdapter(getChartView().getValueAxisLabel(), isValueAxisVisible(), valueAxis, baseAxis, view);
+    }
 }
 
