@@ -106,9 +106,13 @@ O$.PopupLayer = {
           firstExternalAnchor.id = popup.id + O$.PopupLayer.FIRST_EXTERNAL_ANCHOR_SUFFIX;
           firstExternalAnchor.onfocus = function() {
             var focusable = popup._getDefaultFocusComponent();
-            if (focusable)
-              focusable.focus();
-            else
+            if (focusable) {
+              try {
+                focusable.focus();
+              } catch (e) {
+                // the control is not focusable for some reason
+              }
+            } else
               firstExternalAnchor.blur();
           };
 
@@ -126,9 +130,13 @@ O$.PopupLayer = {
           lastExternalAnchor.id = popup.id + O$.PopupLayer.LAST_EXTERNAL_ANCHOR_SUFFIX;
           lastExternalAnchor.onfocus = function() {
             var focusable = popup._getDefaultFocusComponent();
-            if (focusable)
-              focusable.focus();
-            else
+            if (focusable) {
+              try {
+                focusable.focus();
+              } catch (e) {
+                // the control is not focusable for some reason
+              }
+            } else
               lastExternalAnchor.blur();
           };
           body.appendChild(lastExternalAnchor);
@@ -138,9 +146,13 @@ O$.PopupLayer = {
           popup.insertBefore(popup._firstInternalAnchor, popup.firstChild);
           popup._firstInternalAnchor.onfocus = function() {
             var focusable = O$.getLastFocusableControl(popup);
-            if (focusable)
-              focusable.focus();
-            else
+            if (focusable) {
+              try {
+                focusable.focus();
+              } catch (e) {
+                // the control is not focusable for some reason
+              }
+            } else
               this.blur();
           };
           popup._firstInternalAnchor.focus();
@@ -149,9 +161,13 @@ O$.PopupLayer = {
           popup._lastInternalAnchor._focusControlElement = true;
           popup._lastInternalAnchor.onfocus = function() {
             var focusable = O$.getFirstFocusableControl(popup);
-            if (focusable)
-              focusable.focus();
-            else
+            if (focusable) {
+              try {
+                focusable.focus();
+              } catch (e) {
+                // the control is not focusable for some reason
+              }
+            } else
               this.blur();
           };
           popup.appendChild(popup._lastInternalAnchor);
@@ -178,7 +194,7 @@ O$.PopupLayer = {
             if (focusable) try {
               focusable.focus();
             } catch (e) {
-              // control is not focusable for some reason
+              // the control is not focusable for some reason
             }
           }, 20);
 
@@ -354,8 +370,13 @@ O$.PopupLayer = {
     if (popup.blockingLayer)
       popup.blockingLayer.onclick = function() {
         var focusable = popup._getDefaultFocusComponent();
-        if (focusable)
-          focusable.focus();
+        if (focusable) {
+          try {
+            focusable.focus();
+          } catch (e) {
+            // the control is not focusable for some reason
+          }
+        }
       };
 
     O$.addLoadEvent(function () {
