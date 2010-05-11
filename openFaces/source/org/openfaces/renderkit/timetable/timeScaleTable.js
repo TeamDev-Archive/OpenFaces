@@ -42,12 +42,10 @@ O$.TimeScaleTable._init = function(componentId,
 
   if (editingOptions.overlappedEventsAllowed === undefined) editingOptions.overlappedEventsAllowed = true;
 
-  //61
   timeScaleTable._showTimeAgainstMark = stylingParams.timeTextPosition && stylingParams.timeTextPosition == "againstMark";
   var shortestEventTimeWhileResizing = 1000 * 60 * minorTimeInterval;
 
   var dateTimeFormat = O$.getDateTimeFormatObject(locale);
-  //69
   if (!startTimeStr)
     startTimeStr = "00:00";
   timeScaleTable._startTimeStr = startTimeStr;
@@ -259,7 +257,7 @@ O$.TimeScaleTable._init = function(componentId,
       resourceHeadersTable.body._overrideVerticalGridline(headerColumns.length - 2, O$.isExplorer6() ? "1px solid white" : "1px solid transparent");
     }
 
-  }
+  };
 
   timeScaleTable._getNearestTimeslotForPositionAndRow = function(x, y, row, event) {
     var cell = row._cellFromPoint(x, y, true, this._getLayoutCache());
@@ -306,22 +304,18 @@ O$.TimeScaleTable._init = function(componentId,
 
     return {resource: resource, time: time, timeAtPosition: timeAtPosition};
   };
-  //74
   var eventResizeHandleHeight = O$.calculateNumericCSSValue("6px");
 
-  //94
   var dragAndDropTransitionPeriod = stylingParams.dragAndDropTransitionPeriod !== undefined ? stylingParams.dragAndDropTransitionPeriod : 70;
   var dragAndDropCancelingPeriod = stylingParams.dragAndDropCancelingPeriod !== undefined ? stylingParams.dragAndDropCancelingPeriod : 200;
   var undroppableStateTransitionPeriod = stylingParams.undroppableStateTransitionPeriod !== undefined ? stylingParams.undroppableStateTransitionPeriod : 250;
   var undroppableEventTransparency = stylingParams.undroppableEventTransparency !== undefined ? stylingParams.undroppableEventTransparency : 0.5;
 
-  //100
   var eventsLeftOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(timeScaleTable._eventStyleClass, "marginLeft"));
   var eventsRightOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(timeScaleTable._eventStyleClass, "marginRight"));
   var reservedEventsLeftOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(timeScaleTable._reservedTimeEventClass, "marginLeft"));
   var reservedEventsRightOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(timeScaleTable._reservedTimeEventClass, "marginRight"));
 
-  //280
   timeScaleTable._getLayoutCache = function() {
     if (!timeScaleTable._cachedPositions)
       timeScaleTable._cachedPositions = {};
@@ -342,7 +336,6 @@ O$.TimeScaleTable._init = function(componentId,
       return null;
     return this._eventEditor;
   };
-  //300
   function adjustRolloverPaddings() {
     var tempDiv = document.createElement("div");
 
@@ -389,7 +382,6 @@ O$.TimeScaleTable._init = function(componentId,
     }, 1);
   }
 
-  ;
 
   adjustRolloverPaddings();
 
@@ -421,7 +413,6 @@ O$.TimeScaleTable._init = function(componentId,
     return result;
   };
 
-  //408
   O$.addInternalLoadEvent(function() {
     var scrollOffset = timeScaleTable._getVertOffsetByTime(timeScaleTable._scrollTime).y;
     var maxScrollOffset = timeScaleTable._scroller.scrollHeight - O$.getElementSize(timeScaleTable._scroller).height;
@@ -437,7 +428,6 @@ O$.TimeScaleTable._init = function(componentId,
     });
   });
 
-  //536
   timeScaleTable._updateEventElements = function(reacquireDayEvents, refreshAreasAfterReload) {
     this._baseZIndex = O$.getElementZIndex(this);
     if (this._eventElements)
@@ -460,7 +450,6 @@ O$.TimeScaleTable._init = function(componentId,
     this._updateEventZIndexes();
   };
 
-  //580
   timeScaleTable._canEventBeDroppedHere = function(event) {
     var startTime = event.start.getTime();
     var endTime = event.end.getTime();
@@ -482,7 +471,6 @@ O$.TimeScaleTable._init = function(componentId,
     return true;
   };
 
-  //583
   var addEvent = timeScaleTable._addEvent;
   timeScaleTable._addEvent = function(startTime, resourceId) {
     var event = addEvent(startTime, resourceId);
@@ -496,7 +484,6 @@ O$.TimeScaleTable._init = function(componentId,
     }
   };
 
-  //506
   var addEventElement = timeScaleTable._addEventElement;
   timeScaleTable._addEventElement = function(event) {
     var eventElement = addEventElement(event);
@@ -565,7 +552,6 @@ O$.TimeScaleTable._init = function(componentId,
       this._updateShape();
     };
 
-    //TODO: formatting
     eventElement._setupDragAndDrop = function() {
       var eventPreview = timeScaleTable._getEventPreview();
 
@@ -835,7 +821,6 @@ O$.TimeScaleTable._init = function(componentId,
 
   };
 
-  //526
   timeScaleTable._layoutActionBar = function(actionBar, barHeight, eventElement) {
     var borderLeftWidth = O$.getNumericElementStyle(eventElement, "border-left-width");
     var borderRightWidth = O$.getNumericElementStyle(eventElement, "border-right-width");
