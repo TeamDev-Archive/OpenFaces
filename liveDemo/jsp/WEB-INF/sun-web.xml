@@ -3,6 +3,6 @@
         Application Server 3.0 Servlet 3.0//EN" 
         "http://www.sun.com/software/appserver/dtds/sun-web-app_3_0-0.dtd"> 
 <sun-web-app> 
-  <class-loader delegate="false"/>
+  <class-loader delegate="true"/>
   <property name="useBundledJsf" value="true"/> 
 </sun-web-app> 
