@@ -174,4 +174,9 @@ public abstract class OpenFacesTestCase extends SeleniumTestCase {
         // todo: add actual screenshot checking code
     }
 
+    protected void assertPageContainsErrorIcon(boolean shouldContainIcon) {
+        boolean iconExists = getSelenium().isElementPresent("//img[contains(@src,'openFacesResources/META-INF/resources/openfaces/3_0/validation/error_icon')]");
+        assertEquals(shouldContainIcon, iconExists);
+    }
+
 }

@@ -196,7 +196,7 @@ O$.PopupLayer = {
             } catch (e) {
               // the control is not focusable for some reason
             }
-          }, 20);
+          }, 50);
 
           if (!O$.PopupLayer._modalWindows)
             O$.PopupLayer._modalWindows = [];
