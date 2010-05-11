@@ -18,6 +18,7 @@ import org.openfaces.renderkit.cssparser.CSSUtil;
 import org.openfaces.renderkit.cssparser.StyleObjectModel;
 import org.openfaces.renderkit.cssparser.StyledComponent;
 import org.openfaces.taglib.internal.chart.ChartTag;
+import org.openfaces.util.Components;
 import org.openfaces.util.ValueBindings;
 
 import javax.faces.component.UIComponent;
@@ -190,6 +191,10 @@ public class Chart extends OUIComponentBase implements StyledComponent {
 
     public void setImageBytes(byte[] imageBytes) {
         this.imageBytes = imageBytes;
+    }
+
+    public ChartMenu getChartMenu() {
+        return Components.findChildWithClass(this, ChartMenu.class, "<o:chartMenu>");
     }
 
     @Override

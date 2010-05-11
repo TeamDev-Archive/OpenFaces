@@ -15,13 +15,15 @@ import org.openfaces.component.chart.Chart;
 import org.openfaces.component.chart.ChartView;
 import org.openfaces.component.chart.impl.JfcRenderHints;
 import org.openfaces.component.chart.impl.helpers.MapRenderUtilities;
+import org.openfaces.component.command.PopupMenu;
 import org.openfaces.component.output.DynamicImage;
 import org.openfaces.component.output.ImageType;
 import org.openfaces.renderkit.RendererBase;
+import org.openfaces.renderkit.output.DynamicImageRenderer;
+import org.openfaces.util.Components;
 import org.openfaces.util.Rendering;
 import org.openfaces.util.Resources;
-import org.openfaces.util.Components;
-import org.openfaces.renderkit.output.DynamicImageRenderer;
+import org.openfaces.util.ScriptBuilder;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -35,6 +37,21 @@ import java.util.Map;
  * @author Ekaterina Shliakhovetskaya
  */
 public class ChartRenderer extends RendererBase {
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
+
+    @Override
+    public void encodeBegin(FacesContext facesContext, UIComponent component) throws IOException {
+        // This is done to avoid rendering during encode begin phase
+    }
+
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        // This is done to avoid rendering of child tags during component's rendering
+    }
 
     @Override
     public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
@@ -101,7 +118,7 @@ public class ChartRenderer extends RendererBase {
         };
         dynamicImage.setValueExpression("data", ve);
         dynamicImage.setId(chart.getId() + Rendering.SERVER_ID_SUFFIX_SEPARATOR + "img");
-
+        dynamicImage.setParent(chart);
         JfcRenderHints jfcRenderHints = chart.getRenderHints();
         dynamicImage.setMapId(jfcRenderHints.getMapId(chart));
         String map = jfcRenderHints.getMap();
@@ -118,6 +135,29 @@ public class ChartRenderer extends RendererBase {
         if (map != null)
             Resources.renderJSLinkIfNeeded(facesContext, Resources.getUtilJsURL(facesContext));
         writer.endElement("div");
+        encodeScriptsAndStyles(facesContext, chart, dynamicImage);
+    }
+
+    protected void encodeScriptsAndStyles(FacesContext context, Chart chart, DynamicImage dynamicImage) throws IOException {
+        ScriptBuilder buf = new ScriptBuilder();
+        encodeChartMenuSupport(context, chart, dynamicImage, buf);
+
+        Rendering.renderInitScript(context, buf, Resources.getUtilJsURL(context), getChartMenuJsURL(context));
+    }
+
+    private void encodeChartMenuSupport(FacesContext context, Chart chart, DynamicImage dynamicImage,
+                                        ScriptBuilder buf) throws IOException {
+        UIComponent component = chart.getChartMenu();
+        if (component == null) return;
+
+        PopupMenu chartMenu = (PopupMenu) component;
+        chartMenu.encodeAll(context);
+
+        buf.initScript(context, chartMenu, "O$.ChartMenu._init", chart, dynamicImage.getClientId(context));
+    }
+
+    private String getChartMenuJsURL(FacesContext context) {
+        return Resources.getInternalURL(context, "chart/chartMenu.js");
     }
 
     @Override

@@ -733,6 +733,21 @@
     <component-type>org.openfaces.GradientLineAreaFill</component-type>
     <component-class>org.openfaces.component.chart.GradientLineAreaFill</component-class>
   </component>
+
+  <component>
+    <component-type>org.openfaces.ChartMenu</component-type>
+    <component-class>org.openfaces.component.chart.ChartMenu</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.SaveChartMenuItem</component-type>
+    <component-class>org.openfaces.component.chart.SaveChartMenuItem</component-class>
+  </component>
+
+  <component>
+    <component-type>org.openfaces.PrintChartMenuItem</component-type>
+    <component-class>org.openfaces.component.chart.PrintChartMenuItem</component-class>
+  </component>
   <render-kit>
     <renderer>
       <component-family>org.openfaces.DataTable</component-family>
@@ -1204,6 +1219,21 @@
       <component-family>org.openfaces.LevelIndicator</component-family>
       <renderer-type>org.openfaces.LevelIndicatorRenderer</renderer-type>
       <renderer-class>org.openfaces.renderkit.output.LevelIndicatorRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.ChartMenu</component-family>
+      <renderer-type>org.openfaces.ChartMenuRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.chart.ChartMenuRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.SaveChartMenuItem</component-family>
+      <renderer-type>org.openfaces.SaveChartMenuItemRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.chart.SaveChartMenuItemRenderer</renderer-class>
+    </renderer>
+    <renderer>
+      <component-family>org.openfaces.PrintChartMenuItem</component-family>
+      <renderer-type>org.openfaces.PrintChartMenuItemRenderer</renderer-type>
+      <renderer-class>org.openfaces.renderkit.chart.PrintChartMenuItemRenderer</renderer-class>
     </renderer>
 
   </render-kit>

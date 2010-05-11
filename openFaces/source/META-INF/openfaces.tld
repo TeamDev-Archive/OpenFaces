@@ -37389,5 +37389,20 @@ entering a value and returns a list of suggestions from the server -->
       <!-- @el true -->
     </attribute>
   </tag>
+  <tag>
+    <name>chartMenu</name>
+    <tag-class>org.openfaces.taglib.jsp.chart.ChartMenuJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <name>saveChartMenuItem</name>
+    <tag-class>org.openfaces.taglib.jsp.chart.SaveChartMenuItemJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
+  <tag>
+    <name>printChartMenuItem</name>
+    <tag-class>org.openfaces.taglib.jsp.chart.PrintChartMenuItemJspTag</tag-class>
+    <body-content>JSP</body-content>
+  </tag>
 
 </taglib>

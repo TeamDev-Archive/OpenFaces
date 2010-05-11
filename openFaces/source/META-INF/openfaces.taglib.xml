@@ -1128,5 +1128,29 @@
       <handler-class>org.openfaces.taglib.facelets.chart.GradientLineAreaFillTagHandler</handler-class>
     </component>
   </tag>
+  <tag>
+    <tag-name>chartMenu</tag-name>
+    <component>
+      <component-type>org.openfaces.ChartMenu</component-type>
+      <renderer-type>org.openfaces.ChartMenuRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.ChartMenuTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>saveChartMenuItem</tag-name>
+    <component>
+      <component-type>org.openfaces.SaveChartMenuItem</component-type>
+      <renderer-type>org.openfaces.SaveChartMenuItemRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.SaveChartMenuItemTagHandler</handler-class>
+    </component>
+  </tag>
+  <tag>
+    <tag-name>printChartMenuItem</tag-name>
+    <component>
+      <component-type>org.openfaces.PrintChartMenuItem</component-type>
+      <renderer-type>org.openfaces.PrintChartMenuItemRenderer</renderer-type>
+      <handler-class>org.openfaces.taglib.facelets.chart.PrintChartMenuItemTagHandler</handler-class>
+    </component>
+  </tag>
 
 </facelet-taglib>

@@ -188,7 +188,7 @@ public class ResourceFilter implements Filter {
                     : resourcePathWithVersion.substring(Resources.META_INF_RESOURCES_ROOT.length()).lastIndexOf("-");
 
             if (versionPrefixIdx != -1) {
-                if (metaInfResource) versionPrefixIdx += Resources.META_INF_RESOURCES_ROOT.length(); 
+                if (metaInfResource) versionPrefixIdx += Resources.META_INF_RESOURCES_ROOT.length();
                 resourcePath = resourcePathWithVersion.substring(0, versionPrefixIdx) +
                         resourcePathWithVersion.substring(resourcePathWithVersion.lastIndexOf("."));
             } else {
@@ -204,6 +204,10 @@ public class ResourceFilter implements Filter {
         if (isDynamicImageResource) {
             inputStream = getDynamicImageAsInputStream(request, servletContext);
             response.setContentType(getImageContentType(uri));
+            if (request.getParameter("download") != null) {
+                String sid = request.getParameter("id");
+                response.setHeader("Content-Disposition", "attachment; filename=" + sid + ".png");
+            }
         } else {
             if (!(resourcePath.startsWith("/org/openfaces") || resourcePath.startsWith(Resources.META_INF_RESOURCES_ROOT))) {
                 // SECURITY ISSUE: DO NOT LET TO ACCESS /openFacesResources/ HOME AS IT PROVIDES SERVER'S FILES
