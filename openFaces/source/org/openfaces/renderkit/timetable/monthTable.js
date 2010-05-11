@@ -16,10 +16,6 @@
 
 O$.MonthTable = {};
 
-O$.MonthTable.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT = 1;
-
-O$.MonthTable.DEFAULT_EVENT_CONTENT = [ { type : "time"}, { type : "name" }, { type : "resource" } ];
-
 O$.MonthTable._init = function(componentId,
                                day,
                                locale,
@@ -50,25 +46,18 @@ O$.MonthTable._init = function(componentId,
     }
   }
 
-  O$.initComponent(componentId, {rollover: stylingParams.rolloverClass});
+  monthTable.DEFAULT_EVENT_CLASS_NAME = "o_monthTableEvent";
+  monthTable.DEFAULT_EVENT_NAME_CLASS_NAME = "o_monthTableEventName";
+  monthTable.DEFAULT_EVENT_CONTENT = [
+    { type : "time"},
+    { type : "name" },
+    { type : "resource" }
+  ];
+  monthTable.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT = 1;
 
-  var eventProvider = new O$.MonthTable._LazyLoadedTimetableEvents(
-          preloadedEventParams.events,
-          preloadedEventParams.from,
-          preloadedEventParams.to);
-  eventProvider._monthTable = monthTable;
-  var dateTimeFormat = O$.getDateTimeFormatObject(locale);
+  O$.TimeTableView._init(componentId, day, locale, dateFormat, preloadedEventParams, resources,
+          eventAreaSettings, editable, onchange, editingOptions, stylingParams, uiEvent);
 
-  if (!editingOptions)
-    editingOptions = {};
-  if (editingOptions.eventResourceEditable === undefined) editingOptions.eventResourceEditable = true;
-  if (editingOptions.eventDurationEditable === undefined) editingOptions.eventDurationEditable = true;
-  if (editingOptions.defaultEventDuration === undefined || editingOptions.defaultEventDuration <= 0) editingOptions.defaultEventDuration = 30;
-  if (editingOptions.autoSaveChanges === undefined) editingOptions.autoSaveChanges = true;
-  if (editingOptions.overlappedEventsAllowed === undefined) editingOptions.overlappedEventsAllowed = true;
-
-  var reservedTimeEventColor = stylingParams.reservedTimeEventColor ? stylingParams.reservedTimeEventColor : "#b0b0b0";
-  var reservedTimeEventClass = O$.combineClassNames(["o_reservedTimeEvent", stylingParams.reservedTimeEventClass]);
   var moreLinkElementClass = O$.combineClassNames(["o_moreLinkElement", stylingParams.moreLinkElementClass]);
   var moreLinkClass = O$.combineClassNames(["o_moreLink", stylingParams.moreLinkClass]);
   var moreLinkText = stylingParams.moreLinkText ? stylingParams.moreLinkText : "More...";
@@ -80,32 +69,10 @@ O$.MonthTable._init = function(componentId,
   var weekdayStyle = O$.combineClassNames(["o_weekdayText", stylingParams.weekdayClass]);
   var weekdayPattern = stylingParams.weekdayPattern ? stylingParams.weekdayPattern : "EEEE";
 
-  var eventStyleClass = O$.combineClassNames(["o_timetableEvent", "o_monthTableEvent", uiEvent.style]);
-  var rolloverEventClass = O$.combineClassNames(["o_rolloverTimetableEvent", "o_monthTableEvent", uiEvent.rolloverStyle]);
 
-  var eventNameClass = O$.combineClassNames(["o_monthTableEventName", uiEvent.nameStyle]);
-  var eventDescriptionClass = O$.combineClassNames(["o_timetableEventDescription", uiEvent.descriptionStyle]);
-  var eventResourceClass = O$.combineClassNames(["o_timetableEventResource", uiEvent.resourceStyle]);
-  var eventTimeClass = O$.combineClassNames(["o_timetableEventTime", uiEvent.timeStyle]);
-  var eventContentClasses = {
-    name : eventNameClass,
-    description : eventDescriptionClass,
-    resource : eventResourceClass,
-    time: eventTimeClass
-  };
-
-  var eventBackgroundStyleClassName = "o_timetableEventBackground";
-  var defaultEventColor = stylingParams.defaultEventColor ? stylingParams.defaultEventColor : "#006ebb";
-  var escapeEventNames = uiEvent.escapeName !== undefined ? uiEvent.escapeName : true;
-  monthTable._escapeEventNames = escapeEventNames;
-  var escapeEventDescriptions = uiEvent.escapeDescription !== undefined ? uiEvent.escapeDescription : true;
-  monthTable._escapeEventDescriptions = escapeEventDescriptions;
-  var escapeEventResources = uiEvent.escapeResource !== undefined ? uiEvent.escapeResource : true;
-  monthTable._escapeEventResources = escapeEventResources;
-  var eventContent = uiEvent.content ? uiEvent.content : O$.MonthTable.DEFAULT_EVENT_CONTENT;
-
-  var eventBackgroundIntensity = uiEvent.backgroundIntensity !== undefined ? uiEvent.backgroundIntensity : 0.25;
-  var eventBackgroundTransparency = uiEvent.backgroundTransparency !== undefined ? uiEvent.backgroundTransparency : 0.2;
+  monthTable._escapeEventNames = uiEvent.escapeName !== undefined ? uiEvent.escapeName : true;
+  monthTable._escapeEventDescriptions = uiEvent.escapeDescription !== undefined ? uiEvent.escapeDescription : true;
+  monthTable._escapeEventResources= uiEvent.escapeResource !== undefined ? uiEvent.escapeResource : true;  
 
   var weekdayHeadersRowSeparator = stylingParams.weekdayHeadersRowSeparator ? stylingParams.weekdayHeadersRowSeparator : "1px solid gray";
   var weekdayColumnSeparator = stylingParams.weekdayColumnSeparator ? stylingParams.weekdayColumnSeparator : "1px solid silver";
@@ -135,22 +102,14 @@ O$.MonthTable._init = function(componentId,
   monthTable._inactiveMonthCellHeaderClass = inactiveMonthCellHeaderClass;
   monthTable._inactiveMonthCellClass = inactiveMonthCellClass;
 
-  var eventElementHeight = O$.calculateNumericCSSValue(O$.getStyleClassProperty(eventStyleClass, "height"));
-  var eventsLeftOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(eventStyleClass, "marginLeft"));
-  var eventsRightOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(eventStyleClass, "marginRight"));
-  var reservedEventsLeftOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(reservedTimeEventClass, "marginLeft"));
-  var reservedEventsRightOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(reservedTimeEventClass, "marginRight"));
+  var eventElementHeight = O$.calculateNumericCSSValue(O$.getStyleClassProperty(monthTable._eventStyleClass, "height"));
+  var eventsLeftOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(monthTable._eventStyleClass, "marginLeft"));
+  var eventsRightOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(monthTable._eventStyleClass, "marginRight"));
+  var reservedEventsLeftOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(monthTable._reservedTimeEventClass, "marginLeft"));
+  var reservedEventsRightOffset = O$.calculateNumericCSSValue(O$.getStyleClassProperty(monthTable._reservedTimeEventClass, "marginRight"));
   var moreLinkElementHeight = O$.calculateNumericCSSValue(O$.getStyleClassProperty(moreLinkElementClass, "height"));
 
-  var table = O$(componentId + "::table");
-  monthTable._table = table;
-
   var weekdayHeadersTable = O$(componentId + "::weekdayHeaders");
-  monthTable._scroller = O$(monthTable.id + "::scroller");
-
-  var hiddenArea = O$(componentId + "::hiddenArea");
-  monthTable._hiddenArea = hiddenArea;
-  var useResourceSeparation = resources.length > 0;
 
   var firstDayOfWeek = (calendarOptions && calendarOptions.firstDayOfWeek) ? calendarOptions.firstDayOfWeek : 0;
 
@@ -163,7 +122,7 @@ O$.MonthTable._init = function(componentId,
   }
   weekdayHeaderColumns.push({className: "o_defaultScrollBarWidth"});
 
-  if (useResourceSeparation) {
+  if (monthTable._useResourceSeparation) {
     monthTable._resourcesByIds = {};
     monthTable._idsByResourceNames = {};
     for (var resourceIndex = 0; resourceIndex < resources.length; resourceIndex++) {
@@ -173,16 +132,9 @@ O$.MonthTable._init = function(componentId,
     }
   }
 
-  monthTable._getResourceForEvent = function(event) {
-    if (!event.resourceId || !useResourceSeparation)
-      return null;
-    var resource = monthTable._resourcesByIds[event.resourceId];
-    return resource;
-  };
-
   var forceUsingCellStyles = true; // allow such styles as text-align to be applied to row's cells
 
-  O$.Tables._init(table, {
+  O$.Tables._init(monthTable._table, {
     columns: columns,
     gridLines: [rowSeparator, columnSeparator, null, null, null, null, null, null, null, null, null],
     forceUsingCellStyles: forceUsingCellStyles
@@ -198,11 +150,11 @@ O$.MonthTable._init = function(componentId,
   weekdayHeadersTable.body._overrideVerticalGridline(weekdayHeaderColumns.length - 2, O$.isExplorer6() ? "1px solid white" : "1px solid transparent");
 
   for (var week = 0; week < 6; week++) {
-    table.body._newRow().className = dayHeaderRowClass; // day header row
-    table.body._newRow().className = timetableViewRowClass; // day content row
+    monthTable._table.body._newRow().className = dayHeaderRowClass; // day header row
+    monthTable._table.body._newRow().className = timetableViewRowClass; // day content row
   }
 
-  var rows = table.body._getRows();
+  var rows = monthTable._table.body._getRows();
 
   for (var rowIndex = 0; rowIndex < rows.length; rowIndex++) {
     var row = rows[rowIndex];
@@ -213,46 +165,22 @@ O$.MonthTable._init = function(componentId,
         // onclick event can be fired on drag end under IE
         if (editable)
           var newEventTime = this._cellDay;
-          monthTable._addEvent(newEventTime, this._resource ? this._resource.id : null);
+        monthTable._addEvent(newEventTime, this._resource ? this._resource.id : null);
       };
     }
     cells[cells.length - 1]._last = true;
   }
 
   // workaround to show *horizontal* gridlines
-  table.body._overrideVerticalGridline(0, columnSeparator);
+  monthTable._table.body._overrideVerticalGridline(0, columnSeparator);
 
   monthTable._getEventEditor = function() {
     if (!editable)
       return null;
-    return monthTable._eventEditor;
+    return this._eventEditor;
   };
 
-  var ieEventHandlerLayer = O$.isExplorer() ? O$.createAbsolutePositionedElement(monthTable._scroller) : null;
-  var absoluteElementsParentNode = O$.createAbsolutePositionedElement(monthTable._scroller);
-  monthTable._absoluteElementsParentNode = absoluteElementsParentNode;
-  absoluteElementsParentNode.style.overflow = "hidden";
-  absoluteElementsParentNode._updatePos = function() {
-    var tableRect = O$.getElementBorderRectangle(table, true);
-    var rect = new O$.Rectangle(0, 0, tableRect.width, tableRect.height);
-    O$.setElementBorderRectangle(absoluteElementsParentNode, rect);
-    if (ieEventHandlerLayer)
-      O$.setElementBorderRectangle(ieEventHandlerLayer, rect);
-  };
-  absoluteElementsParentNode.onclick = function(e) {
-    var clickPoint = O$.getEventPoint(e);
-    var cell = table._cellFromPoint(clickPoint.x, clickPoint.y, false);
-    if (cell && cell.onclick)
-      cell.onclick(e);
-  };
-  if (ieEventHandlerLayer) {
-    O$.fixIEEventsForTransparentLayer(ieEventHandlerLayer);
-    ieEventHandlerLayer.onclick = function(e) {
-      absoluteElementsParentNode.onclick(e);
-    };
-  }
-
-  for (var rowIndex = 1; rowIndex < rows.length; rowIndex+=2) {
+  for (var rowIndex = 1; rowIndex < rows.length; rowIndex += 2) {
     var row = rows[rowIndex];
     var cells = row._cells;
     for (var cellIndex = 0; cellIndex < cells.length; cellIndex++) {
@@ -263,7 +191,7 @@ O$.MonthTable._init = function(componentId,
 
   function clearAllCellEvents() {
     var rows = monthTable._table.body._getRows();
-    for (var rowIndex = 1; rowIndex < rows.length; rowIndex+=2) {
+    for (var rowIndex = 1; rowIndex < rows.length; rowIndex += 2) {
       var row = rows[rowIndex];
       var cells = row._cells;
       for (var cellIndex = 0; cellIndex < cells.length; cellIndex++) {
@@ -271,7 +199,7 @@ O$.MonthTable._init = function(componentId,
         if (cell._cellEvents) {
           for (var i = 0; i < cell._cellEvents.length; i++) {
             var oldCellEvent = cell._cellEvents[i];
-            removeEventElement(oldCellEvent);
+            monthTable._removeEventElement(oldCellEvent);
           }
         }
         cell._cellEvents = [];
@@ -279,25 +207,25 @@ O$.MonthTable._init = function(componentId,
     }
   }
 
-  function updateCellEventElements(day) {
+  monthTable._updateCellEventElements = function(day) {
     var result = [];
 
-    var cell = O$.MonthTable.getCellForDay(monthTable, day);
+    var cell = O$.MonthTable.getCellForDay(this, day);
 
     if (!cell) {
-      return result;      
+      return result;
     }
 
     if (cell._cellEvents) {
       for (var i = 0; i < cell._cellEvents.length; i++) {
         var oldCellEvent = cell._cellEvents[i];
-        removeEventElement(oldCellEvent);
+        this._removeEventElement(oldCellEvent);
       }
     }
 
     cell._cellEvents = [];
 
-    var cellEvents = O$.MonthTable.getDayEvents(monthTable._monthEvents, day);
+    var cellEvents = O$.MonthTable.getDayEvents(this._events, day);
 
     for (var cellEventIndex = 0; cellEventIndex < cellEvents.length; cellEventIndex++) {
       var cellEvent = cellEvents[cellEventIndex];
@@ -310,7 +238,7 @@ O$.MonthTable._init = function(componentId,
 
     for (var cellEventIndex = 0; cellEventIndex < cellEvents.length; cellEventIndex++) {
       var cellEvent = cellEvents[cellEventIndex];
-      var newEventElement = addEventElement(cellEvent);
+      var newEventElement = this._addEventElement(cellEvent);
       newEventElement._attachAreas();
       result.push(newEventElement);
     }
@@ -318,7 +246,7 @@ O$.MonthTable._init = function(componentId,
     cell._moreLinkData = null;
 
     return result;
-  }
+  };
 
   function addMoreLink(cell) {
     var moreLinkElement = document.createElement("div");
@@ -364,87 +292,15 @@ O$.MonthTable._init = function(componentId,
 
     moreLinkElement._update = function() {
       this._updatePos();
-    }
+    };
 
-    absoluteElementsParentNode.appendChild(moreLinkElement);
+    monthTable._absoluteElementsParentNode.appendChild(moreLinkElement);
     return moreLinkElement;
   }
 
-  function addEventElement(event) {
-    var eventElement = document.createElement("div");
-    eventElement._event = event;
-    event.mainElement = eventElement;
-    eventElement._monthTable = monthTable;
-
-    O$.Timetable._createEventContentElements(eventElement, eventContent, eventContentClasses);
-
-    eventElement._attachAreas = function() {
-      eventElement._areas = [];
-      for (var areaIndex = 0, areaCount = eventAreaSettings.length; areaIndex < areaCount; areaIndex++) {
-        var areaSettings = eventAreaSettings[areaIndex];
-        var areaId = areaSettings.id;
-        var areaClientId = monthTable.id + "::" + event.id + ":" + areaId;
-        var area = O$(areaClientId);
-        if (!area)
-          continue;
-        area.onmousedown = O$.stopEvent;
-        area.onclick = O$.stopEvent;
-        eventElement._areas.push(area);
-
-        var putAreaInElement = O$.isAlignmentInsideOfElement(areaSettings.horizontalAlignment, areaSettings.verticalAlignment);
-        if (putAreaInElement) {
-          var firstEventChild = eventElement.firstChild;
-          if (firstEventChild) {
-            // insert as a first element to allow configuring areas as floating elements by the element's top edge using
-            // area styling attributes, e.g. "position: static; float: right"
-            eventElement.insertBefore(area, firstEventChild);
-          } else
-            eventElement.appendChild(area);
-        } else
-          absoluteElementsParentNode.appendChild(area);
-        area._insideElement = putAreaInElement;
-        area._settings = areaSettings;
-        area._updatePos = function() {
-          O$.alignPopupByElement(this, eventElement, this._settings.horizontalAlignment, this._settings.verticalAlignment, 0, 0, true, true);
-        };
-      }
-    }
-    eventElement._attachAreas();
-
-    eventElement._updateAreaPositions = function(forceInsideAreasUpdate) {
-      for (var areaIndex = 0, areaCount = this._areas.length; areaIndex < areaCount; areaIndex++) {
-        var area = this._areas[areaIndex];
-        if (!area._insideElement || forceInsideAreasUpdate)
-          area._updatePos();
-      }
-    }
-
-    eventElement._updateAreaZIndexes = function(eventZIndex) {
-      if (eventZIndex === undefined)
-        eventZIndex = O$.getNumericElementStyle(event.mainElement, "z-index");
-
-      for (var areaIndex = 0, areaCount = this._areas.length; areaIndex < areaCount; areaIndex++) {
-        var area = this._areas[areaIndex];
-        area.style.zIndex = eventZIndex + 1;
-      }
-    }
-
-    O$.assignEvents(eventElement, uiEvent, true, {timetableEvent: event});
-    eventElement._onmouseover = eventElement.onmouseover;
-    eventElement._onmouseout = eventElement.onmouseout;
-    eventElement.onmouseover = eventElement.onmouseout = null;
-
-    var eventClass = event.type != "reserved" ? eventStyleClass : reservedTimeEventClass;
-    if (O$.isExplorer())
-      O$.combineClassNames([eventClass, "o_explicitly_transparent_background"]);
-    eventElement.className = eventClass;
-    eventElement.style.margin = "0"; // margin in CSS is for calculating eventsLeftOffset/eventsRightOffset only -- it should be reset to avoid unwanted effects
-    eventElement.style.zIndex = monthTable._baseZIndex + 5;
-
-    eventElement._backgroundElement = document.createElement("div");
-    eventElement._backgroundElement.className = eventBackgroundStyleClassName;
-    eventElement._backgroundElement.style.zIndex = monthTable._baseZIndex + 4;
-    event.backgroundElement = eventElement._backgroundElement;
+  var addEventElement = monthTable._addEventElement;
+  monthTable._addEventElement = function(event) {
+    var eventElement = addEventElement(event);
 
     event._updateRolloverState = function() {
       var eventElement = event.mainElement;
@@ -453,7 +309,7 @@ O$.MonthTable._init = function(componentId,
         // just before element is replaced with Ajax, this call will be made when there's no original element anymore
         return;
       }
-      var actionBar = getEventActionBar();
+      var actionBar = monthTable._getEventActionBar();
       event._setMouseInside(eventElement._mouseInside
               || (actionBar._event == event && actionBar._actionsArea._mouseInside)
               );
@@ -461,34 +317,8 @@ O$.MonthTable._init = function(componentId,
 
     eventElement._update = function() {
       this._updatePos();
-      if (event.type != "reserved") {
-        O$.Timetable._updateEventContentElements(eventElement, event, monthTable);
-      }
-
-      var calculatedEventColor = event.color ? event.color : defaultEventColor;
-      if (event.type == "reserved") {
-        calculatedEventColor = reservedTimeEventColor;
-      }
-      eventElement._color = calculatedEventColor;
-      eventElement._backgroundColor = O$.blendColors(eventElement._color, "#ffffff", 1 - eventBackgroundIntensity);
-
-      var userSpecifiedStyles = O$.getStyleClassProperties(
-              event.type != "reserved"
-                      ? (uiEvent.style ? uiEvent.style : stylingParams.eventClass)
-                      : stylingParams.reservedTimeEventClass,
-              ["color", "background-color", "border-color"]);
-      eventElement._backgroundElement.style.backgroundColor = userSpecifiedStyles.backgroundColor
-              ? userSpecifiedStyles.backgroundColor : eventElement._backgroundColor;
-      var elementStyles = O$.getElementStyle(eventElement, ["border-radius", "-moz-border-radius-topleft", "-webkit-border-top-left-radius"]);
-      eventElement._backgroundElement.style.borderRadius = elementStyles.borderRadius;
-      eventElement._backgroundElement.style.MozBorderRadius = elementStyles.MozBorderRadiusTopleft;
-      eventElement._backgroundElement.style.WebkitBorderRadius = elementStyles.WebkitBorderTopLeftRadius;
-
-      O$.setOpacityLevel(eventElement._backgroundElement, 1 - eventBackgroundTransparency);
-      eventElement.style.color = userSpecifiedStyles.color ? userSpecifiedStyles.color : eventElement._color;
-      eventElement.style.borderColor = userSpecifiedStyles.borderColor ? userSpecifiedStyles.borderColor : eventElement._color;
+      this._updateShape();
     };
-
     eventElement._updatePos = function() {
       if (event.resourceId) {
         var resource = monthTable._getResourceForEvent(event);
@@ -519,7 +349,7 @@ O$.MonthTable._init = function(componentId,
         this.style.display = "none";
         return;
       }
-      
+
       var x1 = cellBoundaries.getMinX() + (event.type != "reserved" ? eventsLeftOffset : reservedEventsLeftOffset);
       var x2 = cellBoundaries.getMaxX() - (event.type != "reserved" ? eventsRightOffset : reservedEventsRightOffset);
       if (O$.isExplorer() && O$.isStrictMode() && cell._last) {
@@ -536,277 +366,68 @@ O$.MonthTable._init = function(componentId,
       O$.setElementBorderRectangle(backgroundElement, eventElement._rect);
     };
 
-    var eventPreview = getEventPreview();
-    event._setMouseInside = function(value) {
-      if (event._mouseInside == value)
-        return;
-      event._mouseInside = value;
-      if (event.type == "reserved")
-        return;
-      if (value) {
-        O$.setStyleMappings(eventElement, {_rolloverStyle: rolloverEventClass});
-        eventElement._updateAreaPositions(true);
-        showEventActionBar(event);
-
-        if (eventPreview) {
-          setTimeout(function() {
-            if (event._mouseInside)
-              eventPreview.showForEvent(event);
-          }, eventPreview._showingDelay);
-        }
-        if (eventElement._onmouseover) {
-          eventElement._onmouseover(O$.createEvent("mouseover"));
-        }
-      } else {
-        O$.setStyleMappings(eventElement, {_rolloverStyle: null});
-        eventElement._updateAreaPositions(true);
-        hideEventActionBar();
-
-        if (eventPreview) {
-          eventPreview.hide();
-        }
-        if (eventElement._onmouseout) {
-          eventElement._onmouseout(O$.createEvent("mouseout"));
-        }
-      }
+    eventElement._updateAreaPositionsAndBorder = function() {
+      eventElement._updateAreaPositions(true);
     };
 
-    O$.setupHoverStateFunction(eventElement, function(mouseInside) {
-      if (event._creationInProgress)
-        return;
-      eventElement._mouseInside = mouseInside;
-      O$.invokeFunctionAfterDelay(event._updateRolloverState, O$.MonthTable.EVENT_ROLLOVER_STATE_UPDATE_TIMEOUT);
-    });
+    event._isEventPreviewAllowed = function() {
+      return event._mouseInside;
+    };
 
-    if (editable) {
-      eventElement.onclick = function(e) {
-        O$.breakEvent(e);
-        if (event.type == "reserved")
-          return;
+    event._isEventUpdateNotAllowed = function() {
+      return event.type == "reserved";
+    };
 
-        event._oldStart = event.start;
-        monthTable._getEventEditor().run(event, "update");
-      };
-    }
-
-    if (eventElement.oncreate)
-      eventElement.oncreate(O$.createEvent("create"));
-    absoluteElementsParentNode.appendChild(eventElement);
-    absoluteElementsParentNode.appendChild(eventElement._backgroundElement);
+    event._beforeUpdate = function() {
+      event._oldStart = event.start;
+    };
 
     eventElement._update();
     return eventElement;
-  }
+  };
 
-  function removeEventElement(event) {
+  var removeEventElement = monthTable._removeEventElement;
+  monthTable._removeEventElement = function(event) {
+
     if (!event.mainElement)
       return;
-    if (getEventActionBar()._event == event)
-      hideEventActionBar();
 
     var areas = event.mainElement._areas;
     for (var i = 0, count = areas.length; i < count; i++) {
       var area = areas[i];
-      hiddenArea.appendChild(area);
+      this._hiddenArea.appendChild(area);
     }
 
-    if (event.mainElement._removeNodes)
-      event.mainElement._removeNodes();
-    event.mainElement.parentNode.removeChild(event.mainElement);
-    var backgroundElement = event.mainElement._backgroundElement;
-    backgroundElement.parentNode.removeChild(backgroundElement);
-    event.mainElement._event = null;
-    event.mainElement = null;
-    event.backgroundElement = null;
-  }
+    removeEventElement(event);
+  };
 
-  function getEventActionBar() {
-    if (!monthTable._eventActionBar) {
-      monthTable._eventActionBar = O$(monthTable.id + ":_eventActionBar");
-      if (!monthTable._eventActionBar)
-        return null;
-      monthTable._eventActionBar.style.position = "absolute";
-      monthTable._eventActionBar.style.visibility = "hidden";
 
-    }
-    return monthTable._eventActionBar;
-  }
-
-  function getEventPreview() {
-    if (!monthTable._eventPreview) {
-      monthTable._eventPreview = O$(monthTable.id + ":_eventPreview");
-    }
-    return monthTable._eventPreview;
-  }
-
-  function showEventActionBar(event) {
-    var eventElement = event.mainElement;
-    var actionBar = getEventActionBar();
-    actionBar._event = event;
-    var userSpecifiedStyles = O$.getStyleClassProperties(actionBar._userSpecifiedClass, ["color", "background-color"]);
-    actionBar.style.backgroundColor = userSpecifiedStyles.backgroundColor
-            ? userSpecifiedStyles.backgroundColor
-            : O$.blendColors(eventElement._color, "#ffffff", 1 - actionBar._inactiveSegmentIntensity);
-    eventElement.appendChild(actionBar);
-    actionBar.style.height = "";
-    actionBar.style.width = "";
-    var barHeight = actionBar.offsetHeight;
-    var actionsAreaHeight = actionBar._actionsArea._getHeight();
-    if (barHeight < actionsAreaHeight)
-      barHeight = actionsAreaHeight;
+  monthTable._layoutActionBar = function(actionBar, barHeight, eventElement) {
     var barWidth = actionBar._actionsArea._getWidth();
     O$.setElementSize(actionBar, {width: barWidth, height: barHeight});
     actionBar.style.right = "0px";
     actionBar.style.top = (eventElement._rect.height - barHeight) / 2 + "px";
-    actionBar.style.visibility = "visible";
-    actionBar._actionsArea.style.visibility = "visible";
-    actionBar._update();
-  }
-
-  function hideEventActionBar() {
-    var actionBar = getEventActionBar();
-    if (!actionBar._event)
-      return;
-    var eventElement = actionBar._event.mainElement;
-    actionBar._lastEditedEvent = actionBar._event;
-    actionBar._event = null;
-    eventElement.removeChild(actionBar);
-    actionBar.style.visibility = "hidden";
-    actionBar._actionsArea.style.visibility = "hidden";
-  }
-
-  monthTable.cancelEventCreation = function(event) {
-    event._creationInProgress = undefined;
-    removeEventElement(event);
   };
 
-  monthTable.addEvent = function(event) {
-    event.setStart(event.start, event.startStr);
-    event.setEnd(event.end, event.endStr);
-    if (event._creationInProgress) {
-      event._creationInProgress = undefined;
-      removeEventElement(event);
-    }
 
-    eventProvider.addEvent(event);
-    monthTable._updateEventElements(true);
-    putTimetableChanges([event], null, null);
+  monthTable._updateStartEndTime = function() {
+
+    this._startTime = O$.MonthTable.getFirstDay(this._day, firstDayOfWeek);
+    this._endTime = O$.MonthTable.getFirstDayOut(this._day, firstDayOfWeek);
+
+    O$.MonthTable.updateCellDays(this);
+
   };
 
-  monthTable.deleteEvent = function(event) {
-    eventProvider.deleteEvent(event);
-    monthTable._updateEventElements(true);
-    putTimetableChanges(null, null, [event.id]);
-  };
-
-  monthTable.getEventById = function(eventId) {
-    return eventProvider.getEventById(eventId);
-  };
-
-  monthTable.updateEvent = function(event) {
-    event.setStart(event.start, event.startStr);
-    event.setEnd(event.end, event.endStr);
-
-    if (event._oldStart) {
-      updateCellEventElements(event._oldStart);
-    }
-    updateCellEventElements(event.start);
-
-    event.updatePresentation();
-    putTimetableChanges(null, [event], null);
-  };
-
-  monthTable.refreshEvents = function(serverAction) {
-    this._saveChanges(true, serverAction, monthTable._startTime, monthTable._endTime);
-  };
-
-  monthTable.saveChanges = function() {
-    this._saveChanges(false, null, monthTable._startTime, monthTable._endTime);
-  };
-
-  monthTable._saveChanges = function(reloadAllEvents, serverAction, reloadStartTime, reloadEndTime) {
-    O$.requestComponentPortions(monthTable.id, ["saveEventChanges"], JSON.stringify(
-    {reloadAllEvents: !!reloadAllEvents, startTime: O$.formatDateTime(reloadStartTime), endTime: O$.formatDateTime(reloadEndTime)},
-            ["reloadAllEvents", "startTime", "endTime"]), function(
-            component, portionName, portionHTML, portionScripts, portionData) {
-      var remainingElements = O$.replaceDocumentElements(portionHTML, true);
-      if (remainingElements.hasChildNodes())
-        hiddenArea.appendChild(remainingElements);
-      O$.executeScripts(portionScripts);
-
-      if (portionData.reloadedEvents) {
-        eventProvider.setEvents(portionData.reloadedEvents, reloadStartTime, reloadEndTime);
-        monthTable._updateEventElements(true, true);
-      } else {
-        if (portionData.addedEvents) {
-          var addedCount = portionData.addedEvents.length;
-          O$.assertEquals(monthTable._addedEvents.length, addedCount, "addedEventCount should be same as monthTable._addedEvents.length");
-          for (var addedIdx = 0; addedIdx < addedCount; addedIdx++) {
-            var addedEvent = monthTable._addedEvents[addedIdx];
-            addedEvent._copyFrom(portionData.addedEvents[addedIdx]);
-            addedEvent.updatePresentation(0 /*dragAndDropCancelingPeriod*/);
-            addedEvent.mainElement._attachAreas();
-            addedEvent.mainElement._updateAreaPositions();
-          }
-        }
-        if (portionData.editedEvents) {
-          var editedCount = portionData.editedEvents.length;
-          O$.assertEquals(monthTable._editedEvents.length, editedCount, "editedEventCount should be same as monthTable._editedEvents.length");
-          for (var editedIdx = 0; editedIdx < editedCount; editedIdx++) {
-            var editedEvent = monthTable._editedEvents[editedIdx];
-            editedEvent._copyFrom(portionData.editedEvents[editedIdx]);
-            editedEvent.mainElement._attachAreas();
-            editedEvent.updatePresentation(0 /*dragAndDropCancelingPeriod*/);
-          }
-        }
-      }
-
-      monthTable._addedEvents = [];
-      monthTable._editedEvents = [];
-      monthTable._removedEventIds = [];
-      updateTimetableChangesField();
-    }, function () {
-      alert('Error saving the last timetable change');
-    }, serverAction);
-  };
-  
-
-  monthTable.getDay = function() {
-    return monthTable._day;
-  };
-
-  monthTable.setDay = function(day) {
-    if (O$._datesEqual(monthTable._day, day))
-      return;
-    if (monthTable._onDayChange) {
-      monthTable._onDayChange(day);
-    }
-
-    var dtf = O$.getDateTimeFormatObject(locale);
-    O$.setHiddenField(monthTable, monthTable.id + "::day", dtf.format(day, "dd/MM/yyyy"));
-
-    monthTable._day = day;
-    var startTime = O$.MonthTable.getFirstDay(day, firstDayOfWeek);
-    monthTable._startTime = startTime;
-    var endTime = O$.MonthTable.getFirstDayOut(day, firstDayOfWeek);
-    monthTable._endTime = endTime;
-
-    O$.MonthTable.updateCellDays(monthTable);
-
-    monthTable._monthEvents = eventProvider._getEventsForPeriod(monthTable._startTime, monthTable._endTime, function() {
-      monthTable._updateEventElements(true, true);
-    });
-
-    monthTable._updateEventElements();
-
+  monthTable._updateTimeForCells = function() {
     var weekdayHeaderRow = weekdayHeadersTable.body._getRows()[0];
 
-    var weekdayHeaderCellDay = monthTable._startTime;
+    var weekdayHeaderCellDay = this._startTime;
     for (var weekdayHeaderCellIndex = 0; weekdayHeaderCellIndex < weekdayHeaderRow._cells.length - 1; weekdayHeaderCellIndex++) {
       var weekdayHeaderCell = weekdayHeaderRow._cells[weekdayHeaderCellIndex];
-      var weekdayHeaderCellClassName = monthTable._weekdayHeaderCellClass;
+      var weekdayHeaderCellClassName = this._weekdayHeaderCellClass;
       if (weekdayHeaderCellDay.getDay() == 0 || weekdayHeaderCellDay.getDay() == 6) {
-        weekdayHeaderCellClassName = monthTable._weekendWeekdayHeaderCellClass;       
+        weekdayHeaderCellClassName = this._weekendWeekdayHeaderCellClass;
       }
       weekdayHeaderCell.className = weekdayHeaderCellClassName;
       O$.removeAllChildNodes(weekdayHeaderCell);
@@ -819,99 +440,51 @@ O$.MonthTable._init = function(componentId,
   };
 
   monthTable._updateEventElements = function(reacquireDayEvents, refreshAreasAfterReload) {
-    monthTable._baseZIndex = O$.getElementZIndex(monthTable);
-    
-    monthTable._eventElements = [];
+    this._baseZIndex = O$.getElementZIndex(this);
+
+    this._eventElements = [];
     if (reacquireDayEvents)
-      monthTable._monthEvents = eventProvider._getEventsForPeriod(monthTable._startTime, monthTable._endTime, function() {
-        monthTable._updateEventElements(true, true);
+      this._events = this._eventProvider._getEventsForPeriod(this._startTime, this._endTime, function() {
+        this._updateEventElements(true, true);
       });
 
     clearAllCellEvents();
-    
-    for (var cellDate = monthTable._startTime; cellDate < monthTable._endTime; cellDate = O$.MonthTable.__incDay(cellDate)) {
-      var newEventElements = updateCellEventElements(cellDate);
+
+    for (var cellDate = this._startTime; cellDate < this._endTime; cellDate = O$.MonthTable.__incDay(cellDate)) {
+      var newEventElements = this._updateCellEventElements(cellDate);
       for (var i = 0; i < newEventElements.length; i++) {
-        monthTable._eventElements.push(newEventElements[i]);
+        this._eventElements.push(newEventElements[i]);
       }
     }
 
-    monthTable._updateEventZIndexes();
-  };
-
-  monthTable._baseZIndex = O$.getElementZIndex(monthTable);
-  monthTable._maxZIndex = monthTable._baseZIndex + 10;
-  monthTable._updateEventZIndexes = function() {
-    if (!monthTable._eventElements)
-      return;
-    for (var elementIndex = 0, elementCount = monthTable._eventElements.length; elementIndex < elementCount; elementIndex++) {
-      var eventElement = monthTable._eventElements[elementIndex];
-      var eventZIndex = monthTable._baseZIndex + (elementIndex + 1) * 5;
-      eventElement.style.zIndex = eventZIndex;
-      eventElement._backgroundElement.style.zIndex = eventZIndex - 1;
-      if (eventElement._updateZIndex)
-        eventElement._updateZIndex(eventZIndex);
-    }
-    monthTable._maxZIndex = eventZIndex + 10;
+    this._updateEventZIndexes();
   };
 
   monthTable.previousMonth = function() {
-    var prevDay = new Date(monthTable._day.getFullYear(), monthTable._day.getMonth() - 1, monthTable._day.getDate());
-    monthTable.setDay(prevDay);
+    var prevDay = new Date(this._day.getFullYear(), this._day.getMonth() - 1, this._day.getDate());
+    this.setDay(prevDay);
   };
 
   monthTable.nextMonth = function() {
-    var nextDay = new Date(monthTable._day.getFullYear(), monthTable._day.getMonth() + 1, monthTable._day.getDate());
-    if ((nextDay.getMonth() - monthTable._day.getMonth()) % 12 != 1) {
-      nextDay = new Date(monthTable._day.getFullYear(), monthTable._day.getMonth() + 2, 0);
+    var nextDay = new Date(this._day.getFullYear(), this._day.getMonth() + 1, this._day.getDate());
+    if ((nextDay.getMonth() - this._day.getMonth()) % 12 != 1) {
+      nextDay = new Date(this._day.getFullYear(), this._day.getMonth() + 2, 0);
     }
-    monthTable.setDay(nextDay);
+    this.setDay(nextDay);
   };
 
   monthTable.currentMonth = function() {
     var today = new Date();
-    monthTable.setDay(today);
+    this.setDay(today);
   };
 
   var dtf = O$.getDateTimeFormatObject(locale);
   monthTable.setDay(dtf.parse(day, "dd/MM/yyyy"));
 
-  monthTable._addEvent = function(startTime, resourceId) {
-    var endTime = O$.cloneDateTime(startTime);
-    endTime.setMinutes(startTime.getMinutes() + editingOptions.defaultEventDuration);
-    var event = {
-      name: "",
-      resourceId: resourceId,
-      start: startTime,
-      end: endTime,
-      color: null,
-      description: ""
-    };
-    O$.Timetable._initEvent(event);
-    event._creationInProgress = true;
-    monthTable._getEventEditor().run(event, "create");
-  };
-
-  monthTable.updateLayout = function() {
-    monthTable._cachedPositions = {};
-    monthTable._declaredMonthTableHeight = O$.getStyleClassProperty(monthTable.className, "height");
-    if (monthTable._declaredMonthTableHeight === undefined) {
-      monthTable._scroller.style.overflow = "visible";
-      monthTable._scroller.style.overflowX = "visible";
-      monthTable._scroller.style.overflowY = "hidden";
-      monthTable._scroller.style.height = "auto";
-    } else {
-      if (O$.isOpera()) {
-        monthTable._scroller.style.overflow = "scroll"; // Opera < 9.5 doesn't understand specifying just overflow-y
-      }
-    }
-
-    updateHeightForFF();
-    accountForScrollerWidth();
-    absoluteElementsParentNode._updatePos();
+  monthTable._updateEventsPresentation = function() {
 
     var rows = monthTable._table.body._getRows();
-    for (var rowIndex = 1; rowIndex < rows.length; rowIndex+=2) {
+    for (var rowIndex = 1; rowIndex < rows.length; rowIndex += 2) {
       var row = rows[rowIndex];
       var cells = row._cells;
       for (var cellIndex = 0; cellIndex < cells.length; cellIndex++) {
@@ -928,13 +501,9 @@ O$.MonthTable._init = function(componentId,
       }
     }
 
- };
+  };
 
-  O$.addEventHandler(window, "resize", function() {
-    monthTable.updateLayout();
-  });
   O$.addInternalLoadEvent(function() {
-    monthTable.updateLayout(); // update positions after layout changes that might have had place during loading
 
     var maxScrollOffset = monthTable._scroller.scrollHeight - O$.getElementSize(monthTable._scroller).height;
     if (maxScrollOffset < 0)
@@ -947,28 +516,8 @@ O$.MonthTable._init = function(componentId,
     });
   });
 
-  function updateHeightForFF() {
-    // FireFox's scroller height includes the entire table without truncating it according to
-    // user-specified height in day table, so we should truncate height ourselves
-    if (!O$.isMozillaFF())
-      return;
-
-    if (monthTable._declaredMonthTableHeight === undefined)
-      return;
-    var scrollerHeight = monthTable._declaredMonthTableHeight;
-    if (!O$.stringEndsWith(monthTable._declaredMonthTableHeight, "%")) {
-      var height = O$.calculateNumericCSSValue(monthTable._declaredMonthTableHeight);
-      if (height) {
-        var offset = O$.getElementPos(monthTable._scroller).y - O$.getElementPos(monthTable).y;
-        height -= offset;
-        scrollerHeight = height + "px";
-      }
-    }
-    monthTable._scroller.style.height = scrollerHeight;
-  }
-
-  function accountForScrollerWidth() {
-    var firstDataRow = table.body._getRows()[0];
+  monthTable._accountForScrollerWidth = function() {
+    var firstDataRow = this._table.body._getRows()[0];
     var visibleDataWidth = O$.getElementBorderRectangle(firstDataRow._cells[firstDataRow._cells.length - 1]).getMaxX() - O$.getElementPos(firstDataRow._cells[0]).x;
 
     var weekdayHeaderRow = weekdayHeadersTable.body._getRows()[0];
@@ -979,220 +528,14 @@ O$.MonthTable._init = function(componentId,
     if (lastHeaderColWidth == 0 && O$.isOpera())
       lastHeaderColWidth = 1;
     weekdayHeaderRow._cells[weekdayHeaderRow._cells.length - 1].style.width = lastHeaderColWidth + "px";
-  }
+  };
 
-  updateHeightForFF();
+  monthTable._updateHeightForFF();
 
-  function putTimetableChanges(addedEvents, changedEvents, removedEventIds, initialAssignment) {
-    if (!monthTable._addedEvents) monthTable._addedEvents = [];
-    if (!monthTable._editedEvents) monthTable._editedEvents = [];
-    if (!monthTable._removedEventIds) monthTable._removedEventIds = [];
-    if (addedEvents)
-      monthTable._addedEvents = monthTable._addedEvents.concat(addedEvents);
-    if (changedEvents) {
-      for (var editedIdx = 0, editedCount = changedEvents.length; editedIdx < editedCount; editedIdx++) {
-        var editedEvent = changedEvents[editedIdx];
-        if (O$.findValueInArray(editedEvent, monthTable._addedEvents) != -1)
-          continue;
-        if (O$.findValueInArray(editedEvent, monthTable._editedEvents) == -1) {
-          monthTable._editedEvents.push(editedEvent);
-        }
-      }
-    }
-    if (removedEventIds) {
-      function eventIndexById(events, eventId) {
-        for (var i = 0, count = events.length; i < count; i++) {
-          var event = events[i];
-          if (event.id == eventId)
-            return i;
-        }
-        return -1;
-      }
-
-      for (var removedIdx = 0, removedCount = removedEventIds.length; removedIdx < removedCount; removedIdx++) {
-        var removedEventId = removedEventIds[removedIdx];
-        var addedEventIndex = eventIndexById(monthTable._addedEvents, removedEventId);
-        if (addedEventIndex != -1) {
-          monthTable._addedEvents.splice(addedEventIndex, 1);
-          continue;
-        }
-        var editedEventIndex = eventIndexById(monthTable._editedEvents, removedEventId);
-        if (editedEventIndex != -1)
-          monthTable._editedEvents.splice(editedEventIndex, 1);
-        monthTable._removedEventIds.push(removedEventId);
-      }
-    }
-
-    updateTimetableChangesField();
-
-    if (monthTable.onchange) {
-      var e = O$.createEvent("change");
-      e.addedEvents = addedEvents ? addedEvents : {};
-      e.changedEvents = changedEvents ? changedEvents : {};
-      e.removedEventIds = removedEventIds ? removedEventIds : {};
-
-      if (monthTable.onchange(e) === false)
-        return;
-    }
-
-    if (editingOptions.autoSaveChanges && !initialAssignment)
-      monthTable.saveChanges();
-  }
-
-  // RichFaces-OpenFaces-JSON compatibility workaround
-  // Since some of RichFaces components use JavaScript defining Array.prototype.toJSON method,
-  // JSON.stringify([1, 2]) call will produce '"[1,2]"' string instead of expected '["1","2"]'.
-  // Therefore perform manual array conversion here.
-  function updateTimetableChangesField() {
-
-    var properties = ["id", "name", "description", "resourceId", "startStr", "endStr", "color", "type"];
-
-    function arrayToJSON(name, source, properties) {
-      var result = [];
-      for (var i = 0; i < source.length; i++)
-        result[i] = JSON.stringify(source[i], properties);
-      return JSON.stringify(name) + ":[" + result.join(",") + "]";
-    }
-
-    var events = [
-      arrayToJSON("addedEvents", monthTable._addedEvents, properties),
-      arrayToJSON("editedEvents", monthTable._editedEvents, properties),
-      arrayToJSON("removedEventIds", monthTable._removedEventIds, properties)
-    ];
-    var changesAsString = "{" + events.join(",") + "}";
-    O$.setHiddenField(monthTable, monthTable.id + "::timetableChanges", changesAsString);
-  }
-
-  putTimetableChanges(null, null, null, true);
+  monthTable._putTimetableChanges(null, null, null, true);
   O$.assignEvents(monthTable, {onchange: onchange}, true);
 
 };
-
-O$.MonthTable._findEventById = function(events, id) {
-  if (events._cachedEventsByIds) {
-    return events._cachedEventsByIds[id];
-  }
-  events._cachedEventsByIds = {};
-  for (var i = 0, count = events.length; i < count; i++) {
-    var event = events[i];
-    events._cachedEventsByIds[event.id] = id;
-    if (event.id == id)
-      return event;
-  }
-  return null;
-};
-
-O$.MonthTable._LazyLoadedTimetableEvents = function(preloadedEvents, preloadedStartTime, preloadedEndTime) {
-  O$.MonthTable._PreloadedTimetableEvents.call(this, []);
-
-  this._setEvents = this.setEvents;
-  this.setEvents = function(events, preloadedStartTime, preloadedEndTime) {
-    this._setEvents(events);
-    this._loadedTimeRangeMap = new O$._RangeMap();
-    this._loadingTimeRangeMap = new O$._RangeMap();
-    if (!(preloadedStartTime instanceof Date))
-      preloadedStartTime = preloadedStartTime ? O$.parseDateTime(preloadedStartTime).getTime() : null;
-    if (!(preloadedEndTime instanceof Date))
-      preloadedEndTime = preloadedEndTime ? O$.parseDateTime(preloadedEndTime).getTime() : null;
-    this._loadedTimeRangeMap.addRange(preloadedStartTime, preloadedEndTime);
-    this._loadingTimeRangeMap.addRange(preloadedStartTime, preloadedEndTime);
-  };
-  this.setEvents(preloadedEvents, preloadedStartTime, preloadedEndTime);
-
-  this._getEventsForPeriod_raw = this._getEventsForPeriod;
-  this._getEventsForPeriod = function(start, end, eventsLoadedCallback) {
-    if (this._loadedTimeRangeMap.isRangeFullyInMap(start.getTime(), end.getTime()) ||
-        this._loadingTimeRangeMap.isRangeFullyInMap(start.getTime(), end.getTime()))
-      return this._getEventsForPeriod_raw(start, end);
-
-    this._loadingTimeRangeMap.addRange(start.getTime(), end.getTime());
-    var thisProvider = this;
-    O$.requestComponentPortions(this._monthTable.id, ["loadEvents"],
-            JSON.stringify(
-            {startTime: O$.formatDateTime(start), endTime: O$.formatDateTime(end)},
-                    ["startTime", "endTime"]),
-            function(component, portionName, portionHTML, portionScripts, portionData) {
-              var remainingElements = O$.replaceDocumentElements(portionHTML, true);
-              if (remainingElements.hasChildNodes())
-                thisProvider._monthTable._hiddenArea.appendChild(remainingElements);
-              O$.executeScripts(portionScripts);
-
-              var newEvents = portionData.events;
-              thisProvider._loadedTimeRangeMap.addRange(start.getTime(), end.getTime());
-              thisProvider._events._cachedEventsByIds = null;
-              for (var i = 0, count = newEvents.length; i < count; i++) {
-                var newEvent = newEvents[i];
-                var existingEvent = O$._findEventById(thisProvider._events, newEvent.id);
-                if (existingEvent)
-                  existingEvent._copyFrom(newEvent);
-                else
-                  thisProvider.addEvent(newEvent);
-              }
-              if (eventsLoadedCallback) {
-                //        var eventsForPeriod = this._getEventsForPeriod_raw(start, end);
-                eventsLoadedCallback();//eventsForPeriod);
-              }
-            }, function () {
-      // todo: revert addition of time range to this._loadingTimeRangeMap
-      alert('Error loading timetable events');
-    });
-    return this._getEventsForPeriod_raw(start, end);
-  };
-};
-
-O$.MonthTable._PreloadedTimetableEvents = function(events) {
-
-  this._getEventsForPeriod = function(start, end) {
-    var result = [];
-    var startTime = start.getTime();
-    var endTime = end.getTime();
-    for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
-      var event = this._events[eventIndex];
-      if (event.end.getTime() < event.start.getTime())
-        continue;
-      if (event.end.getTime() <= startTime ||
-          event.start.getTime() >= endTime)
-        continue;
-      result.push(event);
-    }
-    return result;
-  };
-
-  this.setEvents = function(newEvents) {
-    this._events = newEvents;
-    for (var eventIndex = 0, eventCount = newEvents.length; eventIndex < eventCount; eventIndex++) {
-      var event = newEvents[eventIndex];
-      O$.Timetable._initEvent(event);
-    }
-    this._events._cachedEventsByIds = null;
-  };
-
-  this.getEventById = function(eventId) {
-    for (var i = 0, count = this._events.length; i < count; i++) {
-      var evt = this._events[i];
-      if (evt.id == eventId)
-        return evt;
-    }
-    return null;
-  };
-
-  this.addEvent = function(event) {
-    if (this._events._cachedEventsByIds && event.id)
-      this._events._cachedEventsByIds[event.id] = event;
-    O$.Timetable._initEvent(event);
-    this._events.push(event);
-  };
-  this.deleteEvent = function(event) {
-    if (this._events._cachedEventsByIds && event.id)
-      this._events._cachedEventsByIds[event.id] = undefined;
-
-    var eventIndex = O$.findValueInArray(event, this._events);
-    this._events.splice(eventIndex, 1);
-  };
-
-  this.setEvents(events);
-};
-
 
 O$.MonthTable.getFirstDay = function(day, firstDayOfWeek) {
   var firstDayOfMonth = O$.cloneDate(day);
@@ -1252,9 +595,9 @@ O$.MonthTable.updateCellDays = function(monthTable) {
 
   var cellDay = monthTable._startTime;
   var rows = monthTable._table.body._getRows();
-  for (var rowIndex = 0; rowIndex < visibleRowCount; rowIndex+=2) {
+  for (var rowIndex = 0; rowIndex < visibleRowCount; rowIndex += 2) {
     var dayHeaderRow = rows[rowIndex];
-    var dayContentRow = rows[rowIndex+1];
+    var dayContentRow = rows[rowIndex + 1];
     var dayHeaderCells = dayHeaderRow._cells;
     var dayContentCells = dayContentRow._cells;
     var cellCount = dayHeaderCells.length;
@@ -1300,7 +643,7 @@ O$.MonthTable.updateCellDays = function(monthTable) {
 
 O$.MonthTable.getCellForDay = function(monthTable, day) {
   var rows = monthTable._table.body._getRows();
-  for (var rowIndex = 1; rowIndex < rows.length; rowIndex+=2) {
+  for (var rowIndex = 1; rowIndex < rows.length; rowIndex += 2) {
     var row = rows[rowIndex];
     var cells = row._cells;
     for (var cellIndex = 0; cellIndex < cells.length; cellIndex++) {
@@ -1332,9 +675,9 @@ O$.MonthTable.setVisibleRowCount = function(table, count) {
   var rows = table.body._getRows();
   var rowCount = Math.min(count, rows.length);
   for (var visibleRowIndex = 0; visibleRowIndex < rowCount; visibleRowIndex++) {
-    rows[visibleRowIndex].style.display="";
+    rows[visibleRowIndex].style.display = "";
   }
   for (var hiddenRowIndex = rowCount; hiddenRowIndex < rows.length; hiddenRowIndex++) {
-    rows[hiddenRowIndex].style.display="none";
+    rows[hiddenRowIndex].style.display = "none";
   }
-}
+};

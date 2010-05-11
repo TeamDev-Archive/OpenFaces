@@ -215,6 +215,7 @@ public class MonthTableRenderer extends TimetableViewRenderer {
                     TableUtil.getTableUtilJsURL(context),
                     Resources.getInternalURL(context, MonthTableRenderer.class, "rangeMap.js"),
                     Resources.getInternalURL(context, MonthTableRenderer.class, "timetable.js"),
+                    Resources.getInternalURL(context, MonthTableRenderer.class, "timeTableView.js"),
                     Resources.getInternalURL(context, MonthTableRenderer.class, "monthTable.js")
             );
         } catch (JSONException e) {

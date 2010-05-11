@@ -148,7 +148,7 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
                 timetableView.getTimetableChangeListeners().length > 0;
         if (!thereIsChangeListener) {
             Log.log(context, "The " + getComponentName() + " with clientID=[" + clientId + "] is set to be editable, but is not configured to accept the changes. " +
-                    "You should either make it read-only explicitly (using editable=\"false\" attribute), or define timetableChangeListener attriubte to accept the changes (see " + getComponentName() + " reference).");
+                    "You should either make it read-only explicitly (using editable=\"false\" attribute), or define timetableChangeListener attribute to accept the changes (see " + getComponentName() + " reference).");
             editable = false;
         }
         List<AbstractTimetableEvent> events = new ArrayList<AbstractTimetableEvent>();
@@ -194,6 +194,8 @@ public abstract class TimeScaleTableRenderer extends TimetableViewRenderer {
                     Resources.getJsonJsURL(context),
                     TableUtil.getTableUtilJsURL(context),
                     Resources.getInternalURL(context, TimeScaleTableRenderer.class, "rangeMap.js"),
+                    Resources.getInternalURL(context, TimeScaleTableRenderer.class, "timeTableView.js"),
+                    Resources.getInternalURL(context, TimeScaleTableRenderer.class, "timeScaleTable.js"),
                     Resources.getInternalURL(context, TimeScaleTableRenderer.class, "timetable.js"),
                     Resources.getInternalURL(context, TimeScaleTableRenderer.class, getJsLibraryName())
             );

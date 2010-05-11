@@ -534,3 +534,129 @@ O$.Timetable._updateEventContentElements = function(eventElement, event, timetab
     }
   }
 };
+
+O$.Timetable._findEventById = function(events, id) {
+  if (events._cachedEventsByIds) {
+    return events._cachedEventsByIds[id];
+  }
+  events._cachedEventsByIds = {};
+  for (var i = 0, count = events.length; i < count; i++) {
+    var event = events[i];
+    events._cachedEventsByIds[event.id] = id;
+    if (event.id == id)
+      return event;
+  }
+  return null;
+};
+
+O$.Timetable._LazyLoadedTimetableEvents = function(preloadedEvents, preloadedStartTime, preloadedEndTime) {
+  O$.Timetable._PreloadedTimetableEvents.call(this, []);
+
+  this._setEvents = this.setEvents;
+  this.setEvents = function(events, preloadedStartTime, preloadedEndTime) {
+    this._setEvents(events);
+    this._loadedTimeRangeMap = new O$._RangeMap();
+    this._loadingTimeRangeMap = new O$._RangeMap();
+    if (!(preloadedStartTime instanceof Date))
+      preloadedStartTime = preloadedStartTime ? O$.parseDateTime(preloadedStartTime).getTime() : null;
+    if (!(preloadedEndTime instanceof Date))
+      preloadedEndTime = preloadedEndTime ? O$.parseDateTime(preloadedEndTime).getTime() : null;
+    this._loadedTimeRangeMap.addRange(preloadedStartTime, preloadedEndTime);
+    this._loadingTimeRangeMap.addRange(preloadedStartTime, preloadedEndTime);
+  };
+  this.setEvents(preloadedEvents, preloadedStartTime, preloadedEndTime);
+
+  this._getEventsForPeriod_raw = this._getEventsForPeriod;
+  this._getEventsForPeriod = function(start, end, eventsLoadedCallback) {
+    if (this._loadedTimeRangeMap.isRangeFullyInMap(start.getTime(), end.getTime()) ||
+        this._loadingTimeRangeMap.isRangeFullyInMap(start.getTime(), end.getTime()))
+      return this._getEventsForPeriod_raw(start, end);
+
+    this._loadingTimeRangeMap.addRange(start.getTime(), end.getTime());
+    var thisProvider = this;
+    O$.requestComponentPortions(this._timeTableView.id, ["loadEvents"],
+            JSON.stringify(
+            {startTime: O$.formatDateTime(start), endTime: O$.formatDateTime(end)},
+                    ["startTime", "endTime"]),
+            function(component, portionName, portionHTML, portionScripts, portionData) {
+              var remainingElements = O$.replaceDocumentElements(portionHTML, true);
+              if (remainingElements.hasChildNodes())
+                thisProvider._timeTableView._hiddenArea.appendChild(remainingElements);
+              O$.executeScripts(portionScripts);
+
+              var newEvents = portionData.events;
+              thisProvider._loadedTimeRangeMap.addRange(start.getTime(), end.getTime());
+              thisProvider._events._cachedEventsByIds = null;
+              for (var i = 0, count = newEvents.length; i < count; i++) {
+                var newEvent = newEvents[i];
+                var existingEvent = O$.Timetable._findEventById(thisProvider._events, newEvent.id);
+                if (existingEvent)
+                  existingEvent._copyFrom(newEvent);
+                else
+                  thisProvider.addEvent(newEvent);
+              }
+              if (eventsLoadedCallback) {
+                //        var eventsForPeriod = this._getEventsForPeriod_raw(start, end);
+                eventsLoadedCallback();//eventsForPeriod);
+              }
+            }, function () {
+      // todo: revert addition of time range to this._loadingTimeRangeMap
+      alert('Error loading timetable events');
+    });
+    return this._getEventsForPeriod_raw(start, end);
+  };
+};
+
+O$.Timetable._PreloadedTimetableEvents = function(events) {
+
+  this._getEventsForPeriod = function(start, end) {
+    var result = [];
+    var startTime = start.getTime();
+    var endTime = end.getTime();
+    for (var eventIndex = 0, eventCount = this._events.length; eventIndex < eventCount; eventIndex++) {
+      var event = this._events[eventIndex];
+      if (event.end.getTime() < event.start.getTime())
+        continue;
+      if (event.end.getTime() <= startTime ||
+          event.start.getTime() >= endTime)
+        continue;
+      result.push(event);
+    }
+    return result;
+  };
+
+  this.setEvents = function(newEvents) {
+    this._events = newEvents;
+    for (var eventIndex = 0, eventCount = newEvents.length; eventIndex < eventCount; eventIndex++) {
+      var event = newEvents[eventIndex];
+      O$.Timetable._initEvent(event);
+    }
+    this._events._cachedEventsByIds = null;
+  };
+
+  this.getEventById = function(eventId) {
+    for (var i = 0, count = this._events.length; i < count; i++) {
+      var evt = this._events[i];
+      if (evt.id == eventId)
+        return evt;
+    }
+    return null;
+  };
+
+  this.addEvent = function(event) {
+    if (this._events._cachedEventsByIds && event.id)
+      this._events._cachedEventsByIds[event.id] = event;
+    O$.Timetable._initEvent(event);
+    this._events.push(event);
+  };
+  this.deleteEvent = function(event) {
+    if (this._events._cachedEventsByIds && event.id)
+      this._events._cachedEventsByIds[event.id] = undefined;
+
+    var eventIndex = O$.findValueInArray(event, this._events);
+    this._events.splice(eventIndex, 1);
+  };
+
+  this.setEvents(events);
+};
+
