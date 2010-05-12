@@ -66,6 +66,7 @@ public class ChartRenderer extends RendererBase {
         writer.startElement("div", chart);
         writeIdAttribute(facesContext, chart);
         Rendering.writeComponentClassAttribute(writer, chart);
+        writer.writeAttribute("style", "width: " + chart.getWidth() + "px;" + " height:" + chart.getHeight() + "px;", "style");
 
         String actionFiledId = chart.getClientId(facesContext) + MapRenderUtilities.ACTION_FIELD_SUFFIX;
         Rendering.writeNewLine(writer);
@@ -135,10 +136,10 @@ public class ChartRenderer extends RendererBase {
         if (map != null)
             Resources.renderJSLinkIfNeeded(facesContext, Resources.getUtilJsURL(facesContext));
         writer.endElement("div");
-        encodeScriptsAndStyles(facesContext, chart, dynamicImage);
+        encodeScripts(facesContext, chart, dynamicImage);
     }
 
-    protected void encodeScriptsAndStyles(FacesContext context, Chart chart, DynamicImage dynamicImage) throws IOException {
+    protected void encodeScripts(FacesContext context, Chart chart, DynamicImage dynamicImage) throws IOException {
         ScriptBuilder buf = new ScriptBuilder();
         encodeChartMenuSupport(context, chart, dynamicImage, buf);
 

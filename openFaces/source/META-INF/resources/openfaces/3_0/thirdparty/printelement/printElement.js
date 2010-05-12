@@ -39,7 +39,7 @@
         });
     };
     $.fn.printElement.defaults = {
-        printMode: 'iframe', //Usage : iframe / popup
+        printMode: 'popup', //Usage : iframe / popup
         pageTitle: '', //Print Page Title
         overrideElementCSS: null,
         /* Can be one of the following 3 options:
@@ -68,7 +68,9 @@
         var popupOrIframe = null;
         var documentToWriteTo = null;
         if (opts.printMode.toLowerCase() == 'popup') {
-            popupOrIframe = window.open('about:blank', 'printElementWindow', 'width=650,height=440,scrollbars=yes');
+          var width = (!($.browser.msie)) ? element.width() + 40 : element.width() + 60;
+          var height = (!($.browser.msie))? element.height() + 120 : element.height() + 140;
+          popupOrIframe = window.open('about:blank', 'printElementWindow', 'width=' + width + ',height=' + height + ',scrollbars=yes');
             documentToWriteTo = popupOrIframe.document;
         }
         else {
@@ -91,11 +93,11 @@
             iframe = document.frames ? document.frames[printElementID] : document.getElementById(printElementID);
             popupOrIframe = iframe.contentWindow || iframe;
         }
-        focus();
+        
         documentToWriteTo.open();
         documentToWriteTo.write(html);
         documentToWriteTo.close();
-        _callPrint(popupOrIframe);
+         
     };
 
     function _callPrint(element){
@@ -170,8 +172,12 @@
         //Ensure that relative links work
         html.push('<base href="' + _getBaseHref() + '" />');
         html.push('</head><body style="' + opts.printBodyOptions.styleToAdd + '" class="' + opts.printBodyOptions.classNameToAdd + '">');
+        html.push('<div><input type="button" onclick="print(); return false;" value="Print" style="float:right; margin-bottom: 10px;"/></div>');
+        html.push('<div style="clear:both;"/>');
         html.push('<div class="' + $element.attr('class') + '">' + elementHtml + '</div>');
-        html.push('<script type="text/javascript">function printPage(){focus();print();' + ((!$.browser.opera && !opts.leaveOpen && opts.printMode.toLowerCase() == 'popup') ? 'close();' : '') + '}</script>');
+        html.push('<div><input type="button" onclick="print(); return false;" value="Print" style="float:right; margin-top: 10px;"/></div>');
+        html.push('<div style="clear:both;"/>');
+        html.push('<script type="text/javascript">function printPage(){}</script>');
         html.push('</body></html>');
 
         return html.join('');
