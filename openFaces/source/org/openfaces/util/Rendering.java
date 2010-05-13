@@ -74,7 +74,7 @@ public class Rendering {
     }
 
     /**
-     * This method render all children of given component
+     * This method render all children of a given component
      *
      * @param context   {@link FacesContext} for the current request
      * @param component The component, which children will be rendered
@@ -89,7 +89,7 @@ public class Rendering {
     }
 
     /**
-     * This method calls {@link javax.faces.component.UIComponent#encodeAll encodeAll} with given context for all
+     * This method calls {@link javax.faces.component.UIComponent#encodeAll encodeAll} with a given context for all
      * passed components
      *
      * @param context    {@link FacesContext} for the current request
@@ -239,7 +239,7 @@ public class Rendering {
      * @param component    The component
      * @param attrName     The attribute name
      * @param defaultValue The default value to return if such attribute doesn't exist
-     * @return boolean value of given attribute or default value if not found
+     * @return boolean value of a given attribute or default value if not found
      */
     public static boolean getBooleanAttribute(UIComponent component, String attrName, boolean defaultValue) {
         Boolean b = (Boolean) component.getAttributes().get(attrName);
@@ -777,7 +777,7 @@ public class Rendering {
      * @param writer            The character-based output
      * @param style             The value of css style attribute to render
      * @param styleClass        The value of css style class attribute to render
-     * @param defaultStyleClass The default css style class to merge with given css style
+     * @param defaultStyleClass The default css style class to merge with a given css style
      * @throws IOException if an input/output error occurs
      * @see #writeStyleAndClassAttributes(javax.faces.context.ResponseWriter, String, String)
      */
@@ -965,7 +965,7 @@ public class Rendering {
      * Encode png image as array of bytes
      *
      * @param data The png image
-     * @return the array of bytes, representing given image
+     * @return the array of bytes, representing a given image
      */
     public static byte[] encodeAsPNG(RenderedImage data) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -1248,7 +1248,7 @@ public class Rendering {
     }
 
     /**
-     * Return event handlers for given events
+     * Return event handlers for a given events
      *
      * @param component  The component, which event handlers retrieve
      * @param eventNames The event names
